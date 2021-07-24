@@ -1,0 +1,11 @@
+/* Custom Fonts */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Libre+Baskerville');
+
+$menu-label-font-size: 1em;
+$menu-list-line-height: 1.2em;
+$menu-item-radius: 10px;
+$menu-item-hover-background-color: #111;
+
+/* Uncomment to import the entire Bulma framework */
+@import '~bulma/bulma';
+//@import '~bulma-extensions/bulma-switch/src/sass/index';

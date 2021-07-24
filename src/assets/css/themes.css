@@ -1,0 +1,113 @@
+:root {
+    --sidebar-width: 220px;
+    --collapse-width: 900px;
+    --expander-transition-time: 3s;
+
+    --bg-1: #2f3136;
+    --bg-2: #36393f;
+    --bg-3: #4f545c;
+
+    --sep-1: #000;
+    --sep-2: #222;
+    --sep-3: #333;
+
+    --text-1: #fff;
+    --text-2: #eee;
+    --text-3: #aaa;
+
+    --logo-url: url("~@/assets/img/logo-white.png");
+}
+
+:root.light_mode {
+    --bg-1: #fff;
+    --bg-2: #eee;
+    --bg-3: #ddd;
+
+    --sep-1: #fff;
+    --sep-2: #ccc;
+    --sep-3: #ddd;
+
+    --text-1: #111;
+    --text-2: #222;
+    --text-3: #333;
+
+    --logo-url: url("~@/assets/img/logo-black.png");
+}
+
+.bg-1 {
+    background-color: var(--bg-1);
+}
+
+.bg-2 {
+    background-color: var(--bg-2);
+}
+
+.bg-3 {
+    background-color: var(--bg-3);
+}
+
+
+.text-1 {
+    color: var(--text-1);
+}
+
+.text-2 {
+    color: var(--text-2);
+}
+
+.text-3 {
+    color: var(--text-3);
+}
+
+.sep-1 {
+    border-color: var(--sep-1);
+}
+
+.sep-2 {
+    border-color: var(--sep-2);
+}
+
+.sep-3 {
+    border-color: var(--sep-2);
+}
+
+.bg-1-important {
+    background-color: var(--bg-1) !important;
+}
+
+.bg-2-important {
+    background-color: var(--bg-2) !important;
+}
+
+.bg-3-important {
+    background-color: var(--bg-3) !important;
+}
+
+.text-1-important {
+    color: var(--text-1) !important;
+}
+
+.text-2-important {
+    color: var(--text-2) !important;
+}
+
+.text-3-important {
+    color: var(--text-3) !important;
+}
+
+.sep-1-important {
+    border-color: var(--sep-1) !important;
+}
+
+.sep-2-important {
+    border-color: var(--sep-2) !important;
+}
+
+.sep-3-important {
+    border-color: var(--sep-2) !important;
+}
+
+.logo {
+    background: var(--logo-url) no-repeat 0 0;
+    background-size: 100%;
+}
