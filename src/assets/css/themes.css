@@ -6,6 +6,7 @@
     --bg-1: #2f3136;
     --bg-2: #36393f;
     --bg-3: #4f545c;
+    --bg-4: #4f545c;
 
     --sep-1: #000;
     --sep-2: #222;
@@ -22,6 +23,7 @@
     --bg-1: #fff;
     --bg-2: #eee;
     --bg-3: #ddd;
+    --bg-4: rgb(250, 250, 248);
 
     --sep-1: #fff;
     --sep-2: #ccc;
@@ -44,6 +46,10 @@
 
 .bg-3 {
     background-color: var(--bg-3);
+}
+
+.bg-4 {
+    background-color: var(--bg-4);
 }
 
 
@@ -81,6 +87,10 @@
 
 .bg-3-important {
     background-color: var(--bg-3) !important;
+}
+
+.bg-4-important {
+    background-color: var(--bg-4) !important;
 }
 
 .text-1-important {

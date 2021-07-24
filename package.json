@@ -17,6 +17,8 @@
     "bulma-extensions": "^6.2.7",
     "core-js": "^3.6.5",
     "jquery": "^3.6.0",
+    "mongoose": "^5.13.3",
+    "mongos": "0.0.0",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.0-0",

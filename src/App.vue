@@ -4,14 +4,12 @@
     <div id="main-container" class="columns m-0 is-mobile">
       <sidebar id="sidebar" />
       <div id="content-col">
-        <span id="content"></span>
+        <span id="content">
+          <router-view/>
+        </span>
         <span id="search-expander"></span>
       </div>
-      <!--
-        <div id="content-col" class="column p-0">
-        <span id="content"></span>
-        <span id="search-expander"></span>
-      </div>-->
+
     </div>
   </div>
 </template>
@@ -43,7 +41,9 @@ export default defineComponent({
     sidebar: Sidebar,
     topbar: Topbar
   }
+
 })
+
 </script>
 
 <style>
