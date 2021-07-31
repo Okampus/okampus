@@ -1,11 +1,16 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 // import App from '../App.vue'
-import QueryResult from '@/components/QueryResult.vue'
+import SearchQuery from '@/components/SearchQuery.vue'
+import Thread from '@/components/Thread.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    component: QueryResult
+    component: SearchQuery
+  },
+  {
+    path: '/thread',
+    component: Thread
   }
 ]
 
