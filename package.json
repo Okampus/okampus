@@ -17,12 +17,11 @@
     "axios": "^0.19.2",
     "bulma": "^0.9.3",
     "bulma-extensions": "^6.2.7",
-    "core-js": "^3.6.5",
+    "core-js": "^3.6.4",
     "jquery": "^3.6.0",
     "mongoose": "^5.13.3",
     "mongos": "0.0.0",
     "vue": "^3.0.0",
-    "core-js": "^3.6.4",
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.0-0",
     "vue-standard": "^1.1.20"

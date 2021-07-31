@@ -1,16 +1,56 @@
 <template>
   <div class="border container">
     <div class="header">
-        <div class="titre">
-            <h1 class = "title is-1"><span class="titletag">[REPORT]</span> <span class="titreText">Problème matériel en salle 402</span></h1>
-        </div>
-        <div class="statut">
-            <p> Etat - Hot - Upvote - New ? </p>
-        </div>
+      <div class="titre">
+        <h1 class="title is-1">
+          <span class="titletag">[REPORT]</span>
+          <span class="titreText">Problème matériel en salle 402</span>
+        </h1>
+      </div>
+      <div class="statut">
+        <p>Etat - Hot - Upvote - New ?</p>
+      </div>
     </div>
     <div class="border tile is-ancestor m-0">
       <div class="border tile is-vertical is-2 is-parent">
-        <div class="border is-child" style="height: 200px"></div>
+        <div class="border is-child" style="height: 200px">
+          <div class="timeline is-rtl">
+            <header class="timeline-header">
+              <span class="tag is-medium is-primary">Start</span>
+            </header>
+            <div class="timeline-item is-primary">
+              <div class="timeline-marker is-primary"></div>
+              <div class="timeline-content">
+                <p class="heading">January 2016</p>
+                <p>Timeline content - Can include any HTML element</p>
+              </div>
+            </div>
+            <div class="timeline-item is-warning">
+              <div class="timeline-marker is-warning is-image is-32x32">
+                <img src="https://bulma.io/images/placeholders/32x32.png" />
+              </div>
+              <div class="timeline-content">
+                <p class="heading">February 2016</p>
+                <p>Timeline content - Can include any HTML element</p>
+              </div>
+            </div>
+            <header class="timeline-header">
+              <span class="tag is-primary">2017</span>
+            </header>
+            <div class="timeline-item is-danger">
+              <div class="timeline-marker is-danger is-icon">
+                <i class="fa fa-flag"></i>
+              </div>
+              <div class="timeline-content">
+                <p class="heading">March 2017</p>
+                <p>Timeline content - Can include any HTML element</p>
+              </div>
+            </div>
+            <header class="timeline-header">
+              <span class="tag is-medium is-primary">End</span>
+            </header>
+          </div>
+        </div>
         <div class="border tile is-child"></div>
       </div>
       <div class="border tile is-vertical is-7 is-parent">
@@ -127,19 +167,21 @@
       </div>
       <div class="border tile is-vertical is-3 is-parent">
         <div class="border tile is-child">
-            <div class="box assign m-0 mt-3 bg-1-important text-2-important">Assigné à: PM</div>
-            <div class="box collabBox m-0 mt-3 bg-1-important text-2-important">
-                Collaborateurs:
-                <div v-for="c in collaborateurs" v-bind:key="c">
-                    <img class="avatarCollab" v-bind:src=c.avatar alt="">
-                </div>
+          <div class="box assign m-0 mt-3 bg-1-important text-2-important">
+            Assigné à: PM
+          </div>
+          <div class="box collabBox m-0 mt-3 bg-1-important text-2-important">
+            Collaborateurs:
+            <div v-for="c in collaborateurs" v-bind:key="c">
+              <img class="avatarCollab" v-bind:src="c.avatar" alt="" />
             </div>
-            <div class="box tagBox m-0 mt-3 bg-1-important text-2-important">
-                Tags:<br>
-                <div v-for="t in tags" v-bind:key="t">
-                    <div class="tagItem">{{t}}</div>
-                </div>
+          </div>
+          <div class="box tagBox m-0 mt-3 bg-1-important text-2-important">
+            Tags:<br />
+            <div v-for="t in tags" v-bind:key="t">
+              <div class="tagItem">{{ t }}</div>
             </div>
+          </div>
         </div>
         <div class="border tile is-child"></div>
       </div>
@@ -257,13 +299,13 @@ export default defineComponent({
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.ticketTitle{
-  font-size : 60px;
+.ticketTitle {
+  font-size: 60px;
 }
 
 .titletag {
   text-align: bold;
-  color : blue;
+  color: blue;
 }
 
 .msg {
@@ -271,8 +313,8 @@ export default defineComponent({
 }
 
 .titre {
-    margin: 5px;
-    margin-left: 20px;
+  margin: 5px;
+  margin-left: 20px;
 }
 
 .imgprofil {
@@ -314,37 +356,37 @@ export default defineComponent({
   height: 10%;
 }
 
-.titreText{
-    color: white;
-    width: 75%;
-    padding-right:3% ;
+.titreText {
+  color: white;
+  width: 75%;
+  padding-right: 3%;
 }
 
-.header{
-    margin-top: 25px;
-    display: flex;
-    width: 100%;
+.header {
+  margin-top: 25px;
+  display: flex;
+  width: 100%;
 }
 
-.statut{
-    width: 25%;
-    font-size: 30px;
-    padding-left: 3% ;
-    color: white;
+.statut {
+  width: 25%;
+  font-size: 30px;
+  padding-left: 3%;
+  color: white;
 }
 
 .avatarCollab {
-    width: 50%;
-    border-radius: 180px;
+  width: 50%;
+  border-radius: 180px;
 }
 
-.collabBox{
-    display: flex;
+.collabBox {
+  display: flex;
 }
 
-.tagItem{
-    border: white solid 1px;
-    border-radius: 5px;
+.tagItem {
+  border: white solid 1px;
+  border-radius: 5px;
 }
 
 .tagBox {
