@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -32,9 +32,9 @@ export default defineComponent({
     }
   },
   methods: {
-    displayClear (e: Event) {
-      const target = e.target as HTMLInputElement
-      const next = target.nextSibling as HTMLElement
+    displayClear (e) {
+      const target = e.target
+      const next = target.nextSibling
       this.$emit('updateSearch', target.value)
       if (target.value) {
         next.style.display = 'inline-flex'
@@ -43,9 +43,9 @@ export default defineComponent({
       }
     },
 
-    clearSiblingInput (e: Event) {
-      const target = e.target as HTMLInputElement
-      const prev = target.previousSibling as HTMLInputElement
+    clearSiblingInput (e) {
+      const target = e.target
+      const prev = target.previousSibling
 
       prev.value = ''
       prev.focus()

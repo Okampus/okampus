@@ -37,7 +37,7 @@
   </nav>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import { defineComponent } from 'vue'
 import Searchbar from './Searchbar.vue'
 
@@ -45,26 +45,26 @@ export default defineComponent({
   created: function () {
     window.addEventListener('resize', () => {
       const breakpoint = 900
-      const input = document.querySelector('#topbar-searchbar input') as HTMLInputElement
-      const iconGroup = document.querySelector('span.topbar-icon-group') as HTMLElement
-      const burger = document.querySelector('.burger-button') as HTMLElement
+      const input = document.querySelector('#topbar-searchbar input')
+      const iconGroup = document.querySelector('span.topbar-icon-group')
+      const burger = document.querySelector('.burger-button')
 
       if (window.innerWidth < breakpoint) {
         input.placeholder = ''
         iconGroup.style.display = 'none'
         burger.style.display = 'inline-flex'
       } else {
-        input.placeholder = (this.$refs.searchbar as typeof Searchbar).placeholder
+        input.placeholder = this.$refs.searchbar.placeholder
         iconGroup.style.display = 'inline-flex'
         burger.style.display = 'none'
       }
     })
   },
   methods: {
-    changeTheme (e: Event) {
-      const root = document.querySelector(':root') as HTMLElement
+    changeTheme (e) {
+      const root = document.querySelector(':root')
       console.log(document.querySelector(':root'))
-      if ((e.target as HTMLFormElement).checked) {
+      if (e.target.checked) {
         root.classList.add('light_mode')
       } else {
         root.classList.remove('light_mode')

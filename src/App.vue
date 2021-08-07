@@ -5,26 +5,27 @@
       <sidebar id="sidebar" />
       <div id="content-col">
         <span id="content">
-          <router-view/>
+          <router-view />
         </span>
         <span id="search-expander"></span>
       </div>
-
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import { defineComponent } from 'vue'
 
 import Sidebar from '@/components/Sidebar.vue'
 import Topbar from '@/components/Topbar.vue'
+import { getURL } from '@api/routes.config'
 
 export default defineComponent({
   methods: {
-    searchQuery (e: string) {
-      const content = document.querySelector('#content') as HTMLElement
-      const expander = document.querySelector('#search-expander') as HTMLElement
+    searchQuery (e) {
+      console.log(getURL)
+      const content = document.querySelector('#content')
+      const expander = document.querySelector('#search-expander')
       console.log(e)
       if (e) {
         console.log('true')
@@ -41,9 +42,7 @@ export default defineComponent({
     sidebar: Sidebar,
     topbar: Topbar
   }
-
 })
-
 </script>
 
 <style>

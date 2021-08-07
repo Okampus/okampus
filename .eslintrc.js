@@ -5,14 +5,30 @@ module.exports = {
   },
   extends: [
     'plugin:vue/vue3-essential',
-    '@vue/standard',
-    '@vue/typescript/recommended'
+    'eslint:recommended',
+    '@vue/standard'
   ],
   parserOptions: {
-    ecmaVersion: 2020
+    parser: 'babel-eslint'
   },
+  ignorePatterns: [
+    'api/'
+  ],
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
+    // 'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'import/no-unresolved': ['error']
+  },
+  settings: {
+    'import/resolver': {
+      webpack: {
+        alias: {
+          map: [
+            ['@api', './api/']
+          ]
+        },
+        extensions: ['.js', '.less', '.json']
+      }
+    }
   }
 }

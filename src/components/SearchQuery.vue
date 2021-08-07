@@ -1,4 +1,6 @@
 <template>
+    <a v-bind:href="authURL" class="button">Login With Discord</a>
+    <a v-bind:href="userInfoURL" class="button">Info</a>
     <div class="box2 bg-4-important box">
         <div class="box box3">
             <div class="columns">
@@ -42,8 +44,9 @@
     </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import { defineComponent } from 'vue'
+import { getURL } from '@api/routes.config'
 
 export default defineComponent({
   name: 'SearchQuery',
@@ -51,12 +54,13 @@ export default defineComponent({
 
   },
   methods: {
-
   },
 
   data () {
     return {
-      nbcol: 10
+      authURL: getURL('oauth.discord.tokenIssuing', 'full'),
+      userInfoURL: getURL('oauth.discord.userInfo', 'full'),
+      nbcol: 5
     }
   }
 })

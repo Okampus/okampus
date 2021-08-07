@@ -1,9 +1,8 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-// import App from '../App.vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import SearchQuery from '@/components/SearchQuery.vue'
 import Thread from '@/components/Thread.vue'
 
-const routes: Array<RouteRecordRaw> = [
+const routes = [
   {
     path: '/',
     component: SearchQuery
