@@ -7,8 +7,6 @@ const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 const { ENV } = require('@api/routes.config.js')
 
-console.log(ENV)
-
 // Connect mongoDB
 mongoose.connect(ENV.MONGODB_URL, {
   useNewUrlParser: true,
@@ -17,7 +15,7 @@ mongoose.connect(ENV.MONGODB_URL, {
   console.log('Database connected')
 },
 error => {
-  console.log(`Error: Database could't be connected to (${error})`)
+  console.log(`Error: Database could't be connected to. Stacktrace: ${error}`)
 })
 
 const app = express()
@@ -37,7 +35,6 @@ app.listen(ENV.VUE_APP_API_PORT, () => {
 
 // API
 app.use(ENV.VUE_APP_API_ROUTE, require('@api/routes/api.route'))
-console.log(`API ROUTE ${ENV.VUE_APP_API_ROUTE}`)
 
 // Find 404
 app.use((req, res) => {

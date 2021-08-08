@@ -63,31 +63,33 @@ router.route(getURL('oauth.discord.userInfo')).get(async (req, res, next) => {
   // CHECK LOGGED IN
   let guild, member, user
 
-  console.log(req.cookies)
-  await request.get(
-    {
-      url: DISCORD_USER_API_URL,
-      headers: {
-        Authorization: `Bearer ${req.cookies.token.access_token}`
-      }
-    }, async (err, res, body) => {
-      if (err) {
-        console.log('Error:', err)
-      } else {
-        user = JSON.parse(body)
-
-        console.log('Response:', res.statusCode, user)
-        guild = bot.guilds.cache.get(ENV.DISCORD_GUILD_ID)
-        member = await guild.members.fetch(user.id)
-        if (member) {
-          console.log(member)
-          console.log(`${user.username} is a member of ${guild.name}`)
+  if (req.cookies?.token?.access_token) {
+    console.log(req.cookies)
+    await request.get(
+      {
+        url: DISCORD_USER_API_URL,
+        headers: {
+          Authorization: `Bearer ${req.cookies.token.access_token}`
+        }
+      }, async (err, res, body) => {
+        if (err) {
+          console.log('Error:', err)
         } else {
-          console.log(`${user.username} is not a member of ${guild.name}`)
+          user = JSON.parse(body)
+
+          console.log('Response:', res.statusCode, user)
+          guild = bot.guilds.cache.get(ENV.DISCORD_GUILD_ID)
+          member = await guild.members.fetch(user.id)
+          if (member) {
+            console.log(member)
+            console.log(`${user.username} is a member of ${guild.name}`)
+          } else {
+            console.log(`${user.username} is not a member of ${guild.name}`)
+          }
         }
       }
-    }
-  )
+    )
+  }
 
   res.send({
     message: member
@@ -96,8 +98,5 @@ router.route(getURL('oauth.discord.userInfo')).get(async (req, res, next) => {
     user: user
   })
 })
-
-console.log(`ISSUING ROUTE ${getURL('oauth.discord.tokenIssuing')}`)
-console.log(`CALLBACK ROUTE ${getURL('oauth.discord.tokenCallback')}`)
 
 module.exports = router
