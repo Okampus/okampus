@@ -8,6 +8,8 @@
     --bg-3: #4f545c;
     --bg-4: #4f545c;
 
+    --bg-opp-1: #fff;
+
     --sep-1: #000;
     --sep-2: #222;
     --sep-3: #333;
@@ -15,6 +17,8 @@
     --text-1: #fff;
     --text-2: #eee;
     --text-3: #aaa;
+
+    --text-opp-1: #111;
 
     --logo-url: url("~@/assets/img/logo-white.png");
 }
@@ -25,6 +29,8 @@
     --bg-3: #ddd;
     --bg-4: rgb(250, 250, 248);
 
+    --bg-opp-1: #aaa;
+
     --sep-1: #fff;
     --sep-2: #ccc;
     --sep-3: #ddd;
@@ -33,7 +39,13 @@
     --text-2: #222;
     --text-3: #333;
 
+    --text-opp-1: #fff;
+
     --logo-url: url("~@/assets/img/logo-black.png");
+}
+
+.blue {
+    color: blue;
 }
 
 .bg-1 {
@@ -52,6 +64,9 @@
     background-color: var(--bg-4);
 }
 
+.bg-opp-1 {
+    background-color: var(--bg-opp-1);
+}
 
 .text-1 {
     color: var(--text-1);
@@ -63,6 +78,10 @@
 
 .text-3 {
     color: var(--text-3);
+}
+
+.text-opp-1 {
+    color: var(--text-opp-1);
 }
 
 .sep-1 {
@@ -93,6 +112,10 @@
     background-color: var(--bg-4) !important;
 }
 
+.bg-opp-1-important {
+    background-color: var(--bg-opp-1) !important;
+}
+
 .text-1-important {
     color: var(--text-1) !important;
 }
@@ -103,6 +126,10 @@
 
 .text-3-important {
     color: var(--text-3) !important;
+}
+
+.text-opp-1-important {
+    color: var(--text-opp-1) !important;
 }
 
 .sep-1-important {

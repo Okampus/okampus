@@ -1,59 +1,44 @@
 <template>
-  <div class="border container">
-    <div class="header">
-      <div class="titre">
-        <h1 class="title is-1">
-          <span class="titletag">[REPORT]</span>
-          <span class="titreText">Problème matériel en salle 402</span>
-        </h1>
+  <div class="border container is-link">
+    <div class="border header">
+      <div class="border">
+        <div class="border title is-1 headTitle">
+          <span class="blue">[REPORT]</span>
+          <span class="text-1-important">Problème matériel en salle 402</span>
+        </div>
+        <div class="headerInfos text-1-important">08/08/2021-Eleve Lambda</div>
       </div>
-      <div class="statut">
-        <p>Etat - Hot - Upvote - New ?</p>
-      </div>
+      <!-- <div class="box m-0 mt-3 bg-1-important text-2-important"></div> -->
     </div>
     <div class="border tile is-ancestor m-0">
-      <div class="border tile is-vertical is-2 is-parent">
-        <div class="border is-child" style="height: 200px">
-          <div class="timeline is-rtl">
+      <div class="border tile is-vertical is-3 is-parent">
+        <div class="border tile is-child">
+          <div class="timeline is-rtl text-1">
             <header class="timeline-header">
               <span class="tag is-medium is-primary">Start</span>
             </header>
-            <div class="timeline-item is-primary">
-              <div class="timeline-marker is-primary"></div>
+            <div
+              v-for="advancement in timeline_advancements"
+              v-bind:key="advancement"
+              v-bind:class="{'is-danger': !advancement.status,'is-warning':advancement.status==1 ,'is-primary': advancement.status==2}"
+              class="timeline-item"
+            >
+              <div class="timeline-marker"
+              v-bind:class="{'is-danger': !advancement.status,'is-warning':advancement.status==1 ,'is-primary': advancement.status==2}"></div>
               <div class="timeline-content">
-                <p class="heading">January 2016</p>
-                <p>Timeline content - Can include any HTML element</p>
-              </div>
-            </div>
-            <div class="timeline-item is-warning">
-              <div class="timeline-marker is-warning is-image is-32x32">
-                <img src="https://bulma.io/images/placeholders/32x32.png" />
-              </div>
-              <div class="timeline-content">
-                <p class="heading">February 2016</p>
-                <p>Timeline content - Can include any HTML element</p>
-              </div>
-            </div>
-            <header class="timeline-header">
-              <span class="tag is-primary">2017</span>
-            </header>
-            <div class="timeline-item is-danger">
-              <div class="timeline-marker is-danger is-icon">
-                <i class="fa fa-flag"></i>
-              </div>
-              <div class="timeline-content">
-                <p class="heading">March 2017</p>
-                <p>Timeline content - Can include any HTML element</p>
+                <p class="heading">{{advancement.date}}</p>
+                <p class="timeline-advancement-comment">{{advancement.comment}}</p>
               </div>
             </div>
             <header class="timeline-header">
               <span class="tag is-medium is-primary">End</span>
             </header>
           </div>
+          <div class="border tile is-child"></div>
+        <div class="box m-0 mt-3 bg-1-important text-2-important">Jambon</div>
         </div>
-        <div class="border tile is-child"></div>
       </div>
-      <div class="border tile is-vertical is-7 is-parent">
+      <div class="border tile is-vertical is-6 is-parent">
         <div class="border tile is-child"></div>
         <div class="border tile is-child">
           <div
@@ -176,10 +161,10 @@
               <img class="avatarCollab" v-bind:src="c.avatar" alt="" />
             </div>
           </div>
-          <div class="box tagBox m-0 mt-3 bg-1-important text-2-important">
+          <div class="box m-0 mt-3 bg-1-important text-2-important">
             Tags:<br />
             <div v-for="t in tags" v-bind:key="t">
-              <div class="tagItem">{{ t }}</div>
+              <div class="tag bg-opp-1-important text-opp-1-important">{{ t }}</div>
             </div>
           </div>
         </div>
@@ -274,6 +259,24 @@ export default defineComponent({
         'Problème matériel',
         'Ordinateur',
         'Prioritaire'
+      ],
+
+      timeline_advancements: [
+        {
+          date: 'SEPT. 2016',
+          comment: 'Validé',
+          status: 2
+        },
+        {
+          date: 'DEC. 2016',
+          comment: 'En Cours',
+          status: 1
+        },
+        {
+          date: 'JAN. 2017',
+          comment: 'Pas Commencé',
+          status: 0
+        }
       ]
 
     }
@@ -283,7 +286,7 @@ export default defineComponent({
 
 <style scoped>
 .border {
-  /*border: 1px solid white;*/
+  /* border: 1px solid white; */
 }
 
 .no-radius {
@@ -296,7 +299,11 @@ export default defineComponent({
 
 .box {
   /*box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);*/
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 3px solid rgba(0, 0, 0, 0.2);
+}
+
+.timeline-advancement-comment{
+  font-size : 10px;
 }
 
 .ticketTitle {
@@ -308,13 +315,26 @@ export default defineComponent({
   color: blue;
 }
 
+.headTitle{
+  padding-bottom: 0%;
+  margin-bottom: 0%;
+  font-size: 50px;
+}
+
+.headerInfos{
+  padding: 0%;
+  padding-left: 2%;
+  margin: 0%;
+  font-size: 20px;
+  font-weight: bold;
+}
+
 .msg {
   position: block;
 }
 
 .titre {
   margin: 5px;
-  margin-left: 20px;
 }
 
 .imgprofil {
@@ -357,8 +377,6 @@ export default defineComponent({
 }
 
 .titreText {
-  color: white;
-  width: 75%;
   padding-right: 3%;
 }
 
@@ -366,13 +384,6 @@ export default defineComponent({
   margin-top: 25px;
   display: flex;
   width: 100%;
-}
-
-.statut {
-  width: 25%;
-  font-size: 30px;
-  padding-left: 3%;
-  color: white;
 }
 
 .avatarCollab {

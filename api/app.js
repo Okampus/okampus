@@ -7,6 +7,8 @@ const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 const { ENV } = require('@api/routes.config.js')
 
+console.log(ENV)
+
 // Connect mongoDB
 mongoose.connect(ENV.MONGODB_URL, {
   useNewUrlParser: true,
