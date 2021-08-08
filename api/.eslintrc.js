@@ -4,7 +4,7 @@ module.exports = {
     node: true
   },
   parserOptions: {
-    ecmaVersion: 10
+    ecmaVersion: 12
   },
   extends: [
     'standard',

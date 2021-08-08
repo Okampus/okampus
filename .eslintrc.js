@@ -10,7 +10,7 @@ module.exports = {
   ],
   parserOptions: {
     parser: 'babel-eslint',
-    ecmaVersion: 2021
+    ecmaVersion: 12
   },
   ignorePatterns: [
     'api/'
