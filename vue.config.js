@@ -1,8 +1,10 @@
 const TerserPlugin = require('terser-webpack-plugin')
 const path = require('path')
+require('dotenv').config()
 module.exports = {
   devServer: {
-    progress: false
+    progress: false,
+    port: process.env.VUE_APP_PORT
   },
   configureWebpack: {
     optimization: {
