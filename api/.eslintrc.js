@@ -1,8 +1,10 @@
-/* eslint-disable */
 module.exports = {
   root: true,
   env: {
     node: true
+  },
+  parserOptions: {
+    ecmaVersion: 10
   },
   extends: [
     'standard',

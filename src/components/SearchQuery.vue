@@ -1,6 +1,6 @@
 <template>
     <a v-bind:href="authURL" class="button">Login With Discord</a>
-    <a v-bind:href="userInfoURL" class="button">Info</a>
+    <button v-on:click="userInfo" class="button">Info</button>
     <div class="box2 bg-4-important box">
         <div class="box box3">
             <div class="columns">
@@ -54,12 +54,15 @@ export default defineComponent({
 
   },
   methods: {
+    userInfo: () => fetch(getURL('oauth.discord.userInfo', 'full'), {
+      method: 'GET',
+      credentials: 'include'
+    }).then(async res => console.log(await res.json()))
   },
 
   data () {
     return {
       authURL: getURL('oauth.discord.tokenIssuing', 'full'),
-      userInfoURL: getURL('oauth.discord.userInfo', 'full'),
       nbcol: 5
     }
   }

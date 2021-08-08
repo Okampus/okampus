@@ -7,7 +7,7 @@ const { ENV, VUE_BASE, getURL } = require('@api/routes.config.js')
 const { Serialize } = require('@api/routes/utils')
 
 const bot = new Discord.Client()
-bot.login(process.env.DISCORD_BOT_TOKEN)
+bot.login(ENV.DISCORD_BOT_TOKEN)
 
 bot.on('ready', () => {
   console.log(`BOT '${bot.user.username}' READY!`)
@@ -27,12 +27,10 @@ router.route(getURL('oauth.discord.tokenIssuing')).get((req, res, next) => {
       response_type: 'code',
       scope: TOKEN_SCOPE,
       client_id: ENV.DISCORD_CLIENT_ID,
-      //client_secret: ENV.DISCORD_CLIENT_SECRET,
       redirect_uri: getURL('oauth.discord.tokenCallback', 'full')
     }))
 })
 
-// console.log(tokenCallbackURI, `/${discordOAuthRoute}/${tokenRoute}`)
 router.route(getURL('oauth.discord.tokenCallback')).get(async (req, res, next) => {
   const OAuth = await fetch(DISCORD_OAUTH_TOKEN_URL, {
     method: 'POST',
@@ -44,7 +42,7 @@ router.route(getURL('oauth.discord.tokenCallback')).get(async (req, res, next) =
       redirect_uri: getURL('oauth.discord.tokenCallback', 'full'),
       scope: TOKEN_SCOPE
     }),
-    credentials: "include",
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
@@ -52,20 +50,21 @@ router.route(getURL('oauth.discord.tokenCallback')).get(async (req, res, next) =
 
   const tokens = await OAuth.json()
 
-  console.log("EXPIRES", tokens.expires_in * 1000, tokens, VUE_BASE)
+  console.log('EXPIRES', tokens.expires_in * 1000, tokens, VUE_BASE)
   res.cookie('token', {
     access_token: tokens.access_token,
     refresh_token: tokens.refresh_token
   }, { maxAge: tokens.expires_in * 1000 }).redirect(VUE_BASE)
 
-  //request.get({ url: getURL('oauth.discord.userInfo', 'full') })
+  // request.get({ url: getURL('oauth.discord.userInfo', 'full') })
 })
 
-router.route(getURL('oauth.discord.userInfo')).get((req, res, next) => {
+router.route(getURL('oauth.discord.userInfo')).get(async (req, res, next) => {
   // CHECK LOGGED IN
+  let guild, member, user
 
   console.log(req.cookies)
-  request.get(
+  await request.get(
     {
       url: DISCORD_USER_API_URL,
       headers: {
@@ -75,11 +74,11 @@ router.route(getURL('oauth.discord.userInfo')).get((req, res, next) => {
       if (err) {
         console.log('Error:', err)
       } else {
-        const user = JSON.parse(body)
+        user = JSON.parse(body)
 
         console.log('Response:', res.statusCode, user)
-        const guild = bot.guilds.cache.get(ENV.DISCORD_GUILD_ID)
-        const member = await guild.members.fetch(user.id)
+        guild = bot.guilds.cache.get(ENV.DISCORD_GUILD_ID)
+        member = await guild.members.fetch(user.id)
         if (member) {
           console.log(member)
           console.log(`${user.username} is a member of ${guild.name}`)
@@ -89,7 +88,13 @@ router.route(getURL('oauth.discord.userInfo')).get((req, res, next) => {
       }
     }
   )
-  res.send({status: 'ok'})
+
+  res.send({
+    message: member
+      ? `${user.username} is a member of ${guild.name}`
+      : `${user.username} is not a member of ${guild.name}`,
+    user: user
+  })
 })
 
 console.log(`ISSUING ROUTE ${getURL('oauth.discord.tokenIssuing')}`)

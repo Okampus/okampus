@@ -26,10 +26,10 @@ function getURL (routeName, urlType) {
         lastRoute = currRoute
         route = route[currRoute]
       }
-      return '/' + (route._ ?? (typeof route === 'string' ? route : lastRoute))
+      return '/' + (route._ || (typeof route === 'string' ? route : lastRoute))
     } else {
       const route = routeName.split('.').reduce(([url, route], curr) => {
-        const currURL = route[curr]._ ?? (typeof route[curr] === 'string' ? route[curr] : curr)
+        const currURL = route[curr]._ || (typeof route[curr] === 'string' ? route[curr] : curr)
         return [url + '/' + currURL, route[curr]]
       }, [ENV.VUE_APP_API_ROUTE, ROUTES])[0]
 
