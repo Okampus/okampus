@@ -3,23 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "install": "cd ./api && npm i",
-    "test": "concurrently 'npm run api'",
-    "devStart": "npm run install && concurrently 'npm run serve' 'npm run api'",
-    "api": "nodemon --watch api ./api",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "api": "nodemon --watch api ./api",
+    "devStart": "npm run install && concurrently 'npm run serve' 'npm run api'",
+    "install": "cd ./api && npm i"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.35",
-    "@fortawesome/free-brands-svg-icons": "^5.15.3",
-    "@fortawesome/free-regular-svg-icons": "^5.15.3",
-    "@fortawesome/free-solid-svg-icons": "^5.15.3",
-    "@fortawesome/vue-fontawesome": "^3.0.0-4",
+    "autoprefixer": "^9",
     "axios": "^0.19.2",
-    "bulma": "^0.9.3",
-    "bulma-extensions": "^6.2.7",
+    "chalk": "~4.0.0",
     "concurrently": "^6.2.1",
     "cookie-parser": "^1.4.5",
     "core-js": "^3.6.5",
@@ -28,12 +22,14 @@
     "jquery": "^3.6.0",
     "mongoose": "^5.13.3",
     "node-fetch": "^2.6.1",
-    "nodemon": "^2.0.12",
+    "postcss": "^7",
     "request": "^2.88.2",
-    "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0"
+    "uglifyjs-webpack-plugin": "^2.2.0"
   },
   "devDependencies": {
+    "@headlessui/vue": "^1.4.0",
+    "@heroicons/vue": "^1.0.3",
+    "@tailwindcss/postcss7-compat": "^2.0.2",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
@@ -51,9 +47,15 @@
     "eslint-plugin-vue": "^7.0.0",
     "lint-staged": "^9.5.0",
     "node-sass": "^4.12.0",
+    "nodemon": "^2.0.12",
     "npm-run-all": "^4.1.5",
     "sass-loader": "^8.0.2",
-    "terser-webpack-plugin": "^1.4.5"
+    "tailwind-scrollbar": "^1.3.1",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
+    "terser-webpack-plugin": "^1.4.5",
+    "vue": "^3.0.0",
+    "vue-cli-plugin-tailwind": "~2.0.6",
+    "vue-router": "^4.0.0-0"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

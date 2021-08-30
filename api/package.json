@@ -11,9 +11,11 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "http-errors": "^1.7.2",
+    "jose": "^3.14.3",
     "module-alias": "^2.2.2",
     "mongoose": "^5.9.10",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "sodium-native": "^3.2.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"

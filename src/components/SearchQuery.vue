@@ -46,7 +46,7 @@
 
 <script lang="js">
 import { defineComponent } from 'vue'
-import { getURL } from '@api/routes.config'
+import { getURL } from '@api/api.config'
 
 export default defineComponent({
   name: 'SearchQuery',

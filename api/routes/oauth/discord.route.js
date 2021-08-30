@@ -3,8 +3,9 @@ const request = require('request')
 const fetch = require('node-fetch')
 const Discord = require('discord.js')
 
-const { ENV, VUE_BASE, getURL } = require('@api/routes.config.js')
-const { Serialize } = require('@api/routes/utils')
+const { ENV, VUE_BASE, getURL } = require('@api/api.config.js')
+const { EncryptJSON, DecryptJSON } = require('@api/utils/crypto')
+const { Serialize } = require('@api/utils/routing')
 
 const bot = new Discord.Client()
 bot.login(ENV.DISCORD_BOT_TOKEN)
@@ -18,6 +19,7 @@ const DISCORD_USER_API_URL = 'https://discord.com/api/v6/users/@me'
 const DISCORD_OAUTH_AUTH_URL = 'https://discord.com/api/oauth2/authorize'
 const DISCORD_OAUTH_TOKEN_URL = 'https://discord.com/api/oauth2/token'
 
+const DISCORD_TOKEN = 'D_TOKEN'
 const TOKEN_SCOPE = 'identify email'
 
 const router = Router()
@@ -48,15 +50,30 @@ router.route(getURL('oauth.discord.tokenCallback')).get(async (req, res, next) =
     }
   })
 
-  const tokens = await OAuth.json()
+  OAuth.json()
+    .then((tokens) => {
+      console.log(tokens)
+      const tok = EncryptJSON({
+        access_token: tokens.access_token,
+        refresh_token: tokens.refresh_token,
+        token_type: 'Bearer',
+        expires_in: Date.now() + tokens.expires_in * 1000
+      })
+      console.log(tok)
+      console.log('\n', DecryptJSON(tok))
+      res.cookie(DISCORD_TOKEN, EncryptJSON({
+        access_token: tokens.access_token,
+        refresh_token: tokens.refresh_token,
+        token_type: 'Bearer',
+        expires_in: Date.now() + tokens.expires_in * 1000
+      }), { maxAge: tokens.expires_in * 1000 }).redirect(VUE_BASE)
 
-  console.log('EXPIRES', tokens.expires_in * 1000, tokens, VUE_BASE)
-  res.cookie('token', {
-    access_token: tokens.access_token,
-    refresh_token: tokens.refresh_token
-  }, { maxAge: tokens.expires_in * 1000 }).redirect(VUE_BASE)
-
-  // request.get({ url: getURL('oauth.discord.userInfo', 'full') })
+      // request.get({ url: getURL('oauth.discord.userInfo', 'full') })
+    })
+    .catch((err) => {
+      console.log('Error:', err)
+      res.redirect(VUE_BASE)
+    })
 })
 
 router.route(getURL('oauth.discord.userInfo')).get(async (req, res, next) => {
@@ -74,6 +91,7 @@ router.route(getURL('oauth.discord.userInfo')).get(async (req, res, next) => {
       }, async (err, res, body) => {
         if (err) {
           console.log('Error:', err)
+          res.redirect(VUE_BASE)
         } else {
           user = JSON.parse(body)
 
@@ -97,6 +115,14 @@ router.route(getURL('oauth.discord.userInfo')).get(async (req, res, next) => {
       : `${user.username} is not a member of ${guild.name}`,
     user: user
   })
+})
+
+// error handler
+router.use(function (err, req, res, next) {
+  console.log('ERROR')
+  console.error(err.message)
+  if (!err.statusCode) err.statusCode = 500
+  res.status(err.statusCode).send(err.message)
 })
 
 module.exports = router

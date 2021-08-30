@@ -1,141 +1,78 @@
 <template>
-  <nav class="topbar level is-mobile bg-2 mb-0 sep-2">
-    <div id="top-level-left-side" class="level-item sidebar-width">
-      <div class="logo" />
+  <nav
+    id="topbar" class="flex fixed top-0 left-0 w-full h-tbar bg-2 bc-1 fc-1 items-center justify-between border-b transition-filter"
+  >
+    <div class="flex flex-shrink-0 px-4 w-sbar items-center justify-center">
+      <button class="mr-4" aria-label="Open Menu" @click="this.$emit('openSidebar')">
+        <MenuIcon class="h-8 w-8"/>
+      </button>
+      <div class="logo w-48 h-8 mt-1.5"></div>
     </div>
 
-    <div id="top-level-right-side" class="level-item content-width">
-      <searchbar
-        id="topbar-searchbar"
-        ref="searchbar"
-        placeholder="Chercher une page, un document, un article..."
-        v-on:updateSearch="(e) => this.$emit('updateSearch', e)"
-        v-bind:classes="['bg-2', 'text-2']"
-      />
-
-      <div class="burger-button">
-        <font-awesome-icon icon="bars" size="lg" />
-      </div>
-
-      <span class="topbar-icon-group">
-        <div class="topbar-icon">
-          <font-awesome-icon icon="bell" size="lg" :style="{ color: 'var(--text-2)' }" />
-        </div>
-        <div class="topbar-icon">
-          <font-awesome-icon icon="folder-open" size="lg" :style="{ color: 'var(--text-2)' }" />
-        </div>
-        <div class="topbar-icon">
-          <font-awesome-icon icon="envelope" size="lg" :style="{ color: 'var(--text-2)' }" />
-        </div>
+    <div class="relative bg-transparent flex-grow px-6">
+      <span class="absolute inset-y-0 right-0 flex items-center pr-6">
+        <button type="submit" class="p-1 w-8 h-8 text-hover-brand transition-colors">
+          <DocumentSearchIcon/>
+        </button>
       </span>
-
-      <label class="switch ml-3 orange" v-on:click="changeTheme">
-        <input type="checkbox" />
-        <span class="slider round"></span>
-      </label>
+      <input @input="(e) => this.$emit('updateSearch', e.target.value)" id="test-input" type="text" class="w-full fc-1 placeholder-3 bg-2 p-1.5 pr-10 text-lg border-b-2 bc-alt-1 bc-mouse-brand transition-border" placeholder="Search...">
     </div>
+
+    <div class="flex bg-transparent items-center justify-between">
+        <div class="topbar-icon">
+          <bellIcon/>
+        </div>
+        <div class="topbar-icon">
+          <folderIcon/>
+        </div>
+        <div class="topbar-icon">
+          <mailIcon/>
+        </div>
+    </div>
+
+    <label class="switch mr-3 orange" v-on:click="changeTheme">
+      <input type="checkbox" />
+      <span class="slider round"></span>
+    </label>
   </nav>
 </template>
 
-<script lang="js">
-import { defineComponent } from 'vue'
-import Searchbar from './Searchbar.vue'
+<style>
+  @import "~@/assets/css/utils/switch.css";
 
-export default defineComponent({
-  created: function () {
-    window.addEventListener('resize', () => {
-      const breakpoint = 900
-      const input = document.querySelector('#topbar-searchbar input')
-      const iconGroup = document.querySelector('span.topbar-icon-group')
-      const burger = document.querySelector('.burger-button')
+  .topbar-icon {
+      @apply mr-6 w-6 h-6;
+  }
+</style>
 
-      if (window.innerWidth < breakpoint) {
-        input.placeholder = ''
-        iconGroup.style.display = 'none'
-        burger.style.display = 'inline-flex'
-      } else {
-        input.placeholder = this.$refs.searchbar.placeholder
-        iconGroup.style.display = 'inline-flex'
-        burger.style.display = 'none'
-      }
-    })
+<script>
+import { DocumentSearchIcon, BellIcon, FolderIcon, MailIcon, MenuIcon } from '@heroicons/vue/solid'
+
+export default {
+  components: {
+    DocumentSearchIcon,
+    MenuIcon,
+    bellIcon: BellIcon,
+    folderIcon: FolderIcon,
+    mailIcon: MailIcon
   },
   methods: {
+    log (val) {
+      console.log(val)
+    },
     changeTheme (e) {
       const root = document.querySelector(':root')
-      console.log(document.querySelector(':root'))
       if (e.target.checked) {
-        root.classList.add('light_mode')
+        root.classList.add('dark')
       } else {
-        root.classList.remove('light_mode')
+        root.classList.remove('dark')
       }
     }
   },
-  name: 'Topbar',
-  components: {
-    searchbar: Searchbar
+  mounted () {
+    const input = document.getElementById('test-input')
+    console.log('input', input)
+    // input.addEventListener('change', (e) => console.log(e))
   }
-})
+}
 </script>
-
-<style>
-@import "~@/assets/css/themes.css";
-@import "~@/assets/css/utils/switch.css";
-
-#top-level-left-side,
-#top-level-right-side {
-  padding-top: 0.6em;
-  padding-bottom: 0.5em;
-}
-
-#top-level-left-side {
-  width: var(--sidebar-width);
-  flex-grow: 0;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-#top-level-right-side {
-  padding-left: 20px;
-  padding-right: 20px;
-  flex-basis: 0;
-}
-
-.topbar {
-  border-bottom-width: 2px;
-  border-bottom-style: solid;
-}
-
-.burger-button {
-  display: none;
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
-/*.topbar-input::-webkit-input-placeholder {
-    transition: 2s;
-}*/
-
-.topbar-icon-group {
-  display: flex;
-  padding-left: 20px;
-}
-
-.topbar-icon {
-  font-size: 15px;
-  padding-left: 15px;
-  padding-right: 15px;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-}
-
-.topbar-icon:hover {
-  filter: drop-shadow(0px 0px 2px var(--text-2));
-}
-
-.logo {
-  width: 170px;
-  height: 55px;
-  display: block;
-}
-</style>
