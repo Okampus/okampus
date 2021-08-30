@@ -9,9 +9,7 @@
       <Sidebar @closeSidebar="sidebarHandler"/>
       <div id="content" class="bg-3 h-content flex relative top-tbar bg-gray-100 overflow-hidden transition-filter">
           <div class="p-4 flex-1 overflow-auto app-scrollbar">
-              <div class="py-8 shadow text-center rounded-lg mb-10 bg-white" v-for="i in 50" v-bind:key="i">
-                CONTENT
-              </div>
+            <router-view></router-view>
           </div>
       </div>
     </div>
@@ -40,27 +38,16 @@ export default defineComponent({
     sidebarHandler () {
       const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
       const slideSidebar = document.getElementById('slide-sidebar')
-      // const sidebarTop = document.getElementById('sidebar-top')
       const mainContainer = document.getElementById('main-container')
-      // console.log(sidebar, show && !this.$data.showSidebar, !show && this.$data.showSidebar)
       if (vw > this.$data.breakWidth) {
       //   this.$data.showSidebar = false
       } else if (!this.$data.showSidebar) {
         slideSidebar.classList.remove('-l-sbar')
         mainContainer.classList.add('brightness-50')
-        // sidebar.classList.remove('lg-max:w-0', 'border-0')
-        // sidebar.setAttribute('opened', '')
-        // sidebarTop.setAttribute('opened', '')
         this.$data.showSidebar = true
       } else if (this.$data.showSidebar) {
         slideSidebar.classList.add('-l-sbar')
         mainContainer.classList.remove('brightness-50')
-        // sidebar.classList.add('lg-max:w-0', 'border-0')
-        // sidebar.addEventListener('transitionend', () => {
-        //   sidebar.removeAttribute('opened')
-        //   sidebarTop.removeAttribute('opened')
-        // }, { once: true })
-
         this.$data.showSidebar = false
       }
     },
