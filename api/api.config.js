@@ -13,8 +13,7 @@ const ROUTES = {
       tokenCallback: 'token',
       userInfo: 'info'
     }
-  },
-  discord: 'discord'
+  }
 }
 
 function getURL (routeName, urlType) {

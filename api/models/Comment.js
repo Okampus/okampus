@@ -9,6 +9,9 @@ const commentSchema = new Schema({
   onPost: {
     type: Schema.Types.ObjectId,
     ref: 'Post'
+  },
+  text: {
+    type: String
   }
 }, {
   collection: 'comments'

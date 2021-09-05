@@ -1,7 +1,10 @@
 <template>
-    <aside id="sidebar" class="sticky overflow-hidden z-10 lg-max:w-0 flex flex-col h-content sticky w-sbar top-tbar border bc-2 bg-1 fc-2 whitespace-nowrap transition-width duration-300">
-      <SidebarBase/>
-    </aside>
+  <aside
+    id="sidebar"
+    class="sticky overflow-hidden lg-max:w-0 flex flex-col h-content sticky w-sbar top-tbar border bc-2 bg-1 fc-2 whitespace-nowrap transition-width duration-300"
+  >
+    <SidebarBase />
+  </aside>
 </template>
 
 <script lang="js">

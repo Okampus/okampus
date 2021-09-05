@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import SearchQuery from '@/components/SearchQuery.vue'
+import Content from '@/components/Content.vue'
 import Thread from '@/components/Thread.vue'
 
 const routes = [
   {
     path: '/',
-    component: SearchQuery
+    component: Content
   },
   {
     path: '/thread',

@@ -1,13 +1,23 @@
 <template>
-    <aside id="slide-sidebar" class="-l-sbar fixed overflow-hidden z-10 flex flex-col h-full w-sbar border bc-2 bg-1 fc-2 whitespace-nowrap transition-spacing duration-300">
-      <div id="slide-sidebar-top" class="bg-2 h-tbar flex flex-shrink-0 items-center pl-3">
-        <button class="mr-4" aria-label="Open Menu" @click="this.$emit('closeSidebar')">
-          <XIcon class="w-10 h-10"/>
-        </button>
-        <div class="logo w-32 h-6 flex-shrink-0"></div>
-      </div>
-      <SidebarBase/>
-    </aside>
+  <aside
+    id="slide-sidebar"
+    class="-l-sbar fixed overflow-hidden z-50 flex flex-col h-full w-sbar border bc-2 bg-1 text-2 whitespace-nowrap transition-spacing duration-300"
+  >
+    <div
+      id="slide-sidebar-top"
+      class="bg-2 h-tbar flex flex-shrink-0 items-center pl-3"
+    >
+      <button
+        class="mr-4"
+        aria-label="Open Menu"
+        @click="$emit('closeSidebar')"
+      >
+        <XIcon class="w-10 h-10" />
+      </button>
+      <div class="logo w-32 h-6 flex-shrink-0" />
+    </div>
+    <SidebarBase />
+  </aside>
 </template>
 
 <script lang="js">
@@ -23,7 +33,10 @@ export default defineComponent({
     // eslint-disable-next-line vue/no-unused-components
     XIcon,
     SidebarBase
-  }
+  },
+  emits: [
+    'closeSidebar'
+  ]
 })
 </script>
 
