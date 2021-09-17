@@ -3,7 +3,7 @@
 
   <div
     id="main-container"
-    class="relative flex flex-row filter h-screen w-screen transition-filter duration-300 z-1"
+    class="relative flex flex-row filter h-screen w-screen tr-filter z-1"
   >
     <SearchQuery ref="searchQuery" />
     <Topbar
@@ -15,7 +15,7 @@
     <Sidebar @closeSidebar="sidebarHandler" />
     <div
       id="content-wrapper"
-      class="w-full bg-3 h-content flex relative top-tbar bg-gray-100 overflow-hidden transition-filter"
+      class="w-full bg-3 h-content flex relative top-tbar bg-gray-100 overflow-hidden"
     >
       <div
         id="content"
@@ -72,6 +72,7 @@ export default defineComponent({
     },
     checkResize () {
       const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+      this.$refs.searchQuery.checkResize()
       if (vw > this.$data.breakWidth && !this.$data.reachedBreak) {
         const slideSidebar = document.getElementById('slide-sidebar')
         if (!slideSidebar.classList.contains('-l-sbar')) {
@@ -120,6 +121,14 @@ export default defineComponent({
 
 .icon {
   @apply h-6 float-right pl-6;
+}
+
+.tr-filter {
+  transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, filter 500ms;
+}
+
+* {
+  transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms;
 }
 
 html {

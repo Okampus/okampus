@@ -3,11 +3,19 @@
     --sidebar-width: 14rem;
     --collapse-width: 900px;
     --expander-transition-time: 3s;
-    --logo-url: url("~@/assets/img/logo-black.png");
+    --logo-url: url("~@/assets/img/logo-white.png");
 }
 
-:root.dark {
-    --logo-url: url("~@/assets/img/logo-white.png");
+.button {
+    @apply bg-white dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-black cursor-pointer
+}
+
+.bg-opaque {
+    @apply bg-gray-300 dark:bg-gray-500
+}
+
+.bg-0 {
+    @apply bg-white dark:bg-black
 }
 
 .bg-1 {
@@ -19,11 +27,15 @@
 }
 
 .bg-3 {
-    @apply bg-gray-200 dark:bg-gray-600
+    @apply bg-gray-300 dark:bg-gray-600
 }
 
 .bg-4 {
-    @apply bg-gray-300 dark:bg-gray-400
+    @apply bg-gray-400 dark:bg-gray-500
+}
+
+.bg-5 {
+    @apply bg-gray-500 dark:bg-gray-400
 }
 
 .bg-alt-1 {
@@ -118,6 +130,13 @@
     @apply scrollbar scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-blue-300 scrollbar-thumb-rounded
 }
 
+.logo {
+    @apply filter brightness-0 dark:brightness-100;
+    transition: all 300ms;
+    background: var(--logo-url) no-repeat 0 0;
+    background-size: 100%;
+}
+
 .w-sbar {
     width: var(--sidebar-width)
 }
@@ -144,11 +163,6 @@
 
 .top-tbar {
     top: var(--topbar-height)
-}
-
-.logo {
-    background: var(--logo-url) no-repeat 0 0;
-    background-size: 100%;
 }
 
 

@@ -5,11 +5,11 @@
   >
     <div
       id="expander-filler"
-      class="flex-shrink-0 flex-grow transition-all duration-500"
+      class="flex-shrink-0 flex-grow tr-flex"
     />
     <div
       id="expander-content"
-      class="h-0 relative flex-shrink lg:l-sbar flex-grow-0 transition-all duration-500"
+      class="h-0 relative flex-shrink lg:l-sbar flex-grow-0 tr-flex"
     >
       <div class="text-2 flex flex-col w-full h-full shadow-lg z-50 rounded-t-lg bg-3">
         <div class="px-4 py-2 rounded-t-lg w-full">
@@ -36,18 +36,22 @@
             :key="category"
             class=""
           >
-            <p class="text-3 uppercase text-xl mb-1">
+            <p class="text-2 uppercase text-xl mb-1">
               {{ category }}
             </p>
 
             <div class="flex">
-              <div class="mr-2 border-2 rounded-md flex flex-col justify-center flex-shrink-0 h-48 w-8">
-                <ChevronLeftIcon class="h-7 pt-px" />
+              <div
+                class="hover:bg-opaque button bc-2 mr-2 border-2 rounded-md flex flex-col justify-center flex-shrink-0 h-48 w-8 opacity-0 tr-opacity"
+                @click="scrollPreview($event, -1)"
+              >
+                <ChevronLeftIcon class="h-7 pt-px duration-500" />
               </div>
 
               <div
-                class="previewer"
-                @scroll="scrollHorizontal"
+                class="previewer bg-opaque p-3 pb-0 pr-0 mb-2 rounded-lg"
+                @wheel="scrollHorizontal($event)"
+                @scroll="checkScrollersAfterScroll($event.currentTarget)"
               >
                 <div
                   v-for="i in 10"
@@ -56,12 +60,15 @@
                 />
               </div>
 
-              <div class="ml-2 border-2 rounded-md flex flex-col justify-center flex-shrink-0 h-48 w-8">
+              <div
+                class="button bc-2 ml-2 border-2 rounded-md flex flex-col justify-center flex-shrink-0 h-48 w-8 opacity-0 tr-opacity"
+                @click="scrollPreview($event, 1)"
+              >
                 <ChevronRightIcon class="h-7 pt-px" />
               </div>
             </div>
 
-            <div class="w-80 flex justify-center items-center text-center border rounded-md mb-2 text-lg py-1">
+            <div class="button bc-2 w-80 flex justify-center items-center text-center border-2 rounded-md mb-2 text-lg py-1">
               Tous les résultats
               <ChevronRightIcon class="inline-block h-7 pt-px" />
             </div>
@@ -104,15 +111,13 @@ export default defineComponent({
     }
   },
   mounted () {
-    const previewers = document.getElementsByClassName('previewer')
+    /* const previewers = document.getElementsByClassName('previewer')
     for (const previewer of previewers) {
       previewer.addEventListener('wheel', function (e) {
         e.preventDefault()
-        // console.log(e.deltaY)
-        console.log(e.target)
         e.target.scrollLeft += e.deltaY
       })
-    }
+    } */
   },
   methods: {
     testKey (e) {
@@ -133,9 +138,62 @@ export default defineComponent({
       filler.classList.add('flex-grow', 'flex-shrink-0')
       filler.classList.remove('flex-shrink', 'flex-grow-0')
     },
+    scrollPreview (e, factor) {
+      const previewer = e.currentTarget.parentNode.children[1]
+      previewer.scrollLeft += 300 * factor
+      this.checkScrollersAfterScroll(previewer)
+    },
+    checkResize () {
+      document.getElementsByClassName('previewer').forEach((el) => {
+        this.checkScrollersAfterScroll(el)
+        // const chevronRight = el.parentNode.lastChild
+        /* if (el.scrollLeft >= (el.scrollWidth - el.clientWidth) && chevronRight.classList.contains('opacity-1')) {
+          chevronRight.classList.remove('opacity-1')
+          chevronRight.classList.add('opacity-0')
+          chevronRight.classList.add('cursor-pointer')
+        } else if (el.scrollLeft < (el.scrollWidth - el.clientWidth) && chevronRight.classList.contains('opacity-0')) {
+          chevronRight.classList.remove('opacity-0')
+          chevronRight.classList.add('opacity-1')
+          chevronRight.classList.remove('cursor-pointer')
+        }
+         const overflows = el.scrollWidth > el.clientWidth
+        if (overflows && chevronRight.classList.contains('opacity-0')) {
+          chevronRight.classList.remove('opacity-0')
+          chevronRight.classList.add('opacity-1')
+        } else if ((!overflows && chevronRight.classList.contains('opacity-1')) || el.scrollLeft >= (el.scrollWidth - el.clientWidth)) {
+          chevronRight.classList.remove('opacity-1')
+          chevronRight.classList.add('opacity-0')
+        } */
+      })
+    },
+    checkScrollersAfterScroll (previewer) {
+      const chevronLeft = previewer.parentNode.firstChild
+      const chevronRight = previewer.parentNode.lastChild
+      if (previewer.scrollLeft > 0 && chevronLeft.classList.contains('opacity-0')) {
+        chevronLeft.classList.remove('opacity-0')
+        chevronLeft.classList.add('opacity-1')
+        chevronLeft.classList.remove('cursor-default')
+      } else if (previewer.scrollLeft <= 0 && chevronLeft.classList.contains('opacity-1')) {
+        chevronLeft.classList.remove('opacity-1')
+        chevronLeft.classList.add('opacity-0')
+        chevronLeft.classList.add('cursor-default')
+      }
+
+      if (previewer.scrollLeft >= (previewer.scrollWidth - previewer.clientWidth) && chevronRight.classList.contains('opacity-1')) {
+        chevronRight.classList.remove('opacity-1')
+        chevronRight.classList.add('opacity-0')
+        chevronRight.classList.add('cursor-default')
+      } else if (previewer.scrollLeft < (previewer.scrollWidth - previewer.clientWidth) && chevronRight.classList.contains('opacity-0')) {
+        chevronRight.classList.remove('opacity-0')
+        chevronRight.classList.add('opacity-1')
+        chevronRight.classList.remove('cursor-default')
+      }
+    },
     scrollHorizontal (e) {
       e.preventDefault()
-      console.log(e)
+      const previewer = e.currentTarget
+      previewer.scrollLeft += e.deltaY * 2
+      this.checkScrollersAfterScroll(previewer)
     },
     updateQuery (e) {
       const searchScreen = document.getElementById('search-screen')
@@ -167,8 +225,21 @@ export default defineComponent({
 </script>
 
 <style scoped>
+  .tr-flex {
+    transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, flex-grow 500ms, flex-shrink 500ms;
+  }
+
+  .tr-opacity {
+    transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, opacity 400ms;
+  }
+
   .previewer {
     @apply whitespace-nowrap overflow-x-scroll;
+    scroll-behavior: smooth;
+  }
+
+  .previewer > *:last-child {
+    @apply mr-3;
   }
 
   .preview {

@@ -703,6 +703,14 @@ module.exports = {
       'top-left': 'top left'
     },
     transitionDelay: {
+    },
+    transitionDuration: {
+
+    },
+    transitionProperty: {
+
+    },
+    /* transitionDelay: {
       75: '75ms',
       100: '100ms',
       150: '150ms',
@@ -719,6 +727,7 @@ module.exports = {
       150: '150ms',
       200: '200ms',
       300: '300ms',
+      400: '400ms',
       500: '500ms',
       700: '700ms',
       1000: '1000ms',
@@ -730,14 +739,15 @@ module.exports = {
       DEFAULT:
         'background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter',
       colors: 'background-color, border-color, color, fill, stroke',
-      border: 'border-color',
-      opacity: 'opacity',
-      shadow: 'box-shadow',
-      transform: 'transform',
-      width: 'width',
-      filter: 'filter, brightness',
-      spacing: 'margin, padding'
-    },
+      border: 'border-color, color',
+      opacity: 'opacity, color',
+      shadow: 'box-shadow, color',
+      transform: 'transform, color',
+      width: 'width, color',
+      visibility: 'visibility, color',
+      filter: 'filter, brightness, color',
+      spacing: 'margin, padding, color'
+    }, */
     transitionTimingFunction: {
       DEFAULT: 'cubic-bezier(0.4, 0, 0.2, 1)',
       linear: 'linear',
@@ -863,7 +873,7 @@ module.exports = {
     boxDecorationBreak: ['responsive'],
     boxShadow: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus'],
     boxSizing: ['responsive'],
-    brightness: ['responsive'],
+    brightness: ['responsive', 'dark'],
     clear: ['responsive'],
     container: ['responsive'],
     contrast: ['responsive'],

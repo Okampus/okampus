@@ -1,7 +1,7 @@
 <template>
   <aside
     id="slide-sidebar"
-    class="-l-sbar fixed overflow-hidden z-50 flex flex-col h-full w-sbar border bc-2 bg-1 text-2 whitespace-nowrap transition-spacing duration-300"
+    class="-l-sbar fixed overflow-hidden z-50 flex flex-col h-full w-sbar border bc-2 bg-1 text-2 whitespace-nowrap tr-spacing"
   >
     <div
       id="slide-sidebar-top"
@@ -17,6 +17,7 @@
       <div class="logo w-32 h-6 flex-shrink-0" />
     </div>
     <SidebarBase />
+    <img>
   </aside>
 </template>
 
@@ -41,7 +42,11 @@ export default defineComponent({
 </script>
 
 <style>
-#sidebar[opened] {
+.tr-spacing {
+  transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, margin-left 500ms;
+}
+
+/* #sidebar[opened] {
   @apply lg-max:absolute lg-max:h-screen lg-max:top-0;
 }
 
@@ -51,5 +56,5 @@ export default defineComponent({
 
 #sidebar-top[opened] {
   @apply lg:hidden;
-}
+} */
 </style>
