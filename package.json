@@ -25,7 +25,8 @@
     "node-fetch": "^2.6.1",
     "postcss": "^7",
     "request": "^2.88.2",
-    "uglifyjs-webpack-plugin": "^2.2.0"
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "v-markdown-editor": "^1.2.6"
   },
   "devDependencies": {
     "@headlessui/vue": "^1.4.0",

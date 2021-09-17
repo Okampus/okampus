@@ -132,12 +132,12 @@ export default defineComponent({
 }
 
 html {
- font-size: 13px
+  font-size: 13px;
 }
 
-@media (min-width:720px) {
- html {
-  font-size: 15px
- }
+@media (min-width: 720px) {
+  html {
+    font-size: 15px;
+  }
 }
 </style>

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Content from '@/components/Content.vue'
 import Thread from '@/components/Thread.vue'
+import NewThread from '@/components/NewThread.vue'
 
 const routes = [
   {
@@ -10,6 +11,10 @@ const routes = [
   {
     path: '/thread',
     component: Thread
+  },
+  {
+    path: '/newthread',
+    component: NewThread
   }
 ]
 
