@@ -19,11 +19,19 @@
 }
 
 .bg-3 {
-    @apply bg-gray-200 dark:bg-gray-600
+    @apply bg-gray-200 dark:bg-gray-500
 }
 
 .bg-4 {
     @apply bg-gray-300 dark:bg-gray-400
+}
+
+.border-1{
+    @apply  shadow border-opacity-50
+}
+
+.bg-content {
+    @apply bg-gray-300 dark:bg-gray-600
 }
 
 .bg-alt-1 {
@@ -40,6 +48,10 @@
 
 .bg-alt-4 {
     @apply bg-gray-400 dark:bg-gray-300
+}
+
+.bg-alt-content {
+    @apply bg-gray-900 dark:bg-gray-300
 }
 
 .text-1 {
@@ -150,5 +162,6 @@
     background: var(--logo-url) no-repeat 0 0;
     background-size: 100%;
 }
+
 
 

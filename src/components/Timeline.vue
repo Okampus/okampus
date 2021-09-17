@@ -1,5 +1,7 @@
 <template>
-  <div />
+  <div class="w-full text-center">
+    Timeline
+  </div>
 </template>
 
 <script lang="js">

@@ -15,7 +15,8 @@ module.exports = {
   rules: {
     // 'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'import/no-unresolved': ['error']
+    'import/no-unresolved': ['error'],
+    'vue/html-self-closing': ['off']
   },
   settings: {
     'import/resolver': {

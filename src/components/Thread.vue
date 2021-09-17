@@ -1,416 +1,179 @@
 <template>
-  <div class="border container is-link">
-    <div class="border header">
-      <div class="border">
-        <div class="border title is-1 headTitle">
-          <span class="bg-gray-50">[REPORT]</span>
-          <span class="text-1-important">Problème matériel en salle 402</span>
-        </div>
-        <div class="headerInfos text-1-important">08/08/2021-Eleve Lambda</div>
+  <div><Breadcrumb class="mb-2" /></div>
+  <div class="flex mb-4">
+    <div class="text-1 w-1/6 bg-1 rounded-md pl-1 border-1">
+      <div>Demandé : Il y a <span class="font-bold"> 2 semaines</span></div>
+      <div>
+        Denière activité : Il y a <span class="font-bold">2 jours</span>
       </div>
-      <!-- <div class="box m-0 mt-3 bg-1-important text-2-important"></div> -->
+      <div>Nombre de vues : <span class="font-bold">42069</span></div>
     </div>
-    <div class="grid-container">
-      <div class="grid-item blue"></div>
-      <div class="grid-item green"></div>
-      <div class="grid-item bg-gray-50"></div>
+    <div class="text-1 mx-2 w-4/6 border-1 bg-1 rounded-md">
+      <Timeline />
+      <!-- Timeline -->
     </div>
-    <!-- <div class="border tile is-ancestor m-0">
-      <div class="border tile is-vertical is-3 is-parent">
-        <div class="border tile is-child">
-          <div class="timeline is-rtl text-1">
-            <header class="timeline-header">
-              <span class="tag is-medium is-primary">Start</span>
-            </header>
-            <div
-              v-for="advancement in timeline_advancements"
-              v-bind:key="advancement"
-              v-bind:class="{'is-danger': !advancement.status,'is-warning':advancement.status==1 ,'is-primary': advancement.status==2}"
-              class="timeline-item"
-            >
-              <div class="timeline-marker"
-              v-bind:class="{'is-danger': !advancement.status,'is-warning':advancement.status==1 ,'is-primary': advancement.status==2}"></div>
-              <div class="timeline-content">
-                <p class="heading">{{advancement.date}}</p>
-                <p class="timeline-advancement-comment">{{advancement.comment}}</p>
-              </div>
-            </div>
-            <header class="timeline-header">
-              <span class="tag is-medium is-primary">End</span>
-            </header>
-          </div>
-          <div class="border tile is-child"></div>
-        <div class="box m-0 mt-3 bg-1-important text-2-important">Jambon</div>
+    <div class="w-1/6 h-auto">
+      <div
+        class="
+          text-center
+          bg-blue-400
+          text-white
+          hover:text-black
+          border-opacity-50
+          rounded-md
+          p-2
+          border-1
+        "
+      >
+        Créer un Thread
+      </div>
+      <div
+        class="
+          text-center
+          bg-blue-400
+          text-white
+          hover:text-black
+          border-opacity-50
+          rounded-md
+          p-2
+          border-1
+          mt-2
+        "
+      >
+        Suggérer une idée
+      </div>
+    </div>
+  </div>
+  <div class="flex">
+    <div class="w-9/12 flex">
+      <div>
+        <div>
+          <Post
+            :title="'Les ordinateurs sur la deuxième rangée en salle E103 ne fonctionnent plus !'"
+          />
+          <Comment
+            :content="'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis .'"
+            :author="'Pseudo'"
+          />
+          <Comment
+            :content="'Dein Syria per speciosam interpatet diffusa planitiem. hanc nobilitat Antiochia, mundo cognita civitas, cui non certaverit alia advecticiis ita adfluere copiis et internis, et Laodicia et Apamia itidemque Seleucia iam inde a primis auspiciis florentissimae.'"
+            :author="'Pseudo'"
+          />
+          <Comment
+            :content="'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis parentis cernitis sentiant neque.'"
+            :author="'Pseudo'"
+          />
+        </div>
+        <div class="mt-4 w-11/12 float-right">
+          <Response
+            :title="'C\'est à cause d\'une mauvaise installation software'"
+          />
+          <Comment
+            :content="'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis .'"
+            :author="'Pseudo'"
+          />
+          <Comment
+            :content="'Dein Syria per speciosam interpatet diffusa planitiem. hanc nobilitat Antiochia, mundo cognita civitas, cui non certaverit alia advecticiis ita adfluere copiis et internis, et Laodicia et Apamia itidemque Seleucia iam inde a primis auspiciis florentissimae.'"
+            :author="'Pseudo'"
+          />
+          <Comment
+            :content="'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis parentis cernitis sentiant neque.'"
+            :author="'Pseudo'"
+          />
         </div>
       </div>
-      <div class="border tile is-vertical is-6 is-parent">
-        <div class="border tile is-child"></div>
-        <div class="border tile is-child">
-          <div
-            v-for="message in messages"
-            v-bind:key="message"
-            class="responseMessages"
-          >
-            <div class="box m-0 mt-3 bg-1-important text-2-important">
-              <article class="media">
-                <div class="media-left">
-                  <font-awesome-icon
-                    icon="caret-up"
-                    :style="{ 'font-size': '16px' }"
-                  />
-                  <br />
-                  {{ message.upvotes }}
-                  <br />
-                  <font-awesome-icon
-                    icon="caret-down"
-                    :style="{ 'font-size': '16px' }"
-                  />
-                </div>
-                <div class="media-content">
-                  <div class="has-text-weight-bold">{{ message.author }}</div>
-                  <p>
-                    {{ message.text }}
-                  </p>
-
-                  <nav class="level is-mobile icon">
-                    <div class="level-left">
-                      <a class="level-item">
-                        <span class="icon is-small">
-                          <font-awesome-icon
-                            icon="at"
-                            :style="{ 'font-size': '16px' }"
-                          />
-                        </span>
-                      </a>
-                      <a class="level-item">
-                        <span class="icon is-small">
-                          <font-awesome-icon
-                            icon="comment-alt"
-                            :style="{ 'font-size': '16px' }"
-                          />
-                        </span>
-                      </a>
-                      <a class="level-item">
-                        <span class="icon is-small">
-                          <font-awesome-icon
-                            icon="plus"
-                            :style="{ 'font-size': '16px' }"
-                          />
-                        </span>
-                      </a>
-                      <a class="level-item">
-                        <span class="icon is-small">
-                          <font-awesome-icon
-                            icon="flag"
-                            :style="{ 'font-size': '16px' }"
-                          />
-                        </span>
-                      </a>
-                    </div>
-                  </nav>
-                </div>
-              </article>
-            </div>
-            <div
-              class="commentary"
-              v-for="reply_message in message.replies"
-              v-bind:key="reply_message"
-            >
-              <div class="box bg-1-important text-2-important py-2 no-radius">
-                {{ reply_message.text }} –
-                <span class="has-text-weight-bold">{{
-                  reply_message.author
-                }}</span>
-                <nav class="level is-mobile icon">
-                  <div class="level-left">
-                    <a class="level-item">
-                      <span class="icon is-small">
-                        <font-awesome-icon
-                          icon="at"
-                          :style="{ 'font-size': '16px' }"
-                        />
-                      </span>
-                    </a>
-                    <a class="level-item">
-                      <span class="icon is-small">
-                        <font-awesome-icon
-                          icon="plus"
-                          :style="{ 'font-size': '16px' }"
-                        />
-                      </span>
-                    </a>
-                    <a class="level-item">
-                      <span class="icon is-small">
-                        <font-awesome-icon
-                          icon="flag"
-                          :style="{ 'font-size': '16px' }"
-                        />
-                      </span>
-                    </a>
-                  </div>
-                </nav>
-              </div>
-            </div>
+    </div>
+    <div class="w-3/12 ml-4 text-1">
+      <div class="sticky top-0 p-2 border-1 bg-1 rounded-md">
+        <div class="bg-2 border-1 rounded-md px-2 pb-1">
+          <div class="font-bold text-base mb-1/2">
+            Tags :
           </div>
+          <Tag
+            class="mr-2"
+            :title="'TagExample'"
+            :color="'blue-500'"
+          />
+          <Tag
+            class="mr-2"
+            :title="'OneTag'"
+            :color="'red-500'"
+          />
+          <Tag
+            class="mr-2"
+            :title="'Tags'"
+            :color="'pink-500'"
+          />
+          <Tag
+            class="mr-2"
+            :title="'Example'"
+            :color="'orange-500'"
+          />
         </div>
-        <div class="border tile is-child"></div>
-      </div>
-      <div class="border tile is-vertical is-3 is-parent">
-        <div class="border tile is-child">
-          <div class="box assign m-0 mt-3 bg-1-important text-2-important">
-            Assigné à: PM
+        <div class="bg-2 border-1 rounded-md px-2 mt-4">
+          <div class="font-bold text-base">
+            Contributors :
           </div>
-          <div class="box collabBox m-0 mt-3 bg-1-important text-2-important">
-            Collaborateurs:
-            <div v-for="c in collaborateurs" v-bind:key="c">
-              <img class="avatarCollab" v-bind:src="c.avatar" alt="" />
-            </div>
-          </div>
-          <div class="box m-0 mt-3 bg-1-important text-2-important">
-            Tags:<br />
-            <div v-for="t in tags" v-bind:key="t">
-              <div class="tag bg-opp-1-important text-opp-1-important">{{ t }}</div>
-            </div>
-          </div>
+          <Contributors class="inline-block" />
+          <Contributors class="inline-block" />
+          <Contributors class="inline-block" />
+          <Contributors class="inline-block" />
         </div>
-        <div class="border tile is-child"></div>
+        <div class="bg-2 border-1 rounded-md px-2 mt-4 pb-2">
+          <div class="font-bold text-base mb-1/2">
+            Sujets semblables :
+          </div>
+          <SimilarTopic
+            :title="'#173 Probleme dans la salle 7'"
+            class="mb-2"
+          />
+          <SimilarTopic
+            :title="'#173 Probleme de professeur'"
+            class="mb-2"
+          />
+          <SimilarTopic :title="'#173 Probleme dans la salle 7'" />
+        </div>
       </div>
-    </div>  -->
+      <!-- Contibutors -->
+      <!-- Sujets semblables -->
+    </div>
   </div>
 </template>
 
 <script lang="js">
 import { defineComponent } from 'vue'
+import Post from '@/components/Post.vue'
+import Response from '@/components/Response.vue'
+import Timeline from '@/components/Timeline.vue'
+import Tag from '@/components/Tag.vue'
+import Contributors from '@/components/Contributor.vue'
+import SimilarTopic from '@/components/SimilarTopic.vue'
+import Breadcrumb from '@/components/Breadcrumb.vue'
+import Comment from '@/components/Comment.vue'
 
 export default defineComponent({
   name: 'Thread',
+  components: {
+    Post,
+    Response,
+    Timeline,
+    Tag,
+    Contributors,
+    SimilarTopic,
+    Breadcrumb,
+    Comment
+  },
   props: {},
-  methods: {},
 
   data () {
-    return {
-      messages: [
-        {
-          text: 'Le troisième ordinateur de la deuxième rangée ne fonctionne plus',
-          author: 'Timothée',
-          date: '22/02/2020',
-          upvotes: 1023,
-          replies: [
-            {
-              text: 'Vraiment ?',
-              author: 'Ivan Stepanian',
-              date: '23/02/2021',
-              upvotes: 1
-            },
-            {
-              text: 'Plusieurs étudiants ont observé ce problème',
-              author: 'CMB',
-              date: '23/02/2021',
-              upvotes: 1
-            }
-          ]
-        },
-
-        {
-          text: 'Je confirme',
-          author: 'JoDu75',
-          date: '10/12/2019',
-          upvotes: 0,
-          replies: [
-            {
-              text: "Yes, j'ai une preuve en image",
-              author: 'Jean',
-              date: '12/02/2021',
-              upvotes: 547
-            }
-          ]
-        },
-
-        {
-          text: "Qu est ce qu'un steak qui n'est pas un steak ?.... une pastèque lol",
-          author: 'Steak',
-          date: '10/12/2019',
-          upvotes: 0
-        },
-
-        {
-          text: 'Qu est ce qui est jaune et qui attends ?',
-          author: 'iel',
-          date: '10/12/2019',
-          upvotes: 0
-        },
-
-        {
-          text: "Une carte Google Play d'une valeur de 500€ est cachée quelque part sur Horizon",
-          author: 'Code Forlan',
-          date: '10/12/2019',
-          upvotes: 0
-        }
-      ],
-
-      collaborateurs: [
-        {
-          pseudo: 'Tim au Thé',
-          avatar: 'https://hiphopcorner.fr/wp-content/uploads/2019/11/EJ5fnTmWsAAOwF7-3.jpg'
-        },
-
-        {
-          pseudo: 'Unaxe',
-          avatar: 'https://ichef.bbci.co.uk/news/976/cpsprodpb/7727/production/_103330503_musk3.jpg'
-        }
-      ],
-
-      tags: [
-        'Problème matériel',
-        'Ordinateur',
-        'Prioritaire'
-      ],
-
-      timeline_advancements: [
-        {
-          date: 'SEPT. 2016',
-          comment: 'Validé',
-          status: 2
-        },
-        {
-          date: 'DEC. 2016',
-          comment: 'En Cours',
-          status: 1
-        },
-        {
-          date: 'JAN. 2017',
-          comment: 'Pas Commencé',
-          status: 0
-        }
-      ]
-
-    }
-  }
+    return {}
+  },
+  methods: {}
 })
 </script>
 
 <style scoped>
-.grid-container {
-  display: grid;
-  grid-template-columns: 200px 100px;
-}
-
 .border {
   /* border: 1px solid white; */
-}
-
-.no-radius {
-  border-radius: 0;
-}
-
-.pp {
-  position: block;
-}
-
-.box {
-  /*box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);*/
-  border: 3px solid rgba(0, 0, 0, 0.2);
-}
-
-.timeline-advancement-comment{
-  font-size : 10px;
-}
-
-.ticketTitle {
-  font-size: 60px;
-}
-
-.titletag {
-  text-align: bold;
-  color: blue;
-}
-
-.headTitle{
-  padding-bottom: 0%;
-  margin-bottom: 0%;
-  font-size: 50px;
-}
-
-.headerInfos{
-  padding: 0%;
-  padding-left: 2%;
-  margin: 0%;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.msg {
-  position: block;
-}
-
-.titre {
-  margin: 5px;
-}
-
-.imgprofil {
-  border-radius: 180px;
-  padding: 10%;
-}
-
-.responseMessages {
-  margin-bottom: 5px;
-}
-
-.icon {
-  margin-top: 5px;
-}
-
-.commentary {
-  margin-top: 5px;
-  margin-left: 5%;
-  padding: 0;
-}
-
-.align {
-  height: 90%;
-  width: 100%;
-  display: flex;
-}
-
-.topicMsg {
-  border: lightgray solid 1px;
-  margin-left: 5%;
-  margin-top: 5%;
-  height: 85%;
-  margin-bottom: 5%;
-}
-
-.limite {
-  display: flex;
-  width: 100%;
-  height: 10%;
-}
-
-.titreText {
-  padding-right: 3%;
-}
-
-.header {
-  margin-top: 25px;
-  display: flex;
-  width: 100%;
-}
-
-.avatarCollab {
-  width: 50%;
-  border-radius: 180px;
-}
-
-.collabBox {
-  display: flex;
-}
-
-.tagItem {
-  border: white solid 1px;
-  border-radius: 5px;
-}
-
-.tagBox {
-  display: flex;
 }
 </style>

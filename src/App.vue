@@ -3,7 +3,16 @@
 
   <div
     id="main-container"
-    class="relative flex flex-row filter h-screen w-screen transition-filter duration-300 z-1"
+    class="
+      relative
+      flex flex-row
+      filter
+      h-screen
+      w-screen
+      transition-filter
+      duration-300
+      z-1
+    "
   >
     <SearchQuery ref="searchQuery" />
     <Topbar
@@ -15,7 +24,16 @@
     <Sidebar @closeSidebar="sidebarHandler" />
     <div
       id="content-wrapper"
-      class="w-full bg-3 h-content flex relative top-tbar bg-gray-100 overflow-hidden transition-filter"
+      class="
+        w-full
+        bg-content
+        h-content
+        flex
+        relative
+        top-tbar
+        overflow-hidden
+        transition-filter
+      "
     >
       <div
         id="content"
@@ -123,12 +141,12 @@ export default defineComponent({
 }
 
 html {
- font-size: 13px
+  font-size: 13px;
 }
 
-@media (min-width:720px) {
- html {
-  font-size: 15px
- }
+@media (min-width: 720px) {
+  html {
+    font-size: 15px;
+  }
 }
 </style>
