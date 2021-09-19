@@ -14,6 +14,9 @@
             <div class="text-xl">
               Titre du Thread :
             </div>
+            <div class="text-sm">
+              Donnez un titre simple et complet afin de décrire votre ticket
+            </div>
             <input
               id="title"
               class="bg-1 w-full pl-1 border-1"
@@ -25,6 +28,10 @@
           <div class="mt-4">
             <div class="text-xl">
               Contenu du Thread :
+            </div>
+            <div class="text-sm">
+              Décrivez le plus précisément possible votre ticket afin d'avoir
+              toutes les données nécessaires pour le faire avancer
             </div>
             <textarea
               id="title"
