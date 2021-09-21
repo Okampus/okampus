@@ -4,7 +4,7 @@ const fetch = require('node-fetch')
 const Discord = require('discord.js')
 
 const { ENV, VUE_BASE, getURL } = require('@api/api.config.js')
-const { EncryptJSON, DecryptJSON } = require('@api/utils/crypto')
+const { EncryptJSON } = require('@api/utils/crypto')
 const { Serialize } = require('@api/utils/routing')
 
 const bot = new Discord.Client()
@@ -52,23 +52,14 @@ router.route(getURL('oauth.discord.tokenCallback')).get(async (req, res, next) =
 
   OAuth.json()
     .then((tokens) => {
-      console.log(tokens)
       const tok = EncryptJSON({
         access_token: tokens.access_token,
         refresh_token: tokens.refresh_token,
         token_type: 'Bearer',
         expires_in: Date.now() + tokens.expires_in * 1000
       })
-      console.log(tok)
-      console.log('\n', DecryptJSON(tok))
-      res.cookie(DISCORD_TOKEN, EncryptJSON({
-        access_token: tokens.access_token,
-        refresh_token: tokens.refresh_token,
-        token_type: 'Bearer',
-        expires_in: Date.now() + tokens.expires_in * 1000
-      }), { maxAge: tokens.expires_in * 1000 }).redirect(VUE_BASE)
 
-      // request.get({ url: getURL('oauth.discord.userInfo', 'full') })
+      res.cookie(DISCORD_TOKEN, tok, { maxAge: tokens.expires_in * 1000 }).redirect(VUE_BASE)
     })
     .catch((err) => {
       console.log('Error:', err)

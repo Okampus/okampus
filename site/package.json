@@ -5,10 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "api": "nodemon --watch api ./api",
-    "devStart": "npm run install && concurrently 'npm run serve' 'npm run api'",
-    "install": "cd ./api && npm i"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "autoprefixer": "^9",
