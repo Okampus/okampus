@@ -1,5 +1,6 @@
 <template>
   <div><Breadcrumb class="mb-2" /></div>
+  <!-- Haut de page : Timeline... -->
   <div class="flex mb-4">
     <div class="text-1 w-1/6 bg-1 rounded-md pl-1 border-1">
       <div>Demandé : Il y a <span class="font-bold"> 2 semaines</span></div>
@@ -44,42 +45,15 @@
       </div>
     </div>
   </div>
+  <!-- Box contenant les posts -->
   <div class="flex">
     <div class="w-9/12 flex">
       <div>
         <div>
-          <Post
-            :title="'Les ordinateurs sur la deuxième rangée en salle E103 ne fonctionnent plus !'"
-          />
-          <Comment
-            :content="'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis .'"
-            :author="'Pseudo'"
-          />
-          <Comment
-            :content="'Dein Syria per speciosam interpatet diffusa planitiem. hanc nobilitat Antiochia, mundo cognita civitas, cui non certaverit alia advecticiis ita adfluere copiis et internis, et Laodicia et Apamia itidemque Seleucia iam inde a primis auspiciis florentissimae.'"
-            :author="'Pseudo'"
-          />
-          <Comment
-            :content="'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis parentis cernitis sentiant neque.'"
-            :author="'Pseudo'"
-          />
+          <Post :post="post" />
         </div>
         <div class="mt-4 w-11/12 float-right">
-          <Response
-            :title="'C\'est à cause d\'une mauvaise installation software'"
-          />
-          <Comment
-            :content="'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis .'"
-            :author="'Pseudo'"
-          />
-          <Comment
-            :content="'Dein Syria per speciosam interpatet diffusa planitiem. hanc nobilitat Antiochia, mundo cognita civitas, cui non certaverit alia advecticiis ita adfluere copiis et internis, et Laodicia et Apamia itidemque Seleucia iam inde a primis auspiciis florentissimae.'"
-            :author="'Pseudo'"
-          />
-          <Comment
-            :content="'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis parentis cernitis sentiant neque.'"
-            :author="'Pseudo'"
-          />
+          <Response :response="response" />
         </div>
       </div>
     </div>
@@ -149,24 +123,77 @@ import Tag from '@/components/Tag.vue'
 import Contributors from '@/components/Contributor.vue'
 import SimilarTopic from '@/components/SimilarTopic.vue'
 import Breadcrumb from '@/components/Breadcrumb.vue'
-import Comment from '@/components/Comment.vue'
+// import Comment from '@/components/Comment.vue'
 
 export default defineComponent({
   name: 'Thread',
   components: {
-    Post,
-    Response,
     Timeline,
     Tag,
     Contributors,
     SimilarTopic,
     Breadcrumb,
-    Comment
+    Post,
+    Response
+    // Comment
   },
   props: {},
 
   data () {
-    return {}
+    return {
+      post: {
+        number: '194',
+        upvotes: '69',
+        title: 'Les ordinateurs sur la deuxième rangée en salle E103 ne fonctionnent plus !',
+        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut nihil reprehenderit esse aperiam odit dignissimos, praesentium quia blanditiis autem atque molestias officiis deleniti magnam libero a? Optio recusandae totam soluta! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Impedit optio, praesentium obcaecati facere quasi',
+        creator: {
+          pseudo: 'Pseudo',
+          role: 'Role',
+          img: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'
+        },
+        responses: [{
+          author: 'Pseudo',
+          content: 'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis .',
+          likes: '185'
+        },
+        {
+          author: 'Pseudo',
+          content: 'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis .',
+          likes: '185'
+        },
+        {
+          author: 'Pseudo',
+          content: 'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis .',
+          likes: '185'
+        }]
+      },
+      response: {
+        number: '194',
+        upvotes: '69',
+        title: 'Les ordinateurs sur la deuxième rangée en salle E103 ne fonctionnent plus !',
+        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut nihil reprehenderit esse aperiam odit dignissimos, praesentium quia blanditiis autem atque molestias officiis deleniti magnam libero a? Optio recusandae totam soluta! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Impedit optio, praesentium obcaecati facere quasi',
+        creator: {
+          pseudo: 'Pseudo',
+          role: 'Role',
+          img: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'
+        },
+        responses: [{
+          author: 'Pseudo',
+          content: 'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis .',
+          likes: '185'
+        },
+        {
+          author: 'Pseudo',
+          content: 'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis .',
+          likes: '185'
+        },
+        {
+          author: 'Pseudo',
+          content: 'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis .',
+          likes: '185'
+        }]
+      }
+    }
   },
   methods: {}
 })

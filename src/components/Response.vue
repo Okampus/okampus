@@ -14,7 +14,7 @@
         <div>dfs</div>
         <ChevronUpIcon class="h-10 w-10 mt-4" />
         <div class="text-center">
-          69
+          {{ response.number }}
         </div>
         <ChevronDownIcon class="h-10 w-10" />
         <StarIcon class="h-7 w-7 mt-4" />
@@ -25,31 +25,28 @@
       </div>
       <div class="w-10/12 pl-2 pb-4">
         <div class="px-4 pt-4 text-3xl font-bold text-center">
-          #192 - {{ title }}
+          #192 - {{ response.title }}
         </div>
         <PencilAltIcon class="ml-3 inline-block h-7 w-7" />
         <ArchiveIcon class="ml-3 inline-block h-7 w-7" />
         <div class="p-1 mt-2 text-2 text-sm">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut nihil
-          reprehenderit esse aperiam odit dignissimos, praesentium quia
-          blanditiis autem atque molestias officiis deleniti magnam libero a?
-          Optio recusandae totam soluta! Lorem ipsum, dolor sit amet consectetur
-          adipisicing elit. Impedit optio, praesentium obcaecati facere quasi
-          sapiente omnis fugiat reprehenderit ut quis earum fugit repudiandae
-          cum dignissimos, ex quaerat iusto voluptatibus animi? Lorem ipsum
-          dolor sit amet consectetur adipisicing elit. Aut nihil reprehenderit
-          esse aperiam odit dignissimos, praesentium quia blanditiis autem atque
-          molestias officiis deleniti magnam libero a? Optio recusandae totam
-          soluta!
+          {{ response.content }}
         </div>
       </div>
     </div>
+  </div>
+  <div
+    v-for="comment in response.responses"
+    :key="comment"
+  >
+    <Comment :comment="comment" />
   </div>
 </template>
 
 <script lang="js">
 import { defineComponent } from 'vue'
 import { ChevronDownIcon, ChevronUpIcon, BellIcon, StarIcon, FlagIcon, PencilAltIcon, ArchiveIcon } from '@heroicons/vue/outline'
+import Comment from '@/components/Comment.vue'
 
 export default defineComponent({
   name: 'Response',
@@ -60,11 +57,12 @@ export default defineComponent({
     StarIcon,
     FlagIcon,
     PencilAltIcon,
-    ArchiveIcon
+    ArchiveIcon,
+    Comment
   },
   props: {
-    title: {
-      type: String
+    response: {
+      type: Object
     }
   }
 })
