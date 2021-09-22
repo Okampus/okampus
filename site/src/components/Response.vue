@@ -7,9 +7,7 @@
           alt="Profile Picture"
           class="bg-white w-24 h-24 mt-4"
         />
-        <div class="font-bold">
-          Pseudo
-        </div>
+        <div class="font-bold">Pseudo</div>
         <div>Rôle</div>
         <div>dfs</div>
         <ChevronUpIcon class="h-10 w-10 mt-4" />
@@ -35,10 +33,7 @@
       </div>
     </div>
   </div>
-  <div
-    v-for="comment in response.responses"
-    :key="comment"
-  >
+  <div v-for="comment in response.responses" :key="comment">
     <Comment :comment="comment" />
   </div>
 </template>

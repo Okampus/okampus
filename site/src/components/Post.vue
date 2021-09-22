@@ -43,10 +43,7 @@
       </div>
     </div>
   </div>
-  <div
-    v-for="comment in post.responses"
-    :key="comment"
-  >
+  <div v-for="comment in post.responses" :key="comment">
     <Comment :comment="comment" />
   </div>
 </template>

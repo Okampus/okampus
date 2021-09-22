@@ -60,51 +60,23 @@
     <div class="w-3/12 ml-4 text-1">
       <div class="sticky top-0 p-2 border-1 bg-1 rounded-md">
         <div class="bg-2 border-1 rounded-md px-2 pb-1">
-          <div class="font-bold text-base mb-1/2">
-            Tags :
-          </div>
-          <Tag
-            class="mr-2"
-            :title="'TagExample'"
-            :color="'blue-500'"
-          />
-          <Tag
-            class="mr-2"
-            :title="'OneTag'"
-            :color="'red-500'"
-          />
-          <Tag
-            class="mr-2"
-            :title="'Tags'"
-            :color="'pink-500'"
-          />
-          <Tag
-            class="mr-2"
-            :title="'Example'"
-            :color="'orange-500'"
-          />
+          <div class="font-bold text-base mb-1/2">Tags :</div>
+          <Tag class="mr-2" :title="'TagExample'" :color="'blue-500'" />
+          <Tag class="mr-2" :title="'OneTag'" :color="'red-500'" />
+          <Tag class="mr-2" :title="'Tags'" :color="'pink-500'" />
+          <Tag class="mr-2" :title="'Example'" :color="'orange-500'" />
         </div>
         <div class="bg-2 border-1 rounded-md px-2 mt-4">
-          <div class="font-bold text-base">
-            Contributors :
-          </div>
+          <div class="font-bold text-base">Contributors :</div>
           <Contributors class="inline-block" />
           <Contributors class="inline-block" />
           <Contributors class="inline-block" />
           <Contributors class="inline-block" />
         </div>
         <div class="bg-2 border-1 rounded-md px-2 mt-4 pb-2">
-          <div class="font-bold text-base mb-1/2">
-            Sujets semblables :
-          </div>
-          <SimilarTopic
-            :title="'#173 Probleme dans la salle 7'"
-            class="mb-2"
-          />
-          <SimilarTopic
-            :title="'#173 Probleme de professeur'"
-            class="mb-2"
-          />
+          <div class="font-bold text-base mb-1/2">Sujets semblables :</div>
+          <SimilarTopic :title="'#173 Probleme dans la salle 7'" class="mb-2" />
+          <SimilarTopic :title="'#173 Probleme de professeur'" class="mb-2" />
           <SimilarTopic :title="'#173 Probleme dans la salle 7'" />
         </div>
       </div>
