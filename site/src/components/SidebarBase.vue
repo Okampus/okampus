@@ -41,7 +41,15 @@
 <script lang="js">
 import {
   SearchIcon,
-  SpeakerphoneIcon
+  SpeakerphoneIcon,
+  DocumentDownloadIcon,
+  CalendarIcon,
+  TicketIcon,
+  InformationCircleIcon,
+  UserIcon,
+  BriefcaseIcon,
+  PresentationChartLineIcon,
+  DatabaseIcon
 } from '@heroicons/vue/solid'
 
 import {
@@ -55,7 +63,15 @@ export default defineComponent({
     // eslint-disable-next-line vue/no-unused-components
     CogIcon,
     SearchIcon,
-    SpeakerphoneIcon
+    SpeakerphoneIcon,
+    DocumentDownloadIcon,
+    CalendarIcon,
+    TicketIcon,
+    InformationCircleIcon,
+    UserIcon,
+    BriefcaseIcon,
+    PresentationChartLineIcon,
+    DatabaseIcon
   },
   // methods: {
   //   sidebarHandler () {
@@ -78,15 +94,15 @@ export default defineComponent({
       type: Array,
       default: () => [
         { href: '#', section: 'Général', text: 'Annonces', icon: 'SpeakerphoneIcon' },
-        { href: '#', section: 'Général', text: 'Dashboard site', icon: 'SearchIcon' },
-        { href: '#', section: "Ef'réussite", text: 'Docs sharing', icon: 'SearchIcon' },
-        { href: '#', section: "Ef'réussite", text: 'Scheduler', icon: 'SearchIcon' },
-        { href: '#', section: 'Scolarité', text: 'Infos scolarité', icon: 'SearchIcon' },
-        { href: '#', section: 'Scolarité', text: 'Remontées', icon: 'SearchIcon' },
+        { href: '#', section: 'Général', text: 'Dashboard site', icon: 'PresentationChartLineIcon' },
+        { href: '#', section: "Ef'réussite", text: 'Docs sharing', icon: 'DocumentDownloadIcon' },
+        { href: '#', section: "Ef'réussite", text: 'Scheduler', icon: 'CalendarIcon' },
+        { href: '#', section: 'Scolarité', text: 'Infos scolarité', icon: 'InformationCircleIcon' },
+        { href: '#', section: 'Scolarité', text: 'Remontées', icon: 'TicketIcon' },
         { href: '#', section: 'Horizon', text: 'Notre association', icon: 'SearchIcon' },
-        { href: '#', section: 'Horizon', text: 'Project dating', icon: 'SearchIcon' },
-        { href: '#', section: 'Mon Espace', text: 'Mon compte', icon: 'SearchIcon' },
-        { href: '#', section: 'Mon Espace', text: 'RGPD', icon: 'SearchIcon' }
+        { href: '#', section: 'Horizon', text: 'Project dating', icon: 'BriefcaseIcon' },
+        { href: '#', section: 'Mon Espace', text: 'Mon compte', icon: 'UserIcon' },
+        { href: '#', section: 'Mon Espace', text: 'RGPD', icon: 'DatabaseIcon' }
       ]
     }
   }

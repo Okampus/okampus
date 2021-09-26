@@ -11,7 +11,7 @@
       >
         <MenuIcon class="h-8 w-8" />
       </button>
-      <div class="logo w-48 h-8 mt-1.5" />
+      <div class="brand w-48 h-8 mt-1.5" />
     </div>
 
     <div class="relative bg-transparent flex-grow px-6">

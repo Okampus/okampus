@@ -35,8 +35,6 @@ import Sidebar from '@/components/Sidebar.vue'
 import SlidingSidebar from '@/components/SlidingSidebar.vue'
 import SearchQuery from '@/components/SearchQuery.vue'
 
-// import { getURL } from '@api/api.config'
-
 export default defineComponent({
   components: {
     Topbar,

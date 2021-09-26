@@ -3,7 +3,7 @@
     --sidebar-width: 14rem;
     --collapse-width: 900px;
     --expander-transition-time: 3s;
-    --logo-url: url("~@/assets/img/logo-white.png");
+    --brand-url: url("~@/assets/img/brand.png");
 }
 
 .button {
@@ -142,10 +142,10 @@
     @apply scrollbar scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-blue-300 scrollbar-thumb-rounded
 }
 
-.logo {
+.brand {
     @apply filter brightness-0 dark:brightness-100;
     transition: all 300ms;
-    background: var(--logo-url) no-repeat 0 0;
+    background: var(--brand-url) no-repeat 0 0;
     background-size: 100%;
 }
 

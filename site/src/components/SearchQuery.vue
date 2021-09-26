@@ -81,7 +81,7 @@
 
 <script lang="js">
 import { defineComponent } from 'vue'
-import { getURL } from '@api/api.config'
+// import { getURL } from '@api/api.config'
 import { XIcon, StarIcon, DotsHorizontalIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid'
 
 function removeZIndex () {
@@ -123,10 +123,10 @@ export default defineComponent({
     testKey (e) {
       console.log(e)
     },
-    userInfo: () => fetch(getURL('oauth.discord.userInfo', 'full'), {
+    /* userInfo: () => fetch(getURL('oauth.discord.userInfo', 'full'), {
       method: 'GET',
       credentials: 'include'
-    }).then(async res => console.log(await res.json())),
+    }).then(async res => console.log(await res.json())), */
     collapseSearch () {
       this.$data.searchVisible = false
       const searchScreen = document.getElementById('search-screen')
