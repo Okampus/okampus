@@ -7,7 +7,9 @@
         <div>
           Denière activité : Il y a <span class="font-bold">2 jours</span>
         </div>
-        <div>Nombre de vues : <span class="font-bold">42069</span></div>
+        <div>
+          Nombre de vues : <span class="font-bold">{{ thread.views }}</span>
+        </div>
       </div>
       <div class="text-1 mx-2 w-4/6 border-1 bg-1 rounded-md">
         <Timeline />
@@ -65,26 +67,31 @@
         <div class="sticky top-0 p-2 border-1 bg-1 rounded-md">
           <div class="bg-2 border-1 rounded-md px-2 pb-1">
             <div class="font-bold text-base mb-1/2">Tags :</div>
-            <Tag class="mr-2" :title="'TagExample'" :color="'blue-500'" />
-            <Tag class="mr-2" :title="'OneTag'" :color="'red-500'" />
-            <Tag class="mr-2" :title="'Tags'" :color="'pink-500'" />
-            <Tag class="mr-2" :title="'Example'" :color="'orange-500'" />
+            <Tag
+              class="mr-1"
+              v-for="tag in thread.tags"
+              :key="tag"
+              :title="tag.title"
+              :color="tag.color"
+            />
           </div>
           <div class="bg-2 border-1 rounded-md px-2 mt-4">
             <div class="font-bold text-base">Contributors :</div>
-            <Contributors class="inline-block" />
-            <Contributors class="inline-block" />
-            <Contributors class="inline-block" />
-            <Contributors class="inline-block" />
+            <Contributors
+              v-for="contributor in thread.contributors"
+              :key="contributor"
+              :contributor="contributor"
+              class="inline-block"
+            />
           </div>
           <div class="bg-2 border-1 rounded-md px-2 mt-4 pb-2">
             <div class="font-bold text-base mb-1/2">Sujets semblables :</div>
             <SimilarTopic
-              :title="'#173 Probleme dans la salle 7'"
+              v-for="topic in thread.similarTopics"
+              :key="topic"
+              :topic="topic"
               class="mb-2"
             />
-            <SimilarTopic :title="'#173 Probleme de professeur'" class="mb-2" />
-            <SimilarTopic :title="'#173 Probleme dans la salle 7'" />
           </div>
         </div>
       </div>
