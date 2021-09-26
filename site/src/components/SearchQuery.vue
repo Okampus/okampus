@@ -1,48 +1,67 @@
 <template>
   <div
     id="search-screen"
-    class="flex flex-col fixed w-screen top-tbar left-0 h-content bg-transparent"
+    class="
+      flex flex-col
+      fixed
+      w-screen
+      top-tbar
+      left-0
+      h-content
+      bg-transparent
+    "
   >
-    <div
-      id="expander-filler"
-      class="flex-shrink-0 flex-grow tr-flex"
-    />
+    <div id="expander-filler" class="flex-shrink-0 flex-grow tr-flex" />
     <div
       id="expander-content"
       class="h-0 relative flex-shrink lg:l-sbar flex-grow-0 tr-flex"
     >
-      <div class="text-2 flex flex-col w-full h-full shadow-lg z-50 rounded-t-lg bg-3">
+      <div
+        class="
+          text-2
+          flex flex-col
+          w-full
+          h-full
+          shadow-lg
+          z-50
+          rounded-t-lg
+          bg-3
+        "
+      >
         <div class="px-4 py-2 rounded-t-lg w-full">
-          <div class="float-left w-1/3">
-            Recherche: {{ $data.searchText }}
-          </div>
+          <div class="float-left w-1/3">Recherche: {{ $data.searchText }}</div>
           <div class="float-right w-5/12">
-            <XIcon
-              class="icon cursor-pointer"
-              @click="collapseSearch"
-            />
+            <XIcon class="icon cursor-pointer" @click="collapseSearch" />
             <StarIcon class="icon cursor-pointer" />
             <DotsHorizontalIcon class="icon cursor-pointer" />
           </div>
-          <div class="mx-auto text-center w-2/12">
-            100 résultats !
-          </div>
+          <div class="mx-auto text-center w-2/12">100 résultats !</div>
           <div class="clear-both" />
         </div>
 
         <div class="p-5 bg-1 mx-2 flex-grow mb-2 overflow-y-scroll h-full">
-          <div
-            v-for="category of categories"
-            :key="category"
-            class=""
-          >
+          <div v-for="category of categories" :key="category" class="">
             <p class="text-2 uppercase text-xl mb-1">
               {{ category }}
             </p>
 
             <div class="flex">
               <div
-                class="hover:bg-opaque button bc-2 mr-2 border-2 rounded-md flex flex-col justify-center flex-shrink-0 h-48 w-8 opacity-0 tr-opacity"
+                class="
+                  hover:bg-opaque
+                  button
+                  bc-2
+                  mr-2
+                  border-2
+                  rounded-md
+                  flex flex-col
+                  justify-center
+                  flex-shrink-0
+                  h-48
+                  w-8
+                  opacity-0
+                  tr-opacity
+                "
                 @click="scrollPreview($event, -1)"
               >
                 <ChevronLeftIcon class="h-7 pt-px duration-500" />
@@ -53,22 +72,46 @@
                 @wheel="scrollHorizontal($event)"
                 @scroll="checkScrollersAfterScroll($event.currentTarget)"
               >
-                <div
-                  v-for="i in 10"
-                  :key="i"
-                  class="preview"
-                />
+                <div v-for="i in 10" :key="i" class="preview" />
               </div>
 
               <div
-                class="button bc-2 ml-2 border-2 rounded-md flex flex-col justify-center flex-shrink-0 h-48 w-8 opacity-0 tr-opacity"
+                class="
+                  button
+                  bc-2
+                  ml-2
+                  border-2
+                  rounded-md
+                  flex flex-col
+                  justify-center
+                  flex-shrink-0
+                  h-48
+                  w-8
+                  opacity-0
+                  tr-opacity
+                "
                 @click="scrollPreview($event, 1)"
               >
                 <ChevronRightIcon class="h-7 pt-px" />
               </div>
             </div>
 
-            <div class="button bc-2 w-80 flex justify-center items-center text-center border-2 rounded-md mb-2 text-lg py-1">
+            <div
+              class="
+                button
+                bc-2
+                w-80
+                flex
+                justify-center
+                items-center
+                text-center
+                border-2
+                rounded-md
+                mb-2
+                text-lg
+                py-1
+              "
+            >
               Tous les résultats
               <ChevronRightIcon class="inline-block h-7 pt-px" />
             </div>
@@ -123,10 +166,6 @@ export default defineComponent({
     testKey (e) {
       console.log(e)
     },
-    /* userInfo: () => fetch(getURL('oauth.discord.userInfo', 'full'), {
-      method: 'GET',
-      credentials: 'include'
-    }).then(async res => console.log(await res.json())), */
     collapseSearch () {
       this.$data.searchVisible = false
       const searchScreen = document.getElementById('search-screen')
@@ -225,28 +264,30 @@ export default defineComponent({
 </script>
 
 <style scoped>
-  .tr-flex {
-    transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, flex-grow 500ms, flex-shrink 500ms;
-  }
+.tr-flex {
+  transition: color 300ms, background-color 300ms linear, border-color 300ms,
+    fill 300ms, stroke 300ms, flex-grow 500ms, flex-shrink 500ms;
+}
 
-  .tr-opacity {
-    transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, opacity 400ms;
-  }
+.tr-opacity {
+  transition: color 300ms, background-color 300ms linear, border-color 300ms,
+    fill 300ms, stroke 300ms, opacity 400ms;
+}
 
-  .previewer {
-    @apply whitespace-nowrap overflow-x-scroll;
-    scroll-behavior: smooth;
-  }
+.previewer {
+  @apply whitespace-nowrap overflow-x-scroll;
+  scroll-behavior: smooth;
+}
 
-  .previewer > *:last-child {
-    @apply mr-3;
-  }
+.previewer > *:last-child {
+  @apply mr-3;
+}
 
-  .preview {
-    @apply inline-block h-48 w-36 bg-white rounded-sm;
-  }
+.preview {
+  @apply inline-block h-48 w-36 bg-white rounded-sm;
+}
 
-  .preview + .preview {
-    @apply ml-3;
-  }
+.preview + .preview {
+  @apply ml-3;
+}
 </style>

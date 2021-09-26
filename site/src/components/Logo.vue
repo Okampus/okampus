@@ -20,18 +20,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'Tag',
-  props: {
-    title: {
-      type: String
-    },
-    color: {
-      type: String
-    }
-  },
-
-  methods: {
-  }
+  name: 'Logo'
 })
 </script>
 

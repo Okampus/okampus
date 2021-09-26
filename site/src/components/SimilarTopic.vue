@@ -2,22 +2,14 @@
   <div class="bg-1 p-1/2 border-1 rounded-md w-auto flex pl-1 pb-1">
     <div class="w-5/6">
       <div class="text-base font-bold">
-        {{ title }}
+        #{{ topic.number }} {{ topic.title }}
       </div>
       <Tag
-        :title="'Tag'"
+        v-for="tag in topic.tags"
+        :key="tag"
+        :title="tag.title"
         class="mr-2"
-        :color="'blue-500'"
-      />
-      <Tag
-        :title="'Tag'"
-        class="mr-2"
-        :color="'blue-500'"
-      />
-      <Tag
-        :title="'Tag'"
-        class="mr-2"
-        :color="'blue-500'"
+        :color="tag.color"
       />
       <div>Hotness</div>
       <div>Timeline Status</div>
@@ -44,8 +36,8 @@ export default defineComponent({
     FlagIcon
   },
   props: {
-    title: {
-      type: String
+    topic: {
+      type: Object
     }
   }
 })
