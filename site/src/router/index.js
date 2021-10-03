@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Content from '@/components/Content.vue'
-import viewThread from '@/pages/viewThread.vue'
-import NewThread from '@/components/NewThread.vue'
-import Login from '@/components/Login.vue'
-import ThreadList from '@/components/ThreadList.vue'
+import PostView from '@/pages/Post/PostView.vue'
+import PostNew from '@/pages/Post/PostNew.vue'
+import Login from '@/pages/Login.vue'
+import PostList from '@/pages/Post/PostList.vue'
 
 const routes = [
   {
@@ -11,12 +11,12 @@ const routes = [
     component: Content
   },
   {
-    path: '/thread',
-    component: viewThread
+    path: '/post',
+    component: PostView
   },
   {
-    path: '/newthread',
-    component: NewThread
+    path: '/new_post',
+    component: PostNew
   },
 
   {
@@ -25,8 +25,8 @@ const routes = [
   },
 
   {
-    path: '/threadlist',
-    component: ThreadList
+    path: '/posts',
+    component: PostList
   }
 ]
 

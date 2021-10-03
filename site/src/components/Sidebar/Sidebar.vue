@@ -12,7 +12,7 @@ import {
   XIcon
 } from '@heroicons/vue/solid'
 import { defineComponent } from 'vue'
-import SidebarBase from '@/components/SidebarBase.vue'
+import SidebarBase from '@/components/Sidebar/SidebarBase.vue'
 
 export default defineComponent({
   name: 'Sidebar',

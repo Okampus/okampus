@@ -1,22 +1,24 @@
 <template>
   <div>
-    <div class="mb-2"><Breadcrumb /></div>
-    <div><Thread :thread="thread" /></div>
+    <div class="mb-2">
+      <Breadcrumb />
+    </div>
+    <div><Post :thread="thread" /></div>
   </div>
 </template>
 
 <script lang="js">
 import { defineComponent } from 'vue'
 import Breadcrumb from '@/components/Breadcrumb.vue'
-import Thread from '@/components/Thread.vue'
+import Post from '@/pages/Post/Post.vue'
 
 export default defineComponent({
-  name: 'viewTag',
-  props: {
-  },
+  name: 'PostView',
   components: {
-    Thread,
+    Post,
     Breadcrumb
+  },
+  props: {
   },
 
   data () {

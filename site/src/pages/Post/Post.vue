@@ -55,9 +55,9 @@
             <Post :post="thread.post" />
           </div>
           <div
-            class="mt-4 w-11/12 float-right"
             v-for="response in thread.responses"
             :key="response"
+            class="mt-4 w-11/12 float-right"
           >
             <Response :response="response" />
           </div>
@@ -66,17 +66,21 @@
       <div class="w-3/12 ml-4 text-1">
         <div class="sticky top-0 p-2 border-1 bg-1 rounded-md">
           <div class="bg-2 border-1 rounded-md px-2 pb-1">
-            <div class="font-bold text-base mb-1/2">Tags :</div>
+            <div class="font-bold text-base mb-1/2">
+              Tags :
+            </div>
             <Tag
-              class="mr-1"
               v-for="tag in thread.tags"
               :key="tag"
+              class="mr-1"
               :title="tag.title"
               :color="tag.color"
             />
           </div>
           <div class="bg-2 border-1 rounded-md px-2 mt-4">
-            <div class="font-bold text-base">Contributors :</div>
+            <div class="font-bold text-base">
+              Contributors :
+            </div>
             <Contributors
               v-for="contributor in thread.contributors"
               :key="contributor"
@@ -85,7 +89,9 @@
             />
           </div>
           <div class="bg-2 border-1 rounded-md px-2 mt-4 pb-2">
-            <div class="font-bold text-base mb-1/2">Sujets semblables :</div>
+            <div class="font-bold text-base mb-1/2">
+              Sujets semblables :
+            </div>
             <SimilarTopic
               v-for="topic in thread.similarTopics"
               :key="topic"
@@ -101,7 +107,7 @@
 
 <script lang="js">
 import { defineComponent } from 'vue'
-import Post from '@/components/Post.vue'
+import Post from '@/pages/Post/Post.vue'
 import Response from '@/components/Response.vue'
 import Timeline from '@/components/Timeline.vue'
 import Tag from '@/components/Tag.vue'

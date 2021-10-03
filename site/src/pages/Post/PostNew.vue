@@ -111,10 +111,11 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'NewThread',
+  name: 'PostNew',
   props: {
     title: {
-      type: String
+      type: String,
+      required: true
     },
     color: {
       type: String,

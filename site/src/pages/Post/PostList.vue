@@ -4,22 +4,22 @@
       Liste des Threads :
     </div>
     <div class="">
-      <ThreadMini
+      <PostMini
         class="mt-1"
         :title="'Probleme lors de la création de Threads'"
       />
 
-      <ThreadMini
+      <PostMini
         class="mt-1"
         :title="'Probleme lors de la création de Threads'"
       />
 
-      <ThreadMini
+      <PostMini
         class="mt-1"
         :title="'Probleme lors de la création de Threads'"
       />
 
-      <ThreadMini
+      <PostMini
         class="mt-1"
         :title="'Probleme lors de la création de Threads'"
       />
@@ -29,11 +29,11 @@
 
 <script lang="js">
 import { defineComponent } from 'vue'
-import ThreadMini from '@/components/ThreadMini.vue'
+import PostMini from '@/pages/Post/PostMini.vue'
 
 export default defineComponent({
-  name: 'ThreadList',
-  components: { ThreadMini },
+  name: 'PostList',
+  components: { PostMini },
   props: {
   },
 

@@ -31,8 +31,8 @@
 import { defineComponent } from 'vue'
 
 import Topbar from '@/components/Topbar.vue'
-import Sidebar from '@/components/Sidebar.vue'
-import SlidingSidebar from '@/components/SlidingSidebar.vue'
+import Sidebar from '@/components/Sidebar/Sidebar.vue'
+import SlidingSidebar from '@/components/Sidebar/SlidingSidebar.vue'
 import SearchQuery from '@/components/SearchQuery.vue'
 
 export default defineComponent({

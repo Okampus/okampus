@@ -61,7 +61,7 @@ import Tag from '@/components/Tag.vue'
 import { ThumbUpIcon, BellIcon, FlagIcon } from '@heroicons/vue/outline'
 
 export default defineComponent({
-  name: 'SimilarTopic',
+  name: 'PostMini',
   components: {
     Tag,
     ThumbUpIcon,

@@ -11,7 +11,10 @@
       bg-transparent
     "
   >
-    <div id="expander-filler" class="flex-shrink-0 flex-grow tr-flex" />
+    <div
+      id="expander-filler"
+      class="flex-shrink-0 flex-grow tr-flex"
+    />
     <div
       id="expander-content"
       class="h-0 relative flex-shrink lg:l-sbar flex-grow-0 tr-flex"
@@ -29,18 +32,29 @@
         "
       >
         <div class="px-4 py-2 rounded-t-lg w-full">
-          <div class="float-left w-1/3">Recherche: {{ $data.searchText }}</div>
+          <div class="float-left w-1/3">
+            Recherche: {{ $data.searchText }}
+          </div>
           <div class="float-right w-5/12">
-            <XIcon class="icon cursor-pointer" @click="collapseSearch" />
+            <XIcon
+              class="icon cursor-pointer"
+              @click="collapseSearch"
+            />
             <StarIcon class="icon cursor-pointer" />
             <DotsHorizontalIcon class="icon cursor-pointer" />
           </div>
-          <div class="mx-auto text-center w-2/12">100 résultats !</div>
+          <div class="mx-auto text-center w-2/12">
+            100 résultats !
+          </div>
           <div class="clear-both" />
         </div>
 
         <div class="p-5 bg-1 mx-2 flex-grow mb-2 overflow-y-scroll h-full">
-          <div v-for="category of categories" :key="category" class="">
+          <div
+            v-for="category of categories"
+            :key="category"
+            class=""
+          >
             <p class="text-2 uppercase text-xl mb-1">
               {{ category }}
             </p>
@@ -72,7 +86,11 @@
                 @wheel="scrollHorizontal($event)"
                 @scroll="checkScrollersAfterScroll($event.currentTarget)"
               >
-                <div v-for="i in 10" :key="i" class="preview" />
+                <div
+                  v-for="i in 10"
+                  :key="i"
+                  class="preview"
+                />
               </div>
 
               <div
