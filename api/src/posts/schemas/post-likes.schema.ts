@@ -1,5 +1,6 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema } from '@nestjs/mongoose';
 import { Document, SchemaTypes } from 'mongoose';
+import { createSchemaForClass } from '../../shared/utils/createSchemaForClass';
 import { User } from '../../users/user.schema';
 import { Post } from './post.schema';
 
@@ -28,4 +29,4 @@ export class PostLikes extends Document {
   updatedAt: Date;
 }
 
-export const PostLikesSchema = SchemaFactory.createForClass(PostLikes);
+export const PostLikesSchema = createSchemaForClass(PostLikes);

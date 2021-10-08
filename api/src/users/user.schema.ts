@@ -1,6 +1,8 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
-import { Document } from 'mongoose';
+import { Document, HookNextFunction } from 'mongoose';
+import { PreHook } from '../shared/decorators/mongoose-hooks.decorator';
+import { createSchemaForClass } from '../shared/utils/createSchemaForClass';
 
 @Schema({ timestamps: true })
 export class User extends Document {
@@ -18,26 +20,25 @@ export class User extends Document {
 
   createdAt: Date;
   updatedAt: Date;
-  validatePassword: (password: string) => Promise<boolean>;
+
+  @PreHook('save')
+  public async saveHook(next: HookNextFunction): Promise<void> {
+    if (!this.isModified('password') || !this.password) {
+      next();
+      return;
+    }
+
+    try {
+      this.password = await bcrypt.hash(this.password, 10);
+      next();
+    } catch (error: unknown) {
+      next(error as Error);
+    }
+  }
+
+  public async validatePassword(password: string): Promise<boolean> {
+    return await bcrypt.compare(password, this.password ?? '');
+  }
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
-
-UserSchema.methods.validatePassword = async function (password: string): Promise<boolean> {
-  return await bcrypt.compare(password, this.password ?? '');
-};
-
-// Update password into a hashed one.
-UserSchema.pre('save', async function (this: User, next) {
-  if (!this.isModified('password') || !this.password) {
-    next();
-    return;
-  }
-
-  try {
-    this.password = await bcrypt.hash(this.password, 10);
-    next();
-  } catch (error: unknown) {
-    next(error as Error);
-  }
-});
+export const UserSchema = createSchemaForClass(User);
