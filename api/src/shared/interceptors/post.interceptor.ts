@@ -5,12 +5,12 @@ import { map } from 'rxjs/operators';
 import type { Post } from '../../posts/schemas/post.schema';
 
 export type PostResponse = Pick<Post,
-  | 'archived'
   | 'body'
   | 'contentLastEditedAt'
   | 'createdAt'
   | 'downvotes'
   | 'id'
+  | 'locked'
   | 'opened'
   | 'title'
   | 'updatedAt'
@@ -29,7 +29,7 @@ export class PostInterceptor<T extends Post> implements NestInterceptor<T, PostR
           downvotes: post.downvotes,
           upvotes: post.upvotes,
           opened: post.opened,
-          archived: post.archived,
+          locked: post.locked,
           id: post.id,
           createdAt: post.createdAt,
           contentLastEditedAt: post.contentLastEditedAt,

@@ -21,7 +21,7 @@ export class PostsInterceptor<T extends CustomPaginateResult<Post>> implements N
             body: post.body,
             downvotes: post.downvotes,
             upvotes: post.upvotes,
-            archived: post.archived,
+            locked: post.locked,
             id: post.id,
             createdAt: post.createdAt,
             contentLastEditedAt: post.contentLastEditedAt,

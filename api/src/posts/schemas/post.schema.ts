@@ -19,7 +19,7 @@ export class Post extends Document {
   author: User;
 
   @Prop({ default: false })
-  archived: boolean;
+  locked: boolean;
 
   @Prop({ default: true })
   opened: boolean;
