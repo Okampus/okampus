@@ -9,12 +9,12 @@ export type PostResponse = Pick<Post,
   | 'body'
   | 'contentLastEditedAt'
   | 'createdAt'
-  | 'dislikes'
+  | 'downvotes'
   | 'id'
-  | 'likes'
   | 'opened'
   | 'title'
   | 'updatedAt'
+  | 'upvotes'
 >;
 
 @Injectable()
@@ -26,8 +26,8 @@ export class PostInterceptor<T extends Post> implements NestInterceptor<T, PostR
         map(post => ({
           title: post.title,
           body: post.body,
-          dislikes: post.dislikes,
-          likes: post.likes,
+          downvotes: post.downvotes,
+          upvotes: post.upvotes,
           opened: post.opened,
           archived: post.archived,
           id: post.id,

@@ -21,7 +21,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { PaginateDto } from './dto/paginate.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { VoteDto } from './dto/vote.dto';
-import { PostLikesService } from './post-likes.service';
+import { PostVotesService } from './post-votes.service';
 import { PostsService } from './posts.service';
 import type { Post } from './schemas/post.schema';
 
@@ -30,7 +30,7 @@ import type { Post } from './schemas/post.schema';
 export class PostsController {
   constructor(
     private readonly postsService: PostsService,
-    private readonly postLikesService: PostLikesService,
+    private readonly postVotesService: PostVotesService,
   ) {}
 
   @UseInterceptors(PostInterceptor)
@@ -75,19 +75,19 @@ export class PostsController {
   }
 
   @UseInterceptors(PostInterceptor)
-  @PostRequest(':id/like')
-  public async like(
+  @PostRequest(':id/vote')
+  public async vote(
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,
     @Body() voteDto: VoteDto,
   ): Promise<Post> {
     switch (voteDto.value) {
       case -1:
-        return await this.postLikesService.dislike(user, id);
+        return await this.postVotesService.downvote(user, id);
       case 0:
-        return await this.postLikesService.neutralize(user, id);
+        return await this.postVotesService.neutralize(user, id);
       case 1:
-        return await this.postLikesService.like(user, id);
+        return await this.postVotesService.upvote(user, id);
     }
   }
 }

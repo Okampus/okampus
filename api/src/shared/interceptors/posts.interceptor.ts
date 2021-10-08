@@ -19,8 +19,8 @@ export class PostsInterceptor<T extends CustomPaginateResult<Post>> implements N
           items: result.items?.map(post => ({
             title: post.title,
             body: post.body,
-            dislikes: post.dislikes,
-            likes: post.likes,
+            downvotes: post.downvotes,
+            upvotes: post.upvotes,
             archived: post.archived,
             id: post.id,
             createdAt: post.createdAt,

@@ -25,10 +25,10 @@ export class Post extends Document {
   opened: boolean;
 
   @Prop({ default: 0 })
-  likes: number;
+  upvotes: number;
 
   @Prop({ default: 0 })
-  dislikes: number;
+  downvotes: number;
 
   @Prop({ default: null, type: Date })
   contentLastEditedAt: Date | null;

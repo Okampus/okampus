@@ -5,7 +5,7 @@ import { User } from '../../users/user.schema';
 import { Post } from './post.schema';
 
 @Schema({ timestamps: true })
-export class PostLikes extends Document {
+export class PostVotes extends Document {
   @Prop({
     required: true,
     index: true,
@@ -29,4 +29,4 @@ export class PostLikes extends Document {
   updatedAt: Date;
 }
 
-export const PostLikesSchema = createSchemaForClass(PostLikes);
+export const PostVotesSchema = createSchemaForClass(PostVotes);

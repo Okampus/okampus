@@ -5,10 +5,10 @@ import paginate from 'mongoose-paginate-v2';
 import { autoIncrement } from 'mongoose-plugin-autoinc';
 import { AuthModule } from '../auth/auth.module';
 import { UserModule } from '../users/users.module';
-import { PostLikesService } from './post-likes.service';
+import { PostVotesService } from './post-votes.service';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
-import { PostLikes, PostLikesSchema } from './schemas/post-likes.schema';
+import { PostVotes, PostVotesSchema } from './schemas/post-votes.schema';
 import { Post, PostSchema } from './schemas/post.schema';
 
 @Module({
@@ -26,15 +26,15 @@ import { Post, PostSchema } from './schemas/post.schema';
     ]),
     MongooseModule.forFeature([
       {
-        name: PostLikes.name,
-        schema: PostLikesSchema,
+        name: PostVotes.name,
+        schema: PostVotesSchema,
       },
     ]),
     AuthModule,
     UserModule,
   ],
   controllers: [PostsController],
-  providers: [PostsService, PostLikesService],
+  providers: [PostsService, PostVotesService],
   exports: [PostsService],
 })
 export class PostsModule {}
