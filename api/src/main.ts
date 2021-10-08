@@ -4,7 +4,7 @@ import type { NestExpressApplication } from '@nestjs/platform-express';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { config } from './config';
-import { ExceptionsFilter } from './shared/filter/exceptions.filter';
+import { ExceptionsFilter } from './shared/filters/exceptions.filter';
 import { logger } from './shared/middlewares/logger';
 
 async function bootstrap(): Promise<void> {
