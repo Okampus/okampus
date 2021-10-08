@@ -1,8 +1,8 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
-import { CustomPaginateResult, labelize } from '../shared/pagination';
-import { customLabels } from '../shared/pagination';
+import type { CustomPaginateResult } from '../shared/pagination';
+import { labelize } from '../shared/pagination';
 import type { User } from '../users/user.schema';
 import type { CreatePostDto } from './dto/create-post.dto';
 import type { UpdatePostDto } from './dto/update-post.dto';
