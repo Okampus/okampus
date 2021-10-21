@@ -1,0 +1,69 @@
+name: Lint
+
+on: [push]
+
+jobs:
+  lint-front:
+    name: Lint Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        id: cache
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ./node_modules/
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      # TODO: Update to Node v16
+      - name: Install Node v14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+        working-directory: site
+
+      - name: Run ESLint
+        run: npm run lint
+        working-directory: site
+
+  lint-back:
+    name: Lint Backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        id: cache
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ./node_modules/
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      - name: Install Node v16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+        working-directory: api
+
+      - name: Run ESLint
+        run: npm run lint
+        working-directory: api

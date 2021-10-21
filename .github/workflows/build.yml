@@ -1,0 +1,50 @@
+name: Build
+
+on: [push]
+
+jobs:
+  build-front:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: site
+
+      - name: Build project
+        run: npm run build
+        working-directory: site
+
+  build-back:
+    name: Build Backend
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: api
+
+      - name: Build project
+        run: npm run build
+        working-directory: api

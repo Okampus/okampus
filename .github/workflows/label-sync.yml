@@ -15,5 +15,5 @@ jobs:
       - name: Run Label Sync
         uses: crazy-max/ghaction-github-labeler@v3
         with:
-          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          github-token: ${{ secrets.HORIZON_AUTOMATIONS }}
           yaml-file: .github/labels.yml
