@@ -1,0 +1,79 @@
+- name: 'type: question'
+  description: Issues that asks a question.
+  color: 'D4C5F9'
+- name: 'type: feature'
+  description: Issues/PRs that requests/adds a new feature.
+  color: '0052CC'
+- name: 'type: enhancement'
+  description: Issues/PRs that requests/adds an improvement to an existing feature.
+  color: '5319E7'
+- name: 'type: bug'
+  description: Issues/PRs that reports or fixes a bug.
+  color: 'D93F0B'
+
+- name: 'status: blocked'
+  description: PRs that are blocked by other issues/PRs.
+  color: 'E85247'
+- name: 'status: won''t do'
+  description: Issues and PRs that won't be treated.
+  color: 'E85247'
+- name: 'status: needs testing'
+  description: PRs that need testing from the author or volunteers.
+  color: 'A55124'
+- name: 'status: duplicate'
+  description: Issues/PRs that are duplicated.
+  color: 'CFD3D7'
+- name: 'status: invalid'
+  description: Issues/PRs that are invalid and won't be treated.
+  color: 'CFD3D7'
+- name: 'status: help wanted'
+  description: Issues that need assistance from volunteers or PRs that need help to proceed.
+  color: '008672'
+- name: 'status: unconfirmed'
+  description: Issues and PRs that are not approved yet.
+  color: 'DB6A3D'
+- name: 'status: awaiting approval'
+  description: Issues and PRs that are not approved yet.
+  color: 'DB6A3D'
+- name: 'status: approved'
+  description: Issues and PRs that have been approved.
+  color: '8CE098'
+- name: 'status: denied'
+  description: Issues and PRs that have been denied.
+  color: 'E85247'
+
+- name: 'priority: critical'
+  description: Issues that must be fixed or PRs that must be finished and merged with MAXIMUM PRIORITY.
+  color: 'F45B0E'
+- name: 'priority: high'
+  description: Issues that must be fixed or PRs that must be finished and merged with high priority.
+  color: 'F48750'
+- name: 'priority: medium'
+  description: Issues that must be fixed or PRs that must be finished and merged with medium priority.
+  color: 'FBCA04'
+- name: 'priority: low'
+  description: Issues that must be fixed or PRs that must be finished and merged with low priority.
+  color: '9CEB34'
+- name: 'priority: lowest'
+  description: Issues that must be fixed or PRs that must be finished with the looowwwest priority.
+  color: '41FC02'
+
+- name: 'difficulty: complex'
+  description: Issues that are quite complex to finish.
+  color: 'E0B325'
+- name: 'difficulty: medium'
+  description: Issues that are not easy to finish.
+  color: 'DDE025'
+- name: 'difficulty: easy'
+  description: Issues that are easy to finish.
+  color: 'C3E025'
+- name: 'difficulty: trivial'
+  description: Issues that are very easy to finish.
+  color: '85E025'
+
+- name: 'scope: backend'
+  description: Issues and PRs that act on the backend.
+  color: 'C2E0C6'
+- name: 'scope: frontend'
+  description: Issues and PRs that act on the frontend.
+  color: 'C2E0C6'
