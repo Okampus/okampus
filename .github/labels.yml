@@ -71,9 +71,22 @@
   description: Issues that are very easy to finish.
   color: '85E025'
 
-- name: 'scope: backend'
+- name: 'target: backend'
   description: Issues and PRs that act on the backend.
   color: 'C2E0C6'
-- name: 'scope: frontend'
+- name: 'target: frontend'
   description: Issues and PRs that act on the frontend.
   color: 'C2E0C6'
+
+- name: 'scope: forum'
+  description: Issues and PRs related to the forum module.
+  color: '9DCBE0'
+- name: 'scope: file-sharing'
+  description: Issues and PRs related to the file sharing module.
+  color: '9DCBE0'
+- name: 'scope: user'
+  description: Issues and PRs related to users and profiles.
+  color: '9DCBE0'
+- name: 'scope: DMs'
+  description: Issues and PRs related to private messages.
+  color: '9DCBE0'
