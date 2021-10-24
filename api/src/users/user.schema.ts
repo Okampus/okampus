@@ -1,6 +1,7 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
-import { Document, HookNextFunction } from 'mongoose';
+import type { CallbackError } from 'mongoose';
+import { Document } from 'mongoose';
 import { PreHook } from '../shared/decorators/mongoose-hooks.decorator';
 import { createSchemaForClass } from '../shared/utils/createSchemaForClass';
 
@@ -19,7 +20,7 @@ export class User extends Document {
   updatedAt: Date;
 
   @PreHook('save')
-  public async saveHook(next: HookNextFunction): Promise<void> {
+  public async saveHook(next: (err?: CallbackError) => void): Promise<void> {
     if (!this.isModified('password') || !this.password) {
       next();
       return;

@@ -1,5 +1,6 @@
 import { Prop, Schema } from '@nestjs/mongoose';
-import { Document, HookNextFunction, SchemaTypes } from 'mongoose';
+import type { CallbackError } from 'mongoose';
+import { Document, SchemaTypes } from 'mongoose';
 import { nanoid } from 'nanoid';
 import { PreHook } from '../../shared/decorators/mongoose-hooks.decorator';
 import { createSchemaForClass } from '../../shared/utils/createSchemaForClass';
@@ -32,7 +33,7 @@ export class Comment extends Document {
   updatedAt: Date;
 
   @PreHook('save')
-  public saveHook(next: HookNextFunction): void {
+  public saveHook(next: (err?: CallbackError) => void): void {
     if (this.isModified('body'))
       this.contentLastEditedAt = new Date();
     next();
