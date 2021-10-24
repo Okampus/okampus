@@ -6,9 +6,6 @@ import { User } from '../../users/user.schema';
 
 @Schema({ timestamps: true })
 export class Post extends Document {
-  @Prop({ index: true })
-  postId: number;
-
   @Prop({ required: true })
   title: string;
 
