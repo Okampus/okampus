@@ -4,11 +4,12 @@ import type { Schema } from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 import { autoIncrement } from 'mongoose-plugin-autoinc';
 import { AuthModule } from '../auth/auth.module';
+import { Vote, VoteSchema } from '../shared/schemas/vote.schema';
 import { UserModule } from '../users/users.module';
 import { PostVotesService } from './post-votes.service';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
-import { PostVotes, PostVotesSchema } from './schemas/post-votes.schema';
+import { PostVote, PostVoteSchema } from './schemas/post-vote.schema';
 import { Post, PostSchema } from './schemas/post.schema';
 
 @Module({
@@ -26,8 +27,11 @@ import { Post, PostSchema } from './schemas/post.schema';
     ]),
     MongooseModule.forFeature([
       {
-        name: PostVotes.name,
-        schema: PostVotesSchema,
+        name: Vote.name,
+        schema: VoteSchema,
+        discriminators: [
+          { name: PostVote.name, schema: PostVoteSchema },
+        ],
       },
     ]),
     AuthModule,

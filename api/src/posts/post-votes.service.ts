@@ -2,14 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import type { User } from '../users/user.schema';
-import { PostVotes } from './schemas/post-votes.schema';
+import { PostVote } from './schemas/post-vote.schema';
 import { Post } from './schemas/post.schema';
 
 @Injectable()
 export class PostVotesService {
   constructor(
     @InjectModel(Post.name) private readonly postModel: Model<Post>,
-    @InjectModel(PostVotes.name) private readonly postVotesModel: Model<PostVotes>,
+    @InjectModel(PostVote.name) private readonly postVotesModel: Model<PostVote>,
   ) {}
 
   public async upvote(user: User, postId: number): Promise<Post> {

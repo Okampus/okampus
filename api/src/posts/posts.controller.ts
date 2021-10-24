@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
+import { VoteDto } from '../shared/dto/vote.dto';
 import { PostInterceptor } from '../shared/interceptors/post.interceptor';
 import { PostsInterceptor } from '../shared/interceptors/posts.interceptor';
 import type { CustomPaginateResult } from '../shared/pagination';
@@ -20,7 +21,6 @@ import { User } from '../users/user.schema';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PaginateDto } from './dto/paginate.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { VoteDto } from './dto/vote.dto';
 import { PostVotesService } from './post-votes.service';
 import { PostsService } from './posts.service';
 import type { Post } from './schemas/post.schema';

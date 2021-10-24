@@ -1,18 +1,12 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { Document, SchemaTypes } from 'mongoose';
-import { createSchemaForClass } from '../../shared/utils/createSchemaForClass';
 import { User } from '../../users/user.schema';
-import { Post } from './post.schema';
+import { createSchemaForClass } from '../utils/createSchemaForClass';
 
-@Schema({ timestamps: true })
-export class PostVotes extends Document {
-  @Prop({
-    required: true,
-    index: true,
-    type: SchemaTypes.Number,
-    ref: 'Post',
-  })
-  post: Post;
+@Schema({ timestamps: true, discriminatorKey: 'kind' })
+export class Vote extends Document {
+  @Prop({ type: String, required: true })
+  kind: string;
 
   @Prop({
     required: true,
@@ -29,4 +23,4 @@ export class PostVotes extends Document {
   updatedAt: Date;
 }
 
-export const PostVotesSchema = createSchemaForClass(PostVotes);
+export const VoteSchema = createSchemaForClass(Vote);
