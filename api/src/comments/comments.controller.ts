@@ -13,8 +13,8 @@ import {
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
 import { VoteDto } from '../shared/dto/vote.dto';
-import { CommentInterceptor } from '../shared/interceptors/comment.interceptor';
-import { CommentsInterceptor } from '../shared/interceptors/comments.interceptor';
+import { UserResponseInterceptor } from '../shared/interceptors/user-response.interceptor';
+import { UserResponsesInterceptor } from '../shared/interceptors/user-responses.interceptor';
 import { User } from '../users/user.schema';
 import { CommentVotesService } from './comment-votes.service';
 import { CommentsService } from './comments.service';
@@ -23,14 +23,20 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 import type { Comment } from './schemas/comment.schema';
 
 @UseGuards(JwtAuthGuard)
-@Controller({ path: ['posts/:postId/comments', 'posts/comments'], version: '1' })
+@Controller({
+  path: [
+    'posts/:postId/comments',
+    'posts/comments',
+  ],
+  version: '1',
+})
 export class CommentsController {
   constructor(
     private readonly commentsService: CommentsService,
     private readonly commentVotesService: CommentVotesService,
   ) {}
 
-  @UseInterceptors(CommentInterceptor)
+  @UseInterceptors(UserResponseInterceptor)
   @Post()
   public async create(
     @CurrentUser() user: User,
@@ -40,21 +46,19 @@ export class CommentsController {
     return await this.commentsService.create(user, postId, createCommentDto);
   }
 
-  @UseInterceptors(CommentsInterceptor)
+  @UseInterceptors(UserResponsesInterceptor)
   @Get()
-  public async findAll(
-    @Param('postId', ParseIntPipe) postId: number,
-  ): Promise<Comment[]> {
+  public async findAll(@Param('postId', ParseIntPipe) postId: number): Promise<Comment[]> {
     return await this.commentsService.findAll(postId);
   }
 
-  @UseInterceptors(CommentInterceptor)
+  @UseInterceptors(UserResponseInterceptor)
   @Get(':id')
   public async findOne(@Param('id') commentId: string): Promise<Comment | null> {
     return await this.commentsService.findOne(commentId);
   }
 
-  @UseInterceptors(CommentInterceptor)
+  @UseInterceptors(UserResponseInterceptor)
   @Patch(':id')
   public async update(
     @CurrentUser() user: User,
@@ -72,7 +76,7 @@ export class CommentsController {
     await this.commentsService.remove(user, commentId);
   }
 
-  @UseInterceptors(CommentInterceptor)
+  @UseInterceptors(UserResponseInterceptor)
   @Post(':id/vote')
   public async vote(
     @CurrentUser() user: User,

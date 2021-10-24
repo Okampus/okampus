@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { CommentsModule } from './comments/comments.module';
 import { config } from './config';
 import { PostsModule } from './posts/posts.module';
+import { RepliesModule } from './replies/replies.module';
 import { UserModule } from './users/users.module';
 
 @Module({
@@ -15,6 +16,7 @@ import { UserModule } from './users/users.module';
     MongooseModule.forRoot(config.get('mongoUri')),
     PostsModule,
     CommentsModule,
+    RepliesModule,
   ],
   providers: [],
   controllers: [],
