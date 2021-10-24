@@ -13,10 +13,10 @@ import { GoogleAuthService } from './google-auth.service';
 import type { Token } from './jwt-auth.guard';
 
 export interface TokenResponse {
-  /* eslint-disable @typescript-eslint/naming-convention, camelcase */
+  /* eslint-disable @typescript-eslint/naming-convention */
   access_token: string;
   refresh_token: string | null;
-  /* eslint-enable @typescript-eslint/naming-convention, camelcase */
+  /* eslint-enable @typescript-eslint/naming-convention */
 }
 
 export interface SocialUser {
