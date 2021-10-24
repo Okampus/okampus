@@ -31,11 +31,6 @@ export class AuthController {
     );
   }
 
-  @Post('google-login')
-  public async googleLogin(@Body('accessToken') accessToken: string): Promise<TokenResponse> {
-    return this.authService.loginWithGoogle(accessToken);
-  }
-
   @Post('refresh-token')
   public async refreshToken(@Body('refreshToken') refreshToken: string): Promise<TokenResponse> {
     return this.authService.loginWithRefreshToken(refreshToken);

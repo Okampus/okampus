@@ -15,9 +15,6 @@ export class User extends Document {
   @Prop()
   password?: string;
 
-  @Prop()
-  googleId?: string;
-
   createdAt: Date;
   updatedAt: Date;
 

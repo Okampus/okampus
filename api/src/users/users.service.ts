@@ -25,10 +25,6 @@ export class UserService {
     return await this.userModel.findOne({ email: mail.toLowerCase() });
   }
 
-  public async getUserByGoogleId(id: string): Promise<User | null> {
-    return await this.userModel.findOne({ googleId: id });
-  }
-
   public async getUserById(id: string): Promise<User | null> {
     return await this.userModel.findById(id);
   }
