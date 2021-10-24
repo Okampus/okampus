@@ -1,9 +1,9 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { Document, HookNextFunction, SchemaTypes } from 'mongoose';
 import { nanoid } from 'nanoid';
-import { PreHook } from '../shared/decorators/mongoose-hooks.decorator';
-import { createSchemaForClass } from '../shared/utils/createSchemaForClass';
-import { User } from '../users/user.schema';
+import { PreHook } from '../../shared/decorators/mongoose-hooks.decorator';
+import { createSchemaForClass } from '../../shared/utils/createSchemaForClass';
+import { User } from '../../users/user.schema';
 
 @Schema({ timestamps: true })
 export class Comment extends Document {

@@ -2,7 +2,7 @@ import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/com
 import { Injectable } from '@nestjs/common';
 import type { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import type { Comment } from '../../comments/comment.schema';
+import type { Comment } from '../../comments/schemas/comment.schema';
 
 export type CommentResponse = Pick<Comment,
   | 'body'
