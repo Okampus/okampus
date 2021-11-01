@@ -5,7 +5,7 @@
       alt="Avatar"
       class="rounded-full h-8 w-8 mr-2 mt-1 bg-white"
       :title="contributor.pseudo"
-    />
+    >
   </div>
 </template>
 
@@ -18,7 +18,13 @@ export default defineComponent({
   },
   props: {
     contributor: {
-      type: Object
+      type: Object,
+      default: () => {
+        return {
+          img: '',
+          pseudo: '<Pseudo>'
+        }
+      }
     }
   }
 })

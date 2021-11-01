@@ -1,0 +1,114 @@
+.switch {
+    --switch-width: 40px;
+    --switch-height: 20px;
+    --switch-inner-padding: 2px;
+    --switch-color: #2196f3;
+    --switch-bg: #ccc;
+    --button-color: white;
+} /* Default: small */
+
+.switch.red {
+    --switch-color: red;
+}
+
+.switch.orange {
+    --switch-color: orange;
+}
+
+.switch.green {
+    --switch-color: green;
+}
+
+.switch.grey {
+    --switch-color: grey;
+}
+
+.switch.white {
+    --switch-color: white;
+    --button-color: black;
+}
+
+.switch.black {
+    --switch-color: black;
+}
+
+.switch.medium-switch {
+    --switch-width: 80px;
+    --switch-height: 30px;
+    --switch-inner-padding: 4px;
+}
+
+.switch.medium-switch {
+    --switch-width: 80px;
+    --switch-height: 30px;
+    --switch-inner-padding: 4px;
+}
+
+.switch {
+    --button-radius: calc(var(--switch-height) - 2*var(--switch-inner-padding));
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+    width: var(--switch-width);
+    height: var(--switch-height);
+}
+
+.switch input {
+    cursor: pointer;
+    opacity: 0;
+    width: var(--switch-width);
+    height: var(--switch-height);
+}
+
+.slider {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: var(--switch-width);
+    height: var(--switch-height);
+    background-color: var(--switch-bg);
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    top: var(--switch-inner-padding);
+    left: var(--switch-inner-padding);
+    height: var(--button-radius);
+    width: var(--button-radius);
+    background-color: var(--button-color);
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: var(--switch-color);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--switch-color);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--switch-color);
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(calc(var(--switch-width) - 2 * var(--switch-inner-padding) - var(--button-radius)));
+    -ms-transform: translateX(calc(var(--switch-width) - 2 * var(--switch-inner-padding) - var(--button-radius)));
+    transform: translateX(calc(var(--switch-width) - 2 * var(--switch-inner-padding) - var(--button-radius)));
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}

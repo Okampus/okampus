@@ -4,15 +4,24 @@
       ref="input"
       :class="classes.join(' ')"
       :placeholder="placeholder"
-      v-on:input="displayClear"
-      v-on:focus="(e) => (e.target.placeholder = '')"
-      v-on:blur="(e) => (e.target.placeholder = placeholder)"
-    />
-    <span class="icon is-right" v-on:click="clearSiblingInput">
-      <font-awesome-icon icon="times-circle" :style="{ color: 'var(--text-3)' }" />
+      @input="displayClear"
+      @focus="(e) => (e.target.placeholder = '')"
+      @blur="(e) => (e.target.placeholder = placeholder)"
+    >
+    <span
+      class="icon is-right"
+      @click="clearSiblingInput"
+    >
+      <font-awesome-icon
+        icon="times-circle"
+        :style="{ color: 'var(--text-3)' }"
+      />
     </span>
     <span class="icon is-left">
-      <font-awesome-icon icon="search" :style="{ color: 'var(--text-3)' }" />
+      <font-awesome-icon
+        icon="search"
+        :style="{ color: 'var(--text-3)' }"
+      />
     </span>
   </div>
 </template>
@@ -24,13 +33,15 @@ export default defineComponent({
   name: 'Searchbar',
   props: {
     classes: {
-      default: ['is-medium', 'input']
+      type: Array,
+      default: () => ['is-medium', 'input']
     },
     placeholder: {
       type: String,
       default: ''
     }
   },
+  emits: ['updateSearch'],
   methods: {
     displayClear (e) {
       const target = e.target

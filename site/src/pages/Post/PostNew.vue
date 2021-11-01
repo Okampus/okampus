@@ -1,132 +1,321 @@
 <template>
-  <div class="ml-32 mr-32">
-    <div class="text-2xl text-1 mt-8">
-      Créer un nouveau Thread
-    </div>
-    <div class="flex mt-8">
-      <form
-        class="w-4/6"
-        method="post"
-        action="#"
+  <div>
+    <div
+      class="absolute py-12 hero h-52 w-full top-0 left-0"
+    >
+      <h3
+        class="text-4xl font-bold mb-8 text-0"
+        style="padding-left: 5%; padding-right: 5%;"
       >
-        <div class="bg-2 border-1 text-1 p-4">
-          <div>
-            <div class="text-xl">
-              Titre du Thread :
-            </div>
-            <div class="text-sm">
-              Donnez un titre simple et complet afin de décrire votre ticket
-            </div>
-            <input
-              id="title"
-              class="bg-1 w-full pl-1 border-1"
-              type="text"
-              name="title"
-              placeholder="Ex : problème de machine dans la salle E001"
-            />
+        Créer un Post
+      </h3>
+    </div>
+    <div class="relative mt-32 mb-10 flex mx-auto w-11/12">
+      <form
+        class="bg-1 flex flex-col space-y-4 card min-w-2/3"
+        @submit="onSubmit"
+      >
+        <div>
+          <div class="label-title">
+            Titre
           </div>
-          <div class="mt-4">
-            <div class="text-xl">
-              Contenu du Thread :
-            </div>
-            <div class="text-sm">
-              Décrivez le plus précisément possible votre ticket afin d'avoir
-              toutes les données nécessaires pour le faire avancer
-            </div>
-            <textarea
-              id="title"
-              class="bg-1 w-full min-h-32 border-1"
-              type="text"
-              name="title"
-              placeholder="Ex : Avec mes amis on a rencontré un dysfonctionnement de windows sur les ordinateurs de la 3ème rangée en partant du mur, en effet... "
-            />
-            <markdown-editor
-              toolbar="bold italic upload"
-              :extend="custom"
-              @command:upload="upload"
+
+          <div class="label-desc">
+            Donnez un titre simple et complet afin de décrire votre Post
+          </div>
+          <input
+            v-model="titleValue"
+            class="w-full input input-border bg-1"
+            type="text"
+            name="title"
+            placeholder="Titre descriptif/complet"
+            rules="required|min:20"
+          >
+          <ErrorWrapper
+            :error="titleErrorMessage"
+            success="Titre valide"
+            :meta="titleMeta"
+          />
+        </div>
+
+        <div>
+          <div class="label-title">
+            Type de Post
+          </div>
+          <div class="label-desc">
+            Quel <u
+              v-tippy="{ content: typeHtml }"
+              class="text-blue-400 hover:text-orange-400 cursor-help"
+            >type</u> de Post voulez-vous créer ?
+          </div>
+          <select
+            v-model="typeValue"
+            name="type"
+            class="input input-border bg-1 pr-4"
+            required
+          >
+            <option
+              disabled
+              value=""
+              selected
             >
-            </markdown-editor>
+              Type de Post
+            </option>
+            <option value="1">
+              Question
+            </option>
+            <option value="2">
+              Suggestion
+            </option>
+            <option value="3">
+              Problème
+            </option>
+            <option value="4">
+              Discussion
+            </option>
+          </select>
+          <ErrorWrapper
+            :error="typeErrorMessage"
+            success="Type de Post valide"
+            :meta="typeMeta"
+          />
+        </div>
+
+        <div>
+          <div class="label-title">
+            Contenu
+          </div>
+          <div class="label-desc">
+            Décrivez le plus précisément possible votre Post
           </div>
           <div>
-            <div class="text-xl">
-              Tags :
-            </div>
-            <div class="text-sm">
-              Ajoutez 5 Tags qui décrivent le sujet de votre Thread
-            </div>
-            <input
-              id="title"
-              class="bg-1 w-full pl-1 border-1"
-              type="text"
-              name="title"
-              placeholder="Ex : problème de machine dans la salle E001"
-            />
+            <tip-tap-editor
+              ref="editorRef"
+              v-model="editorValue"
+              name="editor"
+              :char-count="true"
+              :buttons="editorButtons"
+              input-placeholder="Décrivez votre question/suggestion/problème !"
+            >
+              <ErrorWrapper
+                :error="editorErrorMessage"
+                success="Post valide"
+                :meta="editorMeta"
+              />
+            </tip-tap-editor>
           </div>
         </div>
-        <input
-          class="
-            bg-2
-            border-1
-            rounded-md
-            px-1
-            bc-mouse-brand
-            text-hover-brand text-xl
-            mt-4
-            text-1
-          "
-          type="submit"
-          value="Créer le Thread ✉"
-        />
-      </form>
-      <div class="w-2/6 ml-8">
-        <div class="border-1 text-1">
-          <div class="bg-3 px-4 text-1 text-l">
-            Qu'est-ce qu'un Thread ?
+
+        <div>
+          <div class="label-title">
+            Tags
           </div>
-          <div class="bg-2 p-2 px-4">
-            Les Threads sont là pour faciliter les échanges entre
+          <div class="label-desc">
+            Ajoutez 4 Tags (ou plus) qui décrivent le sujet de votre Post
+          </div>
+          <tags-input
+            ref="tagsInputRef"
+            v-model="tagsValue"
+            name="tags"
+            input-placeholder="Entrez le nom du tag et appuyez sur entrée..."
+            @error="tagsError"
+            @inputUpdate="customTagError = undefined"
+          />
+          <ErrorWrapper
+            :error="customTagError || tagsErrorMessage"
+            success="Tags valides"
+            :meta="tagsMeta"
+          />
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="button"
+          >
+            Soumettre le Post pour validation
+          </button>
+        </div>
+      </form>
+
+      <div class="ml-6 flex-grow-0 flex-shrink-0 w-1/5">
+        <card-with-title title="Qu'est-ce qu'un Post ?">
+          <div>
+            Les Posts sont là pour faciliter les échanges entre
             l'établissement et les élèves, utilisez les quand vous avez un
             problème à faire remonter, besoin d'une aide, une question à
             poser...
           </div>
-        </div>
-        <div class="mt-4 border-1 text-1">
-          <div class="bg-3 px-4 text-l">
-            Etapes de création :
-          </div>
-          <div class="bg-2 p-2 px-4">
-            <ol>
-              <li>Entrez le titre</li>
-              <li>Décrivez le problème</li>
-              <li>Entrez des Tags</li>
-            </ol>
-          </div>
-        </div>
+        </card-with-title>
+        <br>
+        <card-with-title
+          title="Étapes de création"
+          desc=""
+        >
+          <ul style="list-style-type: square; list-style-position: inside;">
+            <li>
+              Un sommaire structuré et complet de votre besoin
+            </li>
+            <li>
+              En quoi de précédents tickets ne répondent pas à votre besoin
+            </li>
+            <li>
+              Ce que vous avez déjà essayé de faire pour répondre à votre besoin
+            </li>
+          </ul>
+        </card-with-title>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
+import { useField, useForm } from 'vee-validate'
+import ErrorWrapper from '@/components/ErrorWrapper.vue'
+// import * as yup from 'yup'
+import TagsInput from '@/components/Input/TagsInput.vue'
+import CardWithTitle from '@/components/Card/CardWithTitle.vue'
+import TipTapEditor from '@/components/TipTapEditor.vue'
+
+import { ref, defineComponent } from 'vue'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'PostNew',
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
-    color: {
-      type: String,
-      required: true
+  components: {
+    TagsInput,
+    CardWithTitle,
+    ErrorWrapper,
+    TipTapEditor
+  },
+  inheritAttrs: false,
+  setup (props, ctx) {
+    const store = useStore()
+    const tagsInputRef = ref(null)
+    const editorRef = ref(null)
+
+    const {
+      value: editorValue,
+      errorMessage: editorErrorMessage,
+      meta: editorMeta,
+      validate: editorValidate
+    } = useField('editor', 'postBody:50,250', { initialValue: '<p></p>' })
+
+    const {
+      value: titleValue,
+      errorMessage: titleErrorMessage,
+      meta: titleMeta,
+      validate: titleValidate
+    } = useField('title', 'postTitle:20,100', { initialValue: '' })
+
+    const {
+      value: typeValue,
+      errorMessage: typeErrorMessage,
+      meta: typeMeta,
+      validate: typeValidate
+    } = useField('type', 'postType', { initialValue: '' })
+
+    const {
+      value: tagsValue,
+      errorMessage: tagsErrorMessage,
+      meta: tagsMeta,
+      validate: tagsValidate
+    } = useField('tags', 'postTags:4,20', { initialValue: [] })
+
+    const { handleSubmit } = useForm()
+
+    function onInvalidSubmit ({ values, errors, results }) {
+      // console.log(values)
+      // console.log(errors)
+      // console.log(results)
+    }
+
+    const onSubmit = handleSubmit(async function (values) {
+      if ((await editorValidate())?.errors?.length || (await titleValidate())?.errors?.length || (await typeValidate())?.errors?.length || (await tagsValidate())?.errors?.length) {
+        alert('Votre Post n\'est pas encore terminé.\nFinissez-le avant de le soumettre :) !')
+      } else {
+        const post = {
+          title: titleValue.value,
+          body: JSON.stringify(editorRef.value.getJSON()),
+          type: Number.parseInt(typeValue.value, 10),
+          tags: tagsValue.value
+        }
+        store.dispatch('posts/addPost', post)
+      }
+    }, onInvalidSubmit)
+
+    return {
+      tagsInputRef,
+      editorRef,
+      editorErrorMessage,
+      editorValue,
+      editorMeta,
+      editorValidate,
+      titleValue,
+      titleErrorMessage,
+      titleMeta,
+      titleValidate,
+      typeValue,
+      typeErrorMessage,
+      typeMeta,
+      typeValidate,
+      tagsValue,
+      tagsErrorMessage,
+      tagsMeta,
+      tagsValidate,
+      onSubmit
     }
   },
-
+  data () {
+    return {
+      customTagError: undefined,
+      typeHtml: <ul>Types possibles: <li>Question: une question avec reponse </li> <li>Suggestion</li> <li>Problème</li> <li>Opinion</li> <li>Discussion</li></ul>,
+      editorButtons: [
+        { action: 'paragraph', icon: 'ri-paragraph ri-lg', content: 'Paragraphe (Ctrl+Alt+0)' },
+        { action: 'bold', icon: 'ri-bold ri-lg', content: 'Gras (Ctrl+B)' },
+        { action: 'italic', icon: 'ri-italic ri-lg', content: 'Italique (Ctrl+I)' },
+        { action: 'strike', icon: 'ri-strikethrough ri-lg', content: 'Barré (Ctrl+Shift+X)' },
+        { action: 'underline', icon: 'ri-underline ri-lg', content: 'Souligné (Ctrl+U)' },
+        { action: 'highlight', icon: 'ri-mark-pen-line ri-lg', content: 'Surligné (Ctrl+Shift+H)' },
+        { action: 'clearMarks', icon: 'ri-format-clear ri-lg', content: 'Enlever les styles' }
+      ]
+    }
+  },
+  mounted () {
+    this.editorValidate()
+    this.titleValidate()
+    this.tagsValidate()
+    this.typeValidate()
+  },
   methods: {
+    tagsError (err) {
+      if (err === 'unique') {
+        this.customTagError = 'Ce tag est déjà présent dans la liste'
+      } else if (err === 'empty') {
+        this.customTagError = 'Un tag ne peut pas être vide'
+      } else {
+        this.customTagError = 'Erreur de tags'
+      }
+    },
+    validate () {
+      // const post = {
+      //   title: this.titleValue,
+      //   body: JSON.stringify(this.$refs.editorRef.getJSON()),
+      //   type: document.querySelector('#type').value,
+      //   tags: [...this.$refs.tagsInputRef.tags]
+      // }
+      // this.$store.dispatch('posts/addPost', post)
+    }
   }
 })
 </script>
 
-<style scoped>
+<style lang="scss">
+  .success-message {
+    @apply text-blue-400;
+  }
+
+  .error-message {
+    @apply text-red-500;
+  }
 </style>

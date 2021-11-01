@@ -2,6 +2,8 @@ import { createProfiguration } from '@golevelup/profiguration';
 import { Logger } from '@nestjs/common';
 
 interface Config {
+  uploadMaxSize: number;
+  uploadPath: string;
   port: number;
   nodeEnv: 'development' | 'production' | 'test';
   mongoUri: string;
@@ -16,6 +18,16 @@ interface Config {
 const logger = new Logger('Configuration');
 
 export const config = createProfiguration<Config>({
+  uploadMaxSize: {
+    default: 10_485_760,
+    format: Number,
+    env: 'UPLOAD_MAX_SIZE',
+  },
+  uploadPath: {
+    default: 'uploads',
+    format: String,
+    env: 'UPLOAD_PATH',
+  },
   port: {
     default: 5000,
     format: Number,

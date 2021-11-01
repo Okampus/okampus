@@ -15,7 +15,7 @@ async function bootstrap(): Promise<void> {
   app.use(logger);
   app.use(cookieParser(config.get('cookieSignature')));
 
-  app.enableCors();
+  app.enableCors({ origin: true, credentials: true });
   app.enableShutdownHooks();
   app.useGlobalPipes(new ValidationPipe({ transform: true, forbidNonWhitelisted: true, whitelist: true }));
   app.useGlobalFilters(new ExceptionsFilter());
