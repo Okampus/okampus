@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import type { User } from '../users/user.schema';
@@ -16,6 +16,8 @@ export class PostVotesService {
     const post = await this.postModel.findById(postId);
     if (!post)
       throw new NotFoundException('Post not found');
+    if (post.locked)
+      throw new ForbiddenException('Post locked');
 
     const existed = await this.postVotesModel.findOneAndUpdate(
       { post, user: user._id },
@@ -34,6 +36,8 @@ export class PostVotesService {
     const post = await this.postModel.findById(postId);
     if (!post)
       throw new NotFoundException('Post not found');
+    if (post.locked)
+      throw new ForbiddenException('Post locked');
 
     const existed = await this.postVotesModel.findOneAndUpdate(
       { post, user: user._id },
@@ -52,6 +56,8 @@ export class PostVotesService {
     const post = await this.postModel.findById(postId);
     if (!post)
       throw new NotFoundException('Post not found');
+    if (post.locked)
+      throw new ForbiddenException('Post locked');
 
     const oldVote = await this.postVotesModel.findOneAndRemove({ post, user: user._id });
     if (oldVote?.value === 1) {

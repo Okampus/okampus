@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import type { Post } from '../posts/schemas/post.schema';
 import type { User } from '../users/user.schema';
 import { CommentVote } from './schemas/comment-vote.schema';
 import { Comment } from './schemas/comment.schema';
@@ -13,9 +14,11 @@ export class CommentVotesService {
   ) {}
 
   public async upvote(user: User, commentId: string): Promise<Comment> {
-    const comment = await this.commentModel.findById(commentId);
+    const comment = await this.commentModel.findById(commentId).populate<{ post: Post }>('post');
     if (!comment)
       throw new NotFoundException('Comment not found');
+    if (comment.post.locked)
+      throw new ForbiddenException('Post locked');
 
     const existed = await this.commentVotesModel.findOneAndUpdate(
       { comment, user: user._id },
@@ -31,9 +34,11 @@ export class CommentVotesService {
   }
 
   public async downvote(user: User, commentId: string): Promise<Comment> {
-    const comment = await this.commentModel.findById(commentId);
+    const comment = await this.commentModel.findById(commentId).populate<{ post: Post }>('post');
     if (!comment)
       throw new NotFoundException('Comment not found');
+    if (comment.post.locked)
+      throw new ForbiddenException('Post locked');
 
     const existed = await this.commentVotesModel.findOneAndUpdate(
       { comment, user: user._id },
@@ -49,9 +54,11 @@ export class CommentVotesService {
   }
 
   public async neutralize(user: User, commentId: string): Promise<Comment> {
-    const comment = await this.commentModel.findById(commentId);
+    const comment = await this.commentModel.findById(commentId).populate<{ post: Post }>('post');
     if (!comment)
       throw new NotFoundException('Comment not found');
+    if (comment.post.locked)
+      throw new ForbiddenException('Post locked');
 
     const oldVote = await this.commentVotesModel.findOneAndRemove({ comment, user: user._id });
     if (oldVote?.value === 1) {

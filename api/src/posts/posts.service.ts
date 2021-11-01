@@ -46,6 +46,13 @@ export class PostsService {
     const post = await this.postModel.findById(id);
     if (!post)
       throw new NotFoundException('Post not found');
+    if (post.locked) {
+      // Even if the post is locked, we can still unlock it.
+      if (updatePostDto?.locked === false)
+        updatePostDto = { locked: false };
+      else
+        throw new ForbiddenException('Post locked');
+    }
     if (!post.author._id.equals(user._id))
       throw new ForbiddenException('Not the author');
 

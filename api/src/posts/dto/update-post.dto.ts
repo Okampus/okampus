@@ -5,9 +5,9 @@ import { CreatePostDto } from './create-post.dto';
 export class UpdatePostDto extends PartialType(CreatePostDto) {
   @IsBoolean()
   @IsOptional()
-  locked: boolean;
+  locked?: boolean;
 
   @IsBoolean()
   @IsOptional()
-  opened: boolean;
+  opened?: boolean;
 }

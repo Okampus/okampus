@@ -19,6 +19,8 @@ export class RepliesService {
     const comment = await this.commentModel.findById(commentId).populate<{ post: Post }>('post');
     if (!comment)
       throw new NotFoundException('Comment not found');
+    if (comment.post.locked)
+      throw new ForbiddenException('Post locked');
 
     const reply = await this.replyModel.create({
       body: createReplyDto.body,
@@ -41,9 +43,11 @@ export class RepliesService {
   }
 
   public async update(user: User, id: string, updateReplyDto: UpdateReplyDto): Promise<Reply> {
-    const reply = await this.replyModel.findById(id);
+    const reply = await this.replyModel.findById(id).populate<{ post: Post }>('post');
     if (!reply)
       throw new NotFoundException('Reply not found');
+    if (reply.post.locked)
+      throw new NotFoundException('Post locked');
     if (!reply.author._id.equals(user._id))
       throw new ForbiddenException('Not the author');
 

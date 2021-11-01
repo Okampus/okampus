@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import type { Post } from '../posts/schemas/post.schema';
 import type { User } from '../users/user.schema';
 import { ReplyVote } from './schemas/reply-vote.schema';
 import { Reply } from './schemas/reply.schema';
@@ -13,9 +14,11 @@ export class ReplyVotesService {
   ) {}
 
   public async upvote(user: User, replyId: string): Promise<Reply> {
-    const reply = await this.replyModel.findById(replyId);
+    const reply = await this.replyModel.findById(replyId).populate<{ post: Post }>('post');
     if (!reply)
       throw new NotFoundException('Reply not found');
+    if (reply.post.locked)
+      throw new ForbiddenException('Post locked');
 
     const existed = await this.replyVotesModel.findOneAndUpdate(
       { reply, user: user._id },
@@ -31,9 +34,11 @@ export class ReplyVotesService {
   }
 
   public async downvote(user: User, replyId: string): Promise<Reply> {
-    const reply = await this.replyModel.findById(replyId);
+    const reply = await this.replyModel.findById(replyId).populate<{ post: Post }>('post');
     if (!reply)
       throw new NotFoundException('Reply not found');
+    if (reply.post.locked)
+      throw new ForbiddenException('Post locked');
 
     const existed = await this.replyVotesModel.findOneAndUpdate(
       { reply, user: user._id },
@@ -49,9 +54,11 @@ export class ReplyVotesService {
   }
 
   public async neutralize(user: User, replyId: string): Promise<Reply> {
-    const reply = await this.replyModel.findById(replyId);
+    const reply = await this.replyModel.findById(replyId).populate<{ post: Post }>('post');
     if (!reply)
       throw new NotFoundException('Reply not found');
+    if (reply.post.locked)
+      throw new ForbiddenException('Post locked');
 
     const oldVote = await this.replyVotesModel.findOneAndRemove({ reply, user: user._id });
     if (oldVote?.value === 1) {

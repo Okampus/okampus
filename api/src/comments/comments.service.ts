@@ -18,6 +18,8 @@ export class CommentsService {
     const post = await this.postModel.findById(postId);
     if (!post)
       throw new NotFoundException('Post not found');
+    if (post.locked)
+      throw new ForbiddenException('Post locked');
 
     const comment = await this.commentModel.create({
       body: createCommentDto.body,
@@ -39,9 +41,11 @@ export class CommentsService {
   }
 
   public async update(user: User, id: string, updateCommentDto: UpdateCommentDto): Promise<Comment> {
-    const comment = await this.commentModel.findById(id);
+    const comment = await this.commentModel.findById(id).populate<{ post: Post }>('post');
     if (!comment)
       throw new NotFoundException('Comment not found');
+    if (comment.post.locked)
+      throw new ForbiddenException('Post locked');
     if (!comment.author._id.equals(user._id))
       throw new ForbiddenException('Not the author');
 
@@ -50,9 +54,11 @@ export class CommentsService {
   }
 
   public async remove(user: User, id: string): Promise<void> {
-    const comment = await this.commentModel.findById(id);
+    const comment = await this.commentModel.findById(id).populate<{ post: Post }>('post');
     if (!comment)
       throw new NotFoundException('Comment not found');
+    if (comment.post.locked)
+      throw new ForbiddenException('Post locked');
     if (!comment.author._id.equals(user._id))
       throw new ForbiddenException('Not the author');
 
