@@ -26,7 +26,7 @@ import { PostsService } from './posts.service';
 import type { Post } from './schemas/post.schema';
 
 @UseGuards(JwtAuthGuard)
-@Controller({ path: 'posts', version: '1' })
+@Controller({ path: 'posts' })
 export class PostsController {
   constructor(
     private readonly postsService: PostsService,

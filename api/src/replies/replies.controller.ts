@@ -30,7 +30,6 @@ import type { Reply } from './schemas/reply.schema';
     'posts/comments/replies',
     'posts/replies',
   ],
-  version: '1',
 })
 export class RepliesController {
   constructor(

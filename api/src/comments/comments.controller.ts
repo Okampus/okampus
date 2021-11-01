@@ -28,7 +28,6 @@ import type { Comment } from './schemas/comment.schema';
     'posts/:postId/comments',
     'posts/comments',
   ],
-  version: '1',
 })
 export class CommentsController {
   constructor(
