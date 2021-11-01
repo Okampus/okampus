@@ -24,5 +24,6 @@ import { Reply, ReplySchema } from './schemas/reply.schema';
   ],
   controllers: [RepliesController],
   providers: [RepliesService, ReplyVotesService],
+  exports: [RepliesService],
 })
 export class RepliesModule {}
