@@ -15,11 +15,7 @@ export class PostsService {
   ) {}
 
   public async create(user: User, createPostDto: CreatePostDto): Promise<Post> {
-    const post = await this.postModel.create({
-      body: createPostDto.body,
-      title: createPostDto.title,
-      author: user,
-    });
+    const post = await this.postModel.create({ ...createPostDto, author: user });
     return post;
   }
 
