@@ -1,6 +1,8 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Comment } from '../comments/schemas/comment.schema';
+import type { Post } from '../posts/schemas/post.schema';
 import type { User } from '../users/user.schema';
 import type { CreateReplyDto } from './dto/create-reply.dto';
 import type { UpdateReplyDto } from './dto/update-reply.dto';
@@ -9,13 +11,19 @@ import { Reply } from './schemas/reply.schema';
 @Injectable()
 export class RepliesService {
   constructor(
+    @InjectModel(Comment.name) private readonly commentModel: Model<Comment>,
     @InjectModel(Reply.name) private readonly replyModel: Model<Reply>,
   ) {}
 
   public async create(user: User, commentId: string, createReplyDto: CreateReplyDto): Promise<Reply> {
+    const comment = await this.commentModel.findById(commentId).populate<{ post: Post }>('post');
+    if (!comment)
+      throw new NotFoundException('Comment not found');
+
     const reply = await this.replyModel.create({
       body: createReplyDto.body,
-      commentId,
+      comment,
+      post: comment.post,
       author: user,
     });
     return reply;

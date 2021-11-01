@@ -2,6 +2,7 @@ import { Prop, Schema } from '@nestjs/mongoose';
 import type { CallbackError } from 'mongoose';
 import { Document, SchemaTypes } from 'mongoose';
 import { nanoid } from 'nanoid';
+import type { Post } from '../../posts/schemas/post.schema';
 import { PreHook } from '../../shared/decorators/mongoose-hooks.decorator';
 import { createSchemaForClass } from '../../shared/utils/createSchemaForClass';
 import { User } from '../../users/user.schema';
@@ -11,8 +12,8 @@ export class Comment extends Document {
   @Prop({ default: () => nanoid(8) })
   _id: string;
 
-  @Prop({ index: true })
-  postId: number;
+  @Prop({ required: true, type: SchemaTypes.Number, ref: 'Post' })
+  post: Post | number;
 
   @Prop({ required: true })
   body: string;

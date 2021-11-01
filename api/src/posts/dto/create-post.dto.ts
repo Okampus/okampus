@@ -3,6 +3,8 @@ import {
   IsEnum,
   IsNotEmpty,
   IsString,
+  MaxLength,
+  MinLength,
 } from 'class-validator';
 import { PostTypes } from '../../shared/types/post-types.enum';
 

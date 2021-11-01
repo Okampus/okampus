@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from '../auth/auth.module';
+import { Comment, CommentSchema } from '../comments/schemas/comment.schema';
 import { Vote, VoteSchema } from '../shared/schemas/vote.schema';
 import { ReplyVotesService } from './replies-votes.service';
 import { RepliesController } from './replies.controller';
@@ -11,6 +12,10 @@ import { Reply, ReplySchema } from './schemas/reply.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
+      {
+        name: Comment.name,
+        schema: CommentSchema,
+      },
       {
         name: Reply.name,
         schema: ReplySchema,
