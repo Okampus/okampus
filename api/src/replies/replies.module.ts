@@ -12,20 +12,12 @@ import { Reply, ReplySchema } from './schemas/reply.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      {
-        name: Comment.name,
-        schema: CommentSchema,
-      },
-      {
-        name: Reply.name,
-        schema: ReplySchema,
-      },
+      { name: Comment.name, schema: CommentSchema },
+      { name: Reply.name, schema: ReplySchema },
       {
         name: Vote.name,
         schema: VoteSchema,
-        discriminators: [
-          { name: ReplyVote.name, schema: ReplyVoteSchema },
-        ],
+        discriminators: [{ name: ReplyVote.name, schema: ReplyVoteSchema }],
       },
     ]),
     AuthModule,

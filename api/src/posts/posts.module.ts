@@ -29,9 +29,7 @@ import { Post, PostSchema } from './schemas/post.schema';
       {
         name: Vote.name,
         schema: VoteSchema,
-        discriminators: [
-          { name: PostVote.name, schema: PostVoteSchema },
-        ],
+        discriminators: [{ name: PostVote.name, schema: PostVoteSchema }],
       },
     ]),
     AuthModule,

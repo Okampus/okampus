@@ -12,20 +12,12 @@ import { Comment, CommentSchema } from './schemas/comment.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      {
-        name: Post.name,
-        schema: PostSchema,
-      },
-      {
-        name: Comment.name,
-        schema: CommentSchema,
-      },
+      { name: Post.name, schema: PostSchema },
+      { name: Comment.name, schema: CommentSchema },
       {
         name: Vote.name,
         schema: VoteSchema,
-        discriminators: [
-          { name: CommentVote.name, schema: CommentVoteSchema },
-        ],
+        discriminators: [{ name: CommentVote.name, schema: CommentVoteSchema }],
       },
     ]),
     AuthModule,
