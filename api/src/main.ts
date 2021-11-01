@@ -12,15 +12,14 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.use(helmet());
+  app.use(logger);
   app.use(cookieParser(config.get('cookieSignature')));
 
   app.enableCors();
   app.enableShutdownHooks();
-  app.useGlobalPipes(new ValidationPipe({ transform: true, forbidUnknownValues: true }));
+  app.useGlobalPipes(new ValidationPipe({ transform: true, forbidNonWhitelisted: true, whitelist: true }));
   app.useGlobalFilters(new ExceptionsFilter());
   app.set('trust proxy', false);
-
-  app.use(logger);
 
   await app.listen(config.get('port'));
   Logger.log(`Server initialized on port ${config.get('port')}`, 'Bootstrap');
