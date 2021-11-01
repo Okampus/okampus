@@ -1,0 +1,16 @@
+# Ignore all file uploads
+
+avatars/*
+info-docs/*
+study-docs/*
+integrations/*
+unknown/*
+
+# (don't ignore .gitignore and the empty folders)
+
+!.gitignore
+!avatars/.gitkeep
+!info-docs/.gitkeep
+!study-docs/.gitkeep
+!integrations/.gitkeep
+!unknown/.gitkeep

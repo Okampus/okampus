@@ -1,43 +1,75 @@
 <template>
-  <div class="w-5/6 mx-auto px-16">
-    <div class="text-3xl text-1">
-      Liste des Threads :
+  <div>
+    <div
+      class="absolute py-12 hero h-52 w-full top-0 left-0"
+    >
+      <h3
+        class="text-4xl font-bold text-0"
+        style="padding-left: 5%; padding-right: 5%;"
+      >
+        Liste des Posts
+      </h3>
     </div>
-    <div class="">
-      <PostMini
-        class="mt-1"
-        :title="'Probleme lors de la création de Threads'"
-      />
-
-      <PostMini
-        class="mt-1"
-        :title="'Probleme lors de la création de Threads'"
-      />
-
-      <PostMini
-        class="mt-1"
-        :title="'Probleme lors de la création de Threads'"
-      />
-
-      <PostMini
-        class="mt-1"
-        :title="'Probleme lors de la création de Threads'"
+    <div class="relative mt-32 mb-10 flex flex-col mx-auto w-11/12">
+      <post-card
+        v-for="post in posts"
+        :key="post.id"
+        class="mb-4"
+        :post="post"
       />
     </div>
+    <button
+      class="relative button"
+      @click="refreshPosts"
+    >
+      Refresh
+    </button>
   </div>
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
-import PostMini from '@/pages/Post/PostMini.vue'
+import { defineComponent, watch } from 'vue'
+import PostCard from '@/components/Card/PostCard.vue'
 
 export default defineComponent({
   name: 'PostList',
-  components: { PostMini },
-  props: {
+  components: { PostCard },
+  data () {
+    return {
+      posts: this.$store.state.posts.posts
+    }
   },
+  computed: {
+    loggedIn () {
+      return this.$store.state.auth.status.loggedIn
+    }
+  },
+  mounted () {
+    this.emitter.on('login', () => {
+      this.loadPosts()
+    })
 
+    this.emitter.on('logout', () => {
+      this.$store.dispatch('posts/refreshPosts')
+    })
+
+    watch(() => this.$store.getters['posts/getPosts'], (posts) => {
+      this.posts = posts
+    })
+
+    if (this.loggedIn) {
+      this.loadPosts()
+    }
+  },
   methods: {
+    refreshPosts () {
+      this.$store.dispatch('posts/newFetchPosts')
+    },
+    loadPosts () {
+      if (this.$store.state.posts.page === 0) {
+        this.$store.dispatch('posts/fetchPosts')
+      }
+    }
   }
 })
 </script>

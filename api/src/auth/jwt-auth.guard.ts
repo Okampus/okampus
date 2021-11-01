@@ -7,7 +7,7 @@ import { UserService } from '../users/users.service';
 import { AuthService } from './auth.service';
 
 export interface Client {
-  headers: Record<string, string>;
+  signedCookies: Record<string, string>;
   user: User;
 }
 
@@ -35,11 +35,13 @@ export class JwtAuthGuard implements CanActivate {
   }
 
   private async handleRequest(client: Client): Promise<User> {
-    const token = this.getToken(client);
+    const token = client.signedCookies?.accessToken;
+    if (!token)
+      throw new BadRequestException('Token not provided');
 
     const decoded = this.jwtService.decode(token) as Token;
     if (!decoded)
-      throw new BadRequestException('Failed to decode jwt');
+      throw new BadRequestException('Failed to decode JWT');
 
     try {
       await this.jwtService.verifyAsync<Token>(token, this.authService.getAccessTokenOptions());
@@ -48,19 +50,5 @@ export class JwtAuthGuard implements CanActivate {
     }
 
     return await this.userService.validateUserById(decoded.sub);
-  }
-
-  private getToken(client: Client): string {
-    const authorization = client.headers.authorization?.split(' ');
-    if (!authorization)
-      throw new UnauthorizedException('Token not found');
-
-    if (authorization[0].toLowerCase() !== 'bearer')
-      throw new UnauthorizedException('Authorization type not valid');
-
-    if (!authorization[1])
-      throw new UnauthorizedException('Token not provided');
-
-    return authorization[1];
   }
 }

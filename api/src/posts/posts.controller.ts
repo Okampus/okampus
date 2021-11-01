@@ -1,22 +1,22 @@
 import {
- Body,
- Controller,
- Delete,
- Get,
- Param,
- ParseIntPipe,
- Patch,
- Post as PostRequest,
- Query,
- UseGuards,
- UseInterceptors,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post as PostRequest,
+  Query,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
 import { VoteDto } from '../shared/dto/vote.dto';
 import { PostInterceptor } from '../shared/interceptors/post.interceptor';
 import { PostsInterceptor } from '../shared/interceptors/posts.interceptor';
-import type { CustomPaginateResult } from '../shared/pagination';
+import type { CustomPaginateResult, CustomPaginationResponse } from '../shared/pagination';
 import { User } from '../users/user.schema';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PaginateDto } from './dto/paginate.dto';
@@ -26,7 +26,7 @@ import { PostsService } from './posts.service';
 import type { Post } from './schemas/post.schema';
 
 @UseGuards(JwtAuthGuard)
-@Controller({ path: 'posts', version: '1' })
+@Controller({ path: 'posts' })
 export class PostsController {
   constructor(
     private readonly postsService: PostsService,
@@ -41,7 +41,7 @@ export class PostsController {
 
   @UseInterceptors(PostsInterceptor)
   @Get()
-  public async findAll(@Query() query: PaginateDto): Promise<CustomPaginateResult<Post> | { items: Post[] }> {
+  public async findAll(@Query() query: PaginateDto): Promise<CustomPaginationResponse<Post>> {
     if (query.page) {
       return await this.postsService.findAll({
         page: query.page,

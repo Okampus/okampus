@@ -6,20 +6,18 @@
       </div>
       <div class="flex pb-4 pr-4 mt-1">
         <div class="flex flex-col w-1/12 items-center">
-          <ChevronUpIcon class="h-10 w-10 mt-4" />
+          <i class="ri-arrow-up-s-line" />
           <div class="text-center">
             {{ post.upvotes }}
           </div>
-          <ChevronDownIcon class="h-10 w-10" />
-          <StarIcon class="h-7 w-7 mt-4" />
-          <BellIcon class="h-7 w-7 mt-4" />
-          <FlagIcon class="h-7 w-7 mt-4" />
-          <!-- <PencilAltIcon class="h-7 w-7 mt-4" />
-        <ArchiveIcon class="h-7 w-7 mt-4" /> -->
+          <i class="ri-arrow-down-s-line" />
+          <i class="ri-star-line" />
+          <i class="ri-notification-2-line" />
+          <i class="ri-flag-line" />
         </div>
         <div class="w-11/12">
-          <PencilAltIcon class="ml-3 inline-block h-7 w-7" />
-          <ArchiveIcon class="ml-3 inline-block h-7 w-7" />
+          <i class="ri-edit-line ml-3 inline-block" />
+          <i class="ri-archive-line ml-3 inline-block" />
           <div class="p-1 mt-2 text-2 text-sm">
             {{ post.content }}
           </div>
@@ -30,7 +28,7 @@
           :src="post.creator.img"
           alt="Profile Picture"
           class="bg-white w-24 h-24"
-        />
+        >
         <div class="relative ml-3">
           <div>
             <div class="inline-block text-lg font-medium">
@@ -44,7 +42,10 @@
         </div>
       </div>
     </div>
-    <div v-for="comment in post.responses" :key="comment">
+    <div
+      v-for="comment in post.responses"
+      :key="comment"
+    >
       <Comment :comment="comment" />
     </div>
   </div>
@@ -52,24 +53,17 @@
 
 <script lang="js">
 import { defineComponent } from 'vue'
-import { ChevronDownIcon, ChevronUpIcon, BellIcon, StarIcon, FlagIcon, PencilAltIcon, ArchiveIcon } from '@heroicons/vue/outline'
 import Comment from '@/components/Comment.vue'
 
 export default defineComponent({
   name: 'Message',
   components: {
-    ChevronDownIcon,
-    ChevronUpIcon,
-    BellIcon,
-    StarIcon,
-    FlagIcon,
-    PencilAltIcon,
-    ArchiveIcon,
     Comment
   },
   props: {
     post: {
-      type: Object
+      type: Object,
+      default: () => {}
     }
   }
 })

@@ -36,12 +36,13 @@
             Recherche: {{ $data.searchText }}
           </div>
           <div class="float-right w-5/12">
-            <XIcon
-              class="icon cursor-pointer"
+            <i
+              class="ri-close-line icon cursor-pointer"
               @click="collapseSearch"
             />
-            <StarIcon class="icon cursor-pointer" />
-            <DotsHorizontalIcon class="icon cursor-pointer" />
+            <i class="ri-star-line icon cursor-pointer" />
+            <i class="ri-star-line icon cursor-pointer" />
+            <i class="ri-more-2-fill icon cursor-pointer" />
           </div>
           <div class="mx-auto text-center w-2/12">
             100 résultats !
@@ -62,7 +63,6 @@
             <div class="flex">
               <div
                 class="
-                  hover:bg-opaque
                   button
                   bc-2
                   mr-2
@@ -78,11 +78,11 @@
                 "
                 @click="scrollPreview($event, -1)"
               >
-                <ChevronLeftIcon class="h-7 pt-px duration-500" />
+                <i class="ri-arrow-left-s-line pt-px" />
               </div>
 
               <div
-                class="previewer bg-opaque p-3 pb-0 pr-0 mb-2 rounded-lg"
+                class="previewer p-3 pb-0 pr-0 mb-2 rounded-lg"
                 @wheel="scrollHorizontal($event)"
                 @scroll="checkScrollersAfterScroll($event.currentTarget)"
               >
@@ -110,7 +110,7 @@
                 "
                 @click="scrollPreview($event, 1)"
               >
-                <ChevronRightIcon class="h-7 pt-px" />
+                <i class="ri-arrow-right-s-line pt-px" />
               </div>
             </div>
 
@@ -131,7 +131,7 @@
               "
             >
               Tous les résultats
-              <ChevronRightIcon class="inline-block h-7 pt-px" />
+              <i class="ri-arrow-right-s-line pt-px" />
             </div>
           </div>
         </div>
@@ -142,8 +142,6 @@
 
 <script lang="js">
 import { defineComponent } from 'vue'
-// import { getURL } from '@api/api.config'
-import { XIcon, StarIcon, DotsHorizontalIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid'
 
 function removeZIndex () {
   const searchScreen = document.getElementById('search-screen')
@@ -152,38 +150,16 @@ function removeZIndex () {
 
 export default defineComponent({
   name: 'SearchQuery',
-  components: {
-    XIcon,
-    StarIcon,
-    DotsHorizontalIcon,
-    ChevronLeftIcon,
-    ChevronRightIcon
-  },
-  props: {
-
-  },
   data () {
     return {
       categories: [
-        'Documents', 'Tickets', 'Pages, FAQ & Blog'
+        'Posts', 'Documents'
       ],
       searchText: '',
       searchVisible: false
     }
   },
-  mounted () {
-    /* const previewers = document.getElementsByClassName('previewer')
-    for (const previewer of previewers) {
-      previewer.addEventListener('wheel', function (e) {
-        e.preventDefault()
-        e.target.scrollLeft += e.deltaY
-      })
-    } */
-  },
   methods: {
-    testKey (e) {
-      console.log(e)
-    },
     collapseSearch () {
       this.$data.searchVisible = false
       const searchScreen = document.getElementById('search-screen')
@@ -201,26 +177,8 @@ export default defineComponent({
       this.checkScrollersAfterScroll(previewer)
     },
     checkResize () {
-      document.getElementsByClassName('previewer').forEach((el) => {
+      document.querySelectorAll('.previewer').forEach((el) => {
         this.checkScrollersAfterScroll(el)
-        // const chevronRight = el.parentNode.lastChild
-        /* if (el.scrollLeft >= (el.scrollWidth - el.clientWidth) && chevronRight.classList.contains('opacity-1')) {
-          chevronRight.classList.remove('opacity-1')
-          chevronRight.classList.add('opacity-0')
-          chevronRight.classList.add('cursor-pointer')
-        } else if (el.scrollLeft < (el.scrollWidth - el.clientWidth) && chevronRight.classList.contains('opacity-0')) {
-          chevronRight.classList.remove('opacity-0')
-          chevronRight.classList.add('opacity-1')
-          chevronRight.classList.remove('cursor-pointer')
-        }
-         const overflows = el.scrollWidth > el.clientWidth
-        if (overflows && chevronRight.classList.contains('opacity-0')) {
-          chevronRight.classList.remove('opacity-0')
-          chevronRight.classList.add('opacity-1')
-        } else if ((!overflows && chevronRight.classList.contains('opacity-1')) || el.scrollLeft >= (el.scrollWidth - el.clientWidth)) {
-          chevronRight.classList.remove('opacity-1')
-          chevronRight.classList.add('opacity-0')
-        } */
       })
     },
     checkScrollersAfterScroll (previewer) {

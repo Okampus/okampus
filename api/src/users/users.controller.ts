@@ -8,7 +8,7 @@ import { UserInterceptor } from '../shared/interceptors/user.interceptor';
 import type { User } from './user.schema';
 import { UserService } from './users.service';
 
-@Controller({ path: 'users', version: '1' })
+@Controller({ path: 'users' })
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

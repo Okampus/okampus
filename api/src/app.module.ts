@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { CommentsModule } from './comments/comments.module';
 import { config } from './config';
+import { FilesModule } from './files/files.module';
 import { PostsModule } from './posts/posts.module';
 import { RepliesModule } from './replies/replies.module';
 import { UserModule } from './users/users.module';
@@ -17,6 +18,7 @@ import { UserModule } from './users/users.module';
     PostsModule,
     CommentsModule,
     RepliesModule,
+    FilesModule,
   ],
   providers: [],
   controllers: [],

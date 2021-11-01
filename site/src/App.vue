@@ -1,141 +1,215 @@
 <template>
-  <SlidingSidebar @closeSidebar="sidebarHandler" />
-
-  <div
-    id="main-container"
-    class="relative flex flex-row filter h-screen w-screen tr-filter z-1"
-  >
-    <SearchQuery ref="searchQuery" />
-    <Topbar
-      ref="topbar"
-      @launchSearch="launchSearch"
-      @updateSearch="updateSearch"
-      @openSidebar="sidebarHandler"
-    />
-    <Sidebar @closeSidebar="sidebarHandler" />
+  <div>
     <div
-      id="content-wrapper"
-      class="w-full bg-3 h-content flex relative top-tbar bg-gray-100 overflow-hidden"
+      class="relative flex flex-row filter h-screen w-screen z-1"
+      :class="{'brightness-50': showModal}"
     >
+      <sidebar
+        ref="sidebar"
+        :closed="closedSidebar && !uncollapsedSidebar"
+        :uncollapsed="uncollapsedSidebar"
+        :collapsing="collapsingSidebar"
+        @closeSidebar="toggleSidebar"
+      />
       <div
-        id="content"
-        class="p-4 flex-1 overflow-auto app-scrollbar"
+        ref="content"
+        :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
+        class="deep-inner-shadow w-full bg-2 h-content flex flex-col relative top-tbar overflow-auto app-scrollbar filter"
       >
-        <router-view />
+        <div
+          class="flex-grow-1 flex-shrink-0 flex-auto"
+        >
+          <router-view class="my-7 mx-9" />
+        </div>
+        <page-footer class="flex-shrink-0" />
       </div>
+      <topbar
+        ref="topbar"
+        class="flex fixed top-0 left-0 w-full h-tbar border-bar
+      text-1 items-center justify-between border-b bg-1 filter"
+        :show-login="showLogin"
+        :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
+        @toggleSidebar="toggleSidebar"
+        @toggleLogin="toggleLogin"
+      />
     </div>
+    <div
+      v-show="showModal"
+      id="global-modal"
+      class="fixed top-0 left-0 w-screen h-screen"
+      @click="toggleModal"
+    />
   </div>
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
+import debounce from 'lodash/debounce'
+import PageFooter from '@/components/PageFooter.vue'
+
+import { defineComponent, watch, ref } from 'vue'
 
 import Topbar from '@/components/Topbar.vue'
-import Sidebar from '@/components/Sidebar/Sidebar.vue'
-import SlidingSidebar from '@/components/Sidebar/SlidingSidebar.vue'
-import SearchQuery from '@/components/SearchQuery.vue'
-
+import Sidebar from '@/components/Sidebar.vue'
+const breakWidth = 1024
 export default defineComponent({
   components: {
     Topbar,
     Sidebar,
-    SlidingSidebar,
-    SearchQuery
+    PageFooter
+  },
+  setup () {
+    const sidebar = ref(null)
+    const topbar = ref(null)
+    const content = ref(null)
+    return { sidebar, topbar, content }
   },
   data () {
+    const isScreenSmall = () => Math.max(
+      document.documentElement.clientWidth ||
+        0, window.innerWidth || 0) <= breakWidth
+
+    const checkResize = debounce(() => {
+      if (!this.isScreenSmall() && this.smallScreen) {
+        this.smallScreen = false
+
+        if (this.uncollapsedSidebar) {
+          this.uncollapsedSidebar = false
+          this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
+          this.content.removeEventListener('mousedown', this.toggleSidebar)
+        }
+        if (this.closedSidebar) {
+          this.closedSidebar = false
+        }
+      } else if (this.isScreenSmall() && !this.smallScreen) {
+        this.smallScreen = true
+        if (!this.closedSidebar) {
+          this.closedSidebar = true
+        }
+      }
+    }, 50)
+
     return {
-      showSidebar: false,
-      reachedBreak: false,
-      breakWidth: 1024
+      checkResize,
+      isScreenSmall,
+      closedSidebar: isScreenSmall(),
+      uncollapsedSidebar: false,
+      collapsingSidebar: false,
+      smallScreen: isScreenSmall(),
+      showModal: false,
+      showLogin: false
+    }
+  },
+  created () {
+    if (this.$store.state.userConfig.theme === 'dark') {
+      const root = document.querySelector(':root')
+      if (!root.classList.contains('dark')) {
+        root.classList.add('dark')
+      }
     }
   },
   mounted () {
+    this.emitter.on('login', () => {
+      this.toggleLogin()
+    })
+
+    this.emitter.on('toggleModal', () => {
+      this.toggleModal()
+    })
+
+    watch(() => this.$store.getters['userConfig/getTheme'], (theme) => {
+      const root = document.querySelector(':root')
+      if (theme === 'dark') {
+        if (!root.classList.contains('dark')) {
+          root.classList.add('dark')
+        }
+      } else {
+        if (root.classList.contains('dark')) {
+          root.classList.remove('dark')
+        }
+      }
+    })
+
     window.addEventListener('resize', this.checkResize)
-    window.addEventListener('keydown', this.checkKeydown)
-    this.checkResize()
   },
   unmounted () {
     window.removeEventListener('resize', this.checkResize)
-    window.removeEventListener('keydown', this.checkKeydown)
   },
   methods: {
-    checkKeydown (e) {
-      if (e.key === 'Escape') {
-        if (this.$data.showSidebar) {
-          this.sidebarHandler()
-        } else if (this.$refs.searchQuery.$data.searchVisible) {
-          this.$refs.searchQuery.collapseSearch()
+    toggleModal () {
+      this.showModal = !this.showModal
+    },
+
+    toggleSidebar () {
+      if (this.smallScreen) {
+        if (this.uncollapsedSidebar) {
+          this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
+          this.content.removeEventListener('mousedown', this.toggleSidebar)
+          this.collapsingSidebar = true
+          this.sidebar.$el.addEventListener('transitionend', () => {
+            this.uncollapsedSidebar = false
+            this.collapsingSidebar = false
+          }, { once: true })
+        } else {
+          this.uncollapsedSidebar = true
+          this.topbar.$el.addEventListener('mousedown', this.toggleSidebar)
+          this.content.addEventListener('mousedown', this.toggleSidebar)
+        }
+      } else {
+        this.closedSidebar = !this.closedSidebar
+      }
+    },
+    toggleLogin () {
+      if (this.showLogin) {
+        this.showLogin = false
+        this.showModal = false
+      } else {
+        if (!this.showModal) {
+          this.showModal = true
+          this.showLogin = true
         }
       }
-    },
-    checkResize () {
-      const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-      this.$refs.searchQuery.checkResize()
-      if (vw > this.$data.breakWidth && !this.$data.reachedBreak) {
-        const slideSidebar = document.getElementById('slide-sidebar')
-        if (!slideSidebar.classList.contains('-l-sbar')) {
-          slideSidebar.classList.add('-l-sbar')
-        }
-
-        const mainContainer = document.getElementById('main-container')
-        mainContainer.classList.remove('brightness-50')
-
-        this.$data.reachedBreak = true
-      } else if (vw <= this.$data.breakWidth && this.$data.reachedBreak) {
-        this.$data.reachedBreak = false
-      }
-    },
-    sidebarHandler () {
-      const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-      const slideSidebar = document.getElementById('slide-sidebar')
-      const mainContainer = document.getElementById('main-container')
-      if (vw > this.$data.breakWidth && !this.$refs.searchQuery.$data.searchVisible) {
-      //   this.$data.showSidebar = false
-      } else if (!this.$data.showSidebar) {
-        slideSidebar.classList.remove('-l-sbar')
-        mainContainer.classList.add('brightness-50')
-        this.$data.showSidebar = true
-        mainContainer.addEventListener('mousedown', this.sidebarHandler, { once: true })
-      } else if (this.$data.showSidebar) {
-        slideSidebar.classList.add('-l-sbar')
-        mainContainer.classList.remove('brightness-50')
-        this.$data.showSidebar = false
-        mainContainer.removeEventListener('mousedown', this.sidebarHandler, { once: true })
-      }
-    },
-    updateSearch (e) {
-      this.$refs.searchQuery.updateQuery(e)
-    },
-    launchSearch (e) {
-      const input = document.getElementById('search-input')
-      this.$refs.searchQuery.launchSearch(input.value)
     }
   }
 })
 </script>
 
-<style>
-@import "~@/assets/css/themes.css";
+<style lang="scss">
 
-.icon {
-  @apply h-6 float-right pl-6;
+@import "~@/assets/scss/themes.scss";
+
+@import "~@/assets/scss/components/button.scss";
+@import "~@/assets/scss/components/card.scss";
+@import "~@/assets/scss/components/input.scss";
+@import "~@/assets/scss/components/section.scss";
+
+@import "~@/assets/css/constants/spacing.css";
+
+@font-face {
+  font-family: AtkinsonHyperlegible;
+  font-weight: 400;
+  src: url("~@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf") format("truetype");
 }
 
-.tr-filter {
-  transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, filter 500ms;
+@font-face {
+  font-family: AtkinsonHyperlegible;
+  font-weight: 800;
+  src: url("~@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf") format("truetype");
+}
+
+.deep-inner-shadow::after {
+  content: '';
+  @apply shadow-inner-deep dark:shadow-dark-inner-deep h-full w-full absolute top-0 left-0 pointer-events-none;
 }
 
 * {
-  transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms;
-}
-
-html {
-  font-size: 13px;
+  font-family: AtkinsonHyperlegible;
+  font-size: 14px;
+  transition: color 300ms, box-shadow 300ms, background-color 300ms linear, border-color 300ms, border-radius 300ms, fill 300ms, stroke 300ms, filter 200ms;
 }
 
 @media (min-width: 720px) {
   html {
-    font-size: 15px;
+    font-size: 16px;
   }
 }
 </style>

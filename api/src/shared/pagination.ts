@@ -34,3 +34,5 @@ export interface CustomPaginateResult<T> {
   pageCount: number;
   startAt: number;
 }
+
+export type CustomPaginationResponse<T> = CustomPaginateResult<T> | { items: T[] };

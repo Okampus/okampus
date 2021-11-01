@@ -1,0 +1,35 @@
+@import "~@/assets/scss/utils/get-color.scss";
+
+.input-border {
+    @include get-color('border', 5, true);
+    @apply border rounded dark:border-opacity-25;
+}
+
+.input-border-no-shadow {
+    @apply border-gray-500 dark:border-white border rounded;
+}
+
+.input-border:focus, .input-border[focused=true], .input-border[active] {
+    @apply border-yellow-500 dark:border-yellow-400;
+    outline: 0;
+    box-shadow: 0 1px 8px rgba(247, 190, 68, 0.6);
+}
+
+.input {
+    @apply text-gray-900 dark:text-gray-100 py-2 px-3;
+    line-height: 1.43;
+}
+
+.input[type=password] {
+    @apply tracking-widest;
+    font-weight: 900;
+}
+
+.input, .placeholder, .text-placeholder {
+    @apply dark:placeholder-primary-light placeholder-primary-dark;
+}
+
+select:invalid {
+    @apply dark:text-placeholder-light text-placeholder-dark;
+    opacity: 1;
+}

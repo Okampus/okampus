@@ -4,20 +4,22 @@
       <div class="text-base font-bold">
         #{{ topic.number }} {{ topic.title }}
       </div>
-      <Tag
-        v-for="tag in topic.tags"
-        :key="tag"
-        :title="tag.title"
-        class="mr-2"
-        :color="tag.color"
-      />
+      <div class="flex flex-wrap">
+        <Tag
+          v-for="tag in topic.tags"
+          :key="tag"
+          :name="tag.title"
+          class="mr-2"
+          :color="tag.color"
+        />
+      </div>
       <div>Hotness</div>
       <div>Timeline Status</div>
     </div>
     <div class="w-1/6 flex flex-col items-center">
-      <BellIcon class="h-7 w-7 mt-1" />
-      <StarIcon class="h-7 w-7 mt-2" />
-      <FlagIcon class="h-7 w-7 mt-2" />
+      <i class="ri-notification-2-line mt-2" />
+      <i class="ri-star-line mt-2" />
+      <i class="ri-flag-line mt-2" />
     </div>
   </div>
 </template>
@@ -25,19 +27,16 @@
 <script lang="js">
 import { defineComponent } from 'vue'
 import Tag from '@/components/Tag.vue'
-import { BellIcon, StarIcon, FlagIcon } from '@heroicons/vue/outline'
 
 export default defineComponent({
   name: 'SimilarTopic',
   components: {
-    Tag,
-    BellIcon,
-    StarIcon,
-    FlagIcon
+    Tag
   },
   props: {
     topic: {
-      type: Object
+      type: Object,
+      default: () => {}
     }
   }
 })

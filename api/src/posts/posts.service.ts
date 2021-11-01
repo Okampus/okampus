@@ -15,11 +15,7 @@ export class PostsService {
   ) {}
 
   public async create(user: User, createPostDto: CreatePostDto): Promise<Post> {
-    const post = await this.postModel.create({
-      body: createPostDto.body,
-      title: createPostDto.title,
-      author: user,
-    });
+    const post = await this.postModel.create({ ...createPostDto, author: user });
     return post;
   }
 
@@ -30,16 +26,20 @@ export class PostsService {
       return labelize(await this.postModel.paginate({}, {
         page: paginationOptions.page,
         limit: paginationOptions.itemsPerPage,
+        populate: {
+          path: 'author',
+          select: 'username avatar reputation',
+        },
       }));
     }
-    return await this.postModel.find();
+    return await this.postModel.find().populate({ path: 'items', populate: { path: 'author' } });
   }
 
   public async findOne(id: number): Promise<Post> {
     const post = await this.postModel.findById(id);
     if (!post)
       throw new NotFoundException('Post not found');
-    return post;
+    return post.populate('author');
   }
 
   public async update(user: User, id: number, updatePostDto: UpdatePostDto): Promise<Post> {

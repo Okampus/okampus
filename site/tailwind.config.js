@@ -19,7 +19,35 @@ module.exports = {
       'xl-max': { max: '1279px' }
     },
     colors: {
-      ...colors
+      ...colors,
+      0: {
+        light: '#fff',
+        dark: '#000'
+      },
+      1: {
+        light: '#fafafa',
+        dark: '#1d1e20'
+      },
+      2: {
+        light: '#f6f6f6',
+        dark: '#202225'
+      },
+      3: {
+        light: '#e2e2e2',
+        dark: '#2f3136'
+      },
+      4: {
+        light: '#d4d4d4',
+        dark: '#323030'
+      },
+      5: {
+        light: '#c6c6c6',
+        dark: '#444'
+      },
+      6: {
+        light: '#bebebe',
+        dark: '#5e5e5e'
+      }
     },
     spacing: {
       px: '1px',
@@ -144,7 +172,8 @@ module.exports = {
       full: '9999px'
     },
     borderWidth: {
-      DEFAULT: '1px',
+      DEFAULT: '0.5px',
+      1: '1px',
       0: '0px',
       2: '2px',
       4: '4px',
@@ -158,6 +187,8 @@ module.exports = {
       xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
       '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
       inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
+      'inner-deep': 'inset 4px 5px 16px -12px rgba(0,0,0,0.4)',
+      'dark-inner-deep': 'inset 4px 5px 16px -8px rgba(0,0,0,1)',
       none: 'none'
     },
     caretColor: (theme) => theme('colors'),
@@ -269,6 +300,7 @@ module.exports = {
       xs: ['0.75rem', { lineHeight: '1rem' }],
       sm: ['0.875rem', { lineHeight: '1.25rem' }],
       base: ['1rem', { lineHeight: '1.5rem' }],
+      md: ['1.05rem', { lineHeight: '1.6rem' }],
       lg: ['1.125rem', { lineHeight: '1.75rem' }],
       xl: ['1.25rem', { lineHeight: '1.75rem' }],
       '2xl': ['1.5rem', { lineHeight: '2rem' }],
@@ -430,6 +462,7 @@ module.exports = {
     }),
     inset: (theme, { negative }) => ({
       auto: 'auto',
+      unset: 'unset',
       ...theme('spacing'),
       ...negative(theme('spacing')),
       '1/2': '50%',
@@ -536,11 +569,13 @@ module.exports = {
     }),
     minHeight: {
       0: '0px',
+      20: '5rem',
       full: '100%',
       screen: '100vh'
     },
     minWidth: {
       0: '0px',
+      '2/3': '66.66%',
       full: '100%',
       min: 'min-content',
       max: 'max-content'
@@ -596,7 +631,12 @@ module.exports = {
       black: ['2px dotted black', '2px']
     },
     padding: (theme) => theme('spacing'),
-    placeholderColor: (theme) => theme('colors'),
+    placeholderColor: {
+      primary: {
+        light: '#a6a6a6',
+        dark: '#777777'
+      }
+    },
     placeholderOpacity: (theme) => theme('opacity'),
     ringColor: (theme) => ({
       DEFAULT: theme('colors.blue.500', '#3b82f6'),
@@ -689,7 +729,13 @@ module.exports = {
       1: '1',
       2: '2'
     },
-    textColor: (theme) => theme('colors'),
+    textColor: (theme) => ({
+      ...theme('colors'),
+      placeholder: {
+        light: '#a6a6a6',
+        dark: '#777777'
+      }
+    }),
     textOpacity: (theme) => theme('opacity'),
     transformOrigin: {
       center: 'center',
@@ -856,7 +902,7 @@ module.exports = {
     backgroundAttachment: ['responsive'],
     backgroundBlendMode: ['responsive'],
     backgroundClip: ['responsive'],
-    backgroundColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus'],
+    backgroundColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus', 'active'],
     backgroundImage: ['responsive'],
     backgroundOpacity: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus'],
     backgroundPosition: ['responsive'],
@@ -867,11 +913,11 @@ module.exports = {
     borderCollapse: ['responsive'],
     borderColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus'],
     borderOpacity: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus'],
-    borderRadius: ['responsive'],
+    borderRadius: ['responsive', 'focus'],
     borderStyle: ['responsive'],
-    borderWidth: ['responsive'],
+    borderWidth: ['responsive', 'focus'],
     boxDecorationBreak: ['responsive'],
-    boxShadow: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus'],
+    boxShadow: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus', 'dark'],
     boxSizing: ['responsive'],
     brightness: ['responsive', 'dark'],
     clear: ['responsive'],
@@ -994,6 +1040,7 @@ module.exports = {
         })
       })
     }),
-    require('tailwind-scrollbar')
+    require('tailwind-scrollbar'),
+    require('@tailwindcss/line-clamp')
   ]
 }

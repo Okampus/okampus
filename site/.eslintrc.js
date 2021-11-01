@@ -10,24 +10,10 @@ module.exports = {
   ],
   parserOptions: {
     parser: 'babel-eslint',
-    ecmaVersion: 12
+    ecmaVersion: 21
   },
   rules: {
-    // 'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'import/no-unresolved': ['error'],
-    'vue/html-self-closing': ['off']
-  },
-  settings: {
-    'import/resolver': {
-      webpack: {
-        alias: {
-          map: [
-            ['@api', './api/']
-          ]
-        },
-        extensions: ['.js', '.less', '.json']
-      }
-    }
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   }
 }

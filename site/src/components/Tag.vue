@@ -1,18 +1,14 @@
 <template>
   <div
     class="
-      px-1
-      border-opacity-100 border-2
-      bg-opacity-40
-      rounded-full
-      w-auto
-      inline-block
+      h-7 rounded-full text-white space-x-0 md:space-x-1 font-medium flex items-center justify-center mr-1 md:mr-2 px-2 md:px-4 bg-opacity-80 cursor-pointer hover:bg-opacity-100
     "
-    :class="'bg-' + color + ' ' + 'border-' + color"
+    :class="`bg-${color}`"
   >
-    <div class="text-sm">
-      {{ title }}
-    </div>
+    <span class="text-sm md:text-base pb-1">
+      {{ name }}
+    </span>
+    <slot />
   </div>
 </template>
 
@@ -22,18 +18,14 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'Tag',
   props: {
-    title: {
-      type: String
+    name: {
+      type: String,
+      default: '<Tag>'
     },
     color: {
-      type: String
+      type: String,
+      default: 'red-500'
     }
-  },
-
-  methods: {
   }
 })
 </script>
-
-<style scoped>
-</style>
