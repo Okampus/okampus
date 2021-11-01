@@ -14,7 +14,15 @@ export class User extends Document {
   email: string;
 
   @Prop()
-  password?: string;
+  password: string;
+
+  // TODO: Add full 'reputation' support
+  @Prop({ default: 0 })
+  reputation: number;
+
+  // TODO: Add full 'avatar' support
+  @Prop({ default: null, type: String })
+  avatar: string | null;
 
   createdAt: Date;
   updatedAt: Date;
