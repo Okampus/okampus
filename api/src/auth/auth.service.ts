@@ -11,10 +11,8 @@ import { UserService } from '../users/users.service';
 import type { Token } from './jwt-auth.guard';
 
 export interface TokenResponse {
-  /* eslint-disable @typescript-eslint/naming-convention */
-  access_token: string;
-  refresh_token: string | null;
-  /* eslint-enable @typescript-eslint/naming-convention */
+  accessToken: string;
+  refreshToken: string | null;
 }
 
 export interface SocialUser {
@@ -50,12 +48,10 @@ export class AuthService {
     };
 
     return {
-      /* eslint-disable @typescript-eslint/naming-convention */
-      access_token: await this.jwtService.signAsync(payload, this.getAccessTokenOptions()),
-      refresh_token: config.get('accessTokenExpiration')
+      accessToken: await this.jwtService.signAsync(payload, this.getAccessTokenOptions()),
+      refreshToken: config.get('accessTokenExpiration')
         ? await this.jwtService.signAsync(payload, this.getRefreshTokenOptions())
         : null,
-      /* eslint-enable @typescript-eslint/naming-convention */
     };
   }
 
