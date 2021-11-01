@@ -4,7 +4,7 @@ import type { Schema } from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 import { autoIncrement } from 'mongoose-plugin-autoinc';
 import { AuthModule } from '../auth/auth.module';
-import { UserModule } from '../users/users.module';
+import { UsersModule } from '../users/users.module';
 import { FilesController } from './files.controller';
 import { CourseSubject, CourseSubjectSchema } from './schemas/course-subject.schema';
 import { FileUpload, FileUploadSchema } from './schemas/file-upload.schema';
@@ -36,7 +36,7 @@ import { StudyDocsService } from './services/study-docs.service';
     ]),
     MongooseModule.forFeature([{ name: CourseSubject.name, schema: CourseSubjectSchema }]),
     AuthModule,
-    UserModule,
+    UsersModule,
   ],
   controllers: [FilesController],
   providers: [StudyDocsService, FilesService],

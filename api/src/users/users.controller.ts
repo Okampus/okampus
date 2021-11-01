@@ -6,11 +6,11 @@ import {
 } from '@nestjs/common';
 import { UserInterceptor } from '../shared/interceptors/user.interceptor';
 import type { User } from './user.schema';
-import { UserService } from './users.service';
+import { UsersService } from './users.service';
 
-@Controller({ path: 'users' })
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+@Controller({ path: 'users', version: '1' })
+export class UsersController {
+  constructor(private readonly userService: UsersService) {}
 
   @UseInterceptors(UserInterceptor)
   @Get(':username')

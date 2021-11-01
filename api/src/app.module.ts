@@ -7,12 +7,12 @@ import { config } from './config';
 import { FilesModule } from './files/files.module';
 import { PostsModule } from './posts/posts.module';
 import { RepliesModule } from './replies/replies.module';
-import { UserModule } from './users/users.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     AuthModule,
-    UserModule,
+    UsersModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(config.get('mongoUri')),
     PostsModule,

@@ -7,7 +7,7 @@ import type { JwtSignOptions } from '@nestjs/jwt';
 import { JwtService } from '@nestjs/jwt';
 import { config } from '../config';
 import type { User } from '../users/user.schema';
-import { UserService } from '../users/users.service';
+import { UsersService } from '../users/users.service';
 import type { Token } from './jwt-auth.guard';
 
 export interface TokenResponse {
@@ -26,7 +26,7 @@ export type Nullable<T> = { [P in keyof T]: T[P] | null };
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService,
+    private readonly userService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
 

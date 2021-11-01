@@ -3,7 +3,7 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import type { User } from '../users/user.schema';
-import { UserService } from '../users/users.service';
+import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 
 export interface Client {
@@ -23,7 +23,7 @@ export class JwtAuthGuard implements CanActivate {
   constructor(
     private readonly authService: AuthService,
     private readonly jwtService: JwtService,
-    private readonly userService: UserService,
+    private readonly userService: UsersService,
   ) {
     this.reflector = new Reflector();
   }

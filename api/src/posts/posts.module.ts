@@ -5,7 +5,7 @@ import paginate from 'mongoose-paginate-v2';
 import { autoIncrement } from 'mongoose-plugin-autoinc';
 import { AuthModule } from '../auth/auth.module';
 import { Vote, VoteSchema } from '../shared/schemas/vote.schema';
-import { UserModule } from '../users/users.module';
+import { UsersModule } from '../users/users.module';
 import { PostVotesService } from './post-votes.service';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
@@ -33,7 +33,7 @@ import { Post, PostSchema } from './schemas/post.schema';
       },
     ]),
     AuthModule,
-    UserModule,
+    UsersModule,
   ],
   controllers: [PostsController],
   providers: [PostsService, PostVotesService],

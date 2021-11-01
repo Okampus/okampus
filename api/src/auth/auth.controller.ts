@@ -14,7 +14,7 @@ import { Request as Req, Response as Res } from 'express';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
 import { UserInterceptor } from '../shared/interceptors/user.interceptor';
 import { User } from '../users/user.schema';
-import { UserService } from '../users/users.service';
+import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
@@ -30,7 +30,7 @@ const cookieOptions: Partial<CookieOptions> = {
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: UserService,
+    private readonly userService: UsersService,
   ) {}
 
   @UseInterceptors(UserInterceptor)
