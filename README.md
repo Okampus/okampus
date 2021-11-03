@@ -30,10 +30,8 @@ Le frontend est développé en JavaScript et utilise le framework [VueJS].
 
 #### Développeurs
 
-- [Elliot](https://github.com/noftaly)
-- [Ivan](https://github.com/iv-stpn)
-- [Pierre-Marrie](https://github.com/unaxe)
-- [Amaury](https://github.com/Mushurisen)
+Team de développement de l'association Horizon !\
+[Voir les contributeurs].
 
 #### License
 
@@ -41,9 +39,10 @@ HorizonWeb est sous license [MIT](./LICENSE).
 
 <!-- Link Dump -->
 
-[menu des issues]: https://github.com/EFREI-Horizon/HorizonWeb/issues
-[Discussion GitHub]: https://github.com/EFREI-Horizon/HorizonWeb/discussions
+[menu des issues]: https://github.com/horizon-teamdev/HorizonWeb/issues
+[Discussion GitHub]: https://github.com/horizon-teamdev/HorizonWeb/discussions
 [guide de contributions]: ./CONTRIBUTING.md
 [NestJS]: https://nestjs.com
 [VueJS]: https://vuejs.org
+[Voir les contributeurs]: https://github.com/horizon-teamdev/HorizonWeb/graphs/contributors
 [MIT]: ./LICENSE
