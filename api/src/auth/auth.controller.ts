@@ -11,6 +11,7 @@ import {
 import type { CookieOptions } from 'express';
 import { Request as Req, Response as Res } from 'express';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
+import { SerializerIncludeEmail } from '../shared/decorators/serializer-include-email.decorator';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
@@ -24,6 +25,7 @@ const cookieOptions: Partial<CookieOptions> = {
   sameSite: 'strict',
 };
 
+@SerializerIncludeEmail()
 @Controller({ path: 'auth' })
 export class AuthController {
   constructor(
