@@ -12,4 +12,5 @@ RUN chown -R api:api .
 EXPOSE 5000
 USER api
 
+RUN npx mikro-orm schema:create -R
 CMD ["npm", "run", "start:dev"]
