@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5000/files/'
+const API_URL = `http://localhost:${process.env.VUE_APP_API_PORT}/files/`
 
 class PostsService {
   getStudyDocs (query) {

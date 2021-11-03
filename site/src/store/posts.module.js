@@ -77,8 +77,7 @@ export const posts = {
       state.posts = [...new Set([...state.posts, ...posts])]
     },
     addPostSuccess (state, newPost) {
-      state.posts.unshift(newPost)
-      router.push('/')
+      router.push(`/post/${newPost.id}`)
     },
     modifyPostSuccess (state, id, modifedPost) {
       state.posts = state.posts.map(post => modifedPost ? post.id === id : post)
