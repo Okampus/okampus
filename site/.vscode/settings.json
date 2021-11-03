@@ -5,7 +5,8 @@
         "johnsoncodehk.volar",
         "hollowtree.vue-snippets",
         "bradlc.vscode-tailwindcss",
-        "naumovs.color-highlight"
+        "naumovs.color-highlight",
+        "gruntfuggly.todo-tree"
     ],
     "editor.tabSize": 2,
     "editor.insertSpaces": true,
