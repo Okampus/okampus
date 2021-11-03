@@ -1,8 +1,4 @@
 {
-  "extensions": [
-    "dbaeumer.vscode-eslint",
-    "eamodio.gitlens",
-  ],
   "editor.insertSpaces": true,
   "editor.tabSize" : 2,
   "javascript.preferences.quoteStyle" : "single",

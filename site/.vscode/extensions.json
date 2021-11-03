@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "johnsoncodehk.volar",
+        "hollowtree.vue-snippets",
+        "bradlc.vscode-tailwindcss",
+        "naumovs.color-highlight",
+        "gruntfuggly.todo-tree"
+    ]
+}
