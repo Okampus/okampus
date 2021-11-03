@@ -1,72 +1,71 @@
+import { EntityRepository } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import type { User } from '../users/user.schema';
-import { PostVote } from './schemas/post-vote.schema';
-import { Post } from './schemas/post.schema';
+import type { User } from '../users/user.entity';
+import { PostVote } from './entities/post-vote.entity';
+import { Post } from './entities/post.entity';
 
 @Injectable()
 export class PostVotesService {
   constructor(
-    @InjectModel(Post.name) private readonly postModel: Model<Post>,
-    @InjectModel(PostVote.name) private readonly postVotesModel: Model<PostVote>,
+    @InjectRepository(Post) private readonly postRepository: EntityRepository<Post>,
+    @InjectRepository(PostVote) private readonly postVotesRepository: EntityRepository<PostVote>,
   ) {}
 
-  public async upvote(user: User, postId: number): Promise<Post> {
-    const post = await this.postModel.findById(postId);
+  public async update(user: User, postId: number, value: -1 | 1): Promise<Post> {
+    const post = await this.postRepository.findOne({ postId });
     if (!post)
       throw new NotFoundException('Post not found');
     if (post.locked)
       throw new ForbiddenException('Post locked');
 
-    const existed = await this.postVotesModel.findOneAndUpdate(
-      { post, user: user._id },
-      { value: 1 },
-      { upsert: true },
-    );
-    if (existed?.value === 1)
+    let vote = await this.postVotesRepository.findOne({ post, user });
+    const previousValue = vote?.value;
+    if (previousValue === value)
       return post;
-    if (existed?.value === -1)
+
+    // Update pivot table
+    if (vote)
+      vote.value = value;
+    else
+      vote = new PostVote(post, user, value);
+    await this.postVotesRepository.persistAndFlush(vote);
+
+    // Update post
+    if (value === 1)
+      post.upvotes++;
+    else if (value === -1)
+      post.downvotes++;
+
+    if (value === 1 && previousValue === -1)
       post.downvotes--;
-    post.upvotes++;
-    return await post.save();
-  }
-
-  public async downvote(user: User, postId: number): Promise<Post> {
-    const post = await this.postModel.findById(postId);
-    if (!post)
-      throw new NotFoundException('Post not found');
-    if (post.locked)
-      throw new ForbiddenException('Post locked');
-
-    const existed = await this.postVotesModel.findOneAndUpdate(
-      { post, user: user._id },
-      { value: -1 },
-      { upsert: true },
-    );
-    if (existed?.value === -1)
-      return post;
-    if (existed?.value === 1)
+    else if (value === -1 && previousValue === 1)
       post.upvotes--;
-    post.downvotes++;
-    return await post.save();
+
+    await this.postRepository.flush();
+    return post;
   }
 
   public async neutralize(user: User, postId: number): Promise<Post> {
-    const post = await this.postModel.findById(postId);
+    const post = await this.postRepository.findOne({ postId });
     if (!post)
       throw new NotFoundException('Post not found');
     if (post.locked)
       throw new ForbiddenException('Post locked');
 
-    const oldVote = await this.postVotesModel.findOneAndRemove({ post, user: user._id });
-    if (oldVote?.value === 1) {
+    // Update pivot table
+    const oldVote = await this.postVotesRepository.findOne({ post, user });
+    if (!oldVote)
+      return post;
+    await this.postVotesRepository.removeAndFlush(oldVote);
+
+    // Update post
+    if (oldVote?.value === 1)
       post.upvotes--;
-      await post.save();
-    } else if (oldVote?.value === -1) {
+    else if (oldVote?.value === -1)
       post.downvotes--;
-      await post.save();
-    }
+
+    await this.postRepository.flush();
     return post;
   }
 }

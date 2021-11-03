@@ -7,13 +7,12 @@ import {
   Request,
   Response,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import type { CookieOptions } from 'express';
 import { Request as Req, Response as Res } from 'express';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
-import { UserInterceptor } from '../shared/interceptors/user.interceptor';
-import { User } from '../users/user.schema';
+import { SerializerIncludeEmail } from '../shared/decorators/serializer-include-email.decorator';
+import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -26,6 +25,7 @@ const cookieOptions: Partial<CookieOptions> = {
   sameSite: 'strict',
 };
 
+@SerializerIncludeEmail()
 @Controller({ path: 'auth' })
 export class AuthController {
   constructor(
@@ -33,7 +33,6 @@ export class AuthController {
     private readonly userService: UsersService,
   ) {}
 
-  @UseInterceptors(UserInterceptor)
   @Post('register')
   public async register(@Body() body: RegisterDto, @Response({ passthrough: true }) res: Res): Promise<User> {
     if (await this.userService.getUserByName(body.username))
@@ -50,7 +49,6 @@ export class AuthController {
     return user;
   }
 
-  @UseInterceptors(UserInterceptor)
   @Post('login')
   public async login(@Body() body: LoginDto, @Response({ passthrough: true }) res: Res): Promise<User> {
     const user = await this.authService.validate(body.username, body.password);
@@ -79,7 +77,6 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(UserInterceptor)
   @Get('me')
   public me(@CurrentUser() user: User): User {
     return user;

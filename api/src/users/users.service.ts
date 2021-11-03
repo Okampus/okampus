@@ -1,16 +1,17 @@
+import { EntityRepository } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { User } from './user.schema';
+import type { RegisterDto } from '../auth/dto/register.dto';
+import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<User>,
+    @InjectRepository(User) private readonly userRepository: EntityRepository<User>,
   ) {}
 
   public async getUserByName(name: string): Promise<User | null> {
-    return await this.userModel.findOne({ username: { $regex: new RegExp(`^${name}$`, 'i') } });
+    return await this.userRepository.findOne({ username: { $ilike: name } });
   }
 
   public async validateUserByName(username: string): Promise<User> {
@@ -22,30 +23,29 @@ export class UsersService {
   }
 
   public async getUserByEmail(mail: string): Promise<User | null> {
-    return await this.userModel.findOne({ email: mail.toLowerCase() });
+    return await this.userRepository.findOne({ email: mail.toLowerCase() });
   }
 
-  public async getUserById(id: string): Promise<User | null> {
-    return await this.userModel.findById(id);
+  public async getUserById(userId: string): Promise<User | null> {
+    return await this.userRepository.findOne({ userId });
   }
 
-  public async validateUserById(id: string): Promise<User> {
-    const user = await this.getUserById(id);
+  public async validateUserById(userId: string): Promise<User> {
+    const user = await this.getUserById(userId);
     if (!user)
       throw new NotFoundException('User not found');
 
     return user;
   }
 
-  public async getUser(username: string): Promise<User | null> {
-    return (await this.getUserByName(username)) ?? (await this.getUserByEmail(username));
+  public async getUser(login: string): Promise<User | null> {
+    return (await this.getUserByName(login)) ?? (await this.getUserByEmail(login));
   }
 
-  public async create(body: Partial<User>): Promise<User> {
-    const user = await this.userModel.create({
-      ...body,
-      email: body.email!.toLowerCase(),
-    });
-    return await user.save();
+  public async create(body: RegisterDto): Promise<User> {
+    const user = new User(body.username, body.email.toLowerCase());
+    await user.setPassword(body.password);
+    await this.userRepository.persistAndFlush(user);
+    return user;
   }
 }

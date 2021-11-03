@@ -1,21 +1,22 @@
+import { OmitType } from '@nestjs/mapped-types';
 import {
   IsArray,
+  IsIn,
   IsInt,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
-import { IsObjectId } from 'class-validator-mongo-object-id';
-import { CourseSubject } from '../schemas/course-subject.schema';
+import { FileKind } from '../../shared/types/file-kind.enum';
 import { CreateFileUploadDto } from './create-file-upload.dto';
 
-export class CreateStudyDocDto extends CreateFileUploadDto {
+export class CreateStudyDocDto extends OmitType(CreateFileUploadDto, ['fileKind']) {
   @IsOptional()
   @IsInt()
   year?: number;
 
-  @IsOptional()
-  @IsObjectId()
-  subject?: CourseSubject;
+  @IsNumber()
+  subject: number;
 
   @IsOptional()
   @IsArray()
@@ -23,9 +24,13 @@ export class CreateStudyDocDto extends CreateFileUploadDto {
 
   @IsOptional()
   @IsString()
-  docName?: string;
+  name?: string;
 
   @IsOptional()
   @IsString()
   description?: string;
+
+  @IsOptional()
+  @IsIn([FileKind.StudyDocs])
+  fileKind?: FileKind.StudyDocs;
 }

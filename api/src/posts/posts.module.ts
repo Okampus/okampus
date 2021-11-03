@@ -1,37 +1,16 @@
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import type { Schema } from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
-import { autoIncrement } from 'mongoose-plugin-autoinc';
 import { AuthModule } from '../auth/auth.module';
-import { Vote, VoteSchema } from '../shared/schemas/vote.schema';
 import { UsersModule } from '../users/users.module';
+import { PostVote } from './entities/post-vote.entity';
+import { Post } from './entities/post.entity';
 import { PostVotesService } from './post-votes.service';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
-import { PostVote, PostVoteSchema } from './schemas/post-vote.schema';
-import { Post, PostSchema } from './schemas/post.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeatureAsync([
-      {
-        name: Post.name,
-        useFactory: (): Schema => {
-          const schema = PostSchema;
-          schema.plugin(autoIncrement, { model: 'Post', startAt: 1 });
-          schema.plugin(paginate);
-          return schema;
-        },
-      },
-    ]),
-    MongooseModule.forFeature([
-      {
-        name: Vote.name,
-        schema: VoteSchema,
-        discriminators: [{ name: PostVote.name, schema: PostVoteSchema }],
-      },
-    ]),
+    MikroOrmModule.forFeature([Post, PostVote]),
     AuthModule,
     UsersModule,
   ],

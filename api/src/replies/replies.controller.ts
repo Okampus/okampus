@@ -7,19 +7,16 @@ import {
   Patch,
   Post,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
 import { VoteDto } from '../shared/dto/vote.dto';
-import { UserResponseInterceptor } from '../shared/interceptors/user-response.interceptor';
-import { UserResponsesInterceptor } from '../shared/interceptors/user-responses.interceptor';
-import { User } from '../users/user.schema';
+import { User } from '../users/user.entity';
 import { CreateReplyDto } from './dto/create-reply.dto';
 import { UpdateReplyDto } from './dto/update-reply.dto';
+import type { Reply } from './entities/reply.entity';
 import { ReplyVotesService } from './replies-votes.service';
 import { RepliesService } from './replies.service';
-import type { Reply } from './schemas/reply.schema';
 
 @UseGuards(JwtAuthGuard)
 @Controller({
@@ -37,7 +34,6 @@ export class RepliesController {
     private readonly replyVotesService: ReplyVotesService,
   ) {}
 
-  @UseInterceptors(UserResponseInterceptor)
   @Post()
   public async create(
     @CurrentUser() user: User,
@@ -47,19 +43,16 @@ export class RepliesController {
     return await this.repliesService.create(user, commentId, createReplyDto);
   }
 
-  @UseInterceptors(UserResponsesInterceptor)
   @Get()
   public async findAll(@Param('commentId') commentId: string): Promise<Reply[]> {
     return await this.repliesService.findAll(commentId);
   }
 
-  @UseInterceptors(UserResponseInterceptor)
   @Get(':id')
   public async findOne(@Param('id') replyId: string): Promise<Reply | null> {
     return await this.repliesService.findOne(replyId);
   }
 
-  @UseInterceptors(UserResponseInterceptor)
   @Patch(':id')
   public async update(
     @CurrentUser() user: User,
@@ -77,20 +70,14 @@ export class RepliesController {
     await this.repliesService.remove(user, replyId);
   }
 
-  @UseInterceptors(UserResponseInterceptor)
   @Post(':id/vote')
   public async vote(
     @CurrentUser() user: User,
     @Param('id') id: string,
     @Body() voteDto: VoteDto,
   ): Promise<Reply> {
-    switch (voteDto.value) {
-      case -1:
-        return await this.replyVotesService.downvote(user, id);
-      case 0:
-        return await this.replyVotesService.neutralize(user, id);
-      case 1:
-        return await this.replyVotesService.upvote(user, id);
-    }
+    if (voteDto.value === 0)
+      return await this.replyVotesService.neutralize(user, id);
+    return await this.replyVotesService.update(user, id, voteDto.value);
   }
 }

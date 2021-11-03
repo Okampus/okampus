@@ -1,25 +1,16 @@
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from '../auth/auth.module';
-import { Post, PostSchema } from '../posts/schemas/post.schema';
-import { Vote, VoteSchema } from '../shared/schemas/vote.schema';
+import { Post } from '../posts/entities/post.entity';
 import { CommentVotesService } from './comment-votes.service';
 import { CommentsController } from './comments.controller';
 import { CommentsService } from './comments.service';
-import { CommentVote, CommentVoteSchema } from './schemas/comment-vote.schema';
-import { Comment, CommentSchema } from './schemas/comment.schema';
+import { CommentVote } from './entities/comment-vote.entity';
+import { Comment } from './entities/comment.entity';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: Post.name, schema: PostSchema },
-      { name: Comment.name, schema: CommentSchema },
-      {
-        name: Vote.name,
-        schema: VoteSchema,
-        discriminators: [{ name: CommentVote.name, schema: CommentVoteSchema }],
-      },
-    ]),
+    MikroOrmModule.forFeature([Post, Comment, CommentVote]),
     AuthModule,
   ],
   controllers: [CommentsController],

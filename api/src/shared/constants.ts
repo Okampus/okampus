@@ -1,1 +1,1 @@
-export const HOOK_INFOS_KEY = 'hookInfosKey';
+export const EMAIL_INCLUDED = 'EmailIncluded';

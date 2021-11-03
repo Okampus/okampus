@@ -8,19 +8,16 @@ import {
   Patch,
   Post,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
 import { VoteDto } from '../shared/dto/vote.dto';
-import { UserResponseInterceptor } from '../shared/interceptors/user-response.interceptor';
-import { UserResponsesInterceptor } from '../shared/interceptors/user-responses.interceptor';
-import { User } from '../users/user.schema';
+import { User } from '../users/user.entity';
 import { CommentVotesService } from './comment-votes.service';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import type { Comment } from './schemas/comment.schema';
+import type { Comment } from './entities/comment.entity';
 
 @UseGuards(JwtAuthGuard)
 @Controller({
@@ -35,7 +32,6 @@ export class CommentsController {
     private readonly commentVotesService: CommentVotesService,
   ) {}
 
-  @UseInterceptors(UserResponseInterceptor)
   @Post()
   public async create(
     @CurrentUser() user: User,
@@ -45,19 +41,16 @@ export class CommentsController {
     return await this.commentsService.create(user, postId, createCommentDto);
   }
 
-  @UseInterceptors(UserResponsesInterceptor)
   @Get()
   public async findAll(@Param('postId', ParseIntPipe) postId: number): Promise<Comment[]> {
     return await this.commentsService.findAll(postId);
   }
 
-  @UseInterceptors(UserResponseInterceptor)
   @Get(':id')
   public async findOne(@Param('id') commentId: string): Promise<Comment | null> {
     return await this.commentsService.findOne(commentId);
   }
 
-  @UseInterceptors(UserResponseInterceptor)
   @Patch(':id')
   public async update(
     @CurrentUser() user: User,
@@ -75,20 +68,14 @@ export class CommentsController {
     await this.commentsService.remove(user, commentId);
   }
 
-  @UseInterceptors(UserResponseInterceptor)
   @Post(':id/vote')
   public async vote(
     @CurrentUser() user: User,
     @Param('id') id: string,
     @Body() voteDto: VoteDto,
   ): Promise<Comment> {
-    switch (voteDto.value) {
-      case -1:
-        return await this.commentVotesService.downvote(user, id);
-      case 0:
-        return await this.commentVotesService.neutralize(user, id);
-      case 1:
-        return await this.commentVotesService.upvote(user, id);
-    }
+    if (voteDto.value === 0)
+      return await this.commentVotesService.neutralize(user, id);
+    return await this.commentVotesService.update(user, id, voteDto.value);
   }
 }
