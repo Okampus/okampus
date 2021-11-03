@@ -1,25 +1,17 @@
 import {
   IsDate,
-  IsInt,
-  IsNotEmpty,
+  IsEnum,
   IsOptional,
   IsString,
 } from 'class-validator';
+import { FileKind } from '../../shared/types/file-kind.enum';
 
 export class CreateFileUploadDto {
-  @IsNotEmpty()
-  @IsString()
-  originalName: string;
-
   @IsString()
   type: string;
 
-  @IsString()
-  fileKind: string;
-
-  @IsNotEmpty()
-  @IsInt()
-  fileSize: number;
+  @IsEnum(FileKind)
+  fileKind: FileKind;
 
   @IsOptional()
   @IsDate()

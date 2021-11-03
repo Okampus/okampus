@@ -1,4 +1,4 @@
-export enum PostTypes {
+export enum PostType {
   Question,
   Suggestion,
   Problem,

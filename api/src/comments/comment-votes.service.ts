@@ -1,73 +1,71 @@
+import { EntityRepository } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import type { Post } from '../posts/schemas/post.schema';
-import type { User } from '../users/user.schema';
-import { CommentVote } from './schemas/comment-vote.schema';
-import { Comment } from './schemas/comment.schema';
+import type { User } from '../users/user.entity';
+import { CommentVote } from './entities/comment-vote.entity';
+import { Comment } from './entities/comment.entity';
 
 @Injectable()
 export class CommentVotesService {
   constructor(
-    @InjectModel(Comment.name) private readonly commentModel: Model<Comment>,
-    @InjectModel(CommentVote.name) private readonly commentVotesModel: Model<CommentVote>,
+    @InjectRepository(Comment) private readonly commentRepository: EntityRepository<Comment>,
+    @InjectRepository(CommentVote) private readonly commentVotesRepository: EntityRepository<CommentVote>,
   ) {}
 
-  public async upvote(user: User, commentId: string): Promise<Comment> {
-    const comment = await this.commentModel.findById(commentId).populate<{ post: Post }>('post');
+  public async update(user: User, commentId: string, value: -1 | 1): Promise<Comment> {
+    const comment = await this.commentRepository.findOne({ commentId });
     if (!comment)
       throw new NotFoundException('Comment not found');
     if (comment.post.locked)
       throw new ForbiddenException('Post locked');
 
-    const existed = await this.commentVotesModel.findOneAndUpdate(
-      { comment, user: user._id },
-      { value: 1 },
-      { upsert: true },
-    );
-    if (existed?.value === 1)
+    let vote = await this.commentVotesRepository.findOne({ comment, user });
+    const previousValue = vote?.value;
+    if (previousValue === value)
       return comment;
-    if (existed?.value === -1)
+
+    // Update pivot table
+    if (vote)
+      vote.value = value;
+    else
+      vote = new CommentVote(comment, user, value);
+    await this.commentVotesRepository.persistAndFlush(vote);
+
+    // Update comment
+    if (value === 1)
+      comment.upvotes++;
+    else if (value === -1)
+      comment.downvotes++;
+
+    if (value === 1 && previousValue === -1)
       comment.downvotes--;
-    comment.upvotes++;
-    return await comment.save();
-  }
-
-  public async downvote(user: User, commentId: string): Promise<Comment> {
-    const comment = await this.commentModel.findById(commentId).populate<{ post: Post }>('post');
-    if (!comment)
-      throw new NotFoundException('Comment not found');
-    if (comment.post.locked)
-      throw new ForbiddenException('Post locked');
-
-    const existed = await this.commentVotesModel.findOneAndUpdate(
-      { comment, user: user._id },
-      { value: -1 },
-      { upsert: true },
-    );
-    if (existed?.value === -1)
-      return comment;
-    if (existed?.value === 1)
+    else if (value === -1 && previousValue === 1)
       comment.upvotes--;
-    comment.downvotes++;
-    return await comment.save();
+
+    await this.commentRepository.flush();
+    return comment;
   }
 
   public async neutralize(user: User, commentId: string): Promise<Comment> {
-    const comment = await this.commentModel.findById(commentId).populate<{ post: Post }>('post');
+    const comment = await this.commentRepository.findOne({ commentId });
     if (!comment)
       throw new NotFoundException('Comment not found');
     if (comment.post.locked)
       throw new ForbiddenException('Post locked');
 
-    const oldVote = await this.commentVotesModel.findOneAndRemove({ comment, user: user._id });
-    if (oldVote?.value === 1) {
+    // Update pivot table
+    const oldVote = await this.commentVotesRepository.findOne({ comment, user });
+    if (!oldVote)
+      return comment;
+    await this.commentVotesRepository.removeAndFlush(oldVote);
+
+    // Update comment
+    if (oldVote?.value === 1)
       comment.upvotes--;
-      await comment.save();
-    } else if (oldVote?.value === -1) {
+    else if (oldVote?.value === -1)
       comment.downvotes--;
-      await comment.save();
-    }
+
+    await this.commentRepository.flush();
     return comment;
   }
 }

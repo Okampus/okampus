@@ -1,73 +1,71 @@
+import { EntityRepository } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import type { Post } from '../posts/schemas/post.schema';
-import type { User } from '../users/user.schema';
-import { ReplyVote } from './schemas/reply-vote.schema';
-import { Reply } from './schemas/reply.schema';
+import type { User } from '../users/user.entity';
+import { ReplyVote } from './entities/reply-vote.entity';
+import { Reply } from './entities/reply.entity';
 
 @Injectable()
 export class ReplyVotesService {
   constructor(
-    @InjectModel(Reply.name) private readonly replyModel: Model<Reply>,
-    @InjectModel(ReplyVote.name) private readonly replyVotesModel: Model<ReplyVote>,
+    @InjectRepository(Reply) private readonly replyRepository: EntityRepository<Reply>,
+    @InjectRepository(ReplyVote) private readonly replyVotesRepository: EntityRepository<ReplyVote>,
   ) {}
 
-  public async upvote(user: User, replyId: string): Promise<Reply> {
-    const reply = await this.replyModel.findById(replyId).populate<{ post: Post }>('post');
+  public async update(user: User, replyId: string, value: -1 | 1): Promise<Reply> {
+    const reply = await this.replyRepository.findOne({ replyId });
     if (!reply)
       throw new NotFoundException('Reply not found');
     if (reply.post.locked)
       throw new ForbiddenException('Post locked');
 
-    const existed = await this.replyVotesModel.findOneAndUpdate(
-      { reply, user: user._id },
-      { value: 1 },
-      { upsert: true },
-    );
-    if (existed?.value === 1)
+    let vote = await this.replyVotesRepository.findOne({ reply, user });
+    const previousValue = vote?.value;
+    if (previousValue === value)
       return reply;
-    if (existed?.value === -1)
+
+    // Update pivot table
+    if (vote)
+      vote.value = value;
+    else
+      vote = new ReplyVote(reply, user, value);
+    await this.replyVotesRepository.persistAndFlush(vote);
+
+    // Update reply
+    if (value === 1)
+      reply.upvotes++;
+    else if (value === -1)
+      reply.downvotes++;
+
+    if (value === 1 && previousValue === -1)
       reply.downvotes--;
-    reply.upvotes++;
-    return await reply.save();
-  }
-
-  public async downvote(user: User, replyId: string): Promise<Reply> {
-    const reply = await this.replyModel.findById(replyId).populate<{ post: Post }>('post');
-    if (!reply)
-      throw new NotFoundException('Reply not found');
-    if (reply.post.locked)
-      throw new ForbiddenException('Post locked');
-
-    const existed = await this.replyVotesModel.findOneAndUpdate(
-      { reply, user: user._id },
-      { value: -1 },
-      { upsert: true },
-    );
-    if (existed?.value === -1)
-      return reply;
-    if (existed?.value === 1)
+    else if (value === -1 && previousValue === 1)
       reply.upvotes--;
-    reply.downvotes++;
-    return await reply.save();
+
+    await this.replyRepository.flush();
+    return reply;
   }
 
   public async neutralize(user: User, replyId: string): Promise<Reply> {
-    const reply = await this.replyModel.findById(replyId).populate<{ post: Post }>('post');
+    const reply = await this.replyRepository.findOne({ replyId });
     if (!reply)
       throw new NotFoundException('Reply not found');
     if (reply.post.locked)
       throw new ForbiddenException('Post locked');
 
-    const oldVote = await this.replyVotesModel.findOneAndRemove({ reply, user: user._id });
-    if (oldVote?.value === 1) {
+    // Update pivot table
+    const oldVote = await this.replyVotesRepository.findOne({ reply, user });
+    if (!oldVote)
+      return reply;
+    await this.replyVotesRepository.removeAndFlush(oldVote);
+
+    // Update reply
+    if (oldVote?.value === 1)
       reply.upvotes--;
-      await reply.save();
-    } else if (oldVote?.value === -1) {
+    else if (oldVote?.value === -1)
       reply.downvotes--;
-      await reply.save();
-    }
+
+    await this.replyRepository.flush();
     return reply;
   }
 }

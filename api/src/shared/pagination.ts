@@ -1,38 +1,24 @@
-import type { CustomLabels, PaginateResult } from 'mongoose';
-
-export const customLabels: CustomLabels & { pagingCounter: string } = {
-  totalDocs: 'itemCount',
-  docs: 'items',
-  limit: 'itemsPerPage',
-  page: 'page',
-  nextPage: 'nextPage',
-  prevPage: 'prevPage',
-  totalPages: 'pageCount',
-  pagingCounter: 'startAt',
-};
-
-export function labelize<T>(result: PaginateResult<T>): CustomPaginateResult<T> {
+export function labelize<T>(
+  result: T[],
+  stats: { offset: number; itemsPerPage: number; total: number },
+): CustomPaginateResult<T> {
   return {
-    itemCount: result.totalDocs,
-    items: result.docs,
-    itemsPerPage: result.limit,
-    page: result.page,
-    nextPage: result.nextPage,
-    prevPage: result.prevPage,
-    pageCount: result.totalPages,
-    startAt: result.pagingCounter,
+    items: result,
+    itemCount: result.length,
+    itemsPerPage: stats.itemsPerPage,
+    offset: stats.offset,
+    page: stats.offset / stats.itemsPerPage,
+    totalPages: Math.ceil(stats.total / stats.itemsPerPage),
+    totalItemCount: stats.total,
   };
 }
 
 export interface CustomPaginateResult<T> {
-  itemCount: number;
-  items: T[];
-  itemsPerPage: number;
-  page: number | null | undefined;
-  nextPage: number | null | undefined;
-  prevPage: number | null | undefined;
-  pageCount: number;
-  startAt: number;
+  items: T[]; // Responded items
+  itemCount: number; // Number of items in response
+  itemsPerPage: number; // Size of each page
+  offset: number; // Item number to start at
+  page: number; // Current page index
+  totalPages: number; // Number of total pages
+  totalItemCount: number; // Number of total items
 }
-
-export type CustomPaginationResponse<T> = CustomPaginateResult<T> | { items: T[] };

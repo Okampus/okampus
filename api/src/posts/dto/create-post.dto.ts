@@ -6,7 +6,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { PostTypes } from '../../shared/types/post-types.enum';
+import { PostType } from '../../shared/types/post-type.enum';
 
 export class CreatePostDto {
   @IsNotEmpty()
@@ -21,8 +21,8 @@ export class CreatePostDto {
   @IsString()
   body: string;
 
-  @IsEnum(PostTypes)
-  type: PostTypes;
+  @IsEnum(PostType)
+  type: PostType;
 
   @IsArray()
   @IsString({ each: true })

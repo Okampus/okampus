@@ -1,12 +1,8 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import type { JwtSignOptions } from '@nestjs/jwt';
 import { JwtService } from '@nestjs/jwt';
 import { config } from '../config';
-import type { User } from '../users/user.schema';
+import type { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import type { Token } from './jwt-auth.guard';
 
@@ -43,7 +39,7 @@ export class AuthService {
 
   public async login(user: User): Promise<TokenResponse> {
     const payload: Token = {
-      sub: user.id,
+      sub: user.userId,
       username: user.username,
     };
 

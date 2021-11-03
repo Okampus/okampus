@@ -1,4 +1,4 @@
-export enum FileType {
+export enum FileKind {
   Avatars = 'avatars',
   InfoDocs = 'info-docs',
   Integrations = 'integrations',
