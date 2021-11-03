@@ -40,31 +40,24 @@ Pour lancer HorizonWeb localement, il faut suivre ces étapes :
 
 ### Pour le Backend
 
-1. Installez [MongoDB Community Edition].
-1. Dupliquez puis renommez le fichier `.env.example` dans le dossier `api/`, en `.env`.
-1. Remplissez ce fichier avec vos tokens et votre configuration.
-1. Installez les dependences avec `npm install`.
-1. Lancez l'API en mode "développement" avec `npm run dev`.
+2. Installez [PostgreSQL 13].
+2. Dupliquez puis renommez le fichier `.env.example` dans le dossier `api/`, en `.env`.
+2. Remplissez ce fichier avec vos tokens et votre configuration.
+2. Installez les dependences avec `npm install`.
+2. Initialisez la base de données postgreSQL avec `npx mikro-orm schema:screate -r`
+2. Lancez l'API en mode "développement" avec `npm run dev`.
 
 ### Pour le Frontend
 
-1. Installez les dependences avec `npm install`.
-1. Lancez HorizonWeb en mode "développement" avec `npm run dev`.
+2. Dupliquez puis renommez le fichier `.env.example` dans le dossier `site/`, en `.env`.
+2. Installez les dependences avec `npm install`.
+2. Lancez HorizonWeb en mode "développement" avec `npm run dev`.
 
-### D'autres commandes importantes
+### Via Docker
 
-```bash
-# Lancer les tests de style de code ('lint')
-$ npm run lint
-# Appliquer automatiquement les règles de style de code
-$ npm run lint:fix
-# Lancer le front ou le back en mode de développement
-$ npm run dev
-# Lancer le front ou le back en mode de production
-$ npm start
-```
+Si vous préférez utiliser Docker, un container est disponible. Il vous suffit de le lancer avec `docker-compose up` à la racine du projet.
 
 <!-- Link Dump -->
 
 [Node.js]: https://nodejs.org/en/download/
-[MongoDB Community Edition]: https://docs.mongodb.com/manual/installation/
+[PostgreSQL 13]: https://www.postgresqltutorial.com/postgresql-getting-started/

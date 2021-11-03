@@ -6,7 +6,6 @@ interface Config {
   uploadPath: string;
   port: number;
   nodeEnv: 'development' | 'production' | 'test';
-  mongoUri: string;
   frontEndUrl: string;
   accessTokenSecret: string;
   accessTokenExpiration: string;
@@ -37,11 +36,6 @@ export const config = createProfiguration<Config>({
     default: 'development',
     format: ['development', 'production', 'test'],
     env: 'NODE_ENV',
-  },
-  mongoUri: {
-    default: 'mongodb://localhost/horizon-db',
-    format: String,
-    env: 'MONGO_URI',
   },
   frontEndUrl: {
     default: 'http://localhost:8080',
