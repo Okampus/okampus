@@ -10,8 +10,6 @@ export default {
     path: './migrations',
   },
   type: 'postgresql',
-  username: 'horizon-admin',
-  dbName: 'horizon',
   entities: ['./dist/**/*.entity.js'],
   entitiesTs: ['./src/**/*.entity.ts'],
   debug: config.get('nodeEnv') === 'development',
