@@ -1,12 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import AdminSide from '@/pages/AdminSide.vue'
 import Landing from '@/pages/Landing.vue'
-import ThreadCompactView from '@/pages/Post/ThreadCompactView.vue'
-import PostNew from '@/pages/Post/PostNew.vue'
-import FileUpload from '@/pages/FileUpload.vue'
-import PostList from '@/pages/Post/PostList.vue'
-import Filler from '@/pages/Filler.vue'
-import Settings from '@/pages/Settings.vue'
 
 const routes = [
   {
@@ -27,7 +20,7 @@ const routes = [
   },
   {
     path: '/post/:id',
-    component: ThreadCompactView,
+    component: () => import('@/pages/Post/ThreadCompactView.vue'),
     props: {
       post: {
         views: 194,
@@ -207,37 +200,37 @@ const routes = [
 
   {
     path: '/new-post',
-    component: PostNew
+    component: () => import('@/pages/Post/PostNew.vue')
   },
 
   {
     path: '/dashboard',
-    component: AdminSide
+    component: () => import('@/pages/AdminSide.vue')
   },
 
   {
     path: '/file-upload',
-    component: FileUpload
+    component: () => import('@/pages/FileUpload.vue')
   },
 
   {
     path: '/posts',
-    component: PostList
+    component: () => import('@/pages/Post/PostList.vue')
   },
 
   {
     path: '/filler',
-    component: Filler
+    component: () => import('@/pages/Filler.vue')
   },
 
   {
     path: '/my-account',
-    component: Settings
+    component: () => import('@/pages/Settings.vue')
   },
 
   {
     path: '/secret',
-    component: Filler,
+    component: () => import('@/pages/Filler.vue'),
     beforeEnter: (to, from, next) => {
       // ...
     }
