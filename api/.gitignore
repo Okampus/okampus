@@ -5,6 +5,7 @@
 /dist
 /node_modules
 /temp
+/uploads
 
 # Logs
 *.log
