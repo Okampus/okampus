@@ -1,49 +1,40 @@
 <template>
   <div>
     <div class="text-1 border-1 bg-1 rounded-md">
-      <div class="px-4 pt-4 text-3xl font-bold text-center">
-        #{{ post.number }} - {{ post.title }}
-      </div>
-      <div class="flex pb-4 pr-4 mt-1">
-        <div class="flex flex-col w-1/12 items-center">
+      <div class="flex pr-4">
+        <div class="flex flex-col w-2/12 items-center bg-2 border-r pb-4">
+          <img
+            :src="reply.creator.img"
+            alt="Profile Picture"
+            class="bg-white w-24 h-24 mt-4"
+          >
+          <div class="font-bold">
+            {{ reply.creator.pseudo }}
+          </div>
+          <div>{{ reply.creator.role }}</div>
           <i class="ri-arrow-up-s-line" />
           <div class="text-center">
-            {{ post.upvotes }}
+            {{ reply.upvotes }}
           </div>
           <i class="ri-arrow-down-s-line" />
           <i class="ri-star-line" />
           <i class="ri-notification-2-line" />
           <i class="ri-flag-line" />
         </div>
-        <div class="w-11/12">
-          <i class="ri-edit-line ml-3 inline-block" />
-          <i class="ri-archive-line ml-3 inline-block" />
+        <div class="w-10/12 pl-2 pb-4">
+          <div class="px-4 pt-4 text-3xl font-bold text-center">
+            {{ reply.title }}
+          </div>
+          <i class="ri-edit-line" />
+          <i class="ri-archive-line" />
           <div class="p-1 mt-2 text-2 text-sm">
-            {{ post.content }}
+            {{ reply.content }}
           </div>
-        </div>
-      </div>
-      <div class="flex bg-2 border-t rounded-b-md">
-        <img
-          :src="post.creator.img"
-          alt="Profile Picture"
-          class="bg-white w-24 h-24"
-        >
-        <div class="relative ml-3">
-          <div>
-            <div class="inline-block text-lg font-medium">
-              {{ post.creator.pseudo }}
-            </div>
-            <div class="inline-block ml-3 text-sm">
-              {{ post.creator.role }}
-            </div>
-          </div>
-          <div>dfs</div>
         </div>
       </div>
     </div>
     <div
-      v-for="comment in post.responses"
+      v-for="comment in reply.comments"
       :key="comment"
     >
       <Comment :comment="comment" />
@@ -56,12 +47,12 @@ import { defineComponent } from 'vue'
 import Comment from '@/components/Comment.vue'
 
 export default defineComponent({
-  name: 'Message',
+  name: 'Reply',
   components: {
     Comment
   },
   props: {
-    post: {
+    reply: {
       type: Object,
       default: () => {}
     }

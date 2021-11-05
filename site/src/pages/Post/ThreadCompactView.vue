@@ -4,13 +4,13 @@
     <div class="flex mb-4 items-center">
       <div class="text-1 bg-3 rounded-md px-4 py-2 flex-shrink-0">
         <div class="flex space-x-2">
-          <i class="ri-file-edit-fill" /> <p>{{ timeAgo (post.createdAt, 'long') }}</p>
+          <i class="ri-file-edit-fill" /> <p>{{ timeAgo (thread.createdAt, 'long') }}</p>
         </div>
         <div class="flex space-x-2">
-          <i class="ri-history-line" /> <p>{{ timeAgo (post.updatedAt, 'long') }}</p>
+          <i class="ri-history-line" /> <p>{{ timeAgo (thread.updatedAt, 'long') }}</p>
         </div>
         <div class="flex space-x-2">
-          <i class="ri-eye-line" /> <p>{{ post.views }} vues</p>
+          <i class="ri-eye-line" /> <p>{{ thread.views }} vues</p>
         </div>
       </div>
       <div class="text-1 mx-2 w-full border-1 bg-1 rounded-md text-center h-24">
@@ -42,14 +42,14 @@
       <div class="w-9/12 flex">
         <div>
           <div>
-            <Reply :post="post.post" />
+            <post :post="thread.post" />
           </div>
           <div
-            v-for="response in post.responses"
-            :key="response"
+            v-for="(reply, i) in thread.replies"
+            :key="i"
             class="mt-4 w-11/12 float-right"
           >
-            <Response :response="response" />
+            <reply :reply="reply" />
           </div>
         </div>
       </div>
@@ -63,8 +63,8 @@
             <i class="ri-menu-add-line" />
           </div>
           <div class="flex flex-wrap">
-            <Tag
-              v-for="tag in post.tags"
+            <tag
+              v-for="tag in thread.tags"
               :key="tag"
               class="mr-1 mb-1"
               :name="tag.title"
@@ -80,8 +80,8 @@
             <i class="ri-settings-2-line" />
             <i class="ri-arrow-left-right-line" />
           </div>
-          <Contributors
-            v-for="contributor in post.contributors"
+          <contributors
+            v-for="contributor in thread.contributors"
             :key="contributor"
             :contributor="contributor"
             class="inline-block"
@@ -96,8 +96,8 @@
             <i class="ri-arrow-left-circle-fill" />
             <i class="ri-arrow-right-circle-fill" />
           </div>
-          <SimilarTopic
-            v-for="topic in post.similarTopics"
+          <similar-topic
+            v-for="topic in thread.similarTopics"
             :key="topic"
             :topic="topic"
             class="mb-2"
@@ -110,12 +110,11 @@
 
 <script lang="js">
 import { defineComponent } from 'vue'
+import Post from '@/components/Post.vue'
 import Reply from '@/components/Reply.vue'
-import Response from '@/components/Response.vue'
 import Tag from '@/components/Tag.vue'
 import Contributors from '@/components/Contributor.vue'
 import SimilarTopic from '@/components/SimilarTopic.vue'
-// import Comment from '@/components/Comment.vue'
 
 export default defineComponent({
   name: 'Thread',
@@ -123,12 +122,11 @@ export default defineComponent({
     Tag,
     Contributors,
     SimilarTopic,
-    Reply,
-    Response
-    // Comment
+    Post,
+    Reply
   },
   props: {
-    post: {
+    thread: {
       type: Object,
       default: () => {}
     }
@@ -157,28 +155,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style scoped>
-ol {
-  margin: 0;
-  list-style: none;
-  padding: 0;
-  --hue: 1;
-  --unit: 1rem;
-}
-.event-date {
-  margin: 0 0 0.25rem;
-  font-weight: bold;
-}
-.event-description {
-  margin: 0;
-}
-li {
-  position: relative;
-  display: block;
-  background-color: hsl(calc(var(--hue)*360/20),90%,65%);
-  border-color: hsl(calc(var(--hue)*360/20),90%,65%);
-  padding: 1rem;
-  margin: 2rem 0;
-}
-</style>

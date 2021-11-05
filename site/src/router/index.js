@@ -22,7 +22,7 @@ const routes = [
     path: '/post/:id',
     component: () => import('@/pages/Post/ThreadCompactView.vue'),
     props: {
-      post: {
+      thread: {
         views: 194,
         createdAt: '2021-02-04T13:51:36.631Z',
         updatedAt: '2021-03-04T13:51:36.631Z',
@@ -36,7 +36,7 @@ const routes = [
             role: 'Rôle',
             img: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'
           },
-          responses: [{
+          comments: [{
             author: 'Pseudo',
             content: 'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis .',
             likes: '185'
@@ -52,7 +52,7 @@ const routes = [
             likes: '185'
           }]
         },
-        responses: [{
+        replies: [{
           upvotes: 69,
           title: 'Les ordinateurs sur la deuxième rangée en salle E103 ne fonctionnent plus !',
           content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut nihil reprehenderit esse aperiam odit dignissimos, praesentium quia blanditiis autem atque molestias officiis deleniti magnam libero a? Optio recusandae totam soluta! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Impedit optio, praesentium obcaecati facere quasi',
@@ -61,7 +61,7 @@ const routes = [
             role: 'Role',
             img: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'
           },
-          responses: [{
+          comments: [{
             author: 'Pseudo',
             content: 'Neque iudicantibus lacrimae maestitia filium maeror certe quod iudicantibus autem parentis .',
             likes: 185
