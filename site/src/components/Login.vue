@@ -14,25 +14,27 @@
         <div class="space-y-3 mt-4">
           <div>
             <label
-              for="email"
+              for="username"
               class="block tracking-wider text-sm font-semibold text-gray-600 uppercase"
-            >E-mail</label>
+            >Identifiant</label>
             <input-with-icon
               v-model="user.username"
-              name="email"
-              :icon="userIcon"
+              name="username"
+              icon="ri-shield-user-fill ri-xl"
+              placeholder="Entrez votre identifiant..."
             />
           </div>
           <div>
             <label
               for="password"
               class="block tracking-wider mt-2 text-sm font-semibold text-gray-600 uppercase"
-            >Password</label>
+            >Mot de passe</label>
             <input-with-icon
               v-model="user.password"
               name="password"
-              :icon="passwordIcon"
+              icon="ri-key-2-fill ri-xl"
               type="password"
+              placeholder="Entrez votre mot de passe..."
             />
           </div>
         </div>
@@ -118,8 +120,6 @@ export default defineComponent({
   },
   data () {
     return {
-      userIcon: "<i class='ri-shield-user-fill ri-xl'></i>",
-      passwordIcon: "<i class='ri-key-2-fill ri-xl'></i>",
       user: new User('', '', '')
     }
   },

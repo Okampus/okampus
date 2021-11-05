@@ -12,9 +12,9 @@
     </div>
     <div class="relative mt-32 mb-10 flex flex-col mx-auto w-11/12">
       <post-card
-        v-for="post in posts"
-        :key="post.id"
-        class="mb-4"
+        v-for="(post, i) in posts"
+        :key="i"
+        class="mb-2"
         :post="post"
       />
     </div>

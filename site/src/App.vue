@@ -19,7 +19,7 @@
         <div
           class="flex-grow-1 flex-shrink-0 flex-auto"
         >
-          <router-view class="my-7 mx-9" />
+          <router-view />
         </div>
         <page-footer class="flex-shrink-0" />
       </div>
@@ -176,12 +176,11 @@ export default defineComponent({
 <style lang="scss">
 
 @import "~@/assets/scss/themes.scss";
-
 @import "~@/assets/scss/components/button.scss";
 @import "~@/assets/scss/components/card.scss";
 @import "~@/assets/scss/components/input.scss";
 @import "~@/assets/scss/components/section.scss";
-
+@import "~@/assets/scss/components/link.scss";
 @import "~@/assets/css/constants/spacing.css";
 
 @font-face {

@@ -91,7 +91,7 @@ export default defineComponent({
     },
     inputPlaceholder: {
       type: String,
-      default: '<p><Placeholder></p>'
+      default: 'Écrivez votre texte ici...'
     },
     charCount: Boolean,
     charCountLimit: {
@@ -241,44 +241,42 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-  @import "~@/assets/scss/components/input";
-  // @import "~@/assets/css/utils/box.css";
-  // @import "~@/assets/css/utils/button.css";
 
-  .character-count {
-    margin-top: 1rem;
-    display: flex;
-    align-items: center;
-    color: #68CEF8;
+@import "~@/assets/scss/components/input.scss";
 
-    &--warning {
-      color: #FB5151;
-    }
+.character-count {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  color: #68CEF8;
 
-    &__graph {
-      margin-right: 0.5rem;
-    }
-
-    &__text {
-      color: #868e96;
-    }
+  &--warning {
+    color: #FB5151;
   }
 
-  .ProseMirror p.is-editor-empty:first-child::before {
-      content: attr(data-placeholder);
-      float: left;
-      @apply dark:text-placeholder-light text-placeholder-dark;
-      pointer-events: none;
-      height: 0;
+  &__graph {
+    margin-right: 0.5rem;
   }
 
-  .ProseMirror {
-    @extend .input-border;
-    @apply text-gray-900 dark:text-gray-100 rounded-t-none focus:rounded-t focus:outline-none outline-none min-h-20 px-2 py-1;
-    // @apply border rounded-b outline-none px-2 py-1 shadow-inner min-h-20 border-gray-300 dark:border-white
+  &__text {
+    color: #868e96;
   }
+}
 
-  .icon-button.is-active {
-    @apply bg-blue-500 border-indigo-800 dark:shadow-none;
-  }
+.ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    @apply dark:text-placeholder-light text-placeholder-dark;
+    pointer-events: none;
+    height: 0;
+}
+
+.ProseMirror {
+  @extend .input-border;
+  @apply text-gray-900 dark:text-gray-100 rounded-t-none focus:rounded-t focus:outline-none outline-none min-h-20 px-2 py-1;
+}
+
+.icon-button.is-active {
+  @apply bg-blue-500 border-indigo-800 dark:shadow-none;
+}
 </style>

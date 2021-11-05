@@ -201,8 +201,6 @@
                   input-border
                   bg-2
                   rounded
-                  border
-                  border-color-3
                   pl-8
                   pr-6
                   py-2

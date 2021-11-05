@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-row text-gray-600 focus-within:text-gray-900 dark:text-gray-400 dark:focus-within:text-white">
-    <span
-      class="flex items-center py-1 px-2 bg-3 rounded-l-md border-gray-300 dark:border-white border"
-      v-html="icon"
+    <i
+      class="flex items-center py-1 px-2 bg-3 rounded-l-md border-r-0 border-gray-300 dark:border-white border"
+      :class="icon"
     />
     <input
       ref="input"
@@ -36,7 +36,7 @@ export default defineComponent({
     },
     placeholder: {
       type: String,
-      default: '<Placeholder>'
+      default: 'Entrez du texte...'
     },
     type: {
       type: String,
@@ -51,7 +51,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style scoped lang="scss">
-  @import "~@/assets/scss/components/input.scss";
-</style>

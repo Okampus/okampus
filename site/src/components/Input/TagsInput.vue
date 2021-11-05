@@ -3,7 +3,7 @@
     ref="tagsContainer"
     class="flex flex-grow-0 flex-wrap items-center input input-border w-full cursor-text h-max"
     tabindex="0"
-    :focused="focused"
+    :="focused ? {focused: ''} : {}"
     @focus="tagsInput.focus()"
   >
     <div class="flex flex-wrap">
