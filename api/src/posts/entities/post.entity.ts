@@ -22,20 +22,28 @@ export class Post {
   @Property({ type: 'text' })
   body!: string;
 
+  // TODO: Add full 'tag' support
   @Property()
   tags: string[] = [];
 
+  // TODO: Add full 'type' support
   @Enum()
   type!: PostType;
 
   @ManyToOne()
   author!: User;
 
+  // TODO: Add full 'locked' support
   @Property()
   locked = false;
 
+  // TODO: Add full 'opened' support
   @Property()
   opened = true;
+
+  // TODO: Add full 'solved' support
+  @Property()
+  solved = false;
 
   // TODO: Add full 'views' support
   @Property()
