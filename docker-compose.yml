@@ -7,22 +7,26 @@ services:
     restart: always
     volumes:
       - ./data/db:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: root
-      POSTGRES_USER: root
-      POSTGRES_DB: horizon-db
+      - ./scripts/:/docker-entrypoint-initdb.d/
     ports:
-      - 5432:5432
-    
+      - 54321:5432
+    networks:
+      - backend
+    environment:
+      - POSTGRES_USER=horizon-admin
+      - POSTGRES_PASSWORD=root
+
   adminer:
     image: adminer:4.8.1-standalone
     restart: always
     depends_on:
       - horizon-db
     ports:
-      - 8081:8080
+      - 28081:8082
     environment:
       ADMINER_DEFAULT_SERVER: horizon-db
+    networks:
+      - backend
 
   horizon-api:
     build: ./api
@@ -30,12 +34,21 @@ services:
     depends_on:
       - horizon-db
     ports:
-      - 5000:5000
+      - 28080:8081
+    networks:
+      - backend
+    environment:
+      WAIT_HOSTS: horizon-db:5432
+      MIKRO_ORM_HOST: horizon-db
 
-  horizon-site:
-    build: ./site
-    restart: always
-    depends_on:
-      - horizon-api
-    ports:
-      - 8080:8080
+  # horizon-site:
+  #   build: ./site
+  #   restart: always
+  #   depends_on:
+  #     - horizon-api
+  #   ports:
+  #     - 28080:8080
+
+networks:
+  backend:
+    driver: bridge

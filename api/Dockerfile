@@ -7,10 +7,13 @@ ADD .env ./
 ADD package*.json ./
 RUN npm install
 ADD . ./
+RUN chmod +x ./launch.sh
+
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
+RUN chmod +x /wait
 
 RUN chown -R api:api .
 EXPOSE 5000
 USER api
 
-RUN npx mikro-orm schema:create -R
-CMD ["npm", "run", "start:dev"]
+CMD /wait && ./launch.sh
