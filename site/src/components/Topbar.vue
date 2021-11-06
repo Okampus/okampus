@@ -1,7 +1,8 @@
 <template>
   <nav
     id="topbar"
-    class="bg-1 flex fixed top-0 left-0 w-full h-tbar text-1 items-center justify-between border-b"
+    class="bg-1 flex fixed top-0 left-0 w-full h-tbar text-1 items-center justify-between border-b
+    topbar-shadow"
   >
     <div class="flex flex-shrink-0 px-4 w-sbar items-center justify-center">
       <button
@@ -18,7 +19,8 @@
         <input
           id="search-input"
           type="text"
-          class="bg-1 w-full text-1 placeholder-3 px-3 py-1.5 pr-10 text-lg border-b-2 border-color-4 hover:border-indigo-500 focus-border-1 focus:ring-4 focus:rounded-md outline-none"
+          class="bg-1 w-full text-1 placeholder-3 px-3 py-1.5 pr-10 text-lg border-b-2 border-color-4
+          hover:border-indigo-500 focus-border-1 focus:ring-4 focus:rounded-md outline-none"
           placeholder="Rechercher..."
           @input="(e) => $emit('updateSearch', e.target.value)"
         >
@@ -111,9 +113,19 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "~@/assets/scss/utils/get-color.scss";
 
-  input.focus-border-1:focus {
-    @include get-color('border', 1, true);
+@import "~@/assets/scss/utils/get-color.scss";
+
+.topbar-shadow {
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  clip-path: inset(0px 0px -15px 0px);
+  :root.dark & {
+    box-shadow: 0 0 10px rgba(0,0,0,0.75);
   }
+}
+
+input.focus-border-1:focus {
+  @include get-color('border', 1, true);
+}
+
 </style>

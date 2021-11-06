@@ -1,10 +1,12 @@
 <template>
   <aside
     id="sidebar"
-    :class="{'-l-sbar': closed || collapsing, 'fixed': uncollapsed, 'h-screen': uncollapsed,
-             'sticky': !uncollapsed, 'top-tbar': !uncollapsed, 'h-content': !uncollapsed}"
-    class="overflow-hidden flex flex-col
-    flex-shrink-0 w-sbar bg-1
+    :class="{
+      '-l-sbar': closed || collapsing, 'sidebar-shadow': uncollapsed || !closed || collapsing,
+      'fixed': uncollapsed, 'h-screen': uncollapsed, 'sticky': !uncollapsed,
+      'top-tbar': !uncollapsed, 'h-content': !uncollapsed
+    }"
+    class="overflow-hidden flex flex-col flex-shrink-0 w-sbar bg-1
     border-r border-bar whitespace-nowrap tr-spacing z-50"
   >
     <div
@@ -18,7 +20,6 @@
       >
         <i class="ri-close-line text-4xl text-1" />
       </button>
-      <!-- <div class="brand w-32 h-6 flex-shrink-0" /> -->
     </div>
 
     <div class="overflow-y-auto overflow-x-hidden app-scrollbar-on-hover">
@@ -136,6 +137,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+
+.sidebar-shadow {
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  clip-path: inset(0px -15px 0px 0px);
+  :root.dark & {
+    box-shadow: 0 0 10px rgba(0,0,0,0.75);
+  }
+}
 
 .tr-spacing {
   transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, margin-left 500ms;

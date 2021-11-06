@@ -14,7 +14,7 @@
       <div
         ref="content"
         :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
-        class="deep-inner-shadow w-full bg-2 h-content flex flex-col relative top-tbar overflow-auto app-scrollbar filter"
+        class="w-full bg-2 h-content flex flex-col relative top-tbar overflow-auto app-scrollbar filter"
       >
         <div
           class="flex-grow-1 flex-shrink-0 flex-auto"
@@ -46,12 +46,12 @@
 import debounce from 'lodash/debounce'
 import PageFooter from '@/components/PageFooter.vue'
 
-import { defineComponent, ref } from 'vue'
+import { ref } from 'vue'
 
 import Topbar from '@/components/Topbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 const breakWidth = 1024
-export default defineComponent({
+export default {
   components: {
     Topbar,
     Sidebar,
@@ -160,7 +160,7 @@ export default defineComponent({
       }
     }
   }
-})
+}
 </script>
 
 <style lang="scss">
@@ -185,18 +185,13 @@ export default defineComponent({
   src: url("~@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf") format("truetype");
 }
 
-.deep-inner-shadow::after {
-  content: '';
-  @apply shadow-inner-deep dark:shadow-dark-inner-deep h-full w-full absolute top-0 left-0 pointer-events-none;
+* {
+  font-family: AtkinsonHyperlegible;
+  transition: color 300ms, box-shadow 300ms, background-color 300ms linear, border-color 300ms, border-radius 300ms, fill 300ms, stroke 300ms, filter 200ms;
 }
 
 html {
   font-size: 14px;
-}
-
-* {
-  font-family: AtkinsonHyperlegible;
-  transition: color 300ms, box-shadow 300ms, background-color 300ms linear, border-color 300ms, border-radius 300ms, fill 300ms, stroke 300ms, filter 200ms;
 }
 
 @media (min-width: 720px) {
