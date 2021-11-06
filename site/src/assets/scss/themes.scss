@@ -3,8 +3,8 @@
     --brand-url: url("~@/assets/img/logos/horizon_brand.png");
 }
 
-@mixin tailwind-color($tailwind-property, $alt: false, $name: '', $tailwind-property-count: 6) {
-    @if $name == '' {
+@mixin tailwind-color($tailwind-property, $alt: false, $name: "", $tailwind-property-count: 6) {
+    @if $name == "" {
         $name: $tailwind-property;
     }
     $tailwind-property-list: null;
@@ -15,16 +15,15 @@
             .#{$name}-#{$i}-alt {
                 @apply #{$tailwind-property-value}-light dark:#{$tailwind-property-value}-dark;
             }
-    
+
             .#{$name}-#{$i} {
                 @apply #{$tailwind-property-value}-dark dark:#{$tailwind-property-value}-light;
             }
-        }
-        @else {
+        } @else {
             .#{$name}-#{$i} {
                 @apply #{$tailwind-property-value}-light dark:#{$tailwind-property-value}-dark;
             }
-    
+
             .#{$name}-#{$i}-alt {
                 @apply #{$tailwind-property-value}-dark dark:#{$tailwind-property-value}-light;
             }
@@ -34,46 +33,46 @@
     }
 }
 
-@include tailwind-color('bg');
-@include tailwind-color('text', true);
-@include tailwind-color('border', true, 'border-color');
+@include tailwind-color("bg");
+@include tailwind-color("text", true);
+@include tailwind-color("border", true, "border-color");
 
 .border-footer {
-    @apply border-gray-300 dark:border-gray-400
+    @apply border-gray-300 dark:border-gray-400;
 }
 
 .border-bar {
     border-color: #e4e4e7;
-    @apply  dark:border-black
+    @apply dark:border-black;
 }
 
 .divide-color-1 {
-    @apply divide-gray-400 dark:divide-gray-100
+    @apply divide-gray-400 dark:divide-gray-100;
 }
 
 .text-hover-brand {
-    @apply hover:text-indigo-300 focus:outline-none focus:text-blue-400
+    @apply hover:text-indigo-300 focus:outline-none focus:text-blue-400;
 }
 
 .bg-mouse-brand {
-    @apply hover:bg-indigo-100  dark:hover:bg-indigo-400
+    @apply hover:bg-indigo-100  dark:hover:bg-indigo-400;
 }
 
 .bg-mouse-brand.active {
-    box-shadow: inset 5px 0px 0px 0px #6666FF;
-    @apply  bg-indigo-100 dark:bg-indigo-300;
+    box-shadow: inset 5px 0px 0px 0px #6666ff;
+    @apply bg-indigo-100 dark:bg-indigo-300;
 }
 
 .mouse-icon {
-    @apply hover:text-blue-500
+    @apply hover:text-blue-500;
 }
 
 .mouse-icon.active {
-    @apply  text-blue-800;
+    @apply text-blue-800;
 }
 
 .app-scrollbar {
-    @apply scrollbar scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-blue-300 scrollbar-thumb-rounded
+    @apply scrollbar scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-blue-300 scrollbar-thumb-rounded;
 }
 
 .brand {
@@ -81,4 +80,16 @@
     transition: all 300ms;
     background: var(--brand-url) no-repeat 0 0;
     background-size: 100%;
+}
+
+.min-w-1 {
+    min-width: 1em;
+}
+
+.hero {
+    background: linear-gradient(90deg, #ffe100 20%, #ffb800 100%);
+}
+
+:root.dark .hero {
+    background: linear-gradient(90deg, #000d4b 20%, #000926 100%);
 }

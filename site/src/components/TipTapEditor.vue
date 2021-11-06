@@ -242,8 +242,6 @@ export default defineComponent({
 
 <style lang="scss">
 
-@import "~@/assets/scss/components/input.scss";
-
 .character-count {
   margin-top: 1rem;
   display: flex;
@@ -261,19 +259,6 @@ export default defineComponent({
   &__text {
     color: #868e96;
   }
-}
-
-.ProseMirror p.is-editor-empty:first-child::before {
-    content: attr(data-placeholder);
-    float: left;
-    @apply dark:text-placeholder-light text-placeholder-dark;
-    pointer-events: none;
-    height: 0;
-}
-
-.ProseMirror {
-  @extend .input-border;
-  @apply text-gray-900 dark:text-gray-100 rounded-t-none focus:rounded-t focus:outline-none outline-none min-h-20 px-2 py-1;
 }
 
 .icon-button.is-active {

@@ -86,17 +86,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "~@/assets/scss/components/card.scss";
 
 .height {
   min-height: 24rem;
 }
 
-.hero {
-  background: linear-gradient(90deg, #ffe100 20%, #ffb800 100%);
-}
-
-:root.dark .hero {
-  background: linear-gradient(90deg, #000d4b 20%, #000926 100%);
-}
 </style>

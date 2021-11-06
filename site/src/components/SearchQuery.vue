@@ -240,6 +240,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 .tr-flex {
   transition: color 300ms, background-color 300ms linear, border-color 300ms,
     fill 300ms, stroke 300ms, flex-grow 500ms, flex-shrink 500ms;
@@ -266,4 +267,5 @@ export default defineComponent({
 .preview + .preview {
   @apply ml-3;
 }
+
 </style>

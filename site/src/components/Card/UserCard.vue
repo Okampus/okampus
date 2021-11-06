@@ -62,7 +62,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style>
-  /* @import "~@/assets/css/utils/box.css"; */
-</style>

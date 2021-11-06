@@ -217,7 +217,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss">
-  @import "~@/assets/scss/components/input.scss";
-</style>

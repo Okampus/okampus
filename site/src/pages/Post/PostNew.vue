@@ -309,13 +309,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss">
-  .success-message {
-    @apply text-blue-400;
-  }
-
-  .error-message {
-    @apply text-red-500;
-  }
-</style>

@@ -154,13 +154,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "~@/assets/scss/components/card.scss";
 
 .centered-fixed {
-  position: fixed;
-  top: 0;
-  left: 0;
-  transform: translate(calc(50vw - 50%), calc(50vh - 50%));
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(calc(50vw - 50%), calc(50vh - 50%));
 }
 
 </style>

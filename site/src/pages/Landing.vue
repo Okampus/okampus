@@ -259,41 +259,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-  @import "~@/assets/scss/themes.scss";
 
-  .hero {
-    background: linear-gradient(90deg, #ffe100 20%, #ffb800 100%)
-  }
+@import "~@/assets/scss/components/swiper.scss";
 
-  :root.dark .hero {
-    background: linear-gradient(90deg, #000d4b 20%, #000926 100%)
-  }
-
-  .swiper-container {
-    @apply pb-10;
-  }
-
-  .swiper-button-next {
-    @apply top-unset h-7 rounded-full bg-black bottom-0;
-  }
-
-  .swiper-button-next::after {
-    @apply text-lg;
-  }
-
-  .swiper-button-prev {
-    @apply top-unset h-7 rounded-full bg-black bottom-0;
-  }
-
-  .swiper-button-prev::after {
-    @apply text-lg;
-  }
-
-  .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets {
-    @apply w-1/2 left-1/4;
-  }
-
-  .swiper-pagination-bullet {
-    @extend .bg-1;
-  }
 </style>

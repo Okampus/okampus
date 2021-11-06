@@ -21,7 +21,7 @@
       <!-- <div class="brand w-32 h-6 flex-shrink-0" /> -->
     </div>
 
-    <div class="text-1 overflow-y-auto overflow-x-hidden app-scrollbar">
+    <div class="overflow-y-auto overflow-x-hidden app-scrollbar">
       <div class="divide-y divide-color-1">
         <ul
           v-for="linkSection of links"
@@ -39,7 +39,7 @@
                 class="py-1 flex w-full items-center transition-colors bg-mouse-brand duration-300 cursor-pointer"
                 :class="{ active: link.to === $route.path }"
               >
-                <div class="flex flex-col items-center w-full mt-1 mb-2">
+                <div class="flex flex-col items-center w-full mt-1 mb-2 text-2">
                   <i
                     :class="link.icon"
                     class="flex-shrink-0 text-2xl"
@@ -52,16 +52,10 @@
         </ul>
 
         <div class="flex flex-col py-4 items-center">
-          <label
-            class="switch orange"
+          <switch-input
+            v-model="theme"
             @click="$store.dispatch('userConfig/switchTheme')"
-          >
-            <input
-              v-model="theme"
-              type="checkbox"
-            >
-            <span class="slider round" />
-          </label>
+          />
         </div>
       </div>
     </div>
@@ -70,9 +64,11 @@
 
 <script lang="js">
 import { defineComponent, watch } from 'vue'
+import SwitchInput from '@/components/Input/SwitchInput.vue'
 
 export default defineComponent({
   name: 'SidebarBase',
+  components: { SwitchInput },
   props: {
     closed: {
       type: Boolean,
@@ -123,10 +119,8 @@ export default defineComponent({
     }
   },
   mounted () {
-    watch(() => this.$store.getters['userConfig/getTheme'], (newTheme) => {
-      if ((newTheme === 'dark') !== this.theme) {
-        this.theme = newTheme === 'dark'
-      }
+    watch(() => this.$store.getters['userConfig/getTheme'], (theme) => {
+      document.querySelector(':root').className = theme === 'dark' ? 'dark' : ''
     })
   },
   methods: {
@@ -141,10 +135,10 @@ export default defineComponent({
 })
 </script>
 
-<style>
-@import "~@/assets/css/components/switch.css";
+<style lang="scss">
 
 .tr-spacing {
   transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, margin-left 500ms;
 }
+
 </style>

@@ -38,17 +38,16 @@
 
 <script>
 import Tag from '@/components/Tag.vue'
-// import AutoSizeInputInner from '@/components/Input/AutoSizeInputInner.vue'
+
 import { ref } from 'vue'
 export default {
   components: {
-    // AutoSizeInputInner,
     Tag
   },
   props: {
     inputPlaceholder: {
       type: String,
-      default: '<Placehodler>'
+      default: 'Entrez des tags...'
     },
     modelValue: {
       type: Array,
@@ -60,7 +59,7 @@ export default {
     const tagsContainer = ref(null)
     const tagsInput = ref(null)
     const tags = ref(props.modelValue)
-    const newTag = ref('') // keep up with new tag
+    const newTag = ref('')
 
     const addTag = (tag) => {
       if (tagsInput.value.placeholder) {
@@ -72,7 +71,7 @@ export default {
           ctx.emit('error', 'unique')
         } else {
           tags.value.push(tag)
-          newTag.value = '' // reset newTag
+          newTag.value = ''
           ctx.emit('update:modelValue', tags)
         }
       } else {
@@ -95,11 +94,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-  @import "~@/assets/scss/components/input.scss";
-
-  .min-w-1 {
-    min-width: 1em;
-  }
-</style>

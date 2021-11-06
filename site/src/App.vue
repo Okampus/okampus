@@ -46,7 +46,7 @@
 import debounce from 'lodash/debounce'
 import PageFooter from '@/components/PageFooter.vue'
 
-import { defineComponent, watch, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 import Topbar from '@/components/Topbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
@@ -116,19 +116,6 @@ export default defineComponent({
       this.toggleModal()
     })
 
-    watch(() => this.$store.getters['userConfig/getTheme'], (theme) => {
-      const root = document.querySelector(':root')
-      if (theme === 'dark') {
-        if (!root.classList.contains('dark')) {
-          root.classList.add('dark')
-        }
-      } else {
-        if (root.classList.contains('dark')) {
-          root.classList.remove('dark')
-        }
-      }
-    })
-
     window.addEventListener('resize', this.checkResize)
   },
   unmounted () {
@@ -137,6 +124,9 @@ export default defineComponent({
   methods: {
     toggleModal () {
       this.showModal = !this.showModal
+      if (this.showLogin) {
+        this.showLogin = false
+      }
     },
 
     toggleSidebar () {
@@ -179,7 +169,7 @@ export default defineComponent({
 @import "~@/assets/scss/components/button.scss";
 @import "~@/assets/scss/components/card.scss";
 @import "~@/assets/scss/components/input.scss";
-@import "~@/assets/scss/components/section.scss";
+@import "~@/assets/scss/components/tiptap.scss";
 @import "~@/assets/scss/components/link.scss";
 @import "~@/assets/css/constants/spacing.css";
 
@@ -200,9 +190,12 @@ export default defineComponent({
   @apply shadow-inner-deep dark:shadow-dark-inner-deep h-full w-full absolute top-0 left-0 pointer-events-none;
 }
 
+html {
+  font-size: 14px;
+}
+
 * {
   font-family: AtkinsonHyperlegible;
-  font-size: 14px;
   transition: color 300ms, box-shadow 300ms, background-color 300ms linear, border-color 300ms, border-radius 300ms, fill 300ms, stroke 300ms, filter 200ms;
 }
 
