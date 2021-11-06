@@ -33,8 +33,9 @@
               <p class="pr-1">•</p>
               <div
                 :class="[post.solved ? 'text-red-500' : 'text-green-500']"
-                :v-text="[post.solved ? 'Non-Résolu' : '✓ Résolu']"
-              />
+              >
+                {{ post.solved ? 'Non-Résolu' : '✓ Résolu' }}
+              </div>
             </div>
             <div class="flex space-x-1 pl-1">
               <p class="pr-1">•</p>
