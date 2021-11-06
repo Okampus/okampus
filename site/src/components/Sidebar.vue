@@ -21,7 +21,7 @@
       <!-- <div class="brand w-32 h-6 flex-shrink-0" /> -->
     </div>
 
-    <div class="overflow-y-auto overflow-x-hidden app-scrollbar">
+    <div class="overflow-y-auto overflow-x-hidden app-scrollbar-on-hover">
       <div class="divide-y divide-color-1">
         <ul
           v-for="linkSection of links"

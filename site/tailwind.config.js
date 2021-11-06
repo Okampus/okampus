@@ -47,7 +47,8 @@ module.exports = {
       6: {
         light: '#bebebe',
         dark: '#5e5e5e'
-      }
+      },
+      transparent: 'rgba(0, 0, 0, 0)'
     },
     spacing: {
       px: '1px',

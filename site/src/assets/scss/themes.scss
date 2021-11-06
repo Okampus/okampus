@@ -71,8 +71,44 @@
     @apply text-blue-800;
 }
 
+
+
 .app-scrollbar {
-    @apply scrollbar scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-blue-300 scrollbar-thumb-rounded;
+    --scrollbar-thumb-color-hover: #6D6F63;
+    --scrollbar-thumb-color-active: #8F8F80;
+  
+    :root.dark & {
+        --scrollbar-thumb-color-hover: #a3aaaf;
+        --scrollbar-thumb-color-active: #eFeFe0;
+    }
+
+    @apply scrollbar scrollbar-thumb-4-dark dark:scrollbar-thumb-blueGray-500 scrollbar-track-transparent;
+    &::-webkit-scrollbar {
+        width: 12px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb);
+        border: solid 3px transparent;
+        border-radius: 9999px;
+        &:hover {
+            box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color-hover);
+        }
+        &:active {
+            box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color-active);
+        }
+    }
+
+    &-on-hover {
+        @extend .app-scrollbar;
+        &:not(:hover) {
+            @apply scrollbar-thumb-transparent;
+            &::-webkit-scrollbar-thumb {
+                box-shadow: none;
+            }
+        }
+    }
 }
 
 .brand {
