@@ -64,11 +64,11 @@
 </template>
 
 <script lang="js">
-import { defineComponent, watch } from 'vue'
+import { defineComponent } from 'vue'
 import SwitchInput from '@/components/Input/SwitchInput.vue'
 
 export default defineComponent({
-  name: 'SidebarBase',
+  name: 'Sidebar',
   components: { SwitchInput },
   props: {
     closed: {
@@ -109,20 +109,14 @@ export default defineComponent({
   emits: [
     'closeSidebar'
   ],
-  data () {
-    return {
-      theme: this.$store.state.userConfig.theme === 'dark'
-    }
-  },
   computed: {
+    theme () {
+      return this.$store.state.userConfig.theme === 'dark'
+    },
+
     loggedIn () {
       return this.$store.state.auth.status.loggedIn
     }
-  },
-  mounted () {
-    watch(() => this.$store.getters['userConfig/getTheme'], (theme) => {
-      document.querySelector(':root').className = theme === 'dark' ? 'dark' : ''
-    })
   },
   methods: {
     condition (type) {

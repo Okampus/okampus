@@ -66,7 +66,7 @@
 
     <component
       :is="loginComponent"
-      v-if="showLogin"
+      v-if="showLogin && !loggedIn"
     />
   </nav>
 </template>

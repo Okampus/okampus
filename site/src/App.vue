@@ -46,7 +46,7 @@
 import debounce from 'lodash/debounce'
 import PageFooter from '@/components/PageFooter.vue'
 
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 import Topbar from '@/components/Topbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
@@ -100,14 +100,13 @@ export default {
     }
   },
   created () {
-    if (this.$store.state.userConfig.theme === 'dark') {
-      const root = document.querySelector(':root')
-      if (!root.classList.contains('dark')) {
-        root.classList.add('dark')
-      }
-    }
+    document.querySelector(':root').className = this.$store.state.userConfig.theme === 'dark' ? 'dark' : ''
   },
   mounted () {
+    watch(() => this.$store.getters['userConfig/getTheme'], (theme) => {
+      document.querySelector(':root').className = theme === 'dark' ? 'dark' : ''
+    })
+
     this.emitter.on('login', () => {
       this.toggleLogin()
     })
