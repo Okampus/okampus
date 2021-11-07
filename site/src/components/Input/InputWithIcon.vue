@@ -11,6 +11,7 @@
       :type="type"
       class="bg-2 input input-border text-md h-10 w-full rounded-l-none"
       :placeholder="placeholder"
+      :="required ? {required: ''} : {}"
       @input="$emit('update:modelValue', $event.target.value)"
     >
   </div>
@@ -37,6 +38,10 @@ export default defineComponent({
     placeholder: {
       type: String,
       default: 'Entrez du texte...'
+    },
+    required: {
+      type: Boolean,
+      default: false
     },
     type: {
       type: String,
