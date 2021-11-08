@@ -14,7 +14,7 @@ import { User } from '../../users/user.entity';
 })
 export abstract class Vote {
   @PrimaryKey()
-  voteId: number;
+  voteId!: number;
 
   @Enum()
   kind!: 'comment' | 'post' | 'reply';

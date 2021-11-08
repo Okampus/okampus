@@ -14,7 +14,7 @@ import { User } from '../../users/user.entity';
 @Entity()
 export class FileUpload {
   @PrimaryKey()
-  fileUploadId: number;
+  fileUploadId!: number;
 
   @ManyToOne()
   author!: User;

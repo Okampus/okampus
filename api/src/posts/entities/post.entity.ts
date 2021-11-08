@@ -14,7 +14,7 @@ import { User } from '../../users/user.entity';
 @Entity()
 export class Post {
   @PrimaryKey()
-  postId: number;
+  postId!: number;
 
   @Property({ type: 'text' })
   title!: string;
