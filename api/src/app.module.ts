@@ -6,6 +6,7 @@ import { CommentsModule } from './comments/comments.module';
 import { FilesModule } from './files/files.module';
 import { PostsModule } from './posts/posts.module';
 import { RepliesModule } from './replies/replies.module';
+import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -18,6 +19,7 @@ import { UsersModule } from './users/users.module';
     CommentsModule,
     RepliesModule,
     FilesModule,
+    TagsModule,
   ],
   providers: [],
   controllers: [],

@@ -13,7 +13,7 @@ export class PostVotesService {
   ) {}
 
   public async update(user: User, postId: number, value: -1 | 1): Promise<Post> {
-    const post = await this.postRepository.findOne({ postId });
+    const post = await this.postRepository.findOne({ postId }, ['tags']);
     if (!post)
       throw new NotFoundException('Post not found');
     if (post.locked)
@@ -47,7 +47,7 @@ export class PostVotesService {
   }
 
   public async neutralize(user: User, postId: number): Promise<Post> {
-    const post = await this.postRepository.findOne({ postId });
+    const post = await this.postRepository.findOne({ postId }, ['tags']);
     if (!post)
       throw new NotFoundException('Post not found');
     if (post.locked)

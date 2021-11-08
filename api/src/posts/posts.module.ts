@@ -1,6 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
+import { Tag } from '../tags/tag.entity';
 import { UsersModule } from '../users/users.module';
 import { PostVote } from './entities/post-vote.entity';
 import { Post } from './entities/post.entity';
@@ -10,7 +11,7 @@ import { PostsService } from './posts.service';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([Post, PostVote]),
+    MikroOrmModule.forFeature([Post, PostVote, Tag]),
     AuthModule,
     UsersModule,
   ],

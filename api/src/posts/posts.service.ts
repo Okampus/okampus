@@ -2,6 +2,7 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Tag } from '../tags/tag.entity';
 import type { User } from '../users/user.entity';
 import type { CreatePostDto } from './dto/create-post.dto';
 import type { UpdatePostDto } from './dto/update-post.dto';
@@ -11,10 +12,13 @@ import { Post } from './entities/post.entity';
 export class PostsService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: EntityRepository<Post>,
+    @InjectRepository(Tag) private readonly tagRepository: EntityRepository<Tag>,
   ) {}
 
   public async create(user: User, createPostDto: CreatePostDto): Promise<Post> {
     const post = new Post({ ...createPostDto, author: user });
+    const tags = await this.tagRepository.find({ name: { $in: createPostDto.tags } });
+    post.tags.add(...tags);
     await this.postRepository.persistAndFlush(post);
     return post;
   }
@@ -22,19 +26,19 @@ export class PostsService {
   public async findAll(
     paginationOptions?: { offset: number; limit: number },
   ): Promise<{ items: Post[]; total: number }> {
-    const [items, total] = await this.postRepository.findAndCount({}, paginationOptions);
+    const [items, total] = await this.postRepository.findAndCount({}, { ...paginationOptions, populate: ['tags'] });
     return { items, total };
   }
 
   public async findOne(postId: number): Promise<Post> {
-    const post = await this.postRepository.findOne({ postId });
+    const post = await this.postRepository.findOne({ postId }, ['tags']);
     if (!post)
       throw new NotFoundException('Post not found');
     return post;
   }
 
   public async update(user: User, postId: number, updatePostDto: UpdatePostDto): Promise<Post> {
-    const post = await this.postRepository.findOne({ postId });
+    const post = await this.postRepository.findOne({ postId }, ['tags']);
     if (!post)
       throw new NotFoundException('Post not found');
     if (post.locked) {
@@ -47,7 +51,20 @@ export class PostsService {
     if (post.author.userId !== user.userId)
       throw new ForbiddenException('Not the author');
 
-    wrap(post).assign(updatePostDto);
+    const { tags: wantedTags, ...updatedProps } = updatePostDto;
+
+    if (wantedTags) {
+      if (wantedTags.length === 0) {
+        post.tags.removeAll();
+      } else {
+        const tags = await this.tagRepository.find({ name: { $in: wantedTags } });
+        post.tags.set(tags);
+      }
+    }
+
+    if (updatedProps)
+      wrap(post).assign(updatedProps);
+
     await this.postRepository.flush();
     return post;
   }
