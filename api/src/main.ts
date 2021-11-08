@@ -8,7 +8,7 @@ import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { config } from './config';
 import { ExceptionsFilter } from './shared/filters/exceptions.filter';
-import { logger } from './shared/middlewares/logger';
+import { logger } from './shared/middlewares/logger.middleware';
 import { FileKind } from './shared/types/file-kind.enum';
 
 function enumKeys<O extends object, K extends keyof O = keyof O>(obj: O): K[] {
