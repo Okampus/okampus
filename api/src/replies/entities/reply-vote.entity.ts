@@ -1,5 +1,5 @@
 import { Entity, OneToOne } from '@mikro-orm/core';
-import { Vote } from '../../shared/entities/vote.entity';
+import { Vote } from '../../shared/vote-base/vote.entity';
 import { User } from '../../users/user.entity';
 import { Reply } from './reply.entity';
 

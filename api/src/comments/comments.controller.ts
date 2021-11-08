@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
-import { VoteDto } from '../shared/dto/vote.dto';
+import { VoteDto } from '../shared/vote-base/vote.dto';
 import { User } from '../users/user.entity';
 import { CommentVotesService } from './comment-votes.service';
 import { CommentsService } from './comments.service';
