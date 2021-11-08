@@ -42,7 +42,7 @@ async function bootstrap(): Promise<void> {
 
   await createFileStructure();
   await app.listen(config.get('port'));
-  Logger.log(`Server initialized on port ${config.get('port')}`, 'Bootstrap');
+  Logger.log(`API running on: ${(await app.getUrl()).replace('[::1]', 'localhost')}`, 'Bootstrap');
 }
 
 void bootstrap();
