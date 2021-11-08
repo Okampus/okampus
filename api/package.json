@@ -67,12 +67,14 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-unicorn": "^37.0.1",
+    "ts-node": "^10.4.0",
     "typescript": "^4.4.4"
   },
   "engines": {
     "node": ">=14.0.0"
   },
   "mikro-orm": {
+    "useTsNode": true,
     "configPaths": [
       "./src/mikro-orm.config.ts",
       "./dist/mikro-orm.config.js"
