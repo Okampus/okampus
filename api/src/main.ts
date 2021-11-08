@@ -17,8 +17,12 @@ function enumKeys<O extends object, K extends keyof O = keyof O>(obj: O): K[] {
 
 async function createFileStructure(): Promise<void> {
   const base = path.join(path.resolve('./'), 'uploads');
+
+  const dirs: Array<Promise<string | undefined>> = [];
   for (const value of enumKeys(FileKind))
-    await fs.mkdir(path.join(base, FileKind[value]), { recursive: true });
+    dirs.push(fs.mkdir(path.join(base, FileKind[value]), { recursive: true }));
+
+  await Promise.all(dirs);
 }
 
 async function bootstrap(): Promise<void> {
