@@ -21,11 +21,8 @@ import { RepliesService } from './replies.service';
 @UseGuards(JwtAuthGuard)
 @Controller({
   path: [
-    'posts/:postId/comments/:commentId/replies',
-    'posts/:postId/comments/replies',
     'posts/comments/:commentId/replies',
     'posts/comments/replies',
-    'posts/replies',
   ],
 })
 export class RepliesController {
