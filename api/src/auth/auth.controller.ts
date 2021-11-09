@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import type { CookieOptions } from 'express';
 import { Request as Req, Response as Res } from 'express';
-import { CurrentUser } from '../shared/decorators/current-user.decorator';
-import { SerializerIncludeEmail } from '../shared/decorators/serializer-include-email.decorator';
+import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
+import { SerializerIncludeEmail } from '../shared/lib/decorators/serializer-include-email.decorator';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';

@@ -6,7 +6,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { PostType } from '../../shared/types/post-type.enum';
+import { PostType } from '../../shared/lib/types/post-type.enum';
 
 export class CreatePostDto {
   @IsNotEmpty()

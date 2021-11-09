@@ -8,7 +8,7 @@ import {
 import * as bcrypt from 'bcrypt';
 import { Exclude, Expose } from 'class-transformer';
 import { nanoid } from 'nanoid';
-import { EMAIL_INCLUDED } from '../shared/constants';
+import { EMAIL_INCLUDED } from '../shared/lib/constants';
 
 @Entity()
 export class User {

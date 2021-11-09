@@ -6,7 +6,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
-import { User } from '../../users/user.entity';
+import { User } from '../../../users/user.entity';
 
 @Entity({
   discriminatorColumn: 'kind',

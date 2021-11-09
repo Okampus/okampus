@@ -10,7 +10,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Exclude, Transform } from 'class-transformer';
-import { PostType } from '../../shared/types/post-type.enum';
+import { PostType } from '../../shared/lib/types/post-type.enum';
 import type { Tag } from '../../tags/tag.entity';
 import { User } from '../../users/user.entity';
 

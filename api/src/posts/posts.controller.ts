@@ -11,10 +11,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { CurrentUser } from '../shared/decorators/current-user.decorator';
-import { VoteDto } from '../shared/vote-base/vote.dto';
-import type { CustomPaginateResult } from '../shared/pagination';
-import { labelize } from '../shared/pagination';
+import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
+import type { CustomPaginateResult } from '../shared/lib/pagination';
+import { labelize } from '../shared/lib/pagination';
+import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PaginateDto } from './dto/paginate.dto';

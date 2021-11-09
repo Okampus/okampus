@@ -8,7 +8,7 @@ import {
 } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
 import { config } from '../../config';
-import { FileKind } from '../../shared/types/file-kind.enum';
+import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { User } from '../../users/user.entity';
 
 @Entity()

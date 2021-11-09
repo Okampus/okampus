@@ -10,8 +10,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { CurrentUser } from '../shared/decorators/current-user.decorator';
-import { VoteDto } from '../shared/vote-base/vote.dto';
+import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
+import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
 import { CommentVotesService } from './comment-votes.service';
 import { CommentsService } from './comments.service';

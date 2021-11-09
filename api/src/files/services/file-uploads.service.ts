@@ -3,7 +3,7 @@ import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import type { Express } from 'express';
-import type { FileKind } from '../../shared/types/file-kind.enum';
+import type { FileKind } from '../../shared/lib/types/file-kind.enum';
 import type { User } from '../../users/user.entity';
 import { FileUpload } from '../entities/file-upload.entity';
 
