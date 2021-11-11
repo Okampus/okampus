@@ -47,7 +47,7 @@ export class CommentsService {
     if (!comment)
       throw new NotFoundException('Comment not found');
     if (comment.post.locked)
-      throw new NotFoundException('Post locked');
+      throw new ForbiddenException('Post locked');
     if (comment.author.userId !== user.userId)
       throw new ForbiddenException('Not the author');
 

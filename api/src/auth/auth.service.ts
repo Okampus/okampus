@@ -32,7 +32,7 @@ export class AuthService {
       throw new UnauthorizedException('User does not exist');
 
     if (!(await user.validatePassword(password)))
-      throw new UnauthorizedException('Incorrect password');
+      throw new BadRequestException('Incorrect password');
 
     return user;
   }
