@@ -55,7 +55,7 @@ export class FilesController {
     const fileUpload = await this.filesService.create(
       user,
       file,
-      FileKind.StudyDocs,
+      FileKind.StudyDoc,
       createStudyDocDto.fileLastModifiedAt,
     );
     return await this.studyDocsService.create(createStudyDocDto, fileUpload);
@@ -73,12 +73,12 @@ export class FilesController {
     return labelize(items, { offset: 0, itemsPerPage: items.length, total });
   }
 
-  @Get(':id')
+  @Get('/study-docs/:id')
   public async getOne(@Param('id', ParseIntPipe) id: number): Promise<StudyDoc> {
     return await this.studyDocsService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch('/study-docs/:id')
   public async updateDoc(
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,

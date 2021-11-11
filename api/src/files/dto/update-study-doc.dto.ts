@@ -11,13 +11,16 @@ export class UpdateStudyDocDto extends PartialType(CreateStudyDocDto) {
   @IsNumber()
   subject?: number;
 
+  @IsNumber()
+  docSeries: number;
+
   @IsString()
   @IsOptional()
   tags?: string[];
 
   @IsString()
   @IsOptional()
-  docName?: string;
+  name?: string;
 
   @IsString()
   @IsOptional()

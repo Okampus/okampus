@@ -1,7 +1,7 @@
 export enum FileKind {
-  Avatars = 'avatars',
-  InfoDocs = 'info-docs',
-  Integrations = 'integrations',
-  StudyDocs = 'study-docs',
+  Avatar = 'avatar',
+  InfoDoc = 'info-doc',
+  Integration = 'file-integration',
+  StudyDoc = 'study-doc',
   Unknown = 'unknown',
 }

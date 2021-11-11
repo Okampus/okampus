@@ -33,30 +33,29 @@ export class Post {
   })
   tags = new Collection<Tag>(this);
 
-  // TODO: Add full 'type' support
   @Enum()
   type!: PostType;
 
   @ManyToOne()
   author!: User;
 
-  // TODO: Add full 'locked' support
+  // TODO: Add full 'locked' support - Add perms to Update/Patch endpoint
   @Property()
   locked = false;
 
-  // TODO: Add full 'opened' support
+  // TODO: Add full 'opened' support - Add perms to Update/Patch endpoint
   @Property()
   opened = true;
 
-  // TODO: Add full 'solved' support
+  // TODO: Add full 'solved' support - Add perms to Update/Patch endpoint
   @Property()
   solved = false;
 
-  // TODO: Add full 'views' support
+  // TODO: Add full 'views' support - Auto-increment when a post is viewed
   @Property()
   views = 0;
 
-  // TODO: Add full 'favorites' support
+  // TODO: Add full 'favorites' support - Create entity and CRUD + Increment when a favorite is created
   @Property()
   favorites = 0;
 

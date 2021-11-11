@@ -9,28 +9,24 @@ import {
 } from '@mikro-orm/core';
 import { Exclude, Transform } from 'class-transformer';
 import type { Tag } from '../../tags/tag.entity';
-import { CourseSubject } from './course-subject.entity';
 import { DocSeries } from './doc-series.entity';
 import { FileUpload } from './file-upload.entity';
 
 @Entity()
-export class StudyDoc {
+export class InfoDoc {
   @PrimaryKey()
-  studyDocId!: number;
+  infoDocId!: number;
 
   @OneToOne()
   file!: FileUpload;
 
   @ManyToOne()
-  subject!: CourseSubject;
-
-  @ManyToOne()
   docSeries?: DocSeries;
 
   @ManyToMany()
-  @Transform(({ obj: studyDoc }: { obj: StudyDoc }) => {
-    if (studyDoc.tags.isInitialized())
-      return Object.values(studyDoc.tags).filter(tag => typeof tag === 'object');
+  @Transform(({ obj: infoDoc }: { obj: InfoDoc }) => {
+    if (infoDoc.tags.isInitialized())
+      return Object.values(infoDoc.tags).filter(tag => typeof tag === 'object');
     return null; // In case the 'post.tags' field was not populated
   })
   tags = new Collection<Tag>(this);
@@ -45,6 +41,11 @@ export class StudyDoc {
   @Property({ type: 'text' })
   description?: string;
 
+  // Whether the info of an infoDoc is now invalid (the document now acts as an archive or latest known infoDoc)
+  // TODO: Changing the isObsolete property of any document should require a validation/signature
+  @Property({ type: 'boolean', default: false })
+  isObsolete?: boolean;
+
   @Property()
   createdAt = new Date();
 
@@ -54,14 +55,13 @@ export class StudyDoc {
 
   constructor(options: {
     file: FileUpload;
-    subject: CourseSubject;
     docSeries?: DocSeries | null;
     name?: string;
     year?: number;
     description?: string;
+    isObsolete?: boolean;
   }) {
     this.file = options.file;
-    this.subject = options.subject;
     if (options.docSeries)
       this.docSeries = options.docSeries;
     if (options.name)
@@ -70,5 +70,7 @@ export class StudyDoc {
       this.year = options.year;
     if (options.description)
       this.description = options.description;
+    if (options.isObsolete)
+      this.isObsolete = options.isObsolete;
   }
 }

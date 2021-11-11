@@ -5,6 +5,7 @@ import type { User } from '../../users/user.entity';
 import type { CreateStudyDocDto } from '../dto/create-study-doc.dto';
 import type { UpdateStudyDocDto } from '../dto/update-study-doc.dto';
 import { CourseSubject } from '../entities/course-subject.entity';
+import { DocSeries } from '../entities/doc-series.entity';
 import type { FileUpload } from '../entities/file-upload.entity';
 import { StudyDoc } from '../entities/study-doc.entity';
 
@@ -13,7 +14,8 @@ export class StudyDocsService {
   constructor(
     @InjectRepository(StudyDoc) private readonly studyDocRepository: EntityRepository<StudyDoc>,
     @InjectRepository(CourseSubject) private readonly courseSubjectRepository: EntityRepository<CourseSubject>,
-  ) {}
+    @InjectRepository(DocSeries) private readonly docSeriesRepository: EntityRepository<DocSeries>,
+    ) {}
 
   public async getUploadById(studyDocId: number): Promise<StudyDoc | null> {
     return await this.studyDocRepository.findOne({ studyDocId });
@@ -24,7 +26,10 @@ export class StudyDocsService {
     if (!subject)
       throw new NotFoundException('Subject not found');
 
-    const studyDoc = new StudyDoc({ ...createStudyDocDto, subject, file });
+    const docSeries = await this.docSeriesRepository.findOne({ docSeriesId: createStudyDocDto.docSeries });
+    const studyDoc = new StudyDoc({
+      ...createStudyDocDto, subject, file, docSeries,
+    });
     await this.studyDocRepository.persistAndFlush(studyDoc);
     return studyDoc;
   }
