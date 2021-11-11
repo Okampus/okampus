@@ -10,6 +10,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import type { CustomPaginateResult } from '../shared/lib/pagination';
@@ -23,6 +24,7 @@ import type { Post } from './entities/post.entity';
 import { PostVotesService } from './post-votes.service';
 import { PostsService } from './posts.service';
 
+@ApiTags('Posts')
 @UseGuards(JwtAuthGuard)
 @Controller({ path: 'posts' })
 export class PostsController {

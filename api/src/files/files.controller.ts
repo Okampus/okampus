@@ -19,6 +19,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 import { Express, Response as Res } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { config } from '../config';
@@ -34,6 +35,7 @@ import type { StudyDoc } from './entities/study-doc.entity';
 import { FilesService } from './services/file-uploads.service';
 import { StudyDocsService } from './services/study-docs.service';
 
+@ApiTags('File')
 @UseGuards(JwtAuthGuard)
 @Controller({ path: 'files' })
 export class FilesController {

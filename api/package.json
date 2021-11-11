@@ -29,6 +29,7 @@
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/mapped-types": "1.0.0",
     "@nestjs/platform-express": "^8.2.0",
+    "@nestjs/swagger": "^5.1.4",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
@@ -42,7 +43,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.4.0",
-    "statuses": "^2.0.1"
+    "statuses": "^2.0.1",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "@mikro-orm/cli": "^4.5.9",

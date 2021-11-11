@@ -8,6 +8,7 @@ import {
   Response,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import type { CookieOptions } from 'express';
 import { Request as Req, Response as Res } from 'express';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
@@ -25,6 +26,7 @@ const cookieOptions: Partial<CookieOptions> = {
   sameSite: 'strict',
 };
 
+@ApiTags('Authentication')
 @SerializerIncludeEmail()
 @Controller({ path: 'auth' })
 export class AuthController {

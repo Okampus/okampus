@@ -8,6 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { VoteDto } from '../shared/modules/vote/vote.dto';
@@ -18,6 +19,7 @@ import type { Reply } from './entities/reply.entity';
 import { ReplyVotesService } from './replies-votes.service';
 import { RepliesService } from './replies.service';
 
+@ApiTags('Replies')
 @UseGuards(JwtAuthGuard)
 @Controller({
   path: [

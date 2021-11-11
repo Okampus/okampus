@@ -9,6 +9,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { VoteDto } from '../shared/modules/vote/vote.dto';
@@ -19,6 +20,7 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import type { Comment } from './entities/comment.entity';
 
+@ApiTags('Comments')
 @UseGuards(JwtAuthGuard)
 @Controller({
   path: [

@@ -3,6 +3,7 @@ import path from 'node:path';
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
@@ -25,6 +26,17 @@ async function createFileStructure(): Promise<void> {
   await Promise.all(dirs);
 }
 
+const setupSwagger = (app: NestExpressApplication): void => {
+  const swaggerConfig = new DocumentBuilder()
+      .setTitle('Horizon Web API')
+      .setDescription('REST API for HorizonWeb')
+      .setVersion('1.0')
+      .build();
+
+    const document = SwaggerModule.createDocument(app, swaggerConfig);
+    SwaggerModule.setup('docs', app, document);
+};
+
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
@@ -45,6 +57,9 @@ async function bootstrap(): Promise<void> {
   app.set('trust proxy', false);
 
   await createFileStructure();
+
+  setupSwagger(app);
+
   await app.listen(config.get('port'));
   Logger.log(`API running on: ${(await app.getUrl()).replace('[::1]', 'localhost')}`, 'Bootstrap');
 }
