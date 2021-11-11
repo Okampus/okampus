@@ -15,8 +15,8 @@ export class CreateStudyDocDto extends OmitType(CreateFileUploadDto, ['fileKind'
   @IsInt()
   year?: number;
 
-  @IsNumber()
-  subject: number;
+  @IsString()
+  subject: string;
 
   @IsNumber()
   docSeries: number;

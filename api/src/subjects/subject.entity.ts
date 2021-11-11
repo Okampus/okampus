@@ -1,21 +1,10 @@
-import {
-  Entity,
-  Index,
-  PrimaryKey,
-  Property,
-  Unique,
-} from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
 
 @Entity()
-export class CourseSubject {
+export class Subject {
   @PrimaryKey()
-  courseSubjectId!: number;
-
-  @Property()
-  @Unique()
-  @Index()
-  courseCode!: string;
+  subjectId!: string;
 
   @Property({ type: 'text' })
   name!: string;
@@ -35,15 +24,14 @@ export class CourseSubject {
   updatedAt: Date = new Date();
 
   constructor(options: {
-    courseCode: string;
+    subjectId: string;
     name: string;
     englishName: string;
     description?: string;
   }) {
-    this.courseCode = options.courseCode;
+    this.subjectId = options.subjectId;
     this.name = options.name;
     this.englishName = options.englishName;
-
     if (options.description)
       this.description = options.description;
   }

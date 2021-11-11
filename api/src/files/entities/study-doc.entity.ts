@@ -8,8 +8,8 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Exclude, Transform } from 'class-transformer';
+import { Subject } from '../../subjects/subject.entity';
 import type { Tag } from '../../tags/tag.entity';
-import { CourseSubject } from './course-subject.entity';
 import { DocSeries } from './doc-series.entity';
 import { FileUpload } from './file-upload.entity';
 
@@ -22,7 +22,7 @@ export class StudyDoc {
   file!: FileUpload;
 
   @ManyToOne()
-  subject!: CourseSubject;
+  subject!: Subject;
 
   @ManyToOne()
   docSeries?: DocSeries;
@@ -54,7 +54,7 @@ export class StudyDoc {
 
   constructor(options: {
     file: FileUpload;
-    subject: CourseSubject;
+    subject: Subject;
     docSeries?: DocSeries | null;
     name?: string;
     year?: number;
