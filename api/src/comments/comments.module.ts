@@ -1,8 +1,8 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
-import { Post } from '../posts/entities/post.entity';
-import { CommentVotesService } from './comment-votes.service';
+import { Reply } from '../replies/entities/reply.entity';
+import { CommentVotesService } from './comments-votes.service';
 import { CommentsController } from './comments.controller';
 import { CommentsService } from './comments.service';
 import { CommentVote } from './entities/comment-vote.entity';
@@ -10,7 +10,7 @@ import { Comment } from './entities/comment.entity';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([Post, Comment, CommentVote]),
+    MikroOrmModule.forFeature([Reply, Comment, CommentVote]),
     AuthModule,
   ],
   controllers: [CommentsController],

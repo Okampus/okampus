@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   UseGuards,
@@ -16,15 +17,15 @@ import { User } from '../users/user.entity';
 import { CreateReplyDto } from './dto/create-reply.dto';
 import { UpdateReplyDto } from './dto/update-reply.dto';
 import type { Reply } from './entities/reply.entity';
-import { ReplyVotesService } from './replies-votes.service';
 import { RepliesService } from './replies.service';
+import { ReplyVotesService } from './reply-votes.service';
 
 @ApiTags('Replies')
 @UseGuards(JwtAuthGuard)
 @Controller({
   path: [
-    'posts/comments/:commentId/replies',
-    'posts/comments/replies',
+    'posts/:postId/replies',
+    'posts/replies',
   ],
 })
 export class RepliesController {
@@ -36,15 +37,15 @@ export class RepliesController {
   @Post()
   public async create(
     @CurrentUser() user: User,
-    @Param('commentId') commentId: string,
+    @Param('postId', ParseIntPipe) postId: number,
     @Body() createReplyDto: CreateReplyDto,
   ): Promise<Reply> {
-    return await this.repliesService.create(user, commentId, createReplyDto);
+    return await this.repliesService.create(user, postId, createReplyDto);
   }
 
   @Get()
-  public async findAll(@Param('commentId') commentId: string): Promise<Reply[]> {
-    return await this.repliesService.findAll(commentId);
+  public async findAll(@Param('postId', ParseIntPipe) postId: number): Promise<Reply[]> {
+    return await this.repliesService.findAll(postId);
   }
 
   @Get(':id')

@@ -1,7 +1,7 @@
 import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { Comment } from '../comments/entities/comment.entity';
+import { Post } from '../posts/entities/post.entity';
 import type { User } from '../users/user.entity';
 import type { CreateReplyDto } from './dto/create-reply.dto';
 import type { UpdateReplyDto } from './dto/update-reply.dto';
@@ -10,29 +10,24 @@ import { Reply } from './entities/reply.entity';
 @Injectable()
 export class RepliesService {
   constructor(
-    @InjectRepository(Comment) private readonly commentRepository: EntityRepository<Comment>,
+    @InjectRepository(Post) private readonly postRepository: EntityRepository<Post>,
     @InjectRepository(Reply) private readonly replyRepository: EntityRepository<Reply>,
   ) {}
 
-  public async create(user: User, commentId: string, createReplyDto: CreateReplyDto): Promise<Reply> {
-    const comment = await this.commentRepository.findOne({ commentId });
-    if (!comment)
-      throw new NotFoundException('Comment not found');
-    if (comment.post.locked)
+  public async create(user: User, postId: number, createReplyDto: CreateReplyDto): Promise<Reply> {
+    const post = await this.postRepository.findOne({ postId });
+    if (!post)
+      throw new NotFoundException('Post not found');
+    if (post.locked)
       throw new ForbiddenException('Post locked');
 
-    const reply = new Reply({
-      body: createReplyDto.body,
-      comment,
-      post: comment.post,
-      author: user,
-    });
+    const reply = new Reply({ post, body: createReplyDto.body, author: user });
     await this.replyRepository.persistAndFlush(reply);
     return reply;
   }
 
-  public async findAll(commentId: string): Promise<Reply[]> {
-    return await this.replyRepository.find({ comment: { commentId } });
+  public async findAll(postId: number): Promise<Reply[]> {
+    return await this.replyRepository.find({ post: { postId } });
   }
 
   public async findOne(replyId: string): Promise<Reply | null> {
@@ -47,7 +42,7 @@ export class RepliesService {
     if (!reply)
       throw new NotFoundException('Reply not found');
     if (reply.post.locked)
-      throw new NotFoundException('Post locked');
+      throw new ForbiddenException('Post locked');
     if (reply.author.userId !== user.userId)
       throw new ForbiddenException('Not the author');
 
@@ -60,6 +55,8 @@ export class RepliesService {
     const reply = await this.replyRepository.findOne({ replyId });
     if (!reply)
       throw new NotFoundException('Reply not found');
+    if (reply.post.locked)
+      throw new ForbiddenException('Post locked');
     if (reply.author.userId !== user.userId)
       throw new ForbiddenException('Not the author');
 

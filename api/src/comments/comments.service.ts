@@ -1,7 +1,7 @@
 import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { Post } from '../posts/entities/post.entity';
+import { Reply } from '../replies/entities/reply.entity';
 import type { User } from '../users/user.entity';
 import type { CreateCommentDto } from './dto/create-comment.dto';
 import type { UpdateCommentDto } from './dto/update-comment.dto';
@@ -10,24 +10,29 @@ import { Comment } from './entities/comment.entity';
 @Injectable()
 export class CommentsService {
   constructor(
-    @InjectRepository(Post) private readonly postRepository: EntityRepository<Post>,
+    @InjectRepository(Reply) private readonly replyRepository: EntityRepository<Reply>,
     @InjectRepository(Comment) private readonly commentRepository: EntityRepository<Comment>,
   ) {}
 
-  public async create(user: User, postId: number, createCommentDto: CreateCommentDto): Promise<Comment> {
-    const post = await this.postRepository.findOne({ postId });
-    if (!post)
-      throw new NotFoundException('Post not found');
-    if (post.locked)
+  public async create(user: User, replyId: string, createCommentDto: CreateCommentDto): Promise<Comment> {
+    const reply = await this.replyRepository.findOne({ replyId });
+    if (!reply)
+      throw new NotFoundException('Reply not found');
+    if (reply.post.locked)
       throw new ForbiddenException('Post locked');
 
-    const comment = new Comment({ post, body: createCommentDto.body, author: user });
+    const comment = new Comment({
+      body: createCommentDto.body,
+      reply,
+      post: reply.post,
+      author: user,
+    });
     await this.commentRepository.persistAndFlush(comment);
     return comment;
   }
 
-  public async findAll(postId: number): Promise<Comment[]> {
-    return await this.commentRepository.find({ post: { postId } });
+  public async findAll(replyId: string): Promise<Comment[]> {
+    return await this.commentRepository.find({ reply: { replyId } });
   }
 
   public async findOne(commentId: string): Promise<Comment | null> {
@@ -42,7 +47,7 @@ export class CommentsService {
     if (!comment)
       throw new NotFoundException('Comment not found');
     if (comment.post.locked)
-      throw new ForbiddenException('Post locked');
+      throw new NotFoundException('Post locked');
     if (comment.author.userId !== user.userId)
       throw new ForbiddenException('Not the author');
 
@@ -55,8 +60,6 @@ export class CommentsService {
     const comment = await this.commentRepository.findOne({ commentId });
     if (!comment)
       throw new NotFoundException('Comment not found');
-    if (comment.post.locked)
-      throw new ForbiddenException('Post locked');
     if (comment.author.userId !== user.userId)
       throw new ForbiddenException('Not the author');
 
