@@ -78,8 +78,17 @@
   description: Issues and PRs that act on the frontend.
   color: 'C2E0C6'
 
+- name: 'scope: *'
+  description: Issues and PRs related to the whole site.
+  color: '9DCBE0'
 - name: 'scope: forum'
   description: Issues and PRs related to the forum module.
+  color: '9DCBE0'
+- name: 'scope: blog'
+  description: Issues and PRs related to the blog module.
+  color: '9DCBE0'
+- name: 'scope: admin'
+  description: Issues and PRs related to the admin module.
   color: '9DCBE0'
 - name: 'scope: file-sharing'
   description: Issues and PRs related to the file sharing module.
