@@ -1,8 +1,9 @@
 # Docker volume
 data
 
-# Environment variables
+# Private files
 .env
+private/
 
 # Logs
 *.log
