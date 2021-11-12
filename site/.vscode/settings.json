@@ -2,4 +2,24 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true,
     "javascript.preferences.quoteStyle": "single",
+    "eslint.format.enable": true,
+    "stylelint.enable": true,
+    "tailwindCSS.validate": true,
+    "css.validate": false,
+    "less.validate": false,
+    "scss.validate": false,
+    "stylelint.validate": [
+        "css",
+        "scss",
+        "less"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
 }

@@ -1,11 +1,12 @@
 {
     "recommendations": [
+        "ms-vsliveshare.vsliveshare",
         "dbaeumer.vscode-eslint",
         "bradlc.vscode-tailwindcss",
         "johnsoncodehk.volar",
         "hollowtree.vue-snippets",
-        "bradlc.vscode-tailwindcss",
         "naumovs.color-highlight",
-        "gruntfuggly.todo-tree"
+        "gruntfuggly.todo-tree",
+        "stylelint.vscode-stylelint"
     ]
 }
