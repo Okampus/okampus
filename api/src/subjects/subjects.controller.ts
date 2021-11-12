@@ -38,6 +38,6 @@ export class SubjectsController {
 
   @Delete(':id')
   public async remove(@Param('id') id: string): Promise<void> {
-    return await this.subjectsService.remove(id);
+    await this.subjectsService.remove(id);
   }
 }
