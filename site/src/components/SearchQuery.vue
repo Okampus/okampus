@@ -17,7 +17,7 @@
     />
     <div
       id="expander-content"
-      class="h-0 relative flex-shrink lg:l-sbar flex-grow-0 tr-flex"
+      class="h-0 relative flex-shrink lg:after-sidebar flex-grow-0 tr-flex"
     >
       <div
         class="
@@ -141,15 +141,12 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
-
 function removeZIndex () {
   const searchScreen = document.getElementById('search-screen')
   searchScreen.classList.remove('z-10')
 }
 
-export default defineComponent({
-  name: 'SearchQuery',
+export default {
   data () {
     return {
       categories: [
@@ -236,7 +233,7 @@ export default defineComponent({
       }
     }
   }
-})
+}
 </script>
 
 <style scoped>

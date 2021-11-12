@@ -1,10 +1,10 @@
 <template>
   <nav
     id="topbar"
-    class="bg-1 flex fixed top-0 left-0 w-full h-tbar text-1 items-center justify-between border-b
+    class="bg-1 flex fixed top-0 left-0 w-full h-topbar text-1 items-center justify-between border-b
     topbar-shadow"
   >
-    <div class="flex flex-shrink-0 px-4 w-sbar items-center justify-center">
+    <div class="flex flex-shrink-0 px-4 w-sidebar items-center justify-center">
       <button
         aria-label="Open Menu"
         @click="$emit('toggleSidebar')"
@@ -114,7 +114,7 @@ export default {
 
 <style lang="scss">
 
-@import "~@/assets/scss/utils/get-color.scss";
+@import "~@/assets/scss/abstracts/mixins/get-color";
 
 .topbar-shadow {
   box-shadow: 0 0 10px rgba(0,0,0,0.3);

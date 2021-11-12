@@ -13,10 +13,7 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'Tag',
+export default {
   props: {
     name: {
       type: String,
@@ -27,5 +24,5 @@ export default defineComponent({
       default: 'red-500'
     }
   }
-})
+}
 </script>

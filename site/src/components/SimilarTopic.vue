@@ -25,11 +25,9 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
 import Tag from '@/components/Tag.vue'
 
-export default defineComponent({
-  name: 'SimilarTopic',
+export default {
   components: {
     Tag
   },
@@ -39,5 +37,5 @@ export default defineComponent({
       default: () => {}
     }
   }
-})
+}
 </script>

@@ -14,7 +14,7 @@
       <div
         ref="content"
         :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
-        class="w-full bg-2 h-content flex flex-col relative top-tbar overflow-auto app-scrollbar filter"
+        class="w-full bg-2 h-content flex flex-col relative after-topbar overflow-auto app-scrollbar filter"
       >
         <div
           class="flex-grow-1 flex-shrink-0 flex-auto"
@@ -164,13 +164,16 @@ export default {
 
 <style lang="scss">
 
-@import "~@/assets/scss/themes.scss";
-@import "~@/assets/scss/components/button.scss";
-@import "~@/assets/scss/components/card.scss";
-@import "~@/assets/scss/components/input.scss";
-@import "~@/assets/scss/components/tiptap.scss";
-@import "~@/assets/scss/components/link.scss";
-@import "~@/assets/css/constants/spacing.css";
+@import "~@/assets/scss/app";
+@import "~@/assets/scss/components/button";
+@import "~@/assets/scss/components/card";
+@import "~@/assets/scss/components/input";
+@import "~@/assets/scss/components/tiptap";
+@import "~@/assets/scss/components/link";
+@import "~@/assets/scss/sections/hero";
+@import "~@/assets/scss/core/spacing";
+@import "~@/assets/scss/core/tab";
+@import "~@/assets/scss/core/scrollbar";
 
 @font-face {
   font-family: AtkinsonHyperlegible;

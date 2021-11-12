@@ -1,0 +1,75 @@
+@use "sass:string";
+@use "sass:list";
+
+$brand-url: url("~@/assets/img/logos/horizon_brand.png");
+
+@mixin tailwind-color($tailwind-property, $alt: false, $name: "", $tailwind-property-count: 6) {
+  @if $name == "" {
+    $name: $tailwind-property;
+  }
+
+  $tailwind-property-list: null;
+
+  @for $i from 0 through $tailwind-property-count {
+    $tailwind-property-value: #{$tailwind-property}-#{$i};
+
+    @if $alt {
+      .#{$name}-#{$i}-alt {
+        @apply #{$tailwind-property-value}-light dark:#{$tailwind-property-value}-dark;
+      }
+
+      .#{$name}-#{$i} {
+        @apply #{$tailwind-property-value}-dark dark:#{$tailwind-property-value}-light;
+      }
+    } @else {
+      .#{$name}-#{$i} {
+        @apply #{$tailwind-property-value}-light dark:#{$tailwind-property-value}-dark;
+      }
+
+      .#{$name}-#{$i}-alt {
+        @apply #{$tailwind-property-value}-dark dark:#{$tailwind-property-value}-light;
+      }
+    }
+
+    $tailwind-property-list: list.append(
+      $tailwind-property-list,
+      string.unquote(".#{$tailwind-property-value}"),
+      comma
+    );
+    $tailwind-property-list: list.append(
+      $tailwind-property-list,
+      string.unquote(".#{$tailwind-property-value}-alt"),
+      comma
+    );
+  }
+}
+
+@include tailwind-color("bg");
+@include tailwind-color("text", true);
+@include tailwind-color("border", true, "border-color");
+
+.border-footer {
+  @apply border-gray-300 dark:border-gray-400;
+}
+
+.border-bar {
+  border-color: #e4e4e7;
+
+  @apply dark:border-black;
+}
+
+.divide-color-1 {
+  @apply divide-gray-400 dark:divide-gray-100;
+}
+
+.brand {
+  @apply filter brightness-0 dark:brightness-100;
+
+  transition: all 300ms;
+  background: $brand-url no-repeat 0 0;
+  background-size: 100%;
+}
+
+.min-w-1 {
+  min-width: 1em;
+}

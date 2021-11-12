@@ -6,21 +6,19 @@
     :="focused ? {focused: ''} : {}"
     @focus="tagsInput.focus()"
   >
-    <div class="flex flex-wrap">
-      <Tag
-        v-for="(tag, idx) in tags"
-        :key="idx"
-        :name="tag"
-        color="red-500"
+    <Tag
+      v-for="(tag, idx) in tags"
+      :key="idx"
+      :name="tag"
+      color="red-500"
+    >
+      <button
+        class="text-white bg-opacity-0 outline-none border-none cursor-pointer font-bold text-lg"
+        @click="removeTag(idx)"
       >
-        <button
-          class="text-white bg-opacity-0 outline-none border-none cursor-pointer font-bold text-lg"
-          @click="removeTag(idx)"
-        >
-          <i class="ri-close-line" />
-        </button>
-      </Tag>
-    </div>
+        <i class="ri-close-line" />
+      </button>
+    </Tag>
     <input
       ref="tagsInput"
       v-model="newTag"

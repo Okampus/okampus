@@ -73,11 +73,10 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
 import InputWithIcon from '@/components/Input/InputWithIcon.vue'
 import User from '@/models/user'
 
-export default defineComponent({
+export default {
   name: 'Login',
   components: {
     InputWithIcon
@@ -108,7 +107,7 @@ export default defineComponent({
       }
     }
   }
-})
+}
 </script>
 
 <style lang="scss">

@@ -1,38 +1,46 @@
-@import "~@/assets/scss/utils/get-color.scss";
+@import "~@/assets/scss/abstracts/mixins/get-color";
 
 .placeholder,
+%placeholder,
 .text-placeholder {
-    @apply dark:placeholder-primary-light placeholder-primary-dark;
+  @apply dark:placeholder-primary-light placeholder-primary-dark;
 }
 
-.input {
-    @extend .placeholder;
-    @apply text-gray-900 dark:text-gray-100 py-2 px-3;
-    line-height: 1.43;
+.input,
+%input {
+  @extend %placeholder;
+  @apply text-gray-900 dark:text-gray-100 py-2 px-3;
 
-    &-border:focus,
-    &-border[focused],
-    &-border[active] {
-        @apply border-yellow-500 dark:border-yellow-400;
-        outline: 0;
-        // box-shadow: 0 1px 8px rgba(247, 190, 68, 0.6);
-    }
+  line-height: 1.43;
 
-    &-border {
-        @apply border rounded dark:border-opacity-75 border-gray-300 dark:border-white;
-        &-no-shadow {
-            @extend .input-border;
-            @apply border-gray-500 dark:border-white;
-        }
-    }
+  &-border,
+  %input-border {
+    @apply border rounded dark:border-opacity-75 border-gray-300 dark:border-white;
 
-    &[type="password"]:not(:placeholder-shown) {
-        @extend .input;
-        @apply tracking-widest;
+    &-no-shadow {
+      @extend %input-border;
+      @apply border-gray-500 dark:border-white;
     }
+  }
+
+  &-border:focus,
+  &-border[focused],
+  &-border[active] {
+    @apply border-yellow-500 dark:border-yellow-400;
+
+    outline: 0;
+
+    // box-shadow: 0 1px 8px rgba(247, 190, 68, 0.6);
+  }
+
+  &[type="password"]:not(:placeholder-shown) {
+    @extend %input;
+    @apply tracking-widest;
+  }
 }
 
 select:invalid {
-    @apply dark:text-placeholder-light text-placeholder-dark;
-    opacity: 1;
+  @apply dark:text-placeholder-light text-placeholder-dark;
+
+  opacity: 100%;
 }

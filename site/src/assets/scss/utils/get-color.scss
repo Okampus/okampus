@@ -1,8 +1,0 @@
-@mixin get-color($tailwind-property, $property-i, $alt: false) {
-    $tailwind-property-value: #{$tailwind-property}-#{$property-i};
-    @if $alt {
-        @apply #{$tailwind-property-value}-light dark:#{$tailwind-property-value}-dark;
-    } @else {
-        @apply #{$tailwind-property-value}-dark dark:#{$tailwind-property-value}-light;
-    }
-}

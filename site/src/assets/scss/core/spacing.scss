@@ -1,0 +1,30 @@
+$topbar-height: 4.5rem;
+$sidebar-width: 8rem;
+
+.w-sidebar {
+  width: $sidebar-width;
+}
+
+.h-topbar {
+  height: $topbar-height;
+}
+
+.hidden-sidebar {
+  margin-left: calc(-1 * $sidebar-width);
+}
+
+.after-sidebar {
+  left: $sidebar-width;
+}
+
+.after-topbar {
+  top: $topbar-height;
+}
+
+.h-content {
+  height: calc(100vh - $topbar-height);
+}
+
+.w-content {
+  width: calc(100% - $sidebar-width);
+}

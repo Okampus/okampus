@@ -1,16 +1,10 @@
 <template>
-  <div
-    v-for="i in 50"
-    :key="i"
-    class="py-8 shadow text-center rounded-lg mb-10 bg-white"
-  >
-    CONTENT
-  </div>
+  <breadcrumb />
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
-export default defineComponent({
-  name: 'Content'
-})
+import Breadcrumb from '@/components/Breadcrumb.vue'
+export default {
+  components: { Breadcrumb }
+}
 </script>

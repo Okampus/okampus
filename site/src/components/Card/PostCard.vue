@@ -115,7 +115,6 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
 import { generateHTML } from '@tiptap/html'
 import TagsList from '@/components/List/TagsList.vue'
 import StarterKit from '@tiptap/starter-kit'
@@ -126,7 +125,7 @@ import Underline from '@tiptap/extension-underline'
 import CharacterCount from '@tiptap/extension-character-count'
 
 const abbrev = 'kmb'
-export default defineComponent({
+export default {
   name: 'PostListingCard',
   components: {
     TagsList
@@ -214,5 +213,5 @@ export default defineComponent({
       }
     }
   }
-})
+}
 </script>

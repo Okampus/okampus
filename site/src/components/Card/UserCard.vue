@@ -32,10 +32,8 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
 
-export default defineComponent({
-  name: 'UserCard',
+export default {
   props: {
     username: {
       type: String,
@@ -60,5 +58,5 @@ export default defineComponent({
       this.$store.dispatch('auth/logout')
     }
   }
-})
+}
 </script>

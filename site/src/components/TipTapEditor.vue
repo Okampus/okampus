@@ -73,10 +73,7 @@ import Placeholder from '@tiptap/extension-placeholder'
 import Underline from '@tiptap/extension-underline'
 import CharacterCount from '@tiptap/extension-character-count'
 
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'PostNew',
+export default {
   components: {
     EditorContent
   },
@@ -237,7 +234,7 @@ export default defineComponent({
       return this.editor.getJSON()
     }
   }
-})
+}
 </script>
 
 <style lang="scss">

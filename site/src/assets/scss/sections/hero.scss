@@ -1,0 +1,18 @@
+@use "sass:map";
+
+$hero-gradient: (
+  "light": ("start": #ffe100, "end": #ffb800),
+  "dark": ("start": #000d4b, "end": #000926)
+);
+
+.hero {
+  --hero-gradient-start: #{map.get($hero-gradient, "light", "start")};
+  --hero-gradient-end: #{map.get($hero-gradient, "light", "end")};
+
+  background: linear-gradient(90deg, var(--hero-gradient-start) 20%, var(--hero-gradient-end) 100%);
+
+  :root.dark & {
+    --hero-gradient-start: #{map.get($hero-gradient, "dark", "start")};
+    --hero-gradient-end: #{map.get($hero-gradient, "dark", "end")};
+  }
+}

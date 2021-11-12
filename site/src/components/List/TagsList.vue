@@ -15,10 +15,11 @@
         v-else
         :ref="setTagRef"
         :key="i"
-        :name="tag.name"
+        :name="tag.name ?? tag"
         :color="'red-500'"
       />
     </div>
+    <!-- TODO: Link & tooltip preview -->
     <div
       v-if="overflowing.length"
       class="ml-3 text-blue-500"
@@ -30,11 +31,10 @@
 
 <script lang="js">
 import debounce from 'lodash/debounce'
-import { defineComponent, onBeforeUpdate, reactive, ref } from 'vue'
+import { onBeforeUpdate, reactive, ref } from 'vue'
 import Tag from '@/components/Tag.vue'
 
-export default defineComponent({
-  name: 'TagsList',
+export default {
   components: {
     Tag
   },
@@ -90,5 +90,5 @@ export default defineComponent({
       return el?.getBoundingClientRect()?.top ?? 0
     }
   }
-})
+}
 </script>

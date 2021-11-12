@@ -1,4 +1,4 @@
-@import "~@/assets/scss/utils/get-color.scss";
+@import "~@/assets/scss/abstracts/mixins/get-color";
 
 .swiper-container {
   @apply pb-10;
@@ -20,7 +20,9 @@
   @apply text-lg;
 }
 
-.swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets {
+.swiper-pagination-fraction,
+.swiper-pagination-custom,
+.swiper-container-horizontal > .swiper-pagination-bullets {
   @apply w-1/2 left-1/4;
 }
 

@@ -1,0 +1,7 @@
+@import "~@/assets/scss/abstracts/placeholders/activable";
+@import "~@/assets/scss/abstracts/placeholders/focusable";
+@import "~@/assets/scss/abstracts/placeholders/hoverable";
+
+.horizontal-tab {
+  @extend %text-hover, %left-label-active, %bg-hover, %text-opaque-hover, %text-opaque-active;
+}

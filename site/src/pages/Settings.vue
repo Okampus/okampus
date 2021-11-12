@@ -64,10 +64,8 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
 import Profile from '@/components/Profile.vue'
-export default defineComponent({
-  name: 'Settings',
+export default {
   components: {
     Profile
   },
@@ -78,11 +76,11 @@ export default defineComponent({
       links: [
         { text: 'Profil', icon: 'ri-profile-line', component: 'Profile' },
         { text: 'Intégration Discord', icon: 'ri-discord-fill', component: 'Discord' }
-        // { text: "Rôles Ef'Réussite", icon: 'ri-book-mark-line', component: 'Roles' }
+        // TODO: { text: "Rôles Ef'Réussite", icon: 'ri-book-mark-line', component: 'Roles' }
       ]
     }
   }
-})
+}
 </script>
 
 <style lang="scss">

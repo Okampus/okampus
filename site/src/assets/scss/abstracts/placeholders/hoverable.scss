@@ -1,0 +1,23 @@
+%text-hover:hover {
+  color: #a5b4fc;
+
+  :root.dark & {
+    color: #c5d4ff;
+  }
+}
+
+%text-opaque-hover:hover {
+  opacity: 100%;
+}
+
+%bg-hover:hover {
+  background-color: #e0e7ff;
+
+  :root.dark & {
+    background-color: #410783;
+  }
+}
+
+%icon-hover:hover {
+  color: #548ce6;
+}

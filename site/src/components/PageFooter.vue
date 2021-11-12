@@ -96,13 +96,7 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'Footer',
-  props: {
-  },
-  methods: {
-  }
-})
+export default {
+  name: 'Footer'
+}
 </script>

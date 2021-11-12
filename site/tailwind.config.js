@@ -1001,7 +1001,6 @@ module.exports = {
     rotate: ['responsive', 'hover', 'focus'],
     saturate: ['responsive'],
     scale: ['responsive', 'hover', 'focus'],
-    scrollbar: ['dark', 'rounded'],
     sepia: ['responsive'],
     skew: ['responsive', 'hover', 'focus'],
     space: ['responsive'],
@@ -1041,7 +1040,6 @@ module.exports = {
         })
       })
     }),
-    require('tailwind-scrollbar'),
     require('@tailwindcss/line-clamp')
   ]
 }

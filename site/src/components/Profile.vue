@@ -197,16 +197,13 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
+export default {
   name: 'Profile',
   data () {
     return {
       assos: ['']
     }
   },
-
   methods: {
     addLine: function addLine () {
       this.assos.push('')
@@ -215,5 +212,5 @@ export default defineComponent({
       this.assos.pop()
     }
   }
-})
+}
 </script>

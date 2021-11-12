@@ -2,17 +2,17 @@
   <aside
     id="sidebar"
     :class="{
-      '-l-sbar': closed || collapsing, 'sidebar-shadow': uncollapsed || !closed || collapsing,
+      'hidden-sidebar': closed || collapsing, 'sidebar-shadow': uncollapsed || !closed || collapsing,
       'fixed': uncollapsed, 'h-screen': uncollapsed, 'sticky': !uncollapsed,
-      'top-tbar': !uncollapsed, 'h-content': !uncollapsed
+      'after-topbar': !uncollapsed, 'h-content': !uncollapsed
     }"
-    class="overflow-hidden flex flex-col flex-shrink-0 w-sbar bg-1
+    class="overflow-hidden flex flex-col flex-shrink-0 w-sidebar bg-1
     border-r border-bar whitespace-nowrap tr-spacing z-50"
   >
     <div
       v-if="uncollapsed"
       id="slide-sidebar-top"
-      class="bg-2 h-tbar flex flex-shrink-0 items-center justify-center"
+      class="bg-2 h-topbar flex flex-shrink-0 items-center justify-center"
     >
       <button
         aria-label="Open Menu"
@@ -37,7 +37,7 @@
               <router-link
                 v-if="link.condition == undefined || condition(link.condition)"
                 :to="link.to"
-                class="py-1 flex w-full items-center transition-colors bg-mouse-brand duration-300 cursor-pointer"
+                class="py-1 flex w-full items-center transition-colors horizontal-tab duration-300 cursor-pointer opacity-80"
                 :class="{ active: link.to === $route.path }"
               >
                 <div class="flex flex-col items-center w-full mt-1 mb-2 text-2">
@@ -64,11 +64,9 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
 import SwitchInput from '@/components/Input/SwitchInput.vue'
 
-export default defineComponent({
-  name: 'Sidebar',
+export default {
   components: { SwitchInput },
   props: {
     closed: {
@@ -127,7 +125,7 @@ export default defineComponent({
       }
     }
   }
-})
+}
 </script>
 
 <style lang="scss">

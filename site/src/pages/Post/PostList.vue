@@ -1,11 +1,10 @@
 <template>
   <div>
     <div
-      class="absolute py-12 hero h-52 w-full top-0 left-0"
+      class="absolute hero h-52 w-full top-0 left-0 py-12"
     >
       <h3
-        class="text-4xl font-bold text-0"
-        style="padding-left: 5%; padding-right: 5%;"
+        class="text-4xl font-bold text-0 px-10"
       >
         Liste des Posts
       </h3>
@@ -18,21 +17,20 @@
         :post="post"
       />
     </div>
-    <button
+    <!-- <button
       class="relative button"
       @click="refreshPosts"
     >
       Refresh
-    </button>
+    </button> -->
   </div>
 </template>
 
 <script lang="js">
-import { defineComponent, watch } from 'vue'
+import { watch } from 'vue'
 import PostCard from '@/components/Card/PostCard.vue'
 
-export default defineComponent({
-  name: 'PostList',
+export default {
   components: { PostCard },
   data () {
     return {
@@ -71,5 +69,5 @@ export default defineComponent({
       }
     }
   }
-})
+}
 </script>

@@ -1,8 +1,12 @@
 .button {
-    @apply px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring text-white bg-blue-500 border-blue-800 hover:bg-blue-600 active:bg-blue-700 focus:ring-blue-300;
-    line-height: 1.43;
+  @apply px-4 py-2 rounded-md text-sm font-medium
+    focus:outline-none focus:ring text-white bg-blue-500
+    border-blue-800 hover:bg-blue-600 active:bg-blue-700
+    focus:ring-blue-300;
+
+  line-height: 1.43;
 }
 
 .icon-button {
-    @apply p-2 rounded outline-none cursor-pointer border shadow;
+  @apply p-2 rounded outline-none cursor-pointer border shadow;
 }

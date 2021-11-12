@@ -49,10 +49,9 @@
 </template>
 
 <script lang="js">
-import { defineComponent, ref } from 'vue'
+import { ref } from 'vue'
 
-export default defineComponent({
-  name: 'FileUpload',
+export default {
   setup () {
     const fileInput = ref(null)
     const fileId = ref(null)
@@ -115,5 +114,5 @@ export default defineComponent({
       }
     }
   }
-})
+}
 </script>

@@ -1,7 +1,9 @@
-.link {
+.link,
+%link {
   @apply hover:text-orange-500 hover:underline;
+
   &-blue {
-    @extend .link;
+    @extend %link;
     @apply text-blue-600;
   }
 }

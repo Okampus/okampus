@@ -18,10 +18,9 @@
 </template>
 
 <script lang="js">
-import { defineComponent, ref } from 'vue'
+import { ref } from 'vue'
 
-export default defineComponent({
-  name: 'InputWithIcon',
+export default {
   props: {
     name: {
       type: String,
@@ -54,5 +53,5 @@ export default defineComponent({
     const input = ref(null)
     return { input }
   }
-})
+}
 </script>

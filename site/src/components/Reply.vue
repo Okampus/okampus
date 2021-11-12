@@ -43,11 +43,9 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
 import Comment from '@/components/Comment.vue'
 
-export default defineComponent({
-  name: 'Reply',
+export default {
   components: {
     Comment
   },
@@ -57,5 +55,5 @@ export default defineComponent({
       default: () => {}
     }
   }
-})
+}
 </script>

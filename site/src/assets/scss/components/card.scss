@@ -1,15 +1,15 @@
-@import "~@/assets/scss/utils/get-color.scss";
+@import "~@/assets/scss/abstracts/mixins/get-color";
 
 .label-title {
-    @apply text-lg font-bold;
+  @apply text-lg font-bold;
 }
 
 .label-desc {
-    @apply text-base pb-2;
+  @apply text-base pb-2;
 }
 
 .card {
-    @include get-color("text", 0); // Text color
-    @apply shadow-md border py-3 px-4; // Body
-    @apply border-opacity-25 dark:border-gray-400 border-gray-800 rounded-lg; // Border
+  @include get-color("text", 0); // Text color
+  @apply shadow-md border py-3 px-4; // Body
+  @apply border-opacity-25 dark:border-gray-400 border-gray-800 rounded-lg; // Border
 }

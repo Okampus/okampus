@@ -1,0 +1,9 @@
+%text-focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  color: #60a5fa;
+
+  :root.dark & {
+    color: #2095af;
+  }
+}

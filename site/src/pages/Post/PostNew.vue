@@ -4,8 +4,7 @@
       class="absolute py-12 hero h-52 w-full top-0 left-0"
     >
       <h3
-        class="text-4xl font-bold mb-8 text-0"
-        style="padding-left: 5%; padding-right: 5%;"
+        class="text-4xl font-bold mb-8 text-0 px-10"
       >
         Créer un Post
       </h3>
@@ -13,6 +12,7 @@
     <div class="relative mt-32 mb-10 flex mx-auto w-11/12">
       <form
         class="bg-1 flex flex-col space-y-4 card min-w-2/3"
+        action="javascript:void(0);"
         @submit="onSubmit"
       >
         <div>
@@ -111,7 +111,7 @@
             Tags
           </div>
           <div class="label-desc">
-            Ajoutez 4 Tags (ou plus) qui décrivent le sujet de votre Post
+            Ajoutez 2 Tags (ou plus) qui décrivent le sujet de votre Post
           </div>
           <tags-input
             ref="tagsInputRef"
@@ -130,66 +130,36 @@
 
         <div>
           <button
-            type="submit"
             class="button"
           >
             Soumettre le Post pour validation
           </button>
         </div>
       </form>
-
-      <div class="ml-6 flex-grow-0 flex-shrink-0 w-1/5">
-        <card-with-title title="Qu'est-ce qu'un Post ?">
-          <div>
-            Les Posts sont là pour faciliter les échanges entre
-            l'établissement et les élèves, utilisez les quand vous avez un
-            problème à faire remonter, besoin d'une aide, une question à
-            poser...
-          </div>
-        </card-with-title>
-        <br>
-        <card-with-title
-          title="Étapes de création"
-          desc=""
-        >
-          <ul style="list-style-type: square; list-style-position: inside;">
-            <li>
-              Un sommaire structuré et complet de votre besoin
-            </li>
-            <li>
-              En quoi de précédents tickets ne répondent pas à votre besoin
-            </li>
-            <li>
-              Ce que vous avez déjà essayé de faire pour répondre à votre besoin
-            </li>
-          </ul>
-        </card-with-title>
-      </div>
     </div>
   </div>
 </template>
 
 <script lang="js">
-import { useField, useForm } from 'vee-validate'
+import { useField } from 'vee-validate'
 import ErrorWrapper from '@/components/ErrorWrapper.vue'
-// import * as yup from 'yup'
+
 import TagsInput from '@/components/Input/TagsInput.vue'
-import CardWithTitle from '@/components/Card/CardWithTitle.vue'
+// import CardWithTitle from '@/components/Card/CardWithTitle.vue'
 import TipTapEditor from '@/components/TipTapEditor.vue'
 
-import { ref, defineComponent } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 
-export default defineComponent({
-  name: 'PostNew',
+export default {
   components: {
     TagsInput,
-    CardWithTitle,
+    // CardWithTitle,
     ErrorWrapper,
     TipTapEditor
   },
   inheritAttrs: false,
-  setup (props, ctx) {
+  setup () {
     const store = useStore()
     const tagsInputRef = ref(null)
     const editorRef = ref(null)
@@ -222,17 +192,9 @@ export default defineComponent({
       validate: tagsValidate
     } = useField('tags', 'postTags:4,20', { initialValue: [] })
 
-    const { handleSubmit } = useForm()
-
-    function onInvalidSubmit ({ values, errors, results }) {
-      // console.log(values)
-      // console.log(errors)
-      // console.log(results)
-    }
-
-    const onSubmit = handleSubmit(async function (values) {
+    const onSubmit = async (value) => {
       if ((await editorValidate())?.errors?.length || (await titleValidate())?.errors?.length || (await typeValidate())?.errors?.length || (await tagsValidate())?.errors?.length) {
-        alert('Votre Post n\'est pas encore terminé.\nFinissez-le avant de le soumettre :) !')
+        alert('Votre Post n\'est pas encore terminé.\nFinissez-le avant de le soumettre !')
       } else {
         const post = {
           title: titleValue.value,
@@ -242,7 +204,7 @@ export default defineComponent({
         }
         store.dispatch('posts/addPost', post)
       }
-    }, onInvalidSubmit)
+    }
 
     return {
       tagsInputRef,
@@ -296,16 +258,7 @@ export default defineComponent({
       } else {
         this.customTagError = 'Erreur de tags'
       }
-    },
-    validate () {
-      // const post = {
-      //   title: this.titleValue,
-      //   body: JSON.stringify(this.$refs.editorRef.getJSON()),
-      //   type: document.querySelector('#type').value,
-      //   tags: [...this.$refs.tagsInputRef.tags]
-      // }
-      // this.$store.dispatch('posts/addPost', post)
     }
   }
-})
+}
 </script>

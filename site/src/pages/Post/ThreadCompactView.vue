@@ -109,15 +109,13 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
 import Post from '@/components/Post.vue'
 import Reply from '@/components/Reply.vue'
 import Tag from '@/components/Tag.vue'
 import Contributors from '@/components/Contributor.vue'
 import SimilarTopic from '@/components/SimilarTopic.vue'
 
-export default defineComponent({
-  name: 'Thread',
+export default {
   components: {
     Tag,
     Contributors,
@@ -153,5 +151,5 @@ export default defineComponent({
       }
     }
   }
-})
+}
 </script>
