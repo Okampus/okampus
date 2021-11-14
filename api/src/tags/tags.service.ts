@@ -1,6 +1,7 @@
-import { EntityRepository, UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
+import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { CreateTagDto } from './dto/create-tag.dto';
 import type { UpdateTagDto } from './dto/update-tag.dto';
 import { Tag } from './tag.entity';
@@ -8,7 +9,7 @@ import { Tag } from './tag.entity';
 @Injectable()
 export class TagsService {
   constructor(
-    @InjectRepository(Tag) private readonly tagRepository: EntityRepository<Tag>,
+    @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
   ) {}
 
   public async create(createTagDto: CreateTagDto): Promise<Tag> {

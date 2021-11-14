@@ -1,13 +1,13 @@
-import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import type { RegisterDto } from '../auth/dto/register.dto';
+import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: EntityRepository<User>,
+    @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
   ) {}
 
   public async getUserByName(name: string): Promise<User | null> {

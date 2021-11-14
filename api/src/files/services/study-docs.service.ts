@@ -1,6 +1,7 @@
-import { EntityRepository, wrap } from '@mikro-orm/core';
+import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import { Subject } from '../../subjects/subject.entity';
 import type { User } from '../../users/user.entity';
 import type { CreateStudyDocDto } from '../dto/create-study-doc.dto';
@@ -12,9 +13,9 @@ import { StudyDoc } from '../entities/study-doc.entity';
 @Injectable()
 export class StudyDocsService {
   constructor(
-    @InjectRepository(StudyDoc) private readonly studyDocRepository: EntityRepository<StudyDoc>,
-    @InjectRepository(Subject) private readonly subjectRepository: EntityRepository<Subject>,
-    @InjectRepository(DocSeries) private readonly docSeriesRepository: EntityRepository<DocSeries>,
+    @InjectRepository(StudyDoc) private readonly studyDocRepository: BaseRepository<StudyDoc>,
+    @InjectRepository(Subject) private readonly subjectRepository: BaseRepository<Subject>,
+    @InjectRepository(DocSeries) private readonly docSeriesRepository: BaseRepository<DocSeries>,
   ) {}
 
   public async getStudyDocById(studyDocId: number): Promise<StudyDoc | null> {

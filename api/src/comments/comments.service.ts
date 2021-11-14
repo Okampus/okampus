@@ -1,7 +1,8 @@
-import { EntityRepository, wrap } from '@mikro-orm/core';
+import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Reply } from '../replies/entities/reply.entity';
+import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { User } from '../users/user.entity';
 import type { CreateCommentDto } from './dto/create-comment.dto';
 import type { UpdateCommentDto } from './dto/update-comment.dto';
@@ -10,8 +11,8 @@ import { Comment } from './entities/comment.entity';
 @Injectable()
 export class CommentsService {
   constructor(
-    @InjectRepository(Reply) private readonly replyRepository: EntityRepository<Reply>,
-    @InjectRepository(Comment) private readonly commentRepository: EntityRepository<Comment>,
+    @InjectRepository(Reply) private readonly replyRepository: BaseRepository<Reply>,
+    @InjectRepository(Comment) private readonly commentRepository: BaseRepository<Comment>,
   ) {}
 
   public async create(user: User, replyId: string, createCommentDto: CreateCommentDto): Promise<Comment> {

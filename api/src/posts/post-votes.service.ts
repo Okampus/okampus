@@ -1,6 +1,6 @@
-import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { User } from '../users/user.entity';
 import { PostVote } from './entities/post-vote.entity';
 import { Post } from './entities/post.entity';
@@ -8,8 +8,8 @@ import { Post } from './entities/post.entity';
 @Injectable()
 export class PostVotesService {
   constructor(
-    @InjectRepository(Post) private readonly postRepository: EntityRepository<Post>,
-    @InjectRepository(PostVote) private readonly postVotesRepository: EntityRepository<PostVote>,
+    @InjectRepository(Post) private readonly postRepository: BaseRepository<Post>,
+    @InjectRepository(PostVote) private readonly postVotesRepository: BaseRepository<PostVote>,
   ) {}
 
   public async update(user: User, postId: number, value: -1 | 1): Promise<Post> {

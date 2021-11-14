@@ -1,7 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/postgresql';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { Tag } from '../tags/tag.entity';
 import type { User } from '../users/user.entity';
 import type { CreatePostDto } from './dto/create-post.dto';
@@ -11,8 +11,8 @@ import { Post } from './entities/post.entity';
 @Injectable()
 export class PostsService {
   constructor(
-    @InjectRepository(Post) private readonly postRepository: EntityRepository<Post>,
-    @InjectRepository(Tag) private readonly tagRepository: EntityRepository<Tag>,
+    @InjectRepository(Post) private readonly postRepository: BaseRepository<Post>,
+    @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
   ) {}
 
   public async create(user: User, createPostDto: CreatePostDto): Promise<Post> {

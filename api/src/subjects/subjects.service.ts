@@ -1,6 +1,7 @@
-import { EntityRepository, UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
+import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { CreateSubjectDto } from './dto/create-subject.dto';
 import type { UpdateSubjectDto } from './dto/update-subject.dto';
 import { Subject } from './subject.entity';
@@ -8,7 +9,7 @@ import { Subject } from './subject.entity';
 @Injectable()
 export class SubjectsService {
   constructor(
-    @InjectRepository(Subject) private readonly subjectRepository: EntityRepository<Subject>,
+    @InjectRepository(Subject) private readonly subjectRepository: BaseRepository<Subject>,
   ) {}
 
   public async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
