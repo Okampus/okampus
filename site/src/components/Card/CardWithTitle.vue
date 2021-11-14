@@ -11,7 +11,6 @@
 
 <script lang="js">
 export default {
-  name: 'CardWithTitle',
   props: {
     title: {
       type: String,

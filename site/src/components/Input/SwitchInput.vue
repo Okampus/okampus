@@ -23,7 +23,6 @@
 
 <script>
 export default {
-  name: 'Switch',
   props: {
     modelValue: {
       type: Boolean,

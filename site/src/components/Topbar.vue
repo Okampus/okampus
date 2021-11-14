@@ -11,7 +11,6 @@
       >
         <i class="ri-menu-line text-2xl" />
       </button>
-      <!-- <div class="brand w-32 h-6 mt-1.5" /> -->
     </div>
 
     <div class="w-full h-full flex items-center">

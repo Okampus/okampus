@@ -12,7 +12,6 @@
 <script lang="js">
 
 export default {
-  name: 'Response',
   props: {
     contributor: {
       type: Object,

@@ -1,4 +1,5 @@
 import FileService from '../services/files.service'
+import { uniqBy } from '@/utils/uniqBy'
 
 const initialState = { studyDocs: [] }
 
@@ -50,7 +51,7 @@ export const files = {
       state.page = 1
     },
     searchStudyDocsSuccess (state, studyDocs) {
-      state.studyDocs = [...new Set([...state.studyDocs, ...studyDocs])]
+      state.studyDocs = uniqBy([...state.studyDocs, ...studyDocs], (a, b) => a.id === b.id)
       state.page++
     },
     addStudyDocSuccess (state, newStudyDoc) {

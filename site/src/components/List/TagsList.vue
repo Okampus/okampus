@@ -62,9 +62,10 @@ export default {
   data () {
     const overflow = debounce(() => {
       this.overflowing = []
-      const startHeight = this.getTop(this.tagList)
+      const getTop = el => el?.getBoundingClientRect()?.top ?? 0
+      const startHeight = getTop(this.tagList)
       for (var i = 0; i < this.tagRefs.length; i++) {
-        if (startHeight < this.getTop(this.tagRefs[i].$el)) {
+        if (startHeight < getTop(this.tagRefs[i].$el)) {
           this.overflowing.push(this.tagRefs[i].name)
         }
       }
@@ -84,11 +85,6 @@ export default {
   },
   unmounted () {
     this.tagsList$.disconnect()
-  },
-  methods: {
-    getTop (el) {
-      return el?.getBoundingClientRect()?.top ?? 0
-    }
   }
 }
 </script>

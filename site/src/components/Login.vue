@@ -77,7 +77,6 @@ import InputWithIcon from '@/components/Input/InputWithIcon.vue'
 import User from '@/models/user'
 
 export default {
-  name: 'Login',
   components: {
     InputWithIcon
   },

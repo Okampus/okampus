@@ -96,7 +96,5 @@
 </template>
 
 <script lang="js">
-export default {
-  name: 'Footer'
-}
+export default { }
 </script>

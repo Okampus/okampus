@@ -8,13 +8,13 @@
         <div class="text-1 text-center flex flex-col flex-shrink-0 w-14 pt-1 pb-2 bg-5 rounded-l-lg">
           <i class="ri-add-line text-xl md:text-2xl mouse-icon" />
           <div class="font-medium">
-            {{ format(post.upvotes - post.downvotes) }}
+            {{ abbrNumbers(post.upvotes - post.downvotes) }}
           </div>
           <i class="ri-subtract-line text-xl md:text-2xl -mt-1 mouse-icon" />
           <i class="mt-1 ri-bookmark-line mouse-icon text-lg md:text-xl" />
           <i class="mt-2 ri-star-line text-lg md:text-xl mouse-icon" />
           <div class="text-sm font-medium">
-            {{ format(post.favorites) }}
+            {{ abbrNumbers(post.favorites) }}
           </div>
         </div>
 
@@ -50,7 +50,7 @@
             <div class="flex space-x-1 pl-1">
               <p class="pr-1">•</p>
               <i class="ri-eye-line" />
-              <div>{{ format(post.views) }}</div>
+              <div>{{ abbrNumbers(post.views) }}</div>
             </div>
           </span>
 
@@ -83,7 +83,7 @@
                   <div class="text-1 font-bold text hover:underline">
                     {{ post.author?.username }}
                   </div>
-                  <div class="text-sm text-2">{{ format(post.author?.reputation) }}</div>
+                  <div class="text-sm text-2">{{ abbrNumbers(post.author?.reputation) }}</div>
                 </div>
               </a>
               <div class="flex-shrink-0 font-medium text-1 pl-2">
@@ -124,9 +124,10 @@ import Placeholder from '@tiptap/extension-placeholder'
 import Underline from '@tiptap/extension-underline'
 import CharacterCount from '@tiptap/extension-character-count'
 
-const abbrev = 'kmb'
+import { abbrNumbers } from '../../utils/abbrNumbers'
+import { timeAgo } from '../../utils/timeAgo'
+
 export default {
-  name: 'PostListingCard',
   components: {
     TagsList
   },
@@ -151,6 +152,8 @@ export default {
     }
   },
   methods: {
+    abbrNumbers,
+    timeAgo,
     extractContent (s, space) {
       var span = document.createElement('span')
       span.innerHTML = s
@@ -178,39 +181,6 @@ export default {
           CharacterCount
         ]
       ), true)
-    },
-
-    round (n, precision) {
-      var prec = Math.pow(10, precision)
-      return Math.round(n * prec) / prec
-    },
-
-    format (n) {
-      var base = Math.floor(Math.log(Math.abs(n)) / Math.log(1000))
-      var suffix = abbrev[Math.min(2, base - 1)]
-      base = abbrev.indexOf(suffix) + 1
-      return suffix ? this.round(n / Math.pow(1000, base), 2) + suffix : '' + n
-    },
-
-    timeAgo (input) {
-      const date = (input instanceof Date) ? input : new Date(input)
-      const formatter = new Intl.RelativeTimeFormat('fr', { style: 'short' })
-      const ranges = {
-        years: 3600 * 24 * 365,
-        months: 3600 * 24 * 30,
-        weeks: 3600 * 24 * 7,
-        days: 3600 * 24,
-        hours: 3600,
-        minutes: 60,
-        seconds: 1
-      }
-      const secondsElapsed = (date.getTime() - Date.now()) / 1000
-      for (const key in ranges) {
-        if (ranges[key] < Math.abs(secondsElapsed)) {
-          const delta = secondsElapsed / ranges[key]
-          return formatter.format(Math.round(delta), key)
-        }
-      }
     }
   }
 }

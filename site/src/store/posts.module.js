@@ -1,5 +1,6 @@
 import PostsService from '../services/posts.service'
 import router from '@/router'
+import { uniqBy } from '@/utils/uniqBy'
 
 const initialState = { posts: [], page: 0 }
 
@@ -74,7 +75,7 @@ export const posts = {
       state.page = 0
     },
     fetchSuccess (state, posts) {
-      state.posts = [...new Set([...state.posts, ...posts])]
+      state.posts = uniqBy([...state.posts, ...posts], (a, b) => a.id === b.id)
     },
     addPostSuccess (state, newPost) {
       router.push(`/post/${newPost.id}`)

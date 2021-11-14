@@ -31,7 +31,7 @@
             placeholder="Titre descriptif/complet"
             rules="required|min:20"
           >
-          <ErrorWrapper
+          <error-wrapper
             :error="titleErrorMessage"
             success="Titre valide"
             :meta="titleMeta"
@@ -74,7 +74,7 @@
               Discussion
             </option>
           </select>
-          <ErrorWrapper
+          <error-wrapper
             :error="typeErrorMessage"
             success="Type de Post valide"
             :meta="typeMeta"
@@ -97,7 +97,7 @@
               :buttons="editorButtons"
               input-placeholder="Décrivez votre question/suggestion/problème !"
             >
-              <ErrorWrapper
+              <error-wrapper
                 :error="editorErrorMessage"
                 success="Post valide"
                 :meta="editorMeta"

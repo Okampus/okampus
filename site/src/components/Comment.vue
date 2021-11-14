@@ -13,7 +13,7 @@
     "
   >
     {{ comment.content }}
-    <span class="font-bold"> - {{ comment.author }}</span>
+    <span class="font-bold">&nbsp;- {{ comment.author }}</span>
     <div class="float-right mr-1">
       <i class="ri-heart-line inline-block" />
       <div class="h-6 w-auto inline-block">
@@ -27,11 +27,14 @@
 
 <script lang="js">
 export default {
-  name: 'Comment',
   props: {
     comment: {
       type: Object,
-      default: () => {}
+      default: () => ({
+        author: '<Pseudo>',
+        content: '<Comment>',
+        likes: 0
+      })
     }
   }
 }

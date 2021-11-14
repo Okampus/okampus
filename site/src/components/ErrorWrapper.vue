@@ -8,7 +8,6 @@
 
 <script lang="js">
 export default {
-  name: 'Tag',
   props: {
     meta: {
       type: Object,
