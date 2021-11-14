@@ -2,6 +2,8 @@ import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
+import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import type { CreateSubjectDto } from './dto/create-subject.dto';
 import type { UpdateSubjectDto } from './dto/update-subject.dto';
 import { Subject } from './subject.entity';
@@ -24,8 +26,8 @@ export class SubjectsService {
     return subject;
   }
 
-  public async findAll(): Promise<Subject[]> {
-    return await this.subjectRepository.findAll();
+  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Subject>> {
+    return await this.subjectRepository.findWithPagination(paginationOptions);
   }
 
   public async findOne(subjectId: string): Promise<Subject> {

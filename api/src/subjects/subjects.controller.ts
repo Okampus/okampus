@@ -6,7 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
+import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
+import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
 import type { Subject } from './subject.entity';
@@ -22,7 +25,9 @@ export class SubjectsController {
   }
 
   @Get()
-  public async findAll(): Promise<Subject[]> {
+  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Subject>> {
+    if (query.page)
+      return await this.subjectsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
     return await this.subjectsService.findAll();
   }
 

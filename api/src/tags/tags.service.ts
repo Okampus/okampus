@@ -2,6 +2,8 @@ import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
+import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import type { CreateTagDto } from './dto/create-tag.dto';
 import type { UpdateTagDto } from './dto/update-tag.dto';
 import { Tag } from './tag.entity';
@@ -24,8 +26,8 @@ export class TagsService {
     return tag;
   }
 
-  public async findAll(): Promise<Tag[]> {
-    return await this.tagRepository.findAll();
+  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Tag>> {
+    return await this.tagRepository.findWithPagination(paginationOptions);
   }
 
   public async findOne(name: string): Promise<Tag> {

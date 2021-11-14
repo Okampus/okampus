@@ -13,12 +13,11 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-import type { CustomPaginateResult } from '../shared/lib/pagination';
-import { labelize } from '../shared/lib/pagination';
+import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
+import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
 import { CreatePostDto } from './dto/create-post.dto';
-import { PaginateDto } from './dto/paginate.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import type { Post } from './entities/post.entity';
 import { PostVotesService } from './post-votes.service';
@@ -39,15 +38,10 @@ export class PostsController {
   }
 
   @Get()
-  public async findAll(@Query() query: PaginateDto): Promise<CustomPaginateResult<Post>> {
-    if (query.page) {
-      const limit = query.itemsPerPage ?? 10;
-      const offset = (query.page - 1) * limit;
-      const { items, total } = await this.postsService.findAll({ offset, limit });
-      return labelize(items, { offset, itemsPerPage: limit, total });
-    }
-    const { items, total } = await this.postsService.findAll();
-    return labelize(items, { offset: 0, itemsPerPage: items.length, total });
+  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Post>> {
+    if (query.page)
+      return await this.postsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
+    return await this.postsService.findAll();
   }
 
   @Get(':id')

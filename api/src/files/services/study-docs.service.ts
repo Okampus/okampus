@@ -2,6 +2,8 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
+import type { PaginationOptions } from '../../shared/modules/pagination/pagination-option.interface';
+import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import { Subject } from '../../subjects/subject.entity';
 import type { User } from '../../users/user.entity';
 import type { CreateStudyDocDto } from '../dto/create-study-doc.dto';
@@ -35,11 +37,8 @@ export class StudyDocsService {
     return studyDoc;
   }
 
-  public async findAll(
-    paginationOptions?: { offset: number; limit: number },
-  ): Promise<{ items: StudyDoc[]; total: number }> {
-    const [items, total] = await this.studyDocRepository.findAndCount({}, paginationOptions);
-    return { items, total };
+  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<StudyDoc>> {
+    return await this.studyDocRepository.findWithPagination(paginationOptions);
   }
 
   public async findOne(studyDocId: number): Promise<StudyDoc> {
