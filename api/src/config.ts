@@ -28,7 +28,7 @@ export const config = createProfiguration<Config>({
     env: 'UPLOAD_PATH',
   },
   port: {
-    default: 5000,
+    default: 8081,
     format: Number,
     env: 'PORT',
   },
