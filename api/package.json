@@ -2,7 +2,7 @@
   "name": "horizon-api",
   "version": "0.1.0",
   "description": "API for the Horizon's website",
-  "author": "Elliot 'noftaly' Maisl",
+  "author": "Horizon Backend Dev team",
   "private": true,
   "license": "MIT",
   "scripts": {

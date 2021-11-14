@@ -2,7 +2,7 @@
   "name": "horizon-vue",
   "version": "0.1.0",
   "description": "Front-end for the HorizonWeb project",
-  "author": "Horizon Ef'Réussite",
+  "author": "Horizon Frontend Dev team",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
