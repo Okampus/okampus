@@ -7,7 +7,7 @@ import { DocSeries } from './entities/doc-series.entity';
 import { FileUpload } from './entities/file-upload.entity';
 import { StudyDoc } from './entities/study-doc.entity';
 import { FilesController } from './files.controller';
-import { FilesService } from './services/file-uploads.service';
+import { FileUploadsService } from './services/file-uploads.service';
 import { StudyDocsService } from './services/study-docs.service';
 
 @Module({
@@ -22,7 +22,7 @@ import { StudyDocsService } from './services/study-docs.service';
     UsersModule,
   ],
   controllers: [FilesController],
-  providers: [StudyDocsService, FilesService],
+  providers: [StudyDocsService, FileUploadsService],
   exports: [StudyDocsService],
 })
 export class FilesModule {}

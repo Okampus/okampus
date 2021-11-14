@@ -15,9 +15,9 @@ export class StudyDocsService {
     @InjectRepository(StudyDoc) private readonly studyDocRepository: EntityRepository<StudyDoc>,
     @InjectRepository(Subject) private readonly subjectRepository: EntityRepository<Subject>,
     @InjectRepository(DocSeries) private readonly docSeriesRepository: EntityRepository<DocSeries>,
-    ) {}
+  ) {}
 
-  public async getUploadById(studyDocId: number): Promise<StudyDoc | null> {
+  public async getStudyDocById(studyDocId: number): Promise<StudyDoc | null> {
     return await this.studyDocRepository.findOne({ studyDocId });
   }
 

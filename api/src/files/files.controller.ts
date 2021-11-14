@@ -32,7 +32,7 @@ import { User } from '../users/user.entity';
 import { CreateStudyDocDto } from './dto/create-study-doc.dto';
 import { UpdateStudyDocDto } from './dto/update-study-doc.dto';
 import type { StudyDoc } from './entities/study-doc.entity';
-import { FilesService } from './services/file-uploads.service';
+import { FileUploadsService } from './services/file-uploads.service';
 import { StudyDocsService } from './services/study-docs.service';
 
 @ApiTags('File')
@@ -41,12 +41,12 @@ import { StudyDocsService } from './services/study-docs.service';
 export class FilesController {
   constructor(
     private readonly studyDocsService: StudyDocsService,
-    private readonly filesService: FilesService,
+    private readonly filesService: FileUploadsService,
   ) {}
 
   @UseInterceptors(FileInterceptor('file', { limits: { fileSize: config.get('uploadMaxSize') } }))
   @Post('/study-docs')
-  public async uploadCourseDocument(
+  public async create(
     @CurrentUser() user: User,
     @Body() createStudyDocDto: CreateStudyDocDto,
     @UploadedFile() file: Express.Multer.File,
@@ -64,7 +64,7 @@ export class FilesController {
   }
 
   @Get('/study-docs')
-  public async getAllUploads(@Query() query: PaginateDto): Promise<CustomPaginateResult<StudyDoc>> {
+  public async findAll(@Query() query: PaginateDto): Promise<CustomPaginateResult<StudyDoc>> {
     if (query.page) {
       const limit = query.itemsPerPage ?? 10;
       const offset = (query.page - 1) * limit;
@@ -76,12 +76,12 @@ export class FilesController {
   }
 
   @Get('/study-docs/:id')
-  public async getOne(@Param('id', ParseIntPipe) id: number): Promise<StudyDoc> {
+  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<StudyDoc> {
     return await this.studyDocsService.findOne(id);
   }
 
   @Patch('/study-docs/:id')
-  public async updateDoc(
+  public async update(
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCourseDocDto: UpdateStudyDocDto,
@@ -90,7 +90,7 @@ export class FilesController {
   }
 
   @Get('/download/:id')
-  public async getFile(
+  public async findFile(
     @Param('id', ParseIntPipe) id: number,
     @Response({ passthrough: true }) res: Res,
   ): Promise<StreamableFile> {

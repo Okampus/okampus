@@ -8,7 +8,7 @@ import type { User } from '../../users/user.entity';
 import { FileUpload } from '../entities/file-upload.entity';
 
 @Injectable()
-export class FilesService {
+export class FileUploadsService {
   constructor(
     @InjectRepository(FileUpload) private readonly fileUploadRepository: EntityRepository<FileUpload>,
   ) {}
