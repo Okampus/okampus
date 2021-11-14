@@ -1,64 +1,63 @@
 <template>
-  <div>
-    <!-- Haut de page : Timeline... -->
-    <div class="flex mb-4 items-center">
-      <div class="text-1 bg-3 rounded-md px-4 py-2 flex-shrink-0">
+  <div class="px-4 py-6">
+    <div class="text-1">
+      <div class="px-4 pt-4 text-3xl font-bold mb-2">
+        {{ thread.post.title }}
+      </div>
+      <div
+        class="flex flex-row gap-4 text-1 rounded-md px-4 py-2 flex-shrink-0"
+      >
         <div class="flex space-x-2">
-          <i class="ri-file-edit-fill" /> <p>{{ timeAgo (thread.createdAt, 'long') }}</p>
+          <i class="ri-file-edit-fill" />
+          <p>{{ timeAgo(thread.createdAt, "long") }}</p>
         </div>
         <div class="flex space-x-2">
-          <i class="ri-history-line" /> <p>{{ timeAgo (thread.updatedAt, 'long') }}</p>
+          <i class="ri-history-line" />
+          <p>{{ timeAgo(thread.updatedAt, "long") }}</p>
         </div>
         <div class="flex space-x-2">
-          <i class="ri-eye-line" /> <p>{{ thread.views }} vues</p>
+          <i class="ri-eye-line" />
+          <p>{{ thread.views }} vues</p>
+        </div>
+
+        <!-- TODO: Talk tab -->
+        <div class="border-b-2 border-blue-500">
+          Post
+        </div>
+        <div class="border-b-2 border-transparent hover:border-blue-300">
+          Talk
         </div>
       </div>
-      <div class="text-1 mx-2 w-full border-1 bg-1 rounded-md text-center h-24">
-        TIMELINE
-      </div>
-      <div class="box-border flex flex-col space-y-3 flex-shrink-0">
-        <router-link
-          to="/new-post"
-          class="
-            text-center
-            button
-          "
-        >
-          Créer un Post
-        </router-link>
-        <router-link
-          to="/posts"
-          class="
-            text-center
-            button
-          "
-        >
-          Voir d'autres posts
-        </router-link>
-      </div>
+      <hr class="mt-2 mb-4">
     </div>
-    <!-- Box contenant les posts -->
+
     <div class="flex">
-      <div class="w-9/12 flex">
+      <div class="md:w-9/12">
         <div>
-          <div>
-            <post :post="thread.post" />
-          </div>
-          <div
-            v-for="(reply, i) in thread.replies"
-            :key="i"
-            class="mt-4 w-11/12 float-right"
-          >
-            <reply :reply="reply" />
-          </div>
+          <Post :post="thread.post" />
+        </div>
+
+        <div class="pt-4 text-1">
+          {{ thread.replies.length }} {{ thread.replies.length > 1 ? 'Réponses' : 'Réponse' }}
+        </div>
+        <hr class="mt-2">
+
+        <div
+          v-for="(reply, i) in thread.replies"
+          :key="i"
+          class="mt-4"
+        >
+          <reply :reply="reply" />
         </div>
       </div>
-      <div class="w-3/12 ml-4 text-1 sticky top-0 space-y-2">
-        <div class="bg-3 px-4 py-2">
+
+      <div class="w-3/12 ml-4 text-1 sticky top-0 space-y-2 hidden md:block">
+        <div class="border rounded-lg px-4 py-2">
           <div class="flex mb-2 space-x-2 text-xl items-center">
             <div class="font-bold text-md mr-4">
               Tags
             </div>
+            <!-- TODO: Actions -->
             <i class="ri-settings-2-line" />
             <i class="ri-menu-add-line" />
           </div>
@@ -72,7 +71,7 @@
             />
           </div>
         </div>
-        <div class="bg-3 px-4 py-2">
+        <div class="border rounded-lg px-4 py-2">
           <div class="flex mb-2 space-x-2 text-xl items-center">
             <div class="font-bold text-md mr-4">
               Contributeurs
@@ -80,6 +79,7 @@
             <i class="ri-settings-2-line" />
             <i class="ri-arrow-left-right-line" />
           </div>
+          <!-- TODO: Actions -->
           <contributors
             v-for="contributor in thread.contributors"
             :key="contributor"
@@ -87,19 +87,20 @@
             class="inline-block"
           />
         </div>
-        <div class="bg-3 px-4 py-2">
+        <div class="border rounded-lg px-4 py-2">
           <div class="flex mb-3 space-x-2 text-xl items-center">
             <div class="font-bold text-md mr-4">
               Sujets semblables
             </div>
+            <!-- TODO: Actions -->
             <i class="ri-menu-add-line" />
             <i class="ri-arrow-left-circle-fill" />
             <i class="ri-arrow-right-circle-fill" />
           </div>
-          <similar-topic
-            v-for="topic in thread.similarTopics"
-            :key="topic"
-            :topic="topic"
+          <similar-thread
+            v-for="similarThread in thread.similarThreads"
+            :key="similarThread"
+            :thread="similarThread"
             class="mb-2"
           />
         </div>
@@ -109,24 +110,26 @@
 </template>
 
 <script lang="js">
-import Post from '@/components/Post.vue'
+import { defineComponent } from 'vue'
 import Reply from '@/components/Reply.vue'
 import Tag from '@/components/Tag.vue'
 import Contributors from '@/components/Contributor.vue'
-import SimilarTopic from '@/components/SimilarTopic.vue'
+import SimilarThread from '@/components/SimilarThread.vue'
+import Post from '@/components/Post.vue'
 
-export default {
+export default defineComponent({
   components: {
     Tag,
     Contributors,
-    SimilarTopic,
-    Post,
-    Reply
+    SimilarThread,
+    Reply,
+    Post
   },
   props: {
     thread: {
       type: Object,
-      default: () => {}
+      default: () => {},
+      required: true
     }
   },
   methods: {
@@ -151,5 +154,5 @@ export default {
       }
     }
   }
-}
+})
 </script>

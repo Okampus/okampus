@@ -1,40 +1,54 @@
 <template>
   <div>
-    <div class="text-1 border-1 bg-1 rounded-md">
-      <div class="px-4 pt-4 text-3xl font-bold text-center">
-        #{{ post.number }} - {{ post.title }}
-      </div>
-      <div class="flex pb-4 pr-4 mt-1">
-        <div class="flex flex-col w-1/12 items-center">
-          <i class="ri-arrow-up-s-line" />
-          <div class="text-center">
+    <div class="text-1">
+      <div class="flex mt-1">
+        <div class="flex flex-col flex-shrink-0 w-20 items-center justify-center gap-1 text-lg">
+          <i class="ri-arrow-up-s-fill ri-2x" />
+          <div class="text-center text-xl">
             {{ post.upvotes }}
           </div>
-          <i class="ri-arrow-down-s-line" />
-          <i class="ri-star-line" />
-          <i class="ri-notification-2-line" />
-          <i class="ri-flag-line" />
+          <i class="ri-arrow-down-s-fill ri-2x" />
         </div>
         <div class="w-11/12">
-          <i class="ri-edit-line ml-3 inline-block" />
-          <i class="ri-archive-line ml-3 inline-block" />
           <div class="p-1 mt-2 text-2 text-sm">
             {{ post.content }}
           </div>
+          <div class="mt-2">
+            <div class="ml-3 flex items-center ri-lg space-x-4">
+              <div
+                v-for="(action,i) in actions"
+                :key="i"
+                class="flex items-center text-5"
+                @click="actionsMap[action].action"
+              >
+                <i
+                  :class="actionsMap[action].icon"
+                  class="ri-md"
+                />
+                <p class="text-sm tracking-tighter pl-1 hidden md:block">
+                  {{ actionsMap[action].name() }}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="flex bg-2 border-t rounded-b-md">
-        <img
-          :src="post.creator.img"
-          alt="Profile Picture"
-          class="bg-white w-24 h-24"
-        >
-        <div class="relative ml-3">
-          <div>
-            <div class="inline-block text-lg font-medium">
+
+      <div class="flex">
+        <div class="w-20 h-20 p-3">
+          <img
+            :src="post.creator.img"
+            alt="Profile Picture"
+            class="rounded"
+          >
+        </div>
+
+        <div class="my-3 mx-2 flex">
+          <div class="flex flex-col">
+            <div class="text-lg font-medium">
               {{ post.creator.pseudo }}
             </div>
-            <div class="inline-block ml-3 text-sm">
+            <div class="text-sm">
               {{ post.creator.role }}
             </div>
           </div>
@@ -51,10 +65,10 @@
 </template>
 
 <script lang="js">
-import Comment from '@/components/Comment.vue'
+import Comment from './Comment.vue'
+import { defineComponent } from 'vue'
 
-export default {
-  name: 'Message',
+export default defineComponent({
   components: {
     Comment
   },
@@ -62,7 +76,29 @@ export default {
     post: {
       type: Object,
       default: () => {}
+    },
+    actions: {
+      type: Array,
+      default: function () {
+        return [
+          'viewComments',
+          'favorite',
+          'edit',
+          'flag'
+        ]
+      }
+    }
+  },
+  computed: {
+    actionsMap () {
+      // TODO: Actions
+      return {
+        viewComments: { name: () => { return `${this.post.comments.length} Commentaires` }, icon: 'ri-chat-2-line', action: function () { console.log('Commentaire') } },
+        favorite: { name: () => { return 'Favori' }, icon: 'ri-star-line', action: function () { console.log('Favori') } },
+        edit: { name: () => { return 'Éditer' }, icon: 'ri-edit-line', action: function () { console.log('Éditer') } },
+        flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } }
+      }
     }
   }
-}
+})
 </script>
