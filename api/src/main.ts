@@ -11,10 +11,7 @@ import { config } from './config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
 import { logger } from './shared/lib/middlewares/logger.middleware';
 import { FileKind } from './shared/lib/types/file-kind.enum';
-
-function enumKeys<O extends object, K extends keyof O = keyof O>(obj: O): K[] {
-  return Object.keys(obj).filter(k => Number.isNaN(Number(k))) as K[];
-}
+import { enumKeys } from './shared/lib/utils/enumKeys';
 
 async function createFileStructure(): Promise<void> {
   const base = path.join(path.resolve('./'), 'uploads');
@@ -26,16 +23,16 @@ async function createFileStructure(): Promise<void> {
   await Promise.all(dirs);
 }
 
-const setupSwagger = (app: NestExpressApplication): void => {
+function setupSwagger(app: NestExpressApplication): void {
   const swaggerConfig = new DocumentBuilder()
-      .setTitle('Horizon Web API')
-      .setDescription('REST API for HorizonWeb')
-      .setVersion('1.0')
-      .build();
+    .setTitle('Horizon Web API')
+    .setDescription('REST API for HorizonWeb')
+    .setVersion('1.0')
+    .build();
 
-    const document = SwaggerModule.createDocument(app, swaggerConfig);
-    SwaggerModule.setup('docs', app, document);
-};
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('docs', app, document);
+}
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -57,7 +54,6 @@ async function bootstrap(): Promise<void> {
   app.set('trust proxy', false);
 
   await createFileStructure();
-
   setupSwagger(app);
 
   await app.listen(config.get('port'));
