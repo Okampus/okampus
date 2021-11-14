@@ -8,9 +8,9 @@ import { Post } from '../../posts/entities/post.entity';
 import { FileUpload } from './file-upload.entity';
 
 @Entity()
-export class FileIntegration {
+export class Attachment {
   @PrimaryKey()
-  integrationId!: number;
+  attachmentId!: number;
 
   @OneToOne()
   file!: FileUpload;
