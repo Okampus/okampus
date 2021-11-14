@@ -5,10 +5,11 @@ import {
   PrimaryKey,
 } from '@mikro-orm/core';
 import { Post } from '../../posts/entities/post.entity';
+import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { FileUpload } from './file-upload.entity';
 
 @Entity()
-export class Attachment {
+export class Attachment extends BaseEntity {
   @PrimaryKey()
   attachmentId!: number;
 
@@ -23,6 +24,7 @@ export class Attachment {
     file: FileUpload;
     content: Post;
   }) {
+    super();
     this.file = options.file;
     this.content = options.content;
   }

@@ -9,9 +9,10 @@ import * as bcrypt from 'bcrypt';
 import { Exclude, Expose } from 'class-transformer';
 import { nanoid } from 'nanoid';
 import { EMAIL_INCLUDED } from '../shared/lib/constants';
+import { BaseEntity } from '../shared/lib/entities/base.entity';
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @PrimaryKey()
   userId: string = nanoid(10);
 
@@ -38,14 +39,8 @@ export class User {
   @Property({ type: 'text' })
   avatar?: string;
 
-  @Property()
-  createdAt = new Date();
-
-  @Property({ onUpdate: () => new Date() })
-  @Exclude()
-  updatedAt = new Date();
-
   constructor(username: string, email: string) {
+    super();
     this.username = username;
     this.email = email;
   }

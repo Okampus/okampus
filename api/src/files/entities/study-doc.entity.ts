@@ -7,15 +7,15 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Exclude } from 'class-transformer';
 import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
+import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { Subject } from '../../subjects/subject.entity';
 import type { Tag } from '../../tags/tag.entity';
 import { DocSeries } from './doc-series.entity';
 import { FileUpload } from './file-upload.entity';
 
 @Entity()
-export class StudyDoc {
+export class StudyDoc extends BaseEntity {
   @PrimaryKey()
   studyDocId!: number;
 
@@ -42,13 +42,6 @@ export class StudyDoc {
   @Property({ type: 'text' })
   description?: string;
 
-  @Property()
-  createdAt = new Date();
-
-  @Property({ onUpdate: () => new Date() })
-  @Exclude()
-  updatedAt = new Date();
-
   constructor(options: {
     file: FileUpload;
     subject: Subject;
@@ -57,6 +50,7 @@ export class StudyDoc {
     year?: number;
     description?: string;
   }) {
+    super();
     this.file = options.file;
     this.subject = options.subject;
     if (options.docSeries)

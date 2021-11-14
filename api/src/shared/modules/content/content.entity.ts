@@ -4,10 +4,10 @@ import {
   ManyToOne,
   Property,
 } from '@mikro-orm/core';
-import { Exclude } from 'class-transformer';
 import { User } from '../../../users/user.entity';
+import { BaseEntity } from '../../lib/entities/base.entity';
 
-export abstract class Content {
+export abstract class Content extends BaseEntity {
   @Property({ type: 'text' })
   body!: string;
 
@@ -23,17 +23,11 @@ export abstract class Content {
   @Property()
   contentLastUpdatedAt = new Date();
 
-  @Property()
-  createdAt = new Date();
-
-  @Property({ onUpdate: () => new Date() })
-  @Exclude()
-  updatedAt = new Date();
-
   constructor(options: {
     body: string;
     author: User;
   }) {
+    super();
     this.body = options.body;
     this.author = options.author;
   }

@@ -1,8 +1,8 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
-import { Exclude } from 'class-transformer';
+import { BaseEntity } from '../shared/lib/entities/base.entity';
 
 @Entity()
-export class Subject {
+export class Subject extends BaseEntity {
   @PrimaryKey()
   subjectId!: string;
 
@@ -15,19 +15,13 @@ export class Subject {
   @Property({ type: 'text' })
   description?: string;
 
-  @Property()
-  createdAt = new Date();
-
-  @Property({ onUpdate: () => new Date() })
-  @Exclude()
-  updatedAt = new Date();
-
   constructor(options: {
     subjectId: string;
     name: string;
     englishName: string;
     description?: string;
   }) {
+    super();
     this.subjectId = options.subjectId;
     this.name = options.name;
     this.englishName = options.englishName;

@@ -1,26 +1,19 @@
-import {
-  Entity,
-  OneToOne,
-  PrimaryKey,
-  Property,
-} from '@mikro-orm/core';
+import { Entity, OneToOne, PrimaryKey } from '@mikro-orm/core';
+import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { FileUpload } from './file-upload.entity';
 
 @Entity()
-export class Avatar {
+export class Avatar extends BaseEntity {
   @PrimaryKey()
   avatarId!: number;
 
   @OneToOne()
   file!: FileUpload;
 
-  // TODO: Automatically update replacedAt of the last avatar when a new avatar is added
-  @Property()
-  updatedAt: Date = new Date();
-
   constructor(options: {
     file: FileUpload;
   }) {
+    super();
     this.file = options.file;
   }
 }

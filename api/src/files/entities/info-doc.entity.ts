@@ -7,14 +7,14 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Exclude } from 'class-transformer';
 import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
+import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import type { Tag } from '../../tags/tag.entity';
 import { DocSeries } from './doc-series.entity';
 import { FileUpload } from './file-upload.entity';
 
 @Entity()
-export class InfoDoc {
+export class InfoDoc extends BaseEntity {
   @PrimaryKey()
   infoDocId!: number;
 
@@ -43,13 +43,6 @@ export class InfoDoc {
   @Property()
   isObsolete = false;
 
-  @Property()
-  createdAt = new Date();
-
-  @Property({ onUpdate: () => new Date() })
-  @Exclude()
-  updatedAt = new Date();
-
   constructor(options: {
     file: FileUpload;
     docSeries?: DocSeries | null;
@@ -58,6 +51,7 @@ export class InfoDoc {
     description?: string;
     isObsolete?: boolean;
   }) {
+    super();
     this.file = options.file;
     if (options.docSeries)
       this.docSeries = options.docSeries;

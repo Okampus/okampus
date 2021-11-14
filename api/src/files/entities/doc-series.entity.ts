@@ -5,12 +5,12 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Exclude } from 'class-transformer';
 import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
+import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import type { Tag } from '../../tags/tag.entity';
 
 @Entity()
-export class DocSeries {
+export class DocSeries extends BaseEntity {
   @PrimaryKey()
   docSeriesId!: number;
 
@@ -32,19 +32,13 @@ export class DocSeries {
   @Property()
   isObsolete?: boolean;
 
-  @Property()
-  createdAt = new Date();
-
-  @Property({ onUpdate: () => new Date() })
-  @Exclude()
-  updatedAt = new Date();
-
   constructor(options: {
     name: string;
     englishName: string;
     description?: string;
     isObsolete?: boolean;
   }) {
+    super();
     this.name = options.name;
     this.englishName = options.englishName;
 

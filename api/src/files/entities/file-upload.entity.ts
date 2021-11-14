@@ -6,13 +6,13 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Exclude } from 'class-transformer';
 import { config } from '../../config';
+import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { User } from '../../users/user.entity';
 
 @Entity()
-export class FileUpload {
+export class FileUpload extends BaseEntity {
   @PrimaryKey()
   fileUploadId!: number;
 
@@ -40,13 +40,6 @@ export class FileUpload {
   @Enum(() => FileKind)
   fileKind = FileKind.Unknown;
 
-  @Property()
-  createdAt = new Date();
-
-  @Property({ onUpdate: () => new Date() })
-  @Exclude()
-  updatedAt = new Date();
-
   constructor(options: {
     author: User;
     originalName: string;
@@ -55,6 +48,7 @@ export class FileUpload {
     fileLastModifiedAt: Date;
     fileKind?: FileKind;
   }) {
+    super();
     this.author = options.author;
     this.originalName = options.originalName;
     this.fileSize = options.fileSize;

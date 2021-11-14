@@ -3,16 +3,15 @@ import {
   Enum,
   ManyToOne,
   PrimaryKey,
-  Property,
 } from '@mikro-orm/core';
-import { Exclude } from 'class-transformer';
 import { User } from '../../../users/user.entity';
+import { BaseEntity } from '../../lib/entities/base.entity';
 
 @Entity({
   discriminatorColumn: 'kind',
   abstract: true,
 })
-export abstract class Vote {
+export abstract class Vote extends BaseEntity {
   @PrimaryKey()
   voteId!: number;
 
@@ -25,15 +24,8 @@ export abstract class Vote {
   @Enum()
   value!: -1 | 1;
 
-  @Property()
-  @Exclude()
-  createdAt: Date = new Date();
-
-  @Property({ onUpdate: () => new Date() })
-  @Exclude()
-  updatedAt: Date = new Date();
-
   constructor(user: User, value: -1 | 1) {
+    super();
     this.user = user;
     this.value = value;
   }
