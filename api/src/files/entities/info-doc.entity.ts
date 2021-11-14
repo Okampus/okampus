@@ -7,7 +7,8 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Exclude, Transform } from 'class-transformer';
+import { Exclude } from 'class-transformer';
+import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
 import type { Tag } from '../../tags/tag.entity';
 import { DocSeries } from './doc-series.entity';
 import { FileUpload } from './file-upload.entity';
@@ -24,11 +25,7 @@ export class InfoDoc {
   docSeries?: DocSeries;
 
   @ManyToMany()
-  @Transform(({ obj: infoDoc }: { obj: InfoDoc }) => {
-    if (infoDoc.tags.isInitialized())
-      return Object.values(infoDoc.tags).filter(tag => typeof tag === 'object');
-    return null; // In case the 'post.tags' field was not populated
-  })
+  @TransformTags()
   tags = new Collection<Tag>(this);
 
   @Property({ type: 'text' })
@@ -43,8 +40,8 @@ export class InfoDoc {
 
   // Whether the info of an infoDoc is now invalid (the document now acts as an archive or latest known infoDoc)
   // TODO: Changing the isObsolete property of any document should require a validation/signature
-  @Property({ type: 'boolean', default: false })
-  isObsolete?: boolean;
+  @Property()
+  isObsolete = false;
 
   @Property()
   createdAt = new Date();

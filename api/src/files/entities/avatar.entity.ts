@@ -14,10 +14,9 @@ export class Avatar {
   @OneToOne()
   file!: FileUpload;
 
-  // Date at which an avatar was replaced by a new one; if 'null', this avatar is the current avatar
   // TODO: Automatically update replacedAt of the last avatar when a new avatar is added
-  @Property({ default: null })
-  replacedAt: Date;
+  @Property()
+  updatedAt: Date = new Date();
 
   constructor(options: {
     file: FileUpload;

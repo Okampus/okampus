@@ -8,7 +8,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Transform } from 'class-transformer';
+import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
 import { PostType } from '../../shared/lib/types/post-type.enum';
 import { Content } from '../../shared/modules/content/content.entity';
 import type { Tag } from '../../tags/tag.entity';
@@ -23,11 +23,7 @@ export class Post extends Content {
   title!: string;
 
   @ManyToMany()
-  @Transform(({ obj: post }: { obj: Post }) => {
-    if (post.tags.isInitialized())
-      return Object.values(post.tags).filter(tag => typeof tag === 'object');
-    return null; // In case the 'post.tags' field was not populated
-  })
+  @TransformTags()
   tags = new Collection<Tag>(this);
 
   @Enum()

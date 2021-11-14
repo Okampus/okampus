@@ -16,12 +16,11 @@ export class Subject {
   description?: string;
 
   @Property()
-  @Exclude()
-  createdAt: Date = new Date();
+  createdAt = new Date();
 
   @Property({ onUpdate: () => new Date() })
   @Exclude()
-  updatedAt: Date = new Date();
+  updatedAt = new Date();
 
   constructor(options: {
     subjectId: string;

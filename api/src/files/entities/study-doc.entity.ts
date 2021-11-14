@@ -7,7 +7,8 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Exclude, Transform } from 'class-transformer';
+import { Exclude } from 'class-transformer';
+import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
 import { Subject } from '../../subjects/subject.entity';
 import type { Tag } from '../../tags/tag.entity';
 import { DocSeries } from './doc-series.entity';
@@ -28,11 +29,7 @@ export class StudyDoc {
   docSeries?: DocSeries;
 
   @ManyToMany()
-  @Transform(({ obj: studyDoc }: { obj: StudyDoc }) => {
-    if (studyDoc.tags.isInitialized())
-      return Object.values(studyDoc.tags).filter(tag => typeof tag === 'object');
-    return null; // In case the 'post.tags' field was not populated
-  })
+  @TransformTags()
   tags = new Collection<Tag>(this);
 
   @Property({ type: 'text' })
