@@ -2,7 +2,7 @@ import { Entity, ManyToOne, PrimaryKey } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import { Post } from '../../posts/entities/post.entity';
 import { Reply } from '../../replies/entities/reply.entity';
-import { Content } from '../../shared/modules/content/content.entity';
+import { Content } from '../../shared/lib/entities/content.entity';
 import type { User } from '../../users/user.entity';
 
 @Entity()
@@ -14,6 +14,7 @@ export class Comment extends Content {
   post!: Post;
 
   @ManyToOne({ onDelete: 'cascade' })
+  // FIXME: this is optional
   reply!: Reply;
 
   constructor(options: {

@@ -5,7 +5,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { User } from '../../../users/user.entity';
-import { BaseEntity } from '../../lib/entities/base.entity';
+import { BaseEntity } from './base.entity';
 
 export abstract class Content extends BaseEntity {
   @Property({ type: 'text' })

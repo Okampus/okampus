@@ -9,8 +9,8 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
+import { Content } from '../../shared/lib/entities/content.entity';
 import { PostType } from '../../shared/lib/types/post-type.enum';
-import { Content } from '../../shared/modules/content/content.entity';
 import type { Tag } from '../../tags/tag.entity';
 import type { User } from '../../users/user.entity';
 

@@ -1,7 +1,7 @@
 import { Entity, ManyToOne, PrimaryKey } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import { Post } from '../../posts/entities/post.entity';
-import { Content } from '../../shared/modules/content/content.entity';
+import { Content } from '../../shared/lib/entities/content.entity';
 import type { User } from '../../users/user.entity';
 
 @Entity()
