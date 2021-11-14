@@ -21,6 +21,7 @@ export class CreateInfoDocDto extends OmitType(CreateFileUploadDto, ['fileKind']
 
   @IsOptional()
   @IsArray()
+  @IsString({ each: true })
   tags?: string[];
 
   @IsOptional()

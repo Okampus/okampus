@@ -4,10 +4,10 @@ export class PaginateDto {
   @IsOptional()
   @IsNumber()
   @Min(1)
-  page: number;
+  page?: number;
 
   @IsOptional()
   @IsNumber()
   @Min(1)
-  itemsPerPage: number;
+  itemsPerPage?: number;
 }

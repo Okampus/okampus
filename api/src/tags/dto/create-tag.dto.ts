@@ -3,15 +3,14 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  Length,
   Matches,
-  MaxLength,
 } from 'class-validator';
 
 const opaqueHexColor = /^(?:[\da-f]{3}|[\da-f]{6})$/i;
 
 export class CreateTagDto {
-  @IsNotEmpty()
-  @MaxLength(50)
+  @Length(1, 50)
   @IsString()
   name: string;
 

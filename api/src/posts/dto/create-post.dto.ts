@@ -1,23 +1,17 @@
 import {
   IsArray,
   IsEnum,
-  IsNotEmpty,
   IsString,
-  MaxLength,
-  MinLength,
+  Length,
 } from 'class-validator';
 import { PostType } from '../../shared/lib/types/post-type.enum';
 
 export class CreatePostDto {
-  @IsNotEmpty()
-  @MinLength(15)
-  @MaxLength(100)
+  @Length(15, 100)
   @IsString()
   title: string;
 
-  @IsNotEmpty()
-  @MinLength(50)
-  @MaxLength(2000)
+  @Length(50, 2000)
   @IsString()
   body: string;
 

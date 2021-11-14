@@ -15,5 +15,5 @@ export class CreateFileUploadDto {
 
   @IsOptional()
   @IsDate()
-  fileLastModifiedAt: Date;
+  fileLastModifiedAt?: Date;
 }
