@@ -1,6 +1,9 @@
 # Environment variables
 .env
 
+# Secrets
+/secrets
+
 # Compiled output
 /dist
 /node_modules

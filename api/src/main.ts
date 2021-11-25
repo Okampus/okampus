@@ -35,7 +35,12 @@ function setupSwagger(app: NestExpressApplication): void {
 }
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const httpsOptions = {
+    key: await fs.readFile('secrets/private-key.pem'),
+    cert: await fs.readFile('secrets/public-certificate.pem'),
+  };
+
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { httpsOptions });
 
   app.use(helmet());
   app.use(logger);
