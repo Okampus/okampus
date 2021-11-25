@@ -1,6 +1,7 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
+import type { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface';
 import { NestFactory, Reflector } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -9,9 +10,12 @@ import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { config } from './config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
-import { logger } from './shared/lib/middlewares/logger.middleware';
+import { logger as loggerMiddleware } from './shared/lib/middlewares/logger.middleware';
 import { FileKind } from './shared/lib/types/file-kind.enum';
+import { dirExists } from './shared/lib/utils/dirExists';
 import { enumKeys } from './shared/lib/utils/enumKeys';
+
+const logger = new Logger('Bootstrap');
 
 async function createFileStructure(): Promise<void> {
   const base = path.join(path.resolve('./'), 'uploads');
@@ -34,16 +38,28 @@ function setupSwagger(app: NestExpressApplication): void {
   SwaggerModule.setup('docs', app, document);
 }
 
+async function getHttpsOptions(): Promise<HttpsOptions | undefined> {
+  const secretDirs = path.join(path.resolve('./'), 'secrets');
+  if (await dirExists(secretDirs)) {
+    logger.log('Found secrets directory, using HTTPS');
+    return {
+      key: await fs.readFile('secrets/private-key.pem'),
+      cert: await fs.readFile('secrets/public-certificate.pem'),
+    };
+  }
+
+  logger.log('No secrets directory found, using HTTP');
+}
+
 async function bootstrap(): Promise<void> {
-  const httpsOptions = {
-    key: await fs.readFile('secrets/private-key.pem'),
-    cert: await fs.readFile('secrets/public-certificate.pem'),
-  };
+  let httpsOptions;
+  if (config.get('nodeEnv') === 'production')
+    httpsOptions = await getHttpsOptions();
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, { httpsOptions });
 
   app.use(helmet());
-  app.use(logger);
+  app.use(loggerMiddleware);
   app.use(cookieParser(config.get('cookieSignature')));
 
   app.enableCors({ origin: true, credentials: true });
@@ -62,7 +78,7 @@ async function bootstrap(): Promise<void> {
   setupSwagger(app);
 
   await app.listen(config.get('port'));
-  Logger.log(`API running on: ${(await app.getUrl()).replace('[::1]', 'localhost')}`, 'Bootstrap');
+  logger.log(`API running on: ${(await app.getUrl()).replace('[::1]', 'localhost')}`);
 }
 
 void bootstrap();
