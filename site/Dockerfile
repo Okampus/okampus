@@ -8,7 +8,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-RUN chown -R site:site .
+RUN chmod 777 ./
 
 EXPOSE 8080
 USER site
