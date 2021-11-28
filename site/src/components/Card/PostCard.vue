@@ -124,8 +124,9 @@ import Placeholder from '@tiptap/extension-placeholder'
 import Underline from '@tiptap/extension-underline'
 import CharacterCount from '@tiptap/extension-character-count'
 
-import { abbrNumbers } from '../../utils/abbrNumbers'
-import { timeAgo } from '../../utils/timeAgo'
+import { abbrNumbers } from '@/utils/abbrNumbers'
+import { timeAgo } from '@/utils/timeAgo'
+import { extractTextFromHTML } from '@/utils/extractTextFromHTML'
 
 export default {
   components: {
@@ -154,20 +155,8 @@ export default {
   methods: {
     abbrNumbers,
     timeAgo,
-    extractContent (s, space) {
-      var span = document.createElement('span')
-      span.innerHTML = s
-      if (space) {
-        var children = span.querySelectorAll('*')
-        for (var i = 0; i < children.length; i++) {
-          if (children[i].textContent) { children[i].textContent += ' ' } else { children[i].innerText += ' ' }
-        }
-      }
-      return [span.textContent || span.innerText].toString().replace(/ +/g, ' ')
-    },
-
     postPreview (postJson) {
-      return this.extractContent(generateHTML(postJson,
+      return extractTextFromHTML(generateHTML(postJson,
         [
           StarterKit.configure({
             heading: {
