@@ -4,6 +4,7 @@
         "dbaeumer.vscode-eslint",
         "bradlc.vscode-tailwindcss",
         "johnsoncodehk.volar",
+        "ishiyama.vue-autoimport",
         "hollowtree.vue-snippets",
         "naumovs.color-highlight",
         "gruntfuggly.todo-tree",
