@@ -1,18 +1,17 @@
 <template>
-  <p
+  <p class="error-message">
+    {{ error }}
+  </p>
+  <!-- <p
     :class="meta.valid ? 'success-message' : 'error-message' "
   >
     {{ meta.valid ? `✓ ${success}` : (error === undefined ? '' : `✗ ${error}`) }}
-  </p>
+  </p> -->
 </template>
 
 <script lang="js">
 export default {
   props: {
-    meta: {
-      type: Object,
-      default: () => {}
-    },
     error: {
       type: String,
       default: '<Error>'

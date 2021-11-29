@@ -12,7 +12,7 @@
         @click="actionMap[btn.action].action()"
       >
         <i
-          v-tippy="{ content: btn.content }"
+          v-tooltip="btn.content"
           :class="btn.icon"
         />
       </div>
@@ -227,8 +227,11 @@ export default {
     }
   },
   methods: {
+    getCharCount () {
+      return this.editor.getCharacterCount()
+    },
     circleFillCharCount () {
-      return (Math.round((100 / this.charCountLimit) * this.editor.getCharacterCount()) * 31.4) / 100
+      return (Math.round((100 / this.charCountLimit) * this.getCharCount()) * 31.4) / 100
     },
     getJSON () {
       return this.editor.getJSON()

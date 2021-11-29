@@ -28,7 +28,7 @@
       @focus="focused = true"
       @keydown="$emit('inputUpdate', $event)"
       @keydown.enter.prevent="addTag(newTag)"
-      @keydown.space="addTag(newTag)"
+      @keydown.space.prevent="addTag(newTag)"
       @keydown.delete="newTag.length || removeTag(tags.length - 1)"
     >
   </div>
@@ -76,6 +76,7 @@ export default {
         ctx.emit('error', 'empty')
       }
     }
+
     const removeTag = (index) => {
       tags.value.splice(index, 1)
       if (!tags.value.length) {
