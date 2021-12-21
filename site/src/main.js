@@ -5,8 +5,14 @@ import App from './App.vue'
 import store from './store'
 import mitt from 'mitt'
 import router from '@/router/index'
+// import { routes } from './routes.js'
+// import { createRouter, createWebHistory } from 'vue-router'
 
 import './assets/css/tailwind.css'
+// const router = createRouter({
+//   history: createWebHistory(),
+//   routes,
+// })
 
 import {
   VTooltip,

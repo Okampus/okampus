@@ -7,7 +7,7 @@
     <div class="flex flex-shrink-0 px-4 w-sidebar items-center justify-center">
       <button
         aria-label="Open Menu"
-        @click="$emit('toggleSidebar')"
+        @click="$emit('toggle-side-bar')"
       >
         <i class="ri-menu-line text-2xl" />
       </button>
@@ -18,8 +18,8 @@
         <input
           id="search-input"
           type="text"
-          class="bg-1 w-full text-1 placeholder-3 px-3 py-1.5 pr-10 text-lg border-b-2 border-color-4
-          hover:border-indigo-500 focus-border-1 focus:ring-4 focus:rounded-md outline-none"
+          class="bg-1 w-full text-1 placeholder-3 px-3 py-1.5 pr-10 border-0 text-lg border-b-2 border-color-4
+          hover:border-indigo-500 focus:ring-4 focus:border-0 focus:rounded-md outline-none"
           placeholder="Rechercher..."
           @input="(e) => $emit('updateSearch', e.target.value)"
         >
@@ -38,7 +38,7 @@
     >
       <button
         class="button text-md"
-        @click="$emit('toggleLogin')"
+        @click="$emit('toggle-login')"
       >
         <div class="flex space-x-2 items-center">
           <p class="text-md">
@@ -73,7 +73,7 @@
 <script>
 
 import UserCard from '@/components/Card/UserCard.vue'
-import Login from '@/components/Login.vue'
+import Login from '@/components/UserLogin.vue'
 
 export default {
   components: {
@@ -89,8 +89,8 @@ export default {
   emits: [
     'launchSearch',
     'updateSearch',
-    'toggleSidebar',
-    'toggleLogin'
+    'toggle-side-bar',
+    'toggle-login'
   ],
   data () {
     return {
@@ -113,18 +113,12 @@ export default {
 
 <style lang="scss">
 
-@import "~@/assets/scss/abstracts/mixins/get-color";
-
 .topbar-shadow {
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
   clip-path: inset(0px 0px -15px 0px);
   :root.dark & {
     box-shadow: 0 0 10px rgba(0,0,0,0.75);
   }
-}
-
-input.focus-border-1:focus {
-  @include get-color('border', 1, true);
 }
 
 </style>

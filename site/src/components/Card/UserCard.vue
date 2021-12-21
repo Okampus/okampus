@@ -4,7 +4,7 @@
       <div>
         <img
           class="rounded-2xl"
-          :src="avatar ?? require('@/assets/img/default_avatars/user.png')"
+          :src="avatar"
           :alt="username"
         >
       </div>
@@ -32,6 +32,7 @@
 </template>
 
 <script lang="js">
+import default_avatar from '@/assets/img/default_avatars/user.png'
 
 export default {
   props: {
@@ -45,7 +46,7 @@ export default {
     },
     avatar: {
       type: String,
-      default: ''
+      default: default_avatar
     },
     status: {
       type: String,

@@ -9,7 +9,7 @@
         :closed="closedSidebar && !uncollapsedSidebar"
         :uncollapsed="uncollapsedSidebar"
         :collapsing="collapsingSidebar"
-        @closeSidebar="toggleSidebar"
+        @close-side-bar="toggle-side-bar"
       />
       <div
         ref="content"
@@ -29,8 +29,8 @@
       text-1 items-center justify-between border-b bg-1 filter"
         :show-login="showLogin"
         :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
-        @toggleSidebar="toggleSidebar"
-        @toggleLogin="toggleLogin"
+        @toggle-side-bar="toggle-side-bar"
+        @toggle-login="toggle-login"
       />
     </div>
     <div
@@ -48,9 +48,9 @@ import PageFooter from '@/components/PageFooter.vue'
 
 import { ref, watch } from 'vue'
 
-import Topbar from '@/components/Topbar.vue'
-import Sidebar from '@/components/Sidebar.vue'
-const breakWidth = 1024
+import Topbar from '@/components/TopBar.vue'
+import Sidebar from '@/components/SideBar.vue'
+const breakWidth = 768
 export default {
   components: {
     Topbar,
@@ -74,8 +74,8 @@ export default {
 
         if (this.uncollapsedSidebar) {
           this.uncollapsedSidebar = false
-          this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
-          this.content.removeEventListener('mousedown', this.toggleSidebar)
+          this.topbar.$el.removeEventListener('mousedown', this.toggleSideBar)
+          this.content.removeEventListener('mousedown', this.toggleSideBar)
         }
         if (this.closedSidebar) {
           this.closedSidebar = false
@@ -128,11 +128,11 @@ export default {
       }
     },
 
-    toggleSidebar () {
+    toggleSideBar () {
       if (this.smallScreen) {
         if (this.uncollapsedSidebar) {
-          this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
-          this.content.removeEventListener('mousedown', this.toggleSidebar)
+          this.topbar.$el.removeEventListener('mousedown', this.toggleSideBar)
+          this.content.removeEventListener('mousedown', this.toggleSideBar)
           this.collapsingSidebar = true
           this.sidebar.$el.addEventListener('transitionend', () => {
             this.uncollapsedSidebar = false
@@ -140,8 +140,8 @@ export default {
           }, { once: true })
         } else {
           this.uncollapsedSidebar = true
-          this.topbar.$el.addEventListener('mousedown', this.toggleSidebar)
-          this.content.addEventListener('mousedown', this.toggleSidebar)
+          this.topbar.$el.addEventListener('mousedown', this.toggleSideBar)
+          this.content.addEventListener('mousedown', this.toggleSideBar)
         }
       } else {
         this.closedSidebar = !this.closedSidebar
@@ -164,39 +164,38 @@ export default {
 
 <style lang="scss">
 
-@import "~@/assets/scss/app";
-@import "~@/assets/scss/components/button";
-@import "~@/assets/scss/components/card";
-@import "~@/assets/scss/components/input";
-@import "~@/assets/scss/components/tiptap";
-@import "~@/assets/scss/components/link";
-@import "~@/assets/scss/sections/hero";
-@import "~@/assets/scss/core/spacing";
-@import "~@/assets/scss/core/tab";
-@import "~@/assets/scss/core/scrollbar";
+@import "@/assets/scss/app.scss";
+@import "@/assets/scss/components/button.scss";
+@import "@/assets/scss/components/card.scss";
+@import "@/assets/scss/components/input.scss";
+@import "@/assets/scss/components/tiptap.scss";
+@import "@/assets/scss/components/link.scss";
+@import "@/assets/scss/sections/hero.scss";
+@import "@/assets/scss/core/spacing.scss";
+@import "@/assets/scss/core/tab.scss";
+@import "@/assets/scss/core/scrollbar.scss";
 
 @font-face {
   font-family: AtkinsonHyperlegible;
   font-weight: 400;
-  src: url("~@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf") format("truetype");
+  src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: AtkinsonHyperlegible;
   font-weight: 800;
-  src: url("~@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf") format("truetype");
+  src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf") format("truetype");
 }
 
 * {
   font-family: AtkinsonHyperlegible;
-  transition: color 300ms, box-shadow 300ms, background-color 300ms linear, border-color 300ms, border-radius 300ms, fill 300ms, stroke 300ms, filter 200ms;
 }
 
 html {
   font-size: 14px;
 }
 
-@media (min-width: 720px) {
+@media (min-width: 768px) {
   html {
     font-size: 16px;
   }

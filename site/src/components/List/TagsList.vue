@@ -32,7 +32,7 @@
 <script lang="js">
 import debounce from 'lodash/debounce'
 import { onBeforeUpdate, reactive, ref } from 'vue'
-import Tag from '@/components/Tag.vue'
+import Tag from '@/components/ColoredTag.vue'
 
 export default {
   components: {

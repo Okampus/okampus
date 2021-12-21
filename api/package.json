@@ -1,8 +1,8 @@
 {
   "name": "horizon-api",
-  "version": "0.1.0",
-  "description": "API for the Horizon's website",
-  "author": "Horizon Backend Dev team",
+  "version": "1.0.0",
+  "description": "API of horizon-efrei.fr",
+  "author": "Horizon Back-end Dev. Team",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -13,8 +13,8 @@
     "start:dev": "cross-env NODE_ENV=development nest start --watch",
     "start:debug": "cross-env NODE_ENV=development nest start --debug --watch",
     "start:prod": "cross-env NODE_ENV=production node dist/main",
-    "lint": "eslint \"src/**/*.ts\"",
-    "lint:fix": "eslint \"src/**/*.ts\" --fix"
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint 'src/**/*.ts' --fix"
   },
   "dependencies": {
     "@golevelup/profiguration": "^0.2.1",

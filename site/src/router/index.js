@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Landing from '@/pages/Landing.vue'
+import Landing from '@/views/LandingPage.vue'
+import default_avatar from '@/assets/img/default_avatars/user.png'
 
 const routes = [
   {
@@ -20,7 +21,7 @@ const routes = [
   },
   {
     path: '/post/:id',
-    component: () => import('@/pages/Post/ThreadCompactView.vue'),
+    component: () => import('@/views/Post/ThreadCompactView.vue'),
     props: {
       thread: {
         views: 194,
@@ -33,7 +34,7 @@ const routes = [
           creator: {
             pseudo: 'Pseudo',
             role: 'Rôle',
-            img: require('@/assets/img/default_avatars/user.png')
+            img: default_avatar
           },
           comments: [{
             author: 'Pseudo',
@@ -58,7 +59,7 @@ const routes = [
           creator: {
             pseudo: 'Pseudo',
             role: 'Role',
-            img: require('@/assets/img/default_avatars/user.png')
+            img: default_avatar
           },
           comments: [{
             author: 'Pseudo',
@@ -83,7 +84,7 @@ const routes = [
           creator: {
             pseudo: 'Pseudo',
             role: 'Role',
-            img: require('@/assets/img/default_avatars/user.png')
+            img: default_avatar
           },
           responses: [{
             author: 'Pseudo',
@@ -174,19 +175,19 @@ const routes = [
         ],
         contributors: [
           {
-            img: require('@/assets/img/default_avatars/user.png'),
+            img: default_avatar,
             pseudo: 'Pseudo1'
           },
           {
-            img: require('@/assets/img/default_avatars/user.png'),
+            img: default_avatar,
             pseudo: 'Pseudo2'
           },
           {
-            img: require('@/assets/img/default_avatars/user.png'),
+            img: default_avatar,
             pseudo: 'Pseudo3'
           },
           {
-            img: require('@/assets/img/default_avatars/user.png'),
+            img: default_avatar,
             pseudo: 'Pseudo4'
           }
         ]
@@ -196,41 +197,33 @@ const routes = [
 
   {
     path: '/new-post',
-    component: () => import('@/pages/Post/PostNew.vue')
+    component: () => import('@/views/Post/PostNew.vue')
   },
 
   {
     path: '/dashboard',
-    component: () => import('@/pages/AdminSide.vue')
+    component: () => import('@/views/AdminSide.vue')
   },
 
   {
     path: '/file-upload',
-    component: () => import('@/pages/FileUpload.vue')
+    component: () => import('@/views/FileUpload.vue')
   },
 
   {
     path: '/posts',
-    component: () => import('@/pages/Post/PostList.vue')
+    component: () => import('@/views/Post/PostList.vue')
   },
 
   {
-    path: '/filler',
-    component: () => import('@/pages/Filler.vue')
+    path: '/test',
+    component: () => import('@/views/TestPage.vue')
   },
 
   {
     path: '/my-account',
-    component: () => import('@/pages/Settings.vue')
+    component: () => import('@/views/UserSettings.vue')
   },
-
-  {
-    path: '/secret',
-    component: () => import('@/pages/Filler.vue'),
-    beforeEnter: (to, from, next) => {
-      // ...
-    }
-  }
 ]
 
 const router = createRouter({

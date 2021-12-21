@@ -111,11 +111,11 @@
 
 <script lang="js">
 import { defineComponent } from 'vue'
-import Reply from '@/components/Reply.vue'
-import Tag from '@/components/Tag.vue'
-import Contributors from '@/components/Contributor.vue'
+import Reply from '@/components/PostReply.vue'
+import Tag from '@/components/ColoredTag.vue'
+import Contributors from '@/components/PostContributor.vue'
 import SimilarThread from '@/components/SimilarThread.vue'
-import Post from '@/components/Post.vue'
+import Post from '@/components/PostMessage.vue'
 
 export default defineComponent({
   components: {

@@ -127,7 +127,7 @@
           name="tags"
           input-placeholder="Entrez le nom du tag et appuyez sur entrée..."
           @error="tagsError"
-          @inputUpdate="customTagError = null"
+          @input-update="customTagError = null"
           @keydown="v$.tags.$touch"
         />
         <error-wrapper

@@ -63,7 +63,7 @@
 
 <script lang="js">
 import { defineComponent } from 'vue'
-import Comment from '@/components/Comment.vue'
+import Comment from '@/components/PostComment.vue'
 
 export default defineComponent({
   components: {

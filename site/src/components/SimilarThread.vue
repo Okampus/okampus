@@ -18,7 +18,7 @@
 </template>
 
 <script lang="js">
-import Tag from '@/components/Tag.vue'
+import Tag from '@/components/ColoredTag.vue'
 
 export default {
   components: {

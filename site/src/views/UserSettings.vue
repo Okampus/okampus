@@ -64,7 +64,7 @@
 </template>
 
 <script lang="js">
-import Profile from '@/components/Profile.vue'
+import Profile from '@/components/UserProfile.vue'
 export default {
   components: {
     Profile

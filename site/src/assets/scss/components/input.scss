@@ -1,9 +1,9 @@
-@import "~@/assets/scss/abstracts/mixins/get-color";
+@import "@/assets/scss/abstracts/mixins/get-color";
 
 .placeholder,
 %placeholder,
 .text-placeholder {
-  @apply dark:placeholder-primary-light placeholder-primary-dark;
+  @apply dark:placeholder:text-placeholder-dark placeholder:text-placeholder-light;
 }
 
 .input,

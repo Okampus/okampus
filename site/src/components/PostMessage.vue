@@ -65,7 +65,7 @@
 </template>
 
 <script lang="js">
-import Comment from './Comment.vue'
+import Comment from './PostComment.vue'
 import { defineComponent } from 'vue'
 
 export default defineComponent({

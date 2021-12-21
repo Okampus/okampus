@@ -198,7 +198,6 @@
 
 <script lang="js">
 export default {
-  name: 'Profile',
   data () {
     return {
       assos: ['']

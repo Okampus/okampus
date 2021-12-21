@@ -9,13 +9,13 @@
       '--switch-inner-padding': switchInnerPadding,
       '--button-color': buttonColor,
       '--button-radius': buttonRadius,
-      '--transition-duration': transitionDuration
+      '--transition-duration': transitionDuration,
     }"
   >
     <input
       v-model="value"
       type="checkbox"
-      @update:modelValue="$emit($event)"
+      @update:modelValue="value = $event"
     >
     <span class="slider round" />
   </label>
@@ -70,8 +70,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
 .switch {
   position: relative;
   display: inline-block;
@@ -129,14 +128,22 @@ input:focus + .slider {
 
 input:checked + .slider:before {
   -webkit-transform: translateX(
-    calc(var(--switch-width) - 2 * var(--switch-inner-padding) - var(--switch-height) + 2 * var(--switch-inner-padding))
+    calc(
+      var(--switch-width) - 2 * var(--switch-inner-padding) -
+        var(--switch-height) + 2 * var(--switch-inner-padding)
+    )
   );
   -ms-transform: translateX(
-    calc(var(--switch-width) - 2 * var(--switch-inner-padding) - var(--switch-height) + 2 * var(--switch-inner-padding))
+    calc(
+      var(--switch-width) - 2 * var(--switch-inner-padding) -
+        var(--switch-height) + 2 * var(--switch-inner-padding)
+    )
   );
   transform: translateX(
-    calc(var(--switch-width) - 2 * var(--switch-inner-padding) - var(--switch-height) + 2 * var(--switch-inner-padding))
+    calc(
+      var(--switch-width) - 2 * var(--switch-inner-padding) -
+        var(--switch-height) + 2 * var(--switch-inner-padding)
+    )
   );
 }
-
 </style>

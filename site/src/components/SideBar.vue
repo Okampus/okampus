@@ -7,7 +7,7 @@
       'after-topbar': !uncollapsed, 'h-content': !uncollapsed
     }"
     class="overflow-hidden flex flex-col flex-shrink-0 w-sidebar bg-1
-    border-r border-bar whitespace-nowrap tr-spacing z-50"
+    border-r border-bar whitespace-nowrap transition-spacing z-50"
   >
     <div
       v-if="uncollapsed"
@@ -16,7 +16,7 @@
     >
       <button
         aria-label="Open Menu"
-        @click="$emit('closeSidebar')"
+        @click="$emit('close-side-bar')"
       >
         <i class="ri-close-line text-4xl text-1" />
       </button>
@@ -37,7 +37,8 @@
               <router-link
                 v-if="link.condition == undefined || condition(link.condition)"
                 :to="link.to"
-                class="py-1 flex w-full items-center transition-colors horizontal-tab duration-300 cursor-pointer opacity-80"
+                class="py-1 flex w-full items-center transition-colors horizontal-tab
+                duration-300 cursor-pointer opacity-80"
                 :class="{ active: link.to === $route.path }"
               >
                 <div class="flex flex-col items-center w-full mt-1 mb-2 text-2">
@@ -105,7 +106,7 @@ export default {
     }
   },
   emits: [
-    'closeSidebar'
+    'close-side-bar'
   ],
   computed: {
     theme () {
@@ -138,8 +139,8 @@ export default {
   }
 }
 
-.tr-spacing {
-  transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, margin-left 500ms;
+.transition-spacing {
+  transition: margin-left 500ms;
 }
 
 </style>

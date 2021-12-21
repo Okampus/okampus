@@ -1,9 +1,9 @@
 @use "sass:string";
 @use "sass:list";
 
-$brand-url: url("~@/assets/img/logos/horizon_brand.png");
+$brand-url: url("@/assets/img/logos/horizon_brand.png");
 
-@mixin tailwind-color($tailwind-property, $alt: false, $name: "", $tailwind-property-count: 6) {
+@mixin tailwind-color($tailwind-property, $name: "", $tailwind-property-count: 6) {
   @if $name == "" {
     $name: $tailwind-property;
   }
@@ -13,22 +13,12 @@ $brand-url: url("~@/assets/img/logos/horizon_brand.png");
   @for $i from 0 through $tailwind-property-count {
     $tailwind-property-value: #{$tailwind-property}-#{$i};
 
-    @if $alt {
-      .#{$name}-#{$i}-alt {
-        @apply #{$tailwind-property-value}-light dark:#{$tailwind-property-value}-dark;
-      }
+    .#{$name}-#{$i} {
+      @apply #{$tailwind-property-value}-light dark:#{$tailwind-property-value}-dark;
+    }
 
-      .#{$name}-#{$i} {
-        @apply #{$tailwind-property-value}-dark dark:#{$tailwind-property-value}-light;
-      }
-    } @else {
-      .#{$name}-#{$i} {
-        @apply #{$tailwind-property-value}-light dark:#{$tailwind-property-value}-dark;
-      }
-
-      .#{$name}-#{$i}-alt {
-        @apply #{$tailwind-property-value}-dark dark:#{$tailwind-property-value}-light;
-      }
+    .#{$name}-#{$i}-alt {
+      @apply #{$tailwind-property-value}-dark dark:#{$tailwind-property-value}-light;
     }
 
     $tailwind-property-list: list.append(
@@ -45,8 +35,7 @@ $brand-url: url("~@/assets/img/logos/horizon_brand.png");
 }
 
 @include tailwind-color("bg");
-@include tailwind-color("text", true);
-@include tailwind-color("border", true, "border-color");
+@include tailwind-color("text");
 
 .border-footer {
   @apply border-gray-300 dark:border-gray-400;

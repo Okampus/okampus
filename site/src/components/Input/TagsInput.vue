@@ -26,7 +26,7 @@
       class="placeholder h-8 min-w-1 w-full bg-opacity-0 flex-1 bg-white outline-none"
       @blur="focused = false"
       @focus="focused = true"
-      @keydown="$emit('inputUpdate', $event)"
+      @keydown="$emit('input-update', $event)"
       @keydown.enter.prevent="addTag(newTag)"
       @keydown.space.prevent="addTag(newTag)"
       @keydown.delete="newTag.length || removeTag(tags.length - 1)"
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import Tag from '@/components/Tag.vue'
+import Tag from '@/components/ColoredTag.vue'
 
 import { ref } from 'vue'
 export default {
@@ -52,7 +52,7 @@ export default {
       default: () => []
     }
   },
-  emits: ['update:modelValue', 'error', 'inputUpdate'],
+  emits: ['update:modelValue', 'error', 'input-update'],
   setup: (props, ctx) => {
     const tagsContainer = ref(null)
     const tagsInput = ref(null)
