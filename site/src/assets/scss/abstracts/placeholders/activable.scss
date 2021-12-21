@@ -1,16 +1,21 @@
 %left-label-active.active, %left-label-active:active {
-  box-shadow: inset 5px 0 0 0 #66f;
-  background-color: #cedaff;
+    // box-shadow: inset 5px 0 0 0 #66f;
+    @apply opacity-80 bg-sky-100;
 
-  :root.dark & {
-    background-color: #6160a3;
-  }
+    background-color: #edf2fe;
+    color: #4b7bec;
+    border-radius: 1rem;
+
+    :root.dark & {
+        background-color: #11192e;
+        color: #033aba;
+    }
 }
 
 %text-opaque-active.active, %text-opaque-active:active {
-  opacity: 100%;
+    opacity: 1;
 }
 
 %icon-active.active {
-  color: #1e40af;
+    color: #1e40af;
 }

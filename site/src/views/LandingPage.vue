@@ -22,10 +22,10 @@
 
     <!-- Features -->
     <section class="mx-auto px-8 py-10">
-      <h2 class="text-4xl font-bold text-center text-1 mb-12 uppercase tracking-wider">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-1 mb-12 uppercase tracking-wider">
         Fonctionnalités
       </h2>
-      <div class="flex items-center flex-wrap mb-20">
+      <div class="flex w-items-center mb-20 flex-wrap">
         <div class="w-full md:w-1/2 pr-6">
           <h4 class="text-3xl text-1 font-medium mb-3">
             Posts Publics
@@ -35,17 +35,20 @@
             Quiconque peut participer aux fils de discussion des posts, les <u>upvoter/downvoter</u> ou <u>rechercher d'anciens posts archivés</u>.
           </p>
         </div>
-        <post-card :post="posts[0]" />
+        <post-card
+          class="w-full md:w-1/2"
+          :post="posts[0]"
+        />
       </div>
       <div class="flex items-center flex-wrap mb-20">
-        <div class="w-full md:w-1/2 pr-6">
+        <div class="w-full md:w-1/2 pr-6 order-2 md:order-1">
           <img
             src="@/assets/img/landing/github.png"
             class="w-4/5 mx-auto"
           >
         </div>
-        <div class="w-full md:w-1/2">
-          <h4 class="text-3xl text-1 font-medium  mb-3">
+        <div class="w-full md:w-1/2 order-1 md:order-2">
+          <h4 class="text-3xl text-1 font-medium mb-3">
             Fils de discussion détaillés
           </h4>
           <p class="text-2 mb-8">
@@ -55,7 +58,7 @@
       </div>
 
       <div class="flex items-center flex-wrap">
-        <div class="w-full md:w-1/2 pr-6">
+        <div class="pr-6">
           <h4 class="text-3xl text-1 font-medium  mb-3">
             Recherche avancée &amp; Filtrage des Posts
           </h4>
@@ -65,125 +68,8 @@
             Pour chaque <u>type de ressource</u>, des <u>filtres sur les tags, les dates de publication et l'état des ressources</u> permettent de simplifier et préciser les recherches
           </p>
         </div>
-        <div>
-          <div class="flex flex-row mb-2 space-x-2">
-            <div class="relative">
-              <select
-                class="
-                    rounded-l
-                    input
-                    input-border
-                    bg-2
-                    py-2
-                    px-4
-                    pr-8
-                  "
-              >
-                <option>5</option>
-                <option>10</option>
-                <option>20</option>
-              </select>
-            </div>
-            <div class="relative">
-              <select
-                class="
-                    rounded-l
-                    input
-                    input-border
-                    bg-2
-                    py-2
-                    px-4
-                    pr-8
-                  "
-              >
-                <option>Non-Résolu</option>
-                <option>Résolu</option>
-              </select>
-            </div>
-            <div class="relative">
-              <select
-                class="
-                    rounded-l
-                    input
-                    input-border
-                    bg-2
-                    py-2
-                    px-4
-                    pr-8
-                  "
-              >
-                <option>Depuis toujours</option>
-                <option>Aujourd'hui</option>
-                <option>Cette semaine</option>
-                <option>Ce mois</option>
-              </select>
-            </div>
-            <div class="relative">
-              <select
-                class="
-                    rounded-l
-                    input
-                    input-border
-                    bg-2
-                    py-2
-                    px-4
-                    pr-8
-                  "
-              >
-                <option>Actif</option>
-                <option>Très actif</option>
-              </select>
-            </div>
-            <div class="relative">
-              <select
-                class="
-                    rounded-l
-                    input
-                    input-border
-                    bg-2
-                    py-2
-                    px-4
-                    pr-8
-                  "
-              >
-                <option>> 500 vues</option>
-                <option>> 200 vues</option>
-                <option>> 1000 vues</option>
-              </select>
-            </div>
-          </div>
-          <div class="block relative mb-2">
-            <span
-              class="
-                  h-full
-                  absolute
-                  inset-y-0
-                  left-0
-                  flex
-                  items-center
-                  pl-3
-                  text-1
-                "
-            >
-              <i class="ri-search-line" />
-            </span>
-            <input
-              placeholder="Rechercher..."
-              class="
-                  w-full
-                  input
-                  input-border
-                  bg-2
-                  rounded
-                  pl-8
-                  pr-6
-                  py-2
-                "
-            >
-          </div>
-          <div class="w-full">
-            <tags-input input-placeholder="Contient les tags..." />
-          </div>
+        <div class="w-full">
+          <tags-input input-placeholder="Contient les tags..." />
         </div>
       </div>
     </section>
@@ -196,17 +82,22 @@ import TagsInput from '@/components/Input/TagsInput.vue'
 import girl_1 from '@/assets/img/landing/girl_1.jpg'
 
 export default {
-  components: {
-    PostCard,
-    TagsInput
-  },
-  inheritAttrs: false,
-  data () {
-    return {
-      posts: [
-        { postId: 101, type: 3, locked: false, opened: false, solved: false, tags: [{ name: 'émargement' }, { name: 'présence' }, { name: 'promo:l2' }, { name: 'cours' }, { name: 'importance:moyenne' }, { name: 'fréquence:régulier' }], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Problème observé: les étudiants sont parfois notés absents à des cours auxquels ils sont présents (particulièrement en ligne)"}]},{"type":"paragraph","content":[{"type":"text","text":"Solution potentielle: mettre en place un système d’émargement électronique officiel"}]}]}', title: 'Problème avec le système d\'émargement en L2', author: { username: 'Sophie H.', avatar: girl_1, reputation: 50200 }, favorites: 33, upvotes: 243, views: 44653, downvotes: 3, createdAt: '2021-10-18T13:51:36.631Z', updatedAt: '2021-10-18T13:51:36.631Z' },
-      ]
+    components: {
+        PostCard,
+        TagsInput
+    },
+    inheritAttrs: false,
+    data () {
+        return {
+            posts: [
+                { postId: 101, type: 3, locked: false, opened: false, solved: false,
+                    tags: [
+                        { name: 'émargement' },
+                        { name: 'présence' },
+                        { name: 'promo:l2' },
+                    ], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Problème observé: les étudiants sont parfois notés absents à des cours auxquels ils sont présents (particulièrement en ligne)"}]},{"type":"paragraph","content":[{"type":"text","text":"Solution potentielle: mettre en place un système d’émargement électronique officiel"}]}]}', title: 'Problème avec le système d\'émargement en L2', author: { username: 'Sophie H.', avatar: girl_1, reputation: 50200 }, favorites: 33, upvotes: 243, views: 44653, downvotes: 3, createdAt: '2021-10-18T13:51:36.631Z', updatedAt: '2021-10-18T13:51:36.631Z' },
+            ]
+        }
     }
-  }
 }
 </script>

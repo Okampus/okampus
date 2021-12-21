@@ -6,7 +6,7 @@
       px-2  bg-opacity-80 cursor-pointer hover:bg-opacity-100
       md:space-x-1 md:mr-2 md:px-4
     "
-    :class="`bg-${color}`"
+    :style="{backgroundColor: color}"
   >
     <span class="text-sm pb-1 md:text-base">
       {{ name }}
@@ -17,15 +17,15 @@
 
 <script lang="js">
 export default {
-  props: {
-    name: {
-      type: String,
-      default: '<Tag>'
-    },
-    color: {
-      type: String,
-      default: 'red-500'
+    props: {
+        name: {
+            type: String,
+            default: '<Vide>'
+        },
+        color: {
+            type: String,
+            default: '#ef4444'
+        }
     }
-  }
 }
 </script>

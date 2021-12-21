@@ -13,109 +13,109 @@ import { defineComponent } from 'vue'
 import JsonViewItem from './JsonViewItem.vue'
 
 export default defineComponent({
-  components: { JsonViewItem },
-  props: {
-    data: {
-      type: Object,
-      required: true
+    components: { JsonViewItem },
+    props: {
+        data: {
+            type: Object,
+            required: true
+        },
+        rootKey: {
+            type: String,
+            required: false,
+            default: 'root'
+        },
+        maxDepth: {
+            type: Number,
+            required: false,
+            default: 1
+        },
+        colorScheme: {
+            type: String,
+            required: false,
+            default: 'light'
+        }
     },
-    rootKey: {
-      type: String,
-      required: false,
-      default: 'root'
+    emits: ['update:selected'],
+    computed: {
+        parsed () {
+            if (typeof this.data === 'object') {
+                return this.build(this.rootKey, { ...this.data }, 0, '', true)
+            }
+            return {
+                key: this.rootKey,
+                type: 'value',
+                path: '',
+                depth: 0,
+                value: this.data
+            }
+        },
+        hasSelectedListener () {
+            return !!this.$attrs.onSelected
+        }
     },
-    maxDepth: {
-      type: Number,
-      required: false,
-      default: 1
-    },
-    colorScheme: {
-      type: String,
-      required: false,
-      default: 'light'
+    methods: {
+        build (key, val, depth, path, includeKey) {
+            if (this.isObject(val)) {
+                // Build Object
+                const children = []
+                for (const [childKey, childValue] of Object.entries(val)) {
+                    children.push(
+                        this.build(
+                            childKey,
+                            childValue,
+                            depth + 1,
+                            includeKey ? `${path}${key}.` : `${path}`,
+                            true
+                        )
+                    )
+                }
+                return {
+                    key: key,
+                    type: 'object',
+                    depth: depth,
+                    path: path,
+                    length: children.length,
+                    children: children
+                }
+            } else if (this.isArray(val)) {
+                // Build Array
+                const children = []
+                for (let i = 0; i < val.length; i++) {
+                    children.push(
+                        this.build(
+                            i.toString(),
+                            val[i],
+                            depth + 1,
+                            includeKey ? `${path}${key}[${i}].` : `${path}`,
+                            false
+                        )
+                    )
+                }
+                return {
+                    key: key,
+                    type: 'array',
+                    depth: depth,
+                    path: path,
+                    length: children.length,
+                    children: children
+                }
+            } else {
+                // Build Value
+                return {
+                    key: key,
+                    type: 'value',
+                    path: includeKey ? path + key : path.slice(0, -1),
+                    depth: depth,
+                    value: val
+                }
+            }
+        },
+        isObject: (val) => typeof val === 'object' && val !== null && !Array.isArray(val),
+        isArray: (val) => Array.isArray(val),
+        itemSelected (data) {
+            this.$emit('update:selected', data)
+        }
     }
-  },
-  emits: ['update:selected'],
-  computed: {
-    parsed () {
-      if (typeof this.data === 'object') {
-        return this.build(this.rootKey, { ...this.data }, 0, '', true)
-      }
-      return {
-        key: this.rootKey,
-        type: 'value',
-        path: '',
-        depth: 0,
-        value: this.data
-      }
-    },
-    hasSelectedListener () {
-      return !!this.$attrs.onSelected
-    }
-  },
-  methods: {
-    build (key, val, depth, path, includeKey) {
-      if (this.isObject(val)) {
-        // Build Object
-        const children = []
-        for (const [childKey, childValue] of Object.entries(val)) {
-          children.push(
-            this.build(
-              childKey,
-              childValue,
-              depth + 1,
-              includeKey ? `${path}${key}.` : `${path}`,
-              true
-            )
-          )
-        }
-        return {
-          key: key,
-          type: 'object',
-          depth: depth,
-          path: path,
-          length: children.length,
-          children: children
-        }
-      } else if (this.isArray(val)) {
-        // Build Array
-        const children = []
-        for (let i = 0; i < val.length; i++) {
-          children.push(
-            this.build(
-              i.toString(),
-              val[i],
-              depth + 1,
-              includeKey ? `${path}${key}[${i}].` : `${path}`,
-              false
-            )
-          )
-        }
-        return {
-          key: key,
-          type: 'array',
-          depth: depth,
-          path: path,
-          length: children.length,
-          children: children
-        }
-      } else {
-        // Build Value
-        return {
-          key: key,
-          type: 'value',
-          path: includeKey ? path + key : path.slice(0, -1),
-          depth: depth,
-          value: val
-        }
-      }
-    },
-    isObject: (val) => typeof val === 'object' && val !== null && !Array.isArray(val),
-    isArray: (val) => Array.isArray(val),
-    itemSelected (data) {
-      this.$emit('update:selected', data)
-    }
-  }
 })
 </script>
 

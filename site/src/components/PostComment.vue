@@ -26,14 +26,14 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  props: {
-    comment: {
-      type: Object,
-      default: () => {}
-    }
-  },
+    props: {
+        comment: {
+            type: Object,
+            default: () => {}
+        }
+    },
 
-  methods: {
-  }
+    methods: {
+    }
 })
 </script>

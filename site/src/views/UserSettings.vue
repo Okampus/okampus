@@ -38,9 +38,7 @@
                 w-full
                 space-x-2
                 items-center
-                transition-colors
                 bg-mouse-brand
-                duration-300
                 cursor-pointer
               "
               :class="{ active: currentComponent === link.component }"
@@ -66,20 +64,20 @@
 <script lang="js">
 import Profile from '@/components/UserProfile.vue'
 export default {
-  components: {
-    Profile
-  },
-  inheritAttrs: false,
-  data () {
-    return {
-      currentComponent: 'Profile',
-      links: [
-        { text: 'Profil', icon: 'ri-profile-line', component: 'Profile' },
-        { text: 'Intégration Discord', icon: 'ri-discord-fill', component: 'Discord' }
-        // TODO: { text: "Rôles Ef'Réussite", icon: 'ri-book-mark-line', component: 'Roles' }
-      ]
+    components: {
+        Profile
+    },
+    inheritAttrs: false,
+    data () {
+        return {
+            currentComponent: 'Profile',
+            links: [
+                { text: 'Profil', icon: 'ri-profile-line', component: 'Profile' },
+                { text: 'Intégration Discord', icon: 'ri-discord-fill', component: 'Discord' }
+                // TODO: { text: "Rôles Ef'Réussite", icon: 'ri-book-mark-line', component: 'Roles' }
+            ]
+        }
     }
-  }
 }
 </script>
 

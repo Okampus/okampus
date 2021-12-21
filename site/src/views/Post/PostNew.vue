@@ -2,25 +2,19 @@
   <div>
     <div
       class="absolute py-12 hero h-52 w-full top-0 left-0"
-    >
-      <h3
-        class="text-4xl font-bold mb-8 text-0 px-10"
-      >
-        Créer un Post
-      </h3>
-    </div>
-    <div class="relative mt-32 mb-10 mx-auto w-11/12 bg-1 flex flex-col space-y-4 card min-w-2/3">
+    />
+    <div class="relative mt-12 mb-10 mx-auto w-11/12 bg-1 flex flex-col space-y-4 card min-w-2/3">
       <div>
         <div class="label-title">
           Titre
         </div>
 
         <div class="label-desc">
-          Donnez un titre simple et complet afin de décrire votre Post
+          Titre simple et complet décrivant votre Post
         </div>
         <input
           v-model="state.title"
-          class="w-full input input-border bg-1"
+          class="w-full input"
           type="text"
           name="title"
           placeholder="Titre descriptif/complet"
@@ -51,6 +45,7 @@
                   Types possibles: <li
                     v-for="postType in postTypesEnum"
                     :key="postType"
+                    class="text-blue-700"
                   >
                     {{ postType[$i18n.locale] }}
                   </li>
@@ -63,7 +58,8 @@
         <select
           v-model="state.type"
           name="type"
-          class="input input-border bg-1 pr-4"
+          class="select bg-1 pr-4"
+          required
           @input="v$.type.$touch"
         >
           <option
@@ -142,7 +138,9 @@
           class="button"
           @click="submit"
         >
-          Soumettre le Post pour validation
+          <p>
+            Soumettre le Post pour validation
+          </p>
         </button>
       </div>
     </div>
@@ -161,85 +159,85 @@ import TipTapEditor from '@/components/TipTapEditor.vue'
 import { ref, reactive } from 'vue'
 
 export default {
-  components: {
-    TagsInput,
-    ErrorWrapper,
-    TipTapEditor
-  },
-  inheritAttrs: false,
-  props: {
-    editorCharLimit: {
-      type: Array,
-      default: () => [10, 10000]
+    components: {
+        TagsInput,
+        ErrorWrapper,
+        TipTapEditor,
     },
-    titleCharLimit: {
-      type: Array,
-      default: () => [10, 80]
+    inheritAttrs: false,
+    props: {
+        editorCharLimit: {
+            type: Array,
+            default: () => [10, 10000]
+        },
+        titleCharLimit: {
+            type: Array,
+            default: () => [10, 80]
+        },
+        minTags: {
+            type: Number,
+            default: 4
+        }
     },
-    minTags: {
-      type: Number,
-      default: 4
-    }
-  },
-  setup (props) {
-    const tagsInputRef = ref(null)
-    const editorRef = ref(null)
-    const postTypesTipRef = ref(null)
+    setup (props) {
+        const tagsInputRef = ref(null)
+        const editorRef = ref(null)
+        const postTypesTipRef = ref(null)
 
-    const state = reactive({
-      title: '',
-      type: '',
-      editor: '',
-      tags: []
-    })
+        const state = reactive({
+            title: '',
+            type: '',
+            editor: '',
+            tags: []
+        })
 
-    const tagsLength = (tags) => tags.length > props.minTags
+        const tagsLength = (tags) => tags.length > props.minTags
 
-    const inRange = (val, bounds) => val > bounds[0] && val < bounds[1]
-    const editorCharCount = () => inRange(editorRef.value.getCharCount(), props.editorCharLimit)
+        const inRange = (val, bounds) => val > bounds[0] && val < bounds[1]
+        const editorCharCount = () => inRange(editorRef.value.getCharCount(), props.editorCharLimit)
 
-    const rules = {
-      title: { required, minLength: minLength(props.titleCharLimit[0]), maxLength: maxLength(props.titleCharLimit[1]) },
-      type: { required, between: between(1, postTypesEnum.length) },
-      editor: { editorCharCount },
-      tags: { tagsLength }
-    }
+        const rules = {
+            title: { required, minLength: minLength(props.titleCharLimit[0]), maxLength: maxLength(props.titleCharLimit[1]) },
+            type: { required, between: between(1, postTypesEnum.length) },
+            editor: { editorCharCount },
+            tags: { tagsLength }
+        }
 
-    return {
-      tagsInputRef,
-      editorRef,
-      postTypesTipRef,
-      state,
-      v$: useVuelidate(rules, state)
+        return {
+            tagsInputRef,
+            editorRef,
+            postTypesTipRef,
+            state,
+            v$: useVuelidate(rules, state)
+        }
+    },
+    data () {
+        return {
+            postTypesEnum,
+            customTagError: null,
+            editorButtons: [
+                { action: 'paragraph', icon: 'ri-paragraph ri-lg', content: 'Paragraphe (Ctrl+Alt+0)' },
+                { action: 'bold', icon: 'ri-bold ri-lg', content: 'Gras (Ctrl+B)' },
+                { action: 'italic', icon: 'ri-italic ri-lg', content: 'Italique (Ctrl+I)' },
+                { action: 'strike', icon: 'ri-strikethrough ri-lg', content: 'Barré (Ctrl+Shift+X)' },
+                { action: 'underline', icon: 'ri-underline ri-lg', content: 'Souligné (Ctrl+U)' },
+                { action: 'highlight', icon: 'ri-mark-pen-line ri-lg', content: 'Surligné (Ctrl+Shift+H)' },
+                { action: 'clearMarks', icon: 'ri-format-clear ri-lg', content: 'Enlever les styles' }
+            ]
+        }
+    },
+    methods: {
+        tagsError (err) {
+            if (err === 'unique') {
+                this.customTagError = 'Ce Tag est déjà présent dans la liste.'
+            } else if (err === 'empty') {
+                this.customTagError = 'Un Tag ne peut pas être vide.'
+            } else {
+                // TODO
+                this.customTagError = 'Erreur: ces tags génèrent une erreur inconnue.'
+            }
+        }
     }
-  },
-  data () {
-    return {
-      postTypesEnum,
-      customTagError: null,
-      editorButtons: [
-        { action: 'paragraph', icon: 'ri-paragraph ri-lg', content: 'Paragraphe (Ctrl+Alt+0)' },
-        { action: 'bold', icon: 'ri-bold ri-lg', content: 'Gras (Ctrl+B)' },
-        { action: 'italic', icon: 'ri-italic ri-lg', content: 'Italique (Ctrl+I)' },
-        { action: 'strike', icon: 'ri-strikethrough ri-lg', content: 'Barré (Ctrl+Shift+X)' },
-        { action: 'underline', icon: 'ri-underline ri-lg', content: 'Souligné (Ctrl+U)' },
-        { action: 'highlight', icon: 'ri-mark-pen-line ri-lg', content: 'Surligné (Ctrl+Shift+H)' },
-        { action: 'clearMarks', icon: 'ri-format-clear ri-lg', content: 'Enlever les styles' }
-      ]
-    }
-  },
-  methods: {
-    tagsError (err) {
-      if (err === 'unique') {
-        this.customTagError = 'Ce Tag est déjà présent dans la liste.'
-      } else if (err === 'empty') {
-        this.customTagError = 'Un Tag ne peut pas être vide.'
-      } else {
-        // TODO
-        this.customTagError = 'Erreur: ces tags génèrent une erreur inconnue.'
-      }
-    }
-  }
 }
 </script>
 

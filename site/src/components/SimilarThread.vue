@@ -21,15 +21,15 @@
 import Tag from '@/components/ColoredTag.vue'
 
 export default {
-  components: {
-    Tag
-  },
-  props: {
-    thread: {
-      type: Object,
-      default: () => {}
+    components: {
+        Tag
+    },
+    props: {
+        thread: {
+            type: Object,
+            default: () => {}
+        }
     }
-  }
 }
 </script>
 

@@ -1,13 +1,19 @@
+/* stylelint-disable selector-class-pattern */
 .ProseMirror p.is-editor-empty:first-child::before {
-  @extend %placeholder;
-  content: attr(data-placeholder);
-  float: left;
-  pointer-events: none;
-  height: 0;
+    @extend %placeholder;
+
+    content: attr(data-placeholder);
+    float: left;
+    pointer-events: none;
+    height: 0;
 }
 
 .ProseMirror {
-  @extend %input;
-  @apply text-gray-900 dark:text-gray-100
-      rounded-t-none focus:rounded-t min-h-20 px-2 py-1;
+    @extend %input;
+    @apply text-gray-900 dark:text-gray-100
+        rounded-t-none focus:rounded-t min-h-20 px-2 py-1;
+}
+
+.ProseMirror p.is-editor-empty {
+    @extend %text-placeholder;
 }

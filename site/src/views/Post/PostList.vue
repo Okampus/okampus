@@ -31,43 +31,43 @@ import { watch } from 'vue'
 import PostCard from '@/components/Card/PostCard.vue'
 
 export default {
-  components: { PostCard },
-  data () {
-    return {
-      posts: this.$store.state.posts.posts
-    }
-  },
-  computed: {
-    loggedIn () {
-      return this.$store.state.auth.status.loggedIn
-    }
-  },
-  mounted () {
-    this.emitter.on('login', () => {
-      this.loadPosts()
-    })
-
-    this.emitter.on('logout', () => {
-      this.$store.dispatch('posts/refreshPosts')
-    })
-
-    watch(() => this.$store.getters['posts/getPosts'], (posts) => {
-      this.posts = posts
-    })
-
-    if (this.loggedIn) {
-      this.loadPosts()
-    }
-  },
-  methods: {
-    refreshPosts () {
-      this.$store.dispatch('posts/newFetchPosts')
+    components: { PostCard },
+    data () {
+        return {
+            posts: this.$store.state.posts.posts
+        }
     },
-    loadPosts () {
-      if (this.$store.state.posts.page === 0) {
-        this.$store.dispatch('posts/fetchPosts')
-      }
+    computed: {
+        loggedIn () {
+            return this.$store.state.auth.status.loggedIn
+        }
+    },
+    mounted () {
+        this.emitter.on('login', () => {
+            this.loadPosts()
+        })
+
+        this.emitter.on('logout', () => {
+            this.$store.dispatch('posts/refreshPosts')
+        })
+
+        watch(() => this.$store.getters['posts/getPosts'], (posts) => {
+            this.posts = posts
+        })
+
+        if (this.loggedIn) {
+            this.loadPosts()
+        }
+    },
+    methods: {
+        refreshPosts () {
+            this.$store.dispatch('posts/newFetchPosts')
+        },
+        loadPosts () {
+            if (this.$store.state.posts.page === 0) {
+                this.$store.dispatch('posts/fetchPosts')
+            }
+        }
     }
-  }
 }
 </script>

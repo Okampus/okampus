@@ -11,6 +11,7 @@
       >
         <i class="ri-menu-line text-2xl" />
       </button>
+      <div class="hidden 2xl:block brand w-32 h-6 ml-4" />
     </div>
 
     <div class="w-full h-full flex items-center">
@@ -18,15 +19,14 @@
         <input
           id="search-input"
           type="text"
-          class="bg-1 w-full text-1 placeholder-3 px-3 py-1.5 pr-10 border-0 text-lg border-b-2 border-color-4
-          hover:border-indigo-500 focus:ring-4 focus:border-0 focus:rounded-md outline-none"
+          class="bg-1 w-full text-1 placeholder-3 px-3 py-1.5 pr-10 text-lg border-b-2
+            dark:border-2-light border-2-dark
+          focus:border-0 focus:ring-4 focus:rounded-md outline-none"
           placeholder="Rechercher..."
-          @input="(e) => $emit('updateSearch', e.target.value)"
         >
         <span class="absolute inset-y-0 right-0 flex items-center pr-6">
           <i
             class="p-1 ri-file-search-line mouse-icon text-2xl"
-            @click="() => $emit('launchSearch')"
           />
         </span>
       </div>
@@ -73,52 +73,48 @@
 <script>
 
 import UserCard from '@/components/Card/UserCard.vue'
-import Login from '@/components/UserLogin.vue'
+import UserLogin from '@/components/UserLogin.vue'
 
 export default {
-  components: {
-    UserCard,
-    Login
-  },
-  props: {
-    showLogin: {
-      type: Boolean,
-      default: false
-    }
-  },
-  emits: [
-    'launchSearch',
-    'updateSearch',
-    'toggle-side-bar',
-    'toggle-login'
-  ],
-  data () {
-    return {
-      loginComponent: null
-    }
-  },
-  computed: {
-    loggedIn () {
-      return this.$store.state.auth.status.loggedIn
+    components: {
+        UserCard,
+        UserLogin
     },
-    user () {
-      return this.$store.state.auth.user
+    props: {
+        showLogin: {
+            type: Boolean,
+            default: false
+        }
+    },
+    emits: [
+        'toggle-side-bar',
+        'toggle-login'
+    ],
+    data () {
+        return {
+            loginComponent: null
+        }
+    },
+    computed: {
+        loggedIn () {
+            return this.$store.state.auth.status.loggedIn
+        },
+        user () {
+            return this.$store.state.auth.user
+        }
+    },
+    mounted () {
+        this.loginComponent = 'login'
     }
-  },
-  mounted () {
-    this.loginComponent = 'login'
-  }
 }
 </script>
 
 <style lang="scss">
-
 .topbar-shadow {
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  clip-path: inset(0px 0px -15px 0px);
+  box-shadow: 0 0 15px 3px rgba(0,0,0,0.05);
+  clip-path: inset(0px 0px -30px 0px);
   :root.dark & {
-    box-shadow: 0 0 10px rgba(0,0,0,0.75);
+    box-shadow: 0 0 20px 5px rgba(0,0,0,0.4);
   }
 }
-
 </style>

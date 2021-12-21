@@ -20,7 +20,7 @@
                   id="firstname"
                   type="text"
                   name="firstname"
-                  class="w-full input input-border bg-1"
+                  class="w-full input bg-1"
                 >
               </div>
               <div class="ml-2 w-1/2">
@@ -32,7 +32,7 @@
                   id="lastname"
                   type="text"
                   name="lastname"
-                  class="w-full input input-border bg-1"
+                  class="w-full input bg-1"
                 >
               </div>
             </div>
@@ -44,7 +44,7 @@
               <textarea
                 id="description"
                 name="description"
-                class="w-full input input-border bg-1"
+                class="w-full input bg-1"
               />
             </div>
           </div>
@@ -67,7 +67,7 @@
             >Parcours</label>
             <select
               name="parcours"
-              class="w-full input input-border bg-1 pr-4"
+              class="w-full input bg-1 pr-4"
               required
             >
               <option
@@ -87,7 +87,7 @@
             >Promotion</label>
             <select
               name="promo"
-              class="w-full input input-border bg-1 pr-4"
+              class="w-full input bg-1 pr-4"
               required
             >
               <option
@@ -110,7 +110,7 @@
             >Groupe de TD</label>
             <select
               name="td"
-              class="w-full input input-border bg-1 pr-4"
+              class="w-full input bg-1 pr-4"
               required
             >
               <option
@@ -141,7 +141,7 @@
               <select
                 id="asso"
                 name="association"
-                class="w-full input input-border bg-1 pr-4"
+                class="w-full input bg-1 pr-4"
                 required
               >
                 <option
@@ -159,7 +159,7 @@
               <select
                 id="role"
                 name="role"
-                class="w-full input input-border bg-1 pr-4"
+                class="w-full input bg-1 pr-4"
                 required
               >
                 <option
@@ -198,18 +198,18 @@
 
 <script lang="js">
 export default {
-  data () {
-    return {
-      assos: ['']
-    }
-  },
-  methods: {
-    addLine: function addLine () {
-      this.assos.push('')
+    data () {
+        return {
+            assos: ['']
+        }
     },
-    rmLine: function rmLine () {
-      this.assos.pop()
+    methods: {
+        addLine: function addLine () {
+            this.assos.push('')
+        },
+        rmLine: function rmLine () {
+            this.assos.pop()
+        }
     }
-  }
 }
 </script>

@@ -12,16 +12,16 @@
 <script lang="js">
 
 export default {
-  props: {
-    contributor: {
-      type: Object,
-      default: () => {
-        return {
-          img: '',
-          pseudo: '<Pseudo>'
+    props: {
+        contributor: {
+            type: Object,
+            default: () => {
+                return {
+                    img: '',
+                    pseudo: '<Pseudo>'
+                }
+            }
         }
-      }
     }
-  }
 }
 </script>

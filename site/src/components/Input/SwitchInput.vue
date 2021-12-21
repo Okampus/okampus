@@ -23,50 +23,50 @@
 
 <script>
 export default {
-  props: {
-    modelValue: {
-      type: Boolean,
-      default: false
+    props: {
+        modelValue: {
+            type: Boolean,
+            default: false
+        },
+        width: {
+            type: String,
+            default: '40px'
+        },
+        height: {
+            type: String,
+            default: '20px'
+        },
+        switchValidateColor: {
+            type: String,
+            default: 'orange'
+        },
+        switchBackgroundColor: {
+            type: String,
+            default: '#ccc'
+        },
+        switchInnerPadding: {
+            type: String,
+            default: '2px'
+        },
+        buttonColor: {
+            type: String,
+            default: 'white'
+        },
+        buttonRadius: {
+            type: String,
+            default: '9999px'
+        },
+        transitionDuration: {
+            type: String,
+            default: '0.4s'
+        }
     },
-    width: {
-      type: String,
-      default: '40px'
-    },
-    height: {
-      type: String,
-      default: '20px'
-    },
-    switchValidateColor: {
-      type: String,
-      default: 'orange'
-    },
-    switchBackgroundColor: {
-      type: String,
-      default: '#ccc'
-    },
-    switchInnerPadding: {
-      type: String,
-      default: '2px'
-    },
-    buttonColor: {
-      type: String,
-      default: 'white'
-    },
-    buttonRadius: {
-      type: String,
-      default: '9999px'
-    },
-    transitionDuration: {
-      type: String,
-      default: '0.4s'
+    emits: ['update:modelValue'],
+    data () {
+        return {
+            value: this.modelValue
+        }
     }
-  },
-  emits: ['update:modelValue'],
-  data () {
-    return {
-      value: this.modelValue
-    }
-  }
 }
 </script>
 

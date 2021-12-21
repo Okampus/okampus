@@ -5,6 +5,6 @@
 <script lang="js">
 import Breadcrumb from '@/components/BreadCrumb.vue'
 export default {
-  components: { Breadcrumb }
+    components: { Breadcrumb }
 }
 </script>

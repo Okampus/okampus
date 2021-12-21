@@ -9,7 +9,7 @@
       :name="name"
       :value="modelValue"
       :type="type"
-      class="bg-2 input input-border text-md h-10 w-full rounded-l-none"
+      class="bg-2 input text-md h-10 w-full rounded-l-none"
       :placeholder="placeholder"
       :="required ? {required: ''} : {}"
       @input="$emit('update:modelValue', $event.target.value)"
@@ -21,37 +21,37 @@
 import { ref } from 'vue'
 
 export default {
-  props: {
-    name: {
-      type: String,
-      default: ''
+    props: {
+        name: {
+            type: String,
+            default: ''
+        },
+        modelValue: {
+            type: String,
+            default: ''
+        },
+        icon: {
+            type: String,
+            default: 'ri-stack-line'
+        },
+        placeholder: {
+            type: String,
+            default: 'Entrez du texte...'
+        },
+        required: {
+            type: Boolean,
+            default: false
+        },
+        type: {
+            type: String,
+            default: 'text'
+        }
     },
-    modelValue: {
-      type: String,
-      default: ''
-    },
-    icon: {
-      type: String,
-      default: 'ri-stack-line'
-    },
-    placeholder: {
-      type: String,
-      default: 'Entrez du texte...'
-    },
-    required: {
-      type: Boolean,
-      default: false
-    },
-    type: {
-      type: String,
-      default: 'text'
-    }
-  },
-  emits: ['update:modelValue'],
+    emits: ['update:modelValue'],
 
-  setup () {
-    const input = ref(null)
-    return { input }
-  }
+    setup () {
+        const input = ref(null)
+        return { input }
+    }
 }
 </script>

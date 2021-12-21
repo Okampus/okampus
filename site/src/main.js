@@ -15,25 +15,25 @@ import './assets/css/tailwind.css'
 // })
 
 import {
-  VTooltip,
-  Dropdown,
-  Tooltip,
-  Menu
+    VTooltip,
+    Dropdown,
+    Tooltip,
+    Menu
 } from 'v-tooltip'
 import 'v-tooltip/dist/v-tooltip.css'
 
 import 'remixicon/fonts/remixicon.css'
 
 const i18n = createI18n({
-  locale: 'fr'
+    locale: 'fr'
 })
 
 const emitter = mitt()
 
 const app = createApp(App)
-  .use(store)
-  .use(router)
-  .use(i18n)
+    .use(store)
+    .use(router)
+    .use(i18n)
 
 app.directive('tooltip', VTooltip)
 app.component('VDropdown', Dropdown)

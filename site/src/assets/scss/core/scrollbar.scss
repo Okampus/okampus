@@ -6,47 +6,47 @@ $webkit-scrollbar-thumb-color-active: ("light": #3d3d3d, "dark": #dbf4ff);
 
 .app-scrollbar,
 %app-scrollbar {
-  --scrollbar-thumb-color: #{map.get($scrollbar-thumb-color, "light")};
-  --scrollbar-thumb-color-hover: #{map.get($webkit-scrollbar-thumb-color-hover, "light")};
-  --scrollbar-thumb-color-active: #{map.get($webkit-scrollbar-thumb-color-active, "light")};
+    --scrollbar-thumb-color: #{map.get($scrollbar-thumb-color, "light")};
+    --scrollbar-thumb-color-hover: #{map.get($webkit-scrollbar-thumb-color-hover, "light")};
+    --scrollbar-thumb-color-active: #{map.get($webkit-scrollbar-thumb-color-active, "light")};
 
-  scrollbar-color: var(--scrollbar-thumb-color) rgb(0 0 0 / 0%);
-  overflow: overlay;
+    scrollbar-color: var(--scrollbar-thumb-color) rgb(0 0 0 / 0%);
+    overflow: overlay;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: transparent;
-    box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color);
-    border: solid 3px transparent;
-    border-radius: 9999px;
-
-    &:hover {
-      box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color-hover);
+    &::-webkit-scrollbar {
+        width: 12px;
     }
 
-    &:active {
-      box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color-active);
+    &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color);
+        border: solid 3px transparent;
+        border-radius: 9999px;
+
+        &:hover {
+            box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color-hover);
+        }
+
+        &:active {
+            box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color-active);
+        }
     }
-  }
 
-  &-on-hover {
-    @extend %app-scrollbar;
+    &-on-hover {
+        @extend %app-scrollbar;
 
-    &:not(:hover) {
-      --scrollbar-thumb-color: rgb(0 0 0 / 0%);
+        &:not(:hover) {
+            --scrollbar-thumb-color: rgb(0 0 0 / 0%);
 
-      &::-webkit-scrollbar-thumb {
-        box-shadow: none;
-      }
+            &::-webkit-scrollbar-thumb {
+                box-shadow: none;
+            }
+        }
     }
-  }
 
-  :root.dark & {
-    --scrollbar-thumb-color: #{map.get($scrollbar-thumb-color, "dark")};
-    --scrollbar-thumb-color-hover: #{map.get($webkit-scrollbar-thumb-color-hover, "dark")};
-    --scrollbar-thumb-color-active: #{map.get($webkit-scrollbar-thumb-color-active, "dark")};
-  }
+    :root.dark & {
+        --scrollbar-thumb-color: #{map.get($scrollbar-thumb-color, "dark")};
+        --scrollbar-thumb-color-hover: #{map.get($webkit-scrollbar-thumb-color-hover, "dark")};
+        --scrollbar-thumb-color-active: #{map.get($webkit-scrollbar-thumb-color-active, "dark")};
+    }
 }

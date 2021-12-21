@@ -69,36 +69,36 @@ import Comment from './PostComment.vue'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  components: {
-    Comment
-  },
-  props: {
-    post: {
-      type: Object,
-      default: () => {}
+    components: {
+        Comment
     },
-    actions: {
-      type: Array,
-      default: function () {
-        return [
-          'viewComments',
-          'favorite',
-          'edit',
-          'flag'
-        ]
-      }
+    props: {
+        post: {
+            type: Object,
+            default: () => {}
+        },
+        actions: {
+            type: Array,
+            default: function () {
+                return [
+                    'viewComments',
+                    'favorite',
+                    'edit',
+                    'flag'
+                ]
+            }
+        }
+    },
+    computed: {
+        actionsMap () {
+            // TODO: Actions
+            return {
+                viewComments: { name: () => { return `${this.post.comments.length} Commentaires` }, icon: 'ri-chat-2-line', action: function () { console.log('Commentaire') } },
+                favorite: { name: () => { return 'Favori' }, icon: 'ri-star-line', action: function () { console.log('Favori') } },
+                edit: { name: () => { return 'Éditer' }, icon: 'ri-edit-line', action: function () { console.log('Éditer') } },
+                flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } }
+            }
+        }
     }
-  },
-  computed: {
-    actionsMap () {
-      // TODO: Actions
-      return {
-        viewComments: { name: () => { return `${this.post.comments.length} Commentaires` }, icon: 'ri-chat-2-line', action: function () { console.log('Commentaire') } },
-        favorite: { name: () => { return 'Favori' }, icon: 'ri-star-line', action: function () { console.log('Favori') } },
-        edit: { name: () => { return 'Éditer' }, icon: 'ri-edit-line', action: function () { console.log('Éditer') } },
-        flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } }
-      }
-    }
-  }
 })
 </script>

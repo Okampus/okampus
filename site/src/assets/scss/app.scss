@@ -4,61 +4,54 @@
 $brand-url: url("@/assets/img/logos/horizon_brand.png");
 
 @mixin tailwind-color($tailwind-property, $name: "", $tailwind-property-count: 6) {
-  @if $name == "" {
-    $name: $tailwind-property;
-  }
-
-  $tailwind-property-list: null;
-
-  @for $i from 0 through $tailwind-property-count {
-    $tailwind-property-value: #{$tailwind-property}-#{$i};
-
-    .#{$name}-#{$i} {
-      @apply #{$tailwind-property-value}-light dark:#{$tailwind-property-value}-dark;
+    @if $name == "" {
+        $name: $tailwind-property;
     }
 
-    .#{$name}-#{$i}-alt {
-      @apply #{$tailwind-property-value}-dark dark:#{$tailwind-property-value}-light;
-    }
+    $tailwind-property-list: null;
 
-    $tailwind-property-list: list.append(
-      $tailwind-property-list,
-      string.unquote(".#{$tailwind-property-value}"),
-      comma
-    );
-    $tailwind-property-list: list.append(
-      $tailwind-property-list,
-      string.unquote(".#{$tailwind-property-value}-alt"),
-      comma
-    );
-  }
+    @for $i from 0 through $tailwind-property-count {
+        $tailwind-property-value: #{$tailwind-property}-#{$i};
+
+        .#{$name}-#{$i} {
+            @apply #{$tailwind-property-value}-light dark:#{$tailwind-property-value}-dark;
+        }
+
+        .#{$name}-#{$i}-alt {
+            @apply #{$tailwind-property-value}-dark dark:#{$tailwind-property-value}-light;
+        }
+
+        $tailwind-property-list: list.append(
+            $tailwind-property-list,
+            string.unquote(".#{$tailwind-property-value}"),
+            comma
+        );
+        $tailwind-property-list: list.append(
+            $tailwind-property-list,
+            string.unquote(".#{$tailwind-property-value}-alt"),
+            comma
+        );
+    }
 }
 
 @include tailwind-color("bg");
 @include tailwind-color("text");
+@include tailwind-color("divide", "divide-color", 1);
 
 .border-footer {
-  @apply border-gray-300 dark:border-gray-400;
+    @apply border-gray-300 dark:border-gray-400;
 }
 
 .border-bar {
-  border-color: #e4e4e7;
+    border-color: #e4e4e7;
 
-  @apply dark:border-black;
-}
-
-.divide-color-1 {
-  @apply divide-gray-400 dark:divide-gray-100;
+    @apply dark:border-black;
 }
 
 .brand {
-  @apply filter brightness-0 dark:brightness-100;
+    @apply filter brightness-0 dark:brightness-100;
 
-  transition: all 300ms;
-  background: $brand-url no-repeat 0 0;
-  background-size: 100%;
-}
-
-.min-w-1 {
-  min-width: 1em;
+    transition: all 300ms;
+    background: $brand-url no-repeat 0 0;
+    background-size: 100%;
 }

@@ -40,88 +40,88 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  props: {
-    data: {
-      required: true,
-      type: Object
-    },
-    maxDepth: {
-      type: Number,
-      required: false,
-      default: 1
-    },
-    canSelect: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  },
-  emits: ['update:selected'],
-  data () {
-    return {
-      open: this.data.depth < this.maxDepth
-    }
-  },
-  computed: {
-    lengthString () {
-      switch (this.data.type) {
-        case 'array':
-          return this.data.length === 1
-            ? this.data.length + ' element'
-            : this.data.length + ' elements'
-        case 'object':
-          return this.data.length === 1
-            ? this.data.length + ' property'
-            : this.data.length + ' properties'
-        default:
-          return ''
-      }
-    },
-    dataValue () {
-      if (this.data.type === 'value') {
-        if (typeof this.data.value === 'undefined') {
-          return 'undefined'
+    props: {
+        data: {
+            required: true,
+            type: Object
+        },
+        maxDepth: {
+            type: Number,
+            required: false,
+            default: 1
+        },
+        canSelect: {
+            type: Boolean,
+            required: false,
+            default: false
         }
-        return JSON.stringify(this.data.value)
-      }
-      return ''
+    },
+    emits: ['update:selected'],
+    data () {
+        return {
+            open: this.data.depth < this.maxDepth
+        }
+    },
+    computed: {
+        lengthString () {
+            switch (this.data.type) {
+            case 'array':
+                return this.data.length === 1
+                    ? this.data.length + ' element'
+                    : this.data.length + ' elements'
+            case 'object':
+                return this.data.length === 1
+                    ? this.data.length + ' property'
+                    : this.data.length + ' properties'
+            default:
+                return ''
+            }
+        },
+        dataValue () {
+            if (this.data.type === 'value') {
+                if (typeof this.data.value === 'undefined') {
+                    return 'undefined'
+                }
+                return JSON.stringify(this.data.value)
+            }
+            return ''
+        }
+    },
+    methods: {
+        emitSelect (data) {
+            this.$emit('update:selected', {
+                key: data.key,
+                value: data.type === 'value' ? data.value : undefined,
+                path: data.path
+            })
+        },
+        bubbleSelected (data) {
+            this.$emit('update:selected', data)
+        },
+        getKey (value) {
+            if (!isNaN(value.key)) {
+                return value.key + ':'
+            } else {
+                return '"' + value.key + '":'
+            }
+        },
+        getValueStyle (value) {
+            switch (typeof value) {
+            case 'string':
+                return { color: 'var(--vjc-string-color)' }
+            case 'number':
+                return { color: 'var(--vjc-number-color)' }
+            case 'boolean':
+                return { color: 'var(--vjc-boolean-color)' }
+            case 'object':
+                return { color: 'var(--vjc-null-color)' }
+            case 'undefined':
+                return { color: 'var(--vjc-null-color)' }
+            default:
+                return { color: 'var(--vjc-valueKey-color)' }
+            }
+        }
     }
-  },
-  methods: {
-    emitSelect (data) {
-      this.$emit('update:selected', {
-        key: data.key,
-        value: data.type === 'value' ? data.value : undefined,
-        path: data.path
-      })
-    },
-    bubbleSelected (data) {
-      this.$emit('update:selected', data)
-    },
-    getKey (value) {
-      if (!isNaN(value.key)) {
-        return value.key + ':'
-      } else {
-        return '"' + value.key + '":'
-      }
-    },
-    getValueStyle (value) {
-      switch (typeof value) {
-        case 'string':
-          return { color: 'var(--vjc-string-color)' }
-        case 'number':
-          return { color: 'var(--vjc-number-color)' }
-        case 'boolean':
-          return { color: 'var(--vjc-boolean-color)' }
-        case 'object':
-          return { color: 'var(--vjc-null-color)' }
-        case 'undefined':
-          return { color: 'var(--vjc-null-color)' }
-        default:
-          return { color: 'var(--vjc-valueKey-color)' }
-      }
-    }
-  }
 })
 </script>
 

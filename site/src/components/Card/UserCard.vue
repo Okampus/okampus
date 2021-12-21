@@ -10,13 +10,16 @@
       </div>
       <span
         class="w-1/3 h-1/3 absolute bottom-0 right-0 rounded-full border border-color-alt-2"
-        :class="`bg-${status}`"
+        :style="{backgroundColor: status}"
       />
     </div>
     <div class="flex flex-col min-w-0">
-      <div class="font-semibold truncate">
+      <router-link
+        class="font-semibold truncate hover:underline"
+        to="/profile"
+      >
         {{ username }}
-      </div>
+      </router-link>
       <div class="truncate">
         {{ email }}
       </div>
@@ -33,31 +36,30 @@
 
 <script lang="js">
 import default_avatar from '@/assets/img/default_avatars/user.png'
-
 export default {
-  props: {
-    username: {
-      type: String,
-      default: ''
+    props: {
+        username: {
+            type: String,
+            default: ''
+        },
+        email: {
+            type: String,
+            default: ''
+        },
+        avatar: {
+            type: String,
+            default: default_avatar
+        },
+        status: {
+            type: String,
+            default: '#ef4444'
+        }
     },
-    email: {
-      type: String,
-      default: ''
-    },
-    avatar: {
-      type: String,
-      default: default_avatar
-    },
-    status: {
-      type: String,
-      default: 'red-500'
+    methods: {
+        logout () {
+            this.emitter.emit('logout')
+            this.$store.dispatch('auth/logout')
+        }
     }
-  },
-  methods: {
-    logout () {
-      this.emitter.emit('logout')
-      this.$store.dispatch('auth/logout')
-    }
-  }
 }
 </script>

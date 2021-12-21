@@ -71,7 +71,7 @@
             <div class="flex items-start space-x-2 h-12 mt-4 space-y-2 mr-4">
               <a
                 href="#"
-                class="flex flex-shrink-0 items-center"
+                class="flex flex-shrink-0 items-center mr-4"
               >
                 <img
                   :src="post.author?.avatar || require('@/assets/img/default_avatars/user.png')"
@@ -86,9 +86,6 @@
                   <div class="text-sm text-2">{{ abbrNumbers(post.author?.reputation) }}</div>
                 </div>
               </a>
-              <div class="flex-shrink-0 font-medium text-1 pl-2">
-                Tags :
-              </div>
               <tags-list :tags="post.tags" />
             </div>
           </div>
@@ -129,48 +126,48 @@ import { timeAgo } from '@/utils/timeAgo'
 import { extractTextFromHTML } from '@/utils/extractTextFromHTML'
 
 export default {
-  components: {
-    TagsList
-  },
-  props: {
-    post: {
-      type: Object,
-      default: () => {}
-    }
-  },
-  data () {
-    return {
-      headerTypes: {
-        1: { type: 'Question', icon: 'ri-questionnaire-line' },
-        2: { type: 'Suggestion', icon: 'ri-lightbulb-line' },
-        3: { type: 'Problème', icon: 'ri-error-warning-line' },
-        4: { type: 'Discussion', icon: 'ri-discuss-line' }
-      },
-      solvedState: {
-        0: { state: 'Non-Résolu', class: 'text-red-500' },
-        1: { state: '✓ Résolu', class: 'text-green-500' }
-      }
-    }
-  },
-  methods: {
-    abbrNumbers,
-    timeAgo,
-    postPreview (postJson) {
-      return extractTextFromHTML(generateHTML(postJson,
-        [
-          StarterKit.configure({
-            heading: {
-              levels: [1, 2, 3]
+    components: {
+        TagsList
+    },
+    props: {
+        post: {
+            type: Object,
+            default: () => {}
+        }
+    },
+    data () {
+        return {
+            headerTypes: {
+                1: { type: 'Question', icon: 'ri-questionnaire-line' },
+                2: { type: 'Suggestion', icon: 'ri-lightbulb-line' },
+                3: { type: 'Problème', icon: 'ri-error-warning-line' },
+                4: { type: 'Discussion', icon: 'ri-discuss-line' }
+            },
+            solvedState: {
+                0: { state: 'Non-Résolu', class: 'text-red-500' },
+                1: { state: '✓ Résolu', class: 'text-green-500' }
             }
-          }),
-          Highlight,
-          Typography,
-          Placeholder,
-          Underline,
-          CharacterCount
-        ]
-      ), true)
+        }
+    },
+    methods: {
+        abbrNumbers,
+        timeAgo,
+        postPreview (postJson) {
+            return extractTextFromHTML(generateHTML(postJson,
+                [
+                    StarterKit.configure({
+                        heading: {
+                            levels: [1, 2, 3]
+                        }
+                    }),
+                    Highlight,
+                    Typography,
+                    Placeholder,
+                    Underline,
+                    CharacterCount
+                ]
+            ), true)
+        }
     }
-  }
 }
 </script>

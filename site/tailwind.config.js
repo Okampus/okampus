@@ -81,6 +81,16 @@ module.exports = {
           dark: '#5e5e5e'
         }
       },
+      divideColor: {
+        0: {
+          light: '#d4d4d4',
+          dark: '#323030'
+        },
+        1: {
+          light: '#bdbdbd',
+          dark: '#d5d5d5'
+        }
+      },
       textColor: {
         0: {
           light: '#000',
@@ -297,7 +307,6 @@ module.exports = {
     //   zIndex: ['responsive', 'focus-within', 'focus']
   },
   plugins: [
-    require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
     require('@tailwindcss/line-clamp'),
     require('@tailwindcss/aspect-ratio'),

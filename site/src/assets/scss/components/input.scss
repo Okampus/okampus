@@ -1,46 +1,40 @@
 @import "@/assets/scss/abstracts/mixins/get-color";
 
 .placeholder,
-%placeholder,
-.text-placeholder {
-  @apply dark:placeholder:text-placeholder-dark placeholder:text-placeholder-light;
+%placeholder {
+    @apply placeholder:text-placeholder-light dark:placeholder:text-placeholder-dark;
 }
 
-.input,
-%input {
-  @extend %placeholder;
-  @apply text-gray-900 dark:text-gray-100 py-2 px-3;
+.text-placeholder,
+%text-placeholder {
+    @apply text-placeholder-light dark:text-placeholder-dark;
+}
 
-  line-height: 1.43;
+%input-flat, .input-flat {
+    @extend %placeholder;
+    @include get-color("bg", 1);
+    @include get-color("text", 2);
 
-  &-border,
-  %input-border {
-    @apply border rounded dark:border-opacity-75 border-gray-300 dark:border-white;
+    line-height: 1.43;
 
-    &-no-shadow {
-      @extend %input-border;
-      @apply border-gray-500 dark:border-white;
+    @apply rounded dark:border-opacity-75 py-2 px-3;
+
+    &:focus,
+    &[focused] {
+        @apply outline outline-2 outline-blue-600;
     }
-  }
-
-  &-border:focus,
-  &-border[focused],
-  &-border[active] {
-    @apply border-yellow-500 dark:border-yellow-400;
-
-    outline: 0;
-
-    // box-shadow: 0 1px 8px rgba(247, 190, 68, 0.6);
-  }
-
-  &[type="password"]:not(:placeholder-shown) {
-    @extend %input;
-    @apply tracking-widest;
-  }
 }
 
-select:invalid {
-  @apply dark:text-placeholder-light text-placeholder-dark;
+%input, .input, input.input {
+    @extend %input-flat;
 
-  opacity: 100%;
+    box-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 15%), 0 2px 0 hsl(0deg 0% 100% / 40%);
+
+    :root.dark & {
+        box-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 40%), 0 2px 0 hsl(0deg 0% 100% / 15%);
+    }
+}
+
+input[type="password"]:not(:placeholder-shown) {
+    @apply tracking-widest;
 }

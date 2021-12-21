@@ -77,35 +77,35 @@ import InputWithIcon from '@/components/Input/InputWithIcon.vue'
 import User from '@/models/user'
 
 export default {
-  components: {
-    InputWithIcon
-  },
-  data () {
-    return {
-      user: new User('', '', '')
-    }
-  },
-  methods: {
-    handleLogin () {
-      this.loading = true
+    components: {
+        InputWithIcon
+    },
+    data () {
+        return {
+            user: new User('', '', '')
+        }
+    },
+    methods: {
+        handleLogin () {
+            this.loading = true
 
-      if (this.user.username && this.user.password) {
-        this.$store.dispatch('auth/login', this.user).then(
-          (data) => {
-            this.message = data.toString()
-            this.emitter.emit('login')
-          },
-          error => {
-            this.loading = false
-            this.message =
+            if (this.user.username && this.user.password) {
+                this.$store.dispatch('auth/login', this.user).then(
+                    (data) => {
+                        this.message = data.toString()
+                        this.emitter.emit('login')
+                    },
+                    error => {
+                        this.loading = false
+                        this.message =
                 (error.response && error.response.data) ||
                 error.message ||
                 error.toString()
-          }
-        )
-      }
+                    }
+                )
+            }
+        }
     }
-  }
 }
 </script>
 

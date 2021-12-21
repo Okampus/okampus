@@ -1,37 +1,16 @@
 <template>
-  <p class="error-message">
+  <p class="text-red-500">
     {{ error }}
   </p>
-  <!-- <p
-    :class="meta.valid ? 'success-message' : 'error-message' "
-  >
-    {{ meta.valid ? `✓ ${success}` : (error === undefined ? '' : `✗ ${error}`) }}
-  </p> -->
 </template>
 
 <script lang="js">
 export default {
-  props: {
-    error: {
-      type: String,
-      default: '<Error>'
-    },
-    success: {
-      type: String,
-      default: '<Success>'
+    props: {
+        error: {
+            type: String,
+            default: '<Error>'
+        }
     }
-  }
 }
 </script>
-
-<style lang="scss">
-
-.success-message {
-  @apply text-blue-400;
-}
-
-.error-message {
-  @apply text-red-500;
-}
-
-</style>

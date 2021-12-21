@@ -3,5 +3,6 @@
 @import "@/assets/scss/abstracts/placeholders/hoverable";
 
 .horizontal-tab {
-  @extend %text-hover, %left-label-active, %bg-hover, %text-opaque-hover, %text-opaque-active;
+    @extend %text-hover, %left-label-active,
+        %text-opaque-hover, %text-opaque-active;
 }

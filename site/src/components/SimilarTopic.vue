@@ -28,14 +28,14 @@
 import Tag from '@/components/ColoredTag.vue'
 
 export default {
-  components: {
-    Tag
-  },
-  props: {
-    topic: {
-      type: Object,
-      default: () => {}
+    components: {
+        Tag
+    },
+    props: {
+        topic: {
+            type: Object,
+            default: () => {}
+        }
     }
-  }
 }
 </script>
