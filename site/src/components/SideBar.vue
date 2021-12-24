@@ -125,6 +125,11 @@ export default {
                 'docs sharing': [
                     { to: '/file-upload', text: 'Documents', icon: 'ri-folder-upload-line' }
                 ],
+                blog:[
+                    { to: '/blog', text: 'Blog', icon: 'ri-book-open-line' },
+                    { to: '/blog/new', text: 'Créer un article', icon: 'ri-quill-pen-line' },
+                    { to: '/blog/admin', text: 'Blog Admin', icon: 'ri-pie-chart-box-line' }
+                ],
                 post: [
                     { to: '/new-post', text: 'Créer un Post', icon: 'ri-chat-new-line' },
                     { to: '/posts', text: 'Tous les Posts', icon: 'ri-chat-check-line' }

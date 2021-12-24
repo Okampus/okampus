@@ -1,167 +1,210 @@
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
-  content: ['./index.html', './src/**/*.{js,vue}'],
-  // purge: { content: ['./public/**/*.html', './src/**/*.vue'] },
-  darkMode: 'class', // or 'media' or 'class'
-  theme: {
-    extend: {
-      screen: {
-        'sm-max': { max: '639px' },
-        'md-max': { max: '767px' },
-        'lg-max': { max: '1023px' },
-        'xl-max': { max: '1279px' },
-        '2xl-max': { max: '1535px' }
-      },
-      spacing: {
-        '1/24': '4.166667%',
-        '2/24': '8.333333%',
-        '3/24': '12.5%',
-        '4/24': '16.666667%',
-        '5/24': '20.833333%',
-        '6/24': '25.0%',
-        '7/24': '29.166667%',
-        '8/24': '33.333333%',
-        '9/24': '37.5%',
-        '10/24': '41.666667%',
-        '11/24': '45.833333%',
-        '12/24': '50.0%',
-        '13/24': '54.166667%',
-        '14/24': '58.333333%',
-        '15/24': '62.5%',
-        '16/24': '66.666667%',
-        '17/24': '70.833333%',
-        '18/24': '75.0%',
-        '19/24': '79.166667%',
-        '20/24': '83.333333%',
-        '21/24': '87.5%',
-        '22/24': '91.666667%',
-        '23/24': '95.833333%'
-      },
-      borderColor: {
-        0: {
-          light: '#fff',
-          dark: '#000'
-        },
-        1: {
-          light: '#fafafa',
-          dark: '#0A0E18'
-        },
-        2: {
-          light: '#f3f3f5',
-          dark: '#1a1e28'
+    content: ['./index.html', './src/**/*.{js,vue}'],
+    // purge: { content: ['./public/**/*.html', './src/**/*.vue'] },
+    darkMode: 'class', // or 'media' or 'class'
+    theme: {
+        extend: {
+            screen: {
+                'sm-max': { max: '639px' },
+                'md-max': { max: '767px' },
+                'lg-max': { max: '1023px' },
+                'xl-max': { max: '1279px' },
+                '2xl-max': { max: '1535px' }
+            },
+            spacing: {
+                '1/24': '4.166667%',
+                '2/24': '8.333333%',
+                '3/24': '12.5%',
+                '4/24': '16.666667%',
+                '5/24': '20.833333%',
+                '6/24': '25.0%',
+                '7/24': '29.166667%',
+                '8/24': '33.333333%',
+                '9/24': '37.5%',
+                '10/24': '41.666667%',
+                '11/24': '45.833333%',
+                '12/24': '50.0%',
+                '13/24': '54.166667%',
+                '14/24': '58.333333%',
+                '15/24': '62.5%',
+                '16/24': '66.666667%',
+                '17/24': '70.833333%',
+                '18/24': '75.0%',
+                '19/24': '79.166667%',
+                '20/24': '83.333333%',
+                '21/24': '87.5%',
+                '22/24': '91.666667%',
+                '23/24': '95.833333%'
+            },
+            colors:{
+                transparent: 'rgba(0, 0, 0, 0)',
+                'primary-0': '#8D2B0B',
+                'primary-1': '#B44D12',
+                'primary-2': '#CB6E17',
+                'primary-3': '#DE911D',
+                'primary-4': '#F0B429',
+                'primary-5': '#F7C948',
+                'primary-6': '#FADB5F',
+                'primary-7': '#FCE588',
+                'primary-8': '#FFF3C4',
+                'primary-9': '#FFFBEA',
+                'secondary-0': '#035388',
+                'secondary-1': '#0B69A3',
+                'secondary-2': '#127FBF',
+                'secondary-3': '#1992D4',
+                'secondary-4': '#2BB0ED',
+                'secondary-5': '#40C3F7',
+                'secondary-6': '#5ED0FA',
+                'secondary-7': '#5ED0FA',
+                'secondary-8': '#B3ECFF',
+                'secondary-9': '#E3F8FF',
+                'supporting-primary-0': '#610316',
+                'supporting-primary-1': '#8A041A',
+                'supporting-primary-2': '#AB091E',
+                'supporting-primary-3': '#AB091E',
+                'supporting-primary-4': '#E12D39',
+                'supporting-primary-5': '#EF4E4E',
+                'supporting-primary-6': '#F86A6A',
+                'supporting-primary-7': '#FF9B9B',
+                'supporting-primary-8': '#FFBDBD',
+                'supporting-primary-9': '#FFE3E3',
+                'supporting-secondary-0': '#014D40',
+                'supporting-secondary-1': '#0C6B58',
+                'supporting-secondary-2': '#147D64',
+                'supporting-secondary-3': '#199473',
+                'supporting-secondary-4': '#27AB83',
+                'supporting-secondary-5': '#3EBD93',
+                'supporting-secondary-6': '#65D6AD',
+                'supporting-secondary-7': '#8EEDC7',
+                'supporting-secondary-8': '#C6F7E2',
+                'supporting-secondary-9': '#EFFCF6'
+            },
+            borderColor: {
+                0: {
+                    light: '#fff',
+                    dark: '#000'
+                },
+                1: {
+                    light: '#fafafa',
+                    dark: '#0A0E18'
+                },
+                2: {
+                    light: '#f3f3f5',
+                    dark: '#1a1e28'
+                }
+            },
+            backgroundColor: {
+                0: {
+                    light: '#fff',
+                    dark: '#000'
+                },
+                1: {
+                    light: '#fafafa',
+                    dark: '#0A0E18'
+                },
+                2: {
+                    light: '#f3f3f5',
+                    dark: '#1a1e28'
+                },
+                3: {
+                    light: '#6C717D',
+                    dark: '#7F889C'
+                },
+                4: {
+                    light: '#d4d4d4',
+                    dark: '#323030'
+                },
+                5: {
+                    light: '#c6c6c6',
+                    dark: '#444'
+                },
+                6: {
+                    light: '#bebebe',
+                    dark: '#5e5e5e'
+                }
+            },
+            divideColor: {
+                0: {
+                    light: '#d4d4d4',
+                    dark: '#323030'
+                },
+                1: {
+                    light: '#bdbdbd',
+                    dark: '#d5d5d5'
+                }
+            },
+            textColor: {
+                0: {
+                    light: '#000',
+                    dark: '#fff'
+                },
+                1: {
+                    light: '#0A0E18',
+                    dark: '#fafafa'
+                },
+                2: {
+                    light: '#1a1e28',
+                    dark: '#f3f3f5'
+                },
+                3: {
+                    light: '#7F889C',
+                    dark: '#6C717D'
+                },
+                4: {
+                    light: '#323030',
+                    dark: '#d4d4d4'
+                },
+                5: {
+                    light: '#444',
+                    dark: '#c6c6c6'
+                },
+                6: {
+                    light: '#5e5e5e',
+                    dark: '#bebebe'
+                },
+                placeholder: {
+                    light: '#6C717D',
+                    dark: '#7F889C'
+                }
+            },
+            // placeholderColor: {
+            //   primary: {
+            //     light: '#7F889C',
+            //     dark: '#6C717D'
+            //   }
+            // },
+            minHeight: {
+                20: '5rem'
+            }
         }
-      },
-      backgroundColor: {
-        0: {
-          light: '#fff',
-          dark: '#000'
-        },
-        1: {
-          light: '#fafafa',
-          dark: '#0A0E18'
-        },
-        2: {
-          light: '#f3f3f5',
-          dark: '#1a1e28'
-        },
-        3: {
-          light: '#6C717D',
-          dark: '#7F889C'
-        },
-        4: {
-          light: '#d4d4d4',
-          dark: '#323030'
-        },
-        5: {
-          light: '#c6c6c6',
-          dark: '#444'
-        },
-        6: {
-          light: '#bebebe',
-          dark: '#5e5e5e'
+    },
+    variantOrder: [
+        'first',
+        'last',
+        'odd',
+        'even',
+        'visited',
+        'checked',
+        'empty',
+        'read-only',
+        'group-hover',
+        'group-focus',
+        'focus-within',
+        'hover',
+        'focus',
+        'focus-visible',
+        'active',
+        'disabled'
+    ],
+    variants: {
+        extend: {
+            boxShadow: ['dark'],
+            brightness: ['dark'],
+            backgroundColor: ['active'],
+            borderRadius: ['focus'],
+            textColor: ['placeholder']
         }
-      },
-      divideColor: {
-        0: {
-          light: '#d4d4d4',
-          dark: '#323030'
-        },
-        1: {
-          light: '#bdbdbd',
-          dark: '#d5d5d5'
-        }
-      },
-      textColor: {
-        0: {
-          light: '#000',
-          dark: '#fff'
-        },
-        1: {
-          light: '#0A0E18',
-          dark: '#fafafa'
-        },
-        2: {
-          light: '#1a1e28',
-          dark: '#f3f3f5'
-        },
-        3: {
-          light: '#7F889C',
-          dark: '#6C717D'
-        },
-        4: {
-          light: '#323030',
-          dark: '#d4d4d4'
-        },
-        5: {
-          light: '#444',
-          dark: '#c6c6c6'
-        },
-        6: {
-          light: '#5e5e5e',
-          dark: '#bebebe'
-        },
-        placeholder: {
-          light: '#6C717D',
-          dark: '#7F889C'
-        }
-      },
-      // placeholderColor: {
-      //   primary: {
-      //     light: '#7F889C',
-      //     dark: '#6C717D'
-      //   }
-      // },
-      minHeight: {
-        20: '5rem'
-      }
-    }
-  },
-  variantOrder: [
-    'first',
-    'last',
-    'odd',
-    'even',
-    'visited',
-    'checked',
-    'empty',
-    'read-only',
-    'group-hover',
-    'group-focus',
-    'focus-within',
-    'hover',
-    'focus',
-    'focus-visible',
-    'active',
-    'disabled'
-  ],
-  variants: {
-    extend: {
-      boxShadow: ['dark'],
-      brightness: ['dark'],
-      backgroundColor: ['active'],
-      borderRadius: ['focus'],
-      textColor: ['placeholder']
-    }
     //   accessibility: ['responsive', 'focus-within', 'focus'],
     //   alignContent: ['responsive'],
     //   alignItems: ['responsive'],
@@ -305,10 +348,10 @@ module.exports = {
     //   width: ['responsive'],
     //   wordBreak: ['responsive'],
     //   zIndex: ['responsive', 'focus-within', 'focus']
-  },
-  plugins: [
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/line-clamp'),
-    require('@tailwindcss/aspect-ratio'),
-  ],
+    },
+    plugins: [
+        require('@tailwindcss/typography'),
+        require('@tailwindcss/line-clamp'),
+        require('@tailwindcss/aspect-ratio'),
+    ],
 }

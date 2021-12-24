@@ -20,6 +20,22 @@ const routes = [
         component: Landing
     },
     {
+        path: '/blog',
+        component: () => import('@/views/Blog/BlogList.vue')
+    },
+    {
+        path: '/blog/new',
+        component: () => import('@/views/Blog/BlogNew.vue')
+    },
+    {
+        path: '/blog/show/1',
+        component: () => import('@/views/Blog/BlogShow.vue')
+    },
+    {
+        path: '/blog/admin',
+        component: () => import('@/views/Blog/BlogAdmin.vue')
+    },
+    {
         path: '/post/:id',
         component: () => import('@/views/Post/ThreadCompactView.vue'),
         props: {
