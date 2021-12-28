@@ -78,7 +78,8 @@ async function bootstrap(): Promise<void> {
   setupSwagger(app);
 
   await app.listen(config.get('port'));
-  logger.log(`API running on: ${(await app.getUrl()).replace('[::1]', 'localhost')}`);
+  const url = await app.getUrl();
+  logger.log(`API running on: ${url.replace('[::1]', 'localhost')}`);
 }
 
 void bootstrap();
