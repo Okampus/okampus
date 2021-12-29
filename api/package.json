@@ -17,6 +17,7 @@
     "lint:fix": "eslint 'src/**/*.ts' --fix"
   },
   "dependencies": {
+    "@casl/ability": "^5.4.3",
     "@golevelup/profiguration": "^0.2.1",
     "@mikro-orm/core": "^4.5.9",
     "@mikro-orm/migrations": "^4.5.9",

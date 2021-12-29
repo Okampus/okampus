@@ -1,6 +1,9 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { assertPermissions } from '../shared/lib/utils/assertPermission';
+import { Action } from '../shared/modules/authorization';
+import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { User } from '../users/user.entity';
 import { CommentVote } from './entities/comment-vote.entity';
 import { Comment } from './entities/comment.entity';
@@ -10,14 +13,16 @@ export class CommentVotesService {
   constructor(
     @InjectRepository(Comment) private readonly commentRepository: BaseRepository<Comment>,
     @InjectRepository(CommentVote) private readonly commentVotesRepository: BaseRepository<CommentVote>,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   public async update(user: User, commentId: string, value: -1 | 1): Promise<Comment> {
     const comment = await this.commentRepository.findOne({ commentId }, ['author', 'post', 'reply']);
     if (!comment)
       throw new NotFoundException('Comment not found');
-    if (comment.post.locked)
-      throw new ForbiddenException('Post locked');
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Interact, comment);
 
     let vote = await this.commentVotesRepository.findOne({ comment, user });
     const previousValue = vote?.value;
@@ -50,8 +55,9 @@ export class CommentVotesService {
     const comment = await this.commentRepository.findOne({ commentId }, ['author', 'post', 'reply']);
     if (!comment)
       throw new NotFoundException('Comment not found');
-    if (comment.post.locked)
-      throw new ForbiddenException('Post locked');
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Interact, comment);
 
     // Update pivot table
     const oldVote = await this.commentVotesRepository.findOne({ comment, user });

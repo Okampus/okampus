@@ -1,6 +1,9 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { assertPermissions } from '../shared/lib/utils/assertPermission';
+import { Action } from '../shared/modules/authorization';
+import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { User } from '../users/user.entity';
 import { PostVote } from './entities/post-vote.entity';
 import { Post } from './entities/post.entity';
@@ -10,14 +13,16 @@ export class PostVotesService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: BaseRepository<Post>,
     @InjectRepository(PostVote) private readonly postVotesRepository: BaseRepository<PostVote>,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   public async update(user: User, postId: number, value: -1 | 1): Promise<Post> {
     const post = await this.postRepository.findOne({ postId }, ['tags']);
     if (!post)
       throw new NotFoundException('Post not found');
-    if (post.locked)
-      throw new ForbiddenException('Post locked');
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Interact, post);
 
     let vote = await this.postVotesRepository.findOne({ post, user });
     const previousValue = vote?.value;
@@ -50,8 +55,9 @@ export class PostVotesService {
     const post = await this.postRepository.findOne({ postId }, ['tags']);
     if (!post)
       throw new NotFoundException('Post not found');
-    if (post.locked)
-      throw new ForbiddenException('Post locked');
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Interact, post);
 
     // Update pivot table
     const oldVote = await this.postVotesRepository.findOne({ post, user });

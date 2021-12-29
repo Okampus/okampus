@@ -13,18 +13,19 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
+import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import type { Post } from './entities/post.entity';
+import { Post } from './entities/post.entity';
 import { PostVotesService } from './post-votes.service';
 import { PostsService } from './posts.service';
 
 @ApiTags('Posts')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, PoliciesGuard)
 @Controller({ path: 'posts' })
 export class PostsController {
   constructor(
@@ -33,11 +34,13 @@ export class PostsController {
   ) {}
 
   @PostRequest()
+  @CheckPolicies(ability => ability.can(Action.Create, Post))
   public async create(@CurrentUser() user: User, @Body() createPostDto: CreatePostDto): Promise<Post> {
     return await this.postsService.create(user, createPostDto);
   }
 
   @Get()
+  @CheckPolicies(ability => ability.can(Action.Read, Post))
   public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Post>> {
     if (query.page)
       return await this.postsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
@@ -45,11 +48,13 @@ export class PostsController {
   }
 
   @Get(':id')
+  @CheckPolicies(ability => ability.can(Action.Read, Post))
   public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Post> {
     return await this.postsService.findOne(id);
   }
 
   @Patch(':id')
+  @CheckPolicies(ability => ability.can(Action.Update, Post))
   public async update(
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,
@@ -59,11 +64,13 @@ export class PostsController {
   }
 
   @Delete(':id')
+  @CheckPolicies(ability => ability.can(Action.Delete, Post))
   public async remove(@CurrentUser() user: User, @Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.postsService.remove(user, id);
   }
 
   @PostRequest(':id/vote')
+  @CheckPolicies(ability => ability.can(Action.Interact, Post))
   public async vote(
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,
