@@ -1,3 +1,5 @@
+import { createReadStream, promises as fs, constants as fsConst } from 'node:fs';
+import path from 'node:path';
 import {
   BadRequestException,
   Body,
@@ -19,8 +21,6 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { Express, Response as Res } from 'express';
-import { createReadStream, promises as fs, constants as fsConst } from 'node:fs';
-import path from 'node:path';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { config } from '../config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
