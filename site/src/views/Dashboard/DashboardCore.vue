@@ -49,7 +49,7 @@
 </template>
 
 <script lang="js">
-import { defineComponent, defineAsyncComponent } from 'vue'
+import { defineAsyncComponent } from 'vue'
 import SelectMultiCheckbox from '@/components/Input/SelectMultiCheckbox.vue'
 import {
     TransitionRoot,
@@ -58,7 +58,7 @@ import {
 import ThreadCompactView from '@/views/Post/ThreadCompactView.vue'
 import { camelToSentenceCase } from '@/utils/caseUtils'
 
-export default defineComponent({
+export default {
     components: {
         SelectMultiCheckbox,
         TransitionRoot,
@@ -125,7 +125,7 @@ export default defineComponent({
             this.columnsSort[this.sortColumn] = this.columnsSort[this.sortColumn] === -1 ? 0 : (this.columnsSort[this.sortColumn] === 1 ? -1 : 1)
         }
     }
-})
+}
 </script>
 
 <style>

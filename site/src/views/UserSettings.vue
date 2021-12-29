@@ -1,15 +1,15 @@
 <template>
-  <div class="m-0 text-2">
-    <div class="m-0 absolute py-12 hero h-52 w-full top-0 left-0">
-      <h3
-        class="text-4xl font-bold mb-8 text-0"
-        style="padding-left: 5%; padding-right: 5%"
-      >
-        Paramètres
-      </h3>
-    </div>
-    <div
-      class="
+    <div class="m-0 text-2">
+        <div class="m-0 absolute py-12 hero h-52 w-full top-0 left-0">
+            <h3
+                class="text-4xl font-bold mb-8 text-0"
+                style="padding-left: 5%; padding-right: 5%"
+            >
+                Paramètres
+            </h3>
+        </div>
+        <div
+            class="
         height
         relative
         mt-32
@@ -21,15 +21,15 @@
         mx-auto
         flex
       "
-    >
-      <div class="mt-2 flex-shrink-0">
-        <ul class="py-2">
-          <template
-            v-for="link of links"
-            :key="link"
-          >
-            <li
-              class="
+        >
+            <div class="mt-2 flex-shrink-0">
+                <ul class="py-2">
+                    <template
+                        v-for="link of links"
+                        :key="link"
+                    >
+                        <li
+                            class="
                 h-12
                 py-2
                 pl-8
@@ -41,24 +41,24 @@
                 bg-mouse-brand
                 cursor-pointer
               "
-              :class="{ active: currentComponent === link.component }"
-              @click="currentComponent = link.component"
-            >
-              <i
-                class="ri-xl"
-                :class="link.icon"
-              />
-              <span>{{ link.text }}</span>
-            </li>
-          </template>
-        </ul>
-      </div>
+                            :class="{ active: currentComponent === link.component }"
+                            @click="currentComponent = link.component"
+                        >
+                            <i
+                                class="ri-xl"
+                                :class="link.icon"
+                            />
+                            <span>{{ link.text }}</span>
+                        </li>
+                    </template>
+                </ul>
+            </div>
 
-      <div class="border-l-2 border-footer w-full">
-        <component :is="currentComponent" />
-      </div>
+            <div class="border-l-2 border-footer w-full">
+                <component :is="currentComponent" />
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script lang="js">

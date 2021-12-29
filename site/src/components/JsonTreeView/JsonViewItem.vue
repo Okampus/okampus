@@ -1,45 +1,43 @@
 <template>
-  <div class="json-view-item">
-    <!-- Handle Objects and Arrays-->
-    <div v-if="data.type === 'object' || data.type === 'array'">
-      <button
-        class="data-key"
-        :aria-expanded="open ? 'true' : 'false'"
-        @click.stop="open = !open"
-      >
-        <span :class="{'chevron-arrow': true, opened: open}" />
-        {{ data.key }}:
-        <span class="properties">{{ lengthString }}</span>
-      </button>
-      <json-view-item
-        v-for="child in data.children"
-        v-show="open"
-        :key="getKey(child)"
-        :data="child"
-        :max-depth="maxDepth"
-        :can-select="canSelect"
-        @update:selected="bubbleSelected"
-      />
+    <div class="json-view-item">
+        <!-- Handle Objects and Arrays-->
+        <div v-if="data.type === 'object' || data.type === 'array'">
+            <button
+                class="data-key"
+                :aria-expanded="open ? 'true' : 'false'"
+                @click.stop="open = !open"
+            >
+                <span :class="{'chevron-arrow': true, opened: open}" />
+                {{ data.key }}:
+                <span class="properties">{{ lengthString }}</span>
+            </button>
+            <json-view-item
+                v-for="child in data.children"
+                v-show="open"
+                :key="getKey(child)"
+                :data="child"
+                :max-depth="maxDepth"
+                :can-select="canSelect"
+                @update:selected="bubbleSelected"
+            />
+        </div>
+        <div
+            v-if="data.type === 'value'"
+            :class="{'value-key' : true, 'can-select': canSelect}"
+            :role="canSelect ? 'button' : undefined"
+            :tabindex="canSelect ? '0' : undefined"
+            @click="emitSelect(data)"
+            @keyup.enter="emitSelect(data)"
+            @keyup.space="emitSelect(data)"
+        >
+            <span class="value-key">{{ data.key }}:</span>
+            <span :style="getValueStyle(data.value)">{{ dataValue }}</span>
+        </div>
     </div>
-    <div
-      v-if="data.type === 'value'"
-      :class="{'value-key' : true, 'can-select': canSelect}"
-      :role="canSelect ? 'button' : undefined"
-      :tabindex="canSelect ? '0' : undefined"
-      @click="emitSelect(data)"
-      @keyup.enter="emitSelect(data)"
-      @keyup.space="emitSelect(data)"
-    >
-      <span class="value-key">{{ data.key }}:</span>
-      <span :style="getValueStyle(data.value)">{{ dataValue }}</span>
-    </div>
-  </div>
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
+export default {
     props: {
         data: {
             required: true,
@@ -122,7 +120,7 @@ export default defineComponent({
             }
         }
     }
-})
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,51 +1,51 @@
 <template>
-  <div class="text-1">
-    <input
-      ref="fileInput"
-      type="file"
-    >
-    <button
-      class="button ml-4"
-      @click="upload"
-    >
-      Upload
-    </button>
+    <div class="text-1">
+        <input
+            ref="fileInput"
+            type="file"
+        >
+        <button
+            class="button ml-4"
+            @click="upload"
+        >
+            Upload
+        </button>
 
-    <pre
-      ref="response"
-      class="mb-4"
-    />
+        <pre
+            ref="response"
+            class="mb-4"
+        />
 
-    <button
-      class="button"
-      @click="search"
-    >
-      Search
-    </button>
+        <button
+            class="button"
+            @click="search"
+        >
+            Search
+        </button>
 
-    <pre
-      ref="receive"
-      class="mb-4"
-    />
+        <pre
+            ref="receive"
+            class="mb-4"
+        />
 
-    <input
-      ref="fileId"
-      type="number"
-      class="input text-2 bg-2"
-    >
-    <button
-      class="button ml-4"
-      @click="show=`${filesEndpoint}/get-file/${fileId.value}`"
-    >
-      Show
-    </button>
-    <img
-      :src="show"
-      class="mt-4"
-      width="250"
-      height="500"
-    >
-  </div>
+        <input
+            ref="fileId"
+            type="number"
+            class="input text-2 bg-2"
+        >
+        <button
+            class="button ml-4"
+            @click="show=`${filesEndpoint}/get-file/${fileId.value}`"
+        >
+            Show
+        </button>
+        <img
+            :src="show"
+            class="mt-4"
+            width="250"
+            height="500"
+        >
+    </div>
 </template>
 
 <script lang="js">

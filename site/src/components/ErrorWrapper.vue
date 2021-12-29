@@ -1,7 +1,7 @@
 <template>
-  <p class="text-red-500">
-    {{ error }}
-  </p>
+    <p class="text-red-500">
+        {{ error }}
+    </p>
 </template>
 
 <script lang="js">

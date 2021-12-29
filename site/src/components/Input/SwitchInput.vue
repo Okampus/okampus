@@ -1,24 +1,24 @@
 <template lang="">
-  <label
-    class="switch"
-    :style="{
-      '--switch-width': width,
-      '--switch-height': height,
-      '--switch-color': switchValidateColor,
-      '--switch-bg': switchBackgroundColor,
-      '--switch-inner-padding': switchInnerPadding,
-      '--button-color': buttonColor,
-      '--button-radius': buttonRadius,
-      '--transition-duration': transitionDuration,
-    }"
-  >
-    <input
-      v-model="value"
-      type="checkbox"
-      @update:modelValue="value = $event"
+    <label
+        class="switch"
+        :style="{
+            '--switch-width': width,
+            '--switch-height': height,
+            '--switch-color': switchValidateColor,
+            '--switch-bg': switchBackgroundColor,
+            '--switch-inner-padding': switchInnerPadding,
+            '--button-color': buttonColor,
+            '--button-radius': buttonRadius,
+            '--transition-duration': transitionDuration,
+        }"
     >
-    <span class="slider round" />
-  </label>
+        <input
+            v-model="value"
+            type="checkbox"
+            @update:modelValue="value = $event"
+        >
+        <span class="slider round" />
+    </label>
 </template>
 
 <script>

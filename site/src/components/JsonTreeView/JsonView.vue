@@ -1,18 +1,17 @@
 <template>
-  <json-view-item
-    :class="[{ 'root-item': true, dark: colorScheme === 'dark' }]"
-    :data="parsed"
-    :max-depth="maxDepth"
-    :can-select="hasSelectedListener"
-    @update:selected="itemSelected"
-  />
+    <json-view-item
+        :class="[{ 'root-item': true, dark: colorScheme === 'dark' }]"
+        :data="parsed"
+        :max-depth="maxDepth"
+        :can-select="hasSelectedListener"
+        @update:selected="itemSelected"
+    />
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
 import JsonViewItem from './JsonViewItem.vue'
 
-export default defineComponent({
+export default {
     components: { JsonViewItem },
     props: {
         data: {
@@ -116,7 +115,7 @@ export default defineComponent({
             this.$emit('update:selected', data)
         }
     }
-})
+}
 </script>
 
 <style lang="scss" scoped>

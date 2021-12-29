@@ -34,10 +34,8 @@
 import { users } from '@/fake/users'
 import { posts } from '@/fake/posts'
 
-import { defineComponent } from 'vue'
-
 import DashboardCore from './DashboardCore.vue'
-export default defineComponent({
+export default {
     components: {
         DashboardCore
     },
@@ -120,5 +118,5 @@ export default defineComponent({
             }
         }
     }
-})
+}
 </script>
