@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = `${import.meta.env.API_URL}/files/`
+const API_URL = `${import.meta.env.VITE_API_URL}/files/`
 
 class PostsService {
     getStudyDocs (query) {
