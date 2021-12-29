@@ -43,18 +43,21 @@ export const auth = {
         loginSuccess (state, user) {
             state.status.loggedIn = true
             state.user = user
+            localStorage.setItem('user', JSON.stringify(user))
         },
         loginFailure (state) {
             state.status.loggedIn = false
             state.user = null
+            localStorage.removeItem('user')
         },
         logoutSuccess (state) {
             state.status.loggedIn = false
             state.user = null
+            // TODO: Redirect any user-restricted route to '/'
             if (router.currentRoute.value.fullPath === '/my-account') {
-                router
-                    .push('/')
+                router.push('/')
             }
+            localStorage.removeItem('user')
         },
         registerSuccess (state) {
             state.status.loggedIn = false

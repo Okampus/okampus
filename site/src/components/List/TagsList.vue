@@ -1,67 +1,35 @@
 <template>
-  <!-- TODO: Refactor component -->
-  <div>
+    <!--  TODO: Fix load time + add popover -->
     <div
-      ref="tagList"
-      class="flex flex-wrap h-0 overflow-hidden invisible"
+        ref="tagList"
+        class="relative h-7 w-full overflow-hidden"
     >
-      <div
-        v-if="overflowing.length"
-        class="text-blue-500 flex-shrink-0"
-      >
-        + {{ overflowing.length }} tags
-      </div>
-      <div
-        v-if="tags.length === 0 || tags === undefined"
-        class="text-1"
-      >
-        N/A
-      </div>
-      <template
-        v-for="(tag,i) in tags"
-        v-else
-        :key="i"
-      >
-        <tag
-          :ref="setTagRef"
-          :name="tag.name ?? tag"
-        />
-      </template>
-    </div>
-    <div v-show="loaded">
-      <!-- TODO: V-tooltip describing tags -->
-      <div
-        v-if="overflowing.length == tags.length"
-        class="text-blue-500 flex-shrink-0"
-      >
-        + {{ overflowing.length }} tags
-      </div>
-      <div
-        v-else
-        class="flex flex-wrap h-7 overflow-hidden"
-      >
         <template
-          v-for="i in [...Array(last+1).keys()]"
-          :key="i"
+            v-for="(tag, i) in tags"
+            :key="i"
         >
-          <tag
-            :name="tags[i].name ?? tags[i]"
-          />
+            <Tag
+                :ref="setTagRef"
+                :tag-name="tag.name ?? tag"
+                :class="{invisible: i >= last}"
+            />
         </template>
         <div
-          v-if="overflowing.length"
-          class="text-blue-500 flex-shrink-0"
+            v-if="labelLeft !== null"
+            class="absolute flex items-center top-1/2 text-white -translate-y-1/2 whitespace-nowrap rounded-full bg-blue-500 px-2"
+            :style="{left: labelLeft + 'px'}"
         >
-          + {{ overflowing.length }} tags
+            <p>{{ extraTagsText }}</p>
+            <i class="ri-arrow-drop-down-line ri-xl -mr-1" />
         </div>
-      </div>
     </div>
-  </div>
 </template>
+
 <script lang="js">
 import debounce from 'lodash/debounce'
 import { onBeforeUpdate, reactive, ref } from 'vue'
 import Tag from '@/components/ColoredTag.vue'
+import { getTextWidthInElement } from '@/utils/getTextWidth'
 export default {
     components: {
         Tag
@@ -70,6 +38,14 @@ export default {
         tags: {
             type: Array,
             default: () => []
+        },
+        padding: {
+            type: Number,
+            default: 6
+        },
+        extraTagsTextFormat: {
+            type: String,
+            default: '+ {}'
         }
     },
     setup () {
@@ -87,37 +63,58 @@ export default {
         return { tagRefs, tagList, setTagRef, loaded }
     },
     data () {
-        const overflow = debounce(() => {
-            this.overflowing = []
-            this.last = null
-            const getTop = el => el?.getBoundingClientRect()?.top ?? 0
-            const getRight = el => el?.getBoundingClientRect()?.right ?? 0
-            const startHeight = getTop(this.tagList)
-            const startRight = getRight(this.tagList)
-            for (var i = 0; i < this.tagRefs.length; i++) {
-                if (getTop(this.tagRefs[i].$el) > startHeight || getRight(this.tagRefs[i].$el) > startRight) {
-                    this.overflowing.push(this.tagRefs[i].name)
-                } else {
-                    this.last = i
-                }
-            }
-        }, 5)
-        const tagsList$ = new ResizeObserver(overflow)
         return {
             overflowing: [],
-            last: null,
-            tagsList$,
-            overflow,
+            overflowLabelWidth: null,
+            last: this.tags.length,
+            labelLeft: null,
+            tagsListObserver: null
         }
     },
-    mounted () {
-        this.tagsList$.observe(this.tagList)
-        this.loaded = true
-        this.overflow()
+    computed: {
+        extraTagsText() {
+            return this.extraTagsTextFormat.replace(new RegExp('{}', 'g'), (this.tags.length - this.last ?? 0).toString())
+        }
     },
-    unmounted () {
-        this.tagsList$.disconnect()
-        delete this.tagsList$
+    mounted() {
+        const getLabelLeft = (i) => i == 0 ? 0 : this.tagRefs[i-1].$el.getBoundingClientRect().right - this.tagList.getBoundingClientRect().left + this.padding
+        this.overflowLabelWidth = getTextWidthInElement(this.extraTagsTextFormat.replace(new RegExp('{}', 'g'), 'WWWWW'), this.tagList) + this.padding
+        const overflow = debounce(() => {
+            const top = this.tagList.getBoundingClientRect().top + 4
+            if (this.labelLeft === null) {
+                for (var i = 0; i < this.tagRefs.length; i++) {
+                    if (this.tagRefs[i].$el.getBoundingClientRect().top > top) {
+                        for (var j = 0; j < i; j++) {
+                            if (this.tagRefs[j].$el.getBoundingClientRect().right >= this.tagList.getBoundingClientRect().right - this.overflowLabelWidth) {
+                                this.last = j
+                                this.labelLeft = getLabelLeft(j)
+                                return
+                            }
+                        }
+                        this.last = i
+                        this.labelLeft = getLabelLeft(i)
+                        return
+                    }
+                }
+            } else {
+                const actualRight = this.tagList.getBoundingClientRect().right - this.overflowLabelWidth
+                for (var k = 0; k < this.tagRefs.length; k++) {
+                    const rect = this.tagRefs[k].$el.getBoundingClientRect()
+                    if (rect.top > top || rect.right > actualRight) {
+                        this.last = k
+                        this.labelLeft = getLabelLeft(k)
+                        return
+                    }
+                }
+            }
+            this.last = this.tagRefs.length
+            this.labelLeft = null
+        }, 10)
+        this.tagsListObserver = new ResizeObserver(overflow)
+        this.tagsListObserver.observe(this.tagList)
+    },
+    beforeUnmount() {
+        this.tagsListObserver.unobserve(this.tagList)
     }
 }
 </script>

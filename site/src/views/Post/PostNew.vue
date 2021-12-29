@@ -1,153 +1,140 @@
 <template>
-  <div>
-    <div
-      class="absolute py-12 hero h-52 w-full top-0 left-0"
-    />
-    <div class="relative mt-12 mb-10 mx-auto w-11/12 bg-1 flex flex-col space-y-4 card min-w-2/3">
-      <div>
-        <div class="label-title">
-          Titre
-        </div>
-
-        <div class="label-desc">
-          Titre simple et complet décrivant votre Post
-        </div>
-        <input
-          v-model="state.title"
-          class="w-full input"
-          type="text"
-          name="title"
-          placeholder="Titre descriptif/complet"
-          @input="v$.title.$touch"
-        >
-        <error-wrapper
-          v-if="v$.title.$error"
-          :error="`Un titre de Post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
+    <div>
+        <div
+            class="absolute py-12 hero h-52 w-full top-0 left-0"
         />
-      </div>
+        <div class="relative mt-12 mb-10 mx-auto w-11/12 flex flex-col space-y-4 card-0 min-w-2/3">
+            <div>
+                <div class="label-title">
+                    Titre
+                </div>
 
-      <div>
-        <div class="label-title">
-          Type de Post
-        </div>
-        <div class="label-desc">
-          Quel
-          <v-menu>
-            <u
-              class="text-blue-400 hover:text-orange-400 cursor-help"
-            >
-              type
-            </u>
+                <div class="label-desc">
+                    Titre simple et complet décrivant votre Post
+                </div>
+                <input
+                    v-model="state.title"
+                    class="w-full input"
+                    type="text"
+                    name="title"
+                    placeholder="Titre descriptif/complet"
+                    @input="v$.title.$touch"
+                >
+                <error-wrapper
+                    v-if="v$.title.$error"
+                    :error="`Un titre de Post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
+                />
+            </div>
 
-            <template #popper>
-              <div>
-                <ul>
-                  Types possibles: <li
-                    v-for="postType in postTypesEnum"
-                    :key="postType"
-                    class="text-blue-700"
-                  >
-                    {{ postType[$i18n.locale] }}
-                  </li>
-                </ul>
-              </div>
-            </template>
-          </v-menu>
-          de Post voulez-vous créer ?
-        </div>
-        <select
-          v-model="state.type"
-          name="type"
-          class="select bg-1 pr-4"
-          required
-          @input="v$.type.$touch"
-        >
-          <option
-            disabled
-            value=""
-            selected
-          >
-            Type de Post
-          </option>
-          <option
-            v-for="(opt, i) in postTypesEnum"
-            :key="i"
-            :value="i+1"
-          >
-            {{ opt[$i18n.locale] }}
-          </option>
-        </select>
-        <error-wrapper
-          v-if="v$.type.$error"
-          :error="typeErrorMessage"
-          success="Type de Post valide"
-        />
-      </div>
+            <div>
+                <div class="label-title">
+                    Type de Post
+                </div>
+                <div class="label-desc">
+                    Quel
+                    <v-popper :hover="true">
+                        <u
+                            class="text-blue-400 hover:text-orange-400 cursor-help"
+                        >
+                            type
+                        </u>
 
-      <div>
-        <div class="label-title">
-          Contenu
-        </div>
-        <div class="label-desc">
-          Décrivez le plus précisément possible votre Post
-        </div>
-        <div>
-          <tip-tap-editor
-            ref="editorRef"
-            v-model="state.editor"
-            name="editor"
-            :char-count="true"
-            :char-count-limit="editorCharLimit[1]"
-            :buttons="editorButtons"
-            input-placeholder="Décrivez votre question/suggestion/problème !"
-            @input="v$.editor.$touch"
-          >
-            <error-wrapper
-              v-if="v$.editor.$error"
-              :error="`Une description de post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
-            />
-          </tip-tap-editor>
-        </div>
-      </div>
+                        <template #content>
+                            <div class="popover">
+                                <ul>
+                                    Types possibles: <li
+                                        v-for="postType in postTypesEnum"
+                                        :key="postType"
+                                        class="text-blue-700"
+                                    >
+                                        {{ postType[$i18n.locale] }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </template>
+                    </v-popper>
+                    de Post voulez-vous créer ?
+                </div>
+                <select-input
+                    v-model="state.type"
+                    button-name="Type de Post"
+                    :choices="postTypesEnum.map(postType => postType[$i18n.locale])"
+                />
+                <error-wrapper
+                    v-if="v$.type.$error"
+                    :error="typeErrorMessage"
+                    success="Type de Post valide"
+                />
+            </div>
 
-      <div>
-        <div class="label-title">
-          Tags
-        </div>
-        <div class="label-desc">
-          Ajoutez {{ minTags }} Tags (ou plus) qui décrivent le sujet de votre Post
-        </div>
-        <tags-input
-          ref="tagsInputRef"
-          v-model="state.tags"
-          name="tags"
-          input-placeholder="Entrez le nom du tag et appuyez sur entrée..."
-          @error="tagsError"
-          @input-update="customTagError = null"
-          @keydown="v$.tags.$touch"
-        />
-        <error-wrapper
-          v-if="v$.tags.$error"
-          :error="customTagError || `Un Post doit avoir au moins ${minTags} Tags.`"
-          success="Tags valides"
-        />
-      </div>
+            <div>
+                <div class="label-title">
+                    Contenu
+                </div>
+                <div class="label-desc">
+                    Décrivez le plus précisément possible votre Post
+                </div>
+                <div>
+                    <tip-tap-editor
+                        ref="editorRef"
+                        v-model="state.editor"
+                        name="editor"
+                        :char-count="true"
+                        :char-count-limit="editorCharLimit[1]"
+                        :buttons="editorButtons"
+                        placeholder="Décrivez votre question/suggestion/problème !"
+                        @input="v$.editor.$touch"
+                    >
+                        <error-wrapper
+                            v-if="v$.editor.$error"
+                            :error="`Une description de Post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
+                        />
+                    </tip-tap-editor>
+                </div>
+            </div>
 
-      <div>
-        <button
-          class="button"
-          @click="submit"
-        >
-          <p>
-            Soumettre le Post pour validation
-          </p>
-        </button>
-      </div>
+            <div>
+                <div class="label-title">
+                    Tags
+                </div>
+                <div class="label-desc">
+                    Ajoutez {{ minTags }} Tags (ou plus) qui décrivent le sujet de votre Post
+                </div>
+                <tags-input
+                    ref="tagsInputRef"
+                    v-model="state.tags"
+                    name="tags"
+                    placeholder="Entrez le nom du tag et appuyez sur entrée..."
+                    @error="tagsError"
+                    @input-update="customTagError = null"
+                    @keydown="v$.tags.$touch"
+                />
+                <error-wrapper
+                    v-if="v$.tags.$error"
+                    :error="customTagError || `Un Post doit avoir au moins ${minTags} Tags.`"
+                    success="Tags valides"
+                />
+            </div>
+
+            <div>
+                <!-- TODO: message in case post validation doesn't work, refactor error warnings, redirect -->
+                <button
+                    class="button"
+                    @click="submit"
+                >
+                    <p>
+                        Soumettre le Post pour validation
+                    </p>
+                </button>
+            </div>
+
+            <!-- TODO: add second panel (dos and don'ts of a good post) -->
+        </div>
     </div>
-  </div>
 </template>
 
 <script lang="js">
+import SelectInput from '@/components/Input/SelectInput.vue'
 import ErrorWrapper from '@/components/ErrorWrapper.vue'
 import useVuelidate from '@vuelidate/core'
 import { between, required, minLength, maxLength } from '@vuelidate/validators'
@@ -162,7 +149,7 @@ export default {
     components: {
         TagsInput,
         ErrorWrapper,
-        TipTapEditor,
+        TipTapEditor, SelectInput
     },
     inheritAttrs: false,
     props: {
@@ -186,7 +173,7 @@ export default {
 
         const state = reactive({
             title: '',
-            type: '',
+            type: [],
             editor: '',
             tags: []
         })
@@ -214,6 +201,7 @@ export default {
     data () {
         return {
             postTypesEnum,
+
             customTagError: null,
             editorButtons: [
                 { action: 'paragraph', icon: 'ri-paragraph ri-lg', content: 'Paragraphe (Ctrl+Alt+0)' },

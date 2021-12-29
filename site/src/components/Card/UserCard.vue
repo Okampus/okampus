@@ -1,37 +1,37 @@
 <template>
-  <div class="flex space-x-4 items-center">
-    <div class="relative w-11 h-11">
-      <div>
-        <img
-          class="rounded-2xl"
-          :src="avatar"
-          :alt="username"
-        >
-      </div>
-      <span
-        class="w-1/3 h-1/3 absolute bottom-0 right-0 rounded-full border border-color-alt-2"
-        :style="{backgroundColor: status}"
-      />
+    <div class="flex space-x-4 items-center">
+        <div class="relative w-11 h-11">
+            <div>
+                <img
+                    class="rounded-2xl"
+                    :src="avatar"
+                    :alt="username"
+                >
+            </div>
+            <span
+                class="w-1/3 h-1/3 absolute bottom-0 right-0 rounded-full border border-white"
+                :style="{backgroundColor: status}"
+            />
+        </div>
+        <div class="flex flex-col min-w-0">
+            <router-link
+                class="font-semibold truncate hover:underline"
+                to="/profile"
+            >
+                {{ username }}
+            </router-link>
+            <div class="truncate">
+                {{ email }}
+            </div>
+        </div>
+        <div class="flex flex-col items-center justify-center space-y-2">
+            <i class="ri-settings-4-line cursor-pointer" />
+            <i
+                class="ri-logout-box-line cursor-pointer"
+                @click="logout"
+            />
+        </div>
     </div>
-    <div class="flex flex-col min-w-0">
-      <router-link
-        class="font-semibold truncate hover:underline"
-        to="/profile"
-      >
-        {{ username }}
-      </router-link>
-      <div class="truncate">
-        {{ email }}
-      </div>
-    </div>
-    <div class="flex flex-col items-center justify-center space-y-2">
-      <i class="ri-settings-4-line cursor-pointer" />
-      <i
-        class="ri-logout-box-line cursor-pointer"
-        @click="logout"
-      />
-    </div>
-  </div>
 </template>
 
 <script lang="js">
@@ -52,7 +52,7 @@ export default {
         },
         status: {
             type: String,
-            default: '#ef4444'
+            default: '#44ef44'
         }
     },
     methods: {

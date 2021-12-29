@@ -1,45 +1,46 @@
 <template>
-  <div>
-    <div
-      class="relative flex flex-row filter h-screen w-screen z-1"
-      :class="{'brightness-50': showModal}"
-    >
-      <side-bar
-        ref="sidebar"
-        :closed="closedSidebar && !uncollapsedSidebar"
-        :uncollapsed="uncollapsedSidebar"
-        :collapsing="collapsingSidebar"
-        @close-side-bar="toggleSidebar"
-      />
-      <div
-        ref="content"
-        :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
-        class="w-full bg-2 h-content flex flex-col relative after-topbar overflow-auto app-scrollbar filter"
-      >
-        <div
-          class="flex-grow-1 flex-shrink-0 flex-auto"
-        >
-          <router-view />
-        </div>
-        <page-footer class="flex-shrink-0" />
-      </div>
-      <top-bar
-        ref="topbar"
-        class="flex fixed top-0 left-0 w-full h-tbar border-bar
-      text-1 items-center justify-between border-b bg-1 filter"
+    <!-- TODO: Solve mysterious min-width ??? -->
+    <UserLogin
         :show-login="showLogin"
-        :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
-        @toggle-side-bar="toggleSidebar"
+        @login="login"
         @toggle-login="toggleLogin"
-      />
-    </div>
-    <div
-      v-show="showModal"
-      id="global-modal"
-      class="fixed top-0 left-0 w-screen h-screen"
-      @click="toggleModal"
     />
-  </div>
+
+    <div>
+        <div
+            class="relative flex flex-row filter h-screen w-screen z-1"
+            :class="{'brightness-50': showModal}"
+        >
+            <side-bar
+                ref="sidebar"
+                :collapsed="closedSidebar && !uncollapsedSidebar"
+                :uncollapsed="uncollapsedSidebar"
+                :collapsing="collapsingSidebar"
+                @close-side-bar="toggleSidebar"
+            />
+            <div
+                ref="content"
+                :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
+                class="w-full bg-2 h-content flex flex-col relative after-topbar overflow-auto app-scrollbar filter"
+            >
+                <div
+                    class="flex-grow-1 flex-shrink-0 flex-auto"
+                >
+                    <router-view />
+                </div>
+                <page-footer class="flex-shrink-0" />
+            </div>
+            <top-bar
+                ref="topbar"
+                class="flex fixed top-0 left-0 w-full h-tbar border-bar
+      text-1 items-center justify-between border-b bg-1 filter"
+                :show-login="showLogin"
+                :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
+                @toggle-login="toggleLogin"
+                @toggle-side-bar="toggleSidebar"
+            />
+        </div>
+    </div>
 </template>
 
 <script lang="js">
@@ -50,18 +51,34 @@ import { ref, watch } from 'vue'
 
 import TopBar from '@/components/TopBar.vue'
 import SideBar from '@/components/SideBar.vue'
+import User from '@/models/user'
+import UserLogin from '@/components/UserLogin.vue'
+
 const breakWidth = 768
 export default {
     components: {
         TopBar,
         SideBar,
-        PageFooter
+        PageFooter,
+        UserLogin
     },
     setup () {
+        const showLogin = ref(false)
+        const showModal = ref(false)
+
         const sidebar = ref(null)
         const topbar = ref(null)
         const content = ref(null)
-        return { sidebar, topbar, content }
+        return { sidebar, topbar, content, showLogin, showModal,
+            toggleModal () {
+                showModal.value = !showModal.value
+                showLogin.value = showModal.value
+            },
+            toggleLogin () {
+                showLogin.value = !showLogin.value
+                showModal.value = showLogin.value
+            }
+        }
     },
     data () {
         const isScreenSmall = () => Math.max(
@@ -90,28 +107,27 @@ export default {
 
         return {
             checkResize,
+            user: new User('', '', ''),
             isScreenSmall,
             closedSidebar: isScreenSmall(),
+            smallScreen: isScreenSmall(),
             uncollapsedSidebar: false,
             collapsingSidebar: false,
-            smallScreen: isScreenSmall(),
-            showModal: false,
-            showLogin: false
         }
     },
     created () {
-        document.querySelector(':root').className = this.$store.state.userConfig.theme === 'dark' ? 'dark' : ''
+        document.querySelector(':root').className = this.$store.state.userConfig.theme
     },
     mounted () {
         watch(() => this.$store.getters['userConfig/getTheme'], (theme) => {
-            document.querySelector(':root').className = theme === 'dark' ? 'dark' : ''
+            document.querySelector(':root').className = theme
         })
 
-        this.emitter.on('login', () => {
-            this.toggleLogin()
-        })
+        // this.emitter.on('login', () => {
+        //     this.toggleLogin()
+        // })
 
-        this.emitter.on('toggleModal', () => {
+        this.emitter.on('toggle-modal', () => {
             this.toggleModal()
         })
 
@@ -121,13 +137,9 @@ export default {
         window.removeEventListener('resize', this.checkResize)
     },
     methods: {
-        toggleModal () {
-            this.showModal = !this.showModal
-            if (this.showLogin) {
-                this.showLogin = false
-            }
+        login() {
+            this.toggleLogin()
         },
-
         toggleSidebar () {
             if (this.smallScreen) {
                 if (this.uncollapsedSidebar) {
@@ -145,17 +157,6 @@ export default {
                 }
             } else {
                 this.closedSidebar = !this.closedSidebar
-            }
-        },
-        toggleLogin () {
-            if (this.showLogin) {
-                this.showLogin = false
-                this.showModal = false
-            } else {
-                if (!this.showModal) {
-                    this.showModal = true
-                    this.showLogin = true
-                }
             }
         }
     }
@@ -189,14 +190,29 @@ export default {
 
 @font-face {
   font-family: AtkinsonHyperlegible;
-  font-weight: 800;
+  font-weight: 400;
+  font-style: italic;
+  src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: AtkinsonHyperlegible;
+  font-weight: 700;
   src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: AtkinsonHyperlegible;
+  font-weight: 700;
+  font-style: italic;
+  src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf") format("truetype");
 }
 
 * {
   font-family: AtkinsonHyperlegible;
 }
 
+// TODO: Adapt font size to screen size (for small screen sizes)
 html {
   font-size: 14px;
 }

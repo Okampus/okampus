@@ -1,29 +1,48 @@
 <template>
-  <div>
-    <div
-      class="absolute hero h-52 w-full top-0 left-0 py-12"
-    >
-      <h3
-        class="text-4xl font-bold text-0 px-10"
-      >
-        Liste des Posts
-      </h3>
+    <!-- TODO: add filtering, tab, info panel -->
+    <div>
+        <div
+            class="absolute hero h-52 w-full top-0 left-0 py-12"
+        >
+            <h3
+                class="text-4xl font-bold text-0 px-10"
+            >
+                Liste des Posts
+            </h3>
+        </div>
+        <div
+            class="
+            relative
+            mt-32
+            mb-10
+            flex
+            flex-col
+            "
+        >
+            <div
+                v-if="!loggedIn"
+                class="ml-32 text-2xl text-0"
+            >
+                Vous n'êtes pas connecté !
+            </div>
+            <template
+                v-for="(post, i) in posts"
+                v-else-if="posts.length"
+                :key="i"
+            >
+                <post-card
+                    class="mb-2 mx-auto"
+                    :post="post"
+                />
+            </template>
+            <div
+                v-else
+                class="ml-32 text-2xl text-0"
+            >
+                Aucun post ne correspond à ces critères.
+            </div>
+        </div>
     </div>
-    <div class="relative mt-32 mb-10 flex flex-col mx-auto w-11/12">
-      <post-card
-        v-for="(post, i) in posts"
-        :key="i"
-        class="mb-2"
-        :post="post"
-      />
-    </div>
-    <!-- <button
-      class="relative button"
-      @click="refreshPosts"
-    >
-      Refresh
-    </button> -->
-  </div>
 </template>
 
 <script lang="js">

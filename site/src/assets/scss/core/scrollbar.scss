@@ -36,7 +36,7 @@ $webkit-scrollbar-thumb-color-active: ("light": #3d3d3d, "dark": #dbf4ff);
         @extend %app-scrollbar;
 
         &:not(:hover) {
-            --scrollbar-thumb-color: rgb(0 0 0 / 0%);
+            --scrollbar-thumb-color: rgb(0 0 0 / 0%) !important;
 
             &::-webkit-scrollbar-thumb {
                 box-shadow: none;

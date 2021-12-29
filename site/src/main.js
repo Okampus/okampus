@@ -5,23 +5,10 @@ import App from './App.vue'
 import store from './store'
 import mitt from 'mitt'
 import router from '@/router/index'
-// import { routes } from './routes.js'
-// import { createRouter, createWebHistory } from 'vue-router'
 
 import './assets/css/tailwind.css'
-// const router = createRouter({
-//   history: createWebHistory(),
-//   routes,
-// })
 
-import {
-    VTooltip,
-    Dropdown,
-    Tooltip,
-    Menu
-} from 'v-tooltip'
-import 'v-tooltip/dist/v-tooltip.css'
-
+import Popper from "vue3-popper"
 import 'remixicon/fonts/remixicon.css'
 
 const i18n = createI18n({
@@ -35,10 +22,6 @@ const app = createApp(App)
     .use(router)
     .use(i18n)
 
-app.directive('tooltip', VTooltip)
-app.component('VDropdown', Dropdown)
-app.component('VTooltip', Tooltip)
-app.component('VMenu', Menu)
-
+app.component('VPopper', Popper)
 app.config.globalProperties.emitter = emitter
 app.mount('#app')

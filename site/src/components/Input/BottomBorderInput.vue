@@ -1,41 +1,37 @@
 <template>
     <div
-        class="input-with-icon"
-        :class="`h-${height}`"
-        tabindex="0"
+        class="relative bg-transparent flex-grow"
         :="focused ? {'focused': 'true'} : {}"
-        @focus="input.focus()"
+        @click="input.focus()"
     >
-        <i
-            :class="`w-${height}`"
-        >
-            <slot />
-        </i>
-
         <input
             ref="input"
-            :name="inputName"
-            :value="modelValue"
-            :type="inputType"
+            type="text"
+            class="bottom-border-input"
             :placeholder="inputPlaceholder"
             :="attributes"
+            :value="modelValue"
             @blur="focused = false"
             @focus="focused = true"
             @input="$emit('update:modelValue', $event.target.value)"
         >
+        <span class="absolute inset-y-0 right-0 flex items-center pr-2">
+            <slot />
+        </span>
     </div>
 </template>
 
 <script lang="js">
 
 import { ref } from 'vue'
+
 export default {
     props: {
-        height: {
-            type: String,
-            default: '10'
-        },
         inputName: {
+            type: String,
+            default: ''
+        },
+        modelValue: {
             type: String,
             default: ''
         },
@@ -43,21 +39,13 @@ export default {
             type: String,
             default: 'Entrez du texte...'
         },
-        inputType: {
-            type: String,
-            default: 'text'
-        },
-        modelValue: {
-            type: String,
-            default: ''
-        },
         required: {
             type: Boolean,
             default: false
         }
     },
     emits: ['update:modelValue'],
-    setup() {
+    setup () {
         return {input: ref(null)}
     },
     data() {
@@ -79,3 +67,11 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+    :root.light .input-with-icon-shadow {
+        box-shadow:
+            inset 0 2px 2px hsl(0deg 0% 0% / 15%),
+            0 2px 0 hsl(0deg 0% 0% / 5%);
+    }
+</style>

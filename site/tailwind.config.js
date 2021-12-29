@@ -104,23 +104,23 @@ module.exports = {
                     dark: '#0A0E18'
                 },
                 2: {
-                    light: '#f3f3f5',
+                    light: '#ededed',
                     dark: '#1a1e28'
                 },
                 3: {
-                    light: '#6C717D',
-                    dark: '#7F889C'
+                    light: '#ccc',
+                    dark: '#222'
                 },
                 4: {
-                    light: '#d4d4d4',
+                    light: '#bbb',
                     dark: '#323030'
                 },
                 5: {
-                    light: '#c6c6c6',
+                    light: '#aaa',
                     dark: '#444'
                 },
                 6: {
-                    light: '#bebebe',
+                    light: '#999',
                     dark: '#5e5e5e'
                 }
             },
@@ -140,40 +140,34 @@ module.exports = {
                     dark: '#fff'
                 },
                 1: {
-                    light: '#0A0E18',
-                    dark: '#fafafa'
+                    light: '#1a1e28',
+                    dark: '#dedede'
                 },
                 2: {
-                    light: '#1a1e28',
-                    dark: '#f3f3f5'
+                    light: '#3a3e48',
+                    dark: '#ccc'
                 },
                 3: {
-                    light: '#7F889C',
-                    dark: '#6C717D'
+                    light: '#5a5e78',
+                    dark: '#bbb'
                 },
                 4: {
-                    light: '#323030',
-                    dark: '#d4d4d4'
+                    light: '#727070',
+                    dark: '#aaa'
                 },
                 5: {
-                    light: '#444',
-                    dark: '#c6c6c6'
+                    light: '#666',
+                    dark: '#999'
                 },
                 6: {
-                    light: '#5e5e5e',
-                    dark: '#bebebe'
+                    light: '#555',
+                    dark: '#777'
                 },
                 placeholder: {
                     light: '#6C717D',
                     dark: '#7F889C'
                 }
             },
-            // placeholderColor: {
-            //   primary: {
-            //     light: '#7F889C',
-            //     dark: '#6C717D'
-            //   }
-            // },
             minHeight: {
                 20: '5rem'
             }
