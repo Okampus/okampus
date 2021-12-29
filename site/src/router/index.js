@@ -222,8 +222,8 @@ const routes = [
     },
 
     {
-        path: '/dashboard',
-        component: () => import('@/views/AdminSide.vue')
+        path: '/admin',
+        component: () => import('@/views/Dashboard/AdminDashboard.vue')
     },
 
     {
