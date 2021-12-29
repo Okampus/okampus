@@ -16,8 +16,9 @@ export class CreateInfoDocDto extends OmitType(CreateFileUploadDto, ['fileKind']
   @IsInt()
   year?: number;
 
+  @IsOptional()
   @IsNumber()
-  docSeries: number;
+  docSeries?: number;
 
   @IsOptional()
   @IsArray()
