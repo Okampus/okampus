@@ -104,11 +104,23 @@ export default {
             })
         }
     },
-    created () {
+    beforeCreate () {
         for (const column in this.columns) {
             if (this.columns[column].comp.length > 1) {
-                this.$options.components[this.columns[column].comp[0]] =
-                defineAsyncComponent(() => import(this.columns[column].comp[1].replace('@', '/src')))
+                const comp = this.columns[column].comp[1].replace('@/', '').replace('.vue', '')
+                const splitComp = comp.split('/')
+                if (splitComp.length === 1) {
+                    this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}.vue`))
+                }
+                if (splitComp.length === 2) {
+                    this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}/${splitComp[1]}.vue`))
+                }
+                if (splitComp.length === 3) {
+                    this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}/${splitComp[1]}/${splitComp[2]}.vue`))
+                }
+                if (splitComp.length === 4) {
+                    this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}/${splitComp[1]}/${splitComp[2]}/${splitComp[3]}.vue`)).default;
+                }
             }
         }
     },
