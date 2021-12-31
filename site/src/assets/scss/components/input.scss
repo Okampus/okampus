@@ -53,10 +53,14 @@
         @extend %input;
         @apply focus:outline-none rounded-l-none w-full;
 
-        :root.light & {
+        box-shadow:
+            inset 0 2px 2px hsl(0deg 0% 0% / 20%),
+            0 2px 2px hsl(0deg 0% 0% / 10%);
+
+        :root.dark & {
             box-shadow:
-                inset 0 2px 2px hsl(0deg 0% 0% / 15%),
-                0 2px 0 hsl(0deg 0% 0% / 5%);
+                inset -1px 2px 0 hsl(0deg 0% 100% / 8%),
+                inset 0 -2px 5px hsl(0deg 0% 0% / 40%);
         }
 
         line-height: 1.43;

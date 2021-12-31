@@ -10,11 +10,7 @@
 </template>
 
 <script lang="js">
-
 export default {
-    components: {
-
-    },
     props: {
 
     },

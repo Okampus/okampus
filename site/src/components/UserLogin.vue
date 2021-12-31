@@ -132,7 +132,7 @@ export default {
             default: false
         }
     },
-    emits: ['toggle-login', 'login'],
+    emits: ['toggle-login'],
     data () {
         return {
             user: new User('', '', '')
@@ -146,7 +146,7 @@ export default {
                 this.$store.dispatch('auth/login', this.user).then(
                     (data) => {
                         this.message = data.toString()
-                        this.$emit('login')
+                        this.emitter.emit('login')
                     },
                     error => {
                         this.loading = false

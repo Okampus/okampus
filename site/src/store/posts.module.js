@@ -75,7 +75,7 @@ export const posts = {
             state.page = 0
         },
         fetchSuccess (state, posts) {
-            state.posts = uniqBy([...state.posts, ...posts], (a, b) => a.id === b.id)
+            state.posts = uniqBy([...state.posts, ...posts], (a, b) => a.postId === b.postId)
         },
         addPostSuccess (state, newPost) {
             router.push(`/post/${newPost.id}`)

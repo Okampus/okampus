@@ -31,7 +31,7 @@
                 :key="i"
             >
                 <post-card
-                    class="mb-2 mx-auto"
+                    class="mb-2 mx-2/24"
                     :post="post"
                 />
             </template>
@@ -63,7 +63,7 @@ export default {
     },
     mounted () {
         this.emitter.on('login', () => {
-            this.loadPosts()
+            this.refreshPosts()
         })
 
         this.emitter.on('logout', () => {
@@ -75,7 +75,7 @@ export default {
         })
 
         if (this.loggedIn) {
-            this.loadPosts()
+            this.refreshPosts()
         }
     },
     methods: {

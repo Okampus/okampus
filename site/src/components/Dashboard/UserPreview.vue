@@ -3,7 +3,7 @@
         <div class="relative hidden w-10 h-10 mr-3 rounded-full md:block">
             <img
                 class="object-cover w-full h-full rounded-full"
-                :src="avatar"
+                :src="avatar ?? default_avatar"
                 :alt="username"
                 loading="lazy"
             >
@@ -35,12 +35,17 @@ export default {
         },
         avatar: {
             type: String,
-            default: default_avatar
+            default: null
         },
         reputation: {
             type: Number,
             default: 0
         }
+    },
+    data () {
+        return {
+            default_avatar
+        };
     },
     methods: {
         abbrNumbers

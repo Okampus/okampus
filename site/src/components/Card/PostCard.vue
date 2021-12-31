@@ -2,7 +2,7 @@
     <div>
         <div
             v-if="post"
-            class="bg-0 rounded-lg rounded-l-xl"
+            class="bg-0 rounded-lg rounded-l-xl w-full"
         >
             <div class="flex gap-3">
                 <div class="text-1 text-center flex flex-col flex-shrink-0 w-14 pt-1 pb-2 bg-5 rounded-l-lg">
@@ -45,7 +45,7 @@
                         <div class="flex space-x-1 pl-1">
                             <p class="pr-1">•</p>
                             <i class="ri-history-line" />
-                            <div> {{ timeAgo(post.updatedAt) }}</div>
+                            <div> {{ timeAgo(post.contentLastUpdatedAt) }}</div>
                         </div>
                         <div class="flex space-x-1 pl-1">
                             <p class="pr-1">•</p>
@@ -67,7 +67,7 @@
                         </p>
                     </div>
 
-                    <div class="flex items-start space-x-2 h-12 mt-4 space-y-2 mr-4">
+                    <div class="flex items-start space-x-2 h-12 mt-4 mr-4">
                         <a
                             href="#"
                             class="flex flex-shrink-0 items-center mr-4"

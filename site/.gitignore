@@ -2,7 +2,7 @@
 .env
 
 # Test page
-/src/views/TestPage.vue
+/src/views/Test/*
 
 # Compiled output
 /dist

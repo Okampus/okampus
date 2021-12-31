@@ -2,7 +2,6 @@
     <!-- TODO: Solve mysterious min-width ??? -->
     <UserLogin
         :show-login="showLogin"
-        @login="login"
         @toggle-login="toggleLogin"
     />
 
@@ -123,9 +122,9 @@ export default {
             document.querySelector(':root').className = theme
         })
 
-        // this.emitter.on('login', () => {
-        //     this.toggleLogin()
-        // })
+        this.emitter.on('login', () => {
+            this.toggleLogin()
+        })
 
         this.emitter.on('toggle-modal', () => {
             this.toggleModal()
@@ -166,60 +165,56 @@ export default {
 <style lang="scss">
 
 @import "@/assets/scss/app.scss";
-
 @import "@/assets/scss/components/button.scss";
 @import "@/assets/scss/components/card.scss";
 @import "@/assets/scss/components/input.scss";
 @import "@/assets/scss/components/link.scss";
 @import "@/assets/scss/components/select.scss";
 @import "@/assets/scss/components/tiptap.scss";
-
 @import "@/assets/scss/sections/hero.scss";
 @import "@/assets/scss/sections/label.scss";
-
 @import "@/assets/scss/core/scrollbar.scss";
 @import "@/assets/scss/core/spacing.scss";
 @import "@/assets/scss/core/tab.scss";
 
-
 @font-face {
-  font-family: AtkinsonHyperlegible;
-  font-weight: 400;
-  src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf") format("truetype");
+    font-family: AtkinsonHyperlegible;
+    font-weight: 400;
+    src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: AtkinsonHyperlegible;
-  font-weight: 400;
-  font-style: italic;
-  src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf") format("truetype");
+    font-family: AtkinsonHyperlegible;
+    font-weight: 400;
+    font-style: italic;
+    src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: AtkinsonHyperlegible;
-  font-weight: 700;
-  src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf") format("truetype");
+    font-family: AtkinsonHyperlegible;
+    font-weight: 700;
+    src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: AtkinsonHyperlegible;
-  font-weight: 700;
-  font-style: italic;
-  src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf") format("truetype");
+    font-family: AtkinsonHyperlegible;
+    font-weight: 700;
+    font-style: italic;
+    src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf") format("truetype");
 }
 
 * {
-  font-family: AtkinsonHyperlegible;
+    font-family: AtkinsonHyperlegible;
 }
 
 // TODO: Adapt font size to screen size (for small screen sizes)
 html {
-  font-size: 14px;
+    font-size: 12px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 15px;
+    }
 }
 </style>
