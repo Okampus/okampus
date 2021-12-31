@@ -40,7 +40,8 @@ export class SubjectsService {
   public async update(subjectId: string, updateSubjectDto: UpdateSubjectDto): Promise<Subject> {
     const subject = await this.subjectRepository.findOne({ subjectId });
     if (!subject)
-      throw new NotFoundException('Tag not found');
+      throw new NotFoundException('Subject not found');
+
     wrap(subject).assign(updateSubjectDto);
     await this.subjectRepository.flush();
     return subject;
