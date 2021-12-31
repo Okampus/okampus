@@ -7,7 +7,10 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { CreateSubjectDto } from './dto/create-subject.dto';
@@ -15,6 +18,8 @@ import { UpdateSubjectDto } from './dto/update-subject.dto';
 import type { Subject } from './subject.entity';
 import { SubjectsService } from './subjects.service';
 
+@ApiTags('Subjects')
+@UseGuards(JwtAuthGuard)
 @Controller('subjects')
 export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}
