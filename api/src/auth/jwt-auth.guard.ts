@@ -2,14 +2,10 @@ import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
+import type { HorizonRequest } from '../shared/lib/types/horizon-request.interface';
 import type { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
-
-export interface Client {
-  signedCookies: Record<string, string>;
-  user: User;
-}
 
 export interface Token {
   sub: string;
@@ -29,13 +25,13 @@ export class JwtAuthGuard implements CanActivate {
   }
 
   public async canActivate(ctx: ExecutionContext): Promise<boolean> {
-    const client: Client = ctx.switchToHttp().getRequest();
-    client.user = await this.handleRequest(client);
-    return client.user !== null;
+    const request = ctx.switchToHttp().getRequest<HorizonRequest>();
+    request.user = await this.handleRequest(request);
+    return request.user !== null;
   }
 
-  private async handleRequest(client: Client): Promise<User> {
-    const token = client.signedCookies?.accessToken;
+  private async handleRequest(request: HorizonRequest): Promise<User> {
+    const token = request.signedCookies?.accessToken;
     if (!token)
       throw new BadRequestException('Token not provided');
 

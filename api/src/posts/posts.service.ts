@@ -1,7 +1,10 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { assertPermissions } from '../shared/lib/utils/assertPermission';
+import { Action } from '../shared/modules/authorization';
+import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { Tag } from '../tags/tag.entity';
@@ -15,6 +18,7 @@ export class PostsService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: BaseRepository<Post>,
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   public async create(user: User, createPostDto: CreatePostDto): Promise<Post> {
@@ -26,10 +30,14 @@ export class PostsService {
   }
 
   public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Post>> {
+    // TODO: Maybe the user won't have access to all posts. There can be some restrictions
+    // (i.e. "personal"/"sensitive" posts)
     return await this.postRepository.findWithPagination(paginationOptions, {}, { populate: ['tags'] });
   }
 
   public async findOne(postId: number): Promise<Post> {
+    // TODO: Maybe the user won't have access to this post. There can be some restrictions
+    // (i.e. "personal"/"sensitive" posts)
     const post = await this.postRepository.findOne({ postId }, ['tags']);
     if (!post)
       throw new NotFoundException('Post not found');
@@ -37,18 +45,16 @@ export class PostsService {
   }
 
   public async update(user: User, postId: number, updatePostDto: UpdatePostDto): Promise<Post> {
-    const post = await this.postRepository.findOne({ postId }, ['tags']);
+    const post = await this.postRepository.findOne({ postId }, ['author', 'tags']);
     if (!post)
       throw new NotFoundException('Post not found');
-    if (post.locked) {
-      // Even if the post is locked, we can still unlock it.
-      if (updatePostDto?.locked === false)
-        updatePostDto = { locked: false };
-      else
-        throw new ForbiddenException('Post locked');
-    }
-    if (post.author.userId !== user.userId)
-      throw new ForbiddenException('Not the author');
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Update, post, Object.keys(updatePostDto));
+
+    // If we try to unlock the post, then it is the only action that we can do.
+    if (post.locked && updatePostDto?.locked === false)
+      updatePostDto = { locked: false };
 
     const { tags: wantedTags, ...updatedProps } = updatePostDto;
 
@@ -72,8 +78,9 @@ export class PostsService {
     const post = await this.postRepository.findOne({ postId });
     if (!post)
       throw new NotFoundException('Post not found');
-    if (post.author.userId !== user.userId)
-      throw new ForbiddenException('Not the author');
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Delete, post);
 
     await this.postRepository.removeAndFlush(post);
   }

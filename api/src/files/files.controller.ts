@@ -34,6 +34,7 @@ import type { StudyDoc } from './entities/study-doc.entity';
 import { FileUploadsService } from './services/file-uploads.service';
 import { StudyDocsService } from './services/study-docs.service';
 
+// TODO: Add authorization to the whole Files module
 @ApiTags('File')
 @UseGuards(JwtAuthGuard)
 @Controller({ path: 'files' })

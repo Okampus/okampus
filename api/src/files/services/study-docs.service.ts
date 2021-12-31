@@ -21,7 +21,7 @@ export class StudyDocsService {
   ) {}
 
   public async getStudyDocById(studyDocId: number): Promise<StudyDoc | null> {
-    return await this.studyDocRepository.findOne({ studyDocId });
+    return await this.studyDocRepository.findOne({ studyDocId }, ['file', 'subject', 'docSeries', 'tags']);
   }
 
   public async create(createStudyDocDto: CreateStudyDocDto, file: FileUpload): Promise<StudyDoc> {
@@ -29,7 +29,7 @@ export class StudyDocsService {
     if (!subject)
       throw new NotFoundException('Subject not found');
 
-    const docSeries = await this.docSeriesRepository.findOne({ docSeriesId: createStudyDocDto.docSeries });
+    const docSeries = await this.docSeriesRepository.findOne({ docSeriesId: createStudyDocDto.docSeries }, ['tags']);
     const studyDoc = new StudyDoc({
       ...createStudyDocDto, subject, file, docSeries,
     });
@@ -38,18 +38,18 @@ export class StudyDocsService {
   }
 
   public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<StudyDoc>> {
-    return await this.studyDocRepository.findWithPagination(paginationOptions);
+    return await this.studyDocRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'subject', 'docSeries', 'tags'] });
   }
 
   public async findOne(studyDocId: number): Promise<StudyDoc> {
-    const studyDoc = await this.studyDocRepository.findOne({ studyDocId });
+    const studyDoc = await this.studyDocRepository.findOne({ studyDocId }, ['file', 'subject', 'docSeries', 'tags']);
     if (!studyDoc)
       throw new NotFoundException('Document not found');
     return studyDoc;
   }
 
   public async update(user: User, studyDocId: number, updateCourseDto: UpdateStudyDocDto): Promise<StudyDoc> {
-    const studyDoc = await this.studyDocRepository.findOne({ studyDocId });
+    const studyDoc = await this.studyDocRepository.findOne({ studyDocId }, ['file', 'subject', 'docSeries', 'tags']);
     if (!studyDoc)
       throw new NotFoundException('Document not found');
     if (studyDoc.file.author.userId !== user.userId)
@@ -61,7 +61,7 @@ export class StudyDocsService {
   }
 
   public async remove(user: User, studyDocId: number): Promise<void> {
-    const studyDoc = await this.studyDocRepository.findOne({ studyDocId });
+    const studyDoc = await this.studyDocRepository.findOne({ studyDocId }, ['file', 'subject', 'docSeries']);
     if (!studyDoc)
       throw new NotFoundException('Document not found');
     if (studyDoc.file.author.userId !== user.userId)

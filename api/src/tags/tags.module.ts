@@ -1,13 +1,18 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
+import { AuthModule } from '../auth/auth.module';
+import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { Tag } from './tag.entity';
 import { TagsController } from './tags.controller';
 import { TagsService } from './tags.service';
 
 @Module({
-  imports: [MikroOrmModule.forFeature([Tag])],
+  imports: [
+    MikroOrmModule.forFeature([Tag]),
+    AuthModule,
+  ],
   controllers: [TagsController],
-  providers: [TagsService],
+  providers: [CaslAbilityFactory, TagsService],
   exports: [TagsService],
 })
 export class TagsModule {}

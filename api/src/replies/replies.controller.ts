@@ -12,16 +12,17 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
+import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
 import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
 import { CreateReplyDto } from './dto/create-reply.dto';
 import { UpdateReplyDto } from './dto/update-reply.dto';
-import type { Reply } from './entities/reply.entity';
+import { Reply } from './entities/reply.entity';
 import { RepliesService } from './replies.service';
 import { ReplyVotesService } from './reply-votes.service';
 
 @ApiTags('Replies')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, PoliciesGuard)
 @Controller({
   path: [
     'posts/:postId/replies',
@@ -35,6 +36,7 @@ export class RepliesController {
   ) {}
 
   @Post()
+  @CheckPolicies(ability => ability.can(Action.Create, Reply))
   public async create(
     @CurrentUser() user: User,
     @Param('postId', ParseIntPipe) postId: number,
@@ -44,16 +46,19 @@ export class RepliesController {
   }
 
   @Get()
+  @CheckPolicies(ability => ability.can(Action.Read, Reply))
   public async findAll(@Param('postId', ParseIntPipe) postId: number): Promise<Reply[]> {
     return await this.repliesService.findAll(postId);
   }
 
   @Get(':id')
+  @CheckPolicies(ability => ability.can(Action.Read, Reply))
   public async findOne(@Param('id') replyId: string): Promise<Reply | null> {
     return await this.repliesService.findOne(replyId);
   }
 
   @Patch(':id')
+  @CheckPolicies(ability => ability.can(Action.Update, Reply))
   public async update(
     @CurrentUser() user: User,
     @Param('id') replyId: string,
@@ -63,6 +68,7 @@ export class RepliesController {
   }
 
   @Delete(':id')
+  @CheckPolicies(ability => ability.can(Action.Delete, Reply))
   public async remove(
     @CurrentUser() user: User,
     @Param('id') replyId: string,
@@ -71,6 +77,7 @@ export class RepliesController {
   }
 
   @Post(':id/vote')
+  @CheckPolicies(ability => ability.can(Action.Interact, Reply))
   public async vote(
     @CurrentUser() user: User,
     @Param('id') id: string,
