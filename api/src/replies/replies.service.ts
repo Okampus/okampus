@@ -39,7 +39,7 @@ export class RepliesService {
   }
 
   public async update(user: User, replyId: string, updateReplyDto: UpdateReplyDto): Promise<Reply> {
-    const reply = await this.replyRepository.findOne({ replyId });
+    const reply = await this.replyRepository.findOne({ replyId }, ['author', 'post']);
     if (!reply)
       throw new NotFoundException('Reply not found');
     if (reply.post.locked)
@@ -53,7 +53,7 @@ export class RepliesService {
   }
 
   public async remove(user: User, replyId: string): Promise<void> {
-    const reply = await this.replyRepository.findOne({ replyId });
+    const reply = await this.replyRepository.findOne({ replyId }, ['author', 'post']);
     if (!reply)
       throw new NotFoundException('Reply not found');
     if (reply.post.locked)

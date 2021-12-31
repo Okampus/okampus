@@ -14,7 +14,7 @@ export class FileUploadsService {
   ) {}
 
   public async getUploadById(fileUploadId: number): Promise<FileUpload | null> {
-    return await this.fileUploadRepository.findOne({ fileUploadId });
+    return await this.fileUploadRepository.findOne({ fileUploadId }, ['author']);
   }
 
   public async create(

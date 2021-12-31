@@ -13,7 +13,7 @@ export class CommentVotesService {
   ) {}
 
   public async update(user: User, commentId: string, value: -1 | 1): Promise<Comment> {
-    const comment = await this.commentRepository.findOne({ commentId });
+    const comment = await this.commentRepository.findOne({ commentId }, ['author', 'post', 'reply']);
     if (!comment)
       throw new NotFoundException('Comment not found');
     if (comment.post.locked)
@@ -47,7 +47,7 @@ export class CommentVotesService {
   }
 
   public async neutralize(user: User, commentId: string): Promise<Comment> {
-    const comment = await this.commentRepository.findOne({ commentId });
+    const comment = await this.commentRepository.findOne({ commentId }, ['author', 'post', 'reply']);
     if (!comment)
       throw new NotFoundException('Comment not found');
     if (comment.post.locked)

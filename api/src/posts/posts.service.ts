@@ -37,7 +37,7 @@ export class PostsService {
   }
 
   public async update(user: User, postId: number, updatePostDto: UpdatePostDto): Promise<Post> {
-    const post = await this.postRepository.findOne({ postId }, ['tags']);
+    const post = await this.postRepository.findOne({ postId }, ['author', 'tags']);
     if (!post)
       throw new NotFoundException('Post not found');
     if (post.locked) {

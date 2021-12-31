@@ -16,7 +16,7 @@ export class CommentsService {
   ) {}
 
   public async create(user: User, replyId: string, createCommentDto: CreateCommentDto): Promise<Comment> {
-    const reply = await this.replyRepository.findOne({ replyId });
+    const reply = await this.replyRepository.findOne({ replyId }, ['author', 'post']);
     if (!reply)
       throw new NotFoundException('Reply not found');
     if (reply.post.locked)
@@ -33,18 +33,18 @@ export class CommentsService {
   }
 
   public async findAll(replyId: string): Promise<Comment[]> {
-    return await this.commentRepository.find({ reply: { replyId } });
+    return await this.commentRepository.find({ reply: { replyId } }, ['author', 'post', 'reply']);
   }
 
   public async findOne(commentId: string): Promise<Comment | null> {
-    const comment = await this.commentRepository.findOne({ commentId });
+    const comment = await this.commentRepository.findOne({ commentId }, ['author', 'post', 'reply']);
     if (!comment)
       throw new NotFoundException('Comment not found');
     return comment;
   }
 
   public async update(user: User, commentId: string, updateCommentDto: UpdateCommentDto): Promise<Comment> {
-    const comment = await this.commentRepository.findOne({ commentId });
+    const comment = await this.commentRepository.findOne({ commentId }, ['author', 'post', 'reply']);
     if (!comment)
       throw new NotFoundException('Comment not found');
     if (comment.post.locked)
@@ -58,7 +58,7 @@ export class CommentsService {
   }
 
   public async remove(user: User, commentId: string): Promise<void> {
-    const comment = await this.commentRepository.findOne({ commentId });
+    const comment = await this.commentRepository.findOne({ commentId }, ['author', 'post', 'reply']);
     if (!comment)
       throw new NotFoundException('Comment not found');
     if (comment.author.userId !== user.userId)
