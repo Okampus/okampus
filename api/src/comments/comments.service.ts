@@ -25,7 +25,7 @@ export class CommentsService {
       throw new NotFoundException('Reply not found');
 
     const ability = this.caslAbilityFactory.createForUser(user);
-    assertPermissions(ability, Action.Create, reply);
+    assertPermissions(ability, Action.Interact, reply);
 
     const comment = new Comment({
       body: createCommentDto.body,
