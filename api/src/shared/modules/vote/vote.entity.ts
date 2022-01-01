@@ -4,6 +4,7 @@ import {
   ManyToOne,
   PrimaryKey,
 } from '@mikro-orm/core';
+import { Exclude } from 'class-transformer';
 import { User } from '../../../users/user.entity';
 import { BaseEntity } from '../../lib/entities/base.entity';
 
@@ -16,6 +17,7 @@ export abstract class Vote extends BaseEntity {
   voteId!: number;
 
   @Enum()
+  @Exclude()
   kind!: 'comment' | 'post' | 'reply';
 
   @ManyToOne()
