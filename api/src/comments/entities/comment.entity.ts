@@ -14,12 +14,11 @@ export class Comment extends Content {
   post!: Post;
 
   @ManyToOne({ onDelete: 'cascade' })
-  // FIXME: this is optional
-  reply!: Reply;
+  reply?: Reply;
 
   constructor(options: {
     post: Post;
-    reply: Reply;
+    reply?: Reply;
     body: string;
     author: User;
   }) {

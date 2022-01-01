@@ -1,6 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Post } from '../posts/entities/post.entity';
 import { Reply } from '../replies/entities/reply.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assertPermission';
@@ -14,12 +15,13 @@ import { Comment } from './entities/comment.entity';
 @Injectable()
 export class CommentsService {
   constructor(
+    @InjectRepository(Post) private readonly postRepository: BaseRepository<Post>,
     @InjectRepository(Reply) private readonly replyRepository: BaseRepository<Reply>,
     @InjectRepository(Comment) private readonly commentRepository: BaseRepository<Comment>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async create(user: User, replyId: string, createCommentDto: CreateCommentDto): Promise<Comment> {
+  public async createUnderReply(user: User, replyId: string, createCommentDto: CreateCommentDto): Promise<Comment> {
     const reply = await this.replyRepository.findOne({ replyId }, ['author', 'post']);
     if (!reply)
       throw new NotFoundException('Reply not found');
@@ -37,11 +39,35 @@ export class CommentsService {
     return comment;
   }
 
-  public async findAll(replyId: string): Promise<Comment[]> {
+  public async createUnderPost(user: User, postId: number, createCommentDto: CreateCommentDto): Promise<Comment> {
+    const post = await this.postRepository.findOne({ postId }, ['author', 'tags']);
+    if (!post)
+      throw new NotFoundException('Post not found');
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Interact, post);
+
+    const comment = new Comment({
+      body: createCommentDto.body,
+      post,
+      author: user,
+    });
+    await this.commentRepository.persistAndFlush(comment);
+    return comment;
+  }
+
+  public async findAllUnderReply(replyId: string): Promise<Comment[]> {
     // TODO: Maybe the user won't have access to all comments. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
     // TODO: Add pagination
     return await this.commentRepository.find({ reply: { replyId } }, ['author', 'post', 'reply']);
+  }
+
+  public async findAllUnderPost(postId: number): Promise<Comment[]> {
+    // TODO: Maybe the user won't have access to all comments. There can be some restrictions
+    // (i.e. "personal"/"sensitive" posts)
+    // TODO: Add pagination
+    return await this.commentRepository.find({ post: { postId } }, ['author', 'post', 'reply']);
   }
 
   public async findOne(commentId: string): Promise<Comment | null> {

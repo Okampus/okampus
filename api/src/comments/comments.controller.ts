@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   UseGuards,
@@ -29,20 +30,36 @@ export class CommentsController {
     private readonly commentVotesService: CommentVotesService,
   ) {}
 
+  @Post(':postId/comments')
+  @CheckPolicies(ability => ability.can(Action.Create, Comment))
+  public async createUnderPost(
+    @CurrentUser() user: User,
+    @Param('postId', ParseIntPipe) postId: number,
+    @Body() createCommentDto: CreateCommentDto,
+  ): Promise<Comment> {
+    return await this.commentsService.createUnderPost(user, postId, createCommentDto);
+  }
+
   @Post('replies/:replyId/comments')
   @CheckPolicies(ability => ability.can(Action.Create, Comment))
-  public async create(
+  public async createUnderReply(
     @CurrentUser() user: User,
     @Param('replyId') replyId: string,
     @Body() createCommentDto: CreateCommentDto,
   ): Promise<Comment> {
-    return await this.commentsService.create(user, replyId, createCommentDto);
+    return await this.commentsService.createUnderReply(user, replyId, createCommentDto);
+  }
+
+  @Get(':postId/comments')
+  @CheckPolicies(ability => ability.can(Action.Read, Comment))
+  public async findAllUnderPost(@Param('postId', ParseIntPipe) postId: number): Promise<Comment[]> {
+    return await this.commentsService.findAllUnderPost(postId);
   }
 
   @Get('replies/:replyId/comments')
   @CheckPolicies(ability => ability.can(Action.Read, Comment))
-  public async findAll(@Param('replyId') replyId: string): Promise<Comment[]> {
-    return await this.commentsService.findAll(replyId);
+  public async findAllUnderReply(@Param('replyId') replyId: string): Promise<Comment[]> {
+    return await this.commentsService.findAllUnderReply(replyId);
   }
 
   @Get('replies/comments/:id')

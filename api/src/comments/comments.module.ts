@@ -1,6 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
+import { Post } from '../posts/entities/post.entity';
 import { Reply } from '../replies/entities/reply.entity';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { CommentVotesService } from './comments-votes.service';
@@ -11,7 +12,7 @@ import { Comment } from './entities/comment.entity';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([Reply, Comment, CommentVote]),
+    MikroOrmModule.forFeature([Post, Reply, Comment, CommentVote]),
     AuthModule,
   ],
   controllers: [CommentsController],
