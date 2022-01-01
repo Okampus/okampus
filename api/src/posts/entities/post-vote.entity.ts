@@ -5,7 +5,7 @@ import { Post } from './post.entity';
 
 @Entity({ discriminatorValue: 'post' })
 export class PostVote extends Vote {
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   post!: Post;
 
   constructor(post: Post, user: User, value: -1 | 1) {

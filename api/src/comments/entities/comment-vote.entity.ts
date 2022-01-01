@@ -5,7 +5,7 @@ import { Comment } from './comment.entity';
 
 @Entity({ discriminatorValue: 'comment' })
 export class CommentVote extends Vote {
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   comment!: Comment;
 
   constructor(comment: Comment, user: User, value: -1 | 1) {

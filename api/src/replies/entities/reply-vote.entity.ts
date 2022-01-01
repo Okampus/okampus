@@ -5,7 +5,7 @@ import { Reply } from './reply.entity';
 
 @Entity({ discriminatorValue: 'reply' })
 export class ReplyVote extends Vote {
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   reply!: Reply;
 
   constructor(reply: Reply, user: User, value: -1 | 1) {
