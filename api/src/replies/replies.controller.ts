@@ -30,7 +30,7 @@ export class RepliesController {
     private readonly replyVotesService: ReplyVotesService,
   ) {}
 
-  @Post('replies')
+  @Post(':postId/replies')
   @CheckPolicies(ability => ability.can(Action.Create, Reply))
   public async create(
     @CurrentUser() user: User,
