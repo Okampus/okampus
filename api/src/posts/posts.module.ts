@@ -4,20 +4,22 @@ import { AuthModule } from '../auth/auth.module';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { Tag } from '../tags/tag.entity';
 import { UsersModule } from '../users/users.module';
+import { PostReaction } from './entities/post-reaction.entity';
 import { PostVote } from './entities/post-vote.entity';
 import { Post } from './entities/post.entity';
+import { PostReactionsService } from './post-reactions.service';
 import { PostVotesService } from './post-votes.service';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([Post, PostVote, Tag]),
+    MikroOrmModule.forFeature([Post, PostVote, PostReaction, Tag]),
     AuthModule,
     UsersModule,
   ],
   controllers: [PostsController],
-  providers: [CaslAbilityFactory, PostsService, PostVotesService],
+  providers: [CaslAbilityFactory, PostsService, PostVotesService, PostReactionsService],
   exports: [PostsService],
 })
 export class PostsModule {}

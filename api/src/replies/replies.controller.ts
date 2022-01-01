@@ -16,9 +16,12 @@ import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authoriz
 import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
 import { CreateReplyDto } from './dto/create-reply.dto';
+import { ReactReplyDto } from './dto/react-reply.dto';
 import { UpdateReplyDto } from './dto/update-reply.dto';
+import type { ReplyReaction } from './entities/reply-reaction.entity';
 import { Reply } from './entities/reply.entity';
 import { RepliesService } from './replies.service';
+import { ReplyReactionsService } from './reply-reactions.service';
 import { ReplyVotesService } from './reply-votes.service';
 
 @ApiTags('Replies')
@@ -28,6 +31,7 @@ export class RepliesController {
   constructor(
     private readonly repliesService: RepliesService,
     private readonly replyVotesService: ReplyVotesService,
+    private readonly replyReactionsService: ReplyReactionsService,
   ) {}
 
   @Post(':postId/replies')
@@ -81,5 +85,31 @@ export class RepliesController {
     if (voteDto.value === 0)
       return await this.replyVotesService.neutralize(user, id);
     return await this.replyVotesService.update(user, id, voteDto.value);
+  }
+
+  @Get('replies/:id/reactions')
+  @CheckPolicies(ability => ability.can(Action.Read, Reply))
+  public async findReactions(@Param('id') id: string): Promise<ReplyReaction[]> {
+    return await this.replyReactionsService.findAll(id);
+  }
+
+  @Post('replies/:id/reactions')
+  @CheckPolicies(ability => ability.can(Action.Interact, Reply))
+  public async addReaction(
+    @CurrentUser() user: User,
+    @Param('id') id: string,
+    @Body() reactionDto: ReactReplyDto,
+  ): Promise<ReplyReaction> {
+    return await this.replyReactionsService.add(user, id, reactionDto.reaction);
+  }
+
+  @Delete('replies/:id/reactions')
+  @CheckPolicies(ability => ability.can(Action.Interact, Reply))
+  public async removeReaction(
+    @CurrentUser() user: User,
+    @Param('id') id: string,
+    @Body() reactionDto: ReactReplyDto,
+  ): Promise<void> {
+    await this.replyReactionsService.remove(user, id, reactionDto.reaction);
   }
 }

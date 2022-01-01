@@ -36,13 +36,13 @@ export class RepliesService {
     // TODO: Maybe the user won't have access to all replies. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
     // TODO: Add pagination
-    return await this.replyRepository.find({ post: { postId } });
+    return await this.replyRepository.find({ post: { postId } }, ['author', 'post']);
   }
 
   public async findOne(replyId: string): Promise<Reply | null> {
     // TODO: Maybe the user won't have access to all replies. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
-    const reply = await this.replyRepository.findOne({ replyId });
+    const reply = await this.replyRepository.findOne({ replyId }, ['author', 'post']);
     if (!reply)
       throw new NotFoundException('Reply not found');
     return reply;
