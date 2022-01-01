@@ -23,19 +23,14 @@ import { ReplyVotesService } from './reply-votes.service';
 
 @ApiTags('Replies')
 @UseGuards(JwtAuthGuard, PoliciesGuard)
-@Controller({
-  path: [
-    'posts/:postId/replies',
-    'posts/replies',
-  ],
-})
+@Controller({ path: ['posts'] })
 export class RepliesController {
   constructor(
     private readonly repliesService: RepliesService,
     private readonly replyVotesService: ReplyVotesService,
   ) {}
 
-  @Post()
+  @Post('replies')
   @CheckPolicies(ability => ability.can(Action.Create, Reply))
   public async create(
     @CurrentUser() user: User,
@@ -45,19 +40,19 @@ export class RepliesController {
     return await this.repliesService.create(user, postId, createReplyDto);
   }
 
-  @Get()
+  @Get(':postId/replies')
   @CheckPolicies(ability => ability.can(Action.Read, Reply))
   public async findAll(@Param('postId', ParseIntPipe) postId: number): Promise<Reply[]> {
     return await this.repliesService.findAll(postId);
   }
 
-  @Get(':id')
+  @Get('replies/:id')
   @CheckPolicies(ability => ability.can(Action.Read, Reply))
   public async findOne(@Param('id') replyId: string): Promise<Reply | null> {
     return await this.repliesService.findOne(replyId);
   }
 
-  @Patch(':id')
+  @Patch('replies/:id')
   @CheckPolicies(ability => ability.can(Action.Update, Reply))
   public async update(
     @CurrentUser() user: User,
@@ -67,7 +62,7 @@ export class RepliesController {
     return await this.repliesService.update(user, replyId, updateReplyDto);
   }
 
-  @Delete(':id')
+  @Delete('replies/:id')
   @CheckPolicies(ability => ability.can(Action.Delete, Reply))
   public async remove(
     @CurrentUser() user: User,
@@ -76,7 +71,7 @@ export class RepliesController {
     await this.repliesService.remove(user, replyId);
   }
 
-  @Post(':id/vote')
+  @Post('replies/:id/vote')
   @CheckPolicies(ability => ability.can(Action.Interact, Reply))
   public async vote(
     @CurrentUser() user: User,

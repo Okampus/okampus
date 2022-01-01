@@ -22,19 +22,14 @@ import { Comment } from './entities/comment.entity';
 
 @ApiTags('Comments')
 @UseGuards(JwtAuthGuard, PoliciesGuard)
-@Controller({
-  path: [
-    'posts/replies/:replyId/comments',
-    'posts/replies/comments',
-  ],
-})
+@Controller({ path: ['posts'] })
 export class CommentsController {
   constructor(
     private readonly commentsService: CommentsService,
     private readonly commentVotesService: CommentVotesService,
   ) {}
 
-  @Post()
+  @Post('replies/:replyId/comments')
   @CheckPolicies(ability => ability.can(Action.Create, Comment))
   public async create(
     @CurrentUser() user: User,
@@ -44,19 +39,19 @@ export class CommentsController {
     return await this.commentsService.create(user, replyId, createCommentDto);
   }
 
-  @Get()
+  @Get('replies/:replyId/comments')
   @CheckPolicies(ability => ability.can(Action.Read, Comment))
   public async findAll(@Param('replyId') replyId: string): Promise<Comment[]> {
     return await this.commentsService.findAll(replyId);
   }
 
-  @Get(':id')
+  @Get('replies/comments/:id')
   @CheckPolicies(ability => ability.can(Action.Read, Comment))
   public async findOne(@Param('id') commentId: string): Promise<Comment | null> {
     return await this.commentsService.findOne(commentId);
   }
 
-  @Patch(':id')
+  @Patch('replies/comments/:id')
   @CheckPolicies(ability => ability.can(Action.Update, Comment))
   public async update(
     @CurrentUser() user: User,
@@ -66,7 +61,7 @@ export class CommentsController {
     return await this.commentsService.update(user, commentId, updateCommentDto);
   }
 
-  @Delete(':id')
+  @Delete('replies/comments/:id')
   @CheckPolicies(ability => ability.can(Action.Delete, Comment))
   public async remove(
     @CurrentUser() user: User,
@@ -75,7 +70,7 @@ export class CommentsController {
     await this.commentsService.remove(user, commentId);
   }
 
-  @Post(':id/vote')
+  @Post('replies/comments/:id/vote')
   @CheckPolicies(ability => ability.can(Action.Interact, Comment))
   public async vote(
     @CurrentUser() user: User,
