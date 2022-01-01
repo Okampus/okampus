@@ -49,6 +49,9 @@ export class Post extends Content {
   @Property()
   favorites = 0;
 
+  @Property()
+  downvotes = 0;
+
   constructor(options: {
     title: string;
     body: string;

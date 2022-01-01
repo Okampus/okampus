@@ -13,7 +13,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
-import { VoteDto } from '../shared/modules/vote/vote.dto';
+import { UpvoteDto } from '../shared/modules/vote/upvote.dto';
 import { User } from '../users/user.entity';
 import { CommentVotesService } from './comments-votes.service';
 import { CommentsService } from './comments.service';
@@ -92,10 +92,10 @@ export class CommentsController {
   public async vote(
     @CurrentUser() user: User,
     @Param('id') id: string,
-    @Body() voteDto: VoteDto,
+    @Body() voteDto: UpvoteDto,
   ): Promise<Comment> {
     if (voteDto.value === 0)
       return await this.commentVotesService.neutralize(user, id);
-    return await this.commentVotesService.update(user, id, voteDto.value);
+    return await this.commentVotesService.upvote(user, id);
   }
 }

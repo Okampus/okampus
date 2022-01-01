@@ -1,4 +1,9 @@
-import { Entity, ManyToOne, PrimaryKey } from '@mikro-orm/core';
+import {
+  Entity,
+  ManyToOne,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import { Post } from '../../posts/entities/post.entity';
 import { Content } from '../../shared/lib/entities/content.entity';
@@ -11,6 +16,9 @@ export class Reply extends Content {
 
   @ManyToOne({ onDelete: 'cascade' })
   post!: Post;
+
+  @Property()
+  downvotes = 0;
 
   constructor(options: {
     post: Post;

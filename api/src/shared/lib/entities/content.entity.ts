@@ -18,9 +18,6 @@ export abstract class Content extends BaseEntity {
   upvotes = 0;
 
   @Property()
-  downvotes = 0;
-
-  @Property()
   contentLastUpdatedAt = new Date();
 
   constructor(options: {

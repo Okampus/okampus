@@ -16,7 +16,7 @@ export class CommentVotesService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async update(user: User, commentId: string, value: -1 | 1): Promise<Comment> {
+  public async upvote(user: User, commentId: string): Promise<Comment> {
     const comment = await this.commentRepository.findOne({ commentId }, ['author', 'post', 'reply']);
     if (!comment)
       throw new NotFoundException('Comment not found');
@@ -24,30 +24,18 @@ export class CommentVotesService {
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, comment);
 
-    let vote = await this.commentVotesRepository.findOne({ comment, user });
-    const previousValue = vote?.value;
-    if (previousValue === value)
+    const oldVote = await this.commentVotesRepository.findOne({ comment, user });
+    if (oldVote?.value)
       return comment;
 
     // Update pivot table
-    if (vote)
-      vote.value = value;
-    else
-      vote = new CommentVote(comment, user, value);
-    await this.commentVotesRepository.persistAndFlush(vote);
+    const newVote = new CommentVote(comment, user);
+    await this.commentVotesRepository.persistAndFlush(newVote);
 
     // Update comment
-    if (value === 1)
-      comment.upvotes++;
-    else if (value === -1)
-      comment.downvotes++;
-
-    if (value === 1 && previousValue === -1)
-      comment.downvotes--;
-    else if (value === -1 && previousValue === 1)
-      comment.upvotes--;
-
+    comment.upvotes++;
     await this.commentRepository.flush();
+
     return comment;
   }
 
@@ -66,12 +54,9 @@ export class CommentVotesService {
     await this.commentVotesRepository.removeAndFlush(oldVote);
 
     // Update comment
-    if (oldVote?.value === 1)
-      comment.upvotes--;
-    else if (oldVote?.value === -1)
-      comment.downvotes--;
-
+    comment.upvotes--;
     await this.commentRepository.flush();
+
     return comment;
   }
 }

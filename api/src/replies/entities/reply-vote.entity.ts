@@ -1,10 +1,10 @@
 import { Entity, ManyToOne } from '@mikro-orm/core';
-import { Vote } from '../../shared/modules/vote/vote.entity';
+import { VoteBase } from '../../shared/modules/vote/vote-base.entity';
 import { User } from '../../users/user.entity';
 import { Reply } from './reply.entity';
 
-@Entity({ discriminatorValue: 'reply' })
-export class ReplyVote extends Vote {
+@Entity()
+export class ReplyVote extends VoteBase {
   @ManyToOne({ onDelete: 'CASCADE' })
   reply!: Reply;
 
