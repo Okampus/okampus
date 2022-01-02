@@ -1,9 +1,10 @@
+import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import type { JwtSignOptions } from '@nestjs/jwt';
 import { JwtService } from '@nestjs/jwt';
 import { config } from '../config';
-import type { User } from '../users/user.entity';
-import { UsersService } from '../users/users.service';
+import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { User } from '../users/user.entity';
 import type { Token } from './jwt-auth.guard';
 
 export interface TokenResponse {
@@ -11,25 +12,20 @@ export interface TokenResponse {
   refreshToken: string | null;
 }
 
-export interface SocialUser {
-  id: number | string;
-  name: string;
-  email: string;
-}
-
-export type Nullable<T> = { [P in keyof T]: T[P] | null };
-
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UsersService,
+    @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     private readonly jwtService: JwtService,
   ) {}
 
-  public async validate(username: string, password: string): Promise<User> {
-    const user = await this.userService.getUser(username);
-    if (!user)
-      throw new UnauthorizedException('User does not exist');
+  public async validatePassword(userQuery: string, password: string): Promise<User> {
+    const user = await this.userRepository.findOneOrFail({
+      $or: [
+        { username: { $ilike: userQuery } },
+        { email: userQuery.toLowerCase() },
+      ],
+    });
 
     if (!(await user.validatePassword(password)))
       throw new BadRequestException('Incorrect password');
@@ -62,7 +58,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid token');
     }
 
-    const user = await this.userService.validateUserById(decoded.sub);
+    const user = await this.userRepository.findOneOrFail({ userId: decoded.sub });
     return this.login(user);
   }
 

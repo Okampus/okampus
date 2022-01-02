@@ -32,18 +32,15 @@ const cookieOptions: Partial<CookieOptions> = {
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: UsersService,
+    private readonly usersService: UsersService,
   ) {}
 
   @Post('register')
   public async register(@Body() body: RegisterDto, @Response({ passthrough: true }) res: Res): Promise<User> {
-    if (await this.userService.getUserByName(body.username))
-      throw new BadRequestException('Username already exists');
+    if (await this.usersService.validateUsernameAndEmail(body.username, body.email))
+      throw new BadRequestException('Username or email already exist');
 
-    if (await this.userService.getUserByEmail(body.email))
-      throw new BadRequestException('Email already exists');
-
-    const user = await this.userService.create(body);
+    const user = await this.usersService.create(body);
     const login = await this.authService.login(body as User);
     res.cookie('accessToken', login.accessToken, cookieOptions)
       .cookie('refreshToken', login.refreshToken, cookieOptions);
@@ -53,7 +50,7 @@ export class AuthController {
 
   @Post('login')
   public async login(@Body() body: LoginDto, @Response({ passthrough: true }) res: Res): Promise<User> {
-    const user = await this.authService.validate(body.username, body.password);
+    const user = await this.authService.validatePassword(body.username, body.password);
     const login = await this.authService.login(user);
 
     res.cookie('accessToken', login.accessToken, cookieOptions)
