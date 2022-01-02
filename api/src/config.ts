@@ -6,7 +6,6 @@ interface Config {
   uploadPath: string;
   port: number;
   nodeEnv: 'development' | 'production' | 'test';
-  frontEndUrl: string;
   accessTokenSecret: string;
   accessTokenExpiration: string;
   refreshTokenSecret: string;
@@ -36,11 +35,6 @@ export const config = createProfiguration<Config>({
     default: 'development',
     format: ['development', 'production', 'test'],
     env: 'NODE_ENV',
-  },
-  frontEndUrl: {
-    default: 'http://localhost:8080',
-    format: String,
-    env: 'FRONTEND_URL',
   },
   accessTokenSecret: {
     default: 'secret',
