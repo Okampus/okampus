@@ -14,8 +14,8 @@
     "pretty": false,
     "removeComments": true,
     "resolveJsonModule": true,
-    "sourceMap": true,
     "skipLibCheck": true,
+    "sourceMap": true,
     "strictNullChecks": true,
     "target": "es2019",
     "typeRoots": ["./typings", "./node_modules/@types"]
