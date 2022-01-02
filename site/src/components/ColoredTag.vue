@@ -1,15 +1,17 @@
 <template>
     <span
         class="
-        h-7 rounded-full text-white
-        font-medium mr-1 px-2  bg-opacity-80
-        cursor-pointer hover:bg-opacity-100
-        md:mr-2 md:px-4 inline-block
+        h-7 rounded-md text-white
+        font-medium mr-1 px-1  opacity-80
+        cursor-pointer hover:opacity-100
+        md:mr-2 md:px-3 inline-flex items-center
         text-base whitespace-nowrap
     "
         :style="{backgroundColor: color}"
     >
+
         {{ tagName }}
+        <slot />
     </span>
 </template>
 

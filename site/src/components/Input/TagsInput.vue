@@ -1,7 +1,7 @@
 <template>
     <div
         ref="tagsContainer"
-        class="flex flex-grow-0 flex-wrap items-center input w-full cursor-text h-max"
+        class="flex flex-wrap items-center input w-full cursor-text h-max overflow-auto"
         tabindex="0"
         :="focused ? {'focused': 'true'} : {}"
         @focus="tagsInput.focus()"
@@ -10,26 +10,29 @@
             v-for="(tag, idx) in tags"
             :key="idx"
             :tag-name="tag"
+            class="mb-1"
         >
             <button
-                class="text-white bg-opacity-0 outline-none border-none cursor-pointer font-bold text-lg"
+                class="text-white bg-opacity-0 outline-none border-none cursor-pointer font-bold text-lg pt-1 pl-1.5 -mr-1.5"
                 @click="removeTag(idx)"
             >
                 <i class="ri-close-line" />
             </button>
         </Tag>
-        <input
-            ref="tagsInput"
-            v-model="newTag"
-            :placeholder="placeholder"
-            class="placeholder h-8 min-w-[1em] w-full bg-transparent outline-none"
-            @blur="focused = false"
-            @focus="focused = true"
-            @keydown="$emit('input-update', $event)"
-            @keydown.enter.prevent="addTag(newTag)"
-            @keydown.space.prevent="addTag(newTag)"
-            @keydown.delete="newTag.length || removeTag(tags.length - 1)"
-        >
+        <div class="flex-grow basis-0">
+            <input
+                ref="tagsInput"
+                v-model="newTag"
+                :placeholder="placeholder"
+                class="placeholder h-8 min-w-[1em] bg-transparent outline-none w-full"
+                @blur="focused = false"
+                @focus="focused = true"
+                @keydown="$emit('input-update', $event)"
+                @keydown.enter.prevent="addTag(newTag)"
+                @keydown.space.prevent="addTag(newTag)"
+                @keydown.delete="newTag.length || removeTag(tags.length - 1)"
+            >
+        </div>
     </div>
 </template>
 

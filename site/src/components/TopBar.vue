@@ -30,7 +30,7 @@
             class="flex-shrink-0 flex justify-center items-center mr-4"
         >
             <button
-                class="button text-md"
+                class="button"
                 @click="$emit('toggle-login')"
             >
                 <div class="flex items-center">
