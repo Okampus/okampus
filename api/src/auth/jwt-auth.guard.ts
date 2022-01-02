@@ -2,6 +2,7 @@ import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
+import { IS_PUBLIC_KEY } from '../shared/lib/constants';
 import type { HorizonRequest } from '../shared/lib/types/horizon-request.interface';
 import type { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
@@ -24,8 +25,15 @@ export class JwtAuthGuard implements CanActivate {
     this.reflector = new Reflector();
   }
 
-  public async canActivate(ctx: ExecutionContext): Promise<boolean> {
-    const request = ctx.switchToHttp().getRequest<HorizonRequest>();
+  public async canActivate(context: ExecutionContext): Promise<boolean> {
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (isPublic)
+      return true;
+
+    const request = context.switchToHttp().getRequest<HorizonRequest>();
     request.user = await this.handleRequest(request);
     return request.user !== null;
   }

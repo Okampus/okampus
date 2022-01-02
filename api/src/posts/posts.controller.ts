@@ -11,7 +11,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
@@ -28,7 +27,7 @@ import { PostReactionsService } from './services/post-reactions.service';
 import { PostVotesService } from './services/post-votes.service';
 
 @ApiTags('Posts')
-@UseGuards(JwtAuthGuard, PoliciesGuard)
+@UseGuards(PoliciesGuard)
 @Controller({ path: 'posts' })
 export class PostsController {
   constructor(

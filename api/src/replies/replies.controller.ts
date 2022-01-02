@@ -10,7 +10,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
 import { VoteDto } from '../shared/modules/vote/vote.dto';
@@ -25,7 +24,7 @@ import { ReplyReactionsService } from './services/reply-reactions.service';
 import { ReplyVotesService } from './services/reply-votes.service';
 
 @ApiTags('Replies')
-@UseGuards(JwtAuthGuard, PoliciesGuard)
+@UseGuards(PoliciesGuard)
 @Controller({ path: ['posts'] })
 export class RepliesController {
   constructor(

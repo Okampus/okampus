@@ -15,13 +15,11 @@ import {
   Response,
   StreamableFile,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { Express, Response as Res } from 'express';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { config } from '../config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { FileKind } from '../shared/lib/types/file-kind.enum';
@@ -36,7 +34,6 @@ import { StudyDocsService } from './services/study-docs.service';
 
 // TODO: Add authorization to the whole Files module
 @ApiTags('File')
-@UseGuards(JwtAuthGuard)
 @Controller({ path: 'files' })
 export class FilesController {
   constructor(

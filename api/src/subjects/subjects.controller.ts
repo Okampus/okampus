@@ -10,7 +10,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
@@ -20,8 +19,8 @@ import { Subject } from './subject.entity';
 import { SubjectsService } from './subjects.service';
 
 @ApiTags('Subjects')
-@UseGuards(JwtAuthGuard, PoliciesGuard)
-@Controller('subjects')
+@UseGuards(PoliciesGuard)
+@Controller({ path: 'subjects' })
 export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}
 

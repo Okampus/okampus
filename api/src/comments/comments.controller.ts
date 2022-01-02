@@ -10,7 +10,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
 import { UpvoteDto } from '../shared/modules/vote/upvote.dto';
@@ -22,7 +21,7 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Comment } from './entities/comment.entity';
 
 @ApiTags('Comments')
-@UseGuards(JwtAuthGuard, PoliciesGuard)
+@UseGuards(PoliciesGuard)
 @Controller({ path: ['posts'] })
 export class CommentsController {
   constructor(

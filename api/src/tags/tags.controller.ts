@@ -10,7 +10,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
@@ -20,8 +19,8 @@ import { Tag } from './tag.entity';
 import { TagsService } from './tags.service';
 
 @ApiTags('Tags')
-@UseGuards(JwtAuthGuard, PoliciesGuard)
-@Controller('tags')
+@UseGuards(PoliciesGuard)
+@Controller({ path: 'tags' })
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 
