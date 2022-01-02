@@ -11,7 +11,7 @@ import { Exclude, Expose } from 'class-transformer';
 import { nanoid } from 'nanoid';
 import { EMAIL_INCLUDED } from '../shared/lib/constants';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
-import { Role } from '../shared/modules/authorization/role.enum';
+import { Role } from '../shared/modules/authorization/types/role.enum';
 
 @Entity()
 export class User extends BaseEntity {

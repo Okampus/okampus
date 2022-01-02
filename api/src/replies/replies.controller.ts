@@ -21,8 +21,8 @@ import { UpdateReplyDto } from './dto/update-reply.dto';
 import type { ReplyReaction } from './entities/reply-reaction.entity';
 import { Reply } from './entities/reply.entity';
 import { RepliesService } from './replies.service';
-import { ReplyReactionsService } from './reply-reactions.service';
-import { ReplyVotesService } from './reply-votes.service';
+import { ReplyReactionsService } from './services/reply-reactions.service';
+import { ReplyVotesService } from './services/reply-votes.service';
 
 @ApiTags('Replies')
 @UseGuards(JwtAuthGuard, PoliciesGuard)

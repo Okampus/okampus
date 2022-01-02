@@ -1,13 +1,13 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import { assertPermissions } from '../shared/lib/utils/assertPermission';
-import { Action } from '../shared/modules/authorization';
-import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import type { ReplyReaction as ReplyReactionEnum } from '../shared/modules/reaction/reaction.enum';
-import type { User } from '../users/user.entity';
-import { ReplyReaction } from './entities/reply-reaction.entity';
-import { Reply } from './entities/reply.entity';
+import { BaseRepository } from '../../shared/lib/repositories/base.repository';
+import { assertPermissions } from '../../shared/lib/utils/assertPermission';
+import { Action } from '../../shared/modules/authorization';
+import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
+import type { ReplyReaction as ReplyReactionEnum } from '../../shared/modules/reaction/reaction.enum';
+import type { User } from '../../users/user.entity';
+import { ReplyReaction } from '../entities/reply-reaction.entity';
+import { Reply } from '../entities/reply.entity';
 
 @Injectable()
 export class ReplyReactionsService {

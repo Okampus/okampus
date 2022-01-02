@@ -7,8 +7,8 @@ import { Reply } from '../../../replies/entities/reply.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
 import type { User } from '../../../users/user.entity';
-import { Action } from '../authorization/action.enum';
-import { Role } from '../authorization/role.enum';
+import { Action } from '../authorization/types/action.enum';
+import { Role } from '../authorization/types/role.enum';
 
 export type Subjects = InferSubjects<
   | typeof Comment

@@ -8,8 +8,8 @@ import { ReplyVote } from './entities/reply-vote.entity';
 import { Reply } from './entities/reply.entity';
 import { RepliesController } from './replies.controller';
 import { RepliesService } from './replies.service';
-import { ReplyReactionsService } from './reply-reactions.service';
-import { ReplyVotesService } from './reply-votes.service';
+import { ReplyReactionsService } from './services/reply-reactions.service';
+import { ReplyVotesService } from './services/reply-votes.service';
 
 @Module({
   imports: [

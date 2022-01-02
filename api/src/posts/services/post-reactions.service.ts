@@ -1,13 +1,13 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import { assertPermissions } from '../shared/lib/utils/assertPermission';
-import { Action } from '../shared/modules/authorization';
-import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import type { PostReaction as PostReactionEnum } from '../shared/modules/reaction/reaction.enum';
-import type { User } from '../users/user.entity';
-import { PostReaction } from './entities/post-reaction.entity';
-import { Post } from './entities/post.entity';
+import { BaseRepository } from '../../shared/lib/repositories/base.repository';
+import { assertPermissions } from '../../shared/lib/utils/assertPermission';
+import { Action } from '../../shared/modules/authorization';
+import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
+import type { PostReaction as PostReactionEnum } from '../../shared/modules/reaction/reaction.enum';
+import type { User } from '../../users/user.entity';
+import { PostReaction } from '../entities/post-reaction.entity';
+import { Post } from '../entities/post.entity';
 
 @Injectable()
 export class PostReactionsService {

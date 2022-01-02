@@ -7,10 +7,10 @@ import { UsersModule } from '../users/users.module';
 import { PostReaction } from './entities/post-reaction.entity';
 import { PostVote } from './entities/post-vote.entity';
 import { Post } from './entities/post.entity';
-import { PostReactionsService } from './post-reactions.service';
-import { PostVotesService } from './post-votes.service';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
+import { PostReactionsService } from './services/post-reactions.service';
+import { PostVotesService } from './services/post-votes.service';
 
 @Module({
   imports: [

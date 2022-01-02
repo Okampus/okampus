@@ -23,9 +23,9 @@ import { ReactPostDto } from './dto/react-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import type { PostReaction } from './entities/post-reaction.entity';
 import { Post } from './entities/post.entity';
-import { PostReactionsService } from './post-reactions.service';
-import { PostVotesService } from './post-votes.service';
 import { PostsService } from './posts.service';
+import { PostReactionsService } from './services/post-reactions.service';
+import { PostVotesService } from './services/post-votes.service';
 
 @ApiTags('Posts')
 @UseGuards(JwtAuthGuard, PoliciesGuard)

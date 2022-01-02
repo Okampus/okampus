@@ -5,7 +5,7 @@ import type { HorizonRequest } from '../../lib/types/horizon-request.interface';
 import type { AppAbility } from '../casl/casl-ability.factory';
 import { CaslAbilityFactory } from '../casl/casl-ability.factory';
 import { CHECK_POLICIES_KEY } from './check-policies.decorator';
-import type { PolicyHandler } from './policy-handler.type';
+import type { PolicyHandler } from './types/policy-handler.type';
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {
