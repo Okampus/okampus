@@ -1,5 +1,5 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assertPermission';
 import { Action } from '../shared/modules/authorization';
@@ -17,9 +17,7 @@ export class CommentVotesService {
   ) {}
 
   public async upvote(user: User, commentId: string): Promise<Comment> {
-    const comment = await this.commentRepository.findOne({ commentId }, ['author', 'post', 'reply']);
-    if (!comment)
-      throw new NotFoundException('Comment not found');
+    const comment = await this.commentRepository.findOneOrFail({ commentId }, ['author', 'post', 'reply']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, comment);
@@ -40,9 +38,7 @@ export class CommentVotesService {
   }
 
   public async neutralize(user: User, commentId: string): Promise<Comment> {
-    const comment = await this.commentRepository.findOne({ commentId }, ['author', 'post', 'reply']);
-    if (!comment)
-      throw new NotFoundException('Comment not found');
+    const comment = await this.commentRepository.findOneOrFail({ commentId }, ['author', 'post', 'reply']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, comment);

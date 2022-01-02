@@ -1,6 +1,6 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Post } from '../posts/entities/post.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assertPermission';
@@ -20,9 +20,7 @@ export class RepliesService {
   ) {}
 
   public async create(user: User, postId: number, createReplyDto: CreateReplyDto): Promise<Reply> {
-    const post = await this.postRepository.findOne({ postId });
-    if (!post)
-      throw new NotFoundException('Post not found');
+    const post = await this.postRepository.findOneOrFail({ postId });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, post);
@@ -42,16 +40,11 @@ export class RepliesService {
   public async findOne(replyId: string): Promise<Reply | null> {
     // TODO: Maybe the user won't have access to all replies. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
-    const reply = await this.replyRepository.findOne({ replyId }, ['author', 'post']);
-    if (!reply)
-      throw new NotFoundException('Reply not found');
-    return reply;
+    return await this.replyRepository.findOneOrFail({ replyId }, ['author', 'post']);
   }
 
   public async update(user: User, replyId: string, updateReplyDto: UpdateReplyDto): Promise<Reply> {
-    const reply = await this.replyRepository.findOne({ replyId }, ['author', 'post']);
-    if (!reply)
-      throw new NotFoundException('Reply not found');
+    const reply = await this.replyRepository.findOneOrFail({ replyId }, ['author', 'post']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, reply);
@@ -62,9 +55,7 @@ export class RepliesService {
   }
 
   public async remove(user: User, replyId: string): Promise<void> {
-    const reply = await this.replyRepository.findOne({ replyId }, ['author', 'post']);
-    if (!reply)
-      throw new NotFoundException('Reply not found');
+    const reply = await this.replyRepository.findOneOrFail({ replyId }, ['author', 'post']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, reply);

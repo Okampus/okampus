@@ -1,5 +1,5 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../../shared/lib/utils/assertPermission';
 import { Action } from '../../shared/modules/authorization';
@@ -20,17 +20,12 @@ export class PostReactionsService {
   public async findAll(postId: number): Promise<PostReaction[]> {
     // TODO: Maybe the user won't have access to this post. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
-    const post = await this.postRepository.findOne({ postId });
-    if (!post)
-      throw new NotFoundException('Post not found');
-
+    const post = await this.postRepository.findOneOrFail({ postId });
     return await this.postReactionsRepository.find({ post }, ['user', 'post']);
   }
 
   public async add(user: User, postId: number, reaction: PostReactionEnum): Promise<PostReaction> {
-    const post = await this.postRepository.findOne({ postId });
-    if (!post)
-      throw new NotFoundException('Post not found');
+    const post = await this.postRepository.findOneOrFail({ postId });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, post);
@@ -45,17 +40,12 @@ export class PostReactionsService {
   }
 
   public async remove(user: User, postId: number, reaction: PostReactionEnum): Promise<void> {
-    const post = await this.postRepository.findOne({ postId });
-    if (!post)
-      throw new NotFoundException('Post not found');
+    const post = await this.postRepository.findOneOrFail({ postId });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, post);
 
-    const reactionEntity = await this.postReactionsRepository.findOne({ post, user, value: reaction });
-    if (!reactionEntity)
-      throw new NotFoundException('Reaction not found');
-
+    const reactionEntity = await this.postReactionsRepository.findOneOrFail({ post, user, value: reaction });
     await this.postReactionsRepository.removeAndFlush(reactionEntity);
   }
 }

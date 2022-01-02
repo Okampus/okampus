@@ -1,6 +1,6 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assertPermission';
 import { Action } from '../shared/modules/authorization';
@@ -38,16 +38,11 @@ export class PostsService {
   public async findOne(postId: number): Promise<Post> {
     // TODO: Maybe the user won't have access to this post. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
-    const post = await this.postRepository.findOne({ postId }, ['tags']);
-    if (!post)
-      throw new NotFoundException('Post not found');
-    return post;
+    return await this.postRepository.findOneOrFail({ postId }, ['tags']);
   }
 
   public async update(user: User, postId: number, updatePostDto: UpdatePostDto): Promise<Post> {
-    const post = await this.postRepository.findOne({ postId }, ['author', 'tags']);
-    if (!post)
-      throw new NotFoundException('Post not found');
+    const post = await this.postRepository.findOneOrFail({ postId }, ['author', 'tags']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, post, Object.keys(updatePostDto));
@@ -75,9 +70,7 @@ export class PostsService {
   }
 
   public async remove(user: User, postId: number): Promise<void> {
-    const post = await this.postRepository.findOne({ postId });
-    if (!post)
-      throw new NotFoundException('Post not found');
+    const post = await this.postRepository.findOneOrFail({ postId });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, post);

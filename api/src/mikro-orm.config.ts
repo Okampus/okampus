@@ -1,7 +1,7 @@
 import type { Options } from '@mikro-orm/core';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
-import { Logger } from '@nestjs/common';
+import { Logger, NotFoundException } from '@nestjs/common';
 import { config } from './config';
 import { BaseRepository } from './shared/lib/repositories/base.repository';
 
@@ -19,4 +19,5 @@ export default {
   entityRepository: BaseRepository,
   logger: ormLogger.log.bind(ormLogger),
   metadataProvider: TsMorphMetadataProvider,
+  findOneOrFailHandler: entityName => new NotFoundException(`${entityName} not found`),
 } as Options;

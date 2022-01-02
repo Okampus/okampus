@@ -1,5 +1,5 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../../shared/lib/utils/assertPermission';
 import { Action } from '../../shared/modules/authorization';
@@ -17,9 +17,7 @@ export class ReplyVotesService {
   ) {}
 
   public async update(user: User, replyId: string, value: -1 | 1): Promise<Reply> {
-    const reply = await this.replyRepository.findOne({ replyId }, ['author', 'post']);
-    if (!reply)
-      throw new NotFoundException('Reply not found');
+    const reply = await this.replyRepository.findOneOrFail({ replyId }, ['author', 'post']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, reply);
@@ -52,9 +50,7 @@ export class ReplyVotesService {
   }
 
   public async neutralize(user: User, replyId: string): Promise<Reply> {
-    const reply = await this.replyRepository.findOne({ replyId }, ['author', 'post']);
-    if (!reply)
-      throw new NotFoundException('Reply not found');
+    const reply = await this.replyRepository.findOneOrFail({ replyId }, ['author', 'post']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, reply);

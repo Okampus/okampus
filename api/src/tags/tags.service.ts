@@ -1,6 +1,6 @@
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
@@ -31,26 +31,19 @@ export class TagsService {
   }
 
   public async findOne(name: string): Promise<Tag> {
-    const tag = await this.tagRepository.findOne({ name });
-    if (!tag)
-      throw new NotFoundException('Tag not found');
-    return tag;
+    return await this.tagRepository.findOneOrFail({ name });
   }
 
   public async update(name: string, updateTagDto: UpdateTagDto): Promise<Tag> {
-    const tag = await this.tagRepository.findOne({ name });
-    if (!tag)
-      throw new NotFoundException('Tag not found');
+    const tag = await this.tagRepository.findOneOrFail({ name });
+
     wrap(tag).assign(updateTagDto);
     await this.tagRepository.flush();
     return tag;
   }
 
   public async remove(name: string): Promise<void> {
-    const tag = await this.tagRepository.findOne({ name });
-    if (!tag)
-      throw new NotFoundException('Tag not found');
-
+    const tag = await this.tagRepository.findOneOrFail({ name });
     await this.tagRepository.removeAndFlush(tag);
   }
 }

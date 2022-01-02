@@ -1,5 +1,5 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../../shared/lib/utils/assertPermission';
 import { Action } from '../../shared/modules/authorization';
@@ -20,17 +20,12 @@ export class ReplyReactionsService {
   public async findAll(replyId: string): Promise<ReplyReaction[]> {
     // TODO: Maybe the user won't have access to this reply. There can be some restrictions
     // (i.e. "personal"/"sensitive" replys)
-    const reply = await this.replyRepository.findOne({ replyId });
-    if (!reply)
-      throw new NotFoundException('Reply not found');
-
+    const reply = await this.replyRepository.findOneOrFail({ replyId });
     return await this.replyReactionsRepository.find({ reply }, ['user', 'reply']);
   }
 
   public async add(user: User, replyId: string, reaction: ReplyReactionEnum): Promise<ReplyReaction> {
-    const reply = await this.replyRepository.findOne({ replyId }, ['post']);
-    if (!reply)
-      throw new NotFoundException('Reply not found');
+    const reply = await this.replyRepository.findOneOrFail({ replyId }, ['post']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, reply);
@@ -45,17 +40,12 @@ export class ReplyReactionsService {
   }
 
   public async remove(user: User, replyId: string, reaction: ReplyReactionEnum): Promise<void> {
-    const reply = await this.replyRepository.findOne({ replyId }, ['post']);
-    if (!reply)
-      throw new NotFoundException('Reply not found');
+    const reply = await this.replyRepository.findOneOrFail({ replyId }, ['post']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, reply);
 
-    const reactionEntity = await this.replyReactionsRepository.findOne({ reply, user, value: reaction });
-    if (!reactionEntity)
-      throw new NotFoundException('Reaction not found');
-
+    const reactionEntity = await this.replyReactionsRepository.findOneOrFail({ reply, user, value: reaction });
     await this.replyReactionsRepository.removeAndFlush(reactionEntity);
   }
 }

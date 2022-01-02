@@ -1,6 +1,6 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Post } from '../posts/entities/post.entity';
 import { Reply } from '../replies/entities/reply.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
@@ -22,9 +22,7 @@ export class CommentsService {
   ) {}
 
   public async createUnderReply(user: User, replyId: string, createCommentDto: CreateCommentDto): Promise<Comment> {
-    const reply = await this.replyRepository.findOne({ replyId }, ['author', 'post']);
-    if (!reply)
-      throw new NotFoundException('Reply not found');
+    const reply = await this.replyRepository.findOneOrFail({ replyId }, ['author', 'post']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, reply);
@@ -40,9 +38,7 @@ export class CommentsService {
   }
 
   public async createUnderPost(user: User, postId: number, createCommentDto: CreateCommentDto): Promise<Comment> {
-    const post = await this.postRepository.findOne({ postId }, ['author', 'tags']);
-    if (!post)
-      throw new NotFoundException('Post not found');
+    const post = await this.postRepository.findOneOrFail({ postId }, ['author', 'tags']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, post);
@@ -73,16 +69,11 @@ export class CommentsService {
   public async findOne(commentId: string): Promise<Comment | null> {
     // TODO: Maybe the user won't have access to all comments. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
-    const comment = await this.commentRepository.findOne({ commentId }, ['author', 'post', 'reply']);
-    if (!comment)
-      throw new NotFoundException('Comment not found');
-    return comment;
+    return await this.commentRepository.findOneOrFail({ commentId }, ['author', 'post', 'reply']);
   }
 
   public async update(user: User, commentId: string, updateCommentDto: UpdateCommentDto): Promise<Comment> {
-    const comment = await this.commentRepository.findOne({ commentId }, ['author', 'post', 'reply']);
-    if (!comment)
-      throw new NotFoundException('Comment not found');
+    const comment = await this.commentRepository.findOneOrFail({ commentId }, ['author', 'post', 'reply']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, comment);
@@ -93,9 +84,7 @@ export class CommentsService {
   }
 
   public async remove(user: User, commentId: string): Promise<void> {
-    const comment = await this.commentRepository.findOne({ commentId }, ['author', 'post', 'reply']);
-    if (!comment)
-      throw new NotFoundException('Comment not found');
+    const comment = await this.commentRepository.findOneOrFail({ commentId }, ['author', 'post', 'reply']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, comment);

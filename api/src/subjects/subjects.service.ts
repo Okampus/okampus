@@ -1,6 +1,6 @@
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
@@ -31,16 +31,11 @@ export class SubjectsService {
   }
 
   public async findOne(subjectId: string): Promise<Subject> {
-    const subject = await this.subjectRepository.findOne({ subjectId });
-    if (!subject)
-      throw new NotFoundException('Subject not found');
-    return subject;
+    return await this.subjectRepository.findOneOrFail({ subjectId });
   }
 
   public async update(subjectId: string, updateSubjectDto: UpdateSubjectDto): Promise<Subject> {
-    const subject = await this.subjectRepository.findOne({ subjectId });
-    if (!subject)
-      throw new NotFoundException('Subject not found');
+    const subject = await this.subjectRepository.findOneOrFail({ subjectId });
 
     wrap(subject).assign(updateSubjectDto);
     await this.subjectRepository.flush();
@@ -48,10 +43,7 @@ export class SubjectsService {
   }
 
   public async remove(subjectId: string): Promise<void> {
-    const subject = await this.subjectRepository.findOne({ subjectId });
-    if (!subject)
-      throw new NotFoundException('Subject not found');
-
+    const subject = await this.subjectRepository.findOneOrFail({ subjectId });
     await this.subjectRepository.removeAndFlush(subject);
   }
 }
