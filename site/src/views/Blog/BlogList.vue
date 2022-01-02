@@ -115,10 +115,7 @@
                 <h1 class="mb-4 text-xl font-bold text-1">
                     Climat
                 </h1>
-                <weather-widget
-                    :char-count="true"
-                    :buttons="editorButtons"
-                />
+                <weather-widget />
             </div>
         </div>
     </div>
@@ -138,7 +135,7 @@ export default {
     components: { WeatherWidget, SelectInput },
     data() {
         return {
-            rangeFilter: ['Les plus récents', 0],
+            rangeFilter: null,
             articles,
             categories,
             users: users.map((x, i) => { return {...x, nPosts: nPostsUsers[i]} })

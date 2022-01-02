@@ -62,7 +62,7 @@
                 />
                 <error-wrapper
                     v-if="v$.type.$error"
-                    :error="typeErrorMessage"
+                    :error="`Choisissez un type de Post dans la liste.`"
                     success="Type de Post valide"
                 />
             </div>
@@ -77,16 +77,17 @@
                 <div>
                     <tip-tap-editor
                         ref="editorRef"
-                        v-model="state.editor"
+                        v-model="state.body"
                         name="editor"
+                        mode="json"
                         :char-count="true"
                         :char-count-limit="editorCharLimit[1]"
                         :buttons="editorButtons"
                         placeholder="Décrivez votre question/suggestion/problème !"
-                        @input="v$.editor.$touch"
+                        @input="v$.body.$touch"
                     >
                         <error-wrapper
-                            v-if="v$.editor.$error"
+                            v-if="v$.body.$error"
                             :error="`Une description de Post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
                         />
                     </tip-tap-editor>
@@ -101,7 +102,6 @@
                     Ajoutez {{ minTags }} Tags (ou plus) qui décrivent le sujet de votre Post
                 </div>
                 <tags-input
-                    ref="tagsInputRef"
                     v-model="state.tags"
                     name="tags"
                     placeholder="Entrez le nom du tag et appuyez sur entrée..."
@@ -167,33 +167,28 @@ export default {
         }
     },
     setup (props) {
-        const tagsInputRef = ref(null)
         const editorRef = ref(null)
-        const postTypesTipRef = ref(null)
-
         const state = reactive({
             title: '',
-            type: [],
-            editor: '',
+            type: null,
+            body: '',
             tags: []
         })
 
-        const tagsLength = (tags) => tags.length > props.minTags
+        const tagsLength = (tags) => tags.length >= props.minTags
 
         const inRange = (val, bounds) => val > bounds[0] && val < bounds[1]
         const editorCharCount = () => inRange(editorRef.value.getCharCount(), props.editorCharLimit)
 
         const rules = {
             title: { required, minLength: minLength(props.titleCharLimit[0]), maxLength: maxLength(props.titleCharLimit[1]) },
-            type: { required, between: between(1, postTypesEnum.length) },
-            editor: { editorCharCount },
+            type: { required, between: between(0, postTypesEnum.length-1) },
+            body: { editorCharCount },
             tags: { tagsLength }
         }
 
         return {
-            tagsInputRef,
             editorRef,
-            postTypesTipRef,
             state,
             v$: useVuelidate(rules, state)
         }
@@ -201,7 +196,6 @@ export default {
     data () {
         return {
             postTypesEnum,
-
             customTagError: null,
             editorButtons: [
                 { action: 'paragraph', icon: 'ri-paragraph ri-lg', content: 'Paragraphe (Ctrl+Alt+0)' },
@@ -224,6 +218,21 @@ export default {
                 // TODO
                 this.customTagError = 'Erreur: ces tags génèrent une erreur inconnue.'
             }
+        },
+        submit () {
+            console.log(this.v$.$invalid)
+            if (this.v$.$invalid) {
+                this.v$.$touch()
+                return
+            }
+
+            console.log("STATE", JSON.stringify(this.state))
+            this.$store.dispatch('posts/addPost', {
+                title: this.state.title,
+                type: this.state.type,
+                body: this.state.body,
+                tags: this.state.tags
+            })
         }
     }
 }

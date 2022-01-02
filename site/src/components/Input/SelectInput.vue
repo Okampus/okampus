@@ -4,8 +4,8 @@
         offset-distance="0"
     >
         <button class="raised select py-2 px-3 flex space-x-3">
-            <div :class="{'text-placeholder': modelValue.length == 0 || modelValue === undefined}">
-                {{ modelValue[0] || buttonName }}
+            <div :class="modelValue === null || modelValue === undefined ? 'text-placeholder' : 'text-1'">
+                {{ choices[values.indexOf(modelValue)] || buttonName }}
             </div>
             <div class="flex flex-col">
                 <i class="ri-arrow-up-s-line -my-1.5" />
@@ -27,10 +27,13 @@
                     >
                         <div
                             class="px-3 pr-16 rounded cursor-pointer flex text-lg"
-                            :class="choice === modelValue[0] && i === modelValue[1] ? 'bg-blue-200 dark:bg-blue-800 font-bold text-0' : 'hover:bg-blue-100 dark:hover:bg-blue-700 text-2'"
-                            @click="$emit('update:modelValue', [choice, i]); close();"
+                            :class="i === values.indexOf(modelValue) ? 'bg-blue-200 dark:bg-blue-800 font-bold text-1' : 'hover:bg-blue-100 dark:hover:bg-blue-700 text-0'"
+                            @click="$emit('update:modelValue', values[i]); close();"
                         >
-                            <div :class="['h-6 w-6 flex-shrink-0 font-bold', {'ri-check-line': choice === modelValue[0] && i === modelValue[1]}]" />
+                            <div
+                                :class="['h-6 w-6 flex-shrink-0 font-bold',
+                                         {'ri-check-line': i === values.indexOf(modelValue)}]"
+                            />
                             <div>
                                 {{ choice }}
                             </div>
@@ -60,9 +63,13 @@ export default {
             type: Array,
             default: () => []
         },
-        modelValue: {
+        values: {
             type: Array,
-            default: () => []
+            default: (props) => [...Array(props.choices.length).keys()]
+        },
+        modelValue: {
+            type: null,
+            default: null
         }
     },
     emits: ['update:modelValue'],

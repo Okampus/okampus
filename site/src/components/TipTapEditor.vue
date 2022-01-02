@@ -115,6 +115,10 @@ export default {
             type: String,
             default: 'Écrivez votre texte ici...'
         },
+        mode: {
+            type: String,
+            default: 'html'
+        },
         charCount: Boolean,
         charCountLimit: {
             type: Number,
@@ -150,7 +154,7 @@ export default {
         const editor = useEditor({
             content: props.modelValue,
             onUpdate: function () {
-                ctx.emit('update:modelValue', this.getHTML())
+                ctx.emit('update:modelValue', props.mode === 'json' ? JSON.stringify(this.getJSON()) : this.getHTML())
             },
             extensions
         })
