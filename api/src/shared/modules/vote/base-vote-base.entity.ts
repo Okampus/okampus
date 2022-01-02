@@ -1,4 +1,4 @@
-import { ManyToOne, PrimaryKey } from '@mikro-orm/core';
+import { Index, ManyToOne, PrimaryKey } from '@mikro-orm/core';
 import { User } from '../../../users/user.entity';
 import { BaseEntity } from '../../lib/entities/base.entity';
 
@@ -7,6 +7,7 @@ export abstract class BaseVoteBase extends BaseEntity {
   voteId!: number;
 
   @ManyToOne()
+  @Index()
   user!: User;
 
   constructor(user: User) {
