@@ -22,7 +22,7 @@ import { ReplyVotesService } from './reply-votes.service';
 
 @ApiTags('Replies')
 @UseGuards(PoliciesGuard)
-@Controller({ path: ['posts'] })
+@Controller({ path: 'posts' })
 export class RepliesController {
   constructor(
     private readonly repliesService: RepliesService,
