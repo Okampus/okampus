@@ -1,6 +1,7 @@
 import type { AbilityClass, ExtractSubjectType, InferSubjects } from '@casl/ability';
 import { Ability, AbilityBuilder, ForbiddenError } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
+import { Article } from '../../../articles/entities/article.entity';
 import { Comment } from '../../../comments/entities/comment.entity';
 import { Post } from '../../../posts/entities/post.entity';
 import { Reply } from '../../../replies/entities/reply.entity';
@@ -11,6 +12,7 @@ import { Action } from '../authorization/types/action.enum';
 import { Role } from '../authorization/types/role.enum';
 
 export type Subjects = InferSubjects<
+  | typeof Article
   | typeof Comment
   | typeof Post
   | typeof Reply
@@ -37,6 +39,7 @@ export class CaslAbilityFactory {
         allow(Action.Update, 'all');
         allow(Action.Manage, Subject);
         allow(Action.Manage, Tag);
+        allow(Action.Manage, Article);
       } else {
         // FIXME: Make an "automatted" type for this
 
