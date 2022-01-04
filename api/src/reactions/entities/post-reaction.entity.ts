@@ -4,10 +4,10 @@ import {
   Index,
   ManyToOne,
 } from '@mikro-orm/core';
-import { Reaction } from '../../shared/modules/reaction/reaction.entity';
-import { PostReaction as PostReactionEnum } from '../../shared/modules/reaction/reaction.enum';
+import { Post } from '../../posts/entities/post.entity';
 import { User } from '../../users/user.entity';
-import { Post } from './post.entity';
+import { PostReaction as PostReactionEnum } from '../reaction.enum';
+import { Reaction } from './reaction.entity';
 
 @Entity()
 export class PostReaction extends Reaction {

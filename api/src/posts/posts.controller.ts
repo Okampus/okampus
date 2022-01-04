@@ -18,12 +18,9 @@ import type { PaginatedResult } from '../shared/modules/pagination/pagination.in
 import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
 import { CreatePostDto } from './dto/create-post.dto';
-import { ReactPostDto } from './dto/react-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import type { PostReaction } from './entities/post-reaction.entity';
 import { Post } from './entities/post.entity';
 import { PostsService } from './posts.service';
-import { PostReactionsService } from './services/post-reactions.service';
 import { PostVotesService } from './services/post-votes.service';
 
 @ApiTags('Posts')
@@ -33,7 +30,6 @@ export class PostsController {
   constructor(
     private readonly postsService: PostsService,
     private readonly postVotesService: PostVotesService,
-    private readonly postReactionsService: PostReactionsService,
   ) {}
 
   @PostRequest()
@@ -82,31 +78,5 @@ export class PostsController {
     if (voteDto.value === 0)
       return await this.postVotesService.neutralize(user, id);
     return await this.postVotesService.update(user, id, voteDto.value);
-  }
-
-  @Get(':id/reactions')
-  @CheckPolicies(ability => ability.can(Action.Read, Post))
-  public async findReactions(@Param('id', ParseIntPipe) id: number): Promise<PostReaction[]> {
-    return await this.postReactionsService.findAll(id);
-  }
-
-  @PostRequest(':id/reactions')
-  @CheckPolicies(ability => ability.can(Action.Interact, Post))
-  public async addReaction(
-    @CurrentUser() user: User,
-    @Param('id', ParseIntPipe) id: number,
-    @Body() reactionDto: ReactPostDto,
-  ): Promise<PostReaction> {
-    return await this.postReactionsService.add(user, id, reactionDto.reaction);
-  }
-
-  @Delete(':id/reactions')
-  @CheckPolicies(ability => ability.can(Action.Interact, Post))
-  public async removeReaction(
-    @CurrentUser() user: User,
-    @Param('id', ParseIntPipe) id: number,
-    @Body() reactionDto: ReactPostDto,
-  ): Promise<void> {
-    await this.postReactionsService.remove(user, id, reactionDto.reaction);
   }
 }

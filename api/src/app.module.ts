@@ -8,6 +8,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { CommentsModule } from './comments/comments.module';
 import { FilesModule } from './files/files.module';
 import { PostsModule } from './posts/posts.module';
+import { ReactionsModule } from './reactions/reactions.module';
 import { RepliesModule } from './replies/replies.module';
 import { CaslModule } from './shared/modules/casl/casl.module';
 import { SubjectsModule } from './subjects/subjects.module';
@@ -24,6 +25,7 @@ import { UsersModule } from './users/users.module';
     CommentsModule,
     FilesModule,
     PostsModule,
+    ReactionsModule,
     RepliesModule,
     SubjectsModule,
     TagsModule,

@@ -1,6 +1,6 @@
 import { Index, ManyToOne, PrimaryKey } from '@mikro-orm/core';
-import { User } from '../../../users/user.entity';
-import { BaseEntity } from '../../lib/entities/base.entity';
+import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { User } from '../../users/user.entity';
 
 export abstract class Reaction extends BaseEntity {
   @PrimaryKey()

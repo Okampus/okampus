@@ -26,5 +26,3 @@ export enum ArticleReaction {
   Partial = 'partial',
   Perfect = 'perfect',
 }
-
-export type AllReactions = PostReaction | ReplyReaction;

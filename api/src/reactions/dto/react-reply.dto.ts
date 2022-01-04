@@ -1,5 +1,5 @@
 import { IsEnum } from 'class-validator';
-import { ReplyReaction } from '../../shared/modules/reaction/reaction.enum';
+import { ReplyReaction } from '../reaction.enum';
 
 export class ReactReplyDto {
   @IsEnum(ReplyReaction)

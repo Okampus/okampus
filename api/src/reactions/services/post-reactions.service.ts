@@ -1,13 +1,13 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { Post } from '../../posts/entities/post.entity';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../../shared/lib/utils/assertPermission';
 import { Action } from '../../shared/modules/authorization';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
-import type { PostReaction as PostReactionEnum } from '../../shared/modules/reaction/reaction.enum';
 import type { User } from '../../users/user.entity';
 import { PostReaction } from '../entities/post-reaction.entity';
-import { Post } from '../entities/post.entity';
+import type { PostReaction as PostReactionEnum } from '../reaction.enum';
 
 @Injectable()
 export class PostReactionsService {
@@ -32,7 +32,7 @@ export class PostReactionsService {
 
     const entity = await this.postReactionsRepository.findOne({ post, user, value: reaction });
     if (entity)
-      return entity;
+      throw new BadRequestException('Reaction already added');
 
     const newReaction = new PostReaction(post, user, reaction);
     await this.postReactionsRepository.persistAndFlush(newReaction);
