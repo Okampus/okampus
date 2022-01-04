@@ -123,7 +123,7 @@
 
 <script>
 import WeatherWidget from '@/components/Widget/WeatherWidget.vue'
-import { articles, categories } from '@/fake/blog-articles'
+import { articles, categories } from '@/fake/blog'
 import { users } from '@/fake/users'
 
 import { timeAgo } from '@/utils/timeAgo'

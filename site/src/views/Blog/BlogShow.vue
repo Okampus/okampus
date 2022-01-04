@@ -1,300 +1,352 @@
-<template lang="">
-    <div class="w-56 text-center fixed bottom-4 right-0">
-        <Menu
-            as="div"
-            class="relative inline-block text-left"
-        >
-            <div>
-                <MenuButton
-                    class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-                >
-                    Options
-                </MenuButton>
-            </div>
-
-            <transition
-                enter-active-class="transition duration-100 ease-out"
-                enter-from-class="transform scale-95 opacity-0"
-                enter-to-class="transform scale-100 opacity-100"
-                leave-active-class="transition duration-75 ease-in"
-                leave-from-class="transform scale-100 opacity-100"
-                leave-to-class="transform scale-95 opacity-0"
-            >
-                <MenuItems
-                    class="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                >
-                    <div class="px-1 py-1">
-                        <MenuItem v-slot="{ active }">
-                            <button
-                                :class="[
-                                    active ? 'bg-blue-500 text-white' : 'text-gray-900',
-                                    'group flex rounded-md items-center w-full px-2 py-2 text-sm',
-                                ]"
-                            >
-                                <EditIcon
-                                    :active="active"
-                                    class="w-5 h-5 mr-2 text-violet-400"
-                                    aria-hidden="true"
-                                />
-                                Edit
-                            </button>
-                        </MenuItem>
-                        <MenuItem v-slot="{ active }">
-                            <button
-                                :class="[
-                                    active ? 'bg-blue-500 text-white' : 'text-gray-900',
-                                    'group flex rounded-md items-center w-full px-2 py-2 text-sm',
-                                ]"
-                            >
-                                <DuplicateIcon
-                                    :active="active"
-                                    class="w-5 h-5 mr-2 text-violet-400"
-                                    aria-hidden="true"
-                                />
-                                Duplicate
-                            </button>
-                        </MenuItem>
-                    </div>
-                    <div class="px-1 py-1">
-                        <MenuItem v-slot="{ active }">
-                            <button
-                                :class="[
-                                    active ? 'bg-blue-500 text-white' : 'text-gray-900',
-                                    'group flex rounded-md items-center w-full px-2 py-2 text-sm',
-                                ]"
-                            >
-                                <ArchiveIcon
-                                    :active="active"
-                                    class="w-5 h-5 mr-2 text-violet-400"
-                                    aria-hidden="true"
-                                />
-                                Archive
-                            </button>
-                        </MenuItem>
-                        <MenuItem v-slot="{ active }">
-                            <button
-                                :class="[
-                                    active ? 'bg-blue-500 text-white' : 'text-gray-900',
-                                    'group flex rounded-md items-center w-full px-2 py-2 text-sm',
-                                ]"
-                            >
-                                <MoveIcon
-                                    :active="active"
-                                    class="w-5 h-5 mr-2 text-violet-400"
-                                    aria-hidden="true"
-                                />
-                                Move
-                            </button>
-                        </MenuItem>
-                    </div>
-
-                    <div class="px-1 py-1">
-                        <MenuItem v-slot="{ active }">
-                            <button
-                                :class="[
-                                    active ? 'bg-blue-500 text-white' : 'text-gray-900',
-                                    'group flex rounded-md items-center w-full px-2 py-2 text-sm',
-                                ]"
-                            >
-                                <DeleteIcon
-                                    :active="active"
-                                    class="w-5 h-5 mr-2 text-violet-400"
-                                    aria-hidden="true"
-                                />
-                                Delete
-                            </button>
-                        </MenuItem>
-                    </div>
-                </MenuItems>
-            </transition>
-        </Menu>
+<template>
+    <div
+        v-if="article === null"
+        class="w-full max-w-screen-md mx-auto my-5 card"
+    >
+        Cet article n'existe pas !
     </div>
-
-    <!-- component -->
-    <div class="w-21/24 my-8 mx-auto shadow-md bg-white card">
-        <main class="mt-10">
-            <div
-                class="mb-4 md:mb-0 w-full max-w-screen-md mx-auto relative shadow-xl"
-                style="height: 24em;"
-            >
-                <div
-                    class="absolute left-0 bottom-0 w-full h-full z-10 card"
-                    style="background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.7));"
-                />
+    <div
+        v-else
+        class="flex flex-col gap-6 w-full max-w-screen-md mx-auto my-5"
+    >
+        <!-- ARTICLE -->
+        <div class="card pb-8 flex flex-col gap-8">
+            <!-- HEADER -->
+            <div class="flex flex-col gap-4">
+                <!-- THUMBNAIL -->
                 <img
-                    src="https://images.unsplash.com/photo-1493770348161-369560ae357d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80"
-                    class="absolute left-0 top-0 w-full h-full z-0 object-cover"
+                    :src="thumbnail"
+                    class="z-0 object-cover rounded-lg"
                 >
-                <div class="p-4 absolute bottom-0 left-0 z-20">
-                    <a
-                        href="#"
-                        class="px-4 py-1 bg-black text-gray-200 inline-flex items-center justify-center mb-2"
-                    >Nutrition</a>
-                    <h2 class="text-4xl font-semibold text-gray-100 leading-tight">
-                        Pellentesque a consectetur velit, ac molestie ipsum. Donec sodales, massa et auctor.
-                    </h2>
-                    <div class="flex mt-3">
-                        <img
-                            src="https://randomuser.me/api/portraits/men/97.jpg"
-                            class="h-10 w-10 rounded-full mr-2 object-cover"
-                        >
-                        <div>
-                            <p class="font-semibold text-gray-200 text-sm">
-                                Mike Sullivan
-                            </p>
-                            <p class="font-semibold text-gray-400 text-xs">
-                                14 Aug
-                            </p>
-                        </div>
+                <div class="flex flex-col gap-1 mx-4">
+                    <!-- TITLE -->
+                    <div class="font-bold text-4xl text-0 text-justify">
+                        {{ article.title }}
                     </div>
-                </div>
-            </div>
-            <!-- component signature auteur article début -->
-            <head>
-                <aside>
-                    <div
-                        class=" flex w-3/4 h-35 mx-auto mt-8 p-3 bg-1 card"
-                        style="border-radius: 50px;"
-                    >
-                        <div class=" relative flex">
-                            <img
-                                src="https://picsum.photos/id/684/600/400"
-                                alt=""
-                                class="my-auto h-24 w-24 border-blue-300 rounded-full border-4"
-                            >
 
-                            <p class="lg:text-lg my-auto p-3 text-3">
-                                Lorem, ipsum dolor sit amet
-                                consectetur
-                                adipisicing elit.
-                                Amet
-                                natus
-                                recusandae
-                                velit?
-                                Totam aliqu dolorum modi repudiandae inventore animi ipsum vero eaque deleniti voluptates consectetur,
-                            </p>
-                            <div class="absolute  bottom-0 right-0  inline-flex">
+                    <span class="text-0 items-center flex text-base">
+                        <div class="flex gap-2 items-end">
+                            <div class="text-base text-2">par</div>
+                            <a
+                                class="text-xl link mr-12"
+                                href="#author"
+                            >{{ article.author.username }}</a>
+                        </div>
+                        <div class="flex gap-4 items-center">
+                            <div class="items-center flex gap-1 text-1">
+                                <i class="ri-chat-1-line ri-lg" />
                                 <a
-                                    class="mx-2"
-                                    href="#"
-                                ><i
-                                    class="fab fa-github"
-                                /></a>
-                                <a
-                                    class="mx-2"
-                                    href="#"
-                                ><i class="far fa-envelope" /></a>
+                                    class="hover:underline"
+                                    href="#comments"
+                                >
+                                    3 comments</a>
+                            </div>
+                            <div class="items-center flex gap-1 text-base text-1">
+                                <i class="ri-history-line ri-lg" />
+                                <DatePreview :date-string="article.date" />
+                            </div>
+                            <div class="items-center flex gap-1 text-2">
+                                <i class="ri-timer-flash-line ri-lg" />
+                                <p>Lecture en {{ readingTime }} min</p>
                             </div>
                         </div>
-                    </div>
-                </aside>
-                <!--component signature fin-->
+                    </span>
+                </div>
 
-                <!--bloc de texte début-->
-                <div class="px-4 lg:px-0 mt-12 text-gray-700 max-w-screen-lg mx-auto text-lg leading-relaxed text-5">
-                    <p class="pb-6">
-                        Advantage old had otherwise sincerity dependent additions. It in adapted natural hastily is
-                        justice. Six draw
-                        you him full not mean evil. Prepare garrets it expense windows shewing do an. She projection advantages
-                        resolution son indulgence. Part sure on no long life am at ever. In songs above he as drawn to. Gay was
-                        outlived peculiar rendered led six.
-                    </p>
-
-                    <p class="pb-6">
-                        Difficulty on insensible reasonable in. From as went he they. Preference themselves me as
-                        thoroughly
-                        partiality considered on in estimating. Middletons acceptance discovered projecting so is so or. In or
-                        attachment inquietude remarkably comparison at an. Is surrounded prosperous stimulated am me discretion
-                        expression. But truth being state can she china widow. Occasional preference fat remarkably now projecting
-                        uncommonly dissimilar. Sentiments projection particular companions interested do at my delightful. Listening
-                        newspaper in advantage frankness to concluded unwilling.
-                    </p>
-
-                    <p class="pb-6">
-                        Adieus except say barton put feebly favour him. Entreaties unpleasant sufficient few pianoforte
-                        discovered
-                        uncommonly ask. Morning cousins amongst in mr weather do neither. Warmth object matter course active law
-                        spring six. Pursuit showing tedious unknown winding see had man add. And park eyes too more him. Simple excuse
-                        active had son wholly coming number add. Though all excuse ladies rather regard assure yet. If feelings so
-                        prospect no as raptures quitting.
-                    </p>
-
-                    <div class="border-l-4 border-gray-500 pl-4 mb-6 italic rounded">
-                        Sportsman do offending supported extremity breakfast by listening. Decisively advantages nor
-                        expression
-                        unpleasing she led met. Estate was tended ten boy nearer seemed. As so seeing latter he should thirty whence.
-                        Steepest speaking up attended it as. Made neat an on be gave show snug tore.
+                <!-- TAGS -->
+                <div
+                    v-if="article.tags.length > 0"
+                    class="items-center flex text-base"
+                >
+                    <div class="items-center flex gap-2 text-0 mr-4 text-lg">
+                        <i class="ri-price-tag-3-line" />
+                        <p class="text-base">
+                            {{ article.tags.length }} Tags
+                        </p>
                     </div>
 
-                    <p class="pb-6">
-                        Exquisite cordially mr happiness of neglected distrusts. Boisterous impossible unaffected he me
-                        everything.
-                        Is fine loud deal an rent open give. Find upon and sent spot song son eyes. Do endeavor he differed carriage
-                        is learning my graceful. Feel plan know is he like on pure. See burst found sir met think hopes are marry
-                        among. Delightful remarkably new assistance saw literature mrs favourable.
-                    </p>
+                    <div class="flex space-x-1">
+                        <span
+                            v-for="tag in article.tags"
+                            :key="tag.id"
+                            class="text-base text-2"
+                        >
+                            <ColoredTag :tag-name="tag" />
+                        </span>
+                    </div>
+                </div>
+            </div>
 
-                    <h2 class="text-2xl text-gray-800 font-semibold mb-4 mt-4 text-1">
-                        Uneasy barton seeing remark happen his has
-                    </h2>
+            <!-- SHARE -->
+            <div class="flex items-center mx-auto gap-3 text-0">
+                <p class="underline text-xl">
+                    Partage cet article
+                </p>
+                <i class="ri-share-forward-line ri-2xl" />
+                <a class="flex items-center space-x-2 text-white bg-orange-600 rounded-md px-3 py-1 raised">
+                    <i class="ri-reddit-fill ri-lg" />
+                    <p>Reddit</p>
+                </a>
+                <a class="flex items-center space-x-2 text-white bg-slate-800 rounded-md px-3 py-1 raised">
+                    <i class="ri-discord-fill ri-lg" />
+                    <p>Discord</p>
+                </a>
+                <a class="flex items-center space-x-2 text-white bg-blue-900 rounded-md px-3 py-1 raised">
+                    <i class="ri-facebook-box-fill ri-lg" />
+                    <p>Facebook</p>
+                </a>
+                <a
+                    class="flex items-center space-x-2 text-white bg-2 rounded-md px-3 py-1 raised"
+                    style="background-color: #0E76A8;"
+                >
+                    <i class="ri-linkedin-box-fill ri-xl" />
+                    <p>LinkedIn</p>
+                </a>
+            </div>
 
-                    <p class="pb-6">
-                        Guest it he tears aware as. Make my no cold of need. He been past in by my hard. Warmly thrown
-                        oh he common
-                        future. Otherwise concealed favourite frankness on be at dashwoods defective at. Sympathize interested
-                        simplicity at do projecting increasing terminated. As edward settle limits at in.
-                    </p>
+            <!-- TABLE OF CONTENTS -->
+            <div class="px-8 py-4 text-5 bg-3 rounded mx-8">
+                <div class="text-2xl text-3 font-bold">
+                    Table des Matières
+                </div>
+                <ul
+                    v-for="(title, i) in article.toc"
+                    :key="i"
+                    class="ml-3 text-3xl list-[square] list-inside"
+                >
+                    <li class="text-lg mt-1 text-1 font-bold">
+                        <a :href="`#${title.href}`">{{ title.title }}</a>
+                        <ul
+                            v-if="title.subtitles?.length"
+                            class="list-disc list-inside font-normal"
+                        >
+                            <li
+                                v-for="(subtitle, j) in title.subtitles"
+                                :key="j"
+                                class="text-base ml-10"
+                            >
+                                <a
+                                    :href="`#${subtitle.href}`"
+                                    class="link text-2"
+                                >{{ subtitle.title }}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
 
-                    <p class="pb-6">
-                        Dashwood contempt on mr unlocked resolved provided of of. Stanhill wondered it it welcomed oh.
-                        Hundred no
-                        prudent he however smiling at an offence. If earnestly extremity he he propriety something admitting convinced
-                        ye. Pleasant in to although as if differed horrible. Mirth his quick its set front enjoy hoped had there. Who
-                        connection imprudence middletons too but increasing celebrated principles joy. Herself too improve gay winding
-                        ask expense are compact. New all paid few hard pure she.
-                    </p>
+            <!-- CONTENT -->
+            <div class="flex flex-col gap-6 text-justify mx-3">
+                <TipTapRenderer
+                    ref="renderer"
+                    :content="article.body"
+                />
+                <!-- <p>
+                    In many situations, you’ll need to find the number of items stored in a data structure.
+                    justice. Six draw
+                    you him full not mean evil. Prepare garrets it expense windows shewing do an. She projection advantages
+                    resolution son indulgence. Part sure on no long life am at ever. In songs above he as drawn to. Gay was
+                    outlived peculiar rendered led six.
+                </p>
+                <p>
+                    Difficulty on insensible reasonable in. From as went he they. Preference themselves me as
+                    thoroughly
+                    partiality considered on in estimating. Middletons acceptance discovered projecting so is so or. In or
+                    attachment inquietude remarkably comparison at an. Is surrounded prosperous stimulated am me discretion
+                    expression. But truth being state can she china widow. Occasional preference fat remarkably now projecting
+                    uncommonly dissimilar. Sentiments projection particular companions interested do at my delightful. Listening
+                    newspaper in advantage frankness to concluded unwilling.
+                </p>
+                <div class="border-l-4 border-gray-500 pl-4 italic rounded">
+                    Sportsman do offending supported extremity breakfast by listening. Decisively advantages nor
+                    expression
+                    unpleasing she led met. Estate was tended ten boy nearer seemed. As so seeing latter he should thirty whence.
+                    Steepest speaking up attended it as. Made neat an on be gave show snug tore.
+                </div>
+                <h2 class="text-2xl font-semibold mt-4 text-0">
+                    Uneasy barton seeing remark happen his has
+                </h2>
+                <p>
+                    Guest it he tears aware as. Make my no cold of need. He been past in by my hard. Warmly thrown
+                    oh he common
+                    future. Otherwise concealed favourite frankness on be at dashwoods defective at. Sympathize interested
+                    simplicity at do projecting increasing terminated. As edward settle limits at in.
+                </p>
+                <p>
+                    Dashwood contempt on mr unlocked resolved provided of of. Stanhill wondered it it welcomed oh.
+                    Hundred no
+                    prudent he however smiling at an offence. If earnestly extremity he he propriety something admitting convinced
+                    ye. Pleasant in to although as if differed horrible. Mirth his quick its set front enjoy hoped had there. Who
+                    connection imprudence middletons too but increasing celebrated principles joy. Herself too improve gay winding
+                    ask expense are compact. New all paid few hard pure she.
+                </p> -->
+            </div>
+        </div>
 
-                    <p class="pb-6">
-                        Breakfast agreeable incommode departure it an. By ignorant at on wondered relation. Enough at
-                        tastes really
-                        so cousin am of. Extensive therefore supported by extremity of contented. Is pursuit compact demesne invited
-                        elderly be. View him she roof tell her case has sigh. Moreover is possible he admitted sociable concerns. By
-                        in cold no less been sent hard hill.
-                    </p>
-
-                    <p class="pb-6">
-                        Detract yet delight written farther his general. If in so bred at dare rose lose good. Feel and
-                        make two real
-                        miss use easy. Celebrated delightful an especially increasing instrument am. Indulgence contrasted sufficient
-                        to unpleasant in in insensible favourable. Latter remark hunted enough vulgar say man. Sitting hearted on it
-                        without me.
+        <!-- AUTHOR ABSTRACT -->
+        <div
+            class="card pt-2"
+        >
+            <span class="space-x-3 items-center flex border-b-1 p-2 gap-10">
+                <div class="-mt-8">
+                    <img
+                        class="w-20 h-20 object-cover rounded-full border-2"
+                        :src="article.author.avatar"
+                    >
+                </div>
+                <div class="text-2xl text-1">
+                    <p class="">
+                        À propos de <a
+                            href="#"
+                            class="hover:underline font-bold"
+                        >
+                            {{ article.author.username }}
+                        </a>
                     </p>
                 </div>
-            </head>
-        </main>
-        <!-- bloc de texte ends here -->
-        <comment-section
-            :char-count="true"
-        />
-    <!-- component comment section début-->
+            </span>
+            <div>
+                <p class="mt-2 text-5">
+                    {{ profile.about }}
+                </p>
+                <div class="flex justify-end mt-4">
+                    <a
+                        :href="article.author.link"
+                        class="text-sm text-0 font-bold hover:underline"
+                    >Voir le profil de {{ article.author.username }}</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMMENT SECTION -->
+        <div
+            class="card"
+        >
+            <div>
+                <h1 class="mb-4 text-lg font-semibold text-gray-900 uppercase text-1">
+                    {{ article.comments.length }} Commentaires
+                </h1>
+
+                <div
+                    v-for="(comment, i) in article.comments"
+                    :key="i"
+                    class="flex mt-4 gap-2"
+                >
+                    <img
+                        class="w-10 h-10 object-cover rounded-full border-2"
+                        :src="comment.author.avatar"
+                    >
+                    <div class="flex flex-col  rounded-lg px-2 w-full">
+                        <div class="flex items-center gap-3">
+                            <p class="font-semibold text-1">
+                                {{ comment.author.username }}
+                            </p>
+                            <span class="text-xs text-4">
+                                {{ timeAgo(comment.date) }}
+                            </span>
+                        </div>
+                        <p class="text-2 text-sm">
+                            {{ comment.content }}
+                        </p>
+                        <div v-if="comment.replies.length > 0">
+                            <Disclosure v-slot="{ open }">
+                                <DisclosureButton>
+                                    <div class="mt-3 flex items-center gap-1 font-bold text-sm text-3">
+                                        <p class="uppercase">
+                                            {{ comment.replies.length }} {{ comment.replies.length > 1 ? 'réponses' : 'réponse' }}
+                                        </p>
+                                        <i :class="open ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line' " />
+                                    </div>
+                                </DisclosureButton>
+                                <DisclosurePanel>
+                                    <div class="flex flex-col gap-2">
+                                        <div
+                                            v-for="(reply, j) in comment.replies"
+                                            :key="j"
+                                            class="flex gap-2"
+                                        >
+                                            <img
+                                                class="w-10 h-10 object-cover rounded-full border-2"
+                                                :src="reply.author.avatar"
+                                            >
+                                            <div class="px-3 py-1 w-full bg-2 rounded">
+                                                <div class="flex items-center gap-3">
+                                                    <p class="font-semibold text-1">
+                                                        {{ reply.author.username }}
+                                                    </p>
+                                                    <span class="text-xs text-4">
+                                                        {{ timeAgo(reply.date) }}
+                                                    </span>
+                                                </div>
+                                                <p class="text-1 text-sm">
+                                                    {{ reply.content }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </DisclosurePanel>
+                            </Disclosure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import CommentSection from '@/components/CommentSection.vue'
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+
+import { blogProfiles, articles } from '@/fake/blog'
+import DatePreview from '@/components/Dashboard/DatePreview.vue'
+import { readingTimeMinutes } from '@/utils/readingTimeMinutes'
+import TipTapRenderer from '@/components/TipTap/TipTapRenderer.vue'
+import ColoredTag from '@/components/ColoredTag.vue'
+import { timeAgo } from '@/utils/timeAgo'
+
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
+import { extractTextFromJSONBody } from '@/utils/extractTextFromHTML'
 
 export default {
     components: {
-        CommentSection,
-        Menu,
-        MenuButton,
-        MenuItems,
-        MenuItem
+        Disclosure,
+        DisclosureButton,
+        DisclosurePanel,
+        DatePreview,
+        TipTapRenderer,
+        ColoredTag
+    },
+    props: {
+        thumbnail: {
+            type: String,
+            default: "https://picsum.photos/768/432"
+        }
+    },
+    data() {
+        return {
+            article: undefined,
+            profile: undefined,
+            readingTime: undefined,
+            tableContents: undefined,
+            openComments: undefined
+        }
+    },
+    watch: {
+        '$route': 'fetchArticle'
+    },
+    created () {
+        this.fetchArticle()
+    },
+    methods: {
+        timeAgo,
+        fetchArticle() {
+            const articleId = this.$route.params.id
+            const article = articles[articleId] ?? null
+            this.article = article
+            this.profile = article === null ? null : blogProfiles[article.author.id]
+            console.log(this.article.body)
+            this.readingTime = article === null ? null : readingTimeMinutes(extractTextFromJSONBody(JSON.parse(article.body)))
+        }
     }
 }
 
 </script>
-<style lang="">
-
-</style>

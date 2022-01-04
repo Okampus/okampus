@@ -141,7 +141,7 @@ import { between, required, minLength, maxLength } from '@vuelidate/validators'
 import postTypesEnum from '@/shared/types/post-types.enum'
 
 import TagsInput from '@/components/Input/TagsInput.vue'
-import TipTapEditor from '@/components/TipTapEditor.vue'
+import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
 
 import { ref, reactive } from 'vue'
 

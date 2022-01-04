@@ -36,7 +36,10 @@
             </template>
         </div>
 
-        <editor-content :editor="editor" />
+        <editor-content
+            class="editor"
+            :editor="editor"
+        />
 
         <div
             v-if="charCount"
