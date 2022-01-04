@@ -7,11 +7,14 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
+import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
+import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { UpvoteDto } from '../shared/modules/vote/upvote.dto';
 import { User } from '../users/user.entity';
 import { CommentVotesService } from './comments-votes.service';
@@ -51,7 +54,14 @@ export class CommentsController {
 
   @Get(':postId/comments')
   @CheckPolicies(ability => ability.can(Action.Read, Comment))
-  public async findAllUnderPost(@Param('postId', ParseIntPipe) postId: number): Promise<Comment[]> {
+  public async findAllUnderPost(
+    @Query() query: PaginateDto,
+    @Param('postId', ParseIntPipe) postId: number,
+  ): Promise<PaginatedResult<Comment>> {
+    if (query.page) {
+      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
+      return await this.commentsService.findAllUnderPost(postId, options);
+    }
     return await this.commentsService.findAllUnderPost(postId);
   }
 

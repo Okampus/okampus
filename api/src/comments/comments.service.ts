@@ -7,6 +7,8 @@ import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assertPermission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
+import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
+import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import type { User } from '../users/user.entity';
 import type { CreateCommentDto } from './dto/create-comment.dto';
 import type { UpdateCommentDto } from './dto/update-comment.dto';
@@ -59,11 +61,18 @@ export class CommentsService {
     return await this.commentRepository.find({ reply: { replyId } }, ['author', 'post', 'reply']);
   }
 
-  public async findAllUnderPost(postId: number): Promise<Comment[]> {
+  public async findAllUnderPost(
+    postId: number,
+    paginationOptions?: PaginationOptions,
+  ): Promise<PaginatedResult<Comment>> {
     // TODO: Maybe the user won't have access to all comments. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
     // TODO: Add pagination
-    return await this.commentRepository.find({ post: { postId } }, ['author', 'post', 'reply']);
+    return await this.commentRepository.findWithPagination(
+      paginationOptions,
+      { post: { postId } },
+      { populate: ['author', 'post', 'reply'] },
+    );
   }
 
   public async findOne(commentId: string): Promise<Comment | null> {

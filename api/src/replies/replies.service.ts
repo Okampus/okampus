@@ -6,6 +6,8 @@ import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assertPermission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
+import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
+import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import type { User } from '../users/user.entity';
 import type { CreateReplyDto } from './dto/create-reply.dto';
 import type { UpdateReplyDto } from './dto/update-reply.dto';
@@ -30,11 +32,15 @@ export class RepliesService {
     return reply;
   }
 
-  public async findAll(postId: number): Promise<Reply[]> {
+  public async findAll(postId: number, paginationOptions?: PaginationOptions): Promise<PaginatedResult<Reply>> {
     // TODO: Maybe the user won't have access to all replies. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
     // TODO: Add pagination
-    return await this.replyRepository.find({ post: { postId } }, ['author', 'post']);
+    return await this.replyRepository.findWithPagination(
+      paginationOptions,
+      { post: { postId } },
+      { populate: ['author', 'post'] },
+    );
   }
 
   public async findOne(replyId: string): Promise<Reply | null> {

@@ -91,7 +91,7 @@ export class ReactionsController {
 
   @PostRequest('articles/:articleId')
   @CheckPolicies(ability => ability.can(Action.Interact, Article))
-  public async addReaction(
+  public async addArticleReaction(
     @CurrentUser() user: User,
     @Param('articleId', ParseIntPipe) articleId: number,
     @Body() reactionDto: ReactArticleDto,
@@ -101,13 +101,13 @@ export class ReactionsController {
 
   @Get('articles/:articleId')
   @CheckPolicies(ability => ability.can(Action.Read, Article))
-  public async findReactions(@Param('articleId', ParseIntPipe) articleId: number): Promise<ArticleReaction[]> {
+  public async findAllArticleReactions(@Param('articleId', ParseIntPipe) articleId: number): Promise<ArticleReaction[]> {
     return await this.articleReactionsService.findAll(articleId);
   }
 
   @Delete('articles/:articleId')
   @CheckPolicies(ability => ability.can(Action.Interact, Article))
-  public async removeReaction(
+  public async removeArticleReaction(
     @CurrentUser() user: User,
     @Param('articleId', ParseIntPipe) articleId: number,
     @Body() reactionDto: ReactArticleDto,

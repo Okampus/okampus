@@ -43,10 +43,8 @@ export class FavoritesController {
     @CurrentUser() user: User,
   ): Promise<PaginatedResult<Favorite>> {
     if (query.page) {
-      return await this.favoritesService.findAll(
-        user,
-        { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 },
-      );
+      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
+      return await this.favoritesService.findAll(user, options);
     }
     return await this.favoritesService.findAll(user);
   }
@@ -65,10 +63,8 @@ export class FavoritesController {
     @CurrentUser() user: User,
   ): Promise<PaginatedResult<PostFavorite>> {
     if (query.page) {
-      return await this.postFavoritesService.findAll(
-        user,
-        { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 },
-      );
+      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
+      return await this.postFavoritesService.findAll(user, options);
     }
     return await this.postFavoritesService.findAll(user);
   }
@@ -103,10 +99,8 @@ export class FavoritesController {
     @CurrentUser() user: User,
   ): Promise<PaginatedResult<ReplyFavorite>> {
     if (query.page) {
-      return await this.replyFavoritesService.findAll(
-        user,
-        { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 },
-      );
+      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
+      return await this.replyFavoritesService.findAll(user, options);
     }
     return await this.replyFavoritesService.findAll(user);
   }
@@ -141,10 +135,8 @@ export class FavoritesController {
     @CurrentUser() user: User,
   ): Promise<PaginatedResult<CommentFavorite>> {
     if (query.page) {
-      return await this.commentFavoritesService.findAll(
-        user,
-        { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 },
-      );
+      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
+      return await this.commentFavoritesService.findAll(user, options);
     }
     return await this.commentFavoritesService.findAll(user);
   }
@@ -179,10 +171,8 @@ export class FavoritesController {
     @CurrentUser() user: User,
   ): Promise<PaginatedResult<ArticleFavorite>> {
     if (query.page) {
-      return await this.articleFavoritesService.findAll(
-        user,
-        { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 },
-      );
+      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
+      return await this.articleFavoritesService.findAll(user, options);
     }
     return await this.articleFavoritesService.findAll(user);
   }
