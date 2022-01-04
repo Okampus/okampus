@@ -4,7 +4,7 @@
             v-if="post"
             class="bg-0 rounded-lg rounded-l-xl w-full"
         >
-            <div class="flex gap-3">
+            <div class="flex w-full gap-3">
                 <div class="text-1 text-center flex flex-col flex-shrink-0 w-14 pt-1 pb-2 bg-5 rounded-l-lg">
                     <i class="ri-add-line text-xl md:text-2xl mouse-icon" />
                     <div class="font-medium">
@@ -78,7 +78,9 @@
                                 :reputation="post.author.reputation"
                             />
                         </a>
-                        <tags-list :tags="post.tags" />
+                        <tags-list
+                            :tags="post.tags"
+                        />
                     </div>
                 </div>
             </div>

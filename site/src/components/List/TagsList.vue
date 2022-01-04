@@ -6,7 +6,8 @@
     >
         <div
             ref="tagList"
-            class="h-7 w-full overflow-hidden"
+            class="h-7 overflow-hidden min-w-0"
+            :class="{'absoluted': last == 0}"
         >
             <template
                 v-for="(tag, i) in tags"
@@ -15,6 +16,7 @@
                 <Tag
                     :ref="setTagRef"
                     :tag-name="tag.name ?? tag"
+                    class="min-w-0"
                     :class="{invisible: i >= last}"
                 />
             </template>

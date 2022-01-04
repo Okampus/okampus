@@ -37,6 +37,17 @@ $brand-url: url("@/assets/img/logos/horizon_brand.png");
 @include tailwind-color("bg");
 @include tailwind-color("text");
 @include tailwind-color("divide", "divide-color", 1);
+@include tailwind-color("from","", 2);
+@include tailwind-color("to","", 2);
+
+.scrollbar-none {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
 
 .border-footer {
     @apply border-gray-300 dark:border-gray-400;
