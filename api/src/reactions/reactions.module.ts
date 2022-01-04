@@ -21,7 +21,7 @@ import { ReplyReactionsService } from './services/reply-reactions.service';
       ReplyReaction,
       Article,
       ArticleReaction,
-  ]),
+    ]),
   ],
   controllers: [ReactionsController],
   providers: [

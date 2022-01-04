@@ -6,6 +6,7 @@ import { ArticlesModule } from './articles/articles.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { CommentsModule } from './comments/comments.module';
+import { FavoritesModule } from './favorites/favorites.module';
 import { FilesModule } from './files/files.module';
 import { PostsModule } from './posts/posts.module';
 import { ReactionsModule } from './reactions/reactions.module';
@@ -23,6 +24,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     CaslModule,
     CommentsModule,
+    FavoritesModule,
     FilesModule,
     PostsModule,
     ReactionsModule,
