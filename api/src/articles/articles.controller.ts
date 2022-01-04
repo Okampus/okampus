@@ -17,11 +17,11 @@ import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
+import { ArticleVotesService } from './article-votes.service';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { Article } from './entities/article.entity';
-import { ArticleVotesService } from './services/article-votes.service';
 
 @ApiTags('Articles')
 @UseGuards(PoliciesGuard)

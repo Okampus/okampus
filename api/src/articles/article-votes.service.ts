@@ -1,12 +1,12 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '../../shared/lib/repositories/base.repository';
-import { assertPermissions } from '../../shared/lib/utils/assertPermission';
-import { Action } from '../../shared/modules/authorization';
-import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
-import type { User } from '../../users/user.entity';
-import { ArticleVote } from '../entities/article-vote.entity';
-import { Article } from '../entities/article.entity';
+import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { assertPermissions } from '../shared/lib/utils/assertPermission';
+import { Action } from '../shared/modules/authorization';
+import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
+import type { User } from '../users/user.entity';
+import { ArticleVote } from './entities/article-vote.entity';
+import { Article } from './entities/article.entity';
 
 @Injectable()
 export class ArticleVotesService {

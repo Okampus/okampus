@@ -6,7 +6,7 @@ import { ReplyVote } from './entities/reply-vote.entity';
 import { Reply } from './entities/reply.entity';
 import { RepliesController } from './replies.controller';
 import { RepliesService } from './replies.service';
-import { ReplyVotesService } from './services/reply-votes.service';
+import { ReplyVotesService } from './reply-votes.service';
 
 @Module({
   imports: [

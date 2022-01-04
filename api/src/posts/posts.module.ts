@@ -4,9 +4,9 @@ import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory'
 import { Tag } from '../tags/tag.entity';
 import { PostVote } from './entities/post-vote.entity';
 import { Post } from './entities/post.entity';
+import { PostVotesService } from './post-votes.service';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
-import { PostVotesService } from './services/post-votes.service';
 
 @Module({
   imports: [

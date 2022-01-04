@@ -20,8 +20,8 @@ import { User } from '../users/user.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
+import { PostVotesService } from './post-votes.service';
 import { PostsService } from './posts.service';
-import { PostVotesService } from './services/post-votes.service';
 
 @ApiTags('Posts')
 @UseGuards(PoliciesGuard)
