@@ -1,8 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { AuthModule } from '../auth/auth.module';
 import { Subject } from '../subjects/subject.entity';
-import { UsersModule } from '../users/users.module';
 import { DocSeries } from './entities/doc-series.entity';
 import { FileUpload } from './entities/file-upload.entity';
 import { StudyDoc } from './entities/study-doc.entity';
@@ -18,8 +16,6 @@ import { StudyDocsService } from './services/study-docs.service';
       StudyDoc,
       Subject,
     ]),
-    AuthModule,
-    UsersModule,
   ],
   controllers: [FilesController],
   providers: [StudyDocsService, FileUploadsService],

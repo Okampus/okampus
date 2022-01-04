@@ -11,7 +11,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
@@ -28,7 +27,7 @@ import { ArticleReactionsService } from './services/article-reactions.service';
 import { ArticleVotesService } from './services/article-votes.service';
 
 @ApiTags('Articles')
-@UseGuards(JwtAuthGuard, PoliciesGuard)
+@UseGuards(PoliciesGuard)
 @Controller({ path: 'articles' })
 export class ArticlesController {
   constructor(
