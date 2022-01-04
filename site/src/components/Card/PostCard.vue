@@ -63,7 +63,7 @@
                         </router-link>
 
                         <p class="mt-1 text-2 text-justify line-clamp-2">
-                            {{ postPreview(JSON.parse(post.body) || '') }}
+                            {{ extractTextFromJSONBody(JSON.parse(post.body)) }}
                         </p>
                     </div>
 
@@ -103,19 +103,12 @@
 </template>
 
 <script lang="js">
-import { generateHTML } from '@tiptap/html'
-import TagsList from '@/components/List/TagsList.vue'
-import StarterKit from '@tiptap/starter-kit'
-import Highlight from '@tiptap/extension-highlight'
-import Typography from '@tiptap/extension-typography'
-import Placeholder from '@tiptap/extension-placeholder'
-import Underline from '@tiptap/extension-underline'
-import CharacterCount from '@tiptap/extension-character-count'
 
 import { abbrNumbers } from '@/utils/abbrNumbers'
 import { timeAgo } from '@/utils/timeAgo'
-import { extractTextFromHTML } from '@/utils/extractTextFromHTML'
+import { extractTextFromJSONBody } from '@/utils/extractTextFromHTML'
 import UserPreview from '@/components/Dashboard/UserPreview.vue'
+import TagsList from '@/components/List/TagsList.vue'
 
 export default {
     components: {
@@ -145,22 +138,7 @@ export default {
     methods: {
         abbrNumbers,
         timeAgo,
-        postPreview (postJson) {
-            return extractTextFromHTML(generateHTML(postJson,
-                [
-                    StarterKit.configure({
-                        heading: {
-                            levels: [1, 2, 3]
-                        }
-                    }),
-                    Highlight,
-                    Typography,
-                    Placeholder,
-                    Underline,
-                    CharacterCount
-                ]
-            ), true)
-        }
+        extractTextFromJSONBody
     }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <!-- TODO: add on hover extra date info -->
-    <div class="flex items-center text-sm">
+    <div class="flex items-center">
         {{ timeAgo(dateString, 'long') }}
     </div>
 </template>

@@ -24,7 +24,7 @@ export default {
         },
         color: {
             type: String,
-            default: '#ef4444'
+            default: 'orange'
         }
     }
 }

@@ -9,9 +9,9 @@
             <div class="flex">
                 <div>
                     {{ comment.content }}
-                    <nobr class="font-bold">
-                        &nbsp;- {{ comment.author }}<nobr />
-                    </nobr>
+                    <p class="font-bold whitespace-nowrap">
+                        &nbsp;- {{ comment.author }}
+                    </p>
                     <span class="pl-2">
                         <i class="ri-heart-line" />
                         <!-- TODO: Actions -->
