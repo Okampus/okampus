@@ -14,3 +14,9 @@ export class PostVote extends VoteBase {
     this.post = post;
   }
 }
+
+export interface NoPostVote {
+  post: Post;
+  user: User;
+  value: 0;
+}

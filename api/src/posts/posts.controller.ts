@@ -19,6 +19,7 @@ import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import type { NoPostVote, PostVote } from './entities/post-vote.entity';
 import { Post } from './entities/post.entity';
 import { PostVotesService } from './post-votes.service';
 import { PostsService } from './posts.service';
@@ -66,6 +67,15 @@ export class PostsController {
   @CheckPolicies(ability => ability.can(Action.Delete, Post))
   public async remove(@CurrentUser() user: User, @Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.postsService.remove(user, id);
+  }
+
+  @Get(':id/vote')
+  @CheckPolicies(ability => ability.can(Action.Read, Post))
+  public async findVote(
+    @CurrentUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<NoPostVote | PostVote> {
+    return await this.postVotesService.findVote(user, id);
   }
 
   @PostRequest(':id/vote')

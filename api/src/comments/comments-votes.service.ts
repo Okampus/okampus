@@ -5,6 +5,7 @@ import { assertPermissions } from '../shared/lib/utils/assertPermission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { User } from '../users/user.entity';
+import type { NoCommentVote } from './entities/comment-vote.entity';
 import { CommentVote } from './entities/comment-vote.entity';
 import { Comment } from './entities/comment.entity';
 
@@ -15,6 +16,15 @@ export class CommentVotesService {
     @InjectRepository(CommentVote) private readonly commentVotesRepository: BaseRepository<CommentVote>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
+
+  public async findVote(user: User, commentId: string): Promise<CommentVote | NoCommentVote> {
+    const comment = await this.commentRepository.findOneOrFail({ commentId }, ['author', 'post', 'reply']);
+
+    // TODO: Maybe the user won't have access to this comment. There can be some restrictions
+    // (i.e. "personal"/"sensitive" comments)
+
+    return await this.commentVotesRepository.findOne({ comment, user }) ?? { comment, user, value: 0 };
+  }
 
   public async upvote(user: User, commentId: string): Promise<Comment> {
     const comment = await this.commentRepository.findOneOrFail({ commentId }, ['author', 'post', 'reply']);

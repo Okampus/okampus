@@ -14,3 +14,9 @@ export class CommentVote extends UpvoteBase {
     this.comment = comment;
   }
 }
+
+export interface NoCommentVote {
+  comment: Comment;
+  user: User;
+  value: 0;
+}

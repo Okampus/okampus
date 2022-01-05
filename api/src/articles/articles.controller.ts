@@ -21,6 +21,7 @@ import { ArticleVotesService } from './article-votes.service';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
+import type { ArticleVote, NoArticleVote } from './entities/article-vote.entity';
 import { Article } from './entities/article.entity';
 
 @ApiTags('Articles')
@@ -66,6 +67,15 @@ export class ArticlesController {
   @CheckPolicies(ability => ability.can(Action.Delete, Article))
   public async remove(@CurrentUser() user: User, @Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.articlesService.remove(user, id);
+  }
+
+  @Get(':id/vote')
+  @CheckPolicies(ability => ability.can(Action.Read, Article))
+  public async findVote(
+    @CurrentUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ArticleVote | NoArticleVote> {
+    return await this.articleVotesService.findVote(user, id);
   }
 
   @PostRequest(':id/vote')

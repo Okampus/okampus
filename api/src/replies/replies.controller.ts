@@ -19,6 +19,7 @@ import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
 import { CreateReplyDto } from './dto/create-reply.dto';
 import { UpdateReplyDto } from './dto/update-reply.dto';
+import type { NoReplyVote, ReplyVote } from './entities/reply-vote.entity';
 import { Reply } from './entities/reply.entity';
 import { RepliesService } from './replies.service';
 import { ReplyVotesService } from './reply-votes.service';
@@ -76,6 +77,15 @@ export class RepliesController {
     @Param('id') replyId: string,
   ): Promise<void> {
     await this.repliesService.remove(user, replyId);
+  }
+
+  @Get('replies/:id/vote')
+  @CheckPolicies(ability => ability.can(Action.Read, Reply))
+  public async findVote(
+    @CurrentUser() user: User,
+    @Param('id') id: string,
+  ): Promise<NoReplyVote | ReplyVote> {
+    return await this.replyVotesService.findVote(user, id);
   }
 
   @Post('replies/:id/vote')

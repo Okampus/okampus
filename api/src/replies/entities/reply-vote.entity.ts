@@ -14,3 +14,9 @@ export class ReplyVote extends VoteBase {
     this.reply = reply;
   }
 }
+
+export interface NoReplyVote {
+  reply: Reply;
+  user: User;
+  value: 0;
+}

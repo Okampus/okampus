@@ -21,6 +21,7 @@ import { CommentVotesService } from './comments-votes.service';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import type { CommentVote, NoCommentVote } from './entities/comment-vote.entity';
 import { Comment } from './entities/comment.entity';
 
 @ApiTags('Comments')
@@ -94,6 +95,15 @@ export class CommentsController {
     @Param('id') commentId: string,
   ): Promise<void> {
     await this.commentsService.remove(user, commentId);
+  }
+
+  @Get('replies/comments/:id/vote')
+  @CheckPolicies(ability => ability.can(Action.Read, Comment))
+  public async findVote(
+    @CurrentUser() user: User,
+    @Param('id') id: string,
+  ): Promise<CommentVote | NoCommentVote> {
+    return await this.commentVotesService.findVote(user, id);
   }
 
   @Post('replies/comments/:id/vote')

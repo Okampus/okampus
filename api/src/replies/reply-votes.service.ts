@@ -5,6 +5,7 @@ import { assertPermissions } from '../shared/lib/utils/assertPermission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { User } from '../users/user.entity';
+import type { NoReplyVote } from './entities/reply-vote.entity';
 import { ReplyVote } from './entities/reply-vote.entity';
 import { Reply } from './entities/reply.entity';
 
@@ -15,6 +16,15 @@ export class ReplyVotesService {
     @InjectRepository(ReplyVote) private readonly replyVotesRepository: BaseRepository<ReplyVote>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
+
+  public async findVote(user: User, replyId: string): Promise<NoReplyVote | ReplyVote> {
+    const reply = await this.replyRepository.findOneOrFail({ replyId }, ['author', 'post']);
+
+    // TODO: Maybe the user won't have access to this reply. There can be some restrictions
+    // (i.e. "personal"/"sensitive" replys)
+
+    return await this.replyVotesRepository.findOne({ reply, user }) ?? { reply, user, value: 0 };
+  }
 
   public async update(user: User, replyId: string, value: -1 | 1): Promise<Reply> {
     const reply = await this.replyRepository.findOneOrFail({ replyId }, ['author', 'post']);

@@ -14,3 +14,9 @@ export class ArticleVote extends VoteBase {
     this.article = article;
   }
 }
+
+export interface NoArticleVote {
+  article: Article;
+  user: User;
+  value: 0;
+}

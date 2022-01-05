@@ -5,6 +5,7 @@ import { assertPermissions } from '../shared/lib/utils/assertPermission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { User } from '../users/user.entity';
+import type { NoPostVote } from './entities/post-vote.entity';
 import { PostVote } from './entities/post-vote.entity';
 import { Post } from './entities/post.entity';
 
@@ -15,6 +16,15 @@ export class PostVotesService {
     @InjectRepository(PostVote) private readonly postVotesRepository: BaseRepository<PostVote>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
+
+  public async findVote(user: User, postId: number): Promise<NoPostVote | PostVote> {
+    const post = await this.postRepository.findOneOrFail({ postId }, ['tags']);
+
+    // TODO: Maybe the user won't have access to this post. There can be some restrictions
+    // (i.e. "personal"/"sensitive" posts)
+
+    return await this.postVotesRepository.findOne({ post, user }) ?? { post, user, value: 0 };
+  }
 
   public async update(user: User, postId: number, value: -1 | 1): Promise<Post> {
     const post = await this.postRepository.findOneOrFail({ postId }, ['tags']);
