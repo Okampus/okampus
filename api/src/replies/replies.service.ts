@@ -35,7 +35,6 @@ export class RepliesService {
   public async findAll(postId: number, paginationOptions?: PaginationOptions): Promise<PaginatedResult<Reply>> {
     // TODO: Maybe the user won't have access to all replies. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
-    // TODO: Add pagination
     return await this.replyRepository.findWithPagination(
       paginationOptions,
       { post: { postId } },

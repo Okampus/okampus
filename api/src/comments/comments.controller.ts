@@ -67,7 +67,7 @@ export class CommentsController {
 
   @Get('replies/:replyId/comments')
   @CheckPolicies(ability => ability.can(Action.Read, Comment))
-  public async findAllUnderReply(@Param('replyId') replyId: string): Promise<Comment[]> {
+  public async findAllUnderReply(@Param('replyId') replyId: string): Promise<PaginatedResult<Comment>> {
     return await this.commentsService.findAllUnderReply(replyId);
   }
 
