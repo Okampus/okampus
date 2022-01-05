@@ -47,7 +47,8 @@
     "rxjs": "^7.5.1",
     "slugify": "^1.6.5",
     "statuses": "^2.0.1",
-    "swagger-ui-express": "^4.3.0"
+    "swagger-ui-express": "^4.3.0",
+    "typesense": "^1.1.2"
   },
   "devDependencies": {
     "@mikro-orm/cli": "^4.5.9",

@@ -10,6 +10,7 @@ import type { PaginationOptions } from '../shared/modules/pagination/pagination-
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { Tag } from '../tags/tag.entity';
 import type { User } from '../users/user.entity';
+import { ArticleSearchService } from './article-search.service';
 import type { CreateArticleDto } from './dto/create-article.dto';
 import type { UpdateArticleDto } from './dto/update-article.dto';
 import { Article } from './entities/article.entity';
@@ -19,6 +20,7 @@ export class ArticlesService {
   constructor(
     @InjectRepository(Article) private readonly articleRepository: BaseRepository<Article>,
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
+    private readonly articleSearchService: ArticleSearchService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -32,6 +34,7 @@ export class ArticlesService {
     const tags = await this.tagRepository.find({ name: { $in: createArticleDto.tags } });
     article.tags.add(...tags);
     await this.articleRepository.persistAndFlush(article);
+    await this.articleSearchService.add(article);
     return article;
   }
 
@@ -72,6 +75,7 @@ export class ArticlesService {
       wrap(article).assign(updatedProps);
 
     await this.articleRepository.flush();
+    await this.articleSearchService.update(article);
     return article;
   }
 
@@ -82,5 +86,6 @@ export class ArticlesService {
     assertPermissions(ability, Action.Delete, article);
 
     await this.articleRepository.removeAndFlush(article);
+    await this.articleSearchService.remove(article.articleId.toString());
   }
 }

@@ -10,11 +10,16 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
+import { TypesenseError } from 'typesense/lib/Typesense/Errors';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { SearchDto } from '../shared/modules/search/search.dto';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
+import { SubjectSearchService } from './subject-search.service';
+import type { IndexedSubject } from './subject-search.service';
 import { Subject } from './subject.entity';
 import { SubjectsService } from './subjects.service';
 
@@ -22,7 +27,10 @@ import { SubjectsService } from './subjects.service';
 @UseGuards(PoliciesGuard)
 @Controller({ path: 'subjects' })
 export class SubjectsController {
-  constructor(private readonly subjectsService: SubjectsService) {}
+  constructor(
+    private readonly subjectsService: SubjectsService,
+    private readonly subjectSearchService: SubjectSearchService,
+  ) {}
 
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Subject))
@@ -36,6 +44,23 @@ export class SubjectsController {
     if (query.page)
       return await this.subjectsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
     return await this.subjectsService.findAll();
+  }
+
+  @Get('/search')
+  @CheckPolicies(ability => ability.can(Action.Read, Subject))
+  public async search(
+    @Query('full') full: boolean,
+    @Query() query: SearchDto,
+  ): Promise<SearchResponse<IndexedSubject> | SearchResponse<Subject>> {
+    try {
+      if (full)
+        return await this.subjectSearchService.searchAndPopulate(query);
+      return await this.subjectSearchService.search(query);
+    } catch (error: unknown) {
+      if (error instanceof TypesenseError)
+        this.subjectSearchService.throwHttpExceptionFromTypesenseError(error);
+      throw error;
+    }
   }
 
   @Get(':id')

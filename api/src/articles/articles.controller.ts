@@ -11,12 +11,17 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
+import { TypesenseError } from 'typesense/lib/Typesense/Errors';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { SearchDto } from '../shared/modules/search/search.dto';
 import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
+import { ArticleSearchService } from './article-search.service';
+import type { IndexedArticle } from './article-search.service';
 import { ArticleVotesService } from './article-votes.service';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -30,6 +35,7 @@ export class ArticlesController {
   constructor(
     private readonly articlesService: ArticlesService,
     private readonly articleVotesService: ArticleVotesService,
+    private readonly articleSearchService: ArticleSearchService,
   ) {}
 
   @PostRequest()
@@ -44,6 +50,23 @@ export class ArticlesController {
     if (query.page)
       return await this.articlesService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
     return await this.articlesService.findAll();
+  }
+
+  @Get('/search')
+  @CheckPolicies(ability => ability.can(Action.Read, Article))
+  public async search(
+    @Query('full') full: boolean,
+    @Query() query: SearchDto,
+  ): Promise<SearchResponse<Article> | SearchResponse<IndexedArticle>> {
+    try {
+      if (full)
+        return await this.articleSearchService.searchAndPopulate(query);
+      return await this.articleSearchService.search(query);
+    } catch (error: unknown) {
+      if (error instanceof TypesenseError)
+        this.articleSearchService.throwHttpExceptionFromTypesenseError(error);
+      throw error;
+    }
   }
 
   @Get(':id')

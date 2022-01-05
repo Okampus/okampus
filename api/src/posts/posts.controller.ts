@@ -11,15 +11,20 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
+import { TypesenseError } from 'typesense/lib/Typesense/Errors';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { SearchDto } from '../shared/modules/search/search.dto';
 import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
+import type { IndexedPost } from './post-search.service';
+import { PostSearchService } from './post-search.service';
 import { PostVotesService } from './post-votes.service';
 import { PostsService } from './posts.service';
 
@@ -30,6 +35,7 @@ export class PostsController {
   constructor(
     private readonly postsService: PostsService,
     private readonly postVotesService: PostVotesService,
+    private readonly postSearchService: PostSearchService,
   ) {}
 
   @PostRequest()
@@ -44,6 +50,23 @@ export class PostsController {
     if (query.page)
       return await this.postsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
     return await this.postsService.findAll();
+  }
+
+  @Get('/search')
+  @CheckPolicies(ability => ability.can(Action.Read, Post))
+  public async search(
+    @Query('full') full: boolean,
+    @Query() query: SearchDto,
+  ): Promise<SearchResponse<IndexedPost> | SearchResponse<Post>> {
+    try {
+      if (full)
+        return await this.postSearchService.searchAndPopulate(query);
+      return await this.postSearchService.search(query);
+    } catch (error: unknown) {
+      if (error instanceof TypesenseError)
+        this.postSearchService.throwHttpExceptionFromTypesenseError(error);
+      throw error;
+    }
   }
 
   @Get(':id')

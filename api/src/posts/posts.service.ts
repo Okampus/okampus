@@ -12,12 +12,14 @@ import type { User } from '../users/user.entity';
 import type { CreatePostDto } from './dto/create-post.dto';
 import type { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
+import { PostSearchService } from './post-search.service';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: BaseRepository<Post>,
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
+    private readonly postSearchService: PostSearchService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -26,6 +28,7 @@ export class PostsService {
     const tags = await this.tagRepository.find({ name: { $in: createPostDto.tags } });
     post.tags.add(...tags);
     await this.postRepository.persistAndFlush(post);
+    // Await this.postIndexerService.add(post);
     return post;
   }
 
@@ -66,6 +69,7 @@ export class PostsService {
       wrap(post).assign(updatedProps);
 
     await this.postRepository.flush();
+    await this.postSearchService.update(post);
     return post;
   }
 
@@ -76,5 +80,6 @@ export class PostsService {
     assertPermissions(ability, Action.Delete, post);
 
     await this.postRepository.removeAndFlush(post);
+    // Await this.postIndexerService.remove(post.postId.toString());
   }
 }

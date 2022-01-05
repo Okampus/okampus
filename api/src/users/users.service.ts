@@ -2,12 +2,14 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import type { RegisterDto } from '../auth/dto/register.dto';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { UserSearchService } from './user-search.service';
 import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    private readonly userSearchService: UserSearchService,
   ) {}
 
   public async findOne(username: string): Promise<User> {
@@ -32,6 +34,7 @@ export class UsersService {
     const user = new User(body.username, body.email.toLowerCase());
     await user.setPassword(body.password);
     await this.userRepository.persistAndFlush(user);
+    await this.userSearchService.add(user);
     return user;
   }
 }
