@@ -1,6 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
+import { config } from '../config';
 import { UserSearchService } from './user-search.service';
 import { User } from './user.entity';
 import { UsersController } from './users.controller';
@@ -20,6 +21,7 @@ export class UsersModule implements OnModuleInit {
   ) {}
 
   public async onModuleInit(): Promise<void> {
-    await this.userSearchService.init();
+    if (config.get('typesenseEnabled'))
+      await this.userSearchService.init();
   }
 }

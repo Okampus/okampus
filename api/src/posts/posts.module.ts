@@ -1,6 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
+import { config } from '../config';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { Tag } from '../tags/tag.entity';
 import { PostVote } from './entities/post-vote.entity';
@@ -24,6 +25,7 @@ export class PostsModule implements OnModuleInit {
   ) {}
 
   public async onModuleInit(): Promise<void> {
-    await this.postSearchService.init();
+    if (config.get('typesenseEnabled'))
+      await this.postSearchService.init();
   }
 }

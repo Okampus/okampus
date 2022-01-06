@@ -1,5 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
+import { config } from '../config';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { Tag } from '../tags/tag.entity';
 import { ArticleSearchService } from './article-search.service';
@@ -23,6 +24,7 @@ export class ArticlesModule {
   ) {}
 
   public async onModuleInit(): Promise<void> {
-    await this.articleSearchService.init();
+    if (config.get('typesenseEnabled'))
+      await this.articleSearchService.init();
   }
 }
