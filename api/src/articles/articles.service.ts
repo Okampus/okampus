@@ -1,6 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import slugify from 'slugify';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assertPermission';
 import { Action } from '../shared/modules/authorization';
@@ -9,6 +10,7 @@ import type { PaginationOptions } from '../shared/modules/pagination/pagination-
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { Tag } from '../tags/tag.entity';
 import type { User } from '../users/user.entity';
+import { ArticleSearchService } from './article-search.service';
 import type { CreateArticleDto } from './dto/create-article.dto';
 import type { UpdateArticleDto } from './dto/update-article.dto';
 import { Article } from './entities/article.entity';
@@ -18,14 +20,21 @@ export class ArticlesService {
   constructor(
     @InjectRepository(Article) private readonly articleRepository: BaseRepository<Article>,
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
+    private readonly articleSearchService: ArticleSearchService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   public async create(user: User, createArticleDto: CreateArticleDto): Promise<Article> {
-    const article = new Article({ ...createArticleDto, author: user });
+    const article = new Article({
+      ...createArticleDto,
+      slug: slugify(createArticleDto.slug ?? createArticleDto.title),
+      location: createArticleDto?.location?.split(',').map(Number) as [lat: number, lon: number] | undefined,
+      author: user,
+    });
     const tags = await this.tagRepository.find({ name: { $in: createArticleDto.tags } });
     article.tags.add(...tags);
     await this.articleRepository.persistAndFlush(article);
+    await this.articleSearchService.add(article);
     return article;
   }
 
@@ -66,6 +75,7 @@ export class ArticlesService {
       wrap(article).assign(updatedProps);
 
     await this.articleRepository.flush();
+    await this.articleSearchService.update(article);
     return article;
   }
 
@@ -76,5 +86,6 @@ export class ArticlesService {
     assertPermissions(ability, Action.Delete, article);
 
     await this.articleRepository.removeAndFlush(article);
+    await this.articleSearchService.remove(article.articleId.toString());
   }
 }

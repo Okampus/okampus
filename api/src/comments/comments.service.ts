@@ -54,11 +54,17 @@ export class CommentsService {
     return comment;
   }
 
-  public async findAllUnderReply(replyId: string): Promise<Comment[]> {
+  public async findAllUnderReply(
+    replyId: string,
+    paginationOptions?: PaginationOptions,
+  ): Promise<PaginatedResult<Comment>> {
     // TODO: Maybe the user won't have access to all comments. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
-    // TODO: Add pagination
-    return await this.commentRepository.find({ reply: { replyId } }, ['author', 'post', 'reply']);
+    return await this.commentRepository.findWithPagination(
+      paginationOptions,
+      { reply: { replyId } },
+      { populate: ['author', 'post', 'reply'] },
+    );
   }
 
   public async findAllUnderPost(
@@ -67,7 +73,6 @@ export class CommentsService {
   ): Promise<PaginatedResult<Comment>> {
     // TODO: Maybe the user won't have access to all comments. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
-    // TODO: Add pagination
     return await this.commentRepository.findWithPagination(
       paginationOptions,
       { post: { postId } },

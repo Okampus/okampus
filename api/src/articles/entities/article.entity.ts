@@ -1,4 +1,5 @@
 import {
+  ArrayType,
   BeforeUpdate,
   Collection,
   Entity,
@@ -18,24 +19,31 @@ export class Article extends Content {
   articleId!: number;
 
   @Property({ type: 'text' })
+  slug!: string;
+
+  @Property({ type: 'text' })
   title!: string;
+
+  @Property({ type: 'text' })
+  category!: string;
+
+  @Property({ type: 'text' })
+  locationName?: string;
+
+  @Property({ type: new ArrayType(i => Number(i)), nullable: true })
+  location?: [lat: number, lon: number];
 
   @ManyToMany()
   @TransformTags()
   tags = new Collection<Tag>(this);
 
-
   // TODO: Add full 'locked' support - Add perms to Update/Patch endpoint
   @Property()
   locked = false;
 
-  // TODO: Add full 'opened' support - Add perms to Update/Patch endpoint
+  // TODO: Add full 'draft' support
   @Property()
-  opened = true;
-
-  // TODO: Add full 'solved' support - Add perms to Update/Patch endpoint
-  @Property()
-  solved = false;
+  isDraft = false;
 
   // TODO: Add full 'views' support - Auto-increment when a post is viewed
   @Property()
@@ -55,12 +63,18 @@ export class Article extends Content {
     slug: string;
     category: string;
     isDraft: boolean;
-    tags: string[];
-    location?: string;
+    location?: [lat: number, lon: number];
     locationName?: string;
   }) {
     super(options);
     this.title = options.title;
+    this.slug = options.slug;
+    this.category = options.category;
+    this.isDraft = options.isDraft;
+    if (options.location)
+      this.location = options.location;
+    if (options.locationName)
+      this.locationName = options.locationName;
   }
 
   @BeforeUpdate()

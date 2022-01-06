@@ -6,6 +6,7 @@ interface Config {
   uploadPath: string;
   port: number;
   nodeEnv: 'development' | 'production' | 'test';
+  typesenseApiKey: string;
   accessTokenSecret: string;
   accessTokenExpiration: string;
   refreshTokenSecret: string;
@@ -35,6 +36,11 @@ export const config = createProfiguration<Config>({
     default: 'development',
     format: ['development', 'production', 'test'],
     env: 'NODE_ENV',
+  },
+  typesenseApiKey: {
+    default: 'api-key',
+    format: String,
+    env: 'TYPESENSE_API_KEY',
   },
   accessTokenSecret: {
     default: 'secret',

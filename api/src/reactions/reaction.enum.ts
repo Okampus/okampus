@@ -22,7 +22,5 @@ export enum ArticleReaction {
   Interesting = 'interesting',
   Like = 'like',
   Laugh = 'laugh',
-  Unsure = 'unsure',
-  Partial = 'partial',
   Perfect = 'perfect',
 }
