@@ -24,8 +24,9 @@ export class CreateArticleDto {
   @IsString()
   locationName?: string;
 
+  @IsOptional()
   @IsString()
-  slug: string;
+  slug?: string;
 
   @IsString()
   category: string;

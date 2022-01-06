@@ -1,6 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import slugify from 'slugify';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assertPermission';
 import { Action } from '../shared/modules/authorization';
@@ -22,7 +23,12 @@ export class ArticlesService {
   ) {}
 
   public async create(user: User, createArticleDto: CreateArticleDto): Promise<Article> {
-    const article = new Article({ ...createArticleDto, author: user });
+    const article = new Article({
+      ...createArticleDto,
+      slug: slugify(createArticleDto.slug ?? createArticleDto.title),
+      location: createArticleDto?.location?.split(',').map(Number) as [lat: number, lon: number] | undefined,
+      author: user,
+    });
     const tags = await this.tagRepository.find({ name: { $in: createArticleDto.tags } });
     article.tags.add(...tags);
     await this.articleRepository.persistAndFlush(article);
