@@ -1,3 +1,11 @@
+const namingConventionForbidLeadingUnderscore = {
+  selector: 'memberLike',
+  modifiers: ['private'],
+  format: ['camelCase'],
+  leadingUnderscore: 'forbid',
+  trailingUnderscore: 'allow',
+};
+
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -27,52 +35,10 @@ module.exports = {
     // Forbid leading underscore for private properties (in nest almost all if not all class properties are private,
     // adding the underscore just impacts readability.)
     '@typescript-eslint/naming-convention': [
-      'error',
-      {
-        selector: 'default',
-        format: ['camelCase'],
-        leadingUnderscore: 'allow',
-        trailingUnderscore: 'allow',
-      },
-      {
-        selector: 'variable',
-        format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
-        leadingUnderscore: 'allow',
-        trailingUnderscore: 'allow',
-      },
-      {
-        selector: 'objectLiteralProperty',
-        format: ['camelCase', 'UPPER_CASE'],
-        leadingUnderscore: 'allow',
-        trailingUnderscore: 'allow',
-      },
-      {
-        selector: 'memberLike',
-        modifiers: ['private'],
-        format: ['camelCase'],
-        leadingUnderscore: 'forbid',
-        trailingUnderscore: 'allow',
-      },
-      {
-        selector: 'enumMember',
-        format: ['PascalCase'],
-        leadingUnderscore: 'forbid',
-        trailingUnderscore: 'allow',
-      },
-      {
-        selector: 'interface',
-        format: ['PascalCase'],
-        custom: {
-          regex: '^I[A-Z]',
-          match: false,
-        },
-      },
-      {
-        selector: 'typeLike',
-        format: ['PascalCase'],
-        leadingUnderscore: 'forbid',
-        trailingUnderscore: 'allow',
-      },
+      ...require('eslint-config-noftalint/rules/typescript')
+        .rules['@typescript-eslint/naming-convention']
+        .filter(rule => rule.selector !== 'memberLike'),
+      namingConventionForbidLeadingUnderscore,
     ],
   },
   overrides: [{
@@ -82,6 +48,22 @@ module.exports = {
       'node/no-unpublished-import': 'off',
       'node/no-unpublished-require': 'off',
       'import/no-extraneous-dependencies': 'off',
+    },
+  }, {
+    files: ['*.decorator.ts', '*.decorator.js'],
+    rules: {
+      '@typescript-eslint/naming-convention': [
+        ...require('eslint-config-noftalint/rules/typescript')
+          .rules['@typescript-eslint/naming-convention']
+          .filter(rule => rule.selector !== 'memberLike'),
+        namingConventionForbidLeadingUnderscore,
+        {
+          selector: 'function',
+          format: ['camelCase', 'PascalCase'],
+          leadingUnderscore: 'forbid',
+          trailingUnderscore: 'forbid',
+        },
+      ],
     },
   }],
   settings: {
