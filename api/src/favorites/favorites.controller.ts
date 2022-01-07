@@ -6,11 +6,9 @@ import {
   ParseIntPipe,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-import { PoliciesGuard } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { User } from '../users/user.entity';
@@ -26,7 +24,6 @@ import { PostFavoritesService } from './services/post-favorites.service';
 import { ReplyFavoritesService } from './services/reply-favorites.service';
 
 @ApiTags('Favorites')
-@UseGuards(PoliciesGuard)
 @Controller({ path: 'favorites' })
 export class FavoritesController {
   constructor(

@@ -8,11 +8,10 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
+import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { UpvoteDto } from '../shared/modules/vote/upvote.dto';
@@ -25,7 +24,6 @@ import type { CommentVote, NoCommentVote } from './entities/comment-vote.entity'
 import { Comment } from './entities/comment.entity';
 
 @ApiTags('Comments')
-@UseGuards(PoliciesGuard)
 @Controller({ path: ['posts'] })
 export class CommentsController {
   constructor(

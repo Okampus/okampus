@@ -6,14 +6,13 @@ import {
   Param,
   ParseIntPipe,
   Post as PostRequest,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Article } from '../articles/entities/article.entity';
 import { Post } from '../posts/entities/post.entity';
 import { Reply } from '../replies/entities/reply.entity';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
+import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { User } from '../users/user.entity';
 import { ReactArticleDto } from './dto/react-article.dto';
 import { ReactPostDto } from './dto/react-post.dto';
@@ -26,7 +25,6 @@ import { PostReactionsService } from './services/post-reactions.service';
 import { ReplyReactionsService } from './services/reply-reactions.service';
 
 @ApiTags('Reactions')
-@UseGuards(PoliciesGuard)
 @Controller({ path: 'reactions' })
 export class ReactionsController {
   constructor(

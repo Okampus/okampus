@@ -16,6 +16,8 @@ export class PoliciesGuard implements CanActivate {
 
   public canActivate(context: ExecutionContext): boolean {
     const policyHandlers = this.reflector.get<PolicyHandler[]>(CHECK_POLICIES_KEY, context.getHandler()) || [];
+    if (policyHandlers.length === 0)
+      return true;
 
     const user = context.switchToHttp().getRequest<HorizonRequest>()?.user;
     if (!user)

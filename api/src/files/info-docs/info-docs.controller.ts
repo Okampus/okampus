@@ -9,14 +9,13 @@ import {
   Post,
   Query,
   UploadedFile,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Express } from 'express';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
-import { Action, CheckPolicies, PoliciesGuard } from '../../shared/modules/authorization';
+import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import { User } from '../../users/user.entity';
@@ -27,7 +26,6 @@ import { InfoDoc } from './info-doc.entity';
 import { InfoDocsService } from './info-docs.service';
 
 @ApiTags('InfoDocs')
-@UseGuards(PoliciesGuard)
 @Controller()
 export class InfoDocsController {
   constructor(

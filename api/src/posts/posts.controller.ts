@@ -9,14 +9,13 @@ import {
   Post as PostRequest,
   Query,
   ServiceUnavailableException,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { TypesenseError } from 'typesense/lib/Typesense/Errors';
 import { config } from '../config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
+import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../shared/modules/search/search.dto';
@@ -32,7 +31,6 @@ import { PostVotesService } from './post-votes.service';
 import { PostsService } from './posts.service';
 
 @ApiTags('Posts')
-@UseGuards(PoliciesGuard)
 @Controller({ path: 'posts' })
 export class PostsController {
   constructor(

@@ -8,11 +8,10 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
+import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { VoteDto } from '../shared/modules/vote/vote.dto';
@@ -25,7 +24,6 @@ import { RepliesService } from './replies.service';
 import { ReplyVotesService } from './reply-votes.service';
 
 @ApiTags('Replies')
-@UseGuards(PoliciesGuard)
 @Controller({ path: 'posts' })
 export class RepliesController {
   constructor(

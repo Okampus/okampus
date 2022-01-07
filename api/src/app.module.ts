@@ -11,6 +11,7 @@ import { FilesModule } from './files/files.module';
 import { PostsModule } from './posts/posts.module';
 import { ReactionsModule } from './reactions/reactions.module';
 import { RepliesModule } from './replies/replies.module';
+import { PoliciesGuard } from './shared/modules/authorization';
 import { CaslModule } from './shared/modules/casl/casl.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { TagsModule } from './tags/tags.module';
@@ -34,10 +35,8 @@ import { UsersModule } from './users/users.module';
     UsersModule,
   ],
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: PoliciesGuard },
   ],
   controllers: [],
   exports: [],

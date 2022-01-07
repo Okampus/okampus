@@ -7,10 +7,9 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
+import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { CreateTagDto } from './dto/create-tag.dto';
@@ -19,7 +18,6 @@ import { Tag } from './tag.entity';
 import { TagsService } from './tags.service';
 
 @ApiTags('Tags')
-@UseGuards(PoliciesGuard)
 @Controller({ path: 'tags' })
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}

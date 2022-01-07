@@ -8,13 +8,12 @@ import {
   Post,
   Query,
   ServiceUnavailableException,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { TypesenseError } from 'typesense/lib/Typesense/Errors';
 import { config } from '../config';
-import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
+import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../shared/modules/search/search.dto';
@@ -26,7 +25,6 @@ import { Subject } from './subject.entity';
 import { SubjectsService } from './subjects.service';
 
 @ApiTags('Subjects')
-@UseGuards(PoliciesGuard)
 @Controller({ path: 'subjects' })
 export class SubjectsController {
   constructor(
