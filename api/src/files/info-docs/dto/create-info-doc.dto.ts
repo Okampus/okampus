@@ -4,12 +4,11 @@ import {
   IsBoolean,
   IsIn,
   IsInt,
-  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
-import { FileKind } from '../../shared/lib/types/file-kind.enum';
-import { CreateFileUploadDto } from './create-file-upload.dto';
+import { FileKind } from '../../../shared/lib/types/file-kind.enum';
+import { CreateFileUploadDto } from '../../file-uploads/dto/create-file-upload.dto';
 
 export class CreateInfoDocDto extends OmitType(CreateFileUploadDto, ['fileKind']) {
   @IsOptional()
@@ -17,8 +16,8 @@ export class CreateInfoDocDto extends OmitType(CreateFileUploadDto, ['fileKind']
   year?: number;
 
   @IsOptional()
-  @IsNumber()
-  docSeries?: number;
+  @IsString()
+  docSeries?: string;
 
   @IsOptional()
   @IsArray()

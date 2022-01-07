@@ -6,6 +6,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
+import { nanoid } from 'nanoid';
 import { config } from '../../config';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
@@ -14,10 +15,10 @@ import { User } from '../../users/user.entity';
 @Entity()
 export class FileUpload extends BaseEntity {
   @PrimaryKey()
-  fileUploadId!: number;
+  fileUploadId: string = nanoid(32);
 
   @ManyToOne()
-  author!: User;
+  user!: User;
 
   @Property({ type: 'text' })
   originalName!: string;
@@ -38,10 +39,10 @@ export class FileUpload extends BaseEntity {
   visible = false;
 
   @Enum(() => FileKind)
-  fileKind = FileKind.Unknown;
+  fileKind!: FileKind;
 
   constructor(options: {
-    author: User;
+    user: User;
     originalName: string;
     fileSize: number;
     mimeType: string;
@@ -49,21 +50,19 @@ export class FileUpload extends BaseEntity {
     fileKind?: FileKind;
   }) {
     super();
-    this.author = options.author;
+    this.user = options.user;
     this.originalName = options.originalName;
     this.fileSize = options.fileSize;
     this.mimeType = options.mimeType;
     this.fileLastModifiedAt = options.fileLastModifiedAt;
-
-    if (options.fileKind)
-      this.fileKind = options.fileKind;
+    this.fileKind = options.fileKind ?? FileKind.Unknown;
   }
 
   public getPath(): string {
     return path.join(
       config.get('uploadPath'),
       this.fileKind,
-      `${this.fileUploadId.toString()}.${path.extname(this.originalName)}`,
+      `${this.fileUploadId.toString()}${path.extname(this.originalName)}`,
     );
   }
 }

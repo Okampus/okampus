@@ -5,6 +5,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
+import { nanoid } from 'nanoid';
 import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import type { Tag } from '../../tags/tag.entity';
@@ -12,13 +13,13 @@ import type { Tag } from '../../tags/tag.entity';
 @Entity()
 export class DocSeries extends BaseEntity {
   @PrimaryKey()
-  docSeriesId!: number;
+  docSeriesId: string = nanoid(32);
 
   @Property({ type: 'text' })
   name!: string;
 
   @Property({ type: 'text' })
-  englishName!: string;
+  englishName?: string;
 
   @Property({ type: 'text' })
   description?: string;
@@ -34,14 +35,15 @@ export class DocSeries extends BaseEntity {
 
   constructor(options: {
     name: string;
-    englishName: string;
+    englishName?: string;
     description?: string;
     isObsolete?: boolean;
   }) {
     super();
     this.name = options.name;
-    this.englishName = options.englishName;
 
+    if (options.englishName)
+      this.englishName = options.englishName;
     if (options.description)
       this.description = options.description;
     if (options.isObsolete)

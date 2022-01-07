@@ -5,7 +5,7 @@ import type { Express } from 'express';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import type { FileKind } from '../../shared/lib/types/file-kind.enum';
 import type { User } from '../../users/user.entity';
-import { FileUpload } from '../entities/file-upload.entity';
+import { FileUpload } from './file-upload.entity';
 
 @Injectable()
 export class FileUploadsService {
@@ -13,18 +13,20 @@ export class FileUploadsService {
     @InjectRepository(FileUpload) private readonly fileUploadRepository: BaseRepository<FileUpload>,
   ) {}
 
-  public async getUploadById(fileUploadId: number): Promise<FileUpload | null> {
-    return await this.fileUploadRepository.findOne({ fileUploadId }, ['author']);
+  public async findOne(fileUploadId: string): Promise<FileUpload> {
+    // TODO: Maybe the user won't have access to this file. There can be some restrictions
+    // (i.e. "sensitive"/"removed" files)
+    return await this.fileUploadRepository.findOneOrFail({ fileUploadId }, ['user']);
   }
 
   public async create(
-    author: User,
+    user: User,
     file: Express.Multer.File,
     fileKind: FileKind,
     fileLastModifiedAt = new Date(),
   ): Promise<FileUpload> {
     const fileDocument = new FileUpload({
-      author,
+      user,
       originalName: file.originalname,
       fileSize: file.size,
       mimeType: file.mimetype,
@@ -32,8 +34,8 @@ export class FileUploadsService {
       fileLastModifiedAt,
     });
 
-    await fs.writeFile(fileDocument.getPath(), file.buffer);
     await this.fileUploadRepository.persistAndFlush(fileDocument);
+    await fs.writeFile(fileDocument.getPath(), file.buffer);
 
     return fileDocument;
   }

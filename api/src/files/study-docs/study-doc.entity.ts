@@ -7,17 +7,18 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
+import { nanoid } from 'nanoid';
 import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { Subject } from '../../subjects/subject.entity';
 import type { Tag } from '../../tags/tag.entity';
-import { DocSeries } from './doc-series.entity';
-import { FileUpload } from './file-upload.entity';
+import { DocSeries } from '../doc-series/doc-series.entity';
+import { FileUpload } from '../file-uploads/file-upload.entity';
 
 @Entity()
 export class StudyDoc extends BaseEntity {
   @PrimaryKey()
-  studyDocId!: number;
+  studyDocId: string = nanoid(32);
 
   @OneToOne()
   file!: FileUpload;
@@ -32,9 +33,6 @@ export class StudyDoc extends BaseEntity {
   @TransformTags()
   tags = new Collection<Tag>(this);
 
-  @Property({ type: 'text' })
-  name?: string;
-
   // School year corresponding to the document; e.g. 2017 -> 2017-18, 2018 -> 2018-19, etc.
   @Property()
   year?: number;
@@ -46,7 +44,6 @@ export class StudyDoc extends BaseEntity {
     file: FileUpload;
     subject: Subject;
     docSeries?: DocSeries | null;
-    name?: string;
     year?: number;
     description?: string;
   }) {
@@ -55,8 +52,6 @@ export class StudyDoc extends BaseEntity {
     this.subject = options.subject;
     if (options.docSeries)
       this.docSeries = options.docSeries;
-    if (options.name)
-      this.name = options.name;
     if (options.year)
       this.year = options.year;
     if (options.description)

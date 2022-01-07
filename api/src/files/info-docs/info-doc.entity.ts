@@ -7,16 +7,17 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
+import { nanoid } from 'nanoid';
 import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import type { Tag } from '../../tags/tag.entity';
-import { DocSeries } from './doc-series.entity';
-import { FileUpload } from './file-upload.entity';
+import { DocSeries } from '../doc-series/doc-series.entity';
+import { FileUpload } from '../file-uploads/file-upload.entity';
 
 @Entity()
 export class InfoDoc extends BaseEntity {
   @PrimaryKey()
-  infoDocId!: number;
+  infoDocId: string = nanoid(32);
 
   @OneToOne()
   file!: FileUpload;

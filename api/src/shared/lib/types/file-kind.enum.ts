@@ -1,5 +1,5 @@
 export enum FileKind {
-  Avatar = 'avatar',
+  ProfileImage = 'profile-image',
   InfoDoc = 'info-doc',
   Attachment = 'attachment',
   StudyDoc = 'study-doc',
