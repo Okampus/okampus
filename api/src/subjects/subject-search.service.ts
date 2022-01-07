@@ -1,7 +1,9 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import type { CollectionCreateSchema } from 'typesense/lib/Typesense/Collections';
-import type { SearchParams, SearchResponse } from 'typesense/lib/Typesense/Documents';
+import { SearchParams } from 'typesense/lib/Typesense/Documents';
+import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
+import TypesenseEnabled from '../shared/lib/decorators/typesense-enabled.decorator';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { authorizeNotFound, SearchService } from '../shared/modules/search/search.service';
 import { client } from '../typesense.config';
@@ -33,27 +35,33 @@ export class SubjectSearchService extends SearchService<Subject, IndexedSubject>
     @InjectRepository(Subject) private readonly subjectRepository: BaseRepository<Subject>,
   ) { super(SubjectSearchService.schema, 'subjects'); }
 
+  @TypesenseEnabled()
   public async init(): Promise<void> {
     const subjects = await this.subjectRepository.findAll();
     await super.init(subjects, entity => this.toIndexedEntity(entity));
   }
 
+  @TypesenseEnabled()
   public async add(subject: Subject): Promise<void> {
     await this.documents.create(this.toIndexedEntity(subject));
   }
 
+  @TypesenseEnabled()
   public async update(subject: Subject): Promise<void> {
     await this.documents.update(this.toIndexedEntity(subject)).catch(authorizeNotFound);
   }
 
+  @TypesenseEnabled()
   public async remove(subjectId: string): Promise<void> {
     await this.documents.delete(subjectId).catch(authorizeNotFound);
   }
 
+  @TypesenseEnabled()
   public async search(queries: SearchParams<IndexedSubject>): Promise<SearchResponse<IndexedSubject>> {
     return await this.documents.search(queries);
   }
 
+  @TypesenseEnabled()
   public async searchAndPopulate(queries: SearchParams<IndexedSubject>): Promise<SearchResponse<Subject>> {
     const results = await this.documents.search(queries);
 

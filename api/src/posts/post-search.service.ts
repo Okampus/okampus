@@ -1,7 +1,9 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import type { CollectionCreateSchema } from 'typesense/lib/Typesense/Collections';
-import type { SearchParams, SearchResponse } from 'typesense/lib/Typesense/Documents';
+import { SearchParams } from 'typesense/lib/Typesense/Documents';
+import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
+import TypesenseEnabled from '../shared/lib/decorators/typesense-enabled.decorator';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { extractTextFromTiptap } from '../shared/lib/utils/extractTextFromTiptap';
 import type { SimplifiedTiptapJSONContent } from '../shared/lib/utils/extractTextFromTiptap';
@@ -37,27 +39,33 @@ export class PostSearchService extends SearchService<Post, IndexedPost> {
     @InjectRepository(Post) private readonly postRepository: BaseRepository<Post>,
   ) { super(PostSearchService.schema, 'posts'); }
 
+  @TypesenseEnabled()
   public async init(): Promise<void> {
     const posts = await this.postRepository.find({}, ['author', 'tags']);
     await super.init(posts, entity => this.toIndexedEntity(entity));
   }
 
+  @TypesenseEnabled()
   public async add(post: Post): Promise<void> {
     await this.documents.create(this.toIndexedEntity(post));
   }
 
+  @TypesenseEnabled()
   public async update(post: Post): Promise<void> {
     await this.documents.update(this.toIndexedEntity(post)).catch(authorizeNotFound);
   }
 
+  @TypesenseEnabled()
   public async remove(postId: string): Promise<void> {
     await this.documents.delete(postId).catch(authorizeNotFound);
   }
 
+  @TypesenseEnabled()
   public async search(queries: SearchParams<IndexedPost>): Promise<SearchResponse<IndexedPost>> {
     return await this.documents.search(queries);
   }
 
+  @TypesenseEnabled()
   public async searchAndPopulate(queries: SearchParams<IndexedPost>): Promise<SearchResponse<Post>> {
     const results = await this.documents.search(queries);
 
