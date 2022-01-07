@@ -41,7 +41,7 @@ export class JwtAuthGuard implements CanActivate {
   private async handleRequest(request: HorizonRequest): Promise<User> {
     const token = request.signedCookies?.accessToken;
     if (!token)
-      throw new BadRequestException('Token not provided');
+      throw new UnauthorizedException('Token not provided');
 
     const decoded = this.jwtService.decode(token) as Token;
     if (!decoded)
