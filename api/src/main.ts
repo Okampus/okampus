@@ -1,3 +1,5 @@
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
 import type { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface';
 import { NestFactory, Reflector } from '@nestjs/core';
@@ -5,8 +7,6 @@ import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
-import { promises as fs } from 'node:fs';
-import path from 'node:path';
 import { AppModule } from './app.module';
 import { config } from './config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
