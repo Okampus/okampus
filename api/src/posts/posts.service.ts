@@ -28,7 +28,7 @@ export class PostsService {
     const tags = await this.tagRepository.find({ name: { $in: createPostDto.tags } });
     post.tags.add(...tags);
     await this.postRepository.persistAndFlush(post);
-    // Await this.postIndexerService.add(post);
+    await this.postSearchService.add(post);
     return post;
   }
 
@@ -80,6 +80,6 @@ export class PostsService {
     assertPermissions(ability, Action.Delete, post);
 
     await this.postRepository.removeAndFlush(post);
-    // Await this.postIndexerService.remove(post.postId.toString());
+    await this.postSearchService.remove(post.postId.toString());
   }
 }

@@ -1,6 +1,4 @@
-import type { HttpException, Type } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
-import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 import type { CollectionCreateSchema } from 'typesense/lib/Typesense/Collections';
 import type { SearchParams, SearchResponse } from 'typesense/lib/Typesense/Documents';
 import type { TypesenseError } from 'typesense/lib/Typesense/Errors';
@@ -52,22 +50,6 @@ export abstract class SearchService<Entity, IndexedEntity> {
     }
 
     logger.log('Indexing finished.');
-  }
-
-  public throwHttpExceptionFromTypesenseError(error: TypesenseError): Type<HttpException> {
-    const isHttpTypesenseError = typeof error.httpStatus !== 'undefined'
-      && Object.keys(HttpErrorByCode).includes(error.httpStatus.toString());
-
-    const httpCode = isHttpTypesenseError
-      ? error.httpStatus === 404
-        ? 400
-        : error.httpStatus as keyof typeof HttpErrorByCode
-      : 500;
-
-    const Exception = HttpErrorByCode[httpCode] as Type<HttpException>;
-
-    const message = error.message.split('Server said: ').pop();
-    throw new Exception(message);
   }
 
   public abstract add(entity: Entity): Promise<void>;

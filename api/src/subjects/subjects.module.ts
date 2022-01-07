@@ -1,7 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
-import { config } from '../config';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { SubjectSearchService } from './subject-search.service';
 import { Subject } from './subject.entity';
@@ -22,7 +21,6 @@ export class SubjectsModule implements OnModuleInit {
   ) {}
 
   public async onModuleInit(): Promise<void> {
-    if (config.get('typesenseEnabled'))
-      await this.subjectSearchService.init();
+    await this.subjectSearchService.init();
   }
 }

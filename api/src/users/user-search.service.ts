@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import type { CollectionCreateSchema } from 'typesense/lib/Typesense/Collections';
 import { SearchParams } from 'typesense/lib/Typesense/Documents';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
-import TypesenseEnabled from '../shared/lib/decorators/typesense-enabled.decorator';
+import RequireTypesense from '../shared/lib/decorators/require-typesense.decorator';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { authorizeNotFound, SearchService } from '../shared/modules/search/search.service';
 import { client } from '../typesense.config';
@@ -33,33 +33,33 @@ export class UserSearchService extends SearchService<User, IndexedUser> {
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
   ) { super(UserSearchService.schema, 'users'); }
 
-  @TypesenseEnabled()
+  @RequireTypesense()
   public async init(): Promise<void> {
     const users = await this.userRepository.findAll();
     await super.init(users, entity => this.toIndexedEntity(entity));
   }
 
-  @TypesenseEnabled()
+  @RequireTypesense()
   public async add(user: User): Promise<void> {
     await this.documents.create(this.toIndexedEntity(user));
   }
 
-  @TypesenseEnabled()
+  @RequireTypesense()
   public async update(user: User): Promise<void> {
     await this.documents.update(this.toIndexedEntity(user)).catch(authorizeNotFound);
   }
 
-  @TypesenseEnabled()
+  @RequireTypesense()
   public async remove(userId: string): Promise<void> {
     await this.documents.delete(userId).catch(authorizeNotFound);
   }
 
-  @TypesenseEnabled()
+  @RequireTypesense()
   public async search(queries: SearchParams<IndexedUser>): Promise<SearchResponse<IndexedUser>> {
     return await this.documents.search(queries);
   }
 
-  @TypesenseEnabled()
+  @RequireTypesense()
   public async searchAndPopulate(queries: SearchParams<IndexedUser>): Promise<SearchResponse<User>> {
     const results = await this.documents.search(queries);
 

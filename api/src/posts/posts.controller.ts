@@ -8,13 +8,12 @@ import {
   Patch,
   Post as PostRequest,
   Query,
-  ServiceUnavailableException,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
-import { TypesenseError } from 'typesense/lib/Typesense/Errors';
-import { config } from '../config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
+import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
@@ -53,24 +52,16 @@ export class PostsController {
     return await this.postsService.findAll();
   }
 
+  @UseGuards(TypesenseGuard)
   @Get('/search')
   @CheckPolicies(ability => ability.can(Action.Read, Post))
   public async search(
     @Query('full') full: boolean,
     @Query() query: SearchDto,
   ): Promise<SearchResponse<IndexedPost> | SearchResponse<Post>> {
-    if (!config.get('typesenseEnabled'))
-      throw new ServiceUnavailableException('Search is disabled');
-
-    try {
-      if (full)
-        return await this.postSearchService.searchAndPopulate(query);
-      return await this.postSearchService.search(query);
-    } catch (error: unknown) {
-      if (error instanceof TypesenseError)
-        this.postSearchService.throwHttpExceptionFromTypesenseError(error);
-      throw error;
-    }
+    if (full)
+      return await this.postSearchService.searchAndPopulate(query);
+    return await this.postSearchService.search(query);
   }
 
   @Get(':id')

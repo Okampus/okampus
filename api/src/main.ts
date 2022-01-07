@@ -10,6 +10,7 @@ import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { config } from './config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
+import { TypesenseFilter } from './shared/lib/filters/typesense.filter';
 import { logger as loggerMiddleware } from './shared/lib/middlewares/logger.middleware';
 import { FileKind } from './shared/lib/types/file-kind.enum';
 import { dirExists } from './shared/lib/utils/dirExists';
@@ -19,12 +20,14 @@ import { client } from './typesense.config';
 const logger = new Logger('Bootstrap');
 
 async function attemptTypesenseConnection(): Promise<void> {
+  const typesenseLogger = new Logger('Typesense');
   try {
     await client.health.retrieve();
+    typesenseLogger.log('Connection established');
   } catch (err) {
     if (err?.code === 'ECONNREFUSED') {
       config.set('typesenseEnabled', false);
-      new Logger('Typesense').warn('Service not available, disabling');
+      typesenseLogger.warn('Service not available, disabling');
     }
   }
 }
@@ -84,7 +87,7 @@ async function bootstrap(): Promise<void> {
     forbidNonWhitelisted: true,
     whitelist: true,
   }));
-  app.useGlobalFilters(new ExceptionsFilter());
+  app.useGlobalFilters(new ExceptionsFilter(), new TypesenseFilter());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.set('trust proxy', false);
 

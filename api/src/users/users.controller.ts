@@ -3,12 +3,11 @@ import {
   Get,
   Param,
   Query,
-  ServiceUnavailableException,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
-import { TypesenseError } from 'typesense/lib/Typesense/Errors';
-import { config } from '../config';
+import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
 import { SearchDto } from '../shared/modules/search/search.dto';
 import { UserSearchService } from './user-search.service';
 import type { IndexedUser } from './user-search.service';
@@ -28,22 +27,14 @@ export class UsersController {
     return await this.usersService.findOne(username);
   }
 
+  @UseGuards(TypesenseGuard)
   @Get('/search')
   public async search(
     @Query('full') full: boolean,
     @Query() query: SearchDto,
   ): Promise<SearchResponse<IndexedUser> | SearchResponse<User>> {
-    if (!config.get('typesenseEnabled'))
-      throw new ServiceUnavailableException('Search is disabled');
-
-    try {
-      if (full)
-        return await this.userSearchService.searchAndPopulate(query);
-      return await this.userSearchService.search(query);
-    } catch (error: unknown) {
-      if (error instanceof TypesenseError)
-        this.userSearchService.throwHttpExceptionFromTypesenseError(error);
-      throw error;
-    }
+    if (full)
+      return await this.userSearchService.searchAndPopulate(query);
+    return await this.userSearchService.search(query);
   }
 }

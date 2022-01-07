@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import type { CollectionCreateSchema } from 'typesense/lib/Typesense/Collections';
 import { SearchParams } from 'typesense/lib/Typesense/Documents';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
-import TypesenseEnabled from '../shared/lib/decorators/typesense-enabled.decorator';
+import RequireTypesense from '../shared/lib/decorators/require-typesense.decorator';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { extractTextFromTiptap } from '../shared/lib/utils/extractTextFromTiptap';
 import type { SimplifiedTiptapJSONContent } from '../shared/lib/utils/extractTextFromTiptap';
@@ -43,33 +43,33 @@ export class ArticleSearchService extends SearchService<Article, IndexedArticle>
     @InjectRepository(Article) private readonly articleRepository: BaseRepository<Article>,
   ) { super(ArticleSearchService.schema, 'articles'); }
 
-  @TypesenseEnabled()
+  @RequireTypesense()
   public async init(): Promise<void> {
     const articles = await this.articleRepository.find({}, ['author', 'tags']);
     await super.init(articles, entity => this.toIndexedEntity(entity));
   }
 
-  @TypesenseEnabled()
+  @RequireTypesense()
   public async add(article: Article): Promise<void> {
     await this.documents.create(this.toIndexedEntity(article));
   }
 
-  @TypesenseEnabled()
+  @RequireTypesense()
   public async update(article: Article): Promise<void> {
     await this.documents.update(this.toIndexedEntity(article)).catch(authorizeNotFound);
   }
 
-  @TypesenseEnabled()
+  @RequireTypesense()
   public async remove(articleId: string): Promise<void> {
     await this.documents.delete(articleId).catch(authorizeNotFound);
   }
 
-  @TypesenseEnabled()
+  @RequireTypesense()
   public async search(queries: SearchParams<IndexedArticle>): Promise<SearchResponse<IndexedArticle>> {
     return await this.documents.search(queries);
   }
 
-  @TypesenseEnabled()
+  @RequireTypesense()
   public async searchAndPopulate(queries: SearchParams<IndexedArticle>): Promise<SearchResponse<Article>> {
     const results = await this.documents.search(queries);
 

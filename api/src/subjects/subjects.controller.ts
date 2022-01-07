@@ -7,12 +7,11 @@ import {
   Patch,
   Post,
   Query,
-  ServiceUnavailableException,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
-import { TypesenseError } from 'typesense/lib/Typesense/Errors';
-import { config } from '../config';
+import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
@@ -46,24 +45,16 @@ export class SubjectsController {
     return await this.subjectsService.findAll();
   }
 
+  @UseGuards(TypesenseGuard)
   @Get('/search')
   @CheckPolicies(ability => ability.can(Action.Read, Subject))
   public async search(
     @Query('full') full: boolean,
     @Query() query: SearchDto,
   ): Promise<SearchResponse<IndexedSubject> | SearchResponse<Subject>> {
-    if (!config.get('typesenseEnabled'))
-      throw new ServiceUnavailableException('Search is disabled');
-
-    try {
-      if (full)
-        return await this.subjectSearchService.searchAndPopulate(query);
-      return await this.subjectSearchService.search(query);
-    } catch (error: unknown) {
-      if (error instanceof TypesenseError)
-        this.subjectSearchService.throwHttpExceptionFromTypesenseError(error);
-      throw error;
-    }
+    if (full)
+      return await this.subjectSearchService.searchAndPopulate(query);
+    return await this.subjectSearchService.search(query);
   }
 
   @Get(':id')
