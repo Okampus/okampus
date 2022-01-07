@@ -28,7 +28,7 @@ import { InfoDocsService } from './info-docs.service';
 
 @ApiTags('InfoDocs')
 @UseGuards(PoliciesGuard)
-@Controller({ path: 'files/info-docs' })
+@Controller()
 export class InfoDocsController {
   constructor(
     private readonly infoDocsService: InfoDocsService,

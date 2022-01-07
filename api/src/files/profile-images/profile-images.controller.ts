@@ -23,7 +23,7 @@ import { ProfileImagesService } from './profile-images.service';
 
 @ApiTags('ProfileImages')
 @UseGuards(PoliciesGuard)
-@Controller({ path: 'files/profile-images' })
+@Controller()
 export class ProfileImagesController {
   constructor(
     private readonly profileImagesService: ProfileImagesService,

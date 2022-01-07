@@ -24,7 +24,7 @@ import { CreateAttachmentDto } from './dto/create-attachment.dto';
 
 @ApiTags('Attachments')
 @UseGuards(PoliciesGuard)
-@Controller({ path: 'files/attachments' })
+@Controller()
 export class AttachmentsController {
   constructor(
     private readonly attachmentsService: AttachmentsService,

@@ -12,7 +12,7 @@ import { Response as Res } from 'express';
 import { FileUploadsService } from './file-uploads.service';
 
 @ApiTags('FileUploads')
-@Controller({ path: 'files/uploads' })
+@Controller()
 export class FileUploadsController {
   constructor(
     private readonly filesService: FileUploadsService,

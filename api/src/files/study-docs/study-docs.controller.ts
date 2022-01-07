@@ -28,7 +28,7 @@ import { StudyDocsService } from './study-docs.service';
 
 @ApiTags('StudyDocs')
 @UseGuards(PoliciesGuard)
-@Controller({ path: 'files/study-docs' })
+@Controller()
 export class StudyDocsController {
   constructor(
     private readonly studyDocsService: StudyDocsService,
