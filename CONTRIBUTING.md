@@ -44,7 +44,7 @@ Pour lancer HorizonWeb localement, il faut suivre ces étapes :
 2. Dupliquez puis renommez le fichier `.env.example` dans le dossier `api/`, en `.env`.
 2. Remplissez ce fichier avec vos tokens et votre configuration.
 2. Installez les dependences avec `npm install`.
-2. Initialisez la base de données postgreSQL avec `npx mikro-orm schema:screate -r`
+2. Initialisez la base de données postgreSQL avec `npx mikro-orm schema:create -r`
 2. Lancez l'API en mode "développement" avec `npm run dev`.
 
 ### Pour le Frontend
