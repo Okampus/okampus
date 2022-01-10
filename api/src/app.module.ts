@@ -9,6 +9,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { CommentsModule } from './comments/comments.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { FilesModule } from './files/files.module';
+import { HealthModule } from './health/health.module';
 import { PostsModule } from './posts/posts.module';
 import { ReactionsModule } from './reactions/reactions.module';
 import { RepliesModule } from './replies/replies.module';
@@ -28,6 +29,7 @@ import { UsersModule } from './users/users.module';
     CommentsModule,
     FavoritesModule,
     FilesModule,
+    HealthModule,
     PostsModule,
     ReactionsModule,
     RepliesModule,
