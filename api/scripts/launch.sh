@@ -1,2 +1,2 @@
 npx mikro-orm schema:update -r
-npm run start:dev
+npm run start

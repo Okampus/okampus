@@ -3,8 +3,8 @@ import { config } from './config';
 
 export const client = new Client({
   nodes: [{
-    host: 'localhost',
-    port: 8108,
+    host: config.get('typesenseHost'),
+    port: config.get('typesensePort'),
     protocol: 'http',
   }],
   apiKey: config.get('typesenseApiKey'),

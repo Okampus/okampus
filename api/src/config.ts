@@ -8,6 +8,8 @@ interface Config {
   nodeEnv: 'development' | 'production' | 'test';
   typesenseEnabled: boolean;
   typesenseApiKey: string;
+  typesenseHost: string;
+  typesensePort: number;
   accessTokenSecret: string;
   accessTokenExpiration: string;
   refreshTokenSecret: string;
@@ -47,6 +49,16 @@ export const config = createProfiguration<Config>({
     default: 'api-key',
     format: String,
     env: 'TYPESENSE_API_KEY',
+  },
+  typesenseHost: {
+    default: 'localhost',
+    format: String,
+    env: 'TYPESENSE_HOST',
+  },
+  typesensePort: {
+    default: 8108,
+    format: Number,
+    env: 'TYPESENSE_PORT',
   },
   accessTokenSecret: {
     default: 'secret',

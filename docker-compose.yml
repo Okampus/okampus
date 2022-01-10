@@ -13,26 +13,45 @@ services:
     networks:
       - backend
     environment:
-      - POSTGRES_USER=horizon-admin
-      - POSTGRES_PASSWORD=root
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
-  adminer:
-    image: adminer:4.8.1-standalone
+  pgadmin:
+    image: dpage/pgadmin4
     restart: always
     depends_on:
       - horizon-db
     ports:
-      - 28082:8082
-    environment:
-      ADMINER_DEFAULT_SERVER: horizon-db
+      - 5050:5050
+    volumes:
+      - ./data/servers.json:/pgadmin4/servers.json
+      - ./data/pgadmin:/var/lib/pgadmin
     networks:
       - backend
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_LISTEN_PORT: 5050
+
+  typesense:
+    image: typesense/typesense:0.22.1
+    restart: always
+    volumes:
+      - ./data/typesense:/tmp/typesense-data
+    ports:
+      - 18108:8108
+    networks:
+      - backend
+    environment:
+      TYPESENSE_DATA_DIR: ${TYPESENSE_DATA_DIR}
+      TYPESENSE_API_KEY: ${TYPESENSE_API_KEY}
 
   horizon-api:
     build: ./api
     restart: always
     depends_on:
       - horizon-db
+      - typesense
     ports:
       - 443:8081
     volumes:
@@ -40,16 +59,10 @@ services:
     networks:
       - backend
     environment:
-      WAIT_HOSTS: horizon-db:5432
-      MIKRO_ORM_HOST: horizon-db
-
-  # horizon-site:
-  #   build: ./site
-  #   restart: always
-  #   depends_on:
-  #     - horizon-api
-  #   ports:
-  #     - 28080:8080
+      WAIT_HOSTS: horizon-db:5432, typesense:8108
+      MIKRO_ORM_HOST: ${MIKRO_ORM_HOST}
+      TYPESENSE_HOST: ${TYPESENSE_HOST}
+      TYPESENSE_PORT: ${TYPESENSE_PORT}
 
 networks:
   backend:

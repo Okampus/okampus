@@ -7,8 +7,9 @@ ADD .env ./
 ADD package*.json ./
 RUN npm install
 ADD . ./
-RUN chmod +x ./launch.sh
+RUN chmod -R +x ./scripts
 RUN chmod 777 ./
+RUN ./scripts/init_fs.sh
 
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
 RUN chmod +x /wait
@@ -16,4 +17,4 @@ RUN chmod +x /wait
 EXPOSE 8081
 USER api
 
-CMD /wait && ./launch.sh
+CMD /wait && ./scripts/launch.sh
