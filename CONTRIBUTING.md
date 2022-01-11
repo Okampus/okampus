@@ -11,7 +11,7 @@ Sur votre PR, n'ayez pas peur de faire autant de commits dont vous avez besoin, 
 ## Directives
 
 **Les issues sont uniquement pour signaler des bugs ou proposer des suggestions. Si vous avez une question concernant
-le bot ou son développement, ouvrez une Discussion GitHub**.
+le site ou son développement, ouvrez une Discussion GitHub**.
 
 Pour contribuer à ce repo, n'hésitez pas à créer un nouveau fork et à soumettre une Pull Request, en suivant ces
 instructions :
@@ -44,7 +44,7 @@ Pour lancer HorizonWeb localement, il faut suivre ces étapes :
 2. Dupliquez puis renommez le fichier `.env.example` dans le dossier `api/`, en `.env`.
 2. Remplissez ce fichier avec vos tokens et votre configuration.
 2. Installez les dependences avec `npm install`.
-2. Initialisez la base de données postgreSQL avec `npx mikro-orm schema:create -r`
+2. Initialisez la base de données PostgreSQL avec `npx mikro-orm schema:create -r`
 2. Lancez l'API en mode "développement" avec `npm run dev`.
 
 ### Pour le Frontend

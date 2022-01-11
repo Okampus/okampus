@@ -1,20 +1,20 @@
-<h1 align="center">HorizonWeb</h1>
+<h1 align="center">HorizonWeb — API</h1>
 <p align="center">
   🖥 Le projet de forum d'entraide étudiante de Horizon !
 </p>
 
 <h3 align="center">Backend & API</h1>
 
-## Lancer HorizonWeb localement
+## Lancer HorizonWeb — API localement
 
-Pour lancer HorizonWeb localement, il faut suivre ces étapes :
+Pour lancer l'API d'HorizonWeb localement, il faut suivre ces étapes :
 
 1. Installez [Node.js]. Vérifiez bien d'avoir Node.js v16+ ou plus quand vous faites `node -v`.
 1. Installez [PostgreSQL 13].
 1. Dupliquez puis renommez le fichier `.env.example` dans le dossier `api/`, en `.env`.
 1. Remplissez ce fichier avec vos tokens et votre configuration.
 1. Installez les dependences avec `npm install`.
-1. :warning: Initialisez la base de données postgreSQL avec `npx mikro-orm schema:screate -r`
+1. :warning: Initialisez la base de données postgreSQL avec `npx mikro-orm schema:create -r`
 1. Lancez l'API en mode "développement" avec `npm run dev`.
 
 ## Lancer HorizonWeb via Docker
