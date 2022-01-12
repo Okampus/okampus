@@ -13,8 +13,8 @@
     "start:dev": "cross-env NODE_ENV=development nest start --watch",
     "start:debug": "cross-env NODE_ENV=development nest start --debug --watch",
     "start:prod": "cross-env NODE_ENV=production node dist/main",
-    "lint": "eslint \"{src,test}/**/*.{ts,js}\"",
-    "lint:fix": "eslint \"{src,test}/**/*.{ts,js}\" --fix"
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint 'src/**/*.ts' --fix"
   },
   "dependencies": {
     "@casl/ability": "^5.4.3",

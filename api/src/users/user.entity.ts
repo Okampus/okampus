@@ -1,7 +1,9 @@
 import {
+  Collection,
   Entity,
   Enum,
   Index,
+  OneToMany,
   PrimaryKey,
   Property,
   Unique,
@@ -9,6 +11,7 @@ import {
 import * as bcrypt from 'bcrypt';
 import { Exclude, Expose } from 'class-transformer';
 import { nanoid } from 'nanoid';
+import type { BadgeUnlock } from '../badges/badge-unlock.entity';
 import { EMAIL_INCLUDED } from '../shared/lib/constants';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { Role } from '../shared/modules/authorization/types/role.enum';
@@ -33,6 +36,10 @@ export class User extends BaseEntity {
   @Exclude()
   password!: string;
 
+  @OneToMany('BadgeUnlock', 'user')
+  @Exclude()
+  badges = new Collection<BadgeUnlock>(this);
+
   // TODO: Add full 'reputation' support
   @Property()
   reputation = 0;
@@ -43,6 +50,16 @@ export class User extends BaseEntity {
 
   @Enum({ items: () => Role, array: true, default: [Role.User] })
   roles: Role[] = [Role.User];
+
+  @Property({ type: 'text' })
+  color?: string;
+
+  @Property({ type: 'text' })
+  signature?: string;
+
+  // TODO: Add full 'banner' support
+  @Property({ type: 'text' })
+  banner?: string;
 
   constructor(username: string, email: string) {
     super();

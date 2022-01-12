@@ -6,6 +6,8 @@ import { AppController } from './app.controller';
 import { ArticlesModule } from './articles/articles.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { BadgesModule } from './badges/badges.module';
+import { ClubsModule } from './clubs/clubs.module';
 import { CommentsModule } from './comments/comments.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { FilesModule } from './files/files.module';
@@ -15,6 +17,7 @@ import { ReactionsModule } from './reactions/reactions.module';
 import { RepliesModule } from './replies/replies.module';
 import { PoliciesGuard } from './shared/modules/authorization';
 import { CaslModule } from './shared/modules/casl/casl.module';
+import { SocialsModule } from './socials/socials.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
@@ -25,7 +28,9 @@ import { UsersModule } from './users/users.module';
     MikroOrmModule.forRoot(),
     ArticlesModule,
     AuthModule,
+    BadgesModule,
     CaslModule,
+    ClubsModule,
     CommentsModule,
     FavoritesModule,
     FilesModule,
@@ -36,6 +41,7 @@ import { UsersModule } from './users/users.module';
     SubjectsModule,
     TagsModule,
     UsersModule,
+    SocialsModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },

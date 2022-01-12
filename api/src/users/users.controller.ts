@@ -1,17 +1,21 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
+  Patch,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
+import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
 import { SearchDto } from '../shared/modules/search/search.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserSearchService } from './user-search.service';
 import type { IndexedUser } from './user-search.service';
-import type { User } from './user.entity';
+import { User } from './user.entity';
 import { UsersService } from './users.service';
 
 @ApiTags('Users')
@@ -36,5 +40,10 @@ export class UsersController {
     if (full)
       return await this.userSearchService.searchAndPopulate(query);
     return await this.userSearchService.search(query);
+  }
+
+  @Patch('update')
+  public async updateOne(@CurrentUser() user: User, @Body() updateUserDto: UpdateUserDto): Promise<User> {
+    return await this.usersService.updateUser(user.userId, updateUserDto);
   }
 }
