@@ -8,9 +8,11 @@ import {
 } from 'class-validator';
 
 const opaqueHexColor = /^(?:[\da-f]{3}|[\da-f]{6})$/i;
+const tagRegex = /^[\d:a-z-]+$/;
 
 export class CreateTagDto {
   @Length(1, 50)
+  @Matches(tagRegex)
   @IsString()
   name: string;
 
