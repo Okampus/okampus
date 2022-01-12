@@ -9,20 +9,26 @@ import {
   Post,
   Query,
   UploadedFile,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Express } from 'express';
+import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
+import { TypesenseGuard } from '../../shared/lib/guards/typesense.guard';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
+import { SearchDto } from '../../shared/modules/search/search.dto';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
 import { CreateInfoDocDto } from './dto/create-info-doc.dto';
 import { UpdateInfoDocDto } from './dto/update-info-doc.dto';
 import { InfoDoc } from './info-doc.entity';
+import type { IndexedInfoDoc } from './info-docs-search.service';
+import { InfoDocSearchService } from './info-docs-search.service';
 import { InfoDocsService } from './info-docs.service';
 
 @ApiTags('InfoDocs')
@@ -30,6 +36,7 @@ import { InfoDocsService } from './info-docs.service';
 export class InfoDocsController {
   constructor(
     private readonly infoDocsService: InfoDocsService,
+    private readonly infoDocSearchService: InfoDocSearchService,
     private readonly filesService: FileUploadsService,
   ) {}
 
@@ -59,6 +66,18 @@ export class InfoDocsController {
     if (query.page)
       return await this.infoDocsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
     return await this.infoDocsService.findAll();
+  }
+
+  @UseGuards(TypesenseGuard)
+  @Get('/search')
+  @CheckPolicies(ability => ability.can(Action.Read, InfoDoc))
+  public async search(
+    @Query('full') full: boolean,
+    @Query() query: SearchDto,
+  ): Promise<SearchResponse<IndexedInfoDoc> | SearchResponse<InfoDoc>> {
+    if (full)
+      return await this.infoDocSearchService.searchAndPopulate(query);
+    return await this.infoDocSearchService.search(query);
   }
 
   @Get(':id')
