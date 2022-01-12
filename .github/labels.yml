@@ -10,6 +10,9 @@
 - name: 'type: bug'
   description: Issues/PRs that reports or fixes a bug.
   color: 'D93F0B'
+- name: 'type: dependencies'
+  description: Issues/PRs that updates dependencies.
+  color: '699DE5'
 
 - name: 'status: blocked'
   description: PRs that are blocked by other issues/PRs.
