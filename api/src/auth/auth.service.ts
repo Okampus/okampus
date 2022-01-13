@@ -20,15 +20,17 @@ export class AuthService {
   ) {}
 
   public async validatePassword(userQuery: string, password: string): Promise<User> {
-    const user = await this.userRepository.findOneOrFail({
+    const user = await this.userRepository.findOne({
       $or: [
         { username: { $ilike: userQuery } },
         { email: userQuery.toLowerCase() },
       ],
     });
+    if (!user)
+      throw new UnauthorizedException('Invalid credentials');
 
     if (!(await user.validatePassword(password)))
-      throw new BadRequestException('Incorrect password');
+      throw new UnauthorizedException('Incorrect password');
 
     return user;
   }
