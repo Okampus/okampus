@@ -22,3 +22,8 @@ export function extractTextFromTiptap(node: SimplifiedTiptapJSONContent): string
     return node.content.map(subnode => extractTextFromTiptap(subnode)).join('');
   return '';
 }
+
+export function extractTextFromStringifiedTiptap(stringifiedTiptap: string): string {
+  const parsedTiptap = JSON.parse(stringifiedTiptap) as SimplifiedTiptapJSONContent;
+  return extractTextFromTiptap(parsedTiptap);
+}

@@ -5,8 +5,7 @@ import { SearchParams } from 'typesense/lib/Typesense/Documents';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import RequireTypesense from '../shared/lib/decorators/require-typesense.decorator';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import { extractTextFromTiptap } from '../shared/lib/utils/extractTextFromTiptap';
-import type { SimplifiedTiptapJSONContent } from '../shared/lib/utils/extractTextFromTiptap';
+import { extractTextFromStringifiedTiptap } from '../shared/lib/utils/extractTextFromTiptap';
 import { authorizeNotFound, SearchService } from '../shared/modules/search/search.service';
 import { client } from '../typesense.config';
 import { Article } from './entities/article.entity';
@@ -88,7 +87,7 @@ export class ArticleSearchService extends SearchService<Article, IndexedArticle>
   public toIndexedEntity(article: Article): IndexedArticle {
     return {
       title: article.title,
-      body: extractTextFromTiptap(JSON.parse(article.body) as SimplifiedTiptapJSONContent),
+      body: extractTextFromStringifiedTiptap(article.body),
       author: article.author.username,
       tags: article.tags.toArray().map(tag => tag.name),
       category: article.category,
