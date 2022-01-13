@@ -5,40 +5,39 @@
         @toggle-login="toggleLogin"
     />
 
-    <div>
+
+    <div
+        class="flex flex-row filter h-screen w-screen z-1"
+        :class="{'brightness-50': showModal}"
+    >
+        <side-bar
+            ref="sidebar"
+            :collapsed="closedSidebar && !uncollapsedSidebar"
+            :uncollapsed="uncollapsedSidebar"
+            :collapsing="collapsingSidebar"
+            @close-side-bar="toggleSidebar"
+        />
         <div
-            class="relative flex flex-row filter h-screen w-screen z-1"
-            :class="{'brightness-50': showModal}"
+            ref="content"
+            :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
+            class="w-full bg-2 h-content flex flex-col relative after-topbar overflow-auto app-scrollbar filter"
         >
-            <side-bar
-                ref="sidebar"
-                :collapsed="closedSidebar && !uncollapsedSidebar"
-                :uncollapsed="uncollapsedSidebar"
-                :collapsing="collapsingSidebar"
-                @close-side-bar="toggleSidebar"
-            />
             <div
-                ref="content"
-                :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
-                class="w-full bg-2 h-content flex flex-col relative after-topbar overflow-auto app-scrollbar filter"
+                class="flex-grow-1 flex-shrink-0 flex-auto"
             >
-                <div
-                    class="flex-grow-1 flex-shrink-0 flex-auto"
-                >
-                    <router-view />
-                </div>
-                <page-footer class="flex-shrink-0" />
+                <router-view />
             </div>
-            <top-bar
-                ref="topbar"
-                class="flex fixed top-0 left-0 w-full h-tbar border-bar
-      text-1 items-center justify-between border-b bg-1 filter"
-                :show-login="showLogin"
-                :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
-                @toggle-login="toggleLogin"
-                @toggle-side-bar="toggleSidebar"
-            />
+            <page-footer class="flex-shrink-0" />
         </div>
+        <top-bar
+            ref="topbar"
+            class="flex fixed top-0 left-0 w-full h-tbar border-bar
+      text-1 items-center justify-between border-b bg-1 filter"
+            :show-login="showLogin"
+            :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
+            @toggle-login="toggleLogin"
+            @toggle-side-bar="toggleSidebar"
+        />
     </div>
 </template>
 

@@ -6,7 +6,8 @@
     @extend %button-flat;
     @apply text-white bg-blue-600 dark:bg-blue-800
         hover:bg-blue-700 hover:dark:bg-blue-900
-        active:bg-blue-800 active:dark:bg-indigo-900;
+        active:bg-blue-800 active:dark:bg-indigo-900
+        flex justify-center items-center;
 
     box-shadow: 0 0 1px rgb(0 0 0 / 40%);
 
@@ -15,7 +16,7 @@
         @apply bg-blue-500 dark:bg-blue-700
             hover:bg-blue-600 dark:hover:bg-blue-800
             active:bg-blue-700 dark:active:bg-blue-900
-            px-4 py-2 relative
+            px-4 py-2 relative h-10
             bottom-[0.23rem] transform active:translate-y-[0.11rem]
             transition duration-75 ease-in-out;
 

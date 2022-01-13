@@ -11,7 +11,7 @@
             'h-content': !uncollapsed,
         }"
         class="overflow-hidden flex flex-col flex-shrink-0 w-sidebar bg-1
-    border-r border-bar whitespace-nowrap transition-spacing z-50"
+    border-r border-bar whitespace-nowrap transition-spacing z-30"
     >
         <div
             v-if="uncollapsed"
@@ -129,7 +129,8 @@ export default {
                     { to: '/admin', text: 'Admin', icon: 'ri-pie-chart-box-line' }
                 ],
                 'docs sharing': [
-                    { to: '/file-upload', text: 'Documents', icon: 'ri-folder-upload-line' }
+                    { to: '/doc/new', text: 'New Documents', icon: 'ri-folder-upload-line' },
+                    { to: '/doc/list', text: 'Documents', icon: 'ri-folder-line' }
                 ],
                 blog:[
                     { to: '/blog', text: 'Blog', icon: 'ri-book-open-line' },

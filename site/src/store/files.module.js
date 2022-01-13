@@ -1,7 +1,7 @@
 import FileService from '../services/files.service'
 import { uniqBy } from '@/utils/uniqBy'
 
-const initialState = { studyDocs: [] }
+const initialState = { studyDocs: [] , page: 1}
 
 export const files = {
     namespaced: true,
@@ -21,9 +21,21 @@ export const files = {
         },
         newSearchStudyDocs ({ commit }, query) {
             commit('refreshStudyDocs')
-            return FileService.getStudyDocs({ page: 1, ...query }).then(
+            return FileService.getStudyDocs({ page: this.state.page, ...query }).then(
                 studyDocs => {
                     commit('searchStudyDocsSuccess', studyDocs)
+                    return Promise.resolve(studyDocs)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        getStudyDocs ({ commit }, query) {
+            return FileService.getStudyDocs({ page: this.state.page, ...query }).then(
+                studyDocs => {
+                    commit('getStudyDocsSuccess', studyDocs)
                     return Promise.resolve(studyDocs)
                 },
                 error => {
@@ -43,7 +55,7 @@ export const files = {
                     return Promise.reject(error)
                 }
             )
-        }
+        },
     },
     mutations: {
         refreshStudyDocs (state) {
@@ -54,8 +66,11 @@ export const files = {
             state.studyDocs = uniqBy([...state.studyDocs, ...studyDocs], (a, b) => a.id === b.id)
             state.page++
         },
+        getStudyDocsSuccess(state, studyDocs){
+            state.studyDocs = studyDocs
+        },
         addStudyDocSuccess (state, newStudyDoc) {
             state.studyDocs.unshift(newStudyDoc)
         }
-    }
+    },
 }
