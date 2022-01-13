@@ -26,11 +26,8 @@ export class AuthService {
         { email: userQuery.toLowerCase() },
       ],
     });
-    if (!user)
+    if (!user || !(await user.validatePassword(password)))
       throw new UnauthorizedException('Invalid credentials');
-
-    if (!(await user.validatePassword(password)))
-      throw new UnauthorizedException('Incorrect password');
 
     return user;
   }
@@ -52,7 +49,7 @@ export class AuthService {
   public async loginWithRefreshToken(refreshToken: string): Promise<TokenResponse> {
     const decoded = this.jwtService.decode(refreshToken) as Token;
     if (!decoded)
-      throw new BadRequestException('Failed to decode jwt');
+      throw new BadRequestException('Failed to decode JWT');
 
     try {
       await this.jwtService.verifyAsync<Token>(refreshToken, this.getRefreshTokenOptions());
