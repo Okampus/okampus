@@ -80,7 +80,7 @@
                         </a>
 
 
-                        <CarouselTags
+                        <TagsList
                             class="w-full pr-5"
                             :tags="post.tags"
                         />
@@ -119,7 +119,7 @@ export default {
     components: {
 
         UserPreview,
-        CarouselTags
+        TagsList
     },
     props: {
         post: {

@@ -1,5 +1,6 @@
 <template>
     <div
+        v-if="tags.length != 0"
         class="relative flex m-2 items-center"
     >
         <transition name="fade">
@@ -69,17 +70,19 @@ export default {
     },
     methods: {
         getScroll(){
+            if(this.tags.length != 0){
+                if(this.$refs.scroll.scrollLeft == 0){
+                    this.leftGradient = false
+                }else{
+                    this.leftGradient = true
+                }
 
-            if(this.$refs.scroll.scrollLeft == 0){
-                this.leftGradient = false
-            }else{
-                this.leftGradient = true
-            }
-
-            if(this.$refs.scroll.scrollLeft == this.$refs.scroll.scrollWidth - this.$refs.scroll.getBoundingClientRect().width){
-                this.rightGradient = false
-            }else{
-                this.rightGradient = true
+                console.log(this.$refs.scroll.scrollLeft, this.$refs.scroll.scrollWidth - this.$refs.scroll.getBoundingClientRect().width)
+                if(this.$refs.scroll.scrollLeft == this.$refs.scroll.scrollWidth - this.$refs.scroll.getBoundingClientRect().width){
+                    this.rightGradient = false
+                }else{
+                    this.rightGradient = true
+                }
             }
         }
     }
