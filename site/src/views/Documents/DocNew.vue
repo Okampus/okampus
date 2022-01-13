@@ -66,7 +66,7 @@
                     <FileInput
                         v-model="stepsModel[0].files"
                         :img-preview="true"
-                        :file-limit="0"
+                        :file-limit="2"
                         class="h-52 w-full mt-4"
                     />
                 </section>

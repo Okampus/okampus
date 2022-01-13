@@ -5,8 +5,25 @@
             :custom-class="'block md:hidden'"
             @close="filePreview = null"
         >
-            <div class="card w-3/4">
-                {{ filePreview }}
+            <div class="card flex gap-2">
+                <div class="flex items-center justify-center">
+                    <DocImg
+                        class="h-32 w-32"
+                        :mime="filePreview.file.mimeType"
+                        :file-name="filePreview.file.originalName"
+                    />
+                </div>
+                <div class="">
+                    <div class="text-xl font-bold">
+                        {{ filePreview.file.originalName }}
+                    </div>
+                    <div class="text-sm">
+                        {{ new Date(filePreview.createdAt).toLocaleDateString() }}
+                    </div>
+                    <div class="text-sm">
+                        {{ formatBytes(filePreview.file.fileSize) }}
+                    </div>
+                </div>
             </div>
         </CustomModal>
         <div class="card flex flex-grow flex-col gap-4">
@@ -183,7 +200,7 @@
                                 >
                                     <div class="card p-2 flex flex-col">
                                         <div
-                                            v-for="(button, index) in dropDownButtons(file.studyDocId)"
+                                            v-for="(button, index) in dropDownButtons(file)"
                                             :key="index"
                                             class="py-2 px-4 rounded-xl flex justify-center items-center gap-2"
                                             :class="button.class"
@@ -208,15 +225,15 @@
                 <div class="flex flex-col gap-2">
                     <div
                         v-if="filePreview"
-                        class="card"
+                        class="card md:block hidden"
                     >
                         <div class="flex flex-col gap-2 divide-y">
                             <div class="flex items-center justify-center">
-                                <img
+                                <DocImg
                                     class="h-32 w-32"
-                                    :src="fileIcon"
-                                    alt=""
-                                >
+                                    :mime="filePreview.file.mimeType"
+                                    :file-name="filePreview.file.originalName"
+                                />
                             </div>
                             <div class="text-center">
                                 <div class="text-xl font-bold">

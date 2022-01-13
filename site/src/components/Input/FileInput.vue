@@ -75,7 +75,7 @@
                     :disabled="fileLimit != 0 && fileLimit == modelValue.length"
                 >
                     <div
-                        class="h-full flex justify-center items-center"
+                        class="h-full w-full flex justify-center items-center"
                     >
                         <label
                             class="flex-grow"

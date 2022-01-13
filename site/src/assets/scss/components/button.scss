@@ -7,6 +7,7 @@
     @apply text-white bg-blue-600 dark:bg-blue-800
         hover:bg-blue-700 hover:dark:bg-blue-900
         active:bg-blue-800 active:dark:bg-indigo-900
+        disabled:bg-gray-600 disabled:dark:bg-gray-800
         flex justify-center items-center;
 
     box-shadow: 0 0 1px rgb(0 0 0 / 40%);
@@ -17,11 +18,20 @@
             hover:bg-blue-600 dark:hover:bg-blue-800
             active:bg-blue-700 dark:active:bg-blue-900
             px-4 py-2 relative h-10
-            bottom-[0.23rem] transform active:translate-y-[0.11rem]
-            transition duration-75 ease-in-out;
+            bottom-[0.23rem] ;
 
         box-shadow: inset 0 0 3px rgb(255 255 255 / 50%);
     }
+
+    &[disabled] > :first-child{
+        @apply bg-gray-500 dark:bg-gray-700
+    }
+
+    &:not([disabled]) > :first-child{
+        @apply transform active:translate-y-[0.11rem]
+        transition duration-75 ease-in-out
+    }
+
 }
 
 .icon-button {

@@ -36,7 +36,7 @@
 
     <slot :name="steps[currentStep].id" />
 
-    <div class="mt-4">
+    <div class="flex mt-4">
         <button
             v-if="currentStep != 0"
             class="button mr-4"
