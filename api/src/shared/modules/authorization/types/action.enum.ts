@@ -7,4 +7,5 @@ export enum Action {
   Delete = 'delete',
 
   Interact = 'interact',
+  Report = 'report',
 }

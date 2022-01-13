@@ -15,6 +15,7 @@ import { HealthModule } from './health/health.module';
 import { PostsModule } from './posts/posts.module';
 import { ReactionsModule } from './reactions/reactions.module';
 import { RepliesModule } from './replies/replies.module';
+import { ReportsModule } from './reports/reports.module';
 import { PoliciesGuard } from './shared/modules/authorization';
 import { CaslModule } from './shared/modules/casl/casl.module';
 import { SocialsModule } from './socials/socials.module';
@@ -38,6 +39,7 @@ import { UsersModule } from './users/users.module';
     PostsModule,
     ReactionsModule,
     RepliesModule,
+    ReportsModule,
     SubjectsModule,
     TagsModule,
     UsersModule,
