@@ -75,7 +75,7 @@ export class CommentsService {
     // (i.e. "personal"/"sensitive" posts)
     return await this.commentRepository.findWithPagination(
       paginationOptions,
-      { post: { postId } },
+      { post: { postId }, reply: null },
       { populate: ['author', 'post', 'reply'] },
     );
   }
