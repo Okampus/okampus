@@ -78,7 +78,10 @@
                                 :reputation="post.author.reputation"
                             />
                         </a>
-                        <tags-list
+
+
+                        <CarouselTags
+                            class="w-full pr-5"
                             :tags="post.tags"
                         />
                     </div>
@@ -114,8 +117,9 @@ import TagsList from '@/components/List/TagsList.vue'
 
 export default {
     components: {
-        TagsList,
-        UserPreview
+
+        UserPreview,
+        CarouselTags
     },
     props: {
         post: {
