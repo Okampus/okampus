@@ -172,6 +172,7 @@ export default {
 @import "@/assets/scss/components/tiptap.scss";
 @import "@/assets/scss/sections/hero.scss";
 @import "@/assets/scss/sections/label.scss";
+@import "@/assets/scss/sections/transition.scss";
 @import "@/assets/scss/core/scrollbar.scss";
 @import "@/assets/scss/core/spacing.scss";
 @import "@/assets/scss/core/tab.scss";

@@ -168,6 +168,20 @@ module.exports = {
                     dark: '#7F889C'
                 }
             },
+            gradientColorStops:{
+                0: {
+                    light: '#fff',
+                    dark: '#000'
+                },
+                1: {
+                    light: '#fafafa',
+                    dark: '#0A0E18'
+                },
+                2: {
+                    light: '#ededed',
+                    dark: '#1a1e28'
+                },
+            },
             minHeight: {
                 20: '5rem'
             }

@@ -10,12 +10,13 @@
 </template>
 
 <script lang="js">
+
 export default {
+    components:{
+
+    },
     props: {
 
     },
-    data() {
-        return {}
-    }
 }
 </script>
