@@ -1,14 +1,6 @@
-import {
-  IsDate,
-  IsEnum,
-  IsOptional,
-} from 'class-validator';
-import { FileKind } from '../../../shared/lib/types/file-kind.enum';
+import { IsDate, IsOptional } from 'class-validator';
 
 export class CreateFileUploadDto {
-  @IsEnum(FileKind)
-  fileKind: FileKind;
-
   @IsOptional()
   @IsDate()
   fileLastModifiedAt?: Date;

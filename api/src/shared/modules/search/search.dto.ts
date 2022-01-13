@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {
-  IsBoolean,
   IsNumber,
   IsOptional,
   IsString,
@@ -59,8 +58,4 @@ export class SearchDto implements Arguments {
   @IsString()
   @MinLength(1)
   highlight_end_tag?: string;
-
-  @IsOptional()
-  @IsBoolean()
-  full: boolean;
 }

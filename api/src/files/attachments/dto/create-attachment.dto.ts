@@ -1,15 +1,8 @@
-import { OmitType } from '@nestjs/mapped-types';
-import {
-  IsIn,
-  IsInt,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-import { FileKind } from '../../../shared/lib/types/file-kind.enum';
+import { IsInt, IsOptional, IsString } from 'class-validator';
 import { CreateFileUploadDto } from '../../file-uploads/dto/create-file-upload.dto';
 import type { ContentIdsOptions } from '../content-options-xor.type';
 
-export class CreateAttachmentDto extends OmitType(CreateFileUploadDto, ['fileKind']) {
+export class CreateAttachmentDto extends CreateFileUploadDto {
   @IsOptional()
   @IsInt()
   postId?: number;
@@ -17,10 +10,6 @@ export class CreateAttachmentDto extends OmitType(CreateFileUploadDto, ['fileKin
   @IsOptional()
   @IsString()
   replyId?: string;
-
-  @IsOptional()
-  @IsIn([FileKind.Attachment])
-  fileKind?: FileKind.Attachment;
 }
 
 export type ValidCreateAttachmentDto = ContentIdsOptions & CreateFileUploadDto;

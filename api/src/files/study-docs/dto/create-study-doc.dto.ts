@@ -1,15 +1,12 @@
-import { OmitType } from '@nestjs/mapped-types';
 import {
   IsArray,
-  IsIn,
   IsInt,
   IsOptional,
   IsString,
 } from 'class-validator';
-import { FileKind } from '../../../shared/lib/types/file-kind.enum';
 import { CreateFileUploadDto } from '../../file-uploads/dto/create-file-upload.dto';
 
-export class CreateStudyDocDto extends OmitType(CreateFileUploadDto, ['fileKind']) {
+export class CreateStudyDocDto extends CreateFileUploadDto {
   @IsOptional()
   @IsInt()
   year?: number;
@@ -33,8 +30,4 @@ export class CreateStudyDocDto extends OmitType(CreateFileUploadDto, ['fileKind'
   @IsOptional()
   @IsString()
   description?: string;
-
-  @IsOptional()
-  @IsIn([FileKind.StudyDoc])
-  fileKind?: FileKind.StudyDoc;
 }
