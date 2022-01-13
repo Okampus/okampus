@@ -7,3 +7,13 @@
 .fade-leave-to {
     opacity: 0;
 }
+
+.search-fade-enter-active,
+.search-fade-leave-active {
+    transition: opacity 0.4s ease;
+}
+
+.search-fade-enter-from,
+.search-fade-leave-to {
+    opacity: 0;
+}

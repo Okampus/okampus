@@ -45,6 +45,7 @@ services:
     environment:
       TYPESENSE_DATA_DIR: ${TYPESENSE_DATA_DIR}
       TYPESENSE_API_KEY: ${TYPESENSE_API_KEY}
+      TYPESENSE_ENABLE_CORS: "true"
 
   horizon-api:
     build: ./api

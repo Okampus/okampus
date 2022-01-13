@@ -2,7 +2,7 @@
     <div class="w-21/24 flex gap-4 mx-auto my-6">
         <CustomModal
             :show="filePreview != null"
-            :custom-class="'block md:hidden'"
+            :global-custom-class="'block md:hidden'"
             @close="filePreview = null"
         >
             <div class="card flex gap-2">

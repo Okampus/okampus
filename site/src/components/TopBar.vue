@@ -15,14 +15,7 @@
         </div>
 
         <div class="relative bg-transparent flex-grow mx-6">
-            <bottom-border-input
-                class="md:text-lg lg:text-xl"
-                input-placeholder="Rechercher une ressource sur Horizon Efrei..."
-            >
-                <i
-                    class="ri-file-search-line mouse-icon text-2xl"
-                />
-            </bottom-border-input>
+            <SearchBar />
         </div>
 
         <div
@@ -59,17 +52,24 @@
 <script>
 
 import UserCard from '@/components/Card/UserCard.vue'
-import BottomBorderInput from '@/components/Input/BottomBorderInput.vue'
+import SearchBar from './SearchBar.vue'
+
 
 export default {
     components: {
         UserCard,
-        BottomBorderInput
+        SearchBar,
+
     },
     emits: [
         'toggle-side-bar',
         'toggle-login'
     ],
+    data() {
+        return {
+            showSearchBar: false,
+        }
+    },
     computed: {
         loggedIn () {
             return this.$store.state.auth.status.loggedIn
@@ -77,7 +77,8 @@ export default {
         user () {
             return this.$store.state.auth.user
         }
-    }
+    },
+
 }
 </script>
 
