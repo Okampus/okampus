@@ -33,7 +33,7 @@ export class PostFavoritesService {
     return await this.postFavoriteRepository.findWithPagination(
       paginationOptions,
       { user, kind: 'post' },
-      { populate: ['post'] },
+      { populate: ['post', 'post.tags'] },
     );
   }
 

@@ -33,7 +33,7 @@ export class ArticleFavoritesService {
     return await this.articleFavoriteRepository.findWithPagination(
       paginationOptions,
       { user, kind: 'article' },
-      { populate: ['article'] },
+      { populate: ['article', 'article.tags'] },
     );
   }
 
