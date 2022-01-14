@@ -70,7 +70,7 @@ export class SocialsService {
     paginationOptions?: PaginationOptions,
   ): Promise<PaginatedResult<UserSocialAccount>> {
     const user = await this.usersRepository.findOneOrFail({ userId });
-    return await this.userSocialsAccountRepository.findWithPagination(paginationOptions, { user });
+    return await this.userSocialsAccountRepository.findWithPagination(paginationOptions, { user }, { populate: ['social'] });
   }
 
   public async addClubSocialAccount(
@@ -90,7 +90,7 @@ export class SocialsService {
     paginationOptions?: PaginationOptions,
   ): Promise<PaginatedResult<ClubSocialAccount>> {
     const club = await this.clubsRepository.findOneOrFail({ clubId });
-    return await this.clubSocialsAccountRepository.findWithPagination(paginationOptions, { club });
+    return await this.clubSocialsAccountRepository.findWithPagination(paginationOptions, { club }, { populate: ['social'] });
   }
 
   public async updateSocialAccount(

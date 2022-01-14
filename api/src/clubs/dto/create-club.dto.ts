@@ -1,4 +1,4 @@
-import { IsArray, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateClubDto {
   @IsString()
@@ -12,8 +12,4 @@ export class CreateClubDto {
 
   @IsString()
   icon: string;
-
-  @IsArray()
-  @IsString({ each: true })
-  socials: string[];
 }

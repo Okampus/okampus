@@ -1,11 +1,15 @@
 import { Entity, ManyToOne } from '@mikro-orm/core';
-import { Club } from '../../clubs/entities/club.entity';
+import { Expose } from 'class-transformer';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import type { Club } from '../../clubs/entities/club.entity';
+import { CLUB_SOCIALS_INCLUDED } from '../../shared/lib/constants';
 import { SocialAccount } from './social-account.entity';
 import type { Social } from './social.entity';
 
 @Entity({ discriminatorValue: 'club' })
 export class ClubSocialAccount extends SocialAccount {
   @ManyToOne({ onDelete: 'CASCADE' })
+  @Expose({ groups: [CLUB_SOCIALS_INCLUDED] })
   club!: Club;
 
   constructor(options: {

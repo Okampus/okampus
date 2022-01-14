@@ -1,5 +1,4 @@
 import {
-  ArrayType,
   Collection,
   Entity,
   OneToMany,
@@ -10,6 +9,7 @@ import { Expose, Transform } from 'class-transformer';
 import { CLUB_MEMBERS_INCLUDED } from '../../shared/lib/constants';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { ClubRole } from '../../shared/lib/types/club-role.enum';
+import { ClubSocialAccount } from '../../socials/entities/club-social-account.entity';
 import type { User } from '../../users/user.entity';
 import { ClubMember } from './club-member.entity';
 
@@ -33,8 +33,13 @@ export class Club extends BaseEntity {
   @Property({ type: 'text' })
   icon!: string;
 
-  @Property({ type: ArrayType })
-  socials!: string[];
+  @OneToMany(() => ClubSocialAccount, account => account.club)
+  @Transform(({ obj }: { obj: { socials: Collection<string> } }) => {
+    if (obj.socials.isInitialized())
+      return Object.values(obj.socials).filter(social => typeof social === 'object');
+    return null;
+  })
+  socials = new Collection<ClubSocialAccount>(this);
 
   @OneToMany(() => ClubMember, member => member.club)
   @Transform(({ obj }: { obj: { members: Collection<string> } }) => {
@@ -45,22 +50,17 @@ export class Club extends BaseEntity {
   @Expose({ groups: [CLUB_MEMBERS_INCLUDED] })
   members = new Collection<ClubMember>(this);
 
-  @Property()
-  membersCount = 0;
-
   constructor(options: {
     name: string;
     category: string;
     description: string;
     icon: string;
-    socials: string[];
   }) {
     super();
     this.name = options.name;
     this.category = options.category;
     this.description = options.description;
     this.icon = options.icon;
-    this.socials = options.socials;
   }
 
   public getMemberRoles(user: User): ClubRole[] {

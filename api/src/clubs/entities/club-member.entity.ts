@@ -10,7 +10,8 @@ import { CLUBMEMBER_CLUB_INCLUDED } from '../../shared/lib/constants';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { ClubRole } from '../../shared/lib/types/club-role.enum';
 import { User } from '../../users/user.entity';
-import { Club } from './club.entity';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import type { Club } from './club.entity';
 
 @Entity()
 export class ClubMember extends BaseEntity {

@@ -1,6 +1,8 @@
 import { applyDecorators, SerializeOptions } from '@nestjs/common';
 import {
   CLUB_MEMBERS_INCLUDED,
+  CLUB_SOCIALS_CLUB_INCLUDED,
+  CLUB_SOCIALS_INCLUDED,
   CLUBMEMBER_CLUB_INCLUDED,
   EMAIL_INCLUDED,
 } from '../constants';
@@ -15,4 +17,12 @@ export function SerializerIncludeClubMembers(): MethodDecorator {
 
 export function SerializerClubMemberIncludeClub(): MethodDecorator {
   return applyDecorators(SerializeOptions({ groups: [CLUBMEMBER_CLUB_INCLUDED] }));
+}
+
+export function SerializerIncludeClubSocials(): MethodDecorator {
+  return applyDecorators(SerializeOptions({ groups: [CLUB_SOCIALS_INCLUDED] }));
+}
+
+export function SerializerClubSocialsIncludeClub(): MethodDecorator {
+  return applyDecorators(SerializeOptions({ groups: [CLUB_SOCIALS_CLUB_INCLUDED] }));
 }

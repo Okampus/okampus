@@ -43,15 +43,15 @@ export class ClubsService {
   }
 
   public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Club>> {
-    return await this.clubRepository.findWithPagination(paginationOptions, {}, { populate: ['members', 'members.user'] });
+    return await this.clubRepository.findWithPagination(paginationOptions, {}, { populate: ['members', 'members.user', 'socials', 'socials.social'] });
   }
 
   public async findOne(clubId: number): Promise<Club> {
-    return await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user']);
+    return await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user', 'socials', 'socials.social']);
   }
 
   public async update(user: User, clubId: number, updateClubDto: UpdateClubDto): Promise<Club> {
-    const club = await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user']);
+    const club = await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user', 'socials', 'socials.social']);
 
     // TODO: Move this to CASL
     if (!user.roles.includes(Role.Admin) && !club.isClubAdmin(user))
@@ -74,7 +74,7 @@ export class ClubsService {
     paginationOptions?: PaginationOptions,
   ): Promise<PaginatedResult<ClubMember>> {
     const club = await this.clubRepository.findOneOrFail({ clubId });
-    return await this.clubMemberRepository.findWithPagination(paginationOptions, { club }, { populate: ['user', 'club', 'club.members', 'club.members.user'] });
+    return await this.clubMemberRepository.findWithPagination(paginationOptions, { club }, { populate: ['user', 'club', 'club.members', 'club.members.user', 'club.socials', 'club.socials.social'] });
   }
 
   public async findClubMembership(
@@ -84,7 +84,7 @@ export class ClubsService {
     return await this.clubMemberRepository.findWithPagination(
       paginationOptions,
       { user: { userId } },
-      { populate: ['user', 'club', 'club.members'] },
+      { populate: ['user', 'club', 'club.members', 'club.socials', 'club.socials.social'] },
     );
   }
 
@@ -94,7 +94,7 @@ export class ClubsService {
     userId: string,
     createClubMemberDto: CreateClubMemberDto,
 ): Promise<ClubMember> {
-    const club = await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user']);
+    const club = await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user', 'socials', 'socials.social']);
 
     // TODO: Move this to CASL
     if (!requester.roles.includes(Role.Admin) && !club.isClubAdmin(requester))
@@ -119,7 +119,7 @@ export class ClubsService {
     userId: string,
     updateClubMemberDto: UpdateClubMemberDto,
   ): Promise<ClubMember> {
-    const club = await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user']);
+    const club = await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user', 'socials', 'socials.social']);
 
     // TODO: Move this to CASL
     if (!requester.roles.includes(Role.Admin) && !club.isClubAdmin(requester))
@@ -136,7 +136,7 @@ export class ClubsService {
   }
 
   public async removeUserFromClub(requester: User, clubId: number, userId: string): Promise<void> {
-    const club = await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user']);
+    const club = await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user', 'socials', 'socials.social']);
 
     const isSelf = requester.userId === userId;
 
