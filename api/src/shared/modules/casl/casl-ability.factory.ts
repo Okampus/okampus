@@ -18,7 +18,7 @@ import { ReplyReport } from '../../../reports/entities/reply-report.entity';
 import type { Social } from '../../../socials/entities/social.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
-import type { User } from '../../../users/user.entity';
+import { User } from '../../../users/user.entity';
 import { Action } from '../authorization/types/action.enum';
 import { Role } from '../authorization/types/role.enum';
 
@@ -120,6 +120,10 @@ export class CaslAbilityFactory {
           .because('Post is locked');
       }
     }
+
+    // FIXME: This error message is not taken into account (???)
+    allow(Action.Update, User, { userId: user.userId })
+      .because('Not the user');
 
     ForbiddenError.setDefaultMessage(error => `Cannot perform ${error.action.toLowerCase()} on a ${error.subjectType.toLowerCase()}`);
 

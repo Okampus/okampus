@@ -1,8 +1,11 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Club } from '../clubs/entities/club.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { assertPermissions } from '../shared/lib/utils/assertPermission';
+import { Action } from '../shared/modules/authorization';
+import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { User } from '../users/user.entity';
@@ -16,14 +19,16 @@ import { UserSocialAccount } from './entities/user-social-account.entity';
 
 @Injectable()
 export class SocialsService {
+  // eslint-disable-next-line max-params
   constructor(
+    /* eslint-disable max-len */
     @InjectRepository(Social) private readonly socialsRepository: BaseRepository<Social>,
     @InjectRepository(User) private readonly usersRepository: BaseRepository<User>,
     @InjectRepository(Club) private readonly clubsRepository: BaseRepository<Club>,
-    @InjectRepository(UserSocialAccount)
-    private readonly userSocialsAccountRepository: BaseRepository<UserSocialAccount>,
-    @InjectRepository(ClubSocialAccount)
-    private readonly clubSocialsAccountRepository: BaseRepository<ClubSocialAccount>,
+    @InjectRepository(UserSocialAccount) private readonly userSocialsAccountRepository: BaseRepository<UserSocialAccount>,
+    @InjectRepository(ClubSocialAccount) private readonly clubSocialsAccountRepository: BaseRepository<ClubSocialAccount>,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
+    /* eslint-enable max-len */
   ) {}
 
   public async create(createSocialDto: CreateSocialDto): Promise<Social> {
@@ -54,12 +59,16 @@ export class SocialsService {
   }
 
   public async addUserSocialAccount(
+    user: User,
     userId: string,
     socialId: number,
     createSocialAccountDto: CreateSocialAccountDto,
   ): Promise<UserSocialAccount> {
+    // TODO: Move this to CASL
+    if (user.userId !== userId)
+      throw new ForbiddenException('Not the user');
+
     const social = await this.socialsRepository.findOneOrFail({ socialId });
-    const user = await this.usersRepository.findOneOrFail({ userId });
     const socialAccount = new UserSocialAccount({ ...createSocialAccountDto, user, social });
     await this.userSocialsAccountRepository.persistAndFlush(socialAccount);
     return socialAccount;
@@ -73,12 +82,41 @@ export class SocialsService {
     return await this.userSocialsAccountRepository.findWithPagination(paginationOptions, { user }, { populate: ['social'] });
   }
 
+  public async updateUserSocialAccount(
+    requester: User,
+    socialAccountId: number,
+    updateSocialDto: UpdateSocialAccountDto,
+  ): Promise<UserSocialAccount> {
+    const userSocial = await this.userSocialsAccountRepository.findOneOrFail({ socialAccountId }, ['social', 'user']);
+
+    const ability = this.caslAbilityFactory.createForUser(requester);
+    assertPermissions(ability, Action.Update, userSocial.user);
+
+    wrap(userSocial).assign(updateSocialDto);
+    await this.userSocialsAccountRepository.flush();
+    return userSocial;
+  }
+
+  public async deleteUserSocialAccount(requester: User, socialAccountId: number): Promise<void> {
+    const userSocial = await this.userSocialsAccountRepository.findOneOrFail({ socialAccountId }, ['user']);
+
+    const ability = this.caslAbilityFactory.createForUser(requester);
+    assertPermissions(ability, Action.Update, userSocial.user);
+
+    await this.userSocialsAccountRepository.removeAndFlush(userSocial);
+  }
+
   public async addClubSocialAccount(
+    requester: User,
     clubId: number,
     socialId: number,
     createSocialAccountDto: CreateSocialAccountDto,
   ): Promise<ClubSocialAccount> {
-    const club = await this.clubsRepository.findOneOrFail({ clubId });
+    const club = await this.clubsRepository.findOneOrFail({ clubId }, ['members']);
+    // TODO: Move this to CASL
+    if (!club.isClubAdmin(requester))
+      throw new ForbiddenException('Not a club admin');
+
     const social = await this.socialsRepository.findOneOrFail({ socialId });
     const socialAccount = new ClubSocialAccount({ club, ...createSocialAccountDto, social });
     await this.clubSocialsAccountRepository.persistAndFlush(socialAccount);
@@ -93,19 +131,27 @@ export class SocialsService {
     return await this.clubSocialsAccountRepository.findWithPagination(paginationOptions, { club }, { populate: ['social'] });
   }
 
-  public async updateSocialAccount(
+  public async updateClubSocialAccount(
+    requester: User,
     socialAccountId: number,
     updateSocialDto: UpdateSocialAccountDto,
-  ): Promise<UserSocialAccount> {
-    const social = await this.userSocialsAccountRepository.findOneOrFail({ socialAccountId });
+  ): Promise<ClubSocialAccount> {
+    const clubSocial = await this.clubSocialsAccountRepository.findOneOrFail({ socialAccountId }, ['social', 'club', 'club.members']);
+    // TODO: Move this to CASL
+    if (!clubSocial.club.isClubAdmin(requester))
+      throw new ForbiddenException('Not a club admin');
 
-    wrap(social).assign(updateSocialDto);
-    await this.userSocialsAccountRepository.flush();
-    return social;
+    wrap(clubSocial).assign(updateSocialDto);
+    await this.clubSocialsAccountRepository.flush();
+    return clubSocial;
   }
 
-  public async deleteSocialAccount(socialAccountId: number): Promise<void> {
-    const social = await this.userSocialsAccountRepository.findOneOrFail({ socialAccountId });
-    await this.userSocialsAccountRepository.removeAndFlush(social);
+  public async deleteClubSocialAccount(requester: User, socialAccountId: number): Promise<void> {
+    const clubSocial = await this.clubSocialsAccountRepository.findOneOrFail({ socialAccountId }, ['club', 'club.members']);
+    // TODO: Move this to CASL
+    if (!clubSocial.club.isClubAdmin(requester))
+      throw new ForbiddenException('Not a club admin');
+
+    await this.clubSocialsAccountRepository.removeAndFlush(clubSocial);
   }
 }
