@@ -69,6 +69,12 @@ export class ClubsController {
     return await this.clubSearchService.search(query);
   }
 
+  @Get('/names')
+  @CheckPolicies(ability => ability.can(Action.Read, Club))
+  public async findNames(): Promise<Array<Pick<Club, 'category' | 'clubId' | 'icon' | 'name'>>> {
+    return await this.clubsService.findNames();
+  }
+
   @Get('/member/:userId')
   @CheckPolicies(ability => ability.can(Action.Read, User))
   @SerializerClubMemberIncludeClub()

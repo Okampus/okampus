@@ -50,6 +50,12 @@ export class ClubsService {
     return await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user', 'socials', 'socials.social']);
   }
 
+  public async findNames(): Promise<Array<Pick<Club, 'category' | 'clubId' | 'icon' | 'name'>>> {
+    const clubs = await this.clubRepository.findAll({ fields: ['name', 'category', 'icon', 'clubId'] });
+    // Remove null values for M:M relations that are automatically filled
+    return clubs.map(({ socials, members, ...keep }) => keep);
+  }
+
   public async update(user: User, clubId: number, updateClubDto: UpdateClubDto): Promise<Club> {
     const club = await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user', 'socials', 'socials.social']);
 
