@@ -1,5 +1,5 @@
 import { Entity, ManyToOne } from '@mikro-orm/core';
-import { Club } from '../../clubs/club.entity';
+import { Club } from '../../clubs/entities/club.entity';
 import { SocialAccount } from './social-account.entity';
 import type { Social } from './social.entity';
 

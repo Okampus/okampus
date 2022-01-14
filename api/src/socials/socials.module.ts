@@ -1,6 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { Club } from '../clubs/club.entity';
+import { Club } from '../clubs/entities/club.entity';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { User } from '../users/user.entity';
 import { ClubSocialAccount } from './entities/club-social-account.entity';

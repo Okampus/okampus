@@ -12,39 +12,46 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
+import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
+import { SerializerIncludeClubMembers } from '../shared/lib/decorators/serializer-include-club-members.decorator';
+import { SerializerIncludeClubMemberClub } from '../shared/lib/decorators/serializer-include-clubmember-club.decorator';
 import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../shared/modules/search/search.dto';
-import { UsersService } from '../users/users.service';
-import type { ClubMember } from './club-member.entity';
+import { User } from '../users/user.entity';
 import { ClubSearchService } from './club-search.service';
 import type { IndexedClub } from './club-search.service';
-import { Club } from './club.entity';
 import { ClubsService } from './clubs.service';
 import { CreateClubMemberDto } from './dto/create-club-member.dto';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubMemberDto } from './dto/update-club-member.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
+import type { ClubMember } from './entities/club-member.entity';
+import { Club } from './entities/club.entity';
 
 @ApiTags('Clubs')
 @Controller({ path: 'clubs' })
 export class ClubsController {
   constructor(
     private readonly clubsService: ClubsService,
-    private readonly userService: UsersService,
     private readonly clubSearchService: ClubSearchService,
 ) {}
 
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Club))
-  public async create(@Body() createTagDto: CreateClubDto): Promise<Club> {
-    return await this.clubsService.create(createTagDto);
+  @SerializerIncludeClubMembers()
+  public async create(
+    @Body() createTagDto: CreateClubDto,
+    @CurrentUser() user: User,
+  ): Promise<Club> {
+    return await this.clubsService.create(user, createTagDto);
   }
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Club))
+  @SerializerIncludeClubMembers()
   public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Club>> {
     if (query.page)
       return await this.clubsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
@@ -64,13 +71,17 @@ export class ClubsController {
   }
 
   @Get('/member/:userId')
-  public async findClubMemberships(@Param('userId') userId: string): Promise<ClubMember[]> {
-    const user = await this.userService.findOneById(userId);
-    return this.clubsService.findClubMembership(user);
+  @CheckPolicies(ability => ability.can(Action.Read, User))
+  @SerializerIncludeClubMemberClub()
+  public async findClubMemberships(
+    @Param('userId') userId: string,
+  ): Promise<PaginatedResult<ClubMember>> {
+    return this.clubsService.findClubMembership(userId);
   }
 
   @Get(':clubId/members')
   @CheckPolicies(ability => ability.can(Action.Read, Club))
+  @SerializerIncludeClubMemberClub()
   public async findAllUsersInClub(
     @Param('clubId', ParseIntPipe) clubId: number,
     @Query() query: PaginateDto,
@@ -83,50 +94,61 @@ export class ClubsController {
   }
 
   @Post(':clubId/members/:userId')
-  @CheckPolicies(ability => ability.can(Action.Create, Club))
+  @CheckPolicies(ability => ability.can(Action.Update, Club))
+  @SerializerIncludeClubMemberClub()
   public async addUserToClub(
     @Param('clubId', ParseIntPipe) clubId: number,
     @Param('userId') userId: string,
     @Body() createClubMemberDto: CreateClubMemberDto,
+    @CurrentUser() requester: User,
   ): Promise<ClubMember> {
-    return await this.clubsService.addUserToClub(clubId, userId, createClubMemberDto);
+    return await this.clubsService.addUserToClub(requester, clubId, userId, createClubMemberDto);
   }
 
   @Patch(':clubId/members/:userId')
+  @CheckPolicies(ability => ability.can(Action.Update, Club))
+  @SerializerIncludeClubMemberClub()
   public async updateUserRole(
     @Param('clubId', ParseIntPipe) clubId: number,
     @Param('userId') userId: string,
     @Body() updateClubMemberDto: UpdateClubMemberDto,
+    @CurrentUser() requester: User,
   ): Promise<ClubMember> {
-    return await this.clubsService.updateUserRole(clubId, userId, updateClubMemberDto);
+    return await this.clubsService.updateUserRole(requester, clubId, userId, updateClubMemberDto);
   }
 
   @Delete(':clubId/members/:userId')
+  @CheckPolicies(ability => ability.can(Action.Update, Club))
+  @SerializerIncludeClubMembers()
   public async removeUserFromClub(
     @Param('clubId', ParseIntPipe) clubId: number,
     @Param('userId') userId: string,
+    @CurrentUser() requester: User,
   ): Promise<void> {
-    const user = await this.userService.findOneById(userId);
-    await this.clubsService.removeUserFromClub(clubId, user);
+    await this.clubsService.removeUserFromClub(requester, clubId, userId);
   }
 
   @Get(':clubId')
   @CheckPolicies(ability => ability.can(Action.Read, Club))
+  @SerializerIncludeClubMembers()
   public async findOne(@Param('clubId', ParseIntPipe) clubId: number): Promise<Club> {
     return await this.clubsService.findOne(clubId);
   }
 
   @Patch(':clubId')
   @CheckPolicies(ability => ability.can(Action.Update, Club))
+  @SerializerIncludeClubMembers()
   public async update(
     @Param('clubId', ParseIntPipe) clubId: number,
     @Body() updateSubjectDto: UpdateClubDto,
+    @CurrentUser() requester: User,
   ): Promise<Club> {
-    return await this.clubsService.update(clubId, updateSubjectDto);
+    return await this.clubsService.update(requester, clubId, updateSubjectDto);
   }
 
   @Delete(':clubId')
   @CheckPolicies(ability => ability.can(Action.Delete, Club))
+  @SerializerIncludeClubMembers()
   public async remove(@Param('clubId', ParseIntPipe) clubId: number): Promise<void> {
     await this.clubsService.remove(clubId);
   }

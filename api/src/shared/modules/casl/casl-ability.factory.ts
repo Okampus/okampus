@@ -2,8 +2,8 @@ import type { AbilityClass, ExtractSubjectType, InferSubjects } from '@casl/abil
 import { Ability, AbilityBuilder, ForbiddenError } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
 import { Article } from '../../../articles/entities/article.entity';
-import type { Badge } from '../../../badges/badge.entity';
-import type { Club } from '../../../clubs/club.entity';
+import { Badge } from '../../../badges/badge.entity';
+import { Club } from '../../../clubs/entities/club.entity';
 import { Comment } from '../../../comments/entities/comment.entity';
 import { Attachment } from '../../../files/attachments/attachment.entity';
 import { InfoDoc } from '../../../files/info-docs/info-doc.entity';
@@ -39,7 +39,8 @@ export type Subjects = InferSubjects<
   | typeof Social
   | typeof StudyDoc
   | typeof Subject
-  | typeof Tag>
+  | typeof Tag
+  | typeof User>
   | 'all';
 
 const reports = [ArticleReport, CommentReport, PostReport, ReplyReport];
@@ -74,8 +75,12 @@ export class CaslAbilityFactory {
         .because('Cannot report your own content');
       allow(Action.Interact, [Comment, Post, Reply]);
 
+      // This is all managed by-hand inside the services.
+      allow(Action.Update, Club);
+
       if (user.roles.includes(Role.Moderator)) {
         allow(Action.Update, 'all');
+        forbid(Action.Update, Badge);
         allow(Action.Manage, [Article, InfoDoc, ProfileImage, ...reports, StudyDoc, Subject, Tag]);
       } else {
         // @ts-expect-error

@@ -8,9 +8,7 @@ import {
 } from 'class-validator';
 import type { SearchParams } from 'typesense/lib/Typesense/Documents';
 
-type Arguments = SearchParams<Record<string, unknown>>;
-
-export class SearchDto implements Arguments {
+export class SearchDto implements SearchParams<object> {
   @IsString()
   q: string;
 
@@ -58,10 +56,6 @@ export class SearchDto implements Arguments {
   @IsInt()
   @Min(1)
   per_page?: number;
-
-  @IsOptional()
-  @IsString()
-  group_by?: string;
 
   @IsOptional()
   @IsInt()

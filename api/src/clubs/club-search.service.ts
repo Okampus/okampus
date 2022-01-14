@@ -7,10 +7,11 @@ import RequireTypesense from '../shared/lib/decorators/require-typesense.decorat
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { authorizeNotFound, SearchService } from '../shared/modules/search/search.service';
 import { client } from '../typesense.config';
-import { Club } from './club.entity';
+import { Club } from './entities/club.entity';
 
 export interface IndexedClub {
   name: string;
+  category: string;
   description?: string;
   id: string;
 }
@@ -21,7 +22,7 @@ export class ClubSearchService extends SearchService<Club, IndexedClub> {
     name: 'clubs',
     fields: [
       { name: 'name', type: 'string' },
-      { name: 'englishName', type: 'string' },
+      { name: 'category', type: 'string' },
       { name: 'description', type: 'string', optional: true },
     ],
   };
@@ -77,6 +78,7 @@ export class ClubSearchService extends SearchService<Club, IndexedClub> {
   public toIndexedEntity(club: Club): IndexedClub {
     return {
       name: club.name,
+      category: club.category,
       description: club.description,
       id: club.clubId.toString(),
     };
