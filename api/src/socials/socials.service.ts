@@ -76,10 +76,9 @@ export class SocialsService {
 
   public async findAllUserSocialAccounts(
     userId: string,
-    paginationOptions?: PaginationOptions,
-  ): Promise<PaginatedResult<UserSocialAccount>> {
+  ): Promise<UserSocialAccount[]> {
     const user = await this.usersRepository.findOneOrFail({ userId });
-    return await this.userSocialsAccountRepository.findWithPagination(paginationOptions, { user }, { populate: ['social'] });
+    return await this.userSocialsAccountRepository.find({ user }, ['social']);
   }
 
   public async updateUserSocialAccount(
@@ -123,12 +122,9 @@ export class SocialsService {
     return socialAccount;
   }
 
-  public async findAllClubSocialAccounts(
-    clubId: number,
-    paginationOptions?: PaginationOptions,
-  ): Promise<PaginatedResult<ClubSocialAccount>> {
+  public async findAllClubSocialAccounts(clubId: number): Promise<ClubSocialAccount[]> {
     const club = await this.clubsRepository.findOneOrFail({ clubId });
-    return await this.clubSocialsAccountRepository.findWithPagination(paginationOptions, { club }, { populate: ['social'] });
+    return await this.clubSocialsAccountRepository.find({ club }, ['social']);
   }
 
   public async updateClubSocialAccount(

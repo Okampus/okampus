@@ -80,14 +80,7 @@ export class SocialsController {
 
   @Get('/user/:userId')
   @CheckPolicies(ability => ability.can(Action.Read, User))
-  public async findAllUserSocialAccounts(
-    @Param('userId') userId: string,
-    @Query() query: PaginateDto,
-  ): Promise<PaginatedResult<UserSocialAccount>> {
-    if (query.page) {
-      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
-      return await this.socialsService.findAllUserSocialAccounts(userId, options);
-    }
+  public async findAllUserSocialAccounts(@Param('userId') userId: string): Promise<UserSocialAccount[]> {
     return await this.socialsService.findAllUserSocialAccounts(userId);
   }
 
@@ -123,14 +116,7 @@ export class SocialsController {
 
   @Get('/club/:clubId')
   @CheckPolicies(ability => ability.can(Action.Read, Club))
-  public async findAllClubSocialAccounts(
-    @Param('clubId', ParseIntPipe) clubId: number,
-    @Query() query: PaginateDto,
-  ): Promise<PaginatedResult<ClubSocialAccount>> {
-    if (query.page) {
-      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
-      return await this.socialsService.findAllClubSocialAccounts(clubId, options);
-    }
+  public async findAllClubSocialAccounts(@Param('clubId', ParseIntPipe) clubId: number): Promise<ClubSocialAccount[]> {
     return await this.socialsService.findAllClubSocialAccounts(clubId);
   }
 
