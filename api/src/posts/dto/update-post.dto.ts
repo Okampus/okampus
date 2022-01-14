@@ -10,4 +10,8 @@ export class UpdatePostDto extends PartialType(CreatePostDto) {
   @IsBoolean()
   @IsOptional()
   opened?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  solved?: boolean;
 }
