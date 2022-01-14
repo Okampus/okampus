@@ -10,6 +10,10 @@ export class CreateAttachmentDto extends CreateFileUploadDto {
   @IsOptional()
   @IsString()
   replyId?: string;
+
+  @IsOptional()
+  @IsInt()
+  articleId?: number;
 }
 
 export type ValidCreateAttachmentDto = ContentIdsOptions & CreateFileUploadDto;

@@ -1,5 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import { Article } from '../../articles/entities/article.entity';
 import { Post } from '../../posts/entities/post.entity';
 import { Reply } from '../../replies/entities/reply.entity';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
@@ -18,6 +19,7 @@ export class AttachmentsService {
     @InjectRepository(Attachment) private readonly attachmentRepository: BaseRepository<Attachment>,
     @InjectRepository(Post) private readonly postRepository: BaseRepository<Post>,
     @InjectRepository(Reply) private readonly replyRepository: BaseRepository<Reply>,
+    @InjectRepository(Article) private readonly articleRepository: BaseRepository<Article>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -29,6 +31,9 @@ export class AttachmentsService {
     } else if (createAttachmentDto.replyId) {
       const reply = await this.replyRepository.findOneOrFail({ replyId: createAttachmentDto.replyId });
       options = { reply };
+    } else if (createAttachmentDto.articleId) {
+      const article = await this.articleRepository.findOneOrFail({ articleId: createAttachmentDto.articleId });
+      options = { article };
     }
 
     const attachment = new Attachment({ ...createAttachmentDto, ...options!, file });
