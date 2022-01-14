@@ -13,8 +13,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-import { SerializerIncludeClubMembers } from '../shared/lib/decorators/serializer-include-club-members.decorator';
-import { SerializerIncludeClubMemberClub } from '../shared/lib/decorators/serializer-include-clubmember-club.decorator';
+import { SerializerClubMemberIncludeClub, SerializerIncludeClubMembers } from '../shared/lib/decorators/serializers.decorator';
 import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
@@ -72,7 +71,7 @@ export class ClubsController {
 
   @Get('/member/:userId')
   @CheckPolicies(ability => ability.can(Action.Read, User))
-  @SerializerIncludeClubMemberClub()
+  @SerializerClubMemberIncludeClub()
   public async findClubMemberships(
     @Param('userId') userId: string,
   ): Promise<PaginatedResult<ClubMember>> {
@@ -81,7 +80,7 @@ export class ClubsController {
 
   @Get(':clubId/members')
   @CheckPolicies(ability => ability.can(Action.Read, Club))
-  @SerializerIncludeClubMemberClub()
+  @SerializerClubMemberIncludeClub()
   public async findAllUsersInClub(
     @Param('clubId', ParseIntPipe) clubId: number,
     @Query() query: PaginateDto,
@@ -95,7 +94,7 @@ export class ClubsController {
 
   @Post(':clubId/members/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, Club))
-  @SerializerIncludeClubMemberClub()
+  @SerializerClubMemberIncludeClub()
   public async addUserToClub(
     @Param('clubId', ParseIntPipe) clubId: number,
     @Param('userId') userId: string,
@@ -107,7 +106,7 @@ export class ClubsController {
 
   @Patch(':clubId/members/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, Club))
-  @SerializerIncludeClubMemberClub()
+  @SerializerClubMemberIncludeClub()
   public async updateUserRole(
     @Param('clubId', ParseIntPipe) clubId: number,
     @Param('userId') userId: string,

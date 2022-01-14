@@ -13,7 +13,7 @@ import type { CookieOptions } from 'express';
 import { Request as Req, Response as Res } from 'express';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Public } from '../shared/lib/decorators/public.decorator';
-import { SerializerIncludeEmail } from '../shared/lib/decorators/serializer-include-email.decorator';
+import { SerializerIncludeEmail } from '../shared/lib/decorators/serializers.decorator';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
