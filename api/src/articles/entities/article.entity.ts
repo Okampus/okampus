@@ -45,14 +45,6 @@ export class Article extends Content {
   @Property()
   isDraft = false;
 
-  // TODO: Add full 'views' support - Auto-increment when a post is viewed
-  @Property()
-  views = 0;
-
-  // TODO: Add full 'favorites' support - Create entity and CRUD + Increment when a favorite is created
-  @Property()
-  favorites = 0;
-
   @Property()
   downvotes = 0;
 
