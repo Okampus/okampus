@@ -5,16 +5,16 @@
             :key="favorite"
         >
             <FavPost
-                v-if="'postId' in favorite"
-                :post="favorite"
-            />
-            <FavComment
-                v-else-if="'replyId' in favorite"
-                :comment="favorite"
+                v-if="'post' in favorite"
+                :post="favorite.post"
             />
             <FavReply
+                v-else-if="'reply' in favorite"
+                :reply="favorite.reply"
+            />
+            <FavComment
                 v-else
-                :reply="favorite"
+                :comment="favorite.comment"
             />
         </div>
     </div>
@@ -27,14 +27,18 @@ import FavReply from '@/components/FavReply.vue';
 export default {
     components: { FavPost, FavComment, FavReply },
     props:{
-        favorites: {
-            type: Array,
-            default: () => []
-        }
     },
     data() {
         return {
         };
+    },
+    computed: {
+        favorites(){
+            return this.$store.state.users.favorites
+        }
+    },
+    mounted () {
+        this.$store.dispatch('users/getFavorites')
     }
 }
 </script>

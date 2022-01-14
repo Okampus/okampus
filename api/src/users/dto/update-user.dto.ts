@@ -19,4 +19,8 @@ export class UpdateUserDto {
   @IsHexColor()
   @Transform(({ value }: { value: string }) => (value.startsWith('#') ? value.slice(1) : value))
   color: string;
+
+  @IsOptional()
+  @IsString()
+  description: string;
 }

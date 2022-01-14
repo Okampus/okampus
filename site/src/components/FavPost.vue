@@ -23,9 +23,10 @@
             <div>
                 <div class="flex">
                     <a class="text-0 text-xl font-semibold mr-4 whitespace-nowrap ">{{ post.title }}</a>
-                    <TagsList
+                    <!-- <TagsList
                         :tags="post.tags"
-                    />
+                    /> -->
+                    {{ post.tags }}
                 </div>
                 <p class="text-5">
                     Publié par {{ post.author.username }} {{ dateSince(new Date(post.createdAt)) }}, dernière mise à jour {{ dateSince(new Date(post.contentLastUpdatedAt)) }}
@@ -52,10 +53,10 @@
 </template>
 
 <script>
-import TagsList from '@/components/List/TagsList.vue'
+//import TagsList from '@/components/List/TagsList.vue'
 
 export default {
-    components: { TagsList },
+    //components: { TagsList },
     props: {
         post: {
             type: Object,
@@ -66,7 +67,6 @@ export default {
             default: function () {
                 return [
                     'viewComments',
-                    'bookmark',
                     'favorite',
                     'flag'
                 ]
@@ -78,7 +78,6 @@ export default {
             // TODO: Actions
             return {
                 viewComments: { name: () => { return "3 Commentaires" }, icon: 'ri-chat-2-line', action: function () { console.log('Commentaire') } },
-                bookmark: { name: () => { return 'Enregistrer' }, icon: 'ri-bookmark-line', action: function () { console.log('Enregistrer') } },
                 favorite: { name: () => { return 'Favori' }, icon: 'ri-star-line', action: function () { console.log('Favori') } },
                 flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } },
             }

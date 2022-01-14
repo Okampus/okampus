@@ -61,6 +61,9 @@ export class User extends BaseEntity {
   @Property({ type: 'text' })
   banner?: string;
 
+  @Property({ type: 'text' })
+  description?: string;
+
   constructor(username: string, email: string) {
     super();
     this.username = username;

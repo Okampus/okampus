@@ -1,12 +1,5 @@
 <template>
-    <div class="m-4 flex bg-1 min-h-32 rounded-md">
-        <div class="flex flex-col text-white w-14 justify-center bg-gray-600 rounded-l-md">
-            <button><i class="text-center text-4xl -p-x-4 -p-b-2 ri-arrow-up-s-fill" /></button>
-            <div class="text-center mx-1">
-                {{ post.upvotes }}
-            </div>
-            <button><i class="text-center text-4xl -p-x-4 -p-t-2 ri-arrow-down-s-fill" /></button>
-        </div>
+    <div class="m-4 flex bg-1 rounded-md">
         <div class="border-dashed border-l-2 dark:border-opacity-25 ml-2 " />
         <div class="flex border-dashed border-l-2 dark:border-opacity-25 flex-col  justify-center object-cover ml-2 px-8">
             <i class="ri-chat-4-line text-2 text-4xl text-center hidden md:block" />
@@ -15,23 +8,31 @@
             <div class="my-2 flex flex-col justify-between ">
                 <div>
                     <p class="text-5">
-                        Publié par {{ post.author.username }} {{ dateSince(new Date(post.createdAt)) }}
+                        Publié par {{ comment.author.username }} {{ dateSince(new Date(comment.createdAt)) }}
                     </p>
-                    <a class="text-0 text-lg mr-4 line-clamp-2 ">{{ JSON.parse(post.body).content[0].content[0].text }}</a>
+                    <a class="text-0 text-lg mr-4 line-clamp-2 ">
+                        {{ extractTextFromJSONBody(JSON.parse(comment.body)) }}
+                    </a>
                 </div>
                 <div class="flex items-center ri-lg gap-2">
-                    <div
-                        v-for="(action,i) in actions"
-                        :key="i"
-                        class="flex items-center text-5 hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded"
-                        @click="actionsMap[action].action"
-                    >
+                    <div class="flex gap-2">
+                        <div class="flex items-center text-5 hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded">
+                            <i
+                                class=" cursor-pointer  ri-sm tracking-tighter pl-1 hidden md:block"
+                                :class="[comment.currentVote === 1 ? 'ri-thumb-up-fill text-green-600' : 'ri-thumb-up-line']"
+                                @click="comment.currentVote === 1 ? sendVote(0) : sendVote(1)"
+                            />
+                            <p class=" text-sm ml-1 tracking-tighter pl-1 hidden md:block">
+                                {{ comment.upvotes }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-5 hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded">
                         <i
-                            :class="actionsMap[action].icon"
-                            class="ri-md"
+                            class="ri-sm ri-star-line"
                         />
                         <p class="text-2 text-sm tracking-tighter pl-1 hidden md:block">
-                            {{ actionsMap[action].name() }}
+                            Favori
                         </p>
                     </div>
                 </div>
@@ -42,10 +43,11 @@
 
 <script>
 
+import { extractTextFromJSONBody } from '@/utils/extractTextFromHTML'
 export default {
     components: {  },
     props: {
-        post: {
+        comment: {
             type: Object,
             default: () => {}
         },
@@ -92,6 +94,13 @@ export default {
                 }
                 duration /= division.amount;
             }
+        },
+        extractTextFromJSONBody,
+        sendVote(vote) {
+            this.$store.dispatch('thread/voteReply', {
+                replyId: this.reply.replyId,
+                value: vote
+            })
         }
     }
 

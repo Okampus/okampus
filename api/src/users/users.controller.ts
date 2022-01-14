@@ -26,9 +26,9 @@ export class UsersController {
     private readonly userSearchService: UserSearchService,
   ) {}
 
-  @Get(':username')
-  public async findOne(@Param('username') username: string): Promise<User> {
-    return await this.usersService.findOne(username);
+  @Get(':userId')
+  public async findOne(@Param('userId') userId: string): Promise<User> {
+    return await this.usersService.findOneById(userId);
   }
 
   @UseGuards(TypesenseGuard)

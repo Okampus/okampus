@@ -16,7 +16,7 @@
         <div class="flex flex-col min-w-0">
             <router-link
                 class="font-semibold truncate hover:underline"
-                to="/profile"
+                :to="`/profile/${$store.state.auth.user.userId}`"
             >
                 {{ username }}
             </router-link>
@@ -25,7 +25,11 @@
             </div>
         </div>
         <div class="flex flex-col items-center justify-center space-y-2">
-            <i class="ri-settings-4-line cursor-pointer" />
+            <router-link
+                to="/settings"
+            >
+                <i class="ri-settings-4-line cursor-pointer" />
+            </router-link>
             <i
                 class="ri-logout-box-line cursor-pointer"
                 @click="logout"

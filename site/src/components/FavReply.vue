@@ -1,12 +1,5 @@
 <template>
     <div class="m-4 flex bg-1 min-h-32 rounded-md">
-        <div class="flex flex-col text-white w-14 justify-center bg-gray-600 rounded-l-md">
-            <button><i class="text-center text-4xl -p-x-4 -p-b-2 ri-arrow-up-s-fill" /></button>
-            <div class="text-center mx-1">
-                {{ post.upvotes }}
-            </div>
-            <button><i class="text-center text-4xl -p-x-4 -p-t-2 ri-arrow-down-s-fill" /></button>
-        </div>
         <div class="flex border-dashed border-l-2 dark:border-opacity-25 flex-col  justify-center object-cover ml-4 px-8 ">
             <i class="ri-chat-4-line text-2 text-4xl text-center hidden md:block" />
         </div>
@@ -14,11 +7,35 @@
             <div class="my-2 flex flex-col justify-between ">
                 <div>
                     <p class="text-5">
-                        Publié par {{ post.author.username }} {{ dateSince(new Date(post.createdAt)) }}
+                        Publié par {{ reply.author.username }} {{ dateSince(new Date(reply.createdAt)) }}
                     </p>
-                    <a class="text-0 text-lg mr-4 line-clamp-2 ">{{ JSON.parse(post.body).content[0].content[0].text }}</a>
+                    <a class="text-0 text-lg mr-4 line-clamp-2 ">
+                        {{ extractTextFromJSONBody(JSON.parse(reply.body)) }}
+                    </a>
                 </div>
                 <div class="flex items-center ri-lg gap-2">
+                    <div class="flex gap-2">
+                        <div class="flex items-center text-5 hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded">
+                            <i
+                                class=" cursor-pointer  ri-sm tracking-tighter pl-1 hidden md:block"
+                                :class="[reply.currentVote === 1 ? 'ri-thumb-up-fill text-green-600' : 'ri-thumb-up-line']"
+                                @click="reply.currentVote === 1 ? sendVote(0) : sendVote(1)"
+                            />
+                            <p class="text-2 text-sm ml-1 tracking-tighter pl-1 hidden md:block">
+                                {{ reply.upvotes }}
+                            </p>
+                        </div>
+                        <div class="flex items-center text-5 hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded">
+                            <i
+                                class=" cursor-pointer ri-sm tracking-tighter pl-1 hidden md:block"
+                                :class="[reply.currentVote === -1 ? 'ri-thumb-down-fill text-red-600' : 'ri-thumb-down-line']"
+                                @click="reply.currentVote === -1 ? sendVote(0) : sendVote(1)"
+                            />
+                            <p class=" text-sm ml-1 tracking-tighter pl-1 hidden md:block">
+                                {{ reply.downvotes }}
+                            </p>
+                        </div>
+                    </div>
                     <div
                         v-for="(action,i) in actions"
                         :key="i"
@@ -40,11 +57,12 @@
 </template>
 
 <script>
+import { extractTextFromJSONBody } from '@/utils/extractTextFromHTML'
 
 export default {
     components: {  },
     props: {
-        post: {
+        reply: {
             type: Object,
             default: () => {}
         },
@@ -52,7 +70,7 @@ export default {
             type: Array,
             default: function () {
                 return [
-                    'viewComments',
+                    'viewreplies',
                     'favorite',
                     'flag'
                 ]
@@ -63,7 +81,7 @@ export default {
         actionsMap () {
             // TODO: Actions
             return {
-                viewComments: { name: () => { return "3 Réponses" }, icon: 'ri-chat-2-line', action: function () { console.log('Commentaire') } },
+                viewreplies: { name: () => { return "3 Réponses" }, icon: 'ri-chat-2-line', action: function () { console.log('Reply') } },
                 favorite: { name: () => { return 'Favori' }, icon: 'ri-star-line', action: function () { console.log('Favori') } },
                 flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } },
             }
@@ -91,6 +109,13 @@ export default {
                 }
                 duration /= division.amount;
             }
+        },
+        extractTextFromJSONBody,
+        sendVote(vote) {
+            this.$store.dispatch('thread/voteReply', {
+                replyId: this.reply.replyId,
+                value: vote
+            })
         }
     }
 

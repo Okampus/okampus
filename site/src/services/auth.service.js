@@ -31,6 +31,11 @@ class AuthService {
             credentials: 'include'
         })
     }
+    getUser (query) {
+        return axios.get(API_URL + 'me', { params: query, withCredentials: true }).then(
+            res => res.data
+        )
+    }
 }
 
 export default new AuthService()
