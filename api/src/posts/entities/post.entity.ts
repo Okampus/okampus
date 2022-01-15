@@ -44,6 +44,10 @@ export class Post extends Content {
   @Property()
   downvotes = 0;
 
+  @ManyToMany()
+  @TransformCollection()
+  assignees = new Collection<User>(this);
+
   constructor(options: {
     title: string;
     body: string;

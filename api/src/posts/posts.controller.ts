@@ -20,6 +20,7 @@ import type { PaginatedResult } from '../shared/modules/pagination/pagination.in
 import { SearchDto } from '../shared/modules/search/search.dto';
 import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
+import { AssigneesDto } from './dto/assignees.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import type { NoPostVote, PostVote } from './entities/post-vote.entity';
@@ -105,5 +106,23 @@ export class PostsController {
     if (voteDto.value === 0)
       return await this.postVotesService.neutralize(user, id);
     return await this.postVotesService.update(user, id, voteDto.value);
+  }
+
+  @PostRequest(':id/assignees')
+  @CheckPolicies(ability => ability.can(Action.Interact, Post))
+  public async addAssignees(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() assigneesDto: AssigneesDto,
+  ): Promise<Post> {
+    return await this.postsService.addAssignees(id, assigneesDto.assignees);
+  }
+
+  @Delete(':id/assignees')
+  @CheckPolicies(ability => ability.can(Action.Interact, Post))
+  public async removeAssignees(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() assigneesDto: AssigneesDto,
+  ): Promise<void> {
+    await this.postsService.removeAssignees(id, assigneesDto.assignees);
   }
 }

@@ -18,7 +18,7 @@ export class PostVotesService {
   ) {}
 
   public async findVote(user: User, postId: number): Promise<NoPostVote | PostVote> {
-    const post = await this.postRepository.findOneOrFail({ postId }, ['tags']);
+    const post = await this.postRepository.findOneOrFail({ postId }, ['tags', 'assignees']);
 
     // TODO: Maybe the user won't have access to this post. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
@@ -27,7 +27,7 @@ export class PostVotesService {
   }
 
   public async update(user: User, postId: number, value: -1 | 1): Promise<Post> {
-    const post = await this.postRepository.findOneOrFail({ postId }, ['tags']);
+    const post = await this.postRepository.findOneOrFail({ postId }, ['tags', 'assignees']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, post);
@@ -60,7 +60,7 @@ export class PostVotesService {
   }
 
   public async neutralize(user: User, postId: number): Promise<Post> {
-    const post = await this.postRepository.findOneOrFail({ postId }, ['tags']);
+    const post = await this.postRepository.findOneOrFail({ postId }, ['tags', 'assignees']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, post);
