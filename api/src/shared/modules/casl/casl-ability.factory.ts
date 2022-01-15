@@ -121,7 +121,7 @@ export class CaslAbilityFactory {
       }
     }
 
-    // FIXME: This error message is not taken into account (???)
+    forbid(Action.Update, User).because('Not the user');
     allow(Action.Update, User, { userId: user.userId })
       .because('Not the user');
 
