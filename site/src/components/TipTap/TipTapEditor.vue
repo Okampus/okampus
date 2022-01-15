@@ -1,6 +1,7 @@
 <template>
     <div v-if="editor">
         <div
+            v-if="buttons.length > 0"
             class="space-x-2 px-1 py-3 flex flex-wrap items-center border-color-4"
             :class="buttonClasses"
         >
@@ -41,59 +42,78 @@
             :editor="editor"
         />
 
-        <div
-            v-if="charCount"
-            class="mt-1"
-            :class="{
-                'character-count': charCount,
-                'character-count--warning':
-                    getCharCount() === charCountLimit,
-            }"
-        >
-            <svg
-                height="20"
-                width="20"
-                viewBox="0 0 20 20"
-                class="character-count__graph"
+        <div class="flex mt-2 gap-4 items-center">
+            <div
+                v-if="charCount"
+                :class="{
+                    'character-count': charCount,
+                    'character-count--warning':
+                        getCharCount() === charCountLimit,
+                }"
             >
-                <circle
-                    r="10"
-                    cx="10"
-                    cy="10"
-                    fill="#e9ecef"
-                />
-                <circle
-                    r="5"
-                    cx="10"
-                    cy="10"
-                    fill="transparent"
-                    stroke="currentColor"
-                    stroke-width="10"
-                    :stroke-dasharray="`${circleFillCharCount()} 999`"
-                    transform="rotate(-90) translate(-20)"
-                />
-                <circle
-                    r="6"
-                    cx="10"
-                    cy="10"
-                    fill="white"
-                />
-            </svg>
-            <div class="flex space-x-2">
+                <svg
+                    height="20"
+                    width="20"
+                    viewBox="0 0 20 20"
+                    class="character-count__graph"
+                >
+                    <circle
+                        r="10"
+                        cx="10"
+                        cy="10"
+                        fill="#e9ecef"
+                    />
+                    <circle
+                        r="5"
+                        cx="10"
+                        cy="10"
+                        fill="transparent"
+                        stroke="currentColor"
+                        stroke-width="10"
+                        :stroke-dasharray="`${circleFillCharCount()} 999`"
+                        transform="rotate(-90) translate(-20)"
+                    />
+                    <circle
+                        r="6"
+                        cx="10"
+                        cy="10"
+                        fill="white"
+                    />
+                </svg>
+
                 <div
                     :class="{'character-count__text':
                         getCharCount() !== charCountLimit}"
                 >
                     {{ getCharCount() }}/{{ charCountLimit }} characters
                 </div>
-                <slot />
             </div>
+
+            <button
+                v-if="cancellable"
+                class="button red"
+                @click="$emit('cancel')"
+            >
+                <p>
+                    Annuler
+                </p>
+            </button>
+            <button
+                v-if="sendable"
+                class="button"
+                @click="$emit('send')"
+            >
+                <p>
+                    Envoyer
+                </p>
+            </button>
+            <slot name="error" />
         </div>
     </div>
 </template>
 
 <script lang="js">
-import { useEditor, EditorContent } from '@tiptap/vue-3'
+import { useEditor, EditorContent, generateHTML } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
@@ -118,9 +138,21 @@ export default {
             type: String,
             default: 'Écrivez votre texte ici...'
         },
+        cancellable: {
+            type: Boolean,
+            default: false
+        },
+        sendable: {
+            type: Boolean,
+            default: false
+        },
         mode: {
             type: String,
-            default: 'html'
+            default: 'json'
+        },
+        editorClasses: {
+            type: Array,
+            default: () => ['min-h-20']
         },
         charCount: Boolean,
         charCountLimit: {
@@ -128,11 +160,11 @@ export default {
             default: 250
         },
         modelValue: {
-            default: '',
+            default: '{"type":"doc","content":[{"type":"paragraph"}]}',
             type: String
         }
     },
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'cancel', 'send'],
     setup (props, ctx) {
         const extensions = [
             StarterKit.configure({
@@ -155,11 +187,16 @@ export default {
         }
 
         const editor = useEditor({
-            content: props.modelValue,
+            content:  props.mode === 'json' ? JSON.parse(props.modelValue) : generateHTML(props.modelValue),
             onUpdate: function () {
                 ctx.emit('update:modelValue', props.mode === 'json' ? JSON.stringify(this.getJSON()) : this.getHTML())
             },
-            extensions
+            extensions,
+            editorProps: {
+                attributes: {
+                    class: props.editorClasses.join(' ')
+                }
+            }
         })
 
         return {
@@ -274,7 +311,6 @@ export default {
 
 <style lang="scss">
 .character-count {
-    margin-top: 1rem;
     display: flex;
     align-items: center;
     color: #68cef8;
@@ -290,6 +326,10 @@ export default {
     &__text {
         color: #868e96;
     }
+}
+
+.icon-button {
+    @apply p-2 outline-none cursor-pointer rounded border shadow;
 }
 
 .icon-button.is-active {

@@ -4,6 +4,7 @@ import { posts } from './posts.module'
 import { files } from './files.module'
 import { userConfig } from './userConfig.module'
 import { users } from './users.module'
+import { thread } from './thread.module'
 
 const store = createStore({
     state: {
@@ -13,7 +14,8 @@ const store = createStore({
         posts,
         files,
         userConfig,
-        users
+        users,
+        thread
     }
 })
 

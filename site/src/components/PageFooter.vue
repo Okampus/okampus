@@ -10,19 +10,19 @@
                         <li class="mt-2">
                             <a
                                 href="#"
-                                class="hover:underline text-2 hover:text-orange-500"
+                                class="link"
                             >FAQ</a>
                         </li>
                         <li class="mt-2">
                             <a
                                 href="#"
-                                class="hover:underline text-2 hover:text-orange-500"
+                                class="link"
                             >Aide</a>
                         </li>
                         <li class="mt-2">
                             <a
                                 href="#"
-                                class="hover:underline text-2 hover:text-orange-500"
+                                class="link"
                             >Support</a>
                         </li>
                     </ul>
@@ -35,13 +35,13 @@
                         <li class="mt-2">
                             <a
                                 href="#"
-                                class="hover:underline text-2 hover:text-orange-500"
+                                class="link"
                             >CGU</a>
                         </li>
                         <li class="mt-2">
                             <a
                                 href="#"
-                                class="hover:underline text-2 hover:text-orange-500"
+                                class="link"
                             >RGPD</a>
                         </li>
                     </ul>
@@ -54,13 +54,13 @@
                         <li class="mt-2">
                             <a
                                 href="https://www.instagram.com/horizon.efrei/"
-                                class="hover:underline text-2 hover:text-orange-500"
+                                class="link"
                             >Instagram</a>
                         </li>
                         <li class="mt-2">
                             <a
                                 href="https://discord.gg/q22FW5xhvP"
-                                class="hover:underline text-2 hover:text-orange-500"
+                                class="link"
                             >Discord</a>
                         </li>
                     </ul>
@@ -73,19 +73,19 @@
                         <li class="mt-2">
                             <a
                                 href="#"
-                                class="hover:underline text-2 hover:text-orange-500"
+                                class="link"
                             >Blog</a>
                         </li>
                         <li class="mt-2">
                             <a
                                 href="#"
-                                class="hover:underline text-2 hover:text-orange-500"
+                                class="link"
                             >Notre équipe</a>
                         </li>
                         <li class="mt-2">
                             <a
                                 href="#"
-                                class="hover:underline text-2 hover:text-orange-500"
+                                class="link"
                             >Contact</a>
                         </li>
                     </ul>

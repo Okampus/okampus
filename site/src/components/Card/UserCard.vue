@@ -8,10 +8,10 @@
                     :alt="username"
                 >
             </div>
-            <span
+            <!-- <span
                 class="w-1/3 h-1/3 absolute bottom-0 right-0 rounded-full border border-white"
                 :style="{backgroundColor: status}"
-            />
+            /> -->
         </div>
         <div class="flex flex-col min-w-0">
             <router-link

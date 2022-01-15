@@ -1,18 +1,11 @@
 <template>
-    <span
-        class="
-        h-7 rounded-md text-white
-        font-medium mr-1 px-1  opacity-80
-        cursor-pointer hover:opacity-100
-        md:mr-2 md:px-3 inline-flex items-center
-        text-base whitespace-nowrap
-    "
-        :style="{backgroundColor: color}"
+    <div
+        :class="[`bg-${color}-100`, `hover:bg-${color}-200`, `text-${color}-700`]"
+        class="whitespace-normal hover:cursor-pointer py-1 px-3 rounded-full inline-block"
     >
-
         {{ tagName }}
         <slot />
-    </span>
+    </div>
 </template>
 
 <script lang="js">
@@ -24,7 +17,7 @@ export default {
         },
         color: {
             type: String,
-            default: 'orange'
+            default: 'blue'
         }
     }
 }

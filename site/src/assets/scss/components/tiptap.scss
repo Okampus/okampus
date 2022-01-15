@@ -1,8 +1,7 @@
 /* stylelint-disable selector-class-pattern */
 .editor > .ProseMirror {
     @extend %input;
-    @apply text-gray-900 dark:text-gray-100
-        rounded-t-none focus:rounded-t min-h-20 px-2 py-1;
+    @apply text-gray-900 dark:text-gray-100 px-2 py-1 break-all text-ellipsis;
 
     & p.is-editor-empty {
         @extend %text-placeholder;

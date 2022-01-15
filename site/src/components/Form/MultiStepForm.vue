@@ -86,7 +86,7 @@ export default {
             return this.modelValue.previousStep
         }
     },
-    watch:{
+    watch: {
         previousStep(newValue, oldValue) {
             if (newValue && !oldValue) {
                 this.$emit('update:modelValue', {

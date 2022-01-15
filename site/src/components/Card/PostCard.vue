@@ -13,9 +13,6 @@
                     <i class="ri-subtract-line text-xl md:text-2xl -mt-1 mouse-icon" />
                     <i class="mt-1 ri-bookmark-line mouse-icon text-lg md:text-xl" />
                     <i class="mt-2 ri-star-line text-lg md:text-xl mouse-icon" />
-                    <div class="text-sm font-medium">
-                        {{ abbrNumbers(post.favorites) }}
-                    </div>
                 </div>
 
                 <div class="pl-1 pr-4 my-3 mr-2">
@@ -46,11 +43,6 @@
                             <p class="pr-1">•</p>
                             <i class="ri-history-line" />
                             <div> {{ timeAgo(post.contentLastUpdatedAt) }}</div>
-                        </div>
-                        <div class="flex space-x-1 pl-1">
-                            <p class="pr-1">•</p>
-                            <i class="ri-eye-line" />
-                            <div>{{ abbrNumbers(post.views) }}</div>
                         </div>
                     </span>
 

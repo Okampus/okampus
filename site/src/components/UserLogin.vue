@@ -93,12 +93,6 @@
                                         </button>
                                     </div>
                                 </form>
-
-                                <div class="mt-5 md:flex-none flex flex-col flex-wrap space-y-3 sm:mb-2 text-center text-0 underline text-xs">
-                                    <!-- TODO: register & forgot-password (?) -->
-                                    <a href="forgot-password"> Mot de passe oublié ? </a>
-                                    <a href="register"> Création d'un compte </a>
-                                </div>
                             </div>
                         </div>
                     </TransitionChild>

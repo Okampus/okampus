@@ -66,10 +66,10 @@
                     <div class="text-xl">
                         Activité
                     </div>
-                    <post-card-vue
-                        v-for="activitie in activities"
-                        :key="activitie.index"
-                        :post="activitie"
+                    <post-card
+                        v-for="activity in activitys"
+                        :key="activity.index"
+                        :post="activity"
                     />
                 </div>
             </div>
@@ -124,15 +124,15 @@
 
 <script>
 import { posts } from '@/fake/posts'
-import PostCardVue from '../components/Card/PostCard.vue'
+import PostCard from '../components/Card/PostCard.vue'
 
 export default {
     components: {
-        PostCardVue
+        PostCard
     },
     data () {
         return {
-            activities: posts
+            activitys: posts
         }
     },
     computed: {

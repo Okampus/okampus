@@ -259,7 +259,7 @@
                                     </div>
                                 </DisclosureButton>
                                 <DisclosurePanel>
-                                    <div class="flex flex-col gap-2">
+                                    <div class="mt-2 flex flex-col gap-2">
                                         <div
                                             v-for="(reply, j) in comment.replies"
                                             :key="j"
@@ -343,7 +343,6 @@ export default {
             const article = articles[articleId] ?? null
             this.article = article
             this.profile = article === null ? null : blogProfiles[article.author.id]
-            console.log(this.article.body)
             this.readingTime = article === null ? null : readingTimeMinutes(extractTextFromJSONBody(JSON.parse(article.body)))
         }
     }

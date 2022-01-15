@@ -12,7 +12,12 @@ export function timeAgo (dateString, style) {
         seconds: 1
     }
 
-    const secondsElapsed = (date.getTime() - Date.now()) / 1000
+    const secondsElapsed = parseInt((date.getTime() - Date.now()) / 1000)
+    if (secondsElapsed >= 0) {
+        // TODO: internationalize
+        return 'il y a moins d\'une seconde'
+    }
+
     for (const key in ranges) {
         if (ranges[key] < Math.abs(secondsElapsed)) {
             const delta = secondsElapsed / ranges[key]

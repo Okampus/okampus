@@ -10,13 +10,11 @@ class PostsService {
     }
 
     addPost (post) {
-        return axios.post(API_URL + 'posts', post, { withCredentials: true }).then(
-            res => res.data
-        )
-    }
+        for (const tag of post.tags) {
+            axios.post(API_URL + 'tags', {color: 'orange', name: tag}, { withCredentials: true })
+        }
 
-    modifyPost (id, newPost) {
-        return axios.patch(API_URL + 'posts', { id, newPost }, { withCredentials: true }).then(
+        return axios.post(API_URL + 'posts', { ...post, assignees: [] }, { withCredentials: true }).then(
             res => res.data
         )
     }

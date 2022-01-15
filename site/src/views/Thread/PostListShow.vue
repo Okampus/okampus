@@ -75,7 +75,7 @@ export default {
         })
 
         if (this.loggedIn) {
-            this.refreshPosts()
+            this.$store.dispatch('posts/newFetchPosts')
         }
     },
     methods: {

@@ -1,138 +1,94 @@
 <template>
-    <!--  TODO: Fix load time + add popover -->
     <div
-        v-if="tags.length > 0"
-        class="relative h-full flex items-center"
+        v-if="tags.length != 0"
+        class="relative flex m-2 items-center"
     >
-        <div
-            ref="tagList"
-            class="h-7 overflow-hidden min-w-0"
-            :class="{'absoluted': last == 0}"
-        >
-            <template
-                v-for="(tag, i) in tags"
-                :key="i"
+        <transition name="fade">
+            <div
+                v-if="leftGradient"
+                class="absolute flex justify-center items-center h-full"
             >
-                <Tag
-                    :ref="setTagRef"
-                    :tag-name="tag.name ?? tag"
-                    class="min-w-0"
-                    :class="{invisible: i >= last}"
-                />
-            </template>
-        </div>
+                <div
+                    class=" flex justify-center items-center h-full bg-1 cursor-pointer"
+                    @click="$refs.scroll.scrollTo({left:$refs.scroll.scrollLeft - 3/4*$refs.scroll.getBoundingClientRect().width, behavior: 'smooth'})"
+                >
+                    <i class="ri-arrow-left-s-line " />
+                </div>
+
+                <div class="w-10 h-full bg-gradient-to-r from-1" />
+            </div>
+        </transition>
+
         <div
-            v-if="labelLeft !== null"
-            class="absolute flex items-center top-1/2 text-white -translate-y-1/2 whitespace-nowrap rounded-full bg-blue-500 px-2"
-            :style="{left: labelLeft + 'px'}"
+            ref="scroll"
+            class="w-0 basis-full block items-center justify-center gap-2 whitespace-nowrap overflow-y-hidden overflow-x-scroll scrollbar-none space-x-2"
+            @scroll.passive="getScroll"
         >
-            <p>{{ extraTagsText }}</p>
-            <i class="ri-arrow-drop-down-line ri-xl -mr-1" />
+            <div
+                v-for="(el, index) in tags"
+                :key="index"
+                class="inline-block"
+            >
+                <ColoredTag
+                    :tag-name="el.name"
+                    :color="el.color"
+                />
+            </div>
         </div>
-    </div>
-    <div
-        v-else
-        class="italic text-sm h-full text-0 w-full whitespace-nowrap flex items-center"
-    >
-        <p class="my-auto">
-            Aucun tag
-        </p>
+
+        <transition name="fade">
+            <div
+                v-if="rightGradient"
+                class="absolute right-0 flex justify-center items-center h-full"
+            >
+                <div class="w-10 h-full bg-gradient-to-r from-transparent to-1" />
+
+                <div
+                    class=" flex justify-center items-center h-full bg-1 cursor-pointer"
+                    @click="$refs.scroll.scrollTo({left:$refs.scroll.scrollLeft + 3/4*$refs.scroll.getBoundingClientRect().width, behavior: 'smooth'})"
+                >
+                    <i class="ri-arrow-right-s-line " />
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 
-<script lang="js">
-import debounce from 'lodash/debounce'
-import { onBeforeUpdate, reactive, ref } from 'vue'
-import Tag from '@/components/ColoredTag.vue'
-import { getTextWidthInElement } from '@/utils/getTextWidth'
+<script>
+import ColoredTag from '../ColoredTag.vue'
 export default {
-    components: {
-        Tag
-    },
+    components: { ColoredTag },
     props: {
         tags: {
             type: Array,
-            default: () => []
-        },
-        padding: {
-            type: Number,
-            default: 6
-        },
-        extraTagsTextFormat: {
-            type: String,
-            default: '+ {}'
+            required: true
         }
     },
-    setup () {
-        const tagList = ref(null)
-        const loaded = ref(false)
-        let tagRefs = reactive([])
-        const setTagRef = el => {
-            if (el) {
-                tagRefs.push(el)
-            }
-        }
-        onBeforeUpdate(() => {
-            tagRefs = []
-        })
-        return { tagRefs, tagList, setTagRef, loaded }
-    },
-    data () {
+    data() {
         return {
-            overflowing: [],
-            overflowLabelWidth: null,
-            last: this.tags.length,
-            labelLeft: null,
-            tagsListObserver: null
-        }
-    },
-    computed: {
-        extraTagsText() {
-            return this.extraTagsTextFormat.replace(new RegExp('{}', 'g'), (this.tags.length - this.last ?? 0).toString())
-        }
+            leftGradient: Boolean,
+            rightGradient: Boolean
+        };
     },
     mounted() {
-        if (this.tags.length > 0) {
-            const getLabelLeft = (i) => i == 0 ? 0 : this.tagRefs[i-1].$el.getBoundingClientRect().right - this.tagList.getBoundingClientRect().left + this.padding
-            this.overflowLabelWidth = getTextWidthInElement(this.extraTagsTextFormat.replace(new RegExp('{}', 'g'), 'WWWWW'), this.tagList) + this.padding
-            const overflow = debounce(() => {
-                const top = this.tagList.getBoundingClientRect().top + 4
-                if (this.labelLeft === null) {
-                    for (var i = 0; i < this.tagRefs.length; i++) {
-                        if (this.tagRefs[i].$el.getBoundingClientRect().top > top) {
-                            for (var j = 0; j < i; j++) {
-                                if (this.tagRefs[j].$el.getBoundingClientRect().right >= this.tagList.getBoundingClientRect().right - this.overflowLabelWidth) {
-                                    this.last = j
-                                    this.labelLeft = getLabelLeft(j)
-                                    return
-                                }
-                            }
-                            this.last = i
-                            this.labelLeft = getLabelLeft(i)
-                            return
-                        }
-                    }
-                } else {
-                    const actualRight = this.tagList.getBoundingClientRect().right - this.overflowLabelWidth
-                    for (var k = 0; k < this.tagRefs.length; k++) {
-                        const rect = this.tagRefs[k].$el.getBoundingClientRect()
-                        if (rect.top > top || rect.right > actualRight) {
-                            this.last = k
-                            this.labelLeft = getLabelLeft(k)
-                            return
-                        }
-                    }
-                }
-                this.last = this.tagRefs.length
-                this.labelLeft = null
-            }, 10)
-            this.tagsListObserver = new ResizeObserver(overflow)
-            this.tagsListObserver.observe(this.tagList)
-        }
+        this.getScroll();
     },
-    beforeUnmount() {
-        if (this.tags.length > 0) {
-            this.tagsListObserver.unobserve(this.tagList)
+    methods: {
+        getScroll() {
+            if (this.tags.length != 0) {
+                if (this.$refs.scroll.scrollLeft == 0) {
+                    this.leftGradient = false;
+                }
+                else {
+                    this.leftGradient = true;
+                }
+                if (this.$refs.scroll.scrollLeft == this.$refs.scroll.scrollWidth - this.$refs.scroll.getBoundingClientRect().width) {
+                    this.rightGradient = false;
+                }
+                else {
+                    this.rightGradient = true;
+                }
+            }
         }
     }
 }

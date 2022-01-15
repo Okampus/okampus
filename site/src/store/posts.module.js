@@ -15,7 +15,7 @@ export const posts = {
     actions: {
         fetchPosts ({ commit, state }, query) {
             state.page++
-            return PostsService.getPosts({ page: state.page, ...query }).then(
+            return PostsService.getPosts({ page: state.page, itemsPerPage: 30,...query }).then(
                 posts => {
                     commit('fetchSuccess', posts)
                     return Promise.resolve(posts)
@@ -44,10 +44,10 @@ export const posts = {
                 }
             )
         },
-        modifyPost ({ commit }, id, newPost) {
-            return PostsService.modifyPost(id, newPost).then(
+        updatePost ({ commit }, id, newPost) {
+            return PostsService.updatePost(id, newPost).then(
                 modifiedPost => {
-                    commit('modifyPostSuccess', id, modifiedPost)
+                    commit('updatePostSuccess', id, modifiedPost)
                     return Promise.resolve(modifiedPost)
                 },
                 error => {
@@ -57,7 +57,7 @@ export const posts = {
             )
         },
         deletePost ({ commit }, id) {
-            return PostsService.modifyPost(id).then(
+            return PostsService.updatePost(id).then(
                 success => {
                     commit('deletePostSuccess', id)
                     return Promise.resolve(success)
@@ -78,9 +78,9 @@ export const posts = {
             state.posts = uniqBy([...state.posts, ...posts], (a, b) => a.postId === b.postId)
         },
         addPostSuccess (state, newPost) {
-            router.push(`/post/${newPost.id}`)
+            router.push(`/post/${newPost.postId}`)
         },
-        modifyPostSuccess (state, id, modifedPost) {
+        updatePostSuccess (state, id, modifedPost) {
             state.posts = state.posts.map(post => modifedPost ? post.id === id : post)
         },
         deletePostSuccess (state, id) {

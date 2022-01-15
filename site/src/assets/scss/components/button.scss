@@ -18,22 +18,37 @@
             hover:bg-blue-600 dark:hover:bg-blue-800
             active:bg-blue-700 dark:active:bg-blue-900
             px-4 py-2 relative h-10
-            bottom-[0.23rem] ;
+            bottom-[0.23rem] w-full;
 
         box-shadow: inset 0 0 3px rgb(255 255 255 / 50%);
     }
 
-    &[disabled] > :first-child{
-        @apply bg-gray-500 dark:bg-gray-700
+    &[disabled] > :first-child {
+        @apply bg-gray-500 dark:bg-gray-700;
     }
 
-    &:not([disabled]) > :first-child{
+    &:not([disabled]) > :first-child {
         @apply transform active:translate-y-[0.11rem]
-        transition duration-75 ease-in-out
+            transition duration-75 ease-in-out;
     }
-
 }
 
-.icon-button {
-    @apply p-2 rounded outline-none cursor-pointer border shadow;
+.button.red {
+    @extend %button-flat;
+    @apply text-white bg-red-600 dark:bg-red-800
+        hover:bg-red-700 hover:dark:bg-red-900
+        active:bg-red-800 active:dark:bg-red-900
+        disabled:bg-gray-600 disabled:dark:bg-gray-800
+        flex justify-center items-center;
+
+    & > :first-child {
+        @extend %button-flat;
+        @apply bg-red-500 dark:bg-red-700
+            hover:bg-red-600 dark:hover:bg-red-800
+            active:bg-red-700 dark:active:bg-red-900
+            px-4 py-2 relative h-10
+            bottom-[0.23rem] w-full;
+
+        box-shadow: inset 0 0 3px rgb(255 255 255 / 50%);
+    }
 }

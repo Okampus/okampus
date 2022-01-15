@@ -55,7 +55,7 @@ import {
     TransitionRoot,
     Dialog,
 } from '@headlessui/vue'
-import ThreadCompactView from '@/views/Post/ThreadCompactView.vue'
+import ThreadCompactView from '@/views/Thread/ThreadCompactView.vue'
 import { camelToSentenceCase } from '@/utils/caseUtils'
 
 export default {

@@ -1,7 +1,18 @@
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
     content: ['./index.html', './src/**/*.{js,vue}'],
-    // purge: { content: ['./public/**/*.html', './src/**/*.vue'] },
+    safelist: [
+        {
+            pattern: /bg-\w+-100/
+        },
+        {
+            pattern: /bg-\w+-200/,
+            variants: ['hover']
+        },
+        {
+            pattern: /text-\w+-700/,
+        }
+    ],
     darkMode: 'class', // or 'media' or 'class'
     theme: {
         extend: {

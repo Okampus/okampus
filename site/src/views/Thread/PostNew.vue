@@ -86,10 +86,12 @@
                         placeholder="Décrivez votre question/suggestion/problème !"
                         @input="v$.body.$touch"
                     >
-                        <error-wrapper
-                            v-if="v$.body.$error"
-                            :error="`Une description de Post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
-                        />
+                        <template #error>
+                            <error-wrapper
+                                v-if="v$.body.$error"
+                                :error="`Une description de Post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
+                            />
+                        </template>
                     </tip-tap-editor>
                 </div>
             </div>
@@ -159,7 +161,7 @@ export default {
         },
         titleCharLimit: {
             type: Array,
-            default: () => [10, 80]
+            default: () => [15, 80]
         },
         minTags: {
             type: Number,
@@ -171,7 +173,7 @@ export default {
         const state = reactive({
             title: '',
             type: null,
-            body: '',
+            body: '{"type":"doc","content":[{"type":"paragraph"}]}',
             tags: []
         })
 

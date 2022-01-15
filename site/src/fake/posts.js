@@ -26,7 +26,7 @@ export const posts = [
         favorites: 104, upvotes: 1255, views: 27553, downvotes: 3,
         createdAt: '2021-10-15T13:51:36.631Z', contentLastUpdatedAt: '2021-10-17T13:51:36.631Z' },
 
-    { postId: 3032, type: 1, locked: true, opened: false, state: true,
+    { postId: 2, type: 1, locked: true, opened: false, state: true,
         tags: [{ name: 'pave' },
             { name: 'déclaration pave' },
             { name: 'promo:toutes' },
@@ -37,7 +37,7 @@ export const posts = [
         favorites: 95, upvotes: 1004, views: 16993, downvotes: 3,
         createdAt: '2021-10-01T13:51:36.631Z', contentLastUpdatedAt: '2021-10-08T13:51:36.631Z' },
 
-    { postId: 11093, type: 4, locked: false, opened: true, state: false,
+    { postId: 3, type: 4, locked: false, opened: true, state: false,
         tags: [{ name: 'stage' },
             { name: 'sopra steria' },
             { name: 'promo:m1' },

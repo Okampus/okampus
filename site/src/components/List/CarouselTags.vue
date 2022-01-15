@@ -27,6 +27,7 @@
             <div
                 v-for="(el, index) in tags"
                 :key="index"
+                :class="`bg-${el.color}-400`"
                 class="whitespace-normal bg-blue-100 hover:bg-blue-200 hover:cursor-pointer text-blue-400 py-1 px-2 rounded-full inline-block"
             >
                 {{ el.name }}
@@ -55,7 +56,7 @@
 export default {
     props:{
         tags:{
-            type:Array,
+            type: Array,
             required:true
         }
     },
@@ -88,7 +89,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-</style>
