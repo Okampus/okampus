@@ -7,14 +7,11 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Club } from '../clubs/entities/club.entity';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { User } from '../users/user.entity';
 import { CreateSocialAccountDto } from './dto/create-social-account.dto';
 import { CreateSocialDto } from './dto/create-social.dto';
@@ -40,9 +37,7 @@ export class SocialsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Social))
-  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Social>> {
-    if (query.page)
-      return await this.socialsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
+  public async findAll(): Promise<Social[]> {
     return await this.socialsService.findAll();
   }
 

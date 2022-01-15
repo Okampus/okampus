@@ -6,8 +6,6 @@ import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assertPermission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { User } from '../users/user.entity';
 import type { CreateSocialAccountDto } from './dto/create-social-account.dto';
 import type { CreateSocialDto } from './dto/create-social.dto';
@@ -37,8 +35,8 @@ export class SocialsService {
     return social;
   }
 
-  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Social>> {
-    return await this.socialsRepository.findWithPagination(paginationOptions);
+  public async findAll(): Promise<Social[]> {
+    return await this.socialsRepository.findAll();
   }
 
   public async findOne(socialId: number): Promise<Social> {
