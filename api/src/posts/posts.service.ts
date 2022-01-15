@@ -98,6 +98,25 @@ export class PostsService {
     await this.postSearchService.remove(post.postId.toString());
   }
 
+  public async addTags(postId: number, newTags: string[]): Promise<Post> {
+    const post = await this.postRepository.findOneOrFail({ postId }, ['author', 'tags', 'assignees']);
+
+    const tags = await this.tagRepository.find({ name: { $in: newTags } });
+    post.tags.add(...tags);
+    await this.postRepository.flush();
+    await this.postSearchService.update(post);
+    return post;
+  }
+
+  public async removeTags(postId: number, droppedTags: string[]): Promise<void> {
+    const post = await this.postRepository.findOneOrFail({ postId }, ['tags']);
+
+    const tags = await this.tagRepository.find({ name: { $in: droppedTags } });
+    post.tags.remove(...tags);
+    await this.postRepository.flush();
+    await this.postSearchService.update(post);
+  }
+
   public async addAssignees(postId: number, assignees: string[]): Promise<Post> {
     const post = await this.postRepository.findOneOrFail({ postId }, ['author', 'tags', 'assignees']);
 

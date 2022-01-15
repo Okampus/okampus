@@ -22,6 +22,7 @@ import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
 import { AssigneesDto } from './dto/assignees.dto';
 import { CreatePostDto } from './dto/create-post.dto';
+import { TagsDto } from './dto/tags.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import type { NoPostVote, PostVote } from './entities/post-vote.entity';
 import { Post } from './entities/post.entity';
@@ -106,6 +107,24 @@ export class PostsController {
     if (voteDto.value === 0)
       return await this.postVotesService.neutralize(user, id);
     return await this.postVotesService.update(user, id, voteDto.value);
+  }
+
+  @PostRequest(':id/tags')
+  @CheckPolicies(ability => ability.can(Action.Interact, Post))
+  public async addTags(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() tagsDto: TagsDto,
+  ): Promise<Post> {
+    return await this.postsService.addTags(id, tagsDto.tags);
+  }
+
+  @Delete(':id/tags')
+  @CheckPolicies(ability => ability.can(Action.Interact, Post))
+  public async removeTags(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() tagsDto: TagsDto,
+  ): Promise<void> {
+    await this.postsService.removeTags(id, tagsDto.tags);
   }
 
   @PostRequest(':id/assignees')

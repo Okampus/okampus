@@ -1,13 +1,10 @@
-import {
-  IsArray,
-  IsEnum,
-  IsString,
-  Length,
-} from 'class-validator';
+import { IntersectionType } from '@nestjs/mapped-types';
+import { IsEnum, IsString, Length } from 'class-validator';
 import { PostType } from '../../shared/lib/types/post-type.enum';
 import { AssigneesDto } from './assignees.dto';
+import { TagsDto } from './tags.dto';
 
-export class CreatePostDto extends AssigneesDto {
+export class CreatePostDto extends IntersectionType(AssigneesDto, TagsDto) {
   @Length(15, 100)
   @IsString()
   title: string;
@@ -18,8 +15,4 @@ export class CreatePostDto extends AssigneesDto {
 
   @IsEnum(PostType)
   type: PostType;
-
-  @IsArray()
-  @IsString({ each: true })
-  tags: string[];
 }
