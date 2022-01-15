@@ -8,7 +8,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
+import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { Content } from '../../shared/lib/entities/content.entity';
 import type { Tag } from '../../tags/tag.entity';
 import type { User } from '../../users/user.entity';
@@ -34,7 +34,7 @@ export class Article extends Content {
   location?: [lat: number, lon: number];
 
   @ManyToMany()
-  @TransformTags()
+  @TransformCollection()
   tags = new Collection<Tag>(this);
 
   // TODO: Add full 'locked' support - Add perms to Update/Patch endpoint

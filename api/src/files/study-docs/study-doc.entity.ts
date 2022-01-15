@@ -8,7 +8,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
+import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { Subject } from '../../subjects/subject.entity';
 import type { Tag } from '../../tags/tag.entity';
@@ -30,7 +30,7 @@ export class StudyDoc extends BaseEntity {
   docSeries?: DocSeries;
 
   @ManyToMany()
-  @TransformTags()
+  @TransformCollection()
   tags = new Collection<Tag>(this);
 
   // School year corresponding to the document; e.g. 2017 -> 2017-18, 2018 -> 2018-19, etc.

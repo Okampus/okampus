@@ -8,7 +8,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
+import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import type { Tag } from '../../tags/tag.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
@@ -26,7 +26,7 @@ export class InfoDoc extends BaseEntity {
   docSeries?: DocSeries;
 
   @ManyToMany()
-  @TransformTags()
+  @TransformCollection()
   tags = new Collection<Tag>(this);
 
   @Property({ type: 'text' })

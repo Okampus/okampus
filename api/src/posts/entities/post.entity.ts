@@ -8,7 +8,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
+import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { Content } from '../../shared/lib/entities/content.entity';
 import { PostType } from '../../shared/lib/types/post-type.enum';
 import type { Tag } from '../../tags/tag.entity';
@@ -23,7 +23,7 @@ export class Post extends Content {
   title!: string;
 
   @ManyToMany()
-  @TransformTags()
+  @TransformCollection()
   tags = new Collection<Tag>(this);
 
   @Enum()

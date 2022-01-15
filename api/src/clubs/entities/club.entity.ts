@@ -5,8 +5,9 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { CLUB_MEMBERS_INCLUDED } from '../../shared/lib/constants';
+import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { ClubRole } from '../../shared/lib/types/club-role.enum';
 import { ClubSocialAccount } from '../../socials/entities/club-social-account.entity';
@@ -34,19 +35,11 @@ export class Club extends BaseEntity {
   icon!: string;
 
   @OneToMany(() => ClubSocialAccount, account => account.club)
-  @Transform(({ obj }: { obj: { socials: Collection<string> } }) => {
-    if (obj.socials.isInitialized())
-      return Object.values(obj.socials).filter(social => typeof social === 'object');
-    return null;
-  })
+  @TransformCollection()
   socials = new Collection<ClubSocialAccount>(this);
 
   @OneToMany(() => ClubMember, member => member.club)
-  @Transform(({ obj }: { obj: { members: Collection<string> } }) => {
-    if (obj.members.isInitialized())
-      return Object.values(obj.members).filter(member => typeof member === 'object');
-    return null;
-  })
+  @TransformCollection()
   @Expose({ groups: [CLUB_MEMBERS_INCLUDED] })
   members = new Collection<ClubMember>(this);
 
