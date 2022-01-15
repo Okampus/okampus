@@ -14,22 +14,22 @@ class UserService {
 
     getUserSocials (userId) {
         return axios.get(API_URL +`socials/user/${userId}`, {withCredentials: true})
-            .then(res => res.data.items)
+            .then(res => res.data)
     }
 
     getSocials () {
         return axios.get(API_URL +`socials`, {withCredentials: true})
-            .then(res => res.data.items)
+            .then(res => res.data)
     }
 
     getClubs () {
-        return axios.get(API_URL +`clubs`, {withCredentials: true})
-            .then(res => res.data.items)
+        return axios.get(API_URL +`clubs/names`, {withCredentials: true})
+            .then(res => res.data)
     }
 
     getUserClubs (userId) {
         return axios.get(API_URL +`clubs/member/${userId}`, {withCredentials: true})
-            .then(res => res.data)
+            .then(res => res.data.items)
     }
 
     updateUser ( newUser ) {
@@ -41,11 +41,11 @@ class UserService {
     }
 
     updateSocialAccount({socialAccountId,pseudo,link}){
-        return axios.patch(API_URL + `socials/account/${socialAccountId}`,{pseudo,link}, {withCredentials:true}).then(res => res.data)
+        return axios.patch(API_URL + `socials/user/${socialAccountId}`,{pseudo,link}, {withCredentials:true}).then(res => res.data)
     }
 
     deleteSocialAccount(socialAccountId){
-        return axios.delete(API_URL + `socials/account/${socialAccountId}`, {withCredentials:true})
+        return axios.delete(API_URL + `socials/user/${socialAccountId}`, {withCredentials:true})
     }
 
     getFavorites(){

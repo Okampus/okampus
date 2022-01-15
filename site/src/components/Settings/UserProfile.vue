@@ -123,7 +123,7 @@
                             >
                                 <div class="mr-2">
                                     <SelectInput
-                                        v-model="userClubs[idx].club"
+                                        v-model="club.club"
                                         button-name="Association"
                                         :choices="clubs.map(a=>a.name)"
                                         :model-value="clubs.indexOf(clubs.find((a)=> a.clubId === club.club.clubId))"
@@ -139,10 +139,10 @@
                             >
                                 <div class="ml-2">
                                     <SelectInput
-                                        v-model="userClubs[idx].role"
+                                        v-model="club.role"
                                         button-name="Role"
-                                        :choices="roles"
-                                        :model-value="roles.indexOf(club.role)"
+                                        :choices="Object.keys(roles)"
+                                        :model-value="Object.keys(roles).indexOf(Object.keys(roles).find((role) => roles[role] === club.role))"
                                     />
                                 </div>
                                 <button
@@ -255,7 +255,14 @@ export default {
     data() {
         return {
             user:this.$store.state.auth.user,
-            roles: ['Membre','President','Secretaire','Chef de Pôle'],
+            roles :{
+                "Président" : 'president',
+                "Vice-Président" : 'vice-president',
+                "Secretaire" : 'secretary',
+                "Trésorier" : 'treasurer',
+                "Manager" : 'manager',
+                "Membre" : 'member',
+            },
             parcours: null,
             promotion: null,
             group: null,

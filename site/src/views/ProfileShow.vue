@@ -1,7 +1,6 @@
 <template>
     <div v-if="user === undefined || user === null">
-        L'utilisateur n'existe pas
-        {{ user }}
+        Impossible de charger l'utilisateur
     </div>
     <div v-else>
         <div
@@ -75,7 +74,10 @@
                 </div>
             </div>
             <div class="flex flex-col space-y-4 md:w-1/2 lg:w-1/3">
-                <div class="card">
+                <div
+                    v-if="connected.userId == user.userId"
+                    class="card"
+                >
                     <a href="#/settings">Modifier le Profil</a>
                 </div>
                 <div class="card">
@@ -138,6 +140,9 @@ export default {
             console.log(this.$store.state.users.user)
             return this.$store.state.users.user
         },
+        connected() {
+            return this.$store.state.auth.user
+        },
         socialsAccounts() {
             return this.$store.state.users.socialsAccounts
         },
@@ -149,6 +154,7 @@ export default {
             return this.$store.state.users.clubs
         },
         userClubs() {
+            console.log(this.$store.state.users.userClubs)
             return this.$store.state.users.userClubs
         }
     },

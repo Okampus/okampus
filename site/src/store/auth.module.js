@@ -64,11 +64,11 @@ export const auth = {
         },
         logoutSuccess (state) {
             state.status.loggedIn = false
-            state.user = null
             // TODO: Redirect any user-restricted route to '/'
-            if (router.currentRoute.value.fullPath === '/my-account') {
+            if (router.currentRoute.value.fullPath === `/profile/${state.user.userId}`) {
                 router.push('/')
             }
+            state.user = null
             localStorage.removeItem('user')
         },
         registerSuccess (state) {
@@ -79,7 +79,6 @@ export const auth = {
         },
         fetchSuccess (state, user) {
             state.me = user
-            console.log("state me",state.me)
         }
     }
 }
