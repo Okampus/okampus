@@ -63,7 +63,6 @@ export class ReportsController {
     return await this.reportsService.findAll();
   }
 
-
   @UseGuards(TypesenseGuard)
   @Get('/search')
   @CheckPolicies(...makeReportAbilities(Action.Read))

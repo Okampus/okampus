@@ -31,7 +31,6 @@ export class CreateArticleDto {
   @IsString()
   category: string;
 
-
   @IsBoolean()
   isDraft: boolean;
 
