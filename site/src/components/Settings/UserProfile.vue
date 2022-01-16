@@ -1,14 +1,14 @@
 <template>
     {{ }}
     <div
-        v-if="user===undefined || user===null || clubs === undefined || clubs === null || socials === undefined || socials === null "
+        v-if="user===undefined || user===null || clubs === undefined || clubs === null || socials === undefined || socials === null || userClubs === undefined || userClubs === null "
         :class="$store.state.users "
     >
-        Undefined
+        Loading
     </div>
     <div
         v-else
-        class="px-8 py-4 text-2"
+        class="px-4 sm:px-8 py-4 text-2"
     >
         <h2 class="text-xl">
             Profil
@@ -21,31 +21,33 @@
                 <div class="flex mb-4">
                     <div class="mr-6 w-full">
                         <div class="flex mb-4">
-                            <div class="mr-2 w-1/2">
-                                <label
-                                    for="firstname"
-                                    class="text-lg"
-                                >Prénom</label>
-                                <input
-                                    id="firstname"
-                                    v-model="user.username"
-                                    type="text"
-                                    name="firstname"
-                                    class="w-full input bg-1"
-                                >
-                            </div>
-                            <div class="ml-2 w-1/2">
-                                <label
+                            <div class="w-1/2">
+                                <div
                                     for="lastname"
                                     class="text-lg"
-                                >Nom</label>
-                                <input
-                                    id="lastname"
-                                    v-model="user.username"
-                                    type="text"
-                                    name="lastname"
-                                    class="w-full input bg-1 uppercase"
                                 >
+                                    Prénom
+                                </div>
+                                <div
+
+                                    class="w-full bg-1 capitalize"
+                                >
+                                    {{ user.username }}
+                                </div>
+                            </div>
+                            <div class="ml-2 w-1/2">
+                                <div
+                                    for="lastname"
+                                    class="text-lg"
+                                >
+                                    Nom
+                                </div>
+                                <div
+
+                                    class="w-full bg-1 uppercase"
+                                >
+                                    {{ user.username }}
+                                </div>
                             </div>
                         </div>
                         <div class="flex flex-col">
@@ -64,44 +66,12 @@
                     <div class="flex-shrink-0">
                         <div class="relative">
                             <img
-                                src="@/assets/img/default_avatars/user.png"
+                                :src="user.avatar ? user.avatar : default_avatar"
                                 alt="img"
                                 class="rounded-full h-48 w-48"
                             >
                             <i class="ri-camera-line text-2xl border rounded-full py-1 px-2 bg-2 border-color-2 absolute bottom-0 right-2" />
                         </div>
-                    </div>
-                </div>
-                <div class="flex mb-4 space-x-4">
-                    <div class="flex flex-col">
-                        <label
-                            for="parcours"
-                            class="text-lg w-full"
-                        >Parcours</label>
-                        <SelectInput
-                            v-model="parcours"
-                            :choices="['Parcours Ingénieur','Parcours Expert (PEx)']"
-                        />
-                    </div>
-                    <div class="flex flex-col">
-                        <label
-                            for="promo"
-                            class="text-lg w-full"
-                        >Promotion</label>
-                        <SelectInput
-                            v-model="promotion"
-                            :choices="['L1','L2','L3','M1','M2']"
-                        />
-                    </div>
-                    <div class="w-40">
-                        <label
-                            for="td"
-                            class="text-lg"
-                        >Groupe de TD</label>
-                        <SelectInput
-                            v-model="promotion"
-                            :choices="['Int1','Int2','Int3','Int4','A','B','C','D','E','F','G','BN','BDX']"
-                        />
                     </div>
                 </div>
                 <div class="mb-4">
@@ -158,7 +128,7 @@
                         class="button my-2"
                         @click="addLineClub()"
                     >
-                        <p>Ajouter une Association</p>
+                        <p>Ajouter une association</p>
                     </button>
                 </div>
                 <div class="mb-4 ">
@@ -174,23 +144,43 @@
                             <div
                                 v-for="(social, idx) in socialsAccounts"
                                 :key="idx"
-                                class="flex mb-2 items-center"
+                                class="flex sm:mb-2 items-center mb-8"
                             >
-                                <div class="flex">
-                                    <i
-                                        v-if="social.social.socialId!=null"
-                                        class="mr-2 my-auto"
-                                        :class="socials.find((a)=> a.socialId === social.social.socialId).icon"
-                                    />
-                                    <SelectInput
-                                        v-model="social.social"
-                                        :choices="socials.map(sos=> sos.name)"
-                                        :model-value="socials.indexOf(socials.find((a)=> a.socialId === social.social.socialId))"
-                                    />
+                                <div class=" ">
+                                    <div class="flex">
+                                        <i
+                                            v-if="social.social.socialId!=null"
+                                            class="mr-2 my-auto"
+                                            :class="socials.find((a)=> a.socialId === social.social.socialId).icon"
+                                        />
+                                        <SelectInput
+                                            v-model="social.social"
+                                            :choices="socials.map(sos=> sos.name)"
+                                            :model-value="socials.indexOf(socials.find((a)=> a.socialId === social.social.socialId))"
+                                        />
+                                        <button
+                                            class="text-1 block sm:hidden text-xl my-auto red-500 h-8 w-8"
+                                            @click="rmLineAccount(idx)"
+                                        >
+                                            <i class="ri-close-line" />
+                                        </button>
+                                    </div>
+                                    <div class="flex flex-col sm:hidden">
+                                        <input
+                                            v-model="social.pseudo"
+                                            class="input mt-2"
+                                            placeholder="Pseudo"
+                                        >
+                                        <input
+                                            v-model="social.link"
+                                            class="input mt-2"
+                                            placeholder="Lien"
+                                        >
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col">
+                        <div class="hidden sm:flex flex-col">
                             <div
                                 v-for="(social, idx) in socialsAccounts"
                                 :key="idx"
@@ -203,7 +193,7 @@
                                 >
                             </div>
                         </div>
-                        <div class="flex flex-col">
+                        <div class="hidden sm:flex flex-col">
                             <div
                                 v-for="(social, idx) in socialsAccounts"
                                 :key="idx"
@@ -250,6 +240,7 @@
 import SelectInput from '@/components/Input/SelectInput.vue'
 import { watch } from 'vue';
 import _ from 'lodash'
+import default_avatar from '@/assets/img/default_avatars/user.png'
 export default {
     components: { SelectInput },
     data() {
@@ -267,7 +258,8 @@ export default {
             promotion: null,
             group: null,
             userClubs:null,
-            socialsAccounts:null
+            socialsAccounts:null,
+            default_avatar:default_avatar
         };
     },
     computed: {
@@ -292,18 +284,22 @@ export default {
         watch(
             () => this.$store.state.users.socials,
             (newSocials) => {
+                console.log("socials",newSocials)
                 this.socials = [...newSocials]
             }
         )
         watch(
             () => this.$store.state.users.userClubs,
             (newClubs) => {
+
+                console.log("userClubs",newClubs)
                 this.userClubs = [...newClubs]
             }
         )
         watch(
             () => this.$store.state.users.clubs,
             (newClubs) =>{
+                console.log("clubs",newClubs)
                 this.clubs = [...newClubs]
             }
         )
@@ -325,7 +321,6 @@ export default {
         watch(
             () => this.socialsAccounts,
             (updSocial) => {
-                console.log("update")
                 for(let i=0;i<updSocial.length; i++){
                     if(typeof(updSocial[i].social)==="number"){
                         updSocial[i].social = {socialId:this.socials[updSocial[i].social].socialId}
@@ -370,7 +365,6 @@ export default {
             this.$store.dispatch('users/updateUser',this.user)
 
             for( let i =0; i < this.socialsAccounts.length; i++) {
-                console.log(this.socialsAccounts[i])
                 if(canSocialBePosted(this.socialsAccounts[i])){
                     if(!this.$store.state.users.socialsAccounts.find((a)=> _.isEqual(a,this.socialsAccounts[i]))){
                         if(this.socialsAccounts[i].socialAccountId == null){

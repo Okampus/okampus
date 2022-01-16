@@ -48,10 +48,68 @@ class UserService {
         return axios.delete(API_URL + `socials/user/${socialAccountId}`, {withCredentials:true})
     }
 
-    getFavorites(){
-        return axios.get(API_URL + `favorites`, {withCredentials: true}).then(res => res.data.items)
+    async getFavorites(){
+        const postList = await axios.get(API_URL + `favorites`, {withCredentials: true}).then( res => Promise.all(res.data.items.map(async (fav) => {
+            if ("post" in fav){
+                const vote = await axios.get(API_URL + `posts/${fav.post.postId}/vote`, {withCredentials: true}).then(res => res.data.value)
+                const favorited = true
+                return {...fav, post:{...fav.post,currentVote:vote,favorited}}
+            }else if ("reply" in fav){
+                const vote = await axios.get(API_URL + `posts/replies/${fav.reply.replyId}/vote`, {withCredentials: true}).then(res => res.data.value)
+                const favorited = true
+                return {...fav, reply:{...fav.reply,currentVote:vote,favorited}}
+            }else {
+                const vote = await axios.get(API_URL + `posts/replies/comments/${fav.comment.commentId}/vote`, {withCredentials: true}).then(res => res.data.value)
+                const favorited = true
+                return {...fav, comment:{...fav.comment,currentVote:vote, favorited}}
+            }
+        })))
+        return postList
     }
 
+    votePost(postId, value) {
+        return axios.post(API_URL + `posts/${postId}/vote`, { value }, { withCredentials: true }).then(
+            res => res.data
+        )
+    }
+
+    voteReply(replyId, value) {
+        return axios.post(API_URL + `posts/replies/${replyId}/vote`, { value }, { withCredentials: true }).then(
+            res => res.data
+        )
+    }
+
+    voteComment(commentId, value) {
+        return axios.post(API_URL + `posts/replies/comments/${commentId}/vote`, { value }, { withCredentials: true }).then(
+            res => res.data
+        )
+    }
+
+    addFavoritePost(postId) {
+        return axios.post(`${API_URL}favorites/posts/${postId}`, {}, { withCredentials: true }).then(
+            res => res.data
+        )
+    }
+
+    deleteFavoritePost(postId) {
+        return axios.delete(`${API_URL}favorites/posts/${postId}`, { withCredentials: true }).then(() => true).catch(() => false)
+    }
+
+    addFavoriteReply(replyId) {
+        return axios.post(`${API_URL}favorites/replies/${replyId}`, {}, { withCredentials: true }).then(() => true).catch(() => false)
+    }
+
+    deleteFavoriteReply(replyId) {
+        return axios.delete(`${API_URL}favorites/replies/${replyId}`, { withCredentials: true }).then(() => true).catch(() => false)
+    }
+
+    addFavoriteComment(commentId) {
+        return axios.post(`${API_URL}favorites/comments/${commentId}`, {}, { withCredentials: true }).then(() => true).catch(() => false)
+    }
+
+    deleteFavoriteComment(commentId) {
+        return axios.delete(`${API_URL}favorites/comments/${commentId}`, { withCredentials: true }).then(() => true).catch(() => false)
+    }
 }
 
 export default new UserService()

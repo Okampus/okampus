@@ -10,29 +10,38 @@
                     <p class="text-5">
                         Publié par {{ comment.author.username }} {{ dateSince(new Date(comment.createdAt)) }}
                     </p>
-                    <a class="text-0 text-lg mr-4 line-clamp-2 ">
+                    <router-link
+                        :to="`/post/${comment.post.postId}`"
+                        class="text-0 text-lg mr-4 line-clamp-2 "
+                    >
                         {{ extractTextFromJSONBody(JSON.parse(comment.body)) }}
-                    </a>
+                    </router-link>
                 </div>
                 <div class="flex items-center ri-lg gap-2">
                     <div class="flex gap-2">
                         <div class="flex items-center text-5 hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded">
                             <i
-                                class=" cursor-pointer  ri-sm tracking-tighter pl-1 hidden md:block"
+                                class=" cursor-pointer  ri-sm tracking-tighter pl-1 "
                                 :class="[comment.currentVote === 1 ? 'ri-thumb-up-fill text-green-600' : 'ri-thumb-up-line']"
                                 @click="comment.currentVote === 1 ? sendVote(0) : sendVote(1)"
                             />
-                            <p class=" text-sm ml-1 tracking-tighter pl-1 hidden md:block">
+                            <p class=" text-sm ml-1 tracking-tighter pl-1 ">
                                 {{ comment.upvotes }}
                             </p>
                         </div>
                     </div>
-                    <div class="flex items-center text-5 hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded">
+                    <div
+                        v-for="(action,i) in actions"
+                        :key="i"
+                        class="flex items-center text-5 hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded"
+                        @click="actionsMap[action].action"
+                    >
                         <i
-                            class="ri-sm ri-star-line"
+                            :class="actionsMap[action].icon"
+                            class="ri-md"
                         />
                         <p class="text-2 text-sm tracking-tighter pl-1 hidden md:block">
-                            Favori
+                            {{ actionsMap[action].name() }}
                         </p>
                     </div>
                 </div>
@@ -55,7 +64,6 @@ export default {
             type: Array,
             default: function () {
                 return [
-                    'viewComments',
                     'favorite',
                     'flag'
                 ]
@@ -66,8 +74,8 @@ export default {
         actionsMap () {
             // TODO: Actions
             return {
-                viewComments: { name: () => { return "3 Réponses" }, icon: 'ri-chat-2-line', action: function () { console.log('Commentaire') } },
-                favorite: { name: () => { return 'Favori' }, icon: 'ri-star-line', action: function () { console.log('Favori') } },
+                favorite: { name:()=> 'Favoris', icon: this.comment.favorited ? 'ri-star-fill text-yellow-500' : 'ri-star-line', class: [this.comment.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
+                    action: () => { this.comment.favorited ? this.deleteFavorite() : this.addFavorite() } },
                 flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } },
             }
         }
@@ -97,10 +105,16 @@ export default {
         },
         extractTextFromJSONBody,
         sendVote(vote) {
-            this.$store.dispatch('thread/voteReply', {
-                replyId: this.reply.replyId,
+            this.$store.dispatch('users/voteCommentFav', {
+                commentId: this.comment.commentId,
                 value: vote
             })
+        },
+        addFavorite() {
+            this.$store.dispatch('users/addFavoriteComment', this.comment.commentId)
+        },
+        deleteFavorite() {
+            this.$store.dispatch('users/deleteFavoriteComment', this.comment.commentId)
         }
     }
 

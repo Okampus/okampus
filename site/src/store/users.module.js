@@ -145,7 +145,116 @@ export const users = {
                     return Promise.reject(error)
                 }
             )
-        }
+        },
+        votePostFav({commit},{postId,value}){
+            return UserService.votePost(postId,value).then(
+                success => {
+                    commit("votePostSuccess",{success,value})
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        voteReplyFav({commit},{replyId,value}){
+            return UserService.voteReply(replyId,value).then(
+                success => {
+                    commit("voteReplySuccess",{success,value})
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        voteCommentFav({commit},{commentId,value}){
+            return UserService.voteComment(commentId,value).then(
+                success => {
+                    commit("voteCommentSuccess",{success,value})
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        addFavoritePost({ commit }, postId) {
+            return UserService.addFavoritePost(postId).then(
+                worked => {
+                    commit('addFavoritePostSuccess', postId)
+                    return Promise.resolve(worked)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        deleteFavoritePost({ commit }, postId) {
+            console.log("postId",postId)
+            return UserService.deleteFavoritePost(postId).then(
+                worked => {
+                    commit('deleteFavoritePostSuccess', postId)
+                    return Promise.resolve(worked)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        addFavoriteReply({ commit }, replyId) {
+            return UserService.addFavoriteReply(replyId).then(
+                worked => {
+                    commit('addFavoriteReplySuccess', replyId)
+                    return Promise.resolve(worked)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        deleteFavoriteReply({ commit }, replyId) {
+            return UserService.deleteFavoriteReply(replyId).then(
+                worked => {
+                    commit('deleteFavoriteReplySuccess',  replyId)
+                    return Promise.resolve(worked)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        addFavoriteComment({ commit }, commentId) {
+            return UserService.addFavoriteComment(commentId).then(
+                worked => {
+                    commit('addFavoriteCommentSuccess', commentId)
+                    return Promise.resolve(worked)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        deleteFavoriteComment({ commit }, commentId) {
+            return UserService.deleteFavoriteComment(commentId).then(
+                worked => {
+                    commit('deleteFavoriteCommentSuccess',commentId)
+                    return Promise.resolve(worked)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
 
     },
     mutations: {
@@ -189,6 +298,96 @@ export const users = {
         },
         fetchUserFavorites(state,favorites){
             state.favorites = favorites
-        }
+        },
+        votePostSuccess(state,{success,value}){
+            state.favorites = state.favorites.map((a) => {
+                if("post" in a){
+                    if(a.post.postId === success.postId){
+                        a.post.currentVote = value
+                        a.post.upvotes = success.upvotes
+                        a.post.downvotes = success.downvotes
+                    }
+                }
+                return a
+            } )
+        },
+        voteReplySuccess(state,{success, value}){
+            state.favorites = state.favorites.map((a) => {
+                if("reply" in a){
+                    if(a.reply.replyId === success.replyId){
+                        a.reply.currentVote = value
+                        a.reply.upvotes = success.upvotes
+                        a.reply.downvotes = success.downvotes
+                    }
+                }
+                return a
+            } )
+        },
+        voteCommentSuccess(state,{success, value}){
+            state.favorites = state.favorites.map((a) => {
+                if("comment" in a){
+                    if(a.comment.commentId === success.commentId){
+                        a.comment.currentVote = value
+                        a.comment.upvotes = success.upvotes
+                        a.comment.downvotes = success.downvotes
+                    }
+                }
+                return a
+            } )
+        },
+        addFavoritePostSuccess(state,success){
+            state.favorites = state.favorites.map((a) => {
+                if("post" in a){
+                    if(a.post.postId === success)
+                        a.post.favorited = true
+                }
+                return a
+            } )
+        },
+        deleteFavoritePostSuccess(state,success){
+            state.favorites = state.favorites.map((a) => {
+                if("post" in a){
+                    if(a.post.postId === success)
+                        a.post.favorited = false
+                }
+                return a
+            } )
+        },
+        addFavoriteReplySuccess(state,success){
+            state.favorites = state.favorites.map((a) => {
+                if("reply" in a){
+                    if(a.reply.replyId === success)
+                        a.reply.favorited = true
+                }
+                return a
+            } )
+        },
+        deleteFavoriteReplySuccess(state,success){
+            state.favorites = state.favorites.map((a) => {
+                if("reply" in a){
+                    if(a.reply.replyId === success)
+                        a.reply.favorited = false
+                }
+                return a
+            } )
+        },
+        addFavoriteCommentSuccess(state,success){
+            state.favorites = state.favorites.map((a) => {
+                if("comment" in a){
+                    if(a.comment.commentId === success)
+                        a.comment.favorited = true
+                }
+                return a
+            } )
+        },
+        deleteFavoriteCommentSuccess(state,success){
+            state.favorites = state.favorites.map((a) => {
+                if("comment" in a){
+                    if(a.comment.commentId === success)
+                        a.comment.favorited = false
+                }
+                return a
+            } )
+        },
     }
 }

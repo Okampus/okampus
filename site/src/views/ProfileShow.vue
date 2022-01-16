@@ -15,7 +15,7 @@
                     Changer votre banniere
                   </div> -->
                     <img
-                        :src="user.avatar"
+                        :src="user.avatar ? user.avatar : default_avatar"
                         class="absolute left-10 -bottom-1/4 h-32 w-32 rounded-full"
                     >
                 </div>
@@ -43,9 +43,9 @@
                             >
                                 <p>
                                     <img
-                                        src="#"
+                                        :src="club.icon ? club.icon : default_avatar"
                                         alt="#"
-                                        class="border-2 h-16 w-16"
+                                        class="h-16 w-16"
                                     >
                                 </p>
                                 <div class="ml-2">
@@ -125,6 +125,7 @@
 <script>
 import { posts } from '@/fake/posts'
 import PostCard from '../components/Card/PostCard.vue'
+import default_avatar from '@/assets/img/default_avatars/user.png'
 
 export default {
     components: {
@@ -132,7 +133,8 @@ export default {
     },
     data () {
         return {
-            activitys: posts
+            activitys: posts,
+            default_avatar : default_avatar
         }
     },
     computed: {
