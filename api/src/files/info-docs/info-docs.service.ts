@@ -32,17 +32,17 @@ export class InfoDocsService {
   public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<InfoDoc>> {
     // TODO: Maybe the user won't have access to all docs. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
-    return await this.infoDocRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'docSeries', 'tags'] });
+    return await this.infoDocRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'file.user', 'docSeries', 'tags'] });
   }
 
   public async findOne(infoDocId: string): Promise<InfoDoc> {
     // TODO: Maybe the user won't have access to this doc. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
-    return await this.infoDocRepository.findOneOrFail({ infoDocId }, ['file', 'docSeries', 'tags']);
+    return await this.infoDocRepository.findOneOrFail({ infoDocId }, ['file', 'file.user', 'docSeries', 'tags']);
   }
 
   public async update(user: User, infoDocId: string, updateCourseDto: UpdateInfoDocDto): Promise<InfoDoc> {
-    const infoDoc = await this.infoDocRepository.findOneOrFail({ infoDocId }, ['file', 'subject', 'docSeries', 'tags']);
+    const infoDoc = await this.infoDocRepository.findOneOrFail({ infoDocId }, ['file', 'file.user', 'subject', 'docSeries', 'tags']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, infoDoc);

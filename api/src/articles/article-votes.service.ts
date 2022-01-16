@@ -18,16 +18,16 @@ export class ArticleVotesService {
   ) {}
 
   public async findVote(user: User, articleId: number): Promise<ArticleVote | NoArticleVote> {
-    const article = await this.articleRepository.findOneOrFail({ articleId }, ['tags']);
+    const article = await this.articleRepository.findOneOrFail({ articleId }, ['author', 'tags']);
 
     // TODO: Maybe the user won't have access to this article. There can be some restrictions
     // (i.e. "personal"/"sensitive" articles)
 
-    return await this.articleVotesRepository.findOne({ article, user }) ?? { article, user, value: 0 };
+    return await this.articleVotesRepository.findOne({ article, user }, ['article', 'article.tags', 'article.author']) ?? { article, user, value: 0 };
   }
 
   public async update(user: User, postId: number, value: -1 | 1): Promise<Article> {
-    const article = await this.articleRepository.findOneOrFail({ articleId: postId }, ['tags']);
+    const article = await this.articleRepository.findOneOrFail({ articleId: postId }, ['author', 'tags']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, article);
@@ -60,7 +60,7 @@ export class ArticleVotesService {
   }
 
   public async neutralize(user: User, postId: number): Promise<Article> {
-    const article = await this.articleRepository.findOneOrFail({ articleId: postId }, ['tags']);
+    const article = await this.articleRepository.findOneOrFail({ articleId: postId }, ['author', 'tags']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, article);

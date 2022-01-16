@@ -44,11 +44,11 @@ export class AttachmentsService {
   public async findOne(attachmentId: string): Promise<Attachment> {
     // TODO: Maybe the user won't have access to this post/reply. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts/replies)
-    return await this.attachmentRepository.findOneOrFail({ attachmentId }, ['file', 'post']);
+    return await this.attachmentRepository.findOneOrFail({ attachmentId }, ['file', 'file.user', 'post', 'reply', 'article']);
   }
 
   public async remove(user: User, attachmentId: string): Promise<void> {
-    const attachment = await this.attachmentRepository.findOneOrFail({ attachmentId }, ['file', 'post']);
+    const attachment = await this.attachmentRepository.findOneOrFail({ attachmentId }, ['file', 'file.user', 'post', 'reply', 'article']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, attachment);

@@ -33,12 +33,12 @@ export class PostFavoritesService {
     return await this.postFavoriteRepository.findWithPagination(
       paginationOptions,
       { user, kind: 'post' },
-      { populate: ['post', 'post.tags'] },
+      { populate: ['post', 'post.tags', 'post.author'] },
     );
   }
 
   public async findOne(postId: number, user: User): Promise<PostFavorite> {
-    return await this.postFavoriteRepository.findOneOrFail({ post: { postId }, user }, { populate: ['post'] });
+    return await this.postFavoriteRepository.findOneOrFail({ post: { postId }, user }, { populate: ['post', 'post.tags', 'post.author'] });
   }
 
   public async remove(postId: number, user: User): Promise<void> {

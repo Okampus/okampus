@@ -79,8 +79,7 @@ export class ClubsService {
     clubId: number,
     paginationOptions?: PaginationOptions,
   ): Promise<PaginatedResult<ClubMember>> {
-    const club = await this.clubRepository.findOneOrFail({ clubId });
-    return await this.clubMemberRepository.findWithPagination(paginationOptions, { club }, { populate: ['user', 'club', 'club.members', 'club.members.user', 'club.socials', 'club.socials.social'] });
+    return await this.clubMemberRepository.findWithPagination(paginationOptions, { club: { clubId } }, { populate: ['user', 'club', 'club.members', 'club.members.user', 'club.socials', 'club.socials.social'] });
   }
 
   public async findClubMembership(
@@ -107,7 +106,7 @@ export class ClubsService {
       throw new ForbiddenException('Not a club admin');
 
     if (club.canActOnRole(requester, createClubMemberDto.role))
-      throw new BadRequestException('Role too high');
+      throw new ForbiddenException('Role too high');
 
     const user = await this.userRepository.findOneOrFail({ userId });
     const existing = await this.clubMemberRepository.count({ club, user });
@@ -132,9 +131,9 @@ export class ClubsService {
       throw new ForbiddenException('Not a club admin');
 
     if (typeof updateClubMemberDto.role !== 'undefined' && club.canActOnRole(requester, updateClubMemberDto.role))
-      throw new BadRequestException('Role too high');
+      throw new ForbiddenException('Role too high');
 
-    const clubMember = await this.clubMemberRepository.findOneOrFail({ club: { clubId }, user: { userId } }, ['user', 'club', 'club.members']);
+    const clubMember = await this.clubMemberRepository.findOneOrFail({ club: { clubId }, user: { userId } }, ['user', 'club', 'club.members', 'club.members.user', 'club.socials', 'club.socials.social']);
 
     wrap(clubMember).assign(updateClubMemberDto);
     await this.clubMemberRepository.flush();
@@ -142,7 +141,7 @@ export class ClubsService {
   }
 
   public async removeUserFromClub(requester: User, clubId: number, userId: string): Promise<void> {
-    const club = await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user', 'socials', 'socials.social']);
+    const club = await this.clubRepository.findOneOrFail({ clubId }, ['members', 'members.user']);
 
     const isSelf = requester.userId === userId;
 
@@ -150,7 +149,7 @@ export class ClubsService {
     if (!isSelf && !requester.roles.includes(Role.Admin) && !club.isClubAdmin(requester))
       throw new ForbiddenException('Not a club admin');
 
-    const clubMember = await this.clubMemberRepository.findOneOrFail({ club: { clubId }, user: { userId } });
+    const clubMember = await this.clubMemberRepository.findOneOrFail({ club, user: { userId } });
 
     if (!isSelf && clubMember.role === ClubRole.President)
       throw new ForbiddenException('Cannot remove president');

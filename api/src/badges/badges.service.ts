@@ -53,7 +53,7 @@ export class BadgesService {
   }
 
   public async unlockForUser(slug: string, user: User): Promise<BadgeUnlock> {
-    const badge = await this.findOne(slug);
+    const badge = await this.badgeRepository.findOneOrFail({ slug });
     const badgeUnlock = new BadgeUnlock({ badge, user });
     await this.badgeUnlockRepository.persistAndFlush(badgeUnlock);
     return badgeUnlock;
@@ -63,6 +63,6 @@ export class BadgesService {
     userId: string,
     paginationOptions?: PaginationOptions,
   ): Promise<PaginatedResult<BadgeUnlock>> {
-    return await this.badgeUnlockRepository.findWithPagination(paginationOptions, { user: { userId } });
+    return await this.badgeUnlockRepository.findWithPagination(paginationOptions, { user: { userId } }, { populate: ['badge', 'user'] });
   }
 }

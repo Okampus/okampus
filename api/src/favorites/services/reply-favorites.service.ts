@@ -33,12 +33,12 @@ export class ReplyFavoritesService {
     return await this.replyFavoriteRepository.findWithPagination(
       paginationOptions,
       { user, kind: 'reply' },
-      { populate: ['reply'] },
+      { populate: ['reply', 'reply.post', 'reply.author'] },
     );
   }
 
   public async findOne(replyId: string, user: User): Promise<ReplyFavorite> {
-    return await this.replyFavoriteRepository.findOneOrFail({ reply: { replyId }, user }, { populate: ['reply'] });
+    return await this.replyFavoriteRepository.findOneOrFail({ reply: { replyId }, user }, { populate: ['reply', 'reply.post', 'reply.author'] });
   }
 
   public async remove(replyId: string, user: User): Promise<void> {

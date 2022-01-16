@@ -33,12 +33,15 @@ export class CommentFavoritesService {
     return await this.commentFavoriteRepository.findWithPagination(
       paginationOptions,
       { user, kind: 'comment' },
-      { populate: ['comment'] },
+      { populate: ['comment', 'comment.author', 'comment.post', 'comment.reply'] },
     );
   }
 
   public async findOne(commentId: string, user: User): Promise<CommentFavorite> {
-    return await this.commentFavoriteRepository.findOneOrFail({ comment: { commentId }, user }, { populate: ['comment'] });
+    return await this.commentFavoriteRepository.findOneOrFail(
+      { comment: { commentId }, user },
+      { populate: ['comment', 'comment.author', 'comment.post', 'comment.reply'] },
+    );
   }
 
   public async remove(commentId: string, user: User): Promise<void> {

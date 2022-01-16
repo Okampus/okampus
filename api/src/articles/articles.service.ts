@@ -41,13 +41,13 @@ export class ArticlesService {
   public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Article>> {
     // TODO: Maybe the user won't have access to all articles. There can be some restrictions
     // (i.e. "personal"/"sensitive" articles)
-    return await this.articleRepository.findWithPagination(paginationOptions, {}, { populate: ['tags'] });
+    return await this.articleRepository.findWithPagination(paginationOptions, {}, { populate: ['author', 'tags'] });
   }
 
   public async findOne(articleId: number): Promise<Article> {
     // TODO: Maybe the user won't have access to this article. There can be some restrictions
     // (i.e. "personal"/"sensitive" articles)
-    return await this.articleRepository.findOneOrFail({ articleId }, ['tags']);
+    return await this.articleRepository.findOneOrFail({ articleId }, ['author', 'tags']);
   }
 
   public async update(user: User, postId: number, updatePostDto: UpdateArticleDto): Promise<Article> {

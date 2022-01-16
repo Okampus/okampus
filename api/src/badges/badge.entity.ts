@@ -1,4 +1,9 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import {
+  Entity,
+  Enum,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { BadgeLevel } from '../shared/lib/types/badge-level.enum';
 
@@ -16,7 +21,7 @@ export class Badge extends BaseEntity {
   @Property()
   value!: number;
 
-  @Property({})
+  @Enum(() => BadgeLevel)
   level!: BadgeLevel;
 
   // TODO: Add full 'icon' support

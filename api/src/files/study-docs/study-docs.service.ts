@@ -41,17 +41,17 @@ export class StudyDocsService {
   public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<StudyDoc>> {
     // TODO: Maybe the user won't have access to all docs. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
-    return await this.studyDocRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'subject', 'docSeries', 'tags'] });
+    return await this.studyDocRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'file.user', 'subject', 'docSeries', 'tags'] });
   }
 
   public async findOne(studyDocId: string): Promise<StudyDoc> {
     // TODO: Maybe the user won't have access to this doc. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
-    return await this.studyDocRepository.findOneOrFail({ studyDocId }, ['file', 'subject', 'docSeries', 'tags']);
+    return await this.studyDocRepository.findOneOrFail({ studyDocId }, ['file', 'file.user', 'subject', 'docSeries', 'tags']);
   }
 
   public async update(user: User, studyDocId: string, updateCourseDto: UpdateStudyDocDto): Promise<StudyDoc> {
-    const studyDoc = await this.studyDocRepository.findOneOrFail({ studyDocId }, ['file', 'subject', 'docSeries', 'tags']);
+    const studyDoc = await this.studyDocRepository.findOneOrFail({ studyDocId }, ['file', 'file.user', 'subject', 'docSeries', 'tags']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, studyDoc);
@@ -62,7 +62,7 @@ export class StudyDocsService {
   }
 
   public async remove(user: User, studyDocId: string): Promise<void> {
-    const studyDoc = await this.studyDocRepository.findOneOrFail({ studyDocId }, ['file']);
+    const studyDoc = await this.studyDocRepository.findOneOrFail({ studyDocId }, ['file', 'file.user']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, studyDoc);

@@ -72,11 +72,8 @@ export class SocialsService {
     return socialAccount;
   }
 
-  public async findAllUserSocialAccounts(
-    userId: string,
-  ): Promise<UserSocialAccount[]> {
-    const user = await this.usersRepository.findOneOrFail({ userId });
-    return await this.userSocialsAccountRepository.find({ user }, ['social']);
+  public async findAllUserSocialAccounts(userId: string): Promise<UserSocialAccount[]> {
+    return await this.userSocialsAccountRepository.find({ user: { userId } }, ['social', 'user']);
   }
 
   public async updateUserSocialAccount(
@@ -121,8 +118,7 @@ export class SocialsService {
   }
 
   public async findAllClubSocialAccounts(clubId: number): Promise<ClubSocialAccount[]> {
-    const club = await this.clubsRepository.findOneOrFail({ clubId });
-    return await this.clubSocialsAccountRepository.find({ club }, ['social']);
+    return await this.clubSocialsAccountRepository.find({ club: { clubId } }, ['social', 'club', 'club.members']);
   }
 
   public async updateClubSocialAccount(
