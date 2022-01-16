@@ -148,7 +148,7 @@ export default {
                         // { to: '/blog/admin', text: 'Admin (Blog)', icon: 'ri-pie-chart-box-line' }
                     ],
                     post: [
-                        { to: '/posts/ask', text: 'Créer un Post', icon: 'ri-chat-new-line' },
+                        { to: '/posts/new', text: 'Créer un Post', icon: 'ri-chat-new-line' },
                         { to: '/posts', text: 'Tous les Posts', icon: 'ri-chat-check-line' }
                     ],
                 }),

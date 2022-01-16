@@ -24,7 +24,7 @@
     }
 
     &[disabled] > :first-child {
-        @apply bg-gray-500 dark:bg-gray-700;
+        @apply bg-gray-500 dark:bg-gray-700 cursor-not-allowed;
     }
 
     &:not([disabled]) > :first-child {

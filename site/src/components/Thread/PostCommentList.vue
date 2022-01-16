@@ -168,7 +168,7 @@ export default {
                         name: () => { return 'Éditer' },
                         icon: () => 'ri-edit-line',
                         class: () => 'hover:text-green-500',
-                        action: () => { this.commentItems[i].edit = !this.commentItems[i].edit; console.log('d', i, this.commentItems) }
+                        action: () => { this.commentItems[i].edit = !this.commentItems[i].edit }
                     }
                 }),
             }

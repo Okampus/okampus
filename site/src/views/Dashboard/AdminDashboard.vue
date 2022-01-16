@@ -92,7 +92,7 @@ export default {
                         name: 'Actions' }
                     // TODO: Actions
                 }, posts],
-                users: [{
+                utilisateurs: [{
                     user: { attrs: (user) => { return {username: user.username, avatar: user.avatar, reputation: user.reputation }},
                         slot: () => {},
                         value: (user) => user.username,

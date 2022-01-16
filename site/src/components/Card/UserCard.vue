@@ -16,7 +16,7 @@
         <div class="flex flex-col min-w-0">
             <router-link
                 class="font-semibold truncate hover:underline"
-                :to="`/profile/${$store.state.auth.user.userId}`"
+                :to="`/users/${$store.state.auth.user.userId}`"
             >
                 {{ username }}
             </router-link>
@@ -26,7 +26,7 @@
         </div>
         <div class="flex flex-col items-center justify-center space-y-2">
             <router-link
-                to="/settings"
+                to="/users/me"
             >
                 <i class="ri-settings-4-line cursor-pointer" />
             </router-link>

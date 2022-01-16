@@ -37,7 +37,7 @@
                     type="text"
                     placeholder="Rechercher un fichier"
                 >
-                <div class="flex ">
+                <div class="flex cursor-pointer">
                     <div
                         class="bg-2 rounded-l-full flex items-center justify-center pr-3 pl-4 transition"
                         :class="{'text-blue-500':docStyleList}"
@@ -58,7 +58,7 @@
             <div v-if="$store.state.files.studyDocs">
                 <table
                     v-if="docStyleList"
-                    class="w-full table-auto text-center"
+                    class="w-full table-auto text-center -mx-4"
                 >
                     <thead>
                         <tr>
@@ -83,10 +83,10 @@
                         <tr
                             v-for="(file, i) in $store.state.files.studyDocs"
                             :key="i"
-                            class="group rounded-full"
+                            class="group"
                             :class="[file == filePreview ? 'bg-2':'']"
                         >
-                            <td>
+                            <td class="pl-4 rounded-l-xl">
                                 <div class="flex items-center justify-center">
                                     <input
                                         :class="[fileGroup.length == 0 ? 'invisible group-hover:visible':'']"
@@ -276,7 +276,7 @@
                                     class="button text-center "
                                     @click="downloadFileGroup"
                                 >
-                                    <div>Telecharger</div>
+                                    <div>Télécharger</div>
                                 </div>
                             </div>
                         </div>

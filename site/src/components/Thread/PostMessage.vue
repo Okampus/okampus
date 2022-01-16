@@ -145,9 +145,9 @@ export default {
                 },
                 favorite: {
                     name: ()=> 'Répondre',
-                    icon: this.post.favorited ? 'ri-star-fill' : 'ri-star-line',
-                    class: this.post.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500',
-                    action: () => { this.post.favorited ? this.deleteFavorite() : this.addFavorite() }
+                    icon: this.post?.favorited ? 'ri-star-fill' : 'ri-star-line',
+                    class: this.post?.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500',
+                    action: () => { this.post?.favorited ? this.deleteFavorite() : this.addFavorite() }
                 }
             }),
             ...(this.post.author.userId === this.$store.state.auth.user?.userId && {

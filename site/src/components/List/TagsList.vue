@@ -13,7 +13,7 @@
                     class="flex justify-center items-center h-full bg-1 cursor-pointer"
                     @click="$refs.scroll.scrollTo({left:$refs.scroll.scrollLeft - 3/4*$refs.scroll.getBoundingClientRect().width, behavior: 'smooth'})"
                 >
-                    <i class="ri-arrow-left-s-line " />
+                    <i class="text-0 ri-arrow-left-s-line " />
                 </div>
 
                 <div class="w-10 h-full bg-gradient-to-r from-1" />
@@ -48,7 +48,7 @@
                     class=" flex justify-center items-center h-full bg-1 cursor-pointer"
                     @click="scrollTo()"
                 >
-                    <i class="ri-arrow-right-s-line " />
+                    <i class="text-0 ri-arrow-right-s-line " />
                 </div>
             </div>
         </transition>

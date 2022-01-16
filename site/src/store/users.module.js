@@ -195,7 +195,6 @@ export const users = {
             )
         },
         deleteFavoritePost({ commit }, postId) {
-            console.log("postId",postId)
             return UserService.deleteFavoritePost(postId).then(
                 worked => {
                     commit('deleteFavoritePostSuccess', postId)

@@ -132,13 +132,13 @@ export default {
                     action: () => {  }
                 },
                 favorite: {
-                    name: ()=> 'Répondre',
-                    icon: this.post.favorited ? 'ri-star-fill' : 'ri-star-line',
-                    class: this.post.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500',
-                    action: () => { this.post.favorited ? this.deleteFavorite() : this.addFavorite() }
+                    name: ()=> 'Favori',
+                    icon: this.reply.favorited ? 'ri-star-fill' : 'ri-star-line',
+                    class: this.reply.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500',
+                    action: () => { this.reply.favorited ? this.deleteFavorite() : this.addFavorite() }
                 }
             }),
-            ...(this.post.author.userId === this.$store.state.auth.user?.userId && {
+            ...(this.reply.author.userId === this.$store.state.auth.user?.userId && {
                 edit: {
                     name: () => 'Éditer',
                     condition: () => this.isUser(),

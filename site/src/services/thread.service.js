@@ -56,8 +56,8 @@ class ThreadService {
         return post
     }
 
-    updatePost ({ postId, title, body, tags }) {
-        return axios.patch(`${API_URL}/posts/${postId}/`, { title, body, tags }, { withCredentials: true }).then(
+    updatePost ({ postId, title, body }) {
+        return axios.patch(`${API_URL}/posts/${postId}/`, { title, body }, { withCredentials: true }).then(
             res => res.data
         )
     }

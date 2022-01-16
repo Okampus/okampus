@@ -19,19 +19,19 @@
                     <span class="font-light text-3 flex flex-wrap space-x-1 items-center h-6 whitespace-nowrap overflow-hidden">
                         <div class="flex space-x-1 pl-1">
                             <i
-                                :class="headerTypes[post.type]?.icon"
+                                :class="postTypesEnum[post.type]?.icon"
                                 class="text-1"
                             />
                             <div class="text-1 font-bold">
-                                {{ headerTypes[post.type]?.type }}
+                                {{ postTypesEnum[post.type]?.fr }}
                             </div>
                         </div>
                         <div class="flex space-x-1 pl-1">
                             <p class="pr-1">•</p>
                             <div
-                                :class="[post.solved ? 'text-red-500' : 'text-green-500']"
+                                :class="[post.solved ? 'text-green-500' : 'text-red-500']"
                             >
-                                {{ post.solved ? 'Non-Résolu' : '✓ Résolu' }}
+                                {{ post.solved ? '✓ Résolu' : 'Non-Résolu' }}
                             </div>
                         </div>
                         <div class="flex space-x-1 pl-1">
@@ -106,6 +106,7 @@ import { timeAgo } from '@/utils/timeAgo'
 import { extractTextFromJSONBody } from '@/utils/extractTextFromHTML'
 import UserPreview from '@/components/Dashboard/UserPreview.vue'
 import TagsList from '@/components/List/TagsList.vue'
+import postTypesEnum from '@/shared/types/post-types.enum'
 
 export default {
     components: {
@@ -120,16 +121,11 @@ export default {
     },
     data () {
         return {
-            headerTypes: {
-                1: { type: 'Question', icon: 'ri-questionnaire-line' },
-                2: { type: 'Suggestion', icon: 'ri-lightbulb-line' },
-                3: { type: 'Problème', icon: 'ri-error-warning-line' },
-                4: { type: 'Discussion', icon: 'ri-discuss-line' }
-            },
-            solvedState: {
-                0: { state: 'Non-Résolu', class: 'text-red-500' },
-                1: { state: '✓ Résolu', class: 'text-green-500' }
-            }
+            postTypesEnum,
+            // solvedState: {
+            //     0: { state: 'Non-Résolu', class: 'text-red-500' },
+            //     1: { state: '✓ Résolu', class: 'text-green-500' }
+            // }
         }
     },
     methods: {

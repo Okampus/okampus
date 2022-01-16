@@ -21,7 +21,7 @@
         </g>
         <foreignObject
             x="0"
-            y="40"
+            y="43"
             width="47.202"
             height="20.991"
         >

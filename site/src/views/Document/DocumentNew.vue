@@ -66,7 +66,7 @@
                     <FileInput
                         v-model="stepsModel[0].files"
                         :img-preview="true"
-                        :file-limit="2"
+                        :file-limit="0"
                         class="h-52 w-full mt-4"
                     />
                 </section>
@@ -240,7 +240,11 @@ export default {
                     const data = new FormData()
                     data.append('file', el)
                     data.append('subject',this.stepsModel[0].docSubject)
-                    this.$store.dispatch('files/addStudyDoc', data)
+                    this.$store.dispatch('files/addStudyDoc', data).then(
+                        () => {
+                            this.$router.push('/docs')
+                        }
+                    )
                 }
             }
         }

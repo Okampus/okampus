@@ -67,6 +67,16 @@
                 </div>
             </div>
 
+            <input
+                id="file"
+                ref="inputFile"
+                :disabled="fileLimit != 0 && fileLimit == modelValue.length"
+                class="hidden"
+                type="file"
+                :multiple="fileLimit != 1"
+                @change="addFileByInput"
+            >
+
             <div
                 class="h-4/24 flex gap-2"
             >
@@ -75,30 +85,23 @@
                     :disabled="fileLimit != 0 && fileLimit == modelValue.length"
                 >
                     <div
-                        class="h-full w-full flex justify-center items-center"
+                        class="h-full w-full"
+                        @click="$refs.inputFile.click()"
                     >
-                        <label
-                            class="flex-grow"
-                            for="file"
-                        >
-                            <p>
-                                + Ajoutez des fichiers <span v-if="fileLimit > 1"> {{ modelValue.length }} / {{ fileLimit }} </span>
-                            </p>
-                        </label>
-                        <input
-                            id="file"
-                            ref="inputFile"
-                            :disabled="fileLimit != 0 && fileLimit == modelValue.length"
-                            class="opacity-0 absolute -z-50"
-                            type="file"
-                            :multiple="fileLimit != 1"
-                            @change="addFileByInput"
-                        >
+                        <span v-if="fileLimit === 0">
+                            + Ajoutez des fichiers
+                        </span>
+                        <span v-else-if="fileLimit > 1">
+                            + Ajoutez des fichiers ({{ modelValue.length }} / {{ fileLimit }})
+                        </span>
+                        <span v-else>
+                            + Ajoutez un fichier
+                        </span>
                     </div>
                 </button>
                 <button
-                    class=" h-full button"
-
+                    class="h-full button"
+                    :disabled="modelValue.length == 0"
                     @click.prevent="$emit('update:modelValue', [])"
                 >
                     <div class="h-full flex justify-center items-center">
@@ -230,7 +233,6 @@ export default {
             this.$emit("update:modelValue", this.modelValue.concat(files))
         },
         addFileByDrop(e) {
-
             this.dragover = false
             let droppedFiles = e.dataTransfer.files;
             let files = []
@@ -250,9 +252,6 @@ export default {
             this.$emit("update:modelValue", this.modelValue.concat(files))
         },
         removeFile(file){
-            /* this.files = this.files.filter(f => {
-                return f != file;
-            }); */
             this.$emit("update:modelValue", this.modelValue.filter(f => {
                 return f != file;
             }))

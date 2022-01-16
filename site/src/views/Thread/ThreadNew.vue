@@ -22,7 +22,7 @@
                 >
                 <error-wrapper
                     v-if="v$.title.$error"
-                    :error="`Un titre de Post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
+                    :error="`Un titre de Post doit faire entre ${titleCharLimit[0]} et ${titleCharLimit[1]} caractères.`"
                 />
             </div>
 
@@ -165,7 +165,7 @@ export default {
         },
         minTags: {
             type: Number,
-            default: 4
+            default: 2
         }
     },
     setup (props) {
@@ -217,7 +217,6 @@ export default {
             } else if (err === 'empty') {
                 this.customTagError = 'Un Tag ne peut pas être vide.'
             } else {
-                // TODO
                 this.customTagError = 'Erreur: ces tags génèrent une erreur inconnue.'
             }
         },

@@ -37,7 +37,7 @@ const routes = [
     },
 
     {
-        path: '/posts/ask',
+        path: '/posts/new',
         component: () => import('@/views/Thread/ThreadNew.vue')
     },
 
@@ -69,13 +69,15 @@ const routes = [
     {
         path: '/users/me/favorites',
         component : () => import('@/views/FavoritesPage.vue')
-    },
+    }
+]
 
-    ...[{ ...(import.meta.env.DEV && {
+if (import.meta.env.DEV) {
+    routes.push({
         path: '/test',
         component: () => import('@/views/Test/TestPage.vue')
-    }) }],
-]
+    })
+}
 
 const router = createRouter({
     history: createWebHashHistory(),

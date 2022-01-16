@@ -14,7 +14,6 @@ export const thread = {
         fetchThread ({ commit }, id) {
             return ThreadService.fetchThread(id).then(
                 thread => {
-                    console.log("THREAD", thread)
                     commit('setThread', thread)
                     return Promise.resolve(thread)
                 },

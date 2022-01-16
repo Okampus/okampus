@@ -29,7 +29,7 @@
                 </div>
                 <div class="w-full md:w-1/4 text-center text-0">
                     <h5 class="uppercase mt-2 md:mt-0 md:mb-3 font-bold">
-                        Légalité
+                        Mentions légales
                     </h5>
                     <ul class="mb-4">
                         <li class="mt-2">

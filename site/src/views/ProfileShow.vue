@@ -78,7 +78,7 @@
                     v-if="connected.userId == user.userId"
                     class="card"
                 >
-                    <a href="#/settings">Modifier le Profil</a>
+                    <a href="#/users/me">Modifier le Profil</a>
                 </div>
                 <div class="card">
                     Badges
@@ -139,7 +139,6 @@ export default {
     },
     computed: {
         user() {
-            console.log(this.$store.state.users.user)
             return this.$store.state.users.user
         },
         connected() {
@@ -152,11 +151,9 @@ export default {
             return this.$store.state.users.socials
         },
         clubs() {
-            console.log("clubsmounted",this.$store.state.users.clubs)
             return this.$store.state.users.clubs
         },
         userClubs() {
-            console.log(this.$store.state.users.userClubs)
             return this.$store.state.users.userClubs
         }
     },
