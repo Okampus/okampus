@@ -12,7 +12,9 @@ import { config } from './config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
 import { TypesenseFilter } from './shared/lib/filters/typesense.filter';
 import { logger as loggerMiddleware } from './shared/lib/middlewares/logger.middleware';
+import { FileKind } from './shared/lib/types/file-kind.enum';
 import { dirExists } from './shared/lib/utils/dirExists';
+import { enumKeys } from './shared/lib/utils/enumKeys';
 import { client } from './typesense.config';
 
 const logger = new Logger('Bootstrap');
@@ -41,6 +43,7 @@ function setupSwagger(app: NestExpressApplication): void {
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);
+  logger.log('Documentation available at /docs');
 }
 
 async function getHttpsOptions(): Promise<HttpsOptions | undefined> {
@@ -56,8 +59,20 @@ async function getHttpsOptions(): Promise<HttpsOptions | undefined> {
   logger.log('No secrets directory found, using HTTP');
 }
 
+async function createFileStructure(): Promise<void> {
+  const base = path.join(path.resolve('./'), 'uploads');
+
+  const dirs: Array<Promise<string | undefined>> = [];
+  for (const value of enumKeys(FileKind))
+    dirs.push(fs.mkdir(path.join(base, FileKind[value]), { recursive: true }));
+
+  await Promise.all(dirs);
+  logger.log('Uploads file structure created');
+}
+
 async function bootstrap(): Promise<void> {
   await attemptTypesenseConnection();
+  await createFileStructure();
 
   let httpsOptions;
   if (config.get('nodeEnv') === 'production')
