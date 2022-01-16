@@ -21,9 +21,9 @@
                     </div>
                     <div class="flex flex-col">
                         <div
-                            v-for="(action,i) in otherActions"
+                            v-for="(action, i) in otherActions"
                             :key="i"
-                            class="flex items-center text-5 rounded transition"
+                            class="flex items-center text-5 rounded transition cursor-pointer"
                             :class="actionsMap[action].class"
                             @click="actionsMap[action].action"
                         >
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col w-21/24 gap-3 bg-2 p-2 rounded-xl">
+                <div class="flex flex-col w-21/24 gap-3 bg-2 p-2 rounded-xl mt-2">
                     <div class="p-2 text-lg">
                         <EditableRender
                             v-model:content="body"
@@ -42,7 +42,7 @@
                             @validate="updatePost($event)"
                         />
                     </div>
-                    <!-- <hr class=" border-gray-400 opacity-50"> -->
+
                     <div class="flex justify-between items-center">
                         <UserPreview
                             :username="post.author.username"
@@ -68,6 +68,7 @@
                             </div>
                         </div>
                     </div>
+
                     <PostCommentList
                         v-model:on-comment="onComment"
                         :parent-content="{type: 'post', id: post.postId}"
@@ -82,6 +83,7 @@
 <script lang="js">
 import UserPreview from '@/components/Dashboard/UserPreview.vue'
 import PostCommentList from '@/components/Thread/PostCommentList.vue'
+import { watch } from 'vue'
 import EditableRender from '../TipTap/EditableRender.vue'
 
 export default {
@@ -95,25 +97,6 @@ export default {
             type: Object,
             default: () => {}
         },
-        actionsBar: {
-            type: Array,
-            default: function () {
-                return [
-                    'reply',
-                    'addComment',
-                    'edit',
-                    'flag'
-                ]
-            }
-        },
-        otherActions:{
-            type: Array,
-            default: function () {
-                return [
-                    'favorite',
-                ]
-            }
-        }
     },
     emits: ['reply'],
     data() {
@@ -125,19 +108,69 @@ export default {
         }
     },
     computed: {
+        actionsBar() {
+            return [
+                ...[
+                    'reply',
+                    'addComment',
+                    'report'
+                ],
+                ...(this.post.author.userId === this.$store.state.auth.user.userId
+                    ? ['edit']
+                    : [])
+            ]
+        },
+        otherActions() {
+            return ['favorite']
+        },
         actionsMap () {
-            return {
-                reply: { name:()=> 'Répondre', icon: 'ri-reply-fill', class:"hover:text-blue-500", action:  () => { this.$emit("reply"); console.log("Reply")} },
-                addComment: { name:()=> 'Commenter', icon: 'ri-chat-new-line', class:"hover:text-blue-500", action: () => { this.onComment = true } },
-                favorite: { name:()=> 'Répondre', icon: this.post.favorited ? 'ri-star-fill' : 'ri-star-line', class: [this.post.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
-                    action: () => { this.post.favorited ? this.deleteFavorite() : this.addFavorite() } },
-                edit: { name:()=> 'Éditer', icon: 'ri-edit-line', class:"hover:text-green-500", action: () => { this.showEditor = true } },
-                flag: { name:()=> 'Signaler', icon: 'ri-flag-line', class:"hover:text-red-500", action: () => {  } }
+            return { ...( {
+                reply: {
+                    name: () => 'Répondre',
+                    icon: 'ri-reply-fill',
+                    class:"hover:text-blue-500",
+                    action:  () => { this.$emit("reply") }
+                },
+                addComment: {
+                    name: ()=> 'Commenter',
+                    icon: 'ri-chat-new-line',
+                    class: "hover:text-blue-500",
+                    action: () => { this.onComment = true }
+                },
+                report: {
+                    name: ()=> 'Signaler',
+                    icon: 'ri-flag-line',
+                    class:"hover:text-red-500",
+                    action: () => {  }
+                },
+                favorite: {
+                    name: ()=> 'Répondre',
+                    icon: this.post.favorited ? 'ri-star-fill' : 'ri-star-line',
+                    class: this.post.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500',
+                    action: () => { this.post.favorited ? this.deleteFavorite() : this.addFavorite() }
+                }
+            }),
+            ...(this.post.author.userId === this.$store.state.auth.user?.userId && {
+                edit: {
+                    name: () => 'Éditer',
+                    condition: () => this.isUser(),
+                    icon: 'ri-edit-line',
+                    class: "hover:text-green-500",
+                    action: () => { this.showEditor = true }
+                }})
             }
         },
         comments() {
             return this.post.comments
         }
+    },
+    mounted() {
+        watch(
+            () => this.post.body,
+            (newBody) => {
+                this.body = newBody
+            }
+        )
     },
     methods: {
         updatePost(body) {

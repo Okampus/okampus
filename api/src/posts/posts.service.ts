@@ -41,13 +41,13 @@ export class PostsService {
   public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Post>> {
     // TODO: Maybe the user won't have access to all posts. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
-    return await this.postRepository.findWithPagination(paginationOptions, {}, { populate: ['tags', 'assignees'] });
+    return await this.postRepository.findWithPagination(paginationOptions, {}, { populate: ['author', 'tags', 'assignees'] });
   }
 
   public async findOne(postId: number): Promise<Post> {
     // TODO: Maybe the user won't have access to this post. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
-    return await this.postRepository.findOneOrFail({ postId }, ['tags', 'assignees']);
+    return await this.postRepository.findOneOrFail({ postId }, ['author', 'tags', 'assignees']);
   }
 
   public async update(user: User, postId: number, updatePostDto: UpdatePostDto): Promise<Post> {

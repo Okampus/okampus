@@ -3,14 +3,12 @@ module.exports = {
     content: ['./index.html', './src/**/*.{js,vue}'],
     safelist: [
         {
-            pattern: /bg-\w+-100/
-        },
-        {
-            pattern: /bg-\w+-200/,
+            pattern: /bg-\w+-\d00/,
             variants: ['hover']
         },
         {
-            pattern: /text-\w+-700/,
+            pattern: /text-\w+-\d00/,
+            variants: ['hover']
         }
     ],
     darkMode: 'class', // or 'media' or 'class'

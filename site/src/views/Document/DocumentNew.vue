@@ -20,7 +20,7 @@
                                 v-model="stepsModel[0].docSubject"
                                 class="input w-full"
                                 type="text"
-                                placeholder="Quelle est la matière du document"
+                                placeholder="Matière du document..."
                                 @input="test"
                             >
                         </div>
@@ -32,7 +32,7 @@
                                 v-model="stepsModel[0].filiere"
                                 class="input w-full"
                                 type="text"
-                                placeholder="Quelle est la filière associé à ce document"
+                                placeholder="Filière associée à ce document..."
                             >
                         </div>
 
@@ -101,7 +101,7 @@
                         Etape 3
                     </div>
                     <p>Disclaimer:</p>
-                    <ul class="list-disc">
+                    <ul class="list-disc list-inside">
                         <li>Si vous uploadez un fichier, il sera public et accessible par tous</li>
                         <li>Si vous souhaitez que des informations soient floutées, corrigées ou généralement modifiées, nous vous ferrons une proposition avec des informations sensibles retirées et attendrons votre confirmation avant de rendre le fichier public</li>
                     </ul>
@@ -229,17 +229,12 @@ export default {
             this.stepAction.currentStep -= 1
         },
         nextStep(){
-            console.log("next", this.v$.stepsModel[this.stepAction.currentStep].$errors)
-            console.log("next", this.v$.stepsModel[this.stepAction.currentStep].$invalid)
-            console.log(this.stepsModel[0].files)
             if(!this.v$.stepsModel[this.stepAction.currentStep].$invalid){
 
                 this.stepAction.currentStep += 1
             }
         },
         submitForm(){
-            console.log(!this.v$.stepsModel.$invalid)
-
             if(!this.v$.stepsModel.$invalid){
                 for(const el of this.stepsModel[0].files){
                     const data = new FormData()

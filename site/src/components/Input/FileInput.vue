@@ -178,7 +178,6 @@ export default {
 
             for(const el of Object.getOwnPropertyNames(imgName)){
                 if(name.endsWith(el)){
-                    console.log(imgName[el])
                     return imgName[el]
                 }
             }
@@ -217,7 +216,6 @@ export default {
         addFileByInput(){
             let files = []
             for(const el of this.$refs.inputFile.files){
-                console.log(el.type, this.checkMimes(el.type))
                 if(this.fileLimit <= this.modelValue.length && this.fileLimit != 0){
                     this.$emit("update:modelValue", this.modelValue.filter((f, index) => {
                         if(index != 0){
@@ -238,7 +236,6 @@ export default {
             let files = []
             if(!droppedFiles) return;
             ([...droppedFiles]).forEach(f => {
-                console.log(f.type, this.checkMimes(f.type))
                 if(this.fileLimit <= this.modelValue.length && this.fileLimit != 0){
                     this.$emit("update:modelValue", this.modelValue.filter((f, index) => {
                         if(index != 0){

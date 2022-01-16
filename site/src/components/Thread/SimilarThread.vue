@@ -10,7 +10,7 @@
                     v-for="tag in thread.tags"
                     :key="tag"
                     :name="tag.title"
-                    :color="tag.color"
+                    :tag-color="tag.color"
                 />
             </div>
         </div>

@@ -42,9 +42,7 @@ export default {
     },
     emits: ['cancel', 'validate', 'update:content', 'update:show'],
     data() {
-        // console.log("CONTENT", this.content)
         return {
-            // body: '{"type":"doc","content":[{"type":"paragraph"}]}',
             body: this.content ?? '{"type":"doc","content":[{"type":"paragraph"}]}',
         }
     },
@@ -56,11 +54,5 @@ export default {
             }
         )
     }
-    // watch() {
-    //     (oldContent, newContent) => {
-    //         this.body = newContent
-    //     }
-    // }
-
 }
 </script>

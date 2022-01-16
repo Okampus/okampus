@@ -48,7 +48,7 @@
 
                     <div class="mt-1">
                         <router-link
-                            :to="`/post/${post.postId}`"
+                            :to="`/posts/${post.postId}`"
                             class="text-xl text-0 font-semibold hover:underline line-clamp-1"
                         >
                             {{ post.title }}
@@ -73,7 +73,7 @@
 
 
                         <TagsList
-                            class="w-full pr-5"
+                            class="w-full"
                             :tags="post.tags"
                         />
                     </div>
@@ -109,7 +109,6 @@ import TagsList from '@/components/List/TagsList.vue'
 
 export default {
     components: {
-
         UserPreview,
         TagsList
     },

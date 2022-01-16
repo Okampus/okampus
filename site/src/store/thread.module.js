@@ -14,6 +14,7 @@ export const thread = {
         fetchThread ({ commit }, id) {
             return ThreadService.fetchThread(id).then(
                 thread => {
+                    console.log("THREAD", thread)
                     commit('setThread', thread)
                     return Promise.resolve(thread)
                 },
@@ -210,7 +211,6 @@ export const thread = {
             state.thread.comments.unshift(comment)
         },
         addReplyComment(state, { comment, replyId }) {
-            console.log("ADD REPLY", replyId)
             state.thread.replies.find(reply => reply.replyId === replyId)
                 .comments.unshift(comment)
         },
@@ -261,8 +261,6 @@ export const thread = {
             const replyIndex = state.thread.replies.findIndex(
                 r => r.replyId === replyId
             )
-
-            console.log(replyId, newVote, replyIndex)
 
             const oldVote = state.thread.replies[replyIndex].currentVote
             state.thread.replies[replyIndex].currentVote = newVote

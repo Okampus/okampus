@@ -1,87 +1,80 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Landing from '@/views/LandingPage.vue'
 
 const routes = [
     {
         path: '/',
-        component: Landing
-    },
-    {
-        path: '/info',
-        component: Landing
-    },
-    {
-        path: '/rgpd',
-        component: Landing
-    },
-    {
-        path: '/horizon',
-        component: Landing
-    },
-    {
-        path: '/blog',
-        component: () => import('@/views/Blog/BlogList.vue')
-    },
-    {
-        path: '/blog/new',
-        component: () => import('@/views/Blog/BlogNew.vue')
-    },
-    {
-        path: '/blog/:id',
-        component: () => import('@/views/Blog/BlogShow.vue')
-    },
-    {
-        path: '/blog/admin',
-        component: () => import('@/views/Blog/BlogAdmin.vue')
-    },
-    {
-        path: '/post/:id',
-        component: () => import('@/views/Thread/ThreadCompactView.vue'),
-    },
-
-    {
-        path: '/new-post',
-        component: () => import('@/views/Thread/PostNew.vue')
+        component: () => import('@/views/LandingPage.vue')
     },
 
     {
         path: '/admin',
         component: () => import('@/views/Dashboard/AdminDashboard.vue')
     },
+
     {
-        path: '/doc/new',
-        component: () => import('@/views/Documents/DocNew.vue')
+        path: '/blog',
+        component: () => import('@/views/Blog/BlogList.vue')
     },
 
     {
-        path: '/doc/list',
-        component: () => import('@/views/Documents/DocList.vue')
+        path: '/blog/new',
+        component: () => import('@/views/Blog/BlogNew.vue')
+    },
+
+    {
+        path: '/blog/:id',
+        component: () => import('@/views/Blog/BlogShow.vue')
+    },
+
+    {
+        path: '/blog/admin',
+        component: () => import('@/views/Blog/BlogAdmin.vue')
     },
 
     {
         path: '/posts',
-        component: () => import('@/views/Thread/PostListShow.vue')
+        component: () => import('@/views/Thread/ThreadList.vue')
     },
 
     {
-        path: '/test',
-        component: () => import('@/views/Test/TestPage.vue')
+        path: '/posts/ask',
+        component: () => import('@/views/Thread/ThreadNew.vue')
     },
 
     {
-        path: '/settings',
+        path: '/posts/:id',
+        component: () => import('@/views/Thread/ThreadCompactView.vue'),
+    },
+
+    {
+        path: '/docs',
+        component: () => import('@/views/Document/DocumentList.vue')
+    },
+
+    {
+        path: '/docs/upload',
+        component: () => import('@/views/Document/DocumentNew.vue')
+    },
+
+    {
+        path: '/users/me',
         component: () => import('@/views/UserSettings.vue')
     },
 
     {
-        path: '/profile/:userId',
+        path: '/users/:userId',
         component: () => import('@/views/ProfileShow.vue')
     },
 
     {
-        path: '/favorites',
+        path: '/users/me/favorites',
         component : () => import('@/views/FavoritesPage.vue')
     },
+
+    ...[{ ...(import.meta.env.DEV && {
+        path: '/test',
+        component: () => import('@/views/Test/TestPage.vue')
+    }) }],
 ]
 
 const router = createRouter({

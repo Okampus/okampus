@@ -111,7 +111,6 @@ class ThreadService {
     }
 
     deleteFavoritePost(postId) {
-        console.log("deleting favorite post")
         return axios.delete(`${API_URL}/favorites/posts/${postId}`, { withCredentials: true }).then(() => true).catch(() => false)
     }
 

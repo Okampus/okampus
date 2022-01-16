@@ -48,14 +48,14 @@
                     class="flex items-center"
                 >
                     <div
-                        v-for="(action, actionName) in actionsMap"
+                        v-for="(action, actionName) in actionsMap(i)"
                         :key="actionName"
                         class="text-sm flex gap-1 items-center text-5 transition rounded-lg cursor-pointer py-1 px-2"
-                        :class="action.class(i)"
-                        @click="action.action(i)"
+                        :class="action.class()"
+                        @click="action.action()"
                     >
                         <i
-                            :class="action.icon(i)"
+                            :class="action.icon()"
                             class="ri-md"
                         />
                         <p class="text-xs">
@@ -129,29 +129,6 @@ export default {
         }
     },
     computed: {
-        actionsMap () {
-            // TODO: Actions
-            return {
-                favorite: {
-                    name: () => { return 'Favori' },
-                    icon: (i) => this.commentItems[i].favorited ? 'ri-star-fill' : 'ri-star-line',
-                    class: (i) => this.commentItems[i].favorited ? 'text-yellow-500' : 'hover:text-yellow-500',
-                    action: (i) => { this.commentItems[i].favorited ? this.deleteFavorite(i) : this.addFavorite(i) }
-                },
-                edit: {
-                    name: () => { return 'Éditer' },
-                    icon: () => 'ri-edit-line',
-                    class: () => 'hover:text-green-500',
-                    action: (i) => { this.commentItems[i].edit = !this.commentItems[i].edit; console.log('d', i, this.commentItems) }
-                },
-                flag: {
-                    name: () => { return 'Signaler' },
-                    icon: () => 'ri-flag-line',
-                    class: () => 'hover:text-red-500',
-                    action: () => { console.log('Signaler') }
-                }
-            }
-        },
         user () {
             return this.$store.state.auth.user
         },
@@ -170,6 +147,32 @@ export default {
         )
     },
     methods: {
+        actionsMap (i) {
+            return {
+                ...({
+                    favorite: {
+                        name: () => { return 'Favori' },
+                        icon: () => this.commentItems[i].favorited ? 'ri-star-fill' : 'ri-star-line',
+                        class: () => this.commentItems[i].favorited ? 'text-yellow-500' : 'hover:text-yellow-500',
+                        action: () => { this.commentItems[i].favorited ? this.deleteFavorite(i) : this.addFavorite(i) }
+                    },
+
+                    flag: {
+                        name: () => { return 'Signaler' },
+                        icon: () => 'ri-flag-line',
+                        class: () => 'hover:text-red-500',
+                        action: () => { console.log('Signaler') }
+                    }}),
+                ...(this.commentItems[i].author.userId === this.$store.state.auth.user?.userId && {
+                    edit: {
+                        name: () => { return 'Éditer' },
+                        icon: () => 'ri-edit-line',
+                        class: () => 'hover:text-green-500',
+                        action: () => { this.commentItems[i].edit = !this.commentItems[i].edit; console.log('d', i, this.commentItems) }
+                    }
+                }),
+            }
+        },
         closeComment() {
             this.$emit('update:onComment', false)
             this.newComment = '{"type":"doc","content":[{"type":"paragraph"}]}'

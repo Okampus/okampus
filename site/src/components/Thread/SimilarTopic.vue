@@ -10,7 +10,7 @@
                     :key="tag"
                     :name="tag.title"
                     class="mr-2"
-                    :color="tag.color"
+                    :tag-color="tag.color"
                 />
             </div>
             <div>Hotness</div>

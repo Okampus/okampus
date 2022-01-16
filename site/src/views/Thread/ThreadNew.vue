@@ -222,13 +222,11 @@ export default {
             }
         },
         submit () {
-            console.log(this.v$.$invalid)
             if (this.v$.$invalid) {
                 this.v$.$touch()
                 return
             }
 
-            console.log("STATE", JSON.stringify(this.state))
             this.$store.dispatch('posts/addPost', {
                 title: this.state.title,
                 type: this.state.type,

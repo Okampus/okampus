@@ -1,7 +1,7 @@
 <template>
     <div
         ref="tagsContainer"
-        class="flex flex-wrap items-center input w-full cursor-text h-max overflow-auto"
+        class="flex gap-2 flex-wrap items-center input w-full cursor-text h-max overflow-auto"
         tabindex="0"
         :="focused ? {'focused': 'true'} : {}"
         @focus="tagsInput.focus()"
@@ -10,15 +10,10 @@
             v-for="(tag, idx) in tags"
             :key="idx"
             :tag-name="tag"
+            :closable="true"
             class="mb-1"
-        >
-            <button
-                class="text-white bg-opacity-0 outline-none border-none cursor-pointer font-bold text-lg pt-1 pl-1.5 -mr-1.5"
-                @click="removeTag(idx)"
-            >
-                <i class="ri-close-line" />
-            </button>
-        </Tag>
+            @close="removeTag(idx)"
+        />
         <div class="flex-grow basis-0">
             <input
                 ref="tagsInput"

@@ -9,9 +9,9 @@ class PostsService {
         )
     }
 
-    addPost (post) {
+    async addPost (post) {
         for (const tag of post.tags) {
-            axios.post(API_URL + 'tags', {color: 'orange', name: tag}, { withCredentials: true })
+            await axios.post(API_URL + 'tags', {color: 'orange', name: tag}, { withCredentials: true }).catch(() => console.log("tag already exists"))
         }
 
         return axios.post(API_URL + 'posts', { ...post, assignees: [] }, { withCredentials: true }).then(

@@ -4,15 +4,15 @@
             v-for="favorite in favorites"
             :key="favorite"
         >
-            <FavPost
+            <favorite-post
                 v-if="'post' in favorite"
                 :post="favorite.post"
             />
-            <FavReply
+            <favorite-reply
                 v-else-if="'reply' in favorite"
                 :reply="favorite.reply"
             />
-            <FavComment
+            <favorite-comment
                 v-else
                 :comment="favorite.comment"
             />
@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import FavPost from '@/components/FavPost.vue'
-import FavComment from '@/components/FavComment.vue';
-import FavReply from '@/components/FavReply.vue';
+import FavoritePost from '@/components/FavoritePost.vue'
+import FavoriteComment from '@/components/FavoriteComment.vue';
+import FavoriteReply from '@/components/FavoriteReply.vue';
 export default {
-    components: { FavPost, FavComment, FavReply },
+    components: { FavoritePost, FavoriteComment, FavoriteReply },
     props:{
     },
     data() {

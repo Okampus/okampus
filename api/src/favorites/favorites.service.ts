@@ -16,7 +16,7 @@ export class FavoritesService {
     return await this.favoriteRepository.findWithPagination(
       paginationOptions,
       { user },
-      { populate: ['article', 'post', 'reply', 'comment'] },
+      { populate: ['article', 'post.tags', 'post.author', 'reply.author', 'comment.author'] },
     );
   }
 }

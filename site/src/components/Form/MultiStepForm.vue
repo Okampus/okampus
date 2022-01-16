@@ -6,9 +6,13 @@
         >
             <div class="flex flex-col justify-center items-center gap-2">
                 <div
-                    class="flex items-center"
+                    class="flex items-center w-full"
                     :class="i <= currentStep ? 'text-sky-600' : 'text-gray-500'"
                 >
+                    <div
+                        class="flex-auto border-t-2 transition duration-500 ease-in-out"
+                        :class="[i != 0 ? (i < currentStep + 1 ? 'border-sky-600':'border-gray-500') : 'border-none']"
+                    />
                     <div
                         class="rounded-full transition duration-500 ease-in-out h-12 w-12 border-2 flex items-center justify-center"
                         :class="i <= currentStep ? 'border-sky-600' : 'border-gray-500'"
@@ -18,6 +22,10 @@
                             :class="step.icon"
                         />
                     </div>
+                    <div
+                        class="flex-auto border-t-2 transition duration-500 ease-in-out "
+                        :class="[i != steps.length-1 ? (i < currentStep ? 'border-sky-600':'border-gray-500') : 'border-none']"
+                    />
                 </div>
                 <div
                     class="text-xs font-medium uppercase"
@@ -28,7 +36,7 @@
             </div>
             <div
                 v-if="i != steps.length-1"
-                class="flex-auto pb-5 border-t-2 transition duration-500 ease-in-out "
+                class="flex-auto pb-6 border-t-2 transition duration-500 ease-in-out "
                 :class="[i < currentStep ? 'border-sky-600':'border-gray-500']"
             />
         </template>

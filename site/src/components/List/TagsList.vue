@@ -1,6 +1,7 @@
 <template>
     <div
         v-if="tags.length != 0"
+        ref="parent"
         class="relative flex m-2 items-center"
     >
         <transition name="fade">
@@ -9,7 +10,7 @@
                 class="absolute flex justify-center items-center h-full"
             >
                 <div
-                    class=" flex justify-center items-center h-full bg-1 cursor-pointer"
+                    class="flex justify-center items-center h-full bg-1 cursor-pointer"
                     @click="$refs.scroll.scrollTo({left:$refs.scroll.scrollLeft - 3/4*$refs.scroll.getBoundingClientRect().width, behavior: 'smooth'})"
                 >
                     <i class="ri-arrow-left-s-line " />
@@ -31,7 +32,7 @@
             >
                 <ColoredTag
                     :tag-name="el.name"
-                    :color="el.color"
+                    :tag-color="el.color"
                 />
             </div>
         </div>
@@ -45,7 +46,7 @@
 
                 <div
                     class=" flex justify-center items-center h-full bg-1 cursor-pointer"
-                    @click="$refs.scroll.scrollTo({left:$refs.scroll.scrollLeft + 3/4*$refs.scroll.getBoundingClientRect().width, behavior: 'smooth'})"
+                    @click="scrollTo()"
                 >
                     <i class="ri-arrow-right-s-line " />
                 </div>
@@ -74,18 +75,23 @@ export default {
         this.getScroll();
     },
     methods: {
+        scrollTo() {
+            this.$refs.scroll.scrollTo({
+                left: this.$refs.scroll.scrollLeft + 3 / 4 * this.$refs.scroll.getBoundingClientRect().width,
+                behavior: 'smooth'
+            });
+        },
         getScroll() {
             if (this.tags.length != 0) {
                 if (this.$refs.scroll.scrollLeft == 0) {
                     this.leftGradient = false;
-                }
-                else {
+                } else {
                     this.leftGradient = true;
                 }
-                if (this.$refs.scroll.scrollLeft == this.$refs.scroll.scrollWidth - this.$refs.scroll.getBoundingClientRect().width) {
+
+                if (this.$refs.scroll.scrollLeft + 1 >= this.$refs.scroll.scrollWidth - this.$refs.parent.getBoundingClientRect().width) {
                     this.rightGradient = false;
-                }
-                else {
+                } else {
                     this.rightGradient = true;
                 }
             }

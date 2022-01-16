@@ -92,7 +92,7 @@
                                 :key="tag"
                                 class="mr-1 mb-1"
                                 :tag-name="tag.name"
-                                :color="tag.color"
+                                :tag-color="tag.color"
                             />
                         </div>
                     </div>
@@ -182,7 +182,6 @@ export default {
             return this.$store.state.auth.user
         },
         lastUpdatedAt() {
-            console.log(this.post.contentLastUpdatedAt, timeAgo(this.post.contentLastUpdatedAt, 'long'))
             return timeAgo(this.post.contentLastUpdatedAt, 'long')
         },
         replies() {
@@ -219,7 +218,6 @@ export default {
             this.errorReply = false
             this.onReply = false
             this.newReply = emptyTipTapValue
-            console.log("REPLY", this.newReply)
         },
         sendReply() {
             this.$store.dispatch('thread/addReply', {postId: this.post.postId, body: this.newReply})

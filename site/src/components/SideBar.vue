@@ -46,9 +46,6 @@
                         >
                             <li>
                                 <router-link
-                                    v-if="
-                                        link.condition == undefined || condition(link.condition)
-                                    "
                                     :to="link.to"
                                     class="
                                             py-1
@@ -116,38 +113,6 @@ export default {
         collapsing: {
             type: Boolean,
             default: true
-        },
-        links: {
-            type: Object,
-            default: () => ({
-                dev: [
-                    { to: '/test', text: 'Page Test', icon: 'ri-test-tube-line' }
-                ],
-                forum: [
-                    { to: '/', text: 'Accueil', icon: 'ri-home-3-line' },
-                    // TODO: { to: '/info', text: 'Annonces', icon: 'ri-alarm-warning-line' },
-                    { to: '/admin', text: 'Admin', icon: 'ri-pie-chart-box-line' }
-                ],
-                'docs sharing': [
-                    { to: '/doc/new', text: 'New Documents', icon: 'ri-folder-upload-line' },
-                    { to: '/doc/list', text: 'Documents', icon: 'ri-folder-line' }
-                ],
-                blog:[
-                    { to: '/blog', text: 'Blog', icon: 'ri-book-open-line' },
-                    { to: '/blog/new', text: 'Nouvel article', icon: 'ri-quill-pen-line' },
-                    { to: '/blog/admin', text: 'Admin (Blog)', icon: 'ri-pie-chart-box-line' }
-                ],
-                post: [
-                    { to: '/new-post', text: 'Créer un Post', icon: 'ri-chat-new-line' },
-                    { to: '/posts', text: 'Tous les Posts', icon: 'ri-chat-check-line' }
-                ],
-                // TODO: autre: [
-                //     { to: '/profil', text: 'Mon compte', icon: 'ri-account-box-line', condition: 'loggedIn' },
-                //     { to: '/settings', text: 'Paramètre', icon: 'ri-settings-3-line', condition: 'loggedIn' },
-                //     { to: '/rgpd', text: 'RGPD', icon: 'ri-database-2-line' },
-                //     { to: '/horizon', text: 'Horizon', icon: 'ri-information-line' }
-                // ]
-            })
         }
     },
     emits: [
@@ -158,16 +123,49 @@ export default {
             return this.$store.state.userConfig.theme === 'dark'
         },
         loggedIn () {
-            return this.$store.state.auth.status.loggedIn
-        }
-    },
-    methods: {
-        condition (type) {
-            if (type === 'loggedIn') {
-                return this.loggedIn
-            } else {
-                return false
-            }
+            return this.$store.state.auth.status.loggedIn ?? false
+        },
+        links() {
+            return ({
+                ...( import.meta.env.DEV && {
+                    dev: [
+                        { to: '/test', text: 'Page Test', icon: 'ri-test-tube-line' }
+                    ],
+                }),
+                ...({
+                    forum: [
+                        { to: '/', text: 'Accueil', icon: 'ri-home-3-line' },
+                        // TODO: { to: '/info', text: 'Annonces', icon: 'ri-alarm-warning-line' },
+                        { to: '/admin', text: 'Admin', icon: 'ri-pie-chart-box-line' }
+                    ],
+                    'docs sharing': [
+                        { to: '/docs', text: 'Documents', icon: 'ri-folder-line' },
+                        { to: '/docs/upload', text: 'Uploader', icon: 'ri-folder-upload-line' }
+                    ],
+                    blog:[
+                        { to: '/blog', text: 'Blog', icon: 'ri-book-open-line' },
+                        { to: '/blog/new', text: 'Écrire un article', icon: 'ri-quill-pen-line' },
+                        // { to: '/blog/admin', text: 'Admin (Blog)', icon: 'ri-pie-chart-box-line' }
+                    ],
+                    post: [
+                        { to: '/posts/ask', text: 'Créer un Post', icon: 'ri-chat-new-line' },
+                        { to: '/posts', text: 'Tous les Posts', icon: 'ri-chat-check-line' }
+                    ],
+                }),
+                ...(this.loggedIn
+                    ? {
+                        'communauté': [
+                            { to: '/users/', text: 'Utilisateurs', icon: 'ri-user-search-line' },
+                            { to: '/users/me', text: 'Mon compte', icon: 'ri-account-box-line' },
+                            { to: '/users/me/favorites', text: 'Mes favoris', icon: 'ri-star-fill' },
+                        ]
+                    }
+                    : {
+                        'communauté': [
+                            { to: '/users/', text: 'Utilisateurs', icon: 'ri-user-search-line' },
+                        ]
+                    })
+            })
         }
     }
 }

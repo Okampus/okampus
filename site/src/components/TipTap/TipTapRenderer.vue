@@ -29,7 +29,6 @@ export default {
         'content': 'refreshContent'
     },
     mounted() {
-        // console.log("CONTENT", this.content)
         let content
         if ( this.mode === 'json' ) {
             try {
@@ -60,8 +59,6 @@ export default {
                 content = `<p>${this.content}</p>`
             }
         }
-
-        // console.log(content)
 
         this.editor = new Editor({
             editable: false,

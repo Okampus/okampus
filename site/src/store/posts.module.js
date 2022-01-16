@@ -78,7 +78,7 @@ export const posts = {
             state.posts = uniqBy([...state.posts, ...posts], (a, b) => a.postId === b.postId)
         },
         addPostSuccess (state, newPost) {
-            router.push(`/post/${newPost.postId}`)
+            router.push(`/posts/${newPost.postId}`)
         },
         updatePostSuccess (state, id, modifedPost) {
             state.posts = state.posts.map(post => modifedPost ? post.id === id : post)

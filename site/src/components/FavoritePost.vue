@@ -21,12 +21,12 @@
         </div>
         <div class="my-2 flex ml-4 md:ml-0 flex-col justify-between w-full">
             <div>
-                <div class="flex">
+                <div class="flex items-center">
                     <a class="text-0 text-xl font-semibold mr-4 whitespace-nowrap ">{{ post.title }}</a>
-                    <!-- <TagsList
-                        :tags="post.tags"
-                    /> -->
-                    {{ post.tags }}
+                    <TagsList
+                        class="w-full"
+                        :tags="post.tags ?? []"
+                    />
                 </div>
                 <p class="text-5">
                     Publié par {{ post.author.username }} {{ dateSince(new Date(post.createdAt)) }}, dernière mise à jour {{ dateSince(new Date(post.contentLastUpdatedAt)) }}
@@ -53,10 +53,10 @@
 </template>
 
 <script>
-//import TagsList from '@/components/List/TagsList.vue'
+import TagsList from '@/components/List/TagsList.vue'
 
 export default {
-    //components: { TagsList },
+    components: { TagsList },
     props: {
         post: {
             type: Object,
@@ -75,7 +75,6 @@ export default {
     },
     computed: {
         actionsMap () {
-            // TODO: Actions
             return {
                 viewComments: { name: () => { return "3 Commentaires" }, icon: 'ri-chat-2-line', action: function () { console.log('Commentaire') } },
                 favorite: { name: () => { return 'Favori' }, icon: 'ri-star-line', action: function () { console.log('Favori') } },

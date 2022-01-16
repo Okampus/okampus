@@ -6,7 +6,6 @@ class PostsService {
     getStudyDocs (query) {
         return axios.get(`${API_URL}/files/study-docs`, { params: query, withCredentials: true }, ).then(
             (res) => {
-                console.log(res.data.items)
                 return res.data.items
             }
         )

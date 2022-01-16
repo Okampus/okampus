@@ -106,17 +106,6 @@ export default {
         reply: {
             type: Object,
             default: () => {}
-        },
-        actions: {
-            type: Array,
-            default: function () {
-                return [
-                    'viewComments',
-                    'favorite',
-                    'edit',
-                    'flag'
-                ]
-            }
         }
     },
     data() {
@@ -129,31 +118,34 @@ export default {
     },
     computed: {
         actionsMap () {
-            return {
+            return { ...( {
                 addComment: {
-                    name:()=> 'Commenter',
+                    name: ()=> 'Commenter',
                     icon: 'ri-chat-new-line',
-                    class: 'hover:text-blue-500',
-                    action: () => { this.showComments = true }
+                    class: "hover:text-blue-500",
+                    action: () => { this.onComment = true }
+                },
+                report: {
+                    name: ()=> 'Signaler',
+                    icon: 'ri-flag-line',
+                    class:"hover:text-red-500",
+                    action: () => {  }
                 },
                 favorite: {
-                    name: () => { return 'Favori' },
-                    icon: this.reply.favorited ? 'ri-star-fill' : 'ri-star-line',
-                    class: this.reply.favorited ? 'text-yellow-500' : 'hover:text-yellow-500',
-                    action: () => { this.reply.favorited ? this.deleteFavorite() : this.addFavorite() }
-                },
-                edit: {
-                    name: () => { return 'Éditer' },
-                    icon: 'ri-edit-line',
-                    class: 'hover:text-green-500',
-                    action: () => { console.log('Éditer') ; this.showEditor = !this.showEditor }
-                },
-                flag: {
-                    name: () => { return 'Signaler' },
-                    icon: 'ri-flag-line',
-                    class: 'hover:text-red-500',
-                    action: () => { console.log('Signaler') }
+                    name: ()=> 'Répondre',
+                    icon: this.post.favorited ? 'ri-star-fill' : 'ri-star-line',
+                    class: this.post.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500',
+                    action: () => { this.post.favorited ? this.deleteFavorite() : this.addFavorite() }
                 }
+            }),
+            ...(this.post.author.userId === this.$store.state.auth.user?.userId && {
+                edit: {
+                    name: () => 'Éditer',
+                    condition: () => this.isUser(),
+                    icon: 'ri-edit-line',
+                    class: "hover:text-green-500",
+                    action: () => { this.showEditor = true }
+                }})
             }
         },
         comments() {
@@ -187,5 +179,3 @@ export default {
     }
 }
 </script>
-
-<style scoped></style>

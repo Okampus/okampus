@@ -75,7 +75,6 @@ export default {
             return this.$store.state.auth.status.loggedIn
         },
         user () {
-            console.log(this.$store.state.auth.user)
             return this.$store.state.auth.user
         }
     }
