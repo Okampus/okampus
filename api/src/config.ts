@@ -10,6 +10,7 @@ interface Config {
   typesenseApiKey: string;
   typesenseHost: string;
   typesensePort: number;
+  typesenseScheme: string;
   accessTokenSecret: string;
   accessTokenExpiration: string;
   refreshTokenSecret: string;
@@ -59,6 +60,11 @@ export const config = createProfiguration<Config>({
     default: 8108,
     format: Number,
     env: 'TYPESENSE_PORT',
+  },
+  typesenseScheme: {
+    default: 'http',
+    format: ['http', 'https'],
+    env: 'TYPESENSE_SCHEME',
   },
   accessTokenSecret: {
     default: 'secret',
