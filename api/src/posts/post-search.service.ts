@@ -63,6 +63,10 @@ export class PostSearchService extends SearchService<Post, IndexedPost> {
 
   @RequireTypesense()
   public async search(queries: SearchParams<IndexedPost>): Promise<SearchResponse<IndexedPost>> {
+    // TODO: We shouldn't be able to search amongst the archived posts as this raises
+    // security issues: people with no such access could still see them by extracting
+    // the client-side API key and making the research themselves. This comment is also
+    // true for other endpoints
     return await this.documents.search(queries);
   }
 
