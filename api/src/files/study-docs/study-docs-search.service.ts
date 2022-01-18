@@ -11,7 +11,7 @@ import { StudyDoc } from './study-doc.entity';
 
 export interface IndexedStudyDoc {
   user: string;
-  originalName: string;
+  name: string;
   subjectName: string;
   subjectEnglishName: string;
   year?: number;
@@ -26,7 +26,7 @@ export class StudyDocSearchService extends SearchService<StudyDoc, IndexedStudyD
     name: 'study-docs',
     fields: [
       { name: 'user', type: 'string' },
-      { name: 'originalName', type: 'string' },
+      { name: 'name', type: 'string' },
       { name: 'subjectName', type: 'string' },
       { name: 'subjectEnglishName', type: 'string' },
       { name: 'year', type: 'string', optional: true },
@@ -86,7 +86,7 @@ export class StudyDocSearchService extends SearchService<StudyDoc, IndexedStudyD
   public toIndexedEntity(studyDoc: StudyDoc): IndexedStudyDoc {
     return {
       user: studyDoc.file.user.username,
-      originalName: studyDoc.file.originalName,
+      name: studyDoc.file.name,
       subjectName: studyDoc.subject.name,
       subjectEnglishName: studyDoc.subject.englishName,
       year: studyDoc.year,

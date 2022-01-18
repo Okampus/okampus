@@ -15,13 +15,13 @@ import { User } from '../../users/user.entity';
 @Entity()
 export class FileUpload extends BaseEntity {
   @PrimaryKey()
-  fileUploadId: string = nanoid(32);
+  fileUploadId: string = nanoid(64);
 
   @ManyToOne()
   user!: User;
 
   @Property({ type: 'text' })
-  originalName!: string;
+  name!: string;
 
   @Property()
   fileSize!: number;
@@ -35,6 +35,9 @@ export class FileUpload extends BaseEntity {
   @Property()
   validated = false;
 
+  @Property({ type: 'text' })
+  url: string;
+
   @Property()
   visible = false;
 
@@ -43,26 +46,28 @@ export class FileUpload extends BaseEntity {
 
   constructor(options: {
     user: User;
-    originalName: string;
+    name: string;
     fileSize: number;
     mimeType: string;
     fileLastModifiedAt: Date;
-    fileKind?: FileKind;
+    fileKind: FileKind;
+    url: string;
   }) {
     super();
     this.user = options.user;
-    this.originalName = options.originalName;
+    this.name = options.name;
     this.fileSize = options.fileSize;
     this.mimeType = options.mimeType;
+    this.url = options.url;
     this.fileLastModifiedAt = options.fileLastModifiedAt;
-    this.fileKind = options.fileKind ?? FileKind.Unknown;
+    this.fileKind = options.fileKind;
   }
 
   public getPath(): string {
     return path.join(
       config.get('uploadPath'),
       this.fileKind,
-      `${this.fileUploadId.toString()}${path.extname(this.originalName)}`,
+      `${this.fileUploadId.toString()}${path.extname(this.name)}`,
     );
   }
 }

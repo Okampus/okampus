@@ -29,7 +29,7 @@ export class StudyDocsService {
   public async create(createStudyDocDto: CreateStudyDocDto, file: FileUpload): Promise<StudyDoc> {
     const subject = await this.subjectRepository.findOneOrFail({ subjectId: createStudyDocDto.subject });
 
-    const docSeries = await this.docSeriesRepository.findOne({ docSeriesId: createStudyDocDto.docSeries }, ['tags']);
+    const docSeries = await this.docSeriesRepository.findOne({ docSeriesId: createStudyDocDto.docSeries });
     const studyDoc = new StudyDoc({
       ...createStudyDocDto,
       subject,
@@ -44,17 +44,17 @@ export class StudyDocsService {
   public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<StudyDoc>> {
     // TODO: Maybe the user won't have access to all docs. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
-    return await this.studyDocRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'file.user', 'subject', 'docSeries', 'tags'] });
+    return await this.studyDocRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'file.user', 'subject', 'docSeries'] });
   }
 
   public async findOne(studyDocId: string): Promise<StudyDoc> {
     // TODO: Maybe the user won't have access to this doc. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
-    return await this.studyDocRepository.findOneOrFail({ studyDocId }, ['file', 'file.user', 'subject', 'docSeries', 'tags']);
+    return await this.studyDocRepository.findOneOrFail({ studyDocId }, ['file', 'file.user', 'subject', 'docSeries']);
   }
 
   public async update(user: User, studyDocId: string, updateCourseDto: UpdateStudyDocDto): Promise<StudyDoc> {
-    const studyDoc = await this.studyDocRepository.findOneOrFail({ studyDocId }, ['file', 'file.user', 'subject', 'docSeries', 'tags']);
+    const studyDoc = await this.studyDocRepository.findOneOrFail({ studyDocId }, ['file', 'file.user', 'subject', 'docSeries']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, studyDoc);

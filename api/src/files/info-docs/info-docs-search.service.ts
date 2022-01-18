@@ -11,8 +11,7 @@ import { InfoDoc } from './info-doc.entity';
 
 export interface IndexedInfoDoc {
   user: string;
-  originalName: string;
-  name?: string;
+  name: string;
   year?: number;
   description?: string;
   id: string;
@@ -25,8 +24,7 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
     name: 'info-docs',
     fields: [
       { name: 'user', type: 'string' },
-      { name: 'originalName', type: 'string' },
-      { name: 'name', type: 'string', optional: true },
+      { name: 'name', type: 'string' },
       { name: 'year', type: 'string', optional: true },
       { name: 'description', type: 'string', optional: true },
       { name: 'createdAt', type: 'string' },
@@ -84,8 +82,7 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
   public toIndexedEntity(infoDoc: InfoDoc): IndexedInfoDoc {
     return {
       user: infoDoc.file.user.username,
-      originalName: infoDoc.file.originalName,
-      name: infoDoc.name,
+      name: infoDoc.file.name,
       year: infoDoc.year,
       description: infoDoc.description,
       id: infoDoc.infoDocId,

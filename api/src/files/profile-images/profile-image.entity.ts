@@ -1,4 +1,9 @@
-import { Entity, OneToOne, PrimaryKey } from '@mikro-orm/core';
+import {
+  Entity,
+  ManyToOne,
+  OneToOne,
+  PrimaryKey,
+} from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { User } from '../../users/user.entity';
@@ -12,7 +17,7 @@ export class ProfileImage extends BaseEntity {
   @OneToOne()
   file!: FileUpload;
 
-  @OneToOne()
+  @ManyToOne()
   user!: User;
 
   constructor(options: { user: User; file: FileUpload }) {

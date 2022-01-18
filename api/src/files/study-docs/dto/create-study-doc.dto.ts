@@ -1,9 +1,4 @@
-import {
-  IsArray,
-  IsInt,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsInt, IsOptional, IsString } from 'class-validator';
 import { CreateFileUploadDto } from '../../file-uploads/dto/create-file-upload.dto';
 
 export class CreateStudyDocDto extends CreateFileUploadDto {
@@ -17,11 +12,6 @@ export class CreateStudyDocDto extends CreateFileUploadDto {
   @IsOptional()
   @IsString()
   docSeries?: string;
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  tags?: string[];
 
   @IsOptional()
   @IsString()

@@ -1,16 +1,17 @@
-import { promises as fs } from 'node:fs';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import type { Express } from 'express';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import type { FileKind } from '../../shared/lib/types/file-kind.enum';
 import type { User } from '../../users/user.entity';
+import { FilePersistanceService } from './file-persistance.service';
 import { FileUpload } from './file-upload.entity';
 
 @Injectable()
 export class FileUploadsService {
   constructor(
     @InjectRepository(FileUpload) private readonly fileUploadRepository: BaseRepository<FileUpload>,
+    private readonly filePersistanceService: FilePersistanceService,
   ) {}
 
   public async findOne(fileUploadId: string): Promise<FileUpload> {
@@ -27,15 +28,22 @@ export class FileUploadsService {
   ): Promise<FileUpload> {
     const fileDocument = new FileUpload({
       user,
-      originalName: file.originalname,
+      name: file.originalname,
       fileSize: file.size,
       mimeType: file.mimetype,
       fileKind,
       fileLastModifiedAt,
+      url: '',
     });
 
     await this.fileUploadRepository.persistAndFlush(fileDocument);
-    await fs.writeFile(fileDocument.getPath(), file.buffer);
+    const infos = await this.filePersistanceService.upload(file, {
+      path: fileDocument.getPath(),
+      key: fileDocument.fileUploadId,
+      kind: fileKind,
+    });
+
+    fileDocument.url = infos.url;
 
     return fileDocument;
   }

@@ -11,6 +11,10 @@ interface Config {
   typesenseHost: string;
   typesensePort: number;
   typesenseScheme: string;
+  storageAccessKeyId: string;
+  storageSecretAccessKey: string;
+  storageEndpoint: string;
+  storageRegion: string;
   accessTokenSecret: string;
   accessTokenExpiration: string;
   refreshTokenSecret: string;
@@ -65,6 +69,26 @@ export const config = createProfiguration<Config>({
     default: 'http',
     format: ['http', 'https'],
     env: 'TYPESENSE_SCHEME',
+  },
+  storageAccessKeyId: {
+    default: 'access-key-id',
+    format: String,
+    env: 'STORAGE_ACCESS_KEY_ID',
+  },
+  storageSecretAccessKey: {
+    default: 'secret-access-key',
+    format: String,
+    env: 'STORAGE_SECRET_ACCESS_KEY',
+  },
+  storageEndpoint: {
+    default: 'endpoint',
+    format: String,
+    env: 'STORAGE_ENDPOINT',
+  },
+  storageRegion: {
+    default: 'PAR',
+    format: String,
+    env: 'STORAGE_REGION',
   },
   accessTokenSecret: {
     default: 'secret',

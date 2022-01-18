@@ -1,5 +1,4 @@
 import {
-  IsArray,
   IsBoolean,
   IsInt,
   IsOptional,
@@ -15,11 +14,6 @@ export class CreateInfoDocDto extends CreateFileUploadDto {
   @IsOptional()
   @IsString()
   docSeries?: string;
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  tags?: string[];
 
   @IsOptional()
   @IsString()

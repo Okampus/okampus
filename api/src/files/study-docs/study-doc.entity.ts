@@ -1,17 +1,13 @@
 import {
-  Collection,
   Entity,
-  ManyToMany,
   ManyToOne,
   OneToOne,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { Subject } from '../../subjects/subject.entity';
-import type { Tag } from '../../tags/tag.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 
@@ -28,10 +24,6 @@ export class StudyDoc extends BaseEntity {
 
   @ManyToOne()
   docSeries?: DocSeries;
-
-  @ManyToMany()
-  @TransformCollection()
-  tags = new Collection<Tag>(this);
 
   // School year corresponding to the document; e.g. 2017 -> 2017-18, 2018 -> 2018-19, etc.
   @Property()
