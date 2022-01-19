@@ -1,12 +1,13 @@
 <template>
-    <div v-if="editor">
+    <div
+        v-if="editor"
+    >
         <div
-            v-if="buttons.length > 0"
-            class="space-x-2 px-1 py-3 flex flex-wrap items-center border-color-4"
-            :class="buttonClasses"
+            v-if="editorButtons.length > 0"
+            class="space-x-2 px-1 py-2 flex flex-wrap items-center border-color-4"
         >
             <template
-                v-for="(btn, i) in buttons"
+                v-for="(btn, i) in editorButtons"
                 :key="i"
             >
                 <v-popper
@@ -14,14 +15,8 @@
                     :hover="true"
                 >
                     <div
-                        :class="
-                            actionMap[btn.action].isActive
-                                ? {
-                                    'is-active': editor.isActive(...actionMap[btn.action].isActive),
-                                }
-                                : {}
-                        "
-                        class="text-1 flex items-center icon-button mr-3"
+                        :class="[actionMap[btn.action].isActive && editor.isActive(...actionMap[btn.action].isActive) ? 'bg-blue-500 border-indigo-800' : 'bg-2']"
+                        class="text-1 text-lg flex items-center icon-button mr-3 raised p-2 outline-none cursor-pointer rounded"
                         @click="actionMap[btn.action].action()"
                     >
                         <i
@@ -42,20 +37,40 @@
             :editor="editor"
         />
 
-        <div class="flex mt-2 gap-4 items-center">
+        <div class="flex flex-row mt-2 gap-4 items-center">
+            <button
+                v-if="cancellable"
+                :class="textClass"
+                class="button red"
+                @click="$emit('cancel')"
+            >
+                <p>
+                    Annuler
+                </p>
+            </button>
+            <button
+                v-if="sendable"
+                :class="textClass"
+                class="button"
+                @click="$emit('send')"
+            >
+                <p>
+                    Envoyer
+                </p>
+            </button>
+            <slot name="error" />
+
+            <!-- TODO: Refactor charCount (dark mode) -->
             <div
-                v-if="charCount"
-                :class="{
-                    'character-count': charCount,
-                    'character-count--warning':
-                        getCharCount() === charCountLimit,
-                }"
+                v-if="charCount > 0 && getCharCount() >= charCountShowAt"
+                class="flex"
+                :class="[ getCharCount() >= charCount ? 'text-red-400' : 'text-blue-400', textClass ]"
             >
                 <svg
                     height="20"
                     width="20"
                     viewBox="0 0 20 20"
-                    class="character-count__graph"
+                    class="mr-2"
                 >
                     <circle
                         r="10"
@@ -82,70 +97,32 @@
                 </svg>
 
                 <div
-                    :class="{'character-count__text':
-                        getCharCount() !== charCountLimit}"
+                    :class="{'text-slate-700': getCharCount() < charCount}"
                 >
-                    {{ getCharCount() }}/{{ charCountLimit }} characters
+                    {{ getCharCount() }}/{{ charCount }}
                 </div>
             </div>
-
-            <button
-                v-if="cancellable"
-                class="button red"
-                @click="$emit('cancel')"
-            >
-                <p>
-                    Annuler
-                </p>
-            </button>
-            <button
-                v-if="sendable"
-                class="button"
-                @click="$emit('send')"
-            >
-                <p>
-                    Envoyer
-                </p>
-            </button>
-            <slot name="error" />
         </div>
     </div>
 </template>
 
 <script lang="js">
-import { useEditor, EditorContent, generateHTML } from '@tiptap/vue-3'
-import StarterKit from '@tiptap/starter-kit'
-import Highlight from '@tiptap/extension-highlight'
-import Typography from '@tiptap/extension-typography'
-import Placeholder from '@tiptap/extension-placeholder'
-import Underline from '@tiptap/extension-underline'
-import CharacterCount from '@tiptap/extension-character-count'
+// import { useEditor, EditorContent, generateHTML } from '@tiptap/vue-3'
+// import StarterKit from '@tiptap/starter-kit'
+// import Highlight from '@tiptap/extension-highlight'
+// import Typography from '@tiptap/extension-typography'
+// import Placeholder from '@tiptap/extension-placeholder'
+// import Underline from '@tiptap/extension-underline'
+// import CharacterCount from '@tiptap/extension-character-count'
+// import Link from '@tiptap/extension-link'
+import { defaultEditorButtons, defaultTipTapText, getEditor } from '@/utils/tiptap'
+import { EditorContent } from '@tiptap/vue-3'
 
 export default {
     components: {
         EditorContent
     },
     props: {
-        buttons: {
-            type: Array,
-            default: () => [
-                { action: 'paragraph', icon: 'ri-paragraph ri-lg', content: 'Paragraphe (Ctrl+Alt+0)' },
-                { action: 'bold', icon: 'ri-bold ri-lg', content: 'Gras (Ctrl+B)' },
-                { action: 'italic', icon: 'ri-italic ri-lg', content: 'Italique (Ctrl+I)' },
-                { action: 'strike', icon: 'ri-strikethrough ri-lg', content: 'Barré (Ctrl+Shift+X)' },
-                { action: 'underline', icon: 'ri-underline ri-lg', content: 'Souligné (Ctrl+U)' },
-                { action: 'highlight', icon: 'ri-mark-pen-line ri-lg', content: 'Surligné (Ctrl+Shift+H)' },
-                { action: 'clearMarks', icon: 'ri-format-clear ri-lg', content: 'Enlever les styles' }
-            ]
-        },
-        buttonClasses: {
-            type: String,
-            default: () => ''
-        },
-        placeholder: {
-            type: String,
-            default: 'Écrivez votre texte ici...'
-        },
         cancellable: {
             type: Boolean,
             default: false
@@ -154,61 +131,55 @@ export default {
             type: Boolean,
             default: false
         },
+        textClass: {
+            type: String,
+            default: 'text-base'
+        },
+        editorButtons: {
+            type: Array,
+            default: defaultEditorButtons
+        },
+        editorOptions: {
+            type: Object,
+            default: () => ({})
+        },
+        placeholder: {
+            type: String,
+            default: ''
+        },
         mode: {
             type: String,
             default: 'json'
+        },
+        charCountShowAt: {
+            type: Number,
+            default: 0
+        },
+        charCount: {
+            type: Number,
+            default: 0
         },
         editorClasses: {
             type: Array,
             default: () => ['min-h-20']
         },
-        charCount: Boolean,
-        charCountLimit: {
-            type: Number,
-            default: 250
-        },
         modelValue: {
-            default: '{"type":"doc","content":[{"type":"paragraph"}]}',
+            default: defaultTipTapText,
             type: String
-        }
+        },
     },
     emits: ['update:modelValue', 'cancel', 'send'],
     setup (props, ctx) {
-        const extensions = [
-            StarterKit.configure({
-                heading: {
-                    levels: [1, 2, 3]
-                }
-            }),
-            Highlight,
-            Typography,
-            Placeholder.configure({
-                placeholder: props.placeholder
-            }),
-            Underline
-        ]
-
-        if (props.charCount) {
-            extensions.push(CharacterCount.configure({
-                limit: props.charCountLimit
-            }))
-        }
-
-        const editor = useEditor({
-            content:  props.mode === 'json' ? JSON.parse(props.modelValue) : generateHTML(props.modelValue),
-            onUpdate: function () {
-                ctx.emit('update:modelValue', props.mode === 'json' ? JSON.stringify(this.getJSON()) : this.getHTML())
-            },
-            extensions,
-            editorProps: {
-                attributes: {
-                    class: props.editorClasses.join(' ')
-                }
-            }
-        })
-
         return {
-            editor
+            editor: getEditor({
+                ctx,
+                updateEvent: 'update:modelValue',
+                editorOptions: props.editorOptions,
+                mode: props.mode,
+                placeholder: props.placeholder,
+                charCount: props.charCount,
+                editorClasses: props.editorClasses
+            }),
         }
     },
     computed: {
@@ -308,7 +279,7 @@ export default {
             return this.editor.storage.characterCount.characters()
         },
         circleFillCharCount () {
-            return (Math.round((100 / this.charCountLimit) * this.getCharCount()) * 31.4) / 100
+            return (Math.round((100 / this.charCount) * this.getCharCount()) * 31.4) / 100
         },
         getJSON () {
             return this.editor.getJSON()
@@ -316,31 +287,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-.character-count {
-    display: flex;
-    align-items: center;
-    color: #68cef8;
-
-    &--warning {
-        color: #fb5151;
-    }
-
-    &__graph {
-        margin-right: 0.5rem;
-    }
-
-    &__text {
-        color: #868e96;
-    }
-}
-
-.icon-button {
-    @apply p-2 outline-none cursor-pointer rounded border shadow;
-}
-
-.icon-button.is-active {
-    @apply bg-blue-500 border-indigo-800 dark:shadow-none;
-}
-</style>

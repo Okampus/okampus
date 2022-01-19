@@ -55,7 +55,7 @@
                         </router-link>
 
                         <p class="mt-1 text-2 text-justify line-clamp-2">
-                            {{ extractTextFromJSONBody(JSON.parse(post.body)) }}
+                            {{ extractTextFromTipTapJSON(JSON.parse(post.body)) }}
                         </p>
                     </div>
 
@@ -103,8 +103,8 @@
 
 import { abbrNumbers } from '@/utils/abbrNumbers'
 import { timeAgo } from '@/utils/timeAgo'
-import { extractTextFromJSONBody } from '@/utils/extractTextFromHTML'
-import UserPreview from '@/components/Dashboard/UserPreview.vue'
+import { extractTextFromTipTapJSON } from '@/utils/tiptap'
+import UserPreview from '@/components/User/UserPreview.vue'
 import TagsList from '@/components/List/TagsList.vue'
 import postTypesEnum from '@/shared/types/post-types.enum'
 
@@ -131,7 +131,7 @@ export default {
     methods: {
         abbrNumbers,
         timeAgo,
-        extractTextFromJSONBody
+        extractTextFromTipTapJSON
     }
 }
 </script>

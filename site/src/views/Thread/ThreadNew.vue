@@ -80,9 +80,8 @@
                         v-model="state.body"
                         name="editor"
                         mode="json"
-                        :char-count="true"
-                        :char-count-limit="editorCharLimit[1]"
-                        :buttons="editorButtons"
+                        :char-count-show-at="9000"
+                        :char-count="editorCharLimit[1]"
                         placeholder="Décrivez votre question/suggestion/problème !"
                         @input="v$.body.$touch"
                     >
@@ -146,6 +145,7 @@ import TagsInput from '@/components/Input/TagsInput.vue'
 import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
 
 import { ref, reactive } from 'vue'
+import { defaultTipTapText } from '@/utils/tiptap'
 
 export default {
     components: {
@@ -173,7 +173,7 @@ export default {
         const state = reactive({
             title: '',
             type: null,
-            body: '{"type":"doc","content":[{"type":"paragraph"}]}',
+            body: defaultTipTapText,
             tags: []
         })
 
@@ -199,15 +199,6 @@ export default {
         return {
             postTypesEnum,
             customTagError: null,
-            editorButtons: [
-                { action: 'paragraph', icon: 'ri-paragraph ri-lg', content: 'Paragraphe (Ctrl+Alt+0)' },
-                { action: 'bold', icon: 'ri-bold ri-lg', content: 'Gras (Ctrl+B)' },
-                { action: 'italic', icon: 'ri-italic ri-lg', content: 'Italique (Ctrl+I)' },
-                { action: 'strike', icon: 'ri-strikethrough ri-lg', content: 'Barré (Ctrl+Shift+X)' },
-                { action: 'underline', icon: 'ri-underline ri-lg', content: 'Souligné (Ctrl+U)' },
-                { action: 'highlight', icon: 'ri-mark-pen-line ri-lg', content: 'Surligné (Ctrl+Shift+H)' },
-                { action: 'clearMarks', icon: 'ri-format-clear ri-lg', content: 'Enlever les styles' }
-            ]
         }
     },
     methods: {

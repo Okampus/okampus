@@ -3,32 +3,40 @@
         <!-- {{ post }} -->
         <div class="text-1">
             <div class="flex mt-1">
-                <div class="flex flex-col flex-shrink-0 w-3/24 items-center text-lg pt-4 gap-4">
-                    <div class="flex items-center flex-col">
+                <div class="flex flex-col flex-shrink-0 w-3/24 items-center text-lg gap-3 -ml-4">
+                    <UserPreview
+                        :username="post.author?.username"
+                        :avatar="post.author?.avatar"
+                        img-size="14"
+                        text-class="text-lg"
+                        mode="vertical"
+                    />
+
+                    <div class="mt-1 flex items-center gap-2">
                         <i
-                            class="ri-arrow-up-s-fill ri-2x hover:text-blue-500 cursor-pointer"
-                            :class="[post.currentVote === 1 ? 'text-orange-500' : '']"
+                            class="ri-lg hover:text-blue-500 cursor-pointer"
+                            :class="[post.currentVote === 1 ? 'ri-thumb-up-fill text-green-500' : 'ri-thumb-up-line']"
                             @click="post.currentVote === 1 ? sendVote(0) : sendVote(1)"
                         />
                         <div class="text-center text-xl">
                             {{ post.upvotes - post.downvotes }}
                         </div>
                         <i
-                            class="ri-arrow-down-s-fill ri-2x hover:text-blue-500 cursor-pointer"
-                            :class="[post.currentVote === -1 ? 'text-orange-500' : '']"
+                            class="ri-lg hover:text-blue-500 cursor-pointer"
+                            :class="[post.currentVote === -1 ? 'ri-thumb-down-fill text-red-500' : 'ri-thumb-down-line ']"
                             @click="post.currentVote === -1 ? sendVote(0) : sendVote(-1)"
                         />
                     </div>
-                    <div class="flex flex-col">
+
+                    <div class="flex flex-col mt-3">
                         <div
                             v-for="(action, i) in otherActions"
                             :key="i"
                             class="flex items-center text-5 rounded transition cursor-pointer"
-                            :class="actionsMap[action].class"
                             @click="actionsMap[action].action"
                         >
                             <i
-                                :class="actionsMap[action].icon"
+                                :class="`${actionsMap[action].icon} ${actionsMap[action].class}`"
                                 class="ri-lg"
                             />
                         </div>
@@ -44,25 +52,27 @@
                     </div>
 
                     <div class="flex justify-between items-center">
-                        <UserPreview
+                        <!-- <UserPreview
                             :username="post.author.username"
                             :avatar="post.author.avatar"
                             :reputation="post.author.reputation"
-                        />
+                        /> -->
 
                         <div class="flex items-center ri-lg">
                             <div
                                 v-for="(action, i) in actionsBar"
                                 :key="i"
-                                class="flex gap-1 items-center text-5 transition rounded-lg cursor-pointer p-2"
-                                :class="actionsMap[action].class"
+                                class="group flex gap-1 items-center text-5 transition rounded-lg cursor-pointer p-2"
                                 @click="actionsMap[action].action"
                             >
                                 <i
-                                    :class="actionsMap[action].icon"
+                                    :class="`${actionsMap[action].icon} ${actionsMap[action].class}`"
                                     class="ri-md"
                                 />
-                                <p class="text-sm group-hover:underline">
+                                <p
+                                    :class="`${actionsMap[action].class}`"
+                                    class="text-sm"
+                                >
                                     {{ actionsMap[action].name() }}
                                 </p>
                             </div>
@@ -81,7 +91,7 @@
 </template>
 
 <script lang="js">
-import UserPreview from '@/components/Dashboard/UserPreview.vue'
+import UserPreview from '@/components/User/UserPreview.vue'
 import PostCommentList from '@/components/Thread/PostCommentList.vue'
 import { watch } from 'vue'
 import EditableRender from '../TipTap/EditableRender.vue'
@@ -128,25 +138,25 @@ export default {
                 reply: {
                     name: () => 'Répondre',
                     icon: 'ri-reply-fill',
-                    class:"hover:text-blue-500",
+                    class:"group-hover:text-blue-500",
                     action:  () => { this.$emit("reply") }
                 },
                 addComment: {
                     name: ()=> 'Commenter',
                     icon: 'ri-chat-new-line',
-                    class: "hover:text-blue-500",
+                    class: "group-hover:text-blue-500",
                     action: () => { this.onComment = true }
                 },
                 report: {
                     name: ()=> 'Signaler',
                     icon: 'ri-flag-line',
-                    class:"hover:text-red-500",
+                    class:"group-hover:text-red-500",
                     action: () => {  }
                 },
                 favorite: {
                     name: ()=> 'Répondre',
                     icon: this.post?.favorited ? 'ri-star-fill' : 'ri-star-line',
-                    class: this.post?.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500',
+                    class: this.post?.favorited ? 'group-hover:text-blue-500 text-yellow-500' : 'group-hover:text-yellow-500',
                     action: () => { this.post?.favorited ? this.deleteFavorite() : this.addFavorite() }
                 }
             }),
@@ -155,7 +165,7 @@ export default {
                     name: () => 'Éditer',
                     condition: () => this.isUser(),
                     icon: 'ri-edit-line',
-                    class: "hover:text-green-500",
+                    class: "group-hover:text-green-500",
                     action: () => { this.showEditor = true }
                 }})
             }

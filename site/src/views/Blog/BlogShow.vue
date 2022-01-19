@@ -304,7 +304,7 @@ import ColoredTag from '@/components/ColoredTag.vue'
 import { timeAgo } from '@/utils/timeAgo'
 
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { extractTextFromJSONBody } from '@/utils/extractTextFromHTML'
+import { extractTextFromTipTapJSON } from '@/utils/tiptap'
 
 export default {
     components: {
@@ -343,7 +343,7 @@ export default {
             const article = articles[articleId] ?? null
             this.article = article
             this.profile = article === null ? null : blogProfiles[article.author.id]
-            this.readingTime = article === null ? null : readingTimeMinutes(extractTextFromJSONBody(JSON.parse(article.body)))
+            this.readingTime = article === null ? null : readingTimeMinutes(extractTextFromTipTapJSON(JSON.parse(article.body)))
         }
     }
 }

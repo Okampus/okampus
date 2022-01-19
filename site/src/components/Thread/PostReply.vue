@@ -1,15 +1,20 @@
 <template>
     <div class="text-1">
         <div class="flex">
-            <div class="flex flex-col flex-shrink-0 w-3/24 items-center text-lg gap-2 mr-3">
-                <img
+            <div class="flex flex-col flex-shrink-0 w-3/24 items-center text-lg gap-2 -ml-4">
+                <UserPreview
+                    :username="reply.author?.username"
+                    :avatar="reply.author?.avatar"
+                    mode="vertical"
+                />
+                <!-- <img
                     :src="reply.author.avatar || default_avatar"
                     alt="Profile Picture"
                     class="w-10 h-10 rounded-full mt-2 "
                 >
                 <div class="font-medium text-center text-sm">
                     {{ reply.author.username }}
-                </div>
+                </div> -->
 
                 <div class="flex gap-2">
                     <div class="flex gap-1">
@@ -43,21 +48,23 @@
                     <div
                         v-for="(action, actionName) in actionsMap"
                         :key="actionName"
-                        class="flex gap-1 items-center text-5 transition rounded-lg cursor-pointer p-2"
-                        :class="action.class"
+                        class="group flex gap-1 items-center text-5 transition rounded-lg cursor-pointer p-2"
                         @click="action.action"
                     >
                         <i
-                            :class="action.icon"
+                            :class="`${action.icon} ${action.class}`"
                             class="ri-md"
                         />
-                        <p class="text-sm">
+                        <p
+                            class="text-sm"
+                            :class="`${action.class}`"
+                        >
                             {{ action.name() }}
                         </p>
                     </div>
                 </div>
                 <PostCommentList
-                    v-model:on-comment="showComments"
+                    v-model:on-comment="onComment"
                     class="mt-4"
                     :parent-content="{type: 'reply', id: reply.replyId}"
                     :comments="reply.comments"
@@ -93,14 +100,16 @@
 <script lang="js">
 import PostCommentList from '@/components/Thread/PostCommentList.vue'
 import default_avatar from '@/assets/img/default_avatars/user.png'
-import EditableRender from '../TipTap/EditableRender.vue'
+import EditableRender from '@/components/TipTap/EditableRender.vue'
 import { watch } from 'vue'
-
+import { defaultTipTapText } from '@/utils/tiptap'
+import UserPreview from '@/components/User/UserPreview.vue'
 
 export default {
     components: {
         PostCommentList,
-        EditableRender
+        EditableRender,
+        UserPreview
     },
     props: {
         reply: {
@@ -111,9 +120,9 @@ export default {
     data() {
         return {
             default_avatar,
-            showComments: false,
+            onComment: false,
             showEditor: false,
-            body: this.reply.body ?? '{"type":"doc","content":[{"type":"paragraph"}]}'
+            body: this.reply.body ?? defaultTipTapText
         }
     },
     computed: {
@@ -122,19 +131,19 @@ export default {
                 addComment: {
                     name: ()=> 'Commenter',
                     icon: 'ri-chat-new-line',
-                    class: "hover:text-blue-500",
+                    class: "group-hover:text-blue-500",
                     action: () => { this.onComment = true }
                 },
                 report: {
                     name: ()=> 'Signaler',
                     icon: 'ri-flag-line',
-                    class:"hover:text-red-500",
+                    class:"group-hover:text-red-500",
                     action: () => {  }
                 },
                 favorite: {
                     name: ()=> 'Favori',
                     icon: this.reply.favorited ? 'ri-star-fill' : 'ri-star-line',
-                    class: this.reply.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500',
+                    class: this.reply.favorited ? 'group-hover:text-blue-500 text-yellow-500' : 'group-hover:text-yellow-500',
                     action: () => { this.reply.favorited ? this.deleteFavorite() : this.addFavorite() }
                 }
             }),
@@ -143,7 +152,7 @@ export default {
                     name: () => 'Éditer',
                     condition: () => this.isUser(),
                     icon: 'ri-edit-line',
-                    class: "hover:text-green-500",
+                    class: "group-hover:text-green-500",
                     action: () => { this.showEditor = true }
                 }})
             }

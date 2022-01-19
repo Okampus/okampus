@@ -7,13 +7,10 @@
             <div class="flex flex-col w-full gap-4">
                 <tip-tap-editor
                     v-model="newComment"
-                    :char-count-limit="240"
-                    :editor-classes="[]"
                     class="w-full"
+                    :="editorConfig"
                     :sendable="true"
                     :cancellable="true"
-                    :small="true"
-                    :placeholder="`${user.username} va commenter...`"
                     @send="sendComment()"
                     @cancel="closeComment()"
                 />
@@ -33,7 +30,7 @@
                         v-model:content="comment.body"
                         v-model:show="comment.edit"
                         class="w-full"
-                        :editor-classes="['text-sm']"
+                        :="editorConfig"
                         @validate="updateComment($event, i)"
                     />
                     <p
@@ -50,15 +47,17 @@
                     <div
                         v-for="(action, actionName) in actionsMap(i)"
                         :key="actionName"
-                        class="text-sm flex gap-1 items-center text-5 transition rounded-lg cursor-pointer py-1 px-2"
-                        :class="action.class()"
+                        class="group text-sm flex gap-1 items-center text-5 transition rounded-lg cursor-pointer py-1 px-2"
                         @click="action.action()"
                     >
                         <i
-                            :class="action.icon()"
+                            :class="`${action.icon()} ${action.class()}`"
                             class="ri-md"
                         />
-                        <p class="text-xs">
+                        <p
+                            :class="`${action.class()}`"
+                            class="text-xs"
+                        >
                             {{ action.name() }}
                         </p>
                     </div>
@@ -84,11 +83,12 @@
 </template>
 
 <script lang="js">
-// TODO: Expect errors
+
 import default_avatar from '@/assets/img/default_avatars/user.png'
 import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
 import EditableRender from '../TipTap/EditableRender.vue'
 import { watch } from 'vue'
+import { defaultTipTapText } from '@/utils/tiptap'
 
 export default {
     components: {
@@ -121,7 +121,15 @@ export default {
     data() {
         return {
             default_avatar,
-            newComment: '{"type":"doc","content":[{"type":"paragraph"}]}',
+            editorConfig: {
+                charCount: 240,
+                textClass: 'text-sm',
+                editorClasses: ['text-sm'],
+                editorButtons: [],
+                placeholder: `${this.$store.state.auth.user.username} va commenter...`,
+            },
+            commentLimit: 240,
+            newComment: defaultTipTapText,
             commentsShow: false,
             commentItems: this.comments.map(
                 comment => { return { ...comment, edit: false } }
@@ -129,9 +137,6 @@ export default {
         }
     },
     computed: {
-        user () {
-            return this.$store.state.auth.user
-        },
         shownComments() {
             return this.commentItems.slice(0, this.commentsShow ? this.commentItems.length : this.maxCommentsShow)
         }
@@ -153,21 +158,21 @@ export default {
                     favorite: {
                         name: () => { return 'Favori' },
                         icon: () => this.commentItems[i].favorited ? 'ri-star-fill' : 'ri-star-line',
-                        class: () => this.commentItems[i].favorited ? 'text-yellow-500' : 'hover:text-yellow-500',
+                        class: () => this.commentItems[i].favorited ? 'text-yellow-500' : 'group-hover:text-yellow-500',
                         action: () => { this.commentItems[i].favorited ? this.deleteFavorite(i) : this.addFavorite(i) }
                     },
 
                     flag: {
                         name: () => { return 'Signaler' },
                         icon: () => 'ri-flag-line',
-                        class: () => 'hover:text-red-500',
+                        class: () => 'group-hover:text-red-500',
                         action: () => { console.log('Signaler') }
                     }}),
                 ...(this.commentItems[i].author.userId === this.$store.state.auth.user?.userId && {
                     edit: {
                         name: () => { return 'Éditer' },
                         icon: () => 'ri-edit-line',
-                        class: () => 'hover:text-green-500',
+                        class: () => 'group-hover:text-green-500',
                         action: () => { this.commentItems[i].edit = !this.commentItems[i].edit }
                     }
                 }),
@@ -175,7 +180,7 @@ export default {
         },
         closeComment() {
             this.$emit('update:onComment', false)
-            this.newComment = '{"type":"doc","content":[{"type":"paragraph"}]}'
+            this.newComment = defaultTipTapText
         },
         sendComment() {
             if (this.parentContent.type === 'post') {

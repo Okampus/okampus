@@ -5,6 +5,7 @@
             v-model="body"
             :sendable="true"
             :cancellable="true"
+            :editor-buttons="editorButtons"
             :editor-classes="editorClasses"
             @cancel="$emit('update:show', false) ; body = content ; $emit('cancel')"
             @send="$emit('update:show', false) ; $emit('update:content', body) ; $emit('validate', body)"
@@ -17,9 +18,10 @@
 </template>
 
 <script lang="js">
+import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
 import TipTapRenderer from '@/components/TipTap/TipTapRenderer.vue'
+import { defaultEditorButtons, defaultTipTapText } from '@/utils/tiptap'
 import { watch } from 'vue'
-import TipTapEditor from './TipTapEditor.vue'
 
 export default {
     components: {
@@ -29,7 +31,11 @@ export default {
     props: {
         content: {
             type: String,
-            default: () => '{"type":"doc","content":[{"type":"paragraph"}]}'
+            default: defaultTipTapText
+        },
+        editorButtons: {
+            type: Array,
+            default: defaultEditorButtons
         },
         editorClasses: {
             type: Array,
@@ -43,7 +49,7 @@ export default {
     emits: ['cancel', 'validate', 'update:content', 'update:show'],
     data() {
         return {
-            body: this.content ?? '{"type":"doc","content":[{"type":"paragraph"}]}',
+            body: this.content ?? defaultTipTapText
         }
     },
     mounted() {

@@ -2,8 +2,8 @@
     <editor-content :editor="editor" />
 </template>
 <script>
-import { Editor, EditorContent, generateHTML } from '@tiptap/vue-3'
-import StarterKit from '@tiptap/starter-kit'
+import { EditorContent, generateHTML } from '@tiptap/vue-3'
+import { getEditor } from '@/utils/tiptap'
 
 
 export default {
@@ -19,57 +19,27 @@ export default {
             type: String,
             default: 'json'
         },
+        editorOptions: {
+            type: Object,
+            default: () => ({})
+        },
     },
-    data() {
+    setup (props, ctx) {
         return {
-            editor: null,
+            editor: getEditor({
+                ctx,
+                updateEvent: 'update:modelValue',
+                editorOptions: {
+                    editable: false,
+                    ...props.editorOptions
+                },
+                content: props.content,
+                mode: props.mode,
+            }),
         }
     },
     watch: {
         'content': 'refreshContent'
-    },
-    mounted() {
-        let content
-        if ( this.mode === 'json' ) {
-            try {
-                content = JSON.parse(this.content)
-            } catch {
-                content = {
-                    type: 'doc',
-                    content: [
-                        this.content ?
-                            {
-                                type: 'paragraph',
-                                content: [
-                                    {
-                                        type: 'text',
-                                        text: this.content
-                                    }
-                                ]
-                            } : {
-                                type: 'paragraph'
-                            }
-                    ]
-                }
-            }
-        } else {
-            try {
-                content = generateHTML(this.content)
-            } catch {
-                content = `<p>${this.content}</p>`
-            }
-        }
-
-        this.editor = new Editor({
-            editable: false,
-            content,
-            extensions: [
-                StarterKit,
-            ],
-        })
-    },
-    beforeUnmount() {
-        this.editor.destroy()
     },
     methods: {
         refreshContent() {

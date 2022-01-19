@@ -14,7 +14,7 @@
                         :to="`/post/${comment.post.postId}`"
                         class="text-0 text-lg mr-4 line-clamp-2 "
                     >
-                        {{ extractTextFromJSONBody(JSON.parse(comment.body)) }}
+                        {{ extractTextFromTipTapJSON(JSON.parse(comment.body)) }}
                     </router-link>
                 </div>
                 <div class="flex items-center ri-lg gap-2">
@@ -52,7 +52,7 @@
 
 <script>
 
-import { extractTextFromJSONBody } from '@/utils/extractTextFromHTML'
+import { extractTextFromTipTapJSON } from '@/utils/tiptap'
 export default {
     components: {  },
     props: {
@@ -103,7 +103,7 @@ export default {
                 duration /= division.amount;
             }
         },
-        extractTextFromJSONBody,
+        extractTextFromTipTapJSON,
         sendVote(vote) {
             this.$store.dispatch('users/voteCommentFav', {
                 commentId: this.comment.commentId,

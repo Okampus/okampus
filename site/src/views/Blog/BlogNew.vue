@@ -63,9 +63,7 @@
                     Éditeur d'article
                 </strong>
                 <tip-tap-editor
-                    :char-count="true"
-                    :buttons="editorButtons"
-                    :char-count-limit="100000"
+                    :char-count="100000"
                 />
             </div>
             <!-- Sidebar -->
@@ -166,22 +164,14 @@ import { users } from '@/fake/users'
 import default_avatar from '@/assets/img/default_avatars/user.png'
 import TagsInput from '@/components/Input/TagsInput.vue'
 import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
+
 export default {
     name: 'BlogPostForm',
     components: { TipTapEditor, TagsInput },
     data () {
         return {
             user: users[0],
-            default_avatar,
-            editorButtons: [
-                { action: 'paragraph', icon: 'ri-paragraph ri-lg', content: 'Paragraphe (Ctrl+Alt+0)' },
-                { action: 'bold', icon: 'ri-bold ri-lg', content: 'Gras (Ctrl+B)' },
-                { action: 'italic', icon: 'ri-italic ri-lg', content: 'Italique (Ctrl+I)' },
-                { action: 'strike', icon: 'ri-strikethrough ri-lg', content: 'Barré (Ctrl+Shift+X)' },
-                { action: 'underline', icon: 'ri-underline ri-lg', content: 'Souligné (Ctrl+U)' },
-                { action: 'highlight', icon: 'ri-mark-pen-line ri-lg', content: 'Surligné (Ctrl+Shift+H)' },
-                { action: 'clearMarks', icon: 'ri-format-clear ri-lg', content: 'Enlever les styles' }
-            ]
+            default_avatar
         }
     }
 }

@@ -7,7 +7,7 @@
             <div class="text-1 w-full md:w-9/12 text-3xl font-bold mb-4">
                 {{ post.title }}
             </div>
-            <div class="flex ">
+            <div class="flex">
                 <div class="card w-full">
                     <div class="text-1">
                         <div class="flex justify-between items-center">
@@ -53,7 +53,7 @@
                                 <div class="flex flex-col w-21/24 gap-4">
                                     <tip-tap-editor
                                         v-model="newReply"
-                                        :char-count-limit="240"
+                                        :char-count="240"
                                         class="w-full"
                                         :sendable="true"
                                         :cancellable="true"
@@ -150,8 +150,7 @@ import { required } from '@vuelidate/validators'
 import default_avatar from '@/assets/img/default_avatars/user.png'
 import ErrorWrapper from '@/components/ErrorWrapper.vue'
 import { timeAgo } from '@/utils/timeAgo'
-
-const emptyTipTapValue = '{"type":"doc","content":[{"type":"paragraph"}]}'
+import { defaultTipTapText } from '@/utils/tiptap'
 
 export default {
     components: {
@@ -170,7 +169,7 @@ export default {
         return {
             default_avatar,
             onReply : false,
-            newReply: emptyTipTapValue,
+            newReply: defaultTipTapText,
             errorReply: false,
         }
     },
@@ -217,7 +216,7 @@ export default {
         closeReply() {
             this.errorReply = false
             this.onReply = false
-            this.newReply = emptyTipTapValue
+            this.newReply = defaultTipTapText
         },
         sendReply() {
             this.$store.dispatch('thread/addReply', {postId: this.post.postId, body: this.newReply})

@@ -51,7 +51,7 @@
 
 <script>
 
-import UserCard from '@/components/Card/UserCard.vue'
+import UserCard from '@/components/User/UserCard.vue'
 import SearchBar from './SearchBar.vue'
 
 
