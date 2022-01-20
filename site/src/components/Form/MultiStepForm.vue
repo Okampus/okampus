@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center">
+    <div class="flex items-center mb-4">
         <template
             v-for="(step, i) in steps"
             :key="i"
@@ -43,21 +43,21 @@
 
     <slot :name="steps[currentStep].id" />
 
-    <div class="flex mt-4">
+    <div class="flex justify-between mt-8">
         <button
-            v-if="currentStep != 0"
-            class="button mr-4"
+            class="text-blue-500"
+            :class="[currentStep != 0 ? 'visible': 'invisible']"
             @click.prevent="emitPreviousStep"
         >
-            <p>Previous Step</p>
+            Revenir
         </button>
 
         <button
             v-if="currentStep != steps.length-1"
-            class="button"
+            class="button w-1/3"
             @click.prevent="emitNextStep"
         >
-            <p>Next Step</p>
+            <p>Suivant</p>
         </button>
 
         <button
@@ -65,7 +65,7 @@
             class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 ml-4"
             @click="emitFinish"
         >
-            Finish
+            <p>Envoyer</p>
         </button>
     </div>
 </template>

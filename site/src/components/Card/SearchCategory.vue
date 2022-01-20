@@ -1,8 +1,13 @@
 <template>
     <div v-if="items.length != 0">
         <div class="flex items-center text-lg my-2 gap-2">
-            <i :class="indexType.titleIcon" />
-            {{ indexType.title }}
+            <i
+                :class="indexType.titleIcon"
+                class="ri-sm"
+            />
+            <div class="text-sm text-1">
+                {{ indexType.title }}
+            </div>
             <div
                 v-if="items.length > 5"
                 @click="resultExtended = !resultExtended"
@@ -30,7 +35,7 @@
                     @click="$emit('closeModal')"
                 >
                     <div
-                        class="flex flex-col bg-2 gap-1 rounded-lg p-2"
+                        class="flex flex-col gap-1 rounded-lg p-2"
                     >
                         <div
                             class="flex items-center gap-2"
