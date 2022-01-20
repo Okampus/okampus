@@ -105,13 +105,13 @@ export class ClubsService {
     if (!requester.roles.includes(Role.Admin) && !club.isClubAdmin(requester))
       throw new ForbiddenException('Not a club admin');
 
-    if (club.canActOnRole(requester, createClubMemberDto.role))
-      throw new ForbiddenException('Role too high');
-
     const user = await this.userRepository.findOneOrFail({ userId });
     const existing = await this.clubMemberRepository.count({ club, user });
     if (existing)
       throw new BadRequestException('User is already in club');
+
+    if (!club.canActOnRole(requester, createClubMemberDto.role))
+      throw new ForbiddenException('Role too high');
 
     const clubMember = new ClubMember({ ...createClubMemberDto, club, user });
     await this.clubMemberRepository.persistAndFlush(clubMember);
@@ -130,7 +130,7 @@ export class ClubsService {
     if (!requester.roles.includes(Role.Admin) && !club.isClubAdmin(requester))
       throw new ForbiddenException('Not a club admin');
 
-    if (typeof updateClubMemberDto.role !== 'undefined' && club.canActOnRole(requester, updateClubMemberDto.role))
+    if (typeof updateClubMemberDto.role !== 'undefined' && !club.canActOnRole(requester, updateClubMemberDto.role))
       throw new ForbiddenException('Role too high');
 
     const clubMember = await this.clubMemberRepository.findOneOrFail({ club: { clubId }, user: { userId } }, ['user', 'club', 'club.members', 'club.members.user', 'club.socials', 'club.socials.social']);
