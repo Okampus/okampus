@@ -1,5 +1,5 @@
 <template>
-    <VPopper
+    <Popper
         :offset-distance="'0'"
         :interactive="false"
     >
@@ -21,11 +21,17 @@
                 </div>
             </div>
         </template>
-    </VPopper>
+    </Popper>
 </template>
 
 <script>
+
+import Popper from "vue3-popper"
+
 export default {
+    components: {
+        Popper
+    },
     props:{
         buttons:{
             type:Array,

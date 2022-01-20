@@ -50,12 +50,12 @@
                         class="group text-sm flex gap-1 items-center text-5 transition rounded-lg cursor-pointer py-1 px-2"
                         @click="action.action()"
                     >
-                        <i
-                            :class="`${action.icon()} ${action.class()}`"
-                            class="ri-md"
+                        <font-awesome-icon
+                            :icon="action.icon()"
+                            :class="action.class()"
                         />
                         <p
-                            :class="`${action.class()}`"
+                            :class="action.class()"
                             class="text-xs"
                         >
                             {{ action.name() }}
@@ -157,21 +157,21 @@ export default {
                 ...({
                     favorite: {
                         name: () => { return 'Favori' },
-                        icon: () => this.commentItems[i].favorited ? 'ri-star-fill' : 'ri-star-line',
-                        class: () => this.commentItems[i].favorited ? 'text-yellow-500' : 'group-hover:text-yellow-500',
+                        icon: () => this.commentItems[i].favorited ? 'star' : ['far', 'star'],
+                        class: () => this.commentItems[i].favorited ? 'hover:text-yellow-500 text-yellow-400' : 'hover:text-yellow-400',
                         action: () => { this.commentItems[i].favorited ? this.deleteFavorite(i) : this.addFavorite(i) }
                     },
 
                     flag: {
                         name: () => { return 'Signaler' },
-                        icon: () => 'ri-flag-line',
+                        icon: () => ['far', 'flag'],
                         class: () => 'group-hover:text-red-500',
                         action: () => { console.log('Signaler') }
                     }}),
                 ...(this.commentItems[i].author.userId === this.$store.state.auth.user?.userId && {
                     edit: {
                         name: () => { return 'Éditer' },
-                        icon: () => 'ri-edit-line',
+                        icon: () => 'edit',
                         class: () => 'group-hover:text-green-500',
                         action: () => { this.commentItems[i].edit = !this.commentItems[i].edit }
                     }

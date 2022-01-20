@@ -11,13 +11,17 @@
                 <div class="card w-full">
                     <div class="text-1">
                         <div class="flex justify-between items-center">
-                            <div class="text-2 text-sm flex gap-2">
-                                <div class="flex space-x-2">
-                                    <i class="ri-pencil-line" />
+                            <div class="text-2 text-sm flex gap-4 items-center">
+                                <div class="flex gap-2 items-center">
+                                    <font-awesome-icon
+                                        icon="hourglass-end"
+                                    />
                                     <p>{{ timeAgo(post.createdAt, "long") }}</p>
                                 </div>
-                                <div class="flex space-x-2">
-                                    <i class="ri-history-line" />
+                                <div class="flex gap-2 items-center">
+                                    <font-awesome-icon
+                                        icon="history"
+                                    />
                                     <p>{{ lastUpdatedAt }}</p>
                                 </div>
                             </div>
@@ -136,6 +140,7 @@
 </template>
 
 <script lang="js">
+
 import Reply from '@/components/Thread/PostReply.vue'
 import Tag from '@/components/ColoredTag.vue'
 import Contributors from '@/components/Thread/PostContributor.vue'
@@ -202,6 +207,9 @@ export default {
         if (this.loggedIn) {
             this.fetchPost()
         }
+    },
+    mounted () {
+        this.emitter.on('thread-action', () => this.onReply = false)
     },
     methods: {
         fetchPost() {

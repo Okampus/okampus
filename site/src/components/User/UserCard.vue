@@ -28,10 +28,14 @@
             <router-link
                 to="/users/me"
             >
-                <i class="ri-settings-4-line cursor-pointer" />
+                <font-awesome-icon
+                    icon="cog"
+                    class="cursor-pointer"
+                />
             </router-link>
-            <i
-                class="ri-logout-box-line cursor-pointer"
+            <font-awesome-icon
+                icon="sign-out-alt"
+                class="cursor-pointer"
                 @click="logout"
             />
         </div>

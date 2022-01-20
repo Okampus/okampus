@@ -10,7 +10,7 @@
                 v-for="(btn, i) in editorButtons"
                 :key="i"
             >
-                <v-popper
+                <Popper
                     placement="top"
                     :hover="true"
                 >
@@ -19,8 +19,9 @@
                         class="text-1 text-lg flex items-center icon-button mr-3 raised p-2 outline-none cursor-pointer rounded"
                         @click="actionMap[btn.action].action()"
                     >
-                        <i
-                            :class="btn.icon"
+                        <font-awesome-icon
+                            :icon="btn.icon"
+                            class="mr-1"
                         />
                     </div>
                     <template #content>
@@ -28,7 +29,7 @@
                             {{ btn.content }}
                         </div>
                     </template>
-                </v-popper>
+                </Popper>
             </template>
         </div>
 
@@ -107,20 +108,14 @@
 </template>
 
 <script lang="js">
-// import { useEditor, EditorContent, generateHTML } from '@tiptap/vue-3'
-// import StarterKit from '@tiptap/starter-kit'
-// import Highlight from '@tiptap/extension-highlight'
-// import Typography from '@tiptap/extension-typography'
-// import Placeholder from '@tiptap/extension-placeholder'
-// import Underline from '@tiptap/extension-underline'
-// import CharacterCount from '@tiptap/extension-character-count'
-// import Link from '@tiptap/extension-link'
+import Popper from "vue3-popper"
 import { defaultEditorButtons, defaultTipTapText, getEditor } from '@/utils/tiptap'
 import { EditorContent } from '@tiptap/vue-3'
 
 export default {
     components: {
-        EditorContent
+        EditorContent,
+        Popper
     },
     props: {
         cancellable: {
@@ -174,6 +169,7 @@ export default {
             editor: getEditor({
                 ctx,
                 updateEvent: 'update:modelValue',
+                content: props.modelValue,
                 editorOptions: props.editorOptions,
                 mode: props.mode,
                 placeholder: props.placeholder,

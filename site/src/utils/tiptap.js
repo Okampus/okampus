@@ -34,12 +34,10 @@ export function getEditor({
     content=null,
     charCount=0
 }) {
-    console.log(extensions)
     let onUpdate = () => {}
 
     if (ctx !== {}) {
         onUpdate = function () {
-            console.log("UPDATE")
             ctx.emit(updateEvent, mode === 'json' ? JSON.stringify(this.getJSON()) : this.getHTML())
         }
     }
@@ -89,13 +87,13 @@ export function getEditor({
 }
 
 export const defaultEditorButtons = [
-    { action: 'paragraph', icon: 'ri-paragraph ri-lg', content: 'Paragraphe (Ctrl+Alt+0)' },
-    { action: 'bold', icon: 'ri-bold ri-lg', content: 'Gras (Ctrl+B)' },
-    { action: 'italic', icon: 'ri-italic ri-lg', content: 'Italique (Ctrl+I)' },
-    { action: 'strike', icon: 'ri-strikethrough ri-lg', content: 'Barré (Ctrl+Shift+X)' },
-    { action: 'underline', icon: 'ri-underline ri-lg', content: 'Souligné (Ctrl+U)' },
-    { action: 'highlight', icon: 'ri-mark-pen-line ri-lg', content: 'Surligné (Ctrl+Shift+H)' },
-    { action: 'clearMarks', icon: 'ri-format-clear ri-lg', content: 'Enlever les styles' }
+    { action: 'paragraph', icon: 'paragraph', content: 'Paragraphe (Ctrl+Alt+0)' },
+    { action: 'bold', icon: 'bold', content: 'Gras (Ctrl+B)' },
+    { action: 'italic', icon: 'italic', content: 'Italique (Ctrl+I)' },
+    { action: 'strike', icon: 'strikethrough', content: 'Barré (Ctrl+Shift+X)' },
+    { action: 'underline', icon: 'underline', content: 'Souligné (Ctrl+U)' },
+    { action: 'highlight', icon: 'highlighter', content: 'Surligné (Ctrl+Shift+H)' },
+    { action: 'clearMarks', icon: 'trash', content: 'Enlever les styles' }
 ]
 
 export function extractTextFromHTML (html, space) {

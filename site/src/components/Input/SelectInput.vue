@@ -1,15 +1,21 @@
 <template lang="">
-    <v-popper
+    <Popper
         placement="bottom-start"
         offset-distance="0"
     >
-        <button class="raised select py-2 px-3 flex space-x-3">
+        <button class="raised select py-2 px-3 flex space-x-3 items-center">
             <div :class="modelValue === null || modelValue === undefined ? 'text-placeholder' : 'text-1'">
                 {{ choices[values.indexOf(modelValue)] || buttonName }}
             </div>
             <div class="flex flex-col">
-                <i class="ri-arrow-up-s-line -my-1.5" />
-                <i class="ri-arrow-down-s-line -my-1.5" />
+                <font-awesome-icon
+                    :icon="['fas', 'chevron-up']"
+                    class="text-xs"
+                />
+                <font-awesome-icon
+                    :icon="['fas', 'chevron-down']"
+                    class="text-xs"
+                />
             </div>
         </button>
 
@@ -17,7 +23,7 @@
             <div
                 class="z-10 mt-2 max-w-md overflow-hidden card-0 p-0 py-2"
             >
-                <div class="overflow-y-auto max-h-56">
+                <div class="overflow-y-auto max-h-56 app-scrollbar">
                     <div class="text-placeholder text-lg pl-6 py-1">
                         {{ buttonName }}
                     </div>
@@ -26,13 +32,14 @@
                         :key="i"
                     >
                         <div
-                            class="px-3 pr-16 rounded cursor-pointer flex text-lg"
+                            class="px-3 pr-16 rounded cursor-pointer flex text-lg gap-2 items-center"
                             :class="i === values.indexOf(modelValue) ? 'bg-blue-200 dark:bg-blue-800 font-bold text-1' : 'hover:bg-blue-100 dark:hover:bg-blue-700 text-0'"
                             @click="$emit('update:modelValue', values[i]); close();"
                         >
-                            <div
-                                :class="['h-6 w-6 flex-shrink-0 font-bold',
-                                         {'ri-check-line': i === values.indexOf(modelValue)}]"
+                            <font-awesome-icon
+                                v-if="i === values.indexOf(modelValue)"
+                                icon="check"
+                                class="h-6 w-6 flex-shrink-0 font-bold"
                             />
                             <div>
                                 {{ choice }}
@@ -42,10 +49,17 @@
                 </div>
             </div>
         </template>
-    </v-popper>
+    </Popper>
 </template>
+
 <script>
+
+import Popper from "vue3-popper"
+
 export default {
+    components: {
+        Popper
+    },
     props: {
         buttonName: {
             type: String,

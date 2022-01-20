@@ -1,5 +1,5 @@
 <template>
-    <v-popper
+    <Popper
         placement="bottom-start"
         offset-distance="0"
     >
@@ -18,7 +18,7 @@
                         v-model="search"
                         :input-placeholder="inputPlaceholder"
                     >
-                        <i class="ri-search-line" />
+                        <font-awesome-icon icon="search" />
                     </bottom-border-input>
                 </div>
                 <div class="flex flex-col space-y-1 overflow-scroll">
@@ -60,15 +60,19 @@
                 </div>
             </div>
         </template>
-    </v-popper>
+    </Popper>
 </template>
 
 <script>
 import { nanoid } from 'nanoid'
 import BottomBorderInput from '@/components/Input/BottomBorderInput.vue'
+import Popper from "vue3-popper"
 
 export default {
-    components: { BottomBorderInput },
+    components: {
+        BottomBorderInput,
+        Popper
+    },
     props: {
         buttonName: {
             type: String,

@@ -9,7 +9,10 @@
                 aria-label="Open Menu"
                 @click="$emit('toggle-side-bar')"
             >
-                <i class="ri-menu-line text-2xl" />
+                <font-awesome-icon
+                    icon="bars"
+                    class="text-2xl text-0"
+                />
             </button>
             <div class="hidden 2xl:block brand w-32 h-6 ml-4" />
         </div>
@@ -27,10 +30,13 @@
                 @click="$emit('toggle-login')"
             >
                 <div class="flex items-center">
-                    <p class="text-md hidden md:block mr-2">
-                        SE CONNECTER
+                    <p class="text-md hidden md:block mr-2 uppercase">
+                        Se connecter
                     </p>
-                    <i class="ri-login-circle-line text-xl" />
+                    <font-awesome-icon
+                        icon="sign-in-alt"
+                        class="text-lg text-0"
+                    />
                 </div>
             </button>
         </div>

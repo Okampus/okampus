@@ -11,7 +11,7 @@
                 <h3 class="text-4xl font-bold mb-8 text-0">
                     Résolution de problèmes &amp; collaboration étudiante.
                 </h3>
-                <router-link to="/new-post">
+                <router-link to="/posts/new">
                     <button
                         class="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase"
                     >

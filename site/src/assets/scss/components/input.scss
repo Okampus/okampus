@@ -69,7 +69,7 @@
     & > i {
         @extend %raised;
         @include get-color("text", 2);
-        @apply flex items-center py-1 px-2 rounded-l-md;
+        @apply flex-shrink-0 flex items-center justify-center py-1 px-2 rounded-l-md;
 
         &[focused] {
             @include get-color("text", 0);

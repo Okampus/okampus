@@ -70,7 +70,10 @@
                                 alt="img"
                                 class="rounded-full h-48 w-48"
                             >
-                            <i class="ri-camera-line text-2xl border rounded-full py-1 px-2 bg-2 border-color-2 absolute bottom-0 right-2" />
+                            <font-awesome-icon
+                                icon="camera"
+                                class="text-2xl border rounded-full bg-2 border-color-2 absolute bottom-0 right-2"
+                            />
                         </div>
                     </div>
                 </div>

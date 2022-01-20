@@ -7,28 +7,22 @@
                     :avatar="reply.author?.avatar"
                     mode="vertical"
                 />
-                <!-- <img
-                    :src="reply.author.avatar || default_avatar"
-                    alt="Profile Picture"
-                    class="w-10 h-10 rounded-full mt-2 "
-                >
-                <div class="font-medium text-center text-sm">
-                    {{ reply.author.username }}
-                </div> -->
 
-                <div class="flex gap-2">
-                    <div class="flex gap-1">
-                        <i
-                            class="cursor-pointer"
-                            :class="[reply.currentVote === 1 ? 'ri-thumb-up-fill text-green-600' : 'ri-thumb-up-line hover:text-green-600']"
+                <div class="flex gap-5 items-center">
+                    <div class="flex flex-col gap-1 items-center">
+                        <font-awesome-icon
+                            :icon="['fa', 'check']"
+                            class="text-lg hover:text-blue-500 cursor-pointer"
+                            :class="{'text-green-500': reply.currentVote === 1}"
                             @click="reply.currentVote === 1 ? sendVote(0) : sendVote(1)"
                         />
                         <p>{{ reply.upvotes }}</p>
                     </div>
-                    <div class="flex gap-1">
-                        <i
-                            class="cursor-pointer"
-                            :class="[reply.currentVote === -1 ? 'ri-thumb-down-fill text-red-500' : 'ri-thumb-down-line hover:text-red-500']"
+                    <div class="flex flex-col gap-1 items-center">
+                        <font-awesome-icon
+                            :icon="['fa', 'times']"
+                            class="text-xl hover:text-blue-500 cursor-pointer"
+                            :class="{'text-red-500': reply.currentVote === -1}"
                             @click="reply.currentVote === -1 ? sendVote(0) : sendVote(-1)"
                         />
                         <p>{{ reply.downvotes }}</p>
@@ -44,20 +38,21 @@
                         @validate="updateReply($event)"
                     />
                 </div>
-                <div class="mt-2 flex items-center ri-lg">
+                <div class="mt-2 flex items-center">
                     <div
                         v-for="(action, actionName) in actionsMap"
                         :key="actionName"
                         class="group flex gap-1 items-center text-5 transition rounded-lg cursor-pointer p-2"
                         @click="action.action"
                     >
-                        <i
-                            :class="`${action.icon} ${action.class}`"
-                            class="ri-md"
+                        <font-awesome-icon
+                            :icon="action.icon"
+                            :class="action.class"
                         />
+
                         <p
                             class="text-sm"
-                            :class="`${action.class}`"
+                            :class="action.class"
                         >
                             {{ action.name() }}
                         </p>
@@ -69,29 +64,6 @@
                     :parent-content="{type: 'reply', id: reply.replyId}"
                     :comments="reply.comments"
                 />
-                <!-- <div class="flex space-x-2 my-1">
-                        <div class="px-1 border rounded flex items-center justify-center space-x-1 ri-sm w-10">
-                            <p>0</p> <i class="ri-thumb-up-line text-yellow-400 ri-md" />
-                        </div>
-                        <div class="px-1 border rounded flex items-center justify-center space-x-1 ri-sm w-10">
-                            <p>0</p> <i class="ri-check-line text-green-500 ri-lg" />
-                        </div>
-                        <div class="px-1 border rounded flex items-center justify-center space-x-1 ri-sm w-10">
-                            <p>0</p> <i class="ri-close-line text-red-500 ri-lg" />
-                        </div>
-                        <div class="px-1 border rounded flex items-center justify-center space-x-1 ri-sm w-10">
-                            <p>0</p> <i class="ri-heart-line text-pink-500 ri-md" />
-                        </div>
-                        <div class="px-1 border rounded flex items-center justify-center space-x-1 ri-sm w-10">
-                            <p>0</p> <i class="ri-question-mark text-blue-500 ri-md" />
-                        </div>
-                        <div class="px-1 border rounded flex items-center justify-center space-x-1 ri-sm w-10">
-                            <p>0</p> <p>🤔</p>
-                        </div>
-                        <div class="px-1 border rounded flex items-center justify-center space-x-1 ri-sm">
-                            <p>0</p> <p>😂</p>
-                        </div>
-                    </div> -->
             </div>
         </div>
     </div>
@@ -130,20 +102,20 @@ export default {
             return { ...( {
                 addComment: {
                     name: ()=> 'Commenter',
-                    icon: 'ri-chat-new-line',
+                    icon: ['far', 'comment'],
                     class: "group-hover:text-blue-500",
                     action: () => { this.onComment = true }
                 },
                 report: {
                     name: ()=> 'Signaler',
-                    icon: 'ri-flag-line',
-                    class:"group-hover:text-red-500",
+                    icon: ['far', 'flag'],
+                    class: 'group-hover:text-red-500',
                     action: () => {  }
                 },
                 favorite: {
                     name: ()=> 'Favori',
-                    icon: this.reply.favorited ? 'ri-star-fill' : 'ri-star-line',
-                    class: this.reply.favorited ? 'group-hover:text-blue-500 text-yellow-500' : 'group-hover:text-yellow-500',
+                    icon: this.reply?.favorited ? 'star' : ['far', 'star'],
+                    class: this.reply?.favorited ? 'group-hover:text-yellow-500 text-yellow-400' : 'group-hover:text-yellow-400',
                     action: () => { this.reply.favorited ? this.deleteFavorite() : this.addFavorite() }
                 }
             }),
@@ -151,8 +123,8 @@ export default {
                 edit: {
                     name: () => 'Éditer',
                     condition: () => this.isUser(),
-                    icon: 'ri-edit-line',
-                    class: "group-hover:text-green-500",
+                    icon: 'edit',
+                    class: 'group-hover:text-green-500',
                     action: () => { this.showEditor = true }
                 }})
             }
@@ -168,6 +140,8 @@ export default {
                 this.body = newBody
             }
         )
+
+        this.emitter.on('thread-action', () => this.showEditor = false)
     },
     methods: {
         updateReply(body) {

@@ -17,7 +17,7 @@
                         {{ extractTextFromTipTapJSON(JSON.parse(comment.body)) }}
                     </router-link>
                 </div>
-                <div class="flex items-center ri-lg gap-2">
+                <div class="flex items-center gap-2">
                     <div class="flex gap-2">
                         <div class="flex items-center text-5 hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded">
                             <i

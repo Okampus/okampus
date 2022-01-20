@@ -1,12 +1,13 @@
 <template>
     <div
         :class="[`bg-${tagColor}-100`, `hover:bg-${tagColor}-200`, `text-${tagColor}-700`]"
-        class="bg-opacity-90 whitespace-normal hover:cursor-pointer py-1 px-3 rounded-full flex items-center"
+        class="bg-opacity-90 whitespace-normal hover:cursor-pointer py-1 px-3 rounded-full flex items-center gap-1.5"
     >
         <div>{{ tagName }}</div>
-        <i
+        <font-awesome-icon
             v-if="closable"
-            class="ri-close-line text-lg pt-0.5 pl-1 -mr-1.5 -my-2"
+            class="text-sm"
+            :icon="['fa', 'times']"
             @click="$emit('close')"
         />
     </div>

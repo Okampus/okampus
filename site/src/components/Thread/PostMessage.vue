@@ -3,41 +3,43 @@
         <!-- {{ post }} -->
         <div class="text-1">
             <div class="flex mt-1">
-                <div class="flex flex-col flex-shrink-0 w-3/24 items-center text-lg gap-3 -ml-4">
+                <div class="flex flex-col flex-shrink-0 w-3/24 items-center text-lg gap-2 -ml-4">
                     <UserPreview
                         :username="post.author?.username"
                         :avatar="post.author?.avatar"
-                        img-size="14"
+                        :img-size="14"
                         text-class="text-lg"
                         mode="vertical"
                     />
 
                     <div class="mt-1 flex items-center gap-2">
-                        <i
-                            class="ri-lg hover:text-blue-500 cursor-pointer"
-                            :class="[post.currentVote === 1 ? 'ri-thumb-up-fill text-green-500' : 'ri-thumb-up-line']"
+                        <font-awesome-icon
+                            :icon="['fa', 'thumbs-up']"
+                            class="text-lg hover:text-blue-500 cursor-pointer"
+                            :class="{'text-green-500': post.currentVote === 1}"
                             @click="post.currentVote === 1 ? sendVote(0) : sendVote(1)"
                         />
                         <div class="text-center text-xl">
                             {{ post.upvotes - post.downvotes }}
                         </div>
-                        <i
-                            class="ri-lg hover:text-blue-500 cursor-pointer"
-                            :class="[post.currentVote === -1 ? 'ri-thumb-down-fill text-red-500' : 'ri-thumb-down-line ']"
+                        <font-awesome-icon
+                            :icon="['fa', 'thumbs-down']"
+                            class="symmetry-x text-lg hover:text-blue-500 cursor-pointer"
+                            :class="{'text-red-500': post.currentVote === -1}"
                             @click="post.currentVote === -1 ? sendVote(0) : sendVote(-1)"
                         />
                     </div>
 
-                    <div class="flex flex-col mt-3">
+                    <div class="flex flex-col mt-1">
                         <div
                             v-for="(action, i) in otherActions"
                             :key="i"
                             class="flex items-center text-5 rounded transition cursor-pointer"
                             @click="actionsMap[action].action"
                         >
-                            <i
-                                :class="`${actionsMap[action].icon} ${actionsMap[action].class}`"
-                                class="ri-lg"
+                            <font-awesome-icon
+                                :icon="actionsMap[action].icon"
+                                :class="actionsMap[action].class"
                             />
                         </div>
                     </div>
@@ -52,25 +54,19 @@
                     </div>
 
                     <div class="flex justify-between items-center">
-                        <!-- <UserPreview
-                            :username="post.author.username"
-                            :avatar="post.author.avatar"
-                            :reputation="post.author.reputation"
-                        /> -->
-
-                        <div class="flex items-center ri-lg">
+                        <div class="flex items-center">
                             <div
                                 v-for="(action, i) in actionsBar"
                                 :key="i"
                                 class="group flex gap-1 items-center text-5 transition rounded-lg cursor-pointer p-2"
                                 @click="actionsMap[action].action"
                             >
-                                <i
-                                    :class="`${actionsMap[action].icon} ${actionsMap[action].class}`"
-                                    class="ri-md"
+                                <font-awesome-icon
+                                    :icon="actionsMap[action].icon"
+                                    :class="actionsMap[action].class"
                                 />
                                 <p
-                                    :class="`${actionsMap[action].class}`"
+                                    :class="actionsMap[action].class"
                                     class="text-sm"
                                 >
                                     {{ actionsMap[action].name() }}
@@ -137,26 +133,26 @@ export default {
             return { ...( {
                 reply: {
                     name: () => 'Répondre',
-                    icon: 'ri-reply-fill',
-                    class:"group-hover:text-blue-500",
-                    action:  () => { this.$emit("reply") }
+                    icon: ['far', 'comment-alt'],
+                    class: 'group-hover:text-blue-500',
+                    action:  () => { this.$emit('reply') }
                 },
                 addComment: {
                     name: ()=> 'Commenter',
-                    icon: 'ri-chat-new-line',
-                    class: "group-hover:text-blue-500",
+                    icon: ['far', 'comment'],
+                    class: 'group-hover:text-blue-500',
                     action: () => { this.onComment = true }
                 },
                 report: {
                     name: ()=> 'Signaler',
-                    icon: 'ri-flag-line',
-                    class:"group-hover:text-red-500",
+                    icon: ['far', 'flag'],
+                    class: 'group-hover:text-red-500',
                     action: () => {  }
                 },
                 favorite: {
-                    name: ()=> 'Répondre',
-                    icon: this.post?.favorited ? 'ri-star-fill' : 'ri-star-line',
-                    class: this.post?.favorited ? 'group-hover:text-blue-500 text-yellow-500' : 'group-hover:text-yellow-500',
+                    name: () => 'Favori',
+                    icon: this.post?.favorited ? 'star' : ['far', 'star'],
+                    class: this.post?.favorited ? 'hover:text-yellow-500 text-yellow-400' : 'hover:text-yellow-400',
                     action: () => { this.post?.favorited ? this.deleteFavorite() : this.addFavorite() }
                 }
             }),
@@ -164,8 +160,8 @@ export default {
                 edit: {
                     name: () => 'Éditer',
                     condition: () => this.isUser(),
-                    icon: 'ri-edit-line',
-                    class: "group-hover:text-green-500",
+                    icon: 'edit',
+                    class: 'group-hover:text-green-500',
                     action: () => { this.showEditor = true }
                 }})
             }

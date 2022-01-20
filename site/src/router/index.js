@@ -52,7 +52,7 @@ const routes = [
     },
 
     {
-        path: '/docs/upload',
+        path: '/docs/new',
         component: () => import('@/views/Document/DocumentNew.vue')
     },
 

@@ -47,8 +47,9 @@
                     </p>
                 </div>
                 <div class="flex items-center text-3 h-6">
-                    <i
-                        class="ri-windy-line text-sky-400 mr-2"
+                    <font-awesome-icon
+                        class="text-sky-400 mr-2"
+                        icon="wind"
                     />
                     <p>
                         20 km/h

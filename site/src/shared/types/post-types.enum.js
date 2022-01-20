@@ -1,7 +1,7 @@
 export default [
-    { key: 'question', fr: 'Question', en: 'Question', icon: 'ri-questionnaire-line' },
-    { key: 'suggestion', fr: 'Suggestion', en: 'Suggestion', icon: 'ri-lightbulb-line' },
-    { key: 'problem', fr: 'Problème', en: 'Problem', icon: 'ri-error-warning-line' },
-    { key: 'discussion', fr: 'Discussion', en: 'Discussion', icon: 'ri-discuss-line' },
-    { key: 'other', fr: 'Autre', en: 'Other', icon: 'ri-hashtag-line' },
+    { key: 'question', fr: 'Question', en: 'Question', icon: 'question-circle' },
+    { key: 'suggestion', fr: 'Suggestion', en: 'Suggestion', icon: 'lightbulb' },
+    { key: 'problem', fr: 'Problème', en: 'Problem', icon: 'exclamation-circle' },
+    { key: 'discussion', fr: 'Discussion', en: 'Discussion', icon: 'comments' },
+    { key: 'other', fr: 'Autre', en: 'Other', icon: 'hashtag' },
 ]

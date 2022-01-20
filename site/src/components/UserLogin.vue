@@ -48,7 +48,7 @@
                                     Connexion
                                 </h2>
                                 <form action="javascript:void(0);">
-                                    <!-- <div class="space-y-3 mt-4">
+                                    <div class="space-y-3 mt-4">
                                         <div>
                                             <label
                                                 for="username"
@@ -58,7 +58,6 @@
                                                 v-model="user.username"
                                                 input-name="username"
                                                 input-placeholder="Entrez votre identifiant..."
-                                                :required="true"
                                             >
                                                 <font-awesome-icon
                                                     icon="user-shield"
@@ -76,7 +75,6 @@
                                                 input-name="password"
                                                 input-type="password"
                                                 input-placeholder="Entrez votre mot de passe..."
-                                                :required="true"
                                             >
                                                 <font-awesome-icon
                                                     icon="key"
@@ -84,7 +82,7 @@
                                                 />
                                             </input-with-icon>
                                         </div>
-                                    </div> -->
+                                    </div>
 
                                     <!-- TODO: Error message when login fails -->
                                     <div class="flex flex-col mt-10 space-y-2 items-center justify-center">
@@ -127,7 +125,7 @@ import {
     TransitionChild,
     DialogOverlay,
 } from '@headlessui/vue'
-// import InputWithIcon from '@/components/Input/InputWithIcon.vue'
+import InputWithIcon from '@/components/Input/InputWithIcon.vue'
 import User from '@/models/user'
 import axios from 'axios'
 const API_URL = `${import.meta.env.VITE_API_URL}`
@@ -135,7 +133,7 @@ const API_URL = `${import.meta.env.VITE_API_URL}`
 export default {
     components: {
         TransitionChild,
-        // InputWithIcon,
+        InputWithIcon,
         TransitionRoot,
         Dialog,
         DialogOverlay,

@@ -84,3 +84,7 @@ $brand-url: url("@/assets/img/logos/horizon_brand.png");
     display: block;
     padding-top: 100%; /* initial ratio of 1:1 */
 }
+
+.symmetry-x {
+    transform: scale(-1, 1);
+}

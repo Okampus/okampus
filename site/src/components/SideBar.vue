@@ -22,7 +22,10 @@
                 aria-label="Open Menu"
                 @click="$emit('close-side-bar')"
             >
-                <i class="ri-close-line text-4xl text-0" />
+                <font-awesome-icon
+                    icon="times"
+                    class="text-2xl text-0"
+                />
             </button>
         </div>
 
@@ -35,9 +38,9 @@
                     <ul
                         v-for="[sectionName, sectionLinks] in Object.entries(links)"
                         :key="sectionName"
-                        class="p-2"
+                        class="py-2"
                     >
-                        <p class="hidden 2xl:block text-5 uppercase py-2 pl-4">
+                        <p class="hidden 2xl:block text-5 uppercase pl-4">
                             {{ sectionName }}
                         </p>
                         <template
@@ -70,10 +73,11 @@
                                             mb-1
                                         "
                                     >
-                                        <i
-                                            :class="link.icon"
+                                        <font-awesome-icon
+                                            :icon="link.icon"
                                             class="flex-shrink-0 text-xl"
                                         />
+
                                         <span>{{ link.text }}</span>
                                     </div>
                                 </router-link>
@@ -129,40 +133,40 @@ export default {
             return ({
                 ...( import.meta.env.DEV && {
                     dev: [
-                        { to: '/test', text: 'Page Test', icon: 'ri-test-tube-line' }
+                        { to: '/test', text: 'Page Test', icon: 'vial' }
                     ],
                 }),
+
                 ...({
-                    forum: [
-                        { to: '/', text: 'Accueil', icon: 'ri-home-3-line' },
-                        // TODO: { to: '/info', text: 'Annonces', icon: 'ri-alarm-warning-line' },
-                        { to: '/admin', text: 'Admin', icon: 'ri-pie-chart-box-line' }
+                    admin: [
+                        { to: '/admin', text: 'Dashboard', icon: 'columns' }
                     ],
-                    'docs sharing': [
-                        { to: '/docs', text: 'Documents', icon: 'ri-folder-line' },
-                        { to: '/docs/upload', text: 'Uploader', icon: 'ri-folder-upload-line' }
+                    forum: [
+                        { to: '/posts/new', text: 'Créer un Post', icon: 'question-circle' },
+                        { to: '/posts', text: 'Forum', icon: 'comments' }
+                    ],
+                    'horizon docs': [
+                        { to: '/docs', text: 'Documents', icon: 'folder' },
+                        { to: '/docs/new', text: 'Uploader', icon: 'upload' }
                     ],
                     blog:[
-                        { to: '/blog', text: 'Blog', icon: 'ri-book-open-line' },
-                        { to: '/blog/new', text: 'Écrire un article', icon: 'ri-quill-pen-line' },
-                        // { to: '/blog/admin', text: 'Admin (Blog)', icon: 'ri-pie-chart-box-line' }
-                    ],
-                    post: [
-                        { to: '/posts/new', text: 'Créer un Post', icon: 'ri-chat-new-line' },
-                        { to: '/posts', text: 'Tous les Posts', icon: 'ri-chat-check-line' }
+                        { to: '/blog', text: 'Pause Café', icon: 'newspaper' },
+                        { to: '/blog/new', text: 'Écrire un article', icon: 'pen-alt' },
+                        // { to: '/blog/admin', text: 'Admin (Blog)', icon: 'columns' }
                     ],
                 }),
+
                 ...(this.loggedIn
                     ? {
                         'communauté': [
-                            { to: '/users/', text: 'Utilisateurs', icon: 'ri-user-search-line' },
-                            { to: '/users/me', text: 'Mon compte', icon: 'ri-account-box-line' },
-                            { to: '/users/me/favorites', text: 'Mes favoris', icon: 'ri-star-fill' },
+                            { to: '/users/', text: 'Utilisateurs', icon: 'users' },
+                            { to: '/users/me', text: 'Mon compte', icon: 'user-cog' },
+                            { to: '/users/me/favorites', text: 'Mes favoris', icon: 'crown' },
                         ]
                     }
                     : {
                         'communauté': [
-                            { to: '/users/', text: 'Utilisateurs', icon: 'ri-user-search-line' },
+                            { to: '/users/', text: 'Utilisateurs', icon: 'users' },
                         ]
                     })
             })

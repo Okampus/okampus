@@ -34,7 +34,10 @@
                         </div>
                         <div class="flex gap-4 items-center">
                             <div class="items-center flex gap-1 text-1">
-                                <i class="ri-chat-1-line ri-lg" />
+                                <font-awesome-icon
+                                    icon="comment"
+                                    class="mr-1"
+                                />
                                 <a
                                     class="hover:underline"
                                     href="#comments"
@@ -42,11 +45,17 @@
                                     3 comments</a>
                             </div>
                             <div class="items-center flex gap-1 text-base text-1">
-                                <i class="ri-history-line ri-lg" />
+                                <font-awesome-icon
+                                    icon="hourglass-end"
+                                    class="mr-1"
+                                />
                                 <DatePreview :date-string="article.date" />
                             </div>
                             <div class="items-center flex gap-1 text-2">
-                                <i class="ri-timer-flash-line ri-lg" />
+                                <font-awesome-icon
+                                    icon="stopwatch"
+                                    class="mr-1"
+                                />
                                 <p>Lecture en {{ readingTime }} min</p>
                             </div>
                         </div>
@@ -59,7 +68,10 @@
                     class="items-center flex text-base"
                 >
                     <div class="items-center flex gap-2 text-0 mr-4 text-lg">
-                        <i class="ri-price-tag-3-line" />
+                        <font-awesome-icon
+                            icon="tags"
+                            class="mr-1"
+                        />
                         <p class="text-base">
                             {{ article.tags.length }} Tags
                         </p>
@@ -82,24 +94,35 @@
                 <p class="underline text-xl">
                     Partage cet article
                 </p>
-                <i class="ri-share-forward-line ri-2xl" />
-                <a class="flex items-center space-x-2 text-white bg-orange-600 rounded-md px-3 py-1 raised">
-                    <i class="ri-reddit-fill ri-lg" />
+                <font-awesome-icon
+                    icon="share-square"
+                    class="mr-1"
+                />
+                <a class="flex items-center gap-2 text-white bg-orange-600 rounded-md px-3 py-1 raised">
+                    <font-awesome-icon
+                        :icon="['fab', 'reddit']"
+                    />
                     <p>Reddit</p>
                 </a>
-                <a class="flex items-center space-x-2 text-white bg-slate-800 rounded-md px-3 py-1 raised">
-                    <i class="ri-discord-fill ri-lg" />
+                <a class="flex items-center gap-2 text-white bg-slate-800 rounded-md px-3 py-1 raised">
+                    <font-awesome-icon
+                        :icon="['fab', 'discord']"
+                    />
                     <p>Discord</p>
                 </a>
-                <a class="flex items-center space-x-2 text-white bg-blue-900 rounded-md px-3 py-1 raised">
-                    <i class="ri-facebook-box-fill ri-lg" />
+                <a class="flex items-center gap-2 text-white bg-blue-900 rounded-md px-3 py-1 raised">
+                    <font-awesome-icon
+                        :icon="['fab', 'facebook']"
+                    />
                     <p>Facebook</p>
                 </a>
                 <a
-                    class="flex items-center space-x-2 text-white bg-2 rounded-md px-3 py-1 raised"
+                    class="flex items-center gap-2 text-white bg-2 rounded-md px-3 py-1 raised"
                     style="background-color: #0E76A8;"
                 >
-                    <i class="ri-linkedin-box-fill ri-xl" />
+                    <font-awesome-icon
+                        :icon="['fab', 'linkedin']"
+                    />
                     <p>LinkedIn</p>
                 </a>
             </div>
@@ -255,9 +278,12 @@
                                         <p class="uppercase">
                                             {{ comment.replies.length }} {{ comment.replies.length > 1 ? 'réponses' : 'réponse' }}
                                         </p>
-                                        <i :class="open ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line' " />
+                                        <font-awesome-icon
+                                            :icon="open ? ['fas', 'chevron-up'] : ['fas', 'chevron-down']"
+                                        />
                                     </div>
                                 </DisclosureButton>
+
                                 <DisclosurePanel>
                                     <div class="mt-2 flex flex-col gap-2">
                                         <div

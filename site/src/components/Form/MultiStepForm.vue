@@ -15,11 +15,10 @@
                     />
                     <div
                         class="rounded-full transition duration-500 ease-in-out h-12 w-12 border-2 flex items-center justify-center"
-                        :class="i <= currentStep ? 'border-sky-600' : 'border-gray-500'"
+                        :class="i <= currentStep ? 'border-sky-600 text-sky-600' : 'border-gray-500 text-gray-500'"
                     >
-                        <i
-                            class="ri-lg"
-                            :class="step.icon"
+                        <font-awesome-icon
+                            :icon="['fas', step.icon]"
                         />
                     </div>
                     <div
@@ -64,7 +63,7 @@
         <button
             v-if="currentStep === steps.length-1"
             class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 ml-4"
-            @click="emitForm"
+            @click="emitFinish"
         >
             Finish
         </button>
@@ -121,7 +120,7 @@ export default {
         emitPreviousStep(){
             this.$emit('previous-step')
         },
-        emitForm() {
+        emitFinish() {
             this.$emit('finish')
         },
     },

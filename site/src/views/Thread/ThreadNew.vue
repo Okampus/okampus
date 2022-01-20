@@ -32,7 +32,7 @@
                 </div>
                 <div class="label-desc">
                     Quel
-                    <v-popper :hover="true">
+                    <Popper :hover="true">
                         <u
                             class="text-blue-400 hover:text-orange-400 cursor-help"
                         >
@@ -52,7 +52,7 @@
                                 </ul>
                             </div>
                         </template>
-                    </v-popper>
+                    </Popper>
                     de Post voulez-vous créer ?
                 </div>
                 <select-input
@@ -135,6 +135,8 @@
 </template>
 
 <script lang="js">
+import Popper from "vue3-popper"
+
 import SelectInput from '@/components/Input/SelectInput.vue'
 import ErrorWrapper from '@/components/ErrorWrapper.vue'
 import useVuelidate from '@vuelidate/core'
@@ -151,7 +153,9 @@ export default {
     components: {
         TagsInput,
         ErrorWrapper,
-        TipTapEditor, SelectInput
+        TipTapEditor,
+        Popper,
+        SelectInput
     },
     inheritAttrs: false,
     props: {
@@ -227,9 +231,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-.v-popper {
-  @apply inline-block;
-}
-</style>
