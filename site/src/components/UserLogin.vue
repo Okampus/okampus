@@ -48,7 +48,7 @@
                                     Connexion
                                 </h2>
                                 <form action="javascript:void(0);">
-                                    <div class="space-y-3 mt-4">
+                                    <!-- <div class="space-y-3 mt-4">
                                         <div>
                                             <label
                                                 for="username"
@@ -60,7 +60,10 @@
                                                 input-placeholder="Entrez votre identifiant..."
                                                 :required="true"
                                             >
-                                                <i class="ri-shield-user-fill ri-xl" />
+                                                <font-awesome-icon
+                                                    icon="user-shield"
+                                                    class="ml-0.5"
+                                                />
                                             </input-with-icon>
                                         </div>
                                         <div>
@@ -75,10 +78,13 @@
                                                 input-placeholder="Entrez votre mot de passe..."
                                                 :required="true"
                                             >
-                                                <i class="ri-key-2-fill ri-xl" />
+                                                <font-awesome-icon
+                                                    icon="key"
+                                                    class="ml-0.5"
+                                                />
                                             </input-with-icon>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <!-- TODO: Error message when login fails -->
                                     <div class="flex flex-col mt-10 space-y-2 items-center justify-center">
@@ -90,6 +96,18 @@
                                             @click="handleLogin"
                                         >
                                             CONNEXION HORIZON
+                                        </button>
+                                    </div>
+
+                                    <div class="flex flex-col mt-10 space-y-2 items-center justify-center">
+                                        <button
+                                            type="submit"
+                                            class="w-full py-3 bg-blue-500 rounded-sm text-sm
+                    font-medium text-white uppercase
+                    focus:outline-none hover:bg-blue-400 hover:shadow-none"
+                                            @click="myEfreiLogin"
+                                        >
+                                            Connexion myEfrei
                                         </button>
                                     </div>
                                 </form>
@@ -109,13 +127,15 @@ import {
     TransitionChild,
     DialogOverlay,
 } from '@headlessui/vue'
-import InputWithIcon from '@/components/Input/InputWithIcon.vue'
+// import InputWithIcon from '@/components/Input/InputWithIcon.vue'
 import User from '@/models/user'
+import axios from 'axios'
+const API_URL = `${import.meta.env.VITE_API_URL}`
 
 export default {
     components: {
         TransitionChild,
-        InputWithIcon,
+        // InputWithIcon,
         TransitionRoot,
         Dialog,
         DialogOverlay,
@@ -133,6 +153,9 @@ export default {
         }
     },
     methods: {
+        myEfreiLogin() {
+            axios.post(`${API_URL}/auth/myefrei`, { withCredentials: true })
+        },
         handleLogin () {
             this.loading = true
 
