@@ -65,7 +65,7 @@ export const auth = {
         logoutSuccess (state) {
             state.status.loggedIn = false
             // TODO: Redirect any user-restricted route to '/'
-            if (router.currentRoute.value.fullPath === `/users/${state.user.userId}`) {
+            if (router.currentRoute.value.fullPath === `/users/${state.user.userId}` || router.currentRoute.value.fullPath === `/users/me`) {
                 router.push('/')
             }
             state.user = null

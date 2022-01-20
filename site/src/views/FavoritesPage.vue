@@ -16,7 +16,7 @@
         text-0
         p-0
         w-full
-        sm:w-11/12
+        md:w-11/12
         mx-auto
       "
     >

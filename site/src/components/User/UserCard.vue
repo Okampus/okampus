@@ -2,16 +2,12 @@
     <div class="flex space-x-4 items-center">
         <div class="relative w-11 h-11">
             <div>
-                <img
-                    class="rounded-2xl"
+                <AvatarImage
+                    :size="11"
                     :src="avatar"
                     :alt="username"
-                >
+                />
             </div>
-            <!-- <span
-                class="w-1/3 h-1/3 absolute bottom-0 right-0 rounded-full border border-white"
-                :style="{backgroundColor: status}"
-            /> -->
         </div>
         <div class="flex flex-col min-w-0">
             <router-link
@@ -43,8 +39,9 @@
 </template>
 
 <script lang="js">
-import default_avatar from '@/assets/img/default_avatars/user.png'
+import AvatarImage from '@/components/AvatarImage.vue'
 export default {
+    components: { AvatarImage },
     props: {
         username: {
             type: String,
@@ -56,17 +53,17 @@ export default {
         },
         avatar: {
             type: String,
-            default: default_avatar
+            default: ''
         },
         status: {
             type: String,
-            default: '#44ef44'
+            default: "#44ef44"
         }
     },
     methods: {
-        logout () {
-            this.emitter.emit('logout')
-            this.$store.dispatch('auth/logout')
+        logout() {
+            this.emitter.emit("logout");
+            this.$store.dispatch("auth/logout");
         }
     }
 }

@@ -15,18 +15,16 @@
         mt-32
         mb-10
         text-0
-        sm:shadow-md
+        md:w-9/12
         sm:rounded-lg
         p-0
         bg-1
         w-full
-        sm:w-11/12
         mx-auto
-        sm:flex
       "
         >
             <div class="mt-2 flex-shrink-0">
-                <ul class="py-2 flex sm:block">
+                <ul class="py-2 flex">
                     <template
                         v-for="link of links"
                         :key="link"
@@ -36,15 +34,15 @@
                 h-12
                 py-2
                 pl-8
-                sm:pr-20
                 flex
                 w-full
                 space-x-2
                 items-center
                 bg-mouse-brand
                 cursor-pointer
+                hover:text-blue-500
               "
-                            :class="{ active: currentComponent === link.component }"
+                            :class=" currentComponent === link.component ? 'text-blue-500' : ''"
                             @click="currentComponent = link.component"
                         >
                             <i
@@ -57,7 +55,7 @@
                 </ul>
             </div>
 
-            <div class="sm:border-l-2 sm:border-0 border-t-2 border-footer w-full">
+            <div class=" border-t-2 border-color-2-alt w-full">
                 <component :is="currentComponent" />
             </div>
         </div>
@@ -68,14 +66,16 @@
 import Profile from '@/components/Settings/UserProfile.vue'
 import BadgeSettings from '@/components/Settings/BadgeSettings.vue'
 import ExternalAccount from '@/components/Settings/ExternalAccount.vue'
-import AssociationSettings from '@/components/Settings/AssociationSettings.vue'
+import Associations from '@/components/Settings/AssociationSettings.vue'
 import AccessibilitySettings from '@/components/Settings/AccessibilitySettings.vue'
+import LoadingComponentVue from './LoadingComponent.vue'
 export default {
     components: {
         Profile,
         BadgeSettings,
         ExternalAccount,
-        AssociationSettings
+        Associations,
+        LoadingComponentVue
     },
     inheritAttrs: false,
     data () {
@@ -83,10 +83,10 @@ export default {
             currentComponent: 'Profile',
             links: [
                 { text: 'Profil', icon: 'ri-profile-line', component: 'Profile' },
-                { text: 'Intégration Discord', icon: 'ri-discord-fill', component: 'Discord' },
+                { text: 'Discord', icon: 'ri-discord-fill', component: 'Settings' },
+                { text: 'Associations', icon: 'ri-team-fill', component: 'Associations' },
+
                 { text: 'Badges', icon: 'ri-medal-line', component: BadgeSettings },
-                { text: 'Compte lié', icon: 'ri-links-line', component: ExternalAccount },
-                { text: 'Assos', icon: 'ri-team-fill', component: AssociationSettings },
                 { text: 'Accessibilité', icon: 'ri-hand-heart-fill', component: AccessibilitySettings }
                 // TODO: { text: "Rôles Ef'Réussite", icon: 'ri-book-mark-line', component: 'Roles' }
             ],

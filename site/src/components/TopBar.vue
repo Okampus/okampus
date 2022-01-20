@@ -49,6 +49,7 @@
                 <user-card
                     :username="user.username"
                     :email="user.email"
+                    :avatar="user.avatar"
                 />
             </div>
         </div>

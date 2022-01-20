@@ -3,8 +3,16 @@
         placement="bottom-start"
         offset-distance="0"
     >
-        <button class="raised select py-2 px-3 flex space-x-3 items-center">
-            <div :class="modelValue === null || modelValue === undefined ? 'text-placeholder' : 'text-1'">
+        <button
+
+            class="raised select py-2 px-3 flex space-x-3"
+        >
+            <div
+                ref="select"
+                class="overflow-hidden whitespace-nowrap"
+                :class="(modelValue === null || modelValue === undefined ? 'text-placeholder' : 'text-1')"
+                :style="maxContentWidth ? `width: ${max}px` : ''"
+            >
                 {{ choices[values.indexOf(modelValue)] || buttonName }}
             </div>
             <div class="flex flex-col">
@@ -56,6 +64,7 @@
 
 import Popper from "vue3-popper"
 
+import { getTextWidthInElement } from '@/utils/getTextWidth'
 export default {
     components: {
         Popper
@@ -66,6 +75,10 @@ export default {
             default: 'Choix'
         },
         required: {
+            type: Boolean,
+            default: false
+        },
+        maxContentWidth: {
             type: Boolean,
             default: false
         },
@@ -87,6 +100,12 @@ export default {
         }
     },
     emits: ['update:modelValue'],
+    data() {
+        return {
+            max:0
+        }
+    },
+
     computed: {
         attributes() {
             let attributes = {}
@@ -98,6 +117,18 @@ export default {
             }
             return attributes
         }
-    }
+    },
+    mounted() {
+        for(const choice of this.choices){
+            const width = this.getTextWidthInElement(choice,this.$refs.select.$el)
+            if (width>this.max){
+                this.max = width
+            }
+        }
+        this.max = Math.ceil(this.max)
+    },
+    methods: {
+        getTextWidthInElement
+    },
 }
 </script>

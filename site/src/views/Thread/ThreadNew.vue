@@ -117,7 +117,7 @@
                 />
             </div>
 
-            <div>
+            <div class="flex">
                 <!-- TODO: message in case post validation doesn't work, refactor error warnings, redirect -->
                 <button
                     class="button"
@@ -127,6 +127,24 @@
                         Soumettre le Post pour validation
                     </p>
                 </button>
+                <div
+                    v-if="submitSuccess===1"
+                    class="text-green-500 bg-green-500 bg-opacity-25 font-bold p-2 rounded-md my-auto ml-4 flex gap-2"
+                >
+                    <i class="ri-check-fill my-auto" />
+                    <div class="my-auto">
+                        Création réussie
+                    </div>
+                </div>
+                <div
+                    v-else-if="submitSuccess===-1"
+                    class="text-red-500 bg-red-500 bg-opacity-25 font-bold p-2 rounded-md my-auto ml-4 flex gap-2"
+                >
+                    <i class="ri-close-fill my-auto" />
+                    <div class="my-auto">
+                        Erreur lors de l'enregistrement du post
+                    </div>
+                </div>
             </div>
 
             <!-- TODO: add second panel (dos and don'ts of a good post) -->
@@ -203,6 +221,7 @@ export default {
         return {
             postTypesEnum,
             customTagError: null,
+            submitSuccess: 0
         }
     },
     methods: {
@@ -216,8 +235,10 @@ export default {
             }
         },
         submit () {
+            this.submitSuccess = 1
             if (this.v$.$invalid) {
                 this.v$.$touch()
+                this.submitSuccess = -1
                 return
             }
 
@@ -226,6 +247,8 @@ export default {
                 type: this.state.type,
                 body: this.state.body,
                 tags: this.state.tags
+            }).then().catch(()=> {
+                this.submitSuccess = -1
             })
         }
     }

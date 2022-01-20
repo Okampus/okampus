@@ -1,6 +1,6 @@
 import UserService from '@/services/users.service';
 
-const initialState = { users: null, socialsAccounts: [], socials:[], userClubs:[], favorites: [] }
+const initialState = { users: null, socialsAccounts: [], socials:[], userClubs:[], favorites: [], clubMembers: [] }
 
 export const users = {
     namespaced: true,
@@ -244,9 +244,9 @@ export const users = {
         },
         deleteFavoriteComment({ commit }, commentId) {
             return UserService.deleteFavoriteComment(commentId).then(
-                worked => {
+                success => {
                     commit('deleteFavoriteCommentSuccess',commentId)
-                    return Promise.resolve(worked)
+                    return Promise.resolve(success)
                 },
                 error => {
                     console.log(error)
@@ -254,6 +254,78 @@ export const users = {
                 }
             )
         },
+        getClubMembers({commit}, clubId) {
+            return UserService.getClubMembers(clubId).then(
+                success => {
+                    commit('fetchClubMembersSuccess',success)
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        addClubMember({commit}, {clubId,userId}) {
+            return UserService.addClubMember({clubId,userId}).then(
+                success => {
+                    commit('addClubMemberSuccess',success)
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        deleteClubMember({commit}, {clubId,userId}) {
+            return UserService.deleteClubMember({clubId,userId}).then(
+                success => {
+                    commit('deleteClubMemberSuccess',{userId,clubId})
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        updateClubMember({commit}, {clubId,userId,role}){
+            return UserService.updateMemberRole({clubId,userId,role}).then(
+                success => {
+                    commit('updateRoleSuccess',success)
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        leaveClub({commit}, {clubId,userId}) {
+            return UserService.deleteClubMember({clubId,userId}).then(
+                success => {
+                    commit('leaveClubSuccess',clubId)
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        getUsers({commit}){
+            return UserService.getUsers().then(
+                success => {
+                    commit('getUsersSuccess',success)
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        }
 
     },
     mutations: {
@@ -388,5 +460,33 @@ export const users = {
                 return a
             } )
         },
+        fetchClubMembersSuccess(state,success){
+            state.clubMembers = success
+        },
+        addClubMemberSuccess(state,success){
+            state.userClubs = [...state.userClubs, success]
+        },
+        deleteClubMemberSuccess(state,{clubId,userId}){
+            state.clubMembers = state.clubMembers.filter((a) => {
+                if (a.user.userId != userId || a.club.clubId != clubId){
+                    return a
+                }
+            } )
+        },
+        updateRoleSuccess(state,success){
+            state.clubMembers = state.clubMembers.map((a)=>
+                a.clubMemberId === success.clubMemberId ? success : a
+            )
+        },
+        leaveClubSuccess(state,clubId){
+            state.userClubs = state.userClubs.filter((a)=>{
+                if(a.club.clubId !== clubId ){
+                    return a
+                }
+            })
+        },
+        getUsersSuccess(state,success){
+            state.users = success
+        }
     }
 }

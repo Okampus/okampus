@@ -39,6 +39,7 @@ $brand-url: url("@/assets/img/logos/horizon_brand.png");
 @include tailwind-color("divide", "divide-color", 1);
 @include tailwind-color("from","", 2);
 @include tailwind-color("to","", 2);
+@include tailwind-color("border","border-color", 2);
 
 .border-footer {
     @apply border-gray-300 dark:border-gray-400;

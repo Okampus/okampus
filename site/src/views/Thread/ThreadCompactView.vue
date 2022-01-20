@@ -3,12 +3,12 @@
         Ce post n'existe pas.
     </div>
     <div v-else>
-        <div class="w-21/24 mx-auto my-6 flex flex-col">
-            <div class="text-1 w-full md:w-9/12 text-3xl font-bold mb-4">
+        <div class="md:w-21/24 mx-auto my-6 flex flex-col">
+            <div class="ml-4 md:ml-0 text-1 w-full md:w-9/12 text-3xl font-bold mb-4">
                 {{ post.title }}
             </div>
-            <div class="flex">
-                <div class="card w-full">
+            <div class="flex ">
+                <div class=" rounded-none md:rounded-md card w-full">
                     <div class="text-1">
                         <div class="flex justify-between items-center">
                             <div class="text-2 text-sm flex gap-4 items-center">

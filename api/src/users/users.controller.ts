@@ -11,6 +11,8 @@ import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
+import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
+import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../shared/modules/search/search.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserSearchService } from './user-search.service';
@@ -40,6 +42,13 @@ export class UsersController {
     if (full)
       return await this.userSearchService.searchAndPopulate(query);
     return await this.userSearchService.search(query);
+  }
+
+  @Get()
+  public async async(@Query() query: PaginateDto): Promise<PaginatedResult<User>> {
+    if (query.page)
+      return await this.usersService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
+    return await this.usersService.findAll();
   }
 
   @Patch('update')

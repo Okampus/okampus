@@ -1,7 +1,7 @@
 <template>
     <div class="m-4 flex bg-1 rounded-md">
-        <div class="border-dashed border-l-2 dark:border-opacity-25 ml-2 " />
-        <div class="flex border-dashed border-l-2 dark:border-opacity-25 flex-col  justify-center object-cover ml-2 px-8">
+        <div class="border-dashed border-l-2 border-color-2-alt ml-2 " />
+        <div class="flex border-dashed border-l-2 border-color-2-alt flex-col  justify-center object-cover ml-2 px-8">
             <i class="ri-chat-4-line text-2 text-4xl text-center hidden md:block" />
         </div>
         <div class="flex w-full">
@@ -11,7 +11,7 @@
                         Publié par {{ comment.author.username }} {{ dateSince(new Date(comment.createdAt)) }}
                     </p>
                     <router-link
-                        :to="`/post/${comment.post.postId}`"
+                        :to="`/posts/${comment.post.postId}`"
                         class="text-0 text-lg mr-4 line-clamp-2 "
                     >
                         {{ extractTextFromTipTapJSON(JSON.parse(comment.body)) }}

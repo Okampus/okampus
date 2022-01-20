@@ -1,11 +1,9 @@
 <template>
-    {{ }}
-    <div
-        v-if="user===undefined || user===null || clubs === undefined || clubs === null || socials === undefined || socials === null || userClubs === undefined || userClubs === null "
-        :class="$store.state.users "
-    >
-        Loading
-    </div>
+    <LoadingComponent
+        v-if=" clubs === undefined || clubs === null || socials === undefined || socials === null || userClubs === undefined || userClubs === null "
+        :class="$store.state.users"
+        background="bg-1"
+    />
     <div
         v-else
         class="px-4 sm:px-8 py-4 text-2"
@@ -19,124 +17,80 @@
         <div>
             <div>
                 <div class="flex mb-4">
-                    <div class="mr-6 w-full">
-                        <div class="flex mb-4">
-                            <div class="w-1/2">
-                                <div
-                                    for="lastname"
-                                    class="text-lg"
+                    <div class="flex mr-6 w-full">
+                        <div class="flex flex-col w-fit mr-8 mb-4">
+                            <div class="relative mx-auto mb-2">
+                                <avatar-image
+                                    :src="user.avatar"
+                                    :alt="user.username + ' profile image'"
+                                    :size="32"
+                                />
+                                <button
+                                    class="absolute md:block hidden bottom-0 left-24 "
+                                    @click="showImage()"
                                 >
-                                    Prénom
-                                </div>
+                                    <i class="ri-camera-line text-2xl absolute bottom-0 rounded-full border px-1 bg-2 border-color-2" />
+                                </button>
+                            </div>
+                            <div class="flex mx-auto justify-between">
                                 <div
-
-                                    class="w-full bg-1 capitalize"
+                                    class="w-full bg-1 mr-2 capitalize whitespace-nowrap"
                                 >
                                     {{ user.username }}
                                 </div>
-                            </div>
-                            <div class="ml-2 w-1/2">
                                 <div
-                                    for="lastname"
-                                    class="text-lg"
-                                >
-                                    Nom
-                                </div>
-                                <div
-
-                                    class="w-full bg-1 uppercase"
+                                    class="w-full bg-1 uppercase whitespace-nowrap"
                                 >
                                     {{ user.username }}
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col">
+                        <div class="flex w-full flex-col">
                             <label
                                 for="description"
                                 class="text-lg"
                             >Description</label>
                             <textarea
-                                id="description"
                                 v-model="user.description"
                                 name="description"
-                                class="input"
+                                class="input resize-none"
+                                rows="5"
                             />
                         </div>
                     </div>
                     <div class="flex-shrink-0">
                         <div class="relative">
-                            <img
-                                :src="user.avatar ? user.avatar : default_avatar"
-                                alt="img"
-                                class="rounded-full h-48 w-48"
-                            >
-                            <font-awesome-icon
-                                icon="camera"
-                                class="text-2xl border rounded-full bg-2 border-color-2 absolute bottom-0 right-2"
+                            <avatar-image
+                                :src="user.avatar"
+                                :alt="user.username + ' profile image'"
+                                :size="48"
                             />
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <div class="text-lg">
-                        Associations
-                    </div>
-                    <div v-if="userClubs.length === 0">
-                        Vous n'avez pas encore d'Association
-                    </div>
-                    <div
-                        v-else
-                        class="flex"
-                    >
-                        <div class="flex flex-col">
-                            <div
-                                v-for="(club, idx) in userClubs"
-                                :key="idx"
-                                class="flex mb-2 items-center"
+                            <button
+                                class="absolute bottom-0 right-2 "
+                                @click="showEditor"
                             >
-                                <div class="mr-2">
-                                    <SelectInput
-                                        v-model="club.club"
-                                        button-name="Association"
-                                        :choices="clubs.map(a=>a.name)"
-                                        :model-value="clubs.indexOf(clubs.find((a)=> a.clubId === club.club.clubId))"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col">
-                            <div
-                                v-for="(club, idx) in userClubs"
-                                :key="idx"
-                                class="flex mb-2 items-center"
-                            >
-                                <div class="ml-2">
-                                    <SelectInput
-                                        v-model="club.role"
-                                        button-name="Role"
-                                        :choices="Object.keys(roles)"
-                                        :model-value="Object.keys(roles).indexOf(Object.keys(roles).find((role) => roles[role] === club.role))"
-                                    />
-                                </div>
-                                <button
-                                    class="text-1 text-xl red-500 h-8 w-8 my-auto"
-                                    @click="rmLineClub(idx)"
-                                >
-                                    <i class="ri-close-line" />
-                                </button>
-                            </div>
+                                <font-awesome-icon
+                                    icon="camera"
+                                    class="text-2xl border rounded-full bg-2 border-color-2 absolute bottom-0 right-2"
+                                />
+                            </button>
                         </div>
                     </div>
-                    <button
-                        class="button my-2"
-                        @click="addLineClub()"
-                    >
-                        <p>Ajouter une association</p>
-                    </button>
                 </div>
                 <div class="mb-4 ">
-                    <div class="text-lg">
-                        Comptes Externes
+                    <div class="flex">
+                        <div class="text-lg">
+                            Comptes Externes
+                        </div>
+                        <button
+                            class="text-blue-500 ml-4 text-sm flex my-auto"
+                            @click="addLineAccount()"
+                        >
+                            <i class="ri-add-fill" />
+                            <div>
+                                Ajouter un compte
+                            </div>
+                        </button>
                     </div>
                     <div v-if="socialsAccounts.length === 0">
                         Vous n'avez pas encore lié de compte externe
@@ -147,7 +101,7 @@
                             <div
                                 v-for="(social, idx) in socialsAccounts"
                                 :key="idx"
-                                class="flex sm:mb-2 items-center mb-8"
+                                class="flex lg:mb-2 items-center mb-8"
                             >
                                 <div class=" ">
                                     <div class="flex">
@@ -158,17 +112,19 @@
                                         />
                                         <SelectInput
                                             v-model="social.social"
+
+                                            :max-content-width="true"
                                             :choices="socials.map(sos=> sos.name)"
                                             :model-value="socials.indexOf(socials.find((a)=> a.socialId === social.social.socialId))"
                                         />
                                         <button
-                                            class="text-1 block sm:hidden text-xl my-auto red-500 h-8 w-8"
+                                            class="text-1 block lg:hidden text-xl my-auto red-500 h-8 w-8 "
                                             @click="rmLineAccount(idx)"
                                         >
                                             <i class="ri-close-line" />
                                         </button>
                                     </div>
-                                    <div class="flex flex-col sm:hidden">
+                                    <div class="flex flex-col lg:hidden">
                                         <input
                                             v-model="social.pseudo"
                                             class="input mt-2"
@@ -183,7 +139,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="hidden sm:flex flex-col">
+                        <div class="hidden lg:flex flex-col">
                             <div
                                 v-for="(social, idx) in socialsAccounts"
                                 :key="idx"
@@ -196,7 +152,7 @@
                                 >
                             </div>
                         </div>
-                        <div class="hidden sm:flex flex-col">
+                        <div class="hidden lg:flex flex-col">
                             <div
                                 v-for="(social, idx) in socialsAccounts"
                                 :key="idx"
@@ -219,22 +175,46 @@
                         </div>
                     </div>
                 </div>
-
-                <button
-                    class="
-                            button
-                            my-2"
-                    @click="addLineAccount()"
-                >
-                    <p>Ajouter un compte externe</p>
-                </button>
             </div>
-            <button
-                class="button mb-4"
-                @click="submit()"
-            >
-                <p>Enregistrer</p>
-            </button>
+            <div class="flex mb-4 mt-16">
+                <button
+                    class="button my-auto"
+                    @click="submit()"
+                >
+                    <div>
+                        <p class="px-5">
+                            Enregistrer
+                        </p>
+                    </div>
+                </button>
+                <div
+                    v-if="submitSuccess===1"
+                    class="text-green-500 bg-green-500 bg-opacity-25 font-bold p-2 rounded-md my-auto ml-4 flex gap-2"
+                >
+                    <i class="ri-check-fill my-auto" />
+                    <div class="my-auto">
+                        Réussi
+                    </div>
+                </div>
+                <div
+                    v-else-if="submitSuccess===-1"
+                    class="text-red-500 bg-red-500 bg-opacity-25 font-bold p-2 rounded-md my-auto ml-4 flex gap-2"
+                >
+                    <i class="ri-close-fill my-auto" />
+                    <div class="my-auto">
+                        Erreur lors de l'enregistrement
+                    </div>
+                </div>
+            </div>
+            <AvatarCropper
+                v-model="avatarShown"
+                field="file"
+                img-format="jpg"
+                :url="`${API_URL}files/profile-images`"
+                lang-type="fr"
+                :with-credentials="true"
+                @crop-upload-success="cropUploadSuccess"
+            />
         </div>
     </div>
 </template>
@@ -244,110 +224,118 @@ import SelectInput from '@/components/Input/SelectInput.vue'
 import { watch } from 'vue';
 import _ from 'lodash'
 import default_avatar from '@/assets/img/default_avatars/user.png'
+import AvatarImage from '@/components/AvatarImage.vue';
+import LoadingComponent from '@/views/LoadingComponent.vue';
+import AvatarCropper from '../AvatarCropper/AvatarCropper.vue';
+
+
 export default {
-    components: { SelectInput },
+    components: {
+        SelectInput,
+        AvatarImage,
+        // myUpload,
+        LoadingComponent,
+        AvatarCropper
+    },
     data() {
         return {
             user:this.$store.state.auth.user,
-            roles :{
-                "Président" : 'president',
-                "Vice-Président" : 'vice-president',
-                "Secretaire" : 'secretary',
-                "Trésorier" : 'treasurer',
-                "Manager" : 'manager',
-                "Membre" : 'member',
-            },
-            parcours: null,
-            promotion: null,
-            group: null,
+            submitSuccess: 0,
             userClubs:null,
             socialsAccounts:null,
-            default_avatar:default_avatar
+            default_avatar:default_avatar,
+            avatarShown: false,
+            API_URL: `${import.meta.env.VITE_API_URL}/`
         };
     },
     computed: {
     },
 
     mounted(){
-        this.$store.dispatch('auth/getUser',this.user.userId )
-        watch(
-            () => this.$store.state.auth.me,
-            (newUser) => {
-                this.user = newUser
-            }
-        )
-        this.user = this.$store.state.auth.user
-        watch(
-            () => this.$store.state.users.socialsAccounts,
-            (newSocials) => {
-                this.socialsAccounts = _.cloneDeep(newSocials)
-            }
-        )
-
-        watch(
-            () => this.$store.state.users.socials,
-            (newSocials) => {
-                console.log("socials",newSocials)
-                this.socials = [...newSocials]
-            }
-        )
-        watch(
-            () => this.$store.state.users.userClubs,
-            (newClubs) => {
-
-                console.log("userClubs",newClubs)
-                this.userClubs = [...newClubs]
-            }
-        )
-        watch(
-            () => this.$store.state.users.clubs,
-            (newClubs) =>{
-                console.log("clubs",newClubs)
-                this.clubs = [...newClubs]
-            }
-        )
-        watch(
-            () => this.userClubs,
-            (updClubs) => {
-                for(let i= 0; i<updClubs.length;i++){
-                    if(Number.isInteger(updClubs[i].role)){
-                        updClubs[i].role = this.roles[updClubs[i].role]
-                    }
-                    if(Number.isInteger(updClubs[i].club)){
-                        updClubs[i].club = {clubId:this.clubs.items[updClubs[i].club].clubId}
-                    }
+        if(this.user != null && this.user != undefined){
+            this.$store.dispatch('auth/getUser',this.user.userId )
+            watch(
+                () => this.$store.state.auth.me,
+                (newUser) => {
+                    this.user = newUser
                 }
-                this.userClubs = updClubs
-            },
-            {deep: true}
-        )
-        watch(
-            () => this.socialsAccounts,
-            (updSocial) => {
-                for(let i=0;i<updSocial.length; i++){
-                    if(typeof(updSocial[i].social)==="number"){
-                        updSocial[i].social = {socialId:this.socials[updSocial[i].social].socialId}
-                    }
+            )
+            this.user = this.$store.state.auth.user
+            watch(
+                () => this.$store.state.users.socialsAccounts,
+                (newSocials) => {
+                    this.socialsAccounts = _.cloneDeep(newSocials)
                 }
-                if(_.isEqual(this.socialsAccounts ,updSocial)){
-                    this.socialsAccounts = updSocial
-                }
-            },
-            {deep: true}
-        )
+            )
 
-        this.$store.dispatch('users/getUserById',this.user.userId )
-        this.$store.dispatch('users/getUserClubs', this.user.userId)
-        this.$store.dispatch('users/getUserSocials',this.user.userId)
-        this.$store.dispatch('users/getSocials')
-        this.$store.dispatch('users/getClubs')
+            watch(
+                () => this.$store.state.users.socials,
+                (newSocials) => {
+                    this.socials = [...newSocials]
+                }
+            )
+            watch(
+                () => this.$store.state.users.userClubs,
+                (newClubs) => {
+
+                    this.userClubs = [...newClubs]
+                }
+            )
+            watch(
+                () => this.$store.state.users.clubs,
+                (newClubs) =>{
+                    this.clubs = [...newClubs]
+                }
+            )
+            watch(
+                () => this.userClubs,
+                (updClubs) => {
+                    for(let i= 0; i<updClubs.length;i++){
+                        if(Number.isInteger(updClubs[i].role)){
+                            updClubs[i].role = this.roles[updClubs[i].role]
+                        }
+                        if(Number.isInteger(updClubs[i].club)){
+                            updClubs[i].club = {clubId:this.clubs.items[updClubs[i].club].clubId}
+                        }
+                    }
+                    this.userClubs = updClubs
+                },
+                {deep: true}
+            )
+            watch(
+                () => this.socialsAccounts,
+                (updSocial) => {
+                    for(let i=0;i<updSocial.length; i++){
+                        if(typeof(updSocial[i].social)==="number"){
+                            updSocial[i].social = {socialId:this.socials[updSocial[i].social].socialId}
+                        }
+                    }
+                    if(_.isEqual(this.socialsAccounts ,updSocial)){
+                        this.socialsAccounts = updSocial
+                    }
+                },
+                {deep: true}
+            )
+
+            this.$store.dispatch('users/getUserById',this.user.userId )
+            this.$store.dispatch('users/getUserClubs', this.user.userId)
+            this.$store.dispatch('users/getUserSocials',this.user.userId)
+            this.$store.dispatch('users/getSocials')
+            this.$store.dispatch('users/getClubs')
+        }else {
+            this.$router.push("/")
+        }
     },
     methods: {
-        addLineClub: function addLineClub() {
-            this.userClubs.push({role:null,club:{clubId:null}});
+        showImage: function showImage() {
+            if(this.avatarShown){
+                this.avatarShown = false
+            }else{
+                this.avatarShown = true
+            }
         },
-        rmLineClub: function rmLineClub(indx) {
-            this.userClubs.splice(indx,1);
+        cropUploadSuccess: function cropUploadSuccess(jsonData){
+            console.log(jsonData.profileImageId);
         },
         addLineAccount: function addLineAccount() {
             this.socialsAccounts.push({social:{socialId:null},pseudo:null,link:null});
@@ -365,19 +353,34 @@ export default {
                 }
                 return true
             }
-            this.$store.dispatch('users/updateUser',this.user)
+
+            this.submitSuccess = 1
+
+            this.$store.dispatch('users/updateUser',this.user).then().catch(() => {
+                console.log("updateUser")
+                this.submitSuccess = -1
+            })
 
             for( let i =0; i < this.socialsAccounts.length; i++) {
                 if(canSocialBePosted(this.socialsAccounts[i])){
                     if(!this.$store.state.users.socialsAccounts.find((a)=> _.isEqual(a,this.socialsAccounts[i]))){
                         if(this.socialsAccounts[i].socialAccountId == null){
-                            this.$store.dispatch('users/addSocialAccount',{userId:this.user.userId, socialId:this.socialsAccounts[i].social.socialId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link})
+                            this.$store.dispatch('users/addSocialAccount',{userId:this.user.userId, socialId:this.socialsAccounts[i].social.socialId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link}).then().catch(() =>{
+                                console.log("jambon")
+                                this.submitSuccess = -1
+                            })
                         }else{
                             if(this.socialsAccounts[i].social.socialId != this.$store.state.users.socialsAccounts.find((a) => a.socialAccountId === this.socialsAccounts[i].socialAccountId ).social.socialId){
-                                this.$store.dispatch('users/replaceSocialAccount',{userId:this.user.userId, socialAccountId:this.socialsAccounts[i].socialAccountId,socialId:this.socialsAccounts[i].social.socialId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link})
+                                this.$store.dispatch('users/replaceSocialAccount',{userId:this.user.userId, socialAccountId:this.socialsAccounts[i].socialAccountId,socialId:this.socialsAccounts[i].social.socialId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link}).then().catch(() =>{
+                                    console.log("jambon")
+                                    this.submitSuccess = -1
+                                })
                             }
                             else {
-                                this.$store.dispatch('users/updateSocialAccount',{ socialAccountId:this.socialsAccounts[i].socialAccountId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link})
+                                this.$store.dispatch('users/updateSocialAccount',{ socialAccountId:this.socialsAccounts[i].socialAccountId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link}).then().catch(() =>{
+                                    console.log("jambon")
+                                    this.submitSuccess = -1
+                                })
                             }
                         }
                     }
@@ -385,7 +388,9 @@ export default {
             }
             for( let i =0; i < this.$store.state.users.socialsAccounts.length; i++){
                 if(!this.socialsAccounts.find((a)=>a.socialAccountId === this.$store.state.users.socialsAccounts[i].socialAccountId)){
-                    this.$store.dispatch('users/deleteSocialAccount',this.$store.state.users.socialsAccounts[i].socialAccountId)
+                    this.$store.dispatch('users/deleteSocialAccount',this.$store.state.users.socialsAccounts[i].socialAccountId).then().catch(
+                        this.submitSuccess = -1
+                    )
                 }
             }
         }
