@@ -1,11 +1,14 @@
 <template>
     <!-- TODO: Refactor all my-auto -->
-    <div>{{ }}</div>
-    <app-loader
+    <div
         v-if=" clubs === undefined || clubs === null || userClubs === undefined || userClubs === null "
-        :class="$store.state.users"
-        background="bg-1"
-    />
+        class="relative h-32 "
+    >
+        <app-loader
+            :class="$store.state.users"
+            background="bg-1"
+        />
+    </div>
     <div
         v-else
         class="text-2"
@@ -67,14 +70,31 @@
                             Associations
                         </div>
                         <button
-                            class="text-blue-500 ml-4 text-sm flex my-auto"
+                            v-if="!showAddForm"
+                            class="text-blue-500 ml-4 text-sm gap-2 flex my-auto"
                             @click="toggleShowAddForm()"
                         >
                             <font-awesome-icon
+                                class="my-auto"
                                 icon="plus"
                             />
-                            <div>
+                            <div class="my-auto">
                                 Rejoindre une association
+                            </div>
+                        </button>
+                        <button
+                            v-else
+                            class="text-red-500 ml-4 gap-2 text-sm flex my-auto"
+                            @click="toggleShowAddForm()"
+                        >
+                            <font-awesome-icon
+                                icon="times"
+                                class="my-auto"
+                            />
+                            <div
+                                class="my-auto"
+                            >
+                                Fermer le menu
                             </div>
                         </button>
                     </div>

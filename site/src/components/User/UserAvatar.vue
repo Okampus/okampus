@@ -1,9 +1,9 @@
 <template>
-    <div class="rounded-full hover:shadow-inner overflow-hidden">
+    <div class="shadow-inner rounded-full">
         <img
             :src="(src=== '' || src=== null || src === undefined) ? default_avatar :src"
             :alt="alt"
-            class=""
+            class="rounded-full"
             :class="`w-${size} h-${size}`"
         >
     </div>
