@@ -5,6 +5,7 @@ interface Config {
   uploadMaxSize: number;
   uploadPath: string;
   port: number;
+  frontendUrl: string;
   nodeEnv: 'development' | 'production' | 'test';
   typesenseEnabled: boolean;
   typesenseApiKey: string;
@@ -20,6 +21,15 @@ interface Config {
   refreshTokenSecret: string;
   refreshTokenExpiration: string;
   cookieSignature: string;
+  myefreiOauthClientId: string;
+  myefreiOauthClientSecret: string;
+  myefreiOauthAuthorizeUrl: string;
+  myefreiOauthTokenUrl: string;
+  myefreiOauthUserUrl: string;
+  adminAccountUsername: string;
+  adminAccountFirstName: string;
+  adminAccountLastName: string;
+  adminAccountPassword: string;
 }
 
 const logger = new Logger('Configuration');
@@ -39,6 +49,11 @@ export const config = createProfiguration<Config>({
     default: 8081,
     format: Number,
     env: 'PORT',
+  },
+  frontendUrl: {
+    default: 'http://localhost:3000',
+    format: String,
+    env: 'FRONTEND_URL',
   },
   nodeEnv: {
     default: 'development',
@@ -114,6 +129,51 @@ export const config = createProfiguration<Config>({
     default: 'secret',
     format: String,
     env: 'COOKIE_SIGNATURE_SECRET',
+  },
+  myefreiOauthClientId: {
+    default: 'client-id',
+    format: String,
+    env: 'MYEFREI_OAUTH_CLIENT_ID',
+  },
+  myefreiOauthClientSecret: {
+    default: 'client-secret',
+    format: String,
+    env: 'MYEFREI_OAUTH_CLIENT_SECRET',
+  },
+  myefreiOauthAuthorizeUrl: {
+    default: 'https://oauth2service.com/authorize',
+    format: String,
+    env: 'MYEFREI_OAUTH_AUTHORIZE_URL',
+  },
+  myefreiOauthTokenUrl: {
+    default: 'https://oauth2service.com/token',
+    format: String,
+    env: 'MYEFREI_OAUTH_TOKEN_URL',
+  },
+  myefreiOauthUserUrl: {
+    default: 'https://oauth2service.com/user',
+    format: String,
+    env: 'MYEFREI_OAUTH_USER_URL',
+  },
+  adminAccountUsername: {
+    default: 'horizon-admin',
+    format: String,
+    env: 'ADMIN_ACCOUNT_USERNAME',
+  },
+  adminAccountFirstName: {
+    default: 'Horizon',
+    format: String,
+    env: 'ADMIN_ACCOUNT_FIRST_NAME',
+  },
+  adminAccountLastName: {
+    default: 'Admin',
+    format: String,
+    env: 'ADMIN_ACCOUNT_LAST_NAME',
+  },
+  adminAccountPassword: {
+    default: 'root',
+    format: String,
+    env: 'ADMIN_ACCOUNT_PASSWORD',
   },
 }, {
   strict: true,

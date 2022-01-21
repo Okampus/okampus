@@ -98,7 +98,7 @@ export class ReportSearchService extends SearchService<Report, IndexedReport> {
     return {
       /* eslint-disable no-undefined */
       reason: report.reason,
-      user: report.user.username,
+      user: report.user.userId,
       postTitle: 'post' in report ? report.post.title : undefined,
       postBody: 'post' in report ? extractTextFromStringifiedTiptap(report.post.body) : undefined,
       reply: 'reply' in report ? extractTextFromStringifiedTiptap(report.reply.body) : undefined,

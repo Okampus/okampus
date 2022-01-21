@@ -22,7 +22,7 @@ export class AuthService {
   public async validatePassword(userQuery: string, password: string): Promise<User> {
     const user = await this.userRepository.findOne({
       $or: [
-        { username: { $ilike: userQuery } },
+        { userId: { $ilike: userQuery } },
         { email: userQuery.toLowerCase() },
       ],
     });
@@ -35,7 +35,6 @@ export class AuthService {
   public async login(user: User): Promise<TokenResponse> {
     const payload: Token = {
       sub: user.userId,
-      username: user.username,
     };
 
     return {

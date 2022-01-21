@@ -15,11 +15,9 @@ import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Public } from '../shared/lib/decorators/public.decorator';
 import { SerializerIncludeEmail } from '../shared/lib/decorators/serializers.decorator';
 import { User } from '../users/user.entity';
-import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { MyEfreiAuthGuard } from './myefrei-auth.guard';
 
 const cookieOptions: Partial<CookieOptions> = {
   signed: true,
@@ -33,22 +31,7 @@ const cookieOptions: Partial<CookieOptions> = {
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly usersService: UsersService,
   ) {}
-
-  @Public()
-  @Post('register')
-  public async register(@Body() body: RegisterDto, @Response({ passthrough: true }) res: Res): Promise<User> {
-    if (await this.usersService.validateUsernameAndEmail(body.username, body.email))
-      throw new BadRequestException('Username or email already exist');
-
-    const user = await this.usersService.create(body);
-    const login = await this.authService.login(body as User);
-    res.cookie('accessToken', login.accessToken, cookieOptions)
-      .cookie('refreshToken', login.refreshToken, cookieOptions);
-
-    return user;
-  }
 
   @Public()
   @Post('login')
@@ -62,7 +45,25 @@ export class AuthController {
     return user;
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Public()
+  @UseGuards(MyEfreiAuthGuard)
+  @Get('myefrei')
+  public myefreiLogin(): void {
+    console.log('DEBUG: handling myefrei login');
+  }
+
+  @Public()
+  @UseGuards(MyEfreiAuthGuard)
+  @Get('myefrei/callback')
+  public async myefreiCallback(@CurrentUser() user: User, @Response() res: Res): Promise<void> {
+    const login = await this.authService.login(user);
+
+    res.cookie('accessToken', login.accessToken, cookieOptions)
+      .cookie('refreshToken', login.refreshToken, cookieOptions);
+
+    res.redirect('https://horizon-efrei.fr');
+  }
+
   @Get('logout')
   public logout(@Response({ passthrough: true }) res: Res): void {
     res.cookie('accessToken', '', { ...cookieOptions, maxAge: 0 })
@@ -78,7 +79,6 @@ export class AuthController {
     new BadRequestException('Missing refresh token');
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('me')
   public me(@CurrentUser() user: User): User {
     return user;

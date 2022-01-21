@@ -10,7 +10,7 @@ import { client } from '../typesense.config';
 import { User } from './user.entity';
 
 export interface IndexedUser {
-  username: string;
+  userId: string;
   roles: string[];
   id: string;
   createdAt: string;
@@ -21,7 +21,7 @@ export class UserSearchService extends SearchService<User, IndexedUser> {
   private static readonly schema: CollectionCreateSchema = {
     name: 'users',
     fields: [
-      { name: 'username', type: 'string' },
+      { name: 'userId', type: 'string' },
       { name: 'roles', type: 'string[]' },
       { name: 'createdAt', type: 'string' },
     ],
@@ -77,7 +77,7 @@ export class UserSearchService extends SearchService<User, IndexedUser> {
 
   public toIndexedEntity(user: User): IndexedUser {
     return {
-      username: user.username,
+      userId: user.userId,
       roles: user.roles,
       id: user.userId,
       createdAt: user.createdAt.toString(),

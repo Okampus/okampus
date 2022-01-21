@@ -10,7 +10,6 @@ import { AuthService } from './auth.service';
 
 export interface Token {
   sub: string;
-  username: string;
 }
 
 @Injectable()

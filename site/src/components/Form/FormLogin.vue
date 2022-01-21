@@ -127,7 +127,6 @@ import {
 } from '@headlessui/vue'
 import InputWithIcon from '@/components/Input/InputWithIcon.vue'
 import User from '@/models/user'
-import axios from 'axios'
 const API_URL = `${import.meta.env.VITE_API_URL}`
 
 export default {
@@ -152,7 +151,7 @@ export default {
     },
     methods: {
         myEfreiLogin() {
-            axios.post(`${API_URL}/auth/myefrei`, { withCredentials: true })
+            window.location.href = `${API_URL}/auth/myefrei`
         },
         handleLogin () {
             this.loading = true

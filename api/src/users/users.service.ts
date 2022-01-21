@@ -1,6 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import type { MyEfreiDto } from '../auth/dto/my-efrei.dto';
 import type { RegisterDto } from '../auth/dto/register.dto';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
@@ -16,27 +17,14 @@ export class UsersService {
     private readonly userSearchService: UserSearchService,
   ) {}
 
-  public async findOne(username: string): Promise<User> {
-    return await this.userRepository.findOneOrFail({ username: { $ilike: username } });
-  }
-
   public async findOneById(userId: string): Promise<User> {
     return await this.userRepository.findOneOrFail({ userId });
   }
 
-  public async validateUsernameAndEmail(username: string, email: string): Promise<boolean> {
-    const user = await this.userRepository.findOne({
-      $or: [
-        { username: { $ilike: username } },
-        { email: email.toLowerCase() },
-      ],
-    });
-    return Boolean(user);
-  }
-
-  public async create(body: RegisterDto): Promise<User> {
-    const user = new User(body.username, body.email.toLowerCase());
-    await user.setPassword(body.password);
+  public async create(body: MyEfreiDto | RegisterDto): Promise<User> {
+    const user = new User(body);
+    if ('password' in body)
+      await user.setPassword(body.password);
     await this.userRepository.persistAndFlush(user);
     await this.userSearchService.add(user);
     return user;

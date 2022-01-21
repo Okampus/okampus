@@ -90,7 +90,7 @@ export class PostSearchService extends SearchService<Post, IndexedPost> {
     return {
       title: post.title,
       body: extractTextFromStringifiedTiptap(post.body),
-      author: post.author.username,
+      author: post.author.userId,
       tags: post.tags.toArray().map(tag => tag.name),
       id: post.postId.toString(),
       createdAt: post.createdAt.toString(),

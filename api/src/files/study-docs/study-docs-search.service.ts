@@ -85,7 +85,7 @@ export class StudyDocSearchService extends SearchService<StudyDoc, IndexedStudyD
 
   public toIndexedEntity(studyDoc: StudyDoc): IndexedStudyDoc {
     return {
-      user: studyDoc.file.user.username,
+      user: studyDoc.file.user.userId,
       name: studyDoc.file.name,
       subjectName: studyDoc.subject.name,
       subjectEnglishName: studyDoc.subject.englishName,

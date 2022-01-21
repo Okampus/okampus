@@ -81,7 +81,7 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
 
   public toIndexedEntity(infoDoc: InfoDoc): IndexedInfoDoc {
     return {
-      user: infoDoc.file.user.username,
+      user: infoDoc.file.user.userId,
       name: infoDoc.file.name,
       year: infoDoc.year,
       description: infoDoc.description,

@@ -88,7 +88,7 @@ export class ArticleSearchService extends SearchService<Article, IndexedArticle>
     return {
       title: article.title,
       body: extractTextFromStringifiedTiptap(article.body),
-      author: article.author.username,
+      author: article.author.userId,
       tags: article.tags.toArray().map(tag => tag.name),
       category: article.category,
       locationName: article.locationName,
