@@ -15,11 +15,15 @@
                     class="cursor-pointer flex flex-col h-full items-center justify-center rounded hover:outline-dashed outline-blue-500 dark:outline-blue-700 hover:outline-2"
                     @click="$refs.inputFile.click()"
                 >
-                    <i
-                        class="ri-4x"
-                        :class="[dragover ? 'ri-download-cloud-2-line':'ri-upload-cloud-2-line']"
+                    <font-awesome-icon
+                        :icon="dragover ? 'cloud-download-alt' : 'cloud-upload-alt'"
+                        class="text-xl"
                     />
-                    <div><span class="text-blue-500 hover:underline">Cliquez</span> ou glissez vos {{ fileLimit !=-1 ? fileLimit:'' }} fichiers ici </div>
+                    <div>
+                        <span class="text-blue-500 hover:underline">
+                            Cliquez
+                        </span> ou glissez vos {{ fileLimit !=-1 ? fileLimit:'' }} fichiers ici !
+                    </div>
                 </div>
                 <div
                     v-else
@@ -40,7 +44,7 @@
                                 class="h-18/24"
                                 :src="URL.createObjectURL(file)"
                             >
-                            <DocImg
+                            <document-icon
                                 v-else
                                 :file-name="file.name"
                                 :mime="file.type"
@@ -57,7 +61,10 @@
                                 title="Enlever le fichier"
                                 @click.prevent="removeFile(file)"
                             >
-                                <i class="ri-close-line text-red-500" />
+                                <font-awesome-icon
+                                    icon="times"
+                                    class="text-red-500"
+                                />
                             </button>
                         </div>
                     </div>
@@ -102,12 +109,12 @@
 
 <script>
 
-import DocImg from '../DocImg.vue'
+import DocumentIcon from '@/components/Document/DocumentIcon.vue'
 import formatBytes from "@/utils/formatByteSize.js"
 
 export default {
     components:{
-        DocImg
+        DocumentIcon
     },
     props:{
         modelValue: {

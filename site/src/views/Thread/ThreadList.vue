@@ -47,7 +47,7 @@
 
 <script lang="js">
 import { watch } from 'vue'
-import PostCard from '@/components/Card/PostCard.vue'
+import PostCard from '@/components/App/Card/PostCard.vue'
 
 export default {
     components: { PostCard },

@@ -1,6 +1,6 @@
 <template>
     <div class="w-21/24 my-8 mx-auto shadow-md card">
-        <MultiStepForm
+        <form-multi-step
             v-model="stepAction"
             :steps="steps"
             @previous-step="previousStep"
@@ -18,7 +18,7 @@
                                 Matière
                             </div>
                             <div class="w-full">
-                                <SearchInput
+                                <search-input
                                     v-model="stepsModel[0].docSubject"
                                     class="w-full"
                                     :item-limit="1"
@@ -32,9 +32,9 @@
                                     <template #inputComponent="slotValue">
                                         <div class="flex-grow flex justify-between gap-2 items-center bg-0 rounded-lg p-2">
                                             <div class="text-1 flex items-center gap-2">
-                                                <i
-                                                    :class="iconList(slotValue.item.code)"
-                                                    class="ri-xl"
+                                                <font-awesome-icon
+                                                    :icon="iconList(slotValue.item.code)"
+                                                    class="text-lg"
                                                 />
                                                 <div>
                                                     {{ slotValue.item.name }}
@@ -43,8 +43,9 @@
                                                     {{ slotValue.item.code }}
                                                 </div>
                                             </div>
-                                            <i
-                                                class="ri-close-line text-red-500 cursor-pointer"
+                                            <font-awesome-icon
+                                                icon="times"
+                                                class="text-red-500 cursor-pointer"
                                                 @click="slotValue.deleteItem(slotValue.item)"
                                             />
                                         </div>
@@ -66,9 +67,9 @@
 
                                                     })"
                                             >
-                                                <i
-                                                    :class="iconList(item.code)"
-                                                    class="ri-xl"
+                                                <font-awesome-icon
+                                                    :icon="iconList(item.code)"
+                                                    class="text-lg"
                                                 />
                                                 <div>
                                                     {{ item.name }}
@@ -79,20 +80,12 @@
                                             </div>
                                         </div>
                                     </template>
-                                </SearchInput>
+                                </search-input>
                             </div>
                         </div>
 
                         <div class="flex flex-col">
-                            <!-- <input
-                                id="filiere"
-                                v-model="stepsModel[0].filiere"
-                                class="input w-full"
-                                type="text"
-                                placeholder="Filière associée à ce document..."
-                            >
- -->
-                            <RadioInput
+                            <radio-input
                                 v-model="stepsModel[0].cursus"
                                 :choices="[
                                     {name:'Tous', key: 'all'},
@@ -108,7 +101,7 @@
 
                         <div class="flex flex-col">
                             <label for="doc-type">Type de document</label>
-                            <SelectInput
+                            <select-input
                                 v-model="stepsModel[0].docType"
                                 :choices="['DE', 'CE', 'TD', 'Fiche', 'Projet/TAI', 'Controle Continue',
                                            'Cours Efrei', 'Cours eProf', 'DM', 'Notes de cours']"
@@ -127,7 +120,7 @@
                         </div>
                     </div>
 
-                    <FileInput
+                    <file-input
                         v-model="stepsModel[0].files"
                         :img-preview="true"
                         :file-limit="-1"
@@ -170,15 +163,17 @@
                         placeholder="Complément du nom"
                     >
                     <div>Description du document </div>
+
                     <textarea
                         v-model="stepsModel[1].docDescription"
                         placeholder="Description du document"
                         class="input w-full leading-tight focus:outline-none focus:shadow-outline"
                         type="text"
                     />
+
                     <div class="flex flex-col">
                         <label for="content">Contenu du dépôt</label>
-                        <SelectInput
+                        <select-input
                             v-model="stepsModel[0].docContent"
                             :choices="['Corrigé', 'Sujet + Corrigé', 'Copie d\'étudiant']"
                         />
@@ -191,11 +186,13 @@
                     <div class="text-xl py-2">
                         Envoyer
                     </div>
+
                     <p>Disclaimer:</p>
                     <ul class="list-disc list-inside">
                         <li>Si vous uploadez un fichier, il sera public et accessible par tous</li>
                         <li>Si vous souhaitez que des informations soient floutées, corrigées ou généralement modifiées, nous vous ferrons une proposition avec des informations sensibles retirées et attendrons votre confirmation avant de rendre le fichier public</li>
                     </ul>
+
                     <p class="mt-2">
                         Êtes-vous d'accord ?
                     </p>
@@ -221,7 +218,7 @@
                     </label>
                 </section>
             </template>
-        </MultiStepForm>
+        </form-multi-step>
     </div>
 </template>
 
@@ -233,19 +230,20 @@ import { required } from '@vuelidate/validators'
 import RadioInput from '@/components/Input/RadioInput.vue'
 import SelectInput from '@/components/Input/SelectInput.vue'
 import FileInput from '@/components/Input/FileInput.vue'
-import MultiStepForm from '@/components/Form/MultiStepForm.vue'
+import FormMultiStep from '@/components/Form/FormMultiStep.vue'
 
-import SearchInput from '../../components/Input/SearchInput.vue'
+import SearchInput from '@/components/Input/SearchInput.vue'
 
 export default {
     components: {
         RadioInput,
         SelectInput,
         FileInput,
-        MultiStepForm,
-        SearchInput
+        FormMultiStep,
+        SearchInput,
+
     },
-    props:{
+    props: {
         steps: {
             type:Array,
             default(){
@@ -253,15 +251,15 @@ export default {
                     {
                         id: 'step1',
                         name: 'Fichiers',
-                        icon: 'ri-bookmark-line'
+                        icon: 'bookmark'
                     }, {
                         id: 'step2',
                         name: 'Infos',
-                        icon: 'ri-user-add-line'
+                        icon: 'info-circle'
                     }, {
                         id: 'step3',
                         name: 'Envoyer',
-                        icon: 'ri-mail-send-line'
+                        icon: 'paper-plane'
                     }
                 ]
             }
@@ -292,7 +290,6 @@ export default {
     },
     data () {
         return {
-            test: [],
             filesEndpoint: 'http://localhost:5000/files',
             studyDocsEndpoint: 'http://localhost:5000/files/study-docs',
             show: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
@@ -302,6 +299,7 @@ export default {
                 nextStep: false,
                 previousStep: false
             },
+
             stepsModel:[
                 {
                     docSubject:[],
@@ -329,30 +327,21 @@ export default {
         }
     },
     methods: {
-        testM(){
-            console.log("ok")
-        },
         iconList(itemCode){
             const iconList = {
-                'TI':'ri-terminal-line',
-                'SM': 'ri-calculator-line',
-                'SB':'ri-leaf-line',
-                'TE':'ri-flashlight-line',
-                'SP':'ri-flashlight-line'
+                'TI': 'terminal',
+                'SM': 'calculator',
+                'SB': 'leaf',
+                'TE': 'bolt',
+                'SP': 'bolt'
             }
-            if(Object.getOwnPropertyNames(iconList).includes(itemCode.substr(0,2))){
-                return iconList[itemCode.substr(0,2)]
-            }else{
-                return 'ri-book-2-line'
-            }
-
+            return iconList?.[itemCode.substr(0,2)] ?? 'book'
         },
         previousStep(){
             this.stepAction.currentStep -= 1
         },
         nextStep(){
             if(!this.v$.stepsModel[this.stepAction.currentStep].$invalid){
-
                 this.stepAction.currentStep += 1
             }
         },

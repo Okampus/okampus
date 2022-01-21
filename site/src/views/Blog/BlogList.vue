@@ -122,12 +122,13 @@
 </template>
 
 <script>
-import WeatherWidget from '@/components/Widget/WeatherWidget.vue'
 import { articles, categories } from '@/fake/blog'
 import { users } from '@/fake/users'
 
 import { timeAgo } from '@/utils/timeAgo'
+
 import SelectInput from '@/components/Input/SelectInput.vue'
+import WeatherWidget from '@/components/App/Widget/WidgetWeather.vue'
 
 const nPostsUsers = [23, 63, 12, 41, 0]
 

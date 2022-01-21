@@ -20,7 +20,7 @@
                     placeholder="Titre descriptif/complet"
                     @input="v$.title.$touch"
                 >
-                <error-wrapper
+                <app-error
                     v-if="v$.title.$error"
                     :error="`Un titre de Post doit faire entre ${titleCharLimit[0]} et ${titleCharLimit[1]} caractères.`"
                 />
@@ -60,7 +60,7 @@
                     button-name="Type de Post"
                     :choices="postTypesEnum.map(postType => postType[$i18n.locale])"
                 />
-                <error-wrapper
+                <app-error
                     v-if="v$.type.$error"
                     :error="`Choisissez un type de Post dans la liste.`"
                     success="Type de Post valide"
@@ -86,7 +86,7 @@
                         @input="v$.body.$touch"
                     >
                         <template #error>
-                            <error-wrapper
+                            <app-error
                                 v-if="v$.body.$error"
                                 :error="`Une description de Post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
                             />
@@ -102,7 +102,7 @@
                 <div class="label-desc">
                     Ajoutez {{ minTags }} Tags (ou plus) qui décrivent le sujet de votre Post
                 </div>
-                <tags-input
+                <tag-input
                     v-model="state.tags"
                     name="tags"
                     placeholder="Entrez le nom du tag et appuyez sur entrée..."
@@ -128,19 +128,25 @@
                     </p>
                 </button>
                 <div
-                    v-if="submitSuccess===1"
+                    v-if="submitSuccess === 1"
                     class="text-green-500 bg-green-500 bg-opacity-25 font-bold p-2 rounded-md my-auto ml-4 flex gap-2"
                 >
-                    <i class="ri-check-fill my-auto" />
+                    <font-awesome-icon
+                        icon="check"
+                        class="my-auto"
+                    />
                     <div class="my-auto">
                         Création réussie
                     </div>
                 </div>
                 <div
-                    v-else-if="submitSuccess===-1"
+                    v-else-if="submitSuccess === -1"
                     class="text-red-500 bg-red-500 bg-opacity-25 font-bold p-2 rounded-md my-auto ml-4 flex gap-2"
                 >
-                    <i class="ri-close-fill my-auto" />
+                    <font-awesome-icon
+                        icon="times"
+                        class="my-auto"
+                    />
                     <div class="my-auto">
                         Erreur lors de l'enregistrement du post
                     </div>
@@ -156,12 +162,12 @@
 import Popper from "vue3-popper"
 
 import SelectInput from '@/components/Input/SelectInput.vue'
-import ErrorWrapper from '@/components/ErrorWrapper.vue'
+import AppError from '@/components/App/AppError.vue'
 import useVuelidate from '@vuelidate/core'
 import { between, required, minLength, maxLength } from '@vuelidate/validators'
 import postTypesEnum from '@/shared/types/post-types.enum'
 
-import TagsInput from '@/components/Input/TagsInput.vue'
+import TagInput from '@/components/Input/TagInput.vue'
 import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
 
 import { ref, reactive } from 'vue'
@@ -169,8 +175,8 @@ import { defaultTipTapText } from '@/utils/tiptap'
 
 export default {
     components: {
-        TagsInput,
-        ErrorWrapper,
+        TagInput,
+        AppError,
         TipTapEditor,
         Popper,
         SelectInput

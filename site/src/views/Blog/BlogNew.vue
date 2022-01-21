@@ -114,7 +114,8 @@
                     <div class="text text-gray-600 m-2">
                         Tags
                     </div>
-                    <tags-input />
+
+                    <tag-input />
                     <!-- <div class="text-md text-gray-600 mb-2 text-c2 mt-6">
                             Location
                         </div>
@@ -162,12 +163,12 @@
 import { users } from '@/fake/users'
 
 import default_avatar from '@/assets/img/default_avatars/user.png'
-import TagsInput from '@/components/Input/TagsInput.vue'
+import TagInput from '@/components/Input/TagInput.vue'
 import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
 
 export default {
     name: 'BlogPostForm',
-    components: { TipTapEditor, TagsInput },
+    components: { TipTapEditor, TagInput },
     data () {
         return {
             user: users[0],

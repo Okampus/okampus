@@ -70,7 +70,7 @@
                     </p>
                 </div>
                 <div class="w-full">
-                    <tags-input placeholder="Contient les tags..." />
+                    <tag-input placeholder="Contient les tags..." />
                 </div>
             </div>
         </section>
@@ -78,14 +78,14 @@
 </template>
 
 <script lang="js">
-import PostCard from '@/components/Card/PostCard.vue'
-import TagsInput from '@/components/Input/TagsInput.vue'
+import PostCard from '@/components/App/Card/PostCard.vue'
+import TagInput from '@/components/Input/TagInput.vue'
 import { posts } from '@/fake/posts'
 
 export default {
     components: {
         PostCard,
-        TagsInput
+        TagInput
     },
     inheritAttrs: false,
     data () {

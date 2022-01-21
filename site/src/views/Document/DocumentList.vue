@@ -1,13 +1,13 @@
 <template>
     <div class="w-21/24 flex gap-4 mx-auto my-6">
-        <CustomModal
+        <app-modal
             :show="filePreview != null"
             :global-custom-class="'block md:hidden'"
             @close="filePreview = null"
         >
             <div class="card flex gap-2">
                 <div class="flex items-center justify-center">
-                    <DocImg
+                    <DocumentIcon
                         class="h-32 w-32"
                         :mime="filePreview.file.mimeType"
                         :file-name="filePreview.file.originalName"
@@ -25,7 +25,8 @@
                     </div>
                 </div>
             </div>
-        </CustomModal>
+        </app-modal>
+
         <div class="card flex flex-grow flex-col gap-4">
             <div class="flex justify-center gap-4">
                 <SelectMultiCheckbox
@@ -43,7 +44,9 @@
                         :class="{'text-blue-500':docStyleList}"
                         @click="docStyleList = true"
                     >
-                        <i class="ri-list-check" />
+                        <font-awesome-icon
+                            icon="list"
+                        />
                     </div>
 
                     <div
@@ -51,7 +54,9 @@
                         :class="{'text-blue-500':!docStyleList}"
                         @click="docStyleList = false"
                     >
-                        <i class="ri-function-line" />
+                        <font-awesome-icon
+                            icon="th"
+                        />
                     </div>
                 </div>
             </div>
@@ -101,7 +106,7 @@
                                     class="flex justify-center items-center"
                                     @click="setFilePreview(file)"
                                 >
-                                    <DocImg
+                                    <DocumentIcon
                                         class="h-8 w-8"
                                         :mime="file.file.mimeType"
                                         :file-name="file.file.originalName"
@@ -144,11 +149,13 @@
                                 <div
                                     class="flex justify-center items-center hover:cursor-pointer invisible group-hover:visible"
                                 >
-                                    <DropDownInput
+                                    <drop-down-input
                                         :buttons="dropDownButtons(file)"
                                     >
-                                        <i class="ri-more-line" />
-                                    </DropDownInput>
+                                        <font-awesome-icon
+                                            icon="ellipsis-h"
+                                        />
+                                    </drop-down-input>
                                 </div>
                             </td>
                         </tr>
@@ -179,12 +186,12 @@
                                 :checked="fileGroup.includes(file)"
                                 @click="updateFileGroup(file)"
                             >
-                            <VPopper
+                            <popper
                                 :offset-distance="'0'"
                                 :interactive="false"
                             >
                                 <div class="flex flex-col items-center justify-center">
-                                    <DocImg
+                                    <DocumentIcon
                                         class="h-12 w-12"
 
                                         :mime="file.file.mimeType"
@@ -206,12 +213,14 @@
                                             :class="button.class"
                                             @click="button.action()"
                                         >
-                                            <i :class="button.icon" />
-                                            {{ button.name }}
+                                            <font-awesome-icon
+                                                :icon="button.icon"
+                                            />
+                                            <p>{{ button.name }}</p>
                                         </div>
                                     </div>
                                 </template>
-                            </VPopper>
+                            </popper>
                         </div>
                     </div>
                 </div>
@@ -229,7 +238,7 @@
                     >
                         <div class="flex flex-col gap-2 divide-y">
                             <div class="flex items-center justify-center">
-                                <DocImg
+                                <DocumentIcon
                                     class="h-32 w-32"
                                     :mime="filePreview.file.mimeType"
                                     :file-name="filePreview.file.originalName"
@@ -268,7 +277,10 @@
                                     class="cursor-pointer"
                                     @click.prevent="updateFileGroup(file)"
                                 >
-                                    <i class="ri-close-line text-red-500" />
+                                    <font-awesome-icon
+                                        icon="times"
+                                        class="text-red-500"
+                                    />
                                 </div>
                             </div>
                             <div class="flex gap-2 mt-2 w-full items-center justify-center">
@@ -290,24 +302,24 @@
 <script>
 
 import formatBytes from '@/utils/formatByteSize'
-
 import fileIcon from "@/assets/img/doctype/file.png"
 
 import SelectMultiCheckbox from '@/components/Input/SelectMultiCheckbox.vue'
 import DropDownInput from '@/components/Input/DropDownInput.vue'
-import DocImg from '../../components/DocImg.vue'
-import CustomModal from '@/components/CustomModal.vue'
+import DocumentIcon from '@/components/Document/DocumentIcon.vue'
+import AppModal from '@/components/App/AppModal.vue'
+
+import Popper from "vue3-popper"
 
 import filesService from '@/services/files.service'
 
 export default {
     components:{
-
         SelectMultiCheckbox,
         DropDownInput,
-        CustomModal,
-        DocImg
-
+        AppModal,
+        DocumentIcon,
+        Popper
     },
     data() {
         return {
@@ -327,8 +339,21 @@ export default {
     methods: {
         dropDownButtons(studyDocId){
             return [
-                {name:'Télécharger', icon:'ri-download-line', class:"hover:bg-blue-500 hover:text-white", action: ()=>{filesService.downloadFile({query: studyDocId.file.fileUploadId, label:studyDocId.file.originalName})}},
-                {name:'Supprimer', icon:'ri-close-line', class:"hover:bg-red-500 hover:text-white", action: ()=>{ console.log("Delete (placeholder)", studyDocId) }}
+                {
+                    name: 'Télécharger',
+                    icon:'download',
+                    class: 'hover:bg-blue-500 hover:text-white',
+                    action: () => {
+                        filesService.downloadFile({query: studyDocId.file.fileUploadId, label:studyDocId.file.originalName})
+                    }
+                },
+                {
+                    name: 'Supprimer',
+                    icon: 'times',
+                    class: 'hover:bg-red-500 hover:text-white',
+                    // TODO: delete ("archive") file
+                    action: () => { console.log("Delete (placeholder)", studyDocId) }
+                }
             ]
         },
         seeDropdown() {

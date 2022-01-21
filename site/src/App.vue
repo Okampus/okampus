@@ -1,6 +1,6 @@
 <template>
     <!-- TODO: Solve mysterious min-width ??? -->
-    <UserLogin
+    <form-login
         :show-login="showLogin"
         @toggle-login="toggleLogin"
     />
@@ -27,7 +27,7 @@
             >
                 <router-view />
             </div>
-            <page-footer class="flex-shrink-0" />
+            <footer-bar class="flex-shrink-0" />
         </div>
         <top-bar
             ref="topbar"
@@ -42,23 +42,25 @@
 </template>
 
 <script lang="js">
+import User from '@/models/user'
+
 import debounce from 'lodash/debounce'
-import PageFooter from '@/components/PageFooter.vue'
 
 import { ref, watch } from 'vue'
 
-import TopBar from '@/components/TopBar.vue'
-import SideBar from '@/components/SideBar.vue'
-import User from '@/models/user'
-import UserLogin from '@/components/UserLogin.vue'
+import TopBar from '@/components/Bar/TopBar.vue'
+import SideBar from '@/components/Bar/SideBar.vue'
+import FooterBar from '@/components/Bar/FooterBar.vue'
+
+import FormLogin from '@/components/Form/FormLogin.vue'
 
 const breakWidth = 768
 export default {
     components: {
         TopBar,
         SideBar,
-        PageFooter,
-        UserLogin
+        FooterBar,
+        FormLogin
     },
     setup () {
         const showLogin = ref(false)

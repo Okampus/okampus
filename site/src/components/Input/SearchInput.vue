@@ -5,13 +5,13 @@
         :index-name="indexName"
         class="h-full relative w-full"
         @keydown.arrow-up.exact="indexSelected == null && focusInput? indexSelected = -1 : indexSelected--"
-        @keydown.arrow-down.exact="indexSelected == null && focusInput? indexSelected = 0 : indexSelected++"
+        @keydown.arrow-down.exact="indexSelected == null && focusInput? indexSelected = 0 : indexSelected++, $refs.hitList.focus()"
         @keydown.enter.exact="keyEnter = true"
     >
         <div
             class="h-full w-full flex flex-col"
         >
-            <v-popper
+            <Popper
                 class="search-input-global"
                 :offset-distance="'0'"
                 :show="focusInput"
@@ -60,6 +60,7 @@
                                         v-if="items.length != 0"
                                     >
                                         <slot
+                                            ref="hitList"
                                             :indexSelected="indexSelected"
                                             :keyEnter="keyEnter"
                                             :items="items"
@@ -71,10 +72,7 @@
                                         v-else
                                         class="h-24 flex flex-col justify-center items-center gap-2"
                                     >
-                                        <div
-                                            class="text-xl h-1/2 flex items-center"
-                                            v-html="sadFaces[Math.floor(Math.random() * sadFaces.length)]"
-                                        />
+                                        <app-emoji :="sadFaces[Math.floor(Math.random() * (sadFaces.length-1))]" />
                                         <div class="">
                                             Pas de résultat ...
                                         </div>
@@ -84,7 +82,7 @@
                         </ais-index>
                     </div>
                 </template>
-            </v-popper>
+            </Popper>
         </div>
     </ais-instant-search>
 </template>
@@ -92,10 +90,13 @@
 <script>
 
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
+import AppEmoji from '../App/AppEmoji.vue';
+import Popper from "vue3-popper";
 
 export default {
     components:{
-
+        AppEmoji,
+        Popper
     },
     props:{
         indexObject:{
@@ -119,10 +120,18 @@ export default {
             keyEnter: false,
             focusInput: false,
             indexSelected: null,
-            sadFaces: [':(', ':/',':|',':\\',':c',':[',':ꓷ',
-                '<i class="ri-emotion-normal-line ri-lg"></i>',
-                '<i class="ri-emotion-unhappy-line ri-lg"></i>',
-                '<i class="ri-emotion-sad-line ri-lg"></i>',
+            sadFaces: [
+                { emoji: ':(', type: 'text' },
+                { emoji: ':|', type: 'text' },
+                { emoji: ':\\', type: 'text' },
+                { emoji: ':c', type: 'text' },
+                { emoji: ':ꓷ', type: 'text' },
+                { emoji: ':[', type: 'text' },
+                { emoji: 'grimace', type: 'icon' },
+                { emoji: 'sad-cry', type: 'icon' },
+                { emoji: 'grin-beam-sweat', type: 'icon' },
+                { emoji: 'dizzy', type: 'icon' },
+                { emoji: 'surprise', type: 'icon' }
             ],
             Math,
         }

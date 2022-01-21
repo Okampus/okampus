@@ -83,7 +83,7 @@
                             :key="tag.id"
                             class="text-base text-2"
                         >
-                            <ColoredTag :tag-name="tag" />
+                            <app-tag :tag-name="tag" />
                         </span>
                     </div>
                 </div>
@@ -160,7 +160,7 @@
 
             <!-- CONTENT -->
             <div class="flex flex-col gap-6 text-justify mx-3">
-                <TipTapRenderer
+                <tip-tap-renderer
                     ref="renderer"
                     :content="article.body"
                 />
@@ -323,11 +323,12 @@
 <script>
 
 import { blogProfiles, articles } from '@/fake/blog'
-import DatePreview from '@/components/Dashboard/DatePreview.vue'
 import { readingTimeMinutes } from '@/utils/readingTimeMinutes'
-import TipTapRenderer from '@/components/TipTap/TipTapRenderer.vue'
-import ColoredTag from '@/components/ColoredTag.vue'
 import { timeAgo } from '@/utils/timeAgo'
+
+import TipTapRenderer from '@/components/TipTap/TipTapRenderer.vue'
+import AppTag from '@/components/App/AppTag.vue'
+import DatePreview from '@/components/Dashboard/DatePreview.vue'
 
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { extractTextFromTipTapJSON } from '@/utils/tiptap'
@@ -339,7 +340,7 @@ export default {
         DisclosurePanel,
         DatePreview,
         TipTapRenderer,
-        ColoredTag
+        AppTag
     },
     props: {
         thumbnail: {

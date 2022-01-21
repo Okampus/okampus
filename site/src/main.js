@@ -11,8 +11,6 @@ import FontAwesomeIcon from '@/fontawesome-icons'
 
 import './assets/css/tailwind.css'
 
-import 'remixicon/fonts/remixicon.css'
-
 
 const emitter = mitt()
 

@@ -65,7 +65,7 @@
                                         @cancel="closeReply()"
                                     >
                                         <template #error>
-                                            <ErrorWrapper
+                                            <app-error
                                                 v-if="errorReply"
                                                 error="Il y'a eu une erreur lors de l'envoi de cette réponse."
                                             />
@@ -87,11 +87,11 @@
                     <div class="card">
                         <div class="flex mb-2 space-x-2 text-xl items-center">
                             <div class="font-bold text-md mr-4">
-                                Tags
+                                AppTags
                             </div>
                         </div>
                         <div class="flex flex-wrap">
-                            <tag
+                            <app-tag
                                 v-for="tag in post.tags"
                                 :key="tag"
                                 class="mr-1 mb-1"
@@ -105,9 +105,7 @@
                             <div class="font-bold text-md mr-4">
                                 Contributeurs
                             </div>
-                            <!-- TODO: Actions -->
-                            <!-- <i class="ri-settings-2-line" />
-                            <i class="ri-arrow-left-right-line" /> -->
+                            <!-- TODO: Actions : Settings, Add -->
                         </div>
                         <contributors
                             v-for="contributor in post.contributors"
@@ -121,10 +119,7 @@
                             <div class="font-bold text-md mr-4">
                                 Sujets semblables
                             </div>
-                            <!-- TODO: Actions -->
-                            <!-- <i class="ri-menu-add-line" />
-                            <i class="ri-arrow-left-circle-fill" />
-                            <i class="ri-arrow-right-circle-fill" /> -->
+                            <!-- TODO: Actions : Suggest, next page -->
                         </div>
                         <similar-thread
                             v-for="similarThread in post.similarThreads"
@@ -141,31 +136,30 @@
 
 <script lang="js">
 
-import Reply from '@/components/Thread/PostReply.vue'
-import Tag from '@/components/ColoredTag.vue'
-import Contributors from '@/components/Thread/PostContributor.vue'
-import SimilarThread from '@/components/Thread/SimilarThread.vue'
-import PostMessage from '@/components/Thread/PostMessage.vue'
+import Reply from '@/components/Thread/ThreadReply.vue'
+import AppTag from '@/components/App/AppTag.vue'
+import Contributors from '@/components/Thread/ThreadContributor.vue'
+import SimilarThread from '@/components/Thread/ThreadSimilar.vue'
+import PostMessage from '@/components/Thread/ThreadPost.vue'
 import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
 
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
-// import { posts } from '../../fake/posts'
 
 import default_avatar from '@/assets/img/default_avatars/user.png'
-import ErrorWrapper from '@/components/ErrorWrapper.vue'
+import AppError from '@/components/App/AppError.vue'
 import { timeAgo } from '@/utils/timeAgo'
 import { defaultTipTapText } from '@/utils/tiptap'
 
 export default {
     components: {
-        Tag,
+        AppTag,
         Contributors,
         SimilarThread,
         Reply,
         PostMessage,
         TipTapEditor,
-        ErrorWrapper
+        AppError
     },
     setup () {
         return { v$: useVuelidate() }

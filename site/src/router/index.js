@@ -8,7 +8,7 @@ const routes = [
 
     {
         path: '/admin',
-        component: () => import('@/views/Dashboard/AdminDashboard.vue')
+        component: () => import('@/views/Dashboard/DashboardAdmin.vue')
     },
 
     {
@@ -58,28 +58,28 @@ const routes = [
 
     {
         path: '/users/me',
-        component: () => import('@/views/UserSettings.vue')
+        component: () => import('@/views/User/UserMyProfile.vue')
     },
 
     {
         path: '/users/:userId',
-        component: () => import('@/views/ProfileShow.vue')
+        component: () => import('@/views/User/UserProfile.vue')
     },
 
     {
         path: '/users/me/favorites',
-        component : () => import('@/views/FavoritesPage.vue')
-    },
-
-    {
-        path: '/crous',
-        component : () => import('@/views/CrousPage.vue')
+        component : () => import('@/views/User/UserFavorites.vue')
     },
 
     {
         path: '/users',
-        component: () => import('@/views/UsersList.vue')
-    }
+        component: () => import('@/views/User/UserList.vue')
+    },
+
+    {
+        path: '/crous',
+        component : () => import('@/views/Blog/BlogCrous.vue')
+    },
 ]
 
 if (import.meta.env.DEV) {

@@ -33,7 +33,6 @@
         "lodash": "^4.17.21",
         "mitt": "^3.0.0",
         "nanoid": "^3.1.30",
-        "remixicon": "^2.5.0",
         "sass": "^1.45.0",
         "sass-loader": "^12.4.0",
         "typesense-instantsearch-adapter": "^2.2.0",
