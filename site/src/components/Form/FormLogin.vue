@@ -1,17 +1,9 @@
 <template>
     <!-- TODO: Solve repeated ESC popover -->
-    <TransitionRoot
-        v-if="!$store.state.auth.status.loggedIn"
-        appear
-        :show="showLogin"
-        as="template"
-    >
-        <Dialog
-            as="div"
-            @close="$emit('toggle-login')"
-        >
-            <div class="fixed inset-0 z-10 overflow-y-auto">
-                <div class="min-h-screen px-4 text-center">
+    <TransitionRoot v-if="!$store.state.auth.status.loggedIn" appear :show="showLogin" as="template">
+        <Dialog as="div" @close="$emit('toggle-login')">
+            <div class="overflow-y-auto fixed inset-0 z-10">
+                <div class="px-4 min-h-screen text-center">
                     <TransitionChild
                         as="template"
                         enter="duration-300 ease-out"
@@ -24,12 +16,7 @@
                         <DialogOverlay class="fixed inset-0" />
                     </TransitionChild>
 
-                    <span
-                        class="inline-block h-screen align-middle"
-                        aria-hidden="true"
-                    >
-                        &#8203;
-                    </span>
+                    <span class="inline-block h-screen align-middle" aria-hidden="true"> &#8203; </span>
 
                     <TransitionChild
                         as="template"
@@ -41,68 +28,58 @@
                         leave-to="opacity-0 scale-95"
                     >
                         <div
-                            class="card-0 inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl"
+                            class="inline-block overflow-hidden p-6 my-8 w-full max-w-md text-left align-middle bg-white rounded-2xl shadow-xl transition-all card-0"
                         >
                             <div class="flex flex-col">
-                                <h2 class="text-center font-semibold text-3xl text-1">
-                                    Connexion
-                                </h2>
+                                <h2 class="text-3xl font-semibold text-center text-1">Connexion</h2>
                                 <form action="javascript:void(0);">
-                                    <div class="space-y-3 mt-4">
+                                    <div class="mt-4 space-y-3">
                                         <div>
                                             <label
                                                 for="username"
-                                                class="block tracking-wider text-sm font-semibold text-gray-600 uppercase"
-                                            >Identifiant</label>
-                                            <input-with-icon
+                                                class="block text-sm font-semibold tracking-wider text-gray-600 uppercase"
+                                                >Identifiant</label
+                                            >
+                                            <InputWithIcon
                                                 v-model="user.username"
                                                 input-name="username"
                                                 input-placeholder="Entrez votre identifiant..."
                                             >
-                                                <font-awesome-icon
-                                                    icon="user-shield"
-                                                    class="ml-0.5"
-                                                />
-                                            </input-with-icon>
+                                                <font-awesome-icon icon="user-shield" class="ml-0.5" />
+                                            </InputWithIcon>
                                         </div>
                                         <div>
                                             <label
                                                 for="password"
-                                                class="block tracking-wider mt-2 text-sm font-semibold text-gray-600 uppercase"
-                                            >Mot de passe</label>
-                                            <input-with-icon
+                                                class="block mt-2 text-sm font-semibold tracking-wider text-gray-600 uppercase"
+                                                >Mot de passe</label
+                                            >
+                                            <InputWithIcon
                                                 v-model="user.password"
                                                 input-name="password"
                                                 input-type="password"
                                                 input-placeholder="Entrez votre mot de passe..."
                                             >
-                                                <font-awesome-icon
-                                                    icon="key"
-                                                    class="ml-0.5"
-                                                />
-                                            </input-with-icon>
+                                                <font-awesome-icon icon="key" class="ml-0.5" />
+                                            </InputWithIcon>
                                         </div>
                                     </div>
 
                                     <!-- TODO: Error message when login fails -->
-                                    <div class="flex flex-col mt-10 space-y-2 items-center justify-center">
+                                    <div class="flex flex-col justify-center items-center mt-10 space-y-2">
                                         <button
                                             type="submit"
-                                            class="w-full py-3 bg-gray-500 rounded-sm text-sm
-                    font-medium text-white uppercase
-                    focus:outline-none hover:bg-gray-400 hover:shadow-none"
+                                            class="py-3 w-full text-sm font-medium text-white uppercase bg-gray-500 hover:bg-gray-400 rounded-sm focus:outline-none hover:shadow-none"
                                             @click="handleLogin"
                                         >
                                             CONNEXION HORIZON
                                         </button>
                                     </div>
 
-                                    <div class="flex flex-col mt-10 space-y-2 items-center justify-center">
+                                    <div class="flex flex-col justify-center items-center mt-10 space-y-2">
                                         <button
                                             type="submit"
-                                            class="w-full py-3 bg-blue-500 rounded-sm text-sm
-                    font-medium text-white uppercase
-                    focus:outline-none hover:bg-blue-400 hover:shadow-none"
+                                            class="py-3 w-full text-sm font-medium text-white uppercase bg-blue-500 hover:bg-blue-400 rounded-sm focus:outline-none hover:shadow-none"
                                             @click="myEfreiLogin"
                                         >
                                             Connexion myEfrei
@@ -140,14 +117,12 @@ export default {
     props: {
         showLogin: {
             type: Boolean,
-            default: false
-        }
+            default: false,
+        },
     },
     emits: ['toggle-login'],
     data () {
-        return {
-            user: new User('', '', '')
-        }
+        return { user: new User('', '', '') }
     },
     methods: {
         myEfreiLogin() {
@@ -168,21 +143,19 @@ export default {
                 (error.response && error.response.data) ||
                 error.message ||
                 error.toString()
-                    }
+                    },
                 )
             }
-        }
-    }
+        },
+    },
 }
 </script>
 
 <style lang="scss">
-
 // .centered-fixed {
 //     position: fixed;
 //     top: 0;
 //     left: 0;
 //     transform: translate(calc(50vw - 50%), calc(50vh - 50%));
 // }
-
 </style>

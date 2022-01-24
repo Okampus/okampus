@@ -1,121 +1,84 @@
-<template lang="">
-    <div class="mx-6 mt-8 mb-12 flex flex-col space-y-2">
+<template>
+    <div class="flex flex-col mx-6 mt-8 mb-12 space-y-2">
         <div class="card">
-            <div class="flex flex-col lg:flex-row lg:space-x-2 lg:items-center">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:space-x-2">
                 <strong class="mr-2">Nouvel Article</strong>
                 <input
                     id="title"
                     type="text"
-                    class="input w-full h-10 mt-1 lg:m-0"
+                    class="mt-1 w-full h-10 lg:m-0 input"
                     name="title"
                     value=""
                     placeholder="Titre de l'article"
                     required
-                >
-                <div class="flex min-w-fit mt-3 lg:m-0">
-                    <div class="lg:ml-3 flex min-w-fit pr-4">
+                />
+                <div class="flex mt-3 min-w-fit lg:m-0">
+                    <div class="flex pr-4 min-w-fit lg:ml-3">
                         <img
-                            class="object-cover h-10 w-10 rounded-full"
+                            class="object-cover w-10 h-10 rounded-full"
                             :src="user.avatar ?? default_avatar"
                             :alt="user.username"
                             loading="lazy"
-                        >
-                        <div class="ml-3 text-sm text-0 flex flex-col">
-                            <p class="whitespace-nowrap">
-                                Poster en tant que
-                            </p>
-                            <strong
-                                class="
-                                    whitespace-nowrap
-                                    text-base"
-                            >{{ user.username }}</strong>
+                        />
+                        <div class="flex flex-col ml-3 text-sm text-0">
+                            <p class="whitespace-nowrap">Poster en tant que</p>
+                            <strong class="text-base whitespace-nowrap">{{ user.username }}</strong>
                         </div>
                     </div>
-                    <div class="flex space-x-2 items-center">
+                    <div class="flex items-center space-x-2">
                         <button class="button">
-                            <p class="text-sm">
-                                Publier
-                            </p>
+                            <p class="text-sm">Publier</p>
                         </button>
                         <button class="button">
-                            <p class="text-sm">
-                                Sauvegarder
-                            </p>
+                            <p class="text-sm">Sauvegarder</p>
                         </button>
                         <button class="button">
-                            <p class="text-sm">
-                                Aperçu
-                            </p>
+                            <p class="text-sm">Aperçu</p>
                         </button>
                         <button class="button">
-                            <p class="text-sm">
-                                Fermer
-                            </p>
+                            <p class="text-sm">Fermer</p>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="flex flex-col-reverse lg:flex-row lg:space-x-2 lg:space-y-0">
-            <div class="card blog-editor lg:w-2/3">
-                <strong>
-                    Éditeur d'article
-                </strong>
-                <tip-tap-editor
-                    :char-count="100000"
-                />
+        <div class="flex flex-col-reverse lg:flex-row lg:space-y-0 lg:space-x-2">
+            <div class="lg:w-2/3 card blog-editor">
+                <strong> Éditeur d'article </strong>
+                <TipTapEditor :char-count="100000" />
             </div>
             <!-- Sidebar -->
-            <div class="card lg:w-1/3 mb-2 space-y-2">
+            <div class="mb-2 space-y-2 lg:w-1/3 card">
                 <div>
-                    <strong>
-                        Miniature
-                    </strong>
+                    <strong> Miniature </strong>
                     <div class="flex">
                         <!-- TODO: File input -->
-                        <label class="text-0 rounded-md bg-primary-3 px-4 py-2">
+                        <label class="py-2 px-4 bg-primary-3 rounded-md text-0">
                             <span class="block">Changer l'image</span>
-                            <input
-                                type="file"
-                                class="hidden"
-                            >
+                            <input type="file" class="hidden" />
                         </label>
                     </div>
                 </div>
 
                 <div>
                     <strong>Table des matières</strong>
-                    <textarea
-                        name="table-of-contents"
-                        class="input w-full"
-                        placeholder="(Optionnel)"
-                    />
+                    <textarea name="table-of-contents" class="w-full input" placeholder="(Optionnel)" />
                 </div>
 
                 <div>
-                    <strong>
-                        Paramètres de l'article
-                    </strong>
-                    <div class="text text-gray-600 m-2">
-                        Description
-                    </div>
-                    <textarea
-                        name="description"
-                        class="input w-full"
-                        placeholder="(Optionnel)"
-                    />
+                    <strong> Paramètres de l'article </strong>
+                    <div class="m-2 text-gray-600 text">Description</div>
+                    <textarea name="description" class="w-full input" placeholder="(Optionnel)" />
                     <!-- <input
                         id="description"
                         type="text"
                         name="description"
                         placeholder="(Optionnel)"
                     > -->
-                    <div class="text text-gray-600 m-2">
-                        Tags
-                    </div>
+                    <div class="m-2 text-gray-600 text">Tags</div>
 
-                    <tag-input />
+                    <TagInput />
                     <!-- <div class="text-md text-gray-600 mb-2 text-c2 mt-6">
                             Location
                         </div>
@@ -159,7 +122,6 @@
 </template>
 
 <script>
-
 import { users } from '@/fake/users'
 
 import default_avatar from '@/assets/img/default_avatars/user.png'
@@ -168,20 +130,23 @@ import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
 
 export default {
     name: 'BlogPostForm',
-    components: { TipTapEditor, TagInput },
-    data () {
+    components: {
+        TipTapEditor,
+        TagInput,
+    },
+    data() {
         return {
             user: users[0],
-            default_avatar
+            default_avatar,
         }
-    }
+    },
 }
 </script>
 
 <style lang="scss">
 .blog-editor .ProseMirror {
-  min-height:40rem;
-  max-height:40rem;
-  overflow-y:scroll;
+    min-height: 40rem;
+    max-height: 40rem;
+    overflow-y: scroll;
 }
 </style>

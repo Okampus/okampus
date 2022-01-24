@@ -1,29 +1,22 @@
 <template>
     <!-- TODO: Solve unexpected overflow! -->
     <div>
-        <div
-            class="absolute py-12 hero h-52 w-full top-0 left-0"
-        />
-        <div class="relative mt-12 mb-10 mx-auto w-11/12 ">
+        <div class="absolute top-0 left-0 py-12 w-full h-52 hero" />
+        <div class="relative mx-auto mt-12 mb-10 w-11/12">
             <div class="flex mx-auto space-x-2">
                 <button
                     v-for="tab in Object.keys(tabColumns)"
                     :key="tab"
-                    class="uppercase button w-full"
+                    class="w-full uppercase button"
                     @click="currentTab = tab"
                 >
                     <p>{{ tab }}</p>
                 </button>
             </div>
-            <template
-                v-for="column in Object.keys(tabColumns)"
-                :key="column"
-            >
+
+            <template v-for="column in Object.keys(tabColumns)" :key="column">
                 <div :class="column === currentTab ? 'block' : 'hidden'">
-                    <DashboardCore
-                        :columns="tabColumns[column][0]"
-                        :items="tabColumns[column][1]"
-                    />
+                    <DashboardCore :columns="tabColumns[column][0]" :items="tabColumns[column][1]" />
                 </div>
             </template>
         </div>
@@ -36,87 +29,119 @@ import { posts } from '@/fake/posts'
 
 import DashboardCore from './DashboardCore.vue'
 export default {
-    components: {
-        DashboardCore
-    },
+    components: { DashboardCore },
     data () {
         return {
             currentTab: 'posts',
             tabColumns: {
                 posts: [{
-                    votes: { attrs: () => {},
+                    votes: {
+                        attrs: () => {},
                         slot: (post) => post.upvotes - post.downvotes,
                         value: (post) => post.upvotes - post.downvotes,
                         comp: ['div'],
-                        name: 'Votes' },
-                    status: { attrs: () => {},
+                        name: 'Votes',
+                    },
+                    status: {
+                        attrs: () => {},
                         slot: (post) => post.state,
                         value: (post) => post.state,
                         comp: ['div'],
-                        name: 'État' },
-                    title: { attrs: () => {},
+                        name: 'État',
+                    },
+                    title: {
+                        attrs: () => {},
                         slot: (post) => post.title,
                         value: (post) => post.title,
                         comp: ['div'],
-                        name: 'Titre' },
-                    user: { attrs: (post) => { return {username: post.author.username, avatar: post.author.avatar, reputation: post.author.reputation }},
+                        name: 'Titre',
+                    },
+                    user: {
+                        attrs: (post) => ({
+                            username: post.author.username,
+                            avatar: post.author.avatar,
+                            reputation: post.author.reputation,
+                        }),
                         slot: () => {},
                         value: (post) => post.author.username,
                         comp: ['user-preview', '@/components/User/UserPreview.vue'],
-                        name: 'OP' },
-                    lastActivity: { attrs: (post) => { return {dateString: post.contentLastUpdatedAt} },
+                        name: 'OP',
+                    },
+                    lastActivity: {
+                        attrs: (post) => ({ dateString: post.contentLastUpdatedAt }),
                         slot: (post) => post.contentLastUpdatedAt,
-                        value: () => "",
+                        value: () => '',
                         comp: ['date-preview', '@/components/Dashboard/DatePreview.vue'],
-                        name: 'Dernière activité' },
-                    createdAt: { attrs: (post) => { return {dateString: post.createdAt} },
+                        name: 'Dernière activité',
+                    },
+                    createdAt: {
+                        attrs: (post) => ({ dateString: post.createdAt }),
                         slot: (post) => post.createdAt,
-                        value: () => "",
+                        value: () => '',
                         comp: ['date-preview', '@/components/Dashboard/DatePreview.vue'],
                         sort: 0,
-                        name: 'Date de création' },
-                    type: { attrs: () => {},
+                        name: 'Date de création',
+                    },
+                    type: {
+                        attrs: () => {},
                         slot: (post) => post.type,
-                        value: () => "",
+                        value: () => '',
                         comp: ['div'],
-                        name: 'Type' },
-                    tags: { attrs: (post) => {return {tags: post.tags}},
+                        name: 'Type',
+                    },
+                    tags: {
+                        attrs: (post) => ({ tags: post.tags }),
                         slot: () => {},
                         value: (post) => post.tags,
                         comp: ['tags-list', '@/components/List/TagsList.vue'],
-                        name: 'Tags' },
-                    actions: { attrs: () => {},
+                        name: 'Tags',
+                    },
+                    actions: {
+                        attrs: () => {},
                         slot: () => 'Show',
-                        value: () => "",
+                        value: () => '',
                         comp: ['div'],
-                        name: 'Actions' }
+                        name: 'Actions',
+                    },
                     // TODO: Actions
                 }, posts],
                 utilisateurs: [{
-                    user: { attrs: (user) => { return {username: user.username, avatar: user.avatar, reputation: user.reputation }},
+                    user: {
+                        attrs: (user) => ({
+                            username: user.username,
+                            avatar: user.avatar,
+                            reputation: user.reputation,
+                        }),
                         slot: () => {},
                         value: (user) => user.username,
                         comp: ['user-preview', '@/components/User/UserPreview.vue'],
-                        name: 'Utilisateur' },
-                    email: { attrs: () => {},
+                        name: 'Utilisateur',
+                    },
+                    email: {
+                        attrs: () => {},
                         slot: (user) => user.email,
                         value: (user) => user.email,
                         comp: ['div'],
-                        name: 'Email' },
-                    createdAt: { attrs: (user) => { return {dateString: user.createdAt} },
+                        name: 'Email',
+                    },
+                    createdAt: {
+                        attrs: (user) => ({ dateString: user.createdAt }),
                         slot: (user) => user.createdAt,
-                        value: () => "",
+                        value: () => '',
                         comp: ['date-preview', '@/components/Dashboard/DatePreview.vue'],
                         sort: 0,
-                        name: 'Créé' },
-                    lastUpdate: { attrs: (user) => { return {dateString: user.updatedAt} },
+                        name: 'Créé',
+                    },
+                    lastUpdate: {
+                        attrs: (user) => ({ dateString: user.updatedAt }),
                         slot: (user) => user.updatedAt,
-                        value: () => "",
+                        value: () => '',
                         comp: ['date-preview', '@/components/Dashboard/DatePreview.vue'],
-                        name: 'Dernière mise à jour' },
-                }, users]
-            }
+                        name: 'Dernière mise à jour',
+                    },
+                }, users],
+            },
         }
-    }
+    },
 }
 </script>

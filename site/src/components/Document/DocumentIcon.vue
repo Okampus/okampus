@@ -13,20 +13,11 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
             />
-            <path
-                d="m172.48 55.797-10.022-10.54 0.0804 10.439z"
-                fill="#ccc"
-            />
-
+            <path d="m172.48 55.797-10.022-10.54 0.0804 10.439z" fill="#ccc" />
         </g>
-        <foreignObject
-            x="0"
-            y="45"
-            width="47.5"
-            height="15.991"
-        >
+        <foreignObject x="0" y="45" width="47.5" height="15.991">
             <div
-                class="w-full h-full flex items-center justify-center text-white uppercase rounded-b"
+                class="flex justify-center items-center w-full h-full text-white uppercase rounded-b"
                 :class="colors(mime)"
             >
                 {{ fileName.split('.').pop() }}
@@ -36,38 +27,52 @@
 </template>
 
 <script>
-
 export default {
-    props:{
-        mime:{
+    props: {
+        mime: {
             type: String,
-            default(){
+            default() {
                 return ''
-            }
+            },
         },
-        fileName:{
-            type:String,
-            default(){
+        fileName: {
+            type: String,
+            default() {
                 return ''
-            }
-        }
+            },
+        },
     },
     methods: {
-        colors(mime){
+        colors(mime) {
             const dic = [
-                {cond: new RegExp("^image/(.)+"), color: "bg-orange-500"},
-                {cond: new RegExp("^audio/(.)+"), color: "bg-sky-500"},
-                {cond: new RegExp("^text/(.)+"), color: "bg-blue-500"},
-                {cond: new RegExp("^video/(.)+"), color: "bg-green-500"},
-                {cond: new RegExp("^application/(.)+"), color: "bg-pink-500"}
+                {
+                    cond: new RegExp('^image/(.)+'),
+                    color: 'bg-orange-500',
+                },
+                {
+                    cond: new RegExp('^audio/(.)+'),
+                    color: 'bg-sky-500',
+                },
+                {
+                    cond: new RegExp('^text/(.)+'),
+                    color: 'bg-blue-500',
+                },
+                {
+                    cond: new RegExp('^video/(.)+'),
+                    color: 'bg-green-500',
+                },
+                {
+                    cond: new RegExp('^application/(.)+'),
+                    color: 'bg-pink-500',
+                },
             ]
-            for(const el of dic){
-                if(el.cond.test(mime)){
+            for (const el of dic) {
+                if (el.cond.test(mime)) {
                     return el.color
                 }
             }
             return 'bg-gray-500'
-        }
-    }
+        },
+    },
 }
 </script>

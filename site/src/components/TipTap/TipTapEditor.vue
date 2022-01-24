@@ -1,28 +1,22 @@
 <template>
-    <div
-        v-if="editor"
-    >
+    <div v-if="editor">
         <div
             v-if="editorButtons.length > 0"
-            class="space-x-2 px-1 py-2 flex flex-wrap items-center border-color-4"
+            class="flex flex-wrap items-center py-2 px-1 space-x-2 border-color-4"
         >
-            <template
-                v-for="(btn, i) in editorButtons"
-                :key="i"
-            >
-                <Popper
-                    placement="top"
-                    :hover="true"
-                >
+            <template v-for="(btn, i) in editorButtons" :key="i">
+                <Popper placement="top" :hover="true">
                     <div
-                        :class="[actionMap[btn.action].isActive && editor.isActive(...actionMap[btn.action].isActive) ? 'bg-blue-500 border-indigo-800' : 'bg-2']"
-                        class="text-1 text-lg flex items-center icon-button mr-3 raised p-2 outline-none cursor-pointer rounded"
+                        :class="[
+                            actionMap[btn.action].isActive &&
+                            editor.isActive(...actionMap[btn.action].isActive)
+                                ? 'bg-blue-500 border-indigo-800'
+                                : 'bg-2',
+                        ]"
+                        class="flex items-center p-2 mr-3 text-lg rounded outline-none cursor-pointer text-1 icon-button raised"
                         @click="actionMap[btn.action].action()"
                     >
-                        <font-awesome-icon
-                            :icon="btn.icon"
-                            class="mr-1"
-                        />
+                        <font-awesome-icon :icon="btn.icon" class="mr-1" />
                     </div>
                     <template #content>
                         <div class="popover">
@@ -33,31 +27,14 @@
             </template>
         </div>
 
-        <editor-content
-            class="editor"
-            :editor="editor"
-        />
+        <EditorContent class="editor" :editor="editor" />
 
-        <div class="flex flex-row mt-2 gap-4 items-center">
-            <button
-                v-if="cancellable"
-                :class="textClass"
-                class="button red"
-                @click="$emit('cancel')"
-            >
-                <p>
-                    Annuler
-                </p>
+        <div class="flex flex-row gap-4 items-center mt-2">
+            <button v-if="cancellable" :class="textClass" class="button red" @click="$emit('cancel')">
+                <p>Annuler</p>
             </button>
-            <button
-                v-if="sendable"
-                :class="textClass"
-                class="button"
-                @click="$emit('send')"
-            >
-                <p>
-                    Envoyer
-                </p>
+            <button v-if="sendable" :class="textClass" class="button" @click="$emit('send')">
+                <p>Envoyer</p>
             </button>
             <slot name="error" />
 
@@ -65,20 +42,10 @@
             <div
                 v-if="charCount > 0 && getCharCount() >= charCountShowAt"
                 class="flex"
-                :class="[ getCharCount() >= charCount ? 'text-red-400' : 'text-blue-400', textClass ]"
+                :class="[getCharCount() >= charCount ? 'text-red-400' : 'text-blue-400', textClass]"
             >
-                <svg
-                    height="20"
-                    width="20"
-                    viewBox="0 0 20 20"
-                    class="mr-2"
-                >
-                    <circle
-                        r="10"
-                        cx="10"
-                        cy="10"
-                        fill="#e9ecef"
-                    />
+                <svg height="20" width="20" viewBox="0 0 20 20" class="mr-2">
+                    <circle r="10" cx="10" cy="10" fill="#e9ecef" />
                     <circle
                         r="5"
                         cx="10"
@@ -89,17 +56,10 @@
                         :stroke-dasharray="`${circleFillCharCount()} 999`"
                         transform="rotate(-90) translate(-20)"
                     />
-                    <circle
-                        r="6"
-                        cx="10"
-                        cy="10"
-                        fill="white"
-                    />
+                    <circle r="6" cx="10" cy="10" fill="white" />
                 </svg>
 
-                <div
-                    :class="{'text-slate-700': getCharCount() < charCount}"
-                >
+                <div :class="{ 'text-slate-700': getCharCount() < charCount }">
                     {{ getCharCount() }}/{{ charCount }}
                 </div>
             </div>
@@ -108,59 +68,61 @@
 </template>
 
 <script lang="js">
-import Popper from "vue3-popper"
-import { defaultEditorButtons, defaultTipTapText, getEditor } from '@/utils/tiptap'
+import Popper from 'vue3-popper'
+import {
+    defaultEditorButtons, defaultTipTapText, getEditor,
+} from '@/utils/tiptap'
 import { EditorContent } from '@tiptap/vue-3'
 
 export default {
     components: {
         EditorContent,
-        Popper
+        Popper,
     },
     props: {
         cancellable: {
             type: Boolean,
-            default: false
+            default: false,
         },
         sendable: {
             type: Boolean,
-            default: false
+            default: false,
         },
         textClass: {
             type: String,
-            default: 'text-base'
+            default: 'text-base',
         },
         editorButtons: {
             type: Array,
-            default: defaultEditorButtons
+            default: defaultEditorButtons,
         },
         editorOptions: {
             type: Object,
-            default: () => ({})
+            default: () => ({}),
         },
         placeholder: {
             type: String,
-            default: ''
+            default: '',
         },
         mode: {
             type: String,
-            default: 'json'
+            default: 'json',
         },
         charCountShowAt: {
             type: Number,
-            default: 0
+            default: 0,
         },
         charCount: {
             type: Number,
-            default: 0
+            default: 0,
         },
         editorClasses: {
             type: Array,
-            default: () => ['min-h-20']
+            default: () => ['min-h-20'],
         },
         modelValue: {
             default: defaultTipTapText,
-            type: String
+            type: String,
         },
     },
     emits: ['update:modelValue', 'cancel', 'send'],
@@ -174,7 +136,7 @@ export default {
                 mode: props.mode,
                 placeholder: props.placeholder,
                 charCount: props.charCount,
-                editorClasses: props.editorClasses
+                editorClasses: props.editorClasses,
             }),
         }
     },
@@ -183,92 +145,80 @@ export default {
             return {
                 paragraph: {
                     action: () => this.editor.chain().focus().setParagraph().run(),
-                    isActive: ['paragraph']
+                    isActive: ['paragraph'],
                 },
                 bold: {
                     action: () => this.editor.chain().focus().toggleBold().run(),
-                    isActive: ['bold']
+                    isActive: ['bold'],
                 },
                 highlight: {
                     action: () => this.editor.chain().focus().toggleHighlight().run(),
-                    isActive: ['highlight']
+                    isActive: ['highlight'],
                 },
                 italic: {
                     action: () => this.editor.chain().focus().toggleItalic().run(),
-                    isActive: ['italic']
+                    isActive: ['italic'],
                 },
                 underline: {
                     action: () => this.editor.chain().focus().toggleUnderline().run(),
-                    isActive: ['underline']
+                    isActive: ['underline'],
                 },
                 strike: {
                     action: () => this.editor.chain().focus().toggleStrike().run(),
-                    isActive: ['strike']
+                    isActive: ['strike'],
                 },
                 code: {
                     action: () => this.editor.chain().focus().toggleCode().run(),
-                    isActive: ['code']
+                    isActive: ['code'],
                 },
-                clearMarks: {
-                    action: () => this.editor.chain().focus().unsetAllMarks().run()
-                },
-                clearNodes: {
-                    action: () => this.editor.chain().focus().clearNodes().run()
-                },
+                clearMarks: { action: () => this.editor.chain().focus().unsetAllMarks().run() },
+                clearNodes: { action: () => this.editor.chain().focus().clearNodes().run() },
                 h1: {
                     action: () => this.editor.chain().focus().toggleHeading({ level: 1 }).run(),
-                    isActive: ['heading', { level: 1 }]
+                    isActive: ['heading', { level: 1 }],
                 },
                 h2: {
                     action: () => this.editor.chain().focus().toggleHeading({ level: 2 }).run(),
-                    isActive: ['heading', { level: 2 }]
+                    isActive: ['heading', { level: 2 }],
                 },
                 h3: {
                     action: () => this.editor.chain().focus().toggleHeading({ level: 3 }).run(),
-                    isActive: ['heading', { level: 3 }]
+                    isActive: ['heading', { level: 3 }],
                 },
                 h4: {
                     action: () => this.editor.chain().focus().toggleHeading({ level: 4 }).run(),
-                    isActive: ['heading', { level: 4 }]
+                    isActive: ['heading', { level: 4 }],
                 },
                 h5: {
                     action: () => this.editor.chain().focus().toggleHeading({ level: 5 }).run(),
-                    isActive: ['heading', { level: 5 }]
+                    isActive: ['heading', { level: 5 }],
                 },
                 h6: {
                     action: () => this.editor.chain().focus().toggleHeading({ level: 6 }).run(),
-                    isActive: ['heading', { level: 6 }]
+                    isActive: ['heading', { level: 6 }],
                 },
                 bulletList: {
                     action: () => this.editor.chain().focus().toggleBulletList().run(),
-                    isActive: ['bulletList']
+                    isActive: ['bulletList'],
                 },
                 orderedList: {
                     action: () => this.editor.chain().focus().toggleOrderedList().run(),
-                    isActive: ['orderedList']
+                    isActive: ['orderedList'],
                 },
                 codeBlock: {
                     action: () => this.editor.chain().focus().toggleCodeBlock().run(),
-                    isActive: ['codeBlock']
+                    isActive: ['codeBlock'],
                 },
                 blockquote: {
                     action: () => this.editor.chain().focus().toggleBlockquote().run(),
-                    isActive: ['blockquote']
+                    isActive: ['blockquote'],
                 },
-                horizontalRule: {
-                    action: () => this.editor.chain().focus().setHorizontalrule().run()
-                },
-                hardBreak: {
-                    action: () => this.editor.chain().focus().setHardBreak().run()
-                },
-                undo: {
-                    action: () => this.editor.chain().focus().undo().run()
-                },
-                redo: {
-                    action: () => this.editor.chain().focus().redo().run()
-                }
+                horizontalRule: { action: () => this.editor.chain().focus().setHorizontalrule().run() },
+                hardBreak: { action: () => this.editor.chain().focus().setHardBreak().run() },
+                undo: { action: () => this.editor.chain().focus().undo().run() },
+                redo: { action: () => this.editor.chain().focus().redo().run() },
             }
-        }
+        },
     },
     methods: {
         getCharCount () {
@@ -279,7 +229,7 @@ export default {
         },
         getJSON () {
             return this.editor.getJSON()
-        }
-    }
+        },
+    },
 }
 </script>

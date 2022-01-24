@@ -7,16 +7,15 @@ import { users } from './users.module'
 import { thread } from './thread.module'
 
 const store = createStore({
-    state: {
-    },
+    state: {},
     modules: {
         auth,
         posts,
         files,
         userConfig,
         users,
-        thread
-    }
+        thread,
+    },
 })
 
 export default store

@@ -3,66 +3,69 @@ import router from '@/router'
 
 const user = JSON.parse(localStorage.getItem('user'))
 const initialState = user
-    ? { status: { loggedIn: true }, user }
-    : { status: { loggedIn: false }, user: null }
+    ? {
+        status: { loggedIn: true },
+        user,
+    }
+    : {
+        status: { loggedIn: false },
+        user: null,
+    }
 
 export const auth = {
     namespaced: true,
     state: initialState,
     actions: {
-        login ({ commit }, user) {
+        login({ commit }, user) {
             return AuthService.login(user).then(
-                user => {
+                (user) => {
                     commit('loginSuccess', user)
                     return Promise.resolve(user)
                 },
-                error => {
+                (error) => {
                     commit('loginFailure')
                     return Promise.reject(error)
-                }
+                },
             )
         },
-        logout ({ commit }) {
+        logout({ commit }) {
             AuthService.logout()
             commit('logoutSuccess')
         },
-        register ({ commit }, user) {
+        register({ commit }, user) {
             return AuthService.register(user).then(
-                response => {
+                (response) => {
                     commit('registerSuccess')
                     return Promise.resolve(response.data)
                 },
-                error => {
+                (error) => {
                     commit('registerFailure')
                     return Promise.reject(error)
-                }
+                },
             )
         },
-        getUser ({ commit }) {
+        getUser({ commit }) {
             return AuthService.getUser().then(
-                response => {
-                    commit('fetchSuccess',response)
-                    return  Promise.resolve(response)
+                (response) => {
+                    commit('fetchSuccess', response)
+                    return Promise.resolve(response)
                 },
-                error => {
-                    return Promise.reject(error)
-                }
+                (error) => Promise.reject(error),
             )
-
-        }
+        },
     },
     mutations: {
-        loginSuccess (state, user) {
+        loginSuccess(state, user) {
             state.status.loggedIn = true
             state.user = user
             localStorage.setItem('user', JSON.stringify(user))
         },
-        loginFailure (state) {
+        loginFailure(state) {
             state.status.loggedIn = false
             state.user = null
             localStorage.removeItem('user')
         },
-        logoutSuccess (state) {
+        logoutSuccess(state) {
             state.status.loggedIn = false
             // TODO: Redirect any user-restricted route to '/'
             console.log(router.currentRoute.value.fullPath)
@@ -72,14 +75,14 @@ export const auth = {
             state.user = null
             localStorage.removeItem('user')
         },
-        registerSuccess (state) {
+        registerSuccess(state) {
             state.status.loggedIn = false
         },
-        registerFailure (state) {
+        registerFailure(state) {
             state.status.loggedIn = false
         },
-        fetchSuccess (state, user) {
+        fetchSuccess(state, user) {
             state.me = user
-        }
-    }
+        },
+    },
 }

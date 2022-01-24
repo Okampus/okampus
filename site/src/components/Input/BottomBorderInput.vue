@@ -1,9 +1,5 @@
 <template>
-    <div
-        class="relative bg-transparent flex-grow"
-        :="focused ? {'focused': 'true'} : {}"
-        @click="input.focus()"
-    >
+    <div class="relative grow bg-transparent" :="focused ? { 'focused': 'true' } : {}" @click="input.focus()">
         <input
             ref="input"
             type="text"
@@ -14,8 +10,8 @@
             @blur="focused = false"
             @focus="focused = true"
             @input="$emit('update:modelValue', $event.target.value)"
-        >
-        <span class="absolute inset-y-0 right-0 flex items-center pr-2">
+        />
+        <span class="flex absolute inset-y-0 right-0 items-center pr-2">
             <slot />
         </span>
     </div>
@@ -29,29 +25,27 @@ export default {
     props: {
         inputName: {
             type: String,
-            default: ''
+            default: '',
         },
         modelValue: {
             type: String,
-            default: ''
+            default: '',
         },
         inputPlaceholder: {
             type: String,
-            default: 'Entrez du texte...'
+            default: 'Entrez du texte...',
         },
         required: {
             type: Boolean,
-            default: false
-        }
+            default: false,
+        },
     },
     emits: ['update:modelValue'],
     setup () {
-        return {input: ref(null)}
+        return { input: ref(null) }
     },
     data() {
-        return {
-            focused: false
-        }
+        return { focused: false }
     },
     computed: {
         attributes() {
@@ -60,18 +54,16 @@ export default {
                 attributes.name = this.inputName
             }
             if (this.required) {
-                attributes.required = "true"
+                attributes.required = 'true'
             }
             return attributes
-        }
-    }
+        },
+    },
 }
 </script>
 
 <style lang="scss">
-    :root.light .input-with-icon-shadow {
-        box-shadow:
-            inset 0 2px 2px hsl(0deg 0% 0% / 15%),
-            0 2px 0 hsl(0deg 0% 0% / 5%);
-    }
+:root.light .input-with-icon-shadow {
+    box-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 15%), 0 2px 0 hsl(0deg 0% 0% / 5%);
+}
 </style>

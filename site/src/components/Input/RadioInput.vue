@@ -1,15 +1,15 @@
 <template>
-    <div class="bg-1 rounded flex justify-between divide-x divide-color-0 raised cursor-pointer">
+    <div class="flex justify-between rounded divide-x cursor-pointer bg-1 divide-color-0 raised">
         <button
             v-for="(choice, i) in choices"
             :key="i"
-            class="w-full focus:z-50"
-            :class="[ modelValue == choice.key ? 'z-10':'' ]"
+            class="focus:z-50 w-full"
+            :class="[modelValue == choice.key ? 'z-10' : '']"
             @click="$emit('update:modelValue', choice.key)"
         >
             <div
-                class="h-full w-full text-center p-2 rounded"
-                :class="[ modelValue == choice.key ? 'bg-blue-500 text-white ring-2 ring-blue-500':'' ]"
+                class="p-2 w-full h-full text-center rounded"
+                :class="[modelValue == choice.key ? 'bg-blue-500 text-white ring-2 ring-blue-500' : '']"
             >
                 {{ choice.name }}
             </div>
@@ -19,23 +19,22 @@
 
 <script>
 export default {
-    props:{
-        choices:{
-            type:Array,
-            required:true
+    props: {
+        choices: {
+            type: Array,
+            required: true,
         },
-        modelValue:{
+        modelValue: {
             type: null,
-            required: true
-        }
+            required: true,
+        },
     },
     emits: ['update:modelValue'],
     methods: {
-        test(a){
+        test(a) {
             console.log(this.$refs[a].checked)
             console.log(this.modelValue)
-        }
+        },
     },
-
 }
 </script>

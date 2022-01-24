@@ -1,8 +1,5 @@
 <template>
-    <Popper
-        placement="bottom-start"
-        offset-distance="0"
-    >
+    <Popper placement="bottom-start" offset-distance="0">
         <button class="raised select">
             <div>
                 {{ buttonName }}
@@ -10,49 +7,31 @@
         </button>
 
         <template #content>
-            <div
-                class="z-10 mt-2 max-w-md max-h-md overflow-hidden card-0 p-4"
-            >
+            <div class="overflow-hidden z-10 p-4 mt-2 max-w-md max-h-md card-0">
                 <div class="mb-2">
-                    <bottom-border-input
-                        v-model="search"
-                        :input-placeholder="inputPlaceholder"
-                    >
+                    <BottomBorderInput v-model="search" :input-placeholder="inputPlaceholder">
                         <font-awesome-icon icon="search" />
-                    </bottom-border-input>
+                    </BottomBorderInput>
                 </div>
-                <div class="flex flex-col space-y-1 overflow-scroll">
-                    <div class="px-1 rounded flex items-center space-x-1.5">
-                        <input
-                            :id="`${uuid}`"
-                            v-model="allSelected"
-                            type="checkbox"
-                        >
-                        <label
-                            :for="`${uuid}`"
-                            class="cursor-pointer font-semibold text-lg w-full"
-                        >
+                <div class="flex overflow-scroll flex-col space-y-1">
+                    <div class="flex items-center px-1 space-x-1.5 rounded">
+                        <input :id="`${uuid}`" v-model="allSelected" type="checkbox" />
+                        <label :for="`${uuid}`" class="w-full text-lg font-semibold cursor-pointer">
                             {{ allSelected ? 'Tout décocher' : 'Tout cocher' }}
                         </label>
                     </div>
-                    <template
-                        v-for="(filter, i) in filteredList"
-                        :key="i"
-                    >
+                    <template v-for="(filter, i) in filteredList" :key="i">
                         <div
-                            class="flex items-center space-x-2 px-1 rounded"
-                            :class="{'bg-blue-200 dark:bg-blue-800': checkedFilters.includes(filter)}"
+                            class="flex items-center px-1 space-x-2 rounded"
+                            :class="{ 'bg-blue-200 dark:bg-blue-800': checkedFilters.includes(filter) }"
                         >
                             <input
                                 :id="`${uuid}_${i}`"
                                 v-model="checkedFilters"
                                 type="checkbox"
                                 :value="filter"
-                            >
-                            <label
-                                :for="`${uuid}_${i}`"
-                                class="cursor-pointer w-full"
-                            >
+                            />
+                            <label :for="`${uuid}_${i}`" class="w-full cursor-pointer">
                                 {{ filter }}
                             </label>
                         </div>
@@ -66,43 +45,41 @@
 <script>
 import { nanoid } from 'nanoid'
 import BottomBorderInput from '@/components/Input/BottomBorderInput.vue'
-import Popper from "vue3-popper"
+import Popper from 'vue3-popper'
 
 export default {
     components: {
         BottomBorderInput,
-        Popper
+        Popper,
     },
     props: {
         buttonName: {
             type: String,
-            default: 'Choix'
+            default: 'Choix',
         },
         inputPlaceholder: {
             type: String,
-            default: 'Rechercher...'
+            default: 'Rechercher...',
         },
         filters: {
             type: Array,
-            default: () => []
+            default: () => [],
         },
         modelValue: {
             type: Array,
-            default: () => []
-        }
+            default: () => [],
+        },
     },
     emits: ['update:modelValue'],
-    data () {
+    data() {
         return {
             uuid: nanoid(6),
             search: '',
         }
     },
     computed: {
-        filteredList () {
-            return this.filters.filter((item) => {
-                return item.toLowerCase().includes(this.search.toLowerCase())
-            })
+        filteredList() {
+            return this.filters.filter((item) => item.toLowerCase().includes(this.search.toLowerCase()))
         },
         allSelected: {
             get() {
@@ -114,17 +91,17 @@ export default {
                 } else {
                     this.$emit('update:modelValue', [])
                 }
-            }
+            },
         },
         checkedFilters: {
-            get () {
+            get() {
                 return this.modelValue
             },
-            set (value) {
+            set(value) {
                 this.allSelected = this.modelValue.length === this.filters.length
                 this.$emit('update:modelValue', value)
-            }
-        }
+            },
+        },
     },
 }
 </script>

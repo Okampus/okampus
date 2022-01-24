@@ -11,16 +11,13 @@ import FontAwesomeIcon from '@/fontawesome-icons'
 
 import './assets/css/tailwind.css'
 
-
 const emitter = mitt()
 
 const app = createApp(App)
-    .component("font-awesome-icon", FontAwesomeIcon)
+    .component('font-awesome-icon', FontAwesomeIcon)
     .use(store)
     .use(router)
-    .use(createI18n({
-        locale: 'fr'
-    }))
+    .use(createI18n({ locale: 'fr' }))
     .use(InstantSearch)
 
 app.config.globalProperties.emitter = emitter

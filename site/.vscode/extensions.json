@@ -1,13 +1,18 @@
 {
     "recommendations": [
-        "ms-vsliveshare.vsliveshare",
+        "rohit-gohri.format-code-action",
+
         "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "stylelint.vscode-stylelint",
         "bradlc.vscode-tailwindcss",
+
         "johnsoncodehk.volar",
         "ishiyama.vue-autoimport",
         "hollowtree.vue-snippets",
         "naumovs.color-highlight",
+
         "gruntfuggly.todo-tree",
-        "stylelint.vscode-stylelint"
+        "ms-vsliveshare.vsliveshare",
     ]
 }

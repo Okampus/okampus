@@ -1,50 +1,49 @@
 <template>
-    <div class="m-4 flex bg-1 rounded-md">
-        <div class="border-dashed border-l-2 border-color-2-alt ml-2 " />
-        <div class="flex border-dashed border-l-2 border-color-2-alt flex-col  justify-center object-cover ml-2 px-8">
-            <font-awesome-icon
-                icon="comment"
-                class="text-2 text-xl text-center hidden md:block"
-            />
+    <div class="flex m-4 rounded-md bg-1">
+        <div class="ml-2 border-l-2 border-dashed border-color-2-alt" />
+        <div
+            class="flex object-cover flex-col justify-center px-8 ml-2 border-l-2 border-dashed border-color-2-alt"
+        >
+            <font-awesome-icon icon="comment" class="hidden text-xl text-center md:block text-2" />
         </div>
         <div class="flex w-full">
-            <div class="my-2 flex flex-col justify-between ">
+            <div class="flex flex-col justify-between my-2">
                 <div>
                     <p class="text-5">
                         Publié par {{ comment.author.username }} {{ timeAgo(new Date(comment.createdAt)) }}
                     </p>
                     <router-link
                         :to="`/posts/${comment.post.postId}`"
-                        class="text-0 text-lg mr-4 line-clamp-2 "
+                        class="mr-4 text-lg line-clamp-2 text-0"
                     >
                         {{ extractTextFromTipTapJSON(JSON.parse(comment.body)) }}
                     </router-link>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex gap-2 items-center">
                     <div class="flex gap-2">
-                        <div class="flex items-center text-5 hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded">
+                        <div
+                            class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded text-5"
+                        >
                             <font-awesome-icon
-                                class="cursor-pointer tracking-tighter pl-1 block"
-                                :class="{'text-green-600': comment.currentVote === 1}"
+                                class="block pl-1 tracking-tighter cursor-pointer"
+                                :class="{ 'text-green-600': comment.currentVote === 1 }"
                                 :icon="comment.currentVote === 1 ? 'thumbs-up' : ['far', 'thumbs-up']"
                                 @click="comment.currentVote === 1 ? sendVote(0) : sendVote(1)"
                             />
-                            <p class=" text-sm ml-1 tracking-tighter pl-1 ">
+                            <p class="pl-1 ml-1 text-sm tracking-tighter">
                                 {{ comment.upvotes }}
                             </p>
                         </div>
                     </div>
                     <div
-                        v-for="(action,i) in actions"
+                        v-for="(action, i) in actions"
                         :key="i"
-                        class="flex items-center text-5 hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded cursor-pointer"
+                        class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded cursor-pointer text-5"
                         @click="actionsMap[action].action"
                     >
-                        <font-awesome-icon
-                            :icon="actionsMap[action].icon"
-                        />
+                        <font-awesome-icon :icon="actionsMap[action].icon" />
 
-                        <p class="text-2 text-sm tracking-tighter pl-1 hidden md:block">
+                        <p class="hidden pl-1 text-sm tracking-tighter md:block text-2">
                             {{ actionsMap[action].name() }}
                         </p>
                     </div>
@@ -55,43 +54,45 @@
 </template>
 
 <script>
-
 import { timeAgo } from '@/utils/timeAgo'
 import { extractTextFromTipTapJSON } from '@/utils/tiptap'
 export default {
-    components: {  },
+    components: {},
     props: {
         comment: {
             type: Object,
-            default: () => {}
+            default: () => {},
         },
         actions: {
             type: Array,
             default: function () {
-                return [
-                    'favorite',
-                    'flag'
-                ]
-            }
-        }
+                return ['favorite', 'flag']
+            },
+        },
     },
     computed: {
-        actionsMap () {
+        actionsMap() {
             // TODO: Actions
             return {
                 favorite: {
-                    name: ()=> 'Favori',
+                    name: () => 'Favori',
                     icon: this.comment?.favorited ? 'star' : ['far', 'star'],
-                    class: this.comment?.favorited ? 'hover:text-yellow-500 text-yellow-400' : 'hover:text-yellow-400',
-                    action: () => { this.comment.favorited ? this.deleteFavorite() : this.addFavorite() }
+                    class: this.comment?.favorited
+                        ? 'hover:text-yellow-500 text-yellow-400'
+                        : 'hover:text-yellow-400',
+                    action: () => {
+                        this.comment.favorited ? this.deleteFavorite() : this.addFavorite()
+                    },
                 },
                 flag: {
-                    name: () => { return 'Signaler' },
+                    name: () => 'Signaler',
                     icon: 'flag',
-                    action: function () { console.log('Signaler') }
+                    action: function () {
+                        console.log('Signaler')
+                    },
                 },
             }
-        }
+        },
     },
     methods: {
         timeAgo,
@@ -99,7 +100,7 @@ export default {
         sendVote(vote) {
             this.$store.dispatch('users/voteCommentFav', {
                 commentId: this.comment.commentId,
-                value: vote
+                value: vote,
             })
         },
         addFavorite() {
@@ -107,10 +108,8 @@ export default {
         },
         deleteFavorite() {
             this.$store.dispatch('users/deleteFavoriteComment', this.comment.commentId)
-        }
-    }
-
+        },
+    },
 }
 </script>
-<style >
-</style>
+<style></style>

@@ -3,12 +3,10 @@
         class="input-with-icon"
         :class="`h-${height}`"
         tabindex="0"
-        :="focused ? {'focused': 'true'} : {}"
+        :="focused ? { 'focused': 'true' } : {}"
         @focus="input.focus()"
     >
-        <i
-            :class="`w-${height}`"
-        >
+        <i :class="`w-${height}`">
             <slot />
         </i>
 
@@ -22,7 +20,7 @@
             @blur="focused = false"
             @focus="focused = true"
             @input="$emit('update:modelValue', $event.target.value)"
-        >
+        />
     </div>
 </template>
 
@@ -33,37 +31,35 @@ export default {
     props: {
         height: {
             type: String,
-            default: '10'
+            default: '10',
         },
         inputName: {
             type: String,
-            default: ''
+            default: '',
         },
         inputPlaceholder: {
             type: String,
-            default: 'Entrez du texte...'
+            default: 'Entrez du texte...',
         },
         inputType: {
             type: String,
-            default: 'text'
+            default: 'text',
         },
         modelValue: {
             type: String,
-            default: ''
+            default: '',
         },
         required: {
             type: Boolean,
-            default: false
-        }
+            default: false,
+        },
     },
     emits: ['update:modelValue'],
     setup() {
-        return {input: ref(null)}
+        return { input: ref(null) }
     },
     data() {
-        return {
-            focused: false
-        }
+        return { focused: false }
     },
     computed: {
         attributes() {
@@ -72,10 +68,10 @@ export default {
                 attributes.name = this.inputName
             }
             if (this.required) {
-                attributes.required = "true"
+                attributes.required = 'true'
             }
             return attributes
-        }
-    }
+        },
+    },
 }
 </script>

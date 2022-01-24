@@ -1,5 +1,5 @@
 <template>
-    <json-view-item
+    <JsonViewItem
         :class="[{ 'root-item': true, dark: colorScheme === 'dark' }]"
         :data="parsed"
         :max-depth="maxDepth"
@@ -16,23 +16,23 @@ export default {
     props: {
         data: {
             type: Object,
-            required: true
+            required: true,
         },
         rootKey: {
             type: String,
             required: false,
-            default: 'root'
+            default: 'root',
         },
         maxDepth: {
             type: Number,
             required: false,
-            default: 1
+            default: 1,
         },
         colorScheme: {
             type: String,
             required: false,
-            default: 'light'
-        }
+            default: 'light',
+        },
     },
     emits: ['update:selected'],
     computed: {
@@ -45,12 +45,12 @@ export default {
                 type: 'value',
                 path: '',
                 depth: 0,
-                value: this.data
+                value: this.data,
             }
         },
         hasSelectedListener () {
             return !!this.$attrs.onSelected
-        }
+        },
     },
     methods: {
         build (key, val, depth, path, includeKey) {
@@ -64,8 +64,8 @@ export default {
                             childValue,
                             depth + 1,
                             includeKey ? `${path}${key}.` : `${path}`,
-                            true
-                        )
+                            true,
+                        ),
                     )
                 }
                 return {
@@ -74,7 +74,7 @@ export default {
                     depth: depth,
                     path: path,
                     length: children.length,
-                    children: children
+                    children: children,
                 }
             } else if (this.isArray(val)) {
                 // Build Array
@@ -86,8 +86,8 @@ export default {
                             val[i],
                             depth + 1,
                             includeKey ? `${path}${key}[${i}].` : `${path}`,
-                            false
-                        )
+                            false,
+                        ),
                     )
                 }
                 return {
@@ -96,7 +96,7 @@ export default {
                     depth: depth,
                     path: path,
                     length: children.length,
-                    children: children
+                    children: children,
                 }
             } else {
                 // Build Value
@@ -105,7 +105,7 @@ export default {
                     type: 'value',
                     path: includeKey ? path + key : path.slice(0, -1),
                     depth: depth,
-                    value: val
+                    value: val,
                 }
             }
         },
@@ -113,32 +113,32 @@ export default {
         isArray: (val) => Array.isArray(val),
         itemSelected (data) {
             this.$emit('update:selected', data)
-        }
-    }
+        },
+    },
 }
 </script>
 
 <style lang="scss" scoped>
 .root-item {
---vjc-key-color: #0977e6;
---vjc-valueKey-color: #073642;
---vjc-string-color: #268bd2;
---vjc-number-color: #2aa198;
---vjc-boolean-color: #cb4b16;
---vjc-null-color: #6c71c4;
---vjc-arrow-size: 6px;
---vjc-arrow-color: #444;
---vjc-hover-color: rgba(0, 0, 0, 0.2);
+    --vjc-key-color: #0977e6;
+    --vjc-valueKey-color: #073642;
+    --vjc-string-color: #268bd2;
+    --vjc-number-color: #2aa198;
+    --vjc-boolean-color: #cb4b16;
+    --vjc-null-color: #6c71c4;
+    --vjc-arrow-size: 6px;
+    --vjc-arrow-color: #444;
+    --vjc-hover-color: rgba(0, 0, 0, 0.2);
 
-margin-left: 0;
-width: 100%;
-height: auto;
+    margin-left: 0;
+    width: 100%;
+    height: auto;
 }
 
 :root.dark .root-item {
---vjc-key-color: #80d8ff;
---vjc-valueKey-color: #fdf6e3;
---vjc-hover-color: rgba(255, 255, 255, 0.2);
---vjc-arrow-color: #fdf6e3;
+    --vjc-key-color: #80d8ff;
+    --vjc-valueKey-color: #fdf6e3;
+    --vjc-hover-color: rgba(255, 255, 255, 0.2);
+    --vjc-arrow-color: #fdf6e3;
 }
 </style>

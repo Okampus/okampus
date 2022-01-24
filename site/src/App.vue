@@ -1,16 +1,9 @@
 <template>
     <!-- TODO: Solve mysterious min-width ??? -->
-    <form-login
-        :show-login="showLogin"
-        @toggle-login="toggleLogin"
-    />
+    <FormLogin :show-login="showLogin" @toggle-login="toggleLogin" />
 
-
-    <div
-        class="flex flex-row filter h-screen w-screen z-1"
-        :class="{'brightness-50': showModal}"
-    >
-        <side-bar
+    <div class="flex flex-row w-screen h-screen z-1" :class="{ 'brightness-50': showModal }">
+        <SideBar
             ref="sidebar"
             :collapsed="closedSidebar && !uncollapsedSidebar"
             :uncollapsed="uncollapsedSidebar"
@@ -19,22 +12,19 @@
         />
         <div
             ref="content"
-            :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
-            class="w-full bg-2 h-content flex flex-col relative after-topbar overflow-auto app-scrollbar filter"
+            :class="{ 'brightness-50': uncollapsedSidebar && !collapsingSidebar }"
+            class="flex overflow-auto relative flex-col w-full bg-2 h-content after-topbar app-scrollbar"
         >
-            <div
-                class="flex-grow-1 flex-shrink-0 flex-auto"
-            >
+            <div class="flex-auto shrink-0 grow-1">
                 <router-view />
             </div>
-            <footer-bar class="flex-shrink-0" />
+            <FooterBar class="shrink-0" />
         </div>
-        <top-bar
+        <TopBar
             ref="topbar"
-            class="flex fixed top-0 left-0 w-full h-tbar border-bar
-      text-1 items-center justify-between border-b bg-1 filter"
+            class="flex fixed top-0 left-0 justify-between items-center w-full border-b h-tbar border-bar text-1 bg-1"
             :show-login="showLogin"
-            :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
+            :class="{ 'brightness-50': uncollapsedSidebar && !collapsingSidebar }"
             @toggle-login="toggleLogin"
             @toggle-side-bar="toggleSidebar"
         />
@@ -42,17 +32,19 @@
 </template>
 
 <script lang="js">
-import User from '@/models/user'
-
-import debounce from 'lodash/debounce'
-
-import { ref, watch } from 'vue'
-
-import TopBar from '@/components/Bar/TopBar.vue'
-import SideBar from '@/components/Bar/SideBar.vue'
 import FooterBar from '@/components/Bar/FooterBar.vue'
-
+import SideBar from '@/components/Bar/SideBar.vue'
+import TopBar from '@/components/Bar/TopBar.vue'
 import FormLogin from '@/components/Form/FormLogin.vue'
+import User from '@/models/user'
+import debounce from 'lodash/debounce'
+import {
+    ref, watch,
+} from 'vue'
+
+
+
+
 
 const breakWidth = 768
 export default {
@@ -60,7 +52,7 @@ export default {
         TopBar,
         SideBar,
         FooterBar,
-        FormLogin
+        FormLogin,
     },
     setup () {
         const showLogin = ref(false)
@@ -69,7 +61,12 @@ export default {
         const sidebar = ref(null)
         const topbar = ref(null)
         const content = ref(null)
-        return { sidebar, topbar, content, showLogin, showModal,
+        return {
+            sidebar,
+            topbar,
+            content,
+            showLogin,
+            showModal,
             toggleModal () {
                 showModal.value = !showModal.value
                 showLogin.value = showModal.value
@@ -77,7 +74,7 @@ export default {
             toggleLogin () {
                 showLogin.value = !showLogin.value
                 showModal.value = showLogin.value
-            }
+            },
         }
     },
     data () {
@@ -158,51 +155,50 @@ export default {
             } else {
                 this.closedSidebar = !this.closedSidebar
             }
-        }
-    }
+        },
+    },
 }
 </script>
 
 <style lang="scss">
-
-@import "@/assets/scss/app.scss";
-@import "@/assets/scss/components/button.scss";
-@import "@/assets/scss/components/card.scss";
-@import "@/assets/scss/components/input.scss";
-@import "@/assets/scss/components/link.scss";
-@import "@/assets/scss/components/select.scss";
-@import "@/assets/scss/components/tiptap.scss";
-@import "@/assets/scss/sections/hero.scss";
-@import "@/assets/scss/sections/label.scss";
-@import "@/assets/scss/sections/transition.scss";
-@import "@/assets/scss/core/scrollbar.scss";
-@import "@/assets/scss/core/spacing.scss";
-@import "@/assets/scss/core/tab.scss";
+@import '@/assets/scss/app.scss';
+@import '@/assets/scss/components/button.scss';
+@import '@/assets/scss/components/card.scss';
+@import '@/assets/scss/components/input.scss';
+@import '@/assets/scss/components/link.scss';
+@import '@/assets/scss/components/select.scss';
+@import '@/assets/scss/components/tiptap.scss';
+@import '@/assets/scss/sections/hero.scss';
+@import '@/assets/scss/sections/label.scss';
+@import '@/assets/scss/sections/transition.scss';
+@import '@/assets/scss/core/scrollbar.scss';
+@import '@/assets/scss/core/spacing.scss';
+@import '@/assets/scss/core/tab.scss';
 
 @font-face {
     font-family: AtkinsonHyperlegible;
     font-weight: 400;
-    src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf") format("truetype");
+    src: url('@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: AtkinsonHyperlegible;
     font-weight: 400;
     font-style: italic;
-    src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf") format("truetype");
+    src: url('@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf') format('truetype');
 }
 
 @font-face {
     font-family: AtkinsonHyperlegible;
     font-weight: 700;
-    src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf") format("truetype");
+    src: url('@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf') format('truetype');
 }
 
 @font-face {
     font-family: AtkinsonHyperlegible;
     font-weight: 700;
     font-style: italic;
-    src: url("@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf") format("truetype");
+    src: url('@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf') format('truetype');
 }
 
 * {

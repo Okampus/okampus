@@ -1,45 +1,40 @@
 <template>
-    <div class="flex bg-gray-50 dark:bg-gray-800 rounded-lg p-3 my-3 w-full">
-        <select-multi-checkbox
+    <div class="flex p-3 my-3 w-full bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <SelectMultiCheckbox
             v-model="selectedCols"
             :filters="getCols()"
             button-name="Voir les colonnes..."
             input-placeholder="Filtrer les colonnes..."
         />
     </div>
-    <table class="w-full overflow-x-scroll rounded-table">
+    <table class="overflow-x-scroll w-full rounded-table">
         <thead>
             <tr
-                class="text-xs font-semibold tracking-wide text-left text-gray-500 dark:text-gray-400
-            uppercase border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
+                class="text-xs font-semibold tracking-wide text-left text-gray-500 dark:text-gray-400 uppercase bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700"
             >
                 <th
                     v-for="(col, colName) in columns"
                     :key="colName"
-                    class="px-4 py-3"
+                    class="py-3 px-4"
                     :class="{ hidden: !(selectedCols.includes(colName) || selectedCols.includes(col.name)) }"
                 >
                     {{ col.name || colcamelToSentenceCase(colName) }}
                 </th>
             </tr>
         </thead>
-        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+        <tbody class="bg-white dark:bg-gray-800 divide-y dark:divide-gray-700">
             <tr
                 v-for="(item, i) in itemsSorted"
                 :key="i"
-                class="bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900
-             text-gray-700 dark:text-gray-400"
+                class="text-gray-700 dark:text-gray-400 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
             >
                 <td
                     v-for="(col, colName) in columns"
                     :key="colName"
-                    class="px-4 py-3"
+                    class="py-3 px-4"
                     :class="{ hidden: !(selectedCols.includes(colName) || selectedCols.includes(col.name)) }"
                 >
-                    <component
-                        :is="col.comp[0]"
-                        :="col.attrs(item)"
-                    >
+                    <component :is="col.comp[0]" :="col.attrs(item)">
                         {{ col.slot(item) }}
                     </component>
                 </td>
@@ -63,35 +58,35 @@ export default {
         SelectMultiCheckbox,
         TransitionRoot,
         Dialog,
-        ThreadCompactView
+        ThreadCompactView,
     },
     props: {
         items: {
             type: Array,
-            default: () => []
+            default: () => [],
         },
         startSelectedCols: {
             type: Array,
-            default: () => undefined
+            default: () => undefined,
         },
         columns: {
             type: Object,
-            default: () => {}
-        }
+            default: () => {},
+        },
     },
     data () {
         return {
             selectedCols: this.startSelectedCols === undefined ? this.getCols() : [...this.startSelectedCols],
-            sortColumn: "",
+            sortColumn: '',
             columnsSort: Object.fromEntries(
-                Object.values(this.columns).map(colName => [colName, 0])
-            )
+                Object.values(this.columns).map(colName => [colName, 0]),
+            ),
         }
     },
     computed: {
         itemsSorted() {
             return [...this.items].sort((a, b) => {
-                if (this.sortColumn !== "") {
+                if (this.sortColumn !== '') {
                     a = this.columns[this.sortColumn].value(a)
                     b = this.columns[this.sortColumn].value(b)
                     if (a > b) {
@@ -102,7 +97,7 @@ export default {
                 }
                 return 0
             })
-        }
+        },
     },
     beforeCreate () {
         for (const column in this.columns) {
@@ -135,8 +130,8 @@ export default {
                 this.sortColumn = colName
             }
             this.columnsSort[this.sortColumn] = this.columnsSort[this.sortColumn] === -1 ? 0 : (this.columnsSort[this.sortColumn] === 1 ? -1 : 1)
-        }
-    }
+        },
+    },
 }
 </script>
 

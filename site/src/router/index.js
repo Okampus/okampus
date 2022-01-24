@@ -1,44 +1,46 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import {
+    createRouter, createWebHashHistory, 
+} from 'vue-router'
 
 const routes = [
     {
         path: '/',
-        component: () => import('@/views/LandingPage.vue')
+        component: () => import('@/views/LandingPage.vue'),
     },
 
     {
         path: '/admin',
-        component: () => import('@/views/Dashboard/DashboardAdmin.vue')
+        component: () => import('@/views/Dashboard/DashboardAdmin.vue'),
     },
 
     {
         path: '/blog',
-        component: () => import('@/views/Blog/BlogList.vue')
+        component: () => import('@/views/Blog/BlogList.vue'),
     },
 
     {
         path: '/blog/new',
-        component: () => import('@/views/Blog/BlogNew.vue')
+        component: () => import('@/views/Blog/BlogNew.vue'),
     },
 
     {
         path: '/blog/:id',
-        component: () => import('@/views/Blog/BlogShow.vue')
+        component: () => import('@/views/Blog/BlogShow.vue'),
     },
 
     {
         path: '/blog/admin',
-        component: () => import('@/views/Blog/BlogAdmin.vue')
+        component: () => import('@/views/Blog/BlogAdmin.vue'),
     },
 
     {
         path: '/posts',
-        component: () => import('@/views/Thread/ThreadList.vue')
+        component: () => import('@/views/Thread/ThreadList.vue'),
     },
 
     {
         path: '/posts/new',
-        component: () => import('@/views/Thread/ThreadNew.vue')
+        component: () => import('@/views/Thread/ThreadNew.vue'),
     },
 
     {
@@ -48,50 +50,50 @@ const routes = [
 
     {
         path: '/docs',
-        component: () => import('@/views/Document/DocumentList.vue')
+        component: () => import('@/views/Document/DocumentList.vue'),
     },
 
     {
         path: '/docs/new',
-        component: () => import('@/views/Document/DocumentNew.vue')
+        component: () => import('@/views/Document/DocumentNew.vue'),
     },
 
     {
-        path: '/users/me/:component',
-        component: () => import('@/views/User/UserMyProfile.vue')
+        path: '/me/:component',
+        component: () => import('@/views/User/UserMyProfile.vue'),
+    },
+
+    {
+        path: '/me/favorites',
+        component: () => import('@/views/User/UserFavorites.vue'),
     },
 
     {
         path: '/users/:userId',
-        component: () => import('@/views/User/UserProfile.vue')
-    },
-
-    {
-        path: '/users/me/favorites',
-        component : () => import('@/views/User/UserFavorites.vue')
+        component: () => import('@/views/User/UserProfile.vue'),
     },
 
     {
         path: '/users',
-        component: () => import('@/views/User/UserList.vue')
+        component: () => import('@/views/User/UserList.vue'),
     },
 
     {
         path: '/crous',
-        component : () => import('@/views/Blog/BlogCrous.vue')
+        component: () => import('@/views/Blog/BlogCrous.vue'),
     },
 ]
 
 if (import.meta.env.DEV) {
     routes.push({
         path: '/test',
-        component: () => import('@/views/Test/TestPage.vue')
+        component: () => import('@/views/Test/TestPage.vue'),
     })
 }
 
 const router = createRouter({
     history: createWebHashHistory(),
-    routes
+    routes,
 })
 
 export default router

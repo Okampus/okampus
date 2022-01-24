@@ -1,12 +1,12 @@
 <template>
     <div
         ref="tagsContainer"
-        class="flex gap-2 flex-wrap items-center input w-full cursor-text h-max overflow-auto"
+        class="flex overflow-auto flex-wrap gap-2 items-center w-full h-max cursor-text input"
         tabindex="0"
-        :="focused ? {'focused': 'true'} : {}"
+        :="focused ? { 'focused': 'true' } : {}"
         @focus="tagsInput.focus()"
     >
-        <app-tag
+        <AppTag
             v-for="(tag, idx) in tags"
             :key="idx"
             :tag-name="tag"
@@ -14,19 +14,19 @@
             class="mb-1"
             @close="removeTag(idx)"
         />
-        <div class="flex-grow basis-0">
+        <div class="basis-0 grow">
             <input
                 ref="tagsInput"
                 v-model="newTag"
                 :placeholder="placeholder"
-                class="placeholder h-8 min-w-[1em] bg-transparent outline-none w-full"
+                class="w-full min-w-[1em] h-8 bg-transparent outline-none placeholder"
                 @blur="focused = false"
                 @focus="focused = true"
                 @keydown="$emit('input-update', $event)"
                 @keydown.enter.prevent="addTag(newTag)"
                 @keydown.space.prevent="addTag(newTag)"
                 @keydown.delete="newTag.length || removeTag(tags.length - 1)"
-            >
+            />
         </div>
     </div>
 </template>
@@ -36,18 +36,16 @@ import AppTag from '@/components/App/AppTag.vue'
 
 import { ref } from 'vue'
 export default {
-    components: {
-        AppTag
-    },
+    components: { AppTag },
     props: {
         placeholder: {
             type: String,
-            default: 'Entrez des tags...'
+            default: 'Entrez des tags...',
         },
         modelValue: {
             type: Array,
-            default: () => []
-        }
+            default: () => [],
+        },
     },
     emits: ['update:modelValue', 'error', 'input-update'],
     setup: (props, ctx) => {
@@ -81,12 +79,17 @@ export default {
             }
         }
 
-        return { tags, newTag, addTag, removeTag, tagsContainer, tagsInput }
+        return {
+            tags,
+            newTag,
+            addTag,
+            removeTag,
+            tagsContainer,
+            tagsInput,
+        }
     },
     data() {
-        return {
-            focused: false
-        }
-    }
+        return { focused: false }
+    },
 }
 </script>

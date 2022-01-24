@@ -1,17 +1,11 @@
 <template>
     <div>
-        <div
-            class="absolute py-12 hero h-52 w-full top-0 left-0"
-        />
-        <div class="relative mt-12 mb-10 mx-auto w-11/12 flex flex-col space-y-4 card-0 min-w-2/3">
+        <div class="absolute top-0 left-0 py-12 w-full h-52 hero" />
+        <div class="flex relative flex-col mx-auto mt-12 mb-10 space-y-4 w-11/12 card-0 min-w-2/3">
             <div>
-                <div class="label-title">
-                    Titre
-                </div>
+                <div class="label-title">Titre</div>
 
-                <div class="label-desc">
-                    Titre simple et complet décrivant votre Post
-                </div>
+                <div class="label-desc">Titre simple et complet décrivant votre Post</div>
                 <input
                     v-model="state.title"
                     class="w-full input"
@@ -19,30 +13,25 @@
                     name="title"
                     placeholder="Titre descriptif/complet"
                     @input="v$.title.$touch"
-                >
-                <app-error
+                />
+                <AppError
                     v-if="v$.title.$error"
                     :error="`Un titre de Post doit faire entre ${titleCharLimit[0]} et ${titleCharLimit[1]} caractères.`"
                 />
             </div>
 
             <div>
-                <div class="label-title">
-                    Type de Post
-                </div>
+                <div class="label-title">Type de Post</div>
                 <div class="label-desc">
                     Quel
                     <Popper :hover="true">
-                        <u
-                            class="text-blue-400 hover:text-orange-400 cursor-help"
-                        >
-                            type
-                        </u>
+                        <u class="text-blue-400 hover:text-orange-400 cursor-help"> type </u>
 
                         <template #content>
                             <div class="popover">
                                 <ul>
-                                    Types possibles: <li
+                                    Types possibles:
+                                    <li
                                         v-for="postType in postTypesEnum"
                                         :key="postType"
                                         class="text-blue-700"
@@ -55,12 +44,12 @@
                     </Popper>
                     de Post voulez-vous créer ?
                 </div>
-                <select-input
+                <SelectInput
                     v-model="state.type"
                     button-name="Type de Post"
-                    :choices="postTypesEnum.map(postType => postType[$i18n.locale])"
+                    :choices="postTypesEnum.map((postType) => postType[$i18n.locale])"
                 />
-                <app-error
+                <AppError
                     v-if="v$.type.$error"
                     :error="`Choisissez un type de Post dans la liste.`"
                     success="Type de Post valide"
@@ -68,14 +57,10 @@
             </div>
 
             <div>
-                <div class="label-title">
-                    Contenu
-                </div>
-                <div class="label-desc">
-                    Décrivez le plus précisément possible votre Post
-                </div>
+                <div class="label-title">Contenu</div>
+                <div class="label-desc">Décrivez le plus précisément possible votre Post</div>
                 <div>
-                    <tip-tap-editor
+                    <TipTapEditor
                         ref="editorRef"
                         v-model="state.body"
                         name="editor"
@@ -86,23 +71,21 @@
                         @input="v$.body.$touch"
                     >
                         <template #error>
-                            <app-error
+                            <AppError
                                 v-if="v$.body.$error"
                                 :error="`Une description de Post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
                             />
                         </template>
-                    </tip-tap-editor>
+                    </TipTapEditor>
                 </div>
             </div>
 
             <div>
-                <div class="label-title">
-                    Tags
-                </div>
+                <div class="label-title">Tags</div>
                 <div class="label-desc">
                     Ajoutez {{ minTags }} Tags (ou plus) qui décrivent le sujet de votre Post
                 </div>
-                <tag-input
+                <TagInput
                     v-model="state.tags"
                     name="tags"
                     placeholder="Entrez le nom du tag et appuyez sur entrée..."
@@ -119,37 +102,22 @@
 
             <div class="flex">
                 <!-- TODO: message in case post validation doesn't work, refactor error warnings, redirect -->
-                <button
-                    class="button"
-                    @click="submit"
-                >
-                    <p>
-                        Soumettre le Post pour validation
-                    </p>
+                <button class="button" @click="submit">
+                    <p>Soumettre le Post pour validation</p>
                 </button>
                 <div
                     v-if="submitSuccess === 1"
-                    class="text-green-500 bg-green-500 bg-opacity-25 font-bold p-2 rounded-md my-auto ml-4 flex gap-2"
+                    class="flex gap-2 p-2 my-auto ml-4 font-bold text-green-500 bg-green-500 rounded-md bg-opacity-/25"
                 >
-                    <font-awesome-icon
-                        icon="check"
-                        class="my-auto"
-                    />
-                    <div class="my-auto">
-                        Création réussie
-                    </div>
+                    <font-awesome-icon icon="check" class="my-auto" />
+                    <div class="my-auto">Création réussie</div>
                 </div>
                 <div
                     v-else-if="submitSuccess === -1"
-                    class="text-red-500 bg-red-500 bg-opacity-25 font-bold p-2 rounded-md my-auto ml-4 flex gap-2"
+                    class="flex gap-2 p-2 my-auto ml-4 font-bold text-red-500 bg-red-500 rounded-md bg-opacity-/25"
                 >
-                    <font-awesome-icon
-                        icon="times"
-                        class="my-auto"
-                    />
-                    <div class="my-auto">
-                        Erreur lors de l'enregistrement du post
-                    </div>
+                    <font-awesome-icon icon="times" class="my-auto" />
+                    <div class="my-auto">Erreur lors de l'enregistrement du post</div>
                 </div>
             </div>
 
@@ -159,19 +127,23 @@
 </template>
 
 <script lang="js">
-import Popper from "vue3-popper"
-
-import SelectInput from '@/components/Input/SelectInput.vue'
 import AppError from '@/components/App/AppError.vue'
-import useVuelidate from '@vuelidate/core'
-import { between, required, minLength, maxLength } from '@vuelidate/validators'
-import postTypesEnum from '@/shared/types/post-types.enum'
-
+import SelectInput from '@/components/Input/SelectInput.vue'
 import TagInput from '@/components/Input/TagInput.vue'
 import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
-
-import { ref, reactive } from 'vue'
+import postTypesEnum from '@/shared/types/post-types.enum'
 import { defaultTipTapText } from '@/utils/tiptap'
+import useVuelidate from '@vuelidate/core'
+import {
+    between, maxLength, minLength, required,
+} from '@vuelidate/validators'
+import {
+    reactive, ref,
+} from 'vue'
+import Popper from 'vue3-popper'
+
+
+
 
 export default {
     components: {
@@ -179,22 +151,22 @@ export default {
         AppError,
         TipTapEditor,
         Popper,
-        SelectInput
+        SelectInput,
     },
     inheritAttrs: false,
     props: {
         editorCharLimit: {
             type: Array,
-            default: () => [10, 10000]
+            default: () => [10, 10000],
         },
         titleCharLimit: {
             type: Array,
-            default: () => [15, 80]
+            default: () => [15, 80],
         },
         minTags: {
             type: Number,
-            default: 2
-        }
+            default: 2,
+        },
     },
     setup (props) {
         const editorRef = ref(null)
@@ -202,7 +174,7 @@ export default {
             title: '',
             type: null,
             body: defaultTipTapText,
-            tags: []
+            tags: [],
         })
 
         const tagsLength = (tags) => tags.length >= props.minTags
@@ -211,23 +183,30 @@ export default {
         const editorCharCount = () => inRange(editorRef.value.getCharCount(), props.editorCharLimit)
 
         const rules = {
-            title: { required, minLength: minLength(props.titleCharLimit[0]), maxLength: maxLength(props.titleCharLimit[1]) },
-            type: { required, between: between(0, postTypesEnum.length-1) },
+            title: {
+                required,
+                minLength: minLength(props.titleCharLimit[0]),
+                maxLength: maxLength(props.titleCharLimit[1]),
+            },
+            type: {
+                required,
+                between: between(0, postTypesEnum.length-1),
+            },
             body: { editorCharCount },
-            tags: { tagsLength }
+            tags: { tagsLength },
         }
 
         return {
             editorRef,
             state,
-            v$: useVuelidate(rules, state)
+            v$: useVuelidate(rules, state),
         }
     },
     data () {
         return {
             postTypesEnum,
             customTagError: null,
-            submitSuccess: 0
+            submitSuccess: 0,
         }
     },
     methods: {
@@ -252,11 +231,11 @@ export default {
                 title: this.state.title,
                 type: this.state.type,
                 body: this.state.body,
-                tags: this.state.tags
-            }).then().catch(()=> {
+                tags: this.state.tags,
+            }).then().catch(() => {
                 this.submitSuccess = -1
             })
-        }
-    }
+        },
+    },
 }
 </script>

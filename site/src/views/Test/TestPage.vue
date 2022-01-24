@@ -1,10 +1,10 @@
 <template>
-    <div class="text-4xl text-red-500 m-10 text-center">
+    <div class="m-10 text-4xl text-center text-red-500">
         Utilisez ce component pour preview facilement des components, faire des tests...
-        <br>
+        <br />
         (MERCI DE NE PAS COMMIT DE MODIFICATIONS)
-        <br>
-        <br>
+        <br />
+        <br />
         @/views/TestPage.vue
     </div>
 </template>
@@ -12,11 +12,7 @@
 <script lang="js">
 
 export default {
-    components:{
-
-    },
-    props: {
-
-    },
+    components: {},
+    props: {},
 }
 </script>

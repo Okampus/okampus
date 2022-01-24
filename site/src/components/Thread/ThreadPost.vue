@@ -3,7 +3,7 @@
         <!-- {{ post }} -->
         <div class="text-1">
             <div class="flex mt-1">
-                <div class="flex flex-col flex-shrink-0 w-3/24 items-center text-lg gap-2 -ml-4">
+                <div class="flex flex-col shrink-0 gap-2 items-center -ml-4 w-3/24 text-lg">
                     <UserPreview
                         :username="post.author?.username"
                         :avatar="post.author?.avatar"
@@ -12,20 +12,20 @@
                         mode="vertical"
                     />
 
-                    <div class="mt-1 flex items-center gap-2">
+                    <div class="flex gap-2 items-center mt-1">
                         <font-awesome-icon
                             :icon="['fa', 'thumbs-up']"
                             class="text-lg hover:text-blue-500 cursor-pointer"
-                            :class="{'text-green-500': post.currentVote === 1}"
+                            :class="{ 'text-green-500': post.currentVote === 1 }"
                             @click="post.currentVote === 1 ? sendVote(0) : sendVote(1)"
                         />
-                        <div class="text-center text-xl">
+                        <div class="text-xl text-center">
                             {{ post.upvotes - post.downvotes }}
                         </div>
                         <font-awesome-icon
                             :icon="['fa', 'thumbs-down']"
-                            class="symmetry-x text-lg hover:text-blue-500 cursor-pointer"
-                            :class="{'text-red-500': post.currentVote === -1}"
+                            class="text-lg hover:text-blue-500 cursor-pointer symmetry-x"
+                            :class="{ 'text-red-500': post.currentVote === -1 }"
                             @click="post.currentVote === -1 ? sendVote(0) : sendVote(-1)"
                         />
                     </div>
@@ -34,7 +34,7 @@
                         <div
                             v-for="(action, i) in otherActions"
                             :key="i"
-                            class="flex items-center text-5 rounded transition cursor-pointer"
+                            class="flex items-center rounded transition cursor-pointer text-5"
                             @click="actionsMap[action].action"
                         >
                             <font-awesome-icon
@@ -44,9 +44,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col w-21/24 gap-3 bg-2 p-2 rounded-xl mt-2">
+                <div class="flex flex-col gap-3 p-2 mt-2 w-21/24 rounded-xl bg-2">
                     <div class="p-2 text-lg">
-                        <tip-tap-editable-render
+                        <TipTapEditableRender
                             v-model:content="body"
                             v-model:show="showEditor"
                             @validate="updatePost($event)"
@@ -58,26 +58,23 @@
                             <div
                                 v-for="(action, i) in actionsBar"
                                 :key="i"
-                                class="group flex gap-1 items-center text-5 transition rounded-lg cursor-pointer p-2"
+                                class="group flex gap-1 items-center p-2 rounded-lg transition cursor-pointer text-5"
                                 @click="actionsMap[action].action"
                             >
                                 <font-awesome-icon
                                     :icon="actionsMap[action].icon"
                                     :class="actionsMap[action].class"
                                 />
-                                <p
-                                    :class="actionsMap[action].class"
-                                    class="text-sm"
-                                >
+                                <p :class="actionsMap[action].class" class="text-sm">
                                     {{ actionsMap[action].name() }}
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <thread-comment-list
+                    <ThreadCommentList
                         v-model:on-comment="onComment"
-                        :parent-content="{type: 'post', id: post.postId}"
+                        :parent-content="{ type: 'post', id: post.postId }"
                         :comments="comments"
                     />
                 </div>
@@ -96,12 +93,12 @@ export default {
     components: {
         UserPreview,
         ThreadCommentList,
-        TipTapEditableRender
+        TipTapEditableRender,
     },
     props: {
         post: {
             type: Object,
-            default: () => {}
+            default: () => {},
         },
     },
     emits: ['reply'],
@@ -110,7 +107,7 @@ export default {
             maxCommentsShown: 2,
             showEditor: false,
             body: this.post.body,
-            onComment: false
+            onComment: false,
         }
     },
     computed: {
@@ -119,73 +116,78 @@ export default {
                 ...[
                     'reply',
                     'addComment',
-                    'report'
+                    'report',
                 ],
                 ...(this.post.author.userId === this.$store.state.auth.user.userId
                     ? ['edit']
-                    : [])
+                    : []),
             ]
         },
         otherActions() {
             return ['favorite']
         },
         actionsMap () {
-            return { ...( {
-                reply: {
-                    name: () => 'Répondre',
-                    icon: ['far', 'comment-alt'],
-                    class: 'group-hover:text-blue-500',
-                    action:  () => { this.$emit('reply') }
-                },
-                addComment: {
-                    name: ()=> 'Commenter',
-                    icon: ['far', 'comment'],
-                    class: 'group-hover:text-blue-500',
-                    action: () => { this.onComment = true }
-                },
-                report: {
-                    name: ()=> 'Signaler',
-                    icon: ['far', 'flag'],
-                    class: 'group-hover:text-red-500',
-                    action: () => {  }
-                },
-                favorite: {
-                    name: () => 'Favori',
-                    icon: this.post?.favorited ? 'star' : ['far', 'star'],
-                    class: this.post?.favorited ? 'hover:text-yellow-500 text-yellow-400' : 'hover:text-yellow-400',
-                    action: () => { this.post?.favorited ? this.deleteFavorite() : this.addFavorite() }
-                }
-            }),
-            ...(this.post.author.userId === this.$store.state.auth.user?.userId && {
-                edit: {
-                    name: () => 'Éditer',
-                    condition: () => this.isUser(),
-                    icon: 'edit',
-                    class: 'group-hover:text-green-500',
-                    action: () => { this.showEditor = true }
-                }})
+            return {
+                ...( {
+                    reply: {
+                        name: () => 'Répondre',
+                        icon: ['far', 'comment-alt'],
+                        class: 'group-hover:text-blue-500',
+                        action: () => { this.$emit('reply') },
+                    },
+                    addComment: {
+                        name: () => 'Commenter',
+                        icon: ['far', 'comment'],
+                        class: 'group-hover:text-blue-500',
+                        action: () => { this.onComment = true },
+                    },
+                    report: {
+                        name: () => 'Signaler',
+                        icon: ['far', 'flag'],
+                        class: 'group-hover:text-red-500',
+                        action: () => {  },
+                    },
+                    favorite: {
+                        name: () => 'Favori',
+                        icon: this.post?.favorited ? 'star' : ['far', 'star'],
+                        class: this.post?.favorited ? 'hover:text-yellow-500 text-yellow-400' : 'hover:text-yellow-400',
+                        action: () => { this.post?.favorited ? this.deleteFavorite() : this.addFavorite() },
+                    },
+                }),
+                ...(this.post.author.userId === this.$store.state.auth.user?.userId && {
+                    edit: {
+                        name: () => 'Éditer',
+                        condition: () => this.isUser(),
+                        icon: 'edit',
+                        class: 'group-hover:text-green-500',
+                        action: () => { this.showEditor = true },
+                    },
+                }),
             }
         },
         comments() {
             return this.post.comments
-        }
+        },
     },
     mounted() {
         watch(
             () => this.post.body,
             (newBody) => {
                 this.body = newBody
-            }
+            },
         )
     },
     methods: {
         updatePost(body) {
-            this.$store.dispatch('thread/updatePost', { ...this.post, body })
+            this.$store.dispatch('thread/updatePost', {
+                ...this.post,
+                body,
+            })
         },
         sendVote(vote) {
             this.$store.dispatch('thread/votePost', {
                 postId: this.post.postId,
-                value: vote
+                value: vote,
             })
         },
         addFavorite() {
@@ -193,7 +195,7 @@ export default {
         },
         deleteFavorite() {
             this.$store.dispatch('thread/deleteFavoritePost', this.post.postId)
-        }
-    }
+        },
+    },
 }
 </script>

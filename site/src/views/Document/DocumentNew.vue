@@ -1,6 +1,6 @@
 <template>
-    <div class="w-21/24 my-8 mx-auto shadow-md card">
-        <form-multi-step
+    <div class="my-8 mx-auto w-21/24 shadow-md card">
+        <FormMultiStep
             v-model="stepAction"
             :steps="steps"
             @previous-step="previousStep"
@@ -11,24 +11,24 @@
                 <section>
                     <div class="space-y-4">
                         <div>
-                            <div for="matiere">
-                                Matière
-                            </div>
+                            <div for="matiere">Matière</div>
                             <div class="w-full">
-                                <search-input
+                                <SearchInput
                                     v-model="stepsModel[0].docSubject"
                                     class="w-full"
                                     :item-limit="1"
                                     :index-object="{
-                                        'subjects':{
-                                            queryBy:'code,name,englishName',
-                                            queryByWeights: '10, 5, 5'
-                                        }
+                                        'subjects': {
+                                            queryBy: 'code,name,englishName',
+                                            queryByWeights: '10, 5, 5',
+                                        },
                                     }"
                                 >
                                     <template #inputComponent="slotValue">
-                                        <div class="flex-grow flex justify-between gap-2 items-center bg-0 rounded-lg p-2">
-                                            <div class="text-1 flex items-center gap-2">
+                                        <div
+                                            class="flex grow gap-2 justify-between items-center p-2 rounded-lg bg-0"
+                                        >
+                                            <div class="flex gap-2 items-center text-1">
                                                 <font-awesome-icon
                                                     :icon="iconList(slotValue.item.code)"
                                                     class="text-lg"
@@ -49,20 +49,20 @@
                                     </template>
                                     <template #default="slotValue">
                                         <div
-                                            class="max-h-24 w-full flex flex-col overflow-y-scroll app-scrollbar"
+                                            class="flex overflow-y-scroll flex-col w-full max-h-24 app-scrollbar"
                                         >
                                             <div
-                                                v-for="(item,i) in slotValue.items"
+                                                v-for="(item, i) in slotValue.items"
                                                 :key="i"
-                                                class="flex p-1 gap-2 items-center rounded focus:bg-blue-100 focus:dark:bg-blue-500"
+                                                class="flex gap-2 items-center p-1 focus:bg-blue-100 focus:dark:bg-blue-500 rounded"
                                                 tabindex="0"
-                                                @click="slotValue.addItem(
-                                                    {
-                                                        code:item.code,
-                                                        name:item.name,
-                                                        desc:item.name,
-
-                                                    })"
+                                                @click="
+                                                    slotValue.addItem({
+                                                        code: item.code,
+                                                        name: item.name,
+                                                        desc: item.name,
+                                                    })
+                                                "
                                             >
                                                 <font-awesome-icon
                                                     :icon="iconList(item.code)"
@@ -77,31 +77,39 @@
                                             </div>
                                         </div>
                                     </template>
-                                </search-input>
+                                </SearchInput>
                             </div>
                         </div>
 
                         <div class="flex flex-col">
-                            <radio-input
+                            <RadioInput
                                 v-model="stepsModel[0].cursus"
                                 :choices="[
-                                    {name:'Tous', key: 'all'},
-                                    {name:'Internationale', key: 'int'},
-                                    {name:'Renforcé', key: 'renforced'},
-                                    {name:'PEx', key: 'pex'},
-                                    {name:'Classique', key: 'classic'},
+                                    { name: 'Tous', key: 'all' },
+                                    { name: 'Internationale', key: 'int' },
+                                    { name: 'Renforcé', key: 'renforced' },
+                                    { name: 'PEx', key: 'pex' },
+                                    { name: 'Classique', key: 'classic' },
                                 ]"
                             />
                         </div>
 
-
-
                         <div class="flex flex-col">
                             <label for="doc-type">Type de document</label>
-                            <select-input
+                            <SelectInput
                                 v-model="stepsModel[0].docType"
-                                :choices="['DE', 'CE', 'TD', 'Fiche', 'Projet/TAI', 'Controle Continue',
-                                           'Cours Efrei', 'Cours eProf', 'DM', 'Notes de cours']"
+                                :choices="[
+                                    'DE',
+                                    'CE',
+                                    'TD',
+                                    'Fiche',
+                                    'Projet/TAI',
+                                    'Controle Continue',
+                                    'Cours Efrei',
+                                    'Cours eProf',
+                                    'DM',
+                                    'Notes de cours',
+                                ]"
                             />
                         </div>
 
@@ -112,16 +120,16 @@
                                 v-model="stepsModel[0].docYear"
                                 type="number"
                                 placeholder="2025"
-                                class="input w-full"
-                            >
+                                class="w-full input"
+                            />
                         </div>
                     </div>
 
-                    <file-input
+                    <FileInput
                         v-model="stepsModel[0].files"
                         :img-preview="true"
                         :file-limit="-1"
-                        class="h-52 w-full mt-4"
+                        class="mt-4 w-full h-52"
                         :size-limit="2097152"
                         :regex-mimes="[
                             '^image/(.)+',
@@ -146,28 +154,26 @@
             </template>
 
             <template #step2>
-                <section
-                    class="space-y-2"
-                >
+                <section class="space-y-2">
                     <div>Nom du document</div>
                     <input
                         v-model="stepsModel[1].docName"
-                        class="input w-full"
+                        class="w-full input"
                         type="text"
                         placeholder="Complément du nom"
-                    >
-                    <div>Description du document </div>
+                    />
+                    <div>Description du document</div>
 
                     <textarea
                         v-model="stepsModel[1].docDescription"
                         placeholder="Description du document"
-                        class="input w-full leading-tight focus:outline-none focus:shadow-outline"
+                        class="w-full leading-tight focus:outline-none input focus:shadow-outline"
                         type="text"
                     />
 
                     <div class="flex flex-col">
                         <label for="content">Contenu du dépôt</label>
-                        <select-input
+                        <SelectInput
                             v-model="stepsModel[0].docContent"
                             :choices="['Corrigé', 'Sujet + Corrigé', 'Copie d\'étudiant']"
                         />
@@ -180,12 +186,14 @@
                     <p>Disclaimer:</p>
                     <ul class="list-disc list-inside">
                         <li>Si vous uploadez un fichier, il sera public et accessible par tous</li>
-                        <li>Si vous souhaitez que des informations soient floutées, corrigées ou généralement modifiées, nous vous ferrons une proposition avec des informations sensibles retirées et attendrons votre confirmation avant de rendre le fichier public</li>
+                        <li>
+                            Si vous souhaitez que des informations soient floutées, corrigées ou généralement
+                            modifiées, nous vous ferrons une proposition avec des informations sensibles
+                            retirées et attendrons votre confirmation avant de rendre le fichier public
+                        </li>
                     </ul>
 
-                    <p class="mt-2">
-                        Êtes-vous d'accord ?
-                    </p>
+                    <p class="mt-2">Êtes-vous d'accord ?</p>
 
                     <label>
                         <input
@@ -194,7 +202,7 @@
                             value="true"
                             type="radio"
                             class="ml-5"
-                        >Oui
+                        />Oui
                     </label>
 
                     <label>
@@ -204,24 +212,24 @@
                             value="false"
                             type="radio"
                             class="ml-5"
-                        >Non
+                        />Non
                     </label>
                 </section>
             </template>
-        </form-multi-step>
+        </FormMultiStep>
     </div>
 </template>
 
 <script lang="js">
 
+import FormMultiStep from '@/components/Form/FormMultiStep.vue'
+import FileInput from '@/components/Input/FileInput.vue'
+import RadioInput from '@/components/Input/RadioInput.vue'
+import SearchInput from '@/components/Input/SearchInput.vue'
+import SelectInput from '@/components/Input/SelectInput.vue'
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 
-import RadioInput from '@/components/Input/RadioInput.vue'
-import SelectInput from '@/components/Input/SelectInput.vue'
-import FileInput from '@/components/Input/FileInput.vue'
-import FormMultiStep from '@/components/Form/FormMultiStep.vue'
-import SearchInput from '@/components/Input/SearchInput.vue'
 
 export default {
     components: {
@@ -233,32 +241,32 @@ export default {
     },
     props: {
         steps: {
-            type:Array,
-            default(){
+            type: Array,
+            default() {
                 return [
                     {
                         id: 'step1',
-                        name: 'UPLOAD',
-                        icon: 'file'
+                        name: 'Upload',
+                        icon: 'file',
                     }, {
                         id: 'step2',
                         name: 'Infos',
-                        icon: 'info-circle'
+                        icon: 'info-circle',
                     }, {
                         id: 'step3',
                         name: 'Envoyer',
-                        icon: 'paper-plane'
-                    }
+                        icon: 'paper-plane',
+                    },
                 ]
-            }
-        }
+            },
+        },
     },
     setup () {
         return { v$: useVuelidate() }
     },
     validations() {
-        return{
-            stepsModel:[
+        return {
+            stepsModel: [
                 {
                     docSubject: { required },
                     cursus: { required },
@@ -269,11 +277,10 @@ export default {
                 {
                     docContent: {  },
                     docName: {  },
-                    docDescription: {  },},
-                {
-                    modifyDoc: { required }
-                }
-            ]
+                    docDescription: {  },
+                },
+                { modifyDoc: { required } },
+            ],
         }
     },
     data () {
@@ -282,60 +289,58 @@ export default {
             studyDocsEndpoint: 'http://localhost:5000/files/study-docs',
             show: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
 
-            stepAction:{
+            stepAction: {
                 currentStep: 0,
                 nextStep: false,
-                previousStep: false
+                previousStep: false,
             },
 
-            stepsModel:[
+            stepsModel: [
                 {
-                    docSubject:[],
-                    cursus:'all',
-                    docType:'',
+                    docSubject: [],
+                    cursus: 'all',
+                    docType: '',
                     docYear: '',
-                    files:[],
+                    files: [],
                 },
                 {
-                    docContent:'',
-                    docName:'',
-                    docDescription:'',
+                    docContent: '',
+                    docName: '',
+                    docDescription: '',
                 },
-                {
-                    modifyDoc:'false'
-                }
+                { modifyDoc: 'false' },
             ],
 
         }
 
     },
-    watch:{
-        keyEnter(newVal){
+    watch: {
+        keyEnter(newVal) {
             console.log(newVal)
-        }
+        },
     },
     methods: {
-        iconList(itemCode){
+        iconList(itemCode) {
             const iconList = {
                 'TI': 'terminal',
                 'SM': 'calculator',
                 'SB': 'leaf',
                 'TE': 'bolt',
-                'SP': 'bolt'
+                'SP': 'bolt',
             }
             return iconList?.[itemCode.substr(0,2)] ?? 'book'
         },
-        previousStep(){
+        previousStep() {
             this.stepAction.currentStep -= 1
         },
-        nextStep(){
-            if(!this.v$.stepsModel[this.stepAction.currentStep].$invalid){
+        nextStep() {
+            if (!this.v$.stepsModel[this.stepAction.currentStep].$invalid) {
                 this.stepAction.currentStep += 1
             }
         },
-        submitForm(){
-            if(!this.v$.stepsModel.$invalid){
-                for(const el of this.stepsModel[0].files){
+        submitForm() {
+            if (!this.v$.stepsModel.$invalid) {
+                for (const el of this.stepsModel[0].files) {
                     const data = new FormData()
                     data.append('file', el)
                     data.append('subject',this.stepsModel[0].docSubject[0].code)
@@ -344,11 +349,11 @@ export default {
                     this.$store.dispatch('files/addStudyDoc', data).then(
                         () => {
                             this.$router.push('/docs')
-                        }
+                        },
                     )
                 }
             }
-        }
-    }
+        },
+    },
 }
 </script>

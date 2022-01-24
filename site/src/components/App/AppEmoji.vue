@@ -1,13 +1,6 @@
 <template>
-    <font-awesome-icon
-        v-if="type === 'icon'"
-        :icon="emoji"
-        size="lg"
-    />
-    <div
-        v-else
-        class="text-lg"
-    >
+    <font-awesome-icon v-if="type === 'icon'" :icon="emoji" size="lg" />
+    <div v-else class="text-lg">
         {{ emoji }}
     </div>
 </template>
@@ -17,12 +10,12 @@ export default {
     props: {
         emoji: {
             type: String,
-            required: true
+            required: true,
         },
         type: {
             type: String,
-            default: 'text'
-        }
-    }
+            default: 'text',
+        },
+    },
 }
 </script>

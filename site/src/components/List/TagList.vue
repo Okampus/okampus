@@ -1,22 +1,19 @@
 <template>
-    <div
-        v-if="tags.length != 0"
-        ref="parent"
-        class="relative flex m-2 items-center"
-    >
+    <div v-if="tags.length != 0" ref="parent" class="flex relative items-center m-2">
         <transition name="fade">
-            <div
-                v-if="leftGradient"
-                class="absolute flex justify-center items-center h-full"
-            >
+            <div v-if="leftGradient" class="flex absolute justify-center items-center h-full">
                 <div
-                    class="flex justify-center items-center h-full bg-1 cursor-pointer"
-                    @click="$refs.scroll.scrollTo({left:$refs.scroll.scrollLeft - 3/4*$refs.scroll.getBoundingClientRect().width, behavior: 'smooth'})"
+                    class="flex justify-center items-center h-full cursor-pointer bg-1"
+                    @click="
+                        $refs.scroll.scrollTo({
+                            left:
+                                $refs.scroll.scrollLeft -
+                                (3 / 4) * $refs.scroll.getBoundingClientRect().width,
+                            behavior: 'smooth',
+                        })
+                    "
                 >
-                    <font-awesome-icon
-                        :icon="['fas', 'chevron-left']"
-                        class="text-0"
-                    />
+                    <font-awesome-icon :icon="['fas', 'chevron-left']" class="text-0" />
                 </div>
 
                 <div class="w-10 h-full bg-gradient-to-r from-1" />
@@ -25,36 +22,20 @@
 
         <div
             ref="scroll"
-            class="w-0 basis-full block items-center justify-center gap-2 whitespace-nowrap overflow-y-hidden overflow-x-scroll scrollbar-none space-x-2"
+            class="block overflow-x-scroll overflow-y-hidden basis-full gap-2 justify-center items-center space-x-2 w-0 whitespace-nowrap scrollbar-none"
             @scroll.passive="getScroll"
         >
-            <div
-                v-for="(el, index) in tags"
-                :key="index"
-                class="inline-block"
-            >
-                <app-tag
-                    :tag-name="el.name"
-                    :tag-color="el.color"
-                />
+            <div v-for="(el, index) in tags" :key="index" class="inline-block">
+                <AppTag :tag-name="el.name" :tag-color="el.color" />
             </div>
         </div>
 
         <transition name="fade">
-            <div
-                v-if="rightGradient"
-                class="absolute right-0 flex justify-center items-center h-full"
-            >
+            <div v-if="rightGradient" class="flex absolute right-0 justify-center items-center h-full">
                 <div class="w-10 h-full bg-gradient-to-r from-transparent to-1" />
 
-                <div
-                    class=" flex justify-center items-center h-full bg-1 cursor-pointer"
-                    @click="scrollTo()"
-                >
-                    <font-awesome-icon
-                        :icon="['fas', 'chevron-right']"
-                        class="text-0"
-                    />
+                <div class="flex justify-center items-center h-full cursor-pointer bg-1" @click="scrollTo()">
+                    <font-awesome-icon :icon="['fas', 'chevron-right']" class="text-0" />
                 </div>
             </div>
         </transition>
@@ -68,40 +49,44 @@ export default {
     props: {
         tags: {
             type: Array,
-            required: true
-        }
+            required: true,
+        },
     },
     data() {
         return {
             leftGradient: Boolean,
-            rightGradient: Boolean
-        };
+            rightGradient: Boolean,
+        }
     },
     mounted() {
-        this.getScroll();
+        this.getScroll()
     },
     methods: {
         scrollTo() {
             this.$refs.scroll.scrollTo({
-                left: this.$refs.scroll.scrollLeft + 3 / 4 * this.$refs.scroll.getBoundingClientRect().width,
-                behavior: 'smooth'
-            });
+                left:
+                    this.$refs.scroll.scrollLeft + (3 / 4) * this.$refs.scroll.getBoundingClientRect().width,
+                behavior: 'smooth',
+            })
         },
         getScroll() {
             if (this.tags.length != 0) {
                 if (this.$refs.scroll.scrollLeft == 0) {
-                    this.leftGradient = false;
+                    this.leftGradient = false
                 } else {
-                    this.leftGradient = true;
+                    this.leftGradient = true
                 }
 
-                if (this.$refs.scroll.scrollLeft + 1 >= this.$refs.scroll.scrollWidth - this.$refs.parent.getBoundingClientRect().width) {
-                    this.rightGradient = false;
+                if (
+                    this.$refs.scroll.scrollLeft + 1 >=
+                    this.$refs.scroll.scrollWidth - this.$refs.parent.getBoundingClientRect().width
+                ) {
+                    this.rightGradient = false
                 } else {
-                    this.rightGradient = true;
+                    this.rightGradient = true
                 }
             }
-        }
-    }
+        },
+    },
 }
 </script>

@@ -1,11 +1,8 @@
 <template>
     <div>
-        <div
-            v-if="onComment"
-            class="flex mb-3"
-        >
-            <div class="flex flex-col w-full gap-4">
-                <tip-tap-editor
+        <div v-if="onComment" class="flex mb-3">
+            <div class="flex flex-col gap-4 w-full">
+                <TipTapEditor
                     v-model="newComment"
                     class="w-full"
                     :="editorConfig"
@@ -20,44 +17,29 @@
             <div
                 v-for="(comment, i) in shownComments"
                 :key="i"
-                class="flex text-1 text-sm py-1 px-2 bg-1 rounded-md gap-1 justify-between"
+                class="flex gap-1 justify-between py-1 px-2 text-sm rounded-md text-1 bg-1"
             >
-                <div
-                    class="flex items-center"
-                    :class="{'w-full': comment.edit}"
-                >
-                    <tip-tap-editable-render
+                <div class="flex items-center" :class="{ 'w-full': comment.edit }">
+                    <TipTapEditableRender
                         v-model:content="comment.body"
                         v-model:show="comment.edit"
                         class="w-full"
                         :="editorConfig"
                         @validate="updateComment($event, i)"
                     />
-                    <p
-                        v-if="!comment.edit"
-                        class="font-bold whitespace-nowrap"
-                    >
+                    <p v-if="!comment.edit" class="font-bold whitespace-nowrap">
                         &nbsp;- {{ comment.author.username }}
                     </p>
                 </div>
-                <div
-                    v-if="!comment.edit"
-                    class="flex items-center"
-                >
+                <div v-if="!comment.edit" class="flex items-center">
                     <div
                         v-for="(action, actionName) in actionsMap(i)"
                         :key="actionName"
-                        class="group text-sm flex gap-1 items-center text-5 transition rounded-lg cursor-pointer py-1 px-2"
+                        class="group flex gap-1 items-center py-1 px-2 text-sm rounded-lg transition cursor-pointer text-5"
                         @click="action.action()"
                     >
-                        <font-awesome-icon
-                            :icon="action.icon()"
-                            :class="action.class()"
-                        />
-                        <p
-                            :class="action.class()"
-                            class="text-xs"
-                        >
+                        <font-awesome-icon :icon="action.icon()" :class="action.class()" />
+                        <p :class="action.class()" class="text-xs">
                             {{ action.name() }}
                         </p>
                     </div>
@@ -93,7 +75,7 @@ import { defaultTipTapText } from '@/utils/tiptap'
 export default {
     components: {
         TipTapEditor,
-        TipTapEditableRender
+        TipTapEditableRender,
     },
     props: {
         onComment: {
@@ -106,15 +88,15 @@ export default {
         },
         comments: {
             type: Array,
-            default: () => []
+            default: () => [],
         },
         maxCommentsShow: {
             type: Number,
-            default: 2
+            default: 2,
         },
         tiptapError: {
             type: Boolean,
-            default: false
+            default: false,
         },
     },
     emits: ['update:onComment'],
@@ -132,23 +114,29 @@ export default {
             newComment: defaultTipTapText,
             commentsShow: false,
             commentItems: this.comments.map(
-                comment => { return { ...comment, edit: false } }
-            )
+                comment => ({
+                    ...comment,
+                    edit: false,
+                }),
+            ),
         }
     },
     computed: {
         shownComments() {
             return this.commentItems.slice(0, this.commentsShow ? this.commentItems.length : this.maxCommentsShow)
-        }
+        },
     },
     mounted() {
         watch(
             () => this.comments,
             () => {
                 this.commentItems = this.comments.map(
-                    comment => { return { ...comment, edit: false } }
+                    comment => ({
+                        ...comment,
+                        edit: false,
+                    }),
                 )
-            }, { deep: true }
+            }, { deep: true },
         )
     },
     methods: {
@@ -156,25 +144,26 @@ export default {
             return {
                 ...({
                     favorite: {
-                        name: () => { return 'Favori' },
+                        name: () => 'Favori',
                         icon: () => this.commentItems[i].favorited ? 'star' : ['far', 'star'],
                         class: () => this.commentItems[i].favorited ? 'hover:text-yellow-500 text-yellow-400' : 'hover:text-yellow-400',
-                        action: () => { this.commentItems[i].favorited ? this.deleteFavorite(i) : this.addFavorite(i) }
+                        action: () => { this.commentItems[i].favorited ? this.deleteFavorite(i) : this.addFavorite(i) },
                     },
 
                     flag: {
-                        name: () => { return 'Signaler' },
+                        name: () => 'Signaler',
                         icon: () => ['far', 'flag'],
                         class: () => 'group-hover:text-red-500',
-                        action: () => { console.log('Signaler') }
-                    }}),
+                        action: () => { console.log('Signaler') },
+                    },
+                }),
                 ...(this.commentItems[i].author.userId === this.$store.state.auth.user?.userId && {
                     edit: {
-                        name: () => { return 'Éditer' },
+                        name: () => 'Éditer',
                         icon: () => 'edit',
                         class: () => 'group-hover:text-green-500',
-                        action: () => { this.commentItems[i].edit = !this.commentItems[i].edit }
-                    }
+                        action: () => { this.commentItems[i].edit = !this.commentItems[i].edit },
+                    },
                 }),
             }
         },
@@ -186,13 +175,13 @@ export default {
             if (this.parentContent.type === 'post') {
                 this.$store.dispatch('thread/addPostComment', {
                     postId: this.parentContent.id,
-                    body: this.newComment
+                    body: this.newComment,
                 })
                 this.closeComment()
             } else if (this.parentContent.type === 'reply') {
                 this.$store.dispatch('thread/addReplyComment', {
                     replyId: this.parentContent.id,
-                    body: this.newComment
+                    body: this.newComment,
                 })
                 this.closeComment()
             } else {
@@ -202,7 +191,7 @@ export default {
         updateComment(body, i) {
             this.$store.dispatch('thread/updateComment', {
                 commentId: this.commentItems[i].commentId,
-                body: body
+                body: body,
             }).then(() => {
                 this.commentItems[i].edit = false
             })
@@ -212,7 +201,7 @@ export default {
         },
         deleteFavorite(i) {
             this.$store.dispatch('thread/deleteFavoriteComment', this.commentItems[i].commentId)
-        }
-    }
+        },
+    },
 }
 </script>

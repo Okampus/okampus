@@ -1,10 +1,13 @@
 <template>
     <div>
-        <div class="max-w-sm flex flex-col justify-center items-center text-center px-4 py-6 mx-auto rounded-lg shadow-md card-2">
-            <div class="text-md font-bold flex flex-col text-gray-900">
-                <span class="uppercase text-1">Aujourd'hui</span> <span class="font-normal text-4 text-sm">29 Juillet 2021</span>
+        <div
+            class="flex flex-col justify-center items-center py-6 px-4 mx-auto max-w-sm text-center rounded-lg shadow-md card-2"
+        >
+            <div class="flex flex-col font-bold text-gray-900 text-md">
+                <span class="uppercase text-1">Aujourd'hui</span>
+                <span class="text-sm font-normal text-4">29 Juillet 2021</span>
             </div>
-            <div class="w-32 h-32 flex items-center justify-center">
+            <div class="flex justify-center items-center w-32 h-32">
                 <svg
                     class="h-20"
                     viewBox="0 0 81 73"
@@ -22,14 +25,14 @@
                     />
                 </svg>
             </div>
-            <p class="text-3 mb-2">
-                Partiellement nuageux
-            </p>
-            <div class="text-3xl font-bold text-1 mb-6">
-                32º<span class="font-normal text-1 mx-1">/</span>20º
+            <p class="mb-2 text-3">Partiellement nuageux</p>
+            <div class="mb-6 text-3xl font-bold text-1">
+                32º<span class="mx-1 font-normal text-1">/</span>20º
             </div>
-            <div class="flex w-full flex-col items-center space-y-2 xl:flex-row xl:space-y-0 xl:justify-around">
-                <div class="flex items-center text-3 h-6">
+            <div
+                class="flex flex-col items-center space-y-2 w-full xl:flex-row xl:justify-around xl:space-y-0"
+            >
+                <div class="flex items-center h-6 text-3">
                     <svg
                         class="mr-2 h-4"
                         viewBox="0 0 11 18"
@@ -42,18 +45,11 @@
                             d="M11,11.9334341 C11,15.0552582 8.53750272,17.5862069 5.5,17.5862069 C2.46249728,17.5862069 0,15.0552582 0,11.9334341 C0,7.58026159 5.5,0 5.5,0 C5.5,0 11,7.58026159 11,11.9334341 L11,11.9334341 Z"
                         />
                     </svg>
-                    <p>
-                        100 L/m²
-                    </p>
+                    <p>100 L/m²</p>
                 </div>
-                <div class="flex items-center text-3 h-6">
-                    <font-awesome-icon
-                        class="text-sky-400 mr-2"
-                        icon="wind"
-                    />
-                    <p>
-                        20 km/h
-                    </p>
+                <div class="flex items-center h-6 text-3">
+                    <font-awesome-icon class="mr-2 text-sky-400" icon="wind" />
+                    <p>20 km/h</p>
                 </div>
             </div>
         </div>

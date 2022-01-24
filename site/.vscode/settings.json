@@ -5,25 +5,25 @@
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
+
     "javascript.preferences.quoteStyle": "single",
     "eslint.format.enable": true,
-    "[typescript]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-    },
-    "[javascript]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-    },
+
+    "eslint.probe": ["javascript", "javascriptreact", "vue"],
+
     "stylelint.enable": true,
     "tailwindCSS.validate": true,
     "css.validate": false,
     "less.validate": false,
     "scss.validate": false,
-    "stylelint.validate": [
-        "css",
-        "scss",
-        "less"
-    ],
-    "editor.codeActionsOnSave": {
-        "source.fixAll": true
-    }
+    "stylelint.validate": ["css", "scss", "less"],
+
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": ["source.organizeImports", "source.formatDocument", "source.fixAll.eslint"]
 }

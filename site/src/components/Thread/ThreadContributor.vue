@@ -2,10 +2,10 @@
     <div>
         <img
             alt="Avatar"
-            class="rounded-full h-8 w-8 mr-2 mt-1 bg-white"
+            class="mt-1 mr-2 w-8 h-8 bg-white rounded-full"
             :src="contributor.img"
             :title="contributor.pseudo"
-        >
+        />
     </div>
 </template>
 
@@ -15,13 +15,11 @@ export default {
     props: {
         contributor: {
             type: Object,
-            default: () => {
-                return {
-                    img: '',
-                    pseudo: '<Pseudo>'
-                }
-            }
-        }
-    }
+            default: () => ({
+                img: '',
+                pseudo: '<Pseudo>',
+            }),
+        },
+    },
 }
 </script>

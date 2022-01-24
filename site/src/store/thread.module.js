@@ -6,194 +6,224 @@ export const thread = {
     namespaced: true,
     state: initialState,
     getters: {
-        getCurrentThread (state) {
+        getCurrentThread(state) {
             return state.thread
-        }
+        },
     },
     actions: {
-        fetchThread ({ commit }, id) {
+        fetchThread({ commit }, id) {
             return ThreadService.fetchThread(id).then(
-                thread => {
+                (thread) => {
                     commit('setThread', thread)
                     return Promise.resolve(thread)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
-        updatePost ({ commit }, newPost) {
+        updatePost({ commit }, newPost) {
             return ThreadService.updatePost(newPost).then(
-                newPost => {
+                (newPost) => {
                     commit('updatePost', newPost)
                     return Promise.resolve(newPost)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
-        addReply({ commit }, { postId, body }) {
+        addReply({ commit }, {
+            postId, body, 
+        }) {
             return ThreadService.addReply(postId, body).then(
-                reply => {
+                (reply) => {
                     commit('addReply', reply)
                     return Promise.resolve(reply)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
         updateReply({ commit }, newReply) {
             return ThreadService.updateReply(newReply).then(
-                newReply => {
+                (newReply) => {
                     commit('updateReply', newReply)
                     return Promise.resolve(newReply)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
-        addPostComment({ commit }, { postId, body }) {
+        addPostComment({ commit }, {
+            postId, body, 
+        }) {
             return ThreadService.addPostComment(postId, body).then(
-                comment => {
+                (comment) => {
                     commit('addPostComment', comment)
                     return Promise.resolve(comment)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
-        updateComment({ commit }, { commentId, body }) {
+        updateComment({ commit }, {
+            commentId, body, 
+        }) {
             return ThreadService.updateComment(commentId, body).then(
-                comment => {
+                (comment) => {
                     commit('updateComment', comment)
                     return Promise.resolve(comment)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
-        addReplyComment({ commit }, { replyId, body }) {
+        addReplyComment({ commit }, {
+            replyId, body, 
+        }) {
             return ThreadService.addReplyComment(replyId, body).then(
-                comment => {
-                    commit('addReplyComment', { comment, replyId })
+                (comment) => {
+                    commit('addReplyComment', {
+                        comment,
+                        replyId,
+                    })
                     return Promise.resolve(comment)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
-        votePost({ commit }, { postId, value }) {
+        votePost({ commit }, {
+            postId, value, 
+        }) {
             return ThreadService.votePost(postId, value).then(
                 () => {
                     commit('votePost', value)
                     return Promise.resolve(value)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
-        voteReply({ commit }, { replyId, value }) {
+        voteReply({ commit }, {
+            replyId, value, 
+        }) {
             return ThreadService.voteReply(replyId, value).then(
                 () => {
-                    commit('voteReply', { replyId, newVote: value })
+                    commit('voteReply', {
+                        replyId,
+                        newVote: value,
+                    })
                     return Promise.resolve(value)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
         addFavoritePost({ commit }, postId) {
             return ThreadService.addFavoritePost(postId).then(
-                worked => {
+                (worked) => {
                     commit('addFavoritePost', worked)
                     return Promise.resolve(worked)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
         deleteFavoritePost({ commit }, postId) {
             return ThreadService.deleteFavoritePost(postId).then(
-                worked => {
+                (worked) => {
                     commit('deleteFavoritePost', worked)
                     return Promise.resolve(worked)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
         addFavoriteReply({ commit }, replyId) {
             return ThreadService.addFavoriteReply(replyId).then(
-                worked => {
-                    commit('addFavoriteReply', { replyId, worked })
+                (worked) => {
+                    commit('addFavoriteReply', {
+                        replyId,
+                        worked,
+                    })
                     return Promise.resolve(worked)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
         deleteFavoriteReply({ commit }, replyId) {
             return ThreadService.deleteFavoriteReply(replyId).then(
-                worked => {
-                    commit('deleteFavoriteReply', { replyId, worked })
+                (worked) => {
+                    commit('deleteFavoriteReply', {
+                        replyId,
+                        worked,
+                    })
                     return Promise.resolve(worked)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
         addFavoriteComment({ commit }, commentId) {
             return ThreadService.addFavoriteComment(commentId).then(
-                worked => {
-                    commit('addFavoriteComment', { commentId, worked })
+                (worked) => {
+                    commit('addFavoriteComment', {
+                        commentId,
+                        worked,
+                    })
                     return Promise.resolve(worked)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
         deleteFavoriteComment({ commit }, commentId) {
             return ThreadService.deleteFavoriteComment(commentId).then(
-                worked => {
-                    commit('deleteFavoriteComment', { commentId, worked })
+                (worked) => {
+                    commit('deleteFavoriteComment', {
+                        commentId,
+                        worked,
+                    })
                     return Promise.resolve(worked)
                 },
-                error => {
+                (error) => {
                     console.log(error)
                     return Promise.reject(error)
-                }
+                },
             )
         },
     },
     mutations: {
-        setThread (state, thread) {
+        setThread(state, thread) {
             state.thread = thread
         },
         updatePost(state, post) {
@@ -209,27 +239,22 @@ export const thread = {
         addPostComment(state, comment) {
             state.thread.comments.unshift(comment)
         },
-        addReplyComment(state, { comment, replyId }) {
-            state.thread.replies.find(reply => reply.replyId === replyId)
-                .comments.unshift(comment)
+        addReplyComment(state, {
+            comment, replyId, 
+        }) {
+            state.thread.replies.find((reply) => reply.replyId === replyId).comments.unshift(comment)
         },
         updateReply(state, reply) {
-            const replyIndex = state.thread.replies.findIndex(
-                r => r.replyId = reply.replyId
-            )
+            const replyIndex = state.thread.replies.findIndex((r) => (r.replyId = reply.replyId))
 
             state.thread.replies[replyIndex].body = reply.body
         },
         updateComment(state, comment) {
-            const index = state.thread.comments.findIndex(
-                c => c.commentId === comment.commentId
-            )
+            const index = state.thread.comments.findIndex((c) => c.commentId === comment.commentId)
 
             if (index === -1) {
                 for (let reply of state.thread.replies) {
-                    const commentIndex = reply.comments.findIndex(
-                        c => c.commentId === comment.commentId
-                    )
+                    const commentIndex = reply.comments.findIndex((c) => c.commentId === comment.commentId)
 
                     if (commentIndex !== -1) {
                         reply.comments[commentIndex] = comment
@@ -256,10 +281,10 @@ export const thread = {
                 state.thread.downvotes += 1
             }
         },
-        voteReply(state, { replyId, newVote }) {
-            const replyIndex = state.thread.replies.findIndex(
-                r => r.replyId === replyId
-            )
+        voteReply(state, {
+            replyId, newVote, 
+        }) {
+            const replyIndex = state.thread.replies.findIndex((r) => r.replyId === replyId)
 
             const oldVote = state.thread.replies[replyIndex].currentVote
             state.thread.replies[replyIndex].currentVote = newVote
@@ -286,27 +311,29 @@ export const thread = {
                 state.thread.favorited = false
             }
         },
-        addFavoriteReply(state, { replyId, worked }) {
+        addFavoriteReply(state, {
+            replyId, worked, 
+        }) {
             if (worked) {
-                state.thread.replies.find(reply => reply.replyId === replyId).favorited = true
+                state.thread.replies.find((reply) => reply.replyId === replyId).favorited = true
             }
         },
-        deleteFavoriteReply(state, { replyId, worked }) {
+        deleteFavoriteReply(state, {
+            replyId, worked, 
+        }) {
             if (worked) {
-                state.thread.replies.find(reply => reply.replyId === replyId).favorited = false
+                state.thread.replies.find((reply) => reply.replyId === replyId).favorited = false
             }
         },
-        addFavoriteComment(state, { commentId, worked }) {
+        addFavoriteComment(state, {
+            commentId, worked, 
+        }) {
             if (worked) {
-                const index = state.thread.comments.findIndex(
-                    c => c.commentId === commentId
-                )
+                const index = state.thread.comments.findIndex((c) => c.commentId === commentId)
 
                 if (index === -1) {
                     for (let reply of state.thread.replies) {
-                        const commentIndex = reply.comments.findIndex(
-                            c => c.commentId === commentId
-                        )
+                        const commentIndex = reply.comments.findIndex((c) => c.commentId === commentId)
 
                         if (commentIndex !== -1) {
                             reply.comments[commentIndex].favorited = true
@@ -318,17 +345,15 @@ export const thread = {
                 }
             }
         },
-        deleteFavoriteComment(state, { commentId, worked }) {
+        deleteFavoriteComment(state, {
+            commentId, worked, 
+        }) {
             if (worked) {
-                const index = state.thread.comments.findIndex(
-                    c => c.commentId === commentId
-                )
+                const index = state.thread.comments.findIndex((c) => c.commentId === commentId)
 
                 if (index === -1) {
                     for (let reply of state.thread.replies) {
-                        const commentIndex = reply.comments.findIndex(
-                            c => c.commentId === commentId
-                        )
+                        const commentIndex = reply.comments.findIndex((c) => c.commentId === commentId)
 
                         if (commentIndex !== -1) {
                             reply.comments[commentIndex].favorited = false
@@ -340,5 +365,5 @@ export const thread = {
                 }
             }
         },
-    }
+    },
 }

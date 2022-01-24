@@ -1,61 +1,50 @@
 <template>
-    <div v-if="post === null || post === undefined">
-        Ce post n'existe pas.
-    </div>
+    <div v-if="post === null || post === undefined">Ce post n'existe pas.</div>
     <div v-else>
-        <div class="md:w-21/24 mx-auto my-6 flex flex-col">
-            <div class="ml-4 md:ml-0 text-1 w-full md:w-9/12 text-3xl font-bold mb-4">
+        <div class="flex flex-col my-6 mx-auto md:w-21/24">
+            <div class="mb-4 ml-4 w-full text-3xl font-bold md:ml-0 md:w-9/12 text-1">
                 {{ post.title }}
             </div>
-            <div class="flex ">
-                <div class=" rounded-none md:rounded-md card w-full">
+            <div class="flex">
+                <div class="w-full rounded-none md:rounded-md card">
                     <div class="text-1">
                         <div class="flex justify-between items-center">
-                            <div class="text-2 text-sm flex gap-4 items-center">
+                            <div class="flex gap-4 items-center text-sm text-2">
                                 <div class="flex gap-2 items-center">
-                                    <font-awesome-icon
-                                        icon="hourglass-end"
-                                    />
-                                    <p>{{ timeAgo(post.createdAt, "long") }}</p>
+                                    <font-awesome-icon icon="hourglass-end" />
+                                    <p>{{ timeAgo(post.createdAt, 'long') }}</p>
                                 </div>
                                 <div class="flex gap-2 items-center">
-                                    <font-awesome-icon
-                                        icon="history"
-                                    />
+                                    <font-awesome-icon icon="history" />
                                     <p>{{ lastUpdatedAt }}</p>
                                 </div>
                             </div>
                         </div>
-                        <hr class="mt-3 mb-2">
+                        <hr class="mt-3 mb-2" />
                     </div>
                     <div>
                         <div>
                             <div>
-                                <PostMessage
-                                    :post="post"
-                                    @reply="onReply = true"
-                                />
+                                <PostMessage :post="post" @reply="onReply = true" />
                             </div>
                             <div class="pt-4 text-1">
-                                {{ post.replies.length }} {{ post.replies.length > 1 ? 'Réponses' : 'Réponse' }}
+                                {{ post.replies.length }}
+                                {{ post.replies.length > 1 ? 'Réponses' : 'Réponse' }}
                             </div>
-                            <hr class="mt-2">
-                            <div
-                                v-if="onReply"
-                                class="flex mt-3"
-                            >
-                                <div class="w-3/24 flex flex-col items-center mt-4">
+                            <hr class="mt-2" />
+                            <div v-if="onReply" class="flex mt-3">
+                                <div class="flex flex-col items-center mt-4 w-3/24">
                                     <img
                                         :src="user.avatar || default_avatar"
                                         alt="Profile Picture"
-                                        class="w-10 h-10 rounded-full mt-2 "
-                                    >
-                                    <div class="font-medium text-center text-sm">
+                                        class="mt-2 w-10 h-10 rounded-full"
+                                    />
+                                    <div class="text-sm font-medium text-center">
                                         {{ user.username }}
                                     </div>
                                 </div>
-                                <div class="flex flex-col w-21/24 gap-4">
-                                    <tip-tap-editor
+                                <div class="flex flex-col gap-4 w-21/24">
+                                    <TipTapEditor
                                         v-model="newReply"
                                         :char-count="240"
                                         class="w-full"
@@ -65,33 +54,27 @@
                                         @cancel="closeReply()"
                                     >
                                         <template #error>
-                                            <app-error
+                                            <AppError
                                                 v-if="errorReply"
                                                 error="Il y'a eu une erreur lors de l'envoi de cette réponse."
                                             />
                                         </template>
-                                    </tip-tap-editor>
+                                    </TipTapEditor>
                                 </div>
                             </div>
-                            <div
-                                v-for="(reply, i) in replies"
-                                :key="i"
-                                class="mt-4"
-                            >
-                                <reply :reply="reply" />
+                            <div v-for="(reply, i) in replies" :key="i" class="mt-4">
+                                <Reply :reply="reply" />
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="w-3/12 ml-4 text-1 sticky top-0 space-y-2 hidden lg:block">
+                <div class="hidden sticky top-0 ml-4 space-y-2 w-3/12 lg:block text-1">
                     <div class="card">
-                        <div class="flex mb-2 space-x-2 text-xl items-center">
-                            <div class="font-bold text-md mr-4">
-                                AppTags
-                            </div>
+                        <div class="flex items-center mb-2 space-x-2 text-xl">
+                            <div class="mr-4 font-bold text-md">Tags</div>
                         </div>
                         <div class="flex flex-wrap">
-                            <app-tag
+                            <AppTag
                                 v-for="tag in post.tags"
                                 :key="tag"
                                 class="mr-1 mb-1"
@@ -101,13 +84,11 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="flex mb-2 space-x-2 text-xl items-center">
-                            <div class="font-bold text-md mr-4">
-                                Contributeurs
-                            </div>
+                        <div class="flex items-center mb-2 space-x-2 text-xl">
+                            <div class="mr-4 font-bold text-md">Contributeurs</div>
                             <!-- TODO: Actions : Settings, Add -->
                         </div>
-                        <contributors
+                        <Contributors
                             v-for="contributor in post.contributors"
                             :key="contributor"
                             :contributor="contributor"
@@ -115,13 +96,11 @@
                         />
                     </div>
                     <div class="card">
-                        <div class="flex mb-3 space-x-2 text-xl items-center">
-                            <div class="font-bold text-md mr-4">
-                                Sujets semblables
-                            </div>
+                        <div class="flex items-center mb-3 space-x-2 text-xl">
+                            <div class="mr-4 font-bold text-md">Sujets semblables</div>
                             <!-- TODO: Actions : Suggest, next page -->
                         </div>
-                        <similar-thread
+                        <SimilarThread
                             v-for="similarThread in post.similarThreads"
                             :key="similarThread"
                             :thread="similarThread"
@@ -159,7 +138,7 @@ export default {
         Reply,
         PostMessage,
         TipTapEditor,
-        AppError
+        AppError,
     },
     setup () {
         return { v$: useVuelidate() }
@@ -167,7 +146,7 @@ export default {
     data() {
         return {
             default_avatar,
-            onReply : false,
+            onReply: false,
             newReply: defaultTipTapText,
             errorReply: false,
         }
@@ -187,16 +166,12 @@ export default {
         },
         post() {
             return this.$store.state.thread.thread
-        }
+        },
     },
-    validations(){
-        return {
-            newReply: { required }
-        }
+    validations() {
+        return { newReply: { required } }
     },
-    watch: {
-        '$route': 'fetchPost'
-    },
+    watch: { '$route': 'fetchPost' },
     created () {
         if (this.loggedIn) {
             this.fetchPost()
@@ -213,7 +188,10 @@ export default {
         },
         timeAgo,
         votePost(vote) {
-            this.$store.dispatch('thread/postPostVote', {postId: this.$route.params.id, vote})
+            this.$store.dispatch('thread/postPostVote', {
+                postId: this.$route.params.id,
+                vote,
+            })
         },
         closeReply() {
             this.errorReply = false
@@ -221,10 +199,13 @@ export default {
             this.newReply = defaultTipTapText
         },
         sendReply() {
-            this.$store.dispatch('thread/addReply', {postId: this.post.postId, body: this.newReply})
+            this.$store.dispatch('thread/addReply', {
+                postId: this.post.postId,
+                body: this.newReply,
+            })
                 .then(() => { this.closeReply() })
                 .catch(() => { this.errorReply = true })
-        }
-    }
+        },
+    },
 }
 </script>

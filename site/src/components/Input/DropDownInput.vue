@@ -1,23 +1,17 @@
 <template>
-    <Popper
-        :offset-distance="'0'"
-        :interactive="true"
-    >
+    <Popper :offset-distance="'0'" :interactive="true">
         <slot />
 
         <template #content>
-            <div class="card p-2 flex flex-col">
+            <div class="flex flex-col p-2 card">
                 <div
                     v-for="(button, i) in buttons"
                     :key="i"
-                    class="py-2 px-4 rounded-xl flex gap-2 items-center text-center"
+                    class="flex gap-2 items-center py-2 px-4 text-center rounded-xl"
                     :class="button.class"
                     @click="button.action()"
                 >
-                    <font-awesome-icon
-
-                        :icon="button.icon"
-                    />
+                    <font-awesome-icon :icon="button.icon" />
                     <div>
                         {{ button.name }}
                     </div>
@@ -28,27 +22,27 @@
 </template>
 
 <script>
-
-import Popper from "vue3-popper"
+import Popper from 'vue3-popper'
 
 export default {
-    components: {
-        Popper
-    },
-    props:{
-        buttons:{
-            type:Array,
-            required: true
+    components: { Popper },
+    props: {
+        buttons: {
+            type: Array,
+            required: true,
         },
-        placeholder:{
+        placeholder: {
             type: Object,
-            default(){
-                return {name:'', icon:''}
-            }
-        }
+            default() {
+                return {
+                    name: '',
+                    icon: '',
+                }
+            },
+        },
     },
-    monted(){
+    monted() {
         console.log(this.buttons)
-    }
+    },
 }
 </script>

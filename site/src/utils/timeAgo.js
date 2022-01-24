@@ -1,5 +1,5 @@
-export function timeAgo (dateString, style) {
-    const date = (dateString instanceof Date) ? dateString : new Date(dateString)
+export function timeAgo(dateString, style) {
+    const date = dateString instanceof Date ? dateString : new Date(dateString)
     const formatter = new Intl.RelativeTimeFormat('fr', { style: style ?? 'short' })
 
     const ranges = {
@@ -9,15 +9,14 @@ export function timeAgo (dateString, style) {
         days: 3600 * 24,
         hours: 3600,
         minutes: 60,
-        seconds: 1
+        seconds: 1,
     }
-
 
     const secondsElapsed = parseInt((date.getTime() - Date.now()) / 1000)
 
     if (secondsElapsed >= -1) {
         // TODO: internationalize
-        return 'il y a moins d\'une seconde'
+        return "il y a moins d'une seconde"
     }
 
     for (const key in ranges) {

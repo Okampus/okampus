@@ -7,31 +7,27 @@
             :modal-custom-class="'w-3/4 h-3/4'"
             @close="showSearchBar = false"
         >
-            <div class="card w-full h-full">
-                <ais-instant-search
-                    :search-client="searchClient"
-                    index-name="posts"
-                    class="h-full"
-                >
-                    <div class="h-full flex flex-col">
+            <div class="w-full h-full card">
+                <ais-instant-search :search-client="searchClient" index-name="posts" class="h-full">
+                    <div class="flex flex-col h-full">
                         <ais-search-box autofocus>
                             <template #default="{ currentRefinement, isSearchStalled, refine }">
                                 <div
-                                    class="w-full flex justify-between items-center cursor-pointer"
+                                    class="flex justify-between items-center w-full cursor-pointer"
                                     @click.prevent="showSearchBar = true"
                                 >
-                                    <label class="flex-grow flex items-center">
+                                    <label class="flex grow items-center">
                                         <input
-                                            class="border-b-2 flex-grow text-4 md:text-lg lg:text-xl bg-1 p-2"
+                                            class="grow p-2 border-b-2 md:text-lg lg:text-xl text-4 bg-1"
                                             placeholder="Rechercher une ressource sur Horizon Efrei..."
                                             type="search"
                                             autofocus
                                             :value="currentRefinement"
                                             @input="refine($event.currentTarget.value)"
-                                        >
+                                        />
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            class="h-6 w-6"
+                                            class="w-6 h-6"
                                             fill="none"
                                             viewBox="0 0 24 24"
                                             stroke="currentColor"
@@ -49,21 +45,14 @@
                             </template>
                         </ais-search-box>
 
-                        <div
-
-                            class="overflow-y-scroll h-full"
-                        >
-                            <ais-index
-                                v-for="(index, i) in indexList"
-                                :key="i"
-                                :index-name="index.indexName"
-                            >
+                        <div class="overflow-y-scroll h-full">
+                            <ais-index v-for="(index, i) in indexList" :key="i" :index-name="index.indexName">
                                 <ais-hits>
                                     <template #default="{ items }">
                                         <SearchCategory
                                             :items="items"
                                             :index-type="indexList[i]"
-                                            @close-modal="showSearchBar=false"
+                                            @close-modal="showSearchBar = false"
                                         />
                                     </template>
                                 </ais-hits>
@@ -74,15 +63,15 @@
             </div>
         </CustomModal>
         <div
-            class="w-full flex justify-between items-center cursor-pointer"
+            class="flex justify-between items-center w-full cursor-pointer"
             @click.prevent="showSearchBar = true"
         >
-            <div class="border-b-2 flex-grow text-4 md:text-lg lg:text-xl">
+            <div class="grow border-b-2 md:text-lg lg:text-xl text-4">
                 Rechercher une ressource sur Horizon Efrei...
             </div>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
+                class="w-6 h-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -101,9 +90,9 @@
 
 <script>
 import CustomModal from '@/components/App/AppModal.vue'
-import SearchCategory from "@/components/App/Card/SearchCategory.vue"
-import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
-import postTypesEnum from '@/shared/types/post-types.enum';
+import SearchCategory from '@/components/App/Card/SearchCategory.vue'
+import postTypesEnum from '@/shared/types/post-types.enum'
+import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     server: {
@@ -117,106 +106,104 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
         ],
     },
     cacheSearchResultsForSeconds: 2 * 60,
-    additionalSearchParameters:{
-        limit_hits:25,
-        per_page:25
+    additionalSearchParameters: {
+        limit_hits: 25,
+        per_page: 25,
     },
     collectionSpecificSearchParameters: {
         posts: {
-            queryBy: "title,body,tags",
-            queryByWeights:"10, 1, 5"
+            queryBy: 'title,body,tags',
+            queryByWeights: '10, 1, 5',
         },
         'study-docs': {
-            queryBy: "name,subjectEnglishName,subjectName",
-            queryByWeights:"10, 5, 5"
+            queryBy: 'name,subjectEnglishName,subjectName',
+            queryByWeights: '10, 5, 5',
         },
-        clubs:{
-            queryBy:"name",
-            queryByWeights:"10"
+        clubs: {
+            queryBy: 'name',
+            queryByWeights: '10',
         },
-        'info-docs':{
-            queryBy: "name",
-            queryByWeights:"10"
+        'info-docs': {
+            queryBy: 'name',
+            queryByWeights: '10',
         },
-        articles:{
-            queryBy: "title,body,tags,category",
-            queryByWeights:"10, 1, 5, 5"
-        }
-        ,
-        subjects:{
-            queryBy:'name,code',
-            queryByWeights:'1,1'
-        }
-
+        articles: {
+            queryBy: 'title,body,tags,category',
+            queryByWeights: '10, 1, 5, 5',
+        },
+        subjects: {
+            queryBy: 'name,code',
+            queryByWeights: '1,1',
+        },
     },
-});
-const searchClient = typesenseInstantsearchAdapter.searchClient;
+})
+const searchClient = typesenseInstantsearchAdapter.searchClient
 export default {
-    components:{
+    components: {
         CustomModal,
-        SearchCategory
+        SearchCategory,
     },
 
     data() {
         return {
             searchClient,
-            showSearchBar : false,
-            indexList:[
+            showSearchBar: false,
+            indexList: [
                 {
-                    indexName: "posts",
-                    title: "Tous les posts",
-                    titleIcon: "comments",
-                    routerBase: "post",
-                    resultTitle: (item)=>{ return item.title },
-                    resultBody: (item)=>{ return item.body },
-                    resultIcon: (item)=>{ return postTypesEnum?.[item.type]?.icon ?? 'hashtag' }
+                    indexName: 'posts',
+                    title: 'Tous les posts',
+                    titleIcon: 'comments',
+                    routerBase: 'post',
+                    resultTitle: (item) => item.title,
+                    resultBody: (item) => item.body,
+                    resultIcon: (item) => postTypesEnum?.[item.type]?.icon ?? 'hashtag',
                 },
                 {
-                    indexName: "study-docs",
-                    title: "Tous les documents",
-                    titleIcon: "file",
-                    routerBase: "file",
-                    resultTitle: (item) => { return item.name },
-                    resultBody: (item) => { return item.subjectName },
-                    resultIcon: () => { return 'file' }
+                    indexName: 'study-docs',
+                    title: 'Tous les documents',
+                    titleIcon: 'file',
+                    routerBase: 'file',
+                    resultTitle: (item) => item.name,
+                    resultBody: (item) => item.subjectName,
+                    resultIcon: () => 'file',
                 },
                 {
-                    indexName: "info-docs",
-                    title: "Tous les documents informatifs",
-                    titleIcon: "file",
-                    routerBase: "file",
-                    resultTitle: (item) => { return item.name },
-                    resultBody: (item) => { return item.subjectName },
-                    resultIcon: () => { return 'file'}
+                    indexName: 'info-docs',
+                    title: 'Tous les documents informatifs',
+                    titleIcon: 'file',
+                    routerBase: 'file',
+                    resultTitle: (item) => item.name,
+                    resultBody: (item) => item.subjectName,
+                    resultIcon: () => 'file',
                 },
                 {
-                    indexName: "articles",
-                    title: "Tous les articles",
-                    titleIcon: "newspaper",
-                    routerBase: "article",
-                    resultTitle: (item) => { return item.title },
-                    resultBody: (item) => { return item.body },
-                    resultIcon: () => { return 'newspaper' }
+                    indexName: 'articles',
+                    title: 'Tous les articles',
+                    titleIcon: 'newspaper',
+                    routerBase: 'article',
+                    resultTitle: (item) => item.title,
+                    resultBody: (item) => item.body,
+                    resultIcon: () => 'newspaper',
                 },
                 {
-                    indexName: "clubs",
-                    title: "Toutes les associations",
-                    titleIcon: "user-friends",
-                    routerBase: "club",
-                    resultTitle: (item) => { return item.name },
-                    resultBody: (item) => { return item.category },
-                    resultIcon: () => { return 'user-friends'}
+                    indexName: 'clubs',
+                    title: 'Toutes les associations',
+                    titleIcon: 'user-friends',
+                    routerBase: 'club',
+                    resultTitle: (item) => item.name,
+                    resultBody: (item) => item.category,
+                    resultIcon: () => 'user-friends',
                 },
                 {
-                    indexName: "subjects",
-                    title: "Toutes les matieres",
-                    titleIcon: "book",
-                    routerBase: "subject",
-                    resultTitle: (item) => { return item.name },
-                    resultBody: (item) => { return item.code },
-                    resultIcon: () => { return 'book'}
+                    indexName: 'subjects',
+                    title: 'Toutes les matieres',
+                    titleIcon: 'book',
+                    routerBase: 'subject',
+                    resultTitle: (item) => item.name,
+                    resultBody: (item) => item.code,
+                    resultIcon: () => 'book',
                 },
-            ]
+            ],
         }
     },
 }

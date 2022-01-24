@@ -1,60 +1,50 @@
 <template>
     <div
-        class="flex items-center gap-2 p-1 rounded hover:bg-2-light hover:dark:bg-2-dark "
+        class="flex gap-2 items-center p-1 hover:bg-2-light hover:dark:bg-2-dark rounded"
         @click="$emit('path', [folderName])"
     >
         <font-awesome-icon
             class="text-1"
             size="sm"
-            :class="[childrens.length == 0 ? 'invisible':'']"
-            :icon="showChildrens ? 'chevron-down': 'chevron-right'"
+            :class="[childrens.length == 0 ? 'invisible' : '']"
+            :icon="showChildrens ? 'chevron-down' : 'chevron-right'"
             @click="showChildrens = !showChildrens"
         />
-        <font-awesome-icon
-            class="text-1"
-            :icon="'folder'"
-        />
+        <font-awesome-icon class="text-1" :icon="'folder'" />
 
         <div>
             {{ folderName }}
         </div>
     </div>
     <transition name="fade">
-        <div
-            v-if="showChildrens"
-            class="ml-2 p-1 border-l flex flex-col"
-        >
+        <div v-if="showChildrens" class="flex flex-col p-1 ml-2 border-l">
             <FileFolder
                 v-for="(children, i) in childrens"
                 :key="i"
                 :="children"
-                @path="$emit('path', [folderName,...$event ])"
+                @path="$emit('path', [folderName, ...$event])"
             />
         </div>
     </transition>
 </template>
 
 <script>
-
 export default {
-
-    props:{
-        folderName:{
-            type:String,
-            required: true
+    props: {
+        folderName: {
+            type: String,
+            required: true,
         },
-        childrens:{
-            type:Array,
-            default(){
+        childrens: {
+            type: Array,
+            default() {
                 return []
-            }
-        }
+            },
+        },
     },
-    emits:['path'],
+    emits: ['path'],
     data() {
-        return {
-            showChildrens: false
-        }
-    }
+        return { showChildrens: false }
+    },
 }
 </script>

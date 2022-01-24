@@ -1,10 +1,7 @@
 <template>
-    <div
-        v-if="mode=='horizontal'"
-        class="flex items-center"
-    >
+    <div v-if="mode == 'horizontal'" class="flex items-center">
         <div
-            class="relative hidden w-10 h-10 mr-3 rounded-full md:block"
+            class="hidden relative mr-3 w-10 h-10 rounded-full md:block"
             :class="`w-${imgSize} h-${imgSize}`"
         >
             <img
@@ -12,19 +9,13 @@
                 :src="avatar ?? default_avatar"
                 :alt="username"
                 loading="lazy"
-            >
+            />
         </div>
         <div>
-            <p
-                class="whitespace-nowrap"
-                :class="textClass"
-            >
+            <p class="whitespace-nowrap" :class="textClass">
                 {{ username }}
             </p>
-            <p
-                v-if="reputation !== null"
-                class="text-sm text-gray-600 dark:text-gray-400"
-            >
+            <p v-if="reputation !== null" class="text-sm text-gray-600 dark:text-gray-400">
                 {{ abbrNumbers(reputation) }}
             </p>
         </div>
@@ -35,18 +26,12 @@
                 :src="avatar || default_avatar"
                 alt="Profile Picture"
                 :class="`w-${imgSize} h-${imgSize}`"
-                class="rounded-full mt-2 "
-            >
-            <div
-                class="font-medium text-center"
-                :class="textClass"
-            >
+                class="mt-2 rounded-full"
+            />
+            <div class="font-medium text-center" :class="textClass">
                 {{ username }}
             </div>
-            <p
-                v-if="reputation !== null"
-                class="text-sm text-gray-600 dark:text-gray-400"
-            >
+            <p v-if="reputation !== null" class="text-sm text-gray-600 dark:text-gray-400">
                 {{ abbrNumbers(reputation) }}
             </p>
         </div>
@@ -61,40 +46,36 @@ export default {
     props: {
         username: {
             type: String,
-            default: ''
+            default: '',
         },
         avatar: {
             type: String,
-            default: null
+            default: null,
         },
         reputation: {
             type: Number,
-            default: null
+            default: null,
         },
         mode: {
             type: String,
-            default: 'horizontal'
+            default: 'horizontal',
         },
         imgSize: {
             type: Number,
-            default: 10
+            default: 10,
         },
         textClass: {
             type: String,
-            default: 'text-base text-0 font-semibold'
+            default: 'text-base text-0 font-semibold',
         },
         textClassInfo: {
             type: String,
-            default: 'text-sm text-gray-600 dark:text-gray-400'
-        }
+            default: 'text-sm text-gray-600 dark:text-gray-400',
+        },
     },
-    data () {
-        return {
-            default_avatar
-        };
+    data() {
+        return { default_avatar }
     },
-    methods: {
-        abbrNumbers
-    }
+    methods: { abbrNumbers },
 }
 </script>

@@ -12,11 +12,9 @@ export default {
     props: {
         dateString: {
             type: String,
-            default: ''
-        }
+            default: '',
+        },
     },
-    methods: {
-        timeAgo
-    }
+    methods: { timeAgo },
 }
 </script>
