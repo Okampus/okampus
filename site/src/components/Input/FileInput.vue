@@ -13,6 +13,8 @@
                     v-if="modelValue.length == 0"
                     :class="{'outline-2': dragover}"
                     class="cursor-pointer flex flex-col h-full items-center justify-center rounded hover:outline-dashed outline-blue-500 dark:outline-blue-700 hover:outline-2"
+                    tabindex="0"
+                    @keydown.enter="$refs.inputFile.click()"
                     @click="$refs.inputFile.click()"
                 >
                     <font-awesome-icon
@@ -71,7 +73,9 @@
                     <div
                         v-if="modelValue.length != fileLimit"
                         class="cursor-pointer w-full h-full border-dashed border-2 border-gray-300 dark:border-gray-500 text-gray-500 rounded flex flex-col items-center justify-center text-2 p-4 text-center"
+                        tabindex="0"
                         @click="$refs.inputFile.click()"
+                        @keydown.enter="$refs.inputFile.click()"
                     >
                         Ajouter un fichier
                         <div class="text-xl">

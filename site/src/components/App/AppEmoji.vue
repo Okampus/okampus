@@ -1,9 +1,13 @@
-<template lang="">
+<template>
     <font-awesome-icon
-        v-if="emoji === 'icon'"
+        v-if="type === 'icon'"
         :icon="emoji"
+        size="lg"
     />
-    <div v-else>
+    <div
+        v-else
+        class="text-lg"
+    >
         {{ emoji }}
     </div>
 </template>

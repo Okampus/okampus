@@ -5,8 +5,7 @@
         :index-name="indexName"
         class="h-full relative w-full"
         @keydown.arrow-up.exact="indexSelected == null && focusInput? indexSelected = -1 : indexSelected--"
-        @keydown.arrow-down.exact="indexSelected == null && focusInput? indexSelected = 0 : indexSelected++, $refs.hitList.focus()"
-        @keydown.enter.exact="keyEnter = true"
+        @keydown.arrow-down.exact="indexSelected == null && focusInput? indexSelected = 0 : indexSelected++"
     >
         <div
             class="h-full w-full flex flex-col"
@@ -21,7 +20,6 @@
                 >
                     <template #default="{ isSearchStalled, refine }">
                         <div
-
                             class="input w-full h-full flex items-center cursor-pointer"
                             @click.prevent="showSearchBar = true, modelValue.length != itemLimit ? $refs.input.focus():null"
                         >
@@ -60,7 +58,6 @@
                                         v-if="items.length != 0"
                                     >
                                         <slot
-                                            ref="hitList"
                                             :indexSelected="indexSelected"
                                             :keyEnter="keyEnter"
                                             :items="items"

@@ -21,12 +21,12 @@
         </g>
         <foreignObject
             x="0"
-            y="43"
-            width="47.202"
-            height="20.991"
+            y="45"
+            width="47.5"
+            height="15.991"
         >
             <div
-                class="flex items-center justify-center text-white uppercase rounded-b-lg"
+                class="w-full h-full flex items-center justify-center text-white uppercase rounded-b"
                 :class="colors(mime)"
             >
                 {{ fileName.split('.').pop() }}

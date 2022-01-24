@@ -4,20 +4,20 @@
             v-for="(step, i) in steps"
             :key="i"
         >
-            <div class="flex flex-col justify-center items-center gap-2">
+            <div class="flex flex-col justify-center items-center">
                 <div
                     class="flex items-center w-full"
-                    :class="i <= currentStep ? 'text-sky-600' : 'text-gray-500'"
+                    :class="i <= currentStep ? 'text-blue-500' : 'text-gray-500'"
                 >
                     <div
-                        class="flex-auto border-t-2 transition duration-500 ease-in-out"
-                        :class="[i != 0 ? (i < currentStep + 1 ? 'border-sky-600':'border-gray-500') : 'border-none']"
+                        class="flex-auto transition duration-500 ease-in-out"
                     />
                     <div
-                        class="rounded-full transition duration-500 ease-in-out h-12 w-12 border-2 flex items-center justify-center"
-                        :class="i <= currentStep ? 'border-sky-600 text-sky-600' : 'border-gray-500 text-gray-500'"
+                        class="transition duration-500 ease-in-out h-12 w-12 flex items-center justify-center"
+                        :class="i <= currentStep ? 'text-blue-500' : 'text-gray-500'"
                     >
                         <font-awesome-icon
+                            size="lg"
                             :icon="step.icon"
                         />
                     </div>
@@ -27,16 +27,16 @@
                     />
                 </div>
                 <div
-                    class="text-xs font-medium uppercase"
-                    :class="i <= currentStep ? 'text-sky-600' : 'text-gray-500'"
+                    class="text-xs font-medium uppercase -mt-1"
+                    :class="i <= currentStep ? 'text-blue-500' : 'text-gray-500'"
                 >
                     {{ step.name }}
                 </div>
             </div>
             <div
                 v-if="i != steps.length-1"
-                class="flex-auto pb-6 border-t-2 transition duration-500 ease-in-out "
-                :class="[i < currentStep ? 'border-sky-600':'border-gray-500']"
+                class="flex-auto pb-3 border-t-2 transition duration-500 ease-in-out "
+                :class="[i < currentStep ? 'border-blue-500':'border-gray-500']"
             />
         </template>
     </div>
@@ -62,7 +62,7 @@
 
         <button
             v-if="currentStep === steps.length-1"
-            class="button w-1/3"
+            class="button green w-1/3"
             @click="emitFinish"
         >
             <p>Envoyer</p>

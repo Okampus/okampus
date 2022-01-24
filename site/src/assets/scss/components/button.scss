@@ -52,6 +52,20 @@
     }
 }
 
+.button.green {
+    @extend %button-raised;
+    @apply text-white bg-green-600 dark:bg-green-800
+        hover:bg-green-700 hover:dark:bg-green-900
+        active:bg-green-800 active:dark:bg-green-900
+        disabled:bg-gray-600 disabled:dark:bg-gray-800;
+
+    & > :first-child {
+        @apply bg-green-500 dark:bg-green-700
+            hover:bg-green-600 dark:hover:bg-green-800
+            active:bg-green-700 dark:active:bg-green-900;
+    }
+}
+
 // .button {
 //     @extend %button-flat;
 //     @apply text-white bg-blue-600 dark:bg-blue-800

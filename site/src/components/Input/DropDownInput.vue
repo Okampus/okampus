@@ -1,23 +1,26 @@
 <template>
     <Popper
         :offset-distance="'0'"
-        :interactive="false"
+        :interactive="true"
     >
         <slot />
 
-        <template
-            #content
-        >
+        <template #content>
             <div class="card p-2 flex flex-col">
                 <div
                     v-for="(button, i) in buttons"
                     :key="i"
-                    class="py-2 px-4 rounded-xl flex justify-center items-center gap-2"
+                    class="py-2 px-4 rounded-xl flex gap-2 items-center text-center"
                     :class="button.class"
                     @click="button.action()"
                 >
-                    <i :class="button.icon" />
-                    {{ button.name }}
+                    <font-awesome-icon
+
+                        :icon="button.icon"
+                    />
+                    <div>
+                        {{ button.name }}
+                    </div>
                 </div>
             </div>
         </template>

@@ -1,9 +1,9 @@
 <template>
     <div class="bg-1 rounded flex justify-between divide-x divide-color-0 raised cursor-pointer">
-        <div
+        <button
             v-for="(choice, i) in choices"
             :key="i"
-            class="w-full"
+            class="w-full focus:z-50"
             :class="[ modelValue == choice.key ? 'z-10':'' ]"
             @click="$emit('update:modelValue', choice.key)"
         >
@@ -13,7 +13,7 @@
             >
                 {{ choice.name }}
             </div>
-        </div>
+        </button>
     </div>
 </template>
 

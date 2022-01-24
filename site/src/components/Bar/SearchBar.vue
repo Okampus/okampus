@@ -127,7 +127,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
             queryByWeights:"10, 1, 5"
         },
         'study-docs': {
-            queryBy: "originalName,subjectEnglishName,subjectName",
+            queryBy: "name,subjectEnglishName,subjectName",
             queryByWeights:"10, 5, 5"
         },
         clubs:{
@@ -135,12 +135,17 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
             queryByWeights:"10"
         },
         'info-docs':{
-            queryBy: "originalName",
+            queryBy: "name",
             queryByWeights:"10"
         },
         articles:{
             queryBy: "title,body,tags,category",
             queryByWeights:"10, 1, 5, 5"
+        }
+        ,
+        subjects:{
+            queryBy:'name,code',
+            queryByWeights:'1,1'
         }
 
     },
@@ -171,7 +176,7 @@ export default {
                     title: "Tous les documents",
                     titleIcon: "file",
                     routerBase: "file",
-                    resultTitle: (item) => { return item.originalName },
+                    resultTitle: (item) => { return item.name },
                     resultBody: (item) => { return item.subjectName },
                     resultIcon: () => { return 'file' }
                 },
@@ -180,7 +185,7 @@ export default {
                     title: "Tous les documents informatifs",
                     titleIcon: "file",
                     routerBase: "file",
-                    resultTitle: (item) => { return item.originalName },
+                    resultTitle: (item) => { return item.name },
                     resultBody: (item) => { return item.subjectName },
                     resultIcon: () => { return 'file'}
                 },
@@ -198,10 +203,19 @@ export default {
                     title: "Toutes les associations",
                     titleIcon: "user-friends",
                     routerBase: "club",
-                    resultTitle: (item) => { return item.title },
-                    resultBody: (item) => { return item.description },
+                    resultTitle: (item) => { return item.name },
+                    resultBody: (item) => { return item.category },
                     resultIcon: () => { return 'user-friends'}
-                }
+                },
+                {
+                    indexName: "subjects",
+                    title: "Toutes les matieres",
+                    titleIcon: "book",
+                    routerBase: "subject",
+                    resultTitle: (item) => { return item.name },
+                    resultBody: (item) => { return item.code },
+                    resultIcon: () => { return 'book'}
+                },
             ]
         }
     },

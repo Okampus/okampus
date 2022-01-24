@@ -9,9 +9,6 @@
         >
             <template #step1>
                 <section>
-                    <div class="text-xl py-2">
-                        Fichiers
-                    </div>
                     <div class="space-y-4">
                         <div>
                             <div for="matiere">
@@ -57,8 +54,8 @@
                                             <div
                                                 v-for="(item,i) in slotValue.items"
                                                 :key="i"
-                                                class="flex p-1 gap-2 items-center rounded"
-                                                :class="[((slotValue.indexSelected % slotValue.items.length ) + slotValue.items.length ) % slotValue.items.length == i && slotValue.indexSelected != null ? 'bg-blue-100 dark:bg-blue-500' : '']"
+                                                class="flex p-1 gap-2 items-center rounded focus:bg-blue-100 focus:dark:bg-blue-500"
+                                                tabindex="0"
                                                 @click="slotValue.addItem(
                                                     {
                                                         code:item.code,
@@ -152,9 +149,6 @@
                 <section
                     class="space-y-2"
                 >
-                    <div class="text-xl py-2">
-                        Informations
-                    </div>
                     <div>Nom du document</div>
                     <input
                         v-model="stepsModel[1].docName"
@@ -183,10 +177,6 @@
 
             <template #step3>
                 <section>
-                    <div class="text-xl py-2">
-                        Envoyer
-                    </div>
-
                     <p>Disclaimer:</p>
                     <ul class="list-disc list-inside">
                         <li>Si vous uploadez un fichier, il sera public et accessible par tous</li>
@@ -231,7 +221,6 @@ import RadioInput from '@/components/Input/RadioInput.vue'
 import SelectInput from '@/components/Input/SelectInput.vue'
 import FileInput from '@/components/Input/FileInput.vue'
 import FormMultiStep from '@/components/Form/FormMultiStep.vue'
-
 import SearchInput from '@/components/Input/SearchInput.vue'
 
 export default {
@@ -241,7 +230,6 @@ export default {
         FileInput,
         FormMultiStep,
         SearchInput,
-
     },
     props: {
         steps: {
@@ -250,8 +238,8 @@ export default {
                 return [
                     {
                         id: 'step1',
-                        name: 'Fichiers',
-                        icon: 'bookmark'
+                        name: 'UPLOAD',
+                        icon: 'file'
                     }, {
                         id: 'step2',
                         name: 'Infos',
