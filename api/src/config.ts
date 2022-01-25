@@ -16,6 +16,7 @@ interface Config {
   storageSecretAccessKey: string;
   storageEndpoint: string;
   storageRegion: string;
+  distantStorageEnabled: boolean;
   accessTokenSecret: string;
   accessTokenExpiration: string;
   refreshTokenSecret: string;
@@ -104,6 +105,11 @@ export const config = createProfiguration<Config>({
     default: 'PAR',
     format: String,
     env: 'STORAGE_REGION',
+  },
+  distantStorageEnabled: {
+    default: false,
+    format: Boolean,
+    env: 'DISTANT_STORAGE_ENABLED',
   },
   accessTokenSecret: {
     default: 'secret',

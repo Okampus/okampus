@@ -24,7 +24,7 @@ export class FilePersistanceService {
     file: Express.Multer.File,
     { path, key, kind }: { path: string; key: string; kind: FileKind },
   ): Promise<{ url: string; etag: string }> {
-    if (config.get('nodeEnv') === 'development') {
+    if (!config.get('distantStorageEnabled')) {
       await fs.writeFile(path, file.buffer);
       // TODO: Make this configurable
       return { url: `http://localhost:8081/${path}`, etag: key };
