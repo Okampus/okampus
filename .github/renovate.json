@@ -4,19 +4,19 @@
   "schedule": ["before 12pm on Monday"],
   "labels": ["type: dependencies"],
   "branchPrefix": "deps/",
-  "prConcurrentLimit": 2,
+  "prConcurrentLimit": 5,
   "timezone": "Europe/Paris",
   "npm": {
     "packageRules": [
       {
         "matchPaths": ["api/**"],
         "groupName": "Backend dependencies",
-        "addLabels": ["target: backend"],
+        "addLabels": ["target: backend", "type: dependencies"],
         "reviewers": ["noftaly"]
       }, {
         "matchPaths": ["site/**"],
         "groupName": "Frontend dependencies",
-        "addLabels": ["target: frontend"],
+        "addLabels": ["target: frontend", "type: dependencies"],
         "reviewers": ["iv-stpn"]
       }, {
         "matchDepTypes": ["engines"],
