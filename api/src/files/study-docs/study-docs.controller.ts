@@ -24,6 +24,9 @@ import type { PaginatedResult } from '../../shared/modules/pagination/pagination
 import { SearchDto } from '../../shared/modules/search/search.dto';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
+import type { Category } from './category.type';
+import { CategoryType } from './category.type';
+import { CategoryTypesDto } from './dto/category-types.dto';
 import { CreateStudyDocDto } from './dto/create-study-doc.dto';
 import { DocsFilterDto } from './dto/docs-filter.dto';
 import { UpdateStudyDocDto } from './dto/update-study-doc.dto';
@@ -70,6 +73,15 @@ export class StudyDocsController {
     if (query.page)
       return await this.studyDocsService.findAll(filters, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
     return await this.studyDocsService.findAll(filters);
+  }
+
+  @Get('/categories')
+  @CheckPolicies(ability => ability.can(Action.Read, StudyDoc))
+  public async findCategories(
+    @Query() categoriesTypesDto: CategoryTypesDto,
+  ): Promise<Category[]> {
+    const defaultSort = [CategoryType.SchoolYear, CategoryType.Subject, CategoryType.Type, CategoryType.Year];
+    return await this.studyDocsService.findCategories(categoriesTypesDto?.categories ?? defaultSort);
   }
 
   @UseGuards(TypesenseGuard)

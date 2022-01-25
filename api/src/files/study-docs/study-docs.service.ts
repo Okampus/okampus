@@ -2,8 +2,10 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import groupBy from 'lodash.groupby';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import { Cursus } from '../../shared/lib/types/cursus.enum';
+import type { ValueOf } from '../../shared/lib/types/valueof.type';
 import { assertPermissions } from '../../shared/lib/utils/assertPermission';
 import { Action } from '../../shared/modules/authorization';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
@@ -13,6 +15,7 @@ import { Subject } from '../../subjects/subject.entity';
 import type { User } from '../../users/user.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
+import type { Category, CategoryType } from './category.type';
 import type { CreateStudyDocDto } from './dto/create-study-doc.dto';
 import type { DocsFilterDto } from './dto/docs-filter.dto';
 import type { UpdateStudyDocDto } from './dto/update-study-doc.dto';
@@ -67,6 +70,25 @@ export class StudyDocsService {
       options,
       { populate: ['file', 'file.user', 'subject', 'docSeries'] },
     );
+  }
+
+  public async findCategories(baseFilters: CategoryType[]): Promise<Category[]> {
+    const allDocuments: StudyDoc[] = await this.studyDocRepository.findAll(['subject']);
+
+    const groupFilters: Record<CategoryType, (elt: StudyDoc) => ValueOf<StudyDoc>> = {
+      schoolYear: elt => elt.subject.schoolYear,
+      subject: elt => elt.subject.subjectId,
+      type: elt => elt.type,
+      year: elt => elt.year,
+    } as const;
+
+    const computeChildren = (documents: StudyDoc[], filters: CategoryType[]): Category[] =>
+      Object.entries(groupBy(documents, groupFilters[filters[0]])).map(([name, value]) => ({
+        name,
+        children: filters.length === 1 ? [] : computeChildren(value, filters.slice(1)),
+      }));
+
+    return computeChildren(allDocuments, baseFilters);
   }
 
   public async findOne(studyDocId: string): Promise<StudyDoc> {

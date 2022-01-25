@@ -1,3 +1,5 @@
+import type { ValueOf } from '../shared/lib/types/valueof.type';
+
 const BaseReaction = {
   what: 'what',
   interesting: 'interesting',
@@ -30,8 +32,6 @@ export const AllReaction = {
   ...ReplyReaction,
   ...BlogPostReaction,
 } as const;
-
-type ValueOf<T> = T[keyof T];
 
 export type BaseReactionValue = ValueOf<typeof BaseReaction>;
 
