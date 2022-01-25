@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  database:
+    ports:
+      - 54321:5432
+
+  pgadmin:
+    ports:
+      - 5050:5050
+
+  typesense:
+    ports:
+      - 18108:8108
+
+  api:
+    ports:
+      - 443:8081

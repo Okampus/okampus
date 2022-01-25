@@ -1,7 +1,5 @@
-import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
-import type { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface';
 import { NestFactory, Reflector } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -12,7 +10,6 @@ import { config } from './config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
 import { TypesenseFilter } from './shared/lib/filters/typesense.filter';
 import { logger as loggerMiddleware } from './shared/lib/middlewares/logger.middleware';
-import { dirExists } from './shared/lib/utils/dirExists';
 import { client } from './typesense.config';
 
 const logger = new Logger('Bootstrap');
@@ -44,27 +41,10 @@ function setupSwagger(app: NestExpressApplication): void {
   logger.log('Documentation available at /docs');
 }
 
-async function getHttpsOptions(): Promise<HttpsOptions | undefined> {
-  const secretDirs = path.join(path.resolve('./'), 'secrets');
-  if (await dirExists(secretDirs)) {
-    logger.log('Found secrets directory, using HTTPS');
-    return {
-      key: await fs.readFile('secrets/private-key.pem'),
-      cert: await fs.readFile('secrets/public-certificate.pem'),
-    };
-  }
-
-  logger.log('No secrets directory found, using HTTP');
-}
-
 async function bootstrap(): Promise<void> {
   await attemptTypesenseConnection();
 
-  let httpsOptions;
-  if (config.get('nodeEnv') === 'production')
-    httpsOptions = await getHttpsOptions();
-
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, { httpsOptions });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.use(helmet());
   app.use(loggerMiddleware);
