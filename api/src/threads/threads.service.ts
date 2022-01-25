@@ -61,13 +61,20 @@ export class ThreadsService {
   public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Thread>> {
     // TODO: Maybe the user won't have access to all threads. There can be some restrictions
     // (i.e. "personal"/"sensitive" threads)
-    return await this.threadRepository.findWithPagination(paginationOptions, {}, { populate: ['post', 'tags', 'assignees'] });
+    return await this.threadRepository.findWithPagination(
+      paginationOptions,
+      {},
+      { populate: ['post', 'tags', 'assignees'] },
+    );
   }
 
   public async findOne(contentMasterId: number): Promise<Thread> {
     // TODO: Maybe the user won't have access to this thread. There can be some restrictions
     // (i.e. "personal"/"sensitive" threads)
-    return await this.threadRepository.findOneOrFail({ contentMasterId }, ['post', 'post.children', 'post.children.children', 'tags', 'assignees', 'contributors']);
+    return await this.threadRepository.findOneOrFail(
+      { contentMasterId },
+      { populate: ['post', 'post.children', 'post.children.children', 'tags', 'assignees', 'contributors'] },
+    );
   }
 
   public async findInteractions(contentMasterId: number): Promise<ThreadInteractions> {
@@ -88,7 +95,10 @@ export class ThreadsService {
   }
 
   public async update(user: User, contentMasterId: number, updateThreadDto: UpdateThreadDto): Promise<Thread> {
-    const thread = await this.threadRepository.findOneOrFail({ contentMasterId }, ['post', 'tags', 'assignees']);
+    const thread = await this.threadRepository.findOneOrFail(
+      { contentMasterId },
+      { populate: ['post', 'tags', 'assignees'] },
+    );
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, thread, Object.keys(updateThreadDto));
@@ -134,7 +144,10 @@ export class ThreadsService {
   }
 
   public async addTags(contentMasterId: number, newTags: string[]): Promise<Thread> {
-    const thread = await this.threadRepository.findOneOrFail({ contentMasterId }, ['post', 'tags', 'assignees']);
+    const thread = await this.threadRepository.findOneOrFail(
+      { contentMasterId },
+      { populate: ['post', 'tags', 'assignees'] },
+    );
 
     const tags = await this.tagRepository.find({ name: { $in: newTags } });
     thread.tags.add(...tags);
@@ -143,7 +156,7 @@ export class ThreadsService {
   }
 
   public async removeTags(contentMasterId: number, droppedTags: string[]): Promise<void> {
-    const thread = await this.threadRepository.findOneOrFail({ contentMasterId }, ['tags']);
+    const thread = await this.threadRepository.findOneOrFail({ contentMasterId }, { populate: ['tags'] });
 
     const tags = await this.tagRepository.find({ name: { $in: droppedTags } });
     thread.tags.remove(...tags);
@@ -151,7 +164,10 @@ export class ThreadsService {
   }
 
   public async addAssignees(contentMasterId: number, assignees: string[]): Promise<Thread> {
-    const thread = await this.threadRepository.findOneOrFail({ contentMasterId }, ['post', 'tags', 'assignees']);
+    const thread = await this.threadRepository.findOneOrFail(
+      { contentMasterId },
+      { populate: ['post', 'tags', 'assignees'] },
+    );
 
     const users = await this.userRepository.find({ userId: { $in: assignees } });
     thread.assignees.add(...users.filter(user => !thread.assignees.contains(user)));
@@ -160,7 +176,7 @@ export class ThreadsService {
   }
 
   public async removeAssignees(contentMasterId: number, assignees: string[]): Promise<void> {
-    const thread = await this.threadRepository.findOneOrFail({ contentMasterId }, ['assignees']);
+    const thread = await this.threadRepository.findOneOrFail({ contentMasterId }, { populate: ['assignees'] });
 
     const users = await this.userRepository.find({ userId: { $in: assignees } });
     thread.assignees.remove(...users);

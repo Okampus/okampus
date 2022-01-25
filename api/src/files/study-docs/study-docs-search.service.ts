@@ -43,7 +43,7 @@ export class StudyDocSearchService extends SearchService<StudyDoc, IndexedStudyD
 
   @RequireTypesense()
   public async init(): Promise<void> {
-    const studyDocs = await this.studyDocRepository.find({}, ['file', 'file.user', 'subject']);
+    const studyDocs = await this.studyDocRepository.find({}, { populate: ['file', 'file.user', 'subject'] });
     await super.init(studyDocs, entity => this.toIndexedEntity(entity));
   }
 

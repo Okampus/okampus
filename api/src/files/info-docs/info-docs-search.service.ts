@@ -39,7 +39,7 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
 
   @RequireTypesense()
   public async init(): Promise<void> {
-    const infoDocs = await this.infoDocRepository.find({}, ['file', 'file.user']);
+    const infoDocs = await this.infoDocRepository.find({}, { populate: ['file', 'file.user'] });
     await super.init(infoDocs, entity => this.toIndexedEntity(entity));
   }
 

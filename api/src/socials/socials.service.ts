@@ -73,7 +73,7 @@ export class SocialsService {
   }
 
   public async findAllUserSocialAccounts(userId: string): Promise<UserSocialAccount[]> {
-    return await this.userSocialsAccountRepository.find({ user: { userId } }, ['social', 'user']);
+    return await this.userSocialsAccountRepository.find({ user: { userId } }, { populate: ['social', 'user'] });
   }
 
   public async updateUserSocialAccount(
@@ -81,7 +81,10 @@ export class SocialsService {
     socialAccountId: number,
     updateSocialDto: UpdateSocialAccountDto,
   ): Promise<UserSocialAccount> {
-    const userSocial = await this.userSocialsAccountRepository.findOneOrFail({ socialAccountId }, ['social', 'user']);
+    const userSocial = await this.userSocialsAccountRepository.findOneOrFail(
+      { socialAccountId },
+      { populate: ['social', 'user'] },
+    );
 
     const ability = this.caslAbilityFactory.createForUser(requester);
     assertPermissions(ability, Action.Update, userSocial.user);
@@ -92,7 +95,10 @@ export class SocialsService {
   }
 
   public async deleteUserSocialAccount(requester: User, socialAccountId: number): Promise<void> {
-    const userSocial = await this.userSocialsAccountRepository.findOneOrFail({ socialAccountId }, ['user']);
+    const userSocial = await this.userSocialsAccountRepository.findOneOrFail(
+      { socialAccountId },
+      { populate: ['user'] },
+    );
 
     const ability = this.caslAbilityFactory.createForUser(requester);
     assertPermissions(ability, Action.Update, userSocial.user);
@@ -106,7 +112,7 @@ export class SocialsService {
     socialId: number,
     createSocialAccountDto: CreateSocialAccountDto,
   ): Promise<ClubSocialAccount> {
-    const club = await this.clubsRepository.findOneOrFail({ clubId }, ['members']);
+    const club = await this.clubsRepository.findOneOrFail({ clubId }, { populate: ['members'] });
     // TODO: Move this to CASL
     if (!club.isClubAdmin(requester))
       throw new ForbiddenException('Not a club admin');
@@ -118,7 +124,10 @@ export class SocialsService {
   }
 
   public async findAllClubSocialAccounts(clubId: number): Promise<ClubSocialAccount[]> {
-    return await this.clubSocialsAccountRepository.find({ club: { clubId } }, ['social', 'club', 'club.members']);
+    return await this.clubSocialsAccountRepository.find(
+      { club: { clubId } },
+      { populate: ['social', 'club', 'club.members'] },
+    );
   }
 
   public async updateClubSocialAccount(
@@ -126,7 +135,10 @@ export class SocialsService {
     socialAccountId: number,
     updateSocialDto: UpdateSocialAccountDto,
   ): Promise<ClubSocialAccount> {
-    const clubSocial = await this.clubSocialsAccountRepository.findOneOrFail({ socialAccountId }, ['social', 'club', 'club.members']);
+    const clubSocial = await this.clubSocialsAccountRepository.findOneOrFail(
+      { socialAccountId },
+      { populate: ['social', 'club', 'club.members'] },
+    );
     // TODO: Move this to CASL
     if (!clubSocial.club.isClubAdmin(requester))
       throw new ForbiddenException('Not a club admin');
@@ -137,7 +149,10 @@ export class SocialsService {
   }
 
   public async deleteClubSocialAccount(requester: User, socialAccountId: number): Promise<void> {
-    const clubSocial = await this.clubSocialsAccountRepository.findOneOrFail({ socialAccountId }, ['club', 'club.members']);
+    const clubSocial = await this.clubSocialsAccountRepository.findOneOrFail(
+      { socialAccountId },
+      { populate: ['club', 'club.members'] },
+    );
     // TODO: Move this to CASL
     if (!clubSocial.club.isClubAdmin(requester))
       throw new ForbiddenException('Not a club admin');

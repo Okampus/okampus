@@ -73,7 +73,7 @@ export class StudyDocsService {
   }
 
   public async findCategories(baseFilters: CategoryType[]): Promise<Category[]> {
-    const allDocuments: StudyDoc[] = await this.studyDocRepository.findAll(['subject']);
+    const allDocuments: StudyDoc[] = await this.studyDocRepository.findAll({ populate: ['subject'] });
 
     const groupFilters: Record<CategoryType, (elt: StudyDoc) => ValueOf<StudyDoc>> = {
       schoolYear: elt => elt.subject.schoolYear,
@@ -94,23 +94,32 @@ export class StudyDocsService {
   public async findOne(studyDocId: string): Promise<StudyDoc> {
     // TODO: Maybe the user won't have access to this doc. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
-    return await this.studyDocRepository.findOneOrFail({ studyDocId }, ['file', 'file.user', 'subject', 'docSeries']);
+    return await this.studyDocRepository.findOneOrFail(
+      { studyDocId },
+      { populate: ['file', 'file.user', 'subject', 'docSeries'] },
+    );
   }
 
   public async update(user: User, studyDocId: string, updateCourseDto: UpdateStudyDocDto): Promise<StudyDoc> {
-    const studyDoc = await this.studyDocRepository.findOneOrFail({ studyDocId }, ['file', 'file.user', 'subject', 'docSeries']);
+    const studyDoc = await this.studyDocRepository.findOneOrFail(
+      { studyDocId },
+      { populate: ['file', 'file.user', 'subject', 'docSeries'] },
+    );
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, studyDoc);
 
-    wrap(studyDoc).assign(updateCourseDto);
+    const subject = await this.subjectRepository.findOneOrFail({ subjectId: updateCourseDto.subject });
+    const docSeries = await this.docSeriesRepository.findOneOrFail({ docSeriesId: updateCourseDto.docSeries });
+
+    wrap(studyDoc).assign({ ...updateCourseDto, subject, docSeries });
     await this.studyDocRepository.flush();
     await this.studyDocSearchService.update(studyDoc);
     return studyDoc;
   }
 
   public async remove(user: User, studyDocId: string): Promise<void> {
-    const studyDoc = await this.studyDocRepository.findOneOrFail({ studyDocId }, ['file', 'file.user']);
+    const studyDoc = await this.studyDocRepository.findOneOrFail({ studyDocId }, { populate: ['file', 'file.user'] });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, studyDoc);

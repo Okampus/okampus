@@ -17,7 +17,7 @@ export class FileUploadsService {
   public async findOne(fileUploadId: string): Promise<FileUpload> {
     // TODO: Maybe the user won't have access to this file. There can be some restrictions
     // (i.e. "sensitive"/"removed" files)
-    return await this.fileUploadRepository.findOneOrFail({ fileUploadId }, ['user']);
+    return await this.fileUploadRepository.findOneOrFail({ fileUploadId }, { populate: ['user'] });
   }
 
   public async create(

@@ -41,7 +41,7 @@ export class ContentsService {
   public async createReply(user: User, createContentDto: CreateContentDto): Promise<Content> {
     const parent = await this.contentRepository.findOneOrFail(
       { contentId: createContentDto.parentId, kind: ContentKind.Post },
-      ['author'],
+      { populate: ['author'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -61,7 +61,7 @@ export class ContentsService {
 
     const master = await this.contentMasterRepository.findOneOrFail(
       { contentMasterId: content.contentMasterId },
-      ['contributors'],
+      { populate: ['contributors'] },
     );
     if (!master.contributors.contains(user)) {
       master.contributors.add(user);
@@ -74,7 +74,7 @@ export class ContentsService {
   public async createComment(user: User, createContentDto: CreateContentDto): Promise<Content> {
     const parent = await this.contentRepository.findOneOrFail(
       { contentId: createContentDto.parentId, kind: { $in: [ContentKind.Post, ContentKind.Reply] } },
-      ['author'],
+      { populate: ['author'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -94,7 +94,7 @@ export class ContentsService {
 
     const master = await this.contentMasterRepository.findOneOrFail(
       { contentMasterId: content.contentMasterId },
-      ['contributors'],
+      { populate: ['contributors'] },
     );
     if (!master.contributors.contains(user)) {
       master.contributors.add(user);
@@ -127,11 +127,14 @@ export class ContentsService {
   public async findOne(contentId: number): Promise<Content> {
     // TODO: Maybe the user won't have access to this post. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
-    return await this.contentRepository.findOneOrFail({ contentId }, ['author', 'parent', 'children']);
+    return await this.contentRepository.findOneOrFail({ contentId }, { populate: ['author', 'parent', 'children'] });
   }
 
   public async update(user: User, contentId: number, updateContentDto: UpdateContentDto): Promise<Content> {
-    const content = await this.contentRepository.findOneOrFail({ contentId }, ['author', 'parent', 'children']);
+    const content = await this.contentRepository.findOneOrFail(
+      { contentId },
+      { populate: ['author', 'parent', 'children'] },
+    );
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, content, Object.keys(updateContentDto));

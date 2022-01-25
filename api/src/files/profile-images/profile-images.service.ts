@@ -30,11 +30,11 @@ export class ProfileImagesService {
   }
 
   public async findOne(profileImageId: string): Promise<ProfileImage> {
-    return await this.profileImageRepository.findOneOrFail({ profileImageId }, ['file', 'user']);
+    return await this.profileImageRepository.findOneOrFail({ profileImageId }, { populate: ['file', 'user'] });
   }
 
   public async remove(user: User, profileImageId: string): Promise<void> {
-    const profileImage = await this.profileImageRepository.findOneOrFail({ profileImageId }, ['file']);
+    const profileImage = await this.profileImageRepository.findOneOrFail({ profileImageId }, { populate: ['file'] });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, profileImage);

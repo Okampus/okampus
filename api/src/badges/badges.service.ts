@@ -63,6 +63,10 @@ export class BadgesService {
     userId: string,
     paginationOptions?: PaginationOptions,
   ): Promise<PaginatedResult<BadgeUnlock>> {
-    return await this.badgeUnlockRepository.findWithPagination(paginationOptions, { user: { userId } }, { populate: ['badge', 'user'] });
+    return await this.badgeUnlockRepository.findWithPagination(
+      paginationOptions,
+      { user: { userId } },
+      { populate: ['badge', 'user'] },
+    );
   }
 }

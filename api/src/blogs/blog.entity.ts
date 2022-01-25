@@ -1,15 +1,8 @@
-import {
-  Collection,
-  Entity,
-  ManyToMany,
-  Property,
-} from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/core';
 import { Transform } from 'class-transformer';
 import type { Content } from '../contents/content.entity';
-import { TransformCollection } from '../shared/lib/decorators/transform-collection.decorator';
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { ContentMasterType } from '../shared/lib/types/content-master-type.enum';
-import type { Tag } from '../tags/tag.entity';
 
 @Entity({ discriminatorValue: ContentMasterType.Blog })
 export class Blog extends ContentMaster {
@@ -28,10 +21,6 @@ export class Blog extends ContentMaster {
   @Property({ type: 'text' })
   @Transform(({ obj }: { obj: Blog }) => obj.location?.split(','))
   location?: string;
-
-  @ManyToMany()
-  @TransformCollection()
-  tags = new Collection<Tag>(this);
 
   // TODO: Add full 'locked' support - Add perms to Update/Patch endpoint
   @Property()

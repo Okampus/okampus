@@ -53,11 +53,14 @@ export class BlogsService {
   public async findOne(contentMasterId: number): Promise<Blog> {
     // TODO: Maybe the user won't have access to this blog. There can be some restrictions
     // (i.e. "personal"/"sensitive" blogs)
-    return await this.blogRepository.findOneOrFail({ contentMasterId }, ['post', 'post.children', 'post.children.children', 'tags', 'contributors']);
+    return await this.blogRepository.findOneOrFail(
+      { contentMasterId },
+      { populate: ['post', 'post.children', 'post.children.children', 'tags', 'contributors'] },
+    );
   }
 
   public async update(user: User, contentMasterId: number, updateBlogDto: UpdateBlogDto): Promise<Blog> {
-    const blog = await this.blogRepository.findOneOrFail({ contentMasterId }, ['post', 'tags']);
+    const blog = await this.blogRepository.findOneOrFail({ contentMasterId }, { populate: ['post', 'tags'] });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, blog, Object.keys(updateBlogDto));

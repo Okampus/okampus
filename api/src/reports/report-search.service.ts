@@ -38,7 +38,7 @@ export class ReportSearchService extends SearchService<Report, IndexedReport> {
 
   @RequireTypesense()
   public async init(): Promise<void> {
-    const reports = await this.reportRepository.find({}, ['user', 'content', 'reporter']);
+    const reports = await this.reportRepository.find({}, { populate: ['user', 'content', 'reporter'] });
     await super.init(reports, entity => this.toIndexedEntity(entity));
   }
 

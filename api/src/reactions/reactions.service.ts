@@ -21,7 +21,7 @@ export class ReactionsService {
     // TODO: Maybe the user won't have access to this post. There can be some restrictions
     // (i.e. "personal"/"sensitive" posts)
     const content = await this.contentRepository.findOneOrFail({ contentId });
-    return await this.reactionRepository.find({ content }, ['user', 'content']);
+    return await this.reactionRepository.find({ content }, { populate: ['user', 'content'] });
   }
 
   public async add(user: User, contentId: number, value: AllReactionValue): Promise<Reaction> {

@@ -10,17 +10,12 @@ import { TransformCollection } from '../shared/lib/decorators/transform-collecti
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { ContentMasterType } from '../shared/lib/types/content-master-type.enum';
 import { ThreadType } from '../shared/lib/types/thread-type.enum';
-import type { Tag } from '../tags/tag.entity';
 import type { User } from '../users/user.entity';
 
 @Entity({ discriminatorValue: ContentMasterType.Thread })
 export class Thread extends ContentMaster {
   @Property({ type: 'text' })
   title!: string;
-
-  @ManyToMany()
-  @TransformCollection()
-  tags = new Collection<Tag>(this);
 
   @Enum(() => ThreadType)
   type!: ThreadType;

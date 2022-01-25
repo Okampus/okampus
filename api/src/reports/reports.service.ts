@@ -73,11 +73,14 @@ export class ReportsService {
   }
 
   public async findOne(reportId: number): Promise<Report> {
-    return await this.reportRepository.findOneOrFail({ reportId }, ['content', 'user', 'reporter']);
+    return await this.reportRepository.findOneOrFail({ reportId }, { populate: ['content', 'user', 'reporter'] });
   }
 
   public async update(user: User, reportId: number, updateReportDto: UpdateReportDto): Promise<Report> {
-    const report = await this.reportRepository.findOneOrFail({ reportId }, ['content', 'user', 'reporter']);
+    const report = await this.reportRepository.findOneOrFail(
+      { reportId },
+      { populate: ['content', 'user', 'reporter'] },
+    );
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, report);
