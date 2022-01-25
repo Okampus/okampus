@@ -10,6 +10,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
+import { SerializerIncludePersonalInfo } from '../shared/lib/decorators/serializers.decorator';
 import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
@@ -21,6 +22,7 @@ import { User } from './user.entity';
 import { UsersService } from './users.service';
 
 @ApiTags('Users')
+@SerializerIncludePersonalInfo()
 @Controller({ path: 'users' })
 export class UsersController {
   constructor(
