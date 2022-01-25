@@ -1,8 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { Article } from '../../articles/entities/article.entity';
-import { Post } from '../../posts/entities/post.entity';
-import { Reply } from '../../replies/entities/reply.entity';
+import { Content } from '../../contents/content.entity';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
 import { FileUploadsModule } from '../file-uploads/file-uploads.module';
 import { Attachment } from './attachment.entity';
@@ -11,7 +9,7 @@ import { AttachmentsService } from './attachments.service';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([Attachment, Post, Reply, Article]),
+    MikroOrmModule.forFeature([Attachment, Content]),
     FileUploadsModule,
   ],
   controllers: [AttachmentsController],

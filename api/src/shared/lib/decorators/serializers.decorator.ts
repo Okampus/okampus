@@ -4,6 +4,7 @@ import {
   CLUB_SOCIALS_CLUB_INCLUDED,
   CLUB_SOCIALS_INCLUDED,
   CLUBMEMBER_CLUB_INCLUDED,
+  CONTENT_AUTHOR_EXCLUDED,
   EMAIL_INCLUDED,
   PERSONAL_INFO_INCLUDED,
 } from '../constants';
@@ -14,6 +15,10 @@ export function SerializerIncludeEmail(): ClassDecorator {
 
 export function SerializerIncludePersonalInfo(): ClassDecorator {
   return applyDecorators(SerializeOptions({ groups: [PERSONAL_INFO_INCLUDED] }));
+}
+
+export function SerializerExcludeContentAuthor(): ClassDecorator {
+  return applyDecorators(SerializeOptions({ groups: [CONTENT_AUTHOR_EXCLUDED] }));
 }
 
 export function SerializerIncludeClubMembers(): MethodDecorator {

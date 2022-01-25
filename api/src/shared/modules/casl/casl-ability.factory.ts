@@ -1,49 +1,41 @@
 import type { AbilityClass, ExtractSubjectType, InferSubjects } from '@casl/ability';
 import { Ability, AbilityBuilder, ForbiddenError } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
-import { Article } from '../../../articles/entities/article.entity';
 import { Badge } from '../../../badges/badge.entity';
+import { Blog } from '../../../blogs/blog.entity';
 import { Club } from '../../../clubs/entities/club.entity';
-import { Comment } from '../../../comments/entities/comment.entity';
+import { Content } from '../../../contents/content.entity';
 import { Attachment } from '../../../files/attachments/attachment.entity';
 import { InfoDoc } from '../../../files/info-docs/info-doc.entity';
 import { ProfileImage } from '../../../files/profile-images/profile-image.entity';
 import { StudyDoc } from '../../../files/study-docs/study-doc.entity';
-import { Post } from '../../../posts/entities/post.entity';
-import { Reply } from '../../../replies/entities/reply.entity';
-import { ArticleReport } from '../../../reports/entities/article-report.entity';
-import { CommentReport } from '../../../reports/entities/comment-report.entity';
-import { PostReport } from '../../../reports/entities/post-report.entity';
-import { ReplyReport } from '../../../reports/entities/reply-report.entity';
+import { Report } from '../../../reports/report.entity';
 import type { Social } from '../../../socials/entities/social.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
+import { Thread } from '../../../threads/thread.entity';
 import { User } from '../../../users/user.entity';
+import { ContentKind } from '../../lib/types/content-kind.enum';
 import { Action } from '../authorization/types/action.enum';
 import { Role } from '../authorization/types/role.enum';
 
 export type Subjects = InferSubjects<
-  | typeof Article
-  | typeof ArticleReport
   | typeof Attachment
   | typeof Badge
+  | typeof Blog
   | typeof Club
   | typeof Comment
-  | typeof CommentReport
+  | typeof Content
   | typeof InfoDoc
-  | typeof Post
-  | typeof PostReport
   | typeof ProfileImage
-  | typeof Reply
-  | typeof ReplyReport
+  | typeof Report
   | typeof Social
   | typeof StudyDoc
   | typeof Subject
   | typeof Tag
+  | typeof Thread
   | typeof User>
   | 'all';
-
-const reports = [ArticleReport, CommentReport, PostReport, ReplyReport];
 
 export type AppAbility = Ability<[action: Action, subjects: Subjects]>;
 
@@ -62,18 +54,21 @@ export class CaslAbilityFactory {
     const { can: allow, cannot: forbid, build } = new AbilityBuilder<AppAbility>(Ability as AbilityClass<AppAbility>);
 
     const isAuthor = { 'author.userId': user.userId };
+    const isFileUploader = { 'file.user.userId': user.userId };
+    const isPost = { kind: ContentKind.Post };
 
     if (user.roles.includes(Role.Admin)) {
       allow(Action.Manage, 'all');
     } else {
       allow(Action.Read, 'all');
-      forbid(Action.Read, reports);
-      allow(Action.Create, [Attachment, Comment, InfoDoc, Post, Reply, StudyDoc, Tag]);
+      forbid(Action.Read, Report);
+      allow([Action.Read, Action.Update], Report, { user: { userId: user.userId } });
+      allow(Action.Create, [Attachment, Comment, InfoDoc, Content, StudyDoc, Tag]);
       allow(Action.Report, 'all');
       // @ts-expect-error
-      forbid(Action.Report, [Comment, Post, Reply], isAuthor)
+      forbid(Action.Report, Content, isAuthor)
         .because('Cannot report your own content');
-      allow(Action.Interact, [Comment, Post, Reply]);
+      allow(Action.Interact, Content);
 
       // This is all managed by-hand inside the services.
       allow(Action.Update, Club);
@@ -81,43 +76,40 @@ export class CaslAbilityFactory {
       if (user.roles.includes(Role.Moderator)) {
         allow(Action.Update, 'all');
         forbid(Action.Update, Badge);
-        allow(Action.Manage, [Article, InfoDoc, ProfileImage, ...reports, StudyDoc, Subject, Tag]);
+        allow(Action.Manage, [Blog, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag]);
       } else {
         // @ts-expect-error
-        allow(Action.Update, Post, ['body', 'opened', 'solved', 'tags', 'title', 'type'], isAuthor)
+        allow(Action.Update, Thread, ['opened', 'solved', 'tags', 'title', 'type'], { ...isAuthor, ...isPost })
           .because('Not the author');
         // @ts-expect-error
-        allow(Action.Update, Comment, ['body'], isAuthor)
-          .because('Not the author');
-        // @ts-expect-error
-        allow(Action.Update, Reply, ['body'], isAuthor)
-          .because('Not the author');
-        // @ts-expect-error
-        allow(Action.Update, StudyDoc, ['description', 'docSeries', 'name', 'subject', 'tags', 'year'], { 'file.user.userId': user.userId })
-          .because('Not the author');
-        // @ts-expect-error
-        allow(Action.Update, InfoDoc, ['description', 'docSeries', 'name', 'tags', 'year'], { 'file.user.userId': user.userId })
+        allow(Action.Update, Content, ['body'], isAuthor)
           .because('Not the author');
 
         // @ts-expect-error
-        allow(Action.Manage, ProfileImage, { 'file.user.userId': user.userId })
+        allow(Action.Update, StudyDoc, ['description', 'docSeries', 'name', 'subject', 'tags', 'year'], isFileUploader)
+          .because('Not the author');
+        // @ts-expect-error
+        allow(Action.Update, InfoDoc, ['description', 'docSeries', 'name', 'tags', 'year'], isFileUploader)
+          .because('Not the author');
+        // @ts-expect-error
+        allow(Action.Manage, ProfileImage, isFileUploader)
           .because('Not the user');
 
         // @ts-expect-error
-        allow(Action.Delete, [Post, Comment, Reply], isAuthor)
+        allow(Action.Delete, Content, isAuthor)
           .because('Not the author');
         // @ts-expect-error
-        allow(Action.Delete, StudyDoc, { 'file.user.userId': user.userId })
+        allow(Action.Delete, StudyDoc, isFileUploader)
           .because('Not the author');
         // @ts-expect-error
-        allow(Action.Delete, InfoDoc, { 'file.user.userId': user.userId })
+        allow(Action.Delete, InfoDoc, isFileUploader)
           .because('Not the author');
 
-        forbid([Action.Update, Action.Delete, Action.Interact], Post, { locked: true })
-          .because('Post is locked');
+        forbid([Action.Update, Action.Delete, Action.Interact], Thread, { locked: true })
+          .because('Thread is locked');
         // @ts-expect-error
-        forbid([Action.Create, Action.Update, Action.Delete, Action.Interact], [Comment, Reply], { 'post.locked': true })
-          .because('Post is locked');
+        forbid([Action.Create, Action.Update, Action.Delete, Action.Interact], Content, { 'contentMaster.locked': true })
+          .because('Thread is locked');
       }
     }
 

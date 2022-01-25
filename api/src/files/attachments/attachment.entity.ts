@@ -5,12 +5,9 @@ import {
   PrimaryKey,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import { Article } from '../../articles/entities/article.entity';
-import { Post } from '../../posts/entities/post.entity';
-import { Reply } from '../../replies/entities/reply.entity';
+import { Content } from '../../contents/content.entity';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
-import type { ContentOptions } from './content-options-xor.type';
 
 @Entity()
 export class Attachment extends BaseEntity {
@@ -21,22 +18,14 @@ export class Attachment extends BaseEntity {
   file!: FileUpload;
 
   @ManyToOne()
-  post?: Post;
+  content?: Content;
 
-  @ManyToOne()
-  reply?: Reply;
-
-  @ManyToOne()
-  article?: Article;
-
-  constructor(options: ContentOptions & { file: FileUpload }) {
+  constructor(options: {
+    content: Content;
+    file: FileUpload;
+  }) {
     super();
     this.file = options.file;
-    if (options.post)
-      this.post = options.post;
-    else if (options.reply)
-      this.reply = options.reply;
-    else if (options.article)
-      this.article = options.article;
+    this.content = options.content;
   }
 }

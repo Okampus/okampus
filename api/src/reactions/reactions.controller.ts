@@ -5,111 +5,47 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Post as PostRequest,
+  Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Article } from '../articles/entities/article.entity';
-import { Post } from '../posts/entities/post.entity';
-import { Reply } from '../replies/entities/reply.entity';
+import { Content } from '../contents/content.entity';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { User } from '../users/user.entity';
-import { ReactArticleDto } from './dto/react-article.dto';
-import { ReactPostDto } from './dto/react-post.dto';
-import { ReactReplyDto } from './dto/react-reply.dto';
-import type { ArticleReaction } from './entities/article-reaction.entity';
-import type { PostReaction } from './entities/post-reaction.entity';
-import type { ReplyReaction } from './entities/reply-reaction.entity';
-import { ArticleReactionsService } from './services/article-reactions.service';
-import { PostReactionsService } from './services/post-reactions.service';
-import { ReplyReactionsService } from './services/reply-reactions.service';
+import { ReactContentDto } from './dto/react-content.dto';
+import type { Reaction } from './reaction.entity';
+import { ReactionsService } from './reactions.service';
 
 @ApiTags('Reactions')
 @Controller({ path: 'reactions' })
 export class ReactionsController {
   constructor(
-    private readonly postReactionsService: PostReactionsService,
-    private readonly replyReactionsService: ReplyReactionsService,
-    private readonly articleReactionsService: ArticleReactionsService,
+    private readonly reactionsService: ReactionsService,
   ) {}
 
-  @PostRequest('/posts/:postId')
-  @CheckPolicies(ability => ability.can(Action.Interact, Post))
-  public async addPostReaction(
+  @Post(':contentId')
+  @CheckPolicies(ability => ability.can(Action.Interact, Content))
+  public async add(
     @CurrentUser() user: User,
-    @Param('postId', ParseIntPipe) postId: number,
-    @Body() reactionDto: ReactPostDto,
-  ): Promise<PostReaction> {
-    return await this.postReactionsService.add(user, postId, reactionDto.reaction);
+    @Param('contentId', ParseIntPipe) contentId: number,
+    @Body() reactContentDto: ReactContentDto,
+  ): Promise<Reaction> {
+    return await this.reactionsService.add(user, contentId, reactContentDto.reaction);
   }
 
-  @Get('/posts/:postId')
-  @CheckPolicies(ability => ability.can(Action.Read, Post))
-  public async findAllPostReactions(@Param('postId', ParseIntPipe) postId: number): Promise<PostReaction[]> {
-    return await this.postReactionsService.findAll(postId);
+  @Get(':contentId')
+  @CheckPolicies(ability => ability.can(Action.Read, Content))
+  public async findAll(@Param('contentId', ParseIntPipe) contentId: number): Promise<Reaction[]> {
+    return await this.reactionsService.findAll(contentId);
   }
 
-  @Delete('/posts/:postId')
-  @CheckPolicies(ability => ability.can(Action.Interact, Post))
-  public async removePostReaction(
+  @Delete(':contentId')
+  @CheckPolicies(ability => ability.can(Action.Interact, Content))
+  public async remove(
     @CurrentUser() user: User,
-    @Param('postId', ParseIntPipe) postId: number,
-    @Body() reactionDto: ReactPostDto,
+    @Param('contentId', ParseIntPipe) contentId: number,
+    @Body() reactContentDto: ReactContentDto,
   ): Promise<void> {
-    await this.postReactionsService.remove(user, postId, reactionDto.reaction);
-  }
-
-  @PostRequest('/replies/:replyId')
-  @CheckPolicies(ability => ability.can(Action.Interact, Reply))
-  public async addReplyReaction(
-    @Param('replyId') replyId: string,
-    @Body() reactReplyDto: ReactReplyDto,
-    @CurrentUser() user: User,
-  ): Promise<ReplyReaction> {
-    return await this.replyReactionsService.add(user, replyId, reactReplyDto.reaction);
-  }
-
-  @Get('/replies/:replyId')
-  @CheckPolicies(ability => ability.can(Action.Read, Reply))
-  public async findAllReplyReactions(
-    @Param('replyId') replyId: string,
-  ): Promise<ReplyReaction[]> {
-    return await this.replyReactionsService.findAll(replyId);
-  }
-
-  @Delete('/replies/:replyId')
-  @CheckPolicies(ability => ability.can(Action.Delete, Reply))
-  public async removeReplyReaction(
-    @Param('replyId') replyId: string,
-    @Body() reactReplyDto: ReactReplyDto,
-    @CurrentUser() user: User,
-  ): Promise<void> {
-    await this.replyReactionsService.remove(user, replyId, reactReplyDto.reaction);
-  }
-
-  @PostRequest('articles/:articleId')
-  @CheckPolicies(ability => ability.can(Action.Interact, Article))
-  public async addArticleReaction(
-    @CurrentUser() user: User,
-    @Param('articleId', ParseIntPipe) articleId: number,
-    @Body() reactionDto: ReactArticleDto,
-  ): Promise<ArticleReaction> {
-    return await this.articleReactionsService.add(user, articleId, reactionDto.reaction);
-  }
-
-  @Get('articles/:articleId')
-  @CheckPolicies(ability => ability.can(Action.Read, Article))
-  public async findAllArticleReactions(@Param('articleId', ParseIntPipe) articleId: number): Promise<ArticleReaction[]> {
-    return await this.articleReactionsService.findAll(articleId);
-  }
-
-  @Delete('articles/:articleId')
-  @CheckPolicies(ability => ability.can(Action.Interact, Article))
-  public async removeArticleReaction(
-    @CurrentUser() user: User,
-    @Param('articleId', ParseIntPipe) articleId: number,
-    @Body() reactionDto: ReactArticleDto,
-  ): Promise<void> {
-    await this.articleReactionsService.remove(user, articleId, reactionDto.reaction);
+    await this.reactionsService.remove(user, contentId, reactContentDto.reaction);
   }
 }

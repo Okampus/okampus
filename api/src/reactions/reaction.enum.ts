@@ -1,26 +1,42 @@
-export enum PostReaction {
-  What = 'what',
-  Interesting = 'interesting',
-  Like = 'like',
-  Laugh = 'laugh',
-  NotAnIssue = 'notanissue',
-  Bump = 'bump',
-}
+const BaseReaction = {
+  what: 'what',
+  interesting: 'interesting',
+  like: 'like',
+} as const;
 
-export enum ReplyReaction {
-  What = 'what',
-  Interesting = 'interesting',
-  Like = 'like',
-  Laugh = 'laugh',
-  Unsure = 'unsure',
-  Partial = 'partial',
-  Perfect = 'perfect',
-}
+export const ThreadPostReaction = {
+  ...BaseReaction,
+  laugh: 'laugh',
+  notAnIssue: 'notanissue',
+  bump: 'bump',
+} as const;
 
-export enum ArticleReaction {
-  What = 'what',
-  Interesting = 'interesting',
-  Like = 'like',
-  Laugh = 'laugh',
-  Perfect = 'perfect',
-}
+export const ReplyReaction = {
+  ...BaseReaction,
+  laugh: 'laugh',
+  unsure: 'unsure',
+  partial: 'partial',
+  perfect: 'perfect',
+} as const;
+
+export const BlogPostReaction = {
+  ...BaseReaction,
+  laugh: 'laugh',
+  perfect: 'perfect',
+} as const;
+
+export const AllReaction = {
+  ...ThreadPostReaction,
+  ...ReplyReaction,
+  ...BlogPostReaction,
+} as const;
+
+type ValueOf<T> = T[keyof T];
+
+export type BaseReactionValue = ValueOf<typeof BaseReaction>;
+
+export type ThreadPostReactionValue = ValueOf<typeof ThreadPostReaction>;
+export type ReplyReactionValue = ValueOf<typeof ReplyReaction>;
+export type BlogPostReactionValue = ValueOf<typeof BlogPostReaction>;
+
+export type AllReactionValue = BaseReactionValue | BlogPostReactionValue | ReplyReactionValue | ThreadPostReactionValue;

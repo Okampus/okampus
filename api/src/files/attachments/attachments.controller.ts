@@ -18,7 +18,6 @@ import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
 import { Attachment } from './attachment.entity';
 import { AttachmentsService } from './attachments.service';
-import type { ValidCreateAttachmentDto } from './dto/create-attachment.dto';
 import { CreateAttachmentDto } from './dto/create-attachment.dto';
 
 @ApiTags('Attachments')
@@ -40,16 +39,13 @@ export class AttachmentsController {
     if (!file)
       throw new BadRequestException('No file provided');
 
-    if (typeof createAttachmentDto.postId?.toString() === typeof createAttachmentDto.replyId?.toString())
-      throw new BadRequestException('One of postId and replyId must be entered');
-
     const fileUpload = await this.filesService.create(
       user,
       file,
       FileKind.Attachment,
       createAttachmentDto.fileLastModifiedAt,
     );
-    return await this.attachmentsService.create(createAttachmentDto as ValidCreateAttachmentDto, fileUpload);
+    return await this.attachmentsService.create(createAttachmentDto, fileUpload);
   }
 
   @Get(':id')
