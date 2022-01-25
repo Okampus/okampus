@@ -1,13 +1,25 @@
-import { IsInt, IsOptional, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { Cursus } from '../../../shared/lib/types/cursus.enum';
+import { StudyDocType } from '../../../shared/lib/types/study-doc-type.enum';
 import { CreateFileUploadDto } from '../../file-uploads/dto/create-file-upload.dto';
 
 export class CreateStudyDocDto extends CreateFileUploadDto {
-  @IsOptional()
   @IsInt()
-  year?: number;
+  year: number;
 
   @IsString()
   subject: string;
+
+  @IsEnum(Cursus)
+  cursus: Cursus;
+
+  @IsEnum(StudyDocType)
+  type: StudyDocType;
 
   @IsOptional()
   @IsString()

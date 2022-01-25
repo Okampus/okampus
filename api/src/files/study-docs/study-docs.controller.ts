@@ -25,6 +25,7 @@ import { SearchDto } from '../../shared/modules/search/search.dto';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
 import { CreateStudyDocDto } from './dto/create-study-doc.dto';
+import { DocsFilterDto } from './dto/docs-filter.dto';
 import { UpdateStudyDocDto } from './dto/update-study-doc.dto';
 import { StudyDoc } from './study-doc.entity';
 import type { IndexedStudyDoc } from './study-docs-search.service';
@@ -62,10 +63,13 @@ export class StudyDocsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, StudyDoc))
-  public async findAllStudyDocs(@Query() query: PaginateDto): Promise<PaginatedResult<StudyDoc>> {
+  public async findAllStudyDocs(
+    @Body() filters: DocsFilterDto,
+    @Query() query: PaginateDto,
+  ): Promise<PaginatedResult<StudyDoc>> {
     if (query.page)
-      return await this.studyDocsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.studyDocsService.findAll();
+      return await this.studyDocsService.findAll(filters, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
+    return await this.studyDocsService.findAll(filters);
   }
 
   @UseGuards(TypesenseGuard)

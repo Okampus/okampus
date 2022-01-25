@@ -1,5 +1,6 @@
 import {
   Entity,
+  Enum,
   ManyToOne,
   OneToOne,
   PrimaryKey,
@@ -7,6 +8,8 @@ import {
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { Cursus } from '../../shared/lib/types/cursus.enum';
+import { StudyDocType } from '../../shared/lib/types/study-doc-type.enum';
 import { Subject } from '../../subjects/subject.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
@@ -25,27 +28,35 @@ export class StudyDoc extends BaseEntity {
   @ManyToOne()
   docSeries?: DocSeries;
 
-  // School year corresponding to the document; e.g. 2017 -> 2017-18, 2018 -> 2018-19, etc.
   @Property()
-  year?: number;
+  year!: number;
 
   @Property({ type: 'text' })
   description?: string;
 
+  @Enum(() => Cursus)
+  cursus!: Cursus;
+
+  @Enum(() => StudyDocType)
+  type!: StudyDocType;
+
   constructor(options: {
     file: FileUpload;
     subject: Subject;
+    cursus: Cursus;
+    type: StudyDocType;
     docSeries?: DocSeries | null;
-    year?: number;
+    year: number;
     description?: string;
   }) {
     super();
     this.file = options.file;
     this.subject = options.subject;
+    this.cursus = options.cursus;
+    this.type = options.type;
+    this.year = options.year;
     if (options.docSeries)
       this.docSeries = options.docSeries;
-    if (options.year)
-      this.year = options.year;
     if (options.description)
       this.description = options.description;
   }

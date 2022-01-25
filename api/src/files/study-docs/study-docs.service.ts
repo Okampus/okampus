@@ -1,7 +1,9 @@
+import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
+import { Cursus } from '../../shared/lib/types/cursus.enum';
 import { assertPermissions } from '../../shared/lib/utils/assertPermission';
 import { Action } from '../../shared/modules/authorization';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
@@ -12,6 +14,7 @@ import type { User } from '../../users/user.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 import type { CreateStudyDocDto } from './dto/create-study-doc.dto';
+import type { DocsFilterDto } from './dto/docs-filter.dto';
 import type { UpdateStudyDocDto } from './dto/update-study-doc.dto';
 import { StudyDoc } from './study-doc.entity';
 import { StudyDocSearchService } from './study-docs-search.service';
@@ -41,10 +44,29 @@ export class StudyDocsService {
     return studyDoc;
   }
 
-  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<StudyDoc>> {
+  public async findAll(
+    filters: DocsFilterDto,
+    paginationOptions?: PaginationOptions,
+  ): Promise<PaginatedResult<StudyDoc>> {
     // TODO: Maybe the user won't have access to all docs. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
-    return await this.studyDocRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'file.user', 'subject', 'docSeries'] });
+    let options: FilterQuery<StudyDoc> = {};
+    if (typeof filters.schoolYear !== 'undefined')
+      options = { ...options, subject: { schoolYear: filters.schoolYear } };
+    if (typeof filters.year !== 'undefined')
+      options = { ...options, year: filters.year };
+    if (typeof filters.subject !== 'undefined')
+      options = { ...options, subject: { subjectId: filters.subject } };
+    if (typeof filters.type !== 'undefined')
+      options = { ...options, type: filters.type };
+    if (typeof filters.cursus !== 'undefined')
+      options = { ...options, cursus: { $in: [filters.cursus, Cursus.All] } };
+
+    return await this.studyDocRepository.findWithPagination(
+      paginationOptions,
+      options,
+      { populate: ['file', 'file.user', 'subject', 'docSeries'] },
+    );
   }
 
   public async findOne(studyDocId: string): Promise<StudyDoc> {
