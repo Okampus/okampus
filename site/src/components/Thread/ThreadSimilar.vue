@@ -13,17 +13,17 @@
 </template>
 
 <script lang="js">
-import AppTag from '@/components/App/AppTag.vue'
+    import AppTag from '@/components/App/AppTag.vue'
 
-export default {
-    components: { AppTag },
-    props: {
-        thread: {
-            type: Object,
-            default: () => {},
+    export default {
+        components: { AppTag },
+        props: {
+            thread: {
+                type: Object,
+                default: () => {},
+            },
         },
-    },
-}
+    }
 </script>
 
 <style scoped></style>

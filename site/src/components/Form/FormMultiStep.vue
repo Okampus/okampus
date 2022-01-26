@@ -60,59 +60,59 @@
     </div>
 </template>
 <script>
-export default {
-    props: {
-        steps: {
-            type: Array,
-            default: () => [],
+    export default {
+        props: {
+            steps: {
+                type: Array,
+                default: () => [],
+            },
+            modelValue: {
+                type: Object,
+                required: true,
+            },
         },
-        modelValue: {
-            type: Object,
-            required: true,
+        emits: ['update:modelValue', 'previous-step', 'next-step', 'finish'],
+        computed: {
+            currentStep() {
+                return this.modelValue.currentStep
+            },
+            nextStep() {
+                return this.modelValue.nextStep
+            },
+            previousStep() {
+                return this.modelValue.previousStep
+            },
         },
-    },
-    emits: ['update:modelValue', 'previous-step', 'next-step', 'finish'],
-    computed: {
-        currentStep() {
-            return this.modelValue.currentStep
+        watch: {
+            previousStep(newValue, oldValue) {
+                if (newValue && !oldValue) {
+                    this.$emit('update:modelValue', {
+                        currentStep: this.currentStep - 1,
+                        previousStep: false,
+                        nextStep: this.nextStep,
+                    })
+                }
+            },
+            nextStep(newValue, oldValue) {
+                if (newValue && !oldValue) {
+                    this.$emit('update:modelValue', {
+                        currentStep: this.currentStep + 1,
+                        previousStep: false,
+                        nextStep: this.nextStep,
+                    })
+                }
+            },
         },
-        nextStep() {
-            return this.modelValue.nextStep
+        methods: {
+            emitNextStep() {
+                this.$emit('next-step')
+            },
+            emitPreviousStep() {
+                this.$emit('previous-step')
+            },
+            emitFinish() {
+                this.$emit('finish')
+            },
         },
-        previousStep() {
-            return this.modelValue.previousStep
-        },
-    },
-    watch: {
-        previousStep(newValue, oldValue) {
-            if (newValue && !oldValue) {
-                this.$emit('update:modelValue', {
-                    currentStep: this.currentStep - 1,
-                    previousStep: false,
-                    nextStep: this.nextStep,
-                })
-            }
-        },
-        nextStep(newValue, oldValue) {
-            if (newValue && !oldValue) {
-                this.$emit('update:modelValue', {
-                    currentStep: this.currentStep + 1,
-                    previousStep: false,
-                    nextStep: this.nextStep,
-                })
-            }
-        },
-    },
-    methods: {
-        emitNextStep() {
-            this.$emit('next-step')
-        },
-        emitPreviousStep() {
-            this.$emit('previous-step')
-        },
-        emitFinish() {
-            this.$emit('finish')
-        },
-    },
-}
+    }
 </script>

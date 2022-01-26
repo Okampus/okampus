@@ -141,17 +141,17 @@
     </div>
 </template>
 <script lang="js">
-import {
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
-} from '@headlessui/vue'
-
-export default {
-    components: {
+    import {
         Disclosure,
         DisclosureButton,
         DisclosurePanel,
-    },
-}
+    } from '@headlessui/vue'
+
+    export default {
+        components: {
+            Disclosure,
+            DisclosureButton,
+            DisclosurePanel,
+        },
+    }
 </script>

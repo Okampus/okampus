@@ -18,7 +18,7 @@
                     <span class="flex items-center text-base text-0">
                         <div class="flex gap-2 items-end">
                             <div class="text-base text-2">par</div>
-                            <a class="mr-12 text-xl link" href="#author">{{ article.author.username }}</a>
+                            <a class="mr-12 text-xl link" href="#author">{{ article.author.fullname }}</a>
                         </div>
                         <div class="flex gap-4 items-center">
                             <div class="flex gap-1 items-center text-1">
@@ -151,7 +151,7 @@
                     <p class="">
                         À propos de
                         <a href="#" class="font-bold hover:underline">
-                            {{ article.author.username }}
+                            {{ article.author.fullname }}
                         </a>
                     </p>
                 </div>
@@ -162,7 +162,7 @@
                 </p>
                 <div class="flex justify-end mt-4">
                     <a :href="article.author.link" class="text-sm font-bold hover:underline text-0"
-                        >Voir le profil de {{ article.author.username }}</a
+                        >Voir le profil de {{ article.author.fullname }}</a
                     >
                 </div>
             </div>
@@ -180,7 +180,7 @@
                     <div class="flex flex-col px-2 w-full rounded-lg">
                         <div class="flex gap-3 items-center">
                             <p class="font-semibold text-1">
-                                {{ comment.author.username }}
+                                {{ comment.author.fullname }}
                             </p>
                             <span class="text-xs text-4">
                                 {{ timeAgo(comment.date) }}
@@ -217,7 +217,7 @@
                                             <div class="py-1 px-3 w-full rounded bg-2">
                                                 <div class="flex gap-3 items-center">
                                                     <p class="font-semibold text-1">
-                                                        {{ reply.author.username }}
+                                                        {{ reply.author.fullname }}
                                                     </p>
                                                     <span class="text-xs text-4">
                                                         {{ timeAgo(reply.date) }}
@@ -240,61 +240,57 @@
 </template>
 
 <script>
-import {
-    blogProfiles, articles, 
-} from '@/fake/blog'
-import { readingTimeMinutes } from '@/utils/readingTimeMinutes'
-import { timeAgo } from '@/utils/timeAgo'
+    import { blogProfiles, articles } from '@/fake/blog'
+    import { readingTimeMinutes } from '@/utils/readingTimeMinutes'
+    import { timeAgo } from '@/utils/timeAgo'
 
-import TipTapRenderer from '@/components/TipTap/TipTapRenderer.vue'
-import AppTag from '@/components/App/AppTag.vue'
-import DatePreview from '@/components/Dashboard/DatePreview.vue'
+    import TipTapRenderer from '@/components/TipTap/TipTapRenderer.vue'
+    import AppTag from '@/components/App/AppTag.vue'
+    import DatePreview from '@/components/Dashboard/DatePreview.vue'
 
-import {
-    Disclosure, DisclosureButton, DisclosurePanel, 
-} from '@headlessui/vue'
-import { extractTextFromTipTapJSON } from '@/utils/tiptap'
+    import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
+    import { extractTextFromTipTapJSON } from '@/utils/tiptap'
 
-export default {
-    components: {
-        Disclosure,
-        DisclosureButton,
-        DisclosurePanel,
-        DatePreview,
-        TipTapRenderer,
-        AppTag,
-    },
-    props: {
-        thumbnail: {
-            type: String,
-            default: 'https://picsum.photos/768/432',
+    export default {
+        components: {
+            Disclosure,
+            DisclosureButton,
+            DisclosurePanel,
+            DatePreview,
+            TipTapRenderer,
+            AppTag,
         },
-    },
-    data() {
-        return {
-            article: undefined,
-            profile: undefined,
-            readingTime: undefined,
-            tableContents: undefined,
-            openComments: undefined,
-        }
-    },
-    watch: { '$route': 'fetchArticle' },
-    created() {
-        this.fetchArticle()
-    },
-    methods: {
-        timeAgo,
-        fetchArticle() {
-            const articleId = this.$route.params.id
-            const article = articles[articleId] ?? null
-            this.article = article
-            this.profile = article === null ? null : blogProfiles[article.author.id]
-            this.readingTime =
-                article === null
-                    ? null
-                    : readingTimeMinutes(extractTextFromTipTapJSON(JSON.parse(article.body)))
+        props: {
+            thumbnail: {
+                type: String,
+                default: 'https://picsum.photos/768/432',
+            },
         },
-    },
-}
+        data() {
+            return {
+                article: undefined,
+                profile: undefined,
+                readingTime: undefined,
+                tableContents: undefined,
+                openComments: undefined,
+            }
+        },
+        watch: { '$route': 'fetchArticle' },
+        created() {
+            this.fetchArticle()
+        },
+        methods: {
+            timeAgo,
+            fetchArticle() {
+                const articleId = this.$route.params.id
+                const article = articles[articleId] ?? null
+                this.article = article
+                this.profile = article === null ? null : blogProfiles[article.author.id]
+                this.readingTime =
+                    article === null
+                        ? null
+                        : readingTimeMinutes(extractTextFromTipTapJSON(JSON.parse(article.body)))
+            },
+        },
+    }
 </script>

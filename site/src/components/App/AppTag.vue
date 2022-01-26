@@ -9,21 +9,21 @@
 </template>
 
 <script lang="js">
-export default {
-    props: {
-        tagName: {
-            type: String,
-            default: '<Vide>',
+    export default {
+        props: {
+            tagName: {
+                type: String,
+                default: '<Vide>',
+            },
+            tagColor: {
+                type: String,
+                default: 'blue',
+            },
+            closable: {
+                type: Boolean,
+                default: false,
+            },
         },
-        tagColor: {
-            type: String,
-            default: 'blue',
-        },
-        closable: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    emits: ['close'],
-}
+        emits: ['close'],
+    }
 </script>

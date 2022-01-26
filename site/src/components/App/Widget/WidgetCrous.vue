@@ -21,15 +21,15 @@
     </div>
 </template>
 <script>
-export default {
-    data() {
-        return { menu: { plats: ['Poulet au curry', 'Chilli con carne', 'Riz', 'Légumes'] } }
-    },
-    methods: {
-        joinedPlats: function joinedPlats() {
-            return this.menu.plats.join(', ')
+    export default {
+        data() {
+            return { menu: { plats: ['Poulet au curry', 'Chilli con carne', 'Riz', 'Légumes'] } }
         },
-    },
-}
+        methods: {
+            joinedPlats: function joinedPlats() {
+                return this.menu.plats.join(', ')
+            },
+        },
+    }
 </script>
 <style></style>

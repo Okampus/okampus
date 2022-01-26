@@ -89,122 +89,122 @@
 </template>
 
 <script>
-import CustomModal from '@/components/App/AppModal.vue'
-import SearchCategory from '@/components/App/Card/SearchCategory.vue'
-import postTypesEnum from '@/shared/types/post-types.enum'
-import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
+    import CustomModal from '@/components/App/AppModal.vue'
+    import SearchCategory from '@/components/App/Card/SearchCategory.vue'
+    import postTypesEnum from '@/shared/types/post-types.enum'
+    import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
 
-const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
-    server: {
-        apiKey: import.meta.env.VITE_TYPESENSE_API_KEY,
-        nodes: [
-            {
-                host: import.meta.env.VITE_TYPESENSE_HOST,
-                port: import.meta.env.VITE_TYPESENSE_PORT,
-                protocol: import.meta.env.VITE_TYPESENSE_SCHEME,
-            },
-        ],
-    },
-    cacheSearchResultsForSeconds: 2 * 60,
-    additionalSearchParameters: {
-        limit_hits: 25,
-        per_page: 25,
-    },
-    collectionSpecificSearchParameters: {
-        posts: {
-            queryBy: 'title,body,tags',
-            queryByWeights: '10, 1, 5',
-        },
-        'study-docs': {
-            queryBy: 'name,subjectEnglishName,subjectName',
-            queryByWeights: '10, 5, 5',
-        },
-        clubs: {
-            queryBy: 'name',
-            queryByWeights: '10',
-        },
-        'info-docs': {
-            queryBy: 'name',
-            queryByWeights: '10',
-        },
-        articles: {
-            queryBy: 'title,body,tags,category',
-            queryByWeights: '10, 1, 5, 5',
-        },
-        subjects: {
-            queryBy: 'name,code',
-            queryByWeights: '1,1',
-        },
-    },
-})
-const searchClient = typesenseInstantsearchAdapter.searchClient
-export default {
-    components: {
-        CustomModal,
-        SearchCategory,
-    },
-
-    data() {
-        return {
-            searchClient,
-            showSearchBar: false,
-            indexList: [
+    const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
+        server: {
+            apiKey: import.meta.env.VITE_TYPESENSE_API_KEY,
+            nodes: [
                 {
-                    indexName: 'posts',
-                    title: 'Tous les posts',
-                    titleIcon: 'comments',
-                    routerBase: 'post',
-                    resultTitle: (item) => item.title,
-                    resultBody: (item) => item.body,
-                    resultIcon: (item) => postTypesEnum?.[item.type]?.icon ?? 'hashtag',
-                },
-                {
-                    indexName: 'study-docs',
-                    title: 'Tous les documents',
-                    titleIcon: 'file',
-                    routerBase: 'file',
-                    resultTitle: (item) => item.name,
-                    resultBody: (item) => item.subjectName,
-                    resultIcon: () => 'file',
-                },
-                {
-                    indexName: 'info-docs',
-                    title: 'Tous les documents informatifs',
-                    titleIcon: 'file',
-                    routerBase: 'file',
-                    resultTitle: (item) => item.name,
-                    resultBody: (item) => item.subjectName,
-                    resultIcon: () => 'file',
-                },
-                {
-                    indexName: 'articles',
-                    title: 'Tous les articles',
-                    titleIcon: 'newspaper',
-                    routerBase: 'article',
-                    resultTitle: (item) => item.title,
-                    resultBody: (item) => item.body,
-                    resultIcon: () => 'newspaper',
-                },
-                {
-                    indexName: 'clubs',
-                    title: 'Toutes les associations',
-                    titleIcon: 'user-friends',
-                    routerBase: 'club',
-                    resultTitle: (item) => item.name,
-                    resultBody: (item) => item.category,
-                    resultIcon: () => 'user-friends',
-                },
-                {
-                    indexName: 'subjects',
-                    title: 'Toutes les matieres',
-                    titleIcon: 'book',
-                    routerBase: 'subject',
-                    resultTitle: (item) => item.name,
-                    resultBody: (item) => item.code,
-                    resultIcon: () => 'book',
+                    host: import.meta.env.VITE_TYPESENSE_HOST,
+                    port: import.meta.env.VITE_TYPESENSE_PORT,
+                    protocol: import.meta.env.VITE_TYPESENSE_SCHEME,
                 },
             ],
-        }
-    },
-}
+        },
+        cacheSearchResultsForSeconds: 2 * 60,
+        additionalSearchParameters: {
+            limit_hits: 25,
+            per_page: 25,
+        },
+        collectionSpecificSearchParameters: {
+            posts: {
+                queryBy: 'title,body,tags',
+                queryByWeights: '10, 1, 5',
+            },
+            'study-docs': {
+                queryBy: 'name,subjectEnglishName,subjectName',
+                queryByWeights: '10, 5, 5',
+            },
+            clubs: {
+                queryBy: 'name',
+                queryByWeights: '10',
+            },
+            'info-docs': {
+                queryBy: 'name',
+                queryByWeights: '10',
+            },
+            articles: {
+                queryBy: 'title,body,tags,category',
+                queryByWeights: '10, 1, 5, 5',
+            },
+            subjects: {
+                queryBy: 'name,code',
+                queryByWeights: '1,1',
+            },
+        },
+    })
+    const searchClient = typesenseInstantsearchAdapter.searchClient
+    export default {
+        components: {
+            CustomModal,
+            SearchCategory,
+        },
+
+        data() {
+            return {
+                searchClient,
+                showSearchBar: false,
+                indexList: [
+                    {
+                        indexName: 'posts',
+                        title: 'Tous les posts',
+                        titleIcon: 'comments',
+                        routerBase: 'post',
+                        resultTitle: (item) => item.title,
+                        resultBody: (item) => item.body,
+                        resultIcon: (item) => postTypesEnum?.[item.type]?.icon ?? 'hashtag',
+                    },
+                    {
+                        indexName: 'study-docs',
+                        title: 'Tous les documents',
+                        titleIcon: 'file',
+                        routerBase: 'file',
+                        resultTitle: (item) => item.name,
+                        resultBody: (item) => item.subjectName,
+                        resultIcon: () => 'file',
+                    },
+                    {
+                        indexName: 'info-docs',
+                        title: 'Tous les documents informatifs',
+                        titleIcon: 'file',
+                        routerBase: 'file',
+                        resultTitle: (item) => item.name,
+                        resultBody: (item) => item.subjectName,
+                        resultIcon: () => 'file',
+                    },
+                    {
+                        indexName: 'articles',
+                        title: 'Tous les articles',
+                        titleIcon: 'newspaper',
+                        routerBase: 'article',
+                        resultTitle: (item) => item.title,
+                        resultBody: (item) => item.body,
+                        resultIcon: () => 'newspaper',
+                    },
+                    {
+                        indexName: 'clubs',
+                        title: 'Toutes les associations',
+                        titleIcon: 'user-friends',
+                        routerBase: 'club',
+                        resultTitle: (item) => item.name,
+                        resultBody: (item) => item.category,
+                        resultIcon: () => 'user-friends',
+                    },
+                    {
+                        indexName: 'subjects',
+                        title: 'Toutes les matieres',
+                        titleIcon: 'book',
+                        routerBase: 'subject',
+                        resultTitle: (item) => item.name,
+                        resultBody: (item) => item.code,
+                        resultIcon: () => 'book',
+                    },
+                ],
+            }
+        },
+    }
 </script>

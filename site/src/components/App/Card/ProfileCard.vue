@@ -6,7 +6,7 @@
         <div class="flex flex-col justify-between ml-4">
             <div>
                 <div class="flex gap-2 text-lg text-0">
-                    <div class="my-auto font-bold">{{ user.username }} {{ user.username.toUpperCase() }}</div>
+                    <div class="my-auto font-bold">{{ user.fullname }} {{ user.fullname.toUpperCase() }}</div>
                     <div class="my-auto text-sm text-5">L2-F</div>
                     <router-link
                         class="flex gap-1 my-auto ml-1 text-blue-500 hover:underline"
@@ -39,14 +39,14 @@
 </template>
 
 <script>
-import AvatarImage from '@/components/User/UserAvatar.vue'
-export default {
-    components: { AvatarImage },
-    props: {
-        user: {
-            type: Object,
-            default: () => {},
+    import AvatarImage from '@/components/User/UserAvatar.vue'
+    export default {
+        components: { AvatarImage },
+        props: {
+            user: {
+                type: Object,
+                default: () => {},
+            },
         },
-    },
-}
+    }
 </script>

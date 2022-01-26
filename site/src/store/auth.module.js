@@ -1,21 +1,32 @@
-import AuthService from '../services/auth.service'
 import router from '@/router'
+import AuthService from '../services/auth.service'
 
 const user = JSON.parse(localStorage.getItem('user'))
 const initialState = user
     ? {
-        status: { loggedIn: true },
-        user,
-    }
+          status: { loggedIn: true },
+          user,
+      }
     : {
-        status: { loggedIn: false },
-        user: null,
+          status: { loggedIn: false },
+          user: null,
+      }
+
+export function redirectToHome() {
+    if (router.currentRoute.value.fullPath !== '/') {
+        router.push('/')
     }
+}
 
 export const auth = {
     namespaced: true,
     state: initialState,
     actions: {
+        redirectIfNotLoggedIn({ state }) {
+            if (!state.status.loggedIn) {
+                redirectToHome()
+            }
+        },
         login({ commit }, user) {
             return AuthService.login(user).then(
                 (user) => {
@@ -32,22 +43,10 @@ export const auth = {
             AuthService.logout()
             commit('logoutSuccess')
         },
-        register({ commit }, user) {
-            return AuthService.register(user).then(
-                (response) => {
-                    commit('registerSuccess')
-                    return Promise.resolve(response.data)
-                },
-                (error) => {
-                    commit('registerFailure')
-                    return Promise.reject(error)
-                },
-            )
-        },
         getUser({ commit }) {
             return AuthService.getUser().then(
                 (response) => {
-                    commit('fetchSuccess', response)
+                    commit('getSuccess', response)
                     return Promise.resolve(response)
                 },
                 (error) => Promise.reject(error),
@@ -67,21 +66,11 @@ export const auth = {
         },
         logoutSuccess(state) {
             state.status.loggedIn = false
-            // TODO: Redirect any user-restricted route to '/'
-            console.log(router.currentRoute.value.fullPath)
-            if (router.currentRoute.value.fullPath !== '/') {
-                router.push('/')
-            }
+            redirectToHome()
             state.user = null
             localStorage.removeItem('user')
         },
-        registerSuccess(state) {
-            state.status.loggedIn = false
-        },
-        registerFailure(state) {
-            state.status.loggedIn = false
-        },
-        fetchSuccess(state, user) {
+        getSuccess(state, user) {
             state.me = user
         },
     },

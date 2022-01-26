@@ -93,7 +93,7 @@
                     @input-update="customTagError = null"
                     @keydown="v$.tags.$touch"
                 />
-                <error-wrapper
+                <AppError
                     v-if="v$.tags.$error"
                     :error="customTagError || `Un Post doit avoir au moins ${minTags} Tags.`"
                     success="Tags valides"
@@ -107,7 +107,7 @@
                 </button>
                 <div
                     v-if="submitSuccess === 1"
-                    class="flex gap-2 p-2 my-auto ml-4 font-bold text-green-500 bg-green-500 rounded-md bg-opacity-/25"
+                    class="flex gap-2 p-2 my-auto ml-4 font-bold text-green-600 bg-green-500 rounded-md bg-opacity-/25"
                 >
                     <font-awesome-icon icon="check" class="my-auto" />
                     <div class="my-auto">Création réussie</div>
@@ -127,115 +127,109 @@
 </template>
 
 <script lang="js">
-import AppError from '@/components/App/AppError.vue'
-import SelectInput from '@/components/Input/SelectInput.vue'
-import TagInput from '@/components/Input/TagInput.vue'
-import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
-import postTypesEnum from '@/shared/types/post-types.enum'
-import { defaultTipTapText } from '@/utils/tiptap'
-import useVuelidate from '@vuelidate/core'
-import {
-    between, maxLength, minLength, required,
-} from '@vuelidate/validators'
-import {
-    reactive, ref,
-} from 'vue'
-import Popper from 'vue3-popper'
+    import AppError from '@/components/App/AppError.vue'
+    import SelectInput from '@/components/Input/SelectInput.vue'
+    import TagInput from '@/components/Input/TagInput.vue'
+    import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
+    import router from '@/router'
+    import postTypesEnum from '@/shared/types/post-types.enum'
+    import { defaultTipTapText } from '@/utils/tiptap'
+    import useVuelidate from '@vuelidate/core'
+    import { between, maxLength, minLength, required } from '@vuelidate/validators'
+    import { reactive, ref } from 'vue'
+    import Popper from 'vue3-popper'
 
-
-
-
-export default {
-    components: {
-        TagInput,
-        AppError,
-        TipTapEditor,
-        Popper,
-        SelectInput,
-    },
-    inheritAttrs: false,
-    props: {
-        editorCharLimit: {
-            type: Array,
-            default: () => [10, 10000],
+    export default {
+        components: {
+            TagInput,
+            AppError,
+            TipTapEditor,
+            Popper,
+            SelectInput,
         },
-        titleCharLimit: {
-            type: Array,
-            default: () => [15, 80],
-        },
-        minTags: {
-            type: Number,
-            default: 2,
-        },
-    },
-    setup (props) {
-        const editorRef = ref(null)
-        const state = reactive({
-            title: '',
-            type: null,
-            body: defaultTipTapText,
-            tags: [],
-        })
-
-        const tagsLength = (tags) => tags.length >= props.minTags
-
-        const inRange = (val, bounds) => val > bounds[0] && val < bounds[1]
-        const editorCharCount = () => inRange(editorRef.value.getCharCount(), props.editorCharLimit)
-
-        const rules = {
-            title: {
-                required,
-                minLength: minLength(props.titleCharLimit[0]),
-                maxLength: maxLength(props.titleCharLimit[1]),
+        inheritAttrs: false,
+        props: {
+            editorCharLimit: {
+                type: Array,
+                default: () => [10, 10000],
             },
-            type: {
-                required,
-                between: between(0, postTypesEnum.length-1),
+            titleCharLimit: {
+                type: Array,
+                default: () => [15, 80],
             },
-            body: { editorCharCount },
-            tags: { tagsLength },
-        }
-
-        return {
-            editorRef,
-            state,
-            v$: useVuelidate(rules, state),
-        }
-    },
-    data () {
-        return {
-            postTypesEnum,
-            customTagError: null,
-            submitSuccess: 0,
-        }
-    },
-    methods: {
-        tagsError (err) {
-            if (err === 'unique') {
-                this.customTagError = 'Ce Tag est déjà présent dans la liste.'
-            } else if (err === 'empty') {
-                this.customTagError = 'Un Tag ne peut pas être vide.'
-            } else {
-                this.customTagError = 'Erreur: ces tags génèrent une erreur inconnue.'
-            }
+            minTags: {
+                type: Number,
+                default: 2,
+            },
         },
-        submit () {
-            this.submitSuccess = 1
-            if (this.v$.$invalid) {
-                this.v$.$touch()
-                this.submitSuccess = -1
-                return
-            }
-
-            this.$store.dispatch('posts/addPost', {
-                title: this.state.title,
-                type: this.state.type,
-                body: this.state.body,
-                tags: this.state.tags,
-            }).then().catch(() => {
-                this.submitSuccess = -1
+        setup (props) {
+            const editorRef = ref(null)
+            const state = reactive({
+                title: '',
+                type: null,
+                body: defaultTipTapText,
+                tags: [],
             })
+
+            const tagsLength = (tags) => tags.length >= props.minTags
+
+            const inRange = (val, bounds) => val > bounds[0] && val < bounds[1]
+            const editorCharCount = () => inRange(editorRef.value.getCharCount(), props.editorCharLimit)
+
+            const rules = {
+                title: {
+                    required,
+                    minLength: minLength(props.titleCharLimit[0]),
+                    maxLength: maxLength(props.titleCharLimit[1]),
+                },
+                type: {
+                    required,
+                    between: between(0, postTypesEnum.length-1),
+                },
+                body: { editorCharCount },
+                tags: { tagsLength },
+            }
+
+            return {
+                editorRef,
+                state,
+                v$: useVuelidate(rules, state),
+            }
         },
-    },
-}
+        data () {
+            return {
+                postTypesEnum,
+                customTagError: null,
+                submitSuccess: 0,
+            }
+        },
+        methods: {
+            tagsError (err) {
+                if (err === 'unique') {
+                    this.customTagError = 'Ce Tag est déjà présent dans la liste.'
+                } else if (err === 'empty') {
+                    this.customTagError = 'Un Tag ne peut pas être vide.'
+                } else {
+                    this.customTagError = 'Erreur: ces tags génèrent une erreur inconnue.'
+                }
+            },
+            submit () {
+                this.submitSuccess = 1
+                if (this.v$.$invalid) {
+                    this.v$.$touch()
+                    this.submitSuccess = -1
+                    return
+                }
+
+                this.$store.dispatch('threads/addThread', {
+                    title: this.state.title,
+                    type: this.state.type,
+                    body: this.state.body,
+                    tags: this.state.tags,
+                })
+                    .then((newThread) => router.push(`/posts/${newThread.contentMasterId}`))
+                    .catch(() => { this.submitSuccess = -1 })
+            },
+        },
+    }
 </script>

@@ -40,53 +40,57 @@
             </div>
         </transition>
     </div>
+    <div v-else>
+        <p class="italic text-0">Aucun tag</p>
+    </div>
 </template>
 
 <script>
-import AppTag from '@/components/App/AppTag.vue'
-export default {
-    components: { AppTag },
-    props: {
-        tags: {
-            type: Array,
-            required: true,
+    import AppTag from '@/components/App/AppTag.vue'
+    export default {
+        components: { AppTag },
+        props: {
+            tags: {
+                type: Array,
+                required: true,
+            },
         },
-    },
-    data() {
-        return {
-            leftGradient: Boolean,
-            rightGradient: Boolean,
-        }
-    },
-    mounted() {
-        this.getScroll()
-    },
-    methods: {
-        scrollTo() {
-            this.$refs.scroll.scrollTo({
-                left:
-                    this.$refs.scroll.scrollLeft + (3 / 4) * this.$refs.scroll.getBoundingClientRect().width,
-                behavior: 'smooth',
-            })
-        },
-        getScroll() {
-            if (this.tags.length != 0) {
-                if (this.$refs.scroll.scrollLeft == 0) {
-                    this.leftGradient = false
-                } else {
-                    this.leftGradient = true
-                }
-
-                if (
-                    this.$refs.scroll.scrollLeft + 1 >=
-                    this.$refs.scroll.scrollWidth - this.$refs.parent.getBoundingClientRect().width
-                ) {
-                    this.rightGradient = false
-                } else {
-                    this.rightGradient = true
-                }
+        data() {
+            return {
+                leftGradient: Boolean,
+                rightGradient: Boolean,
             }
         },
-    },
-}
+        mounted() {
+            this.getScroll()
+        },
+        methods: {
+            scrollTo() {
+                this.$refs.scroll.scrollTo({
+                    left:
+                        this.$refs.scroll.scrollLeft +
+                        (3 / 4) * this.$refs.scroll.getBoundingClientRect().width,
+                    behavior: 'smooth',
+                })
+            },
+            getScroll() {
+                if (this.tags.length != 0) {
+                    if (this.$refs.scroll.scrollLeft == 0) {
+                        this.leftGradient = false
+                    } else {
+                        this.leftGradient = true
+                    }
+
+                    if (
+                        this.$refs.scroll.scrollLeft + 1 >=
+                        this.$refs.scroll.scrollWidth - this.$refs.parent.getBoundingClientRect().width
+                    ) {
+                        this.rightGradient = false
+                    } else {
+                        this.rightGradient = true
+                    }
+                }
+            },
+        },
+    }
 </script>

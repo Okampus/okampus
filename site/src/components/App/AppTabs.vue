@@ -1,50 +1,59 @@
 <template>
     <div>
         <div class="flex mx-auto space-x-2">
-            <button
-                v-for="(tab, i) in Object.keys(tabs)"
-                :key="i"
-                class="w-full uppercase button"
-                @click="$emit('update:currentTab', i)"
-            >
-                <p>{{ tab.name }}</p>
+            <button v-for="(t, i) in tabs" :key="i" class="w-full uppercase button" @click="updateTab(i)">
+                <p>{{ t.name }}</p>
             </button>
         </div>
 
-        <template v-for="(tab, i) in Object.keys(tabs)" :key="i">
-            <slot :class="i === currentTab ? 'block' : 'hidden'" :name="tab.id" />
-        </template>
+        <slot :name="tabs[tab].id" />
     </div>
 </template>
 
 <script>
-export default {
-    props: {
-        mode: {
-            type: String,
-            default: 'horizontal',
+    import router from '@/router'
+
+    export default {
+        props: {
+            mode: {
+                type: String,
+                default: 'horizontal',
+            },
+            type: {
+                type: String,
+                default: 'button',
+            },
+            tabs: {
+                type: Object,
+                default: () => {},
+            },
+            tab: {
+                type: Number,
+                default: 0,
+            },
         },
-        type: {
-            type: String,
-            default: 'button',
+        emits: ['update:tab'],
+        watch: { $route: 'updateComponent' },
+        created() {
+            this.updateTab(this.tab)
         },
-        tabs: {
-            type: Object,
-            default: () => {},
+        methods: {
+            getTabFromRoute() {
+                return this.tabs.findIndex((t) => t.id === this.$route.params.component)
+            },
+            updateComponent() {
+                if (this.$route.params.component) {
+                    const newTab = this.getTabFromRoute()
+                    if (newTab !== this.tab) {
+                        this.$emit('update:tab', newTab)
+                    }
+                }
+            },
+            updateTab(newTab) {
+                this.$emit('update:tab', newTab)
+                console.log(router)
+                router.push('/me/' + this.tabs[newTab].id)
+            },
         },
-        currentTab: {
-            type: Number,
-            default: 0,
-        },
-    },
-    emits: ['update:currentTab'],
-    watch: { $route: 'updateComponent' },
-    methods: {
-        updateComponent() {
-            if (this.$route.params.component) {
-                this.$emit('update:currentTab', this.$route.params.component)
-            }
-        },
-    },
-}
+    }
 </script>

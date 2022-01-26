@@ -11,15 +11,15 @@
 
 <script lang="js">
 
-export default {
-    props: {
-        contributor: {
-            type: Object,
-            default: () => ({
-                img: '',
-                pseudo: '<Pseudo>',
-            }),
+    export default {
+        props: {
+            contributor: {
+                type: Object,
+                default: () => ({
+                    img: '',
+                    pseudo: '<Pseudo>',
+                }),
+            },
         },
-    },
-}
+    }
 </script>

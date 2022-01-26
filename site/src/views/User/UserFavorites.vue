@@ -12,27 +12,27 @@
 </template>
 
 <script>
-import FavoritePost from '@/components/User/Favorite/FavoritePost.vue'
-import FavoriteComment from '@/components/User/Favorite/FavoriteComment.vue'
-import FavoriteReply from '@/components/User/Favorite/FavoriteReply.vue'
-export default {
-    components: {
-        FavoritePost,
-        FavoriteComment,
-        FavoriteReply,
-    },
-    props: {},
-    data() {
-        return {}
-    },
-    computed: {
-        favorites() {
-            return this.$store.state.users.favorites
+    import FavoritePost from '@/components/User/Favorite/FavoritePost.vue'
+    import FavoriteComment from '@/components/User/Favorite/FavoriteComment.vue'
+    import FavoriteReply from '@/components/User/Favorite/FavoriteReply.vue'
+    export default {
+        components: {
+            FavoritePost,
+            FavoriteComment,
+            FavoriteReply,
         },
-    },
-    mounted() {
-        this.$store.dispatch('users/getFavorites')
-    },
-}
+        props: {},
+        data() {
+            return {}
+        },
+        computed: {
+            favorites() {
+                return this.$store.state.users.favorites
+            },
+        },
+        mounted() {
+            this.$store.dispatch('users/getFavorites')
+        },
+    }
 </script>
 <style></style>

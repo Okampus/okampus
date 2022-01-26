@@ -48,67 +48,67 @@
 </template>
 
 <script>
-import { getTextWidthInElement } from '@/utils/getTextWidth'
-import Popper from 'vue3-popper'
+    import { getTextWidthInElement } from '@/utils/getTextWidth'
+    import Popper from 'vue3-popper'
 
-export default {
-    components: { Popper },
-    props: {
-        buttonName: {
-            type: String,
-            default: 'Choix',
+    export default {
+        components: { Popper },
+        props: {
+            buttonName: {
+                type: String,
+                default: 'Choix',
+            },
+            required: {
+                type: Boolean,
+                default: false,
+            },
+            maxContentWidth: {
+                type: Boolean,
+                default: false,
+            },
+            inputName: {
+                type: String,
+                default: '',
+            },
+            choices: {
+                type: Array,
+                default: () => [],
+            },
+            values: {
+                type: Array,
+                default: (props) => [...Array(props.choices.length).keys()],
+            },
+            modelValue: {
+                type: null,
+                default: null,
+            },
         },
-        required: {
-            type: Boolean,
-            default: false,
+        emits: ['update:modelValue'],
+        data() {
+            return { max: 0 }
         },
-        maxContentWidth: {
-            type: Boolean,
-            default: false,
-        },
-        inputName: {
-            type: String,
-            default: '',
-        },
-        choices: {
-            type: Array,
-            default: () => [],
-        },
-        values: {
-            type: Array,
-            default: (props) => [...Array(props.choices.length).keys()],
-        },
-        modelValue: {
-            type: null,
-            default: null,
-        },
-    },
-    emits: ['update:modelValue'],
-    data() {
-        return { max: 0 }
-    },
 
-    computed: {
-        attributes() {
-            let attributes = {}
-            if (this.inputName) {
-                attributes.name = this.inputName
-            }
-            if (this.required) {
-                attributes.required = 'true'
-            }
-            return attributes
+        computed: {
+            attributes() {
+                let attributes = {}
+                if (this.inputName) {
+                    attributes.name = this.inputName
+                }
+                if (this.required) {
+                    attributes.required = 'true'
+                }
+                return attributes
+            },
         },
-    },
-    mounted() {
-        for (const choice of this.choices) {
-            const width = this.getTextWidthInElement(choice, this.$refs.select.$el)
-            if (width > this.max) {
-                this.max = width
+        mounted() {
+            for (const choice of this.choices) {
+                const width = this.getTextWidthInElement(choice, this.$refs.select.$el)
+                if (width > this.max) {
+                    this.max = width
+                }
             }
-        }
-        this.max = Math.ceil(this.max)
-    },
-    methods: { getTextWidthInElement },
-}
+            this.max = Math.ceil(this.max)
+        },
+        methods: { getTextWidthInElement },
+    }
 </script>

@@ -43,65 +43,65 @@
 </template>
 
 <script>
-import { nanoid } from 'nanoid'
-import BottomBorderInput from '@/components/Input/BottomBorderInput.vue'
-import Popper from 'vue3-popper'
+    import { nanoid } from 'nanoid'
+    import BottomBorderInput from '@/components/Input/BottomBorderInput.vue'
+    import Popper from 'vue3-popper'
 
-export default {
-    components: {
-        BottomBorderInput,
-        Popper,
-    },
-    props: {
-        buttonName: {
-            type: String,
-            default: 'Choix',
+    export default {
+        components: {
+            BottomBorderInput,
+            Popper,
         },
-        inputPlaceholder: {
-            type: String,
-            default: 'Rechercher...',
-        },
-        filters: {
-            type: Array,
-            default: () => [],
-        },
-        modelValue: {
-            type: Array,
-            default: () => [],
-        },
-    },
-    emits: ['update:modelValue'],
-    data() {
-        return {
-            uuid: nanoid(6),
-            search: '',
-        }
-    },
-    computed: {
-        filteredList() {
-            return this.filters.filter((item) => item.toLowerCase().includes(this.search.toLowerCase()))
-        },
-        allSelected: {
-            get() {
-                return this.modelValue.length === this.filters.length
+        props: {
+            buttonName: {
+                type: String,
+                default: 'Choix',
             },
-            set(value) {
-                if (value) {
-                    this.$emit('update:modelValue', this.filters)
-                } else {
-                    this.$emit('update:modelValue', [])
-                }
+            inputPlaceholder: {
+                type: String,
+                default: 'Rechercher...',
+            },
+            filters: {
+                type: Array,
+                default: () => [],
+            },
+            modelValue: {
+                type: Array,
+                default: () => [],
             },
         },
-        checkedFilters: {
-            get() {
-                return this.modelValue
+        emits: ['update:modelValue'],
+        data() {
+            return {
+                uuid: nanoid(6),
+                search: '',
+            }
+        },
+        computed: {
+            filteredList() {
+                return this.filters.filter((item) => item.toLowerCase().includes(this.search.toLowerCase()))
             },
-            set(value) {
-                this.allSelected = this.modelValue.length === this.filters.length
-                this.$emit('update:modelValue', value)
+            allSelected: {
+                get() {
+                    return this.modelValue.length === this.filters.length
+                },
+                set(value) {
+                    if (value) {
+                        this.$emit('update:modelValue', this.filters)
+                    } else {
+                        this.$emit('update:modelValue', [])
+                    }
+                },
+            },
+            checkedFilters: {
+                get() {
+                    return this.modelValue
+                },
+                set(value) {
+                    this.allSelected = this.modelValue.length === this.filters.length
+                    this.$emit('update:modelValue', value)
+                },
             },
         },
-    },
-}
+    }
 </script>

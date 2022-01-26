@@ -6,16 +6,16 @@
 </template>
 
 <script>
-export default {
-    props: {
-        emoji: {
-            type: String,
-            required: true,
+    export default {
+        props: {
+            emoji: {
+                type: String,
+                required: true,
+            },
+            type: {
+                type: String,
+                default: 'text',
+            },
         },
-        type: {
-            type: String,
-            default: 'text',
-        },
-    },
-}
+    }
 </script>

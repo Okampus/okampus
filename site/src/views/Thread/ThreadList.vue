@@ -6,8 +6,8 @@
         </div>
         <div class="flex relative flex-col mt-32 mb-10">
             <div v-if="!loggedIn" class="ml-32 text-2xl text-0">Vous n'êtes pas connecté !</div>
-            <template v-for="(post, i) in posts" v-else-if="posts.length" :key="i">
-                <PostCard class="mx-2/24 mb-2" :post="post" />
+            <template v-for="(thread, i) in threads" v-else-if="threads.length" :key="i">
+                <ThreadPreviewCard class="mx-2/24 mb-2" :thread="thread" />
             </template>
             <div v-else class="ml-32 text-2xl text-0">Aucun post ne correspond à ces critères.</div>
         </div>
@@ -15,45 +15,41 @@
 </template>
 
 <script lang="js">
-import { watch } from 'vue'
-import PostCard from '@/components/App/Card/PostCard.vue'
+    import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
+    import { watch } from 'vue'
 
-export default {
-    components: { PostCard },
-    data () {
-        return { posts: this.$store.state.posts.posts }
-    },
-    computed: {
-        loggedIn () {
-            return this.$store.state.auth.status.loggedIn
+    export default {
+        components: { ThreadPreviewCard },
+        data() {
+            return { threads: this.$store.getters['threads/getThreadList'] }
         },
-    },
-    mounted () {
-        this.emitter.on('login', () => {
-            this.refreshPosts()
-        })
-
-        this.emitter.on('logout', () => {
-            this.$store.dispatch('posts/refreshPosts')
-        })
-
-        watch(() => this.$store.getters['posts/getPosts'], (posts) => {
-            this.posts = posts
-        })
-
-        if (this.loggedIn) {
-            this.$store.dispatch('posts/newFetchPosts')
-        }
-    },
-    methods: {
-        refreshPosts () {
-            this.$store.dispatch('posts/newFetchPosts')
+        computed: {
+            loggedIn () {
+                return this.$store.state.auth.status.loggedIn
+            },
         },
-        loadPosts () {
-            if (this.$store.state.posts.page === 0) {
-                this.$store.dispatch('posts/fetchPosts')
+        mounted () {
+            if (this.loggedIn) {
+                this.refreshThreads()
             }
+
+            watch(() => this.$store.getters['threads/getThreadList'], (threads) => {
+                this.threads = threads
+            })
+
+            this.$emitter.on('login', () => {
+                this.refreshThreads()
+            })
+
+            this.$emitter.on('logout', () => {
+                this.$store.commit('threads/refreshThreadList')
+            })
         },
-    },
-}
+        methods: {
+            refreshThreads () {
+                this.$store.commit('threads/refreshThreadList')
+                this.$store.dispatch('threads/getThreadList')
+            },
+        },
+    }
 </script>

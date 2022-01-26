@@ -10,9 +10,7 @@ export const userConfig = {
         },
     },
     actions: {
-        switchTheme({
-            state, commit, 
-        }) {
+        switchTheme({ state, commit }) {
             commit('setTheme', state.theme === 'dark' ? 'light' : 'dark')
         },
     },

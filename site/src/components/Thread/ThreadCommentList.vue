@@ -28,7 +28,7 @@
                         @validate="updateComment($event, i)"
                     />
                     <p v-if="!comment.edit" class="font-bold whitespace-nowrap">
-                        &nbsp;- {{ comment.author.username }}
+                        &nbsp;- {{ comment.author.fullname }}
                     </p>
                 </div>
                 <div v-if="!comment.edit" class="flex items-center">
@@ -66,142 +66,132 @@
 
 <script lang="js">
 
-import default_avatar from '@/assets/img/default_avatars/user.png'
-import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
-import TipTapEditableRender from '@/components/TipTap/TipTapEditableRender.vue'
-import { watch } from 'vue'
-import { defaultTipTapText } from '@/utils/tiptap'
+    import defaultAvatar from '@/assets/img/default_avatars/user.png'
+    import TipTapEditableRender from '@/components/TipTap/TipTapEditableRender.vue'
+    import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
+    import { defaultTipTapText } from '@/utils/tiptap'
+    import { watch } from 'vue'
 
-export default {
-    components: {
-        TipTapEditor,
-        TipTapEditableRender,
-    },
-    props: {
-        onComment: {
-            type: Boolean,
-            default: false,
+    export default {
+        components: {
+            TipTapEditor,
+            TipTapEditableRender,
         },
-        parentContent: {
-            type: Object,
-            default: () => {},
-        },
-        comments: {
-            type: Array,
-            default: () => [],
-        },
-        maxCommentsShow: {
-            type: Number,
-            default: 2,
-        },
-        tiptapError: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    emits: ['update:onComment'],
-    data() {
-        return {
-            default_avatar,
-            editorConfig: {
-                charCount: 240,
-                textClass: 'text-sm',
-                editorClasses: ['text-sm'],
-                editorButtons: [],
-                placeholder: `${this.$store.state.auth.user.username} va commenter...`,
+        props: {
+            onComment: {
+                type: Boolean,
+                default: false,
             },
-            commentLimit: 240,
-            newComment: defaultTipTapText,
-            commentsShow: false,
-            commentItems: this.comments.map(
-                comment => ({
-                    ...comment,
-                    edit: false,
-                }),
-            ),
-        }
-    },
-    computed: {
-        shownComments() {
-            return this.commentItems.slice(0, this.commentsShow ? this.commentItems.length : this.maxCommentsShow)
+            parentId: {
+                type: Number,
+                required: true,
+            },
+            comments: {
+                type: Array,
+                default: () => [],
+            },
+            maxCommentsShow: {
+                type: Number,
+                default: 2,
+            },
+            tiptapError: {
+                type: Boolean,
+                default: false,
+            },
         },
-    },
-    mounted() {
-        watch(
-            () => this.comments,
-            () => {
-                this.commentItems = this.comments.map(
+        emits: ['update:onComment'],
+        data() {
+            return {
+                defaultAvatar,
+                editorConfig: {
+                    charCount: 240,
+                    textClass: 'text-sm',
+                    editorClasses: ['text-sm'],
+                    editorButtons: [],
+                    placeholder: `${this.$store.state.auth.user.fullname} va commenter...`,
+                },
+                commentLimit: 240,
+                newComment: defaultTipTapText,
+                commentsShow: false,
+                commentItems: this.comments.map(
                     comment => ({
                         ...comment,
                         edit: false,
                     }),
-                )
-            }, { deep: true },
-        )
-    },
-    methods: {
-        actionsMap (i) {
-            return {
-                ...({
-                    favorite: {
-                        name: () => 'Favori',
-                        icon: () => this.commentItems[i].favorited ? 'star' : ['far', 'star'],
-                        class: () => this.commentItems[i].favorited ? 'hover:text-yellow-500 text-yellow-400' : 'hover:text-yellow-400',
-                        action: () => { this.commentItems[i].favorited ? this.deleteFavorite(i) : this.addFavorite(i) },
-                    },
+                ),
+            }
+        },
+        computed: {
+            shownComments() {
+                return this.commentItems.slice(0, this.commentsShow ? this.commentItems.length : this.maxCommentsShow)
+            },
+        },
+        mounted() {
+            watch(
+                () => this.comments,
+                () => {
+                    this.commentItems = this.comments.map(
+                        comment => ({
+                            ...comment,
+                            edit: false,
+                        }),
+                    )
+                }, { deep: true },
+            )
+        },
+        methods: {
+            actionsMap (i) {
+                return {
+                    ...({
+                        favorite: {
+                            name: () => 'Favori',
+                            icon: () => this.commentItems[i].userFavorited ? 'star' : ['far', 'star'],
+                            class: () => this.commentItems[i].userFavorited ? 'group-hover:text-yellow-600 text-yellow-500' : 'group-hover:text-yellow-500',
+                            action: () => { this.commentItems[i].userFavorited ? this.deleteFavorite(i) : this.addFavorite(i) },
+                        },
 
-                    flag: {
-                        name: () => 'Signaler',
-                        icon: () => ['far', 'flag'],
-                        class: () => 'group-hover:text-red-500',
-                        action: () => { console.log('Signaler') },
-                    },
-                }),
-                ...(this.commentItems[i].author.userId === this.$store.state.auth.user?.userId && {
-                    edit: {
-                        name: () => 'Éditer',
-                        icon: () => 'edit',
-                        class: () => 'group-hover:text-green-500',
-                        action: () => { this.commentItems[i].edit = !this.commentItems[i].edit },
-                    },
-                }),
-            }
-        },
-        closeComment() {
-            this.$emit('update:onComment', false)
-            this.newComment = defaultTipTapText
-        },
-        sendComment() {
-            if (this.parentContent.type === 'post') {
-                this.$store.dispatch('thread/addPostComment', {
-                    postId: this.parentContent.id,
+                        flag: {
+                            name: () => 'Signaler',
+                            icon: () => ['far', 'flag'],
+                            class: () => 'group-hover:text-red-500',
+                            action: () => { console.log('Signaler') },
+                        },
+                    }),
+                    ...(this.commentItems[i].author.userId === this.$store.state.auth.user?.userId && {
+                        edit: {
+                            name: () => 'Éditer',
+                            icon: () => 'pen',
+                            class: () => 'group-hover:text-green-600',
+                            action: () => { this.commentItems[i].edit = !this.commentItems[i].edit },
+                        },
+                    }),
+                }
+            },
+            closeComment() {
+                this.$emit('update:onComment', false)
+                this.newComment = defaultTipTapText
+            },
+            sendComment() {
+                this.$store.dispatch('threads/addComment', {
+                    parentId: this.parentId,
                     body: this.newComment,
+                }).then(this.closeComment)
+            },
+            updateComment(body, i) {
+                console.log('COMMENT', this.commentItems[i])
+                this.$store.dispatch('threads/updateContent', {
+                    contentId: this.commentItems[i].contentId,
+                    body: body,
+                }).then(() => {
+                    this.commentItems[i].edit = false
                 })
-                this.closeComment()
-            } else if (this.parentContent.type === 'reply') {
-                this.$store.dispatch('thread/addReplyComment', {
-                    replyId: this.parentContent.id,
-                    body: this.newComment,
-                })
-                this.closeComment()
-            } else {
-                console.error('Unknown parent type')
-            }
+            },
+            addFavorite(i) {
+                this.$store.dispatch('threads/addFavorite', this.commentItems[i].contentId)
+            },
+            deleteFavorite(i) {
+                this.$store.dispatch('threads/deleteFavorite', this.commentItems[i])
+            },
         },
-        updateComment(body, i) {
-            this.$store.dispatch('thread/updateComment', {
-                commentId: this.commentItems[i].commentId,
-                body: body,
-            }).then(() => {
-                this.commentItems[i].edit = false
-            })
-        },
-        addFavorite(i) {
-            this.$store.dispatch('thread/addFavoriteComment', this.commentItems[i].commentId)
-        },
-        deleteFavorite(i) {
-            this.$store.dispatch('thread/deleteFavoriteComment', this.commentItems[i].commentId)
-        },
-    },
-}
+    }
 </script>

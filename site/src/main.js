@@ -1,15 +1,13 @@
-import { createApp } from 'vue'
-import { createI18n } from 'vue-i18n'
-
 import App from '@/App.vue'
+import FontAwesomeIcon from '@/fontawesome-icons'
+import router from '@/router/index'
 import store from '@/store'
 import mitt from 'mitt'
-import router from '@/router/index'
-
+import { createApp } from 'vue'
+import { createI18n } from 'vue-i18n'
 import InstantSearch from 'vue-instantsearch/vue3/es'
-import FontAwesomeIcon from '@/fontawesome-icons'
-
 import './assets/css/tailwind.css'
+import axios from './shared/config/axios.config'
 
 const emitter = mitt()
 
@@ -20,6 +18,7 @@ const app = createApp(App)
     .use(createI18n({ locale: 'fr' }))
     .use(InstantSearch)
 
-app.config.globalProperties.emitter = emitter
+app.config.globalProperties.$emitter = emitter
+app.config.globalProperties.$axios = axios
 
 app.mount('#app')

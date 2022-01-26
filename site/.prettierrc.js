@@ -5,4 +5,5 @@ module.exports = {
     singleQuote: true,
     printWidth: 110,
     quoteProps: 'preserve',
+    vueIndentScriptAndStyle: true,
 }

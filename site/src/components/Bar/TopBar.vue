@@ -25,42 +25,42 @@
 
         <div v-else class="flex justify-between items-center h-full bg-transparent">
             <div class="mr-4">
-                <UserCard :username="user.username" :email="user.email" :avatar="user.avatar" />
+                <UserCard :username="user.fullname" :email="user.email" :avatar="user.avatar" />
             </div>
         </div>
     </nav>
 </template>
 
 <script>
-import UserCard from '@/components/App/Card/UserCard.vue'
-import SearchBar from '@/components/Bar/SearchBar.vue'
+    import UserCard from '@/components/App/Card/UserCard.vue'
+    import SearchBar from '@/components/Bar/SearchBar.vue'
 
-export default {
-    components: {
-        UserCard,
-        SearchBar,
-    },
-    emits: ['toggle-side-bar', 'toggle-login'],
-    data() {
-        return { showSearchBar: false }
-    },
-    computed: {
-        loggedIn() {
-            return this.$store.state.auth.status.loggedIn
+    export default {
+        components: {
+            UserCard,
+            SearchBar,
         },
-        user() {
-            return this.$store.state.auth.user
+        emits: ['toggle-side-bar', 'toggle-login'],
+        data() {
+            return { showSearchBar: false }
         },
-    },
-}
+        computed: {
+            loggedIn() {
+                return this.$store.state.auth.status.loggedIn
+            },
+            user() {
+                return this.$store.state.auth.user
+            },
+        },
+    }
 </script>
 
 <style lang="scss">
-.topbar-shadow {
-    box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.05);
-    clip-path: inset(0px 0px -30px 0px);
-    :root.dark & {
-        box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.4);
+    .topbar-shadow {
+        box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.05);
+        clip-path: inset(0px 0px -30px 0px);
+        :root.dark & {
+            box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.4);
+        }
     }
-}
 </style>

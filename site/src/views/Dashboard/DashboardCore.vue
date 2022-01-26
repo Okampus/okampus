@@ -44,101 +44,101 @@
 </template>
 
 <script lang="js">
-import { defineAsyncComponent } from 'vue'
-import SelectMultiCheckbox from '@/components/Input/SelectMultiCheckbox.vue'
-import {
-    TransitionRoot,
-    Dialog,
-} from '@headlessui/vue'
-import ThreadCompactView from '@/views/Thread/ThreadCompactView.vue'
-import { camelToSentenceCase } from '@/utils/caseUtils'
-
-export default {
-    components: {
-        SelectMultiCheckbox,
+    import { defineAsyncComponent } from 'vue'
+    import SelectMultiCheckbox from '@/components/Input/SelectMultiCheckbox.vue'
+    import {
         TransitionRoot,
         Dialog,
-        ThreadCompactView,
-    },
-    props: {
-        items: {
-            type: Array,
-            default: () => [],
+    } from '@headlessui/vue'
+    import ThreadCompactView from '@/views/Thread/ThreadCompactView.vue'
+    import { camelToSentenceCase } from '@/utils/caseUtils'
+
+    export default {
+        components: {
+            SelectMultiCheckbox,
+            TransitionRoot,
+            Dialog,
+            ThreadCompactView,
         },
-        startSelectedCols: {
-            type: Array,
-            default: () => undefined,
+        props: {
+            items: {
+                type: Array,
+                default: () => [],
+            },
+            startSelectedCols: {
+                type: Array,
+                default: () => undefined,
+            },
+            columns: {
+                type: Object,
+                default: () => {},
+            },
         },
-        columns: {
-            type: Object,
-            default: () => {},
+        data () {
+            return {
+                selectedCols: this.startSelectedCols === undefined ? this.getCols() : [...this.startSelectedCols],
+                sortColumn: '',
+                columnsSort: Object.fromEntries(
+                    Object.values(this.columns).map(colName => [colName, 0]),
+                ),
+            }
         },
-    },
-    data () {
-        return {
-            selectedCols: this.startSelectedCols === undefined ? this.getCols() : [...this.startSelectedCols],
-            sortColumn: '',
-            columnsSort: Object.fromEntries(
-                Object.values(this.columns).map(colName => [colName, 0]),
-            ),
-        }
-    },
-    computed: {
-        itemsSorted() {
-            return [...this.items].sort((a, b) => {
-                if (this.sortColumn !== '') {
-                    a = this.columns[this.sortColumn].value(a)
-                    b = this.columns[this.sortColumn].value(b)
-                    if (a > b) {
-                        return this.columnsSort[this.sortColumn] ? 1 : -1
-                    } else if (a < b) {
-                        return this.columnsSort[this.sortColumn] ? -1 : 1
+        computed: {
+            itemsSorted() {
+                return [...this.items].sort((a, b) => {
+                    if (this.sortColumn !== '') {
+                        a = this.columns[this.sortColumn].value(a)
+                        b = this.columns[this.sortColumn].value(b)
+                        if (a > b) {
+                            return this.columnsSort[this.sortColumn] ? 1 : -1
+                        } else if (a < b) {
+                            return this.columnsSort[this.sortColumn] ? -1 : 1
+                        }
+                    }
+                    return 0
+                })
+            },
+        },
+        beforeCreate () {
+            for (const column in this.columns) {
+                if (this.columns[column].comp.length > 1) {
+                    const comp = this.columns[column].comp[1].replace('@/', '').replace('.vue', '')
+                    const splitComp = comp.split('/')
+                    if (splitComp.length === 1) {
+                        this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}.vue`))
+                    }
+                    if (splitComp.length === 2) {
+                        this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}/${splitComp[1]}.vue`))
+                    }
+                    if (splitComp.length === 3) {
+                        this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}/${splitComp[1]}/${splitComp[2]}.vue`))
+                    }
+                    if (splitComp.length === 4) {
+                        this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}/${splitComp[1]}/${splitComp[2]}/${splitComp[3]}.vue`)).default;
                     }
                 }
-                return 0
-            })
-        },
-    },
-    beforeCreate () {
-        for (const column in this.columns) {
-            if (this.columns[column].comp.length > 1) {
-                const comp = this.columns[column].comp[1].replace('@/', '').replace('.vue', '')
-                const splitComp = comp.split('/')
-                if (splitComp.length === 1) {
-                    this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}.vue`))
-                }
-                if (splitComp.length === 2) {
-                    this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}/${splitComp[1]}.vue`))
-                }
-                if (splitComp.length === 3) {
-                    this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}/${splitComp[1]}/${splitComp[2]}.vue`))
-                }
-                if (splitComp.length === 4) {
-                    this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}/${splitComp[1]}/${splitComp[2]}/${splitComp[3]}.vue`)).default;
-                }
             }
-        }
-    },
-    methods: {
-        getCols() {
-            return Object.keys(this.columns).map(x => this.columns[x].name || camelToSentenceCase(x))
         },
-        camelToSentenceCase,
-        sortTable: function sortTable (colName) {
-            if (colName !== this.sortColumn) {
-                this.columnsSort[this.sortColumn] = 0
-                this.sortColumn = colName
-            }
-            this.columnsSort[this.sortColumn] = this.columnsSort[this.sortColumn] === -1 ? 0 : (this.columnsSort[this.sortColumn] === 1 ? -1 : 1)
+        methods: {
+            getCols() {
+                return Object.keys(this.columns).map(x => this.columns[x].name || camelToSentenceCase(x))
+            },
+            camelToSentenceCase,
+            sortTable: function sortTable (colName) {
+                if (colName !== this.sortColumn) {
+                    this.columnsSort[this.sortColumn] = 0
+                    this.sortColumn = colName
+                }
+                this.columnsSort[this.sortColumn] = this.columnsSort[this.sortColumn] === -1 ? 0 : (this.columnsSort[this.sortColumn] === 1 ? -1 : 1)
+            },
         },
-    },
-}
+    }
 </script>
 
 <style>
-.rounded-table {
-    border-collapse: collapse;
-    border-radius: 15px;
-    overflow: hidden;
-}
+    .rounded-table {
+        border-collapse: collapse;
+        border-radius: 15px;
+        overflow: hidden;
+    }
 </style>

@@ -74,139 +74,139 @@
 </template>
 
 <script>
-import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
-import Popper from 'vue3-popper'
-import AppEmoji from '../App/AppEmoji.vue'
+    import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
+    import Popper from 'vue3-popper'
+    import AppEmoji from '../App/AppEmoji.vue'
 
-export default {
-    components: {
-        AppEmoji,
-        Popper,
-    },
-    props: {
-        indexObject: {
-            type: Object,
-            required: true,
+    export default {
+        components: {
+            AppEmoji,
+            Popper,
         },
-        modelValue: {
-            type: Array,
-            required: true,
-        },
-        itemLimit: {
-            type: Number,
-            default() {
-                return 0
+        props: {
+            indexObject: {
+                type: Object,
+                required: true,
+            },
+            modelValue: {
+                type: Array,
+                required: true,
+            },
+            itemLimit: {
+                type: Number,
+                default() {
+                    return 0
+                },
             },
         },
-    },
-    emits: ['update:modelValue'],
-    data() {
-        return {
-            keyEnter: false,
-            focusInput: false,
-            indexSelected: null,
-            sadFaces: [
-                {
-                    emoji: ':(',
-                    type: 'text',
-                },
-                {
-                    emoji: ':|',
-                    type: 'text',
-                },
-                {
-                    emoji: ':\\',
-                    type: 'text',
-                },
-                {
-                    emoji: ':c',
-                    type: 'text',
-                },
-                {
-                    emoji: ':ꓷ',
-                    type: 'text',
-                },
-                {
-                    emoji: ':[',
-                    type: 'text',
-                },
-                {
-                    emoji: 'grimace',
-                    type: 'icon',
-                },
-                {
-                    emoji: 'sad-cry',
-                    type: 'icon',
-                },
-                {
-                    emoji: 'grin-beam-sweat',
-                    type: 'icon',
-                },
-                {
-                    emoji: 'dizzy',
-                    type: 'icon',
-                },
-                {
-                    emoji: 'surprise',
-                    type: 'icon',
-                },
-            ],
-            Math,
-        }
-    },
-    computed: {
-        indexName() {
-            return Object.getOwnPropertyNames(this.indexObject)[0]
+        emits: ['update:modelValue'],
+        data() {
+            return {
+                keyEnter: false,
+                focusInput: false,
+                indexSelected: null,
+                sadFaces: [
+                    {
+                        emoji: ':(',
+                        type: 'text',
+                    },
+                    {
+                        emoji: ':|',
+                        type: 'text',
+                    },
+                    {
+                        emoji: ':\\',
+                        type: 'text',
+                    },
+                    {
+                        emoji: ':c',
+                        type: 'text',
+                    },
+                    {
+                        emoji: ':ꓷ',
+                        type: 'text',
+                    },
+                    {
+                        emoji: ':[',
+                        type: 'text',
+                    },
+                    {
+                        emoji: 'grimace',
+                        type: 'icon',
+                    },
+                    {
+                        emoji: 'sad-cry',
+                        type: 'icon',
+                    },
+                    {
+                        emoji: 'grin-beam-sweat',
+                        type: 'icon',
+                    },
+                    {
+                        emoji: 'dizzy',
+                        type: 'icon',
+                    },
+                    {
+                        emoji: 'surprise',
+                        type: 'icon',
+                    },
+                ],
+                Math,
+            }
         },
-        typesenseInstantsearchAdapter() {
-            return new TypesenseInstantSearchAdapter({
-                server: {
-                    apiKey: import.meta.env.VITE_TYPESENSE_API_KEY,
-                    nodes: [
-                        {
-                            host: import.meta.env.VITE_TYPESENSE_HOST,
-                            port: import.meta.env.VITE_TYPESENSE_PORT,
-                            protocol: import.meta.env.VITE_TYPESENSE_SCHEME,
-                        },
-                    ],
-                },
-                cacheSearchResultsForSeconds: 2 * 60,
-                additionalSearchParameters: {
-                    limit_hits: 10,
-                    per_page: 10,
-                },
-                collectionSpecificSearchParameters: this.indexObject,
-            })
+        computed: {
+            indexName() {
+                return Object.getOwnPropertyNames(this.indexObject)[0]
+            },
+            typesenseInstantsearchAdapter() {
+                return new TypesenseInstantSearchAdapter({
+                    server: {
+                        apiKey: import.meta.env.VITE_TYPESENSE_API_KEY,
+                        nodes: [
+                            {
+                                host: import.meta.env.VITE_TYPESENSE_HOST,
+                                port: import.meta.env.VITE_TYPESENSE_PORT,
+                                protocol: import.meta.env.VITE_TYPESENSE_SCHEME,
+                            },
+                        ],
+                    },
+                    cacheSearchResultsForSeconds: 2 * 60,
+                    additionalSearchParameters: {
+                        limit_hits: 10,
+                        per_page: 10,
+                    },
+                    collectionSpecificSearchParameters: this.indexObject,
+                })
+            },
         },
-    },
-    methods: {
-        focusSearchbar() {
-            this.showSearchBar = true
-            if (this.modelValue.length != this.itemLimit) {
+        methods: {
+            focusSearchbar() {
+                this.showSearchBar = true
+                if (this.modelValue.length != this.itemLimit) {
+                    this.$refs.input.focus()
+                }
+            },
+            addItem(item) {
+                this.$refs.input.value = ''
                 this.$refs.input.focus()
-            }
+                const temp = this.modelValue
+                if (temp.length == this.itemLimit) {
+                    temp.shift()
+                }
+                temp.push(item)
+                this.$emit('update:modelValue', temp)
+            },
+            deleteItem(item) {
+                const temp = this.modelValue
+                temp.pop(item)
+                this.$emit('update:modelValue', temp)
+            },
         },
-        addItem(item) {
-            this.$refs.input.value = ''
-            this.$refs.input.focus()
-            const temp = this.modelValue
-            if (temp.length == this.itemLimit) {
-                temp.shift()
-            }
-            temp.push(item)
-            this.$emit('update:modelValue', temp)
-        },
-        deleteItem(item) {
-            const temp = this.modelValue
-            temp.pop(item)
-            this.$emit('update:modelValue', temp)
-        },
-    },
-}
+    }
 </script>
 
 <style lang="scss">
-.search-input-global > .popper {
-    @apply w-full;
-}
+    .search-input-global > .popper {
+        @apply w-full;
+    }
 </style>

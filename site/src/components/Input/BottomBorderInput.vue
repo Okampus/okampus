@@ -19,51 +19,51 @@
 
 <script lang="js">
 
-import { ref } from 'vue'
+    import { ref } from 'vue'
 
-export default {
-    props: {
-        inputName: {
-            type: String,
-            default: '',
+    export default {
+        props: {
+            inputName: {
+                type: String,
+                default: '',
+            },
+            modelValue: {
+                type: String,
+                default: '',
+            },
+            inputPlaceholder: {
+                type: String,
+                default: 'Entrez du texte...',
+            },
+            required: {
+                type: Boolean,
+                default: false,
+            },
         },
-        modelValue: {
-            type: String,
-            default: '',
+        emits: ['update:modelValue'],
+        setup () {
+            return { input: ref(null) }
         },
-        inputPlaceholder: {
-            type: String,
-            default: 'Entrez du texte...',
+        data() {
+            return { focused: false }
         },
-        required: {
-            type: Boolean,
-            default: false,
+        computed: {
+            attributes() {
+                let attributes = {}
+                if (this.inputName) {
+                    attributes.name = this.inputName
+                }
+                if (this.required) {
+                    attributes.required = 'true'
+                }
+                return attributes
+            },
         },
-    },
-    emits: ['update:modelValue'],
-    setup () {
-        return { input: ref(null) }
-    },
-    data() {
-        return { focused: false }
-    },
-    computed: {
-        attributes() {
-            let attributes = {}
-            if (this.inputName) {
-                attributes.name = this.inputName
-            }
-            if (this.required) {
-                attributes.required = 'true'
-            }
-            return attributes
-        },
-    },
-}
+    }
 </script>
 
 <style lang="scss">
-:root.light .input-with-icon-shadow {
-    box-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 15%), 0 2px 0 hsl(0deg 0% 0% / 5%);
-}
+    :root.light .input-with-icon-shadow {
+        box-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 15%), 0 2px 0 hsl(0deg 0% 0% / 5%);
+    }
 </style>

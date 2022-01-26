@@ -36,21 +36,21 @@
     </div>
 </template>
 <script>
-import SelectInput from '@/components/Input/SelectInput.vue'
-import SwitchInput from '@/components/Input/SwitchInput.vue'
-export default {
-    components: {
-        SelectInput,
-        SwitchInput,
-    },
-    data() {
-        return {
-            daltonisme: false,
-            dyslexie: false,
-            textsize: null,
-            interline: null,
-        }
-    },
-}
+    import SelectInput from '@/components/Input/SelectInput.vue'
+    import SwitchInput from '@/components/Input/SwitchInput.vue'
+    export default {
+        components: {
+            SelectInput,
+            SwitchInput,
+        },
+        data() {
+            return {
+                daltonisme: false,
+                dyslexie: false,
+                textsize: null,
+                interline: null,
+            }
+        },
+    }
 </script>
 <style></style>

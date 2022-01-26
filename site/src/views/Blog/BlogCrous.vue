@@ -51,16 +51,16 @@
 </template>
 
 <script>
-import CrousWidget from '@/components/App/Widget/WidgetCrous.vue'
-export default {
-    components: { CrousWidget },
-    data() {
-        return { menu: { plats: ['Poulet au curry', 'Chili con carne', 'Riz', 'Légumes'] } }
-    },
-    methods: {
-        joinedPlats: function joinedPlats() {
-            return this.menu.plats.join(', ')
+    import CrousWidget from '@/components/App/Widget/WidgetCrous.vue'
+    export default {
+        components: { CrousWidget },
+        data() {
+            return { menu: { plats: ['Poulet au curry', 'Chili con carne', 'Riz', 'Légumes'] } }
         },
-    },
-}
+        methods: {
+            joinedPlats: function joinedPlats() {
+                return this.menu.plats.join(', ')
+            },
+        },
+    }
 </script>

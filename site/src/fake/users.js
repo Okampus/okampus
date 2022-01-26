@@ -2,7 +2,7 @@ import girl_1 from '@/assets/img/landing/girl_1.jpg'
 import girl_2 from '@/assets/img/landing/girl_2.jpg'
 import guy_1 from '@/assets/img/landing/guy_1.jpg'
 import guy_2 from '@/assets/img/landing/guy_2.jpg'
-import default_avatar from '@/assets/img/default_avatars/user.png'
+import defaultAvatar from '@/assets/img/default_avatars/user.png'
 
 export const users = [
     {
@@ -48,7 +48,7 @@ export const users = [
     {
         id: 4,
         username: 'admin',
-        avatar: default_avatar,
+        avatar: defaultAvatar,
         reputation: 1,
         email: 'admin@horizon-efrei.fr',
         createdAt: '2021-08-18T13:51:36.631Z',

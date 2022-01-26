@@ -5,8 +5,8 @@
                 <font-awesome-icon
                     icon="chevron-up"
                     class="hover:text-blue-500 cursor-pointer"
-                    :class="[post.currentVote === 1 ? 'text-orange-500' : '']"
-                    @click="post.currentVote === 1 ? sendVote(0) : sendVote(1)"
+                    :class="[post.userVote === 1 ? 'text-orange-500' : '']"
+                    @click="post.userVote === 1 ? sendVote(0) : sendVote(1)"
                 />
             </button>
             <div class="mx-1 text-center">
@@ -16,8 +16,8 @@
                 <font-awesome-icon
                     icon="chevron-down"
                     class="hover:text-blue-500 cursor-pointer"
-                    :class="[post.currentVote === -1 ? 'text-orange-500' : '']"
-                    @click="post.currentVote === -1 ? sendVote(0) : sendVote(-1)"
+                    :class="[post.userVote === -1 ? 'text-orange-500' : '']"
+                    @click="post.userVote === -1 ? sendVote(0) : sendVote(-1)"
                 />
             </button>
         </div>
@@ -38,7 +38,7 @@
                     <TagList :tags="post.tags" />
                 </div>
                 <p class="text-5">
-                    Publié par {{ post.author.username }} {{ timeAgo(new Date(post.createdAt)) }}, dernière
+                    Publié par {{ post.author.fullname }} {{ timeAgo(new Date(post.createdAt)) }}, dernière
                     mise à jour {{ timeAgo(new Date(post.contentLastUpdatedAt)) }}
                 </p>
             </div>
@@ -61,75 +61,75 @@
 </template>
 
 <script>
-import TagList from '@/components/List/TagList.vue'
-import { timeAgo } from '@/utils/timeAgo'
+    import TagList from '@/components/List/TagList.vue'
+    import { timeAgo } from '@/utils/timeAgo'
 
-export default {
-    components: { TagList },
-    props: {
-        post: {
-            type: Object,
-            default: () => {},
-        },
-        actions: {
-            type: Array,
-            default: function () {
-                return ['viewReplies', 'favorite', 'flag']
+    export default {
+        components: { TagList },
+        props: {
+            post: {
+                type: Object,
+                default: () => {},
+            },
+            actions: {
+                type: Array,
+                default: function () {
+                    return ['viewReplies', 'favorite', 'flag']
+                },
             },
         },
-    },
-    computed: {
-        actionsMap() {
-            return {
-                viewReplies: {
-                    name: () => 'Réponses',
-                    icon: ['far', 'comment-alt'],
-                    class: 'group-hover:text-blue-500',
-                    action: function () {
-                        console.log('Réponse')
+        computed: {
+            actionsMap() {
+                return {
+                    viewReplies: {
+                        name: () => 'Réponses',
+                        icon: ['far', 'comment-alt'],
+                        class: 'group-hover:text-blue-500',
+                        action: function () {
+                            console.log('Réponse')
+                        },
                     },
-                },
-                favorite: {
-                    name: () => 'Favori',
-                    icon: this.post?.favorited ? 'star' : ['far', 'star'],
-                    class: this.post?.favorited
-                        ? 'hover:text-yellow-500 text-yellow-400'
-                        : 'hover:text-yellow-400',
-                    action: () => {
-                        this.post.favorited ? this.deleteFavorite() : this.addFavorite()
+                    favorite: {
+                        name: () => 'Favori',
+                        icon: this.post?.userFavorited ? 'star' : ['far', 'star'],
+                        class: this.post?.userFavorited
+                            ? 'hover:text-yellow-600 text-yellow-500'
+                            : 'hover:text-yellow-500',
+                        action: () => {
+                            this.post.userFavorited ? this.deleteFavorite() : this.addFavorite()
+                        },
                     },
-                },
-                flag: {
-                    name: () => 'Signaler',
-                    icon: 'flag',
-                    action: function () {
-                        console.log('Signaler')
+                    flag: {
+                        name: () => 'Signaler',
+                        icon: 'flag',
+                        action: function () {
+                            console.log('Signaler')
+                        },
                     },
-                },
-            }
+                }
+            },
         },
-    },
-    mounted() {
-        this.fetchPost()
-    },
-    methods: {
-        timeAgo,
-        fetchPost() {
-            this.$store.dispatch('thread/fetchThread', this.post.postId)
+        mounted() {
+            this.fetchPost()
         },
-        addFavorite() {
-            this.$store.dispatch('users/addFavoritePost', this.post.postId)
+        methods: {
+            timeAgo,
+            fetchPost() {
+                this.$store.dispatch('threads/fetchThread', this.post.postId)
+            },
+            addFavorite() {
+                this.$store.dispatch('users/addFavoritePost', this.post.postId)
+            },
+            deleteFavorite() {
+                this.$store.dispatch('users/deleteFavoritePost', this.post.postId)
+            },
+            sendVote(vote) {
+                this.$store.dispatch('users/votePostFav', {
+                    postId: this.post.postId,
+                    value: vote,
+                })
+            },
         },
-        deleteFavorite() {
-            this.$store.dispatch('users/deleteFavoritePost', this.post.postId)
-        },
-        sendVote(vote) {
-            this.$store.dispatch('users/votePostFav', {
-                postId: this.post.postId,
-                value: vote,
-            })
-        },
-    },
-}
+    }
 </script>
 <style></style>

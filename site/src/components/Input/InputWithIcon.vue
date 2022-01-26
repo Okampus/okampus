@@ -26,52 +26,52 @@
 
 <script lang="js">
 
-import { ref } from 'vue'
-export default {
-    props: {
-        height: {
-            type: String,
-            default: '10',
+    import { ref } from 'vue'
+    export default {
+        props: {
+            height: {
+                type: String,
+                default: '10',
+            },
+            inputName: {
+                type: String,
+                default: '',
+            },
+            inputPlaceholder: {
+                type: String,
+                default: 'Entrez du texte...',
+            },
+            inputType: {
+                type: String,
+                default: 'text',
+            },
+            modelValue: {
+                type: String,
+                default: '',
+            },
+            required: {
+                type: Boolean,
+                default: false,
+            },
         },
-        inputName: {
-            type: String,
-            default: '',
+        emits: ['update:modelValue'],
+        setup() {
+            return { input: ref(null) }
         },
-        inputPlaceholder: {
-            type: String,
-            default: 'Entrez du texte...',
+        data() {
+            return { focused: false }
         },
-        inputType: {
-            type: String,
-            default: 'text',
+        computed: {
+            attributes() {
+                let attributes = {}
+                if (this.inputName) {
+                    attributes.name = this.inputName
+                }
+                if (this.required) {
+                    attributes.required = 'true'
+                }
+                return attributes
+            },
         },
-        modelValue: {
-            type: String,
-            default: '',
-        },
-        required: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    emits: ['update:modelValue'],
-    setup() {
-        return { input: ref(null) }
-    },
-    data() {
-        return { focused: false }
-    },
-    computed: {
-        attributes() {
-            let attributes = {}
-            if (this.inputName) {
-                attributes.name = this.inputName
-            }
-            if (this.required) {
-                attributes.required = 'true'
-            }
-            return attributes
-        },
-    },
-}
+    }
 </script>

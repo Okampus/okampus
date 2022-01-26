@@ -11,8 +11,8 @@
 
 <script lang="js">
 
-export default {
-    components: {},
-    props: {},
-}
+    export default {
+        components: {},
+        props: {},
+    }
 </script>

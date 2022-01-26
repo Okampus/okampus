@@ -29,22 +29,22 @@
 </template>
 
 <script>
-export default {
-    props: {
-        folderName: {
-            type: String,
-            required: true,
-        },
-        childrens: {
-            type: Array,
-            default() {
-                return []
+    export default {
+        props: {
+            folderName: {
+                type: String,
+                required: true,
+            },
+            childrens: {
+                type: Array,
+                default() {
+                    return []
+                },
             },
         },
-    },
-    emits: ['path'],
-    data() {
-        return { showChildrens: false }
-    },
-}
+        emits: ['path'],
+        data() {
+            return { showChildrens: false }
+        },
+    }
 </script>

@@ -27,52 +27,52 @@
 </template>
 
 <script>
-export default {
-    props: {
-        mime: {
-            type: String,
-            default() {
-                return ''
+    export default {
+        props: {
+            mime: {
+                type: String,
+                default() {
+                    return ''
+                },
+            },
+            fileName: {
+                type: String,
+                default() {
+                    return ''
+                },
             },
         },
-        fileName: {
-            type: String,
-            default() {
-                return ''
-            },
-        },
-    },
-    methods: {
-        colors(mime) {
-            const dic = [
-                {
-                    cond: new RegExp('^image/(.)+'),
-                    color: 'bg-orange-500',
-                },
-                {
-                    cond: new RegExp('^audio/(.)+'),
-                    color: 'bg-sky-500',
-                },
-                {
-                    cond: new RegExp('^text/(.)+'),
-                    color: 'bg-blue-500',
-                },
-                {
-                    cond: new RegExp('^video/(.)+'),
-                    color: 'bg-green-500',
-                },
-                {
-                    cond: new RegExp('^application/(.)+'),
-                    color: 'bg-pink-500',
-                },
-            ]
-            for (const el of dic) {
-                if (el.cond.test(mime)) {
-                    return el.color
+        methods: {
+            colors(mime) {
+                const dic = [
+                    {
+                        cond: new RegExp('^image/(.)+'),
+                        color: 'bg-orange-500',
+                    },
+                    {
+                        cond: new RegExp('^audio/(.)+'),
+                        color: 'bg-sky-500',
+                    },
+                    {
+                        cond: new RegExp('^text/(.)+'),
+                        color: 'bg-blue-500',
+                    },
+                    {
+                        cond: new RegExp('^video/(.)+'),
+                        color: 'bg-green-500',
+                    },
+                    {
+                        cond: new RegExp('^application/(.)+'),
+                        color: 'bg-pink-500',
+                    },
+                ]
+                for (const el of dic) {
+                    if (el.cond.test(mime)) {
+                        return el.color
+                    }
                 }
-            }
-            return 'bg-gray-500'
+                return 'bg-gray-500'
+            },
         },
-    },
-}
+    }
 </script>

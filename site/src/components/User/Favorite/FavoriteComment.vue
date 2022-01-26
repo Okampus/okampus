@@ -10,7 +10,7 @@
             <div class="flex flex-col justify-between my-2">
                 <div>
                     <p class="text-5">
-                        Publié par {{ comment.author.username }} {{ timeAgo(new Date(comment.createdAt)) }}
+                        Publié par {{ comment.author.fullname }} {{ timeAgo(new Date(comment.createdAt)) }}
                     </p>
                     <router-link
                         :to="`/posts/${comment.post.postId}`"
@@ -26,9 +26,9 @@
                         >
                             <font-awesome-icon
                                 class="block pl-1 tracking-tighter cursor-pointer"
-                                :class="{ 'text-green-600': comment.currentVote === 1 }"
-                                :icon="comment.currentVote === 1 ? 'thumbs-up' : ['far', 'thumbs-up']"
-                                @click="comment.currentVote === 1 ? sendVote(0) : sendVote(1)"
+                                :class="{ 'text-green-600': comment.userVote === 1 }"
+                                :icon="comment.userVote === 1 ? 'thumbs-up' : ['far', 'thumbs-up']"
+                                @click="comment.userVote === 1 ? sendVote(0) : sendVote(1)"
                             />
                             <p class="pl-1 ml-1 text-sm tracking-tighter">
                                 {{ comment.upvotes }}
@@ -54,62 +54,62 @@
 </template>
 
 <script>
-import { timeAgo } from '@/utils/timeAgo'
-import { extractTextFromTipTapJSON } from '@/utils/tiptap'
-export default {
-    components: {},
-    props: {
-        comment: {
-            type: Object,
-            default: () => {},
-        },
-        actions: {
-            type: Array,
-            default: function () {
-                return ['favorite', 'flag']
+    import { timeAgo } from '@/utils/timeAgo'
+    import { extractTextFromTipTapJSON } from '@/utils/tiptap'
+    export default {
+        components: {},
+        props: {
+            comment: {
+                type: Object,
+                default: () => {},
+            },
+            actions: {
+                type: Array,
+                default: function () {
+                    return ['favorite', 'flag']
+                },
             },
         },
-    },
-    computed: {
-        actionsMap() {
-            // TODO: Actions
-            return {
-                favorite: {
-                    name: () => 'Favori',
-                    icon: this.comment?.favorited ? 'star' : ['far', 'star'],
-                    class: this.comment?.favorited
-                        ? 'hover:text-yellow-500 text-yellow-400'
-                        : 'hover:text-yellow-400',
-                    action: () => {
-                        this.comment.favorited ? this.deleteFavorite() : this.addFavorite()
+        computed: {
+            actionsMap() {
+                // TODO: Actions
+                return {
+                    favorite: {
+                        name: () => 'Favori',
+                        icon: this.comment?.userFavorited ? 'star' : ['far', 'star'],
+                        class: this.comment?.userFavorited
+                            ? 'hover:text-yellow-600 text-yellow-500'
+                            : 'hover:text-yellow-500',
+                        action: () => {
+                            this.comment.userFavorited ? this.deleteFavorite() : this.addFavorite()
+                        },
                     },
-                },
-                flag: {
-                    name: () => 'Signaler',
-                    icon: 'flag',
-                    action: function () {
-                        console.log('Signaler')
+                    flag: {
+                        name: () => 'Signaler',
+                        icon: 'flag',
+                        action: function () {
+                            console.log('Signaler')
+                        },
                     },
-                },
-            }
+                }
+            },
         },
-    },
-    methods: {
-        timeAgo,
-        extractTextFromTipTapJSON,
-        sendVote(vote) {
-            this.$store.dispatch('users/voteCommentFav', {
-                commentId: this.comment.commentId,
-                value: vote,
-            })
+        methods: {
+            timeAgo,
+            extractTextFromTipTapJSON,
+            sendVote(vote) {
+                this.$store.dispatch('users/voteCommentFav', {
+                    commentId: this.comment.commentId,
+                    value: vote,
+                })
+            },
+            addFavorite() {
+                this.$store.dispatch('users/addFavoriteComment', this.comment.commentId)
+            },
+            deleteFavorite() {
+                this.$store.dispatch('users/deleteFavoriteComment', this.comment.commentId)
+            },
         },
-        addFavorite() {
-            this.$store.dispatch('users/addFavoriteComment', this.comment.commentId)
-        },
-        deleteFavorite() {
-            this.$store.dispatch('users/deleteFavoriteComment', this.comment.commentId)
-        },
-    },
-}
+    }
 </script>
 <style></style>

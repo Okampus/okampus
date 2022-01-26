@@ -9,7 +9,7 @@
             <div class="flex flex-col justify-between my-2">
                 <div>
                     <p class="text-5">
-                        Publié par {{ reply.author.username }} {{ timeAgo(new Date(reply.createdAt)) }}
+                        Publié par {{ reply.author.fullname }} {{ timeAgo(new Date(reply.createdAt)) }}
                     </p>
                     <router-link :to="`/posts/${reply.post.postId}`" class="mr-4 text-lg line-clamp-2 text-0">
                         {{ extractTextFromTipTapJSON(JSON.parse(reply.body)) }}
@@ -22,9 +22,9 @@
                         >
                             <font-awesome-icon
                                 class="block pl-1 tracking-tighter cursor-pointer"
-                                :class="{ 'text-green-600': reply.currentVote === 1 }"
-                                :icon="reply.currentVote === 1 ? 'thumbs-up' : ['far', 'thumbs-up']"
-                                @click="reply.currentVote === 1 ? sendVote(0) : sendVote(1)"
+                                :class="{ 'text-green-600': reply.userVote === 1 }"
+                                :icon="reply.userVote === 1 ? 'thumbs-up' : ['far', 'thumbs-up']"
+                                @click="reply.userVote === 1 ? sendVote(0) : sendVote(1)"
                             />
                             <p class="block pl-1 ml-1 text-sm tracking-tighter text-2">
                                 {{ reply.upvotes }}
@@ -35,8 +35,8 @@
                         >
                             <font-awesome-icon
                                 class="pl-1 tracking-tighter cursor-pointer"
-                                :icon="reply.currentVote === -1 ? 'thumbs-down' : ['far', 'thumbs-down']"
-                                @click="reply.currentVote === -1 ? sendVote(0) : sendVote(-1)"
+                                :icon="reply.userVote === -1 ? 'thumbs-down' : ['far', 'thumbs-down']"
+                                @click="reply.userVote === -1 ? sendVote(0) : sendVote(-1)"
                             />
                             <p class="pl-1 ml-1 text-sm tracking-tighter">
                                 {{ reply.downvotes }}
@@ -61,70 +61,70 @@
 </template>
 
 <script>
-import { extractTextFromTipTapJSON } from '@/utils/tiptap'
-import { timeAgo } from '@/utils/timeAgo'
+    import { timeAgo } from '@/utils/timeAgo'
+    import { extractTextFromTipTapJSON } from '@/utils/tiptap'
 
-export default {
-    components: {},
-    props: {
-        reply: {
-            type: Object,
-            default: () => {},
-        },
-        actions: {
-            type: Array,
-            default: function () {
-                return ['viewComments', 'favorite', 'flag']
+    export default {
+        components: {},
+        props: {
+            reply: {
+                type: Object,
+                default: () => {},
+            },
+            actions: {
+                type: Array,
+                default: function () {
+                    return ['viewComments', 'favorite', 'flag']
+                },
             },
         },
-    },
-    computed: {
-        actionsMap() {
-            // TODO: Actions
-            return {
-                viewComments: {
-                    name: () => 'Commentaires',
-                    icon: 'comments',
-                    action: function () {
-                        console.log('Commentaire')
+        computed: {
+            actionsMap() {
+                // TODO: Actions
+                return {
+                    viewComments: {
+                        name: () => 'Commentaires',
+                        icon: 'comments',
+                        action: function () {
+                            console.log('Commentaire')
+                        },
                     },
-                },
-                favorite: {
-                    name: () => 'Favori',
-                    icon: this.reply?.favorited ? 'star' : ['far', 'star'],
-                    class: this.reply?.favorited
-                        ? 'hover:text-yellow-500 text-yellow-400'
-                        : 'hover:text-yellow-400',
-                    action: () => {
-                        this.reply?.favorited ? this.deleteFavorite() : this.addFavorite()
+                    favorite: {
+                        name: () => 'Favori',
+                        icon: this.reply?.userFavorited ? 'star' : ['far', 'star'],
+                        class: this.reply?.userFavorited
+                            ? 'hover:text-yellow-600 text-yellow-500'
+                            : 'hover:text-yellow-500',
+                        action: () => {
+                            this.reply?.userFavorited ? this.deleteFavorite() : this.addFavorite()
+                        },
                     },
-                },
-                flag: {
-                    name: () => 'Signaler',
-                    icon: 'flag',
-                    action: function () {
-                        console.log('Signaler')
+                    flag: {
+                        name: () => 'Signaler',
+                        icon: 'flag',
+                        action: function () {
+                            console.log('Signaler')
+                        },
                     },
-                },
-            }
+                }
+            },
         },
-    },
-    methods: {
-        timeAgo,
-        extractTextFromTipTapJSON,
-        sendVote(vote) {
-            this.$store.dispatch('users/voteReplyFav', {
-                replyId: this.reply.replyId,
-                value: vote,
-            })
+        methods: {
+            timeAgo,
+            extractTextFromTipTapJSON,
+            sendVote(vote) {
+                this.$store.dispatch('users/voteReplyFav', {
+                    replyId: this.reply.replyId,
+                    value: vote,
+                })
+            },
+            addFavorite() {
+                this.$store.dispatch('users/addFavoriteReply', this.reply.replyId)
+            },
+            deleteFavorite() {
+                this.$store.dispatch('users/deleteFavoriteReply', this.reply.replyId)
+            },
         },
-        addFavorite() {
-            this.$store.dispatch('users/addFavoriteReply', this.reply.replyId)
-        },
-        deleteFavorite() {
-            this.$store.dispatch('users/deleteFavoriteReply', this.reply.replyId)
-        },
-    },
-}
+    }
 </script>
 <style></style>

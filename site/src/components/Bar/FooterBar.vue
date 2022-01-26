@@ -58,5 +58,5 @@
 </template>
 
 <script lang="js">
-export default { }
+    export default { }
 </script>

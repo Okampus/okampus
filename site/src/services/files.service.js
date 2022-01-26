@@ -1,21 +1,13 @@
-import axios from 'axios'
+import $axios from '../shared/config/axios.config'
 
-const API_URL = import.meta.env.VITE_API_URL
-
-class PostsService {
-    getStudyDocs(query) {
-        return axios
-            .get(`${API_URL}/files/study-docs`, {
-                params: query,
-                withCredentials: true,
-            })
-            .then((res) => res.data.items)
+class FilesService {
+    getStudyDocList(query) {
+        return $axios.get('files/study-docs', { params: query }).then((res) => res.data.items)
     }
 
     addStudyDoc(data) {
-        return axios
-            .post(`${API_URL}/files/study-docs`, data, {
-                withCredentials: true,
+        return $axios
+            .post('files/study-docs', data, {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'multipart/form-data',
@@ -24,24 +16,16 @@ class PostsService {
             .then((res) => res.data)
     }
 
-    downloadFile({
-        query, label, 
-    }) {
-        return axios
-            .get(`${API_URL}/files/uploads/${query}`, {
-                responseType: 'blob',
-                withCredentials: true,
-            })
-            .then((response) => {
-                const blob = new Blob([response.data])
-                const link = document.createElement('a')
-                link.href = URL.createObjectURL(blob)
-                link.download = label
-                link.click()
-                URL.revokeObjectURL(link.href)
-            })
-            .catch(console.error)
+    downloadFile({ query, label }) {
+        return $axios.get(`/files/uploads/${query}`, { responseType: 'blob' }).then((response) => {
+            const blob = new Blob([response.data])
+            const link = document.createElement('a')
+            link.href = URL.createObjectURL(blob)
+            link.download = label
+            link.click()
+            URL.revokeObjectURL(link.href)
+        })
     }
 }
 
-export default new PostsService()
+export default new FilesService()

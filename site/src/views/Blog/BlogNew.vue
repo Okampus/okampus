@@ -16,13 +16,13 @@
                     <div class="flex pr-4 min-w-fit lg:ml-3">
                         <img
                             class="object-cover w-10 h-10 rounded-full"
-                            :src="user.avatar ?? default_avatar"
-                            :alt="user.username"
+                            :src="user.avatar ?? defaultAvatar"
+                            :alt="user.fullname"
                             loading="lazy"
                         />
                         <div class="flex flex-col ml-3 text-sm text-0">
                             <p class="whitespace-nowrap">Poster en tant que</p>
-                            <strong class="text-base whitespace-nowrap">{{ user.username }}</strong>
+                            <strong class="text-base whitespace-nowrap">{{ user.fullname }}</strong>
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
@@ -122,31 +122,31 @@
 </template>
 
 <script>
-import { users } from '@/fake/users'
+    import { users } from '@/fake/users'
 
-import default_avatar from '@/assets/img/default_avatars/user.png'
-import TagInput from '@/components/Input/TagInput.vue'
-import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
+    import defaultAvatar from '@/assets/img/default_avatars/user.png'
+    import TagInput from '@/components/Input/TagInput.vue'
+    import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
 
-export default {
-    name: 'BlogPostForm',
-    components: {
-        TipTapEditor,
-        TagInput,
-    },
-    data() {
-        return {
-            user: users[0],
-            default_avatar,
-        }
-    },
-}
+    export default {
+        name: 'BlogPostForm',
+        components: {
+            TipTapEditor,
+            TagInput,
+        },
+        data() {
+            return {
+                user: users[0],
+                defaultAvatar,
+            }
+        },
+    }
 </script>
 
 <style lang="scss">
-.blog-editor .ProseMirror {
-    min-height: 40rem;
-    max-height: 40rem;
-    overflow-y: scroll;
-}
+    .blog-editor .ProseMirror {
+        min-height: 40rem;
+        max-height: 40rem;
+        overflow-y: scroll;
+    }
 </style>

@@ -10,7 +10,7 @@
                     <AvatarImage
                         :src="user.avatar"
                         :size="32"
-                        :alt="user.username + ' profile image'"
+                        :alt="user.fullname + ' profile image'"
                         class="absolute -bottom-1/4 left-10 border-4 border-color-1 bg-1"
                     />
                 </div>
@@ -19,14 +19,14 @@
                         <div>
                             <div class="flex">
                                 <div class="text-2xl">
-                                    {{ user.username }} {{ user.username.toUpperCase() }}
+                                    {{ user.fullname }} {{ user.fullname.toUpperCase() }}
                                 </div>
                                 <div class="my-auto ml-2 text-gray-500">
                                     {{ 'M2-F' }}
                                 </div>
                                 <router-link
                                     v-if="connected.userId == user.userId"
-                                    to="/me/home"
+                                    to="/me/profile"
                                     class="my-auto ml-8"
                                 >
                                     <div
@@ -47,7 +47,7 @@
                                             :src="
                                                 clubs.find((a) => a.clubId === club.club.clubId).icon
                                                     ? clubs.find((a) => a.clubId === club.club.clubId).icon
-                                                    : default_avatar
+                                                    : defaultAvatar
                                             "
                                             :alt="`${
                                                 clubs.find((a) => a.clubId === club.club.clubId).name
@@ -78,7 +78,11 @@
             <div class="order-2 mt-0 mb-4 space-y-4 md:order-1 md:mr-4 md:ml-2 md:w-1/2 lg:w-2/3">
                 <div class="flex flex-col grow space-y-4 card">
                     <div class="text-xl">Activité</div>
-                    <PostCard v-for="activity in activities" :key="activity.index" :post="activity" />
+                    <ThreadPreviewCard
+                        v-for="activity in activities"
+                        :key="activity.index"
+                        :post="activity"
+                    />
                 </div>
             </div>
             <div class="flex flex-col order-1 mb-4 space-y-2 md:order-2 md:w-1/2 lg:w-1/3">
@@ -110,67 +114,66 @@
 </template>
 
 <script>
-import default_avatar from '@/assets/img/default_avatars/user.png'
+    import defaultAvatar from '@/assets/img/default_avatars/user.png'
+    import LoadingComponent from '@/components/App/AppLoader.vue'
+    import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
+    import AvatarImage from '@/components/User/UserAvatar.vue'
+    import { posts } from '@/fake/posts'
 
-import { posts } from '@/fake/posts'
-import PostCard from '@/components/App/Card/PostCard.vue'
-import AvatarImage from '@/components/User/UserAvatar.vue'
-import LoadingComponent from '@/components/App/AppLoader.vue'
-
-export default {
-    components: {
-        PostCard,
-        AvatarImage,
-        LoadingComponent,
-    },
-    data() {
-        return {
-            activities: posts,
-            roles: {
-                'Président': 'president',
-                'Vice-Président': 'vice-president',
-                'Secretaire': 'secretary',
-                'Trésorier': 'treasurer',
-                'Manager': 'manager',
-                'Membre': 'member',
+    export default {
+        components: {
+            ThreadPreviewCard,
+            AvatarImage,
+            LoadingComponent,
+        },
+        data() {
+            return {
+                activities: posts,
+                roles: {
+                    'Président': 'president',
+                    'Vice-Président': 'vice-president',
+                    'Secretaire': 'secretary',
+                    'Trésorier': 'treasurer',
+                    'Manager': 'manager',
+                    'Membre': 'member',
+                },
+                defaultAvatar: defaultAvatar,
+            }
+        },
+        computed: {
+            user() {
+                return this.$store.state.users.user
             },
-            default_avatar: default_avatar,
-        }
-    },
-    computed: {
-        user() {
-            return this.$store.state.users.user
+            connected() {
+                return this.$store.state.auth.user
+            },
+            socialsAccounts() {
+                return this.$store.state.users.socialsAccounts
+            },
+            socials() {
+                return this.$store.state.users.socials
+            },
+            clubs() {
+                return this.$store.state.users.clubs
+            },
+            userClubs() {
+                return this.$store.state.users.userClubs
+            },
         },
-        connected() {
-            return this.$store.state.auth.user
+        mounted() {
+            const userId = this.$route.params.userId
+            this.$store.dispatch('users/getUserById', userId)
+            this.$store.dispatch('users/getUserClubs', userId)
+            this.$store.dispatch('users/getUserSocials', userId)
+            this.$store.dispatch('users/getSocials')
+            this.$store.dispatch('users/getClubs')
         },
-        socialsAccounts() {
-            return this.$store.state.users.socialsAccounts
-        },
-        socials() {
-            return this.$store.state.users.socials
-        },
-        clubs() {
-            return this.$store.state.users.clubs
-        },
-        userClubs() {
-            return this.$store.state.users.userClubs
-        },
-    },
-    mounted() {
-        const userId = this.$route.params.userId
-        this.$store.dispatch('users/getUserById', userId)
-        this.$store.dispatch('users/getUserClubs', userId)
-        this.$store.dispatch('users/getUserSocials', userId)
-        this.$store.dispatch('users/getSocials')
-        this.$store.dispatch('users/getClubs')
-    },
-}
+    }
 </script>
 
 <style lang="scss">
-.banner {
-    background-color: #771250;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='96' viewBox='0 0 60 96'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%2335313c' fill-opacity='0.44'%3E%3Cpath d='M36 10a6 6 0 0 1 12 0v12a6 6 0 0 1-6 6 6 6 0 0 0-6 6 6 6 0 0 1-12 0 6 6 0 0 0-6-6 6 6 0 0 1-6-6V10a6 6 0 1 1 12 0 6 6 0 0 0 12 0zm24 78a6 6 0 0 1-6-6 6 6 0 0 0-6-6 6 6 0 0 1-6-6V58a6 6 0 1 1 12 0 6 6 0 0 0 6 6v24zM0 88V64a6 6 0 0 0 6-6 6 6 0 0 1 12 0v12a6 6 0 0 1-6 6 6 6 0 0 0-6 6 6 6 0 0 1-6 6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-}
+    .banner {
+        background-color: #771250;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='96' viewBox='0 0 60 96'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%2335313c' fill-opacity='0.44'%3E%3Cpath d='M36 10a6 6 0 0 1 12 0v12a6 6 0 0 1-6 6 6 6 0 0 0-6 6 6 6 0 0 1-12 0 6 6 0 0 0-6-6 6 6 0 0 1-6-6V10a6 6 0 1 1 12 0 6 6 0 0 0 12 0zm24 78a6 6 0 0 1-6-6 6 6 0 0 0-6-6 6 6 0 0 1-6-6V58a6 6 0 1 1 12 0 6 6 0 0 0 6 6v24zM0 88V64a6 6 0 0 0 6-6 6 6 0 0 1 12 0v12a6 6 0 0 1-6 6 6 6 0 0 0-6 6 6 6 0 0 1-6 6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
 </style>

@@ -86,9 +86,7 @@ export const users = {
                 },
             )
         },
-        addSocialAccount({ commit }, {
-            userId, socialId, pseudo, link, 
-        }) {
+        addSocialAccount({ commit }, { userId, socialId, pseudo, link }) {
             return UserService.addSocialAccount({
                 userId,
                 socialId,
@@ -105,9 +103,7 @@ export const users = {
                 },
             )
         },
-        updateSocialAccount({ commit }, {
-            socialAccountId, pseudo, link, 
-        }) {
+        updateSocialAccount({ commit }, { socialAccountId, pseudo, link }) {
             return UserService.updateSocialAccount({
                 socialAccountId,
                 pseudo,
@@ -135,9 +131,7 @@ export const users = {
                 },
             )
         },
-        replaceSocialAccount({ commit }, {
-            userId, socialId, socialAccountId, pseudo, link, 
-        }) {
+        replaceSocialAccount({ commit }, { userId, socialId, socialAccountId, pseudo, link }) {
             UserService.deleteSocialAccount(socialAccountId).then(
                 () =>
                     UserService.addSocialAccount({
@@ -176,9 +170,7 @@ export const users = {
                 },
             )
         },
-        votePostFav({ commit }, {
-            postId, value, 
-        }) {
+        votePostFav({ commit }, { postId, value }) {
             return UserService.votePost(postId, value).then(
                 (success) => {
                     commit('votePostSuccess', {
@@ -193,9 +185,7 @@ export const users = {
                 },
             )
         },
-        voteReplyFav({ commit }, {
-            replyId, value, 
-        }) {
+        voteReplyFav({ commit }, { replyId, value }) {
             return UserService.voteReply(replyId, value).then(
                 (success) => {
                     commit('voteReplySuccess', {
@@ -210,9 +200,7 @@ export const users = {
                 },
             )
         },
-        voteCommentFav({ commit }, {
-            commentId, value, 
-        }) {
+        voteCommentFav({ commit }, { commentId, value }) {
             return UserService.voteComment(commentId, value).then(
                 (success) => {
                     commit('voteCommentSuccess', {
@@ -311,9 +299,7 @@ export const users = {
                 },
             )
         },
-        addClubMember({ commit }, {
-            clubId, userId, 
-        }) {
+        addClubMember({ commit }, { clubId, userId }) {
             return UserService.addClubMember({
                 clubId,
                 userId,
@@ -328,9 +314,7 @@ export const users = {
                 },
             )
         },
-        deleteClubMember({ commit }, {
-            clubId, userId, 
-        }) {
+        deleteClubMember({ commit }, { clubId, userId }) {
             return UserService.deleteClubMember({
                 clubId,
                 userId,
@@ -348,9 +332,7 @@ export const users = {
                 },
             )
         },
-        updateClubMember({ commit }, {
-            clubId, userId, role, 
-        }) {
+        updateClubMember({ commit }, { clubId, userId, role }) {
             return UserService.updateMemberRole({
                 clubId,
                 userId,
@@ -366,9 +348,7 @@ export const users = {
                 },
             )
         },
-        leaveClub({ commit }, {
-            clubId, userId, 
-        }) {
+        leaveClub({ commit }, { clubId, userId }) {
             return UserService.deleteClubMember({
                 clubId,
                 userId,
@@ -429,9 +409,7 @@ export const users = {
         deleteSocialAccountSuccess(state, socialAccountId) {
             state.socialsAccounts = state.socialsAccounts.filter((a) => a.socialAccountId != socialAccountId)
         },
-        replaceSocialAccountSuccess(state, {
-            socialAccount, socialAccountId, 
-        }) {
+        replaceSocialAccountSuccess(state, { socialAccount, socialAccountId }) {
             state.socialsAccounts = state.socialsAccounts.map((social) => {
                 if (social.socialAccountId != socialAccountId) {
                     return social
@@ -442,13 +420,11 @@ export const users = {
         fetchUserFavorites(state, favorites) {
             state.favorites = favorites
         },
-        votePostSuccess(state, {
-            success, value, 
-        }) {
+        votePostSuccess(state, { success, value }) {
             state.favorites = state.favorites.map((a) => {
                 if ('post' in a) {
                     if (a.post.postId === success.postId) {
-                        a.post.currentVote = value
+                        a.post.userVote = value
                         a.post.upvotes = success.upvotes
                         a.post.downvotes = success.downvotes
                     }
@@ -456,13 +432,11 @@ export const users = {
                 return a
             })
         },
-        voteReplySuccess(state, {
-            success, value, 
-        }) {
+        voteReplySuccess(state, { success, value }) {
             state.favorites = state.favorites.map((a) => {
                 if ('reply' in a) {
                     if (a.reply.replyId === success.replyId) {
-                        a.reply.currentVote = value
+                        a.reply.userVote = value
                         a.reply.upvotes = success.upvotes
                         a.reply.downvotes = success.downvotes
                     }
@@ -470,13 +444,11 @@ export const users = {
                 return a
             })
         },
-        voteCommentSuccess(state, {
-            success, value, 
-        }) {
+        voteCommentSuccess(state, { success, value }) {
             state.favorites = state.favorites.map((a) => {
                 if ('comment' in a) {
                     if (a.comment.commentId === success.commentId) {
-                        a.comment.currentVote = value
+                        a.comment.userVote = value
                         a.comment.upvotes = success.upvotes
                         a.comment.downvotes = success.downvotes
                     }
@@ -487,7 +459,7 @@ export const users = {
         addFavoritePostSuccess(state, success) {
             state.favorites = state.favorites.map((a) => {
                 if ('post' in a) {
-                    if (a.post.postId === success) a.post.favorited = true
+                    if (a.post.postId === success) a.post.userFavorited = true
                 }
                 return a
             })
@@ -495,7 +467,7 @@ export const users = {
         deleteFavoritePostSuccess(state, success) {
             state.favorites = state.favorites.map((a) => {
                 if ('post' in a) {
-                    if (a.post.postId === success) a.post.favorited = false
+                    if (a.post.postId === success) a.post.userFavorited = false
                 }
                 return a
             })
@@ -503,7 +475,7 @@ export const users = {
         addFavoriteReplySuccess(state, success) {
             state.favorites = state.favorites.map((a) => {
                 if ('reply' in a) {
-                    if (a.reply.replyId === success) a.reply.favorited = true
+                    if (a.reply.replyId === success) a.reply.userFavorited = true
                 }
                 return a
             })
@@ -511,7 +483,7 @@ export const users = {
         deleteFavoriteReplySuccess(state, success) {
             state.favorites = state.favorites.map((a) => {
                 if ('reply' in a) {
-                    if (a.reply.replyId === success) a.reply.favorited = false
+                    if (a.reply.replyId === success) a.reply.userFavorited = false
                 }
                 return a
             })
@@ -519,7 +491,7 @@ export const users = {
         addFavoriteCommentSuccess(state, success) {
             state.favorites = state.favorites.map((a) => {
                 if ('comment' in a) {
-                    if (a.comment.commentId === success) a.comment.favorited = true
+                    if (a.comment.commentId === success) a.comment.userFavorited = true
                 }
                 return a
             })
@@ -527,7 +499,7 @@ export const users = {
         deleteFavoriteCommentSuccess(state, success) {
             state.favorites = state.favorites.map((a) => {
                 if ('comment' in a) {
-                    if (a.comment.commentId === success) a.comment.favorited = false
+                    if (a.comment.commentId === success) a.comment.userFavorited = false
                 }
                 return a
             })
@@ -538,9 +510,7 @@ export const users = {
         addClubMemberSuccess(state, success) {
             state.userClubs = [...state.userClubs, success]
         },
-        deleteClubMemberSuccess(state, {
-            clubId, userId, 
-        }) {
+        deleteClubMemberSuccess(state, { clubId, userId }) {
             state.clubMembers = state.clubMembers.filter((a) => {
                 if (a.user.userId != userId || a.club.clubId != clubId) {
                     return a

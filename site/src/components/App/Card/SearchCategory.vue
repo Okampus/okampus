@@ -40,32 +40,32 @@
 </template>
 
 <script>
-export default {
-    props: {
-        items: {
-            type: Array,
-            required: true,
+    export default {
+        props: {
+            items: {
+                type: Array,
+                required: true,
+            },
+            indexType: {
+                type: Object,
+                required: true,
+            },
         },
-        indexType: {
-            type: Object,
-            required: true,
-        },
-    },
-    emits: ['closeModal'],
-    data() {
-        return {
-            resultExtended: false,
-            renderedItems: this.items.slice(0, 5),
-        }
-    },
-    watch: {
-        resultExtended(newVal) {
-            if (newVal) {
-                this.renderedItems = this.items
-            } else {
-                this.renderedItems = this.items.slice(0, 5)
+        emits: ['closeModal'],
+        data() {
+            return {
+                resultExtended: false,
+                renderedItems: this.items.slice(0, 5),
             }
         },
-    },
-}
+        watch: {
+            resultExtended(newVal) {
+                if (newVal) {
+                    this.renderedItems = this.items
+                } else {
+                    this.renderedItems = this.items.slice(0, 5)
+                }
+            },
+        },
+    }
 </script>

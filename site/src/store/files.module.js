@@ -1,9 +1,10 @@
-import FileService from '../services/files.service'
-import { uniqBy } from '@/utils/uniqBy'
+import { uniqBy } from 'lodash'
+import FilesService from '../services/files.service'
+import { ITEMS_PER_PAGE } from './constants'
 
 const initialState = {
     studyDocs: [],
-    page: 1,
+    studyDocsPage: 1,
 }
 
 export const files = {
@@ -11,7 +12,7 @@ export const files = {
     state: initialState,
     actions: {
         searchStudyDocs({ commit }, query) {
-            return FileService.getStudyDocs(query).then(
+            return FilesService.getStudyDocs(query).then(
                 (studyDocs) => {
                     commit('searchStudyDocsSuccess', studyDocs)
                     return Promise.resolve(studyDocs)
@@ -22,10 +23,11 @@ export const files = {
                 },
             )
         },
-        newSearchStudyDocs({ commit }, query) {
+        newSearchStudyDocs({ commit, state }, query) {
             commit('refreshStudyDocs')
-            return FileService.getStudyDocs({
-                page: this.state.page,
+            return FilesService.getStudyDocs({
+                page: state.studyDocsPage,
+                itemsPerPage: ITEMS_PER_PAGE,
                 ...query,
             }).then(
                 (studyDocs) => {
@@ -38,9 +40,10 @@ export const files = {
                 },
             )
         },
-        getStudyDocs({ commit }, query) {
-            return FileService.getStudyDocs({
-                page: this.state.page,
+        getStudyDocs({ commit, state }, query) {
+            return FilesService.getStudyDocs({
+                page: state.studyDocsPage,
+                itemsPerPage: ITEMS_PER_PAGE,
                 ...query,
             }).then(
                 (studyDocs) => {
@@ -54,7 +57,7 @@ export const files = {
             )
         },
         addStudyDoc({ commit }, studyDoc) {
-            return FileService.addStudyDoc(studyDoc).then(
+            return FilesService.addStudyDoc(studyDoc).then(
                 (newStudyDoc) => {
                     commit('addStudyDocSuccess', newStudyDoc)
                     return Promise.resolve(newStudyDoc)
@@ -69,11 +72,11 @@ export const files = {
     mutations: {
         refreshStudyDocs(state) {
             state.studyDocs = []
-            state.page = 1
+            state.studyDocsPage = 1
         },
         searchStudyDocsSuccess(state, studyDocs) {
-            state.studyDocs = uniqBy([...state.studyDocs, ...studyDocs], (a, b) => a.id === b.id)
-            state.page++
+            state.studyDocs = uniqBy([...state.studyDocs, ...studyDocs], 'studyDocId')
+            state.studyDocsPage++
         },
         getStudyDocsSuccess(state, studyDocs) {
             state.studyDocs = studyDocs

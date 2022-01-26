@@ -90,93 +90,93 @@
 </template>
 
 <script>
-import DocumentIcon from '@/components/Document/DocumentIcon.vue'
-import formatBytes from '@/utils/formatByteSize.js'
+    import DocumentIcon from '@/components/Document/DocumentIcon.vue'
+    import formatBytes from '@/utils/formatByteSize.js'
 
-export default {
-    components: { DocumentIcon },
-    props: {
-        modelValue: {
-            type: Array,
-            required: true,
-        },
-        imgPreview: {
-            type: Boolean,
-            default: false,
-        },
-        fileLimit: {
-            type: Number,
-            default: -1,
-        },
-        regexMimes: {
-            type: Array,
-            default() {
-                return String.raw`*`
+    export default {
+        components: { DocumentIcon },
+        props: {
+            modelValue: {
+                type: Array,
+                required: true,
+            },
+            imgPreview: {
+                type: Boolean,
+                default: false,
+            },
+            fileLimit: {
+                type: Number,
+                default: -1,
+            },
+            regexMimes: {
+                type: Array,
+                default() {
+                    return String.raw`*`
+                },
+            },
+            sizeLimit: {
+                type: Number,
+                required: true,
             },
         },
-        sizeLimit: {
-            type: Number,
-            required: true,
+        emits: ['update:modelValue'],
+        data() {
+            return {
+                URL,
+                RegExp,
+                dragover: false,
+            }
         },
-    },
-    emits: ['update:modelValue'],
-    data() {
-        return {
-            URL,
-            RegExp,
-            dragover: false,
-        }
-    },
-    computed: {
-        totalFileSize() {
-            return this.modelValue.reduce((sum, file) => sum + file.size, 0)
+        computed: {
+            totalFileSize() {
+                return this.modelValue.reduce((sum, file) => sum + file.size, 0)
+            },
         },
-    },
-    methods: {
-        formatBytes: formatBytes,
-        checkMimes(exp) {
-            for (const el of this.regexMimes) {
-                if (RegExp(el).test(exp)) {
+        methods: {
+            formatBytes: formatBytes,
+            checkMimes(exp) {
+                for (const el of this.regexMimes) {
+                    if (RegExp(el).test(exp)) {
+                        return true
+                    }
+                }
+                return false
+            },
+            addFileByInput() {
+                for (const el of this.$refs.inputFile.files) {
+                    this.addFile(el)
+                }
+            },
+            addFileByDrop(e) {
+                this.dragover = false
+                let droppedFiles = e.dataTransfer.files
+                if (!droppedFiles) return
+                ;[...droppedFiles].forEach((f) => {
+                    this.addFile(f)
+                })
+            },
+            addFile(file) {
+                if (this.checkMimes(file.type) && this.checkSize(file.size)) {
+                    const temp = this.modelValue
+                    if (temp.length == this.fileLimit) {
+                        temp.shift()
+                    }
+                    temp.push(file)
+                    this.$emit('update:modelValue', temp)
+                }
+            },
+            checkSize(fileSize) {
+                if (this.totalFileSize + fileSize <= this.sizeLimit) {
                     return true
                 }
-            }
-            return false
+                return false
+            },
+            removeFile(file) {
+                this.$emit(
+                    'update:modelValue',
+                    this.modelValue.filter((f) => f != file),
+                )
+            },
         },
-        addFileByInput() {
-            for (const el of this.$refs.inputFile.files) {
-                this.addFile(el)
-            }
-        },
-        addFileByDrop(e) {
-            this.dragover = false
-            let droppedFiles = e.dataTransfer.files
-            if (!droppedFiles) return
-            ;[...droppedFiles].forEach((f) => {
-                this.addFile(f)
-            })
-        },
-        addFile(file) {
-            if (this.checkMimes(file.type) && this.checkSize(file.size)) {
-                const temp = this.modelValue
-                if (temp.length == this.fileLimit) {
-                    temp.shift()
-                }
-                temp.push(file)
-                this.$emit('update:modelValue', temp)
-            }
-        },
-        checkSize(fileSize) {
-            if (this.totalFileSize + fileSize <= this.sizeLimit) {
-                return true
-            }
-            return false
-        },
-        removeFile(file) {
-            this.$emit(
-                'update:modelValue',
-                this.modelValue.filter((f) => f != file),
-            )
-        },
-    },
-}
+    }
 </script>

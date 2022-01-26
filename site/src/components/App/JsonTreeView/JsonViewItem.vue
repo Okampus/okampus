@@ -33,167 +33,167 @@
 </template>
 
 <script lang="js">
-export default {
-    props: {
-        data: {
-            required: true,
-            type: Object,
+    export default {
+        props: {
+            data: {
+                required: true,
+                type: Object,
+            },
+            maxDepth: {
+                type: Number,
+                required: false,
+                default: 1,
+            },
+            canSelect: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
         },
-        maxDepth: {
-            type: Number,
-            required: false,
-            default: 1,
+        emits: ['update:selected'],
+        data () {
+            return { open: this.data.depth < this.maxDepth }
         },
-        canSelect: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-    },
-    emits: ['update:selected'],
-    data () {
-        return { open: this.data.depth < this.maxDepth }
-    },
-    computed: {
-        lengthString () {
-            switch (this.data.type) {
-            case 'array':
-                return this.data.length === 1
-                    ? this.data.length + ' element'
-                    : this.data.length + ' elements'
-            case 'object':
-                return this.data.length === 1
-                    ? this.data.length + ' property'
-                    : this.data.length + ' properties'
-            default:
-                return ''
-            }
-        },
-        dataValue () {
-            if (this.data.type === 'value') {
-                if (typeof this.data.value === 'undefined') {
-                    return 'undefined'
+        computed: {
+            lengthString () {
+                switch (this.data.type) {
+                case 'array':
+                    return this.data.length === 1
+                        ? this.data.length + ' element'
+                        : this.data.length + ' elements'
+                case 'object':
+                    return this.data.length === 1
+                        ? this.data.length + ' property'
+                        : this.data.length + ' properties'
+                default:
+                    return ''
                 }
-                return JSON.stringify(this.data.value)
-            }
-            return ''
+            },
+            dataValue () {
+                if (this.data.type === 'value') {
+                    if (typeof this.data.value === 'undefined') {
+                        return 'undefined'
+                    }
+                    return JSON.stringify(this.data.value)
+                }
+                return ''
+            },
         },
-    },
-    methods: {
-        emitSelect (data) {
-            this.$emit('update:selected', {
-                key: data.key,
-                value: data.type === 'value' ? data.value : undefined,
-                path: data.path,
-            })
+        methods: {
+            emitSelect (data) {
+                this.$emit('update:selected', {
+                    key: data.key,
+                    value: data.type === 'value' ? data.value : undefined,
+                    path: data.path,
+                })
+            },
+            bubbleSelected (data) {
+                this.$emit('update:selected', data)
+            },
+            getKey (value) {
+                if (!isNaN(value.key)) {
+                    return value.key + ':'
+                } else {
+                    return '"' + value.key + '":'
+                }
+            },
+            getValueStyle (value) {
+                switch (typeof value) {
+                case 'string':
+                    return { color: 'var(--vjc-string-color)' }
+                case 'number':
+                    return { color: 'var(--vjc-number-color)' }
+                case 'boolean':
+                    return { color: 'var(--vjc-boolean-color)' }
+                case 'object':
+                    return { color: 'var(--vjc-null-color)' }
+                case 'undefined':
+                    return { color: 'var(--vjc-null-color)' }
+                default:
+                    return { color: 'var(--vjc-valueKey-color)' }
+                }
+            },
         },
-        bubbleSelected (data) {
-            this.$emit('update:selected', data)
-        },
-        getKey (value) {
-            if (!isNaN(value.key)) {
-                return value.key + ':'
-            } else {
-                return '"' + value.key + '":'
-            }
-        },
-        getValueStyle (value) {
-            switch (typeof value) {
-            case 'string':
-                return { color: 'var(--vjc-string-color)' }
-            case 'number':
-                return { color: 'var(--vjc-number-color)' }
-            case 'boolean':
-                return { color: 'var(--vjc-boolean-color)' }
-            case 'object':
-                return { color: 'var(--vjc-null-color)' }
-            case 'undefined':
-                return { color: 'var(--vjc-null-color)' }
-            default:
-                return { color: 'var(--vjc-valueKey-color)' }
-            }
-        },
-    },
-}
+    }
 </script>
 
 <style lang="scss" scoped>
-.json-view-item:not(.root-item) {
-    margin-left: 15px;
-}
+    .json-view-item:not(.root-item) {
+        margin-left: 15px;
+    }
 
-.value-key {
-    color: var(--vjc-valueKey-color);
-    font-weight: 600;
-    margin-left: 10px;
-    border-radius: 2px;
-    white-space: nowrap;
-    padding: 5px 5px 5px 10px;
+    .value-key {
+        color: var(--vjc-valueKey-color);
+        font-weight: 600;
+        margin-left: 10px;
+        border-radius: 2px;
+        white-space: nowrap;
+        padding: 5px 5px 5px 10px;
 
-    &.can-select {
+        &.can-select {
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.08);
+            }
+
+            &:focus {
+                outline: 2px solid var(--vjc-hover-color);
+            }
+        }
+    }
+
+    .data-key {
+        // Button overrides
+        font-size: 100%;
+        font-family: inherit;
+        border: 0;
+        background-color: transparent;
+        width: 100%;
+
+        // Normal styles
+        color: var(--vjc-key-color);
+        display: flex;
+        align-items: center;
+        border-radius: 2px;
+        font-weight: 600;
         cursor: pointer;
+        white-space: nowrap;
+        padding: 5px;
 
         &:hover {
-            background-color: rgba(0, 0, 0, 0.08);
+            background-color: var(--vjc-hover-color);
         }
 
         &:focus {
             outline: 2px solid var(--vjc-hover-color);
         }
-    }
-}
 
-.data-key {
-    // Button overrides
-    font-size: 100%;
-    font-family: inherit;
-    border: 0;
-    background-color: transparent;
-    width: 100%;
+        &::-moz-focus-inner {
+            border: 0;
+        }
 
-    // Normal styles
-    color: var(--vjc-key-color);
-    display: flex;
-    align-items: center;
-    border-radius: 2px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    padding: 5px;
-
-    &:hover {
-        background-color: var(--vjc-hover-color);
+        .properties {
+            font-weight: 300;
+            opacity: 0.9;
+            margin-left: 4px;
+            user-select: none;
+        }
     }
 
-    &:focus {
-        outline: 2px solid var(--vjc-hover-color);
-    }
+    .chevron-arrow {
+        flex-shrink: 0;
+        border-right: 4px solid var(--vjc-arrow-color);
+        border-bottom: 4px solid var(--vjc-arrow-color);
+        width: var(--vjc-arrow-size);
+        height: var(--vjc-arrow-size);
+        margin-right: 20px;
+        margin-left: 5px;
+        transform: rotate(-45deg);
 
-    &::-moz-focus-inner {
-        border: 0;
+        &.opened {
+            margin-top: -3px;
+            transform: rotate(45deg);
+        }
     }
-
-    .properties {
-        font-weight: 300;
-        opacity: 0.9;
-        margin-left: 4px;
-        user-select: none;
-    }
-}
-
-.chevron-arrow {
-    flex-shrink: 0;
-    border-right: 4px solid var(--vjc-arrow-color);
-    border-bottom: 4px solid var(--vjc-arrow-color);
-    width: var(--vjc-arrow-size);
-    height: var(--vjc-arrow-size);
-    margin-right: 20px;
-    margin-left: 5px;
-    transform: rotate(-45deg);
-
-    &.opened {
-        margin-top: -3px;
-        transform: rotate(45deg);
-    }
-}
 </style>

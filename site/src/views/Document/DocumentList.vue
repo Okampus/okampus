@@ -280,97 +280,97 @@
 </template>
 
 <script>
-import fileIcon from '@/assets/img/doctype/file.png'
-import AppModal from '@/components/App/AppModal.vue'
-import DocumentIcon from '@/components/Document/DocumentIcon.vue'
-import FileFolder from '@/components/Document/FileFolder.vue'
-import DropDownInput from '@/components/Input/DropDownInput.vue'
-import { treeFake } from '@/fake/tree.js'
-import filesService from '@/services/files.service'
-import formatBytes from '@/utils/formatByteSize'
-import Popper from 'vue3-popper'
+    import fileIcon from '@/assets/img/doctype/file.png'
+    import AppModal from '@/components/App/AppModal.vue'
+    import DocumentIcon from '@/components/Document/DocumentIcon.vue'
+    import FileFolder from '@/components/Document/FileFolder.vue'
+    import DropDownInput from '@/components/Input/DropDownInput.vue'
+    import { treeFake } from '@/fake/tree.js'
+    import filesService from '@/services/files.service'
+    import formatBytes from '@/utils/formatByteSize'
+    import Popper from 'vue3-popper'
 
-export default {
-    components: {
-        FileFolder,
-        DropDownInput,
-        AppModal,
-        DocumentIcon,
-        Popper,
-    },
-    data() {
-        return {
-            fileIcon,
-            formatBytes,
-            filesFilters: [],
-            docStyleList: true,
-            filePreview: null,
-            showFile: false,
-            fileGroup: [],
-            folderPath: ['Main'],
-            folderType: ['Promotion', 'Matière', 'Cursus', 'Année'],
-            Date,
-            treeFake,
-        }
-    },
-    mounted() {
-        this.$store.dispatch('files/getStudyDocs')
-    },
-    methods: {
-        dropDownButtons(studyDoc) {
-            return [
-                {
-                    name: 'Télécharger',
-                    icon: 'arrow-down',
-                    class: 'hover:bg-green-500 hover:text-white',
-                    action: () => {
-                        filesService.downloadFile({
-                            query: studyDoc.file.fileUploadId,
-                            label: studyDoc.file.name,
-                        })
-                    },
-                },
-                {
-                    name: 'Copier le lien',
-                    icon: 'link',
-                    class: 'hover:bg-blue-500 hover:text-white',
-                    action: () => {
-                        navigator.clipboard.writeText(studyDoc.file.url)
-                    },
-                },
-                {
-                    name: 'Supprimer',
-                    icon: 'times',
-                    class: 'hover:bg-red-500 hover:text-white',
-                    // TODO: delete ("archive") file
-                    action: () => {
-                        console.log('Delete (placeholder)', studyDoc)
-                    },
-                },
-            ]
+    export default {
+        components: {
+            FileFolder,
+            DropDownInput,
+            AppModal,
+            DocumentIcon,
+            Popper,
         },
-        seeDropdown() {
-            this.showDropDownFileCard = true
-        },
-        setFilePreview(file) {
-            this.filePreview = file
-        },
-        updateFileGroup(file) {
-            if (this.fileGroup.includes(file)) {
-                this.fileGroup = this.fileGroup.filter((f) => f != file)
-            } else {
-                this.fileGroup.push(file)
+        data() {
+            return {
+                fileIcon,
+                formatBytes,
+                filesFilters: [],
+                docStyleList: true,
+                filePreview: null,
+                showFile: false,
+                fileGroup: [],
+                folderPath: ['Main'],
+                folderType: ['Promotion', 'Matière', 'Cursus', 'Année'],
+                Date,
+                treeFake,
             }
         },
-        downloadFileGroup() {
-            for (const el of this.fileGroup) {
-                filesService.downloadFile({
-                    query: el.file.fileUploadId,
-                    label: el.file.name,
-                })
-            }
-            this.fileGroup = []
+        mounted() {
+            this.$store.dispatch('files/getStudyDocs')
         },
-    },
-}
+        methods: {
+            dropDownButtons(studyDoc) {
+                return [
+                    {
+                        name: 'Télécharger',
+                        icon: 'arrow-down',
+                        class: 'hover:bg-green-500 hover:text-white',
+                        action: () => {
+                            filesService.downloadFile({
+                                query: studyDoc.file.fileUploadId,
+                                label: studyDoc.file.name,
+                            })
+                        },
+                    },
+                    {
+                        name: 'Copier le lien',
+                        icon: 'link',
+                        class: 'hover:bg-blue-500 hover:text-white',
+                        action: () => {
+                            navigator.clipboard.writeText(studyDoc.file.url)
+                        },
+                    },
+                    {
+                        name: 'Supprimer',
+                        icon: 'times',
+                        class: 'hover:bg-red-500 hover:text-white',
+                        // TODO: delete ("archive") file
+                        action: () => {
+                            console.log('Delete (placeholder)', studyDoc)
+                        },
+                    },
+                ]
+            },
+            seeDropdown() {
+                this.showDropDownFileCard = true
+            },
+            setFilePreview(file) {
+                this.filePreview = file
+            },
+            updateFileGroup(file) {
+                if (this.fileGroup.includes(file)) {
+                    this.fileGroup = this.fileGroup.filter((f) => f != file)
+                } else {
+                    this.fileGroup.push(file)
+                }
+            },
+            downloadFileGroup() {
+                for (const el of this.fileGroup) {
+                    filesService.downloadFile({
+                        query: el.file.fileUploadId,
+                        label: el.file.name,
+                    })
+                }
+                this.fileGroup = []
+            },
+        },
+    }
 </script>

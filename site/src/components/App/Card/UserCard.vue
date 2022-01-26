@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="flex flex-col justify-center items-center space-y-2">
-            <router-link to="/me/home">
+            <router-link to="/me/profile">
                 <font-awesome-icon icon="cog" class="cursor-pointer" />
             </router-link>
             <font-awesome-icon icon="sign-out-alt" class="cursor-pointer" @click="logout" />
@@ -26,32 +26,32 @@
 </template>
 
 <script lang="js">
-import AvatarImage from '@/components/User/UserAvatar.vue'
-export default {
-    components: { AvatarImage },
-    props: {
-        username: {
-            type: String,
-            default: '',
+    import AvatarImage from '@/components/User/UserAvatar.vue';
+    export default {
+        components: { AvatarImage },
+        props: {
+            username: {
+                type: String,
+                default: '',
+            },
+            email: {
+                type: String,
+                default: '',
+            },
+            avatar: {
+                type: String,
+                default: '',
+            },
+            status: {
+                type: String,
+                default: '#44ef44',
+            },
         },
-        email: {
-            type: String,
-            default: '',
+        methods: {
+            logout() {
+                this.$emitter.emit('logout');
+                this.$store.dispatch('auth/logout');
+            },
         },
-        avatar: {
-            type: String,
-            default: '',
-        },
-        status: {
-            type: String,
-            default: '#44ef44',
-        },
-    },
-    methods: {
-        logout() {
-            this.emitter.emit('logout');
-            this.$store.dispatch('auth/logout');
-        },
-    },
-}
+    }
 </script>

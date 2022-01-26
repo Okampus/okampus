@@ -41,7 +41,7 @@
                                 alt="avatar"
                                 class="hidden object-cover mx-4 w-10 h-10 rounded-full sm:block"
                             />
-                            <h1 class="font-bold hover:underline text-1">{{ article.author.username }}</h1>
+                            <h1 class="font-bold hover:underline text-1">{{ article.author.fullname }}</h1>
                         </a>
                     </div>
                 </div>
@@ -51,16 +51,16 @@
             <div class="px-8">
                 <h1 class="mb-4 text-xl font-bold text-0">Auteurs</h1>
                 <div class="py-4 px-6 mx-auto max-w-sm rounded-lg shadow-md card-2">
-                    <ul class="-ml-4">
+                    <ul class="-ml-5">
                         <li v-for="(user, i) in users" :key="i" class="flex items-center">
                             <img
                                 :src="user.avatar"
-                                :alt="user.username"
+                                :alt="user.fullname"
                                 class="object-cover mx-4 w-12 h-12 text-xl rounded-full"
                             />
                             <div class="flex flex-col w-full 2xl:flex-row 2xl:justify-between">
                                 <a :href="user.link" class="font-bold hover:underline text-0">{{
-                                    user.username
+                                    user.fullname
                                 }}</a>
                                 <div class="flex flex-col -mt-1 xl:flex-row xl:items-center">
                                     <span class="hidden mr-2 text-sm font-light xl:block text-3">a créé</span>
@@ -98,34 +98,32 @@
 </template>
 
 <script>
-import {
-    articles, categories, 
-} from '@/fake/blog'
-import { users } from '@/fake/users'
+    import { articles, categories } from '@/fake/blog'
+    import { users } from '@/fake/users'
 
-import { timeAgo } from '@/utils/timeAgo'
+    import { timeAgo } from '@/utils/timeAgo'
 
-import SelectInput from '@/components/Input/SelectInput.vue'
-import WeatherWidget from '@/components/App/Widget/WidgetWeather.vue'
+    import SelectInput from '@/components/Input/SelectInput.vue'
+    import WeatherWidget from '@/components/App/Widget/WidgetWeather.vue'
 
-const nPostsUsers = [23, 63, 12, 41, 0]
+    const nPostsUsers = [23, 63, 12, 41, 0]
 
-export default {
-    components: {
-        WeatherWidget,
-        SelectInput,
-    },
-    data() {
-        return {
-            rangeFilter: null,
-            articles,
-            categories,
-            users: users.map((x, i) => ({
-                ...x,
-                nPosts: nPostsUsers[i],
-            })),
-        }
-    },
-    methods: { timeAgo },
-}
+    export default {
+        components: {
+            WeatherWidget,
+            SelectInput,
+        },
+        data() {
+            return {
+                rangeFilter: null,
+                articles,
+                categories,
+                users: users.map((x, i) => ({
+                    ...x,
+                    nPosts: nPostsUsers[i],
+                })),
+            }
+        },
+        methods: { timeAgo },
+    }
 </script>

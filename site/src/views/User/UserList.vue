@@ -14,16 +14,16 @@
 </template>
 
 <script>
-import ProfileCard from '@/components/App/Card/ProfileCard.vue'
-export default {
-    components: { ProfileCard },
-    computed: {
-        users() {
-            return this.$store.state.users.users
+    import ProfileCard from '@/components/App/Card/ProfileCard.vue'
+    export default {
+        components: { ProfileCard },
+        computed: {
+            users() {
+                return this.$store.state.users.users
+            },
         },
-    },
-    mounted() {
-        this.$store.dispatch('users/getUsers')
-    },
-}
+        mounted() {
+            this.$store.dispatch('users/getUsers')
+        },
+    }
 </script>

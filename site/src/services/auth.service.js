@@ -1,52 +1,20 @@
-import axios from 'axios'
-
-const API_URL = `${import.meta.env.VITE_API_URL}/auth/`
-
+import $axios from '../shared/config/axios.config'
 class AuthService {
     async login(user) {
-        const res = await axios.post(
-            API_URL + 'login',
-            {
-                username: user.username,
-                password: user.password,
-            },
-            {
-                withCredentials: true,
-                credentials: 'include',
-            },
-        )
+        const res = await $axios.post('auth/login', {
+            username: user.fullname,
+            password: user.password,
+        })
 
         return res.data
     }
 
     logout() {
-        axios.get(API_URL + 'logout', {
-            withCredentials: true,
-            credentials: 'include',
-        })
+        $axios.get('auth/logout', { withCredentials: true })
     }
 
-    register(user) {
-        return axios.post(
-            API_URL + 'register',
-            {
-                username: user.username,
-                email: user.email,
-                password: user.password,
-            },
-            {
-                withCredentials: true,
-                credentials: 'include',
-            },
-        )
-    }
     getUser(query) {
-        return axios
-            .get(API_URL + 'me', {
-                params: query,
-                withCredentials: true,
-            })
-            .then((res) => res.data)
+        return $axios.get('auth/me', { params: query }).then((res) => res.data)
     }
 }
 

@@ -12,44 +12,44 @@
 </template>
 
 <script>
-export default {
-    props: {
-        show: {
-            type: Boolean,
-            require: true,
-        },
-        modalCustomClass: {
-            type: String,
-            default() {
-                return ''
+    export default {
+        props: {
+            show: {
+                type: Boolean,
+                require: true,
+            },
+            modalCustomClass: {
+                type: String,
+                default() {
+                    return ''
+                },
+            },
+            globalCustomClass: {
+                type: String,
+                default() {
+                    return ''
+                },
             },
         },
-        globalCustomClass: {
-            type: String,
-            default() {
-                return ''
-            },
-        },
-    },
-    emits: ['close'],
-    watch: {
-        show: function () {
-            if (this.show) {
-                document.documentElement.style.overflow = 'hidden'
-                return
-            }
+        emits: ['close'],
+        watch: {
+            show: function () {
+                if (this.show) {
+                    document.documentElement.style.overflow = 'hidden'
+                    return
+                }
 
-            document.documentElement.style.overflow = 'auto'
+                document.documentElement.style.overflow = 'auto'
+            },
         },
-    },
-}
+    }
 </script>
 
 <style>
-.centered-fixed {
-    position: fixed;
-    top: 0;
-    left: 0;
-    transform: translate(calc(50vw - 50%), calc(50vh - 50%));
-}
+    .centered-fixed {
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translate(calc(50vw - 50%), calc(50vh - 50%));
+    }
 </style>

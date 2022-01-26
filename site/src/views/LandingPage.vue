@@ -30,7 +30,7 @@
                         <u>rechercher d'anciens posts archivés</u>.
                     </p>
                 </div>
-                <PostCard class="w-full md:w-1/2" :post="posts[0]" />
+                <ThreadPreviewCard class="w-full md:w-1/2" :post="posts[0]" />
             </div>
             <div class="flex flex-wrap items-center mb-20">
                 <div class="order-2 pr-6 w-full md:order-1 md:w-1/2">
@@ -68,18 +68,18 @@
 </template>
 
 <script lang="js">
-import PostCard from '@/components/App/Card/PostCard.vue'
-import TagInput from '@/components/Input/TagInput.vue'
-import { posts } from '@/fake/posts'
+    import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
+    import TagInput from '@/components/Input/TagInput.vue'
+    import { posts } from '@/fake/posts'
 
-export default {
-    components: {
-        PostCard,
-        TagInput,
-    },
-    inheritAttrs: false,
-    data () {
-        return { posts }
-    },
-}
+    export default {
+        components: {
+            ThreadPreviewCard,
+            TagInput,
+        },
+        inheritAttrs: false,
+        data () {
+            return { posts }
+        },
+    }
 </script>

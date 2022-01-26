@@ -1,223 +1,67 @@
-import axios from 'axios'
+import $axios from '../shared/config/axios.config'
 
-const API_URL = `${import.meta.env.VITE_API_URL}/`
-
-class UserService {
-    getPublicContent() {
-        return axios.get(API_URL + 'posts', { withCredentials: true })
+class UsersService {
+    async getUserById(userId) {
+        return await $axios.get(`users/${userId}`).then((res) => res.data)
     }
 
-    getUserById(userId) {
-        return axios.get(API_URL + `users/${userId}`, { withCredentials: true }).then((res) => res.data)
+    async getUserSocials(userId) {
+        return await $axios.get(`socials/user/${userId}`).then((res) => res.data)
     }
 
-    getUserSocials(userId) {
-        return axios
-            .get(API_URL + `socials/user/${userId}`, { withCredentials: true })
+    async getSocials() {
+        return await $axios.get('socials').then((res) => res.data)
+    }
+
+    async getClubs() {
+        return await $axios.get('clubs/names').then((res) => res.data)
+    }
+
+    async getUserClubs(userId) {
+        return await $axios.get(`clubs/member/${userId}`).then((res) => res.data.items)
+    }
+
+    async updateUser(newUser) {
+        return await $axios.patch('users/update', newUser).then((res) => res.data)
+    }
+
+    async addSocialAccount({ userId, socialId, pseudo, link }) {
+        return await $axios
+            .post(`socials/user/${userId}/${socialId}`, { pseudo, link })
             .then((res) => res.data)
     }
 
-    getSocials() {
-        return axios.get(API_URL + 'socials', { withCredentials: true }).then((res) => res.data)
-    }
-
-    getClubs() {
-        return axios.get(API_URL + 'clubs/names', { withCredentials: true }).then((res) => res.data)
-    }
-
-    getUserClubs(userId) {
-        return axios
-            .get(API_URL + `clubs/member/${userId}`, { withCredentials: true })
-            .then((res) => res.data.items)
-    }
-
-    updateUser(newUser) {
-        return axios
-            .patch(API_URL + 'users/update', newUser, { withCredentials: true })
-            .then((res) => res.data)
-    }
-
-    addSocialAccount({
-        userId, socialId, pseudo, link, 
-    }) {
-        return axios
-            .post(
-                API_URL + `socials/user/${userId}/${socialId}`,
-                {
-                    pseudo,
-                    link,
-                },
-                { withCredentials: true },
-            )
-            .then((res) => res.data)
-    }
-
-    updateSocialAccount({
-        socialAccountId, pseudo, link, 
-    }) {
-        return axios
-            .patch(
-                API_URL + `socials/user/${socialAccountId}`,
-                {
-                    pseudo,
-                    link,
-                },
-                { withCredentials: true },
-            )
-            .then((res) => res.data)
+    async updateSocialAccount({ socialAccountId, pseudo, link }) {
+        return await $axios.patch(`socials/user/${socialAccountId}`, { pseudo, link }).then((res) => res.data)
     }
 
     deleteSocialAccount(socialAccountId) {
-        return axios.delete(API_URL + `socials/user/${socialAccountId}`, { withCredentials: true })
+        return $axios.delete(`socials/user/${socialAccountId}`, { withCredentials: true })
     }
 
     async getFavorites() {
-        const postList = await axios.get(API_URL + 'favorites', { withCredentials: true }).then((res) =>
-            Promise.all(
-                res.data.items.map(async (fav) => {
-                    if ('post' in fav) {
-                        const vote = await axios
-                            .get(API_URL + `posts/${fav.post.postId}/vote`, { withCredentials: true })
-                            .then((res) => res.data.value)
-                        const favorited = true
-                        return {
-                            ...fav,
-                            post: {
-                                ...fav.post,
-                                currentVote: vote,
-                                favorited,
-                            },
-                        }
-                    } else if ('reply' in fav) {
-                        const vote = await axios
-                            .get(API_URL + `posts/replies/${fav.reply.replyId}/vote`, { withCredentials: true })
-                            .then((res) => res.data.value)
-                        const favorited = true
-                        return {
-                            ...fav,
-                            reply: {
-                                ...fav.reply,
-                                currentVote: vote,
-                                favorited,
-                            },
-                        }
-                    } else {
-                        const vote = await axios
-                            .get(API_URL + `posts/replies/comments/${fav.comment.commentId}/vote`, { withCredentials: true })
-                            .then((res) => res.data.value)
-                        const favorited = true
-                        return {
-                            ...fav,
-                            comment: {
-                                ...fav.comment,
-                                currentVote: vote,
-                                favorited,
-                            },
-                        }
-                    }
-                }),
-            ),
-        )
-        return postList
+        return await $axios.get('favorites').then((res) => res.data)
     }
 
-    votePost(postId, value) {
-        return axios
-            .post(API_URL + `posts/${postId}/vote`, { value }, { withCredentials: true })
-            .then((res) => res.data)
+    async getClubMembers(clubId) {
+        return await $axios.get(`clubs/${clubId}/members`).then((res) => res.data.items)
     }
 
-    voteReply(replyId, value) {
-        return axios
-            .post(API_URL + `posts/replies/${replyId}/vote`, { value }, { withCredentials: true })
-            .then((res) => res.data)
+    async addClubMember({ clubId, userId }) {
+        return $axios.post(`clubs/${clubId}/members/${userId}`, { role: 'member' }).then((res) => res.data)
     }
 
-    voteComment(commentId, value) {
-        return axios
-            .post(API_URL + `posts/replies/comments/${commentId}/vote`, { value }, { withCredentials: true })
-            .then((res) => res.data)
+    deleteClubMember({ clubId, userId }) {
+        return $axios.delete(`clubs/${clubId}/members/${userId}`)
     }
 
-    addFavoritePost(postId) {
-        return axios
-            .post(`${API_URL}favorites/posts/${postId}`, {}, { withCredentials: true })
-            .then((res) => res.data)
+    async updateMemberRole({ clubId, userId, role }) {
+        return await $axios.patch(`clubs/${clubId}/members/${userId}`, { role }).then((res) => res.data)
     }
 
-    deleteFavoritePost(postId) {
-        return axios
-            .delete(`${API_URL}favorites/posts/${postId}`, { withCredentials: true })
-            .then(() => true)
-            .catch(() => false)
-    }
-
-    addFavoriteReply(replyId) {
-        return axios
-            .post(`${API_URL}favorites/replies/${replyId}`, {}, { withCredentials: true })
-            .then(() => true)
-            .catch(() => false)
-    }
-
-    deleteFavoriteReply(replyId) {
-        return axios
-            .delete(`${API_URL}favorites/replies/${replyId}`, { withCredentials: true })
-            .then(() => true)
-            .catch(() => false)
-    }
-
-    addFavoriteComment(commentId) {
-        return axios
-            .post(`${API_URL}favorites/comments/${commentId}`, {}, { withCredentials: true })
-            .then(() => true)
-            .catch(() => false)
-    }
-
-    deleteFavoriteComment(commentId) {
-        return axios
-            .delete(`${API_URL}favorites/comments/${commentId}`, { withCredentials: true })
-            .then(() => true)
-            .catch(() => false)
-    }
-
-    getClubMembers(clubId) {
-        return axios
-            .get(`${API_URL}clubs/${clubId}/members`, { withCredentials: true })
-            .then((res) => res.data.items)
-    }
-
-    addClubMember({
-        clubId, userId, 
-    }) {
-        return axios
-            .post(
-                `${API_URL}clubs/${clubId}/members/${userId}`,
-                { role: 'member' },
-                { withCredentials: true },
-            )
-            .then((res) => res.data)
-    }
-
-    deleteClubMember({
-        clubId, userId, 
-    }) {
-        return axios
-            .delete(`${API_URL}clubs/${clubId}/members/${userId}`, { withCredentials: true })
-            .then(() => true)
-            .catch(() => false)
-    }
-
-    updateMemberRole({
-        clubId, userId, role, 
-    }) {
-        return axios
-            .patch(`${API_URL}clubs/${clubId}/members/${userId}`, { role }, { withCredentials: true })
-            .then((res) => res.data)
-    }
-
-    getUsers() {
-        return axios.get(`${API_URL}users`, { withCredentials: true }).then((res) => res.data.items)
+    async getUsers() {
+        return await $axios.get('users').then((res) => res.data.items)
     }
 }
 
-export default new UserService()
+export default new UsersService()

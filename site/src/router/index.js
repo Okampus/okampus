@@ -1,6 +1,4 @@
-import {
-    createRouter, createWebHashHistory, 
-} from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
     {
@@ -59,13 +57,13 @@ const routes = [
     },
 
     {
-        path: '/me/:component',
-        component: () => import('@/views/User/UserMyProfile.vue'),
+        path: '/me/favorites',
+        component: () => import('@/views/User/UserFavorites.vue'),
     },
 
     {
-        path: '/me/favorites',
-        component: () => import('@/views/User/UserFavorites.vue'),
+        path: '/me/:component',
+        component: () => import('@/views/User/UserMyProfile.vue'),
     },
 
     {

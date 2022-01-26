@@ -24,7 +24,7 @@
     <div class="mt-2 mb-10 h-full">
         <div>
             <select
-                class="w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 shadow-sm text-3 focus:ring-opacity-50 bg-2"
+                class="w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm text-3 bg-2"
             >
                 <option>Dernière semaine</option>
                 <option>Dernier mois</option>
@@ -672,7 +672,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="py-3 px-4 text-sm font-bold text-green-500 text-1">PUBLISHED</td>
+                                <td class="py-3 px-4 text-sm font-bold text-green-600 text-1">PUBLISHED</td>
                             </tr>
                             <tr
                                 class="text-gray-700 dark:text-gray-400 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
@@ -713,7 +713,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="py-3 px-4 text-sm font-bold text-green-500 text-1">PUBLISHED</td>
+                                <td class="py-3 px-4 text-sm font-bold text-green-600 text-1">PUBLISHED</td>
                             </tr>
                             <tr
                                 class="text-gray-700 dark:text-gray-400 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
@@ -754,7 +754,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="py-3 px-4 text-sm font-bold text-green-500 text-1">PUBLISHED</td>
+                                <td class="py-3 px-4 text-sm font-bold text-green-600 text-1">PUBLISHED</td>
                             </tr>
                             <tr
                                 class="text-gray-700 dark:text-gray-400 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
@@ -904,66 +904,66 @@
     </div>
 </template>
 <script>
-export default {
-    data() {
-        return {
-            cards: [
-                {
-                    title: 'Pages',
-                    quantity: 1345,
-                    link: '#',
-                    class: 'bg-green-500 bg-1',
-                },
-                {
-                    title: 'Posts',
-                    quantity: 12456,
-                    link: '#',
-                    class: 'bg-purple-400 bg-1',
-                },
-                {
-                    title: 'Utilisateurs',
-                    quantity: 21,
-                    link: '#',
-                    class: 'bg-orange-400 bg-1',
-                },
-                {
-                    title: 'Fichiers',
-                    quantity: 1220,
-                    link: '#',
-                    class: 'bg-blue-400 bg-1',
-                },
-                {
-                    title: 'Catégories',
-                    quantity: 65,
-                    link: '#',
-                    class: 'bg-gray-800 bg-1',
-                },
-                {
-                    title: 'Commentaires',
-                    quantity: 9876,
-                    link: '#',
-                    class: 'bg-gray-400 bg-1',
-                },
-            ],
-            statistics: [
-                {
-                    title: 'Utilisateurs actifs',
-                    quantity: 1257,
-                },
-                {
-                    title: 'Nouveaux articles',
-                    quantity: 557,
-                },
-                {
-                    title: 'Partages',
-                    quantity: 11257,
-                },
-                {
-                    title: 'Vues',
-                    quantity: 7525,
-                },
-            ],
-        }
-    },
-}
+    export default {
+        data() {
+            return {
+                cards: [
+                    {
+                        title: 'Pages',
+                        quantity: 1345,
+                        link: '#',
+                        class: 'bg-green-500 bg-1',
+                    },
+                    {
+                        title: 'Posts',
+                        quantity: 12456,
+                        link: '#',
+                        class: 'bg-purple-400 bg-1',
+                    },
+                    {
+                        title: 'Utilisateurs',
+                        quantity: 21,
+                        link: '#',
+                        class: 'bg-orange-400 bg-1',
+                    },
+                    {
+                        title: 'Fichiers',
+                        quantity: 1220,
+                        link: '#',
+                        class: 'bg-blue-400 bg-1',
+                    },
+                    {
+                        title: 'Catégories',
+                        quantity: 65,
+                        link: '#',
+                        class: 'bg-gray-800 bg-1',
+                    },
+                    {
+                        title: 'Commentaires',
+                        quantity: 9876,
+                        link: '#',
+                        class: 'bg-gray-400 bg-1',
+                    },
+                ],
+                statistics: [
+                    {
+                        title: 'Utilisateurs actifs',
+                        quantity: 1257,
+                    },
+                    {
+                        title: 'Nouveaux articles',
+                        quantity: 557,
+                    },
+                    {
+                        title: 'Partages',
+                        quantity: 11257,
+                    },
+                    {
+                        title: 'Vues',
+                        quantity: 7525,
+                    },
+                ],
+            }
+        },
+    }
 </script>

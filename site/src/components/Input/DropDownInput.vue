@@ -22,27 +22,27 @@
 </template>
 
 <script>
-import Popper from 'vue3-popper'
+    import Popper from 'vue3-popper'
 
-export default {
-    components: { Popper },
-    props: {
-        buttons: {
-            type: Array,
-            required: true,
-        },
-        placeholder: {
-            type: Object,
-            default() {
-                return {
-                    name: '',
-                    icon: '',
-                }
+    export default {
+        components: { Popper },
+        props: {
+            buttons: {
+                type: Array,
+                required: true,
+            },
+            placeholder: {
+                type: Object,
+                default() {
+                    return {
+                        name: '',
+                        icon: '',
+                    }
+                },
             },
         },
-    },
-    monted() {
-        console.log(this.buttons)
-    },
-}
+        monted() {
+            console.log(this.buttons)
+        },
+    }
 </script>

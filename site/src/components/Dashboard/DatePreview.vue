@@ -6,15 +6,15 @@
 </template>
 
 <script>
-import { timeAgo } from '@/utils/timeAgo'
+    import { timeAgo } from '@/utils/timeAgo'
 
-export default {
-    props: {
-        dateString: {
-            type: String,
-            default: '',
+    export default {
+        props: {
+            dateString: {
+                type: String,
+                default: '',
+            },
         },
-    },
-    methods: { timeAgo },
-}
+        methods: { timeAgo },
+    }
 </script>

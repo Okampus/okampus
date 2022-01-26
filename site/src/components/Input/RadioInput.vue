@@ -18,23 +18,17 @@
 </template>
 
 <script>
-export default {
-    props: {
-        choices: {
-            type: Array,
-            required: true,
+    export default {
+        props: {
+            choices: {
+                type: Array,
+                required: true,
+            },
+            modelValue: {
+                type: null,
+                required: true,
+            },
         },
-        modelValue: {
-            type: null,
-            required: true,
-        },
-    },
-    emits: ['update:modelValue'],
-    methods: {
-        test(a) {
-            console.log(this.$refs[a].checked)
-            console.log(this.modelValue)
-        },
-    },
-}
+        emits: ['update:modelValue'],
+    }
 </script>

@@ -222,138 +222,138 @@
 
 <script lang="js">
 
-import FormMultiStep from '@/components/Form/FormMultiStep.vue'
-import FileInput from '@/components/Input/FileInput.vue'
-import RadioInput from '@/components/Input/RadioInput.vue'
-import SearchInput from '@/components/Input/SearchInput.vue'
-import SelectInput from '@/components/Input/SelectInput.vue'
-import useVuelidate from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+    import FormMultiStep from '@/components/Form/FormMultiStep.vue'
+    import FileInput from '@/components/Input/FileInput.vue'
+    import RadioInput from '@/components/Input/RadioInput.vue'
+    import SearchInput from '@/components/Input/SearchInput.vue'
+    import SelectInput from '@/components/Input/SelectInput.vue'
+    import useVuelidate from '@vuelidate/core'
+    import { required } from '@vuelidate/validators'
 
 
-export default {
-    components: {
-        RadioInput,
-        SelectInput,
-        FileInput,
-        FormMultiStep,
-        SearchInput,
-    },
-    props: {
-        steps: {
-            type: Array,
-            default() {
-                return [
-                    {
-                        id: 'step1',
-                        name: 'Upload',
-                        icon: 'file',
-                    }, {
-                        id: 'step2',
-                        name: 'Infos',
-                        icon: 'info-circle',
-                    }, {
-                        id: 'step3',
-                        name: 'Envoyer',
-                        icon: 'paper-plane',
-                    },
-                ]
-            },
+    export default {
+        components: {
+            RadioInput,
+            SelectInput,
+            FileInput,
+            FormMultiStep,
+            SearchInput,
         },
-    },
-    setup () {
-        return { v$: useVuelidate() }
-    },
-    validations() {
-        return {
-            stepsModel: [
-                {
-                    docSubject: { required },
-                    cursus: { required },
-                    docType: { },
-                    docYear: {},
-                    files: { required },
-                },
-                {
-                    docContent: {  },
-                    docName: {  },
-                    docDescription: {  },
-                },
-                { modifyDoc: { required } },
-            ],
-        }
-    },
-    data () {
-        return {
-            filesEndpoint: 'http://localhost:5000/files',
-            studyDocsEndpoint: 'http://localhost:5000/files/study-docs',
-            show: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
-
-            stepAction: {
-                currentStep: 0,
-                nextStep: false,
-                previousStep: false,
-            },
-
-            stepsModel: [
-                {
-                    docSubject: [],
-                    cursus: 'all',
-                    docType: '',
-                    docYear: '',
-                    files: [],
-                },
-                {
-                    docContent: '',
-                    docName: '',
-                    docDescription: '',
-                },
-                { modifyDoc: 'false' },
-            ],
-
-        }
-
-    },
-    watch: {
-        keyEnter(newVal) {
-            console.log(newVal)
-        },
-    },
-    methods: {
-        iconList(itemCode) {
-            const iconList = {
-                'TI': 'terminal',
-                'SM': 'calculator',
-                'SB': 'leaf',
-                'TE': 'bolt',
-                'SP': 'bolt',
-            }
-            return iconList?.[itemCode.substr(0,2)] ?? 'book'
-        },
-        previousStep() {
-            this.stepAction.currentStep -= 1
-        },
-        nextStep() {
-            if (!this.v$.stepsModel[this.stepAction.currentStep].$invalid) {
-                this.stepAction.currentStep += 1
-            }
-        },
-        submitForm() {
-            if (!this.v$.stepsModel.$invalid) {
-                for (const el of this.stepsModel[0].files) {
-                    const data = new FormData()
-                    data.append('file', el)
-                    data.append('subject',this.stepsModel[0].docSubject[0].code)
-                    console.log(this.stepsModel[0].docSubject[0].code)
-                    //data.append('cursus', this.stepsModel[0].cursus)
-                    this.$store.dispatch('files/addStudyDoc', data).then(
-                        () => {
-                            this.$router.push('/docs')
+        props: {
+            steps: {
+                type: Array,
+                default() {
+                    return [
+                        {
+                            id: 'step1',
+                            name: 'Upload',
+                            icon: 'file',
+                        }, {
+                            id: 'step2',
+                            name: 'Infos',
+                            icon: 'info-circle',
+                        }, {
+                            id: 'step3',
+                            name: 'Envoyer',
+                            icon: 'paper-plane',
                         },
-                    )
-                }
+                    ]
+                },
+            },
+        },
+        setup () {
+            return { v$: useVuelidate() }
+        },
+        validations() {
+            return {
+                stepsModel: [
+                    {
+                        docSubject: { required },
+                        cursus: { required },
+                        docType: { },
+                        docYear: {},
+                        files: { required },
+                    },
+                    {
+                        docContent: {  },
+                        docName: {  },
+                        docDescription: {  },
+                    },
+                    { modifyDoc: { required } },
+                ],
             }
         },
-    },
-}
+        data () {
+            return {
+                filesEndpoint: 'http://localhost:5000/files',
+                studyDocsEndpoint: 'http://localhost:5000/files/study-docs',
+                show: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
+
+                stepAction: {
+                    currentStep: 0,
+                    nextStep: false,
+                    previousStep: false,
+                },
+
+                stepsModel: [
+                    {
+                        docSubject: [],
+                        cursus: 'all',
+                        docType: '',
+                        docYear: '',
+                        files: [],
+                    },
+                    {
+                        docContent: '',
+                        docName: '',
+                        docDescription: '',
+                    },
+                    { modifyDoc: 'false' },
+                ],
+
+            }
+
+        },
+        watch: {
+            keyEnter(newVal) {
+                console.log(newVal)
+            },
+        },
+        methods: {
+            iconList(itemCode) {
+                const iconList = {
+                    'TI': 'terminal',
+                    'SM': 'calculator',
+                    'SB': 'leaf',
+                    'TE': 'bolt',
+                    'SP': 'bolt',
+                }
+                return iconList?.[itemCode.substr(0,2)] ?? 'book'
+            },
+            previousStep() {
+                this.stepAction.currentStep -= 1
+            },
+            nextStep() {
+                if (!this.v$.stepsModel[this.stepAction.currentStep].$invalid) {
+                    this.stepAction.currentStep += 1
+                }
+            },
+            submitForm() {
+                if (!this.v$.stepsModel.$invalid) {
+                    for (const el of this.stepsModel[0].files) {
+                        const data = new FormData()
+                        data.append('file', el)
+                        data.append('subject',this.stepsModel[0].docSubject[0].code)
+                        console.log(this.stepsModel[0].docSubject[0].code)
+                        //data.append('cursus', this.stepsModel[0].cursus)
+                        this.$store.dispatch('files/addStudyDoc', data).then(
+                            () => {
+                                this.$router.push('/docs')
+                            },
+                        )
+                    }
+                }
+            },
+        },
+    }
 </script>

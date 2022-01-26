@@ -32,64 +32,64 @@
 </template>
 
 <script>
-import AppTag from '@/components/App/AppTag.vue'
+    import AppTag from '@/components/App/AppTag.vue'
 
-import { ref } from 'vue'
-export default {
-    components: { AppTag },
-    props: {
-        placeholder: {
-            type: String,
-            default: 'Entrez des tags...',
+    import { ref } from 'vue'
+    export default {
+        components: { AppTag },
+        props: {
+            placeholder: {
+                type: String,
+                default: 'Entrez des tags...',
+            },
+            modelValue: {
+                type: Array,
+                default: () => [],
+            },
         },
-        modelValue: {
-            type: Array,
-            default: () => [],
-        },
-    },
-    emits: ['update:modelValue', 'error', 'input-update'],
-    setup: (props, ctx) => {
-        const tagsContainer = ref(null)
-        const tagsInput = ref(null)
-        const tags = ref(props.modelValue)
-        const newTag = ref('')
+        emits: ['update:modelValue', 'error', 'input-update'],
+        setup: (props, ctx) => {
+            const tagsContainer = ref(null)
+            const tagsInput = ref(null)
+            const tags = ref(props.modelValue)
+            const newTag = ref('')
 
-        const addTag = (tag) => {
-            if (tagsInput.value.placeholder) {
-                tagsInput.value.placeholder = ''
-            }
-
-            if (tag.length) {
-                if (tags.value.includes(tag)) {
-                    ctx.emit('error', 'unique')
-                } else {
-                    tags.value.push(tag)
-                    newTag.value = ''
-                    ctx.emit('update:modelValue', tags)
+            const addTag = (tag) => {
+                if (tagsInput.value.placeholder) {
+                    tagsInput.value.placeholder = ''
                 }
-            } else {
-                ctx.emit('error', 'empty')
-            }
-        }
 
-        const removeTag = (index) => {
-            tags.value.splice(index, 1)
-            if (!tags.value.length) {
-                tagsInput.value.placeholder = props.placeholder
+                if (tag.length) {
+                    if (tags.value.includes(tag)) {
+                        ctx.emit('error', 'unique')
+                    } else {
+                        tags.value.push(tag)
+                        newTag.value = ''
+                        ctx.emit('update:modelValue', tags)
+                    }
+                } else {
+                    ctx.emit('error', 'empty')
+                }
             }
-        }
 
-        return {
-            tags,
-            newTag,
-            addTag,
-            removeTag,
-            tagsContainer,
-            tagsInput,
-        }
-    },
-    data() {
-        return { focused: false }
-    },
-}
+            const removeTag = (index) => {
+                tags.value.splice(index, 1)
+                if (!tags.value.length) {
+                    tagsInput.value.placeholder = props.placeholder
+                }
+            }
+
+            return {
+                tags,
+                newTag,
+                addTag,
+                removeTag,
+                tagsContainer,
+                tagsInput,
+            }
+        },
+        data() {
+            return { focused: false }
+        },
+    }
 </script>

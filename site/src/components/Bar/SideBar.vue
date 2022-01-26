@@ -65,137 +65,137 @@
 </template>
 
 <script lang="js">
-import SwitchInput from '@/components/Input/SwitchInput.vue'
-export default {
-    components: { SwitchInput },
-    props: {
-        collapsed: {
-            type: Boolean,
-            default: true,
+    import SwitchInput from '@/components/Input/SwitchInput.vue'
+    export default {
+        components: { SwitchInput },
+        props: {
+            collapsed: {
+                type: Boolean,
+                default: true,
+            },
+            uncollapsed: {
+                type: Boolean,
+                default: true,
+            },
+            collapsing: {
+                type: Boolean,
+                default: true,
+            },
         },
-        uncollapsed: {
-            type: Boolean,
-            default: true,
-        },
-        collapsing: {
-            type: Boolean,
-            default: true,
-        },
-    },
-    emits: [
-        'close-side-bar',
-    ],
-    computed: {
-        theme () {
-            return this.$store.state.userConfig.theme === 'dark'
-        },
-        loggedIn () {
-            return this.$store.state.auth.status.loggedIn ?? false
-        },
-        links() {
-            return ({
-                ...( import.meta.env.DEV && {
-                    dev: [
-                        {
-                            to: '/test',
-                            text: 'Page Test',
-                            icon: 'vial',
-                        },
-                    ],
-                }),
-
-                ...({
-                    admin: [
-                        {
-                            to: '/admin',
-                            text: 'Dashboard',
-                            icon: 'columns',
-                        },
-                    ],
-                    forum: [
-                        {
-                            to: '/posts/new',
-                            text: 'Créer un Post',
-                            icon: 'question-circle',
-                        },
-                        {
-                            to: '/posts',
-                            text: 'Forum',
-                            icon: 'comments',
-                        },
-                    ],
-                    'horizon docs': [
-                        {
-                            to: '/docs',
-                            text: 'Documents',
-                            icon: 'folder',
-                        },
-                        {
-                            to: '/docs/new',
-                            text: 'Uploader',
-                            icon: 'upload',
-                        },
-                    ],
-                    blog: [
-                        {
-                            to: '/blog',
-                            text: 'Pause Café',
-                            icon: 'newspaper',
-                        },
-                        {
-                            to: '/blog/new',
-                            text: 'Écrire un article',
-                            icon: 'pen-alt',
-                        },
-                        // { to: '/blog/admin', text: 'Admin (Blog)', icon: 'columns' }
-                    ],
-                }),
-
-                ...(this.loggedIn
-                    ? {
-                        'communauté': [
+        emits: [
+            'close-side-bar',
+        ],
+        computed: {
+            theme () {
+                return this.$store.state.userConfig.theme === 'dark'
+            },
+            loggedIn () {
+                return this.$store.state.auth.status.loggedIn ?? false
+            },
+            links() {
+                return ({
+                    ...( import.meta.env.DEV && {
+                        dev: [
                             {
-                                to: '/users/',
-                                text: 'Utilisateurs',
-                                icon: 'users',
-                            },
-                            {
-                                to: '/me/home',
-                                text: 'Mon compte',
-                                icon: 'user-cog',
-                            },
-                            {
-                                to: '/me/favorites',
-                                text: 'Mes favoris',
-                                icon: 'crown',
-                            },
-                        ],
-                    }
-                    : {
-                        'communauté': [
-                            {
-                                to: '/users/',
-                                text: 'Utilisateurs',
-                                icon: 'users',
+                                to: '/test',
+                                text: 'Page Test',
+                                icon: 'vial',
                             },
                         ],
                     }),
-            })
+
+                    ...({
+                        admin: [
+                            {
+                                to: '/admin',
+                                text: 'Dashboard',
+                                icon: 'columns',
+                            },
+                        ],
+                        forum: [
+                            {
+                                to: '/posts/new',
+                                text: 'Créer un Post',
+                                icon: 'question-circle',
+                            },
+                            {
+                                to: '/posts',
+                                text: 'Forum',
+                                icon: 'comments',
+                            },
+                        ],
+                        'horizon docs': [
+                            {
+                                to: '/docs',
+                                text: 'Documents',
+                                icon: 'folder',
+                            },
+                            {
+                                to: '/docs/new',
+                                text: 'Uploader',
+                                icon: 'upload',
+                            },
+                        ],
+                        blog: [
+                            {
+                                to: '/blog',
+                                text: 'Pause Café',
+                                icon: 'newspaper',
+                            },
+                            {
+                                to: '/blog/new',
+                                text: 'Écrire un article',
+                                icon: 'pen-alt',
+                            },
+                            // { to: '/blog/admin', text: 'Admin (Blog)', icon: 'columns' }
+                        ],
+                    }),
+
+                    ...(this.loggedIn
+                        ? {
+                            'communauté': [
+                                {
+                                    to: '/users/',
+                                    text: 'Utilisateurs',
+                                    icon: 'users',
+                                },
+                                {
+                                    to: '/me/profile',
+                                    text: 'Mon compte',
+                                    icon: 'user-cog',
+                                },
+                                {
+                                    to: '/me/favorites',
+                                    text: 'Mes favoris',
+                                    icon: 'crown',
+                                },
+                            ],
+                        }
+                        : {
+                            'communauté': [
+                                {
+                                    to: '/users/',
+                                    text: 'Utilisateurs',
+                                    icon: 'users',
+                                },
+                            ],
+                        }),
+                })
+            },
         },
-    },
-}
+    }
 </script>
 
 <style lang="scss">
-.sidebar-shadow {
-    box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.05);
-    clip-path: inset(0px -30px 0px 0px);
-    :root.dark & {
-        box-shadow: 0 0px 20px 5px rgba(0, 0, 0, 0.4);
+    .sidebar-shadow {
+        box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.05);
+        clip-path: inset(0px -30px 0px 0px);
+        :root.dark & {
+            box-shadow: 0 0px 20px 5px rgba(0, 0, 0, 0.4);
+        }
     }
-}
 
-.transition-spacing {
-    transition: margin-left 300ms;
-}
+    .transition-spacing {
+        transition: margin-left 300ms;
+    }
 </style>

@@ -74,7 +74,7 @@
                                     <img
                                         v-if="club.club.clubId != null"
                                         class="my-auto w-8 h-8 rounded-full"
-                                        :src="club.club.icon != '' ? club.club.icon : default_avatar"
+                                        :src="club.club.icon != '' ? club.club.icon : defaultAvatar"
                                     />
                                     <div class="my-auto ml-2">
                                         {{ club.club.name }}
@@ -119,7 +119,7 @@
                         </button>
                         <div
                             v-if="submitSuccessNewMember === 1"
-                            class="flex gap-2 p-2 my-auto ml-4 font-bold text-green-500 bg-green-500 rounded-md bg-opacity-/25"
+                            class="flex gap-2 p-2 my-auto ml-4 font-bold text-green-600 bg-green-500 rounded-md bg-opacity-/25"
                         >
                             <font-awesome-icon icon="check" class="my-auto" />
                             <div class="my-auto">Réussi</div>
@@ -219,7 +219,7 @@
                                 <li v-for="member in clubMembers" :key="member" class="flex gap-4">
                                     <AvatarImage
                                         :src="member.user.avatar"
-                                        :alt="`${member.user.username}'s' avatar`"
+                                        :alt="`${member.user.fullname}'s' avatar`"
                                         size="8"
                                         class="my-auto"
                                     />
@@ -227,7 +227,7 @@
                                         class="my-auto hover:underline"
                                         :to="`/users/${member.user.userId}`"
                                     >
-                                        {{ member.user.username }} {{ member.user.username.toUpperCase() }}
+                                        {{ member.user.fullname }} {{ member.user.fullname.toUpperCase() }}
                                     </router-link>
 
                                     <SelectInput
@@ -264,161 +264,162 @@
 </template>
 
 <script>
-import AppLoader from '@/components/App/AppLoader.vue'
-import SelectInput from '@/components/Input/SelectInput.vue'
-import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue'
-import AvatarImage from '@/components/User/UserAvatar.vue'
-import _ from 'lodash'
-import { watch } from 'vue'
+    import AppLoader from '@/components/App/AppLoader.vue'
+    import SelectInput from '@/components/Input/SelectInput.vue'
+    import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue'
+    import AvatarImage from '@/components/User/UserAvatar.vue'
+    import _ from 'lodash'
+    import { watch } from 'vue'
 
-export default {
-    components: {
-        AppLoader,
-        AvatarImage,
-        AvatarCropper,
-        SelectInput,
-    },
-    data() {
-        return {
-            roles: {
-                'Président': 'president',
-                'Vice-Président': 'vice-president',
-                'Secretaire': 'secretary',
-                'Trésorier': 'treasurer',
-                'Manager': 'manager',
-                'Membre': 'member',
-            },
-            user: this.$store.state.auth.user,
-            userClubs: null,
-            clubSelected: null,
-            componentSelected: 1,
-            clubImageShown: false,
-            clubMembers: null,
-            showAddForm: false,
-            addingClub: null,
-            submitSuccessNewMember: 0,
-        }
-    },
-    computed: {},
-    mounted() {
-        if (this.user != null && this.user != undefined) {
-            this.$store.dispatch('auth/getUser', this.user.userId)
-            watch(
-                () => this.$store.state.auth.me,
-                (newUser) => {
-                    this.user = newUser
+    export default {
+        components: {
+            AppLoader,
+            AvatarImage,
+            AvatarCropper,
+            SelectInput,
+        },
+        data() {
+            return {
+                roles: {
+                    'Président': 'president',
+                    'Vice-Président': 'vice-president',
+                    'Secretaire': 'secretary',
+                    'Trésorier': 'treasurer',
+                    'Manager': 'manager',
+                    'Membre': 'member',
                 },
-            )
-            watch(
-                () => this.$store.state.users.userClubs,
-                (newClubs) => {
-                    this.userClubs = [...newClubs]
-                    const clubPres = this.clubsThatIsPresident()
-                    if (clubPres.length > 0) {
-                        this.clubSelected = clubPres[0]
-                        this.$store.dispatch('users/getClubMembers', this.clubSelected.club.clubId)
-                    }
-                },
-            )
-            watch(
-                () => this.$store.state.users.clubs,
-                (newClubs) => {
-                    this.clubs = [...newClubs]
-                },
-            )
-            watch(
-                () => [this.$store.state.users.clubMembers, this.clubSelected],
-                () => {
-                    if (_.isEqual(this.$store.state.users.clubMembers, this.clubMembers)) {
-                        this.clubMembers = null
-                        this.$store.dispatch('users/getClubMembers', this.clubSelected.club.clubId)
-                    } else {
-                        this.clubMembers = _.cloneDeep(this.$store.state.users.clubMembers)
-                    }
-                },
-            )
-
-            watch(
-                () => this.clubMembers,
-                (newClubMember) => {
-                    if (newClubMember != null) {
-                        for (let member of newClubMember) {
-                            if (Number.isInteger(member.role)) {
-                                member.role = this.roles[Object.keys(this.roles)[member.role]]
-                                this.clubMembers.find((a) => a.clubMemberId === member.clubMemberId).role =
-                                    member.role
-                                this.$store.dispatch('users/updateClubMember', {
-                                    clubId: this.clubSelected.club.clubId,
-                                    userId: member.user.userId,
-                                    role: member.role,
-                                })
-                            }
-                        }
-                    }
-                },
-                { deep: true },
-            )
-
-            this.$store.dispatch('users/getUserById', this.user.userId)
-            this.$store.dispatch('users/getUserClubs', this.user.userId)
-            this.$store.dispatch('users/getClubs')
-        } else {
-            this.$router.push('/')
-        }
-    },
-    methods: {
-        showImage: function showImage() {
-            if (this.clubImageShown) {
-                this.clubImageShown = false
-            } else {
-                this.clubImageShown = true
+                user: this.$store.state.auth.user,
+                userClubs: null,
+                clubSelected: null,
+                componentSelected: 1,
+                clubImageShown: false,
+                clubMembers: null,
+                showAddForm: false,
+                addingClub: null,
+                submitSuccessNewMember: 0,
             }
         },
-        clubsThatIsPresident: function clubsThatIsPresident() {
-            return this.userClubs.filter((a) => a.role === 'president' || a.role === 'vice-president')
+        computed: {},
+        mounted() {
+            if (this.user != null && this.user != undefined) {
+                this.$store.dispatch('auth/getUser', this.user.userId)
+                watch(
+                    () => this.$store.state.auth.me,
+                    (newUser) => {
+                        this.user = newUser
+                    },
+                )
+                watch(
+                    () => this.$store.state.users.userClubs,
+                    (newClubs) => {
+                        this.userClubs = [...newClubs]
+                        const clubPres = this.clubsThatIsPresident()
+                        if (clubPres.length > 0) {
+                            this.clubSelected = clubPres[0]
+                            this.$store.dispatch('users/getClubMembers', this.clubSelected.club.clubId)
+                        }
+                    },
+                )
+                watch(
+                    () => this.$store.state.users.clubs,
+                    (newClubs) => {
+                        this.clubs = [...newClubs]
+                    },
+                )
+                watch(
+                    () => [this.$store.state.users.clubMembers, this.clubSelected],
+                    () => {
+                        if (_.isEqual(this.$store.state.users.clubMembers, this.clubMembers)) {
+                            this.clubMembers = null
+                            this.$store.dispatch('users/getClubMembers', this.clubSelected.club.clubId)
+                        } else {
+                            this.clubMembers = _.cloneDeep(this.$store.state.users.clubMembers)
+                        }
+                    },
+                )
+
+                watch(
+                    () => this.clubMembers,
+                    (newClubMember) => {
+                        if (newClubMember != null) {
+                            for (let member of newClubMember) {
+                                if (Number.isInteger(member.role)) {
+                                    member.role = this.roles[Object.keys(this.roles)[member.role]]
+                                    this.clubMembers.find(
+                                        (a) => a.clubMemberId === member.clubMemberId,
+                                    ).role = member.role
+                                    this.$store.dispatch('users/updateClubMember', {
+                                        clubId: this.clubSelected.club.clubId,
+                                        userId: member.user.userId,
+                                        role: member.role,
+                                    })
+                                }
+                            }
+                        }
+                    },
+                    { deep: true },
+                )
+
+                this.$store.dispatch('users/getUserById', this.user.userId)
+                this.$store.dispatch('users/getUserClubs', this.user.userId)
+                this.$store.dispatch('users/getClubs')
+            } else {
+                this.$router.push('/')
+            }
         },
-        changeSelectedClub: function changeSelect(club) {
-            this.clubSelected = club
-        },
-        changeSelectedComponent: function changeSelectedComponent(component) {
-            this.componentSelected = component
-        },
-        addLineClub: function addLineClub() {
-            this.userClubs.push({
-                role: null,
-                club: { clubId: null },
-            })
-        },
-        leaveClub: function leaveClub(clubId) {
-            this.$store.dispatch('users/leaveClub', {
-                clubId,
-                userId: this.user.userId,
-            })
-        },
-        toggleShowAddForm: function toggleShowAddForm() {
-            this.showAddForm = !this.showAddForm
-        },
-        signUp: function signUp() {
-            this.submitSuccessNewMember = 0
-            this.$store
-                .dispatch('users/addClubMember', {
-                    clubId: this.clubs[this.addingClub].clubId,
+        methods: {
+            showImage: function showImage() {
+                if (this.clubImageShown) {
+                    this.clubImageShown = false
+                } else {
+                    this.clubImageShown = true
+                }
+            },
+            clubsThatIsPresident: function clubsThatIsPresident() {
+                return this.userClubs.filter((a) => a.role === 'president' || a.role === 'vice-president')
+            },
+            changeSelectedClub: function changeSelect(club) {
+                this.clubSelected = club
+            },
+            changeSelectedComponent: function changeSelectedComponent(component) {
+                this.componentSelected = component
+            },
+            addLineClub: function addLineClub() {
+                this.userClubs.push({
+                    role: null,
+                    club: { clubId: null },
+                })
+            },
+            leaveClub: function leaveClub(clubId) {
+                this.$store.dispatch('users/leaveClub', {
+                    clubId,
                     userId: this.user.userId,
                 })
-                .then(() => {
-                    this.submitSuccessNewMember = 1
-                    this.addingClub = null
+            },
+            toggleShowAddForm: function toggleShowAddForm() {
+                this.showAddForm = !this.showAddForm
+            },
+            signUp: function signUp() {
+                this.submitSuccessNewMember = 0
+                this.$store
+                    .dispatch('users/addClubMember', {
+                        clubId: this.clubs[this.addingClub].clubId,
+                        userId: this.user.userId,
+                    })
+                    .then(() => {
+                        this.submitSuccessNewMember = 1
+                        this.addingClub = null
+                    })
+                    .catch(() => {
+                        this.submitSuccessNewMember = -1
+                    })
+            },
+            kickUser: function kickUser(memberId) {
+                this.$store.dispatch('users/deleteClubMember', {
+                    clubId: this.clubSelected.club.clubId,
+                    userId: memberId,
                 })
-                .catch(() => {
-                    this.submitSuccessNewMember = -1
-                })
+            },
         },
-        kickUser: function kickUser(memberId) {
-            this.$store.dispatch('users/deleteClubMember', {
-                clubId: this.clubSelected.club.clubId,
-                userId: memberId,
-            })
-        },
-    },
-}
+    }
 </script>
