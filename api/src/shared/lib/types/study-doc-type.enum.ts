@@ -3,6 +3,7 @@ export enum StudyDocType {
   ExamCE = 'examCE',
   ExamCC = 'examCC',
   ExamDM = 'examDM',
+  ExamTAI = 'examTAI',
   Course = 'course',
   Sheet = 'sheet',
   Projects = 'projects',

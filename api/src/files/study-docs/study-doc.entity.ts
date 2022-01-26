@@ -40,13 +40,17 @@ export class StudyDoc extends BaseEntity {
   @Enum(() => StudyDocType)
   type!: StudyDocType;
 
+  @Property({ type: 'smallint' })
+  flags = 0;
+
   constructor(options: {
     file: FileUpload;
     subject: Subject;
     cursus: Cursus;
     type: StudyDocType;
-    docSeries?: DocSeries | null;
     year: number;
+    flags?: number;
+    docSeries?: DocSeries | null;
     description?: string;
   }) {
     super();
@@ -55,6 +59,8 @@ export class StudyDoc extends BaseEntity {
     this.cursus = options.cursus;
     this.type = options.type;
     this.year = options.year;
+    if (options.flags)
+      this.flags = options.flags;
     if (options.docSeries)
       this.docSeries = options.docSeries;
     if (options.description)

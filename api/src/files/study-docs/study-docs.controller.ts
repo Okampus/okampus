@@ -52,6 +52,10 @@ export class StudyDocsController {
     @Body() createStudyDocDto: CreateStudyDocDto,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<StudyDoc> {
+    if (createStudyDocDto.flags && !createStudyDocDto.type.startsWith('exam'))
+      throw new BadRequestException('Flags can only be set for exams');
+    if (!createStudyDocDto.flags && createStudyDocDto.type.startsWith('exam'))
+      throw new BadRequestException('Flags must be set for exams');
     if (!file)
       throw new BadRequestException('No file provided');
 
