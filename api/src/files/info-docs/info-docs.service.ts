@@ -1,7 +1,10 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import groupBy from 'lodash.groupby';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
+import type { Category, InfoDocCategoryType } from '../../shared/lib/types/docs-category.type';
+import type { ValueOf } from '../../shared/lib/types/valueof.type';
 import { assertPermissions } from '../../shared/lib/utils/assertPermission';
 import { Action } from '../../shared/modules/authorization';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
@@ -40,6 +43,29 @@ export class InfoDocsService {
       {},
       { populate: ['file', 'file.user', 'docSeries'] },
     );
+  }
+
+  public async findCategories(baseFilters: InfoDocCategoryType[]): Promise<Array<Category<InfoDocCategoryType>>> {
+    const allDocuments: InfoDoc[] = await this.infoDocRepository.findAll();
+
+    const groupFilters: Record<InfoDocCategoryType, (elt: InfoDoc) => ValueOf<InfoDoc>> = {
+      schoolYear: elt => elt.schoolYear,
+      year: elt => elt.year,
+    } as const;
+
+    const computeChildren = (
+      documents: InfoDoc[],
+      filters: InfoDocCategoryType[],
+    ): Array<Category<InfoDocCategoryType>> =>
+      Object.entries(groupBy(documents, groupFilters[filters[0]]))
+        .map(([title, value]) => ({
+          title,
+          context: filters[0],
+          children: filters.length === 1 ? [] : computeChildren(value, filters.slice(1)),
+        }));
+
+    return computeChildren(allDocuments, baseFilters)
+      .flatMap(category => (category.title === 'undefined' ? category.children : category));
   }
 
   public async findOne(infoDocId: string): Promise<InfoDoc> {

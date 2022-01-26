@@ -17,6 +17,8 @@ import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { TypesenseGuard } from '../../shared/lib/guards/typesense.guard';
+import { StudyDocCategoryType } from '../../shared/lib/types/docs-category.type';
+import type { Category } from '../../shared/lib/types/docs-category.type';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
@@ -24,8 +26,6 @@ import type { PaginatedResult } from '../../shared/modules/pagination/pagination
 import { SearchDto } from '../../shared/modules/search/search.dto';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
-import type { Category } from './category.type';
-import { CategoryType } from './category.type';
 import { CategoryTypesDto } from './dto/category-types.dto';
 import { CreateStudyDocDto } from './dto/create-study-doc.dto';
 import { DocsFilterDto } from './dto/docs-filter.dto';
@@ -83,8 +83,13 @@ export class StudyDocsController {
   @CheckPolicies(ability => ability.can(Action.Read, StudyDoc))
   public async findCategories(
     @Query() categoriesTypesDto: CategoryTypesDto,
-  ): Promise<Category[]> {
-    const defaultSort = [CategoryType.SchoolYear, CategoryType.Subject, CategoryType.Type, CategoryType.Year];
+  ): Promise<Array<Category<StudyDocCategoryType>>> {
+    const defaultSort = [
+      StudyDocCategoryType.SchoolYear,
+      StudyDocCategoryType.Subject,
+      StudyDocCategoryType.Type,
+      StudyDocCategoryType.Year,
+  ];
     return await this.studyDocsService.findCategories(categoriesTypesDto?.categories ?? defaultSort);
   }
 

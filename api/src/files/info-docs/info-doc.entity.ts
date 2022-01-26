@@ -1,5 +1,6 @@
 import {
   Entity,
+  Enum,
   ManyToOne,
   OneToOne,
   PrimaryKey,
@@ -7,6 +8,7 @@ import {
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { SchoolYear } from '../../shared/lib/types/school-year.enum';
 import { DocSeries } from '../doc-series/doc-series.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 
@@ -21,9 +23,11 @@ export class InfoDoc extends BaseEntity {
   @ManyToOne()
   docSeries?: DocSeries;
 
-  // School year corresponding to the document; e.g. 2017 -> 2017-18, 2018 -> 2018-19, etc.
   @Property()
   year?: number;
+
+  @Enum(() => SchoolYear)
+  schoolYear?: SchoolYear;
 
   @Property({ type: 'text' })
   description?: string;
@@ -36,6 +40,7 @@ export class InfoDoc extends BaseEntity {
   constructor(options: {
     file: FileUpload;
     docSeries?: DocSeries | null;
+    schoolYear?: number;
     year?: number;
     description?: string;
     isObsolete?: boolean;
@@ -46,6 +51,8 @@ export class InfoDoc extends BaseEntity {
       this.docSeries = options.docSeries;
     if (options.year)
       this.year = options.year;
+    if (options.schoolYear)
+      this.schoolYear = options.schoolYear;
     if (options.description)
       this.description = options.description;
     if (options.isObsolete)

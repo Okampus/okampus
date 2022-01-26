@@ -17,6 +17,8 @@ import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { TypesenseGuard } from '../../shared/lib/guards/typesense.guard';
+import type { Category } from '../../shared/lib/types/docs-category.type';
+import { InfoDocCategoryType } from '../../shared/lib/types/docs-category.type';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
@@ -24,6 +26,7 @@ import type { PaginatedResult } from '../../shared/modules/pagination/pagination
 import { SearchDto } from '../../shared/modules/search/search.dto';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
+import { CategoryTypesDto } from './dto/category-types.dto';
 import { CreateInfoDocDto } from './dto/create-info-doc.dto';
 import { UpdateInfoDocDto } from './dto/update-info-doc.dto';
 import { InfoDoc } from './info-doc.entity';
@@ -66,6 +69,18 @@ export class InfoDocsController {
     if (query.page)
       return await this.infoDocsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
     return await this.infoDocsService.findAll();
+  }
+
+  @Get('/categories')
+  @CheckPolicies(ability => ability.can(Action.Read, InfoDoc))
+  public async findCategories(
+    @Query() categoriesTypesDto: CategoryTypesDto,
+  ): Promise<Array<Category<InfoDocCategoryType>>> {
+    const defaultSort = [
+      InfoDocCategoryType.SchoolYear,
+      InfoDocCategoryType.Year,
+  ];
+    return await this.infoDocsService.findCategories(categoriesTypesDto?.categories ?? defaultSort);
   }
 
   @UseGuards(TypesenseGuard)
