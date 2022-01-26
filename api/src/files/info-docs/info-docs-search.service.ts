@@ -25,7 +25,7 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
     fields: [
       { name: 'user', type: 'string' },
       { name: 'name', type: 'string' },
-      { name: 'year', type: 'string', optional: true },
+      { name: 'year', type: 'int32', optional: true },
       { name: 'description', type: 'string', optional: true },
       { name: 'createdAt', type: 'string' },
     ],

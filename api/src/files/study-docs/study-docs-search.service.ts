@@ -29,7 +29,7 @@ export class StudyDocSearchService extends SearchService<StudyDoc, IndexedStudyD
       { name: 'name', type: 'string' },
       { name: 'subjectName', type: 'string' },
       { name: 'subjectEnglishName', type: 'string' },
-      { name: 'year', type: 'string', optional: true },
+      { name: 'year', type: 'int32', optional: true },
       { name: 'description', type: 'string', optional: true },
       { name: 'createdAt', type: 'string' },
     ],
