@@ -43,7 +43,7 @@ export class Content extends BaseEntity {
   kind!: ContentKind;
 
   @ManyToOne()
-  @Transform(({ obj }: { obj: Content }) => obj.parent?.contentId)
+  @Transform(({ obj }: { obj: Content }) => ({ contentId: obj.parent?.contentId, kind: obj.parent?.kind }))
   parent?: Content;
 
   @OneToMany(() => Content, content => content.parent)
