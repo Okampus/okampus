@@ -16,7 +16,7 @@ export class FavoritesService {
   ) {}
 
   public async create(contentId: number, user: User): Promise<Favorite> {
-    const content = await this.contentRepository.findOneOrFail({ contentId });
+    const content = await this.contentRepository.findOneOrFail({ contentId }, { populate: ['parent'] });
 
     const favorite = new Favorite({ content, user });
     try {
@@ -36,7 +36,7 @@ export class FavoritesService {
       {
         populate: [
           'user',
-          'content', 'content.author',
+          'content', 'content.author', 'content.parent',
           'content.contentMaster', 'content.contentMaster', 'content.contentMaster.tags',
         ],
       },
@@ -49,7 +49,7 @@ export class FavoritesService {
       {
         populate: [
           'user',
-          'content', 'content.author',
+          'content', 'content.author', 'content.parent',
           'content.contentMaster', 'content.contentMaster', 'content.contentMaster.tags',
         ],
       },
