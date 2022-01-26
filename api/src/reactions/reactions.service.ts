@@ -30,7 +30,7 @@ export class ReactionsService {
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, content);
 
-    const entity = await this.reactionRepository.find({ content, user, value });
+    const entity = await this.reactionRepository.findOne({ content, user, value });
     if (entity)
       throw new BadRequestException('Reaction already added on content');
 
