@@ -25,7 +25,6 @@ import { Thread } from './thread.entity';
 import { ThreadsService } from './threads.service';
 
 @ApiTags('Threads')
-@SerializerExcludeContentAuthor()
 @Controller({ path: 'threads' })
 export class ThreadsController {
   constructor(
@@ -33,6 +32,7 @@ export class ThreadsController {
   ) {}
 
   @Post()
+  @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Create, Thread))
   public async create(@CurrentUser() user: User, @Body() createThreadDto: CreateThreadDto): Promise<Thread> {
     return await this.threadsService.create(user, createThreadDto);
@@ -47,6 +47,7 @@ export class ThreadsController {
   }
 
   @Get(':id')
+  @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Read, Thread))
   public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Thread> {
     return await this.threadsService.findOne(id);
@@ -59,6 +60,7 @@ export class ThreadsController {
   }
 
   @Patch(':id')
+  @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Update, Thread))
   public async update(
     @CurrentUser() user: User,
@@ -75,6 +77,7 @@ export class ThreadsController {
   }
 
   @Post(':id/tags')
+  @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Interact, Thread))
   public async addTags(
     @Param('id', ParseIntPipe) id: number,
@@ -93,6 +96,7 @@ export class ThreadsController {
   }
 
   @Post(':id/assignees')
+  @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Interact, Thread))
   public async addAssignees(
     @Param('id', ParseIntPipe) id: number,

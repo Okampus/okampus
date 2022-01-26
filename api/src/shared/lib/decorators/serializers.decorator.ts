@@ -17,7 +17,7 @@ export function SerializerIncludePersonalInfo(): ClassDecorator {
   return applyDecorators(SerializeOptions({ groups: [PERSONAL_INFO_INCLUDED] }));
 }
 
-export function SerializerExcludeContentAuthor(): ClassDecorator {
+export function SerializerExcludeContentAuthor(): MethodDecorator {
   return applyDecorators(SerializeOptions({ groups: [CONTENT_AUTHOR_EXCLUDED] }));
 }
 

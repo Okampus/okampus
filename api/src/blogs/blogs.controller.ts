@@ -22,7 +22,6 @@ import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 
 @ApiTags('Blogs')
-@SerializerExcludeContentAuthor()
 @Controller({ path: 'blogs' })
 export class BlogsController {
   constructor(
@@ -30,6 +29,7 @@ export class BlogsController {
   ) {}
 
   @Post()
+  @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Create, Blog))
   public async create(@CurrentUser() user: User, @Body() createBlogDto: CreateBlogDto): Promise<Blog> {
     return await this.blogsService.create(user, createBlogDto);
@@ -44,12 +44,14 @@ export class BlogsController {
   }
 
   @Get(':id')
+  @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Read, Blog))
   public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Blog> {
     return await this.blogsService.findOne(id);
   }
 
   @Patch(':id')
+  @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Update, Blog))
   public async update(
     @CurrentUser() user: User,
