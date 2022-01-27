@@ -1,20 +1,50 @@
-import UserService from '@/services/users.service'
+import UsersService from '@/services/users.service'
+import { uniqBy } from 'lodash'
+import { ITEMS_PER_PAGE, settleQuery } from './constants'
 
 const initialState = {
-    users: null,
-    socialsAccounts: [],
-    socials: [],
-    userClubs: [],
+    userList: [],
+    userListPage: 1,
+    favoriteList: [],
+    socialList: [],
+    socialAccountList: [],
     favorites: [],
-    clubMembers: [],
 }
 
 export const users = {
     namespaced: true,
     state: initialState,
+    getters: {
+        getUserList: (state) => state.userList,
+        getFavoritesList: (state) => state.favoritesList,
+        getSocialsList: (state) => state.socialsList,
+        getSocialsAccounts: (state) => state.socialsAccounts,
+        getFavorites: (state) => state.favorites,
+    },
     actions: {
+        getUserList: ({ commit, state }, query) =>
+            settleQuery(
+                { commit, mutation: 'getUserListSuccess' },
+                UsersService.getUsers({
+                    page: state.userListPage,
+                    itemsPerPage: ITEMS_PER_PAGE,
+                    ...query,
+                }),
+            ),
+        //  {
+        //     return UsersService.getUserList().then(
+        //         (success) => {
+        //             commit('getUsersSuccess', success)
+        //             return Promise.resolve(success)
+        //         },
+        //         (error) => {
+        //             console.log(error)
+        //             return Promise.reject(error)
+        //         },
+        //     )
+        // },
         getUserById({ commit }, userId) {
-            return UserService.getUserById(userId).then(
+            return UsersService.getUserById(userId).then(
                 (success) => {
                     commit('fetchUserSuccess', success)
                     return Promise.resolve(success)
@@ -26,7 +56,7 @@ export const users = {
             )
         },
         getUserSocials({ commit }, userId) {
-            return UserService.getUserSocials(userId).then(
+            return UsersService.getUserSocials(userId).then(
                 (success) => {
                     commit('fetchSocialsAccountsSuccess', success)
                     return Promise.resolve(success)
@@ -38,7 +68,7 @@ export const users = {
             )
         },
         getSocials({ commit }) {
-            return UserService.getSocials().then(
+            return UsersService.getSocials().then(
                 (success) => {
                     commit('fetchSocialsSuccess', success)
                     return Promise.resolve(success)
@@ -50,7 +80,7 @@ export const users = {
             )
         },
         getClubs({ commit }) {
-            return UserService.getClubs().then(
+            return UsersService.getClubs().then(
                 (success) => {
                     commit('fetchClubsSuccess', success)
                     return Promise.resolve(success)
@@ -62,7 +92,7 @@ export const users = {
             )
         },
         getUserClubs({ commit }, userId) {
-            return UserService.getUserClubs(userId).then(
+            return UsersService.getUserClubs(userId).then(
                 (success) => {
                     commit('fetchUserClubsSuccess', success)
                     return Promise.resolve(success)
@@ -75,7 +105,7 @@ export const users = {
         },
         updateUser({ commit }, newUser) {
             newUser = { description: newUser.description }
-            return UserService.updateUser(newUser).then(
+            return UsersService.updateUser(newUser).then(
                 (success) => {
                     commit('modifyUserSuccess', success)
                     return Promise.resolve(success)
@@ -87,7 +117,7 @@ export const users = {
             )
         },
         addSocialAccount({ commit }, { userId, socialId, pseudo, link }) {
-            return UserService.addSocialAccount({
+            return UsersService.addSocialAccount({
                 userId,
                 socialId,
                 pseudo,
@@ -104,7 +134,7 @@ export const users = {
             )
         },
         updateSocialAccount({ commit }, { socialAccountId, pseudo, link }) {
-            return UserService.updateSocialAccount({
+            return UsersService.updateSocialAccount({
                 socialAccountId,
                 pseudo,
                 link,
@@ -120,7 +150,7 @@ export const users = {
             )
         },
         deleteSocialAccount({ commit }, socialAccountId) {
-            return UserService.deleteSocialAccount(socialAccountId).then(
+            return UsersService.deleteSocialAccount(socialAccountId).then(
                 (success) => {
                     commit('deleteSocialAccountSuccess', socialAccountId)
                     return Promise.resolve(success)
@@ -132,9 +162,9 @@ export const users = {
             )
         },
         replaceSocialAccount({ commit }, { userId, socialId, socialAccountId, pseudo, link }) {
-            UserService.deleteSocialAccount(socialAccountId).then(
+            UsersService.deleteSocialAccount(socialAccountId).then(
                 () =>
-                    UserService.addSocialAccount({
+                    UsersService.addSocialAccount({
                         userId,
                         socialId,
                         pseudo,
@@ -159,7 +189,7 @@ export const users = {
             )
         },
         getFavorites({ commit }) {
-            return UserService.getFavorites().then(
+            return UsersService.getFavorites().then(
                 (success) => {
                     commit('fetchUserFavorites', success)
                     return Promise.resolve(success)
@@ -171,7 +201,7 @@ export const users = {
             )
         },
         votePostFav({ commit }, { postId, value }) {
-            return UserService.votePost(postId, value).then(
+            return UsersService.votePost(postId, value).then(
                 (success) => {
                     commit('votePostSuccess', {
                         success,
@@ -186,7 +216,7 @@ export const users = {
             )
         },
         voteReplyFav({ commit }, { replyId, value }) {
-            return UserService.voteReply(replyId, value).then(
+            return UsersService.voteReply(replyId, value).then(
                 (success) => {
                     commit('voteReplySuccess', {
                         success,
@@ -201,7 +231,7 @@ export const users = {
             )
         },
         voteCommentFav({ commit }, { commentId, value }) {
-            return UserService.voteComment(commentId, value).then(
+            return UsersService.voteComment(commentId, value).then(
                 (success) => {
                     commit('voteCommentSuccess', {
                         success,
@@ -216,7 +246,7 @@ export const users = {
             )
         },
         addFavoritePost({ commit }, postId) {
-            return UserService.addFavoritePost(postId).then(
+            return UsersService.addFavoritePost(postId).then(
                 (worked) => {
                     commit('addFavoritePostSuccess', postId)
                     return Promise.resolve(worked)
@@ -228,7 +258,7 @@ export const users = {
             )
         },
         deleteFavoritePost({ commit }, postId) {
-            return UserService.deleteFavoritePost(postId).then(
+            return UsersService.deleteFavoritePost(postId).then(
                 (worked) => {
                     commit('deleteFavoritePostSuccess', postId)
                     return Promise.resolve(worked)
@@ -240,7 +270,7 @@ export const users = {
             )
         },
         addFavoriteReply({ commit }, replyId) {
-            return UserService.addFavoriteReply(replyId).then(
+            return UsersService.addFavoriteReply(replyId).then(
                 (worked) => {
                     commit('addFavoriteReplySuccess', replyId)
                     return Promise.resolve(worked)
@@ -252,7 +282,7 @@ export const users = {
             )
         },
         deleteFavoriteReply({ commit }, replyId) {
-            return UserService.deleteFavoriteReply(replyId).then(
+            return UsersService.deleteFavoriteReply(replyId).then(
                 (worked) => {
                     commit('deleteFavoriteReplySuccess', replyId)
                     return Promise.resolve(worked)
@@ -264,7 +294,7 @@ export const users = {
             )
         },
         addFavoriteComment({ commit }, commentId) {
-            return UserService.addFavoriteComment(commentId).then(
+            return UsersService.addFavoriteComment(commentId).then(
                 (worked) => {
                     commit('addFavoriteCommentSuccess', commentId)
                     return Promise.resolve(worked)
@@ -276,7 +306,7 @@ export const users = {
             )
         },
         deleteFavoriteComment({ commit }, commentId) {
-            return UserService.deleteFavoriteComment(commentId).then(
+            return UsersService.deleteFavoriteComment(commentId).then(
                 (success) => {
                     commit('deleteFavoriteCommentSuccess', commentId)
                     return Promise.resolve(success)
@@ -287,96 +317,16 @@ export const users = {
                 },
             )
         },
-        getClubMembers({ commit }, clubId) {
-            return UserService.getClubMembers(clubId).then(
-                (success) => {
-                    commit('fetchClubMembersSuccess', success)
-                    return Promise.resolve(success)
-                },
-                (error) => {
-                    console.log(error)
-                    return Promise.reject(error)
-                },
-            )
-        },
-        addClubMember({ commit }, { clubId, userId }) {
-            return UserService.addClubMember({
-                clubId,
-                userId,
-            }).then(
-                (success) => {
-                    commit('addClubMemberSuccess', success)
-                    return Promise.resolve(success)
-                },
-                (error) => {
-                    console.log(error)
-                    return Promise.reject(error)
-                },
-            )
-        },
-        deleteClubMember({ commit }, { clubId, userId }) {
-            return UserService.deleteClubMember({
-                clubId,
-                userId,
-            }).then(
-                (success) => {
-                    commit('deleteClubMemberSuccess', {
-                        userId,
-                        clubId,
-                    })
-                    return Promise.resolve(success)
-                },
-                (error) => {
-                    console.log(error)
-                    return Promise.reject(error)
-                },
-            )
-        },
-        updateClubMember({ commit }, { clubId, userId, role }) {
-            return UserService.updateMemberRole({
-                clubId,
-                userId,
-                role,
-            }).then(
-                (success) => {
-                    commit('updateRoleSuccess', success)
-                    return Promise.resolve(success)
-                },
-                (error) => {
-                    console.log(error)
-                    return Promise.reject(error)
-                },
-            )
-        },
-        leaveClub({ commit }, { clubId, userId }) {
-            return UserService.deleteClubMember({
-                clubId,
-                userId,
-            }).then(
-                (success) => {
-                    commit('leaveClubSuccess', clubId)
-                    return Promise.resolve(success)
-                },
-                (error) => {
-                    console.log(error)
-                    return Promise.reject(error)
-                },
-            )
-        },
-        getUsers({ commit }) {
-            return UserService.getUsers().then(
-                (success) => {
-                    commit('getUsersSuccess', success)
-                    return Promise.resolve(success)
-                },
-                (error) => {
-                    console.log(error)
-                    return Promise.reject(error)
-                },
-            )
-        },
     },
     mutations: {
+        refreshUserList(state) {
+            state.userList = []
+            state.userListPage = 1
+        },
+        getUserListSuccess(state, users) {
+            state.userList = uniqBy([...state.userList, ...users], 'userId')
+            state.userListPage++
+        },
         fetchUserSuccess(state, user) {
             state.user = user
         },
@@ -385,12 +335,6 @@ export const users = {
         },
         fetchSocialsSuccess(state, socials) {
             state.socials = socials
-        },
-        fetchClubsSuccess(state, clubs) {
-            state.clubs = clubs
-        },
-        fetchUserClubsSuccess(state, userClubs) {
-            state.userClubs = userClubs
         },
         modifyUserSuccess(state, user) {
             state.user = user
@@ -503,34 +447,6 @@ export const users = {
                 }
                 return a
             })
-        },
-        fetchClubMembersSuccess(state, success) {
-            state.clubMembers = success
-        },
-        addClubMemberSuccess(state, success) {
-            state.userClubs = [...state.userClubs, success]
-        },
-        deleteClubMemberSuccess(state, { clubId, userId }) {
-            state.clubMembers = state.clubMembers.filter((a) => {
-                if (a.user.userId != userId || a.club.clubId != clubId) {
-                    return a
-                }
-            })
-        },
-        updateRoleSuccess(state, success) {
-            state.clubMembers = state.clubMembers.map((a) =>
-                a.clubMemberId === success.clubMemberId ? success : a,
-            )
-        },
-        leaveClubSuccess(state, clubId) {
-            state.userClubs = state.userClubs.filter((a) => {
-                if (a.club.clubId !== clubId) {
-                    return a
-                }
-            })
-        },
-        getUsersSuccess(state, success) {
-            state.users = success
         },
     },
 }

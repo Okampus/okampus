@@ -5,6 +5,7 @@
                 :username="reply.author?.fullname ?? 'Anonyme'"
                 :avatar="reply.author?.avatar"
                 mode="vertical"
+                :img-size="14"
             />
 
             <div class="flex gap-5 items-center">
@@ -56,6 +57,11 @@
                 class="mt-4"
                 :parent-id="reply.contentId"
                 :comments="reply.comments"
+                @report="
+                    (content) => {
+                        $emit('report', content)
+                    }
+                "
             />
         </div>
     </div>
@@ -82,6 +88,7 @@
                 default: () => {},
             },
         },
+        emits: ['report'],
         data() {
             return {
                 defaultAvatar,
@@ -108,9 +115,9 @@
                         },
                         report: {
                             name: () => 'Signaler',
-                            icon: ['far', 'flag'],
-                            class: 'group-hover:text-red-500',
-                            action: () => {  },
+                            icon: this.reply?.userReported ? 'flag' : ['far', 'flag'],
+                            class: this.reply?.userReported ? 'group-hover:text-red-600 text-red-500' : 'group-hover:text-red-500',
+                            action: () => { this.reply?.userReported ? alert('Vous avez déjà signalé cette réponse.') : this.$emit('report', this.reply) },
                         },
                     }),
                     ...(this.reply.author.userId === this.$store.state.auth.user?.userId && {
@@ -140,10 +147,6 @@
         },
         methods: {
             updateReply(body) {
-                console.log('REPLY', {
-                    contentId: this.reply.contentId,
-                    body,
-                })
                 this.$store.dispatch('threads/updateContent', {
                     contentId: this.reply.contentId,
                     body,

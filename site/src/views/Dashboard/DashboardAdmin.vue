@@ -24,9 +24,10 @@
 </template>
 
 <script lang="js">
-    import { users } from '@/fake/users'
-    import { posts } from '@/fake/posts'
-
+    // import { users } from '@/fake/users'
+    // import { posts } from '@/fake/posts'
+    import postTypeEnum from '@/shared/types/post-types.enum'
+    import { watch } from 'vue'
     import DashboardCore from './DashboardCore.vue'
     export default {
         components: { DashboardCore },
@@ -34,49 +35,83 @@
             return {
                 currentTab: 'posts',
                 tabColumns: {
+                    reports: [{
+                        user: {
+                            attrs: (report) => ({
+                                username: report.user.fullname,
+                                avatar: report.user.avatar,
+                                reputation: report.user.reputation,
+                            }),
+                            slot: () => {},
+                            value: (report) => report.user.fullname,
+                            comp: ['user-preview', '@/components/User/UserPreview.vue'],
+                            name: 'User signalé',
+                        },
+                        reason: {
+                            attrs: (report) => ({ 'content': report.reason }),
+                            slot: () => {},
+                            value: (report) => report.reason,
+                            comp: ['tip-tap-renderer', '@/components/TipTap/TipTapRenderer.vue'],
+                            name: 'Raison',
+                        },
+                        contentId: {
+                            attrs: (report) => ({ 'content': report.content.body }),
+                            slot: () => {},
+                            value: (report) => report.content.body,
+                            comp: ['tip-tap-renderer', '@/components/TipTap/TipTapRenderer.vue'],
+                            name: 'Contenu lié',
+                        },
+                        date: {
+                            attrs: (report) => ({ dateString: report.createdAt }),
+                            slot: (report) => report.createdAt,
+                            value: (report) => report.createdAt,
+                            comp: ['date-preview', '@/components/Dashboard/DatePreview.vue'],
+                            name: 'Fait',
+                        },
+                    }, []],
                     posts: [{
                         votes: {
                             attrs: () => {},
-                            slot: (post) => post.upvotes - post.downvotes,
-                            value: (post) => post.upvotes - post.downvotes,
+                            slot: (thread) => thread.post.upvotes - thread.post.downvotes,
+                            value: (thread) => thread.post.upvotes - thread.post.downvotes,
                             comp: ['div'],
                             name: 'Votes',
                         },
                         status: {
                             attrs: () => {},
-                            slot: (post) => post.state,
-                            value: (post) => post.state,
+                            slot: (thread) => thread.state,
+                            value: (thread) => thread.state,
                             comp: ['div'],
                             name: 'État',
                         },
                         title: {
                             attrs: () => {},
-                            slot: (post) => post.title,
-                            value: (post) => post.title,
+                            slot: (thread) => thread.title,
+                            value: (thread) => thread.title,
                             comp: ['div'],
                             name: 'Titre',
                         },
                         user: {
-                            attrs: (post) => ({
-                                username: post.author.fullname,
-                                avatar: post.author.avatar,
-                                reputation: post.author.reputation,
+                            attrs: (thread) => ({
+                                username: thread.post.author.fullname,
+                                avatar: thread.post.author.avatar,
+                                reputation: thread.post.author.reputation,
                             }),
                             slot: () => {},
-                            value: (post) => post.author.fullname,
+                            value: (thread) => thread.post.author.fullname,
                             comp: ['user-preview', '@/components/User/UserPreview.vue'],
                             name: 'OP',
                         },
                         lastActivity: {
-                            attrs: (post) => ({ dateString: post.contentLastUpdatedAt }),
-                            slot: (post) => post.contentLastUpdatedAt,
+                            attrs: (thread) => ({ dateString: thread.post.contentLastUpdatedAt }),
+                            slot: (thread) => thread.post.contentLastUpdatedAt,
                             value: () => '',
                             comp: ['date-preview', '@/components/Dashboard/DatePreview.vue'],
                             name: 'Dernière activité',
                         },
                         createdAt: {
-                            attrs: (post) => ({ dateString: post.createdAt }),
-                            slot: (post) => post.createdAt,
+                            attrs: (thread) => ({ dateString: thread.post.createdAt }),
+                            slot: (thread) => thread.post.createdAt,
                             value: () => '',
                             comp: ['date-preview', '@/components/Dashboard/DatePreview.vue'],
                             sort: 0,
@@ -84,18 +119,18 @@
                         },
                         type: {
                             attrs: () => {},
-                            slot: (post) => post.type,
+                            slot: (thread) => postTypeEnum[thread.type][this.$i18n.locale],
                             value: () => '',
                             comp: ['div'],
                             name: 'Type',
                         },
-                        tags: {
-                            attrs: (post) => ({ tags: post.tags }),
-                            slot: () => {},
-                            value: (post) => post.tags,
-                            comp: ['tags-list', '@/components/List/TagsList.vue'],
-                            name: 'Tags',
-                        },
+                        // tags: {
+                        //     attrs: (thread) => ({ tags: thread.tags }),
+                        //     slot: () => {},
+                        //     value: (thread) => thread.tags,
+                        //     comp: ['tags-list', '@/components/List/TagsList.vue'],
+                        //     name: 'Tags',
+                        // },
                         actions: {
                             attrs: () => {},
                             slot: () => 'Show',
@@ -104,7 +139,7 @@
                             name: 'Actions',
                         },
                         // TODO: Actions
-                    }, posts],
+                    }, []],
                     utilisateurs: [{
                         user: {
                             attrs: (user) => ({
@@ -139,9 +174,29 @@
                             comp: ['date-preview', '@/components/Dashboard/DatePreview.vue'],
                             name: 'Dernière mise à jour',
                         },
-                    }, users],
+                    }, []],
                 },
             }
+        },
+        async mounted() {
+            watch(() => this.$store.getters['threads/getThreadList'], (newThreads) => {
+                this.tabColumns.posts[1] = newThreads
+            })
+
+            watch(() => this.$store.getters['users/getUserList'], (newUsers) => {
+                this.tabColumns.utilisateurs[1] = newUsers
+            })
+
+            watch(() => this.$store.getters['reports/getReportList'], (newReports) => {
+                this.tabColumns.reports[1] = newReports
+            })
+
+            this.$store.commit('threads/refreshThreadList')
+            await this.$store.dispatch('threads/getThreadList')
+            this.$store.commit('users/refreshUserList')
+            await this.$store.dispatch('users/getUserList')
+            this.$store.commit('reports/refreshReportList')
+            await this.$store.dispatch('reports/getReportList')
         },
     }
 </script>

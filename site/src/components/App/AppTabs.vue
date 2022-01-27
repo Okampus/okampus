@@ -51,7 +51,6 @@
             },
             updateTab(newTab) {
                 this.$emit('update:tab', newTab)
-                console.log(router)
                 router.push('/me/' + this.tabs[newTab].id)
             },
         },

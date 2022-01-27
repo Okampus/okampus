@@ -19,11 +19,11 @@
         components: { ProfileCard },
         computed: {
             users() {
-                return this.$store.state.users.users
+                return this.$store.getters['users/getUserList']
             },
         },
         mounted() {
-            this.$store.dispatch('users/getUsers')
+            this.$store.dispatch('users/getUserList')
         },
     }
 </script>

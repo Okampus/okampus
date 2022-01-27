@@ -114,14 +114,14 @@
                         ],
                         forum: [
                             {
-                                to: '/posts/new',
-                                text: 'Créer un Post',
-                                icon: 'question-circle',
-                            },
-                            {
                                 to: '/posts',
                                 text: 'Forum',
                                 icon: 'comments',
+                            },
+                            {
+                                to: '/posts/new',
+                                text: 'Créer un Post',
+                                icon: 'question-circle',
                             },
                         ],
                         'horizon docs': [

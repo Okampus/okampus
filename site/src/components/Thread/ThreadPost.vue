@@ -5,6 +5,7 @@
                 <UserPreview
                     :username="post.author?.fullname"
                     :avatar="post.author?.avatar"
+                    :img-size="14"
                     mode="vertical"
                 />
 
@@ -77,6 +78,11 @@
                     v-model:on-comment="onComment"
                     :parent-id="post.contentId"
                     :comments="comments"
+                    @report="
+                        (content) => {
+                            $emit('report', content)
+                        }
+                    "
                 />
             </div>
         </div>
@@ -101,7 +107,7 @@
                 default: () => {},
             },
         },
-        emits: ['reply'],
+        emits: ['reply', 'report'],
         data() {
             return {
                 maxCommentsShown: 2,
@@ -143,9 +149,9 @@
                         },
                         report: {
                             name: () => 'Signaler',
-                            icon: ['far', 'flag'],
-                            class: 'group-hover:text-red-500',
-                            action: () => {  },
+                            icon: this.post?.userReported ? 'flag' : ['far', 'flag'],
+                            class: this.post?.userReported ? 'group-hover:text-red-600 text-red-500' : 'group-hover:text-red-500',
+                            action: () => { this.post?.userReported ? alert('Vous avez déjà signalé ce post.') : this.$emit('report', this.post) },
                         },
                         favorite: {
                             name: () => 'Favori',
@@ -179,10 +185,6 @@
         },
         methods: {
             updatePost(body) {
-                console.log({
-                    contentId: this.post.contentId,
-                    body,
-                })
                 this.$store.dispatch('threads/updateContent', {
                     contentId: this.post.contentId,
                     body,

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="mode == 'horizontal'" class="flex items-center">
+    <div v-if="mode == 'horizontal'" class="flex items-center min-h-fit">
         <div
             class="hidden relative mr-3 w-10 h-10 rounded-full md:block"
             :class="`w-${imgSize} h-${imgSize}`"
@@ -20,21 +20,19 @@
             </p>
         </div>
     </div>
-    <div v-else>
-        <div class="flex flex-col items-center">
-            <img
-                :src="avatar || defaultAvatar"
-                alt="Profile Picture"
-                :class="`w-${imgSize} h-${imgSize}`"
-                class="mt-2 rounded-full"
-            />
-            <div class="font-medium text-center" :class="textClass">
-                {{ username }}
-            </div>
-            <p v-if="reputation !== null" class="text-sm text-gray-600 dark:text-gray-400">
-                {{ abbrNumbers(reputation) }}
-            </p>
+    <div v-else class="flex flex-col items-center min-h-fit">
+        <img
+            :src="avatar || defaultAvatar"
+            alt="Profile Picture"
+            :class="`w-${imgSize} h-${imgSize}`"
+            class="mt-2 rounded-full"
+        />
+        <div class="font-medium text-center" :class="textClass">
+            {{ username }}
         </div>
+        <p v-if="reputation !== null" class="text-sm text-gray-600 dark:text-gray-400">
+            {{ abbrNumbers(reputation) }}
+        </p>
     </div>
 </template>
 
@@ -62,7 +60,7 @@
             },
             imgSize: {
                 type: Number,
-                default: 14,
+                default: 10,
             },
             textClass: {
                 type: String,

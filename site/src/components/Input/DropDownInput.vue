@@ -41,8 +41,5 @@
                 },
             },
         },
-        monted() {
-            console.log(this.buttons)
-        },
     }
 </script>

@@ -173,7 +173,6 @@
 </template>
 
 <script lang="js">
-
     import { blagues } from '@/assets/blagues/blagues';
     import defaultAvatar from '@/assets/img/default_avatars/user.png';
     import AppLoader from '@/components/App/AppLoader.vue';
@@ -265,16 +264,15 @@
                 )
 
                 this.$store.dispatch('users/getUserById',this.user.userId).then(() => {
-                    this.$store.dispatch('users/getUserClubs', this.user.userId)
+                    this.$store.dispatch('users/getUserClubList', this.user.userId)
                     this.$store.dispatch('users/getUserSocials',this.user.userId)
                     this.$store.dispatch('users/getSocials')
                     this.$store.dispatch('users/getClubs')
                 }).catch(() => {
                     // TODO: add toast
+                    console.log('Redirected in modal')
                     this.$router.push('/')
                 })
-            } else {
-                this.$router.push('/')
             }
         },
         methods: {

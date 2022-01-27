@@ -13,14 +13,6 @@ class UsersService {
         return await $axios.get('socials').then((res) => res.data)
     }
 
-    async getClubs() {
-        return await $axios.get('clubs/names').then((res) => res.data)
-    }
-
-    async getUserClubs(userId) {
-        return await $axios.get(`clubs/member/${userId}`).then((res) => res.data.items)
-    }
-
     async updateUser(newUser) {
         return await $axios.patch('users/update', newUser).then((res) => res.data)
     }
@@ -41,22 +33,6 @@ class UsersService {
 
     async getFavorites() {
         return await $axios.get('favorites').then((res) => res.data)
-    }
-
-    async getClubMembers(clubId) {
-        return await $axios.get(`clubs/${clubId}/members`).then((res) => res.data.items)
-    }
-
-    async addClubMember({ clubId, userId }) {
-        return $axios.post(`clubs/${clubId}/members/${userId}`, { role: 'member' }).then((res) => res.data)
-    }
-
-    deleteClubMember({ clubId, userId }) {
-        return $axios.delete(`clubs/${clubId}/members/${userId}`)
-    }
-
-    async updateMemberRole({ clubId, userId, role }) {
-        return await $axios.patch(`clubs/${clubId}/members/${userId}`, { role }).then((res) => res.data)
     }
 
     async getUsers() {

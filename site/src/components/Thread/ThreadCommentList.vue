@@ -99,7 +99,7 @@
                 default: false,
             },
         },
-        emits: ['update:onComment'],
+        emits: ['update:onComment', 'report'],
         data() {
             return {
                 defaultAvatar,
@@ -150,11 +150,11 @@
                             action: () => { this.commentItems[i].userFavorited ? this.deleteFavorite(i) : this.addFavorite(i) },
                         },
 
-                        flag: {
+                        report: {
                             name: () => 'Signaler',
-                            icon: () => ['far', 'flag'],
-                            class: () => 'group-hover:text-red-500',
-                            action: () => { console.log('Signaler') },
+                            icon: () => this.commentItems[i]?.userReported ? 'flag' : ['far', 'flag'],
+                            class: () => this.commentItems[i]?.userReported ? 'group-hover:text-red-600 text-red-500' : 'group-hover:text-red-500',
+                            action: () => { this.commentItems[i]?.userReported ? alert('Vous avez déjà signalé ce commentaire.') : this.$emit('report', this.commentItems[i])  },
                         },
                     }),
                     ...(this.commentItems[i].author.userId === this.$store.state.auth.user?.userId && {
@@ -178,7 +178,6 @@
                 }).then(this.closeComment)
             },
             updateComment(body, i) {
-                console.log('COMMENT', this.commentItems[i])
                 this.$store.dispatch('threads/updateContent', {
                     contentId: this.commentItems[i].contentId,
                     body: body,

@@ -364,6 +364,7 @@
                 this.$store.dispatch('users/getUserClubs', this.user.userId)
                 this.$store.dispatch('users/getClubs')
             } else {
+                console.log('Redirected in clubs')
                 this.$router.push('/')
             }
         },

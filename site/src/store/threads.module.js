@@ -1,5 +1,5 @@
 import router from '@/router'
-import ThreadService from '@/services/threads.service'
+import ThreadsService from '@/services/threads.service'
 import { COMMENT, POST, REPLY } from '@/shared/types/content-kind.enum'
 import { groupBy, uniqBy } from 'lodash'
 import { ITEMS_PER_PAGE, settleQuery } from './constants'
@@ -32,8 +32,6 @@ const updateThreadChildren = (thread) => {
 }
 
 const applyFuncOnContent = (func, targetContent, thread) => {
-    console.log('APPLY', func, targetContent)
-
     if (targetContent.kind === POST) {
         if (func === 'delete') {
             delete thread.post
@@ -91,47 +89,47 @@ export const threads = {
         getThreadList: ({ commit, state }, query) =>
             settleQuery(
                 { commit, mutation: 'getThreadListSuccess' },
-                ThreadService.getThreadList({
+                ThreadsService.getThreadList({
                     page: state.threadListPage,
                     itemsPerPage: ITEMS_PER_PAGE,
                     ...query,
                 }),
             ),
         addThread: ({ commit }, thread) =>
-            settleQuery({ commit, mutation: 'addThreadSuccess' }, ThreadService.addThread(thread)),
+            settleQuery({ commit, mutation: 'addThreadSuccess' }, ThreadsService.addThread(thread)),
         getThread: async ({ commit }, id) => {
-            await settleQuery({ commit, mutation: 'getThreadSuccess' }, ThreadService.getThread(id))
+            await settleQuery({ commit, mutation: 'getThreadSuccess' }, ThreadsService.getThread(id))
             await settleQuery(
                 { commit, mutation: 'getThreadInteractionsSuccess' },
-                ThreadService.getThreadInteractions(id),
+                ThreadsService.getThreadInteractions(id),
             )
         },
         updateThread: ({ commit }, thread) =>
-            settleQuery({ commit, mutation: 'updateThreadSuccess' }, ThreadService.updateThread(thread)),
+            settleQuery({ commit, mutation: 'updateThreadSuccess' }, ThreadsService.updateThread(thread)),
         deleteThread: ({ commit }, id) =>
-            settleQuery({ commit, mutation: 'deleteThreadSuccess' }, ThreadService.deleteThread(id)),
+            settleQuery({ commit, mutation: 'deleteThreadSuccess' }, ThreadsService.deleteThread(id)),
         forceDeleteThread: ({ commit }, id) =>
-            settleQuery({ commit, mutation: 'deleteThreadSuccess' }, ThreadService.deleteThread(id, true)),
+            settleQuery({ commit, mutation: 'deleteThreadSuccess' }, ThreadsService.deleteThread(id, true)),
         addReply: ({ commit }, reply) =>
-            settleQuery({ commit, mutation: 'addReplySuccess' }, ThreadService.addReply(reply)),
+            settleQuery({ commit, mutation: 'addReplySuccess' }, ThreadsService.addReply(reply)),
         addComment: ({ commit }, comment) =>
-            settleQuery({ commit, mutation: 'addCommentSuccess' }, ThreadService.addComment(comment)),
+            settleQuery({ commit, mutation: 'addCommentSuccess' }, ThreadsService.addComment(comment)),
         updateContent: ({ commit }, { contentId, body }) =>
             settleQuery(
                 { commit, mutation: 'updateContentSuccess' },
-                ThreadService.updateContent(contentId, body),
+                ThreadsService.updateContent(contentId, body),
             ),
         deleteContent: ({ commit }, id) =>
-            settleQuery({ commit, mutation: 'deleteContentSuccess' }, ThreadService.deleteContent(id)),
+            settleQuery({ commit, mutation: 'deleteContentSuccess' }, ThreadsService.deleteContent(id)),
         forceDeleteContent: ({ commit }, id) =>
-            settleQuery({ commit, mutation: 'deleteContentSuccess' }, ThreadService.deleteContent(id, true)),
+            settleQuery({ commit, mutation: 'deleteContentSuccess' }, ThreadsService.deleteContent(id, true)),
         voteContent: ({ commit }, { contentId, value }) =>
             settleQuery(
                 { commit, mutation: 'voteContentSuccess' },
-                ThreadService.voteContent(contentId, value),
+                ThreadsService.voteContent(contentId, value),
             ),
         addFavorite: ({ commit }, contentId) =>
-            settleQuery({ commit, mutation: 'addFavoriteSuccess' }, ThreadService.addFavorite(contentId)),
+            settleQuery({ commit, mutation: 'addFavoriteSuccess' }, ThreadsService.addFavorite(contentId)),
         deleteFavorite: ({ commit }, content) =>
             settleQuery(
                 {
@@ -139,7 +137,7 @@ export const threads = {
                         commit('deleteFavoriteSuccess', content)
                     },
                 },
-                ThreadService.deleteFavorite(content.contentId),
+                ThreadsService.deleteFavorite(content.contentId),
             ),
     },
     mutations: {
@@ -149,7 +147,7 @@ export const threads = {
         },
         getThreadListSuccess(state, threads) {
             state.threadList = uniqBy([...state.threadList, ...threads], 'contentMasterId')
-            state.threadListPage += 1
+            state.threadListPage++
         },
         addThreadSuccess(state, thread) {
             state.threadList.unshift(thread)
@@ -207,6 +205,8 @@ export const threads = {
                 },
             ]
 
+            console.log('allInteractions', allInteractions)
+
             allInteractions = allInteractions
                 .map((typeInteract) =>
                     typeInteract.interactions.map((interact) => ({
@@ -219,6 +219,8 @@ export const threads = {
             for (const interaction of allInteractions) {
                 applyFuncOnContent(applyInteraction(interaction), interaction.content, state.currentThread)
             }
+
+            console.log('state.currentThread', state.currentThread)
         },
         updateThreadSuccess(state, newThread) {
             state.currentThread = {

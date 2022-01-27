@@ -2,7 +2,7 @@ import $axios from '../shared/config/axios.config'
 class AuthService {
     async login(user) {
         const res = await $axios.post('auth/login', {
-            username: user.fullname,
+            username: user.username,
             password: user.password,
         })
 

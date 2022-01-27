@@ -36,13 +36,7 @@
                             <PostMessage
                                 :post="thread.post"
                                 @reply="onReply = true"
-                                @report="
-                                    (user, content) => {
-                                        userReported = user
-                                        contentReported = content
-                                        onReport = true
-                                    }
-                                "
+                                @report="activateReport($event)"
                             />
                         </div>
 
@@ -64,7 +58,8 @@
                             <div class="flex flex-col gap-4 w-21/24">
                                 <TipTapEditor
                                     v-model="newReply"
-                                    :char-count="240"
+                                    :char-count="10000"
+                                    :char-count-show-at="4000"
                                     class="w-full"
                                     :sendable="true"
                                     :cancellable="true"
@@ -81,16 +76,7 @@
                             </div>
                         </div>
                         <div v-for="(reply, i) in thread.replies" :key="i" class="mt-4">
-                            <Reply
-                                :reply="reply"
-                                @report="
-                                    (user, content) => {
-                                        userReported = user
-                                        contentReported = content
-                                        onReport = true
-                                    }
-                                "
-                            />
+                            <Reply :reply="reply" @report="activateReport($event)" />
                         </div>
                     </div>
                 </div>
@@ -222,6 +208,12 @@
         },
         methods: {
             timeAgo,
+            activateReport(content) {
+                console.log('ACTIVATING', content)
+                this.reportedUser = content.author
+                this.reportedContent = content
+                this.onReport = true
+            },
             getThread() {
                 if (this.$route.params.id !== undefined && this.$route.params.id !== null) {
                     if (this.$route.params.id > 0) {

@@ -3,7 +3,14 @@
     <teleport to="body">
         <div v-if="show" class="absolute top-0 z-40 w-screen h-screen" :class="globalCustomClass">
             <div :class="modalCustomClass" class="z-50 centered-fixed">
-                <slot class="" />
+                <slot
+                    class=""
+                    :close="
+                        () => {
+                            $emit('close')
+                        }
+                    "
+                />
             </div>
 
             <div class="absolute w-full h-full bg-gray-800 opacity-50" @click.prevent="$emit('close')" />
