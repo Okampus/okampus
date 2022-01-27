@@ -108,6 +108,14 @@
         },
         created () {
             document.querySelector(':root').className = this.$store.state.userConfig.theme
+            const cookie = this.$cookies.get('accessTokenExpiresAt')
+            if (cookie) {
+                if (cookie > Date.now()) {
+                    this.$store.dispatch('auth/me')
+                } else {
+                    this.$store.dispatch('logout')
+                }
+            }
         },
         mounted () {
             watch(() => this.$store.getters['userConfig/getTheme'], (theme) => {

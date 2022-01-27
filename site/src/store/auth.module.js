@@ -22,6 +22,15 @@ export const auth = {
     namespaced: true,
     state: initialState,
     actions: {
+        me({ commit }) {
+            return AuthService.me().then(
+                (response) => {
+                    commit('getSuccess', response)
+                    return Promise.resolve(response)
+                },
+                (error) => Promise.reject(error),
+            )
+        },
         redirectIfNotLoggedIn({ state }) {
             if (!state.status.loggedIn) {
                 redirectToHome()
@@ -43,17 +52,11 @@ export const auth = {
             AuthService.logout()
             commit('logoutSuccess')
         },
-        getUser({ commit }) {
-            return AuthService.getUser().then(
-                (response) => {
-                    commit('getSuccess', response)
-                    return Promise.resolve(response)
-                },
-                (error) => Promise.reject(error),
-            )
-        },
     },
     mutations: {
+        getSuccess(state, user) {
+            state.user = user
+        },
         loginSuccess(state, user) {
             state.status.loggedIn = true
             state.user = user
@@ -69,9 +72,6 @@ export const auth = {
             redirectToHome()
             state.user = null
             localStorage.removeItem('user')
-        },
-        getSuccess(state, user) {
-            state.me = user
         },
     },
 }

@@ -9,12 +9,12 @@ class AuthService {
         return res.data
     }
 
-    logout() {
-        $axios.get('auth/logout', { withCredentials: true })
+    async me(query) {
+        return $axios.get('auth/me', { params: query }).then((res) => res.data)
     }
 
-    getUser(query) {
-        return $axios.get('auth/me', { params: query }).then((res) => res.data)
+    logout() {
+        $axios.get('auth/logout', { withCredentials: true })
     }
 }
 

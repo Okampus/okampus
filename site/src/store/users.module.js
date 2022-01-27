@@ -3,6 +3,7 @@ import { uniqBy } from 'lodash'
 import { ITEMS_PER_PAGE, settleQuery } from './constants'
 
 const initialState = {
+    currentUser: { user: null },
     userList: [],
     userListPage: 1,
     favoriteList: [],
@@ -31,42 +32,12 @@ export const users = {
                     ...query,
                 }),
             ),
-        //  {
-        //     return UsersService.getUserList().then(
-        //         (success) => {
-        //             commit('getUsersSuccess', success)
-        //             return Promise.resolve(success)
-        //         },
-        //         (error) => {
-        //             console.log(error)
-        //             return Promise.reject(error)
-        //         },
-        //     )
-        // },
-        getUserById({ commit }, userId) {
-            return UsersService.getUserById(userId).then(
-                (success) => {
-                    commit('fetchUserSuccess', success)
-                    return Promise.resolve(success)
-                },
-                (error) => {
-                    console.log(error)
-                    return Promise.reject(error)
-                },
-            )
-        },
-        getUserSocials({ commit }, userId) {
-            return UsersService.getUserSocials(userId).then(
-                (success) => {
-                    commit('fetchSocialsAccountsSuccess', success)
-                    return Promise.resolve(success)
-                },
-                (error) => {
-                    console.log(error)
-                    return Promise.reject(error)
-                },
-            )
-        },
+        getUser: ({ commit }, userId) =>
+            settleQuery({ commit, mutation: 'getUserSuccess' }, UsersService.getUser(userId)),
+        updateUser: ({ commit }, newUser) =>
+            settleQuery({ commit, mutation: 'updateUserSuccess' }, UsersService.updateUser(newUser)),
+        getUserSocialList: ({ commit }, userId) =>
+            settleQuery({ commit, mutation: 'getUserSocialList' }, UsersService.getUserSocialList(userId)),
         getSocials({ commit }) {
             return UsersService.getSocials().then(
                 (success) => {
@@ -95,19 +66,6 @@ export const users = {
             return UsersService.getUserClubs(userId).then(
                 (success) => {
                     commit('fetchUserClubsSuccess', success)
-                    return Promise.resolve(success)
-                },
-                (error) => {
-                    console.log(error)
-                    return Promise.reject(error)
-                },
-            )
-        },
-        updateUser({ commit }, newUser) {
-            newUser = { description: newUser.description }
-            return UsersService.updateUser(newUser).then(
-                (success) => {
-                    commit('modifyUserSuccess', success)
                     return Promise.resolve(success)
                 },
                 (error) => {
@@ -327,7 +285,10 @@ export const users = {
             state.userList = uniqBy([...state.userList, ...users], 'userId')
             state.userListPage++
         },
-        fetchUserSuccess(state, user) {
+        getUserSuccess(state, user) {
+            state.currentUser = user
+        },
+        updateUserSuccess(state, user) {
             state.user = user
         },
         fetchSocialsAccountsSuccess(state, socialsAccounts) {
@@ -335,9 +296,6 @@ export const users = {
         },
         fetchSocialsSuccess(state, socials) {
             state.socials = socials
-        },
-        modifyUserSuccess(state, user) {
-            state.user = user
         },
         addSocialAccountSuccess(state, socialAccount) {
             state.socialsAccounts.push(socialAccount)

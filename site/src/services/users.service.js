@@ -1,11 +1,11 @@
 import $axios from '../shared/config/axios.config'
 
 class UsersService {
-    async getUserById(userId) {
+    async getUser(userId) {
         return await $axios.get(`users/${userId}`).then((res) => res.data)
     }
 
-    async getUserSocials(userId) {
+    async getUserSocialList(userId) {
         return await $axios.get(`socials/user/${userId}`).then((res) => res.data)
     }
 

@@ -3,12 +3,17 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
     {
         path: '/',
-        component: () => import('@/views/LandingPage.vue'),
+        component: () => import('@/views/App/LandingPage.vue'),
     },
 
     {
         path: '/admin',
         component: () => import('@/views/Dashboard/DashboardAdmin.vue'),
+    },
+
+    {
+        path: '/auth',
+        component: () => import('@/views/App/AuthComponent.vue'),
     },
 
     {
