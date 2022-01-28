@@ -22,13 +22,14 @@
             </button>
         </div>
         <div class="hidden my-auto mx-2 md:block">
-            <div class="flex object-cover flex-col justify-center w-32 h-24 rounded bg-2">
-                <font-awesome-icon icon="bookmark" class="text-xl text-center text-2" />
+            <div class="flex object-cover flex-col justify-center items-center w-24 h-24 rounded bg-2">
+                <font-awesome-icon icon="bookmark" class="text-2xl text-center text-2" />
             </div>
         </div>
         <div class="flex flex-col justify-between my-2 ml-4 w-full md:ml-0">
             <div>
-                <div class="flex">
+                <!-- TODO: Retrieve thread data -->
+                <!-- <div class="flex">
                     <router-link
                         :to="`/posts/${post.postId}`"
                         class="mr-4 text-xl font-semibold whitespace-nowrap text-0"
@@ -36,7 +37,7 @@
                         {{ post.title }}
                     </router-link>
                     <TagList :tags="post.tags" />
-                </div>
+                </div> -->
                 <p class="text-5">
                     Publié par {{ post.author.fullname }} {{ timeAgo(new Date(post.createdAt)) }}, dernière
                     mise à jour {{ timeAgo(new Date(post.contentLastUpdatedAt)) }}
@@ -49,9 +50,12 @@
                     class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded cursor-pointer text-5"
                     @click="actionsMap[action].action"
                 >
-                    <font-awesome-icon :icon="actionsMap[action].icon" />
+                    <font-awesome-icon :icon="actionsMap[action].icon" :class="actionsMap[action].class" />
 
-                    <p class="hidden pl-1 text-sm tracking-tighter md:block text-2">
+                    <p
+                        class="hidden pl-1 text-sm tracking-tighter md:block text-2"
+                        :class="actionsMap[action].class"
+                    >
                         {{ actionsMap[action].name() }}
                     </p>
                 </div>
@@ -61,11 +65,11 @@
 </template>
 
 <script>
-    import TagList from '@/components/List/TagList.vue'
+    // import TagList from '@/components/List/TagList.vue'
     import { timeAgo } from '@/utils/timeAgo'
 
     export default {
-        components: { TagList },
+        // components: { TagList },
         props: {
             post: {
                 type: Object,
@@ -91,12 +95,10 @@
                     },
                     favorite: {
                         name: () => 'Favori',
-                        icon: this.post?.userFavorited ? 'star' : ['far', 'star'],
-                        class: this.post?.userFavorited
-                            ? 'hover:text-yellow-600 text-yellow-500'
-                            : 'hover:text-yellow-500',
+                        icon: 'star',
+                        class: 'hover:text-yellow-600 text-yellow-500',
                         action: () => {
-                            this.post.userFavorited ? this.deleteFavorite() : this.addFavorite()
+                            this.deleteFavorite()
                         },
                     },
                     flag: {
@@ -109,25 +111,16 @@
                 }
             },
         },
-        mounted() {
-            this.fetchPost()
-        },
         methods: {
             timeAgo,
-            fetchPost() {
-                this.$store.dispatch('threads/fetchThread', this.post.postId)
-            },
-            addFavorite() {
-                this.$store.dispatch('users/addFavoritePost', this.post.postId)
-            },
-            deleteFavorite() {
-                this.$store.dispatch('users/deleteFavoritePost', this.post.postId)
-            },
             sendVote(vote) {
-                this.$store.dispatch('users/votePostFav', {
-                    postId: this.post.postId,
+                this.$store.dispatch('threads/voteContent', {
+                    contentId: this.post.contentId,
                     value: vote,
                 })
+            },
+            deleteFavorite() {
+                this.$store.dispatch('user/deleteFavorite', this.post.contentId)
             },
         },
     }

@@ -21,11 +21,11 @@
     export default {
         components: { ThreadPreviewCard },
         data() {
-            return { threads: this.$store.getters['threads/getThreadList'] }
+            return { threads: this.$store.getters['threads/getThreads'] }
         },
         computed: {
             loggedIn () {
-                return this.$store.state.auth.status.loggedIn
+                return this.$store.state.auth.loggedIn
             },
         },
         mounted () {
@@ -33,7 +33,7 @@
                 this.refreshThreads()
             }
 
-            watch(() => this.$store.getters['threads/getThreadList'], (threads) => {
+            watch(() => this.$store.getters['threads/getThreads'], (threads) => {
                 this.threads = threads
             })
 
@@ -42,13 +42,13 @@
             })
 
             this.$emitter.on('logout', () => {
-                this.$store.commit('threads/refreshThreadList')
+                this.$store.commit('threads/refreshThreads')
             })
         },
         methods: {
             refreshThreads () {
-                this.$store.commit('threads/refreshThreadList')
-                this.$store.dispatch('threads/getThreadList')
+                this.$store.commit('threads/refreshThreads')
+                this.$store.dispatch('threads/getThreads')
             },
         },
     }

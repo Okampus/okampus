@@ -38,7 +38,7 @@ const routes = [
 
     {
         path: '/posts',
-        component: () => import('@/views/Thread/ThreadList.vue'),
+        component: () => import('@/views/Thread/Threads.vue'),
     },
 
     {
@@ -63,7 +63,7 @@ const routes = [
 
     {
         path: '/me/favorites',
-        component: () => import('@/views/User/UserFavorites.vue'),
+        component: () => import('@/views/User/UserFavoriteList.vue'),
     },
 
     {

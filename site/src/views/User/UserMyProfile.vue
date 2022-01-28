@@ -4,7 +4,7 @@
             <h3 class="mb-8 text-4xl font-bold text-0">Paramètres</h3>
         </div>
 
-        <AppTabs v-model:tab="tab" :tabs="tabs" class="absolute top-32 w-full card">
+        <AppTabs v-model:tab="tab" :tabs="tabs" class="absolute top-32 w-full card" route-base="/me">
             <template #profile>
                 <ProfileModal />
             </template>

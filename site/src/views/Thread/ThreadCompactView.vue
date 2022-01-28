@@ -179,7 +179,7 @@
         },
         computed: {
             loggedIn () {
-                return this.$store.state.auth.status.loggedIn
+                return this.$store.state.auth.loggedIn
             },
             user () {
                 return this.$store.state.auth.user

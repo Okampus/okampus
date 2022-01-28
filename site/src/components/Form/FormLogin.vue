@@ -93,7 +93,6 @@
             },
             handleLogin () {
                 this.loading = true
-                console.log(this.user)
                 if (this.user.username && this.user.password) {
                     this.$store.dispatch('auth/login', this.user).then(
                         (data) => {

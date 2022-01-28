@@ -12,17 +12,18 @@
                     <p class="text-5">
                         Publié par {{ comment.author.fullname }} {{ timeAgo(new Date(comment.createdAt)) }}
                     </p>
-                    <router-link
+                    <!-- TODO: find parent post to link it -->
+                    <!-- <router-link
                         :to="`/posts/${comment.post.postId}`"
                         class="mr-4 text-lg line-clamp-2 text-0"
-                    >
-                        {{ extractTextFromTipTapJSON(JSON.parse(comment.body)) }}
-                    </router-link>
+                    > -->
+                    {{ extractTextFromTipTapJSON(JSON.parse(comment.body)) }}
+                    <!-- </router-link> -->
                 </div>
-                <div class="flex gap-2 items-center">
+                <div class="flex gap-6 items-center">
                     <div class="flex gap-2">
                         <div
-                            class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded text-5"
+                            class="flex items-center py-1.5 hover:bg-3-light hover:dark:bg-3-dark rounded text-5"
                         >
                             <font-awesome-icon
                                 class="block pl-1 tracking-tighter cursor-pointer"
@@ -35,15 +36,21 @@
                             </p>
                         </div>
                     </div>
+
                     <div
                         v-for="(action, i) in actions"
                         :key="i"
-                        class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded cursor-pointer text-5"
+                        class="flex items-center py-1.5 hover:bg-3-light hover:dark:bg-3-dark rounded cursor-pointer text-5"
                         @click="actionsMap[action].action"
                     >
-                        <font-awesome-icon :icon="actionsMap[action].icon" />
-
-                        <p class="hidden pl-1 text-sm tracking-tighter md:block text-2">
+                        <font-awesome-icon
+                            :icon="actionsMap[action].icon"
+                            :class="actionsMap[action].class"
+                        />
+                        <p
+                            class="hidden pl-1 text-sm tracking-tighter md:block text-2"
+                            :class="actionsMap[action].class"
+                        >
                             {{ actionsMap[action].name() }}
                         </p>
                     </div>
@@ -76,12 +83,10 @@
                 return {
                     favorite: {
                         name: () => 'Favori',
-                        icon: this.comment?.userFavorited ? 'star' : ['far', 'star'],
-                        class: this.comment?.userFavorited
-                            ? 'hover:text-yellow-600 text-yellow-500'
-                            : 'hover:text-yellow-500',
+                        icon: 'star',
+                        class: 'hover:text-yellow-600 text-yellow-500',
                         action: () => {
-                            this.comment.userFavorited ? this.deleteFavorite() : this.addFavorite()
+                            this.deleteFavorite()
                         },
                     },
                     flag: {
@@ -98,16 +103,13 @@
             timeAgo,
             extractTextFromTipTapJSON,
             sendVote(vote) {
-                this.$store.dispatch('users/voteCommentFav', {
-                    commentId: this.comment.commentId,
+                this.$store.dispatch('threads/voteContent', {
+                    contentId: this.comment.contentId,
                     value: vote,
                 })
             },
-            addFavorite() {
-                this.$store.dispatch('users/addFavoriteComment', this.comment.commentId)
-            },
             deleteFavorite() {
-                this.$store.dispatch('users/deleteFavoriteComment', this.comment.commentId)
+                this.$store.dispatch('user/deleteFavorite', this.comment.contentId)
             },
         },
     }

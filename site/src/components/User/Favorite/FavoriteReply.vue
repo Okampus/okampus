@@ -3,7 +3,7 @@
         <div
             class="flex object-cover flex-col justify-center px-8 ml-4 border-l-2 border-dashed border-color-2-alt"
         >
-            <font-awesome-icon icon="comment" class="hidden text-4xl text-center md:block text-2" />
+            <font-awesome-icon icon="comment" class="hidden text-4xl text-center md:block" />
         </div>
         <div class="flex w-full">
             <div class="flex flex-col justify-between my-2">
@@ -11,14 +11,15 @@
                     <p class="text-5">
                         Publié par {{ reply.author.fullname }} {{ timeAgo(new Date(reply.createdAt)) }}
                     </p>
-                    <router-link :to="`/posts/${reply.post.postId}`" class="mr-4 text-lg line-clamp-2 text-0">
-                        {{ extractTextFromTipTapJSON(JSON.parse(reply.body)) }}
-                    </router-link>
+                    <!-- TODO: find parent post to link it -->
+                    <!-- <router-link :to="`/posts/${reply.post.postId}`" class="mr-4 text-lg line-clamp-2 text-0"> -->
+                    {{ extractTextFromTipTapJSON(JSON.parse(reply.body)) }}
+                    <!-- </router-link> -->
                 </div>
                 <div class="flex gap-2 items-center">
                     <div class="flex gap-2">
                         <div
-                            class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded cursor-pointer text-5"
+                            class="flex items-center py-1.5 hover:bg-3-light hover:dark:bg-3-dark rounded cursor-pointer text-5"
                         >
                             <font-awesome-icon
                                 class="block pl-1 tracking-tighter cursor-pointer"
@@ -30,9 +31,7 @@
                                 {{ reply.upvotes }}
                             </p>
                         </div>
-                        <div
-                            class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded text-5"
-                        >
+                        <div class="flex items-center py-1.5 hover:bg-3-light hover:dark:bg-3-dark rounded">
                             <font-awesome-icon
                                 class="pl-1 tracking-tighter cursor-pointer"
                                 :icon="reply.userVote === -1 ? 'thumbs-down' : ['far', 'thumbs-down']"
@@ -46,11 +45,17 @@
                     <div
                         v-for="(action, i) in actions"
                         :key="i"
-                        class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded text-5"
+                        class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded"
                         @click="actionsMap[action].action"
                     >
-                        <font-awesome-icon :icon="actionsMap[action].icon" />
-                        <p class="hidden pl-1 text-sm tracking-tighter md:block text-2">
+                        <font-awesome-icon
+                            :icon="actionsMap[action].icon"
+                            :class="actionsMap[action].class"
+                        />
+                        <p
+                            class="hidden pl-1 text-sm tracking-tighter md:block"
+                            :class="actionsMap[action].class"
+                        >
                             {{ actionsMap[action].name() }}
                         </p>
                     </div>
@@ -91,12 +96,10 @@
                     },
                     favorite: {
                         name: () => 'Favori',
-                        icon: this.reply?.userFavorited ? 'star' : ['far', 'star'],
-                        class: this.reply?.userFavorited
-                            ? 'hover:text-yellow-600 text-yellow-500'
-                            : 'hover:text-yellow-500',
+                        icon: 'star',
+                        class: 'hover:text-yellow-600 text-yellow-500',
                         action: () => {
-                            this.reply?.userFavorited ? this.deleteFavorite() : this.addFavorite()
+                            this.deleteFavorite()
                         },
                     },
                     flag: {
@@ -113,16 +116,13 @@
             timeAgo,
             extractTextFromTipTapJSON,
             sendVote(vote) {
-                this.$store.dispatch('users/voteReplyFav', {
-                    replyId: this.reply.replyId,
+                this.$store.dispatch('threads/voteContent', {
+                    contentId: this.reply.contentId,
                     value: vote,
                 })
             },
-            addFavorite() {
-                this.$store.dispatch('users/addFavoriteReply', this.reply.replyId)
-            },
             deleteFavorite() {
-                this.$store.dispatch('users/deleteFavoriteReply', this.reply.replyId)
+                this.$store.dispatch('user/deleteFavorite', this.reply.contentId)
             },
         },
     }

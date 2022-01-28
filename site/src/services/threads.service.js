@@ -1,7 +1,7 @@
 import $axios from '../shared/config/axios.config'
 
 class ThreadsService {
-    async getThreadList(query) {
+    async getThreads(query) {
         return await $axios.get('threads', { params: query }).then((res) => res.data.items)
     }
 

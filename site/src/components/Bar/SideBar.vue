@@ -57,7 +57,7 @@
                 </div>
                 <div class="flex flex-wrap justify-center items-center py-4 px-2 space-x-4">
                     <p class="text-1 text-bold">Mode Sombre</p>
-                    <SwitchInput v-model="theme" @click="$store.dispatch('userConfig/switchTheme')" />
+                    <SwitchInput v-model="theme" @click="$store.dispatch('user/switchTheme')" />
                 </div>
             </div>
         </div>
@@ -87,10 +87,10 @@
         ],
         computed: {
             theme () {
-                return this.$store.state.userConfig.theme === 'dark'
+                return this.$store.state.user.theme === 'dark'
             },
             loggedIn () {
-                return this.$store.state.auth.status.loggedIn ?? false
+                return this.$store.state.auth.loggedIn ?? false
             },
             links() {
                 return ({

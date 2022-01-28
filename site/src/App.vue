@@ -107,7 +107,7 @@
             }
         },
         created () {
-            document.querySelector(':root').className = this.$store.state.userConfig.theme
+            document.querySelector(':root').className = this.$store.state.user.theme
             const cookie = this.$cookies.get('accessTokenExpiresAt')
             if (cookie) {
                 if (cookie > Date.now()) {
@@ -118,7 +118,7 @@
             }
         },
         mounted () {
-            watch(() => this.$store.getters['userConfig/getTheme'], (theme) => {
+            watch(() => this.$store.getters['user/getTheme'], (theme) => {
                 document.querySelector(':root').className = theme
             })
 

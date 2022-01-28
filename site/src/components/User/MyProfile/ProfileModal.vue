@@ -1,6 +1,6 @@
 <template>
     <div v-if="userClubs === undefined || userClubs === null" class="relative h-32">
-        <AppLoader :class="$store.state.users" />
+        <AppLoader />
     </div>
     <div v-else class="p-4 sm:px-8 text-2">
         <h2 class="text-xl">Profil</h2>
@@ -54,60 +54,49 @@
                             <div>Ajouter un compte</div>
                         </button>
                     </div>
-                    <div v-if="socialsAccounts === null || socialsAccounts.length === 0">
+                    <div v-if="socialAccounts === null || socialAccounts.length === 0">
                         Vous n'avez pas encore lié de compte externe
                     </div>
 
                     <div class="flex">
                         <div class="flex flex-col">
                             <div
-                                v-for="(social, idx) in socialsAccounts"
+                                v-for="(account, idx) in socialAccounts"
                                 :key="idx"
                                 class="flex items-center mb-8 lg:mb-2"
                             >
-                                <div class=" ">
-                                    <div class="flex">
-                                        <i
-                                            v-if="social.social.socialId != null"
-                                            class="my-auto mr-2"
-                                            :class="
-                                                socials.find((a) => a.socialId === social.social.socialId)
-                                                    .icon
-                                            "
-                                        />
-                                        <SelectInput
-                                            v-model="social.social"
-                                            :max-content-width="true"
-                                            :choices="socials.map((sos) => sos.name)"
-                                            :model-value="
-                                                socials.indexOf(
-                                                    socials.find(
-                                                        (a) => a.socialId === social.social.socialId,
-                                                    ),
-                                                )
-                                            "
-                                        />
-                                        <button
-                                            class="block my-auto w-8 h-8 text-xl lg:hidden text-1 red-500"
-                                            @click="rmLineAccount(idx)"
-                                        >
-                                            <font-awesome-icon icon="times" />
-                                        </button>
-                                    </div>
-                                    <div class="flex flex-col lg:hidden">
-                                        <input
-                                            v-model="social.pseudo"
-                                            class="mt-2 input"
-                                            placeholder="Pseudo"
-                                        />
-                                        <input v-model="social.link" class="mt-2 input" placeholder="Lien" />
-                                    </div>
+                                <div class="flex">
+                                    {{ account }}
+                                    <i
+                                        v-if="account.socialId != null"
+                                        class="my-auto mr-2"
+                                        :class="
+                                            socials.find(
+                                                (social) => social.socialId === account.social?.socialId,
+                                            ).icon
+                                        "
+                                    />
+                                    <SelectInput
+                                        v-model="account.social"
+                                        :max-content-width="true"
+                                        :choices="socials.map((sos) => sos.name)"
+                                    />
+                                    <button
+                                        class="block my-auto w-8 h-8 text-xl lg:hidden text-1 red-500"
+                                        @click="rmLineAccount(idx)"
+                                    >
+                                        <font-awesome-icon icon="times" />
+                                    </button>
+                                </div>
+                                <div class="flex flex-col lg:hidden">
+                                    <input v-model="account.pseudo" class="mt-2 input" placeholder="Pseudo" />
+                                    <input v-model="account.link" class="mt-2 input" placeholder="Lien" />
                                 </div>
                             </div>
                         </div>
                         <div class="hidden flex-col lg:flex">
                             <div
-                                v-for="(social, idx) in socialsAccounts"
+                                v-for="(social, idx) in socialAccounts"
                                 :key="idx"
                                 class="flex items-center mb-2"
                             >
@@ -116,7 +105,7 @@
                         </div>
                         <div class="hidden flex-col lg:flex">
                             <div
-                                v-for="(social, idx) in socialsAccounts"
+                                v-for="(social, idx) in socialAccounts"
                                 :key="idx"
                                 class="flex items-center mb-2"
                             >
@@ -163,7 +152,7 @@
                 v-model="avatarShown"
                 field="file"
                 img-format="jpg"
-                :url="`${API_URL}files/profile-images`"
+                :url="`${apiUrl}/files/profile-images`"
                 lang-type="fr"
                 :with-credentials="true"
                 @crop-upload-success="cropUploadSuccess"
@@ -179,8 +168,8 @@
     import SelectInput from '@/components/Input/SelectInput.vue';
     import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue';
     import AvatarImage from '@/components/User/UserAvatar.vue';
-    import _ from 'lodash';
-    import { watch } from 'vue';
+    // import _ from 'lodash';
+    // import { watch } from 'vue';
 
     export default {
         components: {
@@ -191,88 +180,33 @@
         },
         data() {
             return {
-                user: this.$store.state.auth.user,
+                apiUrl: import.meta.env.VITE_API_URL,
+                defaultAvatar,
+                socialAccounts: [],
                 submitSuccess: 0,
-                userClubs: null,
-                socialsAccounts: null,
-                defaultAvatar: defaultAvatar,
                 avatarShown: false,
-                API_URL: `${import.meta.env.VITE_API_URL}/`,
                 blagues: blagues,
                 submitMessage: '',
             };
         },
-        computed: {},
+        computed: {
+            user() {
+                return this.$store.state.auth.user
+            },
+            userClubs() {
+                return this.$store.state.user.clubs
+            },
+            // socialAccounts() {
+            //     return this.$store.state.user.socialAccounts
+            // },
+            socials() {
+                return this.$store.state.user.enumSocials
+            },
+        },
 
         mounted() {
             if (this.user != null && this.user != undefined) {
-                this.$store.dispatch('auth/getUser', this.user.userId)
-
-                watch(
-                    () => this.$store.state.auth.me,
-                    (newUser) => {
-                        this.user = newUser
-                    },
-                )
-
-                this.user = this.$store.state.auth.user
-
-                watch(
-                    () => this.$store.state.users.userClubs,
-                    (newClubs) => {
-
-                        this.userClubs = [...newClubs]
-                    },
-                )
-
-                watch(
-                    () => this.userClubs,
-                    (updClubs) => {
-                        for (let i= 0; i<updClubs.length;i++) {
-                            if (Number.isInteger(updClubs[i].role)) {
-                                updClubs[i].role = this.roles[updClubs[i].role]
-                            }
-                            if (Number.isInteger(updClubs[i].club)) {
-                                updClubs[i].club = { clubId: this.userClubs.items[updClubs[i].club].clubId }
-                            }
-                        }
-                        this.userClubs = updClubs
-                    },
-                    { deep: true },
-                )
-
-                watch(
-                    () => this.$store.state.users.socialsAccounts,
-                    (newSocials) => {
-                        this.socialsAccounts = _.cloneDeep(newSocials)
-                    },
-                )
-
-                watch(
-                    () => this.socialsAccounts,
-                    (updSocial) => {
-                        for (let i=0;i<updSocial.length; i++) {
-                            if (typeof(updSocial[i].social)==='number') {
-                                updSocial[i].social = { socialId: this.socials[updSocial[i].social].socialId }
-                            }
-                        }
-                        if (_.isEqual(this.socialsAccounts ,updSocial)) {
-                            this.socialsAccounts = updSocial
-                        }
-                    },
-                    { deep: true },
-                )
-
-                this.$store.dispatch('users/getUserById',this.user.userId).then(() => {
-                    this.$store.dispatch('users/getUserClubList', this.user.userId)
-                    this.$store.dispatch('users/getUserSocials',this.user.userId)
-                    this.$store.dispatch('users/getSocials')
-                    this.$store.dispatch('users/getClubs')
-                }).catch(() => {
-                    // TODO: add toast
-                    console.log('Redirected in modal')
-                    this.$router.push('/')
-                })
+                this.$store.dispatch('user/getProfile')
             }
         },
         methods: {
@@ -286,86 +220,89 @@
             cropUploadSuccess: function cropUploadSuccess(jsonData) {
                 console.log(jsonData.profileImageId);
             },
-            addLineAccount: function addLineAccount() {
-                this.socialsAccounts.push({
+            addLineAccount() {
+                this.socialAccounts.push({
                     social: { socialId: null },
                     pseudo: null,
                     link: null,
                 });
             },
             rmLineAccount: function rmLineAccount(indx) {
-                this.socialsAccounts.splice(indx,1);
+                this.socialAccounts.splice(indx,1);
             },
             submit: function submit() {
-                function canSocialBePosted(social) {
-                    if (social.pseudo === null) {
-                        return false
-                    }
-                    if (social.social.socialId===null) {
-                        return false
-                    }
-                    return true
-                }
-                this.submitMessage = 'Enregistré'
-                this.submitSuccess = 1
+                // TODO: entire refactor using Vuelidate
 
-                if (this.user.description ==='' || this.user.description === null || this.user.description === undefined) {
-                    const blague = blagues[Math.floor(Math.random()*blagues.length)]
-                    this.user.description = `${blague.question}\n${blague.answer}`
-                    this.submitMessage = 'Nous vous avons ajouté une blague en description :)'
-                }
 
-                this.$store.dispatch('users/updateUser',this.user).then().catch(() => {
-                    this.submitSuccess = -1
-                })
+                // function canSocialBePosted(social) {
+                //     if (social.pseudo === null) {
+                //         return false
+                //     }
+                //     if (social.social.socialId===null) {
+                //         return false
+                //     }
+                //     return true
+                // }
+                // this.submitMessage = 'Enregistré'
+                // this.submitSuccess = 1
 
-                for ( let i =0; i < this.socialsAccounts.length; i++) {
-                    if (canSocialBePosted(this.socialsAccounts[i])) {
-                        if (!this.$store.state.users.socialsAccounts.find((a) => _.isEqual(a,this.socialsAccounts[i]))) {
-                            if (this.socialsAccounts[i].socialAccountId == null) {
-                                this.$store.dispatch('users/addSocialAccount',{
-                                    userId: this.user.userId,
-                                    socialId: this.socialsAccounts[i].social.socialId,
-                                    pseudo: this.socialsAccounts[i].pseudo,
-                                    link: this.socialsAccounts[i].link,
-                                }).then().catch(() => {
-                                    this.submitSuccess = -1
-                                    this.submitMessage = "Erreur lors de l'ajout du compte"
-                                })
-                            } else {
-                                if (this.socialsAccounts[i].social.socialId != this.$store.state.users.socialsAccounts.find((a) => a.socialAccountId === this.socialsAccounts[i].socialAccountId ).social.socialId) {
-                                    this.$store.dispatch('users/replaceSocialAccount',{
-                                        userId: this.user.userId,
-                                        socialAccountId: this.socialsAccounts[i].socialAccountId,
-                                        socialId: this.socialsAccounts[i].social.socialId,
-                                        pseudo: this.socialsAccounts[i].pseudo,
-                                        link: this.socialsAccounts[i].link,
-                                    }).then().catch(() => {
-                                        this.submitSuccess = -1
-                                        this.submitMessage = 'Erreur lors du changement du type de compte'
-                                    })
-                                }
-                                else {
-                                    this.$store.dispatch('users/updateSocialAccount',{
-                                        socialAccountId: this.socialsAccounts[i].socialAccountId,
-                                        pseudo: this.socialsAccounts[i].pseudo,
-                                        link: this.socialsAccounts[i].link,
-                                    }).then().catch(() => {
-                                        this.submitSuccess = -1
-                                        this.submitMessage = 'Erreur lors de la modification du compte'
-                                    })
-                                }
-                            }
-                        }
-                    }
-                }
-                for ( let i =0; i < this.$store.state.users.socialsAccounts.length; i++) {
-                    if (!this.socialsAccounts.find((a) => a.socialAccountId === this.$store.state.users.socialsAccounts[i].socialAccountId)) {
-                        this.$store.dispatch('users/deleteSocialAccount',this.$store.state.users.socialsAccounts[i].socialAccountId).then().catch(
-                            this.submitSuccess = -1,
-                        )
-                    }
-                }
+                // if (this.user.description ==='' || this.user.description === null || this.user.description === undefined) {
+                //     const blague = blagues[Math.floor(Math.random()*blagues.length)]
+                //     this.user.description = `${blague.question}\n${blague.answer}`
+                //     this.submitMessage = 'Nous vous avons ajouté une blague en description :)'
+                // }
+
+                // this.$store.dispatch('users/updateUser',this.user).then().catch(() => {
+                //     this.submitSuccess = -1
+                // })
+
+                // for ( let i =0; i < this.socialAccounts.length; i++) {
+                //     if (canSocialBePosted(this.socialAccounts[i])) {
+                //         if (!this.$store.state.profiles.currentUser.socialAccounts.find((a) => _.isEqual(a,this.socialAccounts[i]))) {
+                //             if (this.socialAccounts[i].socialAccountId == null) {
+                //                 this.$store.dispatch('users/addSocialAccount',{
+                //                     userId: this.user.userId,
+                //                     socialId: this.socialAccounts[i].social.socialId,
+                //                     pseudo: this.socialAccounts[i].pseudo,
+                //                     link: this.socialAccounts[i].link,
+                //                 }).then().catch(() => {
+                //                     this.submitSuccess = -1
+                //                     this.submitMessage = "Erreur lors de l'ajout du compte"
+                //                 })
+                //             } else {
+                //                 if (this.socialAccounts[i].social.socialId != this.$store.state.profiles.currentUser.socialAccounts.find((a) => a.socialAccountId === this.socialAccounts[i].socialAccountId ).social.socialId) {
+                //                     this.$store.dispatch('users/replaceSocialAccount',{
+                //                         userId: this.user.userId,
+                //                         socialAccountId: this.socialAccounts[i].socialAccountId,
+                //                         socialId: this.socialAccounts[i].social.socialId,
+                //                         pseudo: this.socialAccounts[i].pseudo,
+                //                         link: this.socialAccounts[i].link,
+                //                     }).then().catch(() => {
+                //                         this.submitSuccess = -1
+                //                         this.submitMessage = 'Erreur lors du changement du type de compte'
+                //                     })
+                //                 }
+                //                 else {
+                //                     this.$store.dispatch('users/updateSocialAccount',{
+                //                         socialAccountId: this.socialAccounts[i].socialAccountId,
+                //                         pseudo: this.socialAccounts[i].pseudo,
+                //                         link: this.socialAccounts[i].link,
+                //                     }).then().catch(() => {
+                //                         this.submitSuccess = -1
+                //                         this.submitMessage = 'Erreur lors de la modification du compte'
+                //                     })
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
+                // for ( let i =0; i < this.$store.state.profiles.currentUser.socialAccounts.length; i++) {
+                //     if (!this.socialAccounts.find((a) => a.socialAccountId === this.$store.state.profiles.currentUser.socialAccounts[i].socialAccountId)) {
+                //         this.$store.dispatch('users/deleteSocialAccount',this.$store.state.profiles.currentUser.socialAccounts[i].socialAccountId).then().catch(
+                //             this.submitSuccess = -1,
+                //         )
+                //     }
+                // }
             },
         },
     }

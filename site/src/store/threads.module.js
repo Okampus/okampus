@@ -6,8 +6,8 @@ import { ITEMS_PER_PAGE, settleQuery } from './constants'
 
 const initialState = {
     currentThread: null,
-    threadList: [],
-    threadListPage: 1,
+    threads: [],
+    threadsPage: 1,
 }
 
 const updateThreadChildren = (thread) => {
@@ -78,19 +78,19 @@ export const threads = {
     namespaced: true,
     state: initialState,
     getters: {
+        getThreads(state) {
+            return state.threads
+        },
         getCurrentThread(state) {
             return state.currentThread
         },
-        getThreadList(state) {
-            return state.threadList
-        },
     },
     actions: {
-        getThreadList: ({ commit, state }, query) =>
+        getThreads: ({ commit, state }, query) =>
             settleQuery(
-                { commit, mutation: 'getThreadListSuccess' },
-                ThreadsService.getThreadList({
-                    page: state.threadListPage,
+                { commit, mutation: 'getThreadsSuccess' },
+                ThreadsService.getThreads({
+                    page: state.threadsPage,
                     itemsPerPage: ITEMS_PER_PAGE,
                     ...query,
                 }),
@@ -141,16 +141,16 @@ export const threads = {
             ),
     },
     mutations: {
-        refreshThreadList(state) {
-            state.threadList = []
-            state.threadListPage = 1
+        refreshThreads(state) {
+            state.threads = []
+            state.threadsPage = 1
         },
-        getThreadListSuccess(state, threads) {
-            state.threadList = uniqBy([...state.threadList, ...threads], 'contentMasterId')
-            state.threadListPage++
+        getThreadsSuccess(state, threads) {
+            state.threads = uniqBy([...state.threads, ...threads], 'contentMasterId')
+            state.threadsPage++
         },
         addThreadSuccess(state, thread) {
-            state.threadList.unshift(thread)
+            state.threads.unshift(thread)
         },
         getThreadSuccess(state, thread) {
             state.currentThread = updateThreadChildren(thread)
@@ -233,7 +233,7 @@ export const threads = {
                 state.currentThread = null
                 router.push('/')
             }
-            state.threadList = state.threadList.filter((thread) => thread.contentMasterId !== contentMasterId)
+            state.threads = state.threads.filter((thread) => thread.contentMasterId !== contentMasterId)
         },
         addReplySuccess(state, reply) {
             state.currentThread.replies.unshift(reply)

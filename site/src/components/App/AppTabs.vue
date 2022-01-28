@@ -31,11 +31,15 @@
                 type: Number,
                 default: 0,
             },
+            routeBase: {
+                type: String,
+                default: '',
+            },
         },
         emits: ['update:tab'],
         watch: { $route: 'updateComponent' },
         created() {
-            this.updateTab(this.tab)
+            this.updateComponent()
         },
         methods: {
             getTabFromRoute() {
@@ -51,7 +55,7 @@
             },
             updateTab(newTab) {
                 this.$emit('update:tab', newTab)
-                router.push('/me/' + this.tabs[newTab].id)
+                router.push(`${this.routeBase}/${this.tabs[newTab].id}`)
             },
         },
     }

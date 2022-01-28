@@ -1,28 +1,37 @@
 import { uniqBy } from 'lodash'
 import FilesService from '../services/files.service'
-import { ITEMS_PER_PAGE } from './constants'
+import { ITEMS_PER_PAGE, settleQuery } from './constants'
 
 const initialState = {
-    studyDocs: [],
-    studyDocsPage: 1,
+    studyDocList: [],
+    studyDocListPage: 1,
 }
 
 export const files = {
     namespaced: true,
     state: initialState,
     actions: {
-        searchStudyDocs({ commit }, query) {
-            return FilesService.getStudyDocs(query).then(
-                (studyDocs) => {
-                    commit('searchStudyDocsSuccess', studyDocs)
-                    return Promise.resolve(studyDocs)
-                },
-                (error) => {
-                    console.log(error)
-                    return Promise.reject(error)
-                },
-            )
-        },
+        getStudyDocList: ({ commit, state }, query) =>
+            settleQuery(
+                { commit, mutation: 'getStudyDocListSuccess' },
+                FilesService.getStudyDocList({
+                    page: state.studyDocListPage,
+                    itemsPerPage: ITEMS_PER_PAGE,
+                    ...query,
+                }),
+            ),
+        // {
+        //     return FilesService.getStudyDocs(query).then(
+        //         (studyDocs) => {
+        //             commit('searchStudyDocsSuccess', studyDocs)
+        //             return Promise.resolve(studyDocs)
+        //         },
+        //         (error) => {
+        //             console.log(error)
+        //             return Promise.reject(error)
+        //         },
+        //     )
+        // },
         newSearchStudyDocs({ commit, state }, query) {
             commit('refreshStudyDocs')
             return FilesService.getStudyDocs({

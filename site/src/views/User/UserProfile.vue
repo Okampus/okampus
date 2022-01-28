@@ -1,6 +1,6 @@
 <template>
     <div v-if="user === undefined || user === null">
-        <LoadingComponent />
+        <AppLoader />
     </div>
     <div v-else>
         <div class="pb-2 mx-auto text-1">
@@ -115,7 +115,7 @@
 
 <script>
     import defaultAvatar from '@/assets/img/default_avatars/user.png'
-    import LoadingComponent from '@/components/App/AppLoader.vue'
+    import AppLoader from '@/components/App/AppLoader.vue'
     import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
     import AvatarImage from '@/components/User/UserAvatar.vue'
     import { posts } from '@/fake/posts'
@@ -124,7 +124,7 @@
         components: {
             ThreadPreviewCard,
             AvatarImage,
-            LoadingComponent,
+            AppLoader,
         },
         data() {
             return {
@@ -142,31 +142,30 @@
         },
         computed: {
             user() {
-                return this.$store.state.users.user
+                return this.$store.state.profiles.currentUser.user
             },
             connected() {
                 return this.$store.state.auth.user
             },
             socialsAccounts() {
-                return this.$store.state.users.socialsAccounts
+                return this.$store.state.profiles.currentUser.socialsAccounts
             },
             socials() {
-                return this.$store.state.users.socials
+                return this.$store.state.profiles.currentUser.socials
             },
             clubs() {
-                return this.$store.state.users.clubs
+                return this.$store.state.profiles.currentUser.clubs
             },
             userClubs() {
-                return this.$store.state.users.userClubs
+                return this.$store.state.profiles.currentUser.userClubs
             },
         },
         mounted() {
-            const userId = this.$route.params.userId
-            this.$store.dispatch('users/getUserById', userId)
-            this.$store.dispatch('users/getUserClubs', userId)
-            this.$store.dispatch('users/getUserSocials', userId)
-            this.$store.dispatch('users/getSocials')
-            this.$store.dispatch('users/getClubs')
+            if (this.$route.params.userId) {
+                this.$store.dispatch('profiles/getCurrentUserProfile', this.$route.params.userId)
+            } else {
+                this.$router.push('/')
+            }
         },
     }
 </script>

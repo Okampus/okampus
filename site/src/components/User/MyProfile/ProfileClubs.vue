@@ -1,13 +1,10 @@
 <template>
     <!-- TODO: Refactor all my-auto -->
-    <div
-        v-if="clubs === undefined || clubs === null || userClubs === undefined || userClubs === null"
-        class="relative h-32"
-    >
-        <AppLoader :class="$store.state.users" background="bg-1" />
+    <div v-if="!clubsLoaded" class="relative h-32">
+        <AppLoader />
     </div>
     <div v-else class="text-2">
-        <div v-if="clubsThatIsPresident().length > 0" class="flex h-12 border-b-2 border-color-2-alt">
+        <div v-if="userClubsPresident.length > 0" class="flex h-12 border-b-2 border-color-2-alt">
             <button class="flex px-4 my-auto w-1/2" @click="changeSelectedComponent(1)">
                 <div class="flex mx-auto">
                     <font-awesome-icon
@@ -137,13 +134,13 @@
         </div>
 
         <!-- Gestion des assos (pres/ vice pres) -->
-        <div v-if="componentSelected === 2 && clubsThatIsPresident().length > 0">
+        <div v-if="componentSelected === 2 && userClubsPresident.length > 0">
             <div class="flex">
                 <div
-                    v-if="clubsThatIsPresident().length > 1"
+                    v-if="userClubsPresident.length > 1"
                     class="flex flex-col p-2 w-1/6 border-r-2 border-color-4-alt"
                 >
-                    <div v-for="club in clubsThatIsPresident()" :key="club" class="mb-8">
+                    <div v-for="club in userClubsPresident" :key="club" class="mb-8">
                         <button class="flex text-left" @click="changeSelectedClub(club)">
                             <img
                                 :src="club.club.icon"
@@ -159,10 +156,7 @@
                         </button>
                     </div>
                 </div>
-                <div
-                    class="p-4 w-5/6 sm:px-8"
-                    :class="clubsThatIsPresident().length > 1 ? 'w-5/6' : 'w-full'"
-                >
+                <div class="p-4 w-5/6 sm:px-8" :class="userClubsPresident.length > 1 ? 'w-5/6' : 'w-full'">
                     <h2 class="mb-8 text-xl">Gestion de votre Association</h2>
                     <h3 class="mb-8 text-lg">Informations de l'association</h3>
                     <div class="flex mb-4">
@@ -254,7 +248,7 @@
                             </ul>
                         </div>
                         <div v-else class="relative mt-32 mb-64">
-                            <AppLoader background="bg-1" />
+                            <AppLoader />
                         </div>
                     </div>
                 </div>
@@ -268,8 +262,8 @@
     import SelectInput from '@/components/Input/SelectInput.vue'
     import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue'
     import AvatarImage from '@/components/User/UserAvatar.vue'
-    import _ from 'lodash'
-    import { watch } from 'vue'
+    // import _ from 'lodash'
+    // import { watch } from 'vue'
 
     export default {
         components: {
@@ -289,7 +283,7 @@
                     'Membre': 'member',
                 },
                 user: this.$store.state.auth.user,
-                userClubs: null,
+                userClubs: this.$store.state.user.clubs,
                 clubSelected: null,
                 componentSelected: 1,
                 clubImageShown: false,
@@ -299,73 +293,20 @@
                 submitSuccessNewMember: 0,
             }
         },
-        computed: {},
+        computed: {
+            clubs() {
+                return this.$store.state.user.enumClubs
+            },
+            userClubsPresident() {
+                return this.userClubs.filter((club) => club.role === 'president')
+            },
+            clubsLoaded() {
+                return this.$store.state.user.clubsLoaded
+            },
+        },
         mounted() {
             if (this.user != null && this.user != undefined) {
-                this.$store.dispatch('auth/getUser', this.user.userId)
-                watch(
-                    () => this.$store.state.auth.me,
-                    (newUser) => {
-                        this.user = newUser
-                    },
-                )
-                watch(
-                    () => this.$store.state.users.userClubs,
-                    (newClubs) => {
-                        this.userClubs = [...newClubs]
-                        const clubPres = this.clubsThatIsPresident()
-                        if (clubPres.length > 0) {
-                            this.clubSelected = clubPres[0]
-                            this.$store.dispatch('users/getClubMembers', this.clubSelected.club.clubId)
-                        }
-                    },
-                )
-                watch(
-                    () => this.$store.state.users.clubs,
-                    (newClubs) => {
-                        this.clubs = [...newClubs]
-                    },
-                )
-                watch(
-                    () => [this.$store.state.users.clubMembers, this.clubSelected],
-                    () => {
-                        if (_.isEqual(this.$store.state.users.clubMembers, this.clubMembers)) {
-                            this.clubMembers = null
-                            this.$store.dispatch('users/getClubMembers', this.clubSelected.club.clubId)
-                        } else {
-                            this.clubMembers = _.cloneDeep(this.$store.state.users.clubMembers)
-                        }
-                    },
-                )
-
-                watch(
-                    () => this.clubMembers,
-                    (newClubMember) => {
-                        if (newClubMember != null) {
-                            for (let member of newClubMember) {
-                                if (Number.isInteger(member.role)) {
-                                    member.role = this.roles[Object.keys(this.roles)[member.role]]
-                                    this.clubMembers.find(
-                                        (a) => a.clubMemberId === member.clubMemberId,
-                                    ).role = member.role
-                                    this.$store.dispatch('users/updateClubMember', {
-                                        clubId: this.clubSelected.club.clubId,
-                                        userId: member.user.userId,
-                                        role: member.role,
-                                    })
-                                }
-                            }
-                        }
-                    },
-                    { deep: true },
-                )
-
-                this.$store.dispatch('users/getUserById', this.user.userId)
-                this.$store.dispatch('users/getUserClubs', this.user.userId)
-                this.$store.dispatch('users/getClubs')
-            } else {
-                console.log('Redirected in clubs')
-                this.$router.push('/')
+                this.$store.dispatch('user/getClubs')
             }
         },
         methods: {
@@ -375,9 +316,6 @@
                 } else {
                     this.clubImageShown = true
                 }
-            },
-            clubsThatIsPresident: function clubsThatIsPresident() {
-                return this.userClubs.filter((a) => a.role === 'president' || a.role === 'vice-president')
             },
             changeSelectedClub: function changeSelect(club) {
                 this.clubSelected = club
@@ -391,19 +329,13 @@
                     club: { clubId: null },
                 })
             },
-            leaveClub: function leaveClub(clubId) {
-                this.$store.dispatch('users/leaveClub', {
-                    clubId,
-                    userId: this.user.userId,
-                })
-            },
             toggleShowAddForm: function toggleShowAddForm() {
                 this.showAddForm = !this.showAddForm
             },
             signUp: function signUp() {
                 this.submitSuccessNewMember = 0
                 this.$store
-                    .dispatch('users/addClubMember', {
+                    .dispatch('user/addClubMember', {
                         clubId: this.clubs[this.addingClub].clubId,
                         userId: this.user.userId,
                     })
@@ -416,9 +348,15 @@
                     })
             },
             kickUser: function kickUser(memberId) {
-                this.$store.dispatch('users/deleteClubMember', {
+                this.$store.dispatch('user/deleteClubMember', {
                     clubId: this.clubSelected.club.clubId,
                     userId: memberId,
+                })
+            },
+            leaveClub: function leaveClub(clubId) {
+                this.$store.dispatch('user/deleteClubMember', {
+                    clubId,
+                    userId: this.user.userId,
                 })
             },
         },

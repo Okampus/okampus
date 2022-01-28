@@ -179,11 +179,11 @@
             }
         },
         async mounted() {
-            watch(() => this.$store.getters['threads/getThreadList'], (newThreads) => {
+            watch(() => this.$store.getters['threads/getThreads'], (newThreads) => {
                 this.tabColumns.posts[1] = newThreads
             })
 
-            watch(() => this.$store.getters['users/getUserList'], (newUsers) => {
+            watch(() => this.$store.getters['profiles/getUsers'], (newUsers) => {
                 this.tabColumns.utilisateurs[1] = newUsers
             })
 
@@ -191,10 +191,10 @@
                 this.tabColumns.reports[1] = newReports
             })
 
-            this.$store.commit('threads/refreshThreadList')
-            await this.$store.dispatch('threads/getThreadList')
-            this.$store.commit('users/refreshUserList')
-            await this.$store.dispatch('users/getUserList')
+            this.$store.commit('threads/refreshThreads')
+            await this.$store.dispatch('threads/getThreads')
+            this.$store.commit('profiles/refreshUsers')
+            await this.$store.dispatch('profiles/getUsers')
             this.$store.commit('reports/refreshReportList')
             await this.$store.dispatch('reports/getReportList')
         },

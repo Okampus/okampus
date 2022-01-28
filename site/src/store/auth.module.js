@@ -1,16 +1,12 @@
 import router from '@/router'
-import AuthService from '../services/auth.service'
+import AuthService from '@/services/auth.service'
+import { settleQuery } from './constants'
 
 const user = JSON.parse(localStorage.getItem('user'))
-const initialState = user
-    ? {
-          status: { loggedIn: true },
-          user,
-      }
-    : {
-          status: { loggedIn: false },
-          user: null,
-      }
+const initialState = {
+    loggedIn: !!user,
+    user: user,
+}
 
 export function redirectToHome() {
     if (router.currentRoute.value.fullPath !== '/') {
@@ -22,56 +18,30 @@ export const auth = {
     namespaced: true,
     state: initialState,
     actions: {
-        me({ commit }) {
-            return AuthService.me().then(
-                (response) => {
-                    commit('getSuccess', response)
-                    return Promise.resolve(response)
-                },
-                (error) => Promise.reject(error),
-            )
-        },
         redirectIfNotLoggedIn({ state }) {
-            if (!state.status.loggedIn) {
+            if (!state.loggedIn) {
                 redirectToHome()
             }
         },
-        login({ commit }, user) {
-            return AuthService.login(user).then(
-                (user) => {
-                    commit('loginSuccess', user)
-                    return Promise.resolve(user)
-                },
-                (error) => {
-                    commit('loginFailure')
-                    return Promise.reject(error)
-                },
-            )
-        },
-        logout({ commit }) {
-            AuthService.logout()
-            commit('logoutSuccess')
-        },
+        getMe: ({ commit }) => settleQuery({ commit, mutation: 'getMeSuccess' }, AuthService.getMe()),
+        login: ({ commit }, user) =>
+            settleQuery({ commit, mutation: 'getMeSuccess' }, AuthService.logIn(user)),
+        logout: ({ commit }) => settleQuery({ commit, mutation: 'logOutSuccess' }, AuthService.logOut()),
     },
     mutations: {
-        getSuccess(state, user) {
-            state.user = user
-        },
-        loginSuccess(state, user) {
-            state.status.loggedIn = true
+        getMeSuccess(state, user) {
+            state.loggedIn = true
             state.user = user
             localStorage.setItem('user', JSON.stringify(user))
         },
-        loginFailure(state) {
-            state.status.loggedIn = false
-            state.user = null
-            localStorage.removeItem('user')
+        updateUserSuccess(state, newUser) {
+            state.user = newUser
         },
         logoutSuccess(state) {
-            state.status.loggedIn = false
-            redirectToHome()
+            state.loggedIn = false
             state.user = null
             localStorage.removeItem('user')
+            redirectToHome()
         },
     },
 }
