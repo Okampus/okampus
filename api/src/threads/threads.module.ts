@@ -1,4 +1,5 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
 import { Content } from '../contents/content.entity';
 import { ContentsModule } from '../contents/contents.module';
@@ -9,6 +10,7 @@ import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory'
 import { Tag } from '../tags/tag.entity';
 import { User } from '../users/user.entity';
 import { Vote } from '../votes/vote.entity';
+import { ThreadSearchService } from './thread-search.service';
 import { Thread } from './thread.entity';
 import { ThreadsController } from './threads.controller';
 import { ThreadsService } from './threads.service';
@@ -28,7 +30,15 @@ import { ThreadsService } from './threads.service';
     ContentsModule,
   ],
   controllers: [ThreadsController],
-  providers: [CaslAbilityFactory, ThreadsService],
+  providers: [CaslAbilityFactory, ThreadsService, ThreadSearchService],
   exports: [ThreadsService],
 })
-export class ThreadsModule {}
+export class ThreadsModule implements OnModuleInit {
+  constructor(
+    private readonly threadSearchService: ThreadSearchService,
+  ) {}
+
+  public async onModuleInit(): Promise<void> {
+    await this.threadSearchService.init();
+  }
+}

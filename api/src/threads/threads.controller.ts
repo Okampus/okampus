@@ -8,19 +8,25 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { SerializerExcludeContentAuthor } from '../shared/lib/decorators/serializers.decorator';
+import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { SearchDto } from '../shared/modules/search/search.dto';
 import { User } from '../users/user.entity';
 import { AssigneesDto } from './dto/assignees.dto';
 import { CreateThreadDto } from './dto/create-thread.dto';
 import { TagsDto } from './dto/tags.dto';
 import { UpdateThreadDto } from './dto/update-thread.dto';
 import type { ThreadInteractions } from './thread-interactions.interface';
+import { ThreadSearchService } from './thread-search.service';
+import type { IndexedThread } from './thread-search.service';
 import { Thread } from './thread.entity';
 import { ThreadsService } from './threads.service';
 
@@ -29,6 +35,7 @@ import { ThreadsService } from './threads.service';
 export class ThreadsController {
   constructor(
     private readonly threadsService: ThreadsService,
+    private readonly threadSearchService: ThreadSearchService,
   ) {}
 
   @Post()
@@ -44,6 +51,18 @@ export class ThreadsController {
     if (query.page)
       return await this.threadsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
     return await this.threadsService.findAll();
+  }
+
+  @UseGuards(TypesenseGuard)
+  @Get('/search')
+  @CheckPolicies(ability => ability.can(Action.Read, Thread))
+  public async search(
+    @Query('full') full: boolean,
+    @Query() query: SearchDto,
+  ): Promise<SearchResponse<IndexedThread> | SearchResponse<Thread>> {
+    if (full)
+      return await this.threadSearchService.searchAndPopulate(query);
+    return await this.threadSearchService.search(query);
   }
 
   @Get(':id')

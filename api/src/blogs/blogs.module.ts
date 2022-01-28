@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ContentsModule } from '../contents/contents.module';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { Tag } from '../tags/tag.entity';
+import { BlogSearchService } from './blog-search.service';
 import { Blog } from './blog.entity';
 import { BlogsController } from './blogs.controller';
 import { BlogsService } from './blogs.service';
@@ -13,7 +14,15 @@ import { BlogsService } from './blogs.service';
     ContentsModule,
   ],
   controllers: [BlogsController],
-  providers: [CaslAbilityFactory, BlogsService],
+  providers: [CaslAbilityFactory, BlogsService, BlogSearchService],
   exports: [BlogsService],
 })
-export class BlogsModule {}
+export class BlogsModule {
+  constructor(
+    private readonly blogSearchService: BlogSearchService,
+  ) {}
+
+  public async onModuleInit(): Promise<void> {
+    await this.blogSearchService.init();
+  }
+}
