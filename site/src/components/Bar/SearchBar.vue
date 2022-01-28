@@ -100,6 +100,7 @@
             nodes: [
                 {
                     host: import.meta.env.VITE_TYPESENSE_HOST,
+                    port: import.meta.env.VITE_TYPESENSE_PORT,
                     protocol: import.meta.env.VITE_TYPESENSE_SCHEME,
                 },
             ],

@@ -21,13 +21,13 @@ import type { Category } from '../../shared/lib/types/docs-category.type';
 import { InfoDocCategoryType } from '../../shared/lib/types/docs-category.type';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
-import { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../../shared/modules/search/search.dto';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
 import { CategoryTypesDto } from './dto/category-types.dto';
 import { CreateInfoDocDto } from './dto/create-info-doc.dto';
+import { DocsFilterDto } from './dto/docs-filter.dto';
 import { UpdateInfoDocDto } from './dto/update-info-doc.dto';
 import { InfoDoc } from './info-doc.entity';
 import type { IndexedInfoDoc } from './info-docs-search.service';
@@ -65,7 +65,7 @@ export class InfoDocsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, InfoDoc))
-  public async findAllInfoDocs(@Query() query: PaginateDto): Promise<PaginatedResult<InfoDoc>> {
+  public async findAllInfoDocs(@Query() query: DocsFilterDto): Promise<PaginatedResult<InfoDoc>> {
     if (query.page)
       return await this.infoDocsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
     return await this.infoDocsService.findAll();

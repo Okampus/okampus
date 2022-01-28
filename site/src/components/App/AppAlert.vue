@@ -1,10 +1,10 @@
 <template>
     <div
-        class="flex gap-4 items-center p-2 px-4 w-full rounded-b-lg"
+        class="flex gap-4 items-center p-2 px-4 w-full rounded-lg"
         :class="[!background ? 'alert' : 'alert-bg']"
         :alert-type="type"
     >
-        <div class="flex items-center title">
+        <div class="flex items-center subtitle">
             <div v-if="$slots.icon" class="flex items-center">
                 <slot name="icon" />
             </div>
@@ -96,7 +96,7 @@
 
     .alert-bg {
         @extend %alert;
-        @apply border-t-2;
+        @apply border shadow-lg;
         &[alert-type='info'] {
             @apply bg-blue-100 dark:bg-blue-800/50 border-blue-500;
         }

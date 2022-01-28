@@ -8,15 +8,135 @@
             @finish="submitForm"
         >
             <template #step1>
-                <section>
-                    <div class="space-y-4">
+                <section class="flex flex-col gap-4">
+                    <RadioInput
+                        v-model="stepsModel[0].docType"
+                        :choices="[
+                            { name: 'Scolaire', key: 'studyDoc' },
+                            { name: 'Informatif', key: 'infoDoc' },
+                        ]"
+                    />
+                    <div>
+                        <label
+                            >Nom du document<span class="text-red-500">*</span>
+                            <input
+                                v-model="stepsModel[0].docName"
+                                class="w-full input"
+                                :class="{ 'ring-2 ring-red-500': v$.stepsModel[0].docName.$error }"
+                                type="text"
+                                placeholder="Nom du document"
+                            />
+                        </label>
+                        <div v-if="v$.stepsModel[0].docName.$error" class="flex flex-col">
+                            <AppAlert
+                                v-for="(error, i) in v$.stepsModel[0].docName.$errors"
+                                :key="i"
+                                type="error"
+                            >
+                                <template #text>
+                                    <div class="subtitle">
+                                        {{ error.$message }}
+                                    </div>
+                                </template>
+                            </AppAlert>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label
+                            >Description du document
+                            <textarea
+                                v-model="stepsModel[0].docDescription"
+                                placeholder="Description du document"
+                                class="w-full leading-tight focus:outline-none input focus:shadow-outline"
+                                type="text"
+                                rows="5"
+                            />
+                        </label>
+                    </div>
+
+                    <div>
+                        <FileInput
+                            v-model="stepsModel[0].files"
+                            :img-preview="true"
+                            :file-limit="-1"
+                            class="mt-4 w-full h-52 rounded"
+                            :class="{ 'ring-2 ring-red-500': v$.stepsModel[0].files.$error }"
+                            :size-limit="2097152"
+                            :regex-mimes="[
+                                '^image/(.)+',
+                                '^audio/(.)+',
+                                '^text/(.)+',
+                                '^video/(.)+',
+                                '^application/msword',
+                                '^application/xml',
+                                '^application/json',
+                                '^application/pdf',
+                                String.raw`^application/vnd\.oasis\.opendocument\.presentation`,
+                                String.raw`^application/vnd\.oasis\.opendocument\.spreadsheet`,
+                                String.raw`^application/vnd\.oasis\.opendocument\.text`,
+                                String.raw`^application/vnd\.ms-powerpoint`,
+                                String.raw`^application/vnd\.openxmlformats-officedocument\.presentationml\.presentation`,
+                                String.raw`^application/vnd\.ms-excel`,
+                                String.raw`^application/vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet`,
+                                String.raw`^application/vnd\.openxmlformats-officedocument\.wordprocessingml\.document`,
+                            ]"
+                        />
+                        <div v-if="v$.stepsModel[0].files.$error" class="flex flex-col">
+                            <AppAlert
+                                v-for="(error, i) in v$.stepsModel[0].files.$errors"
+                                :key="i"
+                                type="error"
+                            >
+                                <template #text>
+                                    <div class="subtitle">
+                                        {{ error.$message }}
+                                    </div>
+                                </template>
+                            </AppAlert>
+                        </div>
+                    </div>
+                    {{ v$.stepsModel[1].docType }}
+                </section>
+            </template>
+
+            <template #step2>
+                <section class="flex flex-col gap-4">
+                    <div>
+                        <label for="promo"
+                            >Année du document<span class="text-red-500">*</span>
+                            <input
+                                id="promo"
+                                v-model="stepsModel[1].docYear"
+                                :class="{ 'ring-2 ring-red-500': v$.stepsModel[1].docYear.$error }"
+                                type="number"
+                                placeholder="2025"
+                                class="w-full input"
+                            />
+                        </label>
+                        <div v-if="v$.stepsModel[1].docYear.$error" class="flex flex-col">
+                            <AppAlert
+                                v-for="(error, i) in v$.stepsModel[1].docYear.$errors"
+                                :key="i"
+                                type="error"
+                            >
+                                <template #text>
+                                    <div class="subtitle">
+                                        {{ error.$message }}
+                                    </div>
+                                </template>
+                            </AppAlert>
+                        </div>
+                    </div>
+                    <div v-if="stepsModel[0].docType == 'studyDoc'" class="flex flex-col gap-4">
                         <div>
-                            <div for="matiere">Matière</div>
+                            <div for="matiere">Matière<span class="text-red-500">*</span></div>
                             <div class="w-full">
                                 <SearchInput
-                                    v-model="stepsModel[0].docSubject"
-                                    class="w-full"
+                                    v-model="stepsModel[1].docSubject"
+                                    class="w-full rounded"
                                     :item-limit="1"
+                                    :class="{ 'ring-2 ring-red-500': v$.stepsModel[1].docSubject.$error }"
                                     :index-object="{
                                         'subjects': {
                                             queryBy: 'code,name,englishName',
@@ -34,6 +154,7 @@
                                                     class="text-lg"
                                                 />
                                                 <div>
+                                                    {{ subjectYear[slotValue.item.schoolYear] }}
                                                     {{ slotValue.item.name }}
                                                 </div>
                                                 <div class="text-xs text-2">
@@ -69,6 +190,7 @@
                                                     class="text-lg"
                                                 />
                                                 <div>
+                                                    {{ subjectYear[item.schoolYear] }}
                                                     {{ item.name }}
                                                 </div>
                                                 <div class="text-xs text-2">
@@ -79,141 +201,164 @@
                                     </template>
                                 </SearchInput>
                             </div>
+                            <div v-if="v$.stepsModel[1].docSubject.$error" class="flex flex-col">
+                                <AppAlert
+                                    v-for="(error, i) in v$.stepsModel[1].docSubject.$errors"
+                                    :key="i"
+                                    type="error"
+                                >
+                                    <template #text>
+                                        <div class="subtitle">
+                                            {{ error.$message }}
+                                        </div>
+                                    </template>
+                                </AppAlert>
+                            </div>
                         </div>
-
-                        <div class="flex flex-col">
-                            <RadioInput
-                                v-model="stepsModel[0].cursus"
-                                :choices="[
-                                    { name: 'Tous', key: 'all' },
-                                    { name: 'Internationale', key: 'int' },
-                                    { name: 'Renforcé', key: 'renforced' },
-                                    { name: 'PEx', key: 'pex' },
-                                    { name: 'Classique', key: 'classic' },
-                                ]"
-                            />
-                        </div>
-
-                        <div class="flex flex-col">
-                            <label for="doc-type">Type de document</label>
-                            <SelectInput
-                                v-model="stepsModel[0].docType"
-                                :choices="[
-                                    'DE',
-                                    'CE',
-                                    'TD',
-                                    'Fiche',
-                                    'Projet/TAI',
-                                    'Controle Continue',
-                                    'Cours Efrei',
-                                    'Cours eProf',
-                                    'DM',
-                                    'Notes de cours',
-                                ]"
-                            />
-                        </div>
-
+                        <RadioInput
+                            v-model="stepsModel[1].docCursus"
+                            :choices="[
+                                { name: 'Tous', key: 'all' },
+                                { name: 'Internationale', key: 'int' },
+                                { name: 'Renforcé', key: 'renforced' },
+                                { name: 'PEx', key: 'pex' },
+                                { name: 'Classique', key: 'classic' },
+                            ]"
+                        />
                         <div>
-                            <label for="promo">Année du document (Promo)</label>
-                            <input
-                                id="promo"
-                                v-model="stepsModel[0].docYear"
-                                type="number"
-                                placeholder="2025"
-                                class="w-full input"
+                            <div for="doc-type">Type de document<span class="text-red-500">*</span></div>
+                            <SelectInput
+                                v-model="stepsModel[1].docContent"
+                                :choices="[
+                                    'examDE',
+                                    'examCE',
+                                    'examCC',
+                                    'examDM',
+                                    'course',
+                                    'sheet',
+                                    'projects',
+                                    'efreiClass',
+                                    'eprofClass',
+                                    'classNote',
+                                    'other',
+                                ]"
                             />
+                            <div v-if="v$.stepsModel[1].docContent.$error" class="flex flex-col">
+                                <AppAlert
+                                    v-for="(error, i) in v$.stepsModel[1].docContent.$errors"
+                                    :key="i"
+                                    type="error"
+                                >
+                                    <template #text>
+                                        <div class="subtitle">
+                                            {{ error.$message }}
+                                        </div>
+                                    </template>
+                                </AppAlert>
+                            </div>
+                        </div>
+                        <div
+                            v-if="
+                                ['examDE', 'examCE', 'examCC', 'examDM', 'examTAI'].includes(
+                                    [
+                                        'examDE',
+                                        'examCE',
+                                        'examCC',
+                                        'examDM',
+                                        'course',
+                                        'sheet',
+                                        'projects',
+                                        'efreiClass',
+                                        'eprofClass',
+                                        'classNote',
+                                        'other',
+                                    ][stepsModel[1].docContent],
+                                )
+                            "
+                            class="flex flex-col"
+                        >
+                            <div for="content">Contenu du dépôt<span class="text-red-500">*</span></div>
+                            <SelectInput
+                                v-model="stepsModel[1].docFlags"
+                                :choices="['Sujet', 'Corrigé', 'Sujet + Corrigé', 'Copie d\'étudiant']"
+                            />
+                            <div v-if="v$.stepsModel[1].docFlags.$error" class="flex flex-col">
+                                <AppAlert
+                                    v-for="(error, i) in v$.stepsModel[1].docFlags.$errors"
+                                    :key="i"
+                                    type="error"
+                                >
+                                    <template #text>
+                                        <div class="subtitle">
+                                            {{ error.$message }}
+                                        </div>
+                                    </template>
+                                </AppAlert>
+                            </div>
                         </div>
                     </div>
-
-                    <FileInput
-                        v-model="stepsModel[0].files"
-                        :img-preview="true"
-                        :file-limit="-1"
-                        class="mt-4 w-full h-52"
-                        :size-limit="2097152"
-                        :regex-mimes="[
-                            '^image/(.)+',
-                            '^audio/(.)+',
-                            '^text/(.)+',
-                            '^video/(.)+',
-                            '^application/msword',
-                            '^application/xml',
-                            '^application/json',
-                            '^application/pdf',
-                            String.raw`^application/vnd\.oasis\.opendocument\.presentation`,
-                            String.raw`^application/vnd\.oasis\.opendocument\.spreadsheet`,
-                            String.raw`^application/vnd\.oasis\.opendocument\.text`,
-                            String.raw`^application/vnd\.ms-powerpoint`,
-                            String.raw`^application/vnd\.openxmlformats-officedocument\.presentationml\.presentation`,
-                            String.raw`^application/vnd\.ms-excel`,
-                            String.raw`^application/vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet`,
-                            String.raw`^application/vnd\.openxmlformats-officedocument\.wordprocessingml\.document`,
-                        ]"
-                    />
-                </section>
-            </template>
-
-            <template #step2>
-                <section class="space-y-2">
-                    <div>Nom du document</div>
-                    <input
-                        v-model="stepsModel[1].docName"
-                        class="w-full input"
-                        type="text"
-                        placeholder="Complément du nom"
-                    />
-                    <div>Description du document</div>
-
-                    <textarea
-                        v-model="stepsModel[1].docDescription"
-                        placeholder="Description du document"
-                        class="w-full leading-tight focus:outline-none input focus:shadow-outline"
-                        type="text"
-                    />
-
-                    <div class="flex flex-col">
-                        <label for="content">Contenu du dépôt</label>
-                        <SelectInput
-                            v-model="stepsModel[0].docContent"
-                            :choices="['Corrigé', 'Sujet + Corrigé', 'Copie d\'étudiant']"
-                        />
+                    <div v-if="stepsModel[0].docType == 'infoDoc'">
+                        <div>
+                            <div for="doc-type">Promo<span class="text-red-500">*</span></div>
+                            <SelectInput
+                                v-model="stepsModel[1].docSchoolYear"
+                                :choices="['L1', 'L2', 'L3', 'M1', 'M2']"
+                            />
+                            <div v-if="v$.stepsModel[1].docSchoolYear.$error" class="flex flex-col">
+                                <AppAlert
+                                    v-for="(error, i) in v$.stepsModel[1].docSchoolYear.$errors"
+                                    :key="i"
+                                    type="error"
+                                >
+                                    <template #text>
+                                        <div class="subtitle">
+                                            {{ error.$message }}
+                                        </div>
+                                    </template>
+                                </AppAlert>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </template>
 
             <template #step3>
-                <section>
-                    <p>Disclaimer:</p>
-                    <ul class="list-disc list-inside">
-                        <li>Si vous uploadez un fichier, il sera public et accessible par tous</li>
-                        <li>
-                            Si vous souhaitez que des informations soient floutées, corrigées ou généralement
-                            modifiées, nous vous ferrons une proposition avec des informations sensibles
-                            retirées et attendrons votre confirmation avant de rendre le fichier public
-                        </li>
-                    </ul>
-
-                    <p class="mt-2">Êtes-vous d'accord ?</p>
-
-                    <label>
+                <section class="flex flex-col gap-4">
+                    <div>
+                        <p>Disclaimer:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Si vous uploadez un fichier, il sera public et accessible par tous</li>
+                            <li>
+                                Si vous souhaitez que des informations soient floutées, corrigées ou
+                                généralement modifiées, nous vous ferrons une proposition avec des
+                                informations sensibles retirées et attendrons votre confirmation avant de
+                                rendre le fichier public
+                            </li>
+                        </ul>
+                    </div>
+                    <label class="flex gap-2 items-center">
                         <input
-                            v-model="stepsModel[2].modifyDoc"
+                            v-model="stepsModel[2].acceptCondition"
                             name="radioFile"
-                            value="true"
-                            type="radio"
-                            class="ml-5"
-                        />Oui
+                            :value="false"
+                            type="checkbox"
+                            :class="{ 'ring-2 ring-red-500': v$.stepsModel[2].acceptCondition.$error }"
+                        />
+                        Je suis d'accord<span class="text-red-500">*</span>
                     </label>
-
-                    <label>
-                        <input
-                            v-model="stepsModel[2].modifyDoc"
-                            name="radioFile"
-                            value="false"
-                            type="radio"
-                            class="ml-5"
-                        />Non
-                    </label>
+                    <div v-if="v$.stepsModel[2].acceptCondition.$error" class="flex flex-col">
+                        <AppAlert
+                            v-for="(error, i) in v$.stepsModel[2].acceptCondition.$errors"
+                            :key="i"
+                            type="error"
+                        >
+                            <template #text>
+                                <div class="subtitle">
+                                    {{ error.$message }}
+                                </div>
+                            </template>
+                        </AppAlert>
+                    </div>
                 </section>
             </template>
         </FormMultiStep>
@@ -222,13 +367,16 @@
 
 <script lang="js">
 
+    import AppAlert from '@/components/App/AppAlert.vue'
     import FormMultiStep from '@/components/Form/FormMultiStep.vue'
     import FileInput from '@/components/Input/FileInput.vue'
     import RadioInput from '@/components/Input/RadioInput.vue'
     import SearchInput from '@/components/Input/SearchInput.vue'
     import SelectInput from '@/components/Input/SelectInput.vue'
     import useVuelidate from '@vuelidate/core'
-    import { required } from '@vuelidate/validators'
+    import {
+        integer, maxLength, required, requiredIf, sameAs,
+    } from '@vuelidate/validators'
 
 
     export default {
@@ -238,6 +386,7 @@
             FileInput,
             FormMultiStep,
             SearchInput,
+            AppAlert,
         },
         props: {
             steps: {
@@ -268,56 +417,72 @@
             return {
                 stepsModel: [
                     {
-                        docSubject: { required },
-                        cursus: { required },
-                        docType: { },
-                        docYear: {},
                         files: { required },
-                    },
-                    {
-                        docContent: {  },
-                        docName: {  },
+                        docName: {
+                            required,
+
+                            maxLength: maxLength(20),
+                        },
                         docDescription: {  },
                     },
-                    { modifyDoc: { required } },
+                    {
+                        docSubject: { requiredIf: requiredIf(this.stepsModel[0].docType == 'studyDoc') },
+                        docCursus: { requiredIf: requiredIf( this.stepsModel[0].docType == 'studyDoc') },
+                        docYear: {
+                            required,
+                            integer,
+                        },
+                        docContent: { requiredIf: requiredIf( this.stepsModel[0].docType == 'studyDoc') },
+                        docFlags: {
+                            requiredIf: requiredIf( this.stepsModel[0].docType == 'studyDoc' &&
+                                ['examDE','examCE','examCC', 'examDM', 'examTAI'].includes([
+                                    'examDE',
+                                    'examCE',
+                                    'examCC',
+                                    'examDM',
+                                    'course',
+                                    'sheet',
+                                    'projects',
+                                    'efreiClass',
+                                    'eprofClass',
+                                    'classNote',
+                                    'other',
+                                ]
+                                    [this.stepsModel[1].docContent])),
+
+                        },
+                        docSchoolYear: { requiredIf: requiredIf( this.stepsModel[0].docType == 'infoDoc') },
+                    },
+                    { acceptCondition: { sameAs: sameAs(true) } },
                 ],
             }
         },
         data () {
             return {
-                filesEndpoint: 'http://localhost:5000/files',
-                studyDocsEndpoint: 'http://localhost:5000/files/study-docs',
-                show: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
-
                 stepAction: {
                     currentStep: 0,
                     nextStep: false,
                     previousStep: false,
                 },
-
                 stepsModel: [
                     {
-                        docSubject: [],
-                        cursus: 'all',
-                        docType: '',
-                        docYear: '',
+                        docType: 'studyDoc',
                         files: [],
-                    },
-                    {
-                        docContent: '',
                         docName: '',
                         docDescription: '',
                     },
-                    { modifyDoc: 'false' },
+                    {
+                        docSubject: [],
+                        docCursus: 'all',
+                        docYear: '',
+                        docContent: '',
+                        docFlags: '',
+                        docSchoolYear: '',
+                    },
+                    { acceptCondition: false },
                 ],
-
+                subjectYear: ['L1','L2', 'L3', 'M1', 'M2'],
             }
-
-        },
-        watch: {
-            keyEnter(newVal) {
-                console.log(newVal)
-            },
         },
         methods: {
             iconList(itemCode) {
@@ -334,23 +499,66 @@
                 this.stepAction.currentStep -= 1
             },
             nextStep() {
+                this.v$.stepsModel[this.stepAction.currentStep].$validate()
+                console.log(this.v$.stepsModel[this.stepAction.currentStep].$errors)
                 if (!this.v$.stepsModel[this.stepAction.currentStep].$invalid) {
                     this.stepAction.currentStep += 1
                 }
             },
             submitForm() {
+                this.v$.stepsModel.$validate()
                 if (!this.v$.stepsModel.$invalid) {
-                    for (const el of this.stepsModel[0].files) {
-                        const data = new FormData()
-                        data.append('file', el)
-                        data.append('subject',this.stepsModel[0].docSubject[0].code)
-                        console.log(this.stepsModel[0].docSubject[0].code)
-                        //data.append('cursus', this.stepsModel[0].cursus)
-                        this.$store.dispatch('files/addStudyDoc', data).then(
-                            () => {
-                                this.$router.push('/docs')
-                            },
-                        )
+                    for (let i=0;i<this.stepsModel[0].files.length;i++) {
+                        let form = new FormData()
+
+                        form.append('file', this.stepsModel[0].files[i], (this.stepsModel[0].files.length>1 ? this.stepsModel[0].docName+'_Partie'+(i+1) : this.stepsModel[0].docName)+'.'+this.stepsModel[0].files[i].name.split('.').pop() )
+                        form.append('description', this.stepsModel[0].docDescription)
+                        form.append('year', this.stepsModel[1].docYear)
+
+                        if (this.stepsModel[0].docType == 'studyDoc') {
+                            form.append('subject',this.stepsModel[1].docSubject[0].code)
+                            form.append('cursus',this.stepsModel[1].docCursus)
+                            form.append('type',[
+                                'examDE',
+                                'examCE',
+                                'examCC',
+                                'examDM',
+                                'course',
+                                'sheet',
+                                'projects',
+                                'efreiClass',
+                                'eprofClass',
+                                'classNote',
+                                'other',
+                            ][this.stepsModel[1].docContent])
+                            if (['examDE','examCE','examCC', 'examDM', 'examTAI'].includes([
+                                'examDE',
+                                'examCE',
+                                'examCC',
+                                'examDM',
+                                'course',
+                                'sheet',
+                                'projects',
+                                'efreiClass',
+                                'eprofClass',
+                                'classNote',
+                                'other',
+                            ][this.stepsModel[1].docContent])) {
+                                form.append('flags',1)
+                            }
+                            this.$store.dispatch('files/addStudyDoc', form).then(
+                                () => {
+                                    this.$router.push('/docs')
+                                },
+                            )
+                        } else {
+                            form.append('schoolYear', this.stepsModel[1].docSchoolYear)
+                            this.$store.dispatch('files/addInfoDoc', form).then(
+                                () => {
+                                    this.$router.push('/docs')
+                                },
+                            )
+                        }
                     }
                 }
             },

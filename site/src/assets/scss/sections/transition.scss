@@ -17,3 +17,14 @@
 .search-fade-leave-to {
     opacity: 0;
 }
+
+.toast-enter-active,
+.toast-leave-active {
+    transition: all 0.4s ease;
+}
+
+.toast-enter-from,
+.toast-leave-to {
+    opacity: 0;
+    transform: translateY(100%);
+}

@@ -24,7 +24,7 @@
     <div class="mt-2 mb-10 h-full">
         <div>
             <select
-                class="w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm text-3 bg-2"
+                class="w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200/50 shadow-sm text-3 bg-2"
             >
                 <option>Dernière semaine</option>
                 <option>Dernier mois</option>

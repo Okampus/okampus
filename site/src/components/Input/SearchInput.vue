@@ -159,12 +159,14 @@
                 return Object.getOwnPropertyNames(this.indexObject)[0]
             },
             typesenseInstantsearchAdapter() {
+                console.log(import.meta.env.VITE_TYPESENSE_HOST + ':' + import.meta.env.VITE_TYPESENSE_PORT)
                 return new TypesenseInstantSearchAdapter({
                     server: {
                         apiKey: import.meta.env.VITE_TYPESENSE_API_KEY,
                         nodes: [
                             {
                                 host: import.meta.env.VITE_TYPESENSE_HOST,
+                                port: import.meta.env.VITE_TYPESENSE_PORT,
                                 protocol: import.meta.env.VITE_TYPESENSE_SCHEME,
                             },
                         ],

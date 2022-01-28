@@ -61,7 +61,7 @@ async function bootstrap(): Promise<void> {
   app.useGlobalFilters(new ExceptionsFilter(), new TypesenseFilter());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
-  if (config.get('nodeEnv') === 'development') {
+  if (!config.get('distantStorageEnabled')) {
     app.useStaticAssets(
       path.join(path.resolve('./'), config.get('uploadPath')),
       { prefix: '/uploads' },

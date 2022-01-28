@@ -21,7 +21,6 @@ import { StudyDocCategoryType } from '../../shared/lib/types/docs-category.type'
 import type { Category } from '../../shared/lib/types/docs-category.type';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
-import { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../../shared/modules/search/search.dto';
 import { User } from '../../users/user.entity';
@@ -71,12 +70,11 @@ export class StudyDocsController {
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, StudyDoc))
   public async findAllStudyDocs(
-    @Body() filters: DocsFilterDto,
-    @Query() query: PaginateDto,
+    @Query() query: DocsFilterDto,
   ): Promise<PaginatedResult<StudyDoc>> {
     if (query.page)
-      return await this.studyDocsService.findAll(filters, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.studyDocsService.findAll(filters);
+      return await this.studyDocsService.findAll(query, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
+    return await this.studyDocsService.findAll(query);
   }
 
   @Get('/categories')

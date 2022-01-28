@@ -1,41 +1,54 @@
 <template>
     <div
         class="flex gap-2 items-center p-1 hover:bg-2-light hover:dark:bg-2-dark rounded"
-        @click="$emit('path', [folderName])"
+        @click="
+            $emit('path', {
+                filters: { [context]: title },
+                children: children,
+            }),
+                toggleChildren()
+        "
     >
         <font-awesome-icon
             class="text-1"
             size="sm"
-            :class="[childrens.length == 0 ? 'invisible' : '']"
-            :icon="showChildrens ? 'chevron-down' : 'chevron-right'"
-            @click="showChildrens = !showChildrens"
+            :class="[children.length == 0 ? 'invisible' : '']"
+            :icon="showChildren ? 'chevron-down' : 'chevron-right'"
         />
         <font-awesome-icon class="text-1" :icon="'folder'" />
 
         <div>
-            {{ folderName }}
+            {{ contextList[context](title) }}
         </div>
     </div>
     <transition name="fade">
-        <div v-if="showChildrens" class="flex flex-col p-1 ml-2 border-l">
+        <div v-if="showChildren" class="flex flex-col p-1 ml-2 border-l">
             <FileFolder
-                v-for="(children, i) in childrens"
+                v-for="(child, i) in children"
                 :key="i"
-                :="children"
-                @path="$emit('path', [folderName, ...$event])"
+                :title="child.title"
+                :children="child.children"
+                :context="child.context"
+                @path="$emit('path', sendObject($event))"
             />
         </div>
     </transition>
 </template>
 
 <script>
+    import { nodeViewProps } from '@tiptap/vue-3'
+    nodeViewProps()
     export default {
         props: {
-            folderName: {
+            title: {
                 type: String,
                 required: true,
             },
-            childrens: {
+            context: {
+                type: String,
+                required: true,
+            },
+            children: {
                 type: Array,
                 default() {
                     return []
@@ -44,7 +57,27 @@
         },
         emits: ['path'],
         data() {
-            return { showChildrens: false }
+            return {
+                showChildren: false,
+                contextList: {
+                    schoolYear: (val) => ['L1', 'L2', 'L3', 'M1', 'M2'][val],
+                    subject: (val) => val,
+                    type: (val) => val,
+                    year: (val) => val,
+                    query: (val) => val,
+                },
+            }
+        },
+        methods: {
+            toggleChildren() {
+                if (this.children.length > 0) {
+                    this.showChildren = !this.showChildren
+                }
+            },
+            sendObject(data) {
+                data.filters[this.context] = this.title
+                return data
+            },
         },
     }
 </script>
