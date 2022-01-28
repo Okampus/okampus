@@ -23,13 +23,13 @@ export const auth = {
                 redirectToHome()
             }
         },
-        getMe: ({ commit }) => settleQuery({ commit, mutation: 'getMeSuccess' }, AuthService.getMe()),
+        getMe: ({ commit }) => settleQuery({ commit, mutation: 'getUserSuccess' }, AuthService.getMe()),
         login: ({ commit }, user) =>
-            settleQuery({ commit, mutation: 'getMeSuccess' }, AuthService.logIn(user)),
+            settleQuery({ commit, mutation: 'getUserSuccess' }, AuthService.logIn(user)),
         logout: ({ commit }) => settleQuery({ commit, mutation: 'logOutSuccess' }, AuthService.logOut()),
     },
     mutations: {
-        getMeSuccess(state, user) {
+        getUserSuccess(state, user) {
             state.loggedIn = true
             state.user = user
             localStorage.setItem('user', JSON.stringify(user))
@@ -37,7 +37,7 @@ export const auth = {
         updateUserSuccess(state, newUser) {
             state.user = newUser
         },
-        logoutSuccess(state) {
+        logOutSuccess(state) {
             state.loggedIn = false
             state.user = null
             localStorage.removeItem('user')

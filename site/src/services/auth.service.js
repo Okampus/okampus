@@ -1,3 +1,4 @@
+import { noop } from 'lodash'
 import $axios from '../shared/config/axios.config'
 class AuthService {
     async getMe(query) {
@@ -13,8 +14,8 @@ class AuthService {
             .then((res) => res.data)
     }
 
-    logOut() {
-        $axios.get('auth/logout')
+    async logOut() {
+        return await $axios.get('auth/logout').catch(noop)
     }
 }
 

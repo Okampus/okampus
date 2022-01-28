@@ -38,7 +38,7 @@ const routes = [
 
     {
         path: '/posts',
-        component: () => import('@/views/Thread/Threads.vue'),
+        component: () => import('@/views/Thread/ThreadList.vue'),
     },
 
     {
