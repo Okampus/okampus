@@ -77,6 +77,8 @@
     import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
     import Popper from 'vue3-popper'
     import AppEmoji from '../App/AppEmoji.vue'
+    import $typesense from '@/shared/config/typesense.config'
+    import sadFacesEnum from '@/shared/types/sad-faces.enum'
 
     export default {
         components: {
@@ -105,52 +107,7 @@
                 keyEnter: false,
                 focusInput: false,
                 indexSelected: null,
-                sadFaces: [
-                    {
-                        emoji: ':(',
-                        type: 'text',
-                    },
-                    {
-                        emoji: ':|',
-                        type: 'text',
-                    },
-                    {
-                        emoji: ':\\',
-                        type: 'text',
-                    },
-                    {
-                        emoji: ':c',
-                        type: 'text',
-                    },
-                    {
-                        emoji: ':ꓷ',
-                        type: 'text',
-                    },
-                    {
-                        emoji: ':[',
-                        type: 'text',
-                    },
-                    {
-                        emoji: 'grimace',
-                        type: 'icon',
-                    },
-                    {
-                        emoji: 'sad-cry',
-                        type: 'icon',
-                    },
-                    {
-                        emoji: 'grin-beam-sweat',
-                        type: 'icon',
-                    },
-                    {
-                        emoji: 'dizzy',
-                        type: 'icon',
-                    },
-                    {
-                        emoji: 'surprise',
-                        type: 'icon',
-                    },
-                ],
+                sadFaces: sadFacesEnum,
                 Math,
             }
         },
@@ -159,19 +116,8 @@
                 return Object.getOwnPropertyNames(this.indexObject)[0]
             },
             typesenseInstantsearchAdapter() {
-                console.log(import.meta.env.VITE_TYPESENSE_HOST + ':' + import.meta.env.VITE_TYPESENSE_PORT)
                 return new TypesenseInstantSearchAdapter({
-                    server: {
-                        apiKey: import.meta.env.VITE_TYPESENSE_API_KEY,
-                        nodes: [
-                            {
-                                host: import.meta.env.VITE_TYPESENSE_HOST,
-                                port: import.meta.env.VITE_TYPESENSE_PORT,
-                                protocol: import.meta.env.VITE_TYPESENSE_SCHEME,
-                            },
-                        ],
-                    },
-                    cacheSearchResultsForSeconds: 2 * 60,
+                    ...$typesense,
                     additionalSearchParameters: {
                         limit_hits: 10,
                         per_page: 10,

@@ -1,5 +1,5 @@
 <template>
-    <!-- TODO: Local Storage pour voir les recherches recentes + Comonent pour afficher chaque hits -->
+    <!-- TODO: Local Storage pour voir les recherches recentes + Component pour afficher chaque hits + Utiliser SearchInput -->
     <div>
         <CustomModal
             ref="input"
@@ -8,7 +8,7 @@
             @close="showSearchBar = false"
         >
             <div class="w-full h-full card">
-                <ais-instant-search :search-client="searchClient" index-name="posts" class="h-full">
+                <ais-instant-search :search-client="searchClient" :index-name="THREADS" class="h-full">
                     <div class="flex flex-col h-full">
                         <ais-search-box autofocus>
                             <template #default="{ currentRefinement, isSearchStalled, refine }">
@@ -93,51 +93,48 @@
     import SearchCategory from '@/components/App/Card/SearchCategory.vue'
     import postTypesEnum from '@/shared/types/post-types.enum'
     import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
+    import $typesense from '@/shared/config/typesense.config'
+    import {
+        BLOGS,
+        CLUBS,
+        INFO_DOCS,
+        STUDY_DOCS,
+        SUBJECTS,
+        THREADS,
+    } from '@/shared/types/typesense-index.enum'
 
     const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
-        server: {
-            apiKey: import.meta.env.VITE_TYPESENSE_API_KEY,
-            nodes: [
-                {
-                    host: import.meta.env.VITE_TYPESENSE_HOST,
-                    port: import.meta.env.VITE_TYPESENSE_PORT,
-                    protocol: import.meta.env.VITE_TYPESENSE_SCHEME,
-                },
-            ],
-        },
-        cacheSearchResultsForSeconds: 2 * 60,
-        additionalSearchParameters: {
-            limit_hits: 25,
-            per_page: 25,
-        },
+        ...$typesense,
         collectionSpecificSearchParameters: {
-            posts: {
+            [THREADS]: {
                 queryBy: 'title,body,tags',
                 queryByWeights: '10, 1, 5',
             },
-            'study-docs': {
+            [BLOGS]: {
+                queryBy: 'title,body,tags',
+                queryByWeights: '10, 1, 5',
+            },
+            [CLUBS]: {
+                queryBy: 'name',
+                queryByWeights: '10',
+            },
+            [STUDY_DOCS]: {
                 queryBy: 'name,subjectEnglishName,subjectName',
                 queryByWeights: '10, 5, 5',
             },
-            clubs: {
+            [INFO_DOCS]: {
                 queryBy: 'name',
                 queryByWeights: '10',
             },
-            'info-docs': {
-                queryBy: 'name',
-                queryByWeights: '10',
-            },
-            articles: {
-                queryBy: 'title,body,tags,category',
-                queryByWeights: '10, 1, 5, 5',
-            },
-            subjects: {
+            [SUBJECTS]: {
                 queryBy: 'name,code',
                 queryByWeights: '1,1',
             },
         },
     })
+
     const searchClient = typesenseInstantsearchAdapter.searchClient
+
     export default {
         components: {
             CustomModal,
@@ -146,11 +143,12 @@
 
         data() {
             return {
+                THREADS,
                 searchClient,
                 showSearchBar: false,
                 indexList: [
                     {
-                        indexName: 'posts',
+                        indexName: THREADS,
                         title: 'Tous les posts',
                         titleIcon: 'comments',
                         routerBase: 'post',
@@ -159,7 +157,7 @@
                         resultIcon: (item) => postTypesEnum?.[item.type]?.icon ?? 'hashtag',
                     },
                     {
-                        indexName: 'study-docs',
+                        indexName: STUDY_DOCS,
                         title: 'Tous les documents',
                         titleIcon: 'file',
                         routerBase: 'file',
@@ -168,7 +166,7 @@
                         resultIcon: () => 'file',
                     },
                     {
-                        indexName: 'info-docs',
+                        indexName: INFO_DOCS,
                         title: 'Tous les documents informatifs',
                         titleIcon: 'file',
                         routerBase: 'file',
@@ -177,7 +175,7 @@
                         resultIcon: () => 'file',
                     },
                     {
-                        indexName: 'articles',
+                        indexName: BLOGS,
                         title: 'Tous les articles',
                         titleIcon: 'newspaper',
                         routerBase: 'article',
@@ -186,7 +184,7 @@
                         resultIcon: () => 'newspaper',
                     },
                     {
-                        indexName: 'clubs',
+                        indexName: CLUBS,
                         title: 'Toutes les associations',
                         titleIcon: 'user-friends',
                         routerBase: 'club',
@@ -195,7 +193,7 @@
                         resultIcon: () => 'user-friends',
                     },
                     {
-                        indexName: 'subjects',
+                        indexName: SUBJECTS,
                         title: 'Toutes les matieres',
                         titleIcon: 'book',
                         routerBase: 'subject',

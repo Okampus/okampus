@@ -13,7 +13,7 @@ const routes = [
 
     {
         path: '/auth',
-        component: () => import('@/views/App/AuthComponent.vue'),
+        component: () => import('@/views/App/AuthRedirect.vue'),
     },
 
     {
