@@ -2,7 +2,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import type { JwtSignOptions } from '@nestjs/jwt';
 import { JwtService } from '@nestjs/jwt';
-import { config } from '../config';
+import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { User } from '../users/user.entity';
 import type { Token } from './jwt-auth.guard';

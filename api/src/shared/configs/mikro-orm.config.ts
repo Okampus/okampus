@@ -2,8 +2,8 @@ import type { Options } from '@mikro-orm/core';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import { Logger, NotFoundException } from '@nestjs/common';
+import { BaseRepository } from '../lib/repositories/base.repository';
 import { config } from './config';
-import { BaseRepository } from './shared/lib/repositories/base.repository';
 
 const ormLogger = new Logger('MikroORM');
 

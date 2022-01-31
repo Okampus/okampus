@@ -3,7 +3,7 @@ import path from 'node:path';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Logger, Module } from '@nestjs/common';
-import { config } from '../../config';
+import { config } from '../../shared/configs/config';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { enumKeys } from '../../shared/lib/utils/enum-keys';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';

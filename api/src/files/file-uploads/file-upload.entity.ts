@@ -7,7 +7,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import { config } from '../../config';
+import { config } from '../../shared/configs/config';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { User } from '../../users/user.entity';

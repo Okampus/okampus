@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import type { HealthIndicatorResult } from '@nestjs/terminus';
 import { HealthCheckError, HealthIndicator } from '@nestjs/terminus';
-import { client } from '../../../typesense.config';
+import { client } from '../../configs/typesense.config';
 
 @Injectable()
 export class TypesenseHealthIndicator extends HealthIndicator {
@@ -13,6 +13,6 @@ export class TypesenseHealthIndicator extends HealthIndicator {
     if (isHealthy)
       return result;
 
-    throw new HealthCheckError('Database check failed', result);
+    throw new HealthCheckError('Search check failed', result);
   }
 }

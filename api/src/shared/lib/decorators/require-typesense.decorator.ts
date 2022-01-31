@@ -1,4 +1,4 @@
-import { config } from '../../../config';
+import { config } from '../../configs/config';
 
 export default function RequireTypesense(): MethodDecorator {
   return (_target, _key, descriptor: PropertyDescriptor): PropertyDescriptor => {

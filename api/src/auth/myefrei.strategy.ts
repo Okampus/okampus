@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-oauth2';
 import { firstValueFrom } from 'rxjs';
-import { config } from '../config';
+import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';

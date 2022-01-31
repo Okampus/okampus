@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
 import type { Express } from 'express';
 import { InjectS3 } from 'nestjs-s3';
-import { config } from '../../config';
+import { config } from '../../shared/configs/config';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { UploadBucket } from '../../shared/lib/types/upload-bucket.enum';
 

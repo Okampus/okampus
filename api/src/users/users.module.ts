@@ -2,7 +2,7 @@ import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
 import { BadgeUnlock } from '../badges/badge-unlock.entity';
-import { config } from '../config';
+import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { Role } from '../shared/modules/authorization/types/role.enum';
 import { Statistics } from '../statistics/statistics.entity';

@@ -6,11 +6,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
-import { config } from './config';
+import { config } from './shared/configs/config';
+import { client } from './shared/configs/typesense.config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
 import { TypesenseFilter } from './shared/lib/filters/typesense.filter';
 import { logger as loggerMiddleware } from './shared/lib/middlewares/logger.middleware';
-import { client } from './typesense.config';
 
 const logger = new Logger('Bootstrap');
 

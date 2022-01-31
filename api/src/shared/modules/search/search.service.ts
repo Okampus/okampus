@@ -3,7 +3,7 @@ import type { CollectionFieldSchema } from 'typesense/lib/Typesense/Collection';
 import type { CollectionCreateSchema } from 'typesense/lib/Typesense/Collections';
 import type { ImportResponse, SearchParams, SearchResponse } from 'typesense/lib/Typesense/Documents';
 import type { TypesenseError } from 'typesense/lib/Typesense/Errors';
-import { client } from '../../../typesense.config';
+import { client } from '../../configs/typesense.config';
 
 export const authorizeNotFound = (error: TypesenseError): void => {
   if (error.httpStatus !== 404)
