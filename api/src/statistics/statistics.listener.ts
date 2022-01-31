@@ -7,6 +7,7 @@ import { Badge } from '../badges/badge.entity';
 import { Content } from '../contents/content.entity';
 import type { InfoDoc } from '../files/info-docs/info-doc.entity';
 import type { StudyDoc } from '../files/study-docs/study-doc.entity';
+import pointsConfig from '../shared/configs/points.config';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { ContentKind } from '../shared/lib/types/content-kind.enum';
 import { Statistic } from '../shared/lib/types/statistic.enum';
@@ -32,6 +33,7 @@ export class StatisticsListener {
       switch (content.kind) {
         case ContentKind.Post:
           stats.postCount++;
+          stats.user.points += pointsConfig.post;
           if (stats.postStreak === 0 || isYesterday(stats.lastPost!))
             stats.postStreak++;
           stats.lastPost = new Date();
@@ -40,6 +42,7 @@ export class StatisticsListener {
           break;
         case ContentKind.Reply:
           stats.replyCount++;
+          stats.user.points += pointsConfig.reply;
           if (stats.replyStreak === 0 || isYesterday(stats.lastReply!))
             stats.replyStreak++;
           stats.lastReply = new Date();
@@ -48,6 +51,7 @@ export class StatisticsListener {
           break;
         case ContentKind.Comment:
           stats.commentCount++;
+          stats.user.points += pointsConfig.comment;
           if (stats.commentStreak || isYesterday(stats.lastComment!))
             stats.commentStreak++;
           stats.lastComment = new Date();
@@ -64,6 +68,7 @@ export class StatisticsListener {
     const stats = await this.statisticsRepository.findOne({ user: document.file.user }, { populate: ['user'] });
     if (stats) {
       stats.uploadCount++;
+      stats.user.points += pointsConfig.upload;
       await this.registerAction(stats, Statistic.Upload);
     }
   }
@@ -86,7 +91,9 @@ export class StatisticsListener {
       toBeUnlocked.push(new BadgeUnlock({ user: stats.user, badge }));
     }
 
-    await this.badgeUnlockRepository.persistAndFlush(toBeUnlocked);
+    if (toBeUnlocked.length > 0)
+      await this.badgeUnlockRepository.persistAndFlush(toBeUnlocked);
+
     await this.statisticsRepository.flush();
     await this.userRepository.flush();
   }

@@ -10,16 +10,6 @@ import { User } from '../users/user.entity';
 
 @Entity()
 export class Statistics extends BaseEntity {
-  public static points = {
-    post: 5,
-    validatedPost: 10,
-    reply: 5,
-    validatedReply: 10,
-    comment: 2,
-    upload: 10,
-    validatedUpload: 10,
-  };
-
   @OneToOne({ primary: true })
   user!: User;
 
