@@ -12,6 +12,7 @@ import { Blog } from './blog.entity';
 export interface IndexedBlog {
   title: string;
   body: string;
+  category: string;
   author: string;
   tags: string[];
   id: string;
@@ -24,6 +25,7 @@ export class BlogSearchService extends SearchService<Blog, IndexedBlog> {
     fields: [
       { name: 'title', type: 'string' },
       { name: 'body', type: 'string' },
+      { name: 'category', type: 'string' },
       { name: 'author', type: 'string' },
       { name: 'tags', type: 'string[]' },
     ],
@@ -81,6 +83,7 @@ export class BlogSearchService extends SearchService<Blog, IndexedBlog> {
     return {
       title: blog.title,
       body: blog.post!.body,
+      category: blog.category,
       author: blog.post!.author.fullname,
       tags: blog.tags.toArray().map(tag => tag.name),
       id: blog.contentMasterId.toString(),
