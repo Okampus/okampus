@@ -52,7 +52,7 @@
     }
 </script>
 
-<style>
+<style lang="scss">
     .centered-fixed {
         position: fixed;
         top: 0;

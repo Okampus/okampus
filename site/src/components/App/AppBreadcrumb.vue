@@ -19,10 +19,10 @@
     }
 
     #crouton ul {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
         width: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
         list-style: none;
     }
 
@@ -32,13 +32,13 @@
     }
 
     #crouton a {
-        background: #ddd;
-        padding: 0.7em 1em;
-        float: left;
-        text-decoration: none;
-        color: #444;
-        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
         position: relative;
+        float: left;
+        padding: 0.7em 1em;
+        color: #444;
+        text-decoration: none;
+        text-shadow: 0 1px 0 rgb(255 255 255 / 50%);
+        background: #ddd;
     }
 
     #crouton li:first-child a {
@@ -51,19 +51,15 @@
         border-bottom-right-radius: 5px;
     }
 
-    #crouton a:hover {
-        background: #99db76;
-    }
-
     #crouton li:not(:first-child) > a::before {
-        content: '';
         position: absolute;
         top: 50%;
-        margin-top: -1.5em;
-        border-width: 1.5em 0 1.5em 1em;
-        border-style: solid;
-        border-color: #ddd #ddd #ddd transparent;
         left: -1em;
+        margin-top: -1.5em;
+        content: '';
+        border-color: #ddd #ddd #ddd transparent;
+        border-style: solid;
+        border-width: 1.5em 0 1.5em 1em;
     }
 
     #crouton li:not(:first-child) > a:hover::before {
@@ -71,14 +67,14 @@
     }
 
     #crouton li:not(:last-child) > a::after {
-        content: '';
         position: absolute;
         top: 50%;
+        right: -1em;
         margin-top: -1.5em;
+        content: '';
         border-top: 1.5em solid transparent;
         border-bottom: 1.5em solid transparent;
         border-left: 1em solid #ddd;
-        right: -1em;
     }
 
     #crouton li:not(:last-child) > a:hover::after {

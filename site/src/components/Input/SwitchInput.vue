@@ -73,37 +73,35 @@
         height: var(--switch-height);
 
         & input {
-            cursor: pointer;
-            opacity: 0;
             width: var(--switch-width);
             height: var(--switch-height);
+            cursor: pointer;
+            opacity: 0;
         }
     }
 
     .slider {
         position: absolute;
-        pointer-events: none;
         top: 0;
-        left: 0;
         right: 0;
         bottom: 0;
+        left: 0;
         width: var(--switch-width);
         height: var(--switch-height);
+        pointer-events: none;
         background-color: var(--switch-bg);
         border-radius: var(--button-radius);
-        -webkit-transition: var(--transition-duration);
         transition: var(--transition-duration);
 
-        &:before {
+        &::before {
             position: absolute;
-            content: '';
             top: var(--switch-inner-padding);
             left: var(--switch-inner-padding);
-            height: calc(var(--switch-height) - 2 * var(--switch-inner-padding));
             width: calc(var(--switch-height) - 2 * var(--switch-inner-padding));
+            height: calc(var(--switch-height) - 2 * var(--switch-inner-padding));
+            content: '';
             background-color: var(--button-color);
             border-radius: var(--button-radius);
-            -webkit-transition: var(--transition-duration);
             transition: var(--transition-duration);
         }
     }
@@ -116,28 +114,7 @@
         box-shadow: 0 0 1px var(--switch-color);
     }
 
-    input:focus + .slider {
-        box-shadow: 0 0 1px var(--switch-color);
-    }
-
-    input:checked + .slider:before {
-        -webkit-transform: translateX(
-            calc(
-                var(--switch-width) - 2 * var(--switch-inner-padding) - var(--switch-height) + 2 *
-                    var(--switch-inner-padding)
-            )
-        );
-        -ms-transform: translateX(
-            calc(
-                var(--switch-width) - 2 * var(--switch-inner-padding) - var(--switch-height) + 2 *
-                    var(--switch-inner-padding)
-            )
-        );
-        transform: translateX(
-            calc(
-                var(--switch-width) - 2 * var(--switch-inner-padding) - var(--switch-height) + 2 *
-                    var(--switch-inner-padding)
-            )
-        );
+    input:checked + .slider::before {
+        transform: translateX(calc(var(--switch-width) - var(--switch-height)));
     }
 </style>

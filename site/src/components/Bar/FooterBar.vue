@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <div class="px-6 pt-6 pb-2 border-t-2 border-footer">
+        <div class="px-6 pt-6 pb-2">
             <div class="flex flex-wrap justify-center">
                 <div class="w-full text-center md:w-1/4 text-0">
                     <h5 class="font-bold uppercase md:mb-3">Liens</h5>
@@ -56,7 +56,3 @@
         </div>
     </footer>
 </template>
-
-<script lang="js">
-    export default { }
-</script>

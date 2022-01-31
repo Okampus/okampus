@@ -123,18 +123,18 @@
     }
 
     .value-key {
-        color: var(--vjc-valueKey-color);
-        font-weight: 600;
-        margin-left: 10px;
-        border-radius: 2px;
-        white-space: nowrap;
         padding: 5px 5px 5px 10px;
+        margin-left: 10px;
+        font-weight: 600;
+        color: var(--vjc-value-key-color);
+        white-space: nowrap;
+        border-radius: 2px;
 
         &.can-select {
             cursor: pointer;
 
             &:hover {
-                background-color: rgba(0, 0, 0, 0.08);
+                background-color: rgb(0 0 0 / 8%);
             }
 
             &:focus {
@@ -144,22 +144,23 @@
     }
 
     .data-key {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 5px;
+        font-family: inherit;
+
         // Button overrides
         font-size: 100%;
-        font-family: inherit;
-        border: 0;
-        background-color: transparent;
-        width: 100%;
+        font-weight: 600;
 
         // Normal styles
         color: var(--vjc-key-color);
-        display: flex;
-        align-items: center;
-        border-radius: 2px;
-        font-weight: 600;
-        cursor: pointer;
         white-space: nowrap;
-        padding: 5px;
+        cursor: pointer;
+        background-color: transparent;
+        border: 0;
+        border-radius: 2px;
 
         &:hover {
             background-color: var(--vjc-hover-color);
@@ -174,21 +175,21 @@
         }
 
         .properties {
-            font-weight: 300;
-            opacity: 0.9;
             margin-left: 4px;
+            font-weight: 300;
             user-select: none;
+            opacity: 0.9;
         }
     }
 
     .chevron-arrow {
         flex-shrink: 0;
-        border-right: 4px solid var(--vjc-arrow-color);
-        border-bottom: 4px solid var(--vjc-arrow-color);
         width: var(--vjc-arrow-size);
         height: var(--vjc-arrow-size);
         margin-right: 20px;
         margin-left: 5px;
+        border-right: 4px solid var(--vjc-arrow-color);
+        border-bottom: 4px solid var(--vjc-arrow-color);
         transform: rotate(-45deg);
 
         &.opened {

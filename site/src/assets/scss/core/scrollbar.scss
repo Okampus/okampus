@@ -19,9 +19,9 @@ $webkit-scrollbar-thumb-color-active: ("light": #3d3d3d, "dark": #dbf4ff);
 
     &::-webkit-scrollbar-thumb {
         background-color: transparent;
-        box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color);
         border: solid 3px transparent;
         border-radius: 9999px;
+        box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color);
 
         &:hover {
             box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color-hover);

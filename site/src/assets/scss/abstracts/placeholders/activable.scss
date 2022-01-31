@@ -2,13 +2,13 @@
     // box-shadow: inset 5px 0 0 0 #66f;
     @apply opacity-80 bg-sky-100;
 
-    background-color: #edf2fe;
     color: #4b7bec;
+    background-color: #edf2fe;
     border-radius: 1rem;
 
     :root.dark & {
-        background-color: #11192e;
         color: #033aba;
+        background-color: #11192e;
     }
 }
 

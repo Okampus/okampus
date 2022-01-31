@@ -137,8 +137,8 @@
 
 <style>
     .rounded-table {
+        overflow: hidden;
         border-collapse: collapse;
         border-radius: 15px;
-        overflow: hidden;
     }
 </style>

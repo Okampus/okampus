@@ -144,6 +144,7 @@
 </script>
 
 <style lang="scss">
+    /* stylelint-disable-next-line selector-class-pattern */
     .blog-editor .ProseMirror {
         min-height: 40rem;
         max-height: 40rem;

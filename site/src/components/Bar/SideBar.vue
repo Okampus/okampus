@@ -188,10 +188,11 @@
 
 <style lang="scss">
     .sidebar-shadow {
-        box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.05);
-        clip-path: inset(0px -30px 0px 0px);
+        clip-path: inset(0 -30px 0 0);
+        box-shadow: 0 0 15px 3px rgb(0 0 0 / 5%);
+
         :root.dark & {
-            box-shadow: 0 0px 20px 5px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 20px 5px rgb(0 0 0 / 40%);
         }
     }
 

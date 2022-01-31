@@ -97,6 +97,7 @@
     .alert-bg {
         @extend %alert;
         @apply border shadow-lg;
+
         &[alert-type='info'] {
             @apply bg-blue-100 dark:bg-blue-800/50 border-blue-500;
         }

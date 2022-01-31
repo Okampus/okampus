@@ -1,7 +1,7 @@
 <template>
     <div class="m-0 text-2">
         <div class="absolute top-0 left-0 py-12 m-0 w-full h-52 hero">
-            <h3 class="mb-8 text-4xl font-bold text-0" style="padding-left: 5%; padding-right: 5%">
+            <h3 class="mb-8 text-4xl font-bold text-0" style="padding-right: 5%; padding-left: 5%">
                 Liste des utilisateurs
             </h3>
         </div>

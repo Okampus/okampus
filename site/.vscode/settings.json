@@ -16,14 +16,22 @@
     "css.validate": false,
     "less.validate": false,
     "scss.validate": false,
-    "stylelint.validate": ["css", "scss", "less"],
-
+    "stylelint.validate": ["css", "scss", "less", "vue"],
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[scss]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "[vue]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
     "editor.formatOnSave": false,
-    "editor.codeActionsOnSave": ["source.fixAll.eslint", "source.formatDocument"]
+    "editor.codeActionsOnSave": ["source.fixAll.eslint", "source.fixAll.stylelint", "source.formatDocument"]
 }

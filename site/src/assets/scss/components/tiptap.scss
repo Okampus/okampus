@@ -9,10 +9,10 @@
         &:first-child::before {
             @extend %placeholder;
 
-            content: attr(data-placeholder);
             float: left;
-            pointer-events: none;
             height: 0;
+            pointer-events: none;
+            content: attr(data-placeholder);
         }
     }
 }

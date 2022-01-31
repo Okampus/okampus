@@ -163,19 +163,19 @@
 </script>
 
 <style lang="scss">
-    @import '@/assets/scss/app.scss';
-    @import '@/assets/scss/components/button.scss';
-    @import '@/assets/scss/components/card.scss';
-    @import '@/assets/scss/components/input.scss';
-    @import '@/assets/scss/components/link.scss';
-    @import '@/assets/scss/components/select.scss';
-    @import '@/assets/scss/components/tiptap.scss';
-    @import '@/assets/scss/sections/hero.scss';
-    @import '@/assets/scss/sections/label.scss';
-    @import '@/assets/scss/sections/transition.scss';
-    @import '@/assets/scss/core/scrollbar.scss';
-    @import '@/assets/scss/core/spacing.scss';
-    @import '@/assets/scss/core/tab.scss';
+    @import '@/assets/scss/app';
+    @import '@/assets/scss/components/button';
+    @import '@/assets/scss/components/card';
+    @import '@/assets/scss/components/input';
+    @import '@/assets/scss/components/link';
+    @import '@/assets/scss/components/select';
+    @import '@/assets/scss/components/tiptap';
+    @import '@/assets/scss/sections/hero';
+    @import '@/assets/scss/sections/label';
+    @import '@/assets/scss/sections/transition';
+    @import '@/assets/scss/core/scrollbar';
+    @import '@/assets/scss/core/spacing';
+    @import '@/assets/scss/core/tab';
 
     @font-face {
         font-family: AtkinsonHyperlegible;
@@ -185,8 +185,8 @@
 
     @font-face {
         font-family: AtkinsonHyperlegible;
-        font-weight: 400;
         font-style: italic;
+        font-weight: 400;
         src: url('@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf') format('truetype');
     }
 
@@ -198,13 +198,13 @@
 
     @font-face {
         font-family: AtkinsonHyperlegible;
-        font-weight: 700;
         font-style: italic;
+        font-weight: 700;
         src: url('@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf') format('truetype');
     }
 
     * {
-        font-family: AtkinsonHyperlegible;
+        font-family: AtkinsonHyperlegible, sans-serif;
     }
 
     // TODO: Adapt font size to screen size (for small screen sizes)
