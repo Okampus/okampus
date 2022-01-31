@@ -5,7 +5,7 @@ import { SearchParams } from 'typesense/lib/Typesense/Documents';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import RequireTypesense from '../shared/lib/decorators/require-typesense.decorator';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import { extractTextFromStringifiedTiptap } from '../shared/lib/utils/extractTextFromTiptap';
+import { extractTextFromStringifiedTiptap } from '../shared/lib/utils/extract-text-from-tiptap';
 import { authorizeNotFound, SearchService } from '../shared/modules/search/search.service';
 import { client } from '../typesense.config';
 import { Report } from './report.entity';

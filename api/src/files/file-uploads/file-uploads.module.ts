@@ -5,7 +5,7 @@ import type { OnModuleInit } from '@nestjs/common';
 import { Logger, Module } from '@nestjs/common';
 import { config } from '../../config';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
-import { enumKeys } from '../../shared/lib/utils/enumKeys';
+import { enumKeys } from '../../shared/lib/utils/enum-keys';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
 import { FilePersistanceService } from './file-persistance.service';
 import { FileUpload } from './file-upload.entity';

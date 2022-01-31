@@ -10,7 +10,7 @@ import type { StudyDoc } from '../files/study-docs/study-doc.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { ContentKind } from '../shared/lib/types/content-kind.enum';
 import { Statistic } from '../shared/lib/types/statistic.enum';
-import { isYesterday } from '../shared/lib/utils/dateUtils';
+import { isYesterday } from '../shared/lib/utils/date-utils';
 import { User } from '../users/user.entity';
 import { Statistics } from './statistics.entity';
 

@@ -7,7 +7,7 @@ import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import { Cursus } from '../../shared/lib/types/cursus.enum';
 import type { Category, StudyDocCategoryType } from '../../shared/lib/types/docs-category.type';
 import type { ValueOf } from '../../shared/lib/types/valueof.type';
-import { assertPermissions } from '../../shared/lib/utils/assertPermission';
+import { assertPermissions } from '../../shared/lib/utils/assert-permission';
 import { Action } from '../../shared/modules/authorization';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
 import type { PaginationOptions } from '../../shared/modules/pagination/pagination-option.interface';

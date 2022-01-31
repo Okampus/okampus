@@ -8,7 +8,7 @@ import { Reaction } from '../reactions/reaction.entity';
 import { Report } from '../reports/report.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { ContentMasterType } from '../shared/lib/types/content-master-type.enum';
-import { assertPermissions } from '../shared/lib/utils/assertPermission';
+import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';

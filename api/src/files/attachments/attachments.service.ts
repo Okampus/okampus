@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Content } from '../../contents/content.entity';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import { ContentKind } from '../../shared/lib/types/content-kind.enum';
-import { assertPermissions } from '../../shared/lib/utils/assertPermission';
+import { assertPermissions } from '../../shared/lib/utils/assert-permission';
 import { Action } from '../../shared/modules/authorization';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
 import type { User } from '../../users/user.entity';

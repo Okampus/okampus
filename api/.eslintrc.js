@@ -31,6 +31,8 @@ module.exports = {
     'node/no-extraneous-import': ['error', { allowModules: ['express'] }],
     'node/callback-return': 'off',
 
+    'unicorn/filename-case': ['error', { case: 'kebabCase' }],
+
     '@typescript-eslint/no-extraneous-class': ['error', { allowWithDecorator: true }],
     // Forbid leading underscore for private properties (in nest almost all if not all class properties are private,
     // adding the underscore just impacts readability.)
