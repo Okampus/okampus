@@ -49,7 +49,7 @@ export abstract class SearchService<Entity, IndexedEntity> {
           .documents()
           .import(entities.map(toIndexedEntity));
       } catch (error) {
-        throw new Error(`Error importing documents ${JSON.stringify(error, null, 2)}`);
+        throw new Error(`Error importing documents ${JSON.stringify(error, null, 2)}.\nError: ${error}`);
       }
 
       const failedItems = returnData.filter(item => !item.success);

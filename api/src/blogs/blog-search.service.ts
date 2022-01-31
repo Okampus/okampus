@@ -5,6 +5,7 @@ import { SearchParams } from 'typesense/lib/Typesense/Documents';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import RequireTypesense from '../shared/lib/decorators/require-typesense.decorator';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { extractTextFromStringifiedTiptap } from '../shared/lib/utils/extract-text-from-tiptap';
 import { authorizeNotFound, SearchService } from '../shared/modules/search/search.service';
 import { client } from '../typesense.config';
 import { Blog } from './blog.entity';
@@ -39,7 +40,7 @@ export class BlogSearchService extends SearchService<Blog, IndexedBlog> {
 
   @RequireTypesense()
   public async init(): Promise<void> {
-    const blogs = await this.blogRepository.findAll();
+    const blogs = await this.blogRepository.findAll({ populate: ['post', 'post.author'] });
     await super.init(blogs, entity => this.toIndexedEntity(entity));
   }
 
@@ -82,7 +83,7 @@ export class BlogSearchService extends SearchService<Blog, IndexedBlog> {
   public toIndexedEntity(blog: Blog): IndexedBlog {
     return {
       title: blog.title,
-      body: blog.post!.body,
+      body: extractTextFromStringifiedTiptap(blog.post!.body),
       category: blog.category,
       author: blog.post!.author.fullname,
       tags: blog.tags.toArray().map(tag => tag.name),

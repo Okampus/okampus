@@ -5,6 +5,7 @@ import { SearchParams } from 'typesense/lib/Typesense/Documents';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import RequireTypesense from '../shared/lib/decorators/require-typesense.decorator';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { extractTextFromStringifiedTiptap } from '../shared/lib/utils/extract-text-from-tiptap';
 import { authorizeNotFound, SearchService } from '../shared/modules/search/search.service';
 import { client } from '../typesense.config';
 import { Thread } from './thread.entity';
@@ -37,7 +38,7 @@ export class ThreadSearchService extends SearchService<Thread, IndexedThread> {
 
   @RequireTypesense()
   public async init(): Promise<void> {
-    const threads = await this.threadRepository.findAll();
+    const threads = await this.threadRepository.findAll({ populate: ['post', 'post.author'] });
     await super.init(threads, entity => this.toIndexedEntity(entity));
   }
 
@@ -80,7 +81,7 @@ export class ThreadSearchService extends SearchService<Thread, IndexedThread> {
   public toIndexedEntity(thread: Thread): IndexedThread {
     return {
       title: thread.title,
-      body: thread.post!.body,
+      body: extractTextFromStringifiedTiptap(thread.post!.body),
       author: thread.post!.author.fullname,
       tags: thread.tags.toArray().map(tag => tag.name),
       id: thread.contentMasterId.toString(),
