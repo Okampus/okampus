@@ -41,7 +41,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",
-    "dotenv": "^14.3.0",
+    "dotenv": "15.0.0",
     "helmet": "^5.0.2",
     "lodash.groupby": "^4.6.0",
     "mime-db": "^1.51.0",
