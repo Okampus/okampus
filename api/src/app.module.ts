@@ -2,6 +2,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { S3Module } from 'nestjs-s3';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
@@ -18,6 +19,7 @@ import { ReportsModule } from './reports/reports.module';
 import { PoliciesGuard } from './shared/modules/authorization';
 import { CaslModule } from './shared/modules/casl/casl.module';
 import { SocialsModule } from './socials/socials.module';
+import { StatisticsModule } from './statistics/statistics.module';
 import storageConfig from './storage.config';
 import { SubjectsModule } from './subjects/subjects.module';
 import { TagsModule } from './tags/tags.module';
@@ -28,6 +30,7 @@ import { VotesModule } from './votes/votes.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    EventEmitterModule.forRoot(),
     MikroOrmModule.forRoot(),
     S3Module.forRoot({ config: storageConfig }),
     BlogsModule,
@@ -43,6 +46,7 @@ import { VotesModule } from './votes/votes.module';
     ReactionsModule,
     ReportsModule,
     SocialsModule,
+    StatisticsModule,
     SubjectsModule,
     TagsModule,
     UsersModule,

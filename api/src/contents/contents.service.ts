@@ -35,6 +35,7 @@ export class ContentsService {
       author: user,
     });
     await this.contentRepository.persistAndFlush(content);
+
     return content;
   }
 

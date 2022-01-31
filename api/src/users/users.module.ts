@@ -5,14 +5,18 @@ import { BadgeUnlock } from '../badges/badge-unlock.entity';
 import { config } from '../config';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { Role } from '../shared/modules/authorization/types/role.enum';
+import { Statistics } from '../statistics/statistics.entity';
+import { StatisticsModule } from '../statistics/statistics.module';
 import { UserSearchService } from './user-search.service';
 import { User } from './user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import './user.subscriber';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([User, BadgeUnlock]),
+    MikroOrmModule.forFeature([User, Statistics, BadgeUnlock]),
+    StatisticsModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, UserSearchService],

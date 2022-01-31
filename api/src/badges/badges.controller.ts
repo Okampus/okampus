@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -21,7 +22,9 @@ import { UpdateBadgeDto } from './dto/update-badge.dto';
 @ApiTags('Badges')
 @Controller({ path: 'badges' })
 export class BadgesController {
-  constructor(private readonly badgesService: BadgesService) {}
+  constructor(
+    private readonly badgesService: BadgesService,
+  ) {}
 
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Badge))
@@ -50,21 +53,21 @@ export class BadgesController {
     return await this.badgesService.findAllForUser(userId);
   }
 
-  @Get(':slug')
+  @Get(':badgeId')
   @CheckPolicies(ability => ability.can(Action.Read, Badge))
-  public async findOne(@Param('slug') slug: string): Promise<Badge> {
-    return await this.badgesService.findOne(slug);
+  public async findOne(@Param('badgeId', ParseIntPipe) badgeId: number): Promise<Badge> {
+    return await this.badgesService.findOne(badgeId);
   }
 
-  @Patch(':slug')
+  @Patch(':badgeId')
   @CheckPolicies(ability => ability.can(Action.Update, Badge))
-  public async update(@Param('slug') slug: string, @Body() updateBadgeDto: UpdateBadgeDto): Promise<Badge> {
-    return await this.badgesService.update(slug, updateBadgeDto);
+  public async update(@Param('badgeId', ParseIntPipe) badgeId: number, @Body() updateBadgeDto: UpdateBadgeDto): Promise<Badge> {
+    return await this.badgesService.update(badgeId, updateBadgeDto);
   }
 
-  @Delete(':slug')
+  @Delete(':badgeId')
   @CheckPolicies(ability => ability.can(Action.Delete, Badge))
-  public async remove(@Param('slug') slug: string): Promise<void> {
-    await this.badgesService.remove(slug);
+  public async remove(@Param('badgeId', ParseIntPipe) badgeId: number): Promise<void> {
+    await this.badgesService.remove(badgeId);
   }
 }

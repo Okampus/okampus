@@ -1,9 +1,11 @@
 import {
+  Cascade,
   Collection,
   Entity,
   Enum,
   Index,
   OneToMany,
+  OneToOne,
   PrimaryKey,
   Property,
   Unique,
@@ -11,9 +13,11 @@ import {
 import * as bcrypt from 'bcrypt';
 import { Exclude, Expose } from 'class-transformer';
 import type { BadgeUnlock } from '../badges/badge-unlock.entity';
-import { EMAIL_INCLUDED, PERSONAL_INFO_INCLUDED } from '../shared/lib/constants';
+import { EMAIL_INCLUDED, PERSONAL_INFO_INCLUDED, STATISTICS_INCLUDED } from '../shared/lib/constants';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { Role } from '../shared/modules/authorization/types/role.enum';
+// eslint-disable-next-line import/no-cycle
+import { Statistics } from '../statistics/statistics.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -70,6 +74,13 @@ export class User extends BaseEntity {
   @Property({ type: 'text' })
   @Expose({ groups: [PERSONAL_INFO_INCLUDED] })
   description?: string;
+
+  @Expose({ groups: [STATISTICS_INCLUDED] })
+  @OneToOne(() => Statistics, stats => stats.user, { cascade: [Cascade.ALL] })
+  statistics?: Statistics;
+
+  @Property()
+  points = 0;
 
   constructor(options: {
     username: string;

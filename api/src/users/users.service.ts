@@ -6,6 +6,8 @@ import type { RegisterDto } from '../auth/dto/register.dto';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { Statistics } from '../statistics/statistics.entity';
+import { StatisticsService } from '../statistics/statistics.service';
 import type { UpdateUserDto } from './dto/update-user.dto';
 import { UserSearchService } from './user-search.service';
 import { User } from './user.entity';
@@ -14,7 +16,9 @@ import { User } from './user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(Statistics) private readonly statisticsRepository: BaseRepository<Statistics>,
     private readonly userSearchService: UserSearchService,
+    private readonly statisticsService: StatisticsService,
   ) {}
 
   public async findOneById(userId: string): Promise<User> {
@@ -41,5 +45,11 @@ export class UsersService {
 
   public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<User>> {
     return await this.userRepository.findWithPagination(paginationOptions);
+  }
+
+  public async getUserStats(userId: string): Promise<Statistics> {
+    const stats = await this.statisticsRepository.findOneOrFail({ user: { userId } });
+    const streaks = await this.statisticsService.getAllStreaks(stats);
+    return { ...stats, ...streaks };
   }
 }

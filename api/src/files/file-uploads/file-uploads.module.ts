@@ -12,7 +12,9 @@ import { FileUpload } from './file-upload.entity';
 import { FileUploadsService } from './file-uploads.service';
 
 @Module({
-  imports: [MikroOrmModule.forFeature([FileUpload])],
+  imports: [
+    MikroOrmModule.forFeature([FileUpload]),
+  ],
   controllers: [],
   providers: [CaslAbilityFactory, FileUploadsService, FilePersistanceService],
   exports: [FileUploadsService],

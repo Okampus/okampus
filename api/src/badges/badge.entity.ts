@@ -6,21 +6,25 @@ import {
 } from '@mikro-orm/core';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { BadgeLevel } from '../shared/lib/types/badge-level.enum';
+import { Statistic } from '../shared/lib/types/statistic.enum';
 
 @Entity()
 export class Badge extends BaseEntity {
-  @PrimaryKey({ type: 'text' })
-  slug!: string;
+  @PrimaryKey()
+  badgeId!: number;
 
+  // Readable name of the badge
   @Property({ type: 'text' })
   name!: string;
 
   @Property({ type: 'text' })
   description!: string;
 
+  // The number of points given once the badge is unlocked
   @Property()
-  value!: number;
+  pointPrize!: number;
 
+  // The level of the badge, for example Bronze, Silver, Gold, etc.
   @Enum(() => BadgeLevel)
   level!: BadgeLevel;
 
@@ -28,30 +32,36 @@ export class Badge extends BaseEntity {
   @Property({ type: 'text' })
   icon!: string;
 
+  // The serie the badge is in, for example
   @Property({ type: 'text' })
   serie!: string;
 
-  @Property({ type: 'text' })
-  category!: string;
+  // The name of the statistic that the badge is based on
+  @Enum(() => Statistic)
+  statistic!: Statistic;
+
+  // The number of point needed in the stat to unlock the badge
+  @Property()
+  statisticThreshold!: number;
 
   constructor(options: {
     name: string;
-    slug: string;
     description: string;
-    value: number;
+    pointPrize: number;
     level: BadgeLevel;
     icon: string;
     serie: string;
-    category: string;
+    statistic: Statistic;
+    statisticThreshold: number;
   }) {
     super();
     this.name = options.name;
-    this.slug = options.slug;
     this.description = options.description;
-    this.value = options.value;
+    this.pointPrize = options.pointPrize;
     this.level = options.level;
     this.icon = options.icon;
     this.serie = options.serie;
-    this.category = options.category;
+    this.statistic = options.statistic;
+    this.statisticThreshold = options.statisticThreshold;
   }
 }
