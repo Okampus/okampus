@@ -1,6 +1,6 @@
 <h1 align="center">HorizonWeb</h1>
 <p align="center">
-  🖥 Le projet de forum d'entraide étudiante de Horizon !
+  🖥 Le forum d'entraide étudiante de Horizon !
 </p>
 
 ## Rapport de bug et suggestions
@@ -14,17 +14,15 @@ Pour tout autre question, vous pouvez créer une [Discussion GitHub].
 
 ## Développement et contributions
 
-Nos Pull Request (PR) sont ouvertes à toutes contributions ! Vous pouvez regarder notre [guide de contributions] avant
-de commencer à travailler sur HorizonWeb : il vous aidera à tout mettre en place et à vous assurer que votre PR puisse
-être merge rapidement.
+Nos Pull Request (PR) sont ouvertes à toutes contributions ! Vous pouvez regarder notre [guide de contributions] avant de commencer à travailler sur HorizonWeb : il vous aidera à tout mettre en place et à vous assurer que votre PR puisse être merge rapidement.
 
 ## Informations
 
-HorizonWeb est le projet de site web d'Horizon. C'est un forum de collaboration étudiante, de remontée à
-l'administration et de partage de fichiers. Son fonctionnement s'inspire du système de Post de Reddit, StackOverflow,
-ou les Discussions GitHub.\
+HorizonWeb est le projet de site web d'Horizon. C'est un forum de collaboration étudiante, de remontée à l'administration et de partage de fichiers. Son fonctionnement s'inspire du système de Post de Reddit, StackOverflow, ou les Discussions GitHub.\
 Le backend est développé en TypeScript et utilise le framework [NestJS].\
-Le frontend est développé en JavaScript et utilise le framework [VueJS].
+Le frontend est développé en JavaScript et utilise le framework [VueJS].\
+La base de données est une base de données [Postgres].\
+Le service pour la recherche instantanée est [Typesense].
 
 ## Fonctionnalités
 
@@ -46,10 +44,12 @@ HorizonWeb est sous license [MIT](./LICENSE).
 
 <!-- Link Dump -->
 
-[menu des issues]: https://github.com/horizon-teamdev/HorizonWeb/issues
-[Discussion GitHub]: https://github.com/horizon-teamdev/HorizonWeb/discussions
+[menu des issues]: https://github.com/horizon-efrei/HorizonWeb/issues
+[Discussion GitHub]: https://github.com/horizon-efrei/HorizonWeb/discussions
 [guide de contributions]: ./CONTRIBUTING.md
 [NestJS]: https://nestjs.com
 [VueJS]: https://vuejs.org
-[Voir les contributeurs]: https://github.com/horizon-teamdev/HorizonWeb/graphs/contributors
+[Postgres]: https://postgresql.org
+[Typesense]: https://typesense.org
+[Voir les contributeurs]: https://github.com/horizon-efrei/HorizonWeb/graphs/contributors
 [MIT]: ./LICENSE
