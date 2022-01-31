@@ -1,4 +1,4 @@
-import { IntersectionType } from '@nestjs/swagger';
+import { IntersectionType } from '@nestjs/mapped-types';
 import { CreateOrphanContentDto } from './create-orphan-content.dto';
 import { ParentDto } from './parent.dto';
 
