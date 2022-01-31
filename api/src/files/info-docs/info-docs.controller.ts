@@ -65,10 +65,12 @@ export class InfoDocsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, InfoDoc))
-  public async findAllInfoDocs(@Query() query: DocsFilterDto): Promise<PaginatedResult<InfoDoc>> {
+  public async findAllInfoDocs(
+    @Query() query: DocsFilterDto,
+  ): Promise<PaginatedResult<InfoDoc>> {
     if (query.page)
-      return await this.infoDocsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.infoDocsService.findAll();
+      return await this.infoDocsService.findAll(query, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
+    return await this.infoDocsService.findAll(query);
   }
 
   @Get('/categories')

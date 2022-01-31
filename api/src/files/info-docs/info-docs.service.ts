@@ -1,3 +1,4 @@
+import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
@@ -14,6 +15,7 @@ import type { User } from '../../users/user.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 import type { CreateInfoDocDto } from './dto/create-info-doc.dto';
+import type { DocsFilterDto } from './dto/docs-filter.dto';
 import type { UpdateInfoDocDto } from './dto/update-info-doc.dto';
 import { InfoDoc } from './info-doc.entity';
 import { InfoDocSearchService } from './info-docs-search.service';
@@ -29,18 +31,31 @@ export class InfoDocsService {
 
   public async create(createInfoDocDto: CreateInfoDocDto, file: FileUpload): Promise<InfoDoc> {
     const docSeries = await this.docSeriesRepository.findOne({ docSeriesId: createInfoDocDto.docSeries });
-    const infoDoc = new InfoDoc({ ...createInfoDocDto, file, docSeries });
+    const infoDoc = new InfoDoc({
+      ...createInfoDocDto,
+      file,
+      docSeries,
+    });
     await this.infoDocRepository.persistAndFlush(infoDoc);
     await this.infoDocSearchService.add(infoDoc);
     return infoDoc;
   }
 
-  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<InfoDoc>> {
+  public async findAll(
+    filters: DocsFilterDto,
+    paginationOptions?: PaginationOptions,
+  ): Promise<PaginatedResult<InfoDoc>> {
     // TODO: Maybe the user won't have access to all docs. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
+    let options: FilterQuery<InfoDoc> = {};
+    if (typeof filters.schoolYear !== 'undefined')
+      options = { ...options, schoolYear: filters.schoolYear };
+    if (typeof filters.year !== 'undefined')
+      options = { ...options, year: filters.year };
+
     return await this.infoDocRepository.findWithPagination(
       paginationOptions,
-      {},
+      options,
       { populate: ['file', 'file.user', 'docSeries'] },
     );
   }

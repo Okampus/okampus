@@ -86,13 +86,15 @@ export class StudyDocsService {
       documents: StudyDoc[],
       filters: StudyDocCategoryType[],
     ): Array<Category<StudyDocCategoryType>> =>
-      Object.entries(groupBy(documents, groupFilters[filters[0]])).map(([title, value]) => ({
-        title,
-        context: filters[0],
-        children: filters.length === 1 ? [] : computeChildren(value, filters.slice(1)),
-      }));
+      Object.entries(groupBy(documents, groupFilters[filters[0]]))
+        .map(([title, value]) => ({
+          title,
+          context: filters[0],
+          children: filters.length === 1 ? [] : computeChildren(value, filters.slice(1)),
+        }));
 
-    return computeChildren(allDocuments, baseFilters);
+    return computeChildren(allDocuments, baseFilters)
+      .flatMap(category => (category.title === 'undefined' ? category.children : category));
   }
 
   public async findOne(studyDocId: string): Promise<StudyDoc> {
