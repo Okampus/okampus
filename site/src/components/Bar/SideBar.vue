@@ -26,35 +26,33 @@
             class="overflow-x-hidden overflow-y-auto app-scrollbar-on-hover"
             :class="{ 'overflow-y-hidden': collapsing }"
         >
-            <div class="divide-y">
-                <div class="divide-y 2xl:divide-y-0">
-                    <ul
-                        v-for="[sectionName, sectionLinks] in Object.entries(links)"
-                        :key="sectionName"
-                        class="py-2"
-                    >
-                        <p class="hidden pl-4 uppercase 2xl:block text-5">
-                            {{ sectionName }}
-                        </p>
-                        <template v-for="link of sectionLinks" :key="link">
-                            <li>
-                                <router-link
-                                    :to="link.to"
-                                    class="flex items-center py-1 my-1 mx-auto w-11/12 opacity-80 tab text-0"
-                                    :class="{ active: link.regActive.test($route.path) }"
+            <div class="divide-y dark:divide-gray-700 2xl:divide-y-0">
+                <ul
+                    v-for="[sectionName, sectionLinks] in Object.entries(links)"
+                    :key="sectionName"
+                    class="py-2"
+                >
+                    <p class="hidden pl-4 uppercase 2xl:block text-5">
+                        {{ sectionName }}
+                    </p>
+                    <template v-for="link of sectionLinks" :key="link">
+                        <li>
+                            <router-link
+                                :to="link.to"
+                                class="flex items-center py-1 my-1 mx-auto w-11/12 opacity-80 tab text-0"
+                                :class="{ active: link.regActive.test($route.path) }"
+                            >
+                                <div
+                                    class="flex flex-col items-center mb-1 w-full 2xl:flex-row 2xl:ml-5 2xl:space-x-4"
                                 >
-                                    <div
-                                        class="flex flex-col items-center mb-1 w-full 2xl:flex-row 2xl:ml-5 2xl:space-x-4"
-                                    >
-                                        <font-awesome-icon :icon="link.icon" class="shrink-0 text-xl" />
+                                    <font-awesome-icon :icon="link.icon" class="shrink-0 text-xl" />
 
-                                        <span>{{ link.text }}</span>
-                                    </div>
-                                </router-link>
-                            </li>
-                        </template>
-                    </ul>
-                </div>
+                                    <span>{{ link.text }}</span>
+                                </div>
+                            </router-link>
+                        </li>
+                    </template>
+                </ul>
                 <div class="flex flex-wrap justify-center items-center py-4 px-2 space-x-4">
                     <p class="text-1 text-bold">Mode Sombre</p>
                     <SwitchInput v-model="theme" @click="$store.dispatch('user/switchTheme')" />
@@ -170,7 +168,7 @@
                                 },
                                 {
                                     to: '/me/profile',
-                                    regActive: /^\/me/,
+                                    regActive: /^\/me\/profile/,
                                     text: 'Mon compte',
                                     icon: 'user-cog',
                                 },
@@ -186,6 +184,7 @@
                             'communauté': [
                                 {
                                     to: '/users/',
+                                    regActive: /^\/users/,
                                     text: 'Utilisateurs',
                                     icon: 'users',
                                 },
