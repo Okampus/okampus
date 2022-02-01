@@ -7,7 +7,7 @@ const routes = [
     },
 
     {
-        path: '/admin',
+        path: '/admin/:component',
         component: () => import('@/views/Dashboard/DashboardAdmin.vue'),
     },
 

@@ -40,8 +40,8 @@
                             <li>
                                 <router-link
                                     :to="link.to"
-                                    class="flex items-center py-1 my-1 mx-auto w-11/12 opacity-80 cursor-pointer horizontal-tab text-0"
-                                    :class="{ active: link.to === $route.path }"
+                                    class="flex items-center py-1 my-1 mx-auto w-11/12 opacity-80 tab text-0"
+                                    :class="{ active: link.regActive.test($route.path) }"
                                 >
                                     <div
                                         class="flex flex-col items-center mb-1 w-full 2xl:flex-row 2xl:ml-5 2xl:space-x-4"
@@ -98,6 +98,7 @@
                         dev: [
                             {
                                 to: '/test',
+                                regActive: /^\/test/,
                                 text: 'Page Test',
                                 icon: 'vial',
                             },
@@ -107,7 +108,8 @@
                     ...({
                         admin: [
                             {
-                                to: '/admin',
+                                to: '/admin/users',
+                                regActive: /^\/admin/,
                                 text: 'Dashboard',
                                 icon: 'columns',
                             },
@@ -115,11 +117,13 @@
                         forum: [
                             {
                                 to: '/posts',
+                                regActive: /^\/posts(?!\/new)/,
                                 text: 'Forum',
                                 icon: 'comments',
                             },
                             {
                                 to: '/posts/new',
+                                regActive: /^\/posts\/new$/,
                                 text: 'Créer un Post',
                                 icon: 'question-circle',
                             },
@@ -127,11 +131,13 @@
                         'horizon docs': [
                             {
                                 to: '/docs',
+                                regActive: /^\/docs(?!\/new)/,
                                 text: 'Documents',
                                 icon: 'folder',
                             },
                             {
                                 to: '/docs/new',
+                                regActive: /^\/docs\/new$/,
                                 text: 'Uploader',
                                 icon: 'upload',
                             },
@@ -139,11 +145,13 @@
                         blog: [
                             {
                                 to: '/blog',
+                                regActive: /^\/blog(?!\/new)/,
                                 text: 'Pause Café',
                                 icon: 'newspaper',
                             },
                             {
                                 to: '/blog/new',
+                                regActive: /^\/blog\/new$/,
                                 text: 'Écrire un article',
                                 icon: 'pen-alt',
                             },
@@ -156,16 +164,19 @@
                             'communauté': [
                                 {
                                     to: '/users/',
+                                    regActive: /^\/users/,
                                     text: 'Utilisateurs',
                                     icon: 'users',
                                 },
                                 {
                                     to: '/me/profile',
+                                    regActive: /^\/me/,
                                     text: 'Mon compte',
                                     icon: 'user-cog',
                                 },
                                 {
                                     to: '/me/favorites',
+                                    regActive: /^\/me\/favorites/,
                                     text: 'Mes favoris',
                                     icon: 'crown',
                                 },

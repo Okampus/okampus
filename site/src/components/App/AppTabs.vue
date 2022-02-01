@@ -1,9 +1,24 @@
 <template>
     <div>
-        <div class="flex mx-auto space-x-2">
-            <button v-for="(t, i) in tabs" :key="i" class="w-full uppercase button" @click="updateTab(i)">
-                <p>{{ t.name }}</p>
-            </button>
+        <div class="flex -mt-1 mb-2 space-x-2">
+            <template v-if="mode == 'tabs'">
+                <div
+                    v-for="(t, i) in tabs"
+                    :key="i"
+                    class="flex gap-3 justify-center items-center py-3 w-full text-lg tab"
+                    :class="{ active: tabs[tab].id === t.id }"
+                    @click="updateTab(i)"
+                >
+                    <font-awesome-icon :icon="t.icon" />
+                    <p>{{ t.name }}</p>
+                </div>
+            </template>
+            <template v-else>
+                <slot v-for="(t, i) in tabs" :key="i" class="w-full" @click="updateTab(i)">
+                    <p>{{ t.name }}</p>
+                    <font-awesome-icon :icon="t.icon" />
+                </slot>
+            </template>
         </div>
 
         <slot :name="tabs[tab].id" />
@@ -17,7 +32,7 @@
         props: {
             mode: {
                 type: String,
-                default: 'horizontal',
+                default: 'tabs',
             },
             type: {
                 type: String,

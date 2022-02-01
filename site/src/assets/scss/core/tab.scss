@@ -1,8 +1,8 @@
-@import "@/assets/scss/abstracts/placeholders/activable";
-@import "@/assets/scss/abstracts/placeholders/focusable";
-@import "@/assets/scss/abstracts/placeholders/hoverable";
+@import '@/assets/scss/abstracts/placeholders/activable';
+@import '@/assets/scss/abstracts/placeholders/focusable';
+@import '@/assets/scss/abstracts/placeholders/hoverable';
 
-.horizontal-tab {
-    @extend %text-hover, %left-label-active,
-        %text-opaque-hover, %text-opaque-active;
+.tab {
+    @apply cursor-pointer;
+    @extend %text-hover, %left-label-active, %text-opaque-hover, %text-opaque-active;
 }

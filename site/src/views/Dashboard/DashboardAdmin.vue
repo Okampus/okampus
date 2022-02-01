@@ -1,46 +1,54 @@
 <template>
     <!-- TODO: Solve unexpected overflow! -->
-    <div>
-        <div class="absolute top-0 left-0 py-12 w-full h-52 hero" />
-        <div class="relative mx-auto mt-12 mb-10 w-11/12">
-            <div class="flex mx-auto space-x-2">
-                <button
-                    v-for="tab in Object.keys(tabColumns)"
-                    :key="tab"
-                    class="w-full uppercase button"
-                    @click="currentTab = tab"
-                >
-                    <p>{{ tab }}</p>
-                </button>
+    <AppTabs v-model:tab="currentTab" :tabs="tabs" class="absolute top-32 w-full card" route-base="/admin">
+        <template v-for="(tabColumns, i) in dashboardTabs" #[getSlot(i)] :key="i">
+            <div :class="i === currentTab ? 'block' : 'invisible'">
+                <DashboardCore :columns="tabColumns" :items="dashboardData[i]" />
             </div>
-
-            <template v-for="column in Object.keys(tabColumns)" :key="column">
-                <div :class="column === currentTab ? 'block' : 'hidden'">
-                    <DashboardCore :columns="tabColumns[column][0]" :items="tabColumns[column][1]" />
-                </div>
-            </template>
-        </div>
-    </div>
+        </template>
+    </AppTabs>
 </template>
 
-<script lang="js">
-    // import { users } from '@/fake/users'
-    // import { posts } from '@/fake/posts'
+<script>
     import postTypeEnum from '@/shared/types/post-types.enum'
-    import { watch } from 'vue'
-    import DashboardCore from './DashboardCore.vue'
+    import { ref, watch } from 'vue'
+    import DashboardCore from '../../components/Dashboard/DashboardCore.vue'
+    import AppTabs from '@/components/App/AppTabs.vue'
+
+    const tabs = [
+        {
+            id: 'reports',
+            name: 'Signalements',
+            icon: 'flag',
+        },
+        {
+            id: 'posts',
+            name: 'Posts',
+            icon: 'newspaper',
+        },
+        {
+            id: 'users',
+            name: 'Utilisateurs',
+            icon: 'users',
+        },
+    ]
     export default {
-        components: { DashboardCore },
-        data () {
+        components: { DashboardCore, AppTabs },
+        setup() {
+            const dashboardData = ref([[], [], []])
+            return { dashboardData }
+        },
+        data() {
             return {
-                currentTab: 'posts',
-                tabColumns: {
-                    reports: [{
+                currentTab: tabs.findIndex((t) => t.id === this.$route.params.component),
+                tabs,
+                dashboardTabs: [
+                    {
                         user: {
                             attrs: (report) => ({
-                                username: report.user.fullname,
-                                avatar: report.user.avatar,
-                                reputation: report.user.reputation,
+                                username: report?.user?.fullname,
+                                avatar: report?.user?.avatar,
+                                reputation: report?.user?.reputation,
                             }),
                             slot: () => {},
                             value: (report) => report.user.fullname,
@@ -68,11 +76,11 @@
                             comp: ['date-preview', '@/components/Dashboard/DatePreview.vue'],
                             name: 'Fait',
                         },
-                    }, []],
-                    posts: [{
+                    },
+                    {
                         votes: {
                             attrs: () => {},
-                            slot: (thread) => thread.post.upvotes - thread.post.downvotes,
+                            slot: (thread) => thread?.post?.upvotes - thread?.post?.downvotes,
                             value: (thread) => thread.post.upvotes - thread.post.downvotes,
                             comp: ['div'],
                             name: 'Votes',
@@ -93,9 +101,9 @@
                         },
                         user: {
                             attrs: (thread) => ({
-                                username: thread.post.author.fullname,
-                                avatar: thread.post.author.avatar,
-                                reputation: thread.post.author.reputation,
+                                username: thread?.post?.author?.fullname,
+                                avatar: thread?.post?.author?.avatar,
+                                reputation: thread?.post?.author?.reputation,
                             }),
                             slot: () => {},
                             value: (thread) => thread.post.author.fullname,
@@ -103,14 +111,14 @@
                             name: 'OP',
                         },
                         lastActivity: {
-                            attrs: (thread) => ({ dateString: thread.post.contentLastUpdatedAt }),
+                            attrs: (thread) => ({ dateString: thread?.post?.contentLastUpdatedAt }),
                             slot: (thread) => thread.post.contentLastUpdatedAt,
                             value: () => '',
                             comp: ['date-preview', '@/components/Dashboard/DatePreview.vue'],
                             name: 'Dernière activité',
                         },
                         createdAt: {
-                            attrs: (thread) => ({ dateString: thread.post.createdAt }),
+                            attrs: (thread) => ({ dateString: thread?.post?.createdAt }),
                             slot: (thread) => thread.post.createdAt,
                             value: () => '',
                             comp: ['date-preview', '@/components/Dashboard/DatePreview.vue'],
@@ -138,9 +146,8 @@
                             comp: ['div'],
                             name: 'Actions',
                         },
-                        // TODO: Actions
-                    }, []],
-                    utilisateurs: [{
+                    },
+                    {
                         user: {
                             attrs: (user) => ({
                                 username: user.fullname,
@@ -174,22 +181,36 @@
                             comp: ['date-preview', '@/components/Dashboard/DatePreview.vue'],
                             name: 'Dernière mise à jour',
                         },
-                    }, []],
-                },
+                    },
+                ],
             }
         },
         async mounted() {
-            watch(() => this.$store.getters['threads/getThreads'], (newThreads) => {
-                this.tabColumns.posts[1] = newThreads
-            })
+            // TODO: Create admin specific store
+            watch(
+                () => this.$store.getters['reports/getReportList'],
+                (newReports) => {
+                    this.dashboardData[0].push(
+                        ...newReports.filter((report) => !(report in this.dashboardData[0])),
+                    )
+                },
+            )
 
-            watch(() => this.$store.getters['profiles/getUsers'], (newUsers) => {
-                this.tabColumns.utilisateurs[1] = newUsers
-            })
+            watch(
+                () => this.$store.getters['threads/getThreads'],
+                (newThreads) => {
+                    this.dashboardData[1].push(
+                        ...newThreads.filter((thread) => !(thread in this.dashboardData[1])),
+                    )
+                },
+            )
 
-            watch(() => this.$store.getters['reports/getReportList'], (newReports) => {
-                this.tabColumns.reports[1] = newReports
-            })
+            watch(
+                () => this.$store.getters['profiles/getUsers'],
+                (newUsers) => {
+                    this.dashboardData[2].push(...newUsers.filter((user) => !(user in this.dashboardData[2])))
+                },
+            )
 
             this.$store.commit('threads/refreshThreads')
             await this.$store.dispatch('threads/getThreads')
@@ -197,6 +218,11 @@
             await this.$store.dispatch('profiles/getUsers')
             this.$store.commit('reports/refreshReportList')
             await this.$store.dispatch('reports/getReportList')
+        },
+        methods: {
+            getSlot(i) {
+                return this.tabs[i].id
+            },
         },
     }
 </script>

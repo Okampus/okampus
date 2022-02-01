@@ -1,46 +1,50 @@
 <template>
-    <div class="flex p-3 my-3 w-full bg-gray-50 dark:bg-gray-800 rounded-lg">
-        <SelectMultiCheckbox
-            v-model="selectedCols"
-            :filters="getCols()"
-            button-name="Voir les colonnes..."
-            input-placeholder="Filtrer les colonnes..."
-        />
+    <div class="flex flex-col gap-3">
+        <div class="flex">
+            <SelectMultiCheckbox
+                v-model="selectedCols"
+                :filters="getCols()"
+                button-name="Voir les colonnes..."
+                input-placeholder="Filtrer les colonnes..."
+            />
+        </div>
+        <table class="overflow-x-scroll w-full rounded-table">
+            <thead>
+                <tr class="text-xs font-semibold tracking-wide text-left uppercase text-3 bg-3">
+                    <th
+                        v-for="(col, colName) in columns"
+                        :key="colName"
+                        class="py-3 px-4"
+                        :class="{
+                            hidden: !(selectedCols.includes(colName) || selectedCols.includes(col.name)),
+                        }"
+                    >
+                        {{ col.name || colcamelToSentenceCase(colName) }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white dark:bg-gray-800 divide-y dark:divide-gray-700">
+                <tr
+                    v-for="(item, i) in itemsSorted"
+                    :key="i"
+                    class="text-gray-700 dark:text-gray-400 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
+                >
+                    <td
+                        v-for="(col, colName) in columns"
+                        :key="colName"
+                        class="py-3 px-4"
+                        :class="{
+                            hidden: !(selectedCols.includes(colName) || selectedCols.includes(col.name)),
+                        }"
+                    >
+                        <component :is="col.comp[0]" :="col.attrs(item)">
+                            {{ col.slot(item) }}
+                        </component>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <table class="overflow-x-scroll w-full rounded-table">
-        <thead>
-            <tr
-                class="text-xs font-semibold tracking-wide text-left text-gray-500 dark:text-gray-400 uppercase bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700"
-            >
-                <th
-                    v-for="(col, colName) in columns"
-                    :key="colName"
-                    class="py-3 px-4"
-                    :class="{ hidden: !(selectedCols.includes(colName) || selectedCols.includes(col.name)) }"
-                >
-                    {{ col.name || colcamelToSentenceCase(colName) }}
-                </th>
-            </tr>
-        </thead>
-        <tbody class="bg-white dark:bg-gray-800 divide-y dark:divide-gray-700">
-            <tr
-                v-for="(item, i) in itemsSorted"
-                :key="i"
-                class="text-gray-700 dark:text-gray-400 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
-            >
-                <td
-                    v-for="(col, colName) in columns"
-                    :key="colName"
-                    class="py-3 px-4"
-                    :class="{ hidden: !(selectedCols.includes(colName) || selectedCols.includes(col.name)) }"
-                >
-                    <component :is="col.comp[0]" :="col.attrs(item)">
-                        {{ col.slot(item) }}
-                    </component>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </template>
 
 <script lang="js">
