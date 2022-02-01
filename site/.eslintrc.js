@@ -23,15 +23,6 @@ module.exports = {
         'key-spacing': ['error', { beforeColon: false, afterColon: true }],
 
         'object-curly-spacing': ['error', 'always'],
-        'object-curly-newline': [
-            'error',
-            {
-                'ObjectExpression': { 'multiline': true, 'minProperties': 3 },
-                'ObjectPattern': 'never',
-                'ImportDeclaration': { 'multiline': true, 'minProperties': 5 },
-                'ExportDeclaration': { 'multiline': true, 'minProperties': 3 },
-            },
-        ],
 
         'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
