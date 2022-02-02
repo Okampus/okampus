@@ -140,12 +140,8 @@
         </div>
     </div>
 </template>
-<script lang="js">
-    import {
-        Disclosure,
-        DisclosureButton,
-        DisclosurePanel,
-    } from '@headlessui/vue'
+<script>
+    import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 
     export default {
         components: {

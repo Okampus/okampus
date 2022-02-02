@@ -14,18 +14,20 @@ module.exports = {
 
         'arrow-body-style': ['error', 'as-needed'],
         'tailwindcss/no-custom-classname': 'off',
+
         quotes: ['error', 'single', { avoidEscape: true }],
         'comma-dangle': ['error', 'always-multiline'],
 
-        'arrow-spacing': 'error',
-        'keyword-spacing': 'error',
-        'space-before-blocks': 'error',
+        'arrow-spacing': ['error', { before: true, after: true }],
         'key-spacing': ['error', { beforeColon: false, afterColon: true }],
+        'keyword-spacing': 'error',
+
+        'space-before-blocks': 'error',
+        'space-before-function-paren': ['error', 'never'],
 
         'object-curly-spacing': ['error', 'always'],
 
         'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-        'indent': 'off',
     },
 }

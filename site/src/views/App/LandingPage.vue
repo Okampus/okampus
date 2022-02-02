@@ -67,7 +67,7 @@
     </div>
 </template>
 
-<script lang="js">
+<script>
     import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
     import TagInput from '@/components/Input/TagInput.vue'
     import { posts } from '@/fake/posts'
@@ -78,7 +78,7 @@
             TagInput,
         },
         inheritAttrs: false,
-        data () {
+        data() {
             return { posts }
         },
     }

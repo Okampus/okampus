@@ -17,7 +17,7 @@
     </div>
 </template>
 
-<script lang="js">
+<script>
     import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
     import { watch } from 'vue'
 
@@ -29,18 +29,21 @@
             }
         },
         computed: {
-            loggedIn () {
+            loggedIn() {
                 return this.$store.state.auth.loggedIn
             },
         },
-        mounted () {
+        mounted() {
             if (this.loggedIn) {
                 this.refreshThreads()
             }
 
-            watch(() => this.$store.getters['threads/getThreads'], (threads) => {
-                this.threads = threads
-            })
+            watch(
+                () => this.$store.getters['threads/getThreads'],
+                (threads) => {
+                    this.threads = threads
+                },
+            )
 
             this.$emitter.on('login', () => {
                 this.refreshThreads()
@@ -51,7 +54,7 @@
             })
         },
         methods: {
-            refreshThreads () {
+            refreshThreads() {
                 this.$store.commit('threads/refreshThreads')
                 this.$store.dispatch('threads/getThreads')
             },

@@ -161,13 +161,13 @@
     </div>
 </template>
 
-<script lang="js">
-    import { blagues } from '@/assets/blagues/blagues';
-    import defaultAvatar from '@/assets/img/default_avatars/user.png';
-    import AppLoader from '@/components/App/AppLoader.vue';
-    import SelectInput from '@/components/Input/SelectInput.vue';
-    import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue';
-    import AvatarImage from '@/components/User/UserAvatar.vue';
+<script>
+    import { blagues } from '@/assets/blagues/blagues'
+    import defaultAvatar from '@/assets/img/default_avatars/user.png'
+    import AppLoader from '@/components/App/AppLoader.vue'
+    import SelectInput from '@/components/Input/SelectInput.vue'
+    import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue'
+    import AvatarImage from '@/components/User/UserAvatar.vue'
     // import _ from 'lodash';
     // import { watch } from 'vue';
 
@@ -187,7 +187,7 @@
                 avatarShown: false,
                 blagues: blagues,
                 submitMessage: '',
-            };
+            }
         },
         computed: {
             user() {
@@ -218,22 +218,20 @@
                 }
             },
             cropUploadSuccess: function cropUploadSuccess(jsonData) {
-                console.log(jsonData.profileImageId);
+                console.log(jsonData.profileImageId)
             },
             addLineAccount() {
                 this.socialAccounts.push({
                     social: { socialId: null },
                     pseudo: null,
                     link: null,
-                });
+                })
             },
             rmLineAccount: function rmLineAccount(indx) {
-                this.socialAccounts.splice(indx,1);
+                this.socialAccounts.splice(indx, 1)
             },
             submit: function submit() {
                 // TODO: entire refactor using Vuelidate
-
-
                 // function canSocialBePosted(social) {
                 //     if (social.pseudo === null) {
                 //         return false
@@ -245,17 +243,14 @@
                 // }
                 // this.submitMessage = 'Enregistré'
                 // this.submitSuccess = 1
-
                 // if (this.user.description ==='' || this.user.description === null || this.user.description === undefined) {
                 //     const blague = blagues[Math.floor(Math.random()*blagues.length)]
                 //     this.user.description = `${blague.question}\n${blague.answer}`
                 //     this.submitMessage = 'Nous vous avons ajouté une blague en description :)'
                 // }
-
                 // this.$store.dispatch('users/updateUser',this.user).then().catch(() => {
                 //     this.submitSuccess = -1
                 // })
-
                 // for ( let i =0; i < this.socialAccounts.length; i++) {
                 //     if (canSocialBePosted(this.socialAccounts[i])) {
                 //         if (!this.$store.state.profiles.currentUser.socialAccounts.find((a) => _.isEqual(a,this.socialAccounts[i]))) {

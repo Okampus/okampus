@@ -25,8 +25,8 @@
     </div>
 </template>
 
-<script lang="js">
-    import AvatarImage from '@/components/User/UserAvatar.vue';
+<script>
+    import AvatarImage from '@/components/User/UserAvatar.vue'
     export default {
         components: { AvatarImage },
         props: {
@@ -49,8 +49,8 @@
         },
         methods: {
             logout() {
-                this.$emitter.emit('logout');
-                this.$store.dispatch('auth/logout');
+                this.$emitter.emit('logout')
+                this.$store.dispatch('auth/logout')
             },
         },
     }

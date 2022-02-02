@@ -8,7 +8,7 @@
     />
 </template>
 
-<script lang="js">
+<script>
     import JsonViewItem from './JsonViewItem.vue'
 
     export default {
@@ -36,7 +36,7 @@
         },
         emits: ['update:selected'],
         computed: {
-            parsed () {
+            parsed() {
                 if (typeof this.data === 'object') {
                     return this.build(this.rootKey, { ...this.data }, 0, '', true)
                 }
@@ -48,12 +48,12 @@
                     value: this.data,
                 }
             },
-            hasSelectedListener () {
+            hasSelectedListener() {
                 return !!this.$attrs.onSelected
             },
         },
         methods: {
-            build (key, val, depth, path, includeKey) {
+            build(key, val, depth, path, includeKey) {
                 if (this.isObject(val)) {
                     // Build Object
                     const children = []
@@ -111,7 +111,7 @@
             },
             isObject: (val) => typeof val === 'object' && val !== null && !Array.isArray(val),
             isArray: (val) => Array.isArray(val),
-            itemSelected (data) {
+            itemSelected(data) {
                 this.$emit('update:selected', data)
             },
         },

@@ -21,7 +21,7 @@
     </div>
 </template>
 
-<script lang="js">
+<script>
     import AppTabs from '@/components/App/AppTabs.vue'
     import ProfileClubs from '@/components/User/MyProfile/ProfileClubs.vue'
     import ProfileModal from '@/components/User/MyProfile/ProfileModal.vue'
@@ -29,27 +29,27 @@
     import ExternalAccount from '@/components/User/MyProfile/ProfileSocials.vue'
 
     const tabs = [
-                    {
-                        id: 'profile',
-                        name: 'Profil',
-                        icon: 'address-card',
-                    },
-                    {
-                        id: 'socials',
-                        name: 'Discord',
-                        icon: ['fab', 'discord'],
-                    },
-                    {
-                        id: 'clubs',
-                        name: 'Associations',
-                        icon: 'user',
-                    },
-                    {
-                        id: 'profile-settings',
-                        name: 'Accessibilité',
-                        icon: 'universal-access',
-                    },
-                ]
+        {
+            id: 'profile',
+            name: 'Profil',
+            icon: 'address-card',
+        },
+        {
+            id: 'socials',
+            name: 'Discord',
+            icon: ['fab', 'discord'],
+        },
+        {
+            id: 'clubs',
+            name: 'Associations',
+            icon: 'user',
+        },
+        {
+            id: 'profile-settings',
+            name: 'Accessibilité',
+            icon: 'universal-access',
+        },
+    ]
 
     export default {
         components: {
@@ -60,7 +60,7 @@
             ProfileClubs,
         },
         inheritAttrs: false,
-        data () {
+        data() {
             return {
                 currentTab: tabs.findIndex((t) => t.id === this.$route.params.component),
                 tabs,

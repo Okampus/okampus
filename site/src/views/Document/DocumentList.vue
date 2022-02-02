@@ -120,7 +120,10 @@
                 ></FileListPreview>
             </div>
         </div>
-        <div v-if="(filePreview && showFilePreview) || fileGroup.length != 0" class="hidden relative w-1/5 md:block">
+        <div
+            v-if="(filePreview && showFilePreview) || fileGroup.length != 0"
+            class="hidden relative w-1/5 md:block"
+        >
             <div class="sticky top-4">
                 <div class="flex flex-col gap-2">
                     <div v-if="filePreview && showFilePreview" class="hidden md:block card">

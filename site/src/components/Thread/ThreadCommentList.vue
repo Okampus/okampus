@@ -64,8 +64,7 @@
     </div>
 </template>
 
-<script lang="js">
-
+<script>
     import defaultAvatar from '@/assets/img/default_avatars/user.png'
     import TipTapEditableRender from '@/components/TipTap/TipTapEditableRender.vue'
     import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
@@ -113,56 +112,72 @@
                 commentLimit: 240,
                 newComment: defaultTipTapText,
                 commentsShow: false,
-                commentItems: this.comments.map(
-                    comment => ({
-                        ...comment,
-                        edit: false,
-                    }),
-                ),
+                commentItems: this.comments.map((comment) => ({
+                    ...comment,
+                    edit: false,
+                })),
             }
         },
         computed: {
             shownComments() {
-                return this.commentItems.slice(0, this.commentsShow ? this.commentItems.length : this.maxCommentsShow)
+                return this.commentItems.slice(
+                    0,
+                    this.commentsShow ? this.commentItems.length : this.maxCommentsShow,
+                )
             },
         },
         mounted() {
             watch(
                 () => this.comments,
                 () => {
-                    this.commentItems = this.comments.map(
-                        comment => ({
-                            ...comment,
-                            edit: false,
-                        }),
-                    )
-                }, { deep: true },
+                    this.commentItems = this.comments.map((comment) => ({
+                        ...comment,
+                        edit: false,
+                    }))
+                },
+                { deep: true },
             )
         },
         methods: {
-            actionsMap (i) {
+            actionsMap(i) {
                 return {
-                    ...({
+                    ...{
                         favorite: {
                             name: () => 'Favori',
-                            icon: () => this.commentItems[i].userFavorited ? 'star' : ['far', 'star'],
-                            class: () => this.commentItems[i].userFavorited ? 'group-hover:text-yellow-600 text-yellow-500' : 'group-hover:text-yellow-500',
-                            action: () => { this.commentItems[i].userFavorited ? this.deleteFavorite(i) : this.addFavorite(i) },
+                            icon: () => (this.commentItems[i].userFavorited ? 'star' : ['far', 'star']),
+                            class: () =>
+                                this.commentItems[i].userFavorited
+                                    ? 'group-hover:text-yellow-600 text-yellow-500'
+                                    : 'group-hover:text-yellow-500',
+                            action: () => {
+                                this.commentItems[i].userFavorited
+                                    ? this.deleteFavorite(i)
+                                    : this.addFavorite(i)
+                            },
                         },
 
                         report: {
                             name: () => 'Signaler',
-                            icon: () => this.commentItems[i]?.userReported ? 'flag' : ['far', 'flag'],
-                            class: () => this.commentItems[i]?.userReported ? 'group-hover:text-red-600 text-red-500' : 'group-hover:text-red-500',
-                            action: () => { this.commentItems[i]?.userReported ? alert('Vous avez déjà signalé ce commentaire.') : this.$emit('report', this.commentItems[i])  },
+                            icon: () => (this.commentItems[i]?.userReported ? 'flag' : ['far', 'flag']),
+                            class: () =>
+                                this.commentItems[i]?.userReported
+                                    ? 'group-hover:text-red-600 text-red-500'
+                                    : 'group-hover:text-red-500',
+                            action: () => {
+                                this.commentItems[i]?.userReported
+                                    ? alert('Vous avez déjà signalé ce commentaire.')
+                                    : this.$emit('report', this.commentItems[i])
+                            },
                         },
-                    }),
+                    },
                     ...(this.commentItems[i].author.userId === this.$store.state.auth.user?.userId && {
                         edit: {
                             name: () => 'Éditer',
                             icon: () => 'pen',
                             class: () => 'group-hover:text-green-600',
-                            action: () => { this.commentItems[i].edit = !this.commentItems[i].edit },
+                            action: () => {
+                                this.commentItems[i].edit = !this.commentItems[i].edit
+                            },
                         },
                     }),
                 }
@@ -172,18 +187,22 @@
                 this.newComment = defaultTipTapText
             },
             sendComment() {
-                this.$store.dispatch('threads/addComment', {
-                    parentId: this.parentId,
-                    body: this.newComment,
-                }).then(this.closeComment)
+                this.$store
+                    .dispatch('threads/addComment', {
+                        parentId: this.parentId,
+                        body: this.newComment,
+                    })
+                    .then(this.closeComment)
             },
             updateComment(body, i) {
-                this.$store.dispatch('threads/updateContent', {
-                    contentId: this.commentItems[i].contentId,
-                    body: body,
-                }).then(() => {
-                    this.commentItems[i].edit = false
-                })
+                this.$store
+                    .dispatch('threads/updateContent', {
+                        contentId: this.commentItems[i].contentId,
+                        body: body,
+                    })
+                    .then(() => {
+                        this.commentItems[i].edit = false
+                    })
             },
             addFavorite(i) {
                 this.$store.dispatch('threads/addFavorite', this.commentItems[i].contentId)

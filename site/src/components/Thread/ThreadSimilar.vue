@@ -12,7 +12,7 @@
     </div>
 </template>
 
-<script lang="js">
+<script>
     import AppTag from '@/components/App/AppTag.vue'
 
     export default {

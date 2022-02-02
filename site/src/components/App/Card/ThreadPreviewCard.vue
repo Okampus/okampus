@@ -62,15 +62,13 @@
     </div>
 </template>
 
-<script lang="js">
-
+<script>
     import TagsList from '@/components/List/TagList.vue'
     import UserPreview from '@/components/User/UserPreview.vue'
     import postTypesEnum from '@/shared/types/post-types.enum'
     import { abbrNumbers } from '@/utils/abbrNumbers'
     import { timeAgo } from '@/utils/timeAgo'
     import { extractTextFromTipTapJSON } from '@/utils/tiptap'
-
 
     export default {
         components: {
@@ -83,7 +81,7 @@
                 default: () => {},
             },
         },
-        data () {
+        data() {
             return { postTypesEnum }
         },
         methods: {

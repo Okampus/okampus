@@ -67,7 +67,7 @@
     </div>
 </template>
 
-<script lang="js">
+<script>
     import Popper from 'vue3-popper'
     import { defaultEditorButtons, defaultTipTapText, getEditor } from '@/utils/tiptap'
     import { EditorContent } from '@tiptap/vue-3'
@@ -124,7 +124,7 @@
             },
         },
         emits: ['update:modelValue', 'cancel', 'send'],
-        setup (props, ctx) {
+        setup(props, ctx) {
             return {
                 editor: getEditor({
                     ctx,
@@ -139,7 +139,7 @@
             }
         },
         computed: {
-            actionMap () {
+            actionMap() {
                 return {
                     paragraph: {
                         action: () => this.editor.chain().focus().setParagraph().run(),
@@ -219,13 +219,13 @@
             },
         },
         methods: {
-            getCharCount () {
+            getCharCount() {
                 return this.editor.storage.characterCount.characters()
             },
-            circleFillCharCount () {
+            circleFillCharCount() {
                 return (Math.round((100 / this.charCount) * this.getCharCount()) * 31.4) / 100
             },
-            getJSON () {
+            getJSON() {
                 return this.editor.getJSON()
             },
         },

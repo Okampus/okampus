@@ -62,7 +62,7 @@
     </aside>
 </template>
 
-<script lang="js">
+<script>
     import SwitchInput from '@/components/Input/SwitchInput.vue'
     export default {
         components: { SwitchInput },
@@ -80,19 +80,17 @@
                 default: true,
             },
         },
-        emits: [
-            'close-side-bar',
-        ],
+        emits: ['close-side-bar'],
         computed: {
-            theme () {
+            theme() {
                 return this.$store.state.user.theme === 'dark'
             },
-            loggedIn () {
+            loggedIn() {
                 return this.$store.state.auth.loggedIn ?? false
             },
             links() {
-                return ({
-                    ...( import.meta.env.DEV && {
+                return {
+                    ...(import.meta.env.DEV && {
                         dev: [
                             {
                                 to: '/test',
@@ -103,7 +101,7 @@
                         ],
                     }),
 
-                    ...({
+                    ...{
                         admin: [
                             {
                                 to: '/admin/users',
@@ -155,42 +153,42 @@
                             },
                             // { to: '/blog/admin', text: 'Admin (Blog)', icon: 'columns' }
                         ],
-                    }),
+                    },
 
                     ...(this.loggedIn
                         ? {
-                            'communauté': [
-                                {
-                                    to: '/users/',
-                                    regActive: /^\/users/,
-                                    text: 'Utilisateurs',
-                                    icon: 'users',
-                                },
-                                {
-                                    to: '/me/profile',
-                                    regActive: /^\/me\/profile/,
-                                    text: 'Mon compte',
-                                    icon: 'user-cog',
-                                },
-                                {
-                                    to: '/me/favorites',
-                                    regActive: /^\/me\/favorites/,
-                                    text: 'Mes favoris',
-                                    icon: 'crown',
-                                },
-                            ],
-                        }
+                              'communauté': [
+                                  {
+                                      to: '/users/',
+                                      regActive: /^\/users/,
+                                      text: 'Utilisateurs',
+                                      icon: 'users',
+                                  },
+                                  {
+                                      to: '/me/profile',
+                                      regActive: /^\/me\/profile/,
+                                      text: 'Mon compte',
+                                      icon: 'user-cog',
+                                  },
+                                  {
+                                      to: '/me/favorites',
+                                      regActive: /^\/me\/favorites/,
+                                      text: 'Mes favoris',
+                                      icon: 'crown',
+                                  },
+                              ],
+                          }
                         : {
-                            'communauté': [
-                                {
-                                    to: '/users/',
-                                    regActive: /^\/users/,
-                                    text: 'Utilisateurs',
-                                    icon: 'users',
-                                },
-                            ],
-                        }),
-                })
+                              'communauté': [
+                                  {
+                                      to: '/users/',
+                                      regActive: /^\/users/,
+                                      text: 'Utilisateurs',
+                                      icon: 'users',
+                                  },
+                              ],
+                          }),
+                }
             },
         },
     }

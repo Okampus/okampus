@@ -365,8 +365,7 @@
     </div>
 </template>
 
-<script lang="js">
-
+<script>
     import AppAlert from '@/components/App/AppAlert.vue'
     import FormMultiStep from '@/components/Form/FormMultiStep.vue'
     import FileInput from '@/components/Input/FileInput.vue'
@@ -374,10 +373,7 @@
     import SearchInput from '@/components/Input/SearchInput.vue'
     import SelectInput from '@/components/Input/SelectInput.vue'
     import useVuelidate from '@vuelidate/core'
-    import {
-        integer, maxLength, required, requiredIf, sameAs,
-    } from '@vuelidate/validators'
-
+    import { integer, maxLength, required, requiredIf, sameAs } from '@vuelidate/validators'
 
     export default {
         components: {
@@ -397,11 +393,13 @@
                             id: 'step1',
                             name: 'Upload',
                             icon: 'file',
-                        }, {
+                        },
+                        {
                             id: 'step2',
                             name: 'Infos',
                             icon: 'info-circle',
-                        }, {
+                        },
+                        {
                             id: 'step3',
                             name: 'Envoyer',
                             icon: 'paper-plane',
@@ -410,7 +408,7 @@
                 },
             },
         },
-        setup () {
+        setup() {
             return { v$: useVuelidate() }
         },
         validations() {
@@ -423,41 +421,43 @@
 
                             maxLength: maxLength(20),
                         },
-                        docDescription: {  },
+                        docDescription: {},
                     },
                     {
                         docSubject: { requiredIf: requiredIf(this.stepsModel[0].docType == 'studyDoc') },
-                        docCursus: { requiredIf: requiredIf( this.stepsModel[0].docType == 'studyDoc') },
+                        docCursus: { requiredIf: requiredIf(this.stepsModel[0].docType == 'studyDoc') },
                         docYear: {
                             required,
                             integer,
                         },
-                        docContent: { requiredIf: requiredIf( this.stepsModel[0].docType == 'studyDoc') },
+                        docContent: { requiredIf: requiredIf(this.stepsModel[0].docType == 'studyDoc') },
                         docFlags: {
-                            requiredIf: requiredIf( this.stepsModel[0].docType == 'studyDoc' &&
-                                ['examDE','examCE','examCC', 'examDM', 'examTAI'].includes([
-                                    'examDE',
-                                    'examCE',
-                                    'examCC',
-                                    'examDM',
-                                    'course',
-                                    'sheet',
-                                    'projects',
-                                    'efreiClass',
-                                    'eprofClass',
-                                    'classNote',
-                                    'other',
-                                ]
-                                    [this.stepsModel[1].docContent])),
-
+                            requiredIf: requiredIf(
+                                this.stepsModel[0].docType == 'studyDoc' &&
+                                    ['examDE', 'examCE', 'examCC', 'examDM', 'examTAI'].includes(
+                                        [
+                                            'examDE',
+                                            'examCE',
+                                            'examCC',
+                                            'examDM',
+                                            'course',
+                                            'sheet',
+                                            'projects',
+                                            'efreiClass',
+                                            'eprofClass',
+                                            'classNote',
+                                            'other',
+                                        ][this.stepsModel[1].docContent],
+                                    ),
+                            ),
                         },
-                        docSchoolYear: { requiredIf: requiredIf( this.stepsModel[0].docType == 'infoDoc') },
+                        docSchoolYear: { requiredIf: requiredIf(this.stepsModel[0].docType == 'infoDoc') },
                     },
                     { acceptCondition: { sameAs: sameAs(true) } },
                 ],
             }
         },
-        data () {
+        data() {
             return {
                 stepAction: {
                     currentStep: 0,
@@ -481,7 +481,7 @@
                     },
                     { acceptCondition: false },
                 ],
-                subjectYear: ['L1','L2', 'L3', 'M1', 'M2'],
+                subjectYear: ['L1', 'L2', 'L3', 'M1', 'M2'],
             }
         },
         methods: {
@@ -493,7 +493,7 @@
                     'TE': 'bolt',
                     'SP': 'bolt',
                 }
-                return iconList?.[itemCode.substr(0,2)] ?? 'book'
+                return iconList?.[itemCode.substr(0, 2)] ?? 'book'
             },
             previousStep() {
                 this.stepAction.currentStep -= 1
@@ -508,56 +508,67 @@
             submitForm() {
                 this.v$.stepsModel.$validate()
                 if (!this.v$.stepsModel.$invalid) {
-                    for (let i=0;i<this.stepsModel[0].files.length;i++) {
+                    for (let i = 0; i < this.stepsModel[0].files.length; i++) {
                         let form = new FormData()
 
-                        form.append('file', this.stepsModel[0].files[i], (this.stepsModel[0].files.length>1 ? this.stepsModel[0].docName+'_Partie'+(i+1) : this.stepsModel[0].docName)+'.'+this.stepsModel[0].files[i].name.split('.').pop() )
+                        form.append(
+                            'file',
+                            this.stepsModel[0].files[i],
+                            (this.stepsModel[0].files.length > 1
+                                ? this.stepsModel[0].docName + '_Partie' + (i + 1)
+                                : this.stepsModel[0].docName) +
+                                '.' +
+                                this.stepsModel[0].files[i].name.split('.').pop(),
+                        )
                         form.append('description', this.stepsModel[0].docDescription)
                         form.append('year', this.stepsModel[1].docYear)
 
                         if (this.stepsModel[0].docType == 'studyDoc') {
-                            form.append('subject',this.stepsModel[1].docSubject[0].code)
-                            form.append('cursus',this.stepsModel[1].docCursus)
-                            form.append('type',[
-                                'examDE',
-                                'examCE',
-                                'examCC',
-                                'examDM',
-                                'course',
-                                'sheet',
-                                'projects',
-                                'efreiClass',
-                                'eprofClass',
-                                'classNote',
-                                'other',
-                            ][this.stepsModel[1].docContent])
-                            if (['examDE','examCE','examCC', 'examDM', 'examTAI'].includes([
-                                'examDE',
-                                'examCE',
-                                'examCC',
-                                'examDM',
-                                'course',
-                                'sheet',
-                                'projects',
-                                'efreiClass',
-                                'eprofClass',
-                                'classNote',
-                                'other',
-                            ][this.stepsModel[1].docContent])) {
-                                form.append('flags',1)
-                            }
-                            this.$store.dispatch('files/addStudyDoc', form).then(
-                                () => {
-                                    this.$router.push('/docs')
-                                },
+                            form.append('subject', this.stepsModel[1].docSubject[0].code)
+                            form.append('cursus', this.stepsModel[1].docCursus)
+                            form.append(
+                                'type',
+                                [
+                                    'examDE',
+                                    'examCE',
+                                    'examCC',
+                                    'examDM',
+                                    'course',
+                                    'sheet',
+                                    'projects',
+                                    'efreiClass',
+                                    'eprofClass',
+                                    'classNote',
+                                    'other',
+                                ][this.stepsModel[1].docContent],
                             )
+                            if (
+                                ['examDE', 'examCE', 'examCC', 'examDM', 'examTAI'].includes(
+                                    [
+                                        'examDE',
+                                        'examCE',
+                                        'examCC',
+                                        'examDM',
+                                        'course',
+                                        'sheet',
+                                        'projects',
+                                        'efreiClass',
+                                        'eprofClass',
+                                        'classNote',
+                                        'other',
+                                    ][this.stepsModel[1].docContent],
+                                )
+                            ) {
+                                form.append('flags', 1)
+                            }
+                            this.$store.dispatch('files/addStudyDoc', form).then(() => {
+                                this.$router.push('/docs')
+                            })
                         } else {
                             form.append('schoolYear', this.stepsModel[1].docSchoolYear)
-                            this.$store.dispatch('files/addInfoDoc', form).then(
-                                () => {
-                                    this.$router.push('/docs')
-                                },
-                            )
+                            this.$store.dispatch('files/addInfoDoc', form).then(() => {
+                                this.$router.push('/docs')
+                            })
                         }
                     }
                 }

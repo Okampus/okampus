@@ -2,9 +2,7 @@
     <!-- TODO: Solve repeated ESC popover -->
     <AppModal :show="showLogin" @close="$emit('toggle-login')">
         <Transition name="fade">
-            <div
-                class="min-w-[50vw] card"
-            >
+            <div class="min-w-[50vw] card">
                 <div class="flex flex-col">
                     <h2 class="text-3xl font-semibold text-center text-1">Connexion</h2>
                     <form action="javascript:void(0);">
@@ -67,7 +65,7 @@
     </AppModal>
 </template>
 
-<script lang="js">
+<script>
     import InputWithIcon from '@/components/Input/InputWithIcon.vue'
     import User from '@/models/user'
     import AppModal from '../App/AppModal.vue'
@@ -84,14 +82,14 @@
             },
         },
         emits: ['toggle-login'],
-        data () {
+        data() {
             return { user: new User('', '', '') }
         },
         methods: {
             myEfreiLogin() {
                 window.location.href = `${import.meta.env.VITE_API_URL}/auth/myefrei`
             },
-            handleLogin () {
+            handleLogin() {
                 this.loading = true
                 if (this.user.username && this.user.password) {
                     this.$store.dispatch('auth/login', this.user).then(
@@ -99,12 +97,10 @@
                             this.message = data.toString()
                             this.$emitter.emit('login')
                         },
-                        error => {
+                        (error) => {
                             this.loading = false
                             this.message =
-                        (error.response && error.response.data) ||
-                        error.message ||
-                        error.toString()
+                                (error.response && error.response.data) || error.message || error.toString()
                         },
                     )
                 }

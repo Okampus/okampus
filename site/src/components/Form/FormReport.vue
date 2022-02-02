@@ -36,7 +36,7 @@
     </AppModal>
 </template>
 
-<script lang="js">
+<script>
     import useVuelidate from '@vuelidate/core'
     import { reactive } from 'vue'
     import AppModal from '@/components/App/AppModal.vue'
@@ -45,7 +45,9 @@
 
     export default {
         components: {
-            AppModal, AppError, TipTapEditor,
+            AppModal,
+            AppError,
+            TipTapEditor,
         },
         props: {
             user: {

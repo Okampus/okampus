@@ -89,7 +89,7 @@
     </div>
 </template>
 
-<script lang="js">
+<script>
     import ThreadCommentList from '@/components/Thread/ThreadCommentList.vue'
     import TipTapEditableRender from '@/components/TipTap/TipTapEditableRender.vue'
     import UserPreview from '@/components/User/UserPreview.vue'
@@ -119,54 +119,64 @@
         computed: {
             actionsBar() {
                 return [
-                    ...[
-                        'reply',
-                        'addComment',
-                        'report',
-                    ],
-                    ...(this.post.author.userId === this.$store.state.auth.user.userId
-                        ? ['edit']
-                        : []),
+                    ...['reply', 'addComment', 'report'],
+                    ...(this.post.author.userId === this.$store.state.auth.user.userId ? ['edit'] : []),
                 ]
             },
             otherActions() {
                 return ['favorite']
             },
-            actionsMap () {
+            actionsMap() {
                 return {
-                    ...( {
+                    ...{
                         reply: {
                             name: () => 'Répondre',
                             icon: ['far', 'comment-alt'],
                             class: 'group-hover:text-blue-500',
-                            action: () => { this.$emit('reply') },
+                            action: () => {
+                                this.$emit('reply')
+                            },
                         },
                         addComment: {
                             name: () => 'Commenter',
                             icon: ['far', 'comment'],
                             class: 'group-hover:text-blue-500',
-                            action: () => { this.onComment = true },
+                            action: () => {
+                                this.onComment = true
+                            },
                         },
                         report: {
                             name: () => 'Signaler',
                             icon: this.post?.userReported ? 'flag' : ['far', 'flag'],
-                            class: this.post?.userReported ? 'group-hover:text-red-600 text-red-500' : 'group-hover:text-red-500',
-                            action: () => { this.post?.userReported ? alert('Vous avez déjà signalé ce post.') : this.$emit('report', this.post) },
+                            class: this.post?.userReported
+                                ? 'group-hover:text-red-600 text-red-500'
+                                : 'group-hover:text-red-500',
+                            action: () => {
+                                this.post?.userReported
+                                    ? alert('Vous avez déjà signalé ce post.')
+                                    : this.$emit('report', this.post)
+                            },
                         },
                         favorite: {
                             name: () => 'Favori',
                             icon: this.post?.userFavorited ? 'star' : ['far', 'star'],
-                            class: this.post?.userFavorited ? 'group-hover:text-yellow-600 text-yellow-500' : 'group-hover:text-yellow-500',
-                            action: () => { this.post?.userFavorited ? this.deleteFavorite() : this.addFavorite() },
+                            class: this.post?.userFavorited
+                                ? 'group-hover:text-yellow-600 text-yellow-500'
+                                : 'group-hover:text-yellow-500',
+                            action: () => {
+                                this.post?.userFavorited ? this.deleteFavorite() : this.addFavorite()
+                            },
                         },
-                    }),
+                    },
                     ...(this.post.author.userId === this.$store.state.auth.user?.userId && {
                         edit: {
                             name: () => 'Éditer',
                             condition: () => this.isUser(),
                             icon: 'pen',
                             class: 'group-hover:text-green-600',
-                            action: () => { this.showEditor = true },
+                            action: () => {
+                                this.showEditor = true
+                            },
                         },
                     }),
                 }

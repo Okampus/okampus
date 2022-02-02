@@ -4,7 +4,7 @@
     </p>
 </template>
 
-<script lang="js">
+<script>
     export default {
         props: {
             error: {

@@ -31,7 +31,7 @@
     </div>
 </template>
 
-<script lang="js">
+<script>
     import FooterBar from '@/components/Bar/FooterBar.vue'
     import SideBar from '@/components/Bar/SideBar.vue'
     import TopBar from '@/components/Bar/TopBar.vue'
@@ -48,7 +48,7 @@
             FooterBar,
             FormLogin,
         },
-        setup () {
+        setup() {
             const showLogin = ref(false)
             const showModal = ref(false)
 
@@ -61,20 +61,19 @@
                 content,
                 showLogin,
                 showModal,
-                toggleModal () {
+                toggleModal() {
                     showModal.value = !showModal.value
                     showLogin.value = showModal.value
                 },
-                toggleLogin () {
+                toggleLogin() {
                     showLogin.value = !showLogin.value
                     showModal.value = showLogin.value
                 },
             }
         },
-        data () {
-            const isScreenSmall = () => Math.max(
-                document.documentElement.clientWidth ||
-            0, window.innerWidth || 0) <= breakWidth
+        data() {
+            const isScreenSmall = () =>
+                Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) <= breakWidth
 
             const checkResize = debounce(() => {
                 if (!this.isScreenSmall() && this.smallScreen) {
@@ -106,7 +105,7 @@
                 collapsingSidebar: false,
             }
         },
-        created () {
+        created() {
             document.querySelector(':root').className = this.$store.state.user.theme
             const cookie = this.$cookies.get('accessTokenExpiresAt')
             if (cookie) {
@@ -117,10 +116,13 @@
                 }
             }
         },
-        mounted () {
-            watch(() => this.$store.getters['user/getTheme'], (theme) => {
-                document.querySelector(':root').className = theme
-            })
+        mounted() {
+            watch(
+                () => this.$store.getters['user/getTheme'],
+                (theme) => {
+                    document.querySelector(':root').className = theme
+                },
+            )
 
             this.$emitter.on('login', () => {
                 this.toggleLogin()
@@ -132,23 +134,27 @@
 
             window.addEventListener('resize', this.checkResize)
         },
-        unmounted () {
+        unmounted() {
             window.removeEventListener('resize', this.checkResize)
         },
         methods: {
             login() {
                 this.toggleLogin()
             },
-            toggleSidebar () {
+            toggleSidebar() {
                 if (this.smallScreen) {
                     if (this.uncollapsedSidebar) {
                         this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
                         this.content.removeEventListener('mousedown', this.toggleSidebar)
                         this.collapsingSidebar = true
-                        this.sidebar.$el.addEventListener('transitionend', () => {
-                            this.uncollapsedSidebar = false
-                            this.collapsingSidebar = false
-                        }, { once: true })
+                        this.sidebar.$el.addEventListener(
+                            'transitionend',
+                            () => {
+                                this.uncollapsedSidebar = false
+                                this.collapsingSidebar = false
+                            },
+                            { once: true },
+                        )
                     } else {
                         this.uncollapsedSidebar = true
                         this.topbar.$el.addEventListener('mousedown', this.toggleSidebar)

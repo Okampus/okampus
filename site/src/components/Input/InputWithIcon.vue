@@ -24,8 +24,7 @@
     </div>
 </template>
 
-<script lang="js">
-
+<script>
     import { ref } from 'vue'
     export default {
         props: {

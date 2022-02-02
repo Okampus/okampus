@@ -17,8 +17,7 @@
     </div>
 </template>
 
-<script lang="js">
-
+<script>
     import { ref } from 'vue'
 
     export default {
@@ -41,7 +40,7 @@
             },
         },
         emits: ['update:modelValue'],
-        setup () {
+        setup() {
             return { input: ref(null) }
         },
         data() {

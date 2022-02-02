@@ -47,13 +47,10 @@
     </div>
 </template>
 
-<script lang="js">
+<script>
     import { defineAsyncComponent } from 'vue'
     import SelectMultiCheckbox from '@/components/Input/SelectMultiCheckbox.vue'
-    import {
-        TransitionRoot,
-        Dialog,
-    } from '@headlessui/vue'
+    import { TransitionRoot, Dialog } from '@headlessui/vue'
     import ThreadCompactView from '@/views/Thread/ThreadCompactView.vue'
     import { camelToSentenceCase } from '@/utils/caseUtils'
 
@@ -78,13 +75,12 @@
                 default: () => {},
             },
         },
-        data () {
+        data() {
             return {
-                selectedCols: this.startSelectedCols === undefined ? this.getCols() : [...this.startSelectedCols],
+                selectedCols:
+                    this.startSelectedCols === undefined ? this.getCols() : [...this.startSelectedCols],
                 sortColumn: '',
-                columnsSort: Object.fromEntries(
-                    Object.values(this.columns).map(colName => [colName, 0]),
-                ),
+                columnsSort: Object.fromEntries(Object.values(this.columns).map((colName) => [colName, 0])),
             }
         },
         computed: {
@@ -103,37 +99,52 @@
                 })
             },
         },
-        beforeCreate () {
+        beforeCreate() {
             for (const column in this.columns) {
                 if (this.columns[column].comp.length > 1) {
                     const comp = this.columns[column].comp[1].replace('@/', '').replace('.vue', '')
                     const splitComp = comp.split('/')
                     if (splitComp.length === 1) {
-                        this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}.vue`))
+                        this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() =>
+                            import(`../../${splitComp[0]}.vue`),
+                        )
                     }
                     if (splitComp.length === 2) {
-                        this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}/${splitComp[1]}.vue`))
+                        this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() =>
+                            import(`../../${splitComp[0]}/${splitComp[1]}.vue`),
+                        )
                     }
                     if (splitComp.length === 3) {
-                        this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}/${splitComp[1]}/${splitComp[2]}.vue`))
+                        this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() =>
+                            import(`../../${splitComp[0]}/${splitComp[1]}/${splitComp[2]}.vue`),
+                        )
                     }
                     if (splitComp.length === 4) {
-                        this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() => import(`../../${splitComp[0]}/${splitComp[1]}/${splitComp[2]}/${splitComp[3]}.vue`)).default;
+                        this.$options.components[this.columns[column].comp[0]] = defineAsyncComponent(() =>
+                            import(
+                                `../../${splitComp[0]}/${splitComp[1]}/${splitComp[2]}/${splitComp[3]}.vue`
+                            ),
+                        ).default
                     }
                 }
             }
         },
         methods: {
             getCols() {
-                return Object.keys(this.columns).map(x => this.columns[x].name || camelToSentenceCase(x))
+                return Object.keys(this.columns).map((x) => this.columns[x].name || camelToSentenceCase(x))
             },
             camelToSentenceCase,
-            sortTable: function sortTable (colName) {
+            sortTable: function sortTable(colName) {
                 if (colName !== this.sortColumn) {
                     this.columnsSort[this.sortColumn] = 0
                     this.sortColumn = colName
                 }
-                this.columnsSort[this.sortColumn] = this.columnsSort[this.sortColumn] === -1 ? 0 : (this.columnsSort[this.sortColumn] === 1 ? -1 : 1)
+                this.columnsSort[this.sortColumn] =
+                    this.columnsSort[this.sortColumn] === -1
+                        ? 0
+                        : this.columnsSort[this.sortColumn] === 1
+                        ? -1
+                        : 1
             },
         },
     }

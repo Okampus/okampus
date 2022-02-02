@@ -9,8 +9,8 @@
     </div>
 </template>
 
-<script lang="js">
-    export default { }
+<script>
+    export default {}
 </script>
 
 <style scoped>
