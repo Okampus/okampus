@@ -1,13 +1,7 @@
 <template>
     <div
         class="flex gap-2 items-center p-1 hover:bg-2-light hover:dark:bg-2-dark rounded"
-        @click="
-            $emit('path', {
-                filters: { [context]: title },
-                children: children,
-            }),
-                toggleChildren()
-        "
+        @click="emitPath(), toggleChildren()"
     >
         <font-awesome-icon
             class="text-1"
@@ -21,7 +15,7 @@
             {{ contextList[context](title) }}
         </div>
     </div>
-    <transition name="fade">
+    <transition name="file-tree">
         <div v-if="showChildren" class="flex flex-col p-1 ml-2 border-l">
             <FileFolder
                 v-for="(child, i) in children"
@@ -36,8 +30,6 @@
 </template>
 
 <script>
-    import { nodeViewProps } from '@tiptap/vue-3'
-    nodeViewProps()
     export default {
         props: {
             title: {
@@ -77,6 +69,12 @@
             sendObject(data) {
                 data.filters[this.context] = this.title
                 return data
+            },
+            emitPath() {
+                this.$emit('path', {
+                    filters: { [this.context]: this.title },
+                    children: this.children,
+                })
             },
         },
     }

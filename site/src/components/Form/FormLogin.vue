@@ -1,9 +1,9 @@
 <template>
     <!-- TODO: Solve repeated ESC popover -->
     <AppModal :show="showLogin" @close="$emit('toggle-login')">
-        <Transition name="fade" as="template">
+        <Transition name="fade">
             <div
-                class="inline-block overflow-hidden p-6 my-8 w-full max-w-md text-left align-middle bg-white rounded-2xl shadow-xl transition-all card-0"
+                class="min-w-[50vw] card"
             >
                 <div class="flex flex-col">
                     <h2 class="text-3xl font-semibold text-center text-1">Connexion</h2>
