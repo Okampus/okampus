@@ -39,9 +39,9 @@
                 <div class="order-1 w-full md:order-2 md:w-1/2">
                     <h4 class="mb-3 text-3xl font-medium text-1">Fils de discussion détaillés</h4>
                     <p class="mb-8 text-2">
-                        Chaque Post public a un <u>fil de discussion</u> associé dans lequel
-                        <u>quiconque peut contribuer</u>; chaque action sur le Post est enregistrée dans
-                        <u>l'historique du Post</u>, et visible dans sa <u>vue "Historique"</u>
+                        Chaque post public a un <u>fil de discussion</u> associé dans lequel
+                        <u>quiconque peut contribuer</u>; chaque action sur le post est enregistrée dans
+                        <u>l'historique du post</u>, et visible dans sa <u>vue "Historique"</u>
                     </p>
                 </div>
             </div>
@@ -49,7 +49,7 @@
             <div class="flex flex-wrap items-center">
                 <div class="pr-6">
                     <h4 class="mb-3 text-3xl font-medium text-1">
-                        Recherche avancée &amp; Filtrage des Posts
+                        Recherche avancée &amp; Filtrage des posts
                     </h4>
                     <p class="mb-8 text-2">
                         <u>Une barre de recherche</u> disponible sur toutes les pages permet de chercher du

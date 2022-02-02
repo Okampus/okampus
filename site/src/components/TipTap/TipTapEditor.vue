@@ -30,7 +30,7 @@
         <EditorContent class="editor" :editor="editor" />
 
         <div class="flex flex-row gap-4 items-center mt-2">
-            <button v-if="cancellable" :class="textClass" class="button red" @click="$emit('cancel')">
+            <button v-if="cancellable" :class="textClass" class="button-red" @click="$emit('cancel')">
                 <p>Annuler</p>
             </button>
             <button v-if="sendable" :class="textClass" class="button" @click="$emit('send')">

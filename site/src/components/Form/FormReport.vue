@@ -9,7 +9,7 @@
                         v-model="state.reason"
                         :char-count-show-at="900"
                         :char-count="1000"
-                        placeholder="Décrivez la raison de votre signalement..."
+                        placeholder="Décris la raison de ton signalement..."
                         @input="v$.reason.$touch"
                     >
                         <template #error>

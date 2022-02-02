@@ -1,25 +1,25 @@
 <template>
-    <!-- <JsonView :data="thread" /> -->
     <FormReport :show="onReport" :user="reportedUser" :content="reportedContent" @close="onReport = false" />
-    <div v-if="thread === null || thread === undefined"><AppLoader /></div>
+    <template v-if="thread === null || thread === undefined"><AppLoader /></template>
     <div v-else>
         <div class="flex flex-col my-6 mx-auto md:w-21/24">
-            <div class="flex gap-4 mb-4 ml-4 w-full text-3xl font-bold md:ml-0 md:w-9/12 text-1">
-                <div class="flex gap-2 items-center">
+            <div class="flex gap-4 mb-4 ml-4 text-3xl font-bold md:ml-0 text-1">
+                <div class="hidden gap-2 items-center md:flex">
                     ⎡
                     <font-awesome-icon :icon="postTypesEnum[thread.type]?.icon" class="-ml-1 text-1" />
                     <div class="-mr-1 font-bold text-1">{{ postTypesEnum[thread.type][$i18n.locale] }}</div>
                     ⎦
                 </div>
-                <p>{{ thread.title }}</p>
+                <p class="break-all">{{ thread.title }}</p>
             </div>
             <div class="flex">
-                <div class="w-full rounded-none md:rounded-md card">
+                <!-- TODO: FIX OVEFLOW: replace actions by icons to gain space OR use hamburger bars -->
+                <div class="overflow-x-scroll w-full rounded-none md:rounded-md card">
                     <div class="text-1">
                         <div class="flex justify-between items-center">
                             <div class="flex gap-4 items-center text-sm text-2">
                                 <div class="flex gap-2 items-center">
-                                    <font-awesome-icon icon="hourglass-end" />
+                                    <font-awesome-icon icon="calendar" />
                                     <p>{{ timeAgo(thread.post.createdAt, 'long') }}</p>
                                 </div>
                                 <div class="flex gap-2 items-center">
@@ -31,52 +31,50 @@
                         <hr class="mt-3 mb-2" />
                     </div>
 
-                    <div>
-                        <div>
-                            <PostMessage
-                                :post="thread.post"
-                                @reply="onReply = true"
-                                @report="activateReport($event)"
+                    <div class="flex flex-col gap-3">
+                        <ThreadPost
+                            :post="thread.post"
+                            @reply="onReply = true"
+                            @report="activateReport($event)"
+                        />
+
+                        <div v-if="thread.replies.length > 0">
+                            {{
+                                thread.replies.length > 1
+                                    ? `${thread.replies.length} réponses`
+                                    : `${thread.replies.length} réponse`
+                            }}
+                            <hr class="my-2" />
+                            <ThreadReply
+                                v-if="onReply"
+                                v-model:body="newReply"
+                                :new-reply="true"
+                                @close="onReply = false"
+                                @send="sendReply()"
                             />
                         </div>
 
-                        <div class="mt-6 text-1">
-                            {{ thread.replies.length }}
-                            {{ thread.replies.length > 1 ? 'réponses' : 'réponse' }}
+                        <div v-else class="flex gap-5 mt-2">
+                            <AppAlert type="info">
+                                <!-- TODO: bonus for a first answer -->
+                                <template #title> Sois le premier à répondre à ce post ! </template>
+                                <template #text>
+                                    <div class="mb-2">
+                                        Personne n'a encore répondu à ce post : n'hésite pas à proposer une
+                                        première réponse :)
+                                    </div>
+                                    <ThreadReply
+                                        v-model:body="newReply"
+                                        :new-reply="true"
+                                        :closeable="false"
+                                        @send="sendReply()"
+                                    />
+                                </template>
+                            </AppAlert>
                         </div>
 
-                        <hr class="mt-2" />
-
-                        <div v-if="onReply" class="flex mt-3">
-                            <div class="flex flex-col items-center p-3 mt-4 -ml-5 w-4/24">
-                                <UserPreview
-                                    :username="user?.fullname ?? 'Anonyme'"
-                                    :avatar="user?.avatar"
-                                    mode="vertical"
-                                />
-                            </div>
-                            <div class="flex flex-col gap-4 w-21/24">
-                                <TipTapEditor
-                                    v-model="newReply"
-                                    :char-count="10000"
-                                    :char-count-show-at="4000"
-                                    class="w-full"
-                                    :sendable="true"
-                                    :cancellable="true"
-                                    @send="sendReply()"
-                                    @cancel="closeReply()"
-                                >
-                                    <template #error>
-                                        <AppError
-                                            v-if="errorReply"
-                                            error="Il y'a eu une erreur lors de l'envoi de cette réponse."
-                                        />
-                                    </template>
-                                </TipTapEditor>
-                            </div>
-                        </div>
-                        <div v-for="(reply, i) in thread.replies" :key="i" class="mt-4">
-                            <Reply :reply="reply" @report="activateReport($event)" />
+                        <div v-for="(reply, i) in thread.replies" :key="i">
+                            <ThreadReply :reply="reply" @report="activateReport($event)" />
                         </div>
                     </div>
                 </div>
@@ -130,39 +128,37 @@
     </div>
 </template>
 
-<script lang="js">
+<script>
     import postTypesEnum from '@/shared/types/post-types.enum'
-
     import defaultAvatar from '@/assets/img/default_avatars/user.png'
-    import AppError from '@/components/App/AppError.vue'
+
+    import AppAlert from '@/components/App/AppAlert.vue'
+    import AppLoader from '@/components/App/AppLoader.vue'
     import AppTag from '@/components/App/AppTag.vue'
-    // import Contributors from '@/components/Thread/ThreadContributor.vue'
-    import PostMessage from '@/components/Thread/ThreadPost.vue'
-    import Reply from '@/components/Thread/ThreadReply.vue'
-    // import SimilarThread from '@/components/Thread/ThreadSimilar.vue'
-    import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
+
+    import ThreadPost from '@/components/Thread/ThreadPost.vue'
+    import ThreadReply from '@/components/Thread/ThreadReply.vue'
+
+    import FormReport from '@/components/Form/FormReport.vue'
+    import UserPreview from '@/components/User/UserPreview.vue'
+
     import { timeAgo } from '@/utils/timeAgo'
     import { defaultTipTapText } from '@/utils/tiptap'
+
     import useVuelidate from '@vuelidate/core'
     import { required } from '@vuelidate/validators'
-    import UserPreview from '@/components/User/UserPreview.vue'
-    import FormReport from '@/components/Form/FormReport.vue'
-    import AppLoader from '@/components/App/AppLoader.vue'
 
     export default {
         components: {
-            AppTag,
-            // Contributors,
-            // SimilarThread,
-            Reply,
-            PostMessage,
-            TipTapEditor,
-            AppError,
-            UserPreview,
-            FormReport,
             AppLoader,
+            AppTag,
+            ThreadPost,
+            ThreadReply,
+            FormReport,
+            UserPreview,
+            AppAlert,
         },
-        setup () {
+        setup() {
             return { v$: useVuelidate() }
         },
         data() {
@@ -178,10 +174,10 @@
             }
         },
         computed: {
-            loggedIn () {
+            loggedIn() {
                 return this.$store.state.auth.loggedIn
             },
-            user () {
+            user() {
                 return this.$store.state.auth.user
             },
             thread() {
@@ -198,18 +194,17 @@
             return { newReply: { required } }
         },
         watch: { '$route': 'getThread' },
-        created () {
+        created() {
             if (this.loggedIn) {
                 this.getThread()
             }
         },
-        mounted () {
-            this.$emitter.on('thread-action', () => this.onReply = false)
+        mounted() {
+            this.$emitter.on('thread-action', () => (this.onReply = false))
         },
         methods: {
             timeAgo,
             activateReport(content) {
-                console.log('ACTIVATING', content)
                 this.reportedUser = content.author
                 this.reportedContent = content
                 this.onReport = true
@@ -217,7 +212,18 @@
             getThread() {
                 if (this.$route.params.id !== undefined && this.$route.params.id !== null) {
                     if (this.$route.params.id > 0) {
-                        this.$store.dispatch('threads/getThread', this.$route.params.id)
+                        // (voluntarily not functional
+                        // => decide whether to query all data in previews / how to optimize caching)
+                        const thread = this.$store.getters['threads/getThreads'].find(
+                            (thread) => thread.id === this.$route.params.id,
+                        )
+
+                        if (thread === undefined) {
+                            // TODO: CATCH: show error alert
+                            this.$store.dispatch('threads/getThread', this.$route.params.id)
+                        } else {
+                            this.$store.commit('threads/setCurrentThread', thread)
+                        }
                     } else {
                         this.$router.push('/posts')
                     }
@@ -229,19 +235,19 @@
                     vote,
                 })
             },
-            closeReply() {
-                this.errorReply = false
-                this.onReply = false
-                this.newReply = defaultTipTapText
-            },
             sendReply() {
-                this.$store.dispatch('threads/addReply', {
-                    parentId: this.thread.post.contentId,
-                    body: this.newReply,
-                    contentMasterType: 'thread',
-                })
-                    .then(() => { this.closeReply() })
-                    .catch(() => { this.errorReply = true })
+                this.$store
+                    .dispatch('threads/addReply', {
+                        parentId: this.thread.post.contentId,
+                        body: this.newReply,
+                        contentMasterType: 'thread',
+                    })
+                    .then(() => {
+                        this.onReply = false
+                    })
+                    .catch(() => {
+                        this.errorReply = true
+                    })
             },
         },
     }

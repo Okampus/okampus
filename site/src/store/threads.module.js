@@ -141,6 +141,9 @@ export const threads = {
             ),
     },
     mutations: {
+        setCurrentThread(state, thread) {
+            state.currentThread = thread
+        },
         refreshThreads(state) {
             state.threads = []
             state.threadsPage = 1
@@ -205,8 +208,6 @@ export const threads = {
                 },
             ]
 
-            console.log('allInteractions', allInteractions)
-
             allInteractions = allInteractions
                 .map((typeInteract) =>
                     typeInteract.interactions.map((interact) => ({
@@ -219,8 +220,6 @@ export const threads = {
             for (const interaction of allInteractions) {
                 applyFuncOnContent(applyInteraction(interaction), interaction.content, state.currentThread)
             }
-
-            console.log('state.currentThread', state.currentThread)
         },
         updateThreadSuccess(state, newThread) {
             state.currentThread = {
@@ -239,7 +238,6 @@ export const threads = {
             state.currentThread.replies.unshift(reply)
         },
         addCommentSuccess(state, comment) {
-            console.log('ADD COMMENT SUCCESS', comment)
             if (comment.parent.kind === POST) {
                 state.currentThread.post.comments.unshift(comment)
             } else if (comment.parent.kind === REPLY) {
@@ -277,7 +275,6 @@ export const threads = {
             )
         },
         addFavoriteSuccess(state, favorite) {
-            console.log(favorite)
             applyFuncOnContent(
                 (content) => {
                     content.userFavorited = true

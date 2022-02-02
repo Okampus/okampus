@@ -1,15 +1,16 @@
-%button-flat, .button-flat {
+%button-flat,
+.button-flat {
     @apply rounded-md font-medium cursor-pointer;
 }
 
 %button-raised {
     @extend %button-flat;
-    @apply flex justify-center items-center;
+    @apply flex justify-center items-center h-fit mt-1.5;
 
     box-shadow: 0 0 1px rgb(0 0 0 / 40%);
 
     & > :first-child {
-        @apply px-4 py-2 relative bottom-[0.23rem] w-full rounded;
+        @apply px-4 py-2 relative bottom-[0.3rem] w-full rounded;
 
         box-shadow: inset 0 0 3px rgb(255 255 255 / 50%);
     }
@@ -19,7 +20,7 @@
     }
 
     &:not([disabled]) > :first-child {
-        @apply transform active:translate-y-[0.11rem]
+        @apply transform active:translate-y-[0.14rem]
             transition duration-75 ease-in-out;
     }
 }
@@ -38,7 +39,7 @@
     }
 }
 
-.button.red {
+.button-red {
     @extend %button-raised;
     @apply text-white bg-red-600 dark:bg-red-800
         hover:bg-red-700 hover:dark:bg-red-900
@@ -52,7 +53,7 @@
     }
 }
 
-.button.green {
+.button-green {
     @extend %button-raised;
     @apply text-white bg-green-600 dark:bg-green-800
         hover:bg-green-700 hover:dark:bg-green-900

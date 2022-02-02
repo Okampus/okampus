@@ -1,20 +1,20 @@
 <template>
     <div>
         <TipTapEditor
-            v-if="show"
+            v-if="edit"
             v-model="body"
-            :sendable="true"
-            :cancellable="true"
+            :sendable="sendable"
+            :cancellable="cancellable"
             :editor-buttons="editorButtons"
             :editor-classes="editorClasses"
-            @cancel="$emit('update:show', false), (body = content), $emit('cancel')"
-            @send="$emit('update:show', false), $emit('update:content', body), $emit('validate', body)"
+            @cancel="$emit('update:edit', false), (body = content), $emit('cancel')"
+            @send="$emit('update:edit', false), $emit('update:content', body), $emit('send', body)"
         />
         <TipTapRenderer v-else :content="body" />
     </div>
 </template>
 
-<script lang="js">
+<script>
     import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
     import TipTapRenderer from '@/components/TipTap/TipTapRenderer.vue'
     import { defaultEditorButtons, defaultTipTapText } from '@/utils/tiptap'
@@ -30,6 +30,14 @@
                 type: String,
                 default: defaultTipTapText,
             },
+            cancellable: {
+                type: Boolean,
+                default: true,
+            },
+            sendable: {
+                type: Boolean,
+                default: true,
+            },
             editorButtons: {
                 type: Array,
                 default: defaultEditorButtons,
@@ -38,22 +46,35 @@
                 type: Array,
                 default: () => ['min-h-20'],
             },
-            show: {
+            edit: {
+                type: Boolean,
+                default: false,
+            },
+            emitContent: {
                 type: Boolean,
                 default: false,
             },
         },
-        emits: ['cancel', 'validate', 'update:content', 'update:show'],
+        emits: ['cancel', 'send', 'update:content', 'update:edit'],
         data() {
             return { body: this.content ?? defaultTipTapText }
         },
         mounted() {
-            watch(
-                () => this.content,
-                (newContent) => {
-                    this.body = newContent
-                },
-            )
+            if (this.emitContent) {
+                watch(
+                    () => this.body,
+                    (newContent) => {
+                        this.$emit('update:content', newContent)
+                    },
+                )
+            } else {
+                watch(
+                    () => this.content,
+                    (newContent) => {
+                        this.body = newContent
+                    },
+                )
+            }
         },
     }
 </script>

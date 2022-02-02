@@ -22,10 +22,10 @@
                 <div class="flex items-center" :class="{ 'w-full': comment.edit }">
                     <TipTapEditableRender
                         v-model:content="comment.body"
-                        v-model:show="comment.edit"
+                        v-model:edit="comment.edit"
                         class="w-full"
                         :="editorConfig"
-                        @validate="updateComment($event, i)"
+                        @send="updateComment($event, i)"
                     />
                     <p v-if="!comment.edit" class="font-bold whitespace-nowrap">
                         &nbsp;- {{ comment.author.fullname }}

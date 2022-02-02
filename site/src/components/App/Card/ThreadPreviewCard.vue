@@ -15,7 +15,7 @@
                         {{ thread.solved ? 'Résolu' : 'Non-Résolu' }}
                     </div>
                     <div class="flex gap-2 items-center pl-1">
-                        <font-awesome-icon icon="hourglass-end" />
+                        <font-awesome-icon icon="calendar" />
                         <div>{{ timeAgo(thread.createdAt) }}</div>
                     </div>
                     <div class="flex gap-2 items-center pl-1">

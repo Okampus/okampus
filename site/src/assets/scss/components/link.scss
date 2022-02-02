@@ -1,6 +1,6 @@
 .link,
 %link {
-    @apply hover:text-orange-500 hover:underline;
+    @apply hover:text-orange-500 hover:underline cursor-pointer;
 
     &-blue {
         @extend %link;

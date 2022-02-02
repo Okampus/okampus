@@ -4,8 +4,7 @@
         <div class="flex relative flex-col mx-auto mt-12 mb-10 space-y-4 w-11/12 card-0 min-w-2/3">
             <div>
                 <div class="label-title">Titre</div>
-
-                <div class="label-desc">Titre simple et complet décrivant votre Post</div>
+                <div class="label-desc">Titre clair et descriptif</div>
                 <input
                     v-model="state.title"
                     class="w-full input"
@@ -16,12 +15,12 @@
                 />
                 <AppError
                     v-if="v$.title.$error"
-                    :error="`Un titre de Post doit faire entre ${titleCharLimit[0]} et ${titleCharLimit[1]} caractères.`"
+                    :error="`Un titre de post doit faire entre ${titleCharLimit[0]} et ${titleCharLimit[1]} caractères.`"
                 />
             </div>
 
             <div>
-                <div class="label-title">Type de Post</div>
+                <div class="label-title">Type de post</div>
                 <div class="label-desc">
                     Quel
                     <Popper :hover="true">
@@ -42,23 +41,26 @@
                             </div>
                         </template>
                     </Popper>
-                    de Post voulez-vous créer ?
+                    de post souhaites-tu créer ?
                 </div>
                 <SelectInput
                     v-model="state.type"
-                    button-name="Type de Post"
+                    button-name="Type de post"
                     :choices="postTypesEnum.map((postType) => postType[$i18n.locale])"
                 />
                 <AppError
                     v-if="v$.type.$error"
-                    :error="`Choisissez un type de Post dans la liste.`"
-                    success="Type de Post valide"
+                    :error="`Choisis un type de post dans la liste.`"
+                    success="Type de post valide"
                 />
             </div>
 
             <div>
                 <div class="label-title">Contenu</div>
-                <div class="label-desc">Décrivez le plus précisément possible votre Post</div>
+                <div class="label-desc">
+                    Décris le plus précisément <span class="underline">ce que tu souhaites réaliser</span> et
+                    comment l'on peut t'aider !
+                </div>
                 <div>
                     <TipTapEditor
                         ref="editorRef"
@@ -67,13 +69,13 @@
                         mode="json"
                         :char-count-show-at="9000"
                         :char-count="editorCharLimit[1]"
-                        placeholder="Décrivez votre question/suggestion/problème !"
+                        placeholder="Décris ton question/suggestion/problème !"
                         @input="v$.body.$touch"
                     >
                         <template #error>
                             <AppError
                                 v-if="v$.body.$error"
-                                :error="`Une description de Post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
+                                :error="`Une description de post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
                             />
                         </template>
                     </TipTapEditor>
@@ -83,42 +85,47 @@
             <div>
                 <div class="label-title">Tags</div>
                 <div class="label-desc">
-                    Ajoutez {{ minTags }} Tags (ou plus) qui décrivent le sujet de votre Post
+                    Ajoute {{ minTags }} tags (ou plus) qui décrivent le sujet de ton post <br />
+                    <div class="mt-1.5 text-sm">
+                        <span class="font-bold">NOTE :</span> pour des tags de plusieurs mots,
+                        <span class="underline">séparer les mots avec des tirets</span> plutôt que des espaces
+                        !
+                    </div>
                 </div>
                 <TagInput
                     v-model="state.tags"
                     name="tags"
-                    placeholder="Entrez le nom du tag et appuyez sur entrée..."
+                    placeholder="Entre le nom du tag puis appuie sur espace/entrée..."
                     @error="tagsError"
                     @input-update="customTagError = null"
                     @keydown="v$.tags.$touch"
                 />
                 <AppError
                     v-if="v$.tags.$error"
-                    :error="customTagError || `Un Post doit avoir au moins ${minTags} Tags.`"
+                    :error="customTagError || `Un post doit avoir au moins ${minTags} tags.`"
                     success="Tags valides"
                 />
             </div>
 
-            <div class="flex">
-                <!-- TODO: message in case post validation doesn't work, refactor error warnings, redirect -->
-                <button class="button" @click="submit">
-                    <p>Soumettre le Post pour validation</p>
+            <div class="flex gap-4 items-center h-12">
+                <button class="shrink-0 button-green" @click="submit">
+                    <p>Valider mon post</p>
                 </button>
-                <div
-                    v-if="submitSuccess === 1"
-                    class="flex gap-2 p-2 my-auto ml-4 font-bold text-green-600 bg-green-500 rounded-md bg-opacity-/25"
+
+                <AppAlert v-if="show === 'success'" type="success">
+                    <template #text> Création réussie ! Tu vas être redirigé sur ton post. </template>
+                </AppAlert>
+                <AppAlert
+                    v-else-if="show === 'error'"
+                    type="error"
+                    :dismissable="true"
+                    @dismiss="show = null"
                 >
-                    <font-awesome-icon icon="check" class="my-auto" />
-                    <div class="my-auto">Création réussie</div>
-                </div>
-                <div
-                    v-else-if="submitSuccess === -1"
-                    class="flex gap-2 p-2 my-auto ml-4 font-bold text-red-500 bg-red-500 rounded-md bg-opacity-/25"
-                >
-                    <font-awesome-icon icon="times" class="my-auto" />
-                    <div class="my-auto">Erreur lors de l'enregistrement du post</div>
-                </div>
+                    <template #text>
+                        <span class="font-bold">Échec de création du post !</span>
+                        ({{ error || 'Erreur inconnue' }})
+                    </template>
+                </AppAlert>
             </div>
 
             <!-- TODO: add second panel (dos and don'ts of a good post) -->
@@ -126,18 +133,22 @@
     </div>
 </template>
 
-<script lang="js">
+<script>
+    import AppAlert from '@/components/App/AppAlert.vue'
     import AppError from '@/components/App/AppError.vue'
+
+    import Popper from 'vue3-popper'
     import SelectInput from '@/components/Input/SelectInput.vue'
     import TagInput from '@/components/Input/TagInput.vue'
     import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
-    import router from '@/router'
+
     import postTypesEnum from '@/shared/types/post-types.enum'
     import { defaultTipTapText } from '@/utils/tiptap'
+
     import useVuelidate from '@vuelidate/core'
     import { between, maxLength, minLength, required } from '@vuelidate/validators'
+
     import { reactive, ref } from 'vue'
-    import Popper from 'vue3-popper'
 
     export default {
         components: {
@@ -146,6 +157,7 @@
             TipTapEditor,
             Popper,
             SelectInput,
+            AppAlert,
         },
         inheritAttrs: false,
         props: {
@@ -162,7 +174,7 @@
                 default: 2,
             },
         },
-        setup (props) {
+        setup(props) {
             const editorRef = ref(null)
             const state = reactive({
                 title: '',
@@ -184,7 +196,7 @@
                 },
                 type: {
                     required,
-                    between: between(0, postTypesEnum.length-1),
+                    between: between(0, postTypesEnum.length - 1),
                 },
                 body: { editorCharCount },
                 tags: { tagsLength },
@@ -196,15 +208,16 @@
                 v$: useVuelidate(rules, state),
             }
         },
-        data () {
+        data() {
             return {
                 postTypesEnum,
                 customTagError: null,
-                submitSuccess: 0,
+                show: null,
+                error: '',
             }
         },
         methods: {
-            tagsError (err) {
+            tagsError(err) {
                 if (err === 'unique') {
                     this.customTagError = 'Ce Tag est déjà présent dans la liste.'
                 } else if (err === 'empty') {
@@ -213,22 +226,29 @@
                     this.customTagError = 'Erreur: ces tags génèrent une erreur inconnue.'
                 }
             },
-            submit () {
-                this.submitSuccess = 1
+            submit() {
                 if (this.v$.$invalid) {
                     this.v$.$touch()
-                    this.submitSuccess = -1
                     return
                 }
 
-                this.$store.dispatch('threads/addThread', {
-                    title: this.state.title,
-                    type: this.state.type,
-                    body: this.state.body,
-                    tags: this.state.tags,
-                })
-                    .then((newThread) => router.push(`/posts/${newThread.contentMasterId}`))
-                    .catch(() => { this.submitSuccess = -1 })
+                this.$store
+                    .dispatch('threads/addThread', {
+                        title: this.state.title,
+                        type: this.state.type,
+                        body: this.state.body,
+                        tags: this.state.tags,
+                    })
+                    .then((newThread) => {
+                        this.show = 'success'
+                        setTimeout(() => {
+                            this.$router.push(`/posts/${newThread.contentMasterId}`)
+                        }, 2000)
+                    })
+                    .catch((err) => {
+                        this.show = 'error'
+                        this.error = err.toString()
+                    })
             },
         },
     }

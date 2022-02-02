@@ -1,19 +1,21 @@
-@import "@/assets/scss/abstracts/mixins/get-color";
+@import '@/assets/scss/abstracts/mixins/get-color';
+
+// TODO: refactor cards
 
 .card-0 {
-    @include get-color("text", 0);
-    @include get-color("bg", 0);
+    @include get-color('text', 0);
+    @include get-color('bg', 0);
     @apply shadow-md rounded-lg py-4 px-6;
 }
 
 .card {
-    @include get-color("text", 0);
-    @include get-color("bg", 1);
-    @apply shadow-md rounded-lg py-4 px-6;
+    @include get-color('text', 0);
+    @include get-color('bg', 1);
+    @apply md:shadow-md md:rounded-lg py-4 px-6;
 }
 
 .card-2 {
-    @include get-color("text", 0);
-    @include get-color("bg", 2);
+    @include get-color('text', 0);
+    @include get-color('bg', 2);
     @apply shadow-md rounded-lg py-4 px-6;
 }

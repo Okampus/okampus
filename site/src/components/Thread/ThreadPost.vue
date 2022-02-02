@@ -1,31 +1,13 @@
 <template>
     <div>
         <div class="flex items-start">
-            <div class="flex flex-col shrink-0 gap-2 items-center p-3 -ml-5 w-4/24 text-lg">
+            <div class="flex flex-col shrink-0 gap-2 items-center px-3 -ml-5 w-32 text-lg">
                 <UserPreview
                     :username="post.author?.fullname"
                     :avatar="post.author?.avatar"
                     :img-size="14"
                     mode="vertical"
                 />
-
-                <div class="flex gap-2.5 items-center mt-1">
-                    <font-awesome-icon
-                        :icon="['fa', 'thumbs-up']"
-                        class="text-lg hover:text-blue-500 cursor-pointer"
-                        :class="{ 'text-green-600': post.userVote === 1 }"
-                        @click="post.userVote === 1 ? sendVote(0) : sendVote(1)"
-                    />
-                    <div class="text-lg text-center">
-                        {{ post.upvotes - post.downvotes }}
-                    </div>
-                    <font-awesome-icon
-                        :icon="['fa', 'thumbs-down']"
-                        class="text-lg hover:text-blue-500 cursor-pointer symmetry-x"
-                        :class="{ 'text-red-500': post.userVote === -1 }"
-                        @click="post.userVote === -1 ? sendVote(0) : sendVote(-1)"
-                    />
-                </div>
 
                 <div class="flex flex-col mt-1">
                     <div
@@ -34,7 +16,7 @@
                         class="flex items-center rounded transition cursor-pointer text-5"
                         @click="actionsMap[action].action"
                     >
-                        <div class="flex gap-2 items-center">
+                        <div class="group flex gap-2 items-center">
                             <font-awesome-icon
                                 :icon="actionsMap[action].icon"
                                 :class="actionsMap[action].class"
@@ -50,13 +32,31 @@
                 <div class="p-2 text-lg">
                     <TipTapEditableRender
                         v-model:content="currentBody"
-                        v-model:show="showEditor"
-                        @validate="updatePost($event)"
+                        v-model:edit="showEditor"
+                        @send="updatePost($event)"
                     />
                 </div>
 
                 <div class="flex justify-between items-center">
-                    <div class="flex items-center">
+                    <div class="flex gap-2 items-center">
+                        <div class="flex gap-2.5 items-center py-2 px-3 mt-1 rounded-lg bg-3 text-2">
+                            <!-- TODO: mobile-friendly: tap & hold to react -->
+                            <font-awesome-icon
+                                :icon="['fa', 'heart']"
+                                class="text-xl hover:text-blue-500 cursor-pointer"
+                                :class="{ 'text-green-600': post.userVote === 1 }"
+                                @click="post.userVote === 1 ? sendVote(0) : sendVote(1)"
+                            />
+                            <!-- <div class="text-center">
+                                    {{ post.upvotes - post.downvotes }}
+                                </div> -->
+                            <font-awesome-icon
+                                :icon="['fa', 'heart-broken']"
+                                class="text-xl hover:text-blue-500 cursor-pointer"
+                                :class="{ 'text-red-500': post.userVote === -1 }"
+                                @click="post.userVote === -1 ? sendVote(0) : sendVote(-1)"
+                            />
+                        </div>
                         <div
                             v-for="(action, i) in actionsBar"
                             :key="i"
@@ -156,7 +156,7 @@
                         favorite: {
                             name: () => 'Favori',
                             icon: this.post?.userFavorited ? 'star' : ['far', 'star'],
-                            class: this.post?.userFavorited ? 'hover:text-yellow-600 text-yellow-500' : 'hover:text-yellow-500',
+                            class: this.post?.userFavorited ? 'group-hover:text-yellow-600 text-yellow-500' : 'group-hover:text-yellow-500',
                             action: () => { this.post?.userFavorited ? this.deleteFavorite() : this.addFavorite() },
                         },
                     }),
