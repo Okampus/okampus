@@ -23,7 +23,6 @@ module.exports = {
         'keyword-spacing': 'error',
 
         'space-before-blocks': 'error',
-        'space-before-function-paren': ['error', 'never'],
 
         'object-curly-spacing': ['error', 'always'],
 
