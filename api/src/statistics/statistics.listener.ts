@@ -52,7 +52,7 @@ export class StatisticsListener {
         case ContentKind.Comment:
           stats.commentCount++;
           stats.user.points += pointsConfig.comment;
-          if (stats.commentStreak || isYesterday(stats.lastComment!))
+          if (stats.commentStreak === 0 || isYesterday(stats.lastComment!))
             stats.commentStreak++;
           stats.lastComment = new Date();
 
