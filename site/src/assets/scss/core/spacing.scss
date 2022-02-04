@@ -1,13 +1,21 @@
 $topbar-height: 4.5rem;
-$sidebar-width: 9rem;
-$sidebar-width-lg: 14rem;
+$sidebar-width-sm: 4.5rem;
+$sidebar-width-lg: 15rem;
 
-.w-sidebar {
-    width: $sidebar-width;
+.w-sidebar-sm {
+    width: $sidebar-width-sm;
 }
 
-.hidden-sidebar {
-    margin-left: calc(-1 * $sidebar-width);
+.w-sidebar-lg {
+    width: $sidebar-width-lg;
+}
+
+.hidden-sidebar-sm {
+    margin-left: calc(-1 * $sidebar-width-sm);
+}
+
+.hidden-sidebar-lg {
+    margin-left: calc(-1 * $sidebar-width-lg);
 }
 
 @media (min-width: 1536px) {
@@ -25,7 +33,7 @@ $sidebar-width-lg: 14rem;
 }
 
 .after-sidebar {
-    left: $sidebar-width;
+    left: $sidebar-width-sm;
 }
 
 .after-topbar {
@@ -37,5 +45,5 @@ $sidebar-width-lg: 14rem;
 }
 
 .w-content {
-    width: calc(100% - $sidebar-width);
+    width: calc(100% - $sidebar-width-sm);
 }

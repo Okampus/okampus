@@ -1,13 +1,14 @@
 <template>
     <nav
-        id="topbar"
         class="flex fixed top-0 left-0 justify-between items-center w-full border-b bg-0 h-topbar text-1 topbar-shadow"
     >
-        <div class="flex shrink-0 justify-center items-center px-4 w-sidebar">
-            <button aria-label="Open Menu" @click="$emit('toggle-side-bar')">
-                <font-awesome-icon icon="bars" class="text-2xl text-0" />
-            </button>
-            <div class="hidden ml-4 w-32 h-6 2xl:block brand" />
+        <div class="flex items-center w-sidebar-lg">
+            <div class="flex shrink-0 justify-center w-sidebar-sm">
+                <button aria-label="Open Menu" @click="$emit('toggle-side-bar')">
+                    <font-awesome-icon icon="bars" class="text-2xl text-0" />
+                </button>
+            </div>
+            <div class="w-32 h-6 logo" @click="$router.push('/')" />
         </div>
 
         <div class="relative grow mx-6 bg-transparent">
@@ -17,8 +18,8 @@
         <div v-if="!loggedIn" class="flex shrink-0 justify-center items-center mr-4">
             <button class="button" @click="$emit('toggle-login')">
                 <div class="flex items-center">
-                    <p class="hidden mr-2 uppercase md:block text-md">Se connecter</p>
-                    <font-awesome-icon icon="sign-in-alt" class="text-lg text-0" />
+                    <p class="mr-2 uppercase text-md">Se connecter</p>
+                    <font-awesome-icon icon="sign-in-alt" class="text-lg" />
                 </div>
             </button>
         </div>

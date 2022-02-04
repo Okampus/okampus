@@ -1,7 +1,7 @@
 @use 'sass:string';
 @use 'sass:list';
 
-$brand-url: url('@/assets/img/logos/horizon_brand.png');
+$logo-url: url('@/assets/img/logos/horizon_logo.png');
 
 @mixin tailwind-color($tailwind-property, $name: '', $tailwind-property-count: 6) {
     @if $name == '' {
@@ -47,12 +47,11 @@ $brand-url: url('@/assets/img/logos/horizon_brand.png');
     @apply dark:border-black;
 }
 
-.brand {
-    @apply filter brightness-0 dark:brightness-100;
+.logo {
+    @apply filter brightness-0 dark:brightness-100 cursor-pointer;
 
-    background: $brand-url no-repeat 0 0;
+    background: $logo-url no-repeat 0 0;
     background-size: 100%;
-    transition: all 300ms;
 }
 
 .ratio-square {

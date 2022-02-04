@@ -1,18 +1,17 @@
 <template>
-    <!-- TODO: Solve mysterious min-width ??? -->
     <FormLogin :show-login="showLogin" @toggle-login="toggleLogin" />
 
     <div class="flex flex-row w-screen h-screen z-1" :class="{ 'brightness-50': showModal }">
         <SideBar
             ref="sidebar"
-            :collapsed="closedSidebar && !uncollapsedSidebar"
             :uncollapsed="uncollapsedSidebar"
             :collapsing="collapsingSidebar"
+            :small-screen="smallScreen"
             @close-side-bar="toggleSidebar"
         />
         <div
             ref="content"
-            :class="{ 'brightness-50': uncollapsedSidebar && !collapsingSidebar }"
+            :class="{ 'brightness-50': dimPage }"
             class="flex overflow-auto relative flex-col w-full bg-2 h-content after-topbar app-scrollbar"
         >
             <div class="flex-auto shrink-0 grow-1">
@@ -24,7 +23,7 @@
             ref="topbar"
             class="flex fixed top-0 left-0 justify-between items-center w-full border-b h-tbar border-bar text-1 bg-1"
             :show-login="showLogin"
-            :class="{ 'brightness-50': uncollapsedSidebar && !collapsingSidebar }"
+            :class="{ 'brightness-50': dimPage }"
             @toggle-login="toggleLogin"
             @toggle-side-bar="toggleSidebar"
         />
@@ -40,7 +39,7 @@
     import debounce from 'lodash/debounce'
     import { ref, watch } from 'vue'
 
-    const breakWidth = 768
+    const breakWidth = 1024
     export default {
         components: {
             TopBar,
@@ -84,14 +83,9 @@
                         this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
                         this.content.removeEventListener('mousedown', this.toggleSidebar)
                     }
-                    if (this.closedSidebar) {
-                        this.closedSidebar = false
-                    }
                 } else if (this.isScreenSmall() && !this.smallScreen) {
                     this.smallScreen = true
-                    if (!this.closedSidebar) {
-                        this.closedSidebar = true
-                    }
+                    this.uncollapsedSidebar = false
                 }
             }, 50)
 
@@ -99,11 +93,19 @@
                 checkResize,
                 user: new User('', '', ''),
                 isScreenSmall,
-                closedSidebar: isScreenSmall(),
                 smallScreen: isScreenSmall(),
                 uncollapsedSidebar: false,
                 collapsingSidebar: false,
             }
+        },
+        computed: {
+            dimPage() {
+                return (
+                    this.smallScreen &&
+                    ((this.uncollapsedSidebar && !this.collapsingSidebar) ||
+                        (!this.uncollapsedSidebar && this.collapsingSidebar))
+                )
+            },
         },
         created() {
             document.querySelector(':root').className = this.$store.state.user.theme
@@ -143,25 +145,25 @@
             },
             toggleSidebar() {
                 if (this.smallScreen) {
+                    this.collapsingSidebar = true
                     if (this.uncollapsedSidebar) {
                         this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
                         this.content.removeEventListener('mousedown', this.toggleSidebar)
-                        this.collapsingSidebar = true
-                        this.sidebar.$el.addEventListener(
-                            'transitionend',
-                            () => {
-                                this.uncollapsedSidebar = false
-                                this.collapsingSidebar = false
-                            },
-                            { once: true },
-                        )
                     } else {
-                        this.uncollapsedSidebar = true
                         this.topbar.$el.addEventListener('mousedown', this.toggleSidebar)
                         this.content.addEventListener('mousedown', this.toggleSidebar)
                     }
+
+                    this.sidebar.$el.addEventListener(
+                        'transitionend',
+                        () => {
+                            this.collapsingSidebar = false
+                            this.uncollapsedSidebar = !this.uncollapsedSidebar
+                        },
+                        { once: true },
+                    )
                 } else {
-                    this.closedSidebar = !this.closedSidebar
+                    this.uncollapsedSidebar = !this.uncollapsedSidebar
                 }
             },
         },
@@ -222,5 +224,9 @@
         html {
             font-size: 15px;
         }
+    }
+
+    .transition-brightness {
+        transition: 300ms;
     }
 </style>

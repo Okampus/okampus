@@ -1,4 +1,4 @@
-@import "@/assets/scss/abstracts/mixins/get-color";
+@import '@/assets/scss/abstracts/mixins/get-color';
 
 .placeholder,
 %placeholder {
@@ -10,18 +10,20 @@
     @apply text-placeholder-light dark:text-placeholder-dark;
 }
 
-%input-focus, .input-focus {
+%input-focus,
+.input-focus {
     &:focus,
     &[focused] {
         @apply outline outline-2 outline-blue-600;
     }
 }
 
-%input-flat, .input-flat {
+%input-flat,
+.input-flat {
     @extend %placeholder;
     @extend %input-focus;
-    @include get-color("bg", 2);
-    @include get-color("text", 2);
+    @include get-color('bg', 2);
+    @include get-color('text', 2);
 
     line-height: 1.43;
 
@@ -31,14 +33,15 @@
 .bottom-border-input {
     @extend %placeholder;
     @extend %input-focus;
-    @include get-color("text", 2);
+    @include get-color('text', 2);
     @apply bg-transparent w-full focus:rounded dark:border-opacity-75 py-1.5 px-2
         pr-10 border-b-2;
 
     line-height: 1.43;
 }
 
-%input, .input {
+%input,
+.input {
     @extend %input-flat;
 
     box-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 15%), 0 2px 0 hsl(0deg 0% 100% / 40%);
@@ -49,29 +52,30 @@
 }
 
 .input-with-icon {
+    @extend %input;
+    @apply px-0;
+
     & input {
-        @extend %input;
-        @apply focus:outline-none rounded-l-none w-full;
+        // @extend %input;
+        @include get-color('bg', 2);
+        @apply focus:outline-none rounded-l-none w-full mr-2;
 
         line-height: 1.43;
-        box-shadow:
-            inset 0 2px 2px hsl(0deg 0% 0% / 20%),
-            0 2px 2px hsl(0deg 0% 0% / 10%);
 
-        :root.dark & {
-            box-shadow:
-                inset -1px 2px 0 hsl(0deg 0% 100% / 8%),
-                inset 0 -2px 5px hsl(0deg 0% 0% / 40%);
-        }
+        // box-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 20%), 0 2px 2px hsl(0deg 0% 0% / 10%);
+
+        // :root.dark & {
+        //     box-shadow: inset -1px 2px 0 hsl(0deg 0% 100% / 8%), inset 0 -2px 5px hsl(0deg 0% 0% / 40%);
+        // }
     }
 
     & > i {
-        @extend %raised;
-        @include get-color("text", 2);
-        @apply flex-shrink-0 flex items-center justify-center py-1 px-2 rounded-l-md;
+        // @extend %input;
+        @include get-color('text', 2);
+        @apply flex-shrink-0 flex items-center justify-center py-1 px-2 rounded-r-none mx-0.5;
 
         &[focused] {
-            @include get-color("text", 0);
+            @include get-color('text', 0);
         }
     }
 
@@ -79,11 +83,11 @@
     @apply rounded-md flex;
 }
 
-input[type="password"]:not(:placeholder-shown) {
+input[type='password']:not(:placeholder-shown) {
     @apply tracking-widest;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
     @apply bg-white transition duration-300 ease-in-out appearance-none h-4 w-4
         hover:bg-slate-100 cursor-pointer
         border-2 border-gray-300 rounded shadow-sm focus:border-blue-500

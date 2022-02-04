@@ -50,13 +50,11 @@
                         </div>
 
                         <div class="flex flex-col justify-center items-center mt-10 space-y-2">
-                            <button
-                                type="submit"
-                                class="py-3 w-full text-sm font-medium text-white uppercase bg-blue-500 hover:bg-blue-400 rounded-sm focus:outline-none hover:shadow-none"
-                                @click="myEfreiLogin"
+                            <a
+                                class="py-3 w-full text-sm font-medium text-center text-white uppercase bg-blue-500 hover:bg-blue-400 rounded-sm focus:outline-none hover:shadow-none"
+                                :href="authUrl"
+                                >Connexion myEfrei</a
                             >
-                                Connexion myEfrei
-                            </button>
                         </div>
                     </form>
                 </div>
@@ -83,12 +81,12 @@
         },
         emits: ['toggle-login'],
         data() {
-            return { user: new User('', '', '') }
+            return {
+                authUrl: `${import.meta.env.VITE_API_URL}/auth/myefrei`,
+                user: new User('', '', ''),
+            }
         },
         methods: {
-            myEfreiLogin() {
-                window.location.href = `${import.meta.env.VITE_API_URL}/auth/myefrei`
-            },
             handleLogin() {
                 this.loading = true
                 if (this.user.username && this.user.password) {
