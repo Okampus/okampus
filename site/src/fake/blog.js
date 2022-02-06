@@ -26,7 +26,7 @@ export const categories = [
 export const articles = [
     {
         author: users[0],
-        link: '#/blog/0',
+        link: '#/articles/0',
         date: '2021-10-18T13:51:36.631Z',
         title: '[FEATURE] Assigner des équipes à des tickets',
         category: categories[3],
@@ -91,7 +91,7 @@ export const articles = [
     },
     {
         author: users[1],
-        link: '#/blog/1',
+        link: '#/articles/1',
         date: '2021-12-18T18:53:21.051Z',
         title: "L'escalade : plus qu'une passion !",
         category: categories[1],
@@ -160,7 +160,7 @@ export const articles = [
     },
     {
         author: users[2],
-        link: '#/blog/2',
+        link: '#/articles/2',
         date: '2021-11-12T09:21:23.181Z',
         title: '[GIT] Cheatsheet Git : GUIDE COMPLET !',
         category: categories[2],
@@ -229,7 +229,7 @@ export const articles = [
     },
     {
         author: users[3],
-        link: '#/blog/3',
+        link: '#/articles/3',
         date: '2021-12-15T11:27:04.911Z',
         title: 'La Troisième Dose Obligatoire à Partir de Février',
         category: categories[0],
@@ -253,7 +253,7 @@ export const articles = [
     },
     {
         author: users[3],
-        link: '#/blog/4',
+        link: '#/articles/4',
         date: '2021-01-02T19:11:11.111Z',
         title: 'Nouvelle campagne de recrutement lancée à Horizon !',
         category: categories[4],

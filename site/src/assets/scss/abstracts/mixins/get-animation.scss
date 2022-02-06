@@ -1,0 +1,50 @@
+@mixin get-animation(
+    $animation,
+    $duration,
+    $delay,
+    $iteration-count,
+    $direction,
+    $fill-mode,
+    $timing-function
+) {
+    animation: $animation $duration $delay $iteration-count $direction $fill-mode $timing-function;
+}
+
+@mixin get-text-animation(
+    $background,
+    $background-size: 300%,
+    $duration: 1.5s,
+    $delay: 0s,
+    $iteration-count: infinite,
+    $direction: alternate,
+    $fill-mode: forwards,
+    $timing-function: ease-in-out
+) {
+    @keyframes flow {
+        0% {
+            background-position: 0 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0 50%;
+        }
+    }
+    @include get-animation(
+        $animation: flow,
+        $duration: $duration,
+        $delay: $delay,
+        $iteration-count: $iteration-count,
+        $direction: $direction,
+        $fill-mode: $fill-mode,
+        $timing-function: $timing-function
+    );
+
+    background: $background;
+    background-clip: text;
+    background-size: $background-size;
+    -webkit-text-fill-color: transparent;
+}

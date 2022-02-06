@@ -17,22 +17,22 @@ const routes = [
     },
 
     {
-        path: '/blog',
+        path: '/articles',
         component: () => import('@/views/Blog/BlogList.vue'),
     },
 
     {
-        path: '/blog/new',
+        path: '/articles/new',
         component: () => import('@/views/Blog/BlogNew.vue'),
     },
 
     {
-        path: '/blog/:id',
+        path: '/articles/:id',
         component: () => import('@/views/Blog/BlogShow.vue'),
     },
 
     {
-        path: '/blog/admin',
+        path: '/articles/admin',
         component: () => import('@/views/Blog/BlogAdmin.vue'),
     },
 

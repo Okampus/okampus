@@ -9,6 +9,7 @@
             :small-screen="smallScreen"
             @close-side-bar="toggleSidebar"
         />
+
         <div
             ref="content"
             :class="{ 'brightness-50': dimPage }"
@@ -19,6 +20,7 @@
             </div>
             <FooterBar class="shrink-0" />
         </div>
+
         <TopBar
             ref="topbar"
             class="flex fixed top-0 left-0 justify-between items-center w-full border-b h-tbar border-bar text-1 bg-1"
@@ -40,6 +42,7 @@
     import { ref, watch } from 'vue'
 
     const breakWidth = 1024
+    const uncollapseWidth = 1536
     export default {
         components: {
             TopBar,
@@ -71,30 +74,37 @@
             }
         },
         data() {
-            const isScreenSmall = () =>
-                Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) <= breakWidth
+            const isScreenSmallerThan = (width) =>
+                Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) <= width
 
             const checkResize = debounce(() => {
-                if (!this.isScreenSmall() && this.smallScreen) {
-                    this.smallScreen = false
+                const isScreenSmall = isScreenSmallerThan(breakWidth)
+                const isScreenSmallerThanUncollapse = isScreenSmallerThan(uncollapseWidth)
 
-                    if (this.uncollapsedSidebar) {
-                        this.uncollapsedSidebar = false
+                if (!isScreenSmall && !this.smallScreen) {
+                    // If the screen is bigger than the smallScreen breakpoint
+                    if (this.smallerThanUncollapse != isScreenSmallerThanUncollapse) {
+                        // If the screen is smaller than the uncollapse breakpoint
+                        this.smallerThanUncollapse = isScreenSmallerThanUncollapse
+                        this.uncollapsedSidebar = !isScreenSmallerThanUncollapse
+                    }
+                } else if (this.smallScreen != isScreenSmall) {
+                    // If the screen is smaller than the smallScreen breakpoint
+                    this.smallScreen = isScreenSmall
+                    if (!isScreenSmall && this.uncollapsedSidebar) {
+                        // If the sidebar was uncollapsed in smallScreen mode and the screen got larger
                         this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
                         this.content.removeEventListener('mousedown', this.toggleSidebar)
                     }
-                } else if (this.isScreenSmall() && !this.smallScreen) {
-                    this.smallScreen = true
-                    this.uncollapsedSidebar = false
                 }
             }, 50)
 
             return {
                 checkResize,
                 user: new User('', '', ''),
-                isScreenSmall,
-                smallScreen: isScreenSmall(),
-                uncollapsedSidebar: false,
+                smallScreen: isScreenSmallerThan(breakWidth),
+                smallerThanUncollapse: isScreenSmallerThan(uncollapseWidth),
+                uncollapsedSidebar: !isScreenSmallerThan(uncollapseWidth),
                 collapsingSidebar: false,
             }
         },
