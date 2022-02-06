@@ -5,7 +5,8 @@ interface Config {
   uploadMaxSize: number;
   uploadPath: string;
   port: number;
-  frontendUrl: string;
+  devFrontendPort: string;
+  baseUrl: string;
   nodeEnv: 'development' | 'production' | 'test';
   typesenseEnabled: boolean;
   typesenseApiKey: string;
@@ -19,14 +20,15 @@ interface Config {
   distantStorageEnabled: boolean;
   accessTokenSecret: string;
   accessTokenExpiration: string;
+  accessTokenExpirationSeconds: number;
   refreshTokenSecret: string;
   refreshTokenExpiration: string;
+  refreshTokenExpirationSeconds: number;
   cookieSignature: string;
-  myefreiOauthClientId: string;
-  myefreiOauthClientSecret: string;
-  myefreiOauthAuthorizeUrl: string;
-  myefreiOauthTokenUrl: string;
-  myefreiOauthUserUrl: string;
+  myefreiOidcClientId: string;
+  myefreiOidcClientSecret: string;
+  myefreiOidcDiscoveryUrl: string;
+  myefreiOidcScopes: string;
   adminAccountUsername: string;
   adminAccountFirstName: string;
   adminAccountLastName: string;
@@ -51,10 +53,15 @@ export const config = createProfiguration<Config>({
     format: Number,
     env: 'PORT',
   },
-  frontendUrl: {
+  devFrontendPort: {
     default: 'http://localhost:3000',
     format: String,
     env: 'FRONTEND_URL',
+  },
+  baseUrl: {
+    default: 'horizon-efrei.fr',
+    format: String,
+    env: 'BASE_URL',
   },
   nodeEnv: {
     default: 'development',
@@ -117,9 +124,14 @@ export const config = createProfiguration<Config>({
     env: 'ACCESS_TOKEN_SECRET',
   },
   accessTokenExpiration: {
-    default: '3600s',
+    default: '8h',
     format: String,
     env: 'ACCESS_TOKEN_EXPIRATION',
+  },
+  accessTokenExpirationSeconds: {
+    default: 28_800,
+    format: Number,
+    env: 'ACCESS_TOKEN_EXPIRATION_SECONDS',
   },
   refreshTokenSecret: {
     default: 'secret',
@@ -127,39 +139,39 @@ export const config = createProfiguration<Config>({
     env: 'REFRESH_TOKEN_SECRET',
   },
   refreshTokenExpiration: {
-    default: '1y',
+    default: '7d',
     format: String,
     env: 'REFRESH_TOKEN_EXPIRATION',
+  },
+  refreshTokenExpirationSeconds: {
+    default: 604_800,
+    format: Number,
+    env: 'REFRESH_TOKEN_EXPIRATION_SECONDS',
   },
   cookieSignature: {
     default: 'secret',
     format: String,
     env: 'COOKIE_SIGNATURE_SECRET',
   },
-  myefreiOauthClientId: {
+  myefreiOidcClientId: {
     default: 'client-id',
     format: String,
-    env: 'MYEFREI_OAUTH_CLIENT_ID',
+    env: 'MYEFREI_OIDC_CLIENT_ID',
   },
-  myefreiOauthClientSecret: {
+  myefreiOidcClientSecret: {
     default: 'client-secret',
     format: String,
-    env: 'MYEFREI_OAUTH_CLIENT_SECRET',
+    env: 'MYEFREI_OIDC_CLIENT_SECRET',
   },
-  myefreiOauthAuthorizeUrl: {
-    default: 'https://oauth2service.com/authorize',
+  myefreiOidcDiscoveryUrl: {
+    default: 'https://oauth2service.com/.well-known/openid-configuration',
     format: String,
-    env: 'MYEFREI_OAUTH_AUTHORIZE_URL',
+    env: 'MYEFREI_OIDC_DISCOVERY_URL',
   },
-  myefreiOauthTokenUrl: {
-    default: 'https://oauth2service.com/token',
+  myefreiOidcScopes: {
+    default: 'openid profile',
     format: String,
-    env: 'MYEFREI_OAUTH_TOKEN_URL',
-  },
-  myefreiOauthUserUrl: {
-    default: 'https://oauth2service.com/user',
-    format: String,
-    env: 'MYEFREI_OAUTH_USER_URL',
+    env: 'MYEFREI_OIDC_SCOPES',
   },
   adminAccountUsername: {
     default: 'horizon-admin',
@@ -189,3 +201,12 @@ export const config = createProfiguration<Config>({
   },
   configureEnv: () => ({ files: '.env' }),
 });
+
+export const computedConfig = {
+  apiUrl: config.get('nodeEnv') === 'development'
+    ? `http://localhost:${config.get('port')}`
+    : `https://api.${config.get('baseUrl')}`,
+  frontendUrl: config.get('nodeEnv') === 'development'
+    ? 'http://localhost:3000'
+    : `https://${config.get('baseUrl')}`,
+};

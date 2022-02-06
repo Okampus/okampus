@@ -4,9 +4,10 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
+import session from 'express-session';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
-import { config } from './shared/configs/config';
+import { computedConfig, config } from './shared/configs/config';
 import { client } from './shared/configs/typesense.config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
 import { TypesenseFilter } from './shared/lib/filters/typesense.filter';
@@ -49,8 +50,16 @@ async function bootstrap(): Promise<void> {
   app.use(helmet());
   app.use(loggerMiddleware);
   app.use(cookieParser(config.get('cookieSignature')));
+  // TODO: Use redis for session storage, and ensure they are used only for the initial myEfrei login
+  app.use(
+    session({
+      secret: 'my-secret',
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
 
-  app.enableCors({ origin: config.get('frontendUrl'), credentials: true });
+  app.enableCors({ origin: computedConfig.frontendUrl, credentials: true });
   app.enableShutdownHooks();
   app.useGlobalPipes(new ValidationPipe({
     transform: true,

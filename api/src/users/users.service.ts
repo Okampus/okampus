@@ -1,9 +1,8 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import type { MyEfreiDto } from '../auth/dto/my-efrei.dto';
-import type { RegisterDto } from '../auth/dto/register.dto';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import type { UserCreationOptions } from '../shared/lib/types/user-creation-options.interface';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { Statistics } from '../statistics/statistics.entity';
@@ -25,10 +24,10 @@ export class UsersService {
     return await this.userRepository.findOneOrFail({ userId });
   }
 
-  public async create(body: MyEfreiDto | RegisterDto): Promise<User> {
-    const user = new User(body);
-    if ('password' in body)
-      await user.setPassword(body.password);
+  public async create(options: UserCreationOptions): Promise<User> {
+    const user = new User(options);
+    if (options?.password)
+      await user.setPassword(options.password);
     await this.userRepository.persistAndFlush(user);
     await this.userSearchService.add(user);
     return user;

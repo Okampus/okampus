@@ -47,7 +47,7 @@ export class JwtAuthGuard implements CanActivate {
       throw new BadRequestException('Failed to decode JWT');
 
     try {
-      await this.jwtService.verifyAsync<Token>(token, this.authService.getAccessTokenOptions());
+      await this.jwtService.verifyAsync<Token>(token, this.authService.getTokenOptions('access'));
     } catch {
       throw new UnauthorizedException('Invalid token');
     }

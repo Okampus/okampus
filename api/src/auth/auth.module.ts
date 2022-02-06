@@ -9,7 +9,16 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { MyEfreiAuthGuard } from './myefrei-auth.guard';
-import { MyEfreiStrategy } from './myefrei.strategy';
+import { buildOpenIdClient, MyEfreiStrategy } from './myefrei.strategy';
+
+const MyEfreiStrategyFactory = {
+  provide: 'OidcStrategy',
+  useFactory: async (authService: AuthService): Promise<MyEfreiStrategy> => {
+    const client = await buildOpenIdClient();
+    return new MyEfreiStrategy(authService, client);
+  },
+  inject: [AuthService],
+};
 
 @Module({
   imports: [
@@ -20,7 +29,7 @@ import { MyEfreiStrategy } from './myefrei.strategy';
     HttpModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtAuthGuard, MyEfreiAuthGuard, MyEfreiStrategy],
+  providers: [AuthService, JwtAuthGuard, MyEfreiAuthGuard, MyEfreiStrategyFactory],
   exports: [JwtAuthGuard, AuthService, JwtModule, ConfigModule, UsersModule],
 })
 export class AuthModule {}

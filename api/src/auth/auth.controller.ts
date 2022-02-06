@@ -11,6 +11,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import type { CookieOptions } from 'express';
 import { Request as Req, Response as Res } from 'express';
+import { computedConfig, config } from '../shared/configs/config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Public } from '../shared/lib/decorators/public.decorator';
 import { SerializerIncludeEmail } from '../shared/lib/decorators/serializers.decorator';
@@ -21,8 +22,9 @@ import { MyEfreiAuthGuard } from './myefrei-auth.guard';
 
 const cookieOptions: Partial<CookieOptions> = {
   signed: true,
+  secure: true,
   httpOnly: true,
-  sameSite: 'strict',
+  domain: config.get('baseUrl'),
 };
 
 @ApiTags('Authentication')
@@ -49,7 +51,7 @@ export class AuthController {
   @UseGuards(MyEfreiAuthGuard)
   @Get('myefrei')
   public myefreiLogin(): void {
-    console.log('DEBUG: handling myefrei login');
+    // Logging in with MyEfrei! Everything is handled by the guard.
   }
 
   @Public()
@@ -59,9 +61,10 @@ export class AuthController {
     const login = await this.authService.login(user);
 
     res.cookie('accessToken', login.accessToken, cookieOptions)
-      .cookie('refreshToken', login.refreshToken, cookieOptions);
-
-    res.redirect('https://horizon-efrei.fr');
+      .cookie('refreshToken', login.refreshToken, cookieOptions)
+      .cookie('accessTokenExpiresAt', login.accessTokenExpiresAt, { ...cookieOptions, httpOnly: false })
+      .cookie('refreshTokenExpiresAt', login.refreshTokenExpiresAt, { ...cookieOptions, httpOnly: false })
+      .redirect(`${computedConfig.frontendUrl}/#/auth`);
   }
 
   @Get('logout')

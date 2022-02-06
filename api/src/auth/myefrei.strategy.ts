@@ -1,48 +1,54 @@
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-oauth2';
-import { firstValueFrom } from 'rxjs';
+import type {
+  BaseClient,
+  ClientMetadata,
+  TokenSet,
+  UserinfoResponse,
+} from 'openid-client';
+import { Client, Issuer, Strategy } from 'openid-client';
 import { config } from '../shared/configs/config';
-import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import { User } from '../users/user.entity';
-import { UsersService } from '../users/users.service';
+import type { User } from '../users/user.entity';
+import { AuthService } from './auth.service';
+import { MyEfreiDto } from './dto/myefrei.dto';
+
+/* eslint-disable @typescript-eslint/naming-convention */
+const clientOptions: ClientMetadata = {
+  client_id: config.get('myefreiOidcClientId'),
+  client_secret: config.get('myefreiOidcClientSecret'),
+};
+
+const paramOptions = {
+  redirect_uri: 'https://api.horizon-efrei.fr/auth/myefrei/callback',
+  scope: config.get('myefreiOidcScopes'),
+};
+/* eslint-enable @typescript-eslint/naming-convention */
+
+export const buildOpenIdClient = async (): Promise<BaseClient> => {
+  const TrustIssuer = await Issuer.discover(config.get('myefreiOidcDiscoveryUrl'));
+  return new TrustIssuer.Client(clientOptions);
+};
 
 @Injectable()
 export class MyEfreiStrategy extends PassportStrategy(Strategy, 'myefrei') {
+  private readonly client: BaseClient;
+
   constructor(
-    @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
-    private readonly httpService: HttpService,
-    private readonly userService: UsersService,
+    private readonly authService: AuthService,
+    client: Client,
   ) {
     super({
-      authorizationURL: config.get('myefreiOauthAuthorizeUrl'),
-      tokenURL: config.get('myefreiOauthTokenUrl'),
-      clientID: config.get('myefreiOauthClientId'),
-      clientSecret: config.get('myefreiOauthClientSecret'),
-      callbackURL: 'https://api.horizon-efrei.fr/auth/myefrei/callback',
+      client,
+      params: paramOptions,
+      usePKCE: false,
     });
+    this.client = client;
   }
 
-  public async validate(accessToken: string): Promise<User> {
-    const result = this.httpService.get(config.get('myefreiOauthUserUrl'), {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    const { data } = await firstValueFrom(result);
-    console.log('DEBUG: returned user:', data);
+  public async validate(tokenset: TokenSet): Promise<User> {
+    const data: UserinfoResponse = await this.client.userinfo(tokenset);
+    const userInfo = new MyEfreiDto(data);
 
-    const user = await this.userRepository.findOne({ userId: data.username });
-    if (user)
-      return user;
-
-    return await this.userService.create({
-      email: data.email,
-      username: data.username,
-      firstname: data.firstname,
-      lastname: data.name,
-      fullname: data.fullName,
-    });
+    return await this.authService.createOrUpdate(userInfo);
   }
 }

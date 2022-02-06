@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
 import type { Express } from 'express';
 import { InjectS3 } from 'nestjs-s3';
-import { config } from '../../shared/configs/config';
+import { computedConfig, config } from '../../shared/configs/config';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { UploadBucket } from '../../shared/lib/types/upload-bucket.enum';
 
@@ -26,8 +26,7 @@ export class FilePersistanceService {
   ): Promise<{ url: string; etag: string }> {
     if (!config.get('distantStorageEnabled')) {
       await fs.writeFile(path, file.buffer);
-      // TODO: Make this configurable
-      return { url: `http://localhost:8081/${path}`, etag: key };
+      return { url: `${computedConfig.apiUrl}/${path}`, etag: key };
     }
 
     const params = {

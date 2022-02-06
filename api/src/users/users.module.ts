@@ -5,6 +5,7 @@ import { BadgeUnlock } from '../badges/badge-unlock.entity';
 import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { Role } from '../shared/modules/authorization/types/role.enum';
+import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
 import { Statistics } from '../statistics/statistics.entity';
 import { StatisticsModule } from '../statistics/statistics.module';
 import { UserSearchService } from './user-search.service';
@@ -34,11 +35,12 @@ export class UsersModule implements OnModuleInit {
     const admin = await this.userRepository.count({ userId: config.get('adminAccountUsername') });
     if (admin === 0) {
       const user = new User({
-        username: config.get('adminAccountUsername'),
+        userId: config.get('adminAccountUsername'),
         firstname: config.get('adminAccountFirstName'),
         lastname: config.get('adminAccountLastName'),
         email: config.get('adminAccountUsername'),
         fullname: `${config.get('adminAccountFirstName')} ${config.get('adminAccountLastName')}`,
+        schoolRole: SchoolRole.Admin,
       });
       await user.setPassword(config.get('adminAccountPassword'));
       user.roles.push(Role.Moderator, Role.Admin);
