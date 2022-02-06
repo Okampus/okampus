@@ -110,12 +110,8 @@
         created() {
             document.querySelector(':root').className = this.$store.state.user.theme
             const cookie = this.$cookies.get('accessTokenExpiresAt')
-            if (cookie) {
-                if (cookie > Date.now()) {
-                    this.$store.dispatch('auth/me')
-                } else {
-                    this.$store.dispatch('logout')
-                }
+            if (cookie && cookie < Date.now()) {
+                this.$emitter.emit('logout')
             }
         },
         mounted() {
@@ -128,6 +124,12 @@
 
             this.$emitter.on('login', () => {
                 this.toggleLogin()
+            })
+
+            this.$emitter.on('logout', () => {
+                this.$store.dispatch('auth/logout')
+                this.$cookies.remove('accessTokenExpiresAt')
+                this.$cookies.remove('refreshTokenExpiresAt')
             })
 
             this.$emitter.on('toggle-modal', () => {
