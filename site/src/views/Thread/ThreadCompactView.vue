@@ -3,13 +3,13 @@
     <template v-if="thread === null || thread === undefined"><AppLoader /></template>
     <div v-else>
         <div class="flex flex-col my-6 mx-auto md:w-21/24">
-            <div class="flex gap-4 mb-4 ml-4 text-3xl font-bold md:ml-0 text-1">
-                <div class="hidden gap-2 items-center md:flex">
-                    ⎡
-                    <font-awesome-icon :icon="postTypesEnum[thread.type]?.icon" class="-ml-1 text-1" />
-                    <div class="-mr-1 font-bold text-1">{{ postTypesEnum[thread.type][$i18n.locale] }}</div>
-                    ⎦
-                </div>
+            <div class="flex gap-4 items-center mb-4 ml-4 text-3xl font-bold md:ml-0 text-1">
+                <AppTag
+                    :icon="postTypesEnum[thread.type]?.icon"
+                    :tag-color="postTypesEnum[thread.type]?.color"
+                    :tag-name="postTypesEnum[thread.type][$i18n.locale]"
+                    large="true"
+                />
                 <p class="break-all">{{ thread.title }}</p>
             </div>
             <div class="flex">

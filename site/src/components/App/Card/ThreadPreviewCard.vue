@@ -3,14 +3,13 @@
         <div v-if="thread" class="w-full rounded-lg rounded-l-xl bg-0">
             <div class="py-3 px-5 w-full">
                 <span
-                    class="flex overflow-hidden flex-wrap gap-5 items-center h-6 font-light whitespace-nowrap text-3"
+                    class="flex overflow-hidden flex-wrap gap-5 items-center h-8 font-light whitespace-nowrap text-3"
                 >
-                    <div class="flex gap-2 items-center">
-                        <font-awesome-icon :icon="postTypesEnum[thread.type]?.icon" class="text-1" />
-                        <div class="font-bold text-1">
-                            {{ postTypesEnum[thread.type][$i18n.locale] }}
-                        </div>
-                    </div>
+                    <AppTag
+                        :icon="postTypesEnum[thread.type]?.icon"
+                        :tag-color="postTypesEnum[thread.type]?.color"
+                        :tag-name="postTypesEnum[thread.type][$i18n.locale]"
+                    />
                     <div :class="[thread.solved ? 'text-green-600' : 'text-red-500']">
                         {{ thread.solved ? 'Résolu' : 'Non-Résolu' }}
                     </div>
@@ -69,11 +68,13 @@
     import { abbrNumbers } from '@/utils/abbrNumbers'
     import { timeAgo } from '@/utils/timeAgo'
     import { extractTextFromTipTapJSON } from '@/utils/tiptap'
+    import AppTag from '../AppTag.vue'
 
     export default {
         components: {
             UserPreview,
             TagsList,
+            AppTag,
         },
         props: {
             thread: {
