@@ -13,7 +13,7 @@ const routes = [
 
     {
         path: '/auth',
-        component: () => import('@/views/App/AuthRedirect.vue'),
+        component: () => import('@/views/App/AuthPage.vue'),
     },
 
     {
@@ -90,7 +90,7 @@ const routes = [
 if (import.meta.env.DEV) {
     routes.push({
         path: '/test',
-        component: () => import('@/views/Test/TestPage.vue'),
+        component: () => import('@/views/App/TestPage.vue'),
     })
 }
 
