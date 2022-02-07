@@ -7,7 +7,7 @@
             :uncollapsed="uncollapsedSidebar"
             :collapsing="collapsingSidebar"
             :small-screen="smallScreen"
-            @close-side-bar="toggleSidebar"
+            @toggle-side-bar="toggleSidebar"
         />
 
         <div
@@ -95,6 +95,8 @@
                         // If the sidebar was uncollapsed in smallScreen mode and the screen got larger
                         this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
                         this.content.removeEventListener('mousedown', this.toggleSidebar)
+                    } else {
+                        this.uncollapsedSidebar = false
                     }
                 }
             }, 50)

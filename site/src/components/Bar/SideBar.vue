@@ -10,7 +10,7 @@
         class="flex z-30 flex-col shrink-0 border-r w-sidebar-sm bg-1 border-bar"
     >
         <div v-if="smallScreen && showUncollapsed" class="flex shrink-0 items-center bg-0 h-topbar">
-            <button aria-label="Open Menu" class="w-sidebar-sm" @click="$emit('close-side-bar')">
+            <button aria-label="Open Menu" class="w-sidebar-sm" @click="$emit('toggle-side-bar')">
                 <font-awesome-icon icon="times" class="text-2xl text-0" />
             </button>
             <div class="w-32 h-6 logo" @click="$router.push('/')" />
@@ -91,7 +91,7 @@
                 default: false,
             },
         },
-        emits: ['close-side-bar'],
+        emits: ['toggle-side-bar'],
         computed: {
             showUncollapsed() {
                 return this.uncollapsed || (this.collapsing && !this.uncollapsed)
