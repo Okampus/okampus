@@ -64,7 +64,7 @@ export class ThreadsService {
     return await this.threadRepository.findWithPagination(
       paginationOptions,
       {},
-      { populate: ['post', 'tags', 'assignees'] },
+      { populate: ['post', 'tags', 'assignees', 'post.author'] },
     );
   }
 
