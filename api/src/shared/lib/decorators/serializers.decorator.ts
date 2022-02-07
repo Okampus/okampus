@@ -9,30 +9,30 @@ import {
   PERSONAL_INFO_INCLUDED,
 } from '../constants';
 
-export function SerializerIncludeEmail(): ClassDecorator {
+export function SerializerIncludeEmail(): ReturnType<typeof applyDecorators> {
   return applyDecorators(SerializeOptions({ groups: [EMAIL_INCLUDED] }));
 }
 
-export function SerializerIncludePersonalInfo(): ClassDecorator {
+export function SerializerIncludePersonalInfo(): ReturnType<typeof applyDecorators> {
   return applyDecorators(SerializeOptions({ groups: [PERSONAL_INFO_INCLUDED] }));
 }
 
-export function SerializerExcludeContentAuthor(): MethodDecorator {
+export function SerializerExcludeContentAuthor(): ReturnType<typeof applyDecorators> {
   return applyDecorators(SerializeOptions({ groups: [CONTENT_AUTHOR_EXCLUDED] }));
 }
 
-export function SerializerIncludeClubMembers(): MethodDecorator {
+export function SerializerIncludeClubMembers(): ReturnType<typeof applyDecorators> {
   return applyDecorators(SerializeOptions({ groups: [CLUB_MEMBERS_INCLUDED] }));
 }
 
-export function SerializerClubMemberIncludeClub(): MethodDecorator {
+export function SerializerClubMemberIncludeClub(): ReturnType<typeof applyDecorators> {
   return applyDecorators(SerializeOptions({ groups: [CLUBMEMBER_CLUB_INCLUDED] }));
 }
 
-export function SerializerIncludeClubSocials(): MethodDecorator {
+export function SerializerIncludeClubSocials(): ReturnType<typeof applyDecorators> {
   return applyDecorators(SerializeOptions({ groups: [CLUB_SOCIALS_INCLUDED] }));
 }
 
-export function SerializerClubSocialsIncludeClub(): MethodDecorator {
+export function SerializerClubSocialsIncludeClub(): ReturnType<typeof applyDecorators> {
   return applyDecorators(SerializeOptions({ groups: [CLUB_SOCIALS_CLUB_INCLUDED] }));
 }
