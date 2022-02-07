@@ -13,7 +13,7 @@
 </template>
 
 <script>
-    import { POST, REPLY, COMMENT } from '@/shared/types/content-kind.enum'
+    import { POST, REPLY, COMMENT } from '@/shared/types/content-kinds.enum'
     import FavoritePost from '@/components/User/Favorite/FavoritePost.vue'
     import FavoriteComment from '@/components/User/Favorite/FavoriteComment.vue'
     import FavoriteReply from '@/components/User/Favorite/FavoriteReply.vue'

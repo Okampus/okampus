@@ -1,6 +1,6 @@
 import router from '@/router'
 import ThreadsService from '@/services/threads.service'
-import { COMMENT, POST, REPLY } from '@/shared/types/content-kind.enum'
+import { COMMENT, POST, REPLY } from '@/shared/types/content-kinds.enum'
 import { groupBy, uniqBy } from 'lodash'
 import { ITEMS_PER_PAGE, settleQuery } from './constants'
 

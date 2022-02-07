@@ -62,6 +62,7 @@
                 </ais-instant-search>
             </div>
         </CustomModal>
+
         <InputWithIcon
             input-placeholder="Rechercher une ressource sur Horizon Efrei..."
             class="hidden md:flex"
@@ -69,35 +70,12 @@
         >
             <font-awesome-icon icon="search" class="ml-0.5" />
         </InputWithIcon>
+
         <font-awesome-icon
             class="block float-right text-2xl cursor-pointer md:hidden"
             icon="search"
             @click="showSearchBar = true"
         />
-        <!-- <div
-            class="flex justify-between items-center w-full cursor-pointer"
-            @click.prevent="showSearchBar = true"
-        >
-            <div class="w-full border-b-2 md:text-lg lg:text-xl text-4">
-                <div class="text-ellipsis whitespace-nowrap">
-                    Rechercher une ressource sur Horizon Efrei...
-                </div>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                </svg>
-            </div>
-        </div> -->
         {{ $refs.modal }}
     </div>
 </template>
@@ -115,7 +93,7 @@
         STUDY_DOCS,
         SUBJECTS,
         THREADS,
-    } from '@/shared/types/typesense-index.enum'
+    } from '@/shared/types/typesense-index-names.enum'
     import InputWithIcon from '../Input/InputWithIcon.vue'
 
     const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
