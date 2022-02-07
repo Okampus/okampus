@@ -1,0 +1,58 @@
+name: Problème de design
+description: Si vous avez aperçu un problème de design, signalez-le nous !
+labels: ["type: bug", "status: unconfirmed"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de vouloir nous faire part d'un bug !
+        C'est ici que vous pouvez signaler un problème de design concernant le site web de https://horizon-efrei.fr
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Étapes pour reproduire le problème
+      description: |
+        ### 💡 Astuce: Si vous n'arrivez pas à le reproduire, entrez "*Je ne sais pas*"
+      placeholder: |
+        Étape pour reproduire:
+        1. Va sur ce lien
+        2. Fait ceci
+        3. Clique sur le bouton
+        4. Le problème apparaît
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description et screenshots du problème
+      description: |
+        Decrivez le  en fournissant **le plus de détails possibles**.
+
+        ### 💡 Astuce: Vous pouvez joindre des images ou des fichiers en glisser les fichiers dans cette zone.
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Quel navigateur avez-vous utilisé pour faire la requête ?
+      options:
+        - Chromium (Google Chrome, Opera, Brave...)
+        - Firefox
+        - Safari
+        - Edge
+      multiple: true
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: Quel appareil avez-vous utilisé ?
+      options:
+        - Mobile
+        - Tablette
+        - Ordinateur
+      multiple: true
+    validations:
+      required: true

@@ -1,0 +1,33 @@
+name: Idée
+description: Proposez une idée pour HorizonWeb !
+labels: ["type: enhancement", "status: unconfirmed"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de vouloir nous faire part d'une idée que vous avez !
+        C'est ici que vous pouvez proposer une idée ou une suggestion, aussi générale qu'elle soit, concernant le site web ou l'API de https://horizon-efrei.fr
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Pour quelle partie de l'infrastructure souhaitez-vous proposer une suggestion ?
+      options:
+        - Site Web
+        - API
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Votre idée
+      description: Une description claire et concise du problème ou de la fonctionnalité que vous souhaitez voir.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Autre contexte
+      description: Autre idée d'implémentation, autres idées à explorer en aval, exemple d'implémentation dans des sites déjà existants...

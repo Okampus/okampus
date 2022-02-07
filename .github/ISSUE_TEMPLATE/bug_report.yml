@@ -1,0 +1,71 @@
+name: Signalement de bug
+description: Créez un rapport de bug pour nous aider à nous améliorer !
+labels: ["type: bug", "status: unconfirmed"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de vouloir nous faire part d'un bug !
+        C'est ici que vous pouvez signaler un bug concernant le site web ou l'API de https://horizon-efrei.fr
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Pour quelle partie de l'infrastructure souhaitez-vous reporter un bug
+      options:
+        - Site Web
+        - API
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Étapes pour reproduire le bug
+      description: |
+        ### 💡 Si vous n'arrivez pas à le reproduire, entrez "*Je n'arrive pas à reproduire*"
+      placeholder: |
+        Étape pour reproduire:
+        1. Va sur ce lien
+        2. Fait ceci
+        3. Clique sur le bouton
+        4. Le bug apparaît
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description du bug
+      description: |
+        Decrivez le bug en fournissant **le plus de détails possibles**.
+
+        ### 💡 Vous pouvez joindre des images ou des fichiers en glisser les fichiers dans cette zone.
+        ### 💡 Joignez des captures d'écran de la console ou de l'onglet Network des DevTools si vous y voyez des erreurs.
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Quel navigateur avez-vous utilisé ?
+      description: Dans le cas d'un bug concernant l'API, sélectionnez "Client REST"
+      options:
+        - Chromium (Google Chrome, Opera, Brave...)
+        - Firefox
+        - Safari
+        - Edge
+        - Client REST
+      multiple: true
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priorité que cette issue devrait avoir
+      description: Soyez réaliste. Si vous avez besoin de développer votre raisonnement, veuillez utiliser le champ Description ci-dessus.
+      options:
+        - Basse (un peu gênant)
+        - Moyenne (doit être fixé rapidement)
+        - Haute (attention immédiate requise)
+    validations:
+      required: true
