@@ -24,7 +24,6 @@ export type Subjects = InferSubjects<
   | typeof Badge
   | typeof Blog
   | typeof Club
-  | typeof Comment
   | typeof Content
   | typeof InfoDoc
   | typeof ProfileImage
@@ -63,7 +62,7 @@ export class CaslAbilityFactory {
       allow(Action.Read, 'all');
       forbid(Action.Read, Report);
       allow([Action.Read, Action.Update], Report, { user: { userId: user.userId } });
-      allow(Action.Create, [Attachment, Comment, InfoDoc, Content, StudyDoc, Tag]);
+      allow(Action.Create, [Attachment, Content, InfoDoc, StudyDoc, Tag]);
       allow(Action.Report, 'all');
       // @ts-expect-error
       forbid(Action.Report, Content, isAuthor)
