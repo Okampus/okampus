@@ -35,9 +35,6 @@
 - name: 'status: unconfirmed'
   description: Issues and PRs that are not approved yet.
   color: 'DB6A3D'
-- name: 'status: awaiting approval'
-  description: Issues and PRs that are not approved yet.
-  color: 'DB6A3D'
 - name: 'status: approved'
   description: Issues and PRs that have been approved.
   color: '8CE098'
