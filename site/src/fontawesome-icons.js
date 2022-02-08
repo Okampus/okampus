@@ -14,14 +14,16 @@ import {
     faDownload, faPlus, faTools, faToolbox, faBookmark, faPaperPlane, faFile, faTerminal, faCalculator,
     faLeaf, faBolt, faBook, faSadCry, faGrimace, faGrinBeamSweat, faDizzy, faSurprise, faExclamation,
     faInfo, faSpinner, faArrowDown, faArrowRight, faLink, faSlidersH, faLightbulb, faPen,faCircle, faCertificate,
-    faEye, faHeart, faHeartBroken, faBug, faCalendar, faFolderOpen,
+    faEye, faHeart, faHeartBroken, faBug, faCalendar, faFolderOpen, faMapMarkerAlt, faCopyright,
+    faVolumeUp, faUserPlus,
 } from '@fortawesome/free-solid-svg-icons'
 
 // prettier-ignore
 import {
     faFlag as farFlag, faHourglass as farHourglass, faStar as farStar, faComment as farComment,
     faCommentAlt as farCommentAlt, faEdit as farEdit, faThumbsUp as farThumbsUp,
-    faThumbsDown as farThumbsDown,
+    faThumbsDown as farThumbsDown, faEnvelope as farEnvelope, faShareSquare as farShareSquare,
+    faCopyright as farCopyright,
 } from '@fortawesome/free-regular-svg-icons'
 import {
     faReddit,
@@ -30,6 +32,7 @@ import {
     faLinkedin,
     faInstagram,
     faGithub,
+    faVuejs,
 } from '@fortawesome/free-brands-svg-icons'
 
 // Solid icons
@@ -46,12 +49,24 @@ library.add(faPhone, faUser, faFlag, faThumbsUp, faThumbsDown, faCheckCircle, fa
     faInfoCircle, faPaperPlane, faFile, faTerminal, faCalculator, faLeaf, faBolt, faBook, faSadCry,
     faGrimace, faGrinBeamSweat, faDizzy, faSurprise, faExclamation, faInfo, faSpinner, faArrowDown,
     faArrowRight, faLink, faSlidersH, faLightbulb, faPen, faCircle, faCertificate, faEye, faHeart,
-    faHeartBroken, faBug, faCalendar, faFolderOpen)
+    faHeartBroken, faBug, faCalendar, faFolderOpen, faMapMarkerAlt, faCopyright, faVolumeUp, faUserPlus)
 
 // Regular icons
-library.add(farFlag, farHourglass, farStar, farComment, farCommentAlt, farEdit, farThumbsUp, farThumbsDown)
+library.add(
+    farFlag,
+    farHourglass,
+    farStar,
+    farComment,
+    farCommentAlt,
+    farEdit,
+    farThumbsUp,
+    farThumbsDown,
+    farEnvelope,
+    farShareSquare,
+    farCopyright,
+)
 
 // Brand icons
-library.add(faReddit, faFacebook, faDiscord, faLinkedin, faInstagram, faGithub)
+library.add(faReddit, faFacebook, faDiscord, faLinkedin, faInstagram, faGithub, faVuejs)
 
 export default FontAwesomeIcon
