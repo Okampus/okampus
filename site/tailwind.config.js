@@ -1,4 +1,6 @@
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
     content: ['./index.html', './src/**/*.{js,vue}'],
     safelist: [
@@ -13,14 +15,17 @@ module.exports = {
     ],
     darkMode: 'class', // or 'media' or 'class'
     theme: {
+        screens: {
+            'xs': '475px',
+            ...defaultTheme.screens,
+            'xs-max': { max: '474px' },
+            'sm-max': { max: '639px' },
+            'md-max': { max: '767px' },
+            'lg-max': { max: '1023px' },
+            'xl-max': { max: '1279px' },
+            '2xl-max': { max: '1535px' },
+        },
         extend: {
-            screen: {
-                'sm-max': { max: '639px' },
-                'md-max': { max: '767px' },
-                'lg-max': { max: '1023px' },
-                'xl-max': { max: '1279px' },
-                '2xl-max': { max: '1535px' },
-            },
             spacing: {
                 '1/24': '4.166667%',
                 '2/24': '8.333333%',
