@@ -82,7 +82,6 @@ export class ReportSearchService extends SearchService<Report, IndexedReport> {
     return {
       user: report.user.userId,
       reason: report.reason,
-      // eslint-disable-next-line no-undefined
       body: report.content ? extractTextFromStringifiedTiptap(report.content.body) : undefined,
       id: report.reportId.toString(),
       createdAt: report.createdAt.toString(),

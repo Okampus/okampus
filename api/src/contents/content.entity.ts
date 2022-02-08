@@ -35,7 +35,6 @@ export class Content extends BaseEntity {
   upvotes = 0;
 
   @Property()
-  // eslint-disable-next-line no-undefined
   @Transform(({ obj }: { obj: Content }) => (obj.kind === ContentKind.Comment ? undefined : obj.downvotes))
   downvotes = 0;
 

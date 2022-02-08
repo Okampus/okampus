@@ -31,6 +31,7 @@ module.exports = {
     'node/no-extraneous-import': ['error', { allowModules: ['express'] }],
     'node/callback-return': 'off',
 
+    'no-undefined': 'off',
     'unicorn/filename-case': ['error', { case: 'kebabCase' }],
 
     '@typescript-eslint/no-extraneous-class': ['error', { allowWithDecorator: true }],
