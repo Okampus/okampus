@@ -21,9 +21,9 @@ import { MyEfreiAuthGuard } from './myefrei-auth.guard';
 
 const cookieOptions: Partial<CookieOptions> = {
   signed: true,
-  secure: true,
+  secure: config.get('nodeEnv') === 'production',
   httpOnly: true,
-  domain: config.get('baseUrl'),
+  domain: config.get('nodeEnv') === 'production' ? computedConfig.frontendUrl : undefined,
 };
 
 @ApiTags('Authentication')
