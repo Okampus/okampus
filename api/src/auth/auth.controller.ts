@@ -40,7 +40,9 @@ export class AuthController {
     const login = await this.authService.login(user);
 
     res.cookie('accessToken', login.accessToken, cookieOptions)
-      .cookie('refreshToken', login.refreshToken, cookieOptions);
+      .cookie('refreshToken', login.refreshToken, cookieOptions)
+      .cookie('accessTokenExpiresAt', login.accessTokenExpiresAt, { ...cookieOptions, httpOnly: false })
+      .cookie('refreshTokenExpiresAt', login.refreshTokenExpiresAt, { ...cookieOptions, httpOnly: false });
 
     return user;
   }
