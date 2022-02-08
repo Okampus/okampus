@@ -1,13 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import type {
-  BaseClient,
-  ClientMetadata,
-  TokenSet,
-  UserinfoResponse,
-} from 'openid-client';
+import type { BaseClient, ClientMetadata, TokenSet } from 'openid-client';
 import { Client, Issuer, Strategy } from 'openid-client';
 import { config } from '../shared/configs/config';
+import type { MyEfreiUserinfoResponse } from '../shared/lib/types/myefrei-userinfo-response.interface';
+import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
 import type { User } from '../users/user.entity';
 import { AuthService } from './auth.service';
 import { MyEfreiDto } from './dto/myefrei.dto';
@@ -46,7 +43,11 @@ export class MyEfreiStrategy extends PassportStrategy(Strategy, 'myefrei') {
   }
 
   public async validate(tokenset: TokenSet): Promise<User> {
-    const data: UserinfoResponse = await this.client.userinfo(tokenset);
+    const data: MyEfreiUserinfoResponse = await this.client.userinfo(tokenset);
+
+    if (!Object.values<string>(SchoolRole).includes(data.role))
+      throw new UnauthorizedException('Invalid role');
+
     const userInfo = new MyEfreiDto(data);
 
     return await this.authService.createOrUpdate(userInfo);

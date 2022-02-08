@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsString } from 'class-validator';
-import type { UserinfoResponse } from 'openid-client';
+import type { MyEfreiUserinfoResponse } from '../../shared/lib/types/myefrei-userinfo-response.interface';
 import { SchoolRole } from '../../shared/modules/authorization/types/school-role.enum';
 
 export class MyEfreiDto {
@@ -21,7 +21,7 @@ export class MyEfreiDto {
   @IsEnum(SchoolRole)
   schoolRole: SchoolRole;
 
-  constructor(data: UserinfoResponse) {
+  constructor(data: MyEfreiUserinfoResponse) {
     this.userId = data.sub;
     this.firstname = data.given_name!;
     this.lastname = data.family_name!;
