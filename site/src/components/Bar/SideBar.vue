@@ -13,7 +13,7 @@
             <button aria-label="Open Menu" class="w-sidebar-sm" @click="$emit('toggle-side-bar')">
                 <font-awesome-icon icon="times" class="text-2xl text-0" />
             </button>
-            <div class="w-32 h-6 logo" @click="$router.push('/')" />
+            <AppLogo />
         </div>
 
         <div
@@ -24,7 +24,7 @@
         >
             <ul v-for="(section, i) in sections" :key="i">
                 <p
-                    class="py-0.5 pl-4 text-sm uppercase text-1 bg-4"
+                    class="py-0.5 pl-4 mt-3 text-sm uppercase text-0"
                     :class="[showUncollapsed ? 'block' : 'hidden']"
                 >
                     {{ section.name }}
@@ -75,8 +75,9 @@
 <script>
     import SwitchInput from '@/components/Input/SwitchInput.vue'
     import AppLink from '../App/AppLink.vue'
+    import AppLogo from '../App/AppLogo.vue'
     export default {
-        components: { SwitchInput, AppLink },
+        components: { SwitchInput, AppLink, AppLogo },
         props: {
             uncollapsed: {
                 type: Boolean,

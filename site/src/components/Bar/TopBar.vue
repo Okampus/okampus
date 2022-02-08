@@ -8,7 +8,7 @@
                     <font-awesome-icon icon="bars" class="text-2xl text-0" />
                 </button>
             </div>
-            <div class="w-32 h-6 logo" @click="$router.push('/')" />
+            <AppLogo />
         </div>
 
         <div class="relative grow mx-6 bg-transparent">
@@ -35,11 +35,13 @@
 <script>
     import UserCard from '@/components/App/Card/UserCard.vue'
     import SearchBar from '@/components/Bar/SearchBar.vue'
+    import AppLogo from '../App/AppLogo.vue'
 
     export default {
         components: {
             UserCard,
             SearchBar,
+            AppLogo,
         },
         emits: ['toggle-side-bar', 'toggle-login'],
         data() {
