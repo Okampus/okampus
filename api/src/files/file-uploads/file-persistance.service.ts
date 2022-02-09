@@ -29,8 +29,9 @@ export class FilePersistanceService {
       return { url: `${computedConfig.apiUrl}/${path}`, etag: key };
     }
 
-    const params = {
+    const params: S3.PutObjectRequest = {
       /* eslint-disable @typescript-eslint/naming-convention */
+      ACL: 'public-read',
       Bucket: FilePersistanceService.fileKindBucket[kind],
       Key: key,
       Body: file.buffer,

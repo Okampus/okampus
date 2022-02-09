@@ -21,8 +21,10 @@ import { FileUploadsService } from './file-uploads.service';
 })
 export class FileUploadsModule implements OnModuleInit {
   public async onModuleInit(): Promise<void> {
-    if (config.get('nodeEnv') === 'development') {
-      new Logger('Files').log('Running in development mode, uploading to local file system.');
+    if (config.get('storage.enabled')) {
+      new Logger('Files').log(`Distant storage is enabled, uploading to ${config.get('storage.endpoint')}`);
+    } else {
+      new Logger('Files').log('Distant storage is disabled, uploading to local file system.');
       const base = path.join(path.resolve('./'), config.get('upload.path'));
 
       const dirs: Array<Promise<string | undefined>> = [];
