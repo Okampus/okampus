@@ -11,18 +11,18 @@ import { MyEfreiDto } from './dto/myefrei.dto';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 const clientOptions: ClientMetadata = {
-  client_id: config.get('myefreiOidcClientId'),
-  client_secret: config.get('myefreiOidcClientSecret'),
+  client_id: config.get('myefreiOidc.clientId'),
+  client_secret: config.get('myefreiOidc.clientSecret'),
 };
 
 const paramOptions = {
   redirect_uri: 'https://api.horizon-efrei.fr/auth/myefrei/callback',
-  scope: config.get('myefreiOidcScopes'),
+  scope: config.get('myefreiOidc.scopes'),
 };
 /* eslint-enable @typescript-eslint/naming-convention */
 
 export const buildOpenIdClient = async (): Promise<BaseClient> => {
-  const TrustIssuer = await Issuer.discover(config.get('myefreiOidcDiscoveryUrl'));
+  const TrustIssuer = await Issuer.discover(config.get('myefreiOidc.discoveryUrl'));
   return new TrustIssuer.Client(clientOptions);
 };
 

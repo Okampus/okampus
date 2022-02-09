@@ -23,7 +23,7 @@ export class FileUploadsModule implements OnModuleInit {
   public async onModuleInit(): Promise<void> {
     if (config.get('nodeEnv') === 'development') {
       new Logger('Files').log('Running in development mode, uploading to local file system.');
-      const base = path.join(path.resolve('./'), config.get('uploadPath'));
+      const base = path.join(path.resolve('./'), config.get('upload.path'));
 
       const dirs: Array<Promise<string | undefined>> = [];
       for (const value of enumKeys(FileKind))

@@ -22,7 +22,7 @@ async function attemptTypesenseConnection(): Promise<void> {
     typesenseLogger.log('Connection established');
   } catch (err) {
     if (err?.code === 'ECONNREFUSED') {
-      config.set('typesenseEnabled', false);
+      config.set('typesense.enabled', false);
       typesenseLogger.warn('Service not available, disabling');
     } else {
       throw err;
@@ -49,7 +49,7 @@ async function bootstrap(): Promise<void> {
 
   app.use(helmet());
   app.use(loggerMiddleware);
-  app.use(cookieParser(config.get('cookieSignature')));
+  app.use(cookieParser(config.get('cookies.signature')));
   // TODO: Use redis for session storage, and ensure they are used only for the initial myEfrei login
   app.use(
     session({
@@ -70,9 +70,9 @@ async function bootstrap(): Promise<void> {
   app.useGlobalFilters(new ExceptionsFilter(), new TypesenseFilter());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
-  if (!config.get('distantStorageEnabled')) {
+  if (!config.get('storage.enabled')) {
     app.useStaticAssets(
-      path.join(path.resolve('./'), config.get('uploadPath')),
+      path.join(path.resolve('./'), config.get('upload.path')),
       { prefix: '/uploads' },
     );
   }

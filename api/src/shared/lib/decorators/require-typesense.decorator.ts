@@ -5,7 +5,7 @@ export default function RequireTypesense(): MethodDecorator {
     const originalMethod: (...args: any[]) => unknown = descriptor.value;
 
     descriptor.value = function (...args: any[]): void {
-      if (!config.get('typesenseEnabled'))
+      if (!config.get('typesense.enabled'))
         return;
       return Reflect.apply(originalMethod, this, args);
     };

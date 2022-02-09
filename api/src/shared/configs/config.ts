@@ -1,62 +1,62 @@
 import { createProfiguration } from '@golevelup/profiguration';
 import { Logger } from '@nestjs/common';
+import type { CookieOptions } from 'express';
 
 interface Config {
-  uploadMaxSize: number;
-  uploadPath: string;
   port: number;
-  devFrontendPort: string;
   baseUrl: string;
   nodeEnv: 'development' | 'production' | 'test';
-  typesenseEnabled: boolean;
-  typesenseApiKey: string;
-  typesenseHost: string;
-  typesensePort: number;
-  typesenseScheme: string;
-  storageAccessKeyId: string;
-  storageSecretAccessKey: string;
-  storageEndpoint: string;
-  storageRegion: string;
-  distantStorageEnabled: boolean;
-  accessTokenSecret: string;
-  accessTokenExpiration: string;
-  accessTokenExpirationSeconds: number;
-  refreshTokenSecret: string;
-  refreshTokenExpiration: string;
-  refreshTokenExpirationSeconds: number;
-  cookieSignature: string;
-  myefreiOidcClientId: string;
-  myefreiOidcClientSecret: string;
-  myefreiOidcDiscoveryUrl: string;
-  myefreiOidcScopes: string;
-  adminAccountUsername: string;
-  adminAccountFirstName: string;
-  adminAccountLastName: string;
-  adminAccountPassword: string;
+  upload: {
+    maxSize: number;
+    path: string;
+  };
+  storage: {
+    enabled: boolean;
+    accessKeyId: string;
+    secretAccessKey: string;
+    endpoint: string;
+    region: string;
+  };
+  typesense: {
+    enabled: boolean;
+    apiKey: string;
+    host: string;
+    port: number;
+    scheme: string;
+  };
+  tokens: {
+    accessTokenSecret: string;
+    accessTokenExpiration: string;
+    accessTokenExpirationSeconds: number;
+    refreshTokenSecret: string;
+    refreshTokenExpiration: string;
+    refreshTokenExpirationSeconds: number;
+  };
+  cookies: {
+    signature: string;
+    options: CookieOptions;
+  };
+  myefreiOidc: {
+    clientId: string;
+    clientSecret: string;
+    discoveryUrl: string;
+    scopes: string;
+  };
+  adminAccount: {
+    username: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+  };
 }
 
 const logger = new Logger('Configuration');
 
 export const config = createProfiguration<Config>({
-  uploadMaxSize: {
-    default: 10_485_760,
-    format: Number,
-    env: 'UPLOAD_MAX_SIZE',
-  },
-  uploadPath: {
-    default: 'uploads',
-    format: String,
-    env: 'UPLOAD_PATH',
-  },
   port: {
     default: 8081,
     format: Number,
     env: 'PORT',
-  },
-  devFrontendPort: {
-    default: 'http://localhost:3000',
-    format: String,
-    env: 'FRONTEND_URL',
   },
   baseUrl: {
     default: 'horizon-efrei.fr',
@@ -68,130 +68,163 @@ export const config = createProfiguration<Config>({
     format: ['development', 'production', 'test'],
     env: 'NODE_ENV',
   },
-  typesenseEnabled: {
-    default: true,
-    format: Boolean,
-    env: 'TYPESENSE_ENABLED',
+  upload: {
+    maxSize: {
+      default: 10_485_760,
+      format: Number,
+      env: 'UPLOAD_MAX_SIZE',
+    },
+    path: {
+      default: 'uploads',
+      format: String,
+      env: 'UPLOAD_PATH',
+    },
   },
-  typesenseApiKey: {
-    default: 'api-key',
-    format: String,
-    env: 'TYPESENSE_API_KEY',
+  typesense: {
+    enabled: {
+      default: true,
+      format: Boolean,
+      env: 'TYPESENSE_ENABLED',
+    },
+    apiKey: {
+      default: 'api-key',
+      format: String,
+      env: 'TYPESENSE_API_KEY',
+    },
+    host: {
+      default: 'localhost',
+      format: String,
+      env: 'TYPESENSE_HOST',
+    },
+    port: {
+      default: 8108,
+      format: Number,
+      env: 'TYPESENSE_PORT',
+    },
+    scheme: {
+      default: 'http',
+      format: ['http', 'https'],
+      env: 'TYPESENSE_SCHEME',
+    },
   },
-  typesenseHost: {
-    default: 'localhost',
-    format: String,
-    env: 'TYPESENSE_HOST',
+  storage: {
+    enabled: {
+      default: false,
+      format: Boolean,
+      env: 'DISTANT_STORAGE_ENABLED',
+    },
+    accessKeyId: {
+      default: 'access-key-id',
+      format: String,
+      env: 'STORAGE_ACCESS_KEY_ID',
+    },
+    secretAccessKey: {
+      default: 'secret-access-key',
+      format: String,
+      env: 'STORAGE_SECRET_ACCESS_KEY',
+    },
+    endpoint: {
+      default: 'endpoint',
+      format: String,
+      env: 'STORAGE_ENDPOINT',
+    },
+    region: {
+      default: 'PAR',
+      format: String,
+      env: 'STORAGE_REGION',
+    },
   },
-  typesensePort: {
-    default: 8108,
-    format: Number,
-    env: 'TYPESENSE_PORT',
+  tokens: {
+    accessTokenSecret: {
+      default: 'secret',
+      format: String,
+      env: 'ACCESS_TOKEN_SECRET',
+    },
+    accessTokenExpiration: {
+      default: '8h',
+      format: String,
+      env: 'ACCESS_TOKEN_EXPIRATION',
+    },
+    accessTokenExpirationSeconds: {
+      default: 28_800,
+      format: Number,
+      env: 'ACCESS_TOKEN_EXPIRATION_SECONDS',
+    },
+    refreshTokenSecret: {
+      default: 'secret',
+      format: String,
+      env: 'REFRESH_TOKEN_SECRET',
+    },
+    refreshTokenExpiration: {
+      default: '7d',
+      format: String,
+      env: 'REFRESH_TOKEN_EXPIRATION',
+    },
+    refreshTokenExpirationSeconds: {
+      default: 604_800,
+      format: Number,
+      env: 'REFRESH_TOKEN_EXPIRATION_SECONDS',
+    },
   },
-  typesenseScheme: {
-    default: 'http',
-    format: ['http', 'https'],
-    env: 'TYPESENSE_SCHEME',
+  cookies: {
+    signature: {
+      default: 'secret',
+      format: String,
+      env: 'COOKIE_SIGNATURE_SECRET',
+    },
+    options: {
+      // This is only the default value, the real value is set right after the config is initialized.
+      default: {
+        httpOnly: true,
+        secure: false,
+        signed: true,
+      },
+      format: Object,
+    },
   },
-  storageAccessKeyId: {
-    default: 'access-key-id',
-    format: String,
-    env: 'STORAGE_ACCESS_KEY_ID',
+  myefreiOidc: {
+    clientId: {
+      default: 'client-id',
+      format: String,
+      env: 'MYEFREI_OIDC_CLIENT_ID',
+    },
+    clientSecret: {
+      default: 'client-secret',
+      format: String,
+      env: 'MYEFREI_OIDC_CLIENT_SECRET',
+    },
+    discoveryUrl: {
+      default: 'https://oauth2service.com/.well-known/openid-configuration',
+      format: String,
+      env: 'MYEFREI_OIDC_DISCOVERY_URL',
+    },
+    scopes: {
+      default: 'openid profile',
+      format: String,
+      env: 'MYEFREI_OIDC_SCOPES',
+    },
   },
-  storageSecretAccessKey: {
-    default: 'secret-access-key',
-    format: String,
-    env: 'STORAGE_SECRET_ACCESS_KEY',
-  },
-  storageEndpoint: {
-    default: 'endpoint',
-    format: String,
-    env: 'STORAGE_ENDPOINT',
-  },
-  storageRegion: {
-    default: 'PAR',
-    format: String,
-    env: 'STORAGE_REGION',
-  },
-  distantStorageEnabled: {
-    default: false,
-    format: Boolean,
-    env: 'DISTANT_STORAGE_ENABLED',
-  },
-  accessTokenSecret: {
-    default: 'secret',
-    format: String,
-    env: 'ACCESS_TOKEN_SECRET',
-  },
-  accessTokenExpiration: {
-    default: '8h',
-    format: String,
-    env: 'ACCESS_TOKEN_EXPIRATION',
-  },
-  accessTokenExpirationSeconds: {
-    default: 28_800,
-    format: Number,
-    env: 'ACCESS_TOKEN_EXPIRATION_SECONDS',
-  },
-  refreshTokenSecret: {
-    default: 'secret',
-    format: String,
-    env: 'REFRESH_TOKEN_SECRET',
-  },
-  refreshTokenExpiration: {
-    default: '7d',
-    format: String,
-    env: 'REFRESH_TOKEN_EXPIRATION',
-  },
-  refreshTokenExpirationSeconds: {
-    default: 604_800,
-    format: Number,
-    env: 'REFRESH_TOKEN_EXPIRATION_SECONDS',
-  },
-  cookieSignature: {
-    default: 'secret',
-    format: String,
-    env: 'COOKIE_SIGNATURE_SECRET',
-  },
-  myefreiOidcClientId: {
-    default: 'client-id',
-    format: String,
-    env: 'MYEFREI_OIDC_CLIENT_ID',
-  },
-  myefreiOidcClientSecret: {
-    default: 'client-secret',
-    format: String,
-    env: 'MYEFREI_OIDC_CLIENT_SECRET',
-  },
-  myefreiOidcDiscoveryUrl: {
-    default: 'https://oauth2service.com/.well-known/openid-configuration',
-    format: String,
-    env: 'MYEFREI_OIDC_DISCOVERY_URL',
-  },
-  myefreiOidcScopes: {
-    default: 'openid profile',
-    format: String,
-    env: 'MYEFREI_OIDC_SCOPES',
-  },
-  adminAccountUsername: {
-    default: 'horizon-admin',
-    format: String,
-    env: 'ADMIN_ACCOUNT_USERNAME',
-  },
-  adminAccountFirstName: {
-    default: 'Horizon',
-    format: String,
-    env: 'ADMIN_ACCOUNT_FIRST_NAME',
-  },
-  adminAccountLastName: {
-    default: 'Admin',
-    format: String,
-    env: 'ADMIN_ACCOUNT_LAST_NAME',
-  },
-  adminAccountPassword: {
-    default: 'root',
-    format: String,
-    env: 'ADMIN_ACCOUNT_PASSWORD',
+  adminAccount: {
+    username: {
+      default: 'horizon-admin',
+      format: String,
+      env: 'ADMIN_ACCOUNT_USERNAME',
+    },
+    firstName: {
+      default: 'Horizon',
+      format: String,
+      env: 'ADMIN_ACCOUNT_FIRST_NAME',
+    },
+    lastName: {
+      default: 'Admin',
+      format: String,
+      env: 'ADMIN_ACCOUNT_LAST_NAME',
+    },
+    password: {
+      default: 'root',
+      format: String,
+      env: 'ADMIN_ACCOUNT_PASSWORD',
+    },
   },
 }, {
   strict: true,
@@ -209,4 +242,11 @@ export const computedConfig = {
   frontendUrl: config.get('nodeEnv') === 'development'
     ? 'http://localhost:3000'
     : `https://${config.get('baseUrl')}`,
-};
+} as const;
+
+config.set('cookies.options', {
+  signed: true,
+  secure: config.get('nodeEnv') === 'production',
+  httpOnly: true,
+  domain: config.get('nodeEnv') === 'production' ? computedConfig.frontendUrl : undefined,
+});

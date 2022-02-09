@@ -4,6 +4,6 @@ import { config } from '../../configs/config';
 
 export function UploadInterceptor(): MethodDecorator {
   return applyDecorators(
-    UseInterceptors(FileInterceptor('file', { limits: { fileSize: config.get('uploadMaxSize') } })),
+    UseInterceptors(FileInterceptor('file', { limits: { fileSize: config.get('upload.maxSize') } })),
   );
 }

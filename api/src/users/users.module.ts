@@ -32,17 +32,17 @@ export class UsersModule implements OnModuleInit {
   public async onModuleInit(): Promise<void> {
     await this.userSearchService.init();
 
-    const admin = await this.userRepository.count({ userId: config.get('adminAccountUsername') });
+    const admin = await this.userRepository.count({ userId: config.get('adminAccount.username') });
     if (admin === 0) {
       const user = new User({
-        userId: config.get('adminAccountUsername'),
-        firstname: config.get('adminAccountFirstName'),
-        lastname: config.get('adminAccountLastName'),
-        email: config.get('adminAccountUsername'),
-        fullname: `${config.get('adminAccountFirstName')} ${config.get('adminAccountLastName')}`,
+        userId: config.get('adminAccount.username'),
+        firstname: config.get('adminAccount.firstName'),
+        lastname: config.get('adminAccount.lastName'),
+        email: config.get('adminAccount.username'),
+        fullname: `${config.get('adminAccount.firstName')} ${config.get('adminAccount.lastName')}`,
         schoolRole: SchoolRole.Admin,
       });
-      await user.setPassword(config.get('adminAccountPassword'));
+      await user.setPassword(config.get('adminAccount.password'));
       user.roles.push(Role.Moderator, Role.Admin);
       await this.userRepository.persistAndFlush(user);
       await this.userSearchService.add(user);

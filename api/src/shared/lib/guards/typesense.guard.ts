@@ -5,7 +5,7 @@ import { config } from '../../configs/config';
 @Injectable()
 export class TypesenseGuard implements CanActivate {
   public canActivate(): boolean {
-    if (!config.get('typesenseEnabled'))
+    if (!config.get('typesense.enabled'))
       throw new ServiceUnavailableException('Search is disabled');
     return true;
   }

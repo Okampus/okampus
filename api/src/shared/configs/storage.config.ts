@@ -2,13 +2,13 @@ import { Logger } from '@nestjs/common';
 import type { ClientConfiguration } from 'aws-sdk/clients/s3';
 import { config } from './config';
 
-const s3Logger = new Logger('ObjectStorage');
+const storageLogger = new Logger('ObjectStorage');
 
 export default {
-  accessKeyId: config.get('storageAccessKeyId'),
-  secretAccessKey: config.get('storageSecretAccessKey'),
-  endpoint: config.get('storageEndpoint'),
-  region: config.get('storageRegion'),
+  accessKeyId: config.get('storage.accessKeyId'),
+  secretAccessKey: config.get('storage.secretAccessKey'),
+  endpoint: config.get('storage.endpoint'),
+  region: config.get('storage.region'),
   signatureVersion: 'v4',
-  logger: s3Logger,
+  logger: storageLogger,
 } as ClientConfiguration;

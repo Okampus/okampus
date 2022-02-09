@@ -9,7 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import type { CookieOptions } from 'express';
 import { Request as Req, Response as Res } from 'express';
 import { computedConfig, config } from '../shared/configs/config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
@@ -19,12 +18,8 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { MyEfreiAuthGuard } from './myefrei-auth.guard';
 
-const cookieOptions: Partial<CookieOptions> = {
-  signed: true,
-  secure: config.get('nodeEnv') === 'production',
-  httpOnly: true,
-  domain: config.get('nodeEnv') === 'production' ? computedConfig.frontendUrl : undefined,
-};
+const cookieOptions = config.get('cookies.options');
+const cookiePublicOptions = { ...config.get('cookies.options'), httpOnly: false };
 
 @ApiTags('Authentication')
 @Controller({ path: 'auth' })
@@ -41,8 +36,8 @@ export class AuthController {
 
     res.cookie('accessToken', login.accessToken, cookieOptions)
       .cookie('refreshToken', login.refreshToken, cookieOptions)
-      .cookie('accessTokenExpiresAt', login.accessTokenExpiresAt, { ...cookieOptions, httpOnly: false })
-      .cookie('refreshTokenExpiresAt', login.refreshTokenExpiresAt, { ...cookieOptions, httpOnly: false });
+      .cookie('accessTokenExpiresAt', login.accessTokenExpiresAt, cookiePublicOptions)
+      .cookie('refreshTokenExpiresAt', login.refreshTokenExpiresAt, cookiePublicOptions);
 
     return user;
   }
@@ -62,8 +57,8 @@ export class AuthController {
 
     res.cookie('accessToken', login.accessToken, cookieOptions)
       .cookie('refreshToken', login.refreshToken, cookieOptions)
-      .cookie('accessTokenExpiresAt', login.accessTokenExpiresAt, { ...cookieOptions, httpOnly: false })
-      .cookie('refreshTokenExpiresAt', login.refreshTokenExpiresAt, { ...cookieOptions, httpOnly: false })
+      .cookie('accessTokenExpiresAt', login.accessTokenExpiresAt, cookiePublicOptions)
+      .cookie('refreshTokenExpiresAt', login.refreshTokenExpiresAt, cookiePublicOptions)
       .redirect(`${computedConfig.frontendUrl}/#/auth`);
   }
 
