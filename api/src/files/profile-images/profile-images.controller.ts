@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Express } from 'express';
+import { simpleImageMimeTypeRegex } from '../../shared/configs/mime-type';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
@@ -28,7 +29,7 @@ export class ProfileImagesController {
     private readonly filesService: FileUploadsService,
   ) {}
 
-  @UploadInterceptor()
+  @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, ProfileImage))
   public async createProfileImage(
