@@ -53,7 +53,7 @@ async function bootstrap(): Promise<void> {
   // TODO: Use redis for session storage, and ensure they are used only for the initial myEfrei login
   app.use(
     session({
-      secret: 'my-secret',
+      secret: config.get('session.secret'),
       resave: false,
       saveUninitialized: false,
     }),

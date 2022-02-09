@@ -36,6 +36,9 @@ interface Config {
     signature: string;
     options: CookieOptions;
   };
+  session: {
+    secret: string;
+  };
   myefreiOidc: {
     clientId: string;
     clientSecret: string;
@@ -180,6 +183,13 @@ export const config = createProfiguration<Config>({
         signed: true,
       },
       format: Object,
+    },
+  },
+  session: {
+    secret: {
+      default: 'secret',
+      format: String,
+      env: 'SESSION_SECRET',
     },
   },
   myefreiOidc: {
