@@ -1,9 +1,9 @@
 <template>
     <div
         :class="[
-            `bg-${tagColor}-100`,
-            `hover:bg-${tagColor}-200`,
-            `text-${tagColor}-700`,
+            `bg-${tagColor}-100 dark:bg-${tagColor}-900`,
+            `hover:bg-${tagColor}-200 dark:hover:bg-${tagColor}-800`,
+            `text-${tagColor}-700 dark:text-${tagColor}-200`,
             large ? 'px-5 gap-3 py-2' : 'px-3 gap-1.5 py-1',
         ]"
         class="flex items-center whitespace-normal rounded-full hover:cursor-pointer bg-opacity-/90"
