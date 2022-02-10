@@ -133,7 +133,7 @@ export const config = createProfiguration<Config>({
       env: 'STORAGE_ENDPOINT',
     },
     region: {
-      default: 'PAR',
+      default: 'region',
       format: String,
       env: 'STORAGE_REGION',
     },
