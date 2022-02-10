@@ -1,13 +1,8 @@
 @import '@/assets/scss/abstracts/mixins/get-color';
 
-.placeholder,
-%placeholder {
-    @apply placeholder:text-placeholder-light dark:placeholder:text-placeholder-dark;
-}
-
 .text-placeholder,
 %text-placeholder {
-    @apply text-placeholder-light dark:text-placeholder-dark;
+    color: #9ca3af;
 }
 
 %input-focus,
@@ -20,7 +15,6 @@
 
 %input-flat,
 .input-flat {
-    @extend %placeholder;
     @extend %input-focus;
     @include get-color('bg', 2);
     @include get-color('text', 2);
@@ -31,7 +25,6 @@
 }
 
 .bottom-border-input {
-    @extend %placeholder;
     @extend %input-focus;
     @include get-color('text', 2);
     @apply bg-transparent w-full focus:rounded dark:border-opacity-75 py-1.5 px-2

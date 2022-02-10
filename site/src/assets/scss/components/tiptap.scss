@@ -7,8 +7,6 @@
         @extend %text-placeholder;
 
         &:first-child::before {
-            @extend %placeholder;
-
             float: left;
             height: 0;
             pointer-events: none;
