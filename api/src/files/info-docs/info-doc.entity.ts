@@ -17,10 +17,10 @@ export class InfoDoc extends BaseEntity {
   @PrimaryKey()
   infoDocId: string = nanoid(32);
 
-  @OneToOne()
+  @OneToOne({ onDelete: 'CASCADE' })
   file!: FileUpload;
 
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   docSeries?: DocSeries;
 
   @Property()

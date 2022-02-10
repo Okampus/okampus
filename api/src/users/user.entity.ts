@@ -3,6 +3,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Index,
   OneToMany,
   OneToOne,
   PrimaryKey,
@@ -40,6 +41,7 @@ export class User extends BaseEntity {
   password?: string;
 
   @Property({ type: 'text' })
+  @Index()
   email!: string;
 
   @OneToMany('BadgeUnlock', 'user')

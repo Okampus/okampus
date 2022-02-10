@@ -4,6 +4,7 @@ import {
   Entity,
   Enum,
   EventArgs,
+  Index,
   ManyToOne,
   OneToMany,
   PrimaryKey,
@@ -39,6 +40,7 @@ export class Content extends BaseEntity {
   downvotes = 0;
 
   @Enum(() => ContentKind)
+  @Index()
   kind!: ContentKind;
 
   @ManyToOne({ onDelete: 'CASCADE' })

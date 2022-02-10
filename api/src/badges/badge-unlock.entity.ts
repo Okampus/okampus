@@ -1,5 +1,6 @@
 import {
   Entity,
+  Index,
   ManyToOne,
   PrimaryKey,
   Property,
@@ -14,6 +15,7 @@ export class BadgeUnlock extends BaseEntity {
   badgeUnlockId!: number;
 
   @ManyToOne({ onDelete: 'CASCADE' })
+  @Index()
   user!: User;
 
   @ManyToOne({ onDelete: 'CASCADE' })

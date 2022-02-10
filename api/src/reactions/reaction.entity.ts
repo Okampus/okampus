@@ -15,7 +15,7 @@ export class Reaction extends BaseEntity {
   @PrimaryKey()
   reactionId!: number;
 
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   @Index()
   user!: User;
 

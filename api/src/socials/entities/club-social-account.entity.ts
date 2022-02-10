@@ -1,4 +1,4 @@
-import { Entity, ManyToOne } from '@mikro-orm/core';
+import { Entity, Index, ManyToOne } from '@mikro-orm/core';
 import { Expose } from 'class-transformer';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { Club } from '../../clubs/entities/club.entity';
@@ -10,6 +10,7 @@ import type { Social } from './social.entity';
 export class ClubSocialAccount extends SocialAccount {
   @ManyToOne({ onDelete: 'CASCADE' })
   @Expose({ groups: [CLUB_SOCIALS_INCLUDED] })
+  @Index()
   club!: Club;
 
   constructor(options: {

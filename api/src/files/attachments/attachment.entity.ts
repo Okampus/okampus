@@ -14,7 +14,7 @@ export class Attachment extends BaseEntity {
   @PrimaryKey()
   attachmentId: string = nanoid(32);
 
-  @OneToOne()
+  @OneToOne({ onDelete: 'CASCADE' })
   file!: FileUpload;
 
   @ManyToOne()

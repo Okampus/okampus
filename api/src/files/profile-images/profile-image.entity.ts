@@ -14,10 +14,10 @@ export class ProfileImage extends BaseEntity {
   @PrimaryKey()
   profileImageId: string = nanoid(32);
 
-  @OneToOne()
+  @OneToOne({ onDelete: 'CASCADE' })
   file!: FileUpload;
 
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   user!: User;
 
   constructor(options: { user: User; file: FileUpload }) {

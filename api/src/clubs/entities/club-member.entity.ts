@@ -1,6 +1,7 @@
 import {
   Entity,
   Enum,
+  Index,
   ManyToOne,
   PrimaryKey,
   Property,
@@ -19,10 +20,12 @@ export class ClubMember extends BaseEntity {
   clubMemberId!: number;
 
   @ManyToOne({ onDelete: 'CASCADE' })
+  @Index()
   user!: User;
 
   @ManyToOne('Club', { onDelete: 'CASCADE' })
   @Expose({ groups: [CLUBMEMBER_CLUB_INCLUDED] })
+  @Index()
   club!: Club;
 
   @Enum(() => ClubRole)

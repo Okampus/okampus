@@ -23,7 +23,7 @@ export class Report extends BaseEntity {
   @Index()
   user!: User;
 
-  @OneToOne()
+  @OneToOne({ onDelete: 'CASCADE' })
   @Index()
   content?: Content;
 

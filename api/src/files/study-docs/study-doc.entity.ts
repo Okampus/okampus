@@ -19,13 +19,13 @@ export class StudyDoc extends BaseEntity {
   @PrimaryKey()
   studyDocId: string = nanoid(32);
 
-  @OneToOne()
+  @OneToOne({ onDelete: 'CASCADE' })
   file!: FileUpload;
 
   @ManyToOne()
   subject!: Subject;
 
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   docSeries?: DocSeries;
 
   @Property()
