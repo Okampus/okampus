@@ -1,6 +1,6 @@
 <template>
     <div v-if="tags.length != 0" ref="parent" class="flex relative items-center m-2">
-        <transition name="fade">
+        <Transition name="fade">
             <div v-if="leftGradient" class="flex absolute justify-center items-center h-full">
                 <div
                     class="flex justify-center items-center h-full cursor-pointer bg-1"
@@ -18,7 +18,7 @@
 
                 <div class="w-10 h-full bg-gradient-to-r from-1" />
             </div>
-        </transition>
+        </Transition>
 
         <div
             ref="scroll"
@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <transition name="fade">
+        <Transition name="fade">
             <div v-if="rightGradient" class="flex absolute right-0 justify-center items-center h-full">
                 <div class="w-10 h-full bg-gradient-to-r from-transparent to-1" />
 
@@ -38,7 +38,7 @@
                     <font-awesome-icon :icon="['fas', 'chevron-right']" class="text-0" />
                 </div>
             </div>
-        </transition>
+        </Transition>
     </div>
     <div v-else>
         <p class="italic text-0">Aucun tag</p>
@@ -57,8 +57,8 @@
         },
         data() {
             return {
-                leftGradient: Boolean,
-                rightGradient: Boolean,
+                leftGradient: false,
+                rightGradient: false,
             }
         },
         mounted() {
@@ -75,20 +75,10 @@
             },
             getScroll() {
                 if (this.tags.length != 0) {
-                    if (this.$refs.scroll.scrollLeft == 0) {
-                        this.leftGradient = false
-                    } else {
-                        this.leftGradient = true
-                    }
-
-                    if (
-                        this.$refs.scroll.scrollLeft + 1 >=
+                    this.leftGradient = this.$refs.scroll.scrollLeft != 0
+                    this.rightGradient =
+                        this.$refs.scroll.scrollLeft + 1 <
                         this.$refs.scroll.scrollWidth - this.$refs.parent.getBoundingClientRect().width
-                    ) {
-                        this.rightGradient = false
-                    } else {
-                        this.rightGradient = true
-                    }
                 }
             },
         },
