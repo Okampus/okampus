@@ -1,0 +1,10 @@
+@import '@/assets/scss/abstracts/mixins/get-animation';
+
+.highlight-active {
+    @include get-highlight-animation(
+        $background-color-start: coral,
+        $duration: 1s,
+        $delay: 0s,
+        $timing-function: ease-in-out
+    );
+}

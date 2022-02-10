@@ -1,16 +1,16 @@
 @mixin get-animation(
     $animation,
     $duration,
-    $delay,
-    $iteration-count,
-    $direction,
-    $fill-mode,
-    $timing-function
+    $delay: 0s,
+    $iteration-count: 1,
+    $direction: normal,
+    $fill-mode: forwards,
+    $timing-function: ease
 ) {
     animation: $animation $duration $delay $iteration-count $direction $fill-mode $timing-function;
 }
 
-@mixin get-text-animation(
+@mixin get-flow-animation(
     $background,
     $background-size: 300%,
     $duration: 1.5s,
@@ -48,3 +48,22 @@
     background-size: $background-size;
     -webkit-text-fill-color: transparent;
 }
+
+@mixin get-highlight-animation(
+    $background-color-start,
+    $duration: 1s,
+    $delay: 0s,
+    $timing-function: ease-in-out
+) {
+    @keyframes highlight {
+        0% {
+            background-color: $background-color-start;
+        }
+    }
+    @include get-animation(
+        $animation: highlight,
+        $duration: $duration,
+        $delay: $delay,
+        $timing-function: $timing-function
+    );
+} ;
