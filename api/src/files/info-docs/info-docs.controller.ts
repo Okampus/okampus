@@ -16,7 +16,7 @@ import { Express } from 'express';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
-import { TypesenseGuard } from '../../shared/lib/guards/typesense.guard';
+import { TypesenseEnabledGuard } from '../../shared/lib/guards/typesense-enabled.guard';
 import type { Category } from '../../shared/lib/types/docs-category.type';
 import { InfoDocCategoryType } from '../../shared/lib/types/docs-category.type';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
@@ -85,7 +85,7 @@ export class InfoDocsController {
     return await this.infoDocsService.findCategories(categoriesTypesDto?.categories ?? defaultSort);
   }
 
-  @UseGuards(TypesenseGuard)
+  @UseGuards(TypesenseEnabledGuard)
   @Get('/search')
   @CheckPolicies(ability => ability.can(Action.Read, InfoDoc))
   public async search(

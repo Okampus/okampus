@@ -14,7 +14,7 @@ import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { SerializerExcludeContentAuthor } from '../shared/lib/decorators/serializers.decorator';
-import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
+import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
@@ -50,7 +50,7 @@ export class BlogsController {
     return await this.blogsService.findAll();
   }
 
-  @UseGuards(TypesenseGuard)
+  @UseGuards(TypesenseEnabledGuard)
   @Get('/search')
   @CheckPolicies(ability => ability.can(Action.Read, Blog))
   public async search(

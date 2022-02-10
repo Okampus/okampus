@@ -3,7 +3,7 @@ import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { config } from '../../configs/config';
 
 @Injectable()
-export class TypesenseGuard implements CanActivate {
+export class TypesenseEnabledGuard implements CanActivate {
   public canActivate(): boolean {
     if (!config.get('typesense.enabled'))
       throw new ServiceUnavailableException('Search is disabled');

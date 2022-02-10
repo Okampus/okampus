@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
-import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
+import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
@@ -45,7 +45,7 @@ export class SubjectsController {
     return await this.subjectsService.findAll();
   }
 
-  @UseGuards(TypesenseGuard)
+  @UseGuards(TypesenseEnabledGuard)
   @Get('/search')
   @CheckPolicies(ability => ability.can(Action.Read, Subject))
   public async search(
