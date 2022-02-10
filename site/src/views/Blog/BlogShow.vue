@@ -241,7 +241,7 @@
 
 <script>
     import { blogProfiles, articles } from '@/fake/blog'
-    import { readingTimeMinutes } from '@/utils/readingTimeMinutes'
+    import { readingTime } from '@/utils/readingTime'
     import { timeAgo } from '@/utils/timeAgo'
 
     import TipTapRenderer from '@/components/TipTap/TipTapRenderer.vue'
@@ -289,7 +289,7 @@
                 this.readingTime =
                     article === null
                         ? null
-                        : readingTimeMinutes(extractTextFromTipTapJSON(JSON.parse(article.body)))
+                        : parseInt(readingTime(extractTextFromTipTapJSON(JSON.parse(article.body)) / 60))
             },
         },
     }

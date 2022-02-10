@@ -56,6 +56,8 @@ export function getEditor({
 
     if (charCount > 0) {
         extensions.push(CharacterCount.configure({ limit: charCount }))
+    } else {
+        extensions.push(CharacterCount.configure({ limit: null }))
     }
 
     if (editorClasses) {
