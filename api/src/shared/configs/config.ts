@@ -40,6 +40,7 @@ interface Config {
     secret: string;
   };
   myefreiOidc: {
+    enabled: boolean;
     clientId: string;
     clientSecret: string;
     discoveryUrl: string;
@@ -193,6 +194,11 @@ export const config = createProfiguration<Config>({
     },
   },
   myefreiOidc: {
+    enabled: {
+      default: false,
+      format: Boolean,
+      env: 'MYEFREI_OIDC_ENABLED',
+    },
     clientId: {
       default: 'client-id',
       format: String,

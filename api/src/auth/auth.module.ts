@@ -3,6 +3,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { config } from '../shared/configs/config';
 import { User } from '../users/user.entity';
 import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
@@ -20,6 +21,10 @@ const MyEfreiStrategyFactory = {
   inject: [AuthService],
 };
 
+const myefreiStrategy = config.get('myefreiOidc.enabled')
+  ? [MyEfreiStrategyFactory]
+  : [];
+
 @Module({
   imports: [
     MikroOrmModule.forFeature([User]),
@@ -29,7 +34,12 @@ const MyEfreiStrategyFactory = {
     HttpModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtAuthGuard, MyEfreiAuthGuard, MyEfreiStrategyFactory],
+  providers: [
+    AuthService,
+    JwtAuthGuard,
+    MyEfreiAuthGuard,
+    ...myefreiStrategy,
+  ],
   exports: [JwtAuthGuard, AuthService, JwtModule, ConfigModule, UsersModule],
 })
 export class AuthModule {}

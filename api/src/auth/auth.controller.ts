@@ -13,6 +13,7 @@ import { Request as Req, Response as Res } from 'express';
 import { computedConfig, config } from '../shared/configs/config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Public } from '../shared/lib/decorators/public.decorator';
+import { MyEfreiOidcEnabledGuard } from '../shared/lib/guards/myefrei-oidc-enabled.guard';
 import { User } from '../users/user.entity';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -43,14 +44,14 @@ export class AuthController {
   }
 
   @Public()
-  @UseGuards(MyEfreiAuthGuard)
+  @UseGuards(MyEfreiOidcEnabledGuard, MyEfreiAuthGuard)
   @Get('myefrei')
   public myefreiLogin(): void {
     // Logging in with MyEfrei! Everything is handled by the guard.
   }
 
   @Public()
-  @UseGuards(MyEfreiAuthGuard)
+  @UseGuards(MyEfreiOidcEnabledGuard, MyEfreiAuthGuard)
   @Get('myefrei/callback')
   public async myefreiCallback(@CurrentUser() user: User, @Response() res: Res): Promise<void> {
     const login = await this.authService.login(user);
