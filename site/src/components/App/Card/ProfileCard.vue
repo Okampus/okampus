@@ -50,7 +50,7 @@
         data() {
             return {
                 schoolRoleItem: schoolRolesEnum.find(
-                    (role) => role.key === this.user.schoolRole || 'horizon',
+                    (role) => role.key === (this.user.schoolRole || 'horizon'),
                 ),
             }
         },

@@ -88,7 +88,7 @@
         data() {
             return {
                 defaultAvatar,
-                schoolRoleItem: schoolRolesEnum.find((role) => role.key === this.schoolRole || 'horizon'),
+                schoolRoleItem: schoolRolesEnum.find((role) => role.key === (this.schoolRole || 'horizon')),
             }
         },
         methods: { abbrNumbers },
