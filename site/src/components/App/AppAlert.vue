@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex py-3 px-4 rounded-lg"
+        class="flex overflow-hidden relative py-3 px-4 rounded-lg"
         :class="[
             background ? 'alert-card' : 'alert',
             fitContent ? 'w-fit' : 'w-full',
@@ -8,6 +8,8 @@
         ]"
         :alert-type="type"
     >
+        <slot name="default" />
+
         <div v-if="$slots.icon || icon || $slots.title" class="flex gap-3 items-center text-lg title">
             <slot v-if="$slots.icon" name="icon" />
             <font-awesome-icon v-else-if="icon" :icon="defaultIconList?.[type]" />
@@ -78,13 +80,29 @@
 <style lang="scss">
     %alert,
     .alert {
+        & .progress-bar {
+            @keyframes roundtime {
+                to {
+                    /* More performant than animating `width` */
+                    transform: scaleX(0);
+                }
+            }
+
+            transform-origin: left center;
+            animation: roundtime calc(var(--progress-bar-duration) * 1ms) forwards;
+        }
+
         &[alert-type='info'] {
+            & .progress-bar {
+                background: linear-gradient(to bottom, rgb(59 130 246), rgb(37 99 235));
+            }
+
             & .title {
-                @apply text-blue-600 dark:text-blue-500;
+                @apply text-blue-600 dark:text-blue-100;
             }
 
             & .subtitle {
-                @apply text-blue-500 dark:text-blue-400;
+                @apply text-blue-500 dark:text-blue-50;
             }
 
             & .dismiss {
@@ -93,12 +111,16 @@
         }
 
         &[alert-type='warning'] {
+            & .progress-bar {
+                background: linear-gradient(to bottom, rgb(234 179 8), rgb(202 138 4));
+            }
+
             & .title {
-                @apply text-yellow-600 dark:text-yellow-500;
+                @apply text-yellow-600 dark:text-yellow-100;
             }
 
             & .subtitle {
-                @apply text-yellow-500 dark:text-yellow-500;
+                @apply text-yellow-500 dark:text-yellow-50;
             }
 
             & .dismiss {
@@ -107,12 +129,16 @@
         }
 
         &[alert-type='error'] {
+            & .progress-bar {
+                background: linear-gradient(to bottom, rgb(239 68 68), rgb(220 38 38));
+            }
+
             & .title {
-                @apply text-red-600 dark:text-red-500;
+                @apply text-red-600 dark:text-red-100;
             }
 
             & .subtitle {
-                @apply text-red-500 dark:text-red-400;
+                @apply text-red-500 dark:text-red-50;
             }
 
             & .dismiss {
@@ -121,12 +147,16 @@
         }
 
         &[alert-type='success'] {
+            & .progress-bar {
+                background: linear-gradient(to bottom, rgb(74 222 128), rgb(34 197 94));
+            }
+
             & .title {
-                @apply text-green-600 dark:text-green-600;
+                @apply text-green-600 dark:text-green-100;
             }
 
             & .subtitle {
-                @apply text-green-600 dark:text-green-400;
+                @apply text-green-600 dark:text-green-50;
             }
 
             & .dismiss {
@@ -139,19 +169,19 @@
         @extend %alert;
 
         &[alert-type='info'] {
-            @apply bg-blue-100 dark:bg-blue-600/50;
+            @apply bg-blue-100 dark:bg-blue-700;
         }
 
         &[alert-type='warning'] {
-            @apply bg-yellow-100 dark:bg-yellow-600/50;
+            @apply bg-yellow-100 dark:bg-yellow-700;
         }
 
         &[alert-type='error'] {
-            @apply bg-red-100 dark:bg-red-600/50;
+            @apply bg-red-100 dark:bg-red-700;
         }
 
         &[alert-type='success'] {
-            @apply bg-green-100 dark:bg-green-600;
+            @apply bg-green-100 dark:bg-green-700;
         }
     }
 </style>
