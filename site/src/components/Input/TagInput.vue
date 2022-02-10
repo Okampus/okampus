@@ -22,10 +22,7 @@
                 class="w-full min-w-[1em] h-8 bg-transparent outline-none placeholder"
                 @blur="focused = false"
                 @focus="focused = true"
-                @keydown="$emit('input-update', $event)"
-                @keydown.enter.prevent="addTag(newTag)"
-                @keydown.space.prevent="addTag(newTag)"
-                @keydown.delete="newTag.length || removeTag(tags.length - 1)"
+                @keydown="keypress"
             />
         </div>
     </div>
@@ -55,10 +52,6 @@
             const newTag = ref('')
 
             const addTag = (tag) => {
-                if (tagsInput.value.placeholder) {
-                    tagsInput.value.placeholder = ''
-                }
-
                 if (tag.length) {
                     if (tags.value.includes(tag)) {
                         ctx.emit('error', 'unique')
@@ -66,6 +59,9 @@
                         tags.value.push(tag)
                         newTag.value = ''
                         ctx.emit('update:modelValue', tags)
+                    }
+                    if (tagsInput.value.placeholder) {
+                        tagsInput.value.placeholder = ''
                     }
                 } else {
                     ctx.emit('error', 'empty')
@@ -90,6 +86,20 @@
         },
         data() {
             return { focused: false }
+        },
+        methods: {
+            keypress(event) {
+                if (event.key === ' ' || event.key === 'Enter') {
+                    this.addTag(this.newTag)
+                    event.preventDefault()
+                } else if (event.key === 'Backspace') {
+                    if (this.newTag.length === 0 && this.tags.length > 0) {
+                        this.removeTag(this.tags.length - 1)
+                    }
+                } else {
+                    this.$emit('input-update', event)
+                }
+            },
         },
     }
 </script>
