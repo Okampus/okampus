@@ -59,7 +59,7 @@ export class AuthController {
       .cookie('refreshToken', login.refreshToken, cookieOptions)
       .cookie('accessTokenExpiresAt', login.accessTokenExpiresAt, cookiePublicOptions)
       .cookie('refreshTokenExpiresAt', login.refreshTokenExpiresAt, cookiePublicOptions)
-      .redirect(`${computedConfig.frontendUrl}/#/auth`);
+      .redirect(`${computedConfig.frontendUrl + (config.get('nodeEnv') === 'development' ? '/#' : '')}/auth`);
   }
 
   @Get('logout')
