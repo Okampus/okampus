@@ -16,14 +16,16 @@
         <div class="flex flex-col gap-1">
             <div
                 v-for="(comment, i) in shownComments"
+                :id="`content-${comment.contentId}`"
                 :key="i"
+                :class="{ 'highlight-active': comment.active }"
                 class="flex gap-1 justify-between py-1 px-2 text-sm rounded-md text-1 bg-1"
             >
                 <div class="flex items-center" :class="{ 'w-full': comment.edit }">
                     <TipTapEditableRender
                         v-model:content="comment.body"
                         v-model:edit="comment.edit"
-                        class="w-full"
+                        class="p-0 w-full"
                         :="editorConfig"
                         @send="updateComment($event, i)"
                     />
@@ -48,9 +50,9 @@
             <div
                 v-if="comments.length > maxCommentsShow"
                 class="mt-2 ml-1 text-sm text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer"
-                @click="commentsShow = !commentsShow"
+                @click="toggleComments"
             >
-                <div class="flex gap-1 -ml-1">
+                <div class="flex gap-1 mb-1">
                     <div>
                         {{ commentsShow ? 'Cacher' : 'Voir' }}
                     </div>
@@ -68,8 +70,10 @@
     import defaultAvatar from '@/assets/img/default_avatars/user.png'
     import TipTapEditableRender from '@/components/TipTap/TipTapEditableRender.vue'
     import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
+    import { getURL } from '@/utils/routeUtils'
     import { defaultTipTapText } from '@/utils/tiptap'
     import { watch } from 'vue'
+    import urljoin from 'url-join'
 
     export default {
         components: {
@@ -139,6 +143,20 @@
             )
         },
         methods: {
+            toggleComments() {
+                if (this.commentsShow) {
+                    this.commentItems.slice(this.maxCommentsShow, this.commentItems.length).map((comment) => {
+                        comment.active = false
+                    })
+
+                    this.commentsShow = false
+                } else {
+                    this.commentItems.slice(this.maxCommentsShow, this.commentItems.length).map((comment) => {
+                        comment.active = true
+                    })
+                    this.commentsShow = true
+                }
+            },
             actionsMap(i) {
                 return {
                     ...{
@@ -157,7 +175,7 @@
                         },
 
                         report: {
-                            name: () => 'Signaler',
+                            name: () => (this.commentItems[i]?.userReported ? 'Signalé' : 'Signaler'),
                             icon: () => (this.commentItems[i]?.userReported ? 'flag' : ['far', 'flag']),
                             class: () =>
                                 this.commentItems[i]?.userReported
@@ -167,6 +185,26 @@
                                 this.commentItems[i]?.userReported
                                     ? alert('Vous avez déjà signalé ce commentaire.')
                                     : this.$emit('report', this.commentItems[i])
+                            },
+                        },
+
+                        getLink: {
+                            name: () => 'Lien',
+                            icon: () => 'link',
+                            class: () => 'group-hover:text-blue-600',
+                            action: () => {
+                                navigator.clipboard.writeText(
+                                    getURL(
+                                        urljoin(
+                                            this.$route.path,
+                                            '#content-' + this.commentItems[i].contentId,
+                                        ),
+                                    ),
+                                )
+                                this.$emitter.emit('show-toast', {
+                                    text: 'Le lien du commentaire a bien été copié !',
+                                    type: 'info',
+                                })
                             },
                         },
                     },

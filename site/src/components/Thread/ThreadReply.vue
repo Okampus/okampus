@@ -1,28 +1,41 @@
 <template>
     <div v-if="newReply && author === undefined">Erreur: Vous n'ếtes pas connecté!</div>
     <div v-else class="flex items-start">
-        <div class="flex flex-col shrink-0 gap-2 items-center p-3 -ml-5 w-32 text-lg">
+        <div class="flex flex-col shrink-0 gap-2 items-center p-3 w-[8.5rem] text-lg">
             <UserPreview
-                :username="author?.fullname ?? 'Anonyme'"
-                :avatar="author?.avatar ?? defaultAvatar"
-                mode="vertical"
+                :username="author?.fullname"
+                :avatar="author?.avatar"
+                :reputation="author?.points"
+                :school-role="author?.schoolRole"
                 :img-size="14"
+                mode="vertical"
             />
         </div>
 
-        <div class="p-2 w-full rounded-xl" :class="{ 'bg-2': !newReply }">
-            <div class="p-1 text-base">
-                <TipTapEditableRender
-                    v-model:edit="showEditor"
-                    v-model:content="currentBody"
-                    :cancellable="closeable"
-                    :emit-content="newReply"
-                    @send="newReply ? $emit('send') : (updateReply($event), $emit('send'))"
-                    @cancel="$emit('close')"
-                />
-            </div>
+        <div
+            :="reply ? { id: `content-${reply.contentId}` } : {}"
+            class="shrink w-[calc(100%-8.5rem)] rounded-xl"
+            :class="{ 'bg-2 p-2': !newReply }"
+        >
+            <TipTapEditableRender
+                v-if="!newReply"
+                v-model:edit="showEditor"
+                v-model:content="currentBody"
+                :cancellable="closeable"
+                @send="updateReply($event), $emit('send')"
+                @cancel="$emit('close')"
+            />
+            <TipTapEditableRender
+                v-else
+                v-model:content="currentBody"
+                :edit="true"
+                :cancellable="closeable"
+                :emit-content="true"
+                @send="$emit('send'), resetReply()"
+                @cancel="$emit('close')"
+            />
             <template v-if="!newReply">
-                <div class="flex items-center mt-2">
+                <div class="flex items-center">
                     <div class="flex gap-2.5 items-center py-2 px-3 mt-1 rounded-lg bg-3 text-2">
                         <!-- TODO: mobile-friendly: tap & hold to react -->
                         <font-awesome-icon
@@ -74,9 +87,12 @@
     import ThreadCommentList from '@/components/Thread/ThreadCommentList.vue'
     import TipTapEditableRender from '@/components/TipTap/TipTapEditableRender.vue'
     import UserPreview from '@/components/User/UserPreview.vue'
+    import { getURL } from '@/utils/routeUtils'
 
     import { defaultTipTapText } from '@/utils/tiptap'
     import { watch } from 'vue'
+
+    import urljoin from 'url-join'
 
     export default {
         components: {
@@ -106,6 +122,7 @@
         data() {
             return {
                 defaultAvatar,
+                defaultTipTapText,
                 author: this.newReply ? this.$store.state.auth.user : this.reply.author,
                 currentBody: this.body,
                 onComment: false,
@@ -135,7 +152,7 @@
                             },
                         },
                         report: {
-                            name: () => 'Signaler',
+                            name: () => (this.reply?.userReported ? 'Signalé' : 'Signaler'),
                             icon: this.reply?.userReported ? 'flag' : ['far', 'flag'],
                             class: this.reply?.userReported
                                 ? 'group-hover:text-red-600 text-red-500'
@@ -144,6 +161,20 @@
                                 this.reply?.userReported
                                     ? alert('Vous avez déjà signalé cette réponse.')
                                     : this.$emit('report', this.reply)
+                            },
+                        },
+                        getLink: {
+                            name: () => 'Lien',
+                            icon: 'link',
+                            class: 'group-hover:text-blue-600',
+                            action: () => {
+                                navigator.clipboard.writeText(
+                                    getURL(urljoin(this.$route.path, '#content-' + this.reply?.contentId)),
+                                )
+                                this.$emitter.emit('show-toast', {
+                                    text: 'Le lien de la réponse a bien été copié !',
+                                    type: 'info',
+                                })
                             },
                         },
                     },
@@ -180,10 +211,11 @@
                     this.$emit('update:body', newBody)
                 },
             )
-
-            this.$emitter.on('thread-action', () => (this.showEditor = false))
         },
         methods: {
+            resetReply() {
+                this.currentBody = defaultTipTapText
+            },
             updateReply(body) {
                 this.$store.dispatch('threads/updateContent', {
                     contentId: this.reply.contentId,
