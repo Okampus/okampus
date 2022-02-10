@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-center items-center w-full h-full text-6xl text-0">
+    <div class="flex justify-center items-center my-10 w-full h-full text-6xl text-0">
         <svg
             class="text-white animate-spin"
             :style="{ width: `${size}rem`, height: `${size}rem` }"

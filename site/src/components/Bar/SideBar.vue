@@ -225,7 +225,7 @@
                                       {
                                           to: '/me/profile',
                                           regActive: /^\/me\/profile/,
-                                          textSmall: 'Mon compte',
+                                          textSmall: 'Compte',
                                           textLarge: 'Mon compte',
                                           icon: 'user-cog',
                                       },
