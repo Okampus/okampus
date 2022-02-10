@@ -258,5 +258,5 @@ config.set('cookies.options', {
   signed: true,
   secure: config.get('nodeEnv') === 'production',
   httpOnly: true,
-  domain: config.get('nodeEnv') === 'production' ? computedConfig.frontendUrl : undefined,
+  domain: config.get('nodeEnv') === 'production' ? config.get('baseUrl') : undefined,
 });
