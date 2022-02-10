@@ -6,11 +6,11 @@ module.exports = {
     safelist: [
         {
             pattern: /bg-\w+-\d00/,
-            variants: ['hover'],
+            variants: ['hover', 'dark', 'dark:hover'],
         },
         {
             pattern: /text-\w+-\d00/,
-            variants: ['hover'],
+            variants: ['hover', 'dark', 'dark:hover'],
         },
     ],
     darkMode: 'class', // or 'media' or 'class'
@@ -18,12 +18,14 @@ module.exports = {
         screens: {
             'xs': '475px',
             ...defaultTheme.screens,
+            '3xl': '1800px',
             'xs-max': { max: '474px' },
             'sm-max': { max: '639px' },
             'md-max': { max: '767px' },
             'lg-max': { max: '1023px' },
             'xl-max': { max: '1279px' },
             '2xl-max': { max: '1535px' },
+            '3xl-max': { max: '1799px' },
         },
         extend: {
             spacing: {

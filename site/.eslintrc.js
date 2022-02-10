@@ -14,6 +14,7 @@ module.exports = {
 
         'arrow-body-style': ['error', 'as-needed'],
         'tailwindcss/no-custom-classname': 'off',
+        'tailwindcss/enforces-negative-arbitrary-values': 'off',
 
         quotes: ['error', 'single', { avoidEscape: true }],
         'comma-dangle': ['error', 'always-multiline'],
