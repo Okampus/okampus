@@ -17,11 +17,11 @@ export class Vote extends BaseEntity {
   @Enum()
   value!: -1 | 1;
 
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   @Index()
   user!: User;
 
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   @Index()
   content: Content;
 

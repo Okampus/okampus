@@ -27,7 +27,7 @@ export class Content extends BaseEntity {
   @Property({ type: 'text' })
   body!: string;
 
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   @Transform(({ obj }: { obj: Content }) => obj.author.userId, { groups: [CONTENT_AUTHOR_EXCLUDED] })
   author!: User;
 
@@ -41,7 +41,7 @@ export class Content extends BaseEntity {
   @Enum(() => ContentKind)
   kind!: ContentKind;
 
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   @Transform(({ obj }: { obj: Content }) => ({ contentId: obj.parent?.contentId, kind: obj.parent?.kind }))
   parent?: Content;
 
