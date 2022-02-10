@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 
 const routes = [
     {
@@ -95,7 +95,7 @@ if (import.meta.env.DEV) {
 }
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: import.meta.env.DEV ? createWebHashHistory() : createWebHistory(),
     routes,
 })
 
