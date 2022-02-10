@@ -1,16 +1,20 @@
 <template>
-    <div>
-        <div class="absolute top-0 left-0 py-12 w-full h-52 hero" />
-        <div class="flex relative flex-col mx-auto mt-12 mb-10 space-y-4 w-11/12 card-0 min-w-2/3">
+    <AppToast
+        v-model:active="success"
+        text="Création réussie ! Tu vas être redirigé sur ton post."
+        type="success"
+        @close="redirect"
+    />
+    <CardPage>
+        <div class="flex flex-col space-y-5">
             <div>
                 <div class="label-title">Titre</div>
-                <div class="label-desc">Titre clair et descriptif</div>
                 <input
                     v-model="state.title"
                     class="w-full input"
                     type="text"
                     name="title"
-                    placeholder="Titre descriptif/complet"
+                    placeholder="Titre clair, descriptif et complet"
                     @input="v$.title.$touch"
                 />
                 <AppError
@@ -20,14 +24,12 @@
             </div>
 
             <div>
-                <div class="label-title">Type de post</div>
-                <div class="label-desc">
-                    Quel
+                <div class="label-title">
+                    Type de post
                     <Popper :hover="true">
-                        <u class="text-blue-400 hover:text-orange-400 cursor-help"> type </u>
-
+                        <font-awesome-icon icon="info-circle" class="ml-1 text-sm text-slate-400" />
                         <template #content>
-                            <div class="popover">
+                            <div class="font-normal popover">
                                 <ul>
                                     Types possibles:
                                     <li
@@ -41,7 +43,6 @@
                             </div>
                         </template>
                     </Popper>
-                    de post souhaites-tu créer ?
                 </div>
                 <SelectInput
                     v-model="state.type"
@@ -57,19 +58,15 @@
 
             <div>
                 <div class="label-title">Contenu</div>
-                <div class="label-desc">
-                    Décris le plus précisément <span class="underline">ce que tu souhaites réaliser</span> et
-                    comment l'on peut t'aider !
-                </div>
+
                 <div>
                     <TipTapEditor
                         ref="editorRef"
                         v-model="state.body"
                         name="editor"
                         mode="json"
-                        :char-count-show-at="9000"
-                        :char-count="editorCharLimit[1]"
-                        placeholder="Décris ton question/suggestion/problème !"
+                        :char-count="{ limit: editorCharLimit[1], showAt: 9000 }"
+                        placeholder="Décris le plus précisément ce que tu souhaites faire et comment nous pouvons t'aider !"
                         @input="v$.body.$touch"
                     >
                         <template #error>
@@ -83,15 +80,23 @@
             </div>
 
             <div>
-                <div class="label-title">Tags</div>
-                <div class="label-desc">
-                    Ajoute {{ minTags }} tags (ou plus) qui décrivent le sujet de ton post <br />
-                    <div class="mt-1.5 text-sm">
-                        <span class="font-bold">NOTE :</span> pour des tags de plusieurs mots,
-                        <span class="underline">séparer les mots avec des tirets</span> plutôt que des espaces
-                        !
-                    </div>
+                <div class="label-title">
+                    Tags
+                    <Popper :hover="true">
+                        <font-awesome-icon icon="info-circle" class="ml-1 text-sm text-slate-400" />
+                        <template #content>
+                            <div class="max-w-sm font-normal popover bg-0">
+                                Ajoute des tags décrivant le sujet de ton post <br />
+                                <div class="mt-1.5 text-sm">
+                                    <span class="font-bold">NOTE :</span> pour des tags de plusieurs mots,
+                                    <span class="underline">séparer les mots avec des tirets</span> plutôt que
+                                    des espaces
+                                </div>
+                            </div>
+                        </template>
+                    </Popper>
                 </div>
+
                 <TagInput
                     v-model="state.tags"
                     name="tags"
@@ -112,15 +117,7 @@
                     <p>Valider mon post</p>
                 </button>
 
-                <AppAlert v-if="show === 'success'" type="success">
-                    <template #text> Création réussie ! Tu vas être redirigé sur ton post. </template>
-                </AppAlert>
-                <AppAlert
-                    v-else-if="show === 'error'"
-                    type="error"
-                    :dismissable="true"
-                    @dismiss="show = null"
-                >
+                <AppAlert v-if="show === 'error'" type="error" :dismissable="true" @dismiss="show = null">
                     <template #text>
                         <span class="font-bold">Échec de création du post !</span>
                         ({{ error || 'Erreur inconnue' }})
@@ -130,7 +127,7 @@
 
             <!-- TODO: add second panel (dos and don'ts of a good post) -->
         </div>
-    </div>
+    </CardPage>
 </template>
 
 <script>
@@ -149,6 +146,10 @@
     import { between, maxLength, minLength, required } from '@vuelidate/validators'
 
     import { reactive, ref } from 'vue'
+    import CardPage from '../App/CardPage.vue'
+    import AppToast from '@/components/App/AppToast.vue'
+
+    import { noop } from 'lodash'
 
     export default {
         components: {
@@ -158,6 +159,8 @@
             Popper,
             SelectInput,
             AppAlert,
+            CardPage,
+            AppToast,
         },
         inheritAttrs: false,
         props: {
@@ -214,6 +217,8 @@
                 customTagError: null,
                 show: null,
                 error: '',
+                success: false,
+                redirect: noop,
             }
         },
         methods: {
@@ -232,6 +237,8 @@
                     return
                 }
 
+                this.success = true
+
                 this.$store
                     .dispatch('threads/addThread', {
                         title: this.state.title,
@@ -241,9 +248,9 @@
                     })
                     .then((newThread) => {
                         this.show = 'success'
-                        setTimeout(() => {
+                        this.redirect = () => {
                             this.$router.push(`/posts/${newThread.contentMasterId}`)
-                        }, 2000)
+                        }
                     })
                     .catch((err) => {
                         this.show = 'error'
