@@ -151,12 +151,12 @@ export class ContentsService {
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, content);
 
-    await this.contentRepository.removeAndFlush(content);
-
     const master = await this.contentMasterRepository.findOneOrFail({ contentMasterId: content.contentMasterId });
     if (master.contributors.contains(user)) {
       master.contributors.remove(user);
       await this.contentMasterRepository.flush();
     }
+
+    await this.contentRepository.removeAndFlush(content);
   }
 }
