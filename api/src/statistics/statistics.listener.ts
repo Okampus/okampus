@@ -79,6 +79,7 @@ export class StatisticsListener {
     stats.lastAction = new Date();
 
     const badgeUnlocked = await this.badgeUnlockRepository.find({ user: stats.user, badge: { statistic } });
+    // TODO: Add heavy cache here
     const badges = await this.badgeRepository.find({
       statistic,
       statisticThreshold: { $lte: stats[`${statistic}Count`] },
