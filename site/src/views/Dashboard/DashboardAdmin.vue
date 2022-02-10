@@ -1,12 +1,14 @@
 <template>
     <!-- TODO: Solve unexpected overflow! -->
-    <AppTabs v-model:tab="currentTab" :tabs="tabs" class="absolute top-32 w-full card" route-base="/admin">
-        <template v-for="(tabColumns, i) in dashboardTabs" #[getSlot(i)] :key="i">
-            <div :class="i === currentTab ? 'block' : 'invisible'">
-                <DashboardCore :columns="tabColumns" :items="dashboardData[i]" />
-            </div>
-        </template>
-    </AppTabs>
+    <CardPage>
+        <AppTabs v-model:tab="currentTab" :tabs="tabs" route-base="/admin">
+            <template v-for="(tabColumns, i) in dashboardTabs" #[getSlot(i)] :key="i">
+                <div :class="i === currentTab ? 'block' : 'invisible'">
+                    <DashboardCore :columns="tabColumns" :items="dashboardData[i]" />
+                </div>
+            </template>
+        </AppTabs>
+    </CardPage>
 </template>
 
 <script>
@@ -14,6 +16,7 @@
     import { ref, watch } from 'vue'
     import DashboardCore from '../../components/Dashboard/DashboardCore.vue'
     import AppTabs from '@/components/App/AppTabs.vue'
+    import CardPage from '../App/CardPage.vue'
 
     const tabs = [
         {
@@ -33,7 +36,7 @@
         },
     ]
     export default {
-        components: { DashboardCore, AppTabs },
+        components: { DashboardCore, AppTabs, CardPage },
         setup() {
             const dashboardData = ref([[], [], []])
             return { dashboardData }

@@ -1,5 +1,5 @@
 <template>
-    <div class="my-8 mx-auto w-21/24 shadow-md card">
+    <CardPage>
         <FormMultiStep
             v-model="stepAction"
             :steps="steps"
@@ -362,7 +362,7 @@
                 </section>
             </template>
         </FormMultiStep>
-    </div>
+    </CardPage>
 </template>
 
 <script>
@@ -374,6 +374,7 @@
     import SelectInput from '@/components/Input/SelectInput.vue'
     import useVuelidate from '@vuelidate/core'
     import { integer, maxLength, required, requiredIf, sameAs } from '@vuelidate/validators'
+    import CardPage from '../App/CardPage.vue'
 
     export default {
         components: {
@@ -383,6 +384,7 @@
             FormMultiStep,
             SearchInput,
             AppAlert,
+            CardPage,
         },
         props: {
             steps: {

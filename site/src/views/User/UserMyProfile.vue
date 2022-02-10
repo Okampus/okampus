@@ -1,10 +1,6 @@
 <template>
-    <div class="m-0 text-2">
-        <div class="absolute top-0 left-0 py-12 m-0 w-full h-52 hero">
-            <h3 class="mb-8 text-4xl font-bold text-0">Paramètres</h3>
-        </div>
-
-        <AppTabs v-model:tab="currentTab" :tabs="tabs" class="absolute top-32 w-full card" route-base="/me">
+    <CardPage>
+        <AppTabs v-model:tab="currentTab" :tabs="tabs" route-base="/me">
             <template #profile>
                 <ProfileModal />
             </template>
@@ -18,7 +14,7 @@
                 <ProfileSettings />
             </template>
         </AppTabs>
-    </div>
+    </CardPage>
 </template>
 
 <script>
@@ -27,6 +23,7 @@
     import ProfileModal from '@/components/User/MyProfile/ProfileModal.vue'
     import ProfileSettings from '@/components/User/MyProfile/ProfileSettings.vue'
     import ExternalAccount from '@/components/User/MyProfile/ProfileSocials.vue'
+    import CardPage from '../App/CardPage.vue'
 
     const tabs = [
         {
@@ -58,6 +55,7 @@
             ProfileSettings,
             AppTabs,
             ProfileClubs,
+            CardPage,
         },
         inheritAttrs: false,
         data() {
