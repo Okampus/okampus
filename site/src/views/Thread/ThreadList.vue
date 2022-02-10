@@ -1,28 +1,24 @@
 <template>
     <!-- TODO: add filtering, tab, info panel -->
-    <div>
-        <div class="absolute top-0 left-0 py-12 w-full h-52 hero">
-            <h3 class="px-10 text-4xl font-bold text-0">Liste des posts</h3>
-        </div>
-        <div class="flex relative flex-col flex-wrap mx-4 mt-32 mb-10 md:flex-row" :class="`gap-[1rem]`">
-            <div v-if="!loggedIn" class="ml-32 text-2xl text-0">Vous n'êtes pas connecté !</div>
-            <template v-for="(thread, i) in threads" v-else-if="threads.length" :key="i">
-                <ThreadPreviewCard
-                    class="mb-2 w-full lg:w-[calc(50%-(1rem*1/2))] 2xl:w-[calc(33.333%-(1rem*2/3))]"
-                    :thread="thread"
-                />
+    <ListPage>
+        <template v-if="threads.length && loggedIn">
+            <template v-for="(thread, i) in threads" :key="i">
+                <ThreadPreviewCard :thread="thread" />
             </template>
-            <div v-else class="ml-32 text-2xl text-0">Aucun post ne correspond à ces critères.</div>
+        </template>
+        <div v-else class="ml-32 text-2xl text-0">
+            {{ loggedIn ? 'Aucun post ne correspond à ces critères.' : "Vous n'êtes pas connecté !" }}
         </div>
-    </div>
+    </ListPage>
 </template>
 
 <script>
     import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
     import { watch } from 'vue'
+    import ListPage from '../App/ListPage.vue'
 
     export default {
-        components: { ThreadPreviewCard },
+        components: { ThreadPreviewCard, ListPage },
         data() {
             return {
                 threads: this.$store.getters['threads/getThreads'],
