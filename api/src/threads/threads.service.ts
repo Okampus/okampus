@@ -77,14 +77,14 @@ export class ThreadsService {
     );
   }
 
-  public async findInteractions(contentMasterId: number): Promise<ThreadInteractions> {
+  public async findInteractions(user: User, contentMasterId: number): Promise<ThreadInteractions> {
     const contents = await this.contentRepository.find({ contentMaster: { contentMasterId } });
     // TODO: Maybe the user won't have access to this thread. There can be some restrictions
     // (i.e. "personal"/"sensitive" threads)
-    const favorites = await this.favoriteRepository.find({ content: { $in: contents } });
-    const reactions = await this.reactionRepository.find({ content: { $in: contents } });
-    const votes = await this.voteRepository.find({ content: { $in: contents } });
-    const reports = await this.reportRepository.find({ content: { $in: contents } });
+    const favorites = await this.favoriteRepository.find({ user, content: { $in: contents } });
+    const reactions = await this.reactionRepository.find({ user, content: { $in: contents } });
+    const votes = await this.voteRepository.find({ user, content: { $in: contents } });
+    const reports = await this.reportRepository.find({ reporter: user, content: { $in: contents } });
 
     return {
       favorites,

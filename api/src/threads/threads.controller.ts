@@ -74,8 +74,11 @@ export class ThreadsController {
 
   @Get(':id/interactions')
   @CheckPolicies(ability => ability.can(Action.Read, Thread))
-  public async findInteractions(@Param('id', ParseIntPipe) id: number): Promise<ThreadInteractions> {
-    return await this.threadsService.findInteractions(id);
+  public async findInteractions(
+    @CurrentUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ThreadInteractions> {
+    return await this.threadsService.findInteractions(user, id);
   }
 
   @Patch(':id')
