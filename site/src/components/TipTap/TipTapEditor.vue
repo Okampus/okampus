@@ -2,7 +2,7 @@
     <div v-if="editor">
         <div
             v-if="editorButtons.length > 0"
-            class="flex flex-wrap items-center py-2 px-1 space-x-2 border-color-4"
+            class="flex flex-wrap items-center px-1 pb-2 space-x-2 border-color-4"
         >
             <template v-for="(btn, i) in editorButtons" :key="i">
                 <Popper placement="top" :hover="true">
@@ -29,37 +29,58 @@
 
         <EditorContent class="editor" :editor="editor" />
 
-        <div class="flex flex-row gap-4 items-center mt-2">
-            <button v-if="cancellable" :class="textClass" class="button-red" @click="$emit('cancel')">
-                <p>Annuler</p>
-            </button>
-            <button v-if="sendable" :class="textClass" class="button" @click="$emit('send')">
-                <p>Envoyer</p>
-            </button>
-            <slot name="error" />
+        <div class="flex flex-row gap-4 items-center">
+            <p
+                v-if="cancellable"
+                class="mt-2 font-bold text-red-500 uppercase cursor-pointer"
+                :class="textClass"
+                @click="$emit('cancel')"
+            >
+                Annuler
+            </p>
 
-            <!-- TODO: Refactor charCount (dark mode) -->
+            <!-- TODO: validate on send -->
+            <p
+                v-if="sendable"
+                class="mt-2 font-bold tracking-wide uppercase"
+                :class="[
+                    getCharCount() > 0 ? 'text-blue-500 cursor-pointer' : 'text-gray-500 cursor-not-allowed',
+                    textClass,
+                ]"
+                @click="getCharCount() > 0 ? $emit('send') : null"
+            >
+                Envoyer
+            </p>
+
+            <slot name="error" class="mt-2" />
+
             <div
-                v-if="charCount > 0 && getCharCount() >= charCountShowAt"
-                class="flex"
+                v-if="charCount > 0 && getCharCount() >= (charCount?.showAt ?? 0)"
+                class="flex mt-2"
                 :class="[getCharCount() >= charCount ? 'text-red-400' : 'text-blue-400', textClass]"
             >
                 <svg height="20" width="20" viewBox="0 0 20 20" class="mr-2">
-                    <circle r="10" cx="10" cy="10" fill="#e9ecef" />
                     <circle
-                        r="5"
+                        :r="charCountCircleRadius"
                         cx="10"
                         cy="10"
-                        fill="transparent"
+                        fill="none"
+                        stroke-width="4"
+                        stroke="gray"
+                    />
+                    <circle
+                        :r="charCountCircleRadius"
+                        cx="10"
+                        cy="10"
+                        fill="none"
                         stroke="currentColor"
-                        stroke-width="10"
+                        stroke-width="4"
                         :stroke-dasharray="`${circleFillCharCount()} 999`"
                         transform="rotate(-90) translate(-20)"
                     />
-                    <circle r="6" cx="10" cy="10" fill="white" />
                 </svg>
 
-                <div :class="{ 'text-slate-700': getCharCount() < charCount }">
+                <div :class="{ 'text-2': getCharCount() < charCount }">
                     {{ getCharCount() }}/{{ charCount }}
                 </div>
             </div>
@@ -71,6 +92,7 @@
     import Popper from 'vue3-popper'
     import { defaultEditorButtons, defaultTipTapText, getEditor } from '@/utils/tiptap'
     import { EditorContent } from '@tiptap/vue-3'
+    import { watch } from 'vue'
 
     export default {
         components: {
@@ -106,12 +128,8 @@
                 type: String,
                 default: 'json',
             },
-            charCountShowAt: {
-                type: Number,
-                default: 0,
-            },
             charCount: {
-                type: Number,
+                type: [Number, Object],
                 default: 0,
             },
             editorClasses: {
@@ -133,12 +151,20 @@
                     editorOptions: props.editorOptions,
                     mode: props.mode,
                     placeholder: props.placeholder,
-                    charCount: props.charCount,
+                    charCount: props.charCount?.limit ?? props.charCount,
                     editorClasses: props.editorClasses,
                 }),
             }
         },
+        data: function () {
+            return {
+                charCountCircleRadius: 7,
+            }
+        },
         computed: {
+            dark() {
+                return this.$store.state.user.theme === 'dark'
+            },
             actionMap() {
                 return {
                     paragraph: {
@@ -218,12 +244,31 @@
                 }
             },
         },
+        mounted() {
+            watch(
+                () => this.modelValue,
+                (newValue) => {
+                    if (this.mode === 'json') {
+                        if (newValue !== JSON.stringify(this.editor.getJSON())) {
+                            this.editor.commands.setContent(JSON.parse(newValue))
+                        }
+                    } else if (newValue !== this.editor.getHTML()) {
+                        this.editor.commands.setContent(newValue)
+                    }
+                },
+            )
+        },
         methods: {
             getCharCount() {
-                return this.editor.storage.characterCount.characters()
+                return this.editor.storage?.characterCount?.characters() ?? 0
             },
             circleFillCharCount() {
-                return (Math.round((100 / this.charCount) * this.getCharCount()) * 31.4) / 100
+                return (
+                    (this.getCharCount() / (this.charCount?.limit ?? this.charCount)) *
+                    2 *
+                    Math.PI *
+                    this.charCountCircleRadius
+                )
             },
             getJSON() {
                 return this.editor.getJSON()

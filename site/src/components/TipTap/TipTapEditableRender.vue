@@ -1,17 +1,16 @@
 <template>
-    <div>
-        <TipTapEditor
-            v-if="edit"
-            v-model="body"
-            :sendable="sendable"
-            :cancellable="cancellable"
-            :editor-buttons="editorButtons"
-            :editor-classes="editorClasses"
-            @cancel="$emit('update:edit', false), (body = content), $emit('cancel')"
-            @send="$emit('update:edit', false), $emit('update:content', body), $emit('send', body)"
-        />
-        <TipTapRenderer v-else :content="body" />
-    </div>
+    <TipTapEditor
+        v-if="edit"
+        v-model="body"
+        :sendable="sendable"
+        :cancellable="cancellable"
+        :editor-buttons="editorButtons"
+        :editor-classes="editorClasses"
+        :char-count="charCount"
+        @cancel="$emit('update:edit', false), (body = content), $emit('cancel')"
+        @send="$emit('update:edit', false), $emit('update:content', body), $emit('send', body)"
+    />
+    <TipTapRenderer v-else :content="body" class="p-2" />
 </template>
 
 <script>
@@ -46,6 +45,10 @@
                 type: Array,
                 default: () => ['min-h-20'],
             },
+            charCount: {
+                type: [Number, Object],
+                default: 0,
+            },
             edit: {
                 type: Boolean,
                 default: false,
@@ -65,6 +68,14 @@
                     () => this.body,
                     (newContent) => {
                         this.$emit('update:content', newContent)
+                    },
+                )
+                watch(
+                    () => this.content,
+                    (newContent) => {
+                        if (newContent != this.body) {
+                            this.body = newContent
+                        }
                     },
                 )
             } else {

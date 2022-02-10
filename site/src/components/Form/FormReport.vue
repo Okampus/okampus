@@ -7,8 +7,7 @@
                     <div class="label-title">Raison</div>
                     <TipTapEditor
                         v-model="state.reason"
-                        :char-count-show-at="900"
-                        :char-count="1000"
+                        :char-count="{ limit: 1000, showAt: 900 }"
                         placeholder="Décris la raison de ton signalement..."
                         @input="v$.reason.$touch"
                     >
