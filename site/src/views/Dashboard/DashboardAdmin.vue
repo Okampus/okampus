@@ -56,7 +56,7 @@
                             slot: () => {},
                             value: (report) => report.user.fullname,
                             comp: ['user-preview', '@/components/User/UserPreview.vue'],
-                            name: 'User signalé',
+                            name: 'Utilisateur signalé',
                         },
                         reason: {
                             attrs: (report) => ({ 'content': report.reason }),
@@ -111,7 +111,7 @@
                             slot: () => {},
                             value: (thread) => thread.post.author.fullname,
                             comp: ['user-preview', '@/components/User/UserPreview.vue'],
-                            name: 'OP',
+                            name: 'Auteur',
                         },
                         lastActivity: {
                             attrs: (thread) => ({ dateString: thread?.post?.contentLastUpdatedAt }),
