@@ -19,7 +19,7 @@
         <div
             :class="[
                 showUncollapsed ? 'divide-y-0' : 'divide-y dark:divide-gray-700',
-                collapsing ? 'overflow-y-hidden' : 'overflow-y-auto app-scrollbar-on-hover',
+                collapsing ? 'overflow-y-hidden' : 'overflow-y-auto scrollbar-none',
             ]"
         >
             <ul v-for="(section, i) in sections" :key="i">
