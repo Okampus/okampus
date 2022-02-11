@@ -1,0 +1,76 @@
+name: Test Backend
+
+on:
+  push:
+    paths:
+      - 'api/**'
+      - '!api/**/*.md'
+      - '.github/workflows/backend-test.yml'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        id: cache
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ./api/node_modules/
+          key: ${{ runner.os }}-build-${{ hashFiles('./api/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      - name: Install Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+        working-directory: api
+
+      - name: Build project
+        run: npm run build
+        working-directory: api
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        id: cache
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ./api/node_modules/
+          key: ${{ runner.os }}-build-${{ hashFiles('./api/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      - name: Install Node v16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+        working-directory: api
+
+      - name: Run ESLint
+        run: npm run lint
+        working-directory: api
