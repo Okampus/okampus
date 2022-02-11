@@ -1,18 +1,5 @@
 <template>
     <div>
-        <div v-if="onComment" class="flex mb-3">
-            <div class="flex flex-col gap-4 w-full">
-                <TipTapEditor
-                    v-model="newComment"
-                    class="w-full"
-                    :="editorConfig"
-                    :sendable="true"
-                    :cancellable="true"
-                    @send="sendComment()"
-                    @cancel="closeComment()"
-                />
-            </div>
-        </div>
         <div class="flex flex-col gap-1">
             <div
                 v-for="(comment, i) in shownComments"
@@ -62,6 +49,22 @@
                     <div>{{ comments.length - maxCommentsShow > 1 ? 'commentaires' : 'commentaire' }}</div>
                 </div>
             </div>
+        </div>
+        <div v-if="onComment" class="flex mb-3">
+            <div class="flex flex-col gap-4 w-full">
+                <TipTapEditor
+                    v-model="newComment"
+                    class="w-full"
+                    :="editorConfig"
+                    :sendable="true"
+                    :cancellable="true"
+                    @send="sendComment()"
+                    @cancel="closeComment()"
+                />
+            </div>
+        </div>
+        <div v-else @click="showEditor">
+            <p class="text-sm font-bold text-gray-500 uppercase cursor-pointer">Commenter</p>
         </div>
     </div>
 </template>
@@ -156,6 +159,9 @@
                     })
                     this.commentsShow = true
                 }
+            },
+            showEditor() {
+                this.$emit('update:onComment', true)
             },
             actionsMap(i) {
                 return {
