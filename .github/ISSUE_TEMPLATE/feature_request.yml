@@ -15,6 +15,7 @@ body:
       options:
         - Site Web
         - API
+      multiple: true
     validations:
       required: true
 
