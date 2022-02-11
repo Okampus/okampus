@@ -32,7 +32,7 @@
                         <hr class="mt-3 mb-2" />
                     </div>
 
-                    <div class="flex flex-col gap-3 mr-4">
+                    <div class="flex flex-col gap-3 mx-4">
                         <ThreadPost :post="thread.post" @report="activateReport($event)" />
 
                         <div v-if="thread.replies.length > 0" class="mt-2 ml-4">
@@ -46,7 +46,7 @@
                             <hr class="my-2" />
                         </div>
 
-                        <AppAlert v-else type="info" class="mt-2 ml-4">
+                        <AppAlert v-else type="info" class="mt-2">
                             <!-- TODO: bonus for a first answer -->
                             <template #title> Sois le premier à répondre à ce post ! </template>
                             <template #text>
@@ -79,7 +79,7 @@
                         <div class="flex items-center mb-2 space-x-2 text-xl">
                             <div class="mr-4 font-bold text-md">Tags</div>
                         </div>
-                        <div class="flex flex-wrap">
+                        <div v-if="thread.tags?.length" class="flex flex-wrap">
                             <AppTag
                                 v-for="tag in thread.tags"
                                 :key="tag"
@@ -88,6 +88,7 @@
                                 :tag-color="tag.color"
                             />
                         </div>
+                        <div v-else class="italic">Aucun tag</div>
                     </div>
                     <div class="card">
                         <div class="flex items-center mb-2 space-x-2 text-xl">
