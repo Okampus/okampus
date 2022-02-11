@@ -62,7 +62,7 @@ export class CaslAbilityFactory {
       allow(Action.Read, 'all');
       forbid(Action.Read, Report);
       allow([Action.Read, Action.Update], Report, { user: { userId: user.userId } });
-      allow(Action.Create, [Attachment, Content, InfoDoc, StudyDoc, Tag]);
+      allow(Action.Create, [Attachment, Content, InfoDoc, StudyDoc, Tag, Thread]);
       allow(Action.Report, 'all');
       // @ts-expect-error
       forbid(Action.Report, Content, isAuthor)
