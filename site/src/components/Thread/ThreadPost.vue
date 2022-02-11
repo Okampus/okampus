@@ -9,25 +9,6 @@
                 :img-size="14"
                 mode="vertical"
             />
-
-            <div class="flex flex-col mt-1">
-                <div
-                    v-for="(action, i) in otherActions"
-                    :key="i"
-                    class="flex items-center rounded transition cursor-pointer text-5"
-                    @click="actionsMap[action].action"
-                >
-                    <div class="group flex gap-2 items-center">
-                        <font-awesome-icon
-                            :icon="actionsMap[action].icon"
-                            :class="actionsMap[action].class"
-                        />
-                        <p :class="actionsMap[action].class" class="pt-1 text-sm">
-                            {{ actionsMap[action].name() }}
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
         <div
             :id="`content-${post.contentId}`"
@@ -122,12 +103,13 @@
         computed: {
             actionsBar() {
                 return [
-                    ...['reply', 'addComment', 'report', 'getLink'],
+                    'reply',
+                    'addComment',
+                    'favorite',
                     ...(this.post.author.userId === this.$store.state.auth.user.userId ? ['edit'] : []),
+                    'report',
+                    'getLink',
                 ]
-            },
-            otherActions() {
-                return ['favorite']
             },
             actionsMap() {
                 return {
@@ -149,7 +131,7 @@
                             },
                         },
                         report: {
-                            name: () => (this.post?.userReported ? 'Signalé' : 'Signaler'),
+                            name: () => (this.post?.userReported ? 'Signalé' : ''),
                             icon: this.post?.userReported ? 'flag' : ['far', 'flag'],
                             class: this.post?.userReported
                                 ? 'group-hover:text-red-600 text-red-500'
@@ -171,7 +153,7 @@
                             },
                         },
                         getLink: {
-                            name: () => 'Lien',
+                            name: () => '',
                             icon: 'link',
                             class: 'group-hover:text-blue-600',
                             action: () => {

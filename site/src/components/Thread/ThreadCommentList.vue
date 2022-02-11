@@ -165,53 +165,17 @@
             },
             actionsMap(i) {
                 return {
-                    ...{
-                        favorite: {
-                            name: () => 'Favori',
-                            icon: () => (this.commentItems[i].userFavorited ? 'star' : ['far', 'star']),
-                            class: () =>
-                                this.commentItems[i].userFavorited
-                                    ? 'group-hover:text-yellow-600 text-yellow-500'
-                                    : 'group-hover:text-yellow-500',
-                            action: () => {
-                                this.commentItems[i].userFavorited
-                                    ? this.deleteFavorite(i)
-                                    : this.addFavorite(i)
-                            },
-                        },
-
-                        report: {
-                            name: () => (this.commentItems[i]?.userReported ? 'Signalé' : 'Signaler'),
-                            icon: () => (this.commentItems[i]?.userReported ? 'flag' : ['far', 'flag']),
-                            class: () =>
-                                this.commentItems[i]?.userReported
-                                    ? 'group-hover:text-red-600 text-red-500'
-                                    : 'group-hover:text-red-500',
-                            action: () => {
-                                this.commentItems[i]?.userReported
-                                    ? alert('Vous avez déjà signalé ce commentaire.')
-                                    : this.$emit('report', this.commentItems[i])
-                            },
-                        },
-
-                        getLink: {
-                            name: () => 'Lien',
-                            icon: () => 'link',
-                            class: () => 'group-hover:text-blue-600',
-                            action: () => {
-                                navigator.clipboard.writeText(
-                                    getURL(
-                                        urljoin(
-                                            this.$route.path,
-                                            '#content-' + this.commentItems[i].contentId,
-                                        ),
-                                    ),
-                                )
-                                this.$emitter.emit('show-toast', {
-                                    text: 'Le lien du commentaire a bien été copié !',
-                                    type: 'info',
-                                })
-                            },
+                    favorite: {
+                        name: () => 'Favori',
+                        icon: () => (this.commentItems[i].userFavorited ? 'star' : ['far', 'star']),
+                        class: () =>
+                            this.commentItems[i].userFavorited
+                                ? 'group-hover:text-yellow-600 text-yellow-500'
+                                : 'group-hover:text-yellow-500',
+                        action: () => {
+                            this.commentItems[i].userFavorited
+                                ? this.deleteFavorite(i)
+                                : this.addFavorite(i)
                         },
                     },
                     ...(this.commentItems[i].author.userId === this.$store.state.auth.user?.userId && {
@@ -224,6 +188,39 @@
                             },
                         },
                     }),
+                    report: {
+                        name: () => (this.commentItems[i]?.userReported ? 'Signalé' : ''),
+                        icon: () => (this.commentItems[i]?.userReported ? 'flag' : ['far', 'flag']),
+                        class: () =>
+                            this.commentItems[i]?.userReported
+                                ? 'group-hover:text-red-600 text-red-500'
+                                : 'group-hover:text-red-500',
+                        action: () => {
+                            this.commentItems[i]?.userReported
+                                ? alert('Vous avez déjà signalé ce commentaire.')
+                                : this.$emit('report', this.commentItems[i])
+                        },
+                    },
+
+                    getLink: {
+                        name: () => '',
+                        icon: () => 'link',
+                        class: () => 'group-hover:text-blue-600',
+                        action: () => {
+                            navigator.clipboard.writeText(
+                                getURL(
+                                    urljoin(
+                                        this.$route.path,
+                                        '#content-' + this.commentItems[i].contentId,
+                                    ),
+                                ),
+                            )
+                            this.$emitter.emit('show-toast', {
+                                text: 'Le lien du commentaire a bien été copié !',
+                                type: 'info',
+                            })
+                        },
+                    },
                 }
             },
             closeComment() {
