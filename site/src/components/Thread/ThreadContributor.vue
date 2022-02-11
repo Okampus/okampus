@@ -3,8 +3,8 @@
         <img
             alt="Avatar"
             class="mt-1 mr-2 w-8 h-8 bg-white rounded-full"
-            :src="contributor.img"
-            :title="contributor.pseudo"
+            :src="participant.img"
+            :title="participant.pseudo"
         />
     </div>
 </template>
@@ -12,7 +12,7 @@
 <script>
     export default {
         props: {
-            contributor: {
+            participant: {
                 type: Object,
                 default: () => ({
                     img: '',

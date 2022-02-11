@@ -105,21 +105,21 @@
                                 mode="horizontal"
                             />
                         </div>
-                        <div v-else class="italic">Personne d'assigné</div>
+                        <div v-else class="italic">Personne n'est assigné</div>
                     </div>
                     <div class="card">
                         <div class="flex items-center mb-2 space-x-2 text-xl">
-                            <div class="mr-4 font-bold text-md">Contributeurs</div>
+                            <div class="mr-4 font-bold text-md">Participants</div>
                             <!-- TODO: Actions : Settings, Add -->
                         </div>
                         <div class="flex flex-col">
                             <UserPreview
-                                v-for="(contributor, i) in thread.contributors"
+                                v-for="(participant, i) in thread.participants"
                                 :key="i"
                                 :img-size="12"
-                                :username="contributor.fullname"
-                                :avatar="contributor.avatar"
-                                :reputation="contributor.reputation"
+                                :username="participant.fullname"
+                                :avatar="participant.avatar"
+                                :reputation="participant.reputation"
                                 mode="horizontal"
                             />
                         </div>

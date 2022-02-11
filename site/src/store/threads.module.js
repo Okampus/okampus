@@ -14,19 +14,19 @@ const updateThreadChildren = (thread) => {
     const { children, ...post } = thread.post
     const grouped = groupBy(children, 'kind')
     thread.post = post
-    thread.post.author = thread.contributors.find((contributor) => contributor.userId === thread.post.author)
+    thread.post.author = thread.participants.find((participant) => participant.userId === thread.post.author)
     thread.replies = grouped[REPLY] ?? []
     thread.replies.forEach((reply) => {
-        reply.author = thread.contributors.find((contributor) => contributor.userId === reply.author)
+        reply.author = thread.participants.find((participant) => participant.userId === reply.author)
         reply.comments = reply.children
         delete reply.children
         reply.comments.forEach((comment) => {
-            comment.author = thread.contributors.find((contributor) => contributor.userId === comment.author)
+            comment.author = thread.participants.find((participant) => participant.userId === comment.author)
         })
     })
     thread.post.comments = grouped[COMMENT] ?? []
     thread.post.comments.forEach((comment) => {
-        comment.author = thread.contributors.find((contributor) => contributor.userId === comment.author)
+        comment.author = thread.participants.find((participant) => participant.userId === comment.author)
     })
     return thread
 }
