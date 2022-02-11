@@ -237,8 +237,6 @@
                     return
                 }
 
-                this.success = true
-
                 this.$store
                     .dispatch('threads/addThread', {
                         title: this.state.title,
@@ -248,6 +246,7 @@
                     })
                     .then((newThread) => {
                         this.show = 'success'
+                        this.success = true
                         this.redirect = () => {
                             this.$router.push(`/posts/${newThread.contentMasterId}`)
                         }
