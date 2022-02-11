@@ -46,7 +46,7 @@ export class ThreadsService {
     const assignees = await this.userRepository.find({ userId: { $in: createThreadDto.assignees } });
     thread.assignees.add(...assignees);
 
-    thread.contributors.add(user);
+    thread.participants.add(user);
 
     thread.post = await this.contentsService.createPost(user, thread, {
       ...createThreadDto,
@@ -73,7 +73,7 @@ export class ThreadsService {
     // (i.e. "personal"/"sensitive" threads)
     return await this.threadRepository.findOneOrFail(
       { contentMasterId },
-      { populate: ['post', 'post.children', 'post.children.children', 'tags', 'assignees', 'contributors'] },
+      { populate: ['post', 'post.children', 'post.children.children', 'tags', 'assignees', 'participants'] },
     );
   }
 

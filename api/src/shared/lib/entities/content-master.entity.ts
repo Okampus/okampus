@@ -31,7 +31,7 @@ export abstract class ContentMaster extends BaseEntity {
 
   @ManyToMany()
   @TransformCollection()
-  contributors = new Collection<User>(this);
+  participants = new Collection<User>(this);
 
   @Enum(() => ContentMasterType)
   kind: ContentMasterType;

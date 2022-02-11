@@ -62,10 +62,10 @@ export class ContentsService {
 
     const master = await this.contentMasterRepository.findOneOrFail(
       { contentMasterId: content.contentMasterId },
-      { populate: ['contributors'] },
+      { populate: ['participants'] },
     );
-    if (!master.contributors.contains(user)) {
-      master.contributors.add(user);
+    if (!master.participants.contains(user)) {
+      master.participants.add(user);
       await this.contentMasterRepository.flush();
     }
 
@@ -95,10 +95,10 @@ export class ContentsService {
 
     const master = await this.contentMasterRepository.findOneOrFail(
       { contentMasterId: content.contentMasterId },
-      { populate: ['contributors'] },
+      { populate: ['participants'] },
     );
-    if (!master.contributors.contains(user)) {
-      master.contributors.add(user);
+    if (!master.participants.contains(user)) {
+      master.participants.add(user);
       await this.contentMasterRepository.flush();
     }
 
@@ -152,8 +152,8 @@ export class ContentsService {
     assertPermissions(ability, Action.Delete, content);
 
     const master = await this.contentMasterRepository.findOneOrFail({ contentMasterId: content.contentMasterId });
-    if (master.contributors.contains(user)) {
-      master.contributors.remove(user);
+    if (master.participants.contains(user)) {
+      master.participants.remove(user);
       await this.contentMasterRepository.flush();
     }
 

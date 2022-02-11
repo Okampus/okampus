@@ -55,7 +55,7 @@ export class BlogsService {
     // (i.e. "personal"/"sensitive" blogs)
     return await this.blogRepository.findOneOrFail(
       { contentMasterId },
-      { populate: ['post', 'post.children', 'post.children.children', 'tags', 'contributors'] },
+      { populate: ['post', 'post.children', 'post.children.children', 'tags', 'participants'] },
     );
   }
 
