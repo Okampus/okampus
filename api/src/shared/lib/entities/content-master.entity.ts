@@ -26,7 +26,7 @@ export abstract class ContentMaster extends BaseEntity {
   @TransformCollection()
   tags = new Collection<Tag>(this);
 
-  @OneToOne({ onDelete: 'CASCADE' })
+  @OneToOne()
   post?: Content;
 
   @ManyToMany()

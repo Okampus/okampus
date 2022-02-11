@@ -151,7 +151,10 @@ export class ContentsService {
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, content);
 
-    const master = await this.contentMasterRepository.findOneOrFail({ contentMasterId: content.contentMasterId });
+    const master = await this.contentMasterRepository.findOneOrFail(
+      { contentMasterId: content.contentMaster.contentMasterId },
+      { populate: ['participants'] },
+    );
     if (master.participants.contains(user)) {
       master.participants.remove(user);
       await this.contentMasterRepository.flush();
