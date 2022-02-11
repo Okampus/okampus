@@ -5,7 +5,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import {
     faPhone, faUser, faFlag, faThumbsUp, faThumbsDown, faCheckCircle, faTimesCircle, faTimes, faCheck,
     faFolder, faCrown, faQuestionCircle, faNewspaper, faUsers, faPenAlt, faUserCog, faUpload, faComments,
-    faColumns, faHome, faVial, faComment, faHistory, faHourglass, faBars, faSignInAlt, faUserShield, faKey,
+    faColumns, faHome, faVial, faComment, faHistory, faHourglass, faBars, faSignInAlt, faShieldAlt, faUserShield, faKey,
     faInfoCircle, faChevronDown, faChevronUp, faChevronLeft, faChevronRight, faStar, faCommentAlt, faEdit,
     faHourglassEnd, faSearch, faCog, faSignOutAlt, faCamera, faWind, faExclamationCircle, faHashtag,
     faParagraph, faBold, faItalic, faStrikethrough, faUnderline, faHighlighter, faTrash, faStopwatch,
@@ -15,7 +15,7 @@ import {
     faLeaf, faBolt, faBook, faSadCry, faGrimace, faGrinBeamSweat, faDizzy, faSurprise, faExclamation,
     faInfo, faSpinner, faArrowDown, faArrowRight, faLink, faSlidersH, faLightbulb, faPen,faCircle, faCertificate,
     faEye, faHeart, faHeartBroken, faBug, faCalendar, faFolderOpen, faMapMarkerAlt, faCopyright,
-    faVolumeUp, faUserPlus, faExclamationTriangle, faTrophy,
+    faVolumeUp, faUserPlus, faExclamationTriangle, faTrophy, faGraduationCap, faSchool,
 } from '@fortawesome/free-solid-svg-icons'
 
 // prettier-ignore
@@ -40,8 +40,8 @@ import {
 library.add(faPhone, faUser, faFlag, faThumbsUp, faThumbsDown, faCheckCircle, faTimesCircle, faCheck,
     faTimes, faFolder, faCrown, faQuestionCircle, faFolder, faNewspaper, faUsers, faPenAlt, faUserCog,
     faUpload, faComments, faColumns, faHome, faVial, faComment, faHistory, faHourglass, faBars, faSignInAlt,
-    faUserShield, faKey, faInfoCircle, faChevronDown, faChevronUp, faChevronLeft, faChevronRight, faStar,
-    faFlag, faCommentAlt, faEdit, faHourglassEnd, faSearch, faCog, faSignOutAlt, faCamera, faWind,
+    faShieldAlt, faUserShield, faKey, faInfoCircle, faChevronDown, faChevronUp, faChevronLeft, faChevronRight,
+    faStar, faFlag, faCommentAlt, faEdit, faHourglassEnd, faSearch, faCog, faSignOutAlt, faCamera, faWind,
     faExclamationCircle, faHashtag, faParagraph, faBold, faItalic, faStrikethrough, faUnderline,
     faHighlighter, faTrash, faStopwatch, faTags, faShareSquare, faAward, faMedal, faEnvelope,
     faUniversalAccess, faUserFriends, faAddressCard, faExternalLinkAlt, faFileUpload, faCloudUploadAlt,
@@ -50,7 +50,7 @@ library.add(faPhone, faUser, faFlag, faThumbsUp, faThumbsDown, faCheckCircle, fa
     faGrimace, faGrinBeamSweat, faDizzy, faSurprise, faExclamation, faInfo, faSpinner, faArrowDown,
     faArrowRight, faLink, faSlidersH, faLightbulb, faPen, faCircle, faCertificate, faEye, faHeart,
     faHeartBroken, faBug, faCalendar, faFolderOpen, faMapMarkerAlt, faCopyright, faVolumeUp, faUserPlus,
-    faExclamationTriangle, faTrophy)
+    faExclamationTriangle, faTrophy, faGraduationCap, faSchool)
 
 // Regular icons
 library.add(

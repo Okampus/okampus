@@ -1,30 +1,23 @@
 export default [
     {
-        key: 'horizon',
-        fr: 'Horizon',
-        en: 'Horizon',
-        icon: 'hashtag',
-        color: 'yellow',
-    },
-    {
         key: 'student',
         fr: 'Étudiant',
         en: 'Student',
-        icon: 'hashtag',
-        color: 'lime',
+        icon: 'graduation-cap',
+        color: 'neutral',
     },
     {
         key: 'teacher',
         fr: 'Prof.',
         en: 'Teacher',
-        icon: 'hashtag',
+        icon: 'school',
         color: 'blue',
     },
     {
         key: 'admin',
         fr: 'Admin.',
         en: 'Admin.',
-        icon: 'hashtag',
-        color: 'neutral',
+        icon: 'shield-alt',
+        color: 'red',
     },
 ]
