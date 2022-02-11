@@ -55,29 +55,15 @@
                 <p class="text-1 text-bold" :class="{ 'hidden': !showUncollapsed }">Mode Sombre</p>
                 <SwitchInput v-model="theme" @click="$store.dispatch('user/switchTheme')" />
             </div>
-
-            <div
-                class="flex overflow-x-visible flex-wrap justify-center items-center py-4 px-2 text-xs text-2"
-                :class="[showUncollapsed ? 'gap-2 pt-2' : 'flex-col gap-3']"
-            >
-                <template v-for="(link, i) in extraLinks" :key="i">
-                    <div v-if="showUncollapsed" class="flex gap-2">
-                        <AppLink :link="link" class="link" />
-                        <p v-if="i != extraLinks.length - 1">|</p>
-                    </div>
-                    <AppLink v-else :link="link" class="text-center link" />
-                </template>
-            </div>
         </div>
     </aside>
 </template>
 
 <script>
     import SwitchInput from '@/components/Input/SwitchInput.vue'
-    import AppLink from '../App/AppLink.vue'
     import AppLogo from '../App/AppLogo.vue'
     export default {
-        components: { SwitchInput, AppLink, AppLogo },
+        components: { SwitchInput, AppLogo },
         props: {
             uncollapsed: {
                 type: Boolean,
@@ -102,26 +88,6 @@
             },
             loggedIn() {
                 return this.$store.state.auth.loggedIn ?? false
-            },
-            extraLinks() {
-                return [
-                    {
-                        name: 'Nous contacter',
-                        href: "mailto:dev@horizon-efrei.fr?subject=Contact%20via%20site%20-%20%5BRAISON%20DE%20CONTACT%5D&body=Bonjour%20%C3%A0%20l'%C3%A9quipe%20de%20d%C3%A9veloppement%20Horizon%20!%0D%0A%0D%0AJe%20suis%20%5BR%C3%94LE%20AU%20SEIN%20DE%20L'EFREI%5D%2C%20et%20je%20vous%20contact%20au%20sujet%20de%20%5BSUJET%5D%0D%0A%0D%0ACordialement%2C",
-                    },
-                    {
-                        name: 'Notre projet',
-                        to: '/about',
-                    },
-                    {
-                        name: 'CGU',
-                        to: '/cgu',
-                    },
-                    {
-                        name: 'RGPD',
-                        to: '/rgpd',
-                    },
-                ]
             },
             sections() {
                 return [

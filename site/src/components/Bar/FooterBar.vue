@@ -159,19 +159,19 @@
                 ],
                 sections: [
                     {
-                        name: 'Espaces',
+                        name: 'Légal',
                         links: [
                             {
-                                name: 'Efrei Forum',
-                                to: '/posts',
+                                name: 'Notre projet',
+                                to: '/about',
                             },
                             {
-                                name: 'Horizon Cloud',
-                                to: '/docs',
+                                name: 'CGU',
+                                to: '/cgu',
                             },
                             {
-                                name: 'News & Blog',
-                                to: '/articles',
+                                name: 'RGPD',
+                                to: '/rgpd',
                             },
                         ],
                     },
