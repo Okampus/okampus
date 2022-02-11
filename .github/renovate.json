@@ -21,6 +21,17 @@
       }, {
         "matchDepTypes": ["engines"],
         "enabled": false
+      }, {
+        "matchPackageNames": [
+          "@mikro-orm/core",
+          "@mikro-orm/migrations",
+          "@mikro-orm/nestjs",
+          "@mikro-orm/postgresql",
+          "@mikro-orm/reflection",
+          "@mikro-orm/sql-highlighter",
+          "@mikro-orm/cli"
+        ],
+        "enabled": false
       }
     ]
   }
