@@ -55,7 +55,7 @@ export class ContentsService {
       parent,
       author: user,
     });
-    await this.contentRepository.persistAndFlush(content);
+    this.contentRepository.persist(content);
 
     parent.children.add(content);
     await this.contentRepository.flush();
@@ -88,7 +88,7 @@ export class ContentsService {
       parent,
       author: user,
     });
-    await this.contentRepository.persistAndFlush(content);
+    this.contentRepository.persist(content);
 
     parent.children.add(content);
     await this.contentRepository.flush();
