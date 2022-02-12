@@ -13,10 +13,14 @@ const initialState = {
 const updateThreadChildren = (thread) => {
     const { children, ...post } = thread.post
     const grouped = groupBy(children, 'kind')
-    thread.post = post
-    thread.post.author = thread.participants.find((participant) => participant.userId === thread.post.author)
+    thread.post = {
+        ...post,
+        author: thread.participants.find((participant) => participant.userId === thread.post.author),
+        contentMasterId: thread.contentMasterId,
+    }
     thread.replies = grouped[REPLY] ?? []
     thread.replies.forEach((reply) => {
+        reply.contentMasterId = thread.contentMasterId
         reply.author = thread.participants.find((participant) => participant.userId === reply.author)
         reply.comments = reply.children
         delete reply.children
@@ -26,6 +30,7 @@ const updateThreadChildren = (thread) => {
     })
     thread.post.comments = grouped[COMMENT] ?? []
     thread.post.comments.forEach((comment) => {
+        comment.contentMasterId = thread.contentMasterId
         comment.author = thread.participants.find((participant) => participant.userId === comment.author)
     })
     return thread
@@ -106,10 +111,16 @@ export const threads = {
         },
         updateThread: ({ commit }, thread) =>
             settleQuery({ commit, mutation: 'updateThreadSuccess' }, ThreadsService.updateThread(thread)),
-        deleteThread: ({ commit }, id) =>
-            settleQuery({ commit, mutation: 'deleteThreadSuccess' }, ThreadsService.deleteThread(id)),
-        forceDeleteThread: ({ commit }, id) =>
-            settleQuery({ commit, mutation: 'deleteThreadSuccess' }, ThreadsService.deleteThread(id, true)),
+        deleteThread: ({ commit }, contentMasterId) =>
+            settleQuery(
+                { commit, mutation: 'deleteThreadSuccess' },
+                ThreadsService.deleteThread({ threadId: contentMasterId }),
+            ),
+        forceDeleteThread: ({ commit }, contentMasterId) =>
+            settleQuery(
+                { commit, mutation: 'deleteThreadSuccess' },
+                ThreadsService.deleteThread({ threadId: contentMasterId, force: true }),
+            ),
         addReply: ({ commit }, reply) =>
             settleQuery({ commit, mutation: 'addReplySuccess' }, ThreadsService.addReply(reply)),
         addComment: ({ commit }, comment) =>
@@ -119,10 +130,16 @@ export const threads = {
                 { commit, mutation: 'updateContentSuccess' },
                 ThreadsService.updateContent(contentId, body),
             ),
-        deleteContent: ({ commit }, id) =>
-            settleQuery({ commit, mutation: 'deleteContentSuccess' }, ThreadsService.deleteContent(id)),
-        forceDeleteContent: ({ commit }, id) =>
-            settleQuery({ commit, mutation: 'deleteContentSuccess' }, ThreadsService.deleteContent(id, true)),
+        deleteContent: ({ commit }, contentId) =>
+            settleQuery(
+                { commit, mutation: 'deleteContentSuccess' },
+                ThreadsService.deleteContent({ contentId }),
+            ),
+        forceDeleteContent: ({ commit }, contentId) =>
+            settleQuery(
+                { commit, mutation: 'deleteContentSuccess' },
+                ThreadsService.deleteContent({ contentId, force: true }),
+            ),
         voteContent: ({ commit }, { contentId, value }) =>
             settleQuery(
                 { commit, mutation: 'voteContentSuccess' },
@@ -235,6 +252,7 @@ export const threads = {
             state.threads = state.threads.filter((thread) => thread.contentMasterId !== contentMasterId)
         },
         addReplySuccess(state, reply) {
+            reply.comments = []
             state.currentThread.replies.unshift(reply)
         },
         addCommentSuccess(state, comment) {

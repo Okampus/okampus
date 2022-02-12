@@ -103,12 +103,8 @@
         computed: {
             actionsBar() {
                 return [
-                    'reply',
-                    'addComment',
-                    'favorite',
+                    ...['reply', 'addComment', 'report', 'getLink', 'delete'],
                     ...(this.post.author.userId === this.$store.state.auth.user.userId ? ['edit'] : []),
-                    'report',
-                    'getLink',
                 ]
             },
             actionsMap() {
@@ -131,7 +127,7 @@
                             },
                         },
                         report: {
-                            name: () => (this.post?.userReported ? 'Signalé' : ''),
+                            name: () => (this.post?.userReported ? 'Signalé' : 'Signaler'),
                             icon: this.post?.userReported ? 'flag' : ['far', 'flag'],
                             class: this.post?.userReported
                                 ? 'group-hover:text-red-600 text-red-500'
@@ -149,11 +145,13 @@
                                 ? 'group-hover:text-yellow-600 text-yellow-500'
                                 : 'group-hover:text-yellow-500',
                             action: () => {
-                                this.post?.userFavorited ? this.deleteFavorite() : this.addFavorite()
+                                this.post?.userFavorited
+                                    ? this.$store.dispatch('threads/deleteFavorite', this.post)
+                                    : this.$store.dispatch('threads/addFavorite', this.post.contentId)
                             },
                         },
                         getLink: {
-                            name: () => '',
+                            name: () => 'Lien',
                             icon: 'link',
                             class: 'group-hover:text-blue-600',
                             action: () => {
@@ -164,6 +162,21 @@
                                     text: 'Le lien du post a bien été copié !',
                                     type: 'info',
                                 })
+                            },
+                        },
+                        delete: {
+                            name: () => 'Supprimer',
+                            icon: 'trash-alt',
+                            class: 'group-hover:text-red-500',
+                            action: () => {
+                                this.$store
+                                    .dispatch('threads/deleteThread', this.post.contentMasterId)
+                                    .then(() => {
+                                        this.$router.push('/')
+                                    })
+                                    .catch(() => {
+                                        console.log("Couldn't delete thread")
+                                    })
                             },
                         },
                     },
@@ -204,12 +217,6 @@
                     contentId: this.post.contentId,
                     value: vote,
                 })
-            },
-            addFavorite() {
-                this.$store.dispatch('threads/addFavorite', this.post.contentId)
-            },
-            deleteFavorite() {
-                this.$store.dispatch('threads/deleteFavorite', this.post)
             },
         },
     }

@@ -140,7 +140,9 @@
                                 ? 'group-hover:text-yellow-600 text-yellow-500'
                                 : 'group-hover:text-yellow-500',
                             action: () => {
-                                this.reply.userFavorited ? this.deleteFavorite() : this.addFavorite()
+                                this.reply.userFavorited
+                                    ? this.$store.dispatch('threads/deleteFavorite', this.reply)
+                                    : this.$store.dispatch('threads/addFavorite', this.reply.contentId)
                             },
                         },
                         addComment: {
@@ -175,6 +177,14 @@
                                     text: 'Le lien de la réponse a bien été copié !',
                                     type: 'info',
                                 })
+                            },
+                        },
+                        delete: {
+                            name: () => 'Supprimer',
+                            icon: 'trash-alt',
+                            class: 'group-hover:text-red-600',
+                            action: () => {
+                                this.$store.dispatch('threads/deleteContent', this.reply.contentId)
                             },
                         },
                     },
@@ -227,12 +237,6 @@
                     contentId: this.reply.contentId,
                     value: vote,
                 })
-            },
-            addFavorite() {
-                this.$store.dispatch('threads/addFavorite', this.reply.contentId)
-            },
-            deleteFavorite() {
-                this.$store.dispatch('threads/deleteFavorite', this.reply)
             },
         },
     }

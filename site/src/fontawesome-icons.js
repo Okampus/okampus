@@ -15,7 +15,7 @@ import {
     faLeaf, faBolt, faBook, faSadCry, faGrimace, faGrinBeamSweat, faDizzy, faSurprise, faExclamation,
     faInfo, faSpinner, faArrowDown, faArrowRight, faLink, faSlidersH, faLightbulb, faPen,faCircle, faCertificate,
     faEye, faHeart, faHeartBroken, faBug, faCalendar, faFolderOpen, faMapMarkerAlt, faCopyright,
-    faVolumeUp, faUserPlus, faExclamationTriangle, faTrophy, faGraduationCap, faSchool,
+    faVolumeUp, faUserPlus, faExclamationTriangle, faTrophy, faGraduationCap, faSchool, faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons'
 
 // prettier-ignore
@@ -50,7 +50,7 @@ library.add(faPhone, faUser, faFlag, faThumbsUp, faThumbsDown, faCheckCircle, fa
     faGrimace, faGrinBeamSweat, faDizzy, faSurprise, faExclamation, faInfo, faSpinner, faArrowDown,
     faArrowRight, faLink, faSlidersH, faLightbulb, faPen, faCircle, faCertificate, faEye, faHeart,
     faHeartBroken, faBug, faCalendar, faFolderOpen, faMapMarkerAlt, faCopyright, faVolumeUp, faUserPlus,
-    faExclamationTriangle, faTrophy, faGraduationCap, faSchool)
+    faExclamationTriangle, faTrophy, faGraduationCap, faSchool, faTrashAlt)
 
 // Regular icons
 library.add(
