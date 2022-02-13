@@ -1,6 +1,6 @@
 %button-flat,
 .button-flat {
-    @apply rounded-md font-medium cursor-pointer;
+    @apply rounded-md font-medium cursor-pointer select-none;
 }
 
 %button-raised {
@@ -36,6 +36,16 @@
         @apply bg-blue-500 dark:bg-blue-700
             hover:bg-blue-600 dark:hover:bg-blue-800
             active:bg-blue-700 dark:active:bg-blue-900;
+    }
+}
+
+.button-blue-gradient {
+    @extend %button-raised;
+
+    background: linear-gradient(to right, #45aaf2, #1d98df);
+
+    & > :first-child {
+        background: linear-gradient(to right, #45aaf2, #1d98df);
     }
 }
 

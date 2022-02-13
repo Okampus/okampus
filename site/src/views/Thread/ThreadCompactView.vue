@@ -1,49 +1,68 @@
 <template>
     <AppToast v-model:active="showToast" :text="toastText" :type="toastType" />
-    <FormReport :show="onReport" :user="reportedUser" :content="reportedContent" @close="onReport = false" />
-    <template v-if="isNil(thread)"><AppLoader :size="3" /></template>
+    <div v-if="notLoaded" class="flex justify-center items-center w-full h-full text-4xl text-0">
+        <!-- TODO: 404 page + fix Thread switch when on 404 -->
+        404
+    </div>
+    <template v-else-if="isNil(thread)"><AppLoader :size="3" /></template>
     <div v-else>
-        <div class="flex flex-col my-6 mx-auto md:w-21/24">
-            <div class="flex gap-4 items-center mb-4 ml-4 text-xl font-bold md:ml-0 text-1">
-                <AppTag
-                    :icon="postTypesEnum[thread.type]?.icon"
-                    :tag-color="postTypesEnum[thread.type]?.color"
-                    :tag-name="postTypesEnum[thread.type][$i18n.locale]"
-                    :large="true"
-                />
-                <p class="text-2xl break-all">{{ thread.title }}</p>
-            </div>
-            <div class="flex">
-                <!-- TODO: FIX OVERFLOW: replace actions by icons to gain space OR use hamburger bars -->
-                <div class="overflow-x-scroll px-0 w-full rounded-none md:rounded-md card">
-                    <div class="mx-4 text-1">
-                        <div class="flex justify-between items-center mx-2">
-                            <div class="flex gap-4 items-center text-sm text-2">
-                                <div class="flex gap-2 items-center">
-                                    <font-awesome-icon icon="calendar" />
-                                    <p>{{ timeAgo(thread.post.createdAt, 'long') }}</p>
+        <FormReport :show="onReport" :content="reportedContent" @close="onReport = false" />
+        <div class="flex flex-col mx-4 md:mx-auto md:w-23/24 text-0">
+            <div class="flex gap-10 items-end my-6">
+                <div class="flex flex-col gap-2">
+                    <p class="text-3xl break-all text-1">{{ thread.title }}</p>
+                    <div class="flex gap-4 items-center text-2">
+                        <AppTag
+                            :icon="postTypesEnum[thread.type]?.icon"
+                            :tag-color="postTypesEnum[thread.type]?.color"
+                            :tag-name="postTypesEnum[thread.type][$i18n.locale]"
+                            :large="true"
+                        />
+                        <div class="flex gap-8">
+                            <div class="flex flex-col">
+                                <div class="text-sm tracking-tight text-2">Post créé par</div>
+                                <div class="flex gap-2 items-center text-0">
+                                    <div class="flex">
+                                        <div>{{ thread.post?.author?.fullname }}</div>
+                                        <div>,</div>
+                                    </div>
+                                    <p class="text-sm text-1">
+                                        {{ timeAgo(thread.post.createdAt, 'short') }}
+                                    </p>
                                 </div>
-                                <div class="flex gap-2 items-center">
-                                    <font-awesome-icon icon="history" />
-                                    <p>{{ lastUpdatedAt }}</p>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="text-sm tracking-tight text-2">
+                                    <!-- TODO: link to last action -->
+                                    <a class="link-blue"> Dernière action </a> par
+                                </div>
+                                <div class="flex gap-2 items-center text-0">
+                                    <div class="flex">
+                                        <div>{{ thread.post?.author?.fullname }}</div>
+                                        <div>,</div>
+                                    </div>
+                                    <p class="text-sm text-1">{{ lastUpdatedAt('short') }}</p>
                                 </div>
                             </div>
                         </div>
-                        <hr class="mt-3 mb-2" />
                     </div>
+                </div>
+                <div class="button" @click="scrollHighlight('new-reply')"><p>Répondre à ce post</p></div>
+            </div>
 
-                    <div class="flex flex-col gap-3 mx-4">
+            <div class="flex">
+                <!-- TODO: FIX OVERFLOW: replace actions by icons to gain space OR use hamburger bars -->
+                <div class="w-full">
+                    <div class="flex flex-col gap-3">
                         <ThreadPost :post="thread.post" @report="activateReport($event)" />
 
-                        <div v-if="thread.replies.length > 0" class="mt-2 ml-4">
-                            <div class="mx-2">
+                        <div v-if="thread.replies.length > 0" class="mt-2">
+                            <div class="mb-1 ml-2">
                                 {{
-                                    thread.replies.length > 1
-                                        ? `${thread.replies.length} réponses`
-                                        : `${thread.replies.length} réponse`
+                                    `${thread.replies.length} réponse${thread.replies.length > 1 ? 's' : ''}`
                                 }}
                             </div>
-                            <hr class="my-2" />
+                            <hr />
                         </div>
 
                         <AppAlert v-else type="info" class="mt-2">
@@ -51,8 +70,7 @@
                             <template #title> Sois le premier à répondre à ce post ! </template>
                             <template #text>
                                 <div class="mb-2">
-                                    Personne n'a encore répondu à ce post : n'hésite pas à proposer une
-                                    première réponse 🌟
+                                    Personne n'a encore répondu à ce post : propose une première réponse 🌟
                                 </div>
                             </template>
                         </AppAlert>
@@ -64,18 +82,12 @@
                             @report="activateReport($event)"
                         />
 
-                        <p class="mt-2 ml-6 label-title">Ta réponse</p>
-                        <ThreadReply
-                            v-model:body="newReply"
-                            :new-reply="true"
-                            :closeable="false"
-                            @send="sendReply()"
-                        />
+                        <ThreadNewReply :post-parent-id="thread.post.contentId" />
                     </div>
                 </div>
 
                 <div class="hidden sticky top-0 ml-4 space-y-2 w-3/12 lg:block text-1">
-                    <div class="card">
+                    <div class="card bg-card-within-1">
                         <div class="flex items-center mb-2 space-x-2 text-xl">
                             <div class="mr-4 font-bold text-md">Tags</div>
                         </div>
@@ -90,7 +102,7 @@
                         </div>
                         <div v-else class="italic">Aucun tag</div>
                     </div>
-                    <div class="card">
+                    <div class="card bg-card-within-1">
                         <div class="flex items-center mb-2 space-x-2 text-xl">
                             <div class="mr-4 font-bold text-md">Assigné</div>
                             <!-- TODO: Actions : Settings, Add -->
@@ -99,16 +111,13 @@
                             <UserPreview
                                 v-for="(assigned, i) in thread.assignees"
                                 :key="i"
-                                :img-size="12"
-                                :username="assigned.fullname"
-                                :avatar="assigned.avatar"
-                                :reputation="assigned.reputation"
+                                :user="assigned"
                                 mode="horizontal"
                             />
                         </div>
                         <div v-else class="italic">Personne n'est assigné</div>
                     </div>
-                    <div class="card">
+                    <div class="card bg-card-within-1">
                         <div class="flex items-center mb-2 space-x-2 text-xl">
                             <div class="mr-4 font-bold text-md">Participants</div>
                             <!-- TODO: Actions : Settings, Add -->
@@ -117,10 +126,7 @@
                             <UserPreview
                                 v-for="(participant, i) in thread.participants"
                                 :key="i"
-                                :img-size="12"
-                                :username="participant.fullname"
-                                :avatar="participant.avatar"
-                                :reputation="participant.reputation"
+                                :user="participant"
                                 mode="horizontal"
                             />
                         </div>
@@ -145,7 +151,6 @@
 
 <script>
     import postTypesEnum from '@/shared/types/post-types.enum'
-    import defaultAvatar from '@/assets/img/default_avatars/user.png'
 
     import AppAlert from '@/components/App/AppAlert.vue'
     import AppLoader from '@/components/App/AppLoader.vue'
@@ -160,11 +165,9 @@
     import { timeAgo } from '@/utils/timeAgo'
     import { defaultTipTapText } from '@/utils/tiptap'
 
-    import useVuelidate from '@vuelidate/core'
-    import { required } from '@vuelidate/validators'
-
     import { isNil } from 'lodash'
     import AppToast from '@/components/App/AppToast.vue'
+    import ThreadNewReply from '@/components/Thread/ThreadNewReply.vue'
 
     export default {
         components: {
@@ -176,9 +179,7 @@
             UserPreview,
             AppAlert,
             AppToast,
-        },
-        setup() {
-            return { v$: useVuelidate() }
+            ThreadNewReply,
         },
         data() {
             return {
@@ -186,11 +187,10 @@
                 showToast: false,
                 toastText: '',
                 toastType: 'info',
-                defaultAvatar,
-                reportedUser: null,
                 reportedContent: null,
                 onReport: false,
                 newReply: defaultTipTapText,
+                notLoaded: false,
                 errorReply: false,
             }
         },
@@ -208,14 +208,12 @@
                     : null
             },
             lastUpdatedAt() {
-                return timeAgo(this.thread.post.contentLastUpdatedAt, 'long')
+                return (mode) =>
+                    this.thread ? timeAgo(this.thread.post.contentLastUpdatedAt, mode ?? 'long') : null
             },
             replies() {
                 return this.thread.replies
             },
-        },
-        validations() {
-            return { newReply: { required } }
         },
         watch: { '$route': 'getThread' },
         created() {
@@ -225,6 +223,12 @@
                 this.showToast = true
             })
 
+            this.$emitter.on('report', (content) => {
+                this.reportedUser = content.user
+                this.reportedContent = content
+                this.onReport = true
+            })
+
             if (this.loggedIn) {
                 this.getThread()
             }
@@ -232,30 +236,46 @@
         methods: {
             isNil,
             timeAgo,
-            activateReport(content) {
-                this.reportedUser = content.author
-                this.reportedContent = content
-                this.onReport = true
+            scrollHighlight(id) {
+                const el = document.querySelector(id.startsWith('#') ? id : `#${id}`)
+                if (el) {
+                    el.classList.add('highlight-active')
+                    el.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                    })
+                    el.addEventListener(
+                        'animationend',
+                        () => {
+                            el.classList.remove('highlight-active')
+                        },
+                        { once: true },
+                    )
+                }
             },
             getThread() {
                 if (!isNil(this.$route.params.id)) {
                     if (this.$route.params.id > 0) {
                         if (this.thread === null) {
                             // TODO: CATCH: show error alert
-                            this.$store.dispatch('threads/getThread', this.$route.params.id).then(() => {
-                                this.$nextTick(() => {
-                                    if (this.$route.hash) {
-                                        const el = document.querySelector(this.$route.hash)
-                                        if (el) {
-                                            el.classList.add('highlight-active')
-                                            el.scrollIntoView({
-                                                behavior: 'smooth',
-                                                block: 'start',
-                                            })
+                            this.$store
+                                .dispatch('threads/getThread', this.$route.params.id)
+                                .then(() => {
+                                    this.$nextTick(() => {
+                                        if (this.$route.hash) {
+                                            this.scrollHighlight(this.$route.hash)
                                         }
-                                    }
+                                    })
                                 })
-                            })
+                                .catch((err) => {
+                                    this.notLoaded = true
+                                    this.$emitter.emit('show-toast', {
+                                        text: `Le thread correspondant à cette page n'a pas pu être récupéré (${
+                                            err?.response?.data?.message ?? err.toString()
+                                        })`,
+                                        type: 'error',
+                                    })
+                                })
                         }
                     } else {
                         this.$router.push('/posts')
@@ -267,20 +287,6 @@
                     contentId: this.thread.post.contentId,
                     vote,
                 })
-            },
-            sendReply() {
-                this.$store
-                    .dispatch('threads/addReply', {
-                        parentId: this.thread.post.contentId,
-                        body: this.newReply,
-                        contentMasterType: 'thread',
-                    })
-                    .then(() => {
-                        this.newReply = defaultTipTapText
-                    })
-                    .catch(() => {
-                        this.errorReply = true
-                    })
             },
         },
     }

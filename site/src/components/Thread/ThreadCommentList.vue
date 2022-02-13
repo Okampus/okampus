@@ -34,43 +34,48 @@
                     </div>
                 </div>
             </div>
-            <div
-                v-if="comments.length > maxCommentsShow"
-                class="mt-2 ml-1 text-sm text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer"
-                @click="toggleComments"
-            >
-                <div class="flex gap-1 mb-1">
-                    <div>
-                        {{ commentsShow ? 'Cacher' : 'Voir' }}
-                    </div>
-                    <div class="font-bold">
-                        {{ comments.length - maxCommentsShow }}
-                    </div>
-                    <div>{{ comments.length - maxCommentsShow > 1 ? 'commentaires' : 'commentaire' }}</div>
+            <div v-if="onComment" class="flex mb-3">
+                <div class="flex flex-col gap-4 w-full">
+                    <TipTapEditor
+                        v-model="newComment"
+                        class="w-full"
+                        :="editorConfig"
+                        :sendable="true"
+                        :cancellable="true"
+                        @send="sendComment()"
+                        @cancel="closeComment()"
+                    />
                 </div>
             </div>
-        </div>
-        <div v-if="onComment" class="flex mb-3">
-            <div class="flex flex-col gap-4 w-full">
-                <TipTapEditor
-                    v-model="newComment"
-                    class="w-full"
-                    :="editorConfig"
-                    :sendable="true"
-                    :cancellable="true"
-                    @send="sendComment()"
-                    @cancel="closeComment()"
+            <div
+                v-else
+                class="group flex gap-2 items-center pt-2 pl-2 cursor-pointer"
+                @click="onComment = !onComment"
+            >
+                <font-awesome-icon
+                    :icon="['far', 'comment-alt']"
+                    class="text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300"
                 />
+                <p class="text-sm text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300">
+                    Commenter
+                </p>
             </div>
-        </div>
-        <div v-else @click="showEditor">
-            <p class="text-sm font-bold text-gray-500 uppercase cursor-pointer">Commenter</p>
+            <div
+                v-if="comments.length > maxCommentsShow"
+                class="mt-2 mb-1 ml-1 text-sm text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer"
+                @click="toggleComments"
+            >
+                <div v-if="commentsShow" class="-mt-1 text-xs">Cacher les commentaires</div>
+                <div v-else>
+                    Voir <strong>{{ comments.length - maxCommentsShow }}</strong>
+                    {{ comments.length - maxCommentsShow > 1 ? 'commentaires' : 'commentaire' }}
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import defaultAvatar from '@/assets/img/default_avatars/user.png'
     import TipTapEditableRender from '@/components/TipTap/TipTapEditableRender.vue'
     import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
     import { getURL } from '@/utils/routeUtils'
@@ -84,10 +89,6 @@
             TipTapEditableRender,
         },
         props: {
-            onComment: {
-                type: Boolean,
-                default: false,
-            },
             parentId: {
                 type: Number,
                 required: true,
@@ -108,7 +109,6 @@
         emits: ['update:onComment', 'report'],
         data() {
             return {
-                defaultAvatar,
                 editorConfig: {
                     charCount: 240,
                     textClass: 'text-sm',
@@ -123,6 +123,7 @@
                     ...comment,
                     edit: false,
                 })),
+                onComment: false,
             }
         },
         computed: {
@@ -147,21 +148,11 @@
         },
         methods: {
             toggleComments() {
-                if (this.commentsShow) {
-                    this.commentItems.slice(this.maxCommentsShow, this.commentItems.length).map((comment) => {
-                        comment.active = false
-                    })
+                this.commentItems.slice(this.maxCommentsShow, this.commentItems.length).map((comment) => {
+                    comment.active = !this.commentsShow
+                })
 
-                    this.commentsShow = false
-                } else {
-                    this.commentItems.slice(this.maxCommentsShow, this.commentItems.length).map((comment) => {
-                        comment.active = true
-                    })
-                    this.commentsShow = true
-                }
-            },
-            showEditor() {
-                this.$emit('update:onComment', true)
+                this.commentsShow = !this.commentsShow
             },
             actionsMap(i) {
                 return {
@@ -180,40 +171,6 @@
                                           'threads/addFavorite',
                                           this.commentItems[i].contentId,
                                       )
-                            },
-                        },
-
-                        report: {
-                            name: () => (this.commentItems[i]?.userReported ? 'Signalé' : 'Signaler'),
-                            icon: () => (this.commentItems[i]?.userReported ? 'flag' : ['far', 'flag']),
-                            class: () =>
-                                this.commentItems[i]?.userReported
-                                    ? 'group-hover:text-red-600 text-red-500'
-                                    : 'group-hover:text-red-500',
-                            action: () => {
-                                this.commentItems[i]?.userReported
-                                    ? alert('Vous avez déjà signalé ce commentaire.')
-                                    : this.$emit('report', this.commentItems[i])
-                            },
-                        },
-
-                        getLink: {
-                            name: () => 'Lien',
-                            icon: () => 'link',
-                            class: () => 'group-hover:text-blue-600',
-                            action: () => {
-                                navigator.clipboard.writeText(
-                                    getURL(
-                                        urljoin(
-                                            this.$route.path,
-                                            '#content-' + this.commentItems[i].contentId,
-                                        ),
-                                    ),
-                                )
-                                this.$emitter.emit('show-toast', {
-                                    text: 'Le lien du commentaire a bien été copié !',
-                                    type: 'info',
-                                })
                             },
                         },
                         delete: {
@@ -236,7 +193,7 @@
                         },
                     }),
                     report: {
-                        name: () => (this.commentItems[i]?.userReported ? 'Signalé' : ''),
+                        name: () => '',
                         icon: () => (this.commentItems[i]?.userReported ? 'flag' : ['far', 'flag']),
                         class: () =>
                             this.commentItems[i]?.userReported
@@ -244,13 +201,15 @@
                                 : 'group-hover:text-red-500',
                         action: () => {
                             this.commentItems[i]?.userReported
-                                ? alert('Vous avez déjà signalé ce commentaire.')
-                                : this.$emit('report', this.commentItems[i])
+                                ? this.$emitter.emit('show-toast', {
+                                      text: 'Tu as déjà signalé ce commentaire.',
+                                      type: 'failure',
+                                  })
+                                : this.$emitter.emit('report', this.commentItems[i])
                         },
                     },
-
                     getLink: {
-                        name: () => 'Lien',
+                        name: () => '',
                         icon: () => 'link',
                         class: () => 'group-hover:text-blue-600',
                         action: () => {
@@ -268,8 +227,7 @@
                 }
             },
             closeComment() {
-                this.$emit('update:onComment', false)
-                this.newComment = defaultTipTapText
+                this.onComment = false
             },
             sendComment() {
                 this.$store

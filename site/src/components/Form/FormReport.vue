@@ -49,10 +49,6 @@
             TipTapEditor,
         },
         props: {
-            user: {
-                type: Object,
-                default: () => {},
-            },
             content: {
                 type: Object,
                 default: () => {},
@@ -84,7 +80,7 @@
                 }
 
                 this.$store.dispatch('reports/addReport', {
-                    userId: this.user.userId,
+                    userId: this.content.author.userId,
                     contentId: this.content.contentId,
                     reason: this.state.reason,
                 })

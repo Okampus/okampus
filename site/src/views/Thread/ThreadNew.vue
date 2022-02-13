@@ -85,7 +85,7 @@
                     <Popper :hover="true">
                         <font-awesome-icon icon="info-circle" class="ml-1 text-sm text-slate-400" />
                         <template #content>
-                            <div class="max-w-sm font-normal popover bg-0">
+                            <div class="max-w-sm font-normal popover">
                                 Ajoute des tags décrivant le sujet de ton post <br />
                                 <div class="mt-1.5 text-sm">
                                     <span class="font-bold">NOTE :</span> pour des tags de plusieurs mots,

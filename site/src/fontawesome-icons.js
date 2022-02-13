@@ -50,7 +50,7 @@ library.add(faPhone, faUser, faFlag, faThumbsUp, faThumbsDown, faCheckCircle, fa
     faGrimace, faGrinBeamSweat, faDizzy, faSurprise, faExclamation, faInfo, faSpinner, faArrowDown,
     faArrowRight, faLink, faSlidersH, faLightbulb, faPen, faCircle, faCertificate, faEye, faHeart,
     faHeartBroken, faBug, faCalendar, faFolderOpen, faMapMarkerAlt, faCopyright, faVolumeUp, faUserPlus,
-    faExclamationTriangle, faTrophy, faGraduationCap, faSchool, faTrashAlt)
+    faExclamationTriangle, faTrophy, faGraduationCap, faSchool, faTrashAlt, faExclamation)
 
 // Regular icons
 library.add(

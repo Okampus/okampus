@@ -17,10 +17,10 @@
                     :tag-color="schoolRoleItem.color"
                     :icon="schoolRoleItem.icon"
                 />
-                <div v-if="user.schoolRole === 'student'" class="flex gap-1 items-center text-2">
+                <!-- <div v-if="user.schoolRole === 'student'" class="flex gap-1 items-center text-2">
                     <font-awesome-icon icon="trophy" />
                     <p>{{ abbrNumbers(user.reputation) }}</p>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
