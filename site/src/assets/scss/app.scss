@@ -43,7 +43,7 @@ $logo-black-url: url('@/assets/img/logos/horizon_logo_black.png');
 @include tailwind-color('to', '', 2);
 @include tailwind-color('border', 'border-color', 2);
 
-.border-bar {
+.border-navbar {
     border-color: #e4e4e7;
 
     @apply dark:border-black;

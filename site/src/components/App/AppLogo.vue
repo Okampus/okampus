@@ -1,7 +1,7 @@
 <template>
-    <router-link to="/" class="flex items-center cursor-pointer">
-        <div class="w-10 h-10 logo" />
-        <div class="w-24 h-5 brand" />
+    <router-link to="/" class="flex items-center w-[8.5rem] cursor-pointer">
+        <div class="w-[2.5rem] h-[2.5rem] logo" />
+        <div class="w-[6rem] h-[1.25rem] brand" />
     </router-link>
 </template>
 

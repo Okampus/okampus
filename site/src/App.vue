@@ -13,7 +13,7 @@
         <div
             ref="content"
             :class="{ 'brightness-50': dimPage }"
-            class="flex overflow-auto relative flex-col w-full bg-2 h-content after-topbar app-scrollbar"
+            class="flex overflow-auto relative flex-col w-full bg-app h-content after-topbar app-scrollbar"
         >
             <div class="flex-auto shrink-0 grow-1">
                 <router-view />
@@ -23,7 +23,6 @@
 
         <TopBar
             ref="topbar"
-            class="flex fixed top-0 left-0 justify-between items-center w-full border-b h-tbar border-bar text-1 bg-1"
             :show-login="showLogin"
             :class="{ 'brightness-50': dimPage }"
             @toggle-login="toggleLogin"
@@ -185,6 +184,7 @@
 </script>
 
 <style lang="scss">
+    @import '@/assets/scss/colors';
     @import '@/assets/scss/app';
     @import '@/assets/scss/animations/bg-anims';
     @import '@/assets/scss/components/button';

@@ -1,6 +1,6 @@
 <template>
     <nav
-        class="flex fixed top-0 left-0 justify-between items-center w-full border-b bg-0 h-topbar text-1 topbar-shadow"
+        class="flex fixed top-0 left-0 justify-between items-center w-full border-b border-navbar bg-navbar h-topbar text-1 topbar-shadow"
     >
         <div class="flex items-center w-sidebar-lg">
             <div class="flex shrink-0 justify-center w-sidebar-sm">

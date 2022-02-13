@@ -1,5 +1,5 @@
 <template>
-    <footer class="flex flex-col gap-6 py-5 xs:mx-20 sm:mx-auto xs-max:mx-10">
+    <footer class="flex flex-col gap-6 mt-8 mb-6 xs:mx-20 sm:mx-auto xs-max:mx-10">
         <div class="flex flex-col items-center sm:gap-6 xl:flex-row xl:gap-14">
             <div class="flex flex-col gap-6 sm-max:w-full">
                 <!-- Logo Separator -->

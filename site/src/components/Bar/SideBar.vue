@@ -7,9 +7,9 @@
             smallScreen && showUncollapsed ? 'sidebar-shadow' : smallScreen ? 'hidden-sidebar-sm' : '',
             smallScreen && collapsing && uncollapsed ? 'hidden-sidebar-lg' : '',
         ]"
-        class="flex z-30 flex-col shrink-0 border-r w-sidebar-sm bg-1 border-bar"
+        class="flex z-30 flex-col shrink-0 border-r w-sidebar-sm bg-navbar border-navbar"
     >
-        <div v-if="smallScreen && showUncollapsed" class="flex shrink-0 items-center bg-0 h-topbar">
+        <div v-if="smallScreen && showUncollapsed" class="flex shrink-0 items-center bg-navbar h-topbar">
             <button aria-label="Open Menu" class="w-sidebar-sm" @click="$emit('toggle-side-bar')">
                 <font-awesome-icon icon="times" class="text-2xl text-0" />
             </button>
