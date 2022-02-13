@@ -78,7 +78,7 @@ export class CaslAbilityFactory {
         allow(Action.Manage, [Blog, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag]);
       } else {
         // @ts-expect-error
-        allow(Action.Update, Thread, ['opened', 'solved', 'tags', 'title', 'type'], { ...isAuthor, ...isPost })
+        allow(Action.Update, Thread, ['opValidated', 'tags', 'title', 'type'], { ...isAuthor, ...isPost })
           .because('Not the author');
         // @ts-expect-error
         allow(Action.Update, Content, ['body'], isAuthor)

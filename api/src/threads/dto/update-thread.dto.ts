@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsBoolean, IsOptional } from 'class-validator';
+import { IsBoolean, IsInt, IsOptional } from 'class-validator';
 import { CreateThreadDto } from './create-thread.dto';
 
 export class UpdateThreadDto extends PartialType(CreateThreadDto) {
@@ -7,7 +7,11 @@ export class UpdateThreadDto extends PartialType(CreateThreadDto) {
   @IsOptional()
   locked?: boolean;
 
-  @IsBoolean()
+  @IsInt()
   @IsOptional()
-  archived?: boolean;
+  opValidatedWith?: number;
+
+  @IsInt()
+  @IsOptional()
+  adminValidatedWith?: number;
 }

@@ -7,6 +7,7 @@ import { Favorite } from '../favorites/favorite.entity';
 import { Reaction } from '../reactions/reaction.entity';
 import { Report } from '../reports/report.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { ContentKind } from '../shared/lib/types/content-kind.enum';
 import { ContentMasterType } from '../shared/lib/types/content-master-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
@@ -64,7 +65,7 @@ export class ThreadsService {
     return await this.threadRepository.findWithPagination(
       paginationOptions,
       {},
-      { populate: ['post', 'tags', 'assignees', 'post.author'] },
+      { populate: ['post', 'tags', 'assignees', 'post.author', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
     );
   }
 
@@ -73,7 +74,7 @@ export class ThreadsService {
     // (i.e. "personal"/"sensitive" threads)
     return await this.threadRepository.findOneOrFail(
       { contentMasterId },
-      { populate: ['post', 'post.children', 'post.children.children', 'tags', 'assignees', 'participants'] },
+      { populate: ['post', 'post.children', 'post.children.children', 'tags', 'assignees', 'participants', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
     );
   }
 
@@ -97,7 +98,7 @@ export class ThreadsService {
   public async update(user: User, contentMasterId: number, updateThreadDto: UpdateThreadDto): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
       { contentMasterId },
-      { populate: ['post', 'tags', 'assignees'] },
+      { populate: ['post', 'tags', 'assignees', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -107,7 +108,13 @@ export class ThreadsService {
     if (thread.locked && updateThreadDto?.locked === false)
       updateThreadDto = { locked: false };
 
-    const { tags: wantedTags, assignees: wantedAssignees, ...updatedProps } = updateThreadDto;
+    const {
+      tags: wantedTags,
+      assignees: wantedAssignees,
+      opValidatedWith,
+      adminValidatedWith,
+      ...updatedProps
+    } = updateThreadDto;
 
     if (wantedTags) {
       if (wantedTags.length === 0) {
@@ -126,6 +133,24 @@ export class ThreadsService {
         thread.assignees.set(assignees);
       }
     }
+
+    const validationReplyQuery = { kind: ContentKind.Reply, contentMaster: { contentMasterId } };
+
+    if (typeof opValidatedWith !== 'undefined') {
+      thread.opValidatedWith = opValidatedWith
+        ? await this.contentRepository.findOneOrFail({ contentId: opValidatedWith, ...validationReplyQuery })
+        : null;
+    }
+
+    if (typeof adminValidatedWith !== 'undefined') {
+      thread.adminValidatedWith = adminValidatedWith
+        ? await this.contentRepository.findOneOrFail({ contentId: adminValidatedWith, ...validationReplyQuery })
+        : null;
+      thread.adminValidatedBy = adminValidatedWith
+        ? user
+        : null;
+    }
+
 
     if (updatedProps)
       wrap(thread).assign(updatedProps);
@@ -146,7 +171,7 @@ export class ThreadsService {
   public async addTags(contentMasterId: number, newTags: string[]): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
       { contentMasterId },
-      { populate: ['post', 'tags', 'assignees'] },
+      { populate: ['post', 'tags', 'assignees', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
     );
 
     const tags = await this.tagRepository.find({ name: { $in: newTags } });
@@ -166,7 +191,7 @@ export class ThreadsService {
   public async addAssignees(contentMasterId: number, assignees: string[]): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
       { contentMasterId },
-      { populate: ['post', 'tags', 'assignees'] },
+      { populate: ['post', 'tags', 'assignees', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
     );
 
     const users = await this.userRepository.find({ userId: { $in: assignees } });
