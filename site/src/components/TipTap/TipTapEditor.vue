@@ -2,7 +2,7 @@
     <div v-if="editor">
         <div
             v-if="editorButtons.length > 0"
-            class="flex flex-wrap items-center px-1 pb-2 space-x-2 border-color-4"
+            class="flex overflow-hidden flex-wrap items-center p-[2px] rounded-t bg-0"
         >
             <template v-for="(btn, i) in editorButtons" :key="i">
                 <Popper placement="top" :hover="true">
@@ -10,10 +10,10 @@
                         :class="[
                             actionMap[btn.action].isActive &&
                             editor.isActive(...actionMap[btn.action].isActive)
-                                ? 'bg-blue-500 border-indigo-800'
-                                : 'bg-2',
+                                ? 'text-0 bg-2'
+                                : 'text-3 bg-0',
                         ]"
-                        class="flex items-center p-2 mr-3 text-lg rounded outline-none cursor-pointer text-1 icon-button raised"
+                        class="flex items-center p-3 text-lg outline-none cursor-pointer"
                         @click="actionMap[btn.action].action()"
                     >
                         <font-awesome-icon :icon="btn.icon" class="mr-1" />

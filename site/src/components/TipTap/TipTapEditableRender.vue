@@ -10,7 +10,7 @@
         @cancel="$emit('update:edit', false), (body = content), $emit('cancel')"
         @send="$emit('update:edit', false), $emit('update:content', body), $emit('send', body)"
     />
-    <TipTapRenderer v-else :content="body" class="p-2" />
+    <TipTapRenderer v-else :content="body" class="p-1" />
 </template>
 
 <script>
