@@ -63,12 +63,11 @@
             },
             type: {
                 type: String,
-                required: true,
                 default: 'info',
             },
             duration: {
                 type: Number,
-                default: (props) => (props.text ? readingTime(props.text, 'veryFast') * 1000 : 2000),
+                default: (props) => (props.text ? readingTime(props.text, 'fast') * 1000 : 2000),
             },
             active: {
                 type: Boolean,

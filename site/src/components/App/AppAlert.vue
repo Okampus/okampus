@@ -67,7 +67,7 @@
                 defaultIconList: {
                     info: 'info-circle',
                     warning: 'exclamation-triangle',
-                    error: 'exclamation-circle',
+                    error: 'exclamation',
                     bug: 'bug',
                     success: 'check',
                     failure: 'heart-broken',
@@ -128,7 +128,9 @@
             }
         }
 
-        &[alert-type='error'] {
+        &[alert-type='error'],
+        &[alert-type='failure'],
+        &[alert-type='bug'] {
             & .progress-bar {
                 background: linear-gradient(to bottom, rgb(239 68 68), rgb(220 38 38));
             }
@@ -176,7 +178,9 @@
             @apply bg-yellow-100 dark:bg-yellow-700;
         }
 
-        &[alert-type='error'] {
+        &[alert-type='error'],
+        &[alert-type='failure'],
+        &[alert-type='bug'] {
             @apply bg-red-100 dark:bg-red-700;
         }
 
