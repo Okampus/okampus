@@ -14,12 +14,7 @@
                 />
                 <div class="flex mt-3 min-w-fit lg:m-0">
                     <div class="flex pr-4 min-w-fit lg:ml-3">
-                        <img
-                            class="object-cover w-10 h-10 rounded-full"
-                            :src="user.avatar ?? defaultAvatar"
-                            :alt="user.fullname"
-                            loading="lazy"
-                        />
+                        <UserAvatar :img-src="user.avatar" :username="user.fullname" />
                         <div class="flex flex-col ml-3 text-sm text-0">
                             <p class="whitespace-nowrap">Poster en tant que</p>
                             <strong class="text-base whitespace-nowrap">{{ user.fullname }}</strong>
@@ -124,20 +119,20 @@
 <script>
     import { users } from '@/fake/users'
 
-    import defaultAvatar from '@/assets/img/default_avatars/user.png'
     import TagInput from '@/components/Input/TagInput.vue'
     import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
+    import UserAvatar from '@/components/User/UserAvatar.vue'
 
     export default {
         name: 'BlogPostForm',
         components: {
             TipTapEditor,
             TagInput,
+            UserAvatar,
         },
         data() {
             return {
                 user: users[0],
-                defaultAvatar,
             }
         },
     }

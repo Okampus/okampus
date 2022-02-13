@@ -1,10 +1,7 @@
 <template>
-    <div class="flex items-center space-x-4">
-        <div class="relative w-11 h-11">
-            <div>
-                <AvatarImage :size="11" :src="avatar" :alt="username" />
-            </div>
-        </div>
+    <div class="flex gap-3 items-center">
+        <UserAvatar :img-src="avatar" :username="username" />
+
         <div class="flex flex-col min-w-0">
             <router-link
                 class="font-semibold hover:underline truncate"
@@ -26,9 +23,9 @@
 </template>
 
 <script>
-    import AvatarImage from '@/components/User/UserAvatar.vue'
+    import UserAvatar from '@/components/User/UserAvatar.vue'
     export default {
-        components: { AvatarImage },
+        components: { UserAvatar },
         props: {
             username: {
                 type: String,

@@ -1,7 +1,7 @@
 <template>
-    <div class="flex p-4 xs:rounded-xl bg-0">
+    <div class="flex p-4 xs:rounded-xl bg-content">
         <div class="my-auto min-w-fit">
-            <AvatarImage :size="24" :src="user.avatar" alt="alt" />
+            <UserAvatar :img-src="user.avatar" :username="user.fullname" />
         </div>
         <div class="flex flex-col justify-between ml-4">
             <div>
@@ -35,12 +35,12 @@
 </template>
 
 <script>
-    import AvatarImage from '@/components/User/UserAvatar.vue'
+    import UserAvatar from '@/components/User/UserAvatar.vue'
     import schoolRolesEnum from '@/shared/types/school-roles.enum'
     import AppTag from '../AppTag.vue'
 
     export default {
-        components: { AvatarImage, AppTag },
+        components: { UserAvatar, AppTag },
         props: {
             user: {
                 type: Object,

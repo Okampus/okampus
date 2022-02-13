@@ -1,5 +1,5 @@
 <template>
-    <div v-if="thread" class="w-full xs:rounded-xl bg-0">
+    <div v-if="thread" class="w-full xs:rounded-xl bg-content">
         <div class="py-2 px-4 w-full md:py-3 md:px-5">
             <span
                 class="flex overflow-hidden flex-wrap gap-5 items-center h-8 font-light whitespace-nowrap text-3"
@@ -40,19 +40,14 @@
 
             <div class="flex items-center mt-2 mr-4 space-x-2 h-12">
                 <a href="#" class="flex shrink-0 items-center mr-4">
-                    <UserPreview
-                        :username="thread.post.author?.fullname ?? 'Anonyme'"
-                        :img-size="12"
-                        :avatar="thread.post.author?.avatar"
-                        :reputation="thread.post.author?.points ?? 0"
-                    />
+                    <UserPreview :user="thread.post.author" />
                 </a>
 
                 <TagsList class="w-full" :tags="thread.tags" />
             </div>
         </div>
     </div>
-    <div v-else class="flex py-3 px-5 space-x-2 font-semibold rounded-lg bg-0">
+    <div v-else class="flex py-3 px-5 space-x-2 font-semibold rounded-lg">
         <p class="text-lg text-0">Erreur: Ce post est vide.</p>
 
         <!-- TODO: Bug report pages -->

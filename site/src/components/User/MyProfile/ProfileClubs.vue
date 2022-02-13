@@ -71,7 +71,7 @@
                                     <img
                                         v-if="club.club.clubId != null"
                                         class="my-auto w-8 h-8 rounded-full"
-                                        :src="club.club.icon != '' ? club.club.icon : defaultAvatar"
+                                        :src="club.club.icon"
                                     />
                                     <div class="my-auto ml-2">
                                         {{ club.club.name }}
@@ -163,11 +163,9 @@
                         <div class="flex mr-6 w-full">
                             <div class="flex flex-col mr-8 mb-4 w-fit">
                                 <div class="relative mx-auto mb-2">
-                                    <AvatarImage
+                                    <UserAvatar
                                         :src="clubSelected.club.icon"
                                         :alt="clubSelected.club.name + ' icon'"
-                                        :size="32"
-                                        class="w-32"
                                     />
                                     <button
                                         class="hidden absolute bottom-0 left-24 md:block"
@@ -211,7 +209,7 @@
                         <div v-if="clubMembers != undefined && clubMembers != null">
                             <ul>
                                 <li v-for="member in clubMembers" :key="member" class="flex gap-4">
-                                    <AvatarImage
+                                    <UserAvatar
                                         :src="member.user.avatar"
                                         :alt="`${member.user.fullname}'s' avatar`"
                                         size="8"
@@ -261,14 +259,14 @@
     import AppLoader from '@/components/App/AppLoader.vue'
     import SelectInput from '@/components/Input/SelectInput.vue'
     import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue'
-    import AvatarImage from '@/components/User/UserAvatar.vue'
+    import UserAvatar from '@/components/User/UserAvatar.vue'
     // import _ from 'lodash'
     // import { watch } from 'vue'
 
     export default {
         components: {
             AppLoader,
-            AvatarImage,
+            UserAvatar,
             AvatarCropper,
             SelectInput,
         },

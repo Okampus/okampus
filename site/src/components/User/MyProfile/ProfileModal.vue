@@ -11,11 +11,8 @@
                     <div class="flex mr-6 w-full">
                         <div class="flex flex-col mr-8 mb-4 w-fit">
                             <div class="relative mx-auto mb-2">
-                                <AvatarImage
-                                    :src="user.avatar"
-                                    :alt="user.fullname + ' profile image'"
-                                    :size="32"
-                                />
+                                <UserAvatar :img-src="user.avatar" :username="user.fullname" />
+
                                 <button
                                     class="hidden absolute bottom-0 left-24 md:block"
                                     @click="showImage()"
@@ -163,25 +160,23 @@
 
 <script>
     import { blagues } from '@/assets/blagues/blagues'
-    import defaultAvatar from '@/assets/img/default_avatars/user.png'
     import AppLoader from '@/components/App/AppLoader.vue'
     import SelectInput from '@/components/Input/SelectInput.vue'
     import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue'
-    import AvatarImage from '@/components/User/UserAvatar.vue'
+    import UserAvatar from '@/components/User/UserAvatar.vue'
     // import _ from 'lodash';
     // import { watch } from 'vue';
 
     export default {
         components: {
             SelectInput,
-            AvatarImage,
+            UserAvatar,
             AppLoader,
             AvatarCropper,
         },
         data() {
             return {
                 apiUrl: import.meta.env.VITE_API_URL,
-                defaultAvatar,
                 socialAccounts: [],
                 submitSuccess: 0,
                 avatarShown: false,

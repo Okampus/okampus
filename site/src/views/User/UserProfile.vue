@@ -7,12 +7,7 @@
             <div class="p-0 pb-6 rounded-b-none card">
                 <div class="relative w-full h-48">
                     <div class="w-full h-full banner" />
-                    <AvatarImage
-                        :src="user.avatar"
-                        :size="32"
-                        :alt="user.fullname + ' profile image'"
-                        class="absolute -bottom-1/4 left-10 border-4 border-color-1 bg-1"
-                    />
+                    <UserAvatar :img-src="user.avatar" :username="user.username" />
                 </div>
                 <div class="px-4 mt-20 w-full">
                     <div class="flex flex-col pr-8 mb-4 space-y-4">
@@ -44,11 +39,7 @@
                                 <div v-for="club in userClubs" :key="club" class="flex mr-4 mb-4 h-16">
                                     <p class="my-auto w-16 h-16">
                                         <img
-                                            :src="
-                                                clubs.find((a) => a.clubId === club.club.clubId).icon
-                                                    ? clubs.find((a) => a.clubId === club.club.clubId).icon
-                                                    : defaultAvatar
-                                            "
+                                            :src="clubs.find((a) => a.clubId === club.club.clubId).icon"
                                             :alt="`${
                                                 clubs.find((a) => a.clubId === club.club.clubId).name
                                             } Logo`"
@@ -114,16 +105,15 @@
 </template>
 
 <script>
-    import defaultAvatar from '@/assets/img/default_avatars/user.png'
     import AppLoader from '@/components/App/AppLoader.vue'
     import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
-    import AvatarImage from '@/components/User/UserAvatar.vue'
+    import UserAvatar from '@/components/User/UserAvatar.vue'
     import { posts } from '@/fake/posts'
 
     export default {
         components: {
             ThreadPreviewCard,
-            AvatarImage,
+            UserAvatar,
             AppLoader,
         },
         data() {
@@ -137,7 +127,6 @@
                     'Manager': 'manager',
                     'Membre': 'member',
                 },
-                defaultAvatar: defaultAvatar,
             }
         },
         computed: {

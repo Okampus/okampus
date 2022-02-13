@@ -2,7 +2,6 @@ import girl_1 from '@/assets/img/landing/girl_1.jpg'
 import girl_2 from '@/assets/img/landing/girl_2.jpg'
 import guy_1 from '@/assets/img/landing/guy_1.jpg'
 import guy_2 from '@/assets/img/landing/guy_2.jpg'
-import defaultAvatar from '@/assets/img/default_avatars/user.png'
 
 export const users = [
     {
@@ -41,16 +40,6 @@ export const users = [
         avatar: guy_2,
         reputation: 234,
         email: 'stéphane.murier@efrei.net',
-        createdAt: '2021-08-18T13:51:36.631Z',
-        updatedAt: '2021-10-18T13:51:36.631Z',
-        link: '#',
-    },
-    {
-        id: 4,
-        username: 'admin',
-        avatar: defaultAvatar,
-        reputation: 1,
-        email: 'admin@horizon-efrei.fr',
         createdAt: '2021-08-18T13:51:36.631Z',
         updatedAt: '2021-10-18T13:51:36.631Z',
         link: '#',
