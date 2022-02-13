@@ -48,8 +48,15 @@ export class ReportsService {
       reporter,
       user,
     });
+
     await this.reportRepository.persistAndFlush(report);
     await this.reportSearchService.add(report);
+
+    if (content) {
+      content.reportCount++;
+      await this.contentRepository.flush();
+    }
+
     return report;
   }
 
@@ -92,8 +99,13 @@ export class ReportsService {
   }
 
   public async remove(reportId: number): Promise<void> {
-    const report = await this.reportRepository.findOneOrFail({ reportId });
+    const report = await this.reportRepository.findOneOrFail({ reportId }, { populate: ['content'] });
     await this.reportRepository.removeAndFlush(report);
     await this.reportSearchService.remove(report.reportId.toString());
+
+    if (report.content) {
+      report.content.reportCount--;
+      await this.contentRepository.flush();
+    }
   }
 }

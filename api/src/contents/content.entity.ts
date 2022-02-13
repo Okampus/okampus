@@ -62,6 +62,9 @@ export class Content extends BaseEntity {
   contentMasterId!: number;
 
   @Property()
+  reportCount = 0;
+
+  @Property()
   contentLastUpdatedAt = new Date();
 
   constructor(options: {
