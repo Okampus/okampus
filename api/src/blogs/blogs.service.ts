@@ -44,19 +44,22 @@ export class BlogsService {
     return blog;
   }
 
-  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Blog>> {
-    // TODO: Maybe the user won't have access to all blogs. There can be some restrictions
-    // (i.e. "personal"/"sensitive" blogs)
-    return await this.blogRepository.findWithPagination(paginationOptions, {}, { populate: ['post', 'tags'] });
+  public async findAll(user: User, paginationOptions?: PaginationOptions): Promise<PaginatedResult<Blog>> {
+    const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+    const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
+    return await this.blogRepository.findWithPagination(paginationOptions, visibilityQuery, { populate: ['post', 'tags'] });
   }
 
-  public async findOne(contentMasterId: number): Promise<Blog> {
-    // TODO: Maybe the user won't have access to this blog. There can be some restrictions
-    // (i.e. "personal"/"sensitive" blogs)
-    return await this.blogRepository.findOneOrFail(
+  public async findOne(user: User, contentMasterId: number): Promise<Blog> {
+    const blog = await this.blogRepository.findOneOrFail(
       { contentMasterId },
       { populate: ['post', 'post.children', 'post.children.children', 'tags', 'participants'] },
     );
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Read, blog);
+
+    return blog;
   }
 
   public async update(user: User, contentMasterId: number, updateBlogDto: UpdateBlogDto): Promise<Blog> {

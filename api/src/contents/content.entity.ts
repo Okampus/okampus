@@ -62,6 +62,12 @@ export class Content extends BaseEntity {
   contentMasterId!: number;
 
   @Property()
+  hidden = false;
+
+  @Property()
+  isVisible = true;
+
+  @Property()
   reportCount = 0;
 
   @Property()

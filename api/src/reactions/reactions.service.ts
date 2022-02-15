@@ -17,13 +17,6 @@ export class ReactionsService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async findAll(contentId: number): Promise<Reaction[]> {
-    // TODO: Maybe the user won't have access to this post. There can be some restrictions
-    // (i.e. "personal"/"sensitive" posts)
-    const content = await this.contentRepository.findOneOrFail({ contentId });
-    return await this.reactionRepository.find({ content }, { populate: ['user', 'content'] });
-  }
-
   public async add(user: User, contentId: number, value: AllReactionValue): Promise<Reaction> {
     const content = await this.contentRepository.findOneOrFail({ contentId });
 
@@ -38,6 +31,15 @@ export class ReactionsService {
 
     await this.reactionRepository.persistAndFlush(newReaction);
     return newReaction;
+  }
+
+  public async findAll(user: User, contentId: number): Promise<Reaction[]> {
+    const content = await this.contentRepository.findOneOrFail({ contentId });
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Read, content);
+
+    return await this.reactionRepository.find({ content }, { populate: ['user', 'content'] });
   }
 
   public async remove(user: User, contentId: number, value: AllReactionValue): Promise<void> {

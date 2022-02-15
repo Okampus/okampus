@@ -49,33 +49,38 @@ export class ContentsController {
   @Get('replies')
   @CheckPolicies(ability => ability.can(Action.Read, Content))
   public async findAllReplies(
+    @CurrentUser() user: User,
     @Query() query: PaginateDto,
     @Body() parentDto: ParentDto,
   ): Promise<PaginatedResult<Content>> {
     if (query.page) {
       const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
-      return await this.contentsService.findAllReplies(parentDto.parentId, options);
+      return await this.contentsService.findAllReplies(user, parentDto.parentId, options);
     }
-    return await this.contentsService.findAllReplies(parentDto.parentId);
+    return await this.contentsService.findAllReplies(user, parentDto.parentId);
   }
 
   @Get('comments')
   @CheckPolicies(ability => ability.can(Action.Read, Content))
   public async findAllComments(
+    @CurrentUser() user: User,
     @Query() query: PaginateDto,
     @Body() parentDto: ParentDto,
   ): Promise<PaginatedResult<Content>> {
     if (query.page) {
       const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
-      return await this.contentsService.findAllComments(parentDto.parentId, options);
+      return await this.contentsService.findAllComments(user, parentDto.parentId, options);
     }
-    return await this.contentsService.findAllComments(parentDto.parentId);
+    return await this.contentsService.findAllComments(user, parentDto.parentId);
   }
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Content))
-  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Content> {
-    return await this.contentsService.findOne(id);
+  public async findOne(
+    @CurrentUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Content> {
+    return await this.contentsService.findOne(user, id);
   }
 
   @Patch(':id')

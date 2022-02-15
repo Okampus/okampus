@@ -34,8 +34,8 @@ export class FavoritesController {
 
   @Get()
   public async findAllFavorites(
-    @Query() query: PaginateDto,
     @CurrentUser() user: User,
+    @Query() query: PaginateDto,
   ): Promise<PaginatedResult<Favorite>> {
     if (query.page) {
       const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };

@@ -61,6 +61,7 @@ export class ReportsService {
   }
 
   public async findAll(
+    user: User,
     filters: GetReportsDto,
     paginationOptions?: PaginationOptions,
   ): Promise<PaginatedResult<Report>> {
@@ -69,8 +70,11 @@ export class ReportsService {
       options = { ...options, reporter: { userId: filters.byUserId } };
     if (filters.forUserId)
       options = { ...options, user: { userId: filters.forUserId } };
-    if (filters.throughContentId)
-      options = { ...options, content: { contentId: filters.throughContentId } };
+    if (filters.throughContentId) {
+      const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+      const visibilityQuery = canSeeHiddenContent ? {} : { isVisible: true };
+      options = { ...options, content: { contentId: filters.throughContentId, ...visibilityQuery } };
+    }
 
     return await this.reportRepository.findWithPagination(
       paginationOptions,
@@ -79,8 +83,15 @@ export class ReportsService {
     );
   }
 
-  public async findOne(reportId: number): Promise<Report> {
-    return await this.reportRepository.findOneOrFail({ reportId }, { populate: ['content', 'user', 'reporter'] });
+  public async findOne(user: User, reportId: number): Promise<Report> {
+    const report = await this.reportRepository.findOneOrFail({ reportId }, { populate: ['content', 'user', 'reporter'] });
+
+    if (report.content) {
+      const ability = this.caslAbilityFactory.createForUser(user);
+      assertPermissions(ability, Action.Read, report.content);
+    }
+
+    return report;
   }
 
   public async update(user: User, reportId: number, updateReportDto: UpdateReportDto): Promise<Report> {
@@ -98,8 +109,14 @@ export class ReportsService {
     return report;
   }
 
-  public async remove(reportId: number): Promise<void> {
+  public async remove(user: User, reportId: number): Promise<void> {
     const report = await this.reportRepository.findOneOrFail({ reportId }, { populate: ['content'] });
+
+    if (report.content) {
+      const ability = this.caslAbilityFactory.createForUser(user);
+      assertPermissions(ability, Action.Delete, report);
+    }
+
     await this.reportRepository.removeAndFlush(report);
     await this.reportSearchService.remove(report.reportId.toString());
 

@@ -105,30 +105,49 @@ export class ContentsService {
     return content;
   }
 
-  public async findAllReplies(parentId: number, options?: PaginationOptions): Promise<PaginatedResult<Content>> {
-    // TODO: Maybe the user won't have access to all replies. There can be some restrictions
-    // (i.e. "personal"/"sensitive" posts)
+  public async findAllReplies(
+    user: User,
+    parentId: number,
+    options?: PaginationOptions,
+  ): Promise<PaginatedResult<Content>> {
+    const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+    const visibilityQuery = canSeeHiddenContent ? {} : { isVisible: true };
     return await this.contentRepository.findWithPagination(
       options,
-      { kind: ContentKind.Reply, parent: { contentId: parentId } },
+      {
+        kind: ContentKind.Reply,
+        ...visibilityQuery,
+        parent: { contentId: parentId },
+      },
       { populate: ['author', 'parent', 'children'] },
     );
   }
 
-  public async findAllComments(parentId: number, options?: PaginationOptions): Promise<PaginatedResult<Content>> {
-    // TODO: Maybe the user won't have access to all comments. There can be some restrictions
-    // (i.e. "personal"/"sensitive" posts)
+  public async findAllComments(
+    user: User,
+    parentId: number,
+    options?: PaginationOptions,
+  ): Promise<PaginatedResult<Content>> {
+    const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+    const visibilityQuery = canSeeHiddenContent ? {} : { isVisible: true };
     return await this.contentRepository.findWithPagination(
       options,
-      { kind: ContentKind.Comment, parent: { contentId: parentId } },
-      { populate: ['author', 'parent', 'children'] },
+      {
+        kind: ContentKind.Comment,
+        ...visibilityQuery,
+        parent: { contentId: parentId },
+      },
+      { populate: ['author', 'parent', 'parent.parent', 'children'] },
     );
   }
 
-  public async findOne(contentId: number): Promise<Content> {
-    // TODO: Maybe the user won't have access to this post. There can be some restrictions
-    // (i.e. "personal"/"sensitive" posts)
-    return await this.contentRepository.findOneOrFail({ contentId }, { populate: ['author', 'parent', 'children'] });
+  public async findOne(user: User, contentId: number): Promise<Content> {
+    const content = await this.contentRepository.findOneOrFail({ contentId }, { populate: ['author', 'parent', 'parent.parent', 'children'] });
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Read, content);
+
+    return content;
   }
 
   public async update(user: User, contentId: number, updateContentDto: UpdateContentDto): Promise<Content> {
@@ -141,6 +160,19 @@ export class ContentsService {
     assertPermissions(ability, Action.Update, content, Object.keys(updateContentDto));
 
     wrap(content).assign(updateContentDto);
+
+    if (typeof updateContentDto.hidden === 'boolean') {
+      await this.contentRepository.nativeUpdate({
+        $or: [
+          { parent: content },
+          { parent: { parent: content } },
+        ],
+      }, {
+        isVisible: !updateContentDto.hidden,
+      });
+      content.isVisible = !updateContentDto.hidden;
+    }
+
     await this.contentRepository.flush();
     return content;
   }

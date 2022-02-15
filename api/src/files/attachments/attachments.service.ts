@@ -19,23 +19,36 @@ export class AttachmentsService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async create(createAttachmentDto: CreateAttachmentDto, file: FileUpload): Promise<Attachment> {
+  public async assertCanCreateAttachment(user: User, createAttachmentDto: CreateAttachmentDto): Promise<boolean> {
     const content = await this.contentRepository.findOneOrFail({ contentId: createAttachmentDto.contentId });
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Interact, content);
+
     if (content.kind === ContentKind.Comment)
       throw new BadRequestException('Content is a comment');
+
+    return true;
+  }
+
+  public async create(createAttachmentDto: CreateAttachmentDto, file: FileUpload): Promise<Attachment> {
+    const content = await this.contentRepository.findOneOrFail({ contentId: createAttachmentDto.contentId });
 
     const attachment = new Attachment({ ...createAttachmentDto, content, file });
     await this.attachmentRepository.persistAndFlush(attachment);
     return attachment;
   }
 
-  public async findOne(attachmentId: string): Promise<Attachment> {
-    // TODO: Maybe the user won't have access to this post/reply. There can be some restrictions
-    // (i.e. "personal"/"sensitive" contents)
-    return await this.attachmentRepository.findOneOrFail(
+  public async findOne(user: User, attachmentId: string): Promise<Attachment> {
+    const attachment = await this.attachmentRepository.findOneOrFail(
       { attachmentId },
       { populate: ['file', 'file.user', 'content'] },
     );
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Delete, attachment);
+
+    return attachment;
   }
 
   public async remove(user: User, attachmentId: string): Promise<void> {

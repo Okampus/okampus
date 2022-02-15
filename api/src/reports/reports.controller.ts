@@ -39,12 +39,15 @@ export class ReportsController {
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Report))
   public async findAllReports(
+    @CurrentUser() user: User,
     @Body() filters: GetReportsDto,
     @Query() query: PaginateDto,
   ): Promise<PaginatedResult<Report>> {
-    if (query.page)
-      return await this.reportsService.findAll(filters, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.reportsService.findAll(filters);
+    if (query.page) {
+      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
+      return await this.reportsService.findAll(user, filters, options);
+    }
+    return await this.reportsService.findAll(user, filters);
   }
 
   @UseGuards(TypesenseEnabledGuard)
@@ -62,32 +65,38 @@ export class ReportsController {
   @Post(':userId')
   @CheckPolicies(ability => ability.can(Action.Report, Content))
   public async createReport(
+    @CurrentUser() user: User,
     @Param('userId') userId: string,
     @Body() createReportDto: CreateReportDto,
-    @CurrentUser() user: User,
   ): Promise<Report> {
     return await this.reportsService.create(userId, user, createReportDto);
   }
 
   @Get(':reportId')
   @CheckPolicies(ability => ability.can(Action.Read, Report))
-  public async findOne(@Param('reportId', ParseIntPipe) reportId: number): Promise<Report> {
-    return await this.reportsService.findOne(reportId);
+  public async findOne(
+    @CurrentUser() user: User,
+    @Param('reportId', ParseIntPipe) reportId: number,
+  ): Promise<Report> {
+    return await this.reportsService.findOne(user, reportId);
   }
 
   @Patch(':reportId')
   @CheckPolicies(ability => ability.can(Action.Update, Report))
   public async update(
+    @CurrentUser() user: User,
     @Param('reportId', ParseIntPipe) reportId: number,
     @Body() updateReportDto: UpdateReportDto,
-    @CurrentUser() user: User,
   ): Promise<Report> {
     return await this.reportsService.update(user, reportId, updateReportDto);
   }
 
   @Delete(':reportId')
   @CheckPolicies(ability => ability.can(Action.Delete, Report))
-  public async remove(@Param('reportId', ParseIntPipe) reportId: number): Promise<void> {
-    await this.reportsService.remove(reportId);
+  public async remove(
+    @CurrentUser() user: User,
+    @Param('reportId', ParseIntPipe) reportId: number,
+  ): Promise<void> {
+    await this.reportsService.remove(user, reportId);
   }
 }

@@ -20,8 +20,8 @@ export class VotesService {
   public async findOne(user: User, contentId: number): Promise<NoVote | Vote> {
     const content = await this.contentRepository.findOneOrFail({ contentId });
 
-    // TODO: Maybe the user won't have access to this content. There can be some restrictions
-    // (i.e. "personal"/"sensitive" contents)
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Read, content);
 
     return await this.votesRepository.findOne({ content, user }) ?? this.noVote(user, content);
   }

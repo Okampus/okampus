@@ -59,33 +59,38 @@ export class ThreadsService {
     return thread;
   }
 
-  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Thread>> {
-    // TODO: Maybe the user won't have access to all threads. There can be some restrictions
-    // (i.e. "personal"/"sensitive" threads)
+  public async findAll(user: User, paginationOptions?: PaginationOptions): Promise<PaginatedResult<Thread>> {
+    const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+    const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
     return await this.threadRepository.findWithPagination(
       paginationOptions,
-      {},
+      visibilityQuery,
       { populate: ['post', 'tags', 'assignees', 'post.author', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
     );
   }
 
-  public async findOne(contentMasterId: number): Promise<Thread> {
-    // TODO: Maybe the user won't have access to this thread. There can be some restrictions
-    // (i.e. "personal"/"sensitive" threads)
-    return await this.threadRepository.findOneOrFail(
+  public async findOne(user: User, contentMasterId: number): Promise<Thread> {
+    const thread = await this.threadRepository.findOneOrFail(
       { contentMasterId },
       { populate: ['post', 'post.children', 'post.children.children', 'tags', 'assignees', 'participants', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
     );
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Read, thread);
+
+    return thread;
   }
 
   public async findInteractions(user: User, contentMasterId: number): Promise<ThreadInteractions> {
-    const contents = await this.contentRepository.find({ contentMaster: { contentMasterId } });
-    // TODO: Maybe the user won't have access to this thread. There can be some restrictions
-    // (i.e. "personal"/"sensitive" threads)
-    const favorites = await this.favoriteRepository.find({ user, content: { $in: contents } });
-    const reactions = await this.reactionRepository.find({ user, content: { $in: contents } });
-    const votes = await this.voteRepository.find({ user, content: { $in: contents } });
-    const reports = await this.reportRepository.find({ reporter: user, content: { $in: contents } });
+    const thread = await this.threadRepository.findOneOrFail({ contentMasterId }, { populate: ['post'] });
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Read, thread);
+
+    const favorites = await this.favoriteRepository.find({ user, content: { contentMaster: thread } });
+    const reactions = await this.reactionRepository.find({ user, content: { contentMaster: thread } });
+    const votes = await this.voteRepository.find({ user, content: { contentMaster: thread } });
+    const reports = await this.reportRepository.find({ reporter: user, content: { contentMaster: thread } });
 
     return {
       favorites,

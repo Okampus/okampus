@@ -39,6 +39,8 @@ export class AttachmentsController {
     if (!file)
       throw new BadRequestException('No file provided');
 
+    await this.attachmentsService.assertCanCreateAttachment(user, createAttachmentDto);
+
     const fileUpload = await this.filesService.create(
       user,
       file,
@@ -50,8 +52,11 @@ export class AttachmentsController {
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Attachment))
-  public async findOneAttachment(@Param('id') id: string): Promise<Attachment> {
-    return await this.attachmentsService.findOne(id);
+  public async findOneAttachment(
+    @CurrentUser() user: User,
+    @Param('id') id: string,
+  ): Promise<Attachment> {
+    return await this.attachmentsService.findOne(user, id);
   }
 
   @Delete(':id')

@@ -47,10 +47,13 @@ export class ThreadsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Thread))
-  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Thread>> {
+  public async findAll(
+    @CurrentUser() user: User,
+    @Query() query: PaginateDto,
+  ): Promise<PaginatedResult<Thread>> {
     if (query.page)
-      return await this.threadsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.threadsService.findAll();
+      return await this.threadsService.findAll(user, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
+    return await this.threadsService.findAll(user);
   }
 
   @UseGuards(TypesenseEnabledGuard)
@@ -68,8 +71,11 @@ export class ThreadsController {
   @Get(':id')
   @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Read, Thread))
-  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Thread> {
-    return await this.threadsService.findOne(id);
+  public async findOne(
+    @CurrentUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Thread> {
+    return await this.threadsService.findOne(user, id);
   }
 
   @Get(':id/interactions')

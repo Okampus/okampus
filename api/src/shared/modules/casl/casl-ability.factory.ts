@@ -5,6 +5,7 @@ import { Badge } from '../../../badges/badge.entity';
 import { Blog } from '../../../blogs/blog.entity';
 import { Club } from '../../../clubs/entities/club.entity';
 import { Content } from '../../../contents/content.entity';
+import { Favorite } from '../../../favorites/favorite.entity';
 import { Attachment } from '../../../files/attachments/attachment.entity';
 import { InfoDoc } from '../../../files/info-docs/info-doc.entity';
 import { ProfileImage } from '../../../files/profile-images/profile-image.entity';
@@ -25,6 +26,7 @@ export type Subjects = InferSubjects<
   | typeof Blog
   | typeof Club
   | typeof Content
+  | typeof Favorite
   | typeof InfoDoc
   | typeof ProfileImage
   | typeof Report
@@ -52,17 +54,18 @@ export class CaslAbilityFactory {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     const { can: allow, cannot: forbid, build } = new AbilityBuilder<AppAbility>(Ability as AbilityClass<AppAbility>);
 
-    const isAuthor = { 'author.userId': user.userId };
-    const isFileUploader = { 'file.user.userId': user.userId };
-    const isPost = { kind: ContentKind.Post };
+    const isAuthor = { 'author.userId': user.userId } as const;
+    const isFileUploader = { 'file.user.userId': user.userId } as const;
 
     if (user.roles.includes(Role.Admin)) {
       allow(Action.Manage, 'all');
     } else {
       allow(Action.Read, 'all');
       forbid(Action.Read, Report);
-      allow([Action.Read, Action.Update], Report, { user: { userId: user.userId } });
-      allow(Action.Create, [Attachment, Content, InfoDoc, StudyDoc, Tag, Thread]);
+      // @ts-expect-error
+      allow([Action.Read, Action.Update], Report, { 'user.userId': user.userId });
+
+      allow(Action.Create, [Attachment, Content, Favorite, InfoDoc, StudyDoc, Tag, Thread]);
       allow(Action.Report, 'all');
       // @ts-expect-error
       forbid(Action.Report, Content, isAuthor)
@@ -73,12 +76,22 @@ export class CaslAbilityFactory {
       allow(Action.Update, Club);
 
       if (user.roles.includes(Role.Moderator)) {
+        allow(Action.Read, 'all');
         allow(Action.Update, 'all');
         forbid(Action.Update, Badge);
-        allow(Action.Manage, [Blog, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag]);
+        allow(Action.Manage, [Blog, Content, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag, Thread]);
       } else {
         // @ts-expect-error
-        allow(Action.Update, Thread, ['opValidated', 'tags', 'title', 'type'], { ...isAuthor, ...isPost })
+        forbid(Action.Manage, [Blog, Thread], { 'post.isVisible': false })
+          .because('Content has been removed');
+        forbid(Action.Manage, Content, { isVisible: false })
+          .because('Content has been removed');
+        // @ts-expect-error
+        forbid(Action.Manage, [Attachment, Favorite, Report], { 'content.isVisible': this.canSeeHiddenContent(user) })
+          .because('Content has been removed');
+
+        // @ts-expect-error
+        allow(Action.Update, Thread, ['opValidated', 'tags', 'title', 'type'], isAuthor)
           .because('Not the author');
         // @ts-expect-error
         allow(Action.Update, Content, ['body'], isAuthor)
@@ -112,7 +125,7 @@ export class CaslAbilityFactory {
       }
     }
 
-    forbid(Action.Delete, Content, isPost)
+    forbid(Action.Delete, Content, { kind: ContentKind.Post })
       .because('Cannot delete posts, only threads');
     forbid(Action.Update, User)
       .because('Not the user');
@@ -124,5 +137,9 @@ export class CaslAbilityFactory {
     return build({
       detectSubjectType: item => item.constructor as ExtractSubjectType<Subjects>,
     });
+  }
+
+  public canSeeHiddenContent(user: User): boolean {
+    return user.roles.includes(Role.Moderator);
   }
 }

@@ -22,7 +22,6 @@ export class Blog extends ContentMaster {
   @Transform(({ obj }: { obj: Blog }) => obj.location?.split(','))
   location?: string;
 
-  // TODO: Add full 'locked' support - Add perms to Update/Patch endpoint
   @Property()
   locked = false;
 

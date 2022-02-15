@@ -44,10 +44,13 @@ export class BlogsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Blog))
-  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Blog>> {
+  public async findAll(
+    @CurrentUser() user: User,
+    @Query() query: PaginateDto,
+  ): Promise<PaginatedResult<Blog>> {
     if (query.page)
-      return await this.blogsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.blogsService.findAll();
+      return await this.blogsService.findAll(user, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
+    return await this.blogsService.findAll(user);
   }
 
   @UseGuards(TypesenseEnabledGuard)
@@ -65,8 +68,11 @@ export class BlogsController {
   @Get(':id')
   @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Read, Blog))
-  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Blog> {
-    return await this.blogsService.findOne(id);
+  public async findOne(
+    @CurrentUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+): Promise<Blog> {
+    return await this.blogsService.findOne(user, id);
   }
 
   @Patch(':id')

@@ -35,8 +35,11 @@ export class ReactionsController {
 
   @Get(':contentId')
   @CheckPolicies(ability => ability.can(Action.Read, Content))
-  public async findAll(@Param('contentId', ParseIntPipe) contentId: number): Promise<Reaction[]> {
-    return await this.reactionsService.findAll(contentId);
+  public async findAll(
+    @CurrentUser() user: User,
+    @Param('contentId', ParseIntPipe) contentId: number,
+  ): Promise<Reaction[]> {
+    return await this.reactionsService.findAll(user, contentId);
   }
 
   @Delete(':contentId')
