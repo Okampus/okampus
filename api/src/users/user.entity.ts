@@ -37,6 +37,9 @@ export class User extends BaseEntity {
   fullname!: string;
 
   @Property({ type: 'text' })
+  fullnameShort!: string;
+
+  @Property({ type: 'text' })
   @Exclude()
   password?: string;
 
@@ -91,6 +94,7 @@ export class User extends BaseEntity {
     this.firstname = options.firstname;
     this.lastname = options.lastname;
     this.fullname = options.fullname;
+    this.fullnameShort = `${this.firstname.split(' ').shift()} ${this.lastname}`;
     this.schoolRole = options.schoolRole;
   }
 
