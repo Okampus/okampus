@@ -6,6 +6,8 @@ import {
   CLUBMEMBER_CLUB_INCLUDED,
   CONTENT_AUTHOR_EXCLUDED,
   PERSONAL_INFO_INCLUDED,
+  TEAM_MEMBERS_INCLUDED,
+  TEAMMEMBER_TEAM_INCLUDED,
 } from '../constants';
 
 export function SerializerIncludePersonalInfo(): ReturnType<typeof applyDecorators> {
@@ -14,6 +16,14 @@ export function SerializerIncludePersonalInfo(): ReturnType<typeof applyDecorato
 
 export function SerializerExcludeContentAuthor(): ReturnType<typeof applyDecorators> {
   return applyDecorators(SerializeOptions({ groups: [CONTENT_AUTHOR_EXCLUDED] }));
+}
+
+export function SerializerIncludeTeamMembers(): ReturnType<typeof applyDecorators> {
+  return applyDecorators(SerializeOptions({ groups: [TEAM_MEMBERS_INCLUDED] }));
+}
+
+export function SerializerTeamMemberIncludeTeam(): ReturnType<typeof applyDecorators> {
+  return applyDecorators(SerializeOptions({ groups: [TEAMMEMBER_TEAM_INCLUDED] }));
 }
 
 export function SerializerIncludeClubMembers(): ReturnType<typeof applyDecorators> {

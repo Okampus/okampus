@@ -14,6 +14,7 @@ import { Report } from '../../../reports/report.entity';
 import type { Social } from '../../../socials/entities/social.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
+import { Team } from '../../../teams/entities/team.entity';
 import { Thread } from '../../../threads/thread.entity';
 import { User } from '../../../users/user.entity';
 import { ContentKind } from '../../lib/types/content-kind.enum';
@@ -34,6 +35,7 @@ export type Subjects = InferSubjects<
   | typeof StudyDoc
   | typeof Subject
   | typeof Tag
+  | typeof Team
   | typeof Thread
   | typeof User>
   | 'all';
@@ -73,7 +75,7 @@ export class CaslAbilityFactory {
       allow(Action.Interact, Content);
 
       // This is all managed by-hand inside the services.
-      allow(Action.Update, Club);
+      allow(Action.Update, [Club, Team]);
 
       if (user.roles.includes(Role.Moderator)) {
         allow(Action.Read, 'all');

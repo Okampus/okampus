@@ -23,6 +23,7 @@ import { SocialsModule } from './socials/socials.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { TagsModule } from './tags/tags.module';
+import { TeamsModule } from './teams/teams.module';
 import { ThreadsModule } from './threads/threads.module';
 import { UsersModule } from './users/users.module';
 import { VotesModule } from './votes/votes.module';
@@ -33,22 +34,23 @@ import { VotesModule } from './votes/votes.module';
     EventEmitterModule.forRoot(),
     MikroOrmModule.forRoot(),
     S3Module.forRoot({ config: storageConfig }),
-    BlogsModule,
+    CaslModule,
     AuthModule,
     BadgesModule,
-    CaslModule,
+    BlogsModule,
     ClubsModule,
     ContentsModule,
     FavoritesModule,
     FilesModule,
     HealthModule,
-    ThreadsModule,
     ReactionsModule,
     ReportsModule,
     SocialsModule,
     StatisticsModule,
     SubjectsModule,
     TagsModule,
+    TeamsModule,
+    ThreadsModule,
     UsersModule,
     VotesModule,
   ],
