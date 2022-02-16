@@ -7,7 +7,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Content } from '../contents/content.entity';
+import { Content } from '../contents/entities/content.entity';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { User } from '../users/user.entity';

@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Content } from '../../contents/content.entity';
+import { Content } from '../../contents/entities/content.entity';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import { ContentKind } from '../../shared/lib/types/content-kind.enum';
 import { assertPermissions } from '../../shared/lib/utils/assert-permission';

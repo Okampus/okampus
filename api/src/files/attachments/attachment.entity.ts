@@ -5,7 +5,7 @@ import {
   PrimaryKey,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import { Content } from '../../contents/content.entity';
+import { Content } from '../../contents/entities/content.entity';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 

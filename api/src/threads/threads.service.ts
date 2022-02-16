@@ -1,8 +1,8 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { Content } from '../contents/content.entity';
 import { ContentsService } from '../contents/contents.service';
+import { Content } from '../contents/entities/content.entity';
 import { Favorite } from '../favorites/favorite.entity';
 import { Reaction } from '../reactions/reaction.entity';
 import { Report } from '../reports/report.entity';

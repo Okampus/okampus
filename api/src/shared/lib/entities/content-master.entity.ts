@@ -7,7 +7,7 @@ import {
   PrimaryKey,
 } from '@mikro-orm/core';
 // eslint-disable-next-line import/no-cycle
-import { Content } from '../../../contents/content.entity';
+import { Content } from '../../../contents/entities/content.entity';
 import type { Tag } from '../../../tags/tag.entity';
 import type { User } from '../../../users/user.entity';
 import { TransformCollection } from '../decorators/transform-collection.decorator';

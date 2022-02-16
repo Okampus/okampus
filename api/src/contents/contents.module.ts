@@ -2,9 +2,9 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import { Content } from './content.entity';
 import { ContentsController } from './contents.controller';
 import { ContentsService } from './contents.service';
+import { Content } from './entities/content.entity';
 
 @Module({
   imports: [

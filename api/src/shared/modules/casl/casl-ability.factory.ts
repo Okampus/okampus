@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { Badge } from '../../../badges/badge.entity';
 import { Blog } from '../../../blogs/blog.entity';
 import { Club } from '../../../clubs/entities/club.entity';
-import { Content } from '../../../contents/content.entity';
+import { Content } from '../../../contents/entities/content.entity';
 import { Favorite } from '../../../favorites/favorite.entity';
 import { Attachment } from '../../../files/attachments/attachment.entity';
 import { InfoDoc } from '../../../files/info-docs/info-doc.entity';

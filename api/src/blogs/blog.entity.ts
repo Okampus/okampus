@@ -1,6 +1,6 @@
 import { Entity, Property } from '@mikro-orm/core';
 import { Transform } from 'class-transformer';
-import type { Content } from '../contents/content.entity';
+import type { Content } from '../contents/entities/content.entity';
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { ContentMasterType } from '../shared/lib/types/content-master-type.enum';
 

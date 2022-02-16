@@ -10,10 +10,10 @@ import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory'
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import type { User } from '../users/user.entity';
-import { Content } from './content.entity';
 import type { CreateContentDto } from './dto/create-content.dto';
 import type { CreateOrphanContentDto } from './dto/create-orphan-content.dto';
 import type { UpdateContentDto } from './dto/update-content.dto';
+import { Content } from './entities/content.entity';
 
 @Injectable()
 export class ContentsService {

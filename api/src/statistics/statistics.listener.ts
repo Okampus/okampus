@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { BadgeUnlock } from '../badges/badge-unlock.entity';
 import { Badge } from '../badges/badge.entity';
-import { Content } from '../contents/content.entity';
+import { Content } from '../contents/entities/content.entity';
 import type { InfoDoc } from '../files/info-docs/info-doc.entity';
 import type { StudyDoc } from '../files/study-docs/study-doc.entity';
 import pointsConfig from '../shared/configs/points.config';

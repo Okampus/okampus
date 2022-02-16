@@ -15,11 +15,11 @@ import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { User } from '../users/user.entity';
-import { Content } from './content.entity';
 import { ContentsService } from './contents.service';
 import { CreateContentDto } from './dto/create-content.dto';
 import { ParentDto } from './dto/parent.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
+import { Content } from './entities/content.entity';
 
 @ApiTags('Contents')
 @Controller({ path: 'contents' })

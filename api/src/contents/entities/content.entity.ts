@@ -11,14 +11,14 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Exclude, Transform } from 'class-transformer';
-import { CONTENT_AUTHOR_EXCLUDED } from '../shared/lib/constants';
-import { TransformCollection } from '../shared/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '../shared/lib/entities/base.entity';
+import { CONTENT_AUTHOR_EXCLUDED } from '../../shared/lib/constants';
+import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
+import { BaseEntity } from '../../shared/lib/entities/base.entity';
 // eslint-disable-next-line import/no-cycle
-import { ContentMaster } from '../shared/lib/entities/content-master.entity';
-import { ContentKind } from '../shared/lib/types/content-kind.enum';
-import { ContentMasterType } from '../shared/lib/types/content-master-type.enum';
-import { User } from '../users/user.entity';
+import { ContentMaster } from '../../shared/lib/entities/content-master.entity';
+import { ContentKind } from '../../shared/lib/types/content-kind.enum';
+import { ContentMasterType } from '../../shared/lib/types/content-master-type.enum';
+import { User } from '../../users/user.entity';
 
 @Entity()
 export class Content extends BaseEntity {
