@@ -1,12 +1,11 @@
 import {
-  BeforeUpdate,
   Collection,
   Entity,
   Enum,
-  EventArgs,
   Index,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
@@ -19,6 +18,8 @@ import { ContentMaster } from '../../shared/lib/entities/content-master.entity';
 import { ContentKind } from '../../shared/lib/types/content-kind.enum';
 import { ContentMasterType } from '../../shared/lib/types/content-master-type.enum';
 import { User } from '../../users/user.entity';
+// eslint-disable-next-line import/no-cycle
+import { ContentEdit } from './content-edit.entity';
 
 @Entity()
 export class Content extends BaseEntity {
@@ -51,6 +52,11 @@ export class Content extends BaseEntity {
   @TransformCollection()
   children = new Collection<Content>(this);
 
+  @OneToMany(() => ContentEdit, edit => edit.parent)
+  @TransformCollection()
+  @Exclude()
+  edits = new Collection<ContentEdit>(this);
+
   @Enum(() => ContentMasterType)
   contentMasterType!: ContentMasterType;
 
@@ -70,8 +76,8 @@ export class Content extends BaseEntity {
   @Property()
   reportCount = 0;
 
-  @Property()
-  contentLastUpdatedAt = new Date();
+  @OneToOne()
+  lastEdit?: ContentEdit;
 
   constructor(options: {
     body: string;
@@ -90,12 +96,5 @@ export class Content extends BaseEntity {
     this.contentMasterId = this.contentMaster.contentMasterId;
     if (options.parent)
       this.parent = options.parent;
-  }
-
-  @BeforeUpdate()
-  public beforeUpdate(event: EventArgs<this>): void {
-    const payload = event.changeSet?.payload;
-    if (payload && 'body' in payload)
-      this.contentLastUpdatedAt = new Date();
   }
 }

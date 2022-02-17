@@ -19,6 +19,7 @@ import { ContentsService } from './contents.service';
 import { CreateContentDto } from './dto/create-content.dto';
 import { ParentDto } from './dto/parent.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
+import type { ContentEdit } from './entities/content-edit.entity';
 import { Content } from './entities/content.entity';
 
 @ApiTags('Contents')
@@ -81,6 +82,20 @@ export class ContentsController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Content> {
     return await this.contentsService.findOne(user, id);
+  }
+
+  @Get(':id/edits')
+  @CheckPolicies(ability => ability.can(Action.Read, Content))
+  public async findEdits(
+    @CurrentUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+    @Query() query: PaginateDto,
+  ): Promise<PaginatedResult<ContentEdit>> {
+    if (query.page) {
+      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
+      return await this.contentsService.findEdits(user, id, options);
+    }
+    return await this.contentsService.findEdits(user, id);
   }
 
   @Patch(':id')
