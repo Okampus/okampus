@@ -1,4 +1,3 @@
-export const PERSONAL_INFO_INCLUDED = 'PersonalInfoIncluded';
 export const CONTENT_AUTHOR_EXCLUDED = 'ContentAuthorExcluded';
 export const STATISTICS_INCLUDED = 'StatisticsIncluded';
 

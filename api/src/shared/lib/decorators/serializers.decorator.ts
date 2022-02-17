@@ -5,14 +5,9 @@ import {
   CLUB_SOCIALS_INCLUDED,
   CLUBMEMBER_CLUB_INCLUDED,
   CONTENT_AUTHOR_EXCLUDED,
-  PERSONAL_INFO_INCLUDED,
   TEAM_MEMBERS_INCLUDED,
   TEAMMEMBER_TEAM_INCLUDED,
 } from '../constants';
-
-export function SerializerIncludePersonalInfo(): ReturnType<typeof applyDecorators> {
-  return applyDecorators(SerializeOptions({ groups: [PERSONAL_INFO_INCLUDED] }));
-}
 
 export function SerializerExcludeContentAuthor(): ReturnType<typeof applyDecorators> {
   return applyDecorators(SerializeOptions({ groups: [CONTENT_AUTHOR_EXCLUDED] }));
