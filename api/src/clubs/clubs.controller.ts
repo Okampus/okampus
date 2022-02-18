@@ -98,16 +98,15 @@ export class ClubsController {
     return await this.clubsService.findAllUsersInClub(clubId);
   }
 
-  @Post(':clubId/members/:userId')
+  @Post(':clubId/members')
   @CheckPolicies(ability => ability.can(Action.Update, Club))
   @SerializerClubMemberIncludeClub()
   public async addUserToClub(
     @Param('clubId', ParseIntPipe) clubId: number,
-    @Param('userId') userId: string,
     @Body() createClubMemberDto: CreateClubMemberDto,
     @CurrentUser() requester: User,
   ): Promise<ClubMember> {
-    return await this.clubsService.addUserToClub(requester, clubId, userId, createClubMemberDto);
+    return await this.clubsService.addUserToClub(requester, clubId, createClubMemberDto);
   }
 
   @Patch(':clubId/members/:userId')

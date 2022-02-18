@@ -110,7 +110,6 @@ export class ClubsService {
   public async addUserToClub(
     requester: User,
     clubId: number,
-    userId: string,
     createClubMemberDto: CreateClubMemberDto,
 ): Promise<ClubMember> {
     const club = await this.clubRepository.findOneOrFail(
@@ -122,7 +121,7 @@ export class ClubsService {
     if (!requester.roles.includes(Role.Admin) && !club.isClubAdmin(requester))
       throw new ForbiddenException('Not a club admin');
 
-    const user = await this.userRepository.findOneOrFail({ userId });
+    const user = await this.userRepository.findOneOrFail({ userId: createClubMemberDto.userId });
     const existing = await this.clubMemberRepository.count({ club, user });
     if (existing)
       throw new BadRequestException('User is already in club');

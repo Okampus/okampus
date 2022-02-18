@@ -8,4 +8,7 @@ export class CreateClubMemberDto {
   @IsOptional()
   @IsString()
   roleLabel?: string;
+
+  @IsString()
+  userId: string;
 }
