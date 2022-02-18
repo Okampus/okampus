@@ -65,7 +65,10 @@ export class ThreadsService {
     return await this.threadRepository.findWithPagination(
       paginationOptions,
       visibilityQuery,
-      { populate: ['post', 'tags', 'assignees', 'post.author', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
+      {
+        // TODO: Remove 'post.lastEdit' once we add activities
+        populate: ['post', 'tags', 'assignees', 'post.author', 'post.lastEdit', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'],
+      },
     );
   }
 
