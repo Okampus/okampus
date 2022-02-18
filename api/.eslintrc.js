@@ -11,7 +11,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: ['noftalint/typescript'],
-  ignorePatterns: ['node_modules/', './dist', './src/migrations/**/*.ts'],
+  ignorePatterns: ['node_modules/', './dist', './migrations/**/*.ts'],
   reportUnusedDisableDirectives: true,
   parserOptions: {
     project: './tsconfig.eslint.json',
@@ -22,19 +22,14 @@ module.exports = {
   },
   rules: {
     'class-methods-use-this': 'off',
-    'import/extensions': 'off',
-    'import/no-unresolved': 'off',
     'import/prefer-default-export': 'off',
-    'import/no-extraneous-dependencies': 'off',
-    'import/no-import-module-exports': 'off',
 
+    'import/no-extraneous-dependencies': 'off',
     'node/no-extraneous-import': ['error', { allowModules: ['express'] }],
-    'node/callback-return': 'off',
 
     'no-undefined': 'off',
     'unicorn/filename-case': ['error', { case: 'kebabCase' }],
 
-    '@typescript-eslint/no-extraneous-class': ['error', { allowWithDecorator: true }],
     // Forbid leading underscore for private properties (in nest almost all if not all class properties are private,
     // adding the underscore just impacts readability.)
     '@typescript-eslint/naming-convention': [
@@ -45,14 +40,6 @@ module.exports = {
     ],
   },
   overrides: [{
-    files: ['*.config.ts', '*.config.js'],
-    rules: {
-      'import/no-commonjs': 'off',
-      'node/no-unpublished-import': 'off',
-      'node/no-unpublished-require': 'off',
-      'import/no-extraneous-dependencies': 'off',
-    },
-  }, {
     files: ['*.decorator.ts', '*.decorator.js'],
     rules: {
       '@typescript-eslint/naming-convention': [
