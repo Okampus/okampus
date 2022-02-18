@@ -57,7 +57,7 @@ export class UsersController {
     return await this.usersService.getUserStats(userId);
   }
 
-  @Patch('update')
+  @Patch()
   public async updateOne(@CurrentUser() user: User, @Body() updateUserDto: UpdateUserDto): Promise<User> {
     return await this.usersService.updateUser(user.userId, updateUserDto);
   }
