@@ -1,6 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { ContentsModule } from '../contents/contents.module';
+import { Content } from '../contents/entities/content.entity';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { Tag } from '../tags/tag.entity';
 import { BlogSearchService } from './blog-search.service';
@@ -10,7 +11,7 @@ import { BlogsService } from './blogs.service';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([Blog, Tag]),
+    MikroOrmModule.forFeature([Blog, Content, Tag]),
     ContentsModule,
   ],
   controllers: [BlogsController],

@@ -76,13 +76,19 @@ export class ThreadsService {
   }
 
   public async findOne(user: User, contentMasterId: number): Promise<Thread> {
-    const thread = await this.threadRepository.findOneOrFail(
+    const thread: Thread & { contents?: Content[] } = await this.threadRepository.findOneOrFail(
       { contentMasterId },
-      { populate: ['post', 'post.lastEdit', 'post.children', 'post.children.children', 'tags', 'assignees', 'participants', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
+      { populate: ['tags', 'assignees', 'participants', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, thread);
+
+    const contents = await this.contentRepository.find(
+      { contentMaster: thread },
+      { populate: ['author', 'lastEdit'] },
+    );
+    thread.contents = contents;
 
     return thread;
   }

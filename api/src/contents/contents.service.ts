@@ -49,8 +49,6 @@ export class ContentsService {
 
     const content = this.createAndPersistContent(createContentDto, ContentKind.Reply, user, parent);
     await this.contentEditRepository.flush();
-
-    parent.children.add(content);
     await this.contentRepository.flush();
 
     const master = await this.contentMasterRepository.findOneOrFail(
@@ -76,8 +74,6 @@ export class ContentsService {
 
     const content = this.createAndPersistContent(createContentDto, ContentKind.Comment, user, parent);
     await this.contentEditRepository.flush();
-
-    parent.children.add(content);
     await this.contentRepository.flush();
 
     const master = await this.contentMasterRepository.findOneOrFail(
@@ -106,7 +102,7 @@ export class ContentsService {
         ...visibilityQuery,
         parent: { contentId: parentId },
       },
-      { populate: ['author', 'lastEdit', 'parent', 'children'], orderBy: serializeOrder(options?.sortBy) },
+      { populate: ['author', 'lastEdit', 'parent'], orderBy: serializeOrder(options?.sortBy) },
     );
   }
 
@@ -124,12 +120,12 @@ export class ContentsService {
         ...visibilityQuery,
         parent: { contentId: parentId },
       },
-      { populate: ['author', 'lastEdit', 'parent', 'parent.parent', 'children'] },
+      { populate: ['author', 'lastEdit', 'parent', 'parent.parent'] },
     );
   }
 
   public async findOne(user: User, contentId: number): Promise<Content> {
-    const content = await this.contentRepository.findOneOrFail({ contentId }, { populate: ['author', 'lastEdit', 'parent', 'parent.parent', 'children'] });
+    const content = await this.contentRepository.findOneOrFail({ contentId }, { populate: ['author', 'lastEdit', 'parent', 'parent.parent'] });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, content);
@@ -157,7 +153,7 @@ export class ContentsService {
   public async update(user: User, contentId: number, updateContentDto: UpdateContentDto): Promise<Content> {
     const content = await this.contentRepository.findOneOrFail(
       { contentId },
-      { populate: ['author', 'lastEdit', 'parent', 'children'] },
+      { populate: ['author', 'lastEdit', 'parent'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);

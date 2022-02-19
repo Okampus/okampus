@@ -3,6 +3,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import slugify from 'slugify';
 import { ContentsService } from '../contents/contents.service';
+import { Content } from '../contents/entities/content.entity';
 import type { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { ContentMasterType } from '../shared/lib/types/content-master-type.enum';
@@ -21,6 +22,7 @@ import type { UpdateBlogDto } from './dto/update-blog.dto';
 export class BlogsService {
   constructor(
     @InjectRepository(Blog) private readonly blogRepository: BaseRepository<Blog>,
+    @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
     private readonly contentsService: ContentsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
@@ -57,13 +59,19 @@ export class BlogsService {
   }
 
   public async findOne(user: User, contentMasterId: number): Promise<Blog> {
-    const blog = await this.blogRepository.findOneOrFail(
+    const blog: Blog & { contents?: Content[] } = await this.blogRepository.findOneOrFail(
       { contentMasterId },
-      { populate: ['post', 'post.children', 'post.children.children', 'tags', 'participants'] },
+      { populate: ['tags', 'participants'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, blog);
+
+    const contents = await this.contentRepository.find(
+      { contentMaster: blog },
+      { populate: ['author', 'lastEdit'] },
+    );
+    blog.contents = contents;
 
     return blog;
   }
