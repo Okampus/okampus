@@ -10,6 +10,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { BadgesModule } from './badges/badges.module';
 import { BlogsModule } from './blogs/blogs.module';
 import { ClubsModule } from './clubs/clubs.module';
+import { ContactsModule } from './contacts/contacts.module';
 import { ContentsModule } from './contents/contents.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { FilesModule } from './files/files.module';
@@ -19,7 +20,6 @@ import { ReportsModule } from './reports/reports.module';
 import storageConfig from './shared/configs/storage.config';
 import { PoliciesGuard } from './shared/modules/authorization';
 import { CaslModule } from './shared/modules/casl/casl.module';
-import { SocialsModule } from './socials/socials.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { TagsModule } from './tags/tags.module';
@@ -45,7 +45,7 @@ import { VotesModule } from './votes/votes.module';
     HealthModule,
     ReactionsModule,
     ReportsModule,
-    SocialsModule,
+    ContactsModule,
     StatisticsModule,
     SubjectsModule,
     TagsModule,

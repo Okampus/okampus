@@ -3,7 +3,7 @@ import {
   Length,
 } from 'class-validator';
 
-export class CreateSocialDto {
+export class CreateContactDto {
   @Length(1, 50)
   @IsString()
   name: string;

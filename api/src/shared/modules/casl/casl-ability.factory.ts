@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { Badge } from '../../../badges/badge.entity';
 import { Blog } from '../../../blogs/blog.entity';
 import { Club } from '../../../clubs/entities/club.entity';
+import type { Contact } from '../../../contacts/entities/contact.entity';
 import { Content } from '../../../contents/entities/content.entity';
 import { Favorite } from '../../../favorites/favorite.entity';
 import { Attachment } from '../../../files/attachments/attachment.entity';
@@ -11,7 +12,6 @@ import { InfoDoc } from '../../../files/info-docs/info-doc.entity';
 import { ProfileImage } from '../../../files/profile-images/profile-image.entity';
 import { StudyDoc } from '../../../files/study-docs/study-doc.entity';
 import { Report } from '../../../reports/report.entity';
-import type { Social } from '../../../socials/entities/social.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
 import { Team } from '../../../teams/entities/team.entity';
@@ -26,12 +26,12 @@ export type Subjects = InferSubjects<
   | typeof Badge
   | typeof Blog
   | typeof Club
+  | typeof Contact
   | typeof Content
   | typeof Favorite
   | typeof InfoDoc
   | typeof ProfileImage
   | typeof Report
-  | typeof Social
   | typeof StudyDoc
   | typeof Subject
   | typeof Tag

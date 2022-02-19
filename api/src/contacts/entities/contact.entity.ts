@@ -2,9 +2,9 @@ import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 
 @Entity()
-export class Social extends BaseEntity {
+export class Contact extends BaseEntity {
   @PrimaryKey()
-  socialId: number;
+  contactId: number;
 
   @Property()
   name!: string;

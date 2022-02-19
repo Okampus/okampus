@@ -7,22 +7,22 @@ import {
 } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
-import { Social } from './social.entity';
+import { Contact } from './contact.entity';
 
 @Entity({
   discriminatorColumn: 'kind',
   abstract: true,
 })
-export abstract class SocialAccount extends BaseEntity {
+export abstract class ContactAccount extends BaseEntity {
   @PrimaryKey()
-  socialAccountId!: number;
+  contactAccountId!: number;
 
   @Enum()
   @Exclude()
   kind!: 'club' | 'user';
 
   @ManyToOne({ onDelete: 'CASCADE' })
-  social!: Social;
+  contact!: Contact;
 
   @Property({ type: 'text' })
   link?: string;
@@ -31,12 +31,12 @@ export abstract class SocialAccount extends BaseEntity {
   pseudo!: string;
 
   constructor(options: {
-    social: Social;
+    contact: Contact;
     link?: string;
     pseudo: string;
   }) {
     super();
-    this.social = options.social;
+    this.contact = options.contact;
     this.link = options.link;
     this.pseudo = options.pseudo;
   }

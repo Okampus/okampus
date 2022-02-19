@@ -6,11 +6,11 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Expose } from 'class-transformer';
+import { ClubContactAccount } from '../../contacts/entities/club-contact-account.entity';
 import { CLUB_MEMBERS_INCLUDED } from '../../shared/lib/constants';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { ClubRole } from '../../shared/lib/types/club-role.enum';
-import { ClubSocialAccount } from '../../socials/entities/club-social-account.entity';
 import type { User } from '../../users/user.entity';
 import { ClubMember } from './club-member.entity';
 
@@ -34,9 +34,9 @@ export class Club extends BaseEntity {
   @Property({ type: 'text' })
   icon!: string;
 
-  @OneToMany(() => ClubSocialAccount, account => account.club)
+  @OneToMany(() => ClubContactAccount, account => account.club)
   @TransformCollection()
-  socials = new Collection<ClubSocialAccount>(this);
+  contacts = new Collection<ClubContactAccount>(this);
 
   @OneToMany(() => ClubMember, member => member.club)
   @TransformCollection()

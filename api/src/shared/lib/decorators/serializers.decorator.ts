@@ -1,8 +1,8 @@
 import { applyDecorators, SerializeOptions } from '@nestjs/common';
 import {
+  CLUB_CONTACTS_CLUB_INCLUDED,
+  CLUB_CONTACTS_INCLUDED,
   CLUB_MEMBERS_INCLUDED,
-  CLUB_SOCIALS_CLUB_INCLUDED,
-  CLUB_SOCIALS_INCLUDED,
   CLUBMEMBER_CLUB_INCLUDED,
   CONTENT_AUTHOR_EXCLUDED,
   TEAM_MEMBERS_INCLUDED,
@@ -29,10 +29,10 @@ export function SerializerClubMemberIncludeClub(): ReturnType<typeof applyDecora
   return applyDecorators(SerializeOptions({ groups: [CLUBMEMBER_CLUB_INCLUDED] }));
 }
 
-export function SerializerIncludeClubSocials(): ReturnType<typeof applyDecorators> {
-  return applyDecorators(SerializeOptions({ groups: [CLUB_SOCIALS_INCLUDED] }));
+export function SerializerIncludeClubContacts(): ReturnType<typeof applyDecorators> {
+  return applyDecorators(SerializeOptions({ groups: [CLUB_CONTACTS_INCLUDED] }));
 }
 
-export function SerializerClubSocialsIncludeClub(): ReturnType<typeof applyDecorators> {
-  return applyDecorators(SerializeOptions({ groups: [CLUB_SOCIALS_CLUB_INCLUDED] }));
+export function SerializerClubContactsIncludeClub(): ReturnType<typeof applyDecorators> {
+  return applyDecorators(SerializeOptions({ groups: [CLUB_CONTACTS_CLUB_INCLUDED] }));
 }

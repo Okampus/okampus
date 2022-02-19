@@ -46,27 +46,27 @@ export class ClubsService {
     return await this.clubRepository.findWithPagination(
       paginationOptions,
       {},
-      { populate: ['members', 'members.user', 'socials', 'socials.social'], orderBy: { name: 'ASC' } },
+      { populate: ['members', 'members.user', 'contacts', 'contacts.contact'], orderBy: { name: 'ASC' } },
     );
   }
 
   public async findOne(clubId: number): Promise<Club> {
     return await this.clubRepository.findOneOrFail(
       { clubId },
-      { populate: ['members', 'members.user', 'socials', 'socials.social'] },
+      { populate: ['members', 'members.user', 'contacts', 'contacts.contact'] },
     );
   }
 
   public async findNames(): Promise<Array<Pick<Club, 'category' | 'clubId' | 'icon' | 'name'>>> {
     const clubs = await this.clubRepository.findAll({ fields: ['name', 'category', 'icon', 'clubId'], orderBy: { name: 'ASC' } });
     // Remove null values for M:M relations that are automatically filled
-    return clubs.map(({ socials, members, ...keep }) => keep);
+    return clubs.map(({ contacts, members, ...keep }) => keep);
   }
 
   public async update(user: User, clubId: number, updateClubDto: UpdateClubDto): Promise<Club> {
     const club = await this.clubRepository.findOneOrFail(
       { clubId },
-      { populate: ['members', 'members.user', 'socials', 'socials.social'] },
+      { populate: ['members', 'members.user', 'contacts', 'contacts.contact'] },
     );
 
     // TODO: Move this to CASL
@@ -92,7 +92,7 @@ export class ClubsService {
     return await this.clubMemberRepository.findWithPagination(
       paginationOptions,
       { club: { clubId } },
-      { populate: ['user', 'club', 'club.members', 'club.members.user', 'club.socials', 'club.socials.social'], orderBy: { user: { lastname: 'ASC' } } },
+      { populate: ['user', 'club', 'club.members', 'club.members.user', 'club.contacts', 'club.contacts.contact'], orderBy: { user: { lastname: 'ASC' } } },
     );
   }
 
@@ -103,7 +103,7 @@ export class ClubsService {
     return await this.clubMemberRepository.findWithPagination(
       paginationOptions,
       { user: { userId } },
-      { populate: ['user', 'club', 'club.members', 'club.socials', 'club.socials.social'], orderBy: { createdAt: 'ASC' } },
+      { populate: ['user', 'club', 'club.members', 'club.contacts', 'club.contacts.contact'], orderBy: { createdAt: 'ASC' } },
     );
   }
 
@@ -114,7 +114,7 @@ export class ClubsService {
 ): Promise<ClubMember> {
     const club = await this.clubRepository.findOneOrFail(
       { clubId },
-      { populate: ['members', 'members.user', 'socials', 'socials.social'] },
+      { populate: ['members', 'members.user', 'contacts', 'contacts.contact'] },
     );
 
     // TODO: Move this to CASL
@@ -142,7 +142,7 @@ export class ClubsService {
   ): Promise<ClubMember> {
     const club = await this.clubRepository.findOneOrFail(
       { clubId },
-      { populate: ['members', 'members.user', 'socials', 'socials.social'] },
+      { populate: ['members', 'members.user', 'contacts', 'contacts.contact'] },
     );
 
     // TODO: Move this to CASL
@@ -154,7 +154,7 @@ export class ClubsService {
 
     const clubMember = await this.clubMemberRepository.findOneOrFail(
       { club: { clubId }, user: { userId } },
-      { populate: ['user', 'club', 'club.members', 'club.members.user', 'club.socials', 'club.socials.social'] },
+      { populate: ['user', 'club', 'club.members', 'club.members.user', 'club.contacts', 'club.contacts.contact'] },
     );
 
     wrap(clubMember).assign(updateClubMemberDto);
