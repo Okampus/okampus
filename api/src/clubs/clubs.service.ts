@@ -4,7 +4,7 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { ClubRole } from '../shared/lib/types/club-role.enum';
 import { Role } from '../shared/modules/authorization/types/role.enum';
-import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
+import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { User } from '../users/user.entity';
 import { ClubSearchService } from './club-search.service';
@@ -42,11 +42,11 @@ export class ClubsService {
     return club;
   }
 
-  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Club>> {
+  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Club>> {
     return await this.clubRepository.findWithPagination(
       paginationOptions,
       {},
-      { populate: ['members', 'members.user', 'socials', 'socials.social'] },
+      { populate: ['members', 'members.user', 'socials', 'socials.social'], orderBy: { name: 'ASC' } },
     );
   }
 
@@ -58,7 +58,7 @@ export class ClubsService {
   }
 
   public async findNames(): Promise<Array<Pick<Club, 'category' | 'clubId' | 'icon' | 'name'>>> {
-    const clubs = await this.clubRepository.findAll({ fields: ['name', 'category', 'icon', 'clubId'] });
+    const clubs = await this.clubRepository.findAll({ fields: ['name', 'category', 'icon', 'clubId'], orderBy: { name: 'ASC' } });
     // Remove null values for M:M relations that are automatically filled
     return clubs.map(({ socials, members, ...keep }) => keep);
   }
@@ -87,23 +87,23 @@ export class ClubsService {
 
   public async findAllUsersInClub(
     clubId: number,
-    paginationOptions?: PaginationOptions,
+    paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<ClubMember>> {
     return await this.clubMemberRepository.findWithPagination(
       paginationOptions,
       { club: { clubId } },
-      { populate: ['user', 'club', 'club.members', 'club.members.user', 'club.socials', 'club.socials.social'] },
+      { populate: ['user', 'club', 'club.members', 'club.members.user', 'club.socials', 'club.socials.social'], orderBy: { user: { lastname: 'ASC' } } },
     );
   }
 
   public async findClubMembership(
     userId: string,
-    paginationOptions?: PaginationOptions,
+    paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<ClubMember>> {
     return await this.clubMemberRepository.findWithPagination(
       paginationOptions,
       { user: { userId } },
-      { populate: ['user', 'club', 'club.members', 'club.socials', 'club.socials.social'] },
+      { populate: ['user', 'club', 'club.members', 'club.socials', 'club.socials.social'], orderBy: { createdAt: 'ASC' } },
     );
   }
 

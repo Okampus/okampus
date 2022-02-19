@@ -3,13 +3,14 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import slugify from 'slugify';
 import { ContentsService } from '../contents/contents.service';
+import type { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { ContentMasterType } from '../shared/lib/types/content-master-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { serializeOrder } from '../shared/modules/sorting/serialize-order';
 import { Tag } from '../tags/tag.entity';
 import type { User } from '../users/user.entity';
 import { Blog } from './blog.entity';
@@ -32,6 +33,7 @@ export class BlogsService {
       location: createBlogDto?.location?.split(',').map(Number) as [lat: number, lon: number] | undefined,
     });
 
+    // TODO: Keep the original order
     const tags = await this.tagRepository.find({ name: { $in: createBlogDto.tags } });
     blog.tags.add(...tags);
 
@@ -44,10 +46,14 @@ export class BlogsService {
     return blog;
   }
 
-  public async findAll(user: User, paginationOptions?: PaginationOptions): Promise<PaginatedResult<Blog>> {
+  public async findAll(user: User, options?: Required<ListOptionsDto>): Promise<PaginatedResult<Blog>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
-    return await this.blogRepository.findWithPagination(paginationOptions, visibilityQuery, { populate: ['post', 'tags'] });
+    return await this.blogRepository.findWithPagination(
+      options,
+      visibilityQuery,
+      { populate: ['post', 'tags'], orderBy: { post: serializeOrder(options?.sortBy) } },
+    );
   }
 
   public async findOne(user: User, contentMasterId: number): Promise<Blog> {
@@ -78,6 +84,7 @@ export class BlogsService {
       if (wantedTags.length === 0) {
         blog.tags.removeAll();
       } else {
+        // TODO: Keep the original order
         const tags = await this.tagRepository.find({ name: { $in: wantedTags } });
         blog.tags.set(tags);
       }

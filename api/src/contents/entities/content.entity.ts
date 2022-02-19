@@ -1,7 +1,9 @@
 import {
+  BeforeUpdate,
   Collection,
   Entity,
   Enum,
+  EventArgs,
   Index,
   ManyToOne,
   OneToMany,
@@ -39,6 +41,9 @@ export class Content extends BaseEntity {
   @Property()
   @Transform(({ obj }: { obj: Content }) => (obj.kind === ContentKind.Comment ? undefined : obj.downvotes))
   downvotes = 0;
+
+  @Property()
+  votes = 0;
 
   @Enum(() => ContentKind)
   @Index()
@@ -96,5 +101,12 @@ export class Content extends BaseEntity {
     this.contentMasterId = this.contentMaster.contentMasterId;
     if (options.parent)
       this.parent = options.parent;
+  }
+
+  @BeforeUpdate()
+  public beforeUpdate(event: EventArgs<this>): void {
+    const payload = event.changeSet?.payload;
+    if (payload && ('upvotes' in payload || 'downvotes' in payload))
+      this.votes = this.upvotes - this.downvotes;
   }
 }

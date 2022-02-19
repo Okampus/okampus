@@ -7,7 +7,7 @@ import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
+import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { User } from '../users/user.entity';
 import type { CreateReportDto } from './dto/create-report.dto';
@@ -63,7 +63,7 @@ export class ReportsService {
   public async findAll(
     user: User,
     filters: GetReportsDto,
-    paginationOptions?: PaginationOptions,
+    paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<Report>> {
     let options: FilterQuery<Report> = {};
     if (filters.byUserId)
@@ -79,7 +79,7 @@ export class ReportsService {
     return await this.reportRepository.findWithPagination(
       paginationOptions,
       options,
-      { populate: ['content', 'user'] },
+      { populate: ['content', 'user'], orderBy: { createdAt: 'DESC' } },
     );
   }
 

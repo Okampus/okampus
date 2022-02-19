@@ -4,7 +4,7 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { TeamRole } from '../shared/lib/types/team-role.enum';
 import { Role } from '../shared/modules/authorization/types/role.enum';
-import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
+import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { User } from '../users/user.entity';
 import type { CreateTeamMemberDto } from './dto/create-team-member.dto';
@@ -42,11 +42,11 @@ export class TeamsService {
     return team;
   }
 
-  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Team>> {
+  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Team>> {
     return await this.teamRepository.findWithPagination(
       paginationOptions,
       {},
-      { populate: ['members', 'members.user'] },
+      { populate: ['members', 'members.user'], orderBy: { name: 'ASC' } },
     );
   }
 
@@ -87,23 +87,23 @@ export class TeamsService {
 
   public async findAllUsersInTeam(
     teamId: number,
-    paginationOptions?: PaginationOptions,
+    paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<TeamMember>> {
     return await this.teamMemberRepository.findWithPagination(
       paginationOptions,
       { team: { teamId } },
-      { populate: ['user', 'team', 'team.members', 'team.members.user'] },
+      { populate: ['user', 'team', 'team.members', 'team.members.user'], orderBy: { user: { lastname: 'ASC' } } },
     );
   }
 
   public async findTeamMembership(
     userId: string,
-    paginationOptions?: PaginationOptions,
+    paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<TeamMember>> {
     return await this.teamMemberRepository.findWithPagination(
       paginationOptions,
       { user: { userId } },
-      { populate: ['user', 'team', 'team.members'] },
+      { populate: ['user', 'team', 'team.members'], orderBy: { name: 'ASC' } },
     );
   }
 

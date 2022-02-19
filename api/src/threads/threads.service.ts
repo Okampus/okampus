@@ -6,14 +6,15 @@ import { Content } from '../contents/entities/content.entity';
 import { Favorite } from '../favorites/favorite.entity';
 import { Reaction } from '../reactions/reaction.entity';
 import { Report } from '../reports/report.entity';
+import type { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { ContentKind } from '../shared/lib/types/content-kind.enum';
 import { ContentMasterType } from '../shared/lib/types/content-master-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { serializeOrder } from '../shared/modules/sorting/serialize-order';
 import { Tag } from '../tags/tag.entity';
 import { User } from '../users/user.entity';
 import { Vote } from '../votes/vote.entity';
@@ -41,6 +42,7 @@ export class ThreadsService {
   public async create(user: User, createThreadDto: CreateThreadDto): Promise<Thread> {
     const thread = new Thread(createThreadDto);
 
+    // TODO: Keep the original order
     const tags = await this.tagRepository.find({ name: { $in: createThreadDto.tags } });
     thread.tags.add(...tags);
 
@@ -59,15 +61,16 @@ export class ThreadsService {
     return thread;
   }
 
-  public async findAll(user: User, paginationOptions?: PaginationOptions): Promise<PaginatedResult<Thread>> {
+  public async findAll(user: User, options?: Required<ListOptionsDto>): Promise<PaginatedResult<Thread>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
     return await this.threadRepository.findWithPagination(
-      paginationOptions,
+      options,
       visibilityQuery,
       {
         // TODO: Remove 'post.lastEdit' once we add activities
         populate: ['post', 'tags', 'assignees', 'post.author', 'post.lastEdit', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'],
+        orderBy: { post: serializeOrder(options?.sortBy) },
       },
     );
   }

@@ -9,7 +9,7 @@ import type { ValueOf } from '../../shared/lib/types/valueof.type';
 import { assertPermissions } from '../../shared/lib/utils/assert-permission';
 import { Action } from '../../shared/modules/authorization';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
-import type { PaginationOptions } from '../../shared/modules/pagination/pagination-option.interface';
+import type { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import type { User } from '../../users/user.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
@@ -43,7 +43,7 @@ export class InfoDocsService {
 
   public async findAll(
     filters: DocsFilterDto,
-    paginationOptions?: PaginationOptions,
+    paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<InfoDoc>> {
     // TODO: Maybe the user won't have access to all docs. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)

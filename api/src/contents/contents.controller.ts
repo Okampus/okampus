@@ -11,9 +11,12 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
+import { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
+import { normalizePagination } from '../shared/modules/pagination/normalize-pagination';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { normalizeSort } from '../shared/modules/sorting/normalize-sort';
 import { User } from '../users/user.entity';
 import { ContentsService } from './contents.service';
 import { CreateContentDto } from './dto/create-content.dto';
@@ -51,28 +54,28 @@ export class ContentsController {
   @CheckPolicies(ability => ability.can(Action.Read, Content))
   public async findAllReplies(
     @CurrentUser() user: User,
-    @Query() query: PaginateDto,
+    @Query() query: ListOptionsDto,
     @Body() parentDto: ParentDto,
   ): Promise<PaginatedResult<Content>> {
-    if (query.page) {
-      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
-      return await this.contentsService.findAllReplies(user, parentDto.parentId, options);
-    }
-    return await this.contentsService.findAllReplies(user, parentDto.parentId);
+    return await this.contentsService.findAllReplies(
+      user,
+      parentDto.parentId,
+      { ...normalizePagination(query), ...normalizeSort(query) },
+    );
   }
 
   @Get('comments')
   @CheckPolicies(ability => ability.can(Action.Read, Content))
   public async findAllComments(
     @CurrentUser() user: User,
-    @Query() query: PaginateDto,
+    @Query() query: ListOptionsDto,
     @Body() parentDto: ParentDto,
   ): Promise<PaginatedResult<Content>> {
-    if (query.page) {
-      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
-      return await this.contentsService.findAllComments(user, parentDto.parentId, options);
-    }
-    return await this.contentsService.findAllComments(user, parentDto.parentId);
+    return await this.contentsService.findAllComments(
+      user,
+      parentDto.parentId,
+      { ...normalizePagination(query), ...normalizeSort(query) },
+    );
   }
 
   @Get(':id')
@@ -91,11 +94,7 @@ export class ContentsController {
     @Param('id', ParseIntPipe) id: number,
     @Query() query: PaginateDto,
   ): Promise<PaginatedResult<ContentEdit>> {
-    if (query.page) {
-      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
-      return await this.contentsService.findEdits(user, id, options);
-    }
-    return await this.contentsService.findEdits(user, id);
+    return await this.contentsService.findEdits(user, id, normalizePagination(query));
   }
 
   @Patch(':id')

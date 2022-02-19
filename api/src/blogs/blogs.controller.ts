@@ -14,11 +14,13 @@ import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { SerializerExcludeContentAuthor } from '../shared/lib/decorators/serializers.decorator';
+import { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
+import { normalizePagination } from '../shared/modules/pagination/normalize-pagination';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../shared/modules/search/search.dto';
+import { normalizeSort } from '../shared/modules/sorting/normalize-sort';
 import { User } from '../users/user.entity';
 import type { IndexedBlog } from './blog-search.service';
 import { BlogSearchService } from './blog-search.service';
@@ -46,11 +48,9 @@ export class BlogsController {
   @CheckPolicies(ability => ability.can(Action.Read, Blog))
   public async findAll(
     @CurrentUser() user: User,
-    @Query() query: PaginateDto,
+    @Query() query: ListOptionsDto,
   ): Promise<PaginatedResult<Blog>> {
-    if (query.page)
-      return await this.blogsService.findAll(user, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.blogsService.findAll(user);
+    return await this.blogsService.findAll(user, { ...normalizePagination(query), ...normalizeSort(query) });
   }
 
   @UseGuards(TypesenseEnabledGuard)

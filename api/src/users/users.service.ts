@@ -3,7 +3,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { UserCreationOptions } from '../shared/lib/types/user-creation-options.interface';
-import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
+import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { Statistics } from '../statistics/statistics.entity';
 import { StatisticsService } from '../statistics/statistics.service';
@@ -42,8 +42,8 @@ export class UsersService {
     return user;
   }
 
-  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<User>> {
-    return await this.userRepository.findWithPagination(paginationOptions);
+  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<User>> {
+    return await this.userRepository.findWithPagination(paginationOptions, {}, { orderBy: { lastname: 'ASC' } });
   }
 
   public async getUserStats(userId: string): Promise<Statistics> {

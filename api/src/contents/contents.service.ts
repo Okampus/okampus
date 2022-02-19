@@ -1,14 +1,16 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import type { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { ContentKind } from '../shared/lib/types/content-kind.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
+import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { serializeOrder } from '../shared/modules/sorting/serialize-order';
 import type { User } from '../users/user.entity';
 import type { CreateContentDto } from './dto/create-content.dto';
 import type { CreateOrphanContentDto } from './dto/create-orphan-content.dto';
@@ -93,7 +95,7 @@ export class ContentsService {
   public async findAllReplies(
     user: User,
     parentId: number,
-    options?: PaginationOptions,
+    options?: Required<ListOptionsDto>,
   ): Promise<PaginatedResult<Content>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { isVisible: true };
@@ -104,14 +106,14 @@ export class ContentsService {
         ...visibilityQuery,
         parent: { contentId: parentId },
       },
-      { populate: ['author', 'lastEdit', 'parent', 'children'] },
+      { populate: ['author', 'lastEdit', 'parent', 'children'], orderBy: serializeOrder(options?.sortBy) },
     );
   }
 
   public async findAllComments(
     user: User,
     parentId: number,
-    options?: PaginationOptions,
+    options?: Required<PaginateDto>,
   ): Promise<PaginatedResult<Content>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { isVisible: true };
@@ -138,14 +140,18 @@ export class ContentsService {
   public async findEdits(
     user: User,
     contentId: number,
-    paginationOptions?: PaginationOptions,
+    paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<ContentEdit>> {
     const content = await this.contentRepository.findOneOrFail({ contentId });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, content);
 
-    return await this.contentEditRepository.findWithPagination(paginationOptions, { parent: content });
+    return await this.contentEditRepository.findWithPagination(
+      paginationOptions,
+      { parent: content },
+      { orderBy: { createdAt: 'DESC' } },
+    );
   }
 
   public async update(user: User, contentId: number, updateContentDto: UpdateContentDto): Promise<Content> {

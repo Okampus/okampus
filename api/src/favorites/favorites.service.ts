@@ -6,7 +6,7 @@ import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
+import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import type { User } from '../users/user.entity';
 import { Favorite } from './favorite.entity';
@@ -36,7 +36,7 @@ export class FavoritesService {
     return favorite;
   }
 
-  public async findAll(user: User, paginationOptions?: PaginationOptions): Promise<PaginatedResult<Favorite>> {
+  public async findAll(user: User, paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Favorite>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { content: { isVisible: true } };
     return await this.favoriteRepository.findWithPagination(
@@ -48,6 +48,7 @@ export class FavoritesService {
           'content', 'content.author', 'content.parent',
           'content.contentMaster', 'content.contentMaster', 'content.contentMaster.tags',
         ],
+        orderBy: { createdAt: 'DESC' },
       },
     );
   }

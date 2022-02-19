@@ -2,7 +2,7 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
+import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import type { User } from '../users/user.entity';
 import { BadgeUnlock } from './badge-unlock.entity';
@@ -24,8 +24,8 @@ export class BadgesService {
     return badge;
   }
 
-  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Badge>> {
-    return await this.badgeRepository.findWithPagination(paginationOptions);
+  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Badge>> {
+    return await this.badgeRepository.findWithPagination(paginationOptions, {}, { orderBy: { createdAt: 'DESC' } });
   }
 
   public async findOne(badgeId: number): Promise<Badge> {
@@ -54,12 +54,12 @@ export class BadgesService {
 
   public async findAllForUser(
     userId: string,
-    paginationOptions?: PaginationOptions,
+    paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<BadgeUnlock>> {
     return await this.badgeUnlockRepository.findWithPagination(
       paginationOptions,
       { user: { userId } },
-      { populate: ['badge', 'user'] },
+      { populate: ['badge', 'user'], orderBy: { createdAt: 'DESC' } },
     );
   }
 }
