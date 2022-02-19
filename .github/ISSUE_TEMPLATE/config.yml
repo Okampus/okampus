@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discord
+    url: https://discord.gg/TZ7VUHE9yf
+    about: Pour parler avec les développeurs et en apprendre plus sur le projet.
+  - name: Discussions
+    url: https://github.com/horizon-efrei/HorizonWeb/discussions/new
+    about: Pour engager une discussion sur le projet.
