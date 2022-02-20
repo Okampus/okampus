@@ -17,6 +17,7 @@ import { Tag } from '../../../tags/tag.entity';
 import { Team } from '../../../teams/entities/team.entity';
 import { Thread } from '../../../threads/thread.entity';
 import { User } from '../../../users/user.entity';
+import { WikiPage } from '../../../wiki/wiki-page.entity';
 import { ContentKind } from '../../lib/types/content-kind.enum';
 import { Action } from '../authorization/types/action.enum';
 import { Role } from '../authorization/types/role.enum';
@@ -37,7 +38,8 @@ export type Subjects = InferSubjects<
   | typeof Tag
   | typeof Team
   | typeof Thread
-  | typeof User>
+  | typeof User
+  | typeof WikiPage>
   | 'all';
 
 export type AppAbility = Ability<[action: Action, subjects: Subjects]>;
@@ -81,15 +83,17 @@ export class CaslAbilityFactory {
         allow(Action.Read, 'all');
         allow(Action.Update, 'all');
         forbid(Action.Update, Badge);
-        allow(Action.Manage, [Blog, Content, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag, Thread]);
+        allow(Action.Manage, [Blog, Content, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag, Thread, WikiPage]);
       } else {
         // @ts-expect-error
         forbid(Action.Manage, [Blog, Thread], { 'post.isVisible': false })
           .because('Content has been removed');
+        forbid(Action.Manage, WikiPage, { hidden: true })
+          .because('Content has been removed');
         forbid(Action.Manage, Content, { isVisible: false })
           .because('Content has been removed');
         // @ts-expect-error
-        forbid(Action.Manage, [Attachment, Favorite, Report], { 'content.isVisible': this.canSeeHiddenContent(user) })
+        forbid(Action.Manage, [Attachment, Favorite, Report], { 'content.isVisible': false })
           .because('Content has been removed');
 
         // @ts-expect-error

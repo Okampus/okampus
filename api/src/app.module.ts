@@ -27,6 +27,7 @@ import { TeamsModule } from './teams/teams.module';
 import { ThreadsModule } from './threads/threads.module';
 import { UsersModule } from './users/users.module';
 import { VotesModule } from './votes/votes.module';
+import { WikisModule } from './wiki/wikis.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { VotesModule } from './votes/votes.module';
     ThreadsModule,
     UsersModule,
     VotesModule,
+    WikisModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
