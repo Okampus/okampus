@@ -46,6 +46,12 @@ export class UsersService {
     return await this.userRepository.findWithPagination(paginationOptions, {}, { orderBy: { lastname: 'ASC' } });
   }
 
+  public async deleteUser(userId: string): Promise<void> {
+    const user = await this.userRepository.findOneOrFail({ userId });
+    await this.userSearchService.remove(userId);
+    await this.userRepository.removeAndFlush(user);
+  }
+
   public async getUserStats(userId: string): Promise<Statistics> {
     const stats = await this.statisticsRepository.findOneOrFail({ user: { userId } });
     const streaks = await this.statisticsService.getAllStreaks(stats);
