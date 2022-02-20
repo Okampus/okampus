@@ -46,7 +46,7 @@ export class TeamsService {
     return await this.teamRepository.findWithPagination(
       paginationOptions,
       {},
-      { populate: ['members', 'members.user'], orderBy: { name: 'ASC' } },
+      { orderBy: { name: 'ASC' } },
     );
   }
 
@@ -66,7 +66,7 @@ export class TeamsService {
   public async update(user: User, teamId: number, updateTeamDto: UpdateTeamDto): Promise<Team> {
     const team = await this.teamRepository.findOneOrFail(
       { teamId },
-      { populate: ['members', 'members.user'] },
+      { populate: ['members'] },
     );
 
     // TODO: Move this to CASL
@@ -92,7 +92,7 @@ export class TeamsService {
     return await this.teamMemberRepository.findWithPagination(
       paginationOptions,
       { team: { teamId } },
-      { populate: ['user', 'team', 'team.members', 'team.members.user'], orderBy: { user: { lastname: 'ASC' } } },
+      { populate: ['user', 'team'], orderBy: { user: { lastname: 'ASC' } } },
     );
   }
 
@@ -103,7 +103,7 @@ export class TeamsService {
     return await this.teamMemberRepository.findWithPagination(
       paginationOptions,
       { user: { userId } },
-      { populate: ['user', 'team', 'team.members'], orderBy: { name: 'ASC' } },
+      { populate: ['user', 'team'], orderBy: { name: 'ASC' } },
     );
   }
 
@@ -115,7 +115,7 @@ export class TeamsService {
 ): Promise<TeamMember> {
     const team = await this.teamRepository.findOneOrFail(
       { teamId },
-      { populate: ['members', 'members.user'] },
+      { populate: ['members'] },
     );
 
     // TODO: Move this to CASL
@@ -146,7 +146,7 @@ export class TeamsService {
   ): Promise<TeamMember> {
     const team = await this.teamRepository.findOneOrFail(
       { teamId },
-      { populate: ['members', 'members.user'] },
+      { populate: ['members'] },
     );
 
     const { transferTo, ...updatedPros } = updateTeamMemberDto;
@@ -160,7 +160,7 @@ export class TeamsService {
 
     const targetTeamMember = await this.teamMemberRepository.findOneOrFail(
       { team: { teamId }, user: { userId } },
-      { populate: ['user', 'team', 'team.members', 'team.members.user'] },
+      { populate: ['user', 'team'] },
     );
 
 
@@ -176,7 +176,6 @@ export class TeamsService {
 
       const transferMemberTarget = await this.teamMemberRepository.findOneOrFail(
         { team: { teamId }, user: { userId: transferTo } },
-        { populate: ['user', 'team', 'team.members', 'team.members.user'] },
       );
       transferMemberTarget.role = TeamRole.Owner;
       targetTeamMember.role = TeamRole.Leader;
@@ -188,7 +187,7 @@ export class TeamsService {
   }
 
   public async removeUserFromTeam(requester: User, teamId: number, userId: string): Promise<void> {
-    const team = await this.teamRepository.findOneOrFail({ teamId }, { populate: ['members', 'members.user'] });
+    const team = await this.teamRepository.findOneOrFail({ teamId }, { populate: ['members'] });
 
     const isSelf = requester.userId === userId;
 

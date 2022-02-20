@@ -119,7 +119,7 @@ export class ContactsService {
   public async findAllClubContactAccounts(clubId: number): Promise<ClubContactAccount[]> {
     return await this.clubContactsAccountRepository.find(
       { club: { clubId } },
-      { populate: ['contact', 'club', 'club.members'] },
+      { populate: ['contact', 'club'] },
     );
   }
 
