@@ -75,7 +75,7 @@ export class ClubsController {
     return await this.clubsService.findNames();
   }
 
-  @Get('/member/:userId')
+  @Get('/memberships/:userId')
   @CheckPolicies(ability => ability.can(Action.Read, User))
   @SerializerClubMemberIncludeClub()
   public async findClubMemberships(

@@ -75,7 +75,7 @@ export class TeamsController {
     return await this.teamsService.findNames();
   }
 
-  @Get('/member/:userId')
+  @Get('/memberships/:userId')
   @CheckPolicies(ability => ability.can(Action.Read, User))
   @SerializerTeamMemberIncludeTeam()
   public async findTeamMemberships(
