@@ -2,9 +2,16 @@ name: Test Backend
 
 on:
   push:
+    branches:
+      - master
     paths:
       - 'api/**'
-      - '!api/**/*.md'
+      - '!*/**/*.md'
+      - '.github/workflows/backend-test.yml'
+  pull_request:
+    paths:
+      - 'api/**'
+      - '!*/**/*.md'
       - '.github/workflows/backend-test.yml'
 
 jobs:

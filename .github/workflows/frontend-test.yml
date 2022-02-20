@@ -2,9 +2,16 @@ name: Test Frontend
 
 on:
   push:
+    branches:
+      - master
     paths:
       - 'site/**'
-      - '!site/**/*.md'
+      - '!*/**/*.md'
+      - '.github/workflows/frontend-test.yml'
+  pull_request:
+    paths:
+      - 'site/**'
+      - '!*/**/*.md'
       - '.github/workflows/frontend-test.yml'
 
 jobs:
