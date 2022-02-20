@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -11,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
+import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../shared/modules/search/search.dto';
@@ -50,6 +52,12 @@ export class UsersController {
     if (query.page)
       return await this.usersService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
     return await this.usersService.findAll();
+  }
+
+  @Delete(':id')
+  @CheckPolicies(ability => ability.can(Action.Delete, User))
+  public async deleteUser(@Param('id') id: string): Promise<void> {
+    await this.usersService.deleteUser(id);
   }
 
   @Get('/:userId/statistics')
