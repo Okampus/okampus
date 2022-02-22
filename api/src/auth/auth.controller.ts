@@ -63,6 +63,7 @@ export class AuthController {
       .redirect(`${computedConfig.frontendUrl + (config.get('nodeEnv') === 'development' ? '/#' : '')}/auth`);
   }
 
+  @Public()
   @Get('logout')
   public logout(@Response({ passthrough: true }) res: Res): void {
     res.cookie('accessToken', '', { ...cookieOptions, maxAge: 0 })
