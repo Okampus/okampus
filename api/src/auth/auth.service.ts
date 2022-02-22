@@ -45,7 +45,7 @@ export class AuthService {
 
     return {
       accessToken: await this.jwtService.signAsync(payload, this.getTokenOptions('access')),
-      refreshToken: config.get('tokens.accessTokenExpiration')
+      refreshToken: config.get('tokens.accessTokenExpirationSeconds')
         ? await this.jwtService.signAsync(payload, this.getTokenOptions('refresh'))
         : null,
       accessTokenExpiresAt: Date.now() + config.get('tokens.accessTokenExpirationSeconds') * 1000,
@@ -73,9 +73,9 @@ export class AuthService {
       secret: config.get(`tokens.${type}TokenSecret`),
     };
 
-    const expiration = config.get(`tokens.${type}TokenExpiration`);
+    const expiration = config.get(`tokens.${type}TokenExpirationSeconds`);
     if (expiration)
-      options.expiresIn = expiration;
+      options.expiresIn = `${expiration}s`;
 
     return options;
   }

@@ -26,10 +26,8 @@ interface Config {
   };
   tokens: {
     accessTokenSecret: string;
-    accessTokenExpiration: string;
     accessTokenExpirationSeconds: number;
     refreshTokenSecret: string;
-    refreshTokenExpiration: string;
     refreshTokenExpirationSeconds: number;
   };
   cookies: {
@@ -144,11 +142,6 @@ export const config = createProfiguration<Config>({
       format: String,
       env: 'ACCESS_TOKEN_SECRET',
     },
-    accessTokenExpiration: {
-      default: '8h',
-      format: String,
-      env: 'ACCESS_TOKEN_EXPIRATION',
-    },
     accessTokenExpirationSeconds: {
       default: 28_800,
       format: Number,
@@ -158,11 +151,6 @@ export const config = createProfiguration<Config>({
       default: 'secret',
       format: String,
       env: 'REFRESH_TOKEN_SECRET',
-    },
-    refreshTokenExpiration: {
-      default: '7d',
-      format: String,
-      env: 'REFRESH_TOKEN_EXPIRATION',
     },
     refreshTokenExpirationSeconds: {
       default: 604_800,
