@@ -9,9 +9,9 @@
                     class="flex flex-col-reverse gap-6 mx-4 lg:flex-row lg:gap-16 sm-max:flex-row sm-max:gap-14"
                 >
                     <!-- Contact Us -->
-                    <div class="flex gap-4 mt-1 text-1">
+                    <div class="flex gap-4 mt-1 text-0">
                         <div
-                            class="flex flex-row justify-between sm:gap-2.5 sm:items-center sm:mx-16 sm:w-full lg:flex-col lg:mx-0 lg:w-fit sm-max:flex-col sm-max:mb-10 sm-max:ml-2"
+                            class="flex flex-row justify-between sm:gap-2.5 sm:items-center sm:mr-14 sm:ml-6 sm:w-full lg:flex-col lg:mx-0 lg:w-fit sm-max:flex-col sm-max:mb-10 sm-max:ml-2"
                         >
                             <a
                                 v-for="(link, i) in contactLinks"
@@ -41,9 +41,9 @@
                         <div
                             v-for="(section, i) in sections"
                             :key="i"
-                            class="sm-max:mb-10 sm-max:w-1/2 text-0"
+                            class="sm-max:mb-10 sm-max:w-1/2 text-1"
                         >
-                            <h5 class="mb-2 text-base tracking-wider uppercase text-4">
+                            <h5 class="mb-2 text-base tracking-wider uppercase text-5">
                                 {{ section.name }}
                             </h5>
                             <div class="flex flex-col gap-1">
@@ -61,14 +61,23 @@
                 <GuildPreviewCard
                     v-for="(server, i) in discordServers"
                     :key="i"
-                    :="discordData[server.key]"
                     class="hidden lg:flex"
+                    :name="server.name"
+                    :icon-url="server.iconUrl"
+                    :invite-url="server.inviteUrl"
+                    :description="server.description"
+                    :presence="server.presence"
                 />
                 <GuildPreviewCard
                     v-for="(server, i) in discordServers"
                     :key="i"
                     class="hidden lg-max:flex"
-                    :="{ ...discordData[server.key], mini: false }"
+                    :mini="false"
+                    :name="server.name"
+                    :icon-url="server.iconUrl"
+                    :invite-url="server.inviteUrl"
+                    :description="server.description"
+                    :presence="server.presence"
                 />
             </div>
         </div>
@@ -77,13 +86,7 @@
         <div class="flex gap-2 justify-center items-center text-0">
             <div class="flex flex-col gap-1.5 items-center xs:flex-row">
                 <p>Made with</p>
-                <div class="flex gap-1.5">
-                    <a class="text-xl" href="https://v3.vuejs.org/"
-                        ><font-awesome-icon :icon="['fab', 'vuejs']"
-                    /></a>
-                    <p>and</p>
-                    <p class="text-xl">❤️</p>
-                </div>
+                <p class="text-2xl xs:text-xl">❤️</p>
                 <p>by Horizon</p>
                 <div class="flex gap-1">
                     <p><font-awesome-icon class="text-sm" :icon="['far', 'copyright']" /></p>
@@ -95,7 +98,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import AppLink from '../App/AppLink.vue'
     import AppLogo from '../App/AppLogo.vue'
     import GuildPreviewCard from '../App/Card/GuildPreviewCard.vue'
@@ -106,28 +108,28 @@
                 type: Array,
                 default: () => [
                     {
-                        key: 'efreussite',
-                        id: '694220883815956580',
+                        name: "Horizon : Ef'Réussite ⭐",
+                        description: 'Entraide / Partage',
                         iconUrl:
                             'https://cdn.discordapp.com/icons/694220883815956580/a_aaf0ceaa61a5cbe3f2bc9b809a16d95a.png',
-                        tagLine: 'Entraide / Partage',
-                        invite: 'https://discord.gg/BVbZPYfBGW',
+                        inviteUrl: 'https://discord.gg/BVbZPYfBGW',
+                        presence: '1700+',
                     },
                     {
-                        key: 'web',
-                        id: '900796015915978772',
+                        name: 'Horizon : Web 🌐',
+                        description: 'Dév. Web Open Source',
                         iconUrl:
                             'https://cdn.discordapp.com/icons/900796015915978772/76c5153e25f71124a1a199ce7dd5a749.png',
-                        tagLine: 'Dév. Web Open Source',
-                        invite: 'https://discord.gg/VDQekzJgVp',
+                        inviteUrl: 'https://discord.gg/VDQekzJgVp',
+                        presence: '50+',
                     },
                     {
-                        key: 'mentorat',
-                        id: '844294010628472834',
+                        name: 'Horizon : Mentorat 🌱',
+                        description: 'Mentorat / Formation',
                         iconUrl:
                             'https://cdn.discordapp.com/icons/844294010628472834/8f3fbef07829e6737e71aa792dcca7df.png',
-                        tagLine: 'Mentorat / Formation',
-                        invite: 'https://discord.gg/G7fWxQZXqF',
+                        inviteUrl: 'https://discord.gg/G7fWxQZXqF',
+                        presence: '70+',
                     },
                 ],
             },
@@ -228,20 +230,6 @@
                     },
                 ],
             }
-        },
-        mounted() {
-            this.discordServers.forEach((server) => {
-                axios.get(`https://discordapp.com/api/guilds/${server.id}/widget.json`).then(({ data }) => {
-                    const { name, presence_count, instant_invite } = data
-                    this.discordData[server.key] = {
-                        name,
-                        presence: presence_count,
-                        inviteUrl: server.invite ?? instant_invite,
-                        iconUrl: server.iconUrl,
-                        tagLine: server.tagLine,
-                    }
-                })
-            })
         },
     }
 </script>

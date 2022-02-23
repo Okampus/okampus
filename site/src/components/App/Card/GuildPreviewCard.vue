@@ -15,8 +15,8 @@
                         >{{ name }}</a
                     >
                     <div class="flex" :class="[mini ? '-mt-0.5 flex-row items-center gap-2.5' : 'flex-col']">
-                        <div v-if="tagLine !== ''" :class="[mini ? 'text-xs tracking-tight' : 'text-sm']">
-                            {{ tagLine }}
+                        <div v-if="description !== ''" :class="[mini ? 'text-xs tracking-tight' : 'text-sm']">
+                            {{ description }}
                         </div>
                         <div class="flex gap-1 items-center" :class="[mini ? 'text-xs' : 'mt-1.5 text-sm']">
                             <span class="flex relative w-2 h-2">
@@ -48,35 +48,33 @@
     </div>
 </template>
 
-<script>
+<script setup>
     import AppLoader from '../AppLoader.vue'
-    export default {
-        components: { AppLoader },
-        props: {
-            mini: {
-                type: Boolean,
-                default: true,
-            },
-            name: {
-                type: String,
-                default: null,
-            },
-            iconUrl: {
-                type: String,
-                default: null,
-            },
-            presence: {
-                type: Number,
-                default: null,
-            },
-            inviteUrl: {
-                type: String,
-                default: null,
-            },
-            tagLine: {
-                type: String,
-                default: '',
-            },
+
+    defineProps({
+        name: {
+            type: String,
+            default: null,
         },
-    }
+        description: {
+            type: String,
+            default: '',
+        },
+        iconUrl: {
+            type: String,
+            default: '',
+        },
+        inviteUrl: {
+            type: String,
+            default: '',
+        },
+        presence: {
+            type: String,
+            default: '0',
+        },
+        mini: {
+            type: Boolean,
+            default: true,
+        },
+    })
 </script>
