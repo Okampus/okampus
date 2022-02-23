@@ -28,78 +28,63 @@
     </div>
 </template>
 
-<script>
+<script setup>
     import AppTag from '@/components/App/AppTag.vue'
-
     import { ref } from 'vue'
-    export default {
-        components: { AppTag },
-        props: {
-            placeholder: {
-                type: String,
-                default: 'Entrez des tags...',
-            },
-            modelValue: {
-                type: Array,
-                default: () => [],
-            },
-        },
-        emits: ['update:modelValue', 'error', 'input-update'],
-        setup: (props, ctx) => {
-            const tagsContainer = ref(null)
-            const tagsInput = ref(null)
-            const tags = ref(props.modelValue)
-            const newTag = ref('')
 
-            const addTag = (tag) => {
-                if (tag.length) {
-                    if (tags.value.includes(tag)) {
-                        ctx.emit('error', 'unique')
-                    } else {
-                        tags.value.push(tag)
-                        newTag.value = ''
-                        ctx.emit('update:modelValue', tags)
-                    }
-                    if (tagsInput.value.placeholder) {
-                        tagsInput.value.placeholder = ''
-                    }
-                } else {
-                    ctx.emit('error', 'empty')
-                }
-            }
+    const props = defineProps({
+        placeholder: {
+            type: String,
+            default: 'Entrez des tags...',
+        },
+        modelValue: {
+            type: Array,
+            default: () => [],
+        },
+    })
 
-            const removeTag = (index) => {
-                tags.value.splice(index, 1)
-                if (!tags.value.length) {
-                    tagsInput.value.placeholder = props.placeholder
-                }
-            }
+    const emit = defineEmits(['update:modelValue', 'error', 'input'])
+    const focused = ref(false)
 
-            return {
-                tags,
-                newTag,
-                addTag,
-                removeTag,
-                tagsContainer,
-                tagsInput,
+    const tagsContainer = ref(null)
+    const tagsInput = ref(null)
+    const tags = ref(props.modelValue)
+    const newTag = ref('')
+
+    const addTag = (tag) => {
+        if (tag.length) {
+            if (tags.value.includes(tag)) {
+                emit('error', 'unique')
+            } else {
+                tags.value.push(tag)
+                newTag.value = ''
+                emit('update:modelValue', tags)
             }
-        },
-        data() {
-            return { focused: false }
-        },
-        methods: {
-            keypress(event) {
-                if (event.key === ' ' || event.key === 'Enter') {
-                    this.addTag(this.newTag)
-                    event.preventDefault()
-                } else if (event.key === 'Backspace') {
-                    if (this.newTag.length === 0 && this.tags.length > 0) {
-                        this.removeTag(this.tags.length - 1)
-                    }
-                } else {
-                    this.$emit('input-update', event)
-                }
-            },
-        },
+            if (tagsInput.value.placeholder) {
+                tagsInput.value.placeholder = ''
+            }
+        } else {
+            emit('error', 'empty')
+        }
+    }
+
+    const removeTag = (index) => {
+        tags.value.splice(index, 1)
+        if (!tags.value.length) {
+            tagsInput.value.placeholder = props.placeholder
+        }
+    }
+
+    const keypress = (event) => {
+        if (event.key === ' ' || event.key === 'Enter') {
+            addTag(newTag.value)
+            event.preventDefault()
+        } else if (event.key === 'Backspace') {
+            if (newTag.value.length === 0 && tags.value.length > 0) {
+                removeTag(tags.value.length - 1)
+            }
+        } else {
+            emit('input', event)
+        }
     }
 </script>
