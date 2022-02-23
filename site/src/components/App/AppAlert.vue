@@ -17,7 +17,7 @@
         </div>
 
         <div class="subtitle">
-            <slot name="text" />
+            <slot name="message" />
         </div>
 
         <div v-if="$slots.actions || dismissable" class="flex gap-3" :class="{ 'ml-auto': !$slots.title }">
@@ -70,7 +70,7 @@
                     error: 'exclamation',
                     bug: 'bug',
                     success: 'check',
-                    failure: 'heart-broken',
+                    failure: 'times',
                 },
             }
         },

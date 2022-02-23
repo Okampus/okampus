@@ -6,9 +6,16 @@
             :style="[style, showing ? offsetY : {}]"
         >
             <Transition name="toast" :style="{ '--toast-enter-duration': enterDuration }">
-                <AppAlert v-if="active" :icon="icon" :type="type">
+                <AppAlert
+                    v-if="active"
+                    :icon="icon"
+                    :type="type"
+                    :dismissable="dismissable"
+                    @dismiss="dismissToast"
+                >
                     <div
-                        class="absolute top-0 left-0 w-full h-1 progress-bar"
+                        class="absolute top-0 left-0 w-full h-1"
+                        :class="[duration > 0 ? 'progress-bar' : '']"
                         :style="{ '--progress-bar-duration': duration }"
                     />
 
@@ -20,9 +27,9 @@
                         <slot name="icon" />
                     </template>
 
-                    <template #text>
-                        <p v-if="text.length">{{ text }}</p>
-                        <slot v-else name="text" />
+                    <template #message>
+                        <p v-if="message.length">{{ message }}</p>
+                        <slot v-else name="message" />
                     </template>
 
                     <template v-if="$slots.actions" #actions>
@@ -41,7 +48,7 @@
     export default {
         components: { AppAlert },
         props: {
-            text: {
+            message: {
                 type: String,
                 default: '',
             },
@@ -67,7 +74,11 @@
             },
             duration: {
                 type: Number,
-                default: (props) => (props.text ? readingTime(props.text, 'fast') * 1000 : 2000),
+                default: (props) => (props.message ? readingTime(props.message, 'slow') * 1000 : 2000),
+            },
+            dismissable: {
+                type: Boolean,
+                default: true,
             },
             active: {
                 type: Boolean,
@@ -123,11 +134,17 @@
             },
         },
         methods: {
+            dismissToast() {
+                this.$emit('update:active', false)
+                this.$emit('close')
+                // TODO: remove setTimeout on dismiss to avoid dismiss bugs
+            },
             toggleTimeOut() {
-                window.setTimeout(() => {
-                    this.$emit('update:active', false)
-                    this.$emit('close')
-                }, this.duration)
+                if (this.duration > 0) {
+                    window.setTimeout(() => {
+                        this.dismissToast()
+                    }, this.duration)
+                }
             },
         },
     }
