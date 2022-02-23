@@ -9,8 +9,6 @@ import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { computedConfig, config } from './shared/configs/config';
 import { client } from './shared/configs/typesense.config';
-import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
-import { TypesenseFilter } from './shared/lib/filters/typesense.filter';
 import { logger as loggerMiddleware } from './shared/lib/middlewares/logger.middleware';
 
 const logger = new Logger('Bootstrap');
@@ -67,7 +65,6 @@ async function bootstrap(): Promise<void> {
     forbidNonWhitelisted: true,
     whitelist: true,
   }));
-  app.useGlobalFilters(new ExceptionsFilter(), new TypesenseFilter());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   if (!config.get('storage.enabled')) {

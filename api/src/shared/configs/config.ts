@@ -24,6 +24,10 @@ interface Config {
     port: number;
     scheme: string;
   };
+  sentry: {
+    enabled: boolean;
+    dsn: string;
+  };
   tokens: {
     accessTokenSecret: string;
     accessTokenExpirationSeconds: number;
@@ -134,6 +138,18 @@ export const config = createProfiguration<Config>({
       default: 'region',
       format: String,
       env: 'STORAGE_REGION',
+    },
+  },
+  sentry: {
+    enabled: {
+      default: false,
+      format: Boolean,
+      env: 'SENTRY_ENABLED',
+    },
+    dsn: {
+      default: 'https://sentry.io',
+      format: String,
+      env: 'SENTRY_DSN',
     },
   },
   tokens: {
