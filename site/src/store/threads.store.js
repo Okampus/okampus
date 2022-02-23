@@ -71,9 +71,7 @@ export const useThreadsStore = defineStore('threads', {
         initThread({ threadId, thread = null }) {
             thread = thread ?? this.threads.find(sameThread(threadId))
 
-            thread.getUser = (userId) => {
-                return thread.participants?.find((participant) => participant.userId === userId)
-            }
+            thread.getUser = (userId) => thread.participants?.find((participant) => participant.userId === userId)
 
             thread.lastUpdatedAt = computed(() => thread.post.lastEdit.createdAt)
             thread.lastUpdatedBy = computed(() => thread.getUser(thread.post.lastEdit.editedBy))

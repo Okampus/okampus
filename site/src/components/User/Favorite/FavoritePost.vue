@@ -6,7 +6,6 @@
                     icon="chevron-up"
                     class="hover:text-blue-500 cursor-pointer"
                     :class="[post.userVote === 1 ? 'text-orange-500' : '']"
-                    @click="post.userVote === 1 ? sendVote(0) : sendVote(1)"
                 />
             </button>
             <div class="mx-1 text-center">
@@ -17,7 +16,6 @@
                     icon="chevron-down"
                     class="hover:text-blue-500 cursor-pointer"
                     :class="[post.userVote === -1 ? 'text-orange-500' : '']"
-                    @click="post.userVote === -1 ? sendVote(0) : sendVote(-1)"
                 />
             </button>
         </div>
@@ -31,7 +29,7 @@
                 <!-- TODO: Retrieve thread data -->
                 <!-- <div class="flex">
                     <router-link
-                        :to="`/posts/${post.postId}`"
+                        :to="`/threads/${post.postId}`"
                         class="mr-4 text-xl font-semibold whitespace-nowrap text-0"
                     >
                         {{ post.title }}
@@ -113,12 +111,6 @@
         },
         methods: {
             timeAgo,
-            sendVote(vote) {
-                this.$store.dispatch('threads/voteContent', {
-                    contentId: this.post.contentId,
-                    value: vote,
-                })
-            },
             deleteFavorite() {
                 this.$store.dispatch('user/deleteFavorite', this.post.contentId)
             },

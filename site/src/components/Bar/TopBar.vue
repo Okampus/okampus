@@ -15,8 +15,8 @@
             <SearchBar />
         </div>
 
-        <div v-if="!loggedIn" class="flex shrink-0 justify-center items-center mr-4">
-            <button class="button" @click="$emit('toggle-login')">
+        <div v-if="!auth.loggedIn" class="flex shrink-0 justify-center items-center mr-4">
+            <button class="button" @click="emitter.emit('login')">
                 <div class="flex items-center">
                     <p class="mr-2 uppercase text-md">Se connecter</p>
                     <font-awesome-icon icon="sign-in-alt" class="text-lg" />
@@ -26,36 +26,23 @@
 
         <div v-else class="flex justify-between items-center h-full bg-transparent">
             <div class="mr-4">
-                <UserCard :username="user.fullname" :email="user.email" :avatar="user.avatar" />
+                <UserCard :user="auth.user" />
             </div>
         </div>
     </nav>
 </template>
 
-<script>
+<script setup>
     import UserCard from '@/components/App/Card/UserCard.vue'
     import SearchBar from '@/components/Bar/SearchBar.vue'
-    import AppLogo from '../App/AppLogo.vue'
+    import AppLogo from '@/components/App/AppLogo.vue'
 
-    export default {
-        components: {
-            UserCard,
-            SearchBar,
-            AppLogo,
-        },
-        emits: ['toggle-side-bar', 'toggle-login'],
-        data() {
-            return { showSearchBar: false }
-        },
-        computed: {
-            loggedIn() {
-                return this.$store.state.auth.loggedIn
-            },
-            user() {
-                return this.$store.state.auth.user
-            },
-        },
-    }
+    import { emitter } from '@/shared/modules/emitter'
+    import { useAuthStore } from '@/store/auth.store'
+
+    const auth = useAuthStore()
+
+    defineEmits(['toggle-side-bar'])
 </script>
 
 <style lang="scss">
@@ -63,7 +50,7 @@
         clip-path: inset(0 0 -30px 0);
         box-shadow: 0 0 15px 3px rgb(0 0 0 / 5%);
 
-        :root.dark & {
+        .dark & {
             box-shadow: 0 0 20px 5px rgb(0 0 0 / 40%);
         }
     }

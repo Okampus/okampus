@@ -162,9 +162,6 @@
             }
         },
         computed: {
-            dark() {
-                return this.$store.state.user.theme === 'dark'
-            },
             actionMap() {
                 return {
                     paragraph: {

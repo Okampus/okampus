@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { useLocalStorage } from '@vueuse/core'
 
 export const useUserConfigStore = defineStore('userConfig', {
     state: () => {

@@ -12,56 +12,56 @@
             '--transition-duration': transitionDuration,
         }"
     >
-        <input v-model="value" type="checkbox" @update:modelValue="value = $event" />
+        <input
+            :checked="modelValue"
+            type="checkbox"
+            @change="emit('update:modelValue', $event.target.checked)"
+        />
         <span class="slider round" />
     </label>
 </template>
 
-<script>
-    export default {
-        props: {
-            modelValue: {
-                type: Boolean,
-                default: false,
-            },
-            width: {
-                type: String,
-                default: '40px',
-            },
-            height: {
-                type: String,
-                default: '20px',
-            },
-            switchValidateColor: {
-                type: String,
-                default: 'orange',
-            },
-            switchBackgroundColor: {
-                type: String,
-                default: '#ccc',
-            },
-            switchInnerPadding: {
-                type: String,
-                default: '2px',
-            },
-            buttonColor: {
-                type: String,
-                default: 'white',
-            },
-            buttonRadius: {
-                type: String,
-                default: '9999px',
-            },
-            transitionDuration: {
-                type: String,
-                default: '0.4s',
-            },
+<script setup>
+    defineProps({
+        modelValue: {
+            type: Boolean,
+            required: true,
         },
-        emits: ['update:modelValue'],
-        data() {
-            return { value: this.modelValue }
+        width: {
+            type: String,
+            default: '3rem',
         },
-    }
+        height: {
+            type: String,
+            default: '1.5rem',
+        },
+        switchValidateColor: {
+            type: String,
+            default: 'orange',
+        },
+        switchBackgroundColor: {
+            type: String,
+            default: '#ccc',
+        },
+        switchInnerPadding: {
+            type: String,
+            default: '0.2rem',
+        },
+        buttonColor: {
+            type: String,
+            default: '#fff',
+        },
+        buttonRadius: {
+            type: String,
+            default: '9999px',
+        },
+        transitionDuration: {
+            type: String,
+            default: '0.35s',
+        },
+    })
+
+    const emit = defineEmits(['update:modelValue'])
 </script>
 
 <style lang="scss" scoped>

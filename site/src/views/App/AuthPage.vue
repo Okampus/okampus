@@ -2,15 +2,13 @@
     <AppLoader />
 </template>
 
-<script>
+<script setup>
     import AppLoader from '@/components/App/AppLoader.vue'
-    import router from '@/router'
-    export default {
-        components: {
-            AppLoader,
-        },
-        created() {
-            this.$store.dispatch('auth/getMe').then(() => router.push('/'))
-        },
-    }
+    import { useAuthStore } from '@/store/auth.store'
+    import { useRouter } from 'vue-router'
+
+    const router = useRouter()
+    useAuthStore()
+        .getMe()
+        .then(() => router.push('/'))
 </script>

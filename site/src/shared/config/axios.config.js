@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { emitter } from '@/shared/modules/emitter'
 
 const $axios = axios.create({
     baseURL: import.meta.env.VITE_API_URL,

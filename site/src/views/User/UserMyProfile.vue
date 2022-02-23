@@ -86,8 +86,5 @@
                 ],
             }
         },
-        created() {
-            this.$store.dispatch('auth/redirectIfNotLoggedIn')
-        },
     }
 </script>

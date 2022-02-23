@@ -1,7 +1,7 @@
 <template>
-    <div class="relative flex items-center">
+    <div class="flex relative items-center">
         <input
-            class="peer h-[3rem] pl-[3rem] input w-full text-lg text-3 focus:text-0-light dark:focus:text-0-dark"
+            class="peer pl-[3rem] w-full h-[3rem] text-lg focus:text-0-light dark:focus:text-0-dark input text-3"
             :name="inputName"
             :required="inputRequired"
             :type="inputType"
@@ -9,7 +9,7 @@
             :value="modelValue"
             @input="emit('update:modelValue', $event.target.value)"
         />
-        <i class="text-2 w-[3rem] h-[3rem] absolute left-0 flex justify-center items-center">
+        <i class="flex absolute left-0 justify-center items-center w-[3rem] h-[3rem] text-2">
             <slot />
         </i>
     </div>

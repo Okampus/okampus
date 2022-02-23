@@ -1,16 +1,16 @@
 <template>
     <AppToast
         v-model:active="success"
-        text="Création réussie ! Tu vas être redirigé sur ton post."
+        message="Création réussie ! Tu vas être redirigé sur ton post."
         type="success"
-        @close="redirect"
+        @close="router.push(`/threads/${newThreadId}`)"
     />
     <CardPage>
         <div class="flex flex-col space-y-5">
             <div>
                 <div class="label-title">Titre</div>
                 <input
-                    v-model="state.title"
+                    v-model="formState.title"
                     class="w-full input"
                     type="text"
                     name="title"
@@ -32,12 +32,8 @@
                             <div class="font-normal popover">
                                 <ul>
                                     Types possibles:
-                                    <li
-                                        v-for="postType in postTypesEnum"
-                                        :key="postType"
-                                        class="text-blue-700"
-                                    >
-                                        {{ postType[$i18n.locale] }}
+                                    <li v-for="(type, i) in threadTypes" :key="i" class="text-blue-700">
+                                        {{ type[$i18n.locale] }}
                                     </li>
                                 </ul>
                             </div>
@@ -45,9 +41,9 @@
                     </Popper>
                 </div>
                 <SelectInput
-                    v-model="state.type"
+                    v-model="formState.type"
                     button-name="Type de post"
-                    :choices="postTypesEnum.map((postType) => postType[$i18n.locale])"
+                    :choices="threadTypes.map((type) => type[$i18n.locale])"
                 />
                 <AppError
                     v-if="v$.type.$error"
@@ -58,11 +54,10 @@
 
             <div>
                 <div class="label-title">Contenu</div>
-
                 <div>
                     <TipTapEditor
-                        ref="editorRef"
-                        v-model="state.body"
+                        ref="editor"
+                        v-model="formState.body"
                         name="editor"
                         mode="json"
                         :char-count="{ limit: editorCharLimit[1], showAt: 9000 }"
@@ -98,16 +93,16 @@
                 </div>
 
                 <TagInput
-                    v-model="state.tags"
+                    v-model="formState.tags"
                     name="tags"
                     placeholder="Entre le nom du tag puis appuie sur espace/entrée..."
-                    @error="tagsError"
-                    @input-update="customTagError = null"
+                    @error="tagsError = tagErrorEnum[$event][i18n.global.locale]"
+                    @input="tagsError = null"
                     @keydown="v$.tags.$touch"
                 />
                 <AppError
-                    v-if="v$.tags.$error"
-                    :error="customTagError || `Un post doit avoir au moins ${minTags} tags.`"
+                    v-if="tagsError !== null"
+                    :error="tagsError || `Un post doit avoir au moins ${minTags} tags.`"
                     success="Tags valides"
                 />
             </div>
@@ -117,8 +112,8 @@
                     <p>Valider mon post</p>
                 </button>
 
-                <AppAlert v-if="show === 'error'" type="error" :dismissable="true" @dismiss="show = null">
-                    <template #text>
+                <AppAlert v-if="error !== null" type="error" :dismissable="true" @dismiss="error = null">
+                    <template #message>
                         <span class="font-bold">Échec de création du post !</span>
                         ({{ error || 'Erreur inconnue' }})
                     </template>
@@ -130,132 +125,124 @@
     </CardPage>
 </template>
 
-<script>
+<script setup>
+    import CardPage from '@/views/App/CardPage.vue'
+    import AppToast from '@/components/App/AppToast.vue'
+
     import AppAlert from '@/components/App/AppAlert.vue'
     import AppError from '@/components/App/AppError.vue'
 
-    import Popper from 'vue3-popper'
     import SelectInput from '@/components/Input/SelectInput.vue'
     import TagInput from '@/components/Input/TagInput.vue'
     import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
 
-    import postTypesEnum from '@/shared/types/post-types.enum'
-    import { defaultTipTapText } from '@/utils/tiptap'
+    import Popper from 'vue3-popper'
 
     import useVuelidate from '@vuelidate/core'
     import { between, maxLength, minLength, required } from '@vuelidate/validators'
 
-    import { reactive, ref } from 'vue'
-    import CardPage from '../App/CardPage.vue'
-    import AppToast from '@/components/App/AppToast.vue'
+    import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
+    import { onBeforeRouteLeave, useRouter } from 'vue-router'
 
-    import { noop } from 'lodash'
+    import threadTypes from '@/shared/types/thread-types.enum'
+    import tagErrorEnum from '@/shared/errors/tags-error.enum'
 
-    export default {
-        components: {
-            TagInput,
-            AppError,
-            TipTapEditor,
-            Popper,
-            SelectInput,
-            AppAlert,
-            CardPage,
-            AppToast,
+    import { defaultTipTapText } from '@/utils/tiptap'
+    import { useThreadsStore } from '@/store/threads.store'
+    import { i18n } from '@/shared/modules/i18n'
+
+    const titleCharLimit = [10, 100]
+    const editorCharLimit = [50, 1000]
+    const minTags = 2
+
+    const editor = ref(null)
+    const router = useRouter()
+
+    const formState = reactive({
+        title: '',
+        type: '',
+        body: defaultTipTapText,
+        tags: [],
+    })
+
+    const rules = {
+        title: {
+            required,
+            minLength: minLength(titleCharLimit[0]),
+            maxLength: maxLength(titleCharLimit[1]),
         },
-        inheritAttrs: false,
-        props: {
-            editorCharLimit: {
-                type: Array,
-                default: () => [10, 10000],
-            },
-            titleCharLimit: {
-                type: Array,
-                default: () => [15, 80],
-            },
-            minTags: {
-                type: Number,
-                default: 2,
-            },
+        type: {
+            required,
+            between: between(0, threadTypes.length - 1),
         },
-        setup(props) {
-            const editorRef = ref(null)
-            const state = reactive({
-                title: '',
-                type: null,
-                body: defaultTipTapText,
-                tags: [],
+        body: {
+            editorCharCount: () =>
+                editor.value.getCharCount() > editorCharLimit[0] &&
+                editor.value.getCharCount() < editorCharLimit[1],
+        },
+        tags: { tagsLength: (tags) => tags.length >= minTags },
+    }
+
+    const v$ = useVuelidate(rules, formState)
+    const formIsDirty = computed(
+        () =>
+            formState.title !== '' ||
+            formState.type !== '' ||
+            formState.body !== defaultTipTapText ||
+            formState.tags.length !== 0,
+    )
+
+    const tagsError = ref(null)
+
+    const error = ref(null)
+    const success = ref(false)
+    const newThreadId = ref(null)
+
+    onBeforeRouteLeave((to, from, next) => {
+        if (!newThreadId.value && formIsDirty.value) {
+            // TODO: custom modal
+            if (window.confirm('Ês-tu sûr ? Toutes tes modifications non enregistrées seront perdues.')) {
+                next()
+            } else {
+                return false
+            }
+        } else {
+            next()
+        }
+    })
+
+    const beforeWindowUnload = (e) => {
+        if (!success.value && formIsDirty.value) {
+            e.returnValue = 'Ês-tu sûr ? Toutes tes modifications non enregistrées seront perdues.'
+            return true
+        } else {
+            e.returnValue = ''
+        }
+    }
+
+    onMounted(() => {
+        window.addEventListener('beforeunload', beforeWindowUnload)
+    })
+
+    onUnmounted(() => {
+        window.removeEventListener('beforeunload', beforeWindowUnload)
+    })
+
+    const threads = useThreadsStore()
+    const submit = () => {
+        if (v$.$invalid) {
+            v$.$touch()
+            return
+        }
+
+        threads
+            .addThread(formState)
+            .then((thread) => {
+                success.value = true
+                newThreadId.value = thread.contentMasterId
             })
-
-            const tagsLength = (tags) => tags.length >= props.minTags
-
-            const inRange = (val, bounds) => val > bounds[0] && val < bounds[1]
-            const editorCharCount = () => inRange(editorRef.value.getCharCount(), props.editorCharLimit)
-
-            const rules = {
-                title: {
-                    required,
-                    minLength: minLength(props.titleCharLimit[0]),
-                    maxLength: maxLength(props.titleCharLimit[1]),
-                },
-                type: {
-                    required,
-                    between: between(0, postTypesEnum.length - 1),
-                },
-                body: { editorCharCount },
-                tags: { tagsLength },
-            }
-
-            return {
-                editorRef,
-                state,
-                v$: useVuelidate(rules, state),
-            }
-        },
-        data() {
-            return {
-                postTypesEnum,
-                customTagError: null,
-                show: null,
-                error: '',
-                success: false,
-                redirect: noop,
-            }
-        },
-        methods: {
-            tagsError(err) {
-                if (err === 'unique') {
-                    this.customTagError = 'Ce Tag est déjà présent dans la liste.'
-                } else if (err === 'empty') {
-                    this.customTagError = 'Un Tag ne peut pas être vide.'
-                } else {
-                    this.customTagError = 'Erreur: ces tags génèrent une erreur inconnue.'
-                }
-            },
-            submit() {
-                if (this.v$.$invalid) {
-                    this.v$.$touch()
-                    return
-                }
-
-                this.$store
-                    .dispatch('threads/addThread', {
-                        title: this.state.title,
-                        type: this.state.type,
-                        body: this.state.body,
-                        tags: this.state.tags,
-                    })
-                    .then((newThread) => {
-                        this.show = 'success'
-                        this.success = true
-                        this.redirect = () => {
-                            this.$router.push(`/posts/${newThread.contentMasterId}`)
-                        }
-                    })
-                    .catch((err) => {
-                        this.show = 'error'
-                        this.error = err.toString()
-                    })
-            },
-        },
+            .catch((err) => {
+                error.value = err.toString()
+            })
     }
 </script>

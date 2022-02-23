@@ -1,10 +1,6 @@
 <template>
     <div class="flex gap-4 py-6 mx-auto w-23/24 h-full">
-        <AppModal
-            :show="filePreview != null"
-            :global-custom-class="'block md:hidden'"
-            @close="filePreview = null"
-        >
+        <AppModal :show="filePreview != null" @close="filePreview = null">
             <div class="flex gap-2 card">
                 <div class="flex justify-center items-center">
                     <DocumentIcon

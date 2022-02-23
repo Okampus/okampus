@@ -1,6 +1,6 @@
 <template>
     <!-- TODO: Solve repeated ESC popover -->
-    <AppModal :show="showLogin" @close="$emit('toggle-login')">
+    <AppModal :show="showLogin" @close="emit('update:show-login', false)">
         <Transition name="fade">
             <div class="min-w-[50vw] card">
                 <div class="flex flex-col">
@@ -16,6 +16,7 @@
                                 <InputWithIcon
                                     v-model="user.username"
                                     input-name="username"
+                                    :input-required="true"
                                     input-placeholder="Entrez votre identifiant..."
                                 >
                                     <font-awesome-icon icon="user-shield" class="ml-0.5" />
@@ -31,6 +32,7 @@
                                     v-model="user.password"
                                     input-name="password"
                                     input-type="password"
+                                    :input-required="true"
                                     input-placeholder="Entrez votre mot de passe..."
                                 >
                                     <font-awesome-icon icon="key" class="ml-0.5" />
@@ -43,7 +45,7 @@
                             <button
                                 type="submit"
                                 class="py-3 w-full text-sm font-medium text-white uppercase bg-gray-500 hover:bg-gray-400 rounded-sm focus:outline-none hover:shadow-none"
-                                @click="handleLogin"
+                                @click="login"
                             >
                                 Connexion Horizon
                             </button>
@@ -52,7 +54,7 @@
                         <div class="flex flex-col justify-center items-center mt-10 space-y-2">
                             <a
                                 class="py-3 w-full text-sm font-medium text-center text-white uppercase bg-blue-500 hover:bg-blue-400 rounded-sm focus:outline-none hover:shadow-none"
-                                :href="authUrl"
+                                :href="myEfreiAuthUrl"
                                 >Connexion myEfrei</a
                             >
                         </div>
@@ -63,55 +65,41 @@
     </AppModal>
 </template>
 
-<script>
+<script setup>
     import InputWithIcon from '@/components/Input/InputWithIcon.vue'
-    import User from '@/models/user'
-    import AppModal from '../App/AppModal.vue'
+    import AppModal from '@/components/App/AppModal.vue'
+    import { useAuthStore } from '@/store/auth.store'
+    import { emitter } from '@/shared/modules/emitter'
+    import { reactive } from 'vue'
 
-    export default {
-        components: {
-            InputWithIcon,
-            AppModal,
+    const myEfreiAuthUrl = `${import.meta.env.VITE_API_URL}/auth/myefrei`
+    const auth = useAuthStore()
+
+    defineProps({
+        showLogin: {
+            type: Boolean,
+            required: true,
         },
-        props: {
-            showLogin: {
-                type: Boolean,
-                default: false,
-            },
-        },
-        emits: ['toggle-login'],
-        data() {
-            return {
-                authUrl: `${import.meta.env.VITE_API_URL}/auth/myefrei`,
-                user: new User('', '', ''),
-            }
-        },
-        methods: {
-            handleLogin() {
-                this.loading = true
-                if (this.user.username && this.user.password) {
-                    this.$store.dispatch('auth/login', this.user).then(
-                        (data) => {
-                            this.message = data.toString()
-                            this.$emitter.emit('login')
-                        },
-                        (error) => {
-                            this.loading = false
-                            this.message =
-                                (error.response && error.response.data) || error.message || error.toString()
-                        },
-                    )
-                }
-            },
-        },
+    })
+
+    const emit = defineEmits(['update:show-login'])
+
+    const user = reactive({
+        username: '',
+        password: '',
+    })
+
+    const login = () => {
+        if (!user.username || !user.password) {
+            return
+        }
+
+        auth.logIn(user).then(() => {
+            emit('update:show-login', false)
+            emitter.emit('show-toast', {
+                message: 'Connexion réussie !',
+                type: 'success',
+            })
+        })
     }
 </script>
-
-<style lang="scss">
-    // .centered-fixed {
-    //     position: fixed;
-    //     top: 0;
-    //     left: 0;
-    //     transform: translate(calc(50vw - 50%), calc(50vh - 50%));
-    // }
-</style>

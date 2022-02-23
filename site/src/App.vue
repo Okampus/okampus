@@ -1,186 +1,213 @@
 <template>
-    <FormLogin :show-login="showLogin" @toggle-login="toggleLogin" />
-
-    <div class="flex flex-row w-screen h-screen z-1" :class="{ 'brightness-50': showModal }">
-        <SideBar
-            ref="sidebar"
-            :uncollapsed="uncollapsedSidebar"
-            :collapsing="collapsingSidebar"
-            :small-screen="smallScreen"
-            @toggle-side-bar="toggleSidebar"
+    <div>
+        <AppToast
+            v-model:active="toast.show"
+            :message="toast.message"
+            :type="toast.type"
+            :="!isNil(toast.duration) ? { duration: toast.duration } : {}"
         />
+        <FormLogin v-model:show-login="showLogin" />
 
-        <div
-            ref="content"
-            :class="{ 'brightness-50': dimPage }"
-            class="flex overflow-auto relative flex-col w-full bg-app h-content after-topbar app-scrollbar"
-        >
-            <div class="flex-auto shrink-0 grow-1">
-                <router-view />
+        <div class="flex flex-row w-screen h-screen z-1">
+            <SideBar
+                ref="sidebar"
+                :uncollapsed="collapsed"
+                :collapsing="collapsing"
+                :small-screen="hiding"
+                @toggle-side-bar="toggleSidebar"
+            />
+            <div
+                ref="content"
+                :class="{ 'brightness-50': hiding && collapsing != collapsed }"
+                class="flex overflow-auto relative flex-col w-full bg-app h-content after-topbar app-scrollbar"
+                @mousedown="hiding && collapsed !== collapsing && toggleSidebar()"
+            >
+                <div
+                    class="flex-auto shrink-0 grow-1"
+                    :class="{ 'pointer-events-none': hiding && collapsing != collapsed }"
+                >
+                    <AppException v-if="error.code" :code="error.code" />
+                    <router-view v-else />
+                </div>
+                <FooterBar class="shrink-0" />
             </div>
-            <FooterBar class="shrink-0" />
+            <TopBar
+                ref="topbar"
+                :class="{ 'brightness-50': hiding && collapsing != collapsed }"
+                @mousedown="hiding && collapsed !== collapsing && toggleSidebar()"
+                @toggle-side-bar="!collapsing && toggleSidebar()"
+            />
         </div>
-
-        <TopBar
-            ref="topbar"
-            :show-login="showLogin"
-            :class="{ 'brightness-50': dimPage }"
-            @toggle-login="toggleLogin"
-            @toggle-side-bar="toggleSidebar"
-        />
     </div>
 </template>
 
-<script>
+<script setup>
     import FooterBar from '@/components/Bar/FooterBar.vue'
     import SideBar from '@/components/Bar/SideBar.vue'
     import TopBar from '@/components/Bar/TopBar.vue'
     import FormLogin from '@/components/Form/FormLogin.vue'
-    import User from '@/models/user'
-    import debounce from 'lodash/debounce'
-    import { ref, watch } from 'vue'
+    import AppToast from '@/components/App/AppToast.vue'
+    import AppException from '@/views/App/AppException.vue'
 
-    const breakWidth = 1024
-    const uncollapseWidth = 1536
-    export default {
-        components: {
-            TopBar,
-            SideBar,
-            FooterBar,
-            FormLogin,
-        },
-        setup() {
-            const showLogin = ref(false)
-            const showModal = ref(false)
+    import { useBreakpoints } from '@vueuse/core'
 
-            const sidebar = ref(null)
-            const topbar = ref(null)
-            const content = ref(null)
-            return {
-                sidebar,
-                topbar,
-                content,
-                showLogin,
-                showModal,
-                toggleModal() {
-                    showModal.value = !showModal.value
-                    showLogin.value = showModal.value
-                },
-                toggleLogin() {
-                    showLogin.value = !showLogin.value
-                    showModal.value = showLogin.value
-                },
-            }
-        },
-        data() {
-            const isScreenSmallerThan = (width) =>
-                Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) <= width
+    import { emitter } from '@/shared/modules/emitter'
+    import { useAuthStore } from '@/store/auth.store'
+    import { useUserConfigStore } from '@/store/user-config.store'
+    import { useRoute } from 'vue-router'
+    import { useCookies } from 'vue3-cookies'
 
-            const checkResize = debounce(() => {
-                const isScreenSmall = isScreenSmallerThan(breakWidth)
-                const isScreenSmallerThanUncollapse = isScreenSmallerThan(uncollapseWidth)
+    import logOutOnExpire from '@/utils/logOutOnExpire'
 
-                if (!isScreenSmall && !this.smallScreen) {
-                    // If the screen is bigger than the smallScreen breakpoint
-                    if (this.smallerThanUncollapse != isScreenSmallerThanUncollapse) {
-                        // If the screen is smaller than the uncollapse breakpoint
-                        this.smallerThanUncollapse = isScreenSmallerThanUncollapse
-                        this.uncollapsedSidebar = !isScreenSmallerThanUncollapse
-                    }
-                } else if (this.smallScreen != isScreenSmall) {
-                    // If the screen is smaller than the smallScreen breakpoint
-                    this.smallScreen = isScreenSmall
-                    if (!isScreenSmall && this.uncollapsedSidebar) {
-                        // If the sidebar was uncollapsed in smallScreen mode and the screen got larger
-                        this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
-                        this.content.removeEventListener('mousedown', this.toggleSidebar)
-                    } else {
-                        this.uncollapsedSidebar = false
-                    }
-                }
-            }, 50)
+    import { reactive, ref, watch, watchEffect } from 'vue'
 
-            return {
-                checkResize,
-                user: new User('', '', ''),
-                smallScreen: isScreenSmallerThan(breakWidth),
-                smallerThanUncollapse: isScreenSmallerThan(uncollapseWidth),
-                uncollapsedSidebar: !isScreenSmallerThan(uncollapseWidth),
-                collapsingSidebar: false,
-            }
-        },
-        computed: {
-            dimPage() {
-                return (
-                    this.smallScreen &&
-                    ((this.uncollapsedSidebar && !this.collapsingSidebar) ||
-                        (!this.uncollapsedSidebar && this.collapsingSidebar))
-                )
-            },
-        },
-        created() {
-            document.querySelector(':root').className = this.$store.state.user.theme
-            const cookie = this.$cookies.get('accessTokenExpiresAt')
-            if (cookie && cookie < Date.now()) {
-                this.$emitter.emit('logout')
-            }
-        },
-        mounted() {
-            watch(
-                () => this.$store.getters['user/getTheme'],
-                (theme) => {
-                    document.querySelector(':root').className = theme
-                },
-            )
+    import { isNil } from 'lodash'
 
-            this.$emitter.on('login', () => {
-                this.toggleLogin()
-            })
+    const breakpoints = useBreakpoints({
+        hideSidebar: 1024,
+        uncollapseSidebar: 1536,
+    })
 
-            this.$emitter.on('logout', () => {
-                this.$store.dispatch('auth/logout')
-                this.$cookies.remove('accessTokenExpiresAt')
-                this.$cookies.remove('refreshTokenExpiresAt')
-            })
+    const sidebar = ref(null)
+    const topbar = ref(null)
+    const content = ref(null)
 
-            this.$emitter.on('toggle-modal', () => {
-                this.toggleModal()
-            })
+    const hiding = breakpoints.smaller('hideSidebar')
+    const uncollapsing = breakpoints.greater('uncollapseSidebar')
 
-            window.addEventListener('resize', this.checkResize)
-        },
-        unmounted() {
-            window.removeEventListener('resize', this.checkResize)
-        },
-        methods: {
-            login() {
-                this.toggleLogin()
-            },
-            toggleSidebar() {
-                if (this.smallScreen) {
-                    this.collapsingSidebar = true
-                    if (this.uncollapsedSidebar) {
-                        this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
-                        this.content.removeEventListener('mousedown', this.toggleSidebar)
-                    } else {
-                        this.topbar.$el.addEventListener('mousedown', this.toggleSidebar)
-                        this.content.addEventListener('mousedown', this.toggleSidebar)
-                    }
+    const collapsing = ref(false)
+    const collapsed = ref(false)
 
-                    this.sidebar.$el.addEventListener(
-                        'transitionend',
-                        () => {
-                            this.collapsingSidebar = false
-                            this.uncollapsedSidebar = !this.uncollapsedSidebar
-                        },
-                        { once: true },
-                    )
-                } else {
-                    this.uncollapsedSidebar = !this.uncollapsedSidebar
-                }
-            },
-        },
+    const showLogin = ref(false)
+
+    const switchCollapsed = (event) => {
+        if (event.propertyName !== 'margin-left') return
+        collapsing.value = false
+        collapsed.value = !collapsed.value
+        sidebar.value.$el.removeEventListener('transitionend', switchCollapsed)
     }
+
+    const toggleSidebar = () => {
+        if (hiding.value) {
+            if (collapsing.value) {
+                sidebar.value.$el.removeEventListener('transitionend', switchCollapsed)
+                collapsed.value = !collapsed.value
+            } else {
+                collapsing.value = true
+            }
+            sidebar.value.$el.addEventListener('transitionend', switchCollapsed)
+        } else {
+            collapsed.value = !collapsed.value
+        }
+    }
+
+    const toast = reactive({
+        show: false,
+        message: '',
+        type: '',
+        duration: null,
+    })
+
+    const error = reactive({
+        code: null,
+        path: null,
+    })
+
+    const scrollHighlight = (id) => {
+        const el = document.querySelector(id.startsWith('#') ? id : `#${id}`)
+        if (el) {
+            el.classList.add('highlight-active')
+            el.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            })
+            el.addEventListener(
+                'animationend',
+                () => {
+                    el.classList.remove('highlight-active')
+                },
+                { once: true },
+            )
+        }
+    }
+
+    const config = useUserConfigStore()
+
+    const auth = useAuthStore()
+    const route = useRoute()
+    const cookies = useCookies().cookies
+
+    logOutOnExpire()
+
+    if (config.darkMode) {
+        document.documentElement.classList.add('dark')
+    }
+    watch(
+        () => config.darkMode,
+        (enabled) => {
+            if (enabled) {
+                document.documentElement.classList.add('dark')
+            } else {
+                document.documentElement.classList.remove('dark')
+            }
+        },
+    )
+
+    watch(hiding, () => {
+        if (hiding.value) {
+            collapsed.value = false
+        }
+    })
+
+    watch(uncollapsing, () => {
+        collapsed.value = uncollapsing.value
+    })
+
+    emitter.on('login', () => {
+        showLogin.value = true
+    })
+
+    emitter.on('scroll-to-anchor', (id) => {
+        scrollHighlight(id)
+    })
+
+    emitter.on('show-toast', ({ message, type, duration }) => {
+        toast.show = true
+        toast.type = type
+        toast.message = message
+        toast.duration = duration
+    })
+
+    emitter.on('error-route', ({ code, path }) => {
+        error.code = code
+        error.path = path ?? route.path
+    })
+
+    emitter.on('logout', () => {
+        auth.logOut().then(() => {
+            if (route.meta?.requiresAuth) {
+                error.code = '401'
+                error.path = route.path
+            }
+            cookies.remove('accessTokenExpiresAt')
+            cookies.remove('refreshTokenExpiresAt')
+        })
+    })
+
+    watchEffect(() => {
+        if (!toast.show) {
+            toast.type = 'info'
+            toast.message = ''
+            toast.duration = null
+        }
+    })
+
+    watchEffect(() => {
+        if (error.code && (route.path !== error.path || (error.code === '401' && auth.loggedIn))) {
+            error.code = null
+            error.path = null
+        }
+    })
 </script>
 
 <style lang="scss">

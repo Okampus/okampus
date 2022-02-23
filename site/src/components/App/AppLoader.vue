@@ -17,13 +17,11 @@
     </div>
 </template>
 
-<script>
-    export default {
-        props: {
-            size: {
-                type: Number,
-                default: 4,
-            },
+<script setup>
+    defineProps({
+        size: {
+            type: Number,
+            default: 4,
         },
-    }
+    })
 </script>

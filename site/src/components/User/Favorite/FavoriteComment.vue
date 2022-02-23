@@ -14,7 +14,7 @@
                     </p>
                     <!-- TODO: find parent post to link it -->
                     <!-- <router-link
-                        :to="`/posts/${comment.post.postId}`"
+                        :to="`/threads/${comment.post.postId}`"
                         class="mr-4 text-lg line-clamp-2 text-0"
                     > -->
                     {{ extractTextFromTipTapJSON(JSON.parse(comment.body)) }}
@@ -29,7 +29,6 @@
                                 class="block pl-1 tracking-tighter cursor-pointer"
                                 :class="{ 'text-green-600': comment.userVote === 1 }"
                                 :icon="comment.userVote === 1 ? 'thumbs-up' : ['far', 'thumbs-up']"
-                                @click="comment.userVote === 1 ? sendVote(0) : sendVote(1)"
                             />
                             <p class="pl-1 ml-1 text-sm tracking-tighter">
                                 {{ comment.upvotes }}
@@ -102,12 +101,6 @@
         methods: {
             timeAgo,
             extractTextFromTipTapJSON,
-            sendVote(vote) {
-                this.$store.dispatch('threads/voteContent', {
-                    contentId: this.comment.contentId,
-                    value: vote,
-                })
-            },
             deleteFavorite() {
                 this.$store.dispatch('user/deleteFavorite', this.comment.contentId)
             },

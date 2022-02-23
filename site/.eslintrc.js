@@ -1,6 +1,9 @@
 module.exports = {
     root: true,
-    env: { node: true },
+    parserOptions: {
+        'ecmaVersion': 'latest',
+    },
+    env: { node: true, es2021: true, 'vue/setup-compiler-macros': true },
     extends: [
         'plugin:vue/vue3-recommended',
         'plugin:tailwindcss/recommended',

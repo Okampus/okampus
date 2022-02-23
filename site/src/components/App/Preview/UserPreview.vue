@@ -29,8 +29,8 @@
 <script>
     import schoolRolesEnum from '@/shared/types/school-roles.enum'
     import { abbrNumbers } from '@/utils/abbrNumbers'
-    import AppTag from '../App/AppTag.vue'
-    import UserAvatar from './UserAvatar.vue'
+    import AppTag from '@/components/App/AppTag.vue'
+    import UserAvatar from '@/components/User/UserAvatar.vue'
 
     export default {
         components: { AppTag, UserAvatar },

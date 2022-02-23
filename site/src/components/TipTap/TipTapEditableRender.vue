@@ -7,85 +7,77 @@
         :editor-buttons="editorButtons"
         :editor-classes="editorClasses"
         :char-count="charCount"
-        @cancel="$emit('update:edit', false), (body = content), $emit('cancel')"
-        @send="$emit('update:edit', false), $emit('update:content', body), $emit('send', body)"
+        @cancel="cancel"
+        @send="send"
     />
     <TipTapRenderer v-else :content="body" class="p-1" />
 </template>
 
-<script>
+<script setup>
     import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
     import TipTapRenderer from '@/components/TipTap/TipTapRenderer.vue'
     import { defaultEditorButtons, defaultTipTapText } from '@/utils/tiptap'
-    import { watch } from 'vue'
+    import { onMounted, ref, watchEffect } from 'vue'
 
-    export default {
-        components: {
-            TipTapRenderer,
-            TipTapEditor,
+    const props = defineProps({
+        content: {
+            type: String,
+            default: defaultTipTapText,
         },
-        props: {
-            content: {
-                type: String,
-                default: defaultTipTapText,
-            },
-            cancellable: {
-                type: Boolean,
-                default: true,
-            },
-            sendable: {
-                type: Boolean,
-                default: true,
-            },
-            editorButtons: {
-                type: Array,
-                default: defaultEditorButtons,
-            },
-            editorClasses: {
-                type: Array,
-                default: () => ['min-h-20'],
-            },
-            charCount: {
-                type: [Number, Object],
-                default: 0,
-            },
-            edit: {
-                type: Boolean,
-                default: false,
-            },
-            emitContent: {
-                type: Boolean,
-                default: false,
-            },
+        cancellable: {
+            type: Boolean,
+            default: true,
         },
-        emits: ['cancel', 'send', 'update:content', 'update:edit'],
-        data() {
-            return { body: this.content ?? defaultTipTapText }
+        sendable: {
+            type: Boolean,
+            default: true,
         },
-        mounted() {
-            if (this.emitContent) {
-                watch(
-                    () => this.body,
-                    (newContent) => {
-                        this.$emit('update:content', newContent)
-                    },
-                )
-                watch(
-                    () => this.content,
-                    (newContent) => {
-                        if (newContent != this.body) {
-                            this.body = newContent
-                        }
-                    },
-                )
-            } else {
-                watch(
-                    () => this.content,
-                    (newContent) => {
-                        this.body = newContent
-                    },
-                )
-            }
+        editorButtons: {
+            type: Array,
+            default: defaultEditorButtons,
         },
+        editorClasses: {
+            type: Array,
+            default: () => ['min-h-20'],
+        },
+        charCount: {
+            type: [Number, Object],
+            default: 0,
+        },
+        edit: {
+            type: Boolean,
+            default: false,
+        },
+        emitContent: {
+            type: Boolean,
+            default: false,
+        },
+    })
+
+    const emit = defineEmits(['cancel', 'send', 'update:content', 'update:edit'])
+    const body = ref(props.content ?? defaultTipTapText)
+
+    const cancel = () => {
+        if (props.cancellable) {
+            emit('update:edit', false)
+            body.value = props.content
+            emit('cancel')
+        }
     }
+
+    const send = () => {
+        if (props.sendable) {
+            emit('update:edit', false)
+            emit('send', body.value)
+        }
+    }
+
+    onMounted(() => {
+        if (props.emitContent) {
+            watchEffect(() => emit('update:content', body.value))
+            watchEffect(() => (body.value = props.content != body.value ? props.content : body.value))
+        } else {
+            watchEffect(() => (body.value = props.content))
+        }
+    })
 </script>

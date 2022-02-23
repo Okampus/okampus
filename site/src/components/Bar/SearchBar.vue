@@ -1,12 +1,7 @@
 <template>
-    <!-- TODO: Local Storage pour voir les recherches recentes + Component pour afficher chaque hits + Utiliser SearchInput -->
+    <!-- TODO: Component pour afficher chaque hits + Utiliser SearchInput -->
     <div>
-        <CustomModal
-            ref="input"
-            :show="showSearchBar"
-            :modal-custom-class="'w-3/4 h-3/4'"
-            @close="showSearchBar = false"
-        >
+        <AppModal ref="input" :show="showSearchbar" @close="showSearchbar = false">
             <div class="w-full h-full card">
                 <ais-instant-search :search-client="searchClient" :index-name="THREADS" class="h-full">
                     <div class="flex flex-col h-full">
@@ -14,7 +9,7 @@
                             <template #default="{ currentRefinement, isSearchStalled, refine }">
                                 <div
                                     class="flex justify-between items-center w-full cursor-pointer"
-                                    @click.prevent="showSearchBar = true"
+                                    @click.prevent="showSearchbar = true"
                                 >
                                     <label class="flex grow items-center">
                                         <input
@@ -52,7 +47,7 @@
                                         <SearchCategory
                                             :items="items"
                                             :index-type="indexList[i]"
-                                            @close-modal="showSearchBar = false"
+                                            @close-modal="showSearchbar = false"
                                         />
                                     </template>
                                 </ais-hits>
@@ -61,12 +56,12 @@
                     </div>
                 </ais-instant-search>
             </div>
-        </CustomModal>
+        </AppModal>
 
         <InputWithIcon
-            input-placeholder="Rechercher une ressource sur Horizon Efrei..."
             class="hidden md:flex"
-            @click.prevent="showSearchBar = true"
+            input-placeholder="Rechercher une ressource sur Horizon Efrei..."
+            @click.prevent="showSearchbar = true"
         >
             <font-awesome-icon icon="search" class="ml-0.5" />
         </InputWithIcon>
@@ -74,17 +69,18 @@
         <font-awesome-icon
             class="block float-right text-2xl cursor-pointer md:hidden"
             icon="search"
-            @click="showSearchBar = true"
+            @click="showSearchbar = true"
         />
         {{ $refs.modal }}
     </div>
 </template>
 
-<script>
-    import CustomModal from '@/components/App/AppModal.vue'
+<script setup>
+    import AppModal from '@/components/App/AppModal.vue'
     import SearchCategory from '@/components/App/Card/SearchCategory.vue'
-    import postTypesEnum from '@/shared/types/post-types.enum'
-    import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
+    import InputWithIcon from '@/components/Input/InputWithIcon.vue'
+
+    import threadTypes from '@/shared/types/thread-types.enum'
     import $typesense from '@/shared/config/typesense.config'
     import {
         BLOGS,
@@ -94,7 +90,10 @@
         SUBJECTS,
         THREADS,
     } from '@/shared/types/typesense-index-names.enum'
-    import InputWithIcon from '../Input/InputWithIcon.vue'
+
+    import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
+
+    import { ref } from 'vue'
 
     const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
         ...$typesense,
@@ -128,75 +127,61 @@
 
     const searchClient = typesenseInstantsearchAdapter.searchClient
 
-    export default {
-        components: {
-            CustomModal,
-            SearchCategory,
-            InputWithIcon,
+    const showSearchbar = ref(false)
+    const indexList = ref([
+        {
+            indexName: THREADS,
+            title: 'Tous les threads',
+            titleIcon: 'comments',
+            routerBase: 'post',
+            resultTitle: (item) => item.title,
+            resultBody: (item) => item.body,
+            resultIcon: (item) => threadTypes?.[item.type]?.icon ?? 'hashtag',
         },
-
-        data() {
-            return {
-                THREADS,
-                searchClient,
-                showSearchBar: false,
-                indexList: [
-                    {
-                        indexName: THREADS,
-                        title: 'Tous les posts',
-                        titleIcon: 'comments',
-                        routerBase: 'post',
-                        resultTitle: (item) => item.title,
-                        resultBody: (item) => item.body,
-                        resultIcon: (item) => postTypesEnum?.[item.type]?.icon ?? 'hashtag',
-                    },
-                    {
-                        indexName: STUDY_DOCS,
-                        title: 'Tous les documents',
-                        titleIcon: 'file',
-                        routerBase: 'file',
-                        resultTitle: (item) => item.name,
-                        resultBody: (item) => item.subjectName,
-                        resultIcon: () => 'file',
-                    },
-                    {
-                        indexName: INFO_DOCS,
-                        title: 'Tous les documents informatifs',
-                        titleIcon: 'file',
-                        routerBase: 'file',
-                        resultTitle: (item) => item.name,
-                        resultBody: (item) => item.subjectName,
-                        resultIcon: () => 'file',
-                    },
-                    {
-                        indexName: BLOGS,
-                        title: 'Tous les articles',
-                        titleIcon: 'newspaper',
-                        routerBase: 'article',
-                        resultTitle: (item) => item.title,
-                        resultBody: (item) => item.body,
-                        resultIcon: () => 'newspaper',
-                    },
-                    {
-                        indexName: CLUBS,
-                        title: 'Toutes les associations',
-                        titleIcon: 'user-friends',
-                        routerBase: 'club',
-                        resultTitle: (item) => item.name,
-                        resultBody: (item) => item.category,
-                        resultIcon: () => 'user-friends',
-                    },
-                    {
-                        indexName: SUBJECTS,
-                        title: 'Toutes les matieres',
-                        titleIcon: 'book',
-                        routerBase: 'subject',
-                        resultTitle: (item) => item.name,
-                        resultBody: (item) => item.code,
-                        resultIcon: () => 'book',
-                    },
-                ],
-            }
+        {
+            indexName: STUDY_DOCS,
+            title: 'Tous les documents',
+            titleIcon: 'file',
+            routerBase: 'file',
+            resultTitle: (item) => item.name,
+            resultBody: (item) => item.subjectName,
+            resultIcon: () => 'file',
         },
-    }
+        {
+            indexName: INFO_DOCS,
+            title: 'Tous les documents informatifs',
+            titleIcon: 'file',
+            routerBase: 'file',
+            resultTitle: (item) => item.name,
+            resultBody: (item) => item.subjectName,
+            resultIcon: () => 'file',
+        },
+        {
+            indexName: BLOGS,
+            title: 'Tous les articles',
+            titleIcon: 'newspaper',
+            routerBase: 'article',
+            resultTitle: (item) => item.title,
+            resultBody: (item) => item.body,
+            resultIcon: () => 'newspaper',
+        },
+        {
+            indexName: CLUBS,
+            title: 'Toutes les associations',
+            titleIcon: 'user-friends',
+            routerBase: 'club',
+            resultTitle: (item) => item.name,
+            resultBody: (item) => item.category,
+            resultIcon: () => 'user-friends',
+        },
+        {
+            indexName: SUBJECTS,
+            title: 'Toutes les matieres',
+            titleIcon: 'book',
+            routerBase: 'subject',
+            resultTitle: (item) => item.name,
+            resultBody: (item) => item.code,
+            resultIcon: () => 'book',
+        },
+    ])
 </script>

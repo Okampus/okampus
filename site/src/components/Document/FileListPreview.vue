@@ -143,7 +143,7 @@
                         :checked="downloadFileGroup.includes(file)"
                         @click="updateFileGroup(file)"
                     />
-                    <Popper :offset-distance="'0'" :interactive="false" class="w-full">
+                    <Popper offset-distance="0" :interactive="false" class="w-full">
                         <div
                             class="flex flex-col gap-1 justify-center items-center w-full"
                             @click="$emit('update:filePreview', file)"
@@ -161,8 +161,8 @@
                         <template #content>
                             <div class="flex flex-col p-2 card">
                                 <div
-                                    v-for="(button, index) in dropDownButtons(file)"
-                                    :key="index"
+                                    v-for="(button, _, j) in dropDownButtons(file)"
+                                    :key="j"
                                     class="flex gap-2 justify-center items-center py-2 px-4 hover:text-white rounded-xl"
                                     :class="button.class"
                                     @click="button.action()"
@@ -231,8 +231,8 @@
         },
         methods: {
             dropDownButtons(doc) {
-                return [
-                    {
+                return {
+                    open: {
                         name: 'Voir',
                         icon: 'eye',
                         class: 'hover:bg-green-500 hover:text-white',
@@ -240,7 +240,7 @@
                             window.open(doc.file.url, '_blank').focus()
                         },
                     },
-                    {
+                    download: {
                         name: 'Télécharger',
                         icon: 'arrow-down',
                         class: 'hover:bg-green-500 hover:text-white',
@@ -252,7 +252,7 @@
                             })
                         },
                     },
-                    {
+                    copy: {
                         name: 'Copier le lien',
                         icon: 'link',
                         class: 'hover:bg-blue-500 hover:text-white',
@@ -260,7 +260,7 @@
                             navigator.clipboard.writeText(doc.file.url)
                         },
                     },
-                    {
+                    delete: {
                         name: 'Supprimer',
                         icon: 'times',
                         class: 'hover:bg-red-500 hover:text-white',
@@ -269,7 +269,7 @@
                             console.log('Delete (placeholder)', doc)
                         },
                     },
-                ]
+                }
             },
             updateFileGroup(file) {
                 if (this.downloadFileGroup.includes(file)) {

@@ -108,7 +108,6 @@
     import AppLoader from '@/components/App/AppLoader.vue'
     import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
     import UserAvatar from '@/components/User/UserAvatar.vue'
-    import { posts } from '@/fake/posts'
 
     export default {
         components: {
@@ -118,7 +117,6 @@
         },
         data() {
             return {
-                activities: posts,
                 roles: {
                     'Président': 'president',
                     'Vice-Président': 'vice-president',

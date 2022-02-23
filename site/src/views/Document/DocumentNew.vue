@@ -33,7 +33,7 @@
                                 :key="i"
                                 type="error"
                             >
-                                <template #text>
+                                <template #message>
                                     <div class="subtitle">
                                         {{ error.$message }}
                                     </div>
@@ -88,7 +88,7 @@
                                 :key="i"
                                 type="error"
                             >
-                                <template #text>
+                                <template #message>
                                     <div class="subtitle">
                                         {{ error.$message }}
                                     </div>
@@ -120,7 +120,7 @@
                                 :key="i"
                                 type="error"
                             >
-                                <template #text>
+                                <template #message>
                                     <div class="subtitle">
                                         {{ error.$message }}
                                     </div>
@@ -146,7 +146,7 @@
                                 >
                                     <template #inputComponent="slotValue">
                                         <div
-                                            class="flex grow gap-2 justify-between items-center p-2 rounded-lg bg-0"
+                                            class="flex grow gap-2 justify-between items-center p-2 rounded-lg"
                                         >
                                             <div class="flex gap-2 items-center text-1">
                                                 <font-awesome-icon
@@ -207,7 +207,7 @@
                                     :key="i"
                                     type="error"
                                 >
-                                    <template #text>
+                                    <template #message>
                                         <div class="subtitle">
                                             {{ error.$message }}
                                         </div>
@@ -249,7 +249,7 @@
                                     :key="i"
                                     type="error"
                                 >
-                                    <template #text>
+                                    <template #message>
                                         <div class="subtitle">
                                             {{ error.$message }}
                                         </div>
@@ -288,7 +288,7 @@
                                     :key="i"
                                     type="error"
                                 >
-                                    <template #text>
+                                    <template #message>
                                         <div class="subtitle">
                                             {{ error.$message }}
                                         </div>
@@ -310,7 +310,7 @@
                                     :key="i"
                                     type="error"
                                 >
-                                    <template #text>
+                                    <template #message>
                                         <div class="subtitle">
                                             {{ error.$message }}
                                         </div>
@@ -352,7 +352,7 @@
                             :key="i"
                             type="error"
                         >
-                            <template #text>
+                            <template #message>
                                 <div class="subtitle">
                                     {{ error.$message }}
                                 </div>

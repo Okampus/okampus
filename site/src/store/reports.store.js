@@ -1,7 +1,6 @@
 import $axios from '@/shared/config/axios.config'
 import { defineStore } from 'pinia'
 
-import { upsert } from '@/utils/arrays'
 import { onData, onItems } from '@/utils/store'
 import { useThreadsStore } from './threads.store'
 

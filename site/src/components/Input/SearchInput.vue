@@ -10,7 +10,7 @@
         "
     >
         <div class="flex flex-col w-full h-full">
-            <Popper class="search-input-global" :offset-distance="'0'" :show="focusInput">
+            <Popper class="search-input-global" offset-distance="0" :show="focusInput">
                 <ais-search-box class="w-full h-full">
                     <template #default="{ isSearchStalled, refine }">
                         <div

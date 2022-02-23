@@ -12,7 +12,7 @@
                         Publié par {{ reply.author.fullname }} {{ timeAgo(new Date(reply.createdAt)) }}
                     </p>
                     <!-- TODO: find parent post to link it -->
-                    <!-- <router-link :to="`/posts/${reply.post.postId}`" class="mr-4 text-lg line-clamp-2 text-0"> -->
+                    <!-- <router-link :to="`/threads/${reply.post.postId}`" class="mr-4 text-lg line-clamp-2 text-0"> -->
                     {{ extractTextFromTipTapJSON(JSON.parse(reply.body)) }}
                     <!-- </router-link> -->
                 </div>
@@ -24,8 +24,6 @@
                             <font-awesome-icon
                                 class="block pl-1 tracking-tighter cursor-pointer"
                                 :class="{ 'text-green-600': reply.userVote === 1 }"
-                                :icon="reply.userVote === 1 ? 'thumbs-up' : ['far', 'thumbs-up']"
-                                @click="reply.userVote === 1 ? sendVote(0) : sendVote(1)"
                             />
                             <p class="block pl-1 ml-1 text-sm tracking-tighter text-2">
                                 {{ reply.upvotes }}
@@ -115,12 +113,6 @@
         methods: {
             timeAgo,
             extractTextFromTipTapJSON,
-            sendVote(vote) {
-                this.$store.dispatch('threads/voteContent', {
-                    contentId: this.reply.contentId,
-                    value: vote,
-                })
-            },
             deleteFavorite() {
                 this.$store.dispatch('user/deleteFavorite', this.reply.contentId)
             },

@@ -5,9 +5,9 @@
                 class="flex overflow-hidden flex-wrap gap-5 items-center h-8 font-light whitespace-nowrap text-3"
             >
                 <AppTag
-                    :icon="postTypesEnum[thread.type]?.icon"
-                    :tag-color="postTypesEnum[thread.type]?.color"
-                    :tag-name="postTypesEnum[thread.type][$i18n.locale]"
+                    :icon="threadTypes[thread.type]?.icon"
+                    :tag-color="threadTypes[thread.type]?.color"
+                    :tag-name="threadTypes[thread.type][$i18n.locale]"
                 />
                 <div :class="[thread.solved ? 'text-green-600' : 'text-red-500']">
                     {{ thread.solved ? 'Résolu' : 'Non-Résolu' }}
@@ -17,17 +17,24 @@
                     <div>{{ timeAgo(thread.createdAt) }}</div>
                 </div>
                 <div
-                    v-if="thread.createdAt !== thread.post.contentLastUpdatedAt"
+                    v-if="thread.createdAt !== thread.post.lastEdit.createdAt"
                     class="flex gap-2 items-center pl-1"
                 >
                     <font-awesome-icon icon="history" />
-                    <div>{{ timeAgo(thread.post.contentLastUpdatedAt) }}</div>
+                    <div>{{ timeAgo(thread.post.lastEdit.createdAt) }}</div>
+                </div>
+                <div
+                    v-if="thread.post.hidden"
+                    class="flex gap-2 items-center text-yellow-300 dark:text-yellow-600"
+                >
+                    <font-awesome-icon icon="exclamation-triangle" />
+                    <div>Ce thread est masqué</div>
                 </div>
             </span>
 
             <div class="mt-2">
                 <router-link
-                    :to="`/posts/${thread.contentMasterId}`"
+                    :to="`/threads/${thread.contentMasterId}`"
                     class="text-xl font-semibold hover:underline line-clamp-1 text-0"
                 >
                     {{ thread.title }}
@@ -51,40 +58,26 @@
         <p class="text-lg text-0">Erreur: Ce post est vide.</p>
 
         <!-- TODO: Bug report pages -->
-        <router-link :to="`/report-bug/posts`" class="text-lg font-semibold line-clamp-1 link-blue">
+        <router-link :to="`/report-bug/threads`" class="text-lg font-semibold line-clamp-1 link-blue">
             Signalez ce bug !
         </router-link>
     </div>
 </template>
 
-<script>
+<script setup>
     import TagsList from '@/components/List/TagList.vue'
-    import UserPreview from '@/components/User/UserPreview.vue'
-    import postTypesEnum from '@/shared/types/post-types.enum'
-    import { abbrNumbers } from '@/utils/abbrNumbers'
-    import { timeAgo } from '@/utils/timeAgo'
-    import { extractTextFromTipTapJSON } from '@/utils/tiptap'
-    import AppTag from '../AppTag.vue'
+    import UserPreview from '@/components/App/Preview/UserPreview.vue'
+    import AppTag from '@/components/App/AppTag.vue'
 
-    export default {
-        components: {
-            UserPreview,
-            TagsList,
-            AppTag,
+    import threadTypes from '@/shared/types/thread-types.enum'
+
+    import { extractTextFromTipTapJSON } from '@/utils/tiptap'
+    import { timeAgo } from '@/utils/timeAgo'
+
+    defineProps({
+        thread: {
+            type: Object,
+            required: true,
         },
-        props: {
-            thread: {
-                type: Object,
-                default: () => {},
-            },
-        },
-        data() {
-            return { postTypesEnum }
-        },
-        methods: {
-            abbrNumbers,
-            timeAgo,
-            extractTextFromTipTapJSON,
-        },
-    }
+    })
 </script>
