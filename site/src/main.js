@@ -1,26 +1,39 @@
 import App from '@/App.vue'
+
+import { createApp } from 'vue'
+
+import InstantSearch from 'vue-instantsearch/vue3/es'
+import VueCookies from 'vue3-cookies'
+import { createPinia } from 'pinia'
+
+import axios from '@/shared/config/axios.config'
+
+import { emitter } from '@/shared/modules/emitter'
+import { i18n } from '@/shared/modules/i18n'
+
 import FontAwesomeIcon from '@/fontawesome-icons'
 import router from '@/router/index'
-import store from '@/store'
-import mitt from 'mitt'
-import { createApp } from 'vue'
-import { createI18n } from 'vue-i18n'
-import InstantSearch from 'vue-instantsearch/vue3/es'
-import './assets/css/tailwind.css'
-import axios from './shared/config/axios.config'
-import VueCookies from 'vue3-cookies'
+import store from '@/old-store'
 
-const emitter = mitt()
+import '@/assets/css/tailwind.css'
 
 const app = createApp(App)
-    .component('font-awesome-icon', FontAwesomeIcon)
-    .use(store)
-    .use(router)
-    .use(createI18n({ locale: 'fr' }))
-    .use(InstantSearch)
-    .use(VueCookies)
 
-app.config.globalProperties.$emitter = emitter
 app.config.globalProperties.$axios = axios
+
+app.config.errorHandler = (error, vm, info) => {
+    console.log('Vue Error', error, vm, info)
+    emitter.emit('show-toast', {
+        message: `[BUG À SIGNALER] ${error}`,
+        type: 'bug',
+        duration: -1,
+    })
+    console.error(error, info)
+}
+
+app.component('FontAwesomeIcon', FontAwesomeIcon)
+
+// TODO: remove injection of modules in favor of composition API
+app.use(store).use(createPinia()).use(router).use(i18n).use(InstantSearch).use(VueCookies)
 
 app.mount('#app')
