@@ -3,114 +3,130 @@
         <div
             class="flex flex-col shrink-0 gap-2 p-4 w-[12rem] text-lg rounded-none md:rounded-lg md:rounded-r-none bg-card-meta"
         >
-            <UserPreview :user="content.author" mode="horizontal" />
+            <div class="flex items-center self-center">
+                <UpvoteIcon
+                    :full="true"
+                    :width="40"
+                    :height="40"
+                    class="p-2 hover:text-blue-500 cursor-pointer"
+                    :class="[content.interactions.voted === 1 ? 'text-green-600' : 'text-5']"
+                    @click="
+                        content.interactions.voted === 1
+                            ? threads.voteContent(content.contentId, 0)
+                            : threads.voteContent(content.contentId, 1)
+                    "
+                />
+
+                <div class="text-lg text-center">
+                    {{ content.upvotes - content.downvotes }}
+                </div>
+
+                <DownvoteIcon
+                    :full="true"
+                    :width="40"
+                    :height="40"
+                    class="p-2 hover:text-blue-500 cursor-pointer"
+                    :class="[content.interactions.voted === -1 ? 'text-red-600' : 'text-5']"
+                    @click="
+                        content.interactions.voted === -1
+                            ? threads.voteContent(content.contentId, 0)
+                            : threads.voteContent(content.contentId, -1)
+                    "
+                />
+            </div>
+            <UserPreview :user="content._author" mode="horizontal" />
         </div>
 
         <div
+            :id="`content-${content.contentId}`"
             class="flex flex-col gap-3 p-4 w-[calc(100%-12rem)] rounded-none md:rounded-lg md:rounded-l-none bg-card-within-1"
         >
-            <div class="flex justify-between items-center">
-                <div class="flex gap-2 text-sm text-4">
-                    <p>Posté {{ createdAt }}</p>
-                    <p v-if="content.contentLastUpdatedAt != content.createdAt">
-                        Modifié {{ lastUpdatedAt }}
-                    </p>
+            <div class="flex justify-between items-center" :class="unfocusedContentClass">
+                <div class="flex gap-1 items-center text-sm text-4">
+                    Posté
+                    <AppDateAndModified
+                        :created-at="content.createdAt"
+                        :modified-at="content.lastEdit.createdAt"
+                    />
+                    <div v-if="content.hidden" class="flex gap-1 items-center ml-4 text-yellow-500">
+                        <font-awesome-icon icon="exclamation-triangle" />
+                        <div>
+                            {{ capitalize(contentTypeDemonstrative[content.kind][i18n.global.locale]) }}
+                            est masqué{{
+                                i18n.global.locale == 'fr' &&
+                                contentTypeDemonstrative[content.kind].frFeminine
+                                    ? 'e'
+                                    : ''
+                            }}
+                        </div>
+                    </div>
                 </div>
-                <div class="flex gap-2 items-center content-unfocused text-3">
+                <div class="flex gap-2 items-center text-3">
                     <div
-                        v-for="(action, _, i) in actionsMap"
+                        v-for="(action, i) in actionsShown"
                         :key="i"
                         class="group flex gap-1 items-center px-1 rounded-lg transition cursor-pointer"
-                        @click="action.action()"
+                        @click="action.action"
                     >
                         <font-awesome-icon :icon="action.icon" :class="action.class" />
                         <p :class="action.class" class="text-sm">
-                            {{ action.name() }}
+                            {{ action.name }}
                         </p>
                     </div>
                 </div>
             </div>
-            <div :id="`content-${content.contentId}`" class="rounded-lg text-0">
+            <div class="rounded-lg text-0">
                 <slot name="content" />
+                <div class="flex" :class="unfocusedContentClass">
+                    <slot name="actions" />
+                </div>
             </div>
 
             <ThreadCommentList
+                :thread-id="content.contentMasterId"
                 :parent-id="content.contentId"
                 :comments="content.comments"
-                class="content-unfocused"
+                :action-class="unfocusedContentClass"
             />
         </div>
     </div>
 </template>
 
-<script>
-    import UserPreview from '../User/UserPreview.vue'
+<script setup>
+    import AppDateAndModified from '../App/AppDateAndModified.vue'
+    import UserPreview from '../App/Preview/UserPreview.vue'
     import ThreadCommentList from './ThreadCommentList.vue'
-    import { timeAgo } from '@/utils/timeAgo'
-    import { getURL } from '@/utils/routeUtils'
-    import urlJoin from 'url-join'
-    import { POST, REPLY } from '@/shared/types/content-kinds.enum'
-    export default {
-        components: { UserPreview, ThreadCommentList },
-        props: {
-            content: {
-                type: Object,
-                required: true,
-            },
+    import UpvoteIcon from '../App/Icon/UpvoteIcon.vue'
+    import DownvoteIcon from '../App/Icon/DownvoteIcon.vue'
+
+    import { useThreadsStore } from '@/store/threads.store'
+
+    import { getLinkContent, report } from '@/shared/actions/thread.actions'
+    import { computed } from 'vue'
+
+    import { contentTypeDemonstrative } from '@/shared/types/content-kinds.enum'
+    import { capitalize } from 'lodash'
+    import { i18n } from '@/shared/modules/i18n'
+
+    const threads = useThreadsStore()
+    const unfocusedContentClass = ['opacity-80', 'content-show-focused']
+
+    const props = defineProps({
+        content: {
+            type: Object,
+            required: true,
         },
-        computed: {
-            actionsMap() {
-                return {
-                    report: {
-                        name: () => (this.content.userReported ? 'Signalé' : 'Signaler'),
-                        icon: this.content.userReported ? 'flag' : ['far', 'flag'],
-                        class: this.content.userReported
-                            ? 'group-hover:text-red-600 text-red-500'
-                            : 'group-hover:text-red-500',
-                        action: () => {
-                            this.content.userReported
-                                ? this.$emitter.emit('show-toast', {
-                                      text: `Tu as déjà signalé ${this.contentTypeDemonstrative}.`,
-                                      type: 'failure',
-                                  })
-                                : this.$emitter.emit('report', this.content)
-                        },
-                    },
-                    getLink: {
-                        name: () => 'Lien',
-                        icon: 'link',
-                        class: 'group-hover:text-blue-600',
-                        action: () => {
-                            navigator.clipboard.writeText(
-                                getURL(urlJoin(this.$route.path, '#content-' + this.content.contentId)),
-                            )
-                            this.$emitter.emit('show-toast', {
-                                text: `Le lien de ${this.contentTypeDemonstrative} a bien été copié !`,
-                                type: 'info',
-                            })
-                        },
-                    },
-                }
-            },
-            contentTypeDemonstrative() {
-                return {
-                    [POST]: 'ce post',
-                    [REPLY]: 'cette réponse',
-                }[this.content.kind]
-            },
-            lastUpdatedAt() {
-                return timeAgo(this.content.contentLastUpdatedAt)
-            },
-            createdAt() {
-                return timeAgo(this.content.createdAt)
-            },
-        },
-    }
+    })
+
+    const actions = [report, getLinkContent]
+    const actionsShown = computed(() =>
+        actions.map((action) => action(props.content)).filter((action) => action.condition),
+    )
 </script>
 
 <style lang="scss">
-    .content-unfocused {
-        opacity: 0.8;
+    .content-show-focused {
+        transition: opacity 0.5s ease;
 
         .content-parent:hover & {
             opacity: 1;

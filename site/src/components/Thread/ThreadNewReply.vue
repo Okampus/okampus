@@ -5,80 +5,60 @@
             id="new-reply"
             class="flex shrink-0 gap-2 p-4 w-full text-lg rounded-none shadow-md md:rounded-lg bg-card-meta"
         >
-            <UserAvatar :img-src="user.avatar" :username="user.fullname" />
+            <UserAvatar :img-src="auth?.user?.avatar" :username="auth?.user?.fullname" />
+            {{}}
             <div class="flex w-full triangle-before">
                 <TipTapEditableRender
-                    v-model:content="currentBody"
+                    v-model:content="body"
                     :edit="true"
                     class="w-full"
                     :cancellable="false"
                     :emit-content="true"
-                    @send="sendReply()"
+                    @send="
+                        threads.addContent(threadId, { parentId, body }, REPLY).then((content) => {
+                            emitter.emit('show-toast', {
+                                message: 'Réponse envoyée avec succès !',
+                                type: 'success',
+                            })
+                            emitter.emit('scroll-to-anchor', `content-${content.contentId}`)
+                            body = defaultTipTapText
+                        })
+                    "
                 />
             </div>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
+    import { REPLY } from '@/shared/types/content-kinds.enum'
+
     import TipTapEditableRender from '@/components/TipTap/TipTapEditableRender.vue'
     import UserAvatar from '../User/UserAvatar.vue'
 
-    import { defaultTipTapText } from '@/utils/tiptap'
+    import { useAuthStore } from '@/store/auth.store'
+    import { useThreadsStore } from '@/store/threads.store'
 
-    export default {
-        components: {
-            TipTapEditableRender,
-            UserAvatar,
+    import { emitter } from '@/shared/modules/emitter'
+
+    import { defaultTipTapText } from '@/utils/tiptap'
+    import { ref } from 'vue'
+
+    defineProps({
+        threadId: {
+            type: Number,
+            required: true,
         },
-        props: {
-            postParentId: {
-                type: Number,
-                required: true,
-            },
+        parentId: {
+            type: Number,
+            required: true,
         },
-        emits: ['report', 'send'],
-        data() {
-            return {
-                defaultTipTapText,
-                author: this.$store.state.auth.user,
-                currentBody: this.body,
-                onComment: false,
-                showEditor: this.newReply,
-            }
-        },
-        computed: {
-            user() {
-                return this.$store.state.auth.user
-            },
-        },
-        methods: {
-            sendVote(vote) {
-                this.$store.dispatch('threads/voteContent', {
-                    contentId: this.reply.contentId,
-                    value: vote,
-                })
-            },
-            sendReply() {
-                this.$store
-                    .dispatch('threads/addReply', {
-                        parentId: this.postParentId,
-                        body: this.currentBody,
-                    })
-                    .then(() => {
-                        this.currentBody = defaultTipTapText
-                    })
-                    .catch((err) => {
-                        this.$emitter.emit('show-toast', {
-                            text: `La réponse n'a pas pu être envoyée (${
-                                err?.response?.data?.message ?? err.toString()
-                            })`,
-                            type: 'error',
-                        })
-                    })
-            },
-        },
-    }
+    })
+
+    const auth = useAuthStore()
+    const threads = useThreadsStore()
+
+    const body = ref(defaultTipTapText)
 </script>
 
 <style lang="scss">
@@ -92,7 +72,7 @@
         border-style: solid;
         border-width: 0.6rem 0.9rem 0.6rem 0;
 
-        :root.dark & {
+        .dark & {
             border-color: transparent #000 transparent transparent;
         }
     }
