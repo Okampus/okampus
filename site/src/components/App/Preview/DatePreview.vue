@@ -1,8 +1,8 @@
 <template>
     <!-- TODO: add on hover extra date info -->
-    <div class="flex items-center">
-        {{ timeAgo(dateString, 'long') }}
-    </div>
+    <span class="flex items-center">
+        {{ timeAgo(date, 'long') }}
+    </span>
 </template>
 
 <script>
@@ -10,7 +10,7 @@
 
     export default {
         props: {
-            dateString: {
+            date: {
                 type: String,
                 default: '',
             },

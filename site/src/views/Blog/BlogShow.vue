@@ -27,7 +27,7 @@
                             </div>
                             <div class="flex gap-1 items-center text-base text-1">
                                 <font-awesome-icon icon="hourglass-end" class="mr-1" />
-                                <DatePreview :date-string="article.date" />
+                                <DatePreview :date="article.date" />
                             </div>
                             <div class="flex gap-1 items-center text-2">
                                 <font-awesome-icon icon="stopwatch" class="mr-1" />
@@ -246,7 +246,7 @@
 
     import TipTapRenderer from '@/components/TipTap/TipTapRenderer.vue'
     import AppTag from '@/components/App/AppTag.vue'
-    import DatePreview from '@/components/Dashboard/DatePreview.vue'
+    import DatePreview from '@/components/App/Preview/DatePreview.vue'
 
     import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
     import { extractTextFromTipTapJSON } from '@/utils/tiptap'
