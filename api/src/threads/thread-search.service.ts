@@ -82,7 +82,7 @@ export class ThreadSearchService extends SearchService<Thread, IndexedThread> {
     return {
       title: thread.title,
       body: extractTextFromStringifiedTiptap(thread.post!.body),
-      author: thread.post!.author.fullname,
+      author: thread.post!.author.getFullName(),
       tags: thread.tags.toArray().map(tag => tag.name),
       id: thread.contentMasterId.toString(),
     };

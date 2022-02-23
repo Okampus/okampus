@@ -21,7 +21,8 @@ const validatedContentTransformer = ({ value }: { value: Content }): DeepPartial
     contentId: value?.contentId,
     author: {
       userId: value?.author?.userId,
-      fullname: value?.author?.fullname,
+      firstname: value?.author?.firstname,
+      lastname: value?.author?.lastname,
     },
   }
   : null);
@@ -46,7 +47,9 @@ export class Thread extends ContentMaster {
   adminValidatedWith?: Content | null = null;
 
   @ManyToOne()
-  @Transform(({ value }: { value: User }) => (value ? { userId: value.userId, fullname: value.fullname } : null))
+  @Transform(({ value }: { value: User }) => (value
+    ? { userId: value.userId, firstname: value.firstname, lastname: value.lastname }
+    : null))
   adminValidatedBy?: User | null = null;
 
   @ManyToMany()

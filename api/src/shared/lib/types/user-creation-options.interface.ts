@@ -5,7 +5,6 @@ export interface UserCreationOptions {
   email: string;
   firstname: string;
   lastname: string;
-  fullname: string;
   schoolRole: SchoolRole;
   password?: string;
 }

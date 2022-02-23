@@ -12,9 +12,6 @@ export class MyEfreiDto {
   @IsString()
   lastname: string;
 
-  @IsString()
-  fullname: string;
-
   @IsEmail()
   email: string;
 
@@ -25,7 +22,6 @@ export class MyEfreiDto {
     this.userId = data.sub;
     this.firstname = data.given_name!;
     this.lastname = data.family_name!;
-    this.fullname = data.name!;
     this.email = data.email!;
     this.schoolRole = data.role as SchoolRole;
   }

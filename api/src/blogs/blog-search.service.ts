@@ -85,7 +85,7 @@ export class BlogSearchService extends SearchService<Blog, IndexedBlog> {
       title: blog.title,
       body: extractTextFromStringifiedTiptap(blog.post!.body),
       category: blog.category,
-      author: blog.post!.author.fullname,
+      author: blog.post!.author.getFullName(),
       tags: blog.tags.toArray().map(tag => tag.name),
       id: blog.contentMasterId.toString(),
     };

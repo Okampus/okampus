@@ -39,7 +39,6 @@ export class UsersModule implements OnModuleInit {
         firstname: config.get('adminAccount.firstName'),
         lastname: config.get('adminAccount.lastName'),
         email: config.get('adminAccount.username'),
-        fullname: `${config.get('adminAccount.firstName')} ${config.get('adminAccount.lastName')}`,
         schoolRole: SchoolRole.Admin,
       });
       await user.setPassword(config.get('adminAccount.password'));

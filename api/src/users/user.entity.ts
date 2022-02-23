@@ -32,12 +32,6 @@ export class User extends BaseEntity {
   lastname!: string;
 
   @Property({ type: 'text' })
-  fullname!: string;
-
-  @Property({ type: 'text' })
-  fullnameShort!: string;
-
-  @Property({ type: 'text' })
   @Exclude()
   password?: string;
 
@@ -89,8 +83,6 @@ export class User extends BaseEntity {
     this.email = options.email;
     this.firstname = options.firstname;
     this.lastname = options.lastname;
-    this.fullname = options.fullname;
-    this.fullnameShort = `${this.firstname.split(' ').shift()} ${this.lastname}`;
     this.schoolRole = options.schoolRole;
   }
 
@@ -105,8 +97,11 @@ export class User extends BaseEntity {
   public hasChanged(dto: UserCreationOptions): boolean {
     return this.firstname !== dto.firstname
       || this.lastname !== dto.lastname
-      || this.fullname !== dto.fullname
       || this.email !== dto.email
       || this.schoolRole !== dto.schoolRole;
+  }
+
+  public getFullName(): string {
+    return `${this.firstname} ${this.lastname}`;
   }
 }
