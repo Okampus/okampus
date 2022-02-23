@@ -1,10 +1,44 @@
 <template>
-    <div>
-        <div class="absolute top-0 left-0 py-12 w-full h-52 hero" />
-        <div
-            class="flex relative flex-col gap-2 mt-8 mb-6 w-full min-h-[9.5rem] xs:mx-auto xs:w-22/24 md:gap-4 md:mt-12 md:mb-10 md:w-18/24 lg:w-14/24 2xl:w-1/2"
-        >
-            <slot />
-        </div>
-    </div>
+    <Suspense>
+        <template #default>
+            <ListPageAsync
+                :base-route="baseRoute"
+                :store-callback="storeCallback"
+                :store-getter="storeGetter"
+            >
+                <template #default="{ items }">
+                    <slot :items="items" />
+                </template>
+            </ListPageAsync>
+        </template>
+
+        <template #fallback>
+            <AppLoader :size="3" />
+        </template>
+    </Suspense>
 </template>
+
+<script setup>
+    import ListPageAsync from '@/views/App/ListPageAsync.vue'
+    import AppLoader from '@/components/App/AppLoader.vue'
+    import { NOOP } from '@vue/shared'
+
+    defineProps({
+        sortTypes: {
+            type: Array,
+            default: () => [],
+        },
+        baseRoute: {
+            type: String,
+            required: true,
+        },
+        storeCallback: {
+            type: Function,
+            required: true,
+        },
+        storeGetter: {
+            type: Function,
+            default: NOOP,
+        },
+    })
+</script>
