@@ -2,8 +2,8 @@
 
 .highlight-active {
     @include get-highlight-animation(
-        $background-color-start: coral,
-        $duration: 1s,
+        $background-color-start: rgba(255, 127, 80, 0.25),
+        $duration: 1.5s,
         $delay: 0s,
         $timing-function: ease-in-out
     );

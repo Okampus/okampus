@@ -44,7 +44,7 @@ $webkit-scrollbar-thumb-color-active: ("light": #3d3d3d, "dark": #dbf4ff);
         }
     }
 
-    :root.dark & {
+    .dark & {
         --scrollbar-thumb-color: #{map.get($scrollbar-thumb-color, "dark")};
         --scrollbar-thumb-color-hover: #{map.get($webkit-scrollbar-thumb-color-hover, "dark")};
         --scrollbar-thumb-color-active: #{map.get($webkit-scrollbar-thumb-color-active, "dark")};

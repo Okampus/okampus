@@ -1,76 +1,79 @@
 <template>
-    <div
-        class="input-with-icon"
-        :class="`h-${height}`"
-        tabindex="0"
-        :="focused ? { 'focused': 'true' } : {}"
-        @focus="input.focus()"
-    >
-        <i :class="`w-${height}`">
-            <slot />
-        </i>
-
+    <div class="relative flex items-center">
         <input
-            ref="input"
+            class="peer h-[3rem] pl-[3rem] input w-full text-lg text-3 focus:text-0-light dark:focus:text-0-dark"
             :name="inputName"
-            :value="modelValue"
+            :required="inputRequired"
             :type="inputType"
             :placeholder="inputPlaceholder"
-            :="attributes"
-            @blur="focused = false"
-            @focus="focused = true"
-            @input="$emit('update:modelValue', $event.target.value)"
+            :value="modelValue"
+            @input="emit('update:modelValue', $event.target.value)"
         />
+        <i class="text-2 w-[3rem] h-[3rem] absolute left-0 flex justify-center items-center">
+            <slot />
+        </i>
     </div>
 </template>
 
-<script>
-    import { ref } from 'vue'
-    export default {
-        props: {
-            height: {
-                type: String,
-                default: '10',
-            },
-            inputName: {
-                type: String,
-                default: '',
-            },
-            inputPlaceholder: {
-                type: String,
-                default: 'Entrez du texte...',
-            },
-            inputType: {
-                type: String,
-                default: 'text',
-            },
-            modelValue: {
-                type: String,
-                default: '',
-            },
-            required: {
-                type: Boolean,
-                default: false,
-            },
+<script setup>
+    import { NOOP } from '@vue/shared'
+
+    defineProps({
+        inputName: {
+            type: String,
+            default: '',
         },
-        emits: ['update:modelValue'],
-        setup() {
-            return { input: ref(null) }
+        inputType: {
+            type: String,
+            default: 'text',
         },
-        data() {
-            return { focused: false }
+        inputPlaceholder: {
+            type: String,
+            default: '',
         },
-        computed: {
-            attributes() {
-                let attributes = {}
-                if (this.inputName) {
-                    attributes.name = this.inputName
-                }
-                if (this.required) {
-                    attributes.required = 'true'
-                }
-                return attributes
-            },
+        inputRequired: {
+            type: Boolean,
+            default: false,
         },
-    }
+        modelValue: {
+            type: String,
+            default: '',
+        },
+        attributes: {
+            type: Object,
+            default: NOOP,
+        },
+    })
+
+    const emit = defineEmits(['update:modelValue'])
 </script>
+
+<style lang="scss">
+    input:-webkit-autofill {
+        color: #333 !important;
+        box-shadow: 0 0 0 30px #ffa inset !important;
+
+        .dark {
+            box-shadow: 0 0 0 30px #ff9 inset !important;
+        }
+    }
+
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        color: black !important;
+        box-shadow: 0 0 0 30px #ff9 inset !important;
+
+        .dark {
+            box-shadow: 0 0 0 30px #ff5 inset !important;
+        }
+    }
+
+    input:-webkit-autofill + i {
+        color: #333 !important;
+    }
+
+    input:-webkit-autofill:focus + i,
+    input:-webkit-autofill:active + i {
+        color: black !important;
+    }
+</style>

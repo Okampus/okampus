@@ -3,7 +3,7 @@
     outline: 2px solid transparent;
     outline-offset: 2px;
 
-    :root.dark & {
+    .dark & {
         color: #2095af;
     }
 }

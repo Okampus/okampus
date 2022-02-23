@@ -135,7 +135,7 @@
         margin-left: 0;
     }
 
-    :root.dark .root-item {
+    .dark .root-item {
         --vjc-key-color: #80d8ff;
         --vjc-value-key-color: #fdf6e3;
         --vjc-hover-color: rgb(255 255 255 / 20%);

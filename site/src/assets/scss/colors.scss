@@ -1,7 +1,7 @@
 .bg-navbar {
     background-color: #fff;
 
-    :root.dark & {
+    .dark & {
         background-color: #1d2226;
     }
 }
@@ -9,7 +9,7 @@
 .bg-app {
     background-color: #efefef;
 
-    :root.dark & {
+    .dark & {
         background-color: #111214;
     }
 }
@@ -17,7 +17,7 @@
 .bg-content {
     background-color: #fff;
 
-    :root.dark & {
+    .dark & {
         background: linear-gradient(to right, #17191f, #1a2221);
     }
 }
@@ -25,7 +25,7 @@
 .bg-card-meta {
     background-color: #f7f7f7;
 
-    :root.dark & {
+    .dark & {
         background-color: #222329;
     }
 }
@@ -33,7 +33,7 @@
 .bg-card-within-1 {
     background-color: #fff;
 
-    :root.dark & {
+    .dark & {
         background-color: #1d1f25;
     }
 }

@@ -73,7 +73,7 @@
     .avatar {
         box-shadow: inset 0 0 7px rgb(0 0 0 / 15%);
 
-        :root.dark & {
+        .dark & {
             box-shadow: inset 0 0 5px rgb(255 255 255 / 30%);
         }
     }

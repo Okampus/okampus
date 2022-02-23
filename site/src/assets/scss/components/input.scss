@@ -39,41 +39,9 @@
 
     box-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 15%), 0 2px 0 hsl(0deg 0% 100% / 40%);
 
-    :root.dark & {
+    .dark & {
         box-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 40%), 0 2px 0 hsl(0deg 0% 100% / 15%);
     }
-}
-
-.input-with-icon {
-    @extend %input;
-    @apply px-0;
-
-    & input {
-        // @extend %input;
-        @include get-color('bg', 2);
-        @apply focus:outline-none rounded-l-none w-full mr-2;
-
-        line-height: 1.43;
-
-        // box-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 20%), 0 2px 2px hsl(0deg 0% 0% / 10%);
-
-        // :root.dark & {
-        //     box-shadow: inset -1px 2px 0 hsl(0deg 0% 100% / 8%), inset 0 -2px 5px hsl(0deg 0% 0% / 40%);
-        // }
-    }
-
-    & > i {
-        // @extend %input;
-        @include get-color('text', 2);
-        @apply flex-shrink-0 flex items-center justify-center py-1 px-2 rounded-r-none mx-0.5;
-
-        &[focused] {
-            @include get-color('text', 0);
-        }
-    }
-
-    @extend %input-focus;
-    @apply rounded-md flex;
 }
 
 input[type='password']:not(:placeholder-shown) {

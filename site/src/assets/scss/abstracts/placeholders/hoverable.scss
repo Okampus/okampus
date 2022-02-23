@@ -1,15 +1,11 @@
 %text-hover:hover {
     color: #4b7bec;
 
-    :root.dark & {
-        color: #033aba;
+    .dark & {
+        color: #1042c2;
     }
 }
 
 %text-opaque-hover:hover {
     opacity: 1;
-}
-
-%icon-hover:hover {
-    color: #548ce6;
 }
