@@ -34,7 +34,7 @@ import { WikisModule } from './wiki/wikis.module';
     ConfigModule.forRoot(),
     EventEmitterModule.forRoot(),
     MikroOrmModule.forRoot(),
-    S3Module.forRoot({ config: storageConfig }),
+    S3Module.forRoot(storageConfig),
     CaslModule,
     AuthModule,
     BadgesModule,

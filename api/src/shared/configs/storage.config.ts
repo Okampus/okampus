@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import type { ClientConfiguration } from 'aws-sdk/clients/s3';
+import type { S3ModuleOptions } from 'nestjs-s3';
 import { config } from './config';
 
 const storageLogger = new Logger('ObjectStorage');
@@ -7,19 +7,21 @@ const storageLogger = new Logger('ObjectStorage');
 const awsLogRegex = /\[AWS (?<service>\w+) (?<statusCode>\d+) (?<time>[\d.]+)s (?<retries>\d+) retries\] (?<method>\w+)\(.*\)/isu;
 
 export default {
-  accessKeyId: config.get('storage.accessKeyId'),
-  secretAccessKey: config.get('storage.secretAccessKey'),
-  endpoint: config.get('storage.endpoint'),
-  region: config.get('storage.region'),
-  signatureVersion: 'v4',
-  logger: {
-    log: (message: string) => {
-      if (config.get('nodeEnv') === 'development') {
-        storageLogger.log(message);
-      } else {
-        const awsLog = awsLogRegex.exec(message)?.groups;
-        storageLogger.log(`${awsLog?.method}: ${awsLog?.time}s - ${awsLog?.statusCode} [${awsLog?.retries} retries]`);
-      }
+  config: {
+    accessKeyId: config.get('storage.accessKeyId'),
+    secretAccessKey: config.get('storage.secretAccessKey'),
+    endpoint: config.get('storage.endpoint'),
+    region: config.get('storage.region'),
+    signatureVersion: 'v4',
+    logger: {
+      log: (message: string) => {
+        if (config.get('nodeEnv') === 'development') {
+          storageLogger.log(message);
+        } else {
+          const awsLog = awsLogRegex.exec(message)?.groups;
+          storageLogger.log(`${awsLog?.method}: ${awsLog?.time}s - ${awsLog?.statusCode} [${awsLog?.retries} retries]`);
+        }
+      },
     },
   },
-} as ClientConfiguration;
+} as S3ModuleOptions;
