@@ -100,7 +100,7 @@ export class CaslAbilityFactory {
         allow(Action.Update, Thread, ['opValidated', 'tags', 'title', 'type'], isAuthor)
           .because('Not the author');
         // @ts-expect-error
-        allow(Action.Update, Content, ['body'], isAuthor)
+        allow(Action.Update, Content, ['body', 'hidden'], isAuthor)
           .because('Not the author');
 
         // @ts-expect-error
