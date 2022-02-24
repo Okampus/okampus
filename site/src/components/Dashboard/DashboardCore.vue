@@ -38,7 +38,7 @@
                             hidden: !(selectedCols.includes(colName) || selectedCols.includes(col.name)),
                         }"
                     >
-                        <component :is="componentLoader(col.comp)" :="col.attrs(item)">
+                        <component :is="componentLoader(col.comp)" v-bind="col.attrs(item)">
                             {{ col.slot(item) }}
                         </component>
                     </td>

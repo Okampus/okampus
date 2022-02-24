@@ -3,7 +3,7 @@
         <template #content>
             <!-- Violating props immutability? -->
             <TipTapEditableRender
-                v-model:edit="post.editing"
+                v-model:edit="editing"
                 :content="body"
                 @send="
                     threads.updateContent(post.contentMasterId, { contentId: post.contentId, body: $event })
@@ -51,4 +51,8 @@
             .map((action) => action(props.post))
             .filter((action) => action.condition),
     )
+    const editing = computed({
+        get: () => props.post.editing,
+        set: (v) => threads.editingContent(props.post.contentId, v),
+    })
 </script>

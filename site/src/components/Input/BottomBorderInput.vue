@@ -1,11 +1,15 @@
 <template>
-    <div class="relative grow bg-transparent" :="focused ? { 'focused': 'true' } : {}" @click="input.focus()">
+    <div
+        class="relative grow bg-transparent"
+        v-bind="focused ? { 'focused': 'true' } : {}"
+        @click="input.focus()"
+    >
         <input
             ref="input"
             type="text"
             class="bottom-border-input"
             :placeholder="inputPlaceholder"
-            :="attributes"
+            v-bind="attributes"
             :value="modelValue"
             @blur="focused = false"
             @focus="focused = true"

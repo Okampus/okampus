@@ -59,7 +59,9 @@
                                     </div>
                                     <div v-else class="flex flex-col gap-2 justify-center items-center h-24">
                                         <AppEmoji
-                                            :="sadFaces[Math.floor(Math.random() * (sadFaces.length - 1))]"
+                                            v-bind="
+                                                sadFaces[Math.floor(Math.random() * (sadFaces.length - 1))]
+                                            "
                                         />
                                         <div class="">Pas de résultat ...</div>
                                     </div>

@@ -4,7 +4,7 @@
             <!-- Violating props immutability? -->
             <TipTapEditableRender
                 v-model:content="body"
-                v-model:edit="reply.editing"
+                v-model:edit="editing"
                 @send="
                     threads.updateContent(reply.contentMasterId, { contentId: reply.contentId, body: $event })
                 "
@@ -51,4 +51,8 @@
     )
 
     const threads = useThreadsStore()
+    const editing = computed({
+        get: () => props.reply.editing,
+        set: (v) => threads.editingContent(props.reply.contentId, v),
+    })
 </script>

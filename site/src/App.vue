@@ -4,7 +4,7 @@
             v-model:active="toast.show"
             :message="toast.message"
             :type="toast.type"
-            :="!isNil(toast.duration) ? { duration: toast.duration } : {}"
+            v-bind="!isNil(toast.duration) ? { duration: toast.duration } : {}"
         />
         <FormLogin v-model:show-login="showLogin" />
 

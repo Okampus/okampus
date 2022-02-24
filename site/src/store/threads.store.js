@@ -20,33 +20,34 @@ const differentThread = (id) => (thread) => $id(thread) !== id
 const sameContent = (id) => (content) => content.contentId === id
 const differentContent = (id) => (content) => content.contentId !== id
 
-// TODO: optimize content operations with currentThread?
+// TODO: optimize content operations with currentThread? & refactor
 export const useThreadsStore = defineStore('threads', {
     state: () => ({
         threads: [],
     }),
     actions: {
-        removeThread(threadId) {
-            this.threads = this.threads.filter(differentThread(threadId))
-            return true
-        },
-        removeContent({ contentId, ...content }) {
-            const auth = useAuthStore()
-            const thread = this.threads.find((thread) => thread?.contents?.some(sameContent(contentId)))
-            if (!auth.user.roles.includes('admin')) {
-                if (!isNil(thread) && !(thread.contents.find(sameContent(contentId)).kind === POST)) {
-                    thread.contents = thread.contents.filter(differentContent(contentId))
-                }
-            } else {
-                this.updateContent(thread.contentMasterId, { contentId, ...content })
-            }
-            return true
-        },
-        replaceThreads(threads, pageInfo) {
-            if (threads.length) {
-                this.threads = threads
-            }
-            return { items: threads, pageInfo }
+        initThread({ threadId, thread = null }) {
+            thread = thread ?? this.threads.find(sameThread(threadId))
+
+            thread.getUser = (userId) =>
+                thread.participants?.find((participant) => participant.userId === userId)
+
+            thread.lastUpdatedAt = computed(() => thread.post.lastEdit.createdAt)
+            thread.lastUpdatedBy = computed(() => thread.getUser(thread.post.lastEdit.editedBy))
+
+            thread._type = threadTypes[thread.type]
+
+            thread.contents = thread.contents?.map((content) => this.initContent(thread, content)) ?? []
+
+            thread._post = computed(() =>
+                thread.contents?.length
+                    ? thread.contents.find((content) => content.kind === POST)
+                    : thread.post,
+            )
+            thread.replies = computed(() => thread.contents?.filter((content) => content.kind === REPLY))
+            this.getThreadInteractions(thread.contentMasterId)
+
+            return thread
         },
         initContent(thread, content) {
             content.contentMasterId = thread.contentMasterId
@@ -68,27 +69,66 @@ export const useThreadsStore = defineStore('threads', {
 
             return content
         },
-        initThread({ threadId, thread = null }) {
-            thread = thread ?? this.threads.find(sameThread(threadId))
-
-            thread.getUser = (userId) => thread.participants?.find((participant) => participant.userId === userId)
-
-            thread.lastUpdatedAt = computed(() => thread.post.lastEdit.createdAt)
-            thread.lastUpdatedBy = computed(() => thread.getUser(thread.post.lastEdit.editedBy))
-
-            thread._type = threadTypes[thread.type]
-
-            thread.contents = thread.contents?.map((content) => this.initContent(thread, content)) ?? []
-
-            thread._post = computed(() =>
-                thread.contents?.length
-                    ? thread.contents.find((content) => content.kind === POST)
-                    : thread.post,
-            )
-            thread.replies = computed(() => thread.contents?.filter((content) => content.kind === REPLY))
-            this.getThreadInteractions(thread.contentMasterId)
-
+        getThreadContainingContent(contentId) {
+            return this.threads.find((thread) => thread.contents?.some(sameContent(contentId)))
+        },
+        getThreadById(threadId) {
+            return this.threads.find(sameThread(parseInt(threadId)))
+        },
+        replaceThread(thread) {
+            const index = this.threads.findIndex(sameThread($id(thread)))
+            if (index !== -1) {
+                this.threads[index] = thread
+            } else {
+                this.threads.push(thread)
+            }
+            this.initThread({ threadId: $id(thread) })
             return thread
+        },
+        // upsertThread(thread) {
+        //     upsert(this.threads, thread, sameThread($id(thread)), {
+        //         beforeUpdate: (thread) => {
+        //             const { contents, ...$thread } = thread
+        //             contents.forEach((content) => this.upsertContent($id($thread), content))
+        //             return $thread
+        //         },
+        //         onInsert: (thread) => this.initThread({ threadId: $id(thread) }),
+        //     })
+        //     return thread
+        // },
+        upsertContent(threadId, content) {
+            const thread = this.threads.find(sameThread(threadId))
+            if (thread) {
+                upsert(thread.contents, content, sameContent(content.contentId), {
+                    onAfter: () => this.initContent(thread, content),
+                })
+            } else {
+                this.getThread(threadId)
+            }
+
+            return content
+        },
+        removeThread(threadId) {
+            this.threads = this.threads.filter(differentThread(threadId))
+            return true
+        },
+        removeContent({ contentId, ...content }) {
+            const auth = useAuthStore()
+            const thread = this.threads.find((thread) => thread?.contents?.some(sameContent(contentId)))
+            if (!auth.user.roles.includes('admin')) {
+                if (!isNil(thread) && !(thread.contents.find(sameContent(contentId)).kind === POST)) {
+                    thread.contents = thread.contents.filter(differentContent(contentId))
+                }
+            } else {
+                this.updateContent(thread.contentMasterId, { contentId, ...content })
+            }
+            return true
+        },
+        replaceThreads(threads, pageInfo) {
+            if (threads.length) {
+                this.threads = threads
+            }
+            return { items: threads, pageInfo }
         },
         addInteraction(thread, type, interaction, newInteraction = false) {
             console.log('addInteraction', type, interaction, newInteraction)
@@ -125,40 +165,16 @@ export const useThreadsStore = defineStore('threads', {
             }
             return thread
         },
-        replaceThread(thread) {
-            const index = this.threads.findIndex(sameThread($id(thread)))
-            if (index !== -1) {
-                this.threads[index] = thread
-            } else {
-                this.threads.push(thread)
-            }
-            this.initThread({ threadId: $id(thread) })
-            return thread
-        },
-        // upsertThread(thread) {
-        //     upsert(this.threads, thread, sameThread($id(thread)), {
-        //         beforeUpdate: (thread) => {
-        //             const { contents, ...$thread } = thread
-        //             contents.forEach((content) => this.upsertContent($id($thread), content))
-        //             return $thread
-        //         },
-        //         onInsert: (thread) => this.initThread({ threadId: $id(thread) }),
-        //     })
-        //     return thread
-        // },
-        upsertContent(threadId, content) {
-            const thread = this.threads.find(sameThread(threadId))
+        editingContent(contentId, editing = true) {
+            const thread = this.getThreadContainingContent(contentId)
             if (thread) {
-                upsert(thread.contents, content, sameContent(content.contentId), {
-                    onAfter: () => this.initContent(thread, content),
-                })
+                const content = thread.contents.find(sameContent(contentId))
+                content.editing = editing
+                return content
             } else {
-                this.getThread(threadId)
+                return null
             }
-
-            return content
         },
-
         async getThreadInteractions(id) {
             return await $axios
                 .get(`threads/${id}/interactions`)
@@ -218,11 +234,6 @@ export const useThreadsStore = defineStore('threads', {
             return await $axios
                 .delete(`favorites/${contentId}`)
                 .then(onData(() => this.removeInteraction('favorites', { contentId })))
-        },
-    },
-    getters: {
-        getThreadById(state) {
-            return (threadId) => state.threads.find(sameThread(parseInt(threadId)))
         },
     },
 })

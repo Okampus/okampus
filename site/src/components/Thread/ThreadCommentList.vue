@@ -1,6 +1,6 @@
 <template>
     <div>
-        <template v-for="(comment, i) in commentItems" :key="i">
+        <template v-for="(comment, i) in shownComments" :key="i">
             <div
                 :id="`content-${comment.contentId}`"
                 class="flex items-center py-1 px-2.5 mb-1.5 w-full text-sm rounded text-1 bg-1"
@@ -38,11 +38,11 @@
                     <span class="w-full">
                         <!-- Violating props immutability? -->
                         <TipTapEditableRender
-                            v-model:edit="comments[i].editing"
+                            v-model:edit="editing[i].value"
                             :content="comment.body"
                             class="p-0 mr-1.5"
                             :class="[!comment.editing ? 'render-inline' : 'w-full']"
-                            :="editorConfig"
+                            v-bind="editorConfig"
                             @send="
                                 threads.updateContent(threadId, {
                                     contentId: comment.contentId,
@@ -110,7 +110,7 @@
             <TipTapEditor
                 v-model="newComment"
                 class="w-full"
-                :="editorConfig"
+                v-bind="editorConfig"
                 :sendable="true"
                 :cancellable="true"
                 @send="threads.addContent(threadId, { parentId, body: newComment }, COMMENT)"
@@ -205,22 +205,26 @@
         placeholder: `${auth.user?.fullname} va commenter...`,
     }
 
-    const commentsShow = ref(false)
-    const commentItems = computed(() => {
-        const items = props.comments.map((comment) => ({
-            ...comment,
-            edit: false,
-        }))
-        return commentsShow.value ? items : items.slice(0, maxCommentsShow)
-    })
+    const showAll = ref(false)
+    const shownComments = computed(() =>
+        showAll.value ? props.comments : props.comments.slice(0, maxCommentsShow),
+    )
 
+    const editing = computed(() =>
+        shownComments.value.map((comment) =>
+            computed({
+                get: () => comment.editing,
+                set: (v) => threads.editingContent(comment.contentId, v),
+            }),
+        ),
+    )
     const commenting = ref(false)
     const newComment = ref(defaultTipTapText)
 
     const toggleComments = () => {
-        commentsShow.value = !commentsShow.value
-        commentItems.value.slice(maxCommentsShow, props.comments.length).forEach((comment) => {
-            comment.active = commentsShow.value
+        showAll.value = !showAll.value
+        shownComments.value.slice(maxCommentsShow, props.comments.length).forEach((comment) => {
+            comment.active = showAll.value
         })
     }
 </script>

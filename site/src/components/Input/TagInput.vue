@@ -3,7 +3,7 @@
         ref="tagsContainer"
         class="flex overflow-auto flex-wrap gap-2 items-center w-full h-max cursor-text input"
         tabindex="0"
-        :="focused ? { 'focused': 'true' } : {}"
+        v-bind="focused ? { 'focused': 'true' } : {}"
         @focus="tagsInput.focus()"
     >
         <AppTag
