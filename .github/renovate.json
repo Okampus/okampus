@@ -1,10 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", "group:allNonMajor"],
+  "extends": ["config:base"],
   "schedule": ["before 12pm on Monday"],
   "labels": ["type: dependencies"],
   "branchPrefix": "deps/",
-  "prConcurrentLimit": 5,
+  "prConcurrentLimit": 10,
   "timezone": "Europe/Paris",
   "npm": {
     "packageRules": [
@@ -12,25 +12,72 @@
         "matchPaths": ["api/**"],
         "groupName": "Backend dependencies",
         "addLabels": ["target: backend", "type: dependencies"],
-        "reviewers": ["noftaly"]
-      }, {
+        "reviewers": ["noftaly"],
+        "matchUpdateTypes": ["minor", "patch", "bump"],
+        "excludePackagePatterns": [".*eslint.*"]
+      },
+      {
+        "matchPaths": ["api/**"],
+        "groupName": "Backend dependencies maintenance",
+        "addLabels": ["target: backend", "type: dependencies"],
+        "reviewers": ["noftaly"],
+        "matchUpdateTypes": ["pin", "digest", "lockFileMaintenance"]
+      },
+      {
+        "matchPaths": ["api/**"],
+        "groupName": "major Backend dependencies",
+        "addLabels": ["target: backend", "type: dependencies"],
+        "reviewers": ["noftaly"],
+        "matchUpdateTypes": ["major"],
+        "excludePackagePatterns": [".*eslint.*"]
+      },
+      {
+        "groupName": "ESLint for Backend",
+        "matchPaths": ["api/**"],
+        "addLabels": ["target: backend", "type: dependencies"],
+        "reviewers": ["noftaly"],
+        "matchUpdateTypes": ["major", "minor", "patch"],
+        "matchPackagePatterns": [".*eslint.*"]
+      },
+
+      {
         "matchPaths": ["site/**"],
         "groupName": "Frontend dependencies",
         "addLabels": ["target: frontend", "type: dependencies"],
-        "reviewers": ["iv-stpn"]
-      }, {
+        "reviewers": ["iv-stpn"],
+        "matchUpdateTypes": ["minor", "patch", "bump"],
+        "excludePackagePatterns": [".*eslint.*"]
+      },
+      {
+        "matchPaths": ["api/**"],
+        "groupName": "Frontend dependencies maintenance",
+        "addLabels": ["target: frontend", "type: dependencies"],
+        "reviewers": ["iv-stpn"],
+        "matchUpdateTypes": ["pin", "digest", "lockFileMaintenance"]
+      },
+      {
+        "matchPaths": ["api/**"],
+        "groupName": "major Frontend dependencies",
+        "addLabels": ["target: frontend", "type: dependencies"],
+        "reviewers": ["iv-stpn"],
+        "matchUpdateTypes": ["major"],
+        "excludePackagePatterns": [".*eslint.*"]
+      },
+      {
+        "groupName": "ESLint for Frontend",
+        "matchPaths": ["site/**"],
+        "addLabels": ["target: frontend", "type: dependencies"],
+        "reviewers": ["iv-stpn"],
+        "matchUpdateTypes": ["major", "minor", "patch"],
+        "matchPackagePatterns": [".*eslint.*"]
+      },
+
+      {
         "matchDepTypes": ["engines"],
         "enabled": false
-      }, {
-        "matchPackageNames": [
-          "@mikro-orm/core",
-          "@mikro-orm/migrations",
-          "@mikro-orm/nestjs",
-          "@mikro-orm/postgresql",
-          "@mikro-orm/reflection",
-          "@mikro-orm/sql-highlighter",
-          "@mikro-orm/cli"
-        ],
+      },
+      {
+        "matchPackagePrefixes": ["@mikro-orm/"],
         "enabled": false
       }
     ]
