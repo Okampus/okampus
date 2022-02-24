@@ -16,7 +16,7 @@ const threads = useThreadsStore()
 
 export const report = (content, hoverBackground = false) => ({
     name: content.interactions.reported ? 'Signalé' : 'Signaler',
-    condition: true,
+    condition: content.isVisible,
     icon: content.interactions.reported ? 'flag' : ['far', 'flag'],
     class:
         (hoverBackground ? 'hover:bg-red-500 hover:text-white' : 'group-hover:text-red-600') +
@@ -35,7 +35,7 @@ export const report = (content, hoverBackground = false) => ({
 
 export const getLinkContent = (content, hoverBackground = false) => ({
     name: 'Lien',
-    condition: true,
+    condition: content.isVisible,
     icon: 'link',
     class: hoverBackground ? 'hover:bg-blue-500 hover:text-white' : 'group-hover:text-blue-600',
     action: () => {
@@ -64,7 +64,7 @@ export const getLinkContent = (content, hoverBackground = false) => ({
 export const removeContent = (content, hoverBackground = false) => ({
     name: 'Supprimer',
     condition:
-        (content.author == auth.user?.userId || auth.user?.roles?.includes('admin')) && !content.hidden,
+        (content.author == auth.user?.userId || auth.user?.roles?.includes('admin')) && content.isVisible,
     icon: 'trash-alt',
     class: hoverBackground ? 'hover:bg-red-500 hover:text-white' : 'group-hover:text-red-600',
     action: () => {
@@ -98,7 +98,8 @@ export const removeContent = (content, hoverBackground = false) => ({
 
 export const edit = (content, hoverBackground = false) => ({
     name: 'Éditer',
-    condition: content.author == auth.user?.userId || auth.user?.roles?.includes('admin'),
+    condition:
+        (content.author == auth.user?.userId || auth.user?.roles?.includes('admin')) && content.isVisible,
     icon: 'pen',
     class: hoverBackground ? 'hover:bg-green-500 hover:text-white' : 'group-hover:text-green-600',
     action: () => {
@@ -108,7 +109,7 @@ export const edit = (content, hoverBackground = false) => ({
 
 export const favorite = (content, hoverBackground = false) => ({
     name: 'Favori',
-    condition: true,
+    condition: content.isVisible,
     icon: content.interactions.favorited ? 'star' : ['far', 'star'],
     class:
         (hoverBackground ? 'hover:bg-yellow-500 hover:text-white' : 'group-hover:text-yellow-600') +

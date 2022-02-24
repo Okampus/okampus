@@ -10,7 +10,7 @@
         @cancel="cancel"
         @send="send"
     />
-    <TipTapRenderer v-else :content="body" class="p-1" />
+    <TipTapRenderer v-else :content="body" />
 </template>
 
 <script setup>

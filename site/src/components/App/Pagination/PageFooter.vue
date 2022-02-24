@@ -1,78 +1,96 @@
 <template>
-    <div class="flex sticky bottom-0 justify-between items-center py-3 px-4 md:px-6 bg-0">
+    <div
+        class="flex sticky bottom-0 justify-between items-center py-3 px-4 md:block md:bottom-[unset] md:px-6"
+    >
         <div class="flex flex-1 justify-between md:hidden">
             <router-link
-                v-if="currentPage > 1"
                 :to="`${baseRoute}?page=${currentPage - 1}`"
                 class="inline-flex relative justify-center items-center py-2 px-4 w-28 text-sm font-medium rounded-md text-0 bg-2"
             >
-                Previous
+                Précédent
             </router-link>
-            <div v-else class="w-28"></div>
             <div
                 class="py-2 px-3 h-10 text-lg leading-tight text-center border border-opacity/40 bg-4 text-0 border-color-2"
             >
-                {{ currentPage }} / {{ totalPages }}
+                {{ currentPage }}/{{ totalPages }}
             </div>
             <router-link
-                v-if="currentPage < totalPages"
                 :to="`${baseRoute}?page=${currentPage + 1}`"
                 class="inline-flex relative justify-center items-center py-2 px-4 w-28 text-sm font-medium rounded-md text-0 bg-2"
             >
-                Next
+                Suivant
             </router-link>
-            <div v-else class="w-28"></div>
         </div>
+
         <div class="hidden sm:items-center md:flex md:flex-1 md:justify-between">
             <div>
                 <p class="flex gap-1 text-sm text-2">
-                    <span>Résultats</span>
-                    <span class="font-medium text-0">{{ itemsPerPage * (currentPage - 1) + 1 }}</span>
-                    <span>à</span>
-                    <span class="font-medium text-0">{{
-                        Math.min(itemsPerPage * currentPage, totalItemCount)
-                    }}</span>
-                    <span>parmi</span>
                     <span class="font-medium text-0">{{ totalItemCount }}</span>
                     <span>résultats</span>
                 </p>
             </div>
+
             <div>
                 <nav
                     class="inline-flex relative z-0 gap-2 items-center rounded-md shadow-sm"
                     aria-label="Pagination"
                 >
-                    <router-link
-                        v-if="currentPage > 1"
-                        :to="`${baseRoute}?page=${currentPage - 1}`"
-                        class="inline-flex relative items-center p-2 h-10 text-sm font-medium rounded-l-md bg-4 text-0"
-                    >
-                        <span class="sr-only">Previous</span>
-                        <font-awesome-icon icon="chevron-left" class="w-5 h-5" aria-hidden="true" />
-                    </router-link>
+                    <span :class="{ 'cursor-not-allowed': currentPage === 1 }">
+                        <router-link
+                            :to="`${baseRoute}?page=${currentPage - 1}`"
+                            :class="[
+                                currentPage === 1
+                                    ? 'pointer-events-none text-4'
+                                    : 'hover:bg-3-light dark:hover:bg-3-dark text-0',
+                            ]"
+                            class="inline-flex relative items-center p-2 h-10 text-sm font-medium rounded-md"
+                        >
+                            <span class="sr-only">Précédent</span>
+                            <font-awesome-icon icon="chevron-left" class="w-5 h-5" aria-hidden="true" />
+                        </router-link>
+                    </span>
+
                     <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->
-                    <span class="flex -space-x-[1px]">
+                    <span class="flex gap-1 items-center">
                         <template v-for="(page, i) in pages" :key="i">
-                            <div v-if="page === '...'" class="flex justify-center items-center">...</div>
+                            <div
+                                v-if="page === '...'"
+                                class="flex justify-center items-center w-10 h-10 text-0"
+                            >
+                                ...
+                            </div>
                             <router-link
                                 v-else
                                 :to="`${baseRoute}?page=${page}`"
-                                class="py-2 px-3 h-10 text-lg leading-tight border border-opacity/40 bg-4 text-0 border-color-2"
-                                :class="{ 'bg-blue-400 dark:bg-blue-700': page === currentPage }"
+                                class="py-2 w-10 h-10 text-lg leading-tight text-center rounded-md text-0"
+                                :class="[
+                                    page === currentPage
+                                        ? 'bg-2-light dark:bg-2-dark '
+                                        : 'hover:bg-3-light dark:hover:bg-3-dark',
+                                ]"
                                 >{{ page }}</router-link
                             >
                         </template>
                     </span>
-                    <router-link
-                        v-if="currentPage < totalPages"
-                        :to="`${baseRoute}?page=${currentPage + 1}`"
-                        class="inline-flex relative items-center p-2 h-10 text-sm font-medium rounded-r-md bg-4 text-0"
-                    >
-                        <span class="sr-only">Next</span>
-                        <font-awesome-icon icon="chevron-right" class="w-5 h-5" aria-hidden="true" />
-                    </router-link>
+
+                    <span :class="{ 'cursor-not-allowed': currentPage === totalPages }">
+                        <router-link
+                            :to="`${baseRoute}?page=${currentPage + 1}`"
+                            class="inline-flex relative items-center p-2 h-10 text-sm font-medium hover:bg-3-light dark:hover:bg-3-dark rounded-md text-0"
+                            :class="[
+                                currentPage === totalPages
+                                    ? 'pointer-events-none text-4'
+                                    : 'hover:bg-3-light dark:hover:bg-3-dark text-0',
+                            ]"
+                        >
+                            <span class="sr-only">Suivant</span>
+                            <font-awesome-icon icon="chevron-right" class="w-5 h-5" aria-hidden="true" />
+                        </router-link>
+                    </span>
                 </nav>
             </div>
+
+            <div></div>
         </div>
     </div>
 </template>
@@ -80,7 +98,7 @@
 <script setup>
     import { range } from 'lodash'
     import { computed } from 'vue'
-    const numberPagesShownAround = 3
+    const numberPagesShownAround = 2
     const maxPagesShown = numberPagesShownAround * 2 + 1
 
     const props = defineProps({
