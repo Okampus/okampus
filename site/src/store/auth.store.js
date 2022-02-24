@@ -17,6 +17,7 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         updateUser(user) {
             this.user = user
+            this.user.fullname = user.firstname.split(' ')[0] + ' ' + user.lastname
         },
         async getMe() {
             return await $axios.get('auth/me').then(onData(this.updateUser))

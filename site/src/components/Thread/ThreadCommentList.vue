@@ -51,7 +51,7 @@
                             "
                         />
                         <span v-if="!comment.editing" class="inline-flex gap-1 items-center tracking-tight">
-                            <span class="link-blue">{{ comment._author.fullnameShort }}</span>
+                            <span class="link-blue">{{ comment._author.fullname }}</span>
                             <AppDateAndModified
                                 :created-at="comment.createdAt"
                                 :modified-at="comment.lastEdit.createdAt"

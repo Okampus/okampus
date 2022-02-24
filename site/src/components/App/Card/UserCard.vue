@@ -1,10 +1,10 @@
 <template>
     <div class="flex gap-3 items-center">
-        <UserAvatar :img-src="user.avatar" :username="user.fullnameShort" />
+        <UserAvatar :img-src="user.avatar" :username="user.fullname" />
 
         <div class="flex flex-col min-w-0">
             <router-link class="font-semibold hover:underline truncate" :to="`/users/${user.userId}`">
-                {{ user.fullnameShort }}
+                {{ user.fullname }}
             </router-link>
             <div class="truncate">
                 {{ user.email }}

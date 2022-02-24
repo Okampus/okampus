@@ -15,7 +15,7 @@
                             <div class="text-sm tracking-tight text-2">Post créé par</div>
                             <div class="flex gap-2 items-center text-0">
                                 <div class="flex">
-                                    <div>{{ thread.getUser(thread.post.author)?.fullnameShort }}</div>
+                                    <div>{{ thread.getUser(thread.post.author)?.fullname }}</div>
                                     <div>,</div>
                                 </div>
                                 <p class="text-sm text-1">
@@ -30,7 +30,7 @@
                             </div>
                             <div class="flex gap-2 items-center text-0">
                                 <div class="flex">
-                                    <div>{{ thread.lastUpdatedBy?.fullnameShort }}</div>
+                                    <div>{{ thread.lastUpdatedBy?.fullname }}</div>
                                     <div>,</div>
                                 </div>
                                 <p class="text-sm text-1">
