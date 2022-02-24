@@ -25,6 +25,7 @@
     import { NOOP } from '@vue/shared'
 
     import { isNil } from 'lodash'
+    import { getStatus } from '@/utils/errors'
 
     const query = reactive({
         page: 1,
@@ -76,20 +77,25 @@
 
             query.page = parseInt(queryPage)
 
-            await props.storeCallback(query).then(({ items, pageInfo }) => {
-                if (!items.length && query.page > 1) {
-                    emitter.emit('show-toast', {
-                        message: `La page ${props.page} est vide. Redirection sur la page 1.`,
-                        type: 'info',
-                        duration: 5000,
-                    })
-                    router.push(props.baseRoute)
-                } else {
-                    results.items = props.storeGetter() ?? items
-                    results.totalPages = pageInfo.totalPages
-                    results.totalItemCount = pageInfo.totalItemCount
-                }
-            })
+            await props
+                .storeCallback(query)
+                .then(({ items, pageInfo }) => {
+                    if (!items.length && query.page > 1) {
+                        emitter.emit('show-toast', {
+                            message: `La page ${props.page} est vide. Redirection sur la page 1.`,
+                            type: 'info',
+                            duration: 5000,
+                        })
+                        router.push(props.baseRoute)
+                    } else {
+                        results.items = props.storeGetter() ?? items
+                        results.totalPages = pageInfo.totalPages
+                        results.totalItemCount = pageInfo.totalItemCount
+                    }
+                })
+                .catch((err) => {
+                    emitter.emit('error-route', { code: getStatus(err.response) })
+                })
         }
     }
 
