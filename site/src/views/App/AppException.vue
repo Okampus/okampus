@@ -6,7 +6,7 @@
         <div class="text-2xl text-blue-700 uppercase">{{ props.code }}</div>
 
         <div class="text-5xl text-center">
-            <template v-if="props.code == '404'">Cette ressources n'existe pas.</template>
+            <template v-if="props.code == '404'">Cette ressource n'existe pas.</template>
             <template v-else-if="props.code == '403'"
                 >Seuls les utilisateurs autorisés peuvent accéder à cette page.</template
             >
