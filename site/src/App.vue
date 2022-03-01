@@ -59,7 +59,7 @@
 
     import logOutOnExpire from '@/utils/logOutOnExpire'
 
-    import { reactive, ref, watch, watchEffect } from 'vue'
+    import { nextTick, reactive, ref, watch, watchEffect } from 'vue'
 
     import { isNil } from 'lodash'
 
@@ -137,8 +137,6 @@
     const route = useRoute()
     const cookies = useCookies().cookies
 
-    logOutOnExpire()
-
     if (config.darkMode) {
         document.documentElement.classList.add('dark')
     }
@@ -208,6 +206,8 @@
             error.path = null
         }
     })
+
+    nextTick(() => logOutOnExpire())
 </script>
 
 <style lang="scss">

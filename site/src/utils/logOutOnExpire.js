@@ -11,7 +11,7 @@ export default function logOutOnExpire() {
             cookies.get('accessTokenExpiresAt').match(timeStampRegex).groups.timestamp,
         )
 
-        const logOutOnExpire = () => {
+        const logOut = () => {
             emitter.emit('show-toast', {
                 message: 'Votre session a expiré.',
                 type: 'warning',
@@ -20,9 +20,9 @@ export default function logOutOnExpire() {
         }
 
         if (expirationDate - Date.now() < 0) {
-            logOutOnExpire()
+            logOut()
         } else {
-            setToHappen(logOutOnExpire, expirationDate)
+            setToHappen(logOut, expirationDate)
         }
     }
 }
