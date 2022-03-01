@@ -14,17 +14,21 @@
                             class="flex flex-row justify-between sm:gap-2.5 sm:items-center sm:mr-14 sm:ml-6 sm:w-full lg:flex-col lg:mx-0 lg:w-fit sm-max:flex-col sm-max:mb-10 sm-max:ml-2"
                         >
                             <a
-                                v-for="(link, i) in contactLinks"
+                                v-for="(link, i) in contacts"
                                 :key="i"
                                 class="flex text-3xl lg:h-5 lg:text-xl flex-start"
                                 :href="link.href"
                             >
-                                <font-awesome-icon :icon="link.icon" :class="link.iconClasses ?? ''" />
+                                <font-awesome-icon
+                                    :icon="link.icon"
+                                    :class="link.iconClasses ?? ''"
+                                    class="hover-icon"
+                                />
                             </a>
                         </div>
                         <div class="hidden flex-col gap-2.5 lg:flex">
                             <a
-                                v-for="(link, i) in contactLinks"
+                                v-for="(link, i) in contacts"
                                 :key="i"
                                 :href="link.href"
                                 target="_blank"
@@ -39,7 +43,7 @@
                         class="flex flex-wrap items-center sm:flex-row sm:gap-16 sm:items-start sm-max:w-full"
                     >
                         <div
-                            v-for="(section, i) in sections"
+                            v-for="(section, i) in footerSections"
                             :key="i"
                             class="sm-max:mb-10 sm-max:w-1/2 text-1"
                         >
@@ -59,7 +63,7 @@
             <!-- Discord Invite Previews -->
             <div class="flex flex-col gap-2 w-full lg:flex-row lg:w-fit xl:flex-col">
                 <GuildPreviewCard
-                    v-for="(server, i) in discordServers"
+                    v-for="(server, i) in servers"
                     :key="i"
                     class="hidden lg:flex"
                     :name="server.name"
@@ -69,7 +73,7 @@
                     :presence="server.presence"
                 />
                 <GuildPreviewCard
-                    v-for="(server, i) in discordServers"
+                    v-for="(server, i) in servers"
                     :key="i"
                     class="hidden lg-max:flex"
                     :mini="false"
@@ -97,139 +101,23 @@
     </footer>
 </template>
 
-<script>
+<script setup>
     import AppLink from '../App/AppLink.vue'
     import AppLogo from '../App/AppLogo.vue'
     import GuildPreviewCard from '../App/Card/GuildPreviewCard.vue'
-    export default {
-        components: { AppLink, AppLogo, GuildPreviewCard },
-        props: {
-            discordServers: {
-                type: Array,
-                default: () => [
-                    {
-                        name: "Horizon : Ef'Réussite ⭐",
-                        description: 'Entraide / Partage',
-                        iconUrl:
-                            'https://cdn.discordapp.com/icons/694220883815956580/a_aaf0ceaa61a5cbe3f2bc9b809a16d95a.png',
-                        inviteUrl: 'https://discord.gg/BVbZPYfBGW',
-                        presence: '1700+',
-                    },
-                    {
-                        name: 'Horizon : Web 🌐',
-                        description: 'Dév. Web Open Source',
-                        iconUrl:
-                            'https://cdn.discordapp.com/icons/900796015915978772/76c5153e25f71124a1a199ce7dd5a749.png',
-                        inviteUrl: 'https://discord.gg/VDQekzJgVp',
-                        presence: '50+',
-                    },
-                    {
-                        name: 'Horizon : Mentorat 🌱',
-                        description: 'Mentorat / Formation',
-                        iconUrl:
-                            'https://cdn.discordapp.com/icons/844294010628472834/8f3fbef07829e6737e71aa792dcca7df.png',
-                        inviteUrl: 'https://discord.gg/G7fWxQZXqF',
-                        presence: '70+',
-                    },
-                ],
-            },
-        },
-        data() {
-            return {
-                discordData: {},
-                contactLinks: [
-                    {
-                        label: 'dev@horizon-efrei.fr',
-                        href: "mailto:dev@horizon-efrei.fr?subject=Contact%20via%20site%20-%20%5BRAISON%20DE%20CONTACT%5D&body=Bonjour%20%C3%A0%20l'%C3%A9quipe%20de%20d%C3%A9veloppement%20Horizon%20!%0D%0A%0D%0AJe%20suis%20%5BR%C3%94LE%20AU%20SEIN%20DE%20L'EFREI%5D%2C%20et%20je%20vous%20contact%20au%20sujet%20de%20%5BSUJET%5D%0D%0A%0D%0ACordialement%2C",
-                        icon: ['far', 'envelope'],
-                    },
-                    {
-                        label: 'horizon-efrei',
-                        href: 'https://github.com/horizon-efrei',
-                        icon: ['fab', 'github'],
-                    },
-                    {
-                        label: '@horizon.efrei',
-                        href: 'https://instagram.com/horizon.efrei',
-                        icon: ['fab', 'instagram'],
-                    },
-                    {
-                        label: 'Horizon EFREI',
-                        href: 'https://linkedin.com/company/horizon-efrei/',
-                        icon: ['fab', 'linkedin'],
-                    },
-                ],
-                sections: [
-                    {
-                        name: 'Légal',
-                        links: [
-                            {
-                                name: 'Notre projet',
-                                to: '/about',
-                            },
-                            {
-                                name: 'CGU',
-                                to: '/cgu',
-                            },
-                            {
-                                name: 'RGPD',
-                                to: '/rgpd',
-                            },
-                        ],
-                    },
-                    {
-                        name: 'Support',
-                        links: [
-                            {
-                                name: 'Support',
-                                to: '/support',
-                            },
-                            {
-                                name: 'FAQ Horizon',
-                                to: '/tags/meta',
-                            },
-                            {
-                                name: 'Signaler un Bug',
-                                to: '/report-bug',
-                            },
-                        ],
-                    },
-                    {
-                        name: 'Technique',
-                        links: [
-                            {
-                                name: 'Docs API',
-                                href: 'https://api.horizon-efrei.fr/docs/',
-                            },
-                            {
-                                name: 'Infos Site',
-                                href: 'https://github.com/horizon-efrei/HorizonWeb/blob/master/README.md',
-                            },
-                            {
-                                name: 'Contribuer',
-                                href: 'https://github.com/horizon-efrei/HorizonWeb/blob/master/CONTRIBUTING.md',
-                            },
-                        ],
-                    },
-                    {
-                        name: 'Horizon',
-                        links: [
-                            {
-                                name: "L'équipe Horizon",
-                                to: '/about',
-                            },
-                            {
-                                name: 'Prochaines MàJ',
-                                href: '/next',
-                            },
-                            {
-                                name: 'Discussion',
-                                href: '/tags/horizon',
-                            },
-                        ],
-                    },
-                ],
-            }
-        },
-    }
+
+    import servers from '@/shared/navigation/discord-servers.enum'
+    import contacts from '@/shared/navigation/footer-contacts.enum'
+    import footerSections from '@/shared/navigation/footer-sections.enum'
 </script>
+
+<style lang="scss">
+    .hover-icon {
+        background: transparent;
+        transition: transform 0.2s ease-in-out;
+
+        &:hover {
+            transform: scale(1.2);
+        }
+    }
+</style>
