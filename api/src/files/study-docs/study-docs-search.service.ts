@@ -63,12 +63,12 @@ export class StudyDocSearchService extends SearchService<StudyDoc, IndexedStudyD
   }
 
   @RequireTypesense()
-  public async search(queries: SearchParams<IndexedStudyDoc>): Promise<SearchResponse<IndexedStudyDoc>> {
+  public async search(queries: SearchParams): Promise<SearchResponse<IndexedStudyDoc>> {
     return await this.documents.search(queries);
   }
 
   @RequireTypesense()
-  public async searchAndPopulate(queries: SearchParams<IndexedStudyDoc>): Promise<SearchResponse<StudyDoc>> {
+  public async searchAndPopulate(queries: SearchParams): Promise<SearchResponse<StudyDoc>> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {

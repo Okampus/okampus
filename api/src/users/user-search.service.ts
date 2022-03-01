@@ -55,12 +55,12 @@ export class UserSearchService extends SearchService<User, IndexedUser> {
   }
 
   @RequireTypesense()
-  public async search(queries: SearchParams<IndexedUser>): Promise<SearchResponse<IndexedUser>> {
+  public async search(queries: SearchParams): Promise<SearchResponse<IndexedUser>> {
     return await this.documents.search(queries);
   }
 
   @RequireTypesense()
-  public async searchAndPopulate(queries: SearchParams<IndexedUser>): Promise<SearchResponse<User>> {
+  public async searchAndPopulate(queries: SearchParams): Promise<SearchResponse<User>> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {

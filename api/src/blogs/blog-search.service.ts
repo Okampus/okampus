@@ -60,12 +60,12 @@ export class BlogSearchService extends SearchService<Blog, IndexedBlog> {
   }
 
   @RequireTypesense()
-  public async search(queries: SearchParams<IndexedBlog>): Promise<SearchResponse<IndexedBlog>> {
+  public async search(queries: SearchParams): Promise<SearchResponse<IndexedBlog>> {
     return await this.documents.search(queries);
   }
 
   @RequireTypesense()
-  public async searchAndPopulate(queries: SearchParams<IndexedBlog>): Promise<SearchResponse<Blog>> {
+  public async searchAndPopulate(queries: SearchParams): Promise<SearchResponse<Blog>> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {

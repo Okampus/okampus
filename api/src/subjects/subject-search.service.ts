@@ -57,12 +57,12 @@ export class SubjectSearchService extends SearchService<Subject, IndexedSubject>
   }
 
   @RequireTypesense()
-  public async search(queries: SearchParams<IndexedSubject>): Promise<SearchResponse<IndexedSubject>> {
+  public async search(queries: SearchParams): Promise<SearchResponse<IndexedSubject>> {
     return await this.documents.search(queries);
   }
 
   @RequireTypesense()
-  public async searchAndPopulate(queries: SearchParams<IndexedSubject>): Promise<SearchResponse<Subject>> {
+  public async searchAndPopulate(queries: SearchParams): Promise<SearchResponse<Subject>> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {

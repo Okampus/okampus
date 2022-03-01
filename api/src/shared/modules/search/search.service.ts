@@ -83,9 +83,9 @@ export abstract class SearchService<Entity, IndexedEntity> {
 
   public abstract remove(id: string): Promise<void>;
 
-  public abstract search(queries: SearchParams<IndexedEntity>): Promise<SearchResponse<IndexedEntity>>;
+  public abstract search(queries: SearchParams): Promise<SearchResponse<IndexedEntity>>;
 
-  public abstract searchAndPopulate(queries: SearchParams<IndexedEntity>): Promise<SearchResponse<Entity>>;
+  public abstract searchAndPopulate(queries: SearchParams): Promise<SearchResponse<Entity>>;
 
   public abstract toIndexedEntity(entity: Entity): IndexedEntity;
 }

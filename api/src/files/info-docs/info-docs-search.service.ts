@@ -59,12 +59,12 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
   }
 
   @RequireTypesense()
-  public async search(queries: SearchParams<IndexedInfoDoc>): Promise<SearchResponse<IndexedInfoDoc>> {
+  public async search(queries: SearchParams): Promise<SearchResponse<IndexedInfoDoc>> {
     return await this.documents.search(queries);
   }
 
   @RequireTypesense()
-  public async searchAndPopulate(queries: SearchParams<IndexedInfoDoc>): Promise<SearchResponse<InfoDoc>> {
+  public async searchAndPopulate(queries: SearchParams): Promise<SearchResponse<InfoDoc>> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
