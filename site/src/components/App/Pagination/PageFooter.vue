@@ -1,5 +1,6 @@
 <template>
     <div
+        v-if="totalItemCount > 0"
         class="flex sticky bottom-0 justify-between items-center py-3 px-4 md:block md:bottom-[unset] md:px-6"
     >
         <div class="flex flex-1 justify-between md:hidden">
@@ -26,7 +27,7 @@
             <div>
                 <p class="flex gap-1 text-sm text-2">
                     <span class="font-medium text-0">{{ totalItemCount }}</span>
-                    <span>résultats</span>
+                    <span>résultat{{ totalItemCount > 1 ? 's' : '' }}</span>
                 </p>
             </div>
 
