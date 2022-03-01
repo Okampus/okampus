@@ -58,12 +58,12 @@ export class ThreadSearchService extends SearchService<Thread, IndexedThread> {
   }
 
   @RequireTypesense()
-  public async search(queries: SearchParams<IndexedThread>): Promise<SearchResponse<IndexedThread>> {
+  public async search(queries: SearchParams): Promise<SearchResponse<IndexedThread>> {
     return await this.documents.search(queries);
   }
 
   @RequireTypesense()
-  public async searchAndPopulate(queries: SearchParams<IndexedThread>): Promise<SearchResponse<Thread>> {
+  public async searchAndPopulate(queries: SearchParams): Promise<SearchResponse<Thread>> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {

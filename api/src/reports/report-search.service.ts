@@ -58,12 +58,12 @@ export class ReportSearchService extends SearchService<Report, IndexedReport> {
   }
 
   @RequireTypesense()
-  public async search(queries: SearchParams<IndexedReport>): Promise<SearchResponse<IndexedReport>> {
+  public async search(queries: SearchParams): Promise<SearchResponse<IndexedReport>> {
     return await this.documents.search(queries);
   }
 
   @RequireTypesense()
-  public async searchAndPopulate(queries: SearchParams<IndexedReport>): Promise<SearchResponse<Report>> {
+  public async searchAndPopulate(queries: SearchParams): Promise<SearchResponse<Report>> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {

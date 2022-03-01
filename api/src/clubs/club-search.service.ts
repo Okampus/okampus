@@ -55,12 +55,12 @@ export class ClubSearchService extends SearchService<Club, IndexedClub> {
   }
 
   @RequireTypesense()
-  public async search(queries: SearchParams<IndexedClub>): Promise<SearchResponse<IndexedClub>> {
+  public async search(queries: SearchParams): Promise<SearchResponse<IndexedClub>> {
     return await this.documents.search(queries);
   }
 
   @RequireTypesense()
-  public async searchAndPopulate(queries: SearchParams<IndexedClub>): Promise<SearchResponse<Club>> {
+  public async searchAndPopulate(queries: SearchParams): Promise<SearchResponse<Club>> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {

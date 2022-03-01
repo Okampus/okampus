@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import type { SearchParams } from 'typesense/lib/Typesense/Documents';
 
-export class SearchDto implements SearchParams<object> {
+export class SearchDto implements SearchParams {
   @IsString()
   q: string;
 
