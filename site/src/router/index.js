@@ -130,8 +130,17 @@ const routes = [
     },
 
     {
-        path: '/crous',
-        component: () => import('@/views/Blog/BlogCrous.vue'),
+        name: 'crous',
+        path: '/crous/daily/:date',
+        component: () => import('@/views/Crous/CrousView.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
+        path: '/crous/new',
+        component: () => import('@/views/Crous/CrousNew.vue'),
         meta: {
             requiresAuth: true,
         },

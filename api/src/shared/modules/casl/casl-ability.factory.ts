@@ -12,6 +12,9 @@ import { InfoDoc } from '../../../files/info-docs/info-doc.entity';
 import { ProfileImage } from '../../../files/profile-images/profile-image.entity';
 import { StudyDoc } from '../../../files/study-docs/study-doc.entity';
 import { Report } from '../../../reports/report.entity';
+import { DailyInfo } from '../../../restaurant/daily-info/daily-info.entity';
+import { DailyMenu } from '../../../restaurant/daily-menus/daily-menu.entity';
+import { Food } from '../../../restaurant/food/food.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
 import { Team } from '../../../teams/entities/team.entity';
@@ -29,7 +32,10 @@ export type Subjects = InferSubjects<
   | typeof Club
   | typeof Contact
   | typeof Content
+  | typeof DailyInfo
+  | typeof DailyMenu
   | typeof Favorite
+  | typeof Food
   | typeof InfoDoc
   | typeof ProfileImage
   | typeof Report
@@ -44,6 +50,7 @@ export type Subjects = InferSubjects<
 
 export type AppAbility = Ability<[action: Action, subjects: Subjects]>;
 
+// TODO: all this class needs a MAJOR refactor
 @Injectable()
 export class CaslAbilityFactory {
   public createForUser(user: User): AppAbility {
@@ -85,6 +92,9 @@ export class CaslAbilityFactory {
         forbid(Action.Update, Badge);
         allow(Action.Manage, [Blog, Content, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag, Thread, WikiPage]);
       } else {
+        if (user.roles.includes(Role.RestaurantManager))
+          allow(Action.Manage, [DailyInfo, DailyMenu, Food]);
+
         // @ts-expect-error
         forbid(Action.Manage, [Blog, Thread], { 'post.isVisible': false })
           .because('Content has been removed');

@@ -20,6 +20,7 @@ export const sections = computed(() => {
                   },
               ]
             : []),
+
         ...(auth.loggedIn && auth.user.roles.includes('admin')
             ? [
                   {
@@ -36,44 +37,79 @@ export const sections = computed(() => {
                   },
               ]
             : []),
-        {
-            name: 'Forum',
-            links: [
-                {
-                    to: '/threads',
-                    regActive: /^\/threads(?!\/new)/,
-                    textSmall: 'Forum',
-                    textLarge: 'Efrei Forum',
-                    icon: 'comments',
-                },
-                {
-                    to: '/threads/new',
-                    regActive: /^\/threads\/new$/,
-                    textSmall: 'Poster',
-                    textLarge: 'Créer un post',
-                    icon: 'question-circle',
-                },
-            ],
-        },
-        {
-            name: 'Horizon Cloud',
-            links: [
-                {
-                    to: '/docs',
-                    regActive: /^\/docs(?!\/new)/,
-                    textSmall: 'Documents',
-                    textLarge: 'Tous les documents',
-                    icon: 'folder',
-                },
-                {
-                    to: '/docs/new',
-                    regActive: /^\/docs\/new$/,
-                    textSmall: 'Uploader',
-                    textLarge: 'Ajouter un fichier',
-                    icon: 'upload',
-                },
-            ],
-        },
+
+        ...(auth.loggedIn
+            ? [
+                  {
+                      name: 'Forum',
+                      links: [
+                          {
+                              to: '/threads',
+                              regActive: /^\/threads(?!\/new)/,
+                              textSmall: 'Forum',
+                              textLarge: 'Efrei Forum',
+                              icon: 'comments',
+                          },
+                          {
+                              to: '/threads/new',
+                              regActive: /^\/threads\/new$/,
+                              textSmall: 'Poster',
+                              textLarge: 'Créer un post',
+                              icon: 'question-circle',
+                          },
+                      ],
+                  },
+              ]
+            : []),
+
+        ...(auth.loggedIn
+            ? [
+                  {
+                      name: 'Horizon Cloud',
+                      links: [
+                          {
+                              to: '/docs',
+                              regActive: /^\/docs(?!\/new)/,
+                              textSmall: 'Documents',
+                              textLarge: 'Tous les documents',
+                              icon: 'folder',
+                          },
+                          {
+                              to: '/docs/new',
+                              regActive: /^\/docs\/new$/,
+                              textSmall: 'Uploader',
+                              textLarge: 'Ajouter un fichier',
+                              icon: 'upload',
+                          },
+                      ],
+                  },
+              ]
+            : []),
+
+        ...(auth.loggedIn
+            ? [
+                  {
+                      name: 'Crous',
+                      links: [
+                          {
+                              to: '/crous/daily/today',
+                              regActive: /^\/crous(?!\/new)/,
+                              textSmall: 'Menu du jour',
+                              textLarge: 'Menu du Crous',
+                              icon: 'utensils',
+                          },
+                          {
+                              to: '/crous/new',
+                              regActive: /^\/crous\/new$/,
+                              textSmall: 'Crous',
+                              textLarge: 'Gestion du Crous',
+                              icon: 'apple-alt',
+                          },
+                      ],
+                  },
+              ]
+            : []),
+
         // {
         //     name: 'Pause Café',
         //     links: [
@@ -93,18 +129,19 @@ export const sections = computed(() => {
         //         },
         //     ],
         // },
-        {
-            name: 'Communauté',
-            links: [
-                {
-                    to: '/users/',
-                    regActive: /^\/users/,
-                    textSmall: 'Utilisateurs',
-                    textLarge: 'Utilisateurs',
-                    icon: 'users',
-                },
-                ...(useAuthStore().loggedIn
-                    ? [
+
+        ...(auth.loggedIn
+            ? [
+                  {
+                      name: 'Communauté',
+                      links: [
+                          {
+                              to: '/users/',
+                              regActive: /^\/users/,
+                              textSmall: 'Utilisateurs',
+                              textLarge: 'Utilisateurs',
+                              icon: 'users',
+                          },
                           {
                               to: '/me/profile',
                               regActive: /^\/me\/profile/,
@@ -119,9 +156,9 @@ export const sections = computed(() => {
                               textLarge: 'Mes favoris',
                               icon: 'crown',
                           },
-                      ]
-                    : []),
-            ],
-        },
+                      ],
+                  },
+              ]
+            : []),
     ]
 })

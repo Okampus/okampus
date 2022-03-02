@@ -19,6 +19,7 @@ import { FilesModule } from './files/files.module';
 import { HealthModule } from './health/health.module';
 import { ReactionsModule } from './reactions/reactions.module';
 import { ReportsModule } from './reports/reports.module';
+import { RestaurantModule } from './restaurant/restaurant.module';
 import sentryConfig from './shared/configs/sentry.config';
 import storageConfig from './shared/configs/storage.config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
@@ -47,13 +48,14 @@ import { WikisModule } from './wiki/wikis.module';
     BadgesModule,
     BlogsModule,
     ClubsModule,
+    ContactsModule,
     ContentsModule,
     FavoritesModule,
     FilesModule,
     HealthModule,
     ReactionsModule,
     ReportsModule,
-    ContactsModule,
+    RestaurantModule,
     StatisticsModule,
     SubjectsModule,
     TagsModule,
