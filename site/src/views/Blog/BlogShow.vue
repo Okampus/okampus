@@ -190,9 +190,8 @@
                             {{ comment.content }}
                         </p>
                         <div v-if="comment.replies.length > 0">
-                            <Disclosure v-slot="{ open }">
-                                <DisclosureButton>
-                                    <div class="flex gap-1 items-center mt-3 text-sm font-bold text-3">
+                            <!-- TODO: add Disclosure button -->
+                            <!-- <div class="flex gap-1 items-center mt-3 text-sm font-bold text-3">
                                         <p class="uppercase">
                                             {{ comment.replies.length }}
                                             {{ comment.replies.length > 1 ? 'réponses' : 'réponse' }}
@@ -200,37 +199,29 @@
                                         <font-awesome-icon
                                             :icon="open ? ['fas', 'chevron-up'] : ['fas', 'chevron-down']"
                                         />
-                                    </div>
-                                </DisclosureButton>
+                                    </div> -->
 
-                                <DisclosurePanel>
-                                    <div class="flex flex-col gap-2 mt-2">
-                                        <div
-                                            v-for="(reply, j) in comment.replies"
-                                            :key="j"
-                                            class="flex gap-2"
-                                        >
-                                            <img
-                                                class="object-cover w-10 h-10 rounded-full border-2"
-                                                :src="reply.author.avatar"
-                                            />
-                                            <div class="py-1 px-3 w-full rounded bg-2">
-                                                <div class="flex gap-3 items-center">
-                                                    <p class="font-semibold text-1">
-                                                        {{ reply.author.fullname }}
-                                                    </p>
-                                                    <span class="text-xs text-4">
-                                                        {{ timeAgo(reply.date) }}
-                                                    </span>
-                                                </div>
-                                                <p class="text-sm text-1">
-                                                    {{ reply.content }}
-                                                </p>
-                                            </div>
+                            <div class="flex flex-col gap-2 mt-2">
+                                <div v-for="(reply, j) in comment.replies" :key="j" class="flex gap-2">
+                                    <img
+                                        class="object-cover w-10 h-10 rounded-full border-2"
+                                        :src="reply.author.avatar"
+                                    />
+                                    <div class="py-1 px-3 w-full rounded bg-2">
+                                        <div class="flex gap-3 items-center">
+                                            <p class="font-semibold text-1">
+                                                {{ reply.author.fullname }}
+                                            </p>
+                                            <span class="text-xs text-4">
+                                                {{ timeAgo(reply.date) }}
+                                            </span>
                                         </div>
+                                        <p class="text-sm text-1">
+                                            {{ reply.content }}
+                                        </p>
                                     </div>
-                                </DisclosurePanel>
-                            </Disclosure>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -248,14 +239,10 @@
     import AppTag from '@/components/App/AppTag.vue'
     import DatePreview from '@/components/App/Preview/DatePreview.vue'
 
-    import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
     import { extractTextFromTipTapJSON } from '@/utils/tiptap'
 
     export default {
         components: {
-            Disclosure,
-            DisclosureButton,
-            DisclosurePanel,
             DatePreview,
             TipTapRenderer,
             AppTag,
