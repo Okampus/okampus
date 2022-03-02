@@ -6,7 +6,7 @@
             <ThreadPreviewCard v-for="(thread, i) in threads" :key="i" :thread="thread" />
         </template>
         <template v-else>
-            <div class="mt-10 text-2xl font-bold text-center">Aucun post ne correspond à ces critères.</div>
+            <div class="text-2xl font-bold text-center">Aucun post ne correspond à ces critères.</div>
             <div class="text-lg text-center">
                 Regardez la
                 <router-link to="threads" class="link-blue">liste de tous les posts</router-link> ou
