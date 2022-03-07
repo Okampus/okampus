@@ -9,23 +9,23 @@
   "npm": {
     "packageRules": [
       {
-        "matchPaths": ["api/**"],
         "groupName": "Backend dependencies",
+        "matchPaths": ["api/**"],
         "addLabels": ["target: backend", "type: dependencies"],
         "reviewers": ["noftaly"],
         "matchUpdateTypes": ["minor", "patch", "bump"],
         "excludePackagePatterns": [".*eslint.*"]
       },
       {
-        "matchPaths": ["api/**"],
         "groupName": "Backend dependencies maintenance",
+        "matchPaths": ["api/**"],
         "addLabels": ["target: backend", "type: dependencies"],
         "reviewers": ["noftaly"],
         "matchUpdateTypes": ["pin", "digest", "lockFileMaintenance"]
       },
       {
+        "groupName": "Major Backend dependencies",
         "matchPaths": ["api/**"],
-        "groupName": "major Backend dependencies",
         "addLabels": ["target: backend", "type: dependencies"],
         "reviewers": ["noftaly"],
         "matchUpdateTypes": ["major"],
@@ -41,23 +41,23 @@
       },
 
       {
-        "matchPaths": ["site/**"],
         "groupName": "Frontend dependencies",
+        "matchPaths": ["site/**"],
         "addLabels": ["target: frontend", "type: dependencies"],
         "reviewers": ["iv-stpn"],
         "matchUpdateTypes": ["minor", "patch", "bump"],
         "excludePackagePatterns": [".*eslint.*"]
       },
       {
-        "matchPaths": ["api/**"],
         "groupName": "Frontend dependencies maintenance",
+        "matchPaths": ["site/**"],
         "addLabels": ["target: frontend", "type: dependencies"],
         "reviewers": ["iv-stpn"],
         "matchUpdateTypes": ["pin", "digest", "lockFileMaintenance"]
       },
       {
-        "matchPaths": ["api/**"],
-        "groupName": "major Frontend dependencies",
+        "groupName": "Major Frontend dependencies",
+        "matchPaths": ["site/**"],
         "addLabels": ["target: frontend", "type: dependencies"],
         "reviewers": ["iv-stpn"],
         "matchUpdateTypes": ["major"],
