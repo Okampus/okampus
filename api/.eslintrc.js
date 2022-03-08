@@ -53,6 +53,20 @@ module.exports = {
           leadingUnderscore: 'forbid',
           trailingUnderscore: 'forbid',
         },
+        {
+          selector: [
+            'classProperty',
+            'objectLiteralProperty',
+            'typeProperty',
+            'classMethod',
+            'objectLiteralMethod',
+            'typeMethod',
+            'accessor',
+            'enumMember',
+          ],
+          format: null,
+          modifiers: ['requiresQuotes'],
+        }
       ],
     },
   }],
