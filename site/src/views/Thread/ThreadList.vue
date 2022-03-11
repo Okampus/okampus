@@ -1,6 +1,5 @@
 <template>
     <!-- TODO: add filtering, tab, info panel -->
-
     <div class="flex flex-col gap-4 my-2 mx-4 text-0">
         <template v-if="threads.length">
             <ThreadPreviewCard v-for="(thread, i) in threads" :key="i" :thread="thread" />

@@ -55,4 +55,6 @@
         get: () => props.post.editing,
         set: (v) => threads.editingContent(props.post.contentId, v),
     })
+
+    console.log('POST', props.post)
 </script>

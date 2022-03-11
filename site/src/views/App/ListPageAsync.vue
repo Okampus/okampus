@@ -94,6 +94,7 @@
                     }
                 })
                 .catch((err) => {
+                    console.log('ListPage Error: ', err)
                     emitter.emit('error-route', { code: getStatus(err.response) })
                 })
         }

@@ -29,6 +29,10 @@ export const useThreadsStore = defineStore('threads', {
         initThread({ threadId, thread = null }) {
             thread = thread ?? this.threads.find(sameThread(threadId))
 
+            thread.participants = thread.participants.map((participant) => ({
+                ...participant,
+                fullname: participant.firstname + ' ' + participant.lastname,
+            }))
             thread.getUser = (userId) =>
                 thread.participants?.find((participant) => participant.userId === userId)
 
@@ -126,7 +130,11 @@ export const useThreadsStore = defineStore('threads', {
         },
         replaceThreads(threads, pageInfo) {
             if (threads.length) {
-                this.threads = threads
+                this.threads = threads.map((thread) => {
+                    thread.post.author.fullname =
+                        thread.post.author.firstname + ' ' + thread.post.author.lastname
+                    return thread
+                })
             }
             return { items: threads, pageInfo }
         },
