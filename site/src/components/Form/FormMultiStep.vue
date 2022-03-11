@@ -11,7 +11,7 @@
                         class="flex justify-center items-center w-12 h-12 transition duration-500 ease-in-out"
                         :class="i <= currentStep ? 'text-blue-500' : 'text-gray-500'"
                     >
-                        <font-awesome-icon size="lg" :icon="step.icon" />
+                        <i class="text-lg fas" :class="[`fa-${step.icon}`]" />
                     </div>
                     <div
                         class="flex-auto border-t-2 transition duration-500 ease-in-out"

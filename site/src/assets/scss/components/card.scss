@@ -19,3 +19,7 @@
     @include get-color('bg', 2);
     @apply shadow-md rounded-lg py-4 px-6;
 }
+
+.card-tip {
+    @apply flex gap-1 p-2 rounded-md bg-0;
+}

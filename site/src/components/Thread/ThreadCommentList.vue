@@ -1,4 +1,5 @@
 <template>
+    <!-- TODO: Refactor component -->
     <div>
         <template v-for="(comment, i) in shownComments" :key="i">
             <div
@@ -7,7 +8,7 @@
                 :class="{ 'highlight-active': comment.active }"
             >
                 <div
-                    class="flex shrink-0 gap-0.5 items-center w-[2rem] cursor-pointer text-5"
+                    class="flex shrink-0 gap-0.5 items-center w-[2.5rem] cursor-pointer text-5"
                     @click="
                         comment.interactions.voted === 1
                             ? threads.voteContent(comment.contentId, 0)
@@ -22,33 +23,23 @@
                     {{ comment.upvotes }}
                 </div>
 
-                <div class="w-[calc(100%-2rem)]">
+                <div class="w-[calc(100%-2.5rem)]">
                     <div v-if="comment.hidden" class="flex gap-1 items-center text-yellow-500">
-                        <font-awesome-icon icon="exclamation-triangle" />
+                        <i class="fas fa-eye-slash" />
                         <div>
-                            {{ capitalize(contentTypeDemonstrative[comment.kind][i18n.global.locale]) }}
-                            est masqué{{
-                                i18n.global.locale == 'fr' &&
-                                contentTypeDemonstrative[comment.kind].frFeminine
-                                    ? 'e'
-                                    : ''
-                            }}
+                            {{ capitalize(getContentName(comment.kind)) }}
+                            masqué{{ isContentFeminine(comment.kind) ? 'e' : '' }}
                         </div>
                     </div>
-                    <span class="w-full">
-                        <!-- Violating props immutability? -->
-                        <TipTapEditableRender
+                    <span class="flex flex-wrap items-center w-full">
+                        <MdEditableRender
                             v-model:edit="editing[i].value"
                             :content="comment.body"
                             class="p-0 mr-1.5"
                             :class="[!comment.editing ? 'render-inline' : 'w-full']"
                             v-bind="editorConfig"
-                            @send="
-                                threads.updateContent(threadId, {
-                                    contentId: comment.contentId,
-                                    body: $event,
-                                })
-                            "
+                            :uid="`comment-${threadId}-${comment.contentId}`"
+                            @send="editComment($event)"
                         />
                         <span v-if="!comment.editing" class="inline-flex gap-1 items-center tracking-tight">
                             <span class="link-blue">{{ comment._author.fullname }}</span>
@@ -70,9 +61,9 @@
                                             :arrow="true"
                                             offset-distance="3"
                                         >
-                                            <font-awesome-icon :icon="action.icon" :class="action.class" />
+                                            <i :class="[action.icon, action.class]" />
                                             <template #content>
-                                                {{ action.name }}
+                                                <div class="card-tip">{{ action.name }}</div>
                                             </template>
                                         </Popper>
                                     </div>
@@ -80,9 +71,8 @@
                                         class="text-sm rounded-lg cursor-pointer comment-ellipsis-dropdown text-5"
                                     >
                                         <DropDownInput :buttons="hiddenActions(i)">
-                                            <font-awesome-icon
-                                                icon="ellipsis-h"
-                                                class="py-1 px-2 comment-ellipsis-dropdown-icon"
+                                            <i
+                                                class="py-1 px-2 fas fa-ellipsis-h comment-ellipsis-dropdown-icon"
                                             />
                                         </DropDownInput>
                                     </div>
@@ -99,7 +89,7 @@
             class="mb-1 ml-1 text-sm text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer"
             @click="toggleComments"
         >
-            <div v-if="commentsShow" class="text-xs">Cacher les commentaires</div>
+            <div v-if="showAll" class="text-xs">Cacher les commentaires</div>
             <div v-else>
                 Voir <strong>{{ comments.length - maxCommentsShow }}</strong>
                 {{ comments.length - maxCommentsShow > 1 ? 'commentaires' : 'commentaire' }}
@@ -107,48 +97,41 @@
         </div>
 
         <div v-if="commenting" class="flex mt-2">
-            <TipTapEditor
+            <MdEditor
                 v-model="newComment"
+                :uid="`new-comment-${threadId}-${parentId}`"
                 class="w-full"
                 v-bind="editorConfig"
                 :sendable="true"
                 :cancellable="true"
-                @send="threads.addContent(threadId, { parentId, body: newComment }, COMMENT)"
+                @send="sendComment"
                 @cancel="commenting = false"
             />
         </div>
-
         <div
-            v-else
-            class="group flex gap-2 items-center pl-2 mt-2 w-fit cursor-pointer"
+            v-else-if="parentVisible"
+            class="group flex gap-2 items-center mt-2 w-fit cursor-pointer"
             :class="actionClass"
             @click="commenting = true"
         >
-            <font-awesome-icon
-                :icon="['far', 'comment-alt']"
-                class="group-hover:text-gray-700 dark:group-hover:text-gray-300 text-5"
-            />
+            <i class="group-hover:text-gray-700 dark:group-hover:text-gray-300 far fa-comment-alt text-5" />
             <p class="text-sm group-hover:text-gray-700 dark:group-hover:text-gray-300 text-5">Commenter</p>
         </div>
     </div>
 </template>
 
 <script setup>
-    import TipTapEditableRender from '@/components/TipTap/TipTapEditableRender.vue'
-    import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
+    import MdEditableRender from '@/components/App/Editor/MdEditableRender.vue'
+    import MdEditor from '@/components/App/Editor/MdEditor.vue'
 
     import DropDownInput from '@/components/Input/DropDownInput.vue'
     import UpvoteIcon from '@/components/App/Icon/UpvoteIcon.vue'
 
     import Popper from 'vue3-popper'
 
-    import { defaultTipTapText } from '@/utils/tiptap'
-
-    import { i18n } from '@/shared/modules/i18n'
-
     import { edit, removeContent, favorite, getLinkContent, report } from '@/shared/actions/thread.actions'
     import { COMMENT } from '@/shared/types/content-kinds.enum'
-    import { contentTypeDemonstrative } from '@/shared/types/content-kinds.enum'
+    import { isContentFeminine, getContentName } from '@/shared/types/content-kinds.enum'
 
     import { useAuthStore } from '@/store/auth.store'
     import { useThreadsStore } from '@/store/threads.store'
@@ -170,6 +153,10 @@
             type: Number,
             required: true,
         },
+        parentVisible: {
+            type: Boolean,
+            default: false,
+        },
         comments: {
             type: Array,
             default: () => [],
@@ -186,12 +173,10 @@
 
     const actions = computed(
         () => (i) =>
-            [edit, removeContent]
-                .map((action) => action(props.comments[i]))
-                .filter((action) => action.condition),
+            [favorite, edit].map((action) => action(props.comments[i])).filter((action) => action.condition),
     )
     const hiddenActions = computed(
-        () => (i) => [favorite, report, getLinkContent].map((action) => action(props.comments[i], true)),
+        () => (i) => [removeContent, report, getLinkContent].map((action) => action(props.comments[i], true)),
     )
 
     const maxCommentsShow = 2
@@ -219,7 +204,20 @@
         ),
     )
     const commenting = ref(false)
-    const newComment = ref(defaultTipTapText)
+    const newComment = ref('')
+
+    const sendComment = () => {
+        threads.addContent(props.threadId, { parentId: props.parentId, body: newComment.value }, COMMENT)
+        newComment.value = ''
+        commenting.value = false
+    }
+
+    const editComment = (body) => {
+        threads.updateContent(props.threadId, {
+            parentId: props.parentId,
+            body,
+        })
+    }
 
     const toggleComments = () => {
         showAll.value = !showAll.value

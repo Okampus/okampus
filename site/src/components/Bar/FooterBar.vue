@@ -19,11 +19,7 @@
                                 class="flex text-3xl lg:h-5 lg:text-xl flex-start"
                                 :href="link.href"
                             >
-                                <font-awesome-icon
-                                    :icon="link.icon"
-                                    :class="link.iconClasses ?? ''"
-                                    class="hover-icon"
-                                />
+                                <i :class="link.icon" class="hover-icon" />
                             </a>
                         </div>
                         <div class="hidden flex-col gap-2.5 lg:flex">
@@ -87,13 +83,13 @@
         </div>
 
         <!-- Copyright -->
-        <div class="flex gap-2 justify-center items-center text-0">
-            <div class="flex flex-col gap-1.5 items-center xs:flex-row">
+        <div class="flex justify-center items-center text-0">
+            <div class="flex flex-col gap-2 items-center xs:flex-row">
                 <p>Made with</p>
-                <p class="text-2xl xs:text-xl">❤️</p>
+                <i class="hover:text-red-500 transition-transform hover:scale-125 fas fa-heart" />
                 <p>by Horizon</p>
-                <div class="flex gap-1">
-                    <p><font-awesome-icon class="text-sm" :icon="['far', 'copyright']" /></p>
+                <div class="flex gap-1 items-center">
+                    <i class="pb-[1px] text-sm far fa-copyright" />
                     <p>{{ new Date().getFullYear() }}</p>
                 </div>
             </div>
@@ -118,6 +114,10 @@
 
         &:hover {
             transform: scale(1.2);
+
+            .dark & {
+                text-shadow: 0 0 15px #fff;
+            }
         }
     }
 </style>

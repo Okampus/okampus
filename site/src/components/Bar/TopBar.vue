@@ -5,7 +5,7 @@
         <div class="flex items-center w-sidebar-lg">
             <div class="flex shrink-0 justify-center w-sidebar-sm">
                 <button aria-label="Open Menu" @click="$emit('toggle-side-bar')">
-                    <font-awesome-icon icon="bars" class="text-2xl text-0" />
+                    <i class="text-2xl fas fa-bars text-0" />
                 </button>
             </div>
             <AppLogo />
@@ -19,7 +19,7 @@
             <button class="button" @click="emitter.emit('login')">
                 <div class="flex items-center">
                     <p class="mr-2 uppercase text-md">Se connecter</p>
-                    <font-awesome-icon icon="sign-in-alt" class="text-lg" />
+                    <i class="text-lg fas fa-sign-in-alt" />
                 </div>
             </button>
         </div>

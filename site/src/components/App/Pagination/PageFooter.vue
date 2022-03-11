@@ -47,7 +47,8 @@
                             class="inline-flex relative items-center p-2 h-10 text-sm font-medium rounded-md"
                         >
                             <span class="sr-only">Précédent</span>
-                            <font-awesome-icon icon="chevron-left" class="w-5 h-5" aria-hidden="true" />
+
+                            <i class="w-5 h-5 fas fa-chevron-left" />
                         </router-link>
                     </span>
 
@@ -85,7 +86,7 @@
                             ]"
                         >
                             <span class="sr-only">Suivant</span>
-                            <font-awesome-icon icon="chevron-right" class="w-5 h-5" aria-hidden="true" />
+                            <i class="w-5 h-5 fas fa-chevron-right" />
                         </router-link>
                     </span>
                 </nav>

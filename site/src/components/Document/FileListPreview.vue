@@ -24,7 +24,7 @@
                         "
                     >
                         <td class="p-2 pl-4 rounded-l-xl">
-                            <font-awesome-icon size="2x" icon="folder"></font-awesome-icon>
+                            <i class="text-2xl fas fa-folder" />
                         </td>
                         <td class="p-2">
                             {{ contextList[folder.context](folder.title) }}
@@ -68,11 +68,7 @@
                                         class="absolute -top-3 right-0"
                                     >
                                         <Popper :hover="true" :arrow="true">
-                                            <font-awesome-icon
-                                                class="text-blue-500 cursor-auto"
-                                                icon="certificate"
-                                                size="xs"
-                                            ></font-awesome-icon>
+                                            <i class="text-xs text-blue-500 cursor-auto fas fa-certificate" />
                                             <template #content>
                                                 <div
                                                     class="p-2 px-3 whitespace-nowrap rounded shadow-lg bg-1"
@@ -105,7 +101,7 @@
                                 class="flex invisible group-hover:visible justify-center items-center hover:cursor-pointer"
                             >
                                 <DropDownInput :buttons="dropDownButtons(file)">
-                                    <font-awesome-icon icon="ellipsis-h" />
+                                    <i class="fas fa-ellipsis-h" />
                                 </DropDownInput>
                             </div>
                         </td>
@@ -125,7 +121,7 @@
                     "
                 >
                     <div class="flex flex-col gap-1 justify-center items-center">
-                        <font-awesome-icon size="3x" icon="folder"></font-awesome-icon>
+                        <i class="text-3xl fas fa-certificate" />
                         <div class="w-full text-sm text-center truncate">
                             {{ contextList[folder.context](folder.title) }}
                         </div>
@@ -167,7 +163,7 @@
                                     :class="button.class"
                                     @click="button.action()"
                                 >
-                                    <font-awesome-icon :icon="button.icon" />
+                                    <i class="fas" :class="`fa-${button.icon}`" />
                                     <p>{{ button.name }}</p>
                                 </div>
                             </div>

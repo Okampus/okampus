@@ -63,12 +63,11 @@
             input-placeholder="Rechercher une ressource sur Horizon Efrei..."
             @click.prevent="showSearchbar = true"
         >
-            <font-awesome-icon icon="search" class="ml-0.5" />
+            <i class="ml-0.5 fas fa-search" />
         </InputWithIcon>
 
-        <font-awesome-icon
-            class="block float-right text-2xl cursor-pointer md:hidden"
-            icon="search"
+        <i
+            class="block float-right text-2xl cursor-pointer md:hidden fas fa-search"
             @click="showSearchbar = true"
         />
         {{ $refs.modal }}

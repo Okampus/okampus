@@ -20,13 +20,13 @@
                     class="flex gap-1 my-auto ml-1 text-blue-500 hover:underline"
                     :to="`/users/${user.userId}`"
                 >
-                    <font-awesome-icon icon="external-link-alt" />
+                    <i class="fas fa-external-link-alt" />
                     <div>Voir le profil</div>
                 </router-link>
             </div>
             <div class="flex gap-4 mt-2 text-sm text-5">
                 <div class="flex gap-2">
-                    <font-awesome-icon icon="trophy" />
+                    <i class="fas fa-trophy" />
                     <div>{{ user.points }}</div>
                 </div>
             </div>

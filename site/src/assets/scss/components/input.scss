@@ -33,15 +33,19 @@
     line-height: 1.43;
 }
 
-%input,
-.input {
-    @extend %input-flat;
-
+%input-shadow,
+.input-shadow {
     box-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 15%), 0 2px 0 hsl(0deg 0% 100% / 40%);
 
     .dark & {
         box-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 40%), 0 2px 0 hsl(0deg 0% 100% / 15%);
     }
+}
+
+%input,
+.input {
+    @extend %input-flat;
+    @extend %input-shadow;
 }
 
 input[type='password']:not(:placeholder-shown) {

@@ -41,7 +41,7 @@
         <div class="flex flex-col-reverse lg:flex-row lg:space-y-0 lg:space-x-2">
             <div class="lg:w-2/3 card blog-editor">
                 <strong> Éditeur d'article </strong>
-                <TipTapEditor :char-count="100000" />
+                <MdEditor uid="new-blog" :char-count="10000" />
             </div>
             <!-- Sidebar -->
             <div class="mb-2 space-y-2 lg:w-1/3 card">
@@ -120,14 +120,14 @@
     import { users } from '@/fake/users'
 
     import TagInput from '@/components/Input/TagInput.vue'
-    import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
+    import MdEditor from '@/components/App/Editor/MdEditor.vue'
     import UserAvatar from '@/components/User/UserAvatar.vue'
 
     export default {
         name: 'BlogPostForm',
         components: {
-            TipTapEditor,
             TagInput,
+            MdEditor,
             UserAvatar,
         },
         data() {

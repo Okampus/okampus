@@ -13,7 +13,7 @@
                         })
                     "
                 >
-                    <font-awesome-icon :icon="['fas', 'chevron-left']" class="text-0" />
+                    <i class="fas fa-chevron-left text-0" />
                 </div>
 
                 <div class="w-10 h-full bg-gradient-to-r from-1" />
@@ -35,7 +35,7 @@
                 <div class="w-10 h-full bg-gradient-to-r from-transparent to-1" />
 
                 <div class="flex justify-center items-center h-full cursor-pointer bg-1" @click="scrollTo()">
-                    <font-awesome-icon :icon="['fas', 'chevron-right']" class="text-0" />
+                    <i class="fas fa-chevron-right text-0" />
                 </div>
             </div>
         </Transition>

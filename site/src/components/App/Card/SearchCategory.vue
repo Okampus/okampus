@@ -1,14 +1,14 @@
 <template>
     <div v-if="items.length != 0">
         <div class="flex gap-2 items-center my-2 text-lg">
-            <font-awesome-icon :icon="indexType.titleIcon" />
+            <i class="fas" :class="`fa-${indexType.titleIcon}`" />
 
             <div class="text-sm text-1">
                 {{ indexType.title }}
             </div>
 
             <div v-if="items.length > 5" @click="resultExtended = !resultExtended">
-                <font-awesome-icon :icon="resultExtended ? 'chevron-up' : 'chevron-down'" />
+                <i class="fas" :class="resultExtended ? 'fa-chevron-up' : 'fa-chevron-down'" />
             </div>
         </div>
         <div class="flex flex-col gap-2">
@@ -21,7 +21,7 @@
                 >
                     <div class="flex flex-col gap-1 p-2 rounded-lg">
                         <div class="flex gap-2 items-center">
-                            <font-awesome-icon :icon="indexType.resultIcon(result)" />
+                            <i class="fas" :class="`fa-${indexType.resultIcon(result)}`" />
 
                             <div class="flex flex-col">
                                 <div class="line-clamp-1">

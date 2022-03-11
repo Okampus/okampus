@@ -10,7 +10,7 @@
             <div class="overflow-hidden z-10 p-4 mt-2 max-w-md max-h-md card-0">
                 <div class="mb-2">
                     <BottomBorderInput v-model="search" :input-placeholder="inputPlaceholder">
-                        <font-awesome-icon icon="search" />
+                        <i class="fas fa-search" />
                     </BottomBorderInput>
                 </div>
                 <div class="flex overflow-scroll flex-col space-y-1">

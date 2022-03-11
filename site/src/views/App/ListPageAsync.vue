@@ -35,8 +35,8 @@
 
     const results = reactive({
         items: [],
-        totalPages: null,
-        totalItemCount: null,
+        totalPages: 0,
+        totalItemCount: 0,
     })
 
     const props = defineProps({

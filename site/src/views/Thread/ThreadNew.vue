@@ -26,8 +26,8 @@
             <div>
                 <div class="label-title">
                     Type de post
-                    <Popper :hover="true">
-                        <font-awesome-icon icon="info-circle" class="ml-1 text-sm text-slate-400" />
+                    <Popper :hover="true" placement="right">
+                        <i class="ml-1 text-sm text-slate-400 fas fa-info-circle" />
                         <template #content>
                             <div class="font-normal popover">
                                 <ul>
@@ -55,12 +55,13 @@
             <div>
                 <div class="label-title">Contenu</div>
                 <div>
-                    <TipTapEditor
+                    <MdEditor
                         ref="editor"
                         v-model="formState.body"
+                        uid="new-thread"
                         name="editor"
                         mode="json"
-                        :char-count="{ limit: editorCharLimit[1], showAt: 9000 }"
+                        :char-count="editorCharLimit[1]"
                         placeholder="Décris le plus précisément ce que tu souhaites faire et comment nous pouvons t'aider !"
                         @input="v$.body.$touch"
                     >
@@ -70,7 +71,7 @@
                                 :error="`Une description de post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
                             />
                         </template>
-                    </TipTapEditor>
+                    </MdEditor>
                 </div>
             </div>
 
@@ -78,7 +79,7 @@
                 <div class="label-title">
                     Tags
                     <Popper :hover="true">
-                        <font-awesome-icon icon="info-circle" class="ml-1 text-sm text-slate-400" />
+                        <i class="ml-1 text-sm text-slate-400 fas fa-info-circle" />
                         <template #content>
                             <div class="max-w-sm font-normal popover">
                                 Ajoute des tags décrivant le sujet de ton post <br />
@@ -133,8 +134,8 @@
     import AppError from '@/components/App/AppError.vue'
 
     import SelectInput from '@/components/Input/SelectInput.vue'
+    import MdEditor from '@/components/App/Editor/MdEditor.vue'
     import TagInput from '@/components/Input/TagInput.vue'
-    import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
 
     import Popper from 'vue3-popper'
 
@@ -147,12 +148,11 @@
     import threadTypes from '@/shared/types/thread-types.enum'
     import tagErrorEnum from '@/shared/errors/tags-error.enum'
 
-    import { defaultTipTapText } from '@/utils/tiptap'
     import { useThreadsStore } from '@/store/threads.store'
     import { i18n } from '@/shared/modules/i18n'
 
     const titleCharLimit = [10, 100]
-    const editorCharLimit = [50, 1000]
+    const editorCharLimit = [10, 10000]
     const minTags = 2
 
     const editor = ref(null)
@@ -161,7 +161,7 @@
     const formState = reactive({
         title: '',
         type: '',
-        body: defaultTipTapText,
+        body: '',
         tags: [],
     })
 
@@ -176,9 +176,10 @@
             between: between(0, threadTypes.length - 1),
         },
         body: {
-            editorCharCount: () =>
-                editor.value.getCharCount() > editorCharLimit[0] &&
-                editor.value.getCharCount() < editorCharLimit[1],
+            editorCharCount: () => {
+                const charCount = editor.value.charCount
+                return charCount > editorCharLimit[0] && charCount < editorCharLimit[1]
+            },
         },
         tags: { tagsLength: (tags) => tags.length >= minTags },
     }
@@ -188,7 +189,7 @@
         () =>
             formState.title !== '' ||
             formState.type !== '' ||
-            formState.body !== defaultTipTapText ||
+            formState.body !== '' ||
             formState.tags.length !== 0,
     )
 

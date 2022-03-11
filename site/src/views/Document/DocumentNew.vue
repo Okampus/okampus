@@ -149,9 +149,9 @@
                                             class="flex grow gap-2 justify-between items-center p-2 rounded-lg"
                                         >
                                             <div class="flex gap-2 items-center text-1">
-                                                <font-awesome-icon
-                                                    :icon="iconList(slotValue.item.code)"
-                                                    class="text-lg"
+                                                <i
+                                                    class="text-lg fas"
+                                                    :class="`fa-${iconList(slotValue.item.code)}`"
                                                 />
                                                 <div>
                                                     {{ subjectYear[slotValue.item.schoolYear] }}
@@ -161,9 +161,8 @@
                                                     {{ slotValue.item.code }}
                                                 </div>
                                             </div>
-                                            <font-awesome-icon
-                                                icon="times"
-                                                class="text-red-500 cursor-pointer"
+                                            <i
+                                                class="text-red-500 cursor-pointer fas fa-times"
                                                 @click="slotValue.deleteItem(slotValue.item)"
                                             />
                                         </div>
@@ -185,10 +184,7 @@
                                                     })
                                                 "
                                             >
-                                                <font-awesome-icon
-                                                    :icon="iconList(item.code)"
-                                                    class="text-lg"
-                                                />
+                                                <i class="text-lg fas" :class="`fa-${iconList(item.code)}`" />
                                                 <div>
                                                     {{ subjectYear[item.schoolYear] }}
                                                     {{ item.name }}

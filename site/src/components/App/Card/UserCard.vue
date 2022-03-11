@@ -12,9 +12,9 @@
         </div>
         <div class="flex flex-col justify-center items-center space-y-2">
             <router-link to="/me/profile">
-                <font-awesome-icon icon="cog" class="cursor-pointer" />
+                <i class="cursor-pointer fas fa-cog" />
             </router-link>
-            <font-awesome-icon icon="sign-out-alt" class="cursor-pointer" @click="emitter.emit('logout')" />
+            <i class="cursor-pointer fas fa-sign-out-alt" @click="emitter.emit('logout')" />
         </div>
     </div>
 </template>

@@ -12,7 +12,7 @@
     >
         <div v-if="smallScreen && showUncollapsed" class="flex shrink-0 items-center bg-navbar h-topbar">
             <button aria-label="Close Menu" class="w-sidebar-sm" @click="emit('toggle-side-bar')">
-                <font-awesome-icon icon="times" class="text-2xl text-0" />
+                <i class="text-2xl fas fa-times text-0" />
             </button>
             <AppLogo />
         </div>
@@ -41,7 +41,7 @@
                                 class="flex items-center w-full"
                                 :class="[showUncollapsed ? 'flex-row ml-3 gap-4' : 'flex-col mb-1']"
                             >
-                                <font-awesome-icon :icon="link.icon" class="shrink-0 text-xl" />
+                                <i :class="`fas fa-${link.icon}`" class="shrink-0 text-xl" />
                                 <span v-if="showUncollapsed" class="text-base tracking-normal">{{
                                     link.textLarge
                                 }}</span>

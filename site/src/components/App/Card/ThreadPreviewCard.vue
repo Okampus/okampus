@@ -13,22 +13,22 @@
                     {{ thread.solved ? 'Résolu' : 'Non-Résolu' }}
                 </div>
                 <div class="flex gap-2 items-center pl-1">
-                    <font-awesome-icon icon="calendar" />
+                    <i class="fas fa-calendar" />
                     <div>{{ timeAgo(thread.createdAt) }}</div>
                 </div>
                 <div
                     v-if="thread.createdAt !== thread.post.lastEdit.createdAt"
                     class="flex gap-2 items-center pl-1"
                 >
-                    <font-awesome-icon icon="history" />
+                    <i class="fas fa-history" />
                     <div>{{ timeAgo(thread.post.lastEdit.createdAt) }}</div>
                 </div>
                 <div
                     v-if="thread.post.hidden"
                     class="flex gap-2 items-center text-yellow-300 dark:text-yellow-600"
                 >
-                    <font-awesome-icon icon="exclamation-triangle" />
-                    <div>Ce thread est masqué</div>
+                    <i class="fas fa-eye-slash" />
+                    <div>Thread masqué</div>
                 </div>
             </span>
 
@@ -41,7 +41,7 @@
                 </router-link>
 
                 <p class="mt-1 text-justify line-clamp-2 text-2">
-                    {{ extractTextFromTipTapJSON(JSON.parse(thread.post.body)) }}
+                    {{ thread.post.body }}
                 </p>
             </div>
 
@@ -71,7 +71,6 @@
 
     import threadTypes from '@/shared/types/thread-types.enum'
 
-    import { extractTextFromTipTapJSON } from '@/utils/tiptap'
     import { timeAgo } from '@/utils/timeAgo'
 
     defineProps({

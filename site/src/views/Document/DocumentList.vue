@@ -42,7 +42,7 @@
             <div class="flex justify-between">
                 <div>
                     <Popper placement="left">
-                        <font-awesome-icon icon="sliders-h" />
+                        <i class="fas fa-sliders-h" />
                         <template #content>
                             <div class="flex flex-col gap-2 card">
                                 <div>Ordre des dossiers</div>
@@ -55,10 +55,9 @@
                                         <div>
                                             {{ filter }}
                                         </div>
-                                        <font-awesome-icon
+                                        <i
                                             v-if="i != filterList.length - 1"
-                                            icon="chevron-right"
-                                            size="xs"
+                                            class="text-xs fas fa-chevron-right"
                                         />
                                     </div>
                                 </div>
@@ -67,7 +66,7 @@
                     </Popper>
                 </div>
                 <div @click="showFilePreview = !showFilePreview">
-                    <font-awesome-icon icon="info"></font-awesome-icon>
+                    <i class="fas fa-info" />
                 </div>
             </div>
             <div class="flex gap-4 justify-center">
@@ -77,7 +76,7 @@
                         :class="[docStyleList ? 'bg-2' : '']"
                         @click="docStyleList = true"
                     >
-                        <font-awesome-icon icon="list" />
+                        <i class="fas fa-list" />
                     </div>
 
                     <div
@@ -85,7 +84,7 @@
                         :class="{ 'bg-2': !docStyleList }"
                         @click="docStyleList = false"
                     >
-                        <font-awesome-icon icon="th" />
+                        <i class="fas fa-th" />
                     </div>
                 </div>
                 <input
@@ -94,8 +93,8 @@
                     placeholder="Rechercher un fichier"
                 />
                 <div class="flex gap-2 items-center">
-                    <font-awesome-icon
-                        icon="download"
+                    <i
+                        class="fas fa-download"
                         :class="[filePreview ? 'text-blue-500 cursor-pointer' : '']"
                         @click="
                             $store.dispatch('files/downloadFile', {
@@ -154,13 +153,13 @@
                                     {{ file.file.name }}
                                 </div>
                                 <div class="cursor-pointer" @click.prevent="updateFileGroup(file)">
-                                    <font-awesome-icon icon="times" class="text-red-500" />
+                                    <i class="text-red-500 fas fa-times" />
                                 </div>
                             </div>
                             <div class="flex gap-2 justify-center items-center mt-2 w-full">
                                 <div class="text-center button" @click="downloadFileGroup">
                                     <div class="flex gap-2 justify-center items-center">
-                                        <font-awesome-icon icon="arrow-down" />
+                                        <i class="fas fa-arrow-down" />
                                         <div>Télécharger</div>
                                     </div>
                                 </div>

@@ -15,9 +15,9 @@
                     @keydown.enter="$refs.inputFile.click()"
                     @click="$refs.inputFile.click()"
                 >
-                    <font-awesome-icon
-                        :icon="dragover ? 'cloud-download-alt' : 'cloud-upload-alt'"
-                        class="text-xl"
+                    <i
+                        class="text-xl fas"
+                        :class="dragover ? 'fa-cloud-download-alt' : 'fa-cloud-upload-alt'"
                     />
                     <div>
                         <span class="text-blue-500 hover:underline"> Cliquez </span> ou glissez vos
@@ -52,7 +52,7 @@
                         <div class="flex justify-between items-center p-2 w-full h-5/24">
                             {{ formatBytes(file.size, 0) }}
                             <button title="Enlever le fichier" @click.prevent="removeFile(file)">
-                                <font-awesome-icon icon="times" class="text-red-500" />
+                                <i class="text-red-500 fas fa-times" />
                             </button>
                         </div>
                     </div>

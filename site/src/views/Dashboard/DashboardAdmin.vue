@@ -169,14 +169,14 @@
                 attrs: (report) => ({ 'content': report.reason }),
                 slot: () => {},
                 value: (report) => report.reason,
-                comp: ['tip-tap-renderer', '@/components/TipTap/TipTapRenderer.vue'],
+                comp: ['md-renderer', '@/components/App/Editor/MdRenderer.vue'],
                 name: 'Raison',
             },
             contentId: {
                 attrs: (report) => ({ 'content': report?.content?.body }),
                 slot: () => {},
                 value: (report) => report.content.body,
-                comp: ['tip-tap-renderer', '@/components/TipTap/TipTapRenderer.vue'],
+                comp: ['md-renderer', '@/components/App/Editor/MdRenderer.vue'],
                 name: 'Contenu lié',
             },
             date: {

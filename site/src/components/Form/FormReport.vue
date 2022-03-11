@@ -5,9 +5,11 @@
                 <div class="text-xl">Signaler ce contenu</div>
                 <div class="label-title">Raison</div>
 
-                <TipTapEditor
+                <!-- TODO: Change editor to basic textarea ? -->
+                <MdEditor
                     v-model="state.reason"
-                    :char-count="{ limit: 1000, showAt: 900 }"
+                    uid="new-report"
+                    :char-count="1000"
                     placeholder="Décris la raison de ton signalement..."
                     @input="v$.reason.$touch"
                 >
@@ -17,7 +19,7 @@
                             error="La raison de ton signalement doit faire entre 10 et 1000 caractères."
                         />
                     </template>
-                </TipTapEditor>
+                </MdEditor>
                 <button
                     class="font-bold text-blue-500"
                     @click="
@@ -37,7 +39,7 @@
 <script setup>
     import AppModal from '@/components/App/AppModal.vue'
     import AppError from '@/components/App/AppError.vue'
-    import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
+    import MdEditor from '@/components/App/Editor/MdEditor.vue'
 
     import { NOOP } from '@vue/shared'
     import useVuelidate from '@vuelidate/core'

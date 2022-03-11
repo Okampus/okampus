@@ -13,7 +13,7 @@
                     </p>
                     <!-- TODO: find parent post to link it -->
                     <!-- <router-link :to="`/threads/${reply.post.postId}`" class="mr-4 text-lg line-clamp-2 text-0"> -->
-                    {{ extractTextFromTipTapJSON(JSON.parse(reply.body)) }}
+                    {{ reply.body }}
                     <!-- </router-link> -->
                 </div>
                 <div class="flex gap-2 items-center">
@@ -65,7 +65,6 @@
 
 <script>
     import { timeAgo } from '@/utils/timeAgo'
-    import { extractTextFromTipTapJSON } from '@/utils/tiptap'
 
     export default {
         components: {},
@@ -112,7 +111,6 @@
         },
         methods: {
             timeAgo,
-            extractTextFromTipTapJSON,
             deleteFavorite() {
                 this.$store.dispatch('user/deleteFavorite', this.reply.contentId)
             },

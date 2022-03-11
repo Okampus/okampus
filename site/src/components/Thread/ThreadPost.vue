@@ -1,9 +1,9 @@
 <template>
     <ThreadCommentable :content="post">
         <template #content>
-            <!-- Violating props immutability? -->
-            <TipTapEditableRender
+            <MdEditableRender
                 v-model:edit="editing"
+                :uid="`post-${post.contentId}`"
                 :content="body"
                 @send="
                     threads.updateContent(post.contentMasterId, { contentId: post.contentId, body: $event })
@@ -12,16 +12,18 @@
         </template>
 
         <template #actions>
-            <div
-                v-for="(action, i) in actions"
-                :key="i"
-                class="group flex gap-1 items-center p-2 rounded-lg transition cursor-pointer text-5"
-                @click="action.action"
-            >
-                <font-awesome-icon :icon="action.icon" :class="action.class" />
-                <p :class="action.class" class="text-sm">
-                    {{ action.name }}
-                </p>
+            <div v-if="actionsShown.length" class="flex gap-4 items-center mt-5">
+                <div
+                    v-for="(action, i) in actionsShown"
+                    :key="i"
+                    class="group flex gap-1.5 items-center rounded-lg transition cursor-pointer text-5"
+                    @click="action.action"
+                >
+                    <i :class="[action.icon, action.class]" />
+                    <p :class="action.class" class="text-sm">
+                        {{ action.name }}
+                    </p>
+                </div>
             </div>
         </template>
     </ThreadCommentable>
@@ -29,7 +31,7 @@
 
 <script setup>
     import ThreadCommentable from '@/components/Thread/ThreadCommentable.vue'
-    import TipTapEditableRender from '@/components/TipTap/TipTapEditableRender.vue'
+    import MdEditableRender from '@/components/App/Editor/MdEditableRender.vue'
 
     import { edit, favorite, removeContent } from '@/shared/actions/thread.actions'
     import { useThreadsStore } from '@/store/threads.store'
@@ -45,11 +47,9 @@
     const body = ref(props.post.body)
 
     const threads = useThreadsStore()
-
-    const actions = computed(() =>
-        [favorite, edit, removeContent]
-            .map((action) => action(props.post))
-            .filter((action) => action.condition),
+    const actions = [favorite, edit, removeContent]
+    const actionsShown = computed(() =>
+        actions.map((action) => action(props.post)).filter((action) => action.condition),
     )
     const editing = computed({
         get: () => props.post.editing,

@@ -11,7 +11,6 @@ import axios from '@/shared/config/axios.config'
 import { emitter } from '@/shared/modules/emitter'
 import { i18n } from '@/shared/modules/i18n'
 
-import FontAwesomeIcon from '@/fontawesome-icons'
 import router from '@/router/index'
 import store from '@/old-store'
 
@@ -30,8 +29,6 @@ app.config.errorHandler = (error, vm, info) => {
     })
     console.error(error, info)
 }
-
-app.component('FontAwesomeIcon', FontAwesomeIcon)
 
 // TODO: remove injection of modules in favor of composition API
 app.use(store).use(createPinia()).use(router).use(i18n).use(InstantSearch).use(VueCookies)

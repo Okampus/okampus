@@ -9,14 +9,14 @@
                     :class="{ active: tabs[tab].id === t.id }"
                     @click="updateTab(i)"
                 >
-                    <font-awesome-icon :icon="t.icon" />
+                    <i class="fas" :class="`fa-${t.icon}`" />
                     <p>{{ t.name }}</p>
                 </div>
             </template>
             <template v-else>
                 <slot v-for="(t, i) in tabs" :key="i" class="w-full" @click="updateTab(i)">
                     <p>{{ t.name }}</p>
-                    <font-awesome-icon :icon="t.icon" />
+                    <i class="fas" :class="`fa-${t.icon}`" />
                 </slot>
             </template>
         </div>

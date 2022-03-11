@@ -49,15 +49,10 @@
                         :modified-at="content.lastEdit.createdAt"
                     />
                     <div v-if="content.hidden" class="flex gap-1 items-center ml-4 text-yellow-500">
-                        <font-awesome-icon icon="exclamation-triangle" />
+                        <i class="fas fa-eye-slash" />
                         <div>
-                            {{ capitalize(contentTypeDemonstrative[content.kind][i18n.global.locale]) }}
-                            est masqué{{
-                                i18n.global.locale == 'fr' &&
-                                contentTypeDemonstrative[content.kind].frFeminine
-                                    ? 'e'
-                                    : ''
-                            }}
+                            {{ capitalize(getContentDemonstrative(content.kind)) }}
+                            est masqué{{ isContentFeminine(content.kind) ? 'e' : '' }}
                         </div>
                     </div>
                 </div>
@@ -68,7 +63,7 @@
                         class="group flex gap-1 items-center px-1 rounded-lg transition cursor-pointer"
                         @click="action.action"
                     >
-                        <font-awesome-icon :icon="action.icon" :class="action.class" />
+                        <i class="fas" :class="[`fa-${action.icon}`, action.class]" />
                         <p :class="action.class" class="text-sm">
                             {{ action.name }}
                         </p>
@@ -85,6 +80,7 @@
             <ThreadCommentList
                 :thread-id="content.contentMasterId"
                 :parent-id="content.contentId"
+                :parent-visible="content.isVisible"
                 :comments="content.comments"
                 :action-class="unfocusedContentClass"
             />
@@ -104,9 +100,8 @@
     import { getLinkContent, report } from '@/shared/actions/thread.actions'
     import { computed } from 'vue'
 
-    import { contentTypeDemonstrative } from '@/shared/types/content-kinds.enum'
+    import { getContentDemonstrative, isContentFeminine } from '@/shared/types/content-kinds.enum'
     import { capitalize } from 'lodash'
-    import { i18n } from '@/shared/modules/i18n'
 
     const threads = useThreadsStore()
     const unfocusedContentClass = ['opacity-80', 'content-show-focused']

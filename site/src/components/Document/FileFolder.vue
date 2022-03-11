@@ -3,13 +3,14 @@
         class="flex gap-2 items-center p-1 hover:bg-2-light hover:dark:bg-2-dark rounded"
         @click="emitPath(), toggleChildren()"
     >
-        <font-awesome-icon
-            class="text-1"
-            size="sm"
-            :class="[children.length == 0 ? 'invisible' : '']"
-            :icon="showChildren ? 'chevron-down' : 'chevron-right'"
+        <i
+            class="fas text-1"
+            :class="[
+                children.length == 0 ? 'invisible' : '',
+                showChildren ? 'fa-chevron-down' : 'fa-chevron-right',
+            ]"
         />
-        <font-awesome-icon class="text-1" :icon="'folder'" />
+        <i class="text-1 fas fa-folder" />
 
         <div>
             {{ contextList[context](title) }}

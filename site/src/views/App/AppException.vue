@@ -25,7 +25,7 @@
         </div>
 
         <router-link to="/" class="flex gap-4 items-center mt-20 text-3xl text-blue-600 link-blue">
-            <span>Revenir à l'accueil</span> <font-awesome-icon class="text-lg" icon="arrow-right" />
+            <span>Revenir à l'accueil</span> <i class="text-lg fas fa-arrow-right" />
         </router-link>
     </div>
 </template>

@@ -1,28 +1,34 @@
 <template>
-    <TipTapEditor
+    <MdEditor
         v-if="edit"
-        v-model="body"
+        v-model="editedBody"
         :sendable="sendable"
         :cancellable="cancellable"
-        :editor-buttons="editorButtons"
-        :editor-classes="editorClasses"
         :char-count="charCount"
+        :uid="uid"
         @cancel="cancel"
         @send="send"
     />
-    <TipTapRenderer v-else :content="body" />
+    <MdRenderer v-else :content="body" />
 </template>
 
 <script setup>
-    import TipTapEditor from '@/components/TipTap/TipTapEditor.vue'
-    import TipTapRenderer from '@/components/TipTap/TipTapRenderer.vue'
-    import { defaultEditorButtons, defaultTipTapText } from '@/utils/tiptap'
+    import MdEditor from '@/components/App/Editor/MdEditor.vue'
+    import MdRenderer from '@/components/App/Editor/MdRenderer.vue'
     import { onMounted, ref, watchEffect } from 'vue'
 
     const props = defineProps({
+        uid: {
+            type: String,
+            required: true,
+        },
+        edit: {
+            type: Boolean,
+            default: false,
+        },
         content: {
             type: String,
-            default: defaultTipTapText,
+            required: true,
         },
         cancellable: {
             type: Boolean,
@@ -32,35 +38,19 @@
             type: Boolean,
             default: true,
         },
-        editorButtons: {
-            type: Array,
-            default: defaultEditorButtons,
-        },
-        editorClasses: {
-            type: Array,
-            default: () => ['min-h-20'],
-        },
         charCount: {
             type: [Number, Object],
             default: 0,
         },
-        edit: {
-            type: Boolean,
-            default: false,
-        },
-        emitContent: {
-            type: Boolean,
-            default: false,
-        },
     })
 
     const emit = defineEmits(['cancel', 'send', 'update:content', 'update:edit'])
-    const body = ref(props.content ?? defaultTipTapText)
+    const body = ref(props.content)
+    const editedBody = ref(props.content)
 
     const cancel = () => {
         if (props.cancellable) {
             emit('update:edit', false)
-            body.value = props.content
             emit('cancel')
         }
     }

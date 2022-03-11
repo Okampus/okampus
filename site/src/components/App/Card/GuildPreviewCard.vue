@@ -40,7 +40,7 @@
                     :class="[mini ? 'py-1 px-2 rounded text-xs' : 'py-3 px-4 rounded-md text-sm']"
                     class="flex text-white bg-green-600"
                 >
-                    <font-awesome-icon v-if="mini" icon="plus" />
+                    <i v-if="mini" class="fas fa-plus" />
                     <p v-else>Rejoindre</p>
                 </a>
             </div>

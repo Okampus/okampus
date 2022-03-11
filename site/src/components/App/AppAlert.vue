@@ -12,7 +12,7 @@
 
         <div v-if="$slots.icon || icon || $slots.title" class="flex gap-3 items-center text-lg title">
             <slot v-if="$slots.icon" name="icon" />
-            <font-awesome-icon v-else-if="icon" :icon="defaultIconList?.[type]" />
+            <i v-else-if="icon" class="fas" :class="`fa-${defaultIconList?.[type]}`" />
             <slot name="title" />
         </div>
 
@@ -29,7 +29,7 @@
                 class="flex justify-center items-center p-1.5 w-8 h-8 text-xl rounded-lg focus:ring-1 cursor-pointer dismiss"
                 @click="$emit('dismiss')"
             >
-                <font-awesome-icon :icon="dismissIcon" />
+                <i class="fas" :class="`fa-${dismissIcon}`" />
             </button>
         </div>
     </div>

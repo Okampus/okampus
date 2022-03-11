@@ -21,16 +21,16 @@
                             <a class="mr-12 text-xl link" href="#author">{{ article.author.fullname }}</a>
                         </div>
                         <div class="flex gap-4 items-center">
-                            <div class="flex gap-1 items-center text-1">
-                                <font-awesome-icon icon="comment" class="mr-1" />
+                            <div class="flex gap-2 items-center text-1">
+                                <i class="fas fa-comment" />
                                 <a class="hover:underline" href="#comments"> 3 comments</a>
                             </div>
-                            <div class="flex gap-1 items-center text-base text-1">
-                                <font-awesome-icon icon="hourglass-end" class="mr-1" />
+                            <div class="flex gap-2 items-center text-base text-1">
+                                <i class="fas fa-hourglass" />
                                 <DatePreview :date="article.date" />
                             </div>
-                            <div class="flex gap-1 items-center text-2">
-                                <font-awesome-icon icon="stopwatch" class="mr-1" />
+                            <div class="flex gap-2 items-center text-2">
+                                <i class="fas fa-stopwatch" />
                                 <p>Lecture en {{ readingTime }} min</p>
                             </div>
                         </div>
@@ -40,11 +40,11 @@
                 <!-- TAGS -->
                 <div v-if="article.tags.length > 0" class="flex items-center text-base">
                     <div class="flex gap-2 items-center mr-4 text-lg text-0">
-                        <font-awesome-icon icon="tags" class="mr-1" />
+                        <i class="fas fa-tags" />
                         <p class="text-base">{{ article.tags.length }} Tags</p>
                     </div>
 
-                    <div class="flex space-x-1">
+                    <div class="flex gap-1">
                         <span v-for="tag in article.tags" :key="tag.id" class="text-base text-2">
                             <AppTag :tag-name="tag" />
                         </span>
@@ -55,24 +55,23 @@
             <!-- SHARE -->
             <div class="flex gap-3 items-center mx-auto text-0">
                 <p class="text-xl underline">Partage cet article</p>
-                <font-awesome-icon icon="share-square" class="mr-1" />
                 <a class="flex gap-2 items-center py-1 px-3 text-white bg-orange-600 rounded-md raised">
-                    <font-awesome-icon :icon="['fab', 'reddit']" />
+                    <i class="fab fa-reddit" />
                     <p>Reddit</p>
                 </a>
                 <a class="flex gap-2 items-center py-1 px-3 text-white bg-slate-800 rounded-md raised">
-                    <font-awesome-icon :icon="['fab', 'discord']" />
+                    <i class="fab fa-discord" />
                     <p>Discord</p>
                 </a>
                 <a class="flex gap-2 items-center py-1 px-3 text-white bg-blue-900 rounded-md raised">
-                    <font-awesome-icon :icon="['fab', 'facebook']" />
+                    <i class="fab fa-facebook" />
                     <p>Facebook</p>
                 </a>
                 <a
                     class="flex gap-2 items-center py-1 px-3 text-white rounded-md bg-2 raised"
                     style="background-color: #0e76a8"
                 >
-                    <font-awesome-icon :icon="['fab', 'linkedin']" />
+                    <i class="fab fa-linkedin" />
                     <p>LinkedIn</p>
                 </a>
             </div>
@@ -98,7 +97,7 @@
 
             <!-- CONTENT -->
             <div class="flex flex-col gap-6 mx-3 text-justify">
-                <TipTapRenderer ref="renderer" :content="article.body" />
+                <MdRenderer ref="renderer" :content="article.body" />
                 <!-- <p>
                     In many situations, you’ll need to find the number of items stored in a data structure.
                     justice. Six draw
@@ -196,9 +195,7 @@
                                             {{ comment.replies.length }}
                                             {{ comment.replies.length > 1 ? 'réponses' : 'réponse' }}
                                         </p>
-                                        <font-awesome-icon
-                                            :icon="open ? ['fas', 'chevron-up'] : ['fas', 'chevron-down']"
-                                        />
+                                        <i class="fas" :class="open ? 'fa-chevron-up' : 'fa-chevron-down'" />
                                     </div> -->
 
                             <div class="flex flex-col gap-2 mt-2">
@@ -235,16 +232,14 @@
     import { readingTime } from '@/utils/readingTime'
     import { timeAgo } from '@/utils/timeAgo'
 
-    import TipTapRenderer from '@/components/TipTap/TipTapRenderer.vue'
-    import AppTag from '@/components/App/AppTag.vue'
     import DatePreview from '@/components/App/Preview/DatePreview.vue'
-
-    import { extractTextFromTipTapJSON } from '@/utils/tiptap'
+    import MdRenderer from '@/components/App/Editor/MdRenderer.vue'
+    import AppTag from '@/components/App/AppTag.vue'
 
     export default {
         components: {
             DatePreview,
-            TipTapRenderer,
+            MdRenderer,
             AppTag,
         },
         props: {
@@ -273,10 +268,7 @@
                 const article = articles[articleId] ?? null
                 this.article = article
                 this.profile = article === null ? null : blogProfiles[article.author.id]
-                this.readingTime =
-                    article === null
-                        ? null
-                        : parseInt(readingTime(extractTextFromTipTapJSON(JSON.parse(article.body)) / 60))
+                this.readingTime = article === null ? null : parseInt(readingTime(article.body) / 60)
             },
         },
     }

@@ -1,6 +1,6 @@
 <template>
     <Popper placement="bottom-start" offset-distance="0">
-        <button class="flex py-2 px-3 space-x-3 raised select">
+        <button class="flex gap-3 items-center py-2 px-3 raised select">
             <div
                 ref="select"
                 class="overflow-hidden whitespace-nowrap"
@@ -10,8 +10,8 @@
                 {{ choices[currentChoice] || buttonName }}
             </div>
             <div class="flex flex-col">
-                <font-awesome-icon :icon="['fas', 'chevron-up']" class="text-xs" />
-                <font-awesome-icon :icon="['fas', 'chevron-down']" class="text-xs" />
+                <i class="text-[0.7rem] fas fa-chevron-up" />
+                <i class="text-[0.7rem] fas fa-chevron-down" />
             </div>
         </button>
 
@@ -31,11 +31,7 @@
                             "
                             @click="emit('update:modelValue', values[i]), close()"
                         >
-                            <font-awesome-icon
-                                v-if="i === currentChoice"
-                                icon="check"
-                                class="shrink-0 w-6 h-6 font-bold"
-                            />
+                            <i v-if="i === currentChoice" class="shrink-0 w-6 h-6 font-bold fas fa-check" />
                             <div>
                                 {{ choice }}
                             </div>

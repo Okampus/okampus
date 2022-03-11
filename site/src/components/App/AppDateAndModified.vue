@@ -5,9 +5,7 @@
             <Popper :hover="true" placement="top" :arrow="true" offset-distance="3">
                 <span class="text-xs cursor-default select-none text-3">(modifié)</span>
                 <template #content>
-                    <div class="flex gap-1 p-2 rounded-md bg-0">
-                        Modifié <DatePreview :date="modifiedAt" />
-                    </div>
+                    <div class="card-tip">Modifié <DatePreview :date="modifiedAt" /></div>
                 </template>
             </Popper>
         </span>

@@ -48,7 +48,7 @@
                     <p>100 L/m²</p>
                 </div>
                 <div class="flex items-center h-6 text-3">
-                    <font-awesome-icon class="mr-2 text-sky-400" icon="wind" />
+                    <i class="mr-2 text-sky-400 fas fa-wind" />
                     <p>20 km/h</p>
                 </div>
             </div>

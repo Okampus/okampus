@@ -27,7 +27,7 @@
                                     <div
                                         class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded"
                                     >
-                                        <font-awesome-icon icon="pen-alt" />
+                                        <i class="fas fa-pen-alt" />
                                     </div>
                                 </router-link>
                             </div>
@@ -81,7 +81,7 @@
                     Comptes
                     <div class="flex flex-col mt-2 space-y-2">
                         <div v-if="user.email" class="flex space-x-2">
-                            <font-awesome-icon icon="envelope" />
+                            <i class="fas fa-enveloppe" />
                             <div>{{ user.email }}</div>
                         </div>
                         <div v-if="socialsAccounts === undefined || socialsAccounts === null">
@@ -89,10 +89,11 @@
                         </div>
                         <div v-for="social in socialsAccounts" v-else :key="social">
                             <div class="flex space-x-2">
-                                <font-awesome-icon
-                                    :icon="
+                                <i
+                                    class="fas"
+                                    :class="`fa-${
                                         socials.filter((a) => a.socialId === social.social.socialId)[0].icon
-                                    "
+                                    }`"
                                 />
                                 <a :href="social.link">{{ social.pseudo }}</a>
                             </div>

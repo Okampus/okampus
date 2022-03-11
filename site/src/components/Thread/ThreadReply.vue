@@ -1,10 +1,10 @@
 <template>
     <ThreadCommentable :content="reply">
         <template #content>
-            <!-- Violating props immutability? -->
-            <TipTapEditableRender
+            <MdEditableRender
                 v-model:content="body"
                 v-model:edit="editing"
+                :uid="`reply-${reply.contentId}`"
                 @send="
                     threads.updateContent(reply.contentMasterId, { contentId: reply.contentId, body: $event })
                 "
@@ -12,14 +12,14 @@
         </template>
 
         <template #actions>
-            <div class="flex items-center mt-2">
+            <div v-if="actionsShown.length" class="flex gap-4 items-center mt-5">
                 <div
                     v-for="(action, i) in actionsShown"
                     :key="i"
-                    class="group flex gap-1 items-center p-2 rounded-lg transition cursor-pointer text-5"
+                    class="group flex gap-1.5 items-center rounded-lg transition cursor-pointer text-5"
                     @click="action.action"
                 >
-                    <font-awesome-icon :icon="action.icon" :class="action.class" />
+                    <i :class="[action.icon, action.class]" />
                     <p class="text-sm" :class="action.class">
                         {{ action.name }}
                     </p>
@@ -31,7 +31,7 @@
 
 <script setup>
     import ThreadCommentable from '@/components/Thread/ThreadCommentable.vue'
-    import TipTapEditableRender from '@/components/TipTap/TipTapEditableRender.vue'
+    import MdEditableRender from '@/components/App/Editor/MdEditableRender.vue'
 
     import { edit, favorite, removeContent } from '@/shared/actions/thread.actions'
     import { useThreadsStore } from '@/store/threads.store'

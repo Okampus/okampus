@@ -17,7 +17,7 @@
                         :to="`/threads/${comment.post.postId}`"
                         class="mr-4 text-lg line-clamp-2 text-0"
                     > -->
-                    {{ extractTextFromTipTapJSON(JSON.parse(comment.body)) }}
+                    {{ comment.body }}
                     <!-- </router-link> -->
                 </div>
                 <div class="flex gap-6 items-center">
@@ -61,7 +61,6 @@
 
 <script>
     import { timeAgo } from '@/utils/timeAgo'
-    import { extractTextFromTipTapJSON } from '@/utils/tiptap'
     export default {
         components: {},
         props: {
@@ -100,7 +99,6 @@
         },
         methods: {
             timeAgo,
-            extractTextFromTipTapJSON,
             deleteFavorite() {
                 this.$store.dispatch('user/deleteFavorite', this.comment.contentId)
             },

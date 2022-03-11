@@ -19,7 +19,7 @@
                                     :input-required="true"
                                     input-placeholder="Entrez votre identifiant..."
                                 >
-                                    <font-awesome-icon icon="user-shield" class="ml-0.5" />
+                                    <i class="ml-0.5 fas fa-user-shield" />
                                 </InputWithIcon>
                             </div>
                             <div>
@@ -35,7 +35,7 @@
                                     :input-required="true"
                                     input-placeholder="Entrez votre mot de passe..."
                                 >
-                                    <font-awesome-icon icon="key" class="ml-0.5" />
+                                    <i class="ml-0.5 fas fa-key" />
                                 </InputWithIcon>
                             </div>
                         </div>

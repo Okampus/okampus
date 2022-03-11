@@ -11,7 +11,7 @@
                     :class="button.class"
                     @click="button.action()"
                 >
-                    <font-awesome-icon :icon="button.icon" />
+                    <i class="fas" :class="`fa-${button.icon}`" />
                     <div>
                         {{ button.name }}
                     </div>

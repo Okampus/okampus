@@ -18,7 +18,7 @@
                     :icon="schoolRoleItem.icon"
                 />
                 <!-- <div v-if="user.schoolRole === 'student'" class="flex gap-1 items-center text-2">
-                    <font-awesome-icon icon="trophy" />
+                    <i class="fas fa-trophy" />
                     <p>{{ abbrNumbers(user.reputation) }}</p>
                 </div> -->
             </div>

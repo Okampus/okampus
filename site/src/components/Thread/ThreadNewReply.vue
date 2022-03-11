@@ -6,25 +6,8 @@
             class="flex shrink-0 gap-2 p-4 w-full text-lg rounded-none shadow-md md:rounded-lg bg-card-meta"
         >
             <UserAvatar :img-src="auth?.user?.avatar" :username="auth?.user?.fullname" />
-            {{}}
             <div class="flex w-full triangle-before">
-                <TipTapEditableRender
-                    v-model:content="body"
-                    :edit="true"
-                    class="w-full"
-                    :cancellable="false"
-                    :emit-content="true"
-                    @send="
-                        threads.addContent(threadId, { parentId, body }, REPLY).then((content) => {
-                            emitter.emit('show-toast', {
-                                message: 'Réponse envoyée avec succès !',
-                                type: 'success',
-                            })
-                            emitter.emit('scroll-to-anchor', `content-${content.contentId}`)
-                            body = defaultTipTapText
-                        })
-                    "
-                />
+                <MdEditor v-model="body" uid="new-reply" :sendable="true" @send="sendReply" />
             </div>
         </div>
     </div>
@@ -33,18 +16,17 @@
 <script setup>
     import { REPLY } from '@/shared/types/content-kinds.enum'
 
-    import TipTapEditableRender from '@/components/TipTap/TipTapEditableRender.vue'
-    import UserAvatar from '../User/UserAvatar.vue'
+    import UserAvatar from '@/components/User/UserAvatar.vue'
+    import MdEditor from '@/components/App/Editor/MdEditor.vue'
 
     import { useAuthStore } from '@/store/auth.store'
     import { useThreadsStore } from '@/store/threads.store'
 
     import { emitter } from '@/shared/modules/emitter'
 
-    import { defaultTipTapText } from '@/utils/tiptap'
     import { ref } from 'vue'
 
-    defineProps({
+    const props = defineProps({
         threadId: {
             type: Number,
             required: true,
@@ -55,10 +37,23 @@
         },
     })
 
+    const body = ref('')
+
+    const sendReply = () => {
+        threads
+            .addContent(props.threadId, { parentId: props.parentId, body: body.value }, REPLY)
+            .then((content) => {
+                emitter.emit('show-toast', {
+                    message: 'Réponse envoyée avec succès !',
+                    type: 'success',
+                })
+                emitter.emit('scroll-to-anchor', `content-${content.contentId}`)
+            })
+        body.value = ''
+    }
+
     const auth = useAuthStore()
     const threads = useThreadsStore()
-
-    const body = ref(defaultTipTapText)
 </script>
 
 <style lang="scss">
@@ -68,7 +63,7 @@
         margin-top: 0.6rem;
         vertical-align: middle;
         content: '';
-        border-color: transparent #fff transparent transparent;
+        border-color: transparent #ddd transparent transparent;
         border-style: solid;
         border-width: 0.6rem 0.9rem 0.6rem 0;
 

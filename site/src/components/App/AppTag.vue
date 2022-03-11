@@ -8,9 +8,9 @@
         ]"
         class="flex items-center whitespace-normal rounded-full cursor-pointer bg-opacity-/90"
     >
-        <font-awesome-icon v-if="icon" :icon="icon" />
+        <i v-if="icon" class="fas" :class="`fa-${icon}`" />
         <div>{{ tagName }}</div>
-        <font-awesome-icon v-if="closable" class="text-sm" :icon="['fa', 'times']" @click="emit('close')" />
+        <i v-if="closable" class="text-sm fas" :class="`fa-times`" @click="emit('close')" />
     </div>
 </template>
 

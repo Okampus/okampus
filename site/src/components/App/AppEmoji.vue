@@ -1,5 +1,5 @@
 <template>
-    <font-awesome-icon v-if="type === 'icon'" :icon="emoji" size="lg" />
+    <i v-if="type === 'icon'" class="fas" :class="`fa-${emoji}`" />
     <div v-else class="text-lg">
         {{ emoji }}
     </div>
