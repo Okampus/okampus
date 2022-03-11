@@ -21,7 +21,7 @@
     "dependencies": {
         "@vuelidate/core": "2.0.0-alpha.34",
         "@vuelidate/validators": "2.0.0-alpha.26",
-        "@vueuse/core": "7.6.2",
+        "@vueuse/core": "8.0.0",
         "axios": "0.25.0",
         "lodash": "4.17.21",
         "mitt": "3.0.0",
@@ -57,7 +57,7 @@
         "sass": "1.49.7",
         "sass-loader": "12.4.0",
         "stylelint": "14.4.0",
-        "stylelint-config-css-modules": "2.3.0",
+        "stylelint-config-css-modules": "4.0.1",
         "stylelint-config-prettier": "9.0.3",
         "stylelint-config-recess-order": "3.0.0",
         "stylelint-config-recommended": "^7.0.0",
