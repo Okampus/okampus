@@ -1,12 +1,12 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import removeMarkdown from 'markdown-to-text';
 import type { CollectionCreateSchema } from 'typesense/lib/Typesense/Collections';
 import { SearchParams } from 'typesense/lib/Typesense/Documents';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { client } from '../shared/configs/typesense.config';
 import RequireTypesense from '../shared/lib/decorators/require-typesense.decorator';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import { extractTextFromStringifiedTiptap } from '../shared/lib/utils/extract-text-from-tiptap';
 import { authorizeNotFound, SearchService } from '../shared/modules/search/search.service';
 import { Thread } from './thread.entity';
 
@@ -81,7 +81,7 @@ export class ThreadSearchService extends SearchService<Thread, IndexedThread> {
   public toIndexedEntity(thread: Thread): IndexedThread {
     return {
       title: thread.title,
-      body: extractTextFromStringifiedTiptap(thread.post!.body),
+      body: removeMarkdown(thread.post!.body),
       author: thread.post!.author.getFullName(),
       tags: thread.tags.toArray().map(tag => tag.name),
       id: thread.contentMasterId.toString(),
