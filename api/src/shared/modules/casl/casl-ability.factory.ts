@@ -65,6 +65,7 @@ export class CaslAbilityFactory {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     const { can: allow, cannot: forbid, build } = new AbilityBuilder<AppAbility>(Ability as AbilityClass<AppAbility>);
 
+    /* eslint-disable @typescript-eslint/naming-convention */
     const isAuthor = { 'author.userId': user.userId } as const;
     const isFileUploader = { 'file.user.userId': user.userId } as const;
 
@@ -147,6 +148,7 @@ export class CaslAbilityFactory {
       .because('Not the user');
     allow(Action.Update, User, { userId: user.userId })
       .because('Not the user');
+    /* eslint-enable @typescript-eslint/naming-convention */
 
     ForbiddenError.setDefaultMessage(error => `Cannot perform ${error.action.toLowerCase()} on a ${error.subjectType.toLowerCase()}`);
 
