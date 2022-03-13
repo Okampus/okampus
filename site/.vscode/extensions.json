@@ -14,5 +14,6 @@
 
         "gruntfuggly.todo-tree",
         "ms-vsliveshare.vsliveshare",
+        "adam-bender.commit-message-editor",
     ]
 }
