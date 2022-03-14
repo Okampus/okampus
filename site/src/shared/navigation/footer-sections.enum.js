@@ -42,11 +42,11 @@ export default [
             },
             {
                 name: 'Infos Site',
-                href: 'https://github.com/horizon-efrei/HorizonWeb/blob/master/README.md',
+                href: 'https://github.com/horizon-efrei/HorizonWeb/blob/dev/README.md',
             },
             {
                 name: 'Contribuer',
-                href: 'https://github.com/horizon-efrei/HorizonWeb/blob/master/CONTRIBUTING.md',
+                href: 'https://github.com/horizon-efrei/HorizonWeb/blob/dev/CONTRIBUTING.md',
             },
         ],
     },

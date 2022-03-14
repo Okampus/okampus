@@ -4,7 +4,7 @@
     ":autodetectPinVersions",
     ":dependencyDashboard",
     ":ignoreModulesAndTests",
-    ":semanticCommitsDisabled",
+    ":semanticCommitType(build)",
     "group:monorepos",
     "group:recommended",
     "workarounds:all"

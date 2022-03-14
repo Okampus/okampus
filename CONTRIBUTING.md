@@ -11,7 +11,7 @@ Sur votre PR, n'ayez pas peur de faire autant de commits dont vous avez besoin, 
 
 Pour contribuer à ce repo, n'hésitez pas à créer un nouveau fork et à soumettre une Pull Request, en suivant ces instructions :
 
-1. Forkez, clonez, et selectionnez la branche `master`.
+1. Forkez, clonez, et selectionnez la branche `dev`.
    `git clone https://github.com/<votre pseudo>/HorizonWeb`
 1. **Créez une nouvelle branche sur votre fork.**
    `git checkout -b feature/<votre-feature>`

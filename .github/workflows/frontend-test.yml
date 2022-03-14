@@ -3,6 +3,7 @@ name: Test Frontend
 on:
   push:
     branches:
+      - dev
       - master
     paths:
       - 'site/**'
