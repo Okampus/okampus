@@ -22,8 +22,6 @@
     import { emitter } from '@/shared/modules/emitter'
     import { isPositiveInteger } from '@/utils/conditions'
 
-    import { NOOP } from '@vue/shared'
-
     import { isNil } from 'lodash'
     import { getStatus } from '@/utils/errors'
 
@@ -51,10 +49,6 @@
         storeCallback: {
             type: Function,
             required: true,
-        },
-        storeGetter: {
-            type: Function,
-            default: NOOP,
         },
     })
 
@@ -88,7 +82,7 @@
                         })
                         router.push(props.baseRoute)
                     } else {
-                        results.items = props.storeGetter() ?? items
+                        results.items = items
                         results.totalPages = pageInfo.totalPages
                         results.totalItemCount = pageInfo.totalItemCount
                     }

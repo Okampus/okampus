@@ -1,11 +1,7 @@
 <template>
     <Suspense>
         <template #default>
-            <ListPageAsync
-                :base-route="baseRoute"
-                :store-callback="storeCallback"
-                :store-getter="storeGetter"
-            >
+            <ListPageAsync :base-route="baseRoute" :store-callback="storeCallback">
                 <template #default="{ items }">
                     <slot :items="items" />
                 </template>
@@ -21,7 +17,6 @@
 <script setup>
     import ListPageAsync from '@/views/App/ListPageAsync.vue'
     import AppLoader from '@/components/App/AppLoader.vue'
-    import { NOOP } from '@vue/shared'
 
     defineProps({
         sortTypes: {
@@ -35,10 +30,6 @@
         storeCallback: {
             type: Function,
             required: true,
-        },
-        storeGetter: {
-            type: Function,
-            default: NOOP,
         },
     })
 </script>

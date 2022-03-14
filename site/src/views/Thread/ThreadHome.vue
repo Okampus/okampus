@@ -1,11 +1,7 @@
 <template>
     <!-- TODO: add filtering, tab, info panel -->
     <AppView>
-        <ListPage
-            base-route="/threads"
-            :store-callback="threads.getThreads"
-            :store-getter="threads.getThreadById"
-        >
+        <ListPage base-route="/threads" :store-callback="threads.getThreads">
             <template #default="{ items }">
                 <ThreadList :threads="items" />
             </template>
