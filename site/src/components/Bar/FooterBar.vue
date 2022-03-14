@@ -1,12 +1,12 @@
 <template>
     <footer class="flex flex-col gap-6 mt-8 mb-6 xs:mx-20 sm:mx-auto xs-max:mx-10">
-        <div class="flex flex-col items-center sm:gap-6 xl:flex-row xl:gap-14">
+        <div class="flex flex-col items-center sm:gap-6 xl:flex-row xl:gap-2">
             <div class="flex flex-col gap-6 sm-max:w-full">
                 <!-- Logo Separator -->
-                <AppLogo class="ml-3" />
+                <AppLogo class="ml-5" />
 
                 <div
-                    class="flex flex-col-reverse gap-6 mx-4 lg:flex-row lg:gap-16 sm-max:flex-row sm-max:gap-14"
+                    class="flex flex-col-reverse gap-6 mx-10 lg:flex-row lg:gap-14 sm-max:flex-row sm-max:gap-12"
                 >
                     <!-- Contact Us -->
                     <div class="flex gap-4 mt-1 text-0">
@@ -36,14 +36,14 @@
 
                     <!-- Sections -->
                     <div
-                        class="flex flex-wrap items-center sm:flex-row sm:gap-16 sm:items-start sm-max:w-full"
+                        class="flex flex-wrap items-center sm:flex-row sm:gap-10 sm:items-start sm-max:w-full"
                     >
                         <div
                             v-for="(section, i) in footerSections"
                             :key="i"
                             class="sm-max:mb-10 sm-max:w-1/2 text-1"
                         >
-                            <h5 class="mb-2 text-base tracking-wider uppercase text-5">
+                            <h5 class="mb-2 text-base tracking-wider uppercase header text-0">
                                 {{ section.name }}
                             </h5>
                             <div class="flex flex-col gap-1">
@@ -89,7 +89,7 @@
                 <i class="hover:text-red-500 transition-transform hover:scale-125 fas fa-heart" />
                 <p>by Horizon</p>
                 <div class="flex gap-1 items-center">
-                    <i class="pb-[1px] text-sm far fa-copyright" />
+                    <i class="text-sm far fa-copyright" />
                     <p>{{ new Date().getFullYear() }}</p>
                 </div>
             </div>

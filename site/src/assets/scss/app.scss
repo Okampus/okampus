@@ -1,7 +1,6 @@
 @use 'sass:string';
 @use 'sass:list';
 
-$brand-url: url('@/assets/img/logos/horizon_brand.png');
 $logo-white-url: url('@/assets/img/logos/horizon_logo_white.png');
 $logo-black-url: url('@/assets/img/logos/horizon_logo_black.png');
 
@@ -47,13 +46,6 @@ $logo-black-url: url('@/assets/img/logos/horizon_logo_black.png');
     border-color: #e4e4e7;
 
     @apply dark:border-black;
-}
-
-.brand {
-    @apply filter brightness-0 dark:brightness-100;
-
-    background: $brand-url no-repeat 0 0;
-    background-size: 100%;
 }
 
 .logo {

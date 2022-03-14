@@ -1,7 +1,7 @@
 <template>
     <div class="flex relative items-center">
         <input
-            class="peer pl-[3rem] w-full h-[3rem] text-lg focus:text-0-light dark:focus:text-0-dark input text-3"
+            class="peer pl-[3rem] w-full h-[3rem] focus:text-0-light dark:focus:text-0-dark input text-3"
             :name="inputName"
             :required="inputRequired"
             :type="inputType"

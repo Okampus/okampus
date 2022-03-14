@@ -228,33 +228,28 @@
     @import '@/assets/scss/core/tab';
 
     @font-face {
-        font-family: AtkinsonHyperlegible;
-        font-weight: 400;
-        src: url('@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf') format('truetype');
+        font-family: Montserrat;
+        src: url('@/assets/font/Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
     }
 
     @font-face {
-        font-family: AtkinsonHyperlegible;
+        font-family: Montserrat;
         font-style: italic;
-        font-weight: 400;
-        src: url('@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf') format('truetype');
+        src: url('@/assets/font/Montserrat/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
     }
 
     @font-face {
-        font-family: AtkinsonHyperlegible;
-        font-weight: 700;
-        src: url('@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf') format('truetype');
-    }
-
-    @font-face {
-        font-family: AtkinsonHyperlegible;
-        font-style: italic;
-        font-weight: 700;
-        src: url('@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf') format('truetype');
+        font-family: Fredoka;
+        src: url('@/assets/font/Fredoka/Fredoka-VariableFont_wdth,wght.ttf') format('truetype');
     }
 
     * {
-        font-family: AtkinsonHyperlegible, sans-serif;
+        font-family: Montserrat, sans-serif;
+        font-weight: 450;
+    }
+
+    .header {
+        font-family: Fredoka, sans-serif;
     }
 
     // TODO: Adapt font size to screen size (for small screen sizes)

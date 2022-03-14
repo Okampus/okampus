@@ -1,7 +1,11 @@
 <template>
-    <router-link to="/" class="flex items-center w-[8.5rem] cursor-pointer">
-        <div class="w-[2.5rem] h-[2.5rem] logo" />
-        <div class="w-[6rem] h-[1.25rem] brand" />
+    <router-link to="/" class="flex items-center cursor-pointer">
+        <div class="mr-[0.5rem] w-[2.5rem] h-[2.5rem] logo" />
+        <img
+            src="@/assets/img/logos/horizon_brand.png"
+            alt=""
+            class="w-[5rem] brightness-0 dark:brightness-100"
+        />
     </router-link>
 </template>
 

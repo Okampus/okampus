@@ -18,7 +18,7 @@
         <div v-if="!auth.loggedIn" class="flex shrink-0 justify-center items-center mr-4">
             <button class="button" @click="emitter.emit('login')">
                 <div class="flex items-center">
-                    <p class="mr-2 uppercase text-md">Se connecter</p>
+                    <p class="mr-2 font-semibold uppercase text-md">Se connecter</p>
                     <i class="text-lg fas fa-sign-in-alt" />
                 </div>
             </button>

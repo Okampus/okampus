@@ -94,7 +94,7 @@ export const sections = computed(() => {
                           {
                               to: '/crous/daily/today',
                               regActive: /^\/crous(?!\/new)/,
-                              textSmall: 'Menu du jour',
+                              textSmall: 'Menu',
                               textLarge: 'Menu du Crous',
                               icon: 'utensils',
                           },

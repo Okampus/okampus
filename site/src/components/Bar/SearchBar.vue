@@ -59,7 +59,7 @@
         </AppModal>
 
         <InputWithIcon
-            class="hidden md:flex"
+            class="hidden md:flex lg:text-lg"
             input-placeholder="Rechercher une ressource sur Horizon Efrei..."
             @click.prevent="showSearchbar = true"
         >
