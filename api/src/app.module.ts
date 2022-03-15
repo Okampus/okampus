@@ -20,6 +20,7 @@ import { HealthModule } from './health/health.module';
 import { ReactionsModule } from './reactions/reactions.module';
 import { ReportsModule } from './reports/reports.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import { config } from './shared/configs/config';
 import sentryConfig from './shared/configs/sentry.config';
 import storageConfig from './shared/configs/storage.config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
@@ -76,6 +77,7 @@ import { WikisModule } from './wiki/wikis.module';
 })
 export class AppModule {
   public configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(TraceMiddleware).forRoutes('*');
+    if (config.get('sentry.enabled'))
+      consumer.apply(TraceMiddleware).forRoutes('*');
   }
 }
