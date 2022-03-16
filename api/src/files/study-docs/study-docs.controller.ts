@@ -21,6 +21,7 @@ import { StudyDocCategoryType } from '../../shared/lib/types/docs-category.type'
 import type { Category } from '../../shared/lib/types/docs-category.type';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
+import { normalizePagination } from '../../shared/modules/pagination/normalize-pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../../shared/modules/search/search.dto';
 import { User } from '../../users/user.entity';
@@ -72,9 +73,7 @@ export class StudyDocsController {
   public async findAllStudyDocs(
     @Query() query: DocsFilterDto,
   ): Promise<PaginatedResult<StudyDoc>> {
-    if (query.page)
-      return await this.studyDocsService.findAll(query, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.studyDocsService.findAll(query);
+    return await this.studyDocsService.findAll(query, normalizePagination(query));
   }
 
   @Get('/categories')

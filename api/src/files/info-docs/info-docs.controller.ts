@@ -21,6 +21,7 @@ import type { Category } from '../../shared/lib/types/docs-category.type';
 import { InfoDocCategoryType } from '../../shared/lib/types/docs-category.type';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
+import { normalizePagination } from '../../shared/modules/pagination/normalize-pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../../shared/modules/search/search.dto';
 import { User } from '../../users/user.entity';
@@ -68,9 +69,7 @@ export class InfoDocsController {
   public async findAllInfoDocs(
     @Query() query: DocsFilterDto,
   ): Promise<PaginatedResult<InfoDoc>> {
-    if (query.page)
-      return await this.infoDocsService.findAll(query, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.infoDocsService.findAll(query);
+    return await this.infoDocsService.findAll(query, normalizePagination(query));
   }
 
   @Get('/categories')
