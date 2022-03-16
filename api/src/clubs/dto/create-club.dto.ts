@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateClubDto {
   @IsString()
@@ -11,5 +11,6 @@ export class CreateClubDto {
   description: string;
 
   @IsString()
-  icon: string;
+  @IsOptional()
+  avatar?: string;
 }

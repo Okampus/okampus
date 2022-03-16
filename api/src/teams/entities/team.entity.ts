@@ -26,9 +26,8 @@ export class Team extends BaseEntity {
   @Property({ type: 'text' })
   description?: string;
 
-  // TODO: Full 'icon' support
   @Property({ type: 'text' })
-  icon!: string;
+  avatar?: string | null;
 
   @OneToMany(() => TeamMember, member => member.team)
   @TransformCollection()
@@ -38,13 +37,14 @@ export class Team extends BaseEntity {
   constructor(options: {
     name: string;
     description?: string;
-    icon: string;
+    avatar?: string;
   }) {
     super();
     this.name = options.name;
     if (options.description)
       this.description = options.description;
-    this.icon = options.icon;
+    if (options.avatar)
+      this.avatar = options.avatar;
   }
 
   public getMemberRoles(user: User): TeamRole[] {

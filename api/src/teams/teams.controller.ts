@@ -71,7 +71,7 @@ export class TeamsController {
 
   @Get('/names')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
-  public async findNames(): Promise<Array<Pick<Team, 'icon' | 'name' | 'teamId'>>> {
+  public async findNames(): Promise<Array<Pick<Team, 'avatar' | 'name' | 'teamId'>>> {
     return await this.teamsService.findNames();
   }
 

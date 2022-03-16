@@ -47,9 +47,8 @@ export class User extends BaseEntity {
   @Property()
   reputation = 0;
 
-  // TODO: Add full 'avatar' support
   @Property({ type: 'text' })
-  avatar?: string;
+  avatar?: string | null;
 
   @Enum({ items: () => Role, array: true, default: [Role.User] })
   roles: Role[] = [Role.User];
@@ -63,7 +62,6 @@ export class User extends BaseEntity {
   @Property({ type: 'text' })
   signature?: string;
 
-  // TODO: Add full 'banner' support
   @Property({ type: 'text' })
   banner?: string;
 

@@ -1,6 +1,7 @@
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { ProfileImage } from '../files/profile-images/profile-image.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { TeamRole } from '../shared/lib/types/team-role.enum';
 import { Role } from '../shared/modules/authorization/types/role.enum';
@@ -21,11 +22,17 @@ export class TeamsService {
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
     private readonly teamSearchService: TeamSearchService,
   ) {}
 
   public async create(user: User, createTeamDto: CreateTeamDto): Promise<Team> {
-    const team = new Team(createTeamDto);
+    const { avatar, ...dto } = createTeamDto;
+
+    const team = new Team(dto);
+
+    if (avatar)
+      await this.setAvatar(avatar, team);
 
     try {
       await this.teamRepository.persistAndFlush(team);
@@ -57,8 +64,8 @@ export class TeamsService {
     );
   }
 
-  public async findNames(): Promise<Array<Pick<Team, 'icon' | 'name' | 'teamId'>>> {
-    const teams = await this.teamRepository.findAll({ fields: ['name', 'icon', 'teamId'] });
+  public async findNames(): Promise<Array<Pick<Team, 'avatar' | 'name' | 'teamId'>>> {
+    const teams = await this.teamRepository.findAll({ fields: ['name', 'avatar', 'teamId'] });
     // Remove null values for M:M relations that are automatically filled
     return teams.map(({ members, ...keep }) => keep);
   }
@@ -73,7 +80,14 @@ export class TeamsService {
     if (!user.roles.includes(Role.Admin) && !team.isTeamAdmin(user))
       throw new ForbiddenException('Not a team admin');
 
-    wrap(team).assign(updateTeamDto);
+    const { avatar, ...dto } = updateTeamDto;
+
+    if (avatar)
+      await this.setAvatar(avatar, team);
+    else
+      team.avatar = null;
+
+    wrap(team).assign(dto);
     await this.teamRepository.flush();
     await this.teamSearchService.update(team);
     return team;
@@ -201,5 +215,21 @@ export class TeamsService {
       throw new ForbiddenException('Cannot remove owner');
 
     await this.teamMemberRepository.removeAndFlush(teamMember);
+  }
+
+  private async setAvatar(profileImageId: string, team: Team): Promise<void> {
+    // Get the avatar image and validate it
+    const avatarImage = await this.profileImageRepository.findOne({ profileImageId }, { populate: ['file'] });
+    if (!avatarImage || !avatarImage.isAvailableFor('team', team.teamId))
+      throw new BadRequestException('Invalid avatar image');
+
+    // Update the team's avatar
+    team.avatar = avatarImage.file.url;
+
+    // Update the target type of the image
+    if (!avatarImage.team) {
+      avatarImage.team = team;
+      await this.profileImageRepository.flush();
+    }
   }
 }

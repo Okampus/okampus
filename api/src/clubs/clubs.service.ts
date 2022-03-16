@@ -1,6 +1,7 @@
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { ProfileImage } from '../files/profile-images/profile-image.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { ClubRole } from '../shared/lib/types/club-role.enum';
 import { Role } from '../shared/modules/authorization/types/role.enum';
@@ -21,11 +22,19 @@ export class ClubsService {
     @InjectRepository(Club) private readonly clubRepository: BaseRepository<Club>,
     @InjectRepository(ClubMember) private readonly clubMemberRepository: BaseRepository<ClubMember>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
     private readonly clubSearchService: ClubSearchService,
   ) {}
 
   public async create(user: User, createClubDto: CreateClubDto): Promise<Club> {
-    const club = new Club(createClubDto);
+    const { avatar, ...dto } = createClubDto;
+
+    const club = new Club(dto);
+
+    if (avatar)
+      await this.setAvatar(avatar, club);
+    else
+      club.avatar = null;
 
     try {
       await this.clubRepository.persistAndFlush(club);
@@ -57,8 +66,8 @@ export class ClubsService {
     );
   }
 
-  public async findNames(): Promise<Array<Pick<Club, 'category' | 'clubId' | 'icon' | 'name'>>> {
-    const clubs = await this.clubRepository.findAll({ fields: ['name', 'category', 'icon', 'clubId'], orderBy: { name: 'ASC' } });
+  public async findNames(): Promise<Array<Pick<Club, 'avatar' | 'category' | 'clubId' | 'name'>>> {
+    const clubs = await this.clubRepository.findAll({ fields: ['name', 'category', 'avatar', 'clubId'], orderBy: { name: 'ASC' } });
     // Remove null values for M:M relations that are automatically filled
     return clubs.map(({ contacts, members, ...keep }) => keep);
   }
@@ -73,7 +82,12 @@ export class ClubsService {
     if (!user.roles.includes(Role.Admin) && !club.isClubAdmin(user))
       throw new ForbiddenException('Not a club admin');
 
-    wrap(club).assign(updateClubDto);
+    const { avatar, ...dto } = updateClubDto;
+
+    if (typeof avatar !== 'undefined')
+      await this.setAvatar(avatar, club);
+
+    wrap(club).assign(dto);
     await this.clubRepository.flush();
     await this.clubSearchService.update(club);
     return club;
@@ -177,5 +191,21 @@ export class ClubsService {
       throw new ForbiddenException('Cannot remove president');
 
     await this.clubMemberRepository.removeAndFlush(clubMember);
+  }
+
+  private async setAvatar(profileImageId: string, club: Club): Promise<void> {
+    // Get the avatar image and validate it
+    const avatarImage = await this.profileImageRepository.findOne({ profileImageId }, { populate: ['file'] });
+    if (!avatarImage || !avatarImage.isAvailableFor('club', club.clubId))
+      throw new BadRequestException('Invalid avatar image');
+
+    // Update the club's avatar
+    club.avatar = avatarImage.file.url;
+
+    // Update the target type of the image
+    if (avatarImage.club?.clubId !== club.clubId) {
+      avatarImage.club = club;
+      await this.profileImageRepository.flush();
+    }
   }
 }

@@ -71,7 +71,7 @@ export class ClubsController {
 
   @Get('/names')
   @CheckPolicies(ability => ability.can(Action.Read, Club))
-  public async findNames(): Promise<Array<Pick<Club, 'category' | 'clubId' | 'icon' | 'name'>>> {
+  public async findNames(): Promise<Array<Pick<Club, 'avatar' | 'category' | 'clubId' | 'name'>>> {
     return await this.clubsService.findNames();
   }
 

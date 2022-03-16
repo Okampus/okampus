@@ -30,9 +30,8 @@ export class Club extends BaseEntity {
   @Property({ type: 'text' })
   description!: string;
 
-  // TODO: Full 'icon' support
   @Property({ type: 'text' })
-  icon!: string;
+  avatar?: string | null;
 
   @OneToMany(() => ClubContactAccount, account => account.club)
   @TransformCollection()
@@ -47,13 +46,14 @@ export class Club extends BaseEntity {
     name: string;
     category: string;
     description: string;
-    icon: string;
+    avatar?: string;
   }) {
     super();
     this.name = options.name;
     this.category = options.category;
     this.description = options.description;
-    this.icon = options.icon;
+    if (options.avatar)
+      this.avatar = options.avatar;
   }
 
   public getMemberRoles(user: User): ClubRole[] {
