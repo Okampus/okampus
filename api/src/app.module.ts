@@ -11,7 +11,6 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { BadgesModule } from './badges/badges.module';
 import { BlogsModule } from './blogs/blogs.module';
-import { ClubsModule } from './clubs/clubs.module';
 import { ContactsModule } from './contacts/contacts.module';
 import { ContentsModule } from './contents/contents.module';
 import { FavoritesModule } from './favorites/favorites.module';
@@ -48,7 +47,6 @@ import { WikisModule } from './wiki/wikis.module';
     AuthModule,
     BadgesModule,
     BlogsModule,
-    ClubsModule,
     ContactsModule,
     ContentsModule,
     FavoritesModule,

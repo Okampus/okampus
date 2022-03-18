@@ -1,10 +1,8 @@
 import { applyDecorators, SerializeOptions } from '@nestjs/common';
 import {
-  CLUB_CONTACTS_CLUB_INCLUDED,
-  CLUB_CONTACTS_INCLUDED,
-  CLUB_MEMBERS_INCLUDED,
-  CLUBMEMBER_CLUB_INCLUDED,
   CONTENT_AUTHOR_EXCLUDED,
+  TEAM_CONTACTS_INCLUDED,
+  TEAM_CONTACTS_TEAM_INCLUDED,
   TEAM_MEMBERS_INCLUDED,
   TEAMMEMBER_TEAM_INCLUDED,
 } from '../constants';
@@ -21,18 +19,10 @@ export function SerializerTeamMemberIncludeTeam(): ReturnType<typeof applyDecora
   return applyDecorators(SerializeOptions({ groups: [TEAMMEMBER_TEAM_INCLUDED] }));
 }
 
-export function SerializerIncludeClubMembers(): ReturnType<typeof applyDecorators> {
-  return applyDecorators(SerializeOptions({ groups: [CLUB_MEMBERS_INCLUDED] }));
+export function SerializerIncludeTeamContacts(): ReturnType<typeof applyDecorators> {
+  return applyDecorators(SerializeOptions({ groups: [TEAM_CONTACTS_INCLUDED] }));
 }
 
-export function SerializerClubMemberIncludeClub(): ReturnType<typeof applyDecorators> {
-  return applyDecorators(SerializeOptions({ groups: [CLUBMEMBER_CLUB_INCLUDED] }));
-}
-
-export function SerializerIncludeClubContacts(): ReturnType<typeof applyDecorators> {
-  return applyDecorators(SerializeOptions({ groups: [CLUB_CONTACTS_INCLUDED] }));
-}
-
-export function SerializerClubContactsIncludeClub(): ReturnType<typeof applyDecorators> {
-  return applyDecorators(SerializeOptions({ groups: [CLUB_CONTACTS_CLUB_INCLUDED] }));
+export function SerializerTeamContactsIncludeTeam(): ReturnType<typeof applyDecorators> {
+  return applyDecorators(SerializeOptions({ groups: [TEAM_CONTACTS_TEAM_INCLUDED] }));
 }

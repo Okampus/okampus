@@ -19,7 +19,7 @@ export abstract class ContactAccount extends BaseEntity {
 
   @Enum()
   @Exclude()
-  kind!: 'club' | 'user';
+  kind!: 'team' | 'user';
 
   @ManyToOne({ onDelete: 'CASCADE' })
   contact!: Contact;

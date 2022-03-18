@@ -3,7 +3,6 @@ import { Ability, AbilityBuilder, ForbiddenError } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
 import { Badge } from '../../../badges/badge.entity';
 import { Blog } from '../../../blogs/blog.entity';
-import { Club } from '../../../clubs/entities/club.entity';
 import type { Contact } from '../../../contacts/entities/contact.entity';
 import { Content } from '../../../contents/entities/content.entity';
 import { Favorite } from '../../../favorites/favorite.entity';
@@ -29,7 +28,6 @@ export type Subjects = InferSubjects<
   | typeof Attachment
   | typeof Badge
   | typeof Blog
-  | typeof Club
   | typeof Contact
   | typeof Content
   | typeof DailyInfo
@@ -85,7 +83,7 @@ export class CaslAbilityFactory {
       allow(Action.Interact, Content);
 
       // This is all managed by-hand inside the services.
-      allow(Action.Update, [Club, Team]);
+      allow(Action.Update, Team);
 
       if (user.roles.includes(Role.Moderator)) {
         allow(Action.Read, 'all');

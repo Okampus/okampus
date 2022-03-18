@@ -1,30 +1,28 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { Club } from '../clubs/entities/club.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import { User } from '../users/user.entity';
+import { Team } from '../teams/entities/team.entity';
+import type { User } from '../users/user.entity';
 import type { CreateContactAccountDto } from './dto/create-contact-account.dto';
 import type { CreateContactDto } from './dto/create-contact.dto';
 import type { UpdateContactAccountDto } from './dto/update-contact-account.dto';
 import type { UpdateContactDto } from './dto/update-contact.dto';
-import { ClubContactAccount } from './entities/club-contact-account.entity';
 import { Contact } from './entities/contact.entity';
+import { TeamContactAccount } from './entities/team-contact-account.entity';
 import { UserContactAccount } from './entities/user-contact-account.entity';
 
 @Injectable()
 export class ContactsService {
-  // eslint-disable-next-line max-params
   constructor(
     /* eslint-disable max-len */
     @InjectRepository(Contact) private readonly contactsRepository: BaseRepository<Contact>,
-    @InjectRepository(User) private readonly usersRepository: BaseRepository<User>,
-    @InjectRepository(Club) private readonly clubsRepository: BaseRepository<Club>,
+    @InjectRepository(Team) private readonly teamsRepository: BaseRepository<Team>,
     @InjectRepository(UserContactAccount) private readonly userContactsAccountRepository: BaseRepository<UserContactAccount>,
-    @InjectRepository(ClubContactAccount) private readonly clubContactsAccountRepository: BaseRepository<ClubContactAccount>,
+    @InjectRepository(TeamContactAccount) private readonly teamContactsAccountRepository: BaseRepository<TeamContactAccount>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
     /* eslint-enable max-len */
   ) {}
@@ -100,56 +98,56 @@ export class ContactsService {
     await this.userContactsAccountRepository.removeAndFlush(userContact);
   }
 
-  public async addClubContactAccount(
+  public async addTeamContactAccount(
     requester: User,
-    clubId: number,
+    teamId: number,
     createContactAccountDto: CreateContactAccountDto,
-  ): Promise<ClubContactAccount> {
-    const club = await this.clubsRepository.findOneOrFail({ clubId }, { populate: ['members'] });
+  ): Promise<TeamContactAccount> {
+    const team = await this.teamsRepository.findOneOrFail({ teamId }, { populate: ['members'] });
     // TODO: Move this to CASL
-    if (!club.isClubAdmin(requester))
-      throw new ForbiddenException('Not a club admin');
+    if (!team.isTeamAdmin(requester))
+      throw new ForbiddenException('Not a team admin');
 
     const contact = await this.contactsRepository.findOneOrFail({ contactId: createContactAccountDto.contactId });
-    const contactAccount = new ClubContactAccount({ club, ...createContactAccountDto, contact });
-    await this.clubContactsAccountRepository.persistAndFlush(contactAccount);
+    const contactAccount = new TeamContactAccount({ team, ...createContactAccountDto, contact });
+    await this.teamContactsAccountRepository.persistAndFlush(contactAccount);
     return contactAccount;
   }
 
-  public async findAllClubContactAccounts(clubId: number): Promise<ClubContactAccount[]> {
-    return await this.clubContactsAccountRepository.find(
-      { club: { clubId } },
-      { populate: ['contact', 'club'] },
+  public async findAllTeamContactAccounts(teamId: number): Promise<TeamContactAccount[]> {
+    return await this.teamContactsAccountRepository.find(
+      { team: { teamId } },
+      { populate: ['contact', 'team'] },
     );
   }
 
-  public async updateClubContactAccount(
+  public async updateTeamContactAccount(
     requester: User,
     contactAccountId: number,
     updateContactDto: UpdateContactAccountDto,
-  ): Promise<ClubContactAccount> {
-    const clubContact = await this.clubContactsAccountRepository.findOneOrFail(
+  ): Promise<TeamContactAccount> {
+    const teamContact = await this.teamContactsAccountRepository.findOneOrFail(
       { contactAccountId },
-      { populate: ['contact', 'club', 'club.members'] },
+      { populate: ['contact', 'team', 'team.members'] },
     );
     // TODO: Move this to CASL
-    if (!clubContact.club.isClubAdmin(requester))
-      throw new ForbiddenException('Not a club admin');
+    if (!teamContact.team.isTeamAdmin(requester))
+      throw new ForbiddenException('Not a team admin');
 
-    wrap(clubContact).assign(updateContactDto);
-    await this.clubContactsAccountRepository.flush();
-    return clubContact;
+    wrap(teamContact).assign(updateContactDto);
+    await this.teamContactsAccountRepository.flush();
+    return teamContact;
   }
 
-  public async deleteClubContactAccount(requester: User, contactAccountId: number): Promise<void> {
-    const clubContact = await this.clubContactsAccountRepository.findOneOrFail(
+  public async deleteTeamContactAccount(requester: User, contactAccountId: number): Promise<void> {
+    const teamContact = await this.teamContactsAccountRepository.findOneOrFail(
       { contactAccountId },
-      { populate: ['club', 'club.members'] },
+      { populate: ['team', 'team.members'] },
     );
     // TODO: Move this to CASL
-    if (!clubContact.club.isClubAdmin(requester))
-      throw new ForbiddenException('Not a club admin');
+    if (!teamContact.team.isTeamAdmin(requester))
+      throw new ForbiddenException('Not a team admin');
 
-    await this.clubContactsAccountRepository.removeAndFlush(clubContact);
+    await this.teamContactsAccountRepository.removeAndFlush(teamContact);
   }
 }
