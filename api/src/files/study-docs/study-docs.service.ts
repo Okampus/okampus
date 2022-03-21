@@ -54,11 +54,12 @@ export class StudyDocsService {
     // (i.e. "sensitive"/"deprecated" docs)
     let options: FilterQuery<StudyDoc> = {};
     if (typeof filters.schoolYear !== 'undefined')
-      options = { ...options, subject: { schoolYear: filters.schoolYear } };
+      options = { subject: { schoolYear: filters.schoolYear } };
     if (typeof filters.year !== 'undefined')
       options = { ...options, year: filters.year };
     if (typeof filters.subject !== 'undefined')
-      options = { ...options, subject: { subjectId: filters.subject } };
+      // @ts-expect-error: ts(2339)
+      options = { ...options, subject: { ...options.subject, subjectId: filters.subject } };
     if (typeof filters.type !== 'undefined')
       options = { ...options, type: filters.type };
     if (typeof filters.cursus !== 'undefined')
