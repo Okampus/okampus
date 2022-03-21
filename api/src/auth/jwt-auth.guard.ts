@@ -3,7 +3,7 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { IS_PUBLIC_KEY } from '../shared/lib/constants';
-import type { HorizonRequest } from '../shared/lib/types/horizon-request.interface';
+import type { HorizonRequest } from '../shared/lib/types/interfaces/horizon-request.interface';
 import type { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';

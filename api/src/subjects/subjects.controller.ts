@@ -13,8 +13,8 @@ import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
+import type { PaginatedResult } from '../shared/modules/pagination';
 import { SearchDto } from '../shared/modules/search/search.dto';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
@@ -40,9 +40,7 @@ export class SubjectsController {
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Subject))
   public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Subject>> {
-    if (query.page)
-      return await this.subjectsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.subjectsService.findAll();
+    return await this.subjectsService.findAll(normalizePagination(query));
   }
 
   @UseGuards(TypesenseEnabledGuard)

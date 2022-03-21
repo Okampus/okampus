@@ -5,7 +5,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { SchoolYear } from '../../../shared/lib/types/school-year.enum';
+import { SchoolYear } from '../../../shared/lib/types/enums/school-year.enum';
 import { CreateFileUploadDto } from '../../file-uploads/dto/create-file-upload.dto';
 
 export class CreateInfoDocDto extends CreateFileUploadDto {

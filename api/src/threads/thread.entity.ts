@@ -11,9 +11,9 @@ import { Transform } from 'class-transformer';
 import type { Content } from '../contents/entities/content.entity';
 import { TransformCollection } from '../shared/lib/decorators/transform-collection.decorator';
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
-import { ContentMasterType } from '../shared/lib/types/content-master-type.enum';
-import type { DeepPartial } from '../shared/lib/types/deep-partial.type';
-import { ThreadType } from '../shared/lib/types/thread-type.enum';
+import { ContentMasterType } from '../shared/lib/types/enums/content-master-type.enum';
+import { ThreadType } from '../shared/lib/types/enums/thread-type.enum';
+import type { DeepPartial } from '../shared/lib/types/types/deep-partial.type';
 import type { User } from '../users/user.entity';
 
 const validatedContentTransformer = ({ value }: { value: Content }): DeepPartial<Content> | null => (value

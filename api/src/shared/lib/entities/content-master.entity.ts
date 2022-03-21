@@ -11,7 +11,7 @@ import { Content } from '../../../contents/entities/content.entity';
 import type { Tag } from '../../../tags/tag.entity';
 import type { User } from '../../../users/user.entity';
 import { TransformCollection } from '../decorators/transform-collection.decorator';
-import { ContentMasterType } from '../types/content-master-type.enum';
+import { ContentMasterType } from '../types/enums/content-master-type.enum';
 import { BaseEntity } from './base.entity';
 
 @Entity({

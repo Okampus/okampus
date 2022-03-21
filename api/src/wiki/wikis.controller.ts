@@ -12,8 +12,8 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { normalizePagination } from '../shared/modules/pagination/normalize-pagination';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { normalizePagination } from '../shared/modules/pagination';
+import type { PaginatedResult } from '../shared/modules/pagination';
 import { User } from '../users/user.entity';
 import { CreateWikiPageDto } from './dto/create-wiki-page.dto';
 import { FilterAndPaginateDto } from './dto/filter-and-paginate.dto';
@@ -24,7 +24,9 @@ import { WikisService } from './wikis.service';
 @ApiTags('Wikis')
 @Controller({ path: 'wikis' })
 export class WikisController {
-  constructor(private readonly wikisService: WikisService) {}
+  constructor(
+    private readonly wikisService: WikisService,
+  ) {}
 
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, WikiPage))

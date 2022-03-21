@@ -4,9 +4,9 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { BaseEntity } from '../shared/lib/entities/base.entity';
-import { BadgeLevel } from '../shared/lib/types/badge-level.enum';
-import { Statistic } from '../shared/lib/types/statistic.enum';
+import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { BadgeLevel } from '../../shared/lib/types/enums/badge-level.enum';
+import { Statistic } from '../../shared/lib/types/enums/statistic.enum';
 
 @Entity()
 export class Badge extends BaseEntity {

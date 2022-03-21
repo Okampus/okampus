@@ -1,7 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { BadgeUnlock } from '../badges/badge-unlock.entity';
-import { Badge } from '../badges/badge.entity';
+import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
+import { Badge } from '../badges/entities/badge.entity';
 import { User } from '../users/user.entity';
 import { Statistics } from './statistics.entity';
 import { StatisticsListener } from './statistics.listener';

@@ -11,13 +11,13 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
-import type { BadgeUnlock } from './badge-unlock.entity';
-import { Badge } from './badge.entity';
+import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
+import type { PaginatedResult } from '../shared/modules/pagination';
 import { BadgesService } from './badges.service';
 import { CreateBadgeDto } from './dto/create-badge.dto';
 import { UpdateBadgeDto } from './dto/update-badge.dto';
+import type { BadgeUnlock } from './entities/badge-unlock.entity';
+import { Badge } from './entities/badge.entity';
 
 @ApiTags('Badges')
 @Controller({ path: 'badges' })
@@ -35,9 +35,7 @@ export class BadgesController {
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Badge))
   public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Badge>> {
-    if (query.page)
-      return await this.badgesService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.badgesService.findAll();
+    return await this.badgesService.findAll(normalizePagination(query));
   }
 
   @Get('/user/:userId')

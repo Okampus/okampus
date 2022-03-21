@@ -9,7 +9,7 @@ import { Expose } from 'class-transformer';
 import { TEAM_MEMBERS_INCLUDED } from '../../shared/lib/constants';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
-import { TeamRole } from '../../shared/lib/types/team-role.enum';
+import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import type { User } from '../../users/user.entity';
 import { TeamMember } from './team-member.entity';
 

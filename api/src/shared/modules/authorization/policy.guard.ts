@@ -1,7 +1,7 @@
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import type { HorizonRequest } from '../../lib/types/horizon-request.interface';
+import type { HorizonRequest } from '../../lib/types/interfaces/horizon-request.interface';
 import type { AppAbility } from '../casl/casl-ability.factory';
 import { CaslAbilityFactory } from '../casl/casl-ability.factory';
 import { CHECK_POLICIES_KEY } from './check-policies.decorator';

@@ -2,7 +2,7 @@ import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
 import { Catch, HttpException } from '@nestjs/common';
 import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
 import { config } from '../../configs/config';
-import type { ErrorFilterResponse } from '../types/error-filter-response.interface';
+import type { ErrorFilterResponse } from '../types/interfaces/error-filter-response.interface';
 
 @Catch(HttpException)
 export class ExceptionsFilter implements ExceptionFilter {

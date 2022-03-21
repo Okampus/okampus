@@ -4,7 +4,7 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import { SchoolYear } from '../../shared/lib/types/school-year.enum';
+import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 
 export class CreateSubjectDto {
   @Length(1, 10)

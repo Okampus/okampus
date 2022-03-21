@@ -7,7 +7,7 @@ import type {
 import { Catch } from '@nestjs/common';
 import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 import { TypesenseError } from 'typesense/lib/Typesense/Errors';
-import type { ErrorFilterResponse } from '../types/error-filter-response.interface';
+import type { ErrorFilterResponse } from '../types/interfaces/error-filter-response.interface';
 
 @Catch(TypesenseError)
 export class TypesenseFilter implements ExceptionFilter {

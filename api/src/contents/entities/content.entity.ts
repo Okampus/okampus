@@ -17,8 +17,8 @@ import { TransformCollection } from '../../shared/lib/decorators/transform-colle
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 // eslint-disable-next-line import/no-cycle
 import { ContentMaster } from '../../shared/lib/entities/content-master.entity';
-import { ContentKind } from '../../shared/lib/types/content-kind.enum';
-import { ContentMasterType } from '../../shared/lib/types/content-master-type.enum';
+import { ContentKind } from '../../shared/lib/types/enums/content-kind.enum';
+import { ContentMasterType } from '../../shared/lib/types/enums/content-master-type.enum';
 import { User } from '../../users/user.entity';
 // eslint-disable-next-line import/no-cycle
 import { ContentEdit } from './content-edit.entity';

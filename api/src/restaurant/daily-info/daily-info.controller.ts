@@ -11,9 +11,8 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { ParseDatePipe } from '../../shared/lib/pipes/parse-date.pipe';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
-import { normalizePagination } from '../../shared/modules/pagination/normalize-pagination';
-import { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
+import { normalizePagination, PaginateDto } from '../../shared/modules/pagination';
+import type { PaginatedResult } from '../../shared/modules/pagination';
 import { DailyInfo } from './daily-info.entity';
 import { DailyInfoService } from './daily-info.service';
 import { CreateDailyInfoDto } from './dto/create-daily-info.dto';

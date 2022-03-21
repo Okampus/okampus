@@ -8,8 +8,8 @@ import {
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
-import { Cursus } from '../../shared/lib/types/cursus.enum';
-import { StudyDocType } from '../../shared/lib/types/study-doc-type.enum';
+import { Cursus } from '../../shared/lib/types/enums/cursus.enum';
+import { StudyDocType } from '../../shared/lib/types/enums/study-doc-type.enum';
 import { Subject } from '../../subjects/subject.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';

@@ -3,10 +3,9 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import { TeamRole } from '../shared/lib/types/team-role.enum';
+import { TeamRole } from '../shared/lib/types/enums/team-role.enum';
 import { Role } from '../shared/modules/authorization/types/role.enum';
-import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import { User } from '../users/user.entity';
 import type { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import type { CreateTeamDto } from './dto/create-team.dto';
@@ -176,7 +175,6 @@ export class TeamsService {
       { team: { teamId }, user: { userId } },
       { populate: ['user', 'team'] },
     );
-
 
     if (transferTo) {
       if (requester.userId !== targetTeamMember.user.userId)

@@ -2,7 +2,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import type { Express } from 'express';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
-import type { FileKind } from '../../shared/lib/types/file-kind.enum';
+import type { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
 import type { User } from '../../users/user.entity';
 import { FilePersistanceService } from './file-persistance.service';
 import { FileUpload } from './file-upload.entity';

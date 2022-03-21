@@ -6,7 +6,6 @@ import { FoodController } from './food.controller';
 import { Food } from './food.entity';
 import { FoodService } from './food.service';
 
-
 @Module({
   imports: [MikroOrmModule.forFeature([Food])],
   controllers: [FoodController],

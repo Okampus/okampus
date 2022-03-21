@@ -11,10 +11,10 @@ import {
 } from '@mikro-orm/core';
 import * as bcrypt from 'bcrypt';
 import { Exclude, Expose } from 'class-transformer';
-import type { BadgeUnlock } from '../badges/badge-unlock.entity';
+import type { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { STATISTICS_INCLUDED } from '../shared/lib/constants';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
-import { UserCreationOptions } from '../shared/lib/types/user-creation-options.interface';
+import { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
 import { Role } from '../shared/modules/authorization/types/role.enum';
 import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
 // eslint-disable-next-line import/no-cycle

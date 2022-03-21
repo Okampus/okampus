@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
+import type { PaginatedResult } from '../shared/modules/pagination';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { Tag } from './tag.entity';
@@ -31,9 +31,7 @@ export class TagsController {
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Tag))
   public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Tag>> {
-    if (query.page)
-      return await this.tagsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.tagsService.findAll();
+    return await this.tagsService.findAll(normalizePagination(query));
   }
 
   @Get(':name')

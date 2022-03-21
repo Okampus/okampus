@@ -9,7 +9,6 @@ import { FoodModule } from './food/food.module';
 import { RestaurantController } from './restaurant.controller';
 import { RestaurantService } from './restaurant.service';
 
-
 @Module({
   imports: [
     MikroOrmModule.forFeature([DailyMenu, DailyInfo]),

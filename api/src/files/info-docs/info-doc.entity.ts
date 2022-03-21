@@ -8,7 +8,7 @@ import {
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
-import { SchoolYear } from '../../shared/lib/types/school-year.enum';
+import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 import { DocSeries } from '../doc-series/doc-series.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 

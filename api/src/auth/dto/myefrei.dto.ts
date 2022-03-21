@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsString } from 'class-validator';
-import type { MyEfreiUserinfoResponse } from '../../shared/lib/types/myefrei-userinfo-response.interface';
+import type { MyEfreiUserinfoResponse } from '../../shared/lib/types/interfaces/myefrei-userinfo-response.interface';
 import { SchoolRole } from '../../shared/modules/authorization/types/school-role.enum';
 
 export class MyEfreiDto {

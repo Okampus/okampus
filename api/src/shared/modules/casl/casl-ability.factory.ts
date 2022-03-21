@@ -1,7 +1,7 @@
 import type { AbilityClass, ExtractSubjectType, InferSubjects } from '@casl/ability';
 import { Ability, AbilityBuilder, ForbiddenError } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
-import { Badge } from '../../../badges/badge.entity';
+import { Badge } from '../../../badges/entities/badge.entity';
 import { Blog } from '../../../blogs/blog.entity';
 import type { Contact } from '../../../contacts/entities/contact.entity';
 import { Content } from '../../../contents/entities/content.entity';
@@ -20,7 +20,7 @@ import { Team } from '../../../teams/entities/team.entity';
 import { Thread } from '../../../threads/thread.entity';
 import { User } from '../../../users/user.entity';
 import { WikiPage } from '../../../wiki/wiki-page.entity';
-import { ContentKind } from '../../lib/types/content-kind.enum';
+import { ContentKind } from '../../lib/types/enums/content-kind.enum';
 import { Action } from '../authorization/types/action.enum';
 import { Role } from '../authorization/types/role.enum';
 

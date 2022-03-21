@@ -11,7 +11,6 @@ export function isYesterday(date: Date): boolean {
   return isSameDay(yesterday, date);
 }
 
-
 export function isBeforeYesterday(date: Date): boolean {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);

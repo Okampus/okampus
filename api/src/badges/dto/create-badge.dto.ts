@@ -1,6 +1,6 @@
 import { IsEnum, IsInt, IsString } from 'class-validator';
-import { BadgeLevel } from '../../shared/lib/types/badge-level.enum';
-import { Statistic } from '../../shared/lib/types/statistic.enum';
+import { BadgeLevel } from '../../shared/lib/types/enums/badge-level.enum';
+import { Statistic } from '../../shared/lib/types/enums/statistic.enum';
 
 export class CreateBadgeDto {
   @IsString()

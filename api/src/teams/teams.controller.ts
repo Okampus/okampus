@@ -16,8 +16,8 @@ import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { SerializerIncludeTeamMembers, SerializerTeamMemberIncludeTeam } from '../shared/lib/decorators/serializers.decorator';
 import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
+import type { PaginatedResult } from '../shared/modules/pagination';
 import { SearchDto } from '../shared/modules/search/search.dto';
 import { User } from '../users/user.entity';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
@@ -52,9 +52,7 @@ export class TeamsController {
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   @SerializerIncludeTeamMembers()
   public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Team>> {
-    if (query.page)
-      return await this.teamsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.teamsService.findAll();
+    return await this.teamsService.findAll(normalizePagination(query));
   }
 
   @UseGuards(TypesenseEnabledGuard)

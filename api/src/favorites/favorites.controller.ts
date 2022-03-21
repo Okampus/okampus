@@ -11,8 +11,8 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
+import type { PaginatedResult } from '../shared/modules/pagination';
 import { User } from '../users/user.entity';
 import type { Favorite } from './favorite.entity';
 import { FavoritesService } from './favorites.service';
@@ -37,11 +37,7 @@ export class FavoritesController {
     @CurrentUser() user: User,
     @Query() query: PaginateDto,
   ): Promise<PaginatedResult<Favorite>> {
-    if (query.page) {
-      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
-      return await this.favoritesService.findAll(user, options);
-    }
-    return await this.favoritesService.findAll(user);
+    return await this.favoritesService.findAll(user, normalizePagination(query));
   }
 
   @Get(':contentId')
