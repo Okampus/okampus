@@ -6,6 +6,7 @@ import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { client } from '../../shared/configs/typesense.config';
 import RequireTypesense from '../../shared/lib/decorators/require-typesense.decorator';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
+import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 import { authorizeNotFound, SearchService } from '../../shared/modules/search/search.service';
 import { InfoDoc } from './info-doc.entity';
 
@@ -13,6 +14,7 @@ export interface IndexedInfoDoc {
   user: string;
   name: string;
   year?: number;
+  schoolYear?: string;
   description?: string;
   id: string;
   createdAt: string;
@@ -26,6 +28,7 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
       { name: 'user', type: 'string' },
       { name: 'name', type: 'string' },
       { name: 'year', type: 'int32', optional: true },
+      { name: 'schoolYear', type: 'string', optional: true },
       { name: 'description', type: 'string', optional: true },
       { name: 'createdAt', type: 'string' },
     ],
@@ -84,6 +87,7 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
       user: infoDoc.file.user.userId,
       name: infoDoc.file.name,
       year: infoDoc.year,
+      schoolYear: infoDoc.schoolYear ? SchoolYear[infoDoc.schoolYear] : undefined,
       description: infoDoc.description,
       id: infoDoc.infoDocId,
       createdAt: infoDoc.createdAt.toString(),

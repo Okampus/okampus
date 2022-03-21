@@ -14,17 +14,20 @@ import type { PaginatedResult } from '../shared/modules/pagination';
 import { serializeOrder } from '../shared/modules/sorting';
 import { Tag } from '../tags/tag.entity';
 import type { User } from '../users/user.entity';
+import { BlogSearchService } from './blog-search.service';
 import { Blog } from './blog.entity';
 import type { CreateBlogDto } from './dto/create-blog.dto';
 import type { UpdateBlogDto } from './dto/update-blog.dto';
 
 @Injectable()
 export class BlogsService {
+  // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(Blog) private readonly blogRepository: BaseRepository<Blog>,
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
     private readonly contentsService: ContentsService,
+    private readonly blogSearchService: BlogSearchService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -45,6 +48,7 @@ export class BlogsService {
     });
 
     await this.blogRepository.persistAndFlush(blog);
+    await this.blogSearchService.add(blog);
     return blog;
   }
 
@@ -102,6 +106,7 @@ export class BlogsService {
       wrap(blog).assign(updatedProps);
 
     await this.blogRepository.flush();
+    await this.blogSearchService.update(blog);
     return blog;
   }
 
@@ -112,5 +117,6 @@ export class BlogsService {
     assertPermissions(ability, Action.Delete, blog);
 
     await this.blogRepository.removeAndFlush(blog);
+    await this.blogSearchService.remove(blog.contentMasterId.toString());
   }
 }
