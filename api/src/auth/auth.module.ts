@@ -1,7 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { config } from '../shared/configs/config';
 import { User } from '../users/user.entity';
@@ -28,7 +27,6 @@ const myefreiStrategy = config.get('myefreiOidc.enabled')
 @Module({
   imports: [
     MikroOrmModule.forFeature([User]),
-    ConfigModule,
     JwtModule.register({}),
     UsersModule,
     HttpModule,
@@ -40,6 +38,6 @@ const myefreiStrategy = config.get('myefreiOidc.enabled')
     MyEfreiAuthGuard,
     ...myefreiStrategy,
   ],
-  exports: [JwtAuthGuard, AuthService, JwtModule, ConfigModule, UsersModule],
+  exports: [JwtAuthGuard, AuthService, JwtModule, UsersModule],
 })
 export class AuthModule {}

@@ -1,7 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { MiddlewareConsumer } from '@nestjs/common';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { SentryModule } from '@ntegral/nestjs-sentry';
@@ -38,7 +37,6 @@ import { WikisModule } from './wiki/wikis.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     EventEmitterModule.forRoot(),
     MikroOrmModule.forRoot(),
     S3Module.forRoot(storageConfig),

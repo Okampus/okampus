@@ -16,7 +16,7 @@ const clientOptions: ClientMetadata = {
 };
 
 const paramOptions = {
-  redirect_uri: 'https://api.horizon-efrei.fr/auth/myefrei/callback',
+  redirect_uri: config.get('myefreiOidc.callbackUri'),
   scope: config.get('myefreiOidc.scopes'),
 };
 /* eslint-enable @typescript-eslint/naming-convention */

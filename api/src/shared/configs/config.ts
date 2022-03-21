@@ -47,6 +47,7 @@ interface Config {
     clientSecret: string;
     discoveryUrl: string;
     scopes: string;
+    callbackUri: string;
   };
   adminAccount: {
     username: string;
@@ -222,6 +223,11 @@ export const config = createProfiguration<Config>({
       default: 'openid profile',
       format: String,
       env: 'MYEFREI_OIDC_SCOPES',
+    },
+    callbackUri: {
+      default: 'https://api.horizon-efrei.fr/auth/myefrei/callback',
+      format: String,
+      env: 'MYEFREI_OIDC_CALLBACK_URI',
     },
   },
   adminAccount: {
