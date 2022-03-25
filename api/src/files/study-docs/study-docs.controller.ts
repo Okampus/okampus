@@ -17,9 +17,9 @@ import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { TypesenseEnabledGuard } from '../../shared/lib/guards/typesense-enabled.guard';
+import { StudyDocFilter } from '../../shared/lib/types/enums/docs-filters.enum';
 import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
-import { StudyDocCategoryType } from '../../shared/lib/types/types/docs-category.type';
-import type { Category } from '../../shared/lib/types/types/docs-category.type';
+import type { Categories } from '../../shared/lib/utils/compute-document-categories';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
@@ -80,13 +80,13 @@ export class StudyDocsController {
   @CheckPolicies(ability => ability.can(Action.Read, StudyDoc))
   public async findCategories(
     @Query() categoriesTypesDto: CategoryTypesDto,
-  ): Promise<Array<Category<StudyDocCategoryType>>> {
+  ): Promise<Categories<StudyDoc>> {
     const defaultSort = [
-      StudyDocCategoryType.SchoolYear,
-      StudyDocCategoryType.Subject,
-      StudyDocCategoryType.Type,
-      StudyDocCategoryType.Year,
-  ];
+      StudyDocFilter.SchoolYear,
+      StudyDocFilter.Subject,
+      StudyDocFilter.Type,
+      StudyDocFilter.Year,
+    ];
     return await this.studyDocsService.findCategories(categoriesTypesDto?.categories ?? defaultSort);
   }
 
