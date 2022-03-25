@@ -14,7 +14,7 @@ export interface IndexedStudyDoc {
   name: string;
   subjectName: string;
   subjectEnglishName: string;
-  year?: number;
+  year: number;
   description?: string;
   id: string;
   createdAt: string;
@@ -29,7 +29,7 @@ export class StudyDocSearchService extends SearchService<StudyDoc, IndexedStudyD
       { name: 'name', type: 'string' },
       { name: 'subjectName', type: 'string' },
       { name: 'subjectEnglishName', type: 'string' },
-      { name: 'year', type: 'int32', optional: true },
+      { name: 'year', type: 'int32' },
       { name: 'description', type: 'string', optional: true },
       { name: 'createdAt', type: 'string' },
     ],

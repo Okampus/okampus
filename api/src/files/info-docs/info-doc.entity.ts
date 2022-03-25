@@ -24,7 +24,7 @@ export class InfoDoc extends BaseEntity {
   docSeries?: DocSeries;
 
   @Property()
-  year?: number;
+  year: number;
 
   @Enum(() => SchoolYear)
   schoolYear?: SchoolYear;
@@ -41,16 +41,15 @@ export class InfoDoc extends BaseEntity {
     file: FileUpload;
     docSeries?: DocSeries | null;
     schoolYear?: number;
-    year?: number;
+    year: number;
     description?: string;
     isObsolete?: boolean;
   }) {
     super();
     this.file = options.file;
+    this.year = options.year;
     if (options.docSeries)
       this.docSeries = options.docSeries;
-    if (options.year)
-      this.year = options.year;
     if (options.schoolYear)
       this.schoolYear = options.schoolYear;
     if (options.description)

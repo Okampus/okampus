@@ -13,7 +13,7 @@ import { InfoDoc } from './info-doc.entity';
 export interface IndexedInfoDoc {
   user: string;
   name: string;
-  year?: number;
+  year: number;
   schoolYear?: string;
   description?: string;
   id: string;
@@ -27,7 +27,7 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
     fields: [
       { name: 'user', type: 'string' },
       { name: 'name', type: 'string' },
-      { name: 'year', type: 'int32', optional: true },
+      { name: 'year', type: 'int32' },
       { name: 'schoolYear', type: 'string', optional: true },
       { name: 'description', type: 'string', optional: true },
       { name: 'createdAt', type: 'string' },
