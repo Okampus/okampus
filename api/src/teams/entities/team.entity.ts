@@ -1,6 +1,7 @@
 import {
   Collection,
   Entity,
+  Enum,
   OneToMany,
   PrimaryKey,
   Property,
@@ -9,6 +10,7 @@ import { Expose } from 'class-transformer';
 import { TEAM_MEMBERS_INCLUDED } from '../../shared/lib/constants';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import type { User } from '../../users/user.entity';
 import { TeamMember } from './team-member.entity';
@@ -19,6 +21,9 @@ const ADMIN_ROLES = new Set([TeamRole.Owner, TeamRole.Leader]);
 export class Team extends BaseEntity {
   @PrimaryKey()
   teamId!: number;
+
+  @Enum(() => TeamKind)
+  kind!: TeamKind;
 
   @Property({ type: 'text' })
   name!: string;
@@ -36,11 +41,13 @@ export class Team extends BaseEntity {
 
   constructor(options: {
     name: string;
+    kind: TeamKind;
     description?: string;
     avatar?: string;
   }) {
     super();
     this.name = options.name;
+    this.kind = options.kind;
     if (options.description)
       this.description = options.description;
     if (options.avatar)
