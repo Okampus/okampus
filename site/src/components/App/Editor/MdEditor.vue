@@ -1,11 +1,17 @@
 <template>
     <div>
-        <span ref="editorEl" />
+        <textarea ref="editor" />
+        <!-- <vue-easymde
+            ref="editor"
+            :model-value="props.modelValue"
+            :options="{ maxHeight: '15rem' }"
+            @update:model-value="(value) => emit('update:modelValue', value)"
+        /> -->
         <div class="flex flex-row gap-4 items-center">
             <p
                 v-if="cancellable"
                 class="mt-2 text-base font-bold text-red-500 uppercase cursor-pointer"
-                @click="$emit('cancel')"
+                @click="emit('cancel')"
             >
                 Annuler
             </p>
@@ -18,7 +24,7 @@
                             ? 'text-blue-500 cursor-pointer'
                             : 'text-gray-500 cursor-not-allowed',
                     ]"
-                    @click="charCount > minCharCount ? $emit('send') : null"
+                    @click="charCount > minCharCount ? emit('send') : null"
                 >
                     Envoyer
                 </p>
@@ -28,14 +34,15 @@
             </Popper>
             <slot name="error" class="mt-2" />
         </div>
+        {{ props.modelValue }}
     </div>
 </template>
 
 <script setup>
     import Popper from 'vue3-popper'
-    import Vditor from 'vditor'
+    import EasyMDE from 'easymde'
 
-    import { onMounted, ref, watch } from 'vue'
+    import { onMounted, ref } from 'vue'
 
     const emit = defineEmits(['update:modelValue', 'cancel', 'send'])
     const props = defineProps({
@@ -69,63 +76,27 @@
         },
     })
 
-    const editorEl = ref(null)
     const editor = ref(null)
-    const charCount = ref(0)
+    const charCount = ref(props.modelValue ? props.modelValue.length : 0)
 
     defineExpose({
-        editor,
         charCount,
+        editor,
     })
 
-    // TODO: upload
-    // TODO: custom toolbar
-    // TODO: fix relative links
+    const mde = ref(null)
     onMounted(() => {
-        editor.value = new Vditor(editorEl.value, {
-            // toolbar,
-            lang: 'en_US',
-            counter: {
-                enable: true,
-                max: props.charCount > 0 ? props.charCount : null,
-                type: 'markdown',
-                after: (length) => {
-                    charCount.value = length
-                },
-            },
-            cache: {
-                id: props.uid,
-                after: (value) => {
-                    emit('update:modelValue', value)
-                },
-            },
-            input: (value) => {
-                emit('update:modelValue', value)
-                console.log(value, props.modelValue)
-            },
-            placeholder: props.placeholder ?? '',
-            height: 300,
-            preview: {
-                actions: [],
-                markdown: {
-                    toc: true,
-                    mark: true,
-                    footnotes: true,
-                    autoSpace: true,
-                },
-            },
-            toolbarConfig: {
-                pin: true,
-            },
+        console.log('editor', editor.value)
+        mde.value = new EasyMDE({
+            autoDownloadFontAwesome: false,
+            element: editor.value,
+            initialValue: props.modelValue,
+            maxHeight: '15rem',
+        })
+        // editor.value.getMDEInstance()
+        mde.value.codemirror.on('change', () => {
+            emit('update:modelValue', mde.value.value())
+            charCount.value = mde.value.value().trim().length
         })
     })
-
-    watch(
-        () => props.modelValue,
-        (value) => {
-            if (editor.value) {
-                editor.value.setValue(value)
-            }
-        },
-    )
 </script>

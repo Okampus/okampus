@@ -3,8 +3,8 @@
         <template #content>
             <MdEditableRender
                 v-model:edit="editing"
+                v-model:content="body"
                 :uid="`post-${post.contentId}`"
-                :content="body"
                 @send="
                     threads.updateContent(post.contentMasterId, { contentId: post.contentId, body: $event })
                 "
@@ -55,6 +55,4 @@
         get: () => props.post.editing,
         set: (v) => threads.editingContent(props.post.contentId, v),
     })
-
-    console.log('POST', props.post)
 </script>

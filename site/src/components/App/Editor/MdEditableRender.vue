@@ -9,13 +9,13 @@
         @cancel="cancel"
         @send="send"
     />
-    <MdRenderer v-else :content="body" />
+    <MdRenderer v-else :content="content" />
 </template>
 
 <script setup>
     import MdEditor from '@/components/App/Editor/MdEditor.vue'
     import MdRenderer from '@/components/App/Editor/MdRenderer.vue'
-    import { onMounted, ref, watchEffect } from 'vue'
+    import { ref } from 'vue'
 
     const props = defineProps({
         uid: {
@@ -45,7 +45,6 @@
     })
 
     const emit = defineEmits(['cancel', 'send', 'update:content', 'update:edit'])
-    const body = ref(props.content)
     const editedBody = ref(props.content)
 
     const cancel = () => {
@@ -58,16 +57,17 @@
     const send = () => {
         if (props.sendable) {
             emit('update:edit', false)
-            emit('send', body.value)
+            emit('update:content', editedBody.value)
+            emit('send', editedBody.value)
         }
     }
 
-    onMounted(() => {
-        if (props.emitContent) {
-            watchEffect(() => emit('update:content', body.value))
-            watchEffect(() => (body.value = props.content != body.value ? props.content : body.value))
-        } else {
-            watchEffect(() => (body.value = props.content))
-        }
-    })
+    // onMounted(() => {
+    //     if (props.emitContent) {
+    //         watchEffect(() => emit('update:content', body.value))
+    //         watchEffect(() => (body.value = props.content != body.value ? props.content : body.value))
+    //     } else {
+    //         watchEffect(() => (body.value = props.content))
+    //     }
+    // })
 </script>
