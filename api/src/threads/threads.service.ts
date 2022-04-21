@@ -21,6 +21,7 @@ import { Vote } from '../votes/vote.entity';
 import type { CreateThreadDto } from './dto/create-thread.dto';
 import type { UpdateThreadDto } from './dto/update-thread.dto';
 import type { ThreadInteractions } from './thread-interactions.interface';
+import { ThreadSearchService } from './thread-search.service';
 import { Thread } from './thread.entity';
 
 @Injectable()
@@ -36,6 +37,7 @@ export class ThreadsService {
     @InjectRepository(Vote) private readonly voteRepository: BaseRepository<Vote>,
     @InjectRepository(Report) private readonly reportRepository: BaseRepository<Report>,
     private readonly contentsService: ContentsService,
+    private readonly threadSearchService: ThreadSearchService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -57,6 +59,7 @@ export class ThreadsService {
     });
 
     await this.threadRepository.persistAndFlush(thread);
+    await this.threadSearchService.add(thread);
 
     return thread;
   }
@@ -172,6 +175,7 @@ export class ThreadsService {
       wrap(thread).assign(updatedProps);
 
     await this.threadRepository.flush();
+    await this.threadSearchService.update(thread);
     return thread;
   }
 
@@ -182,6 +186,7 @@ export class ThreadsService {
     assertPermissions(ability, Action.Delete, thread);
 
     await this.threadRepository.removeAndFlush(thread);
+    await this.threadSearchService.remove(thread.contentMasterId.toString());
   }
 
   public async addTags(contentMasterId: number, newTags: string[]): Promise<Thread> {
