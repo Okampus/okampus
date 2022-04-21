@@ -7,7 +7,10 @@ import { TypesenseHealthIndicator } from '../shared/modules/health/typesense.hea
 import { HealthController } from './health.controller';
 
 @Module({
-  imports: [TerminusModule, HttpModule],
+  imports: [
+    TerminusModule,
+    HttpModule,
+  ],
   controllers: [HealthController],
   providers: [
     MikroOrmHealthIndicator,
