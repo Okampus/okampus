@@ -21,6 +21,7 @@ import { Thread } from '../../../threads/thread.entity';
 import { User } from '../../../users/user.entity';
 import { WikiPage } from '../../../wiki/wiki-page.entity';
 import { ContentKind } from '../../lib/types/enums/content-kind.enum';
+import { TeamKind } from '../../lib/types/enums/team-kind.enum';
 import { Action } from '../authorization/types/action.enum';
 import { Role } from '../authorization/types/role.enum';
 
@@ -66,6 +67,7 @@ export class CaslAbilityFactory {
     /* eslint-disable @typescript-eslint/naming-convention */
     const isAuthor = { 'author.userId': user.userId } as const;
     const isFileUploader = { 'file.user.userId': user.userId } as const;
+    const isClub = { kind: TeamKind.Club } as const;
 
     if (user.roles.includes(Role.Admin)) {
       allow(Action.Manage, 'all');
@@ -91,9 +93,6 @@ export class CaslAbilityFactory {
         forbid(Action.Update, Badge);
         allow(Action.Manage, [Blog, Content, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag, Thread, WikiPage]);
       } else {
-        if (user.roles.includes(Role.RestaurantManager))
-          allow(Action.Manage, [DailyInfo, DailyMenu, Food]);
-
         // @ts-expect-error
         forbid(Action.Manage, [Blog, Thread], { 'post.isVisible': false })
           .because('Content has been removed');
@@ -138,6 +137,12 @@ export class CaslAbilityFactory {
         forbid([Action.Create, Action.Update, Action.Delete, Action.Interact], Content, { 'contentMaster.locked': true })
           .because('Thread is locked');
       }
+
+      if (user.roles.includes(Role.RestaurantManager))
+        allow(Action.Manage, [DailyInfo, DailyMenu, Food]);
+
+      if (user.roles.includes(Role.ClubManager))
+        allow(Action.Manage, Team, isClub);
     }
 
     forbid(Action.Delete, Content, { kind: ContentKind.Post })

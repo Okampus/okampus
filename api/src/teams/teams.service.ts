@@ -4,7 +4,6 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { TeamRole } from '../shared/lib/types/enums/team-role.enum';
-import { Role } from '../shared/modules/authorization/types/role.enum';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import { User } from '../users/user.entity';
 import type { CreateTeamMemberDto } from './dto/create-team-member.dto';
@@ -76,7 +75,7 @@ export class TeamsService {
     );
 
     // TODO: Move this to CASL
-    if (!user.roles.includes(Role.Admin) && !team.isTeamAdmin(user))
+    if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
     const { avatar, ...dto } = updateTeamDto;
@@ -132,7 +131,7 @@ export class TeamsService {
     );
 
     // TODO: Move this to CASL
-    if (!requester.roles.includes(Role.Admin) && !team.isTeamAdmin(requester))
+    if (!team.canAdminister(requester))
       throw new ForbiddenException('Not a team admin');
 
     if (createTeamMemberDto.role === TeamRole.Owner)
@@ -165,7 +164,7 @@ export class TeamsService {
     const { transferTo, ...updatedPros } = updateTeamMemberDto;
 
     // TODO: Move this to CASL
-    if (!requester.roles.includes(Role.Admin) && !team.isTeamAdmin(requester))
+    if (!team.canAdminister(requester))
       throw new ForbiddenException('Not a team admin');
 
     if (typeof updatedPros.role !== 'undefined' && !team.canActOnRole(requester, updatedPros.role))
@@ -204,7 +203,7 @@ export class TeamsService {
     const isSelf = requester.userId === userId;
 
     // TODO: Move this to CASL
-    if (!isSelf && !requester.roles.includes(Role.Admin) && !team.isTeamAdmin(requester))
+    if (!isSelf && !team.canAdminister(requester))
       throw new ForbiddenException('Not a team admin');
 
     const teamMember = await this.teamMemberRepository.findOneOrFail({ team, user: { userId } });

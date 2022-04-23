@@ -12,6 +12,7 @@ import { TransformCollection } from '../../shared/lib/decorators/transform-colle
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
+import { Role } from '../../shared/modules/authorization/types/role.enum';
 import type { User } from '../../users/user.entity';
 import { TeamMember } from './team-member.entity';
 
@@ -65,9 +66,21 @@ export class Team extends BaseEntity {
     return this.getMemberRoles(user).some(role => ADMIN_ROLES.has(role));
   }
 
+  public isGlobalAdmin(user: User): boolean {
+    return user.roles.includes(Role.Admin) || (this.kind === TeamKind.Club && user.roles.includes(Role.ClubManager));
+  }
+
+  public canAdminister(user: User): boolean {
+    return this.isGlobalAdmin(user) || this.isTeamAdmin(user);
+  }
+
   public canActOnRole(user: User, role: TeamRole): boolean {
+    if (this.isGlobalAdmin(user))
+      return true;
+
     if (!ADMIN_ROLES.has(role))
       return this.isTeamAdmin(user);
+
     return this.getMemberRoles(user).includes(TeamRole.Owner);
   }
 }
