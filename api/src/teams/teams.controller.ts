@@ -22,6 +22,7 @@ import { SearchDto } from '../shared/modules/search/search.dto';
 import { User } from '../users/user.entity';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { CreateTeamDto } from './dto/create-team.dto';
+import { TeamListOptions } from './dto/team-list-options.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import type { TeamMember } from './entities/team-member.entity';
@@ -51,8 +52,10 @@ export class TeamsController {
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   @SerializerIncludeTeamMembers()
-  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Team>> {
-    return await this.teamsService.findAll(normalizePagination(query));
+  public async findAll(
+    @Query() options: TeamListOptions,
+    ): Promise<PaginatedResult<Team>> {
+    return await this.teamsService.findAll(options, normalizePagination(options));
   }
 
   @UseGuards(TypesenseEnabledGuard)

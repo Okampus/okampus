@@ -1,3 +1,4 @@
+import type { FilterQuery } from '@mikro-orm/core';
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
@@ -8,6 +9,7 @@ import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination'
 import { User } from '../users/user.entity';
 import type { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import type { CreateTeamDto } from './dto/create-team.dto';
+import type { TeamsFilterDto } from './dto/teams-filter.dto';
 import type { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import type { UpdateTeamDto } from './dto/update-team.dto';
 import { TeamMember } from './entities/team-member.entity';
@@ -47,10 +49,17 @@ export class TeamsService {
     return team;
   }
 
-  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Team>> {
+  public async findAll(
+    filters: TeamsFilterDto,
+    paginationOptions?: Required<PaginateDto>,
+  ): Promise<PaginatedResult<Team>> {
+    let options: FilterQuery<Team> = {};
+    if (filters.kind)
+      options = { kind: filters.kind };
+
     return await this.teamRepository.findWithPagination(
       paginationOptions,
-      {},
+      options,
       { orderBy: { name: 'ASC' } },
     );
   }
