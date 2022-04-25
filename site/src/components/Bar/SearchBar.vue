@@ -58,16 +58,25 @@
             </div>
         </AppModal>
 
-        <InputWithIcon
+        <div class="hidden justify-center md:flex">
+            <div
+                class="flex justify-center items-center p-2 w-full max-w-2xl text-white bg-[#3a5257] dark:bg-[#334041] rounded-md outline-none cursor-text select-none"
+                @click="showSearchbar = true"
+            >
+                <i class="mr-2 fas fa-search" />
+                <span>Rechercher sur Horizon Web</span>
+            </div>
+        </div>
+        <!-- <InputWithIcon
             class="hidden md:flex lg:text-lg"
             input-placeholder="Rechercher une ressource sur Horizon Efrei..."
             @click.prevent="showSearchbar = true"
         >
             <i class="ml-0.5 fas fa-search" />
-        </InputWithIcon>
+        </InputWithIcon> -->
 
         <i
-            class="block float-right text-2xl cursor-pointer md:hidden fas fa-search"
+            class="block float-right text-2xl text-white cursor-pointer md:hidden fas fa-search"
             @click="showSearchbar = true"
         />
         {{ $refs.modal }}
@@ -77,7 +86,7 @@
 <script setup>
     import AppModal from '@/components/App/AppModal.vue'
     import SearchCategory from '@/components/App/Card/SearchCategory.vue'
-    import InputWithIcon from '@/components/Input/InputWithIcon.vue'
+    // import InputWithIcon from '@/components/Input/InputWithIcon.vue'
 
     import threadTypes from '@/shared/types/thread-types.enum'
     import $typesense from '@/shared/config/typesense.config'

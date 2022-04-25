@@ -52,7 +52,8 @@ $logo-black-url: url('@/assets/img/logos/horizon_logo_black.png');
     background: $logo-black-url no-repeat 0 0;
     background-size: 100%;
 
-    .dark & {
+    .dark &[allow-dark],
+    &[dark] {
         background: $logo-white-url no-repeat 0 0;
         background-size: 100%;
     }

@@ -1,14 +1,12 @@
 <template>
-    <nav
-        class="flex fixed top-0 left-0 justify-between items-center w-full border-b border-navbar bg-navbar h-topbar text-1 topbar-shadow"
-    >
+    <nav class="flex fixed top-0 left-0 justify-between items-center w-full topbar h-topbar text-1">
         <div class="flex items-center w-sidebar-lg">
             <div class="flex shrink-0 justify-center w-sidebar-sm">
                 <button aria-label="Open Menu" @click="$emit('toggle-side-bar')">
-                    <i class="text-2xl fas fa-bars text-0" />
+                    <i class="text-2xl text-white fas fa-bars" />
                 </button>
             </div>
-            <AppLogo />
+            <AppLogo only="dark" />
         </div>
 
         <div class="relative grow mx-6 bg-transparent">
@@ -26,14 +24,15 @@
 
         <div v-else class="flex justify-between items-center h-full bg-transparent">
             <div class="mr-4">
-                <UserCard :user="auth.user" />
+                <UserAvatar :img-src="auth.user.avatar" :username="auth.user.fullname" />
             </div>
         </div>
     </nav>
 </template>
 
 <script setup>
-    import UserCard from '@/components/App/Card/UserCard.vue'
+    // import UserCard from '@/components/App/Card/UserCard.vue'
+    import UserAvatar from '@/components/User/UserAvatar.vue'
     import SearchBar from '@/components/Bar/SearchBar.vue'
     import AppLogo from '@/components/App/AppLogo.vue'
 
@@ -44,14 +43,3 @@
 
     defineEmits(['toggle-side-bar'])
 </script>
-
-<style lang="scss">
-    .topbar-shadow {
-        clip-path: inset(0 0 -30px 0);
-        box-shadow: 0 0 15px 3px rgb(0 0 0 / 5%);
-
-        .dark & {
-            box-shadow: 0 0 20px 5px rgb(0 0 0 / 40%);
-        }
-    }
-</style>

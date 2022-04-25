@@ -1,5 +1,4 @@
 <template>
-    <AppView>
         <div class="flex gap-4 mx-auto">
             <div class="flex flex-col gap-4">
                 <div class="flex flex-col gap-4 card">
@@ -46,7 +45,6 @@
                 <div v-else>Pas d'informations pour ce jour !</div>
             </div>
         </div>
-    </AppView>
 </template>
 
 <script setup>
@@ -62,7 +60,6 @@
     import { i18n } from '@/shared/modules/i18n'
 
     import { FOOD_TYPES } from '@/shared/types/food-types.enum'
-    import AppView from '../App/AppView.vue'
 
     const START_DATE = new Date('2022-02-25')
 

@@ -121,7 +121,7 @@ module.exports = {
                 },
                 2: {
                     light: '#ededed',
-                    dark: '#1a1e28',
+                    dark: '#1b1d21',
                 },
                 3: {
                     light: '#ccc',

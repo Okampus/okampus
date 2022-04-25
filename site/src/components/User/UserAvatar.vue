@@ -9,7 +9,7 @@
                 ? { background: `no-repeat url(${imgSrc})`, backgroundSize: 'cover' }
                 : { backgroundColor: getColorFromData(username) }),
         }"
-        class="rounded-full select-none avatar"
+        class="shrink-0 rounded-full select-none avatar"
         :class="[!imgSrc ? 'avatar flex items-center justify-center' : '']"
     >
         <div v-if="!imgSrc" class="m-auto w-fit h-fit text-white" :style="{ fontSize: `${size / 2}rem` }">
@@ -27,7 +27,7 @@
             },
             size: {
                 type: Number,
-                default: 3.2,
+                default: 3,
             },
             username: {
                 type: String,

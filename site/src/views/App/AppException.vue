@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col items-center m-20 text-0">
         <router-link to="/" class="mb-10 w-fit">
-            <div class="w-[5.5rem] h-[5.5rem] logo" />
+            <div class="w-[5.5rem] h-[5.5rem] logo" allow-dark="" />
         </router-link>
         <div class="text-2xl text-blue-700 uppercase">{{ props.code }}</div>
 
