@@ -4,7 +4,6 @@ import { DailyInfoController } from './daily-info.controller';
 import { DailyInfo } from './daily-info.entity';
 import { DailyInfoService } from './daily-info.service';
 
-
 @Module({
   imports: [MikroOrmModule.forFeature([DailyInfo])],
   controllers: [DailyInfoController],

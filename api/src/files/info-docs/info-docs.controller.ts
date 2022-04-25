@@ -17,11 +17,12 @@ import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { TypesenseEnabledGuard } from '../../shared/lib/guards/typesense-enabled.guard';
-import type { Category } from '../../shared/lib/types/docs-category.type';
-import { InfoDocCategoryType } from '../../shared/lib/types/docs-category.type';
-import { FileKind } from '../../shared/lib/types/file-kind.enum';
+import { InfoDocFilter } from '../../shared/lib/types/enums/docs-filters.enum';
+import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
+import type { Categories } from '../../shared/lib/utils/compute-document-categories';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
-import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
+import { normalizePagination } from '../../shared/modules/pagination';
+import type { PaginatedResult } from '../../shared/modules/pagination';
 import { SearchDto } from '../../shared/modules/search/search.dto';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
@@ -68,20 +69,18 @@ export class InfoDocsController {
   public async findAllInfoDocs(
     @Query() query: DocsFilterDto,
   ): Promise<PaginatedResult<InfoDoc>> {
-    if (query.page)
-      return await this.infoDocsService.findAll(query, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.infoDocsService.findAll(query);
+    return await this.infoDocsService.findAll(query, normalizePagination(query));
   }
 
   @Get('/categories')
   @CheckPolicies(ability => ability.can(Action.Read, InfoDoc))
   public async findCategories(
     @Query() categoriesTypesDto: CategoryTypesDto,
-  ): Promise<Array<Category<InfoDocCategoryType>>> {
+  ): Promise<Categories<InfoDoc>> {
     const defaultSort = [
-      InfoDocCategoryType.SchoolYear,
-      InfoDocCategoryType.Year,
-  ];
+      InfoDocFilter.SchoolYear,
+      InfoDocFilter.Year,
+    ];
     return await this.infoDocsService.findCategories(categoriesTypesDto?.categories ?? defaultSort);
   }
 

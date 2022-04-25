@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import type { BaseClient, ClientMetadata, TokenSet } from 'openid-client';
 import { Client, Issuer, Strategy } from 'openid-client';
 import { config } from '../shared/configs/config';
-import type { MyEfreiUserinfoResponse } from '../shared/lib/types/myefrei-userinfo-response.interface';
+import type { MyEfreiUserinfoResponse } from '../shared/lib/types/interfaces/myefrei-userinfo-response.interface';
 import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
 import type { User } from '../users/user.entity';
 import { AuthService } from './auth.service';
@@ -16,7 +16,7 @@ const clientOptions: ClientMetadata = {
 };
 
 const paramOptions = {
-  redirect_uri: 'https://api.horizon-efrei.fr/auth/myefrei/callback',
+  redirect_uri: config.get('myefreiOidc.callbackUri'),
   scope: config.get('myefreiOidc.scopes'),
 };
 /* eslint-enable @typescript-eslint/naming-convention */

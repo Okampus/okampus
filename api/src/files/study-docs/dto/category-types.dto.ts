@@ -1,11 +1,11 @@
 import { Transform } from 'class-transformer';
 import { IsArray, IsEnum, IsOptional } from 'class-validator';
-import { StudyDocCategoryType } from '../../../shared/lib/types/docs-category.type';
+import { StudyDocFilter } from '../../../shared/lib/types/enums/docs-filters.enum';
 
 export class CategoryTypesDto {
   @Transform(({ value }) => value.split(','))
   @IsOptional()
   @IsArray()
-  @IsEnum(StudyDocCategoryType, { each: true })
-  categories?: StudyDocCategoryType[];
+  @IsEnum(StudyDocFilter, { each: true })
+  categories?: StudyDocFilter[];
 }

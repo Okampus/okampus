@@ -7,8 +7,8 @@ import {
 } from '@mikro-orm/core';
 import { Content } from '../contents/entities/content.entity';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
+import { AllReaction, AllReactionValue } from '../shared/lib/types/enums/reaction.enum';
 import { User } from '../users/user.entity';
-import { AllReaction, AllReactionValue } from './reaction.enum';
 
 @Entity()
 export class Reaction extends BaseEntity {

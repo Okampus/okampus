@@ -8,7 +8,7 @@ import {
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
-import { SchoolYear } from '../../shared/lib/types/school-year.enum';
+import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 import { DocSeries } from '../doc-series/doc-series.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 
@@ -24,7 +24,7 @@ export class InfoDoc extends BaseEntity {
   docSeries?: DocSeries;
 
   @Property()
-  year?: number;
+  year: number;
 
   @Enum(() => SchoolYear)
   schoolYear?: SchoolYear;
@@ -41,16 +41,15 @@ export class InfoDoc extends BaseEntity {
     file: FileUpload;
     docSeries?: DocSeries | null;
     schoolYear?: number;
-    year?: number;
+    year: number;
     description?: string;
     isObsolete?: boolean;
   }) {
     super();
     this.file = options.file;
+    this.year = options.year;
     if (options.docSeries)
       this.docSeries = options.docSeries;
-    if (options.year)
-      this.year = options.year;
     if (options.schoolYear)
       this.schoolYear = options.schoolYear;
     if (options.description)

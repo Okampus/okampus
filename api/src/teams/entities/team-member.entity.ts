@@ -9,7 +9,7 @@ import {
 import { Expose } from 'class-transformer';
 import { TEAMMEMBER_TEAM_INCLUDED } from '../../shared/lib/constants';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
-import { TeamRole } from '../../shared/lib/types/team-role.enum';
+import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import { User } from '../../users/user.entity';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { Team } from './team.entity';

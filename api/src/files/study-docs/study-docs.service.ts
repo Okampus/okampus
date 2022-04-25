@@ -2,16 +2,16 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import groupBy from 'lodash.groupby';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
-import { Cursus } from '../../shared/lib/types/cursus.enum';
-import type { Category, StudyDocCategoryType } from '../../shared/lib/types/docs-category.type';
-import type { ValueOf } from '../../shared/lib/types/valueof.type';
+import { Cursus } from '../../shared/lib/types/enums/cursus.enum';
+import type { StudyDocFilter } from '../../shared/lib/types/enums/docs-filters.enum';
+import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 import { assertPermissions } from '../../shared/lib/utils/assert-permission';
+import type { Categories, GroupFilters } from '../../shared/lib/utils/compute-document-categories';
+import { computeDocumentCategories } from '../../shared/lib/utils/compute-document-categories';
 import { Action } from '../../shared/modules/authorization';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
-import type { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
+import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
 import { Subject } from '../../subjects/subject.entity';
 import type { User } from '../../users/user.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
@@ -55,11 +55,12 @@ export class StudyDocsService {
     // (i.e. "sensitive"/"deprecated" docs)
     let options: FilterQuery<StudyDoc> = {};
     if (typeof filters.schoolYear !== 'undefined')
-      options = { ...options, subject: { schoolYear: filters.schoolYear } };
+      options = { subject: { schoolYear: filters.schoolYear } };
     if (typeof filters.year !== 'undefined')
       options = { ...options, year: filters.year };
     if (typeof filters.subject !== 'undefined')
-      options = { ...options, subject: { subjectId: filters.subject } };
+      // @ts-expect-error: ts(2339)
+      options = { ...options, subject: { ...options.subject, subjectId: filters.subject } };
     if (typeof filters.type !== 'undefined')
       options = { ...options, type: filters.type };
     if (typeof filters.cursus !== 'undefined')
@@ -72,29 +73,17 @@ export class StudyDocsService {
     );
   }
 
-  public async findCategories(baseFilters: StudyDocCategoryType[]): Promise<Array<Category<StudyDocCategoryType>>> {
+  public async findCategories(baseFilters: StudyDocFilter[]): Promise<Categories<StudyDoc>> {
     const allDocuments: StudyDoc[] = await this.studyDocRepository.findAll({ populate: ['subject'] });
 
-    const groupFilters: Record<StudyDocCategoryType, (elt: StudyDoc) => ValueOf<StudyDoc>> = {
-      schoolYear: elt => elt.subject.schoolYear,
-      subject: elt => elt.subject.subjectId,
-      type: elt => elt.type,
-      year: elt => elt.year,
+    const groupFilters: GroupFilters<StudyDoc> = {
+      schoolYear: elt => ({ key: elt.subject.schoolYear.toString(), metadata: SchoolYear[elt.subject.schoolYear] }),
+      subject: elt => ({ key: elt.subject.subjectId.toString(), metadata: elt.subject.name }),
+      type: elt => ({ key: elt.type.toString(), metadata: null }),
+      year: elt => ({ key: elt.year.toString(), metadata: null }),
     } as const;
 
-    const computeChildren = (
-      documents: StudyDoc[],
-      filters: StudyDocCategoryType[],
-    ): Array<Category<StudyDocCategoryType>> =>
-      Object.entries(groupBy(documents, groupFilters[filters[0]]))
-        .map(([title, value]) => ({
-          title,
-          context: filters[0],
-          children: filters.length === 1 ? [] : computeChildren(value, filters.slice(1)),
-        }));
-
-    return computeChildren(allDocuments, baseFilters)
-      .flatMap(category => (category.title === 'undefined' ? category.children : category));
+    return computeDocumentCategories(allDocuments, groupFilters, baseFilters);
   }
 
   public async findOne(studyDocId: string): Promise<StudyDoc> {

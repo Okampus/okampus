@@ -39,7 +39,7 @@
                             :class="[!comment.editing ? 'render-inline' : 'w-full']"
                             v-bind="editorConfig"
                             :uid="`comment-${threadId}-${comment.contentId}`"
-                            @send="editComment($event)"
+                            @send="editComment($event, i)"
                         />
                         <span v-if="!comment.editing" class="inline-flex gap-1 items-center tracking-tight">
                             <span class="link-blue">{{ comment._author.fullname }}</span>
@@ -212,9 +212,10 @@
         commenting.value = false
     }
 
-    const editComment = (body) => {
+    const editComment = (body, i) => {
         threads.updateContent(props.threadId, {
             parentId: props.parentId,
+            contentId: props.comments[i].contentId,
             body,
         })
     }

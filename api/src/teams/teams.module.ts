@@ -1,6 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
+import { ProfileImage } from '../files/profile-images/profile-image.entity';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { User } from '../users/user.entity';
 import { TeamMember } from './entities/team-member.entity';
@@ -11,7 +12,7 @@ import { TeamsService } from './teams.service';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([Team, TeamMember, User]),
+    MikroOrmModule.forFeature([Team, TeamMember, ProfileImage, User]),
   ],
   controllers: [TeamsController],
   providers: [CaslAbilityFactory, TeamsService, TeamSearchService],

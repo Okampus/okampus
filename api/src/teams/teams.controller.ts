@@ -16,12 +16,13 @@ import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { SerializerIncludeTeamMembers, SerializerTeamMemberIncludeTeam } from '../shared/lib/decorators/serializers.decorator';
 import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
+import type { PaginatedResult } from '../shared/modules/pagination';
 import { SearchDto } from '../shared/modules/search/search.dto';
 import { User } from '../users/user.entity';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { CreateTeamDto } from './dto/create-team.dto';
+import { TeamListOptions } from './dto/team-list-options.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import type { TeamMember } from './entities/team-member.entity';
@@ -51,10 +52,10 @@ export class TeamsController {
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   @SerializerIncludeTeamMembers()
-  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Team>> {
-    if (query.page)
-      return await this.teamsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.teamsService.findAll();
+  public async findAll(
+    @Query() options: TeamListOptions,
+    ): Promise<PaginatedResult<Team>> {
+    return await this.teamsService.findAll(options, normalizePagination(options));
   }
 
   @UseGuards(TypesenseEnabledGuard)
@@ -71,7 +72,7 @@ export class TeamsController {
 
   @Get('/names')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
-  public async findNames(): Promise<Array<Pick<Team, 'icon' | 'name' | 'teamId'>>> {
+  public async findNames(): Promise<Array<Pick<Team, 'avatar' | 'name' | 'teamId'>>> {
     return await this.teamsService.findNames();
   }
 

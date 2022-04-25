@@ -17,11 +17,12 @@ import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { TypesenseEnabledGuard } from '../../shared/lib/guards/typesense-enabled.guard';
-import { StudyDocCategoryType } from '../../shared/lib/types/docs-category.type';
-import type { Category } from '../../shared/lib/types/docs-category.type';
-import { FileKind } from '../../shared/lib/types/file-kind.enum';
+import { StudyDocFilter } from '../../shared/lib/types/enums/docs-filters.enum';
+import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
+import type { Categories } from '../../shared/lib/utils/compute-document-categories';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
-import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
+import { normalizePagination } from '../../shared/modules/pagination';
+import type { PaginatedResult } from '../../shared/modules/pagination';
 import { SearchDto } from '../../shared/modules/search/search.dto';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
@@ -72,22 +73,20 @@ export class StudyDocsController {
   public async findAllStudyDocs(
     @Query() query: DocsFilterDto,
   ): Promise<PaginatedResult<StudyDoc>> {
-    if (query.page)
-      return await this.studyDocsService.findAll(query, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.studyDocsService.findAll(query);
+    return await this.studyDocsService.findAll(query, normalizePagination(query));
   }
 
   @Get('/categories')
   @CheckPolicies(ability => ability.can(Action.Read, StudyDoc))
   public async findCategories(
     @Query() categoriesTypesDto: CategoryTypesDto,
-  ): Promise<Array<Category<StudyDocCategoryType>>> {
+  ): Promise<Categories<StudyDoc>> {
     const defaultSort = [
-      StudyDocCategoryType.SchoolYear,
-      StudyDocCategoryType.Subject,
-      StudyDocCategoryType.Type,
-      StudyDocCategoryType.Year,
-  ];
+      StudyDocFilter.SchoolYear,
+      StudyDocFilter.Subject,
+      StudyDocFilter.Type,
+      StudyDocFilter.Year,
+    ];
     return await this.studyDocsService.findCategories(categoriesTypesDto?.categories ?? defaultSort);
   }
 

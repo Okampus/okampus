@@ -9,23 +9,23 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Club } from '../clubs/entities/club.entity';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-import { SerializerIncludeClubContacts } from '../shared/lib/decorators/serializers.decorator';
+import { SerializerIncludeTeamContacts } from '../shared/lib/decorators/serializers.decorator';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
+import { Team } from '../teams/entities/team.entity';
 import { User } from '../users/user.entity';
 import { ContactsService } from './contacts.service';
 import { CreateContactAccountDto } from './dto/create-contact-account.dto';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactAccountDto } from './dto/update-contact-account.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
-import type { ClubContactAccount } from './entities/club-contact-account.entity';
 import { Contact } from './entities/contact.entity';
+import type { TeamContactAccount } from './entities/team-contact-account.entity';
 import type { UserContactAccount } from './entities/user-contact-account.entity';
 
 @ApiTags('Contacts')
 @Controller({ path: 'contacts' })
-@SerializerIncludeClubContacts()
+@SerializerIncludeTeamContacts()
 export class ContactsController {
   constructor(
     private readonly contactsService: ContactsService,
@@ -98,36 +98,36 @@ export class ContactsController {
     await this.contactsService.deleteUserContactAccount(user, contactAccountId);
   }
 
-  @Post('/clubs/:clubId')
-  @CheckPolicies(ability => ability.can(Action.Update, Club))
-  public async addClubContact(
-    @Param('clubId', ParseIntPipe) clubId: number,
+  @Post('/teams/:teamId')
+  @CheckPolicies(ability => ability.can(Action.Update, Team))
+  public async addTeamContact(
+    @Param('teamId', ParseIntPipe) teamId: number,
     @Body() createContactAccountDto: CreateContactAccountDto,
     @CurrentUser() user: User,
-  ): Promise<ClubContactAccount> {
-    return await this.contactsService.addClubContactAccount(user, clubId, createContactAccountDto);
+  ): Promise<TeamContactAccount> {
+    return await this.contactsService.addTeamContactAccount(user, teamId, createContactAccountDto);
   }
 
-  @Get('/clubs/:clubId')
-  @CheckPolicies(ability => ability.can(Action.Read, Club))
-  public async findAllClubContactAccounts(@Param('clubId', ParseIntPipe) clubId: number): Promise<ClubContactAccount[]> {
-    return await this.contactsService.findAllClubContactAccounts(clubId);
+  @Get('/teams/:teamId')
+  @CheckPolicies(ability => ability.can(Action.Read, Team))
+  public async findAllTeamContactAccounts(@Param('teamId', ParseIntPipe) teamId: number): Promise<TeamContactAccount[]> {
+    return await this.contactsService.findAllTeamContactAccounts(teamId);
   }
 
-  @Patch('/clubs/account/:contactAccountId')
-  public async updateClubContactAccount(
+  @Patch('/teams/account/:contactAccountId')
+  public async updateTeamContactAccount(
     @Param('contactAccountId', ParseIntPipe) contactAccountId: number,
     @Body() updateContactAccountDto: UpdateContactAccountDto,
     @CurrentUser() user: User,
-  ): Promise<ClubContactAccount> {
-    return await this.contactsService.updateClubContactAccount(user, contactAccountId, updateContactAccountDto);
+  ): Promise<TeamContactAccount> {
+    return await this.contactsService.updateTeamContactAccount(user, contactAccountId, updateContactAccountDto);
   }
 
-  @Delete('/clubs/account/:contactAccountId')
-  public async deleteClubContactAccount(
+  @Delete('/teams/account/:contactAccountId')
+  public async deleteTeamContactAccount(
     @Param('contactAccountId', ParseIntPipe) contactAccountId: number,
     @CurrentUser() user: User,
   ): Promise<void> {
-    await this.contactsService.deleteClubContactAccount(user, contactAccountId);
+    await this.contactsService.deleteTeamContactAccount(user, contactAccountId);
   }
 }

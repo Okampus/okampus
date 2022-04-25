@@ -1,7 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { MiddlewareConsumer } from '@nestjs/common';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { SentryModule } from '@ntegral/nestjs-sentry';
@@ -11,7 +10,6 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { BadgesModule } from './badges/badges.module';
 import { BlogsModule } from './blogs/blogs.module';
-import { ClubsModule } from './clubs/clubs.module';
 import { ContactsModule } from './contacts/contacts.module';
 import { ContentsModule } from './contents/contents.module';
 import { FavoritesModule } from './favorites/favorites.module';
@@ -20,6 +18,7 @@ import { HealthModule } from './health/health.module';
 import { ReactionsModule } from './reactions/reactions.module';
 import { ReportsModule } from './reports/reports.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import { config } from './shared/configs/config';
 import sentryConfig from './shared/configs/sentry.config';
 import storageConfig from './shared/configs/storage.config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
@@ -38,7 +37,6 @@ import { WikisModule } from './wiki/wikis.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     EventEmitterModule.forRoot(),
     MikroOrmModule.forRoot(),
     S3Module.forRoot(storageConfig),
@@ -47,7 +45,6 @@ import { WikisModule } from './wiki/wikis.module';
     AuthModule,
     BadgesModule,
     BlogsModule,
-    ClubsModule,
     ContactsModule,
     ContentsModule,
     FavoritesModule,
@@ -76,6 +73,7 @@ import { WikisModule } from './wiki/wikis.module';
 })
 export class AppModule {
   public configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(TraceMiddleware).forRoutes('*');
+    if (config.get('sentry.enabled'))
+      consumer.apply(TraceMiddleware).forRoutes('*');
   }
 }

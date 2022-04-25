@@ -4,10 +4,10 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Cursus } from '../../../shared/lib/types/cursus.enum';
-import { SchoolYear } from '../../../shared/lib/types/school-year.enum';
-import { StudyDocType } from '../../../shared/lib/types/study-doc-type.enum';
-import { PaginateDto } from '../../../shared/modules/pagination/paginate.dto';
+import { Cursus } from '../../../shared/lib/types/enums/cursus.enum';
+import { SchoolYear } from '../../../shared/lib/types/enums/school-year.enum';
+import { StudyDocType } from '../../../shared/lib/types/enums/study-doc-type.enum';
+import { PaginateDto } from '../../../shared/modules/pagination';
 
 export class DocsFilterDto extends PaginateDto {
   @IsOptional()

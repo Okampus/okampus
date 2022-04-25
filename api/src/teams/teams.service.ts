@@ -1,14 +1,15 @@
+import type { FilterQuery } from '@mikro-orm/core';
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { ProfileImage } from '../files/profile-images/profile-image.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import { TeamRole } from '../shared/lib/types/team-role.enum';
-import { Role } from '../shared/modules/authorization/types/role.enum';
-import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { TeamRole } from '../shared/lib/types/enums/team-role.enum';
+import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import { User } from '../users/user.entity';
 import type { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import type { CreateTeamDto } from './dto/create-team.dto';
+import type { TeamsFilterDto } from './dto/teams-filter.dto';
 import type { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import type { UpdateTeamDto } from './dto/update-team.dto';
 import { TeamMember } from './entities/team-member.entity';
@@ -21,11 +22,17 @@ export class TeamsService {
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
     private readonly teamSearchService: TeamSearchService,
   ) {}
 
   public async create(user: User, createTeamDto: CreateTeamDto): Promise<Team> {
-    const team = new Team(createTeamDto);
+    const { avatar, ...dto } = createTeamDto;
+
+    const team = new Team(dto);
+
+    if (avatar)
+      await this.setAvatar(avatar, team);
 
     try {
       await this.teamRepository.persistAndFlush(team);
@@ -42,10 +49,17 @@ export class TeamsService {
     return team;
   }
 
-  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Team>> {
+  public async findAll(
+    filters: TeamsFilterDto,
+    paginationOptions?: Required<PaginateDto>,
+  ): Promise<PaginatedResult<Team>> {
+    let options: FilterQuery<Team> = {};
+    if (filters.kind)
+      options = { kind: filters.kind };
+
     return await this.teamRepository.findWithPagination(
       paginationOptions,
-      {},
+      options,
       { orderBy: { name: 'ASC' } },
     );
   }
@@ -57,8 +71,8 @@ export class TeamsService {
     );
   }
 
-  public async findNames(): Promise<Array<Pick<Team, 'icon' | 'name' | 'teamId'>>> {
-    const teams = await this.teamRepository.findAll({ fields: ['name', 'icon', 'teamId'] });
+  public async findNames(): Promise<Array<Pick<Team, 'avatar' | 'name' | 'teamId'>>> {
+    const teams = await this.teamRepository.findAll({ fields: ['name', 'avatar', 'teamId'] });
     // Remove null values for M:M relations that are automatically filled
     return teams.map(({ members, ...keep }) => keep);
   }
@@ -70,10 +84,17 @@ export class TeamsService {
     );
 
     // TODO: Move this to CASL
-    if (!user.roles.includes(Role.Admin) && !team.isTeamAdmin(user))
+    if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
-    wrap(team).assign(updateTeamDto);
+    const { avatar, ...dto } = updateTeamDto;
+
+    if (avatar)
+      await this.setAvatar(avatar, team);
+    else
+      team.avatar = null;
+
+    wrap(team).assign(dto);
     await this.teamRepository.flush();
     await this.teamSearchService.update(team);
     return team;
@@ -119,7 +140,7 @@ export class TeamsService {
     );
 
     // TODO: Move this to CASL
-    if (!requester.roles.includes(Role.Admin) && !team.isTeamAdmin(requester))
+    if (!team.canAdminister(requester))
       throw new ForbiddenException('Not a team admin');
 
     if (createTeamMemberDto.role === TeamRole.Owner)
@@ -152,7 +173,7 @@ export class TeamsService {
     const { transferTo, ...updatedPros } = updateTeamMemberDto;
 
     // TODO: Move this to CASL
-    if (!requester.roles.includes(Role.Admin) && !team.isTeamAdmin(requester))
+    if (!team.canAdminister(requester))
       throw new ForbiddenException('Not a team admin');
 
     if (typeof updatedPros.role !== 'undefined' && !team.canActOnRole(requester, updatedPros.role))
@@ -162,7 +183,6 @@ export class TeamsService {
       { team: { teamId }, user: { userId } },
       { populate: ['user', 'team'] },
     );
-
 
     if (transferTo) {
       if (requester.userId !== targetTeamMember.user.userId)
@@ -192,7 +212,7 @@ export class TeamsService {
     const isSelf = requester.userId === userId;
 
     // TODO: Move this to CASL
-    if (!isSelf && !requester.roles.includes(Role.Admin) && !team.isTeamAdmin(requester))
+    if (!isSelf && !team.canAdminister(requester))
       throw new ForbiddenException('Not a team admin');
 
     const teamMember = await this.teamMemberRepository.findOneOrFail({ team, user: { userId } });
@@ -201,5 +221,21 @@ export class TeamsService {
       throw new ForbiddenException('Cannot remove owner');
 
     await this.teamMemberRepository.removeAndFlush(teamMember);
+  }
+
+  private async setAvatar(profileImageId: string, team: Team): Promise<void> {
+    // Get the avatar image and validate it
+    const avatarImage = await this.profileImageRepository.findOne({ profileImageId }, { populate: ['file'] });
+    if (!avatarImage || !avatarImage.isAvailableFor('team', team.teamId))
+      throw new BadRequestException('Invalid avatar image');
+
+    // Update the team's avatar
+    team.avatar = avatarImage.file.url;
+
+    // Update the target type of the image
+    if (!avatarImage.team) {
+      avatarImage.team = team;
+      await this.profileImageRepository.flush();
+    }
   }
 }

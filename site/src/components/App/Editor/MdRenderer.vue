@@ -1,9 +1,11 @@
 <template>
-    <div ref="renderer" />
+    <div ref="renderer" v-html="output" />
 </template>
+
 <script setup>
-    import VditorPreview from 'vditor/dist/method.min'
-    import { onMounted, ref, watch } from 'vue'
+    import { onMounted, ref, computed } from 'vue'
+    import { marked } from 'marked'
+    import hljs from 'highlight.js'
 
     const renderer = ref(null)
 
@@ -14,27 +16,26 @@
         },
     })
 
-    const renderConfig = {
-        markdown: {
-            toc: true,
-            listStyle: true,
-        },
-        speech: {
-            enable: false,
-        },
-        lang: 'en_US',
-        anchor: 1,
-        lazyLoadImage: 'https://cdn.jsdelivr.net/npm/vditor/dist/images/img-loading.svg',
-    }
+    const output = computed(() =>
+        marked(props.content, {
+            highlight: function (markdown) {
+                return hljs.highlightAuto(markdown).value
+            },
+        }),
+    )
 
     onMounted(() => {
-        VditorPreview.preview(renderer.value, props.content, renderConfig)
+        hljs.highlightAll()
     })
-
-    watch(
-        () => props.content,
-        (content) => {
-            VditorPreview.preview(renderer.value, content, renderConfig)
-        },
-    )
 </script>
+
+<style>
+    @import 'highlight.js/styles/monokai-sublime.css';
+
+    .markdown-body > p > img {
+        display: flex;
+        max-width: 90%;
+        max-height: 600px;
+        margin: auto;
+    }
+</style>

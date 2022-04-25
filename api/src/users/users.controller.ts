@@ -13,8 +13,8 @@ import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
+import type { PaginatedResult } from '../shared/modules/pagination';
 import { SearchDto } from '../shared/modules/search/search.dto';
 import type { Statistics } from '../statistics/statistics.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -49,9 +49,7 @@ export class UsersController {
 
   @Get()
   public async async(@Query() query: PaginateDto): Promise<PaginatedResult<User>> {
-    if (query.page)
-      return await this.usersService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.usersService.findAll();
+    return await this.usersService.findAll(normalizePagination(query));
   }
 
   @Delete(':id')
@@ -66,7 +64,10 @@ export class UsersController {
   }
 
   @Patch()
-  public async updateOne(@CurrentUser() user: User, @Body() updateUserDto: UpdateUserDto): Promise<User> {
+  public async updateOne(
+    @CurrentUser() user: User,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<User> {
     return await this.usersService.updateUser(user.userId, updateUserDto);
   }
 }

@@ -2,15 +2,15 @@ import { MikroORM } from '@mikro-orm/core';
 import { InjectRepository, UseRequestContext } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { BadgeUnlock } from '../badges/badge-unlock.entity';
-import { Badge } from '../badges/badge.entity';
+import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
+import { Badge } from '../badges/entities/badge.entity';
 import { Content } from '../contents/entities/content.entity';
 import type { InfoDoc } from '../files/info-docs/info-doc.entity';
 import type { StudyDoc } from '../files/study-docs/study-doc.entity';
 import pointsConfig from '../shared/configs/points.config';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import { ContentKind } from '../shared/lib/types/content-kind.enum';
-import { Statistic } from '../shared/lib/types/statistic.enum';
+import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
+import { Statistic } from '../shared/lib/types/enums/statistic.enum';
 import { isYesterday } from '../shared/lib/utils/date-utils';
 import { User } from '../users/user.entity';
 import { Statistics } from './statistics.entity';
@@ -22,6 +22,7 @@ export class StatisticsListener {
     @InjectRepository(Badge) private readonly badgeRepository: BaseRepository<Badge>,
     @InjectRepository(BadgeUnlock) private readonly badgeUnlockRepository: BaseRepository<BadgeUnlock>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+
     private readonly orm: MikroORM,
   ) {}
 

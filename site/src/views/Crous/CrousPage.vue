@@ -1,52 +1,50 @@
 <template>
-    <AppView>
-        <div class="flex gap-4 mx-auto">
-            <div class="flex flex-col gap-4">
-                <div class="flex flex-col gap-4 card">
-                    <div class="flex items-center w-full">
-                        <img class="w-16 h-16" :src="crousLogo" />
-                        <h3 class="ml-4 text-xl font-bold">Menu du Crous</h3>
-                    </div>
-                    <template v-if="!isEmpty(dishes)">
-                        <div v-for="(dishList, type, i) in dishes" :key="i" class="flex flex-col gap-2">
-                            <span class="uppercase">{{ FOOD_TYPES[type][i18n.global.locale] + 's' }}</span>
-                            <div class="flex gap-4">
-                                <span v-for="(dish, j) in dishList" :key="j"> {{ dish.name }}</span>
-                            </div>
+    <div class="flex gap-4 mx-auto">
+        <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-4 card">
+                <div class="flex items-center w-full">
+                    <img class="w-16 h-16" :src="crousLogo" />
+                    <h3 class="ml-4 text-xl font-bold">Menu du Crous</h3>
+                </div>
+                <template v-if="!isEmpty(dishes)">
+                    <div v-for="(dishList, type, i) in dishes" :key="i" class="flex flex-col gap-2">
+                        <span class="uppercase">{{ FOOD_TYPES[type][i18n.global.locale] + 's' }}</span>
+                        <div class="flex gap-4">
+                            <span v-for="(dish, j) in dishList" :key="j"> {{ dish.name }}</span>
                         </div>
-                    </template>
-                    <template v-else>
-                        <div>Pas de menu pour ce jour !</div>
-                    </template>
-                </div>
-
-                <div class="flex flex-col gap-4 card">
-                    <div class="flex items-center w-full">
-                        <img class="w-16 h-16" :src="crousLogo" />
-                        <h3 class="ml-4 text-xl font-bold">Formules et Tarifs</h3>
                     </div>
-                    <img class="w-full" :src="crousMenu" />
-                </div>
+                </template>
+                <template v-else>
+                    <div>Pas de menu pour ce jour !</div>
+                </template>
             </div>
 
             <div class="flex flex-col gap-4 card">
-                <div class="">
-                    <h3 class="text-xl font-bold">Horaires</h3>
-                    <div>Du Lundi au Vendredi :</div>
-                    <div class="ml-4">
-                        <div>Cantine : 12h-14h30</div>
-                        <div>Cafétéria : 8h-18h</div>
-                    </div>
+                <div class="flex items-center w-full">
+                    <img class="w-16 h-16" :src="crousLogo" />
+                    <h3 class="ml-4 text-xl font-bold">Formules et Tarifs</h3>
                 </div>
-            </div>
-
-            <div class="flex flex-col gap-4 card">
-                <h3 class="text-xl font-bold">Dernières informations</h3>
-                <div v-if="dayCrous.info?.content">{{ dayCrous.info?.content }}</div>
-                <div v-else>Pas d'informations pour ce jour !</div>
+                <img class="w-full" :src="crousMenu" />
             </div>
         </div>
-    </AppView>
+
+        <div class="flex flex-col gap-4 card">
+            <div class="">
+                <h3 class="text-xl font-bold">Horaires</h3>
+                <div>Du Lundi au Vendredi :</div>
+                <div class="ml-4">
+                    <div>Cantine : 12h-14h30</div>
+                    <div>Cafétéria : 8h-18h</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4 card">
+            <h3 class="text-xl font-bold">Dernières informations</h3>
+            <div v-if="dayCrous.info?.content">{{ dayCrous.info?.content }}</div>
+            <div v-else>Pas d'informations pour ce jour !</div>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -62,7 +60,6 @@
     import { i18n } from '@/shared/modules/i18n'
 
     import { FOOD_TYPES } from '@/shared/types/food-types.enum'
-    import AppView from '../App/AppView.vue'
 
     const START_DATE = new Date('2022-02-25')
 

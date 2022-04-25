@@ -1,4 +1,4 @@
-import type { SchoolRole } from '../../modules/authorization/types/school-role.enum';
+import type { SchoolRole } from '../../../modules/authorization/types/school-role.enum';
 
 export interface UserCreationOptions {
   userId: string;

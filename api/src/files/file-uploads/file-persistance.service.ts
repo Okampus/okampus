@@ -4,8 +4,8 @@ import { S3 } from 'aws-sdk';
 import type { Express } from 'express';
 import { InjectS3 } from 'nestjs-s3';
 import { computedConfig, config } from '../../shared/configs/config';
-import { FileKind } from '../../shared/lib/types/file-kind.enum';
-import { UploadBucket } from '../../shared/lib/types/upload-bucket.enum';
+import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
+import { UploadBucket } from '../../shared/lib/types/enums/upload-bucket.enum';
 
 @Injectable()
 export class FilePersistanceService {

@@ -17,10 +17,10 @@ import { SerializerExcludeContentAuthor } from '../shared/lib/decorators/seriali
 import { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { normalizePagination } from '../shared/modules/pagination/normalize-pagination';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { normalizePagination } from '../shared/modules/pagination';
+import type { PaginatedResult } from '../shared/modules/pagination';
 import { SearchDto } from '../shared/modules/search/search.dto';
-import { normalizeSort } from '../shared/modules/sorting/normalize-sort';
+import { normalizeSort } from '../shared/modules/sorting';
 import { User } from '../users/user.entity';
 import { AssigneesDto } from './dto/assignees.dto';
 import { CreateThreadDto } from './dto/create-thread.dto';

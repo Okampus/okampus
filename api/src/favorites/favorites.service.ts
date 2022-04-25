@@ -6,8 +6,7 @@ import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import type { User } from '../users/user.entity';
 import { Favorite } from './favorite.entity';
 

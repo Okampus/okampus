@@ -5,7 +5,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
-import { Colors } from '../shared/lib/types/colors.enum';
+import { Colors } from '../shared/lib/types/enums/colors.enum';
 
 @Entity()
 export class Tag extends BaseEntity {

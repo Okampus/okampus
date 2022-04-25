@@ -2,15 +2,15 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import groupBy from 'lodash.groupby';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
-import type { Category, InfoDocCategoryType } from '../../shared/lib/types/docs-category.type';
-import type { ValueOf } from '../../shared/lib/types/valueof.type';
+import type { InfoDocFilter } from '../../shared/lib/types/enums/docs-filters.enum';
+import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 import { assertPermissions } from '../../shared/lib/utils/assert-permission';
+import type { Categories, GroupFilters } from '../../shared/lib/utils/compute-document-categories';
+import { computeDocumentCategories } from '../../shared/lib/utils/compute-document-categories';
 import { Action } from '../../shared/modules/authorization';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
-import type { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
+import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
 import type { User } from '../../users/user.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
@@ -60,27 +60,19 @@ export class InfoDocsService {
     );
   }
 
-  public async findCategories(baseFilters: InfoDocCategoryType[]): Promise<Array<Category<InfoDocCategoryType>>> {
+  public async findCategories(baseFilters: InfoDocFilter[]): Promise<Categories<InfoDoc>> {
     const allDocuments: InfoDoc[] = await this.infoDocRepository.findAll();
 
-    const groupFilters: Record<InfoDocCategoryType, (elt: InfoDoc) => ValueOf<InfoDoc>> = {
-      schoolYear: elt => elt.schoolYear,
-      year: elt => elt.year,
+    const groupFilters: GroupFilters<InfoDoc> = {
+      schoolYear: elt => ({
+        key: elt.schoolYear?.toString(),
+        metadata: elt.schoolYear ? SchoolYear[elt.schoolYear] : null,
+      }),
+      year: elt => ({ key: elt.year.toString(), metadata: null }),
     } as const;
 
-    const computeChildren = (
-      documents: InfoDoc[],
-      filters: InfoDocCategoryType[],
-    ): Array<Category<InfoDocCategoryType>> =>
-      Object.entries(groupBy(documents, groupFilters[filters[0]]))
-        .map(([title, value]) => ({
-          title,
-          context: filters[0],
-          children: filters.length === 1 ? [] : computeChildren(value, filters.slice(1)),
-        }));
-
-    return computeChildren(allDocuments, baseFilters)
-      .flatMap(category => (category.title === 'undefined' ? category.children : category));
+    const result = computeDocumentCategories(allDocuments, groupFilters, baseFilters);
+    return result;
   }
 
   public async findOne(infoDocId: string): Promise<InfoDoc> {

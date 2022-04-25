@@ -16,8 +16,8 @@ import { Content } from '../contents/entities/content.entity';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
+import type { PaginatedResult } from '../shared/modules/pagination';
 import { SearchDto } from '../shared/modules/search/search.dto';
 import { User } from '../users/user.entity';
 import { CreateReportDto } from './dto/create-report.dto';
@@ -43,11 +43,7 @@ export class ReportsController {
     @Body() filters: GetReportsDto,
     @Query() query: PaginateDto,
   ): Promise<PaginatedResult<Report>> {
-    if (query.page) {
-      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
-      return await this.reportsService.findAll(user, filters, options);
-    }
-    return await this.reportsService.findAll(user, filters);
+    return await this.reportsService.findAll(user, filters, normalizePagination(query));
   }
 
   @UseGuards(TypesenseEnabledGuard)

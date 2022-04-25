@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache
         env:
           cache-name: cache-node-modules
@@ -59,7 +59,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache
         env:
           cache-name: cache-node-modules

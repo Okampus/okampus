@@ -8,19 +8,20 @@ import { Reaction } from '../reactions/reaction.entity';
 import { Report } from '../reports/report.entity';
 import type { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import { ContentKind } from '../shared/lib/types/content-kind.enum';
-import { ContentMasterType } from '../shared/lib/types/content-master-type.enum';
+import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
+import { ContentMasterType } from '../shared/lib/types/enums/content-master-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
-import { serializeOrder } from '../shared/modules/sorting/serialize-order';
+import type { PaginatedResult } from '../shared/modules/pagination';
+import { serializeOrder } from '../shared/modules/sorting';
 import { Tag } from '../tags/tag.entity';
 import { User } from '../users/user.entity';
 import { Vote } from '../votes/vote.entity';
 import type { CreateThreadDto } from './dto/create-thread.dto';
 import type { UpdateThreadDto } from './dto/update-thread.dto';
 import type { ThreadInteractions } from './thread-interactions.interface';
+import { ThreadSearchService } from './thread-search.service';
 import { Thread } from './thread.entity';
 
 @Injectable()
@@ -36,6 +37,7 @@ export class ThreadsService {
     @InjectRepository(Vote) private readonly voteRepository: BaseRepository<Vote>,
     @InjectRepository(Report) private readonly reportRepository: BaseRepository<Report>,
     private readonly contentsService: ContentsService,
+    private readonly threadSearchService: ThreadSearchService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -57,6 +59,7 @@ export class ThreadsService {
     });
 
     await this.threadRepository.persistAndFlush(thread);
+    await this.threadSearchService.add(thread);
 
     return thread;
   }
@@ -168,11 +171,11 @@ export class ThreadsService {
         : null;
     }
 
-
     if (updatedProps)
       wrap(thread).assign(updatedProps);
 
     await this.threadRepository.flush();
+    await this.threadSearchService.update(thread);
     return thread;
   }
 
@@ -183,6 +186,7 @@ export class ThreadsService {
     assertPermissions(ability, Action.Delete, thread);
 
     await this.threadRepository.removeAndFlush(thread);
+    await this.threadSearchService.remove(thread.contentMasterId.toString());
   }
 
   public async addTags(contentMasterId: number, newTags: string[]): Promise<Thread> {

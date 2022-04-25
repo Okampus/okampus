@@ -13,7 +13,7 @@ import { Express } from 'express';
 import { simpleImageMimeTypeRegex } from '../../shared/configs/mime-type';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
-import { FileKind } from '../../shared/lib/types/file-kind.enum';
+import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
@@ -46,7 +46,7 @@ export class ProfileImagesController {
       FileKind.ProfileImage,
       createProfileImageDto.fileLastModifiedAt,
     );
-    return await this.profileImagesService.create(user, fileUpload);
+    return await this.profileImagesService.create(fileUpload);
   }
 
   @Get(':id')

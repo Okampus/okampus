@@ -1,8 +1,11 @@
 import {
- Entity, Enum, PrimaryKey, Property,
+  Entity,
+  Enum,
+  PrimaryKey,
+  Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
-import { FoodType } from '../../shared/lib/types/food-type.enum';
+import { FoodType } from '../../shared/lib/types/enums/food-type.enum';
 
 @Entity()
 export class Food extends BaseEntity {

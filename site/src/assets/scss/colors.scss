@@ -1,13 +1,23 @@
-.bg-navbar {
-    background-color: #fff;
+.topbar {
+    color: #ddd;
+    background-color: #0d2a35;
 
     .dark & {
-        background-color: #1d2226;
+        background-color: #051519;
+    }
+}
+
+.sidebar {
+    color: #ddd;
+    background-color: #163541;
+
+    .dark & {
+        background-color: #081f25;
     }
 }
 
 .bg-app {
-    background-color: #efefef;
+    background-color: #fff;
 
     .dark & {
         background-color: #111214;

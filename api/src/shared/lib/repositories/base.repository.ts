@@ -1,7 +1,7 @@
 import type { FilterQuery, FindOptions } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { labelize } from '../../modules/pagination/labelize.util';
-import type { PaginatedResult } from '../../modules/pagination/pagination.interface';
+import { labelize } from '../../modules/pagination';
+import type { PaginatedResult } from '../../modules/pagination';
 import type { BaseEntity } from '../entities/base.entity';
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {

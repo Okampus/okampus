@@ -216,10 +216,11 @@
     @import '@/assets/scss/animations/bg-anims';
     @import '@/assets/scss/components/button';
     @import '@/assets/scss/components/card';
+
+    @import '@/assets/scss/components/easymde';
     @import '@/assets/scss/components/input';
     @import '@/assets/scss/components/link';
     @import '@/assets/scss/components/select';
-    @import '@/assets/scss/components/vditor';
     @import '@/assets/scss/sections/hero';
     @import '@/assets/scss/sections/label';
     @import '@/assets/scss/sections/transition';

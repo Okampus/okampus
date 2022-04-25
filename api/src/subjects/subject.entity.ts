@@ -5,7 +5,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
-import { SchoolYear } from '../shared/lib/types/school-year.enum';
+import { SchoolYear } from '../shared/lib/types/enums/school-year.enum';
 
 @Entity()
 export class Subject extends BaseEntity {

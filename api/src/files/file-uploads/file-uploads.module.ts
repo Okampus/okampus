@@ -4,7 +4,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Logger, Module } from '@nestjs/common';
 import { config } from '../../shared/configs/config';
-import { FileKind } from '../../shared/lib/types/file-kind.enum';
+import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
 import { enumKeys } from '../../shared/lib/utils/enum-keys';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
 import { FilePersistanceService } from './file-persistance.service';
@@ -21,17 +21,20 @@ import { FileUploadsService } from './file-uploads.service';
 })
 export class FileUploadsModule implements OnModuleInit {
   public async onModuleInit(): Promise<void> {
+    const logger = new Logger('Files');
+
     if (config.get('storage.enabled')) {
-      new Logger('Files').log(`Distant storage is enabled, uploading to ${config.get('storage.endpoint')}`);
-    } else {
-      new Logger('Files').log('Distant storage is disabled, uploading to local file system.');
-      const base = path.join(path.resolve('./'), config.get('upload.path'));
-
-      const dirs: Array<Promise<string | undefined>> = [];
-      for (const value of enumKeys(FileKind))
-        dirs.push(fs.mkdir(path.join(base, FileKind[value]), { recursive: true }));
-
-      await Promise.all(dirs);
+      logger.log(`Distant storage is enabled, uploading to ${config.get('storage.endpoint')}`);
+      return;
     }
+
+    logger.log('Distant storage is disabled, uploading to local file system.');
+    const base = path.join(path.resolve('./'), config.get('upload.path'));
+
+    const dirs: Array<Promise<string | undefined>> = [];
+    for (const value of enumKeys(FileKind))
+      dirs.push(fs.mkdir(path.join(base, FileKind[value]), { recursive: true }));
+
+    await Promise.all(dirs);
   }
 }

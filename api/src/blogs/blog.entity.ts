@@ -2,7 +2,7 @@ import { Entity, Property } from '@mikro-orm/core';
 import { Transform } from 'class-transformer';
 import type { Content } from '../contents/entities/content.entity';
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
-import { ContentMasterType } from '../shared/lib/types/content-master-type.enum';
+import { ContentMasterType } from '../shared/lib/types/enums/content-master-type.enum';
 
 @Entity({ discriminatorValue: ContentMasterType.Blog })
 export class Blog extends ContentMaster {

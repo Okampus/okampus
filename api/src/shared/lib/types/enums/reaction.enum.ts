@@ -1,4 +1,4 @@
-import type { ValueOf } from '../shared/lib/types/valueof.type';
+import type { ValueOf } from '../types/valueof.type';
 
 const BaseReaction = {
   what: 'what',

@@ -2,13 +2,12 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import type { User } from '../users/user.entity';
-import { BadgeUnlock } from './badge-unlock.entity';
-import { Badge } from './badge.entity';
 import type { CreateBadgeDto } from './dto/create-badge.dto';
 import type { UpdateBadgeDto } from './dto/update-badge.dto';
+import { BadgeUnlock } from './entities/badge-unlock.entity';
+import { Badge } from './entities/badge.entity';
 
 @Injectable()
 export class BadgesService {

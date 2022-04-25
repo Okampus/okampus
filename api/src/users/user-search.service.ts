@@ -11,6 +11,7 @@ import { User } from './user.entity';
 
 export interface IndexedUser {
   userId: string;
+  fullname: string;
   roles: string[];
   id: string;
   createdAt: string;
@@ -22,6 +23,7 @@ export class UserSearchService extends SearchService<User, IndexedUser> {
     name: 'users',
     fields: [
       { name: 'userId', type: 'string' },
+      { name: 'fullname', type: 'string' },
       { name: 'roles', type: 'string[]' },
       { name: 'createdAt', type: 'string' },
     ],
@@ -78,6 +80,7 @@ export class UserSearchService extends SearchService<User, IndexedUser> {
   public toIndexedEntity(user: User): IndexedUser {
     return {
       userId: user.userId,
+      fullname: user.getFullName(),
       roles: user.roles,
       id: user.userId,
       createdAt: user.createdAt.toString(),

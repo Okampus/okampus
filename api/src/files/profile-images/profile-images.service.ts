@@ -4,9 +4,8 @@ import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../../shared/lib/utils/assert-permission';
 import { Action } from '../../shared/modules/authorization';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
-import type { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
-import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
-import { User } from '../../users/user.entity';
+import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
+import type { User } from '../../users/user.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 import { ProfileImage } from './profile-image.entity';
 
@@ -15,12 +14,10 @@ export class ProfileImagesService {
   constructor(
     @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
-    @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
-
   ) {}
 
-  public async create(user: User, file: FileUpload): Promise<ProfileImage> {
-    const profileImage = new ProfileImage({ file, user });
+  public async create(file: FileUpload): Promise<ProfileImage> {
+    const profileImage = new ProfileImage({ file });
     await this.profileImageRepository.persistAndFlush(profileImage);
     return profileImage;
   }

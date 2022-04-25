@@ -3,38 +3,35 @@
         :class="[
             smallScreen || uncollapsed ? 'w-sidebar-lg' : 'w-sidebar-sm',
             collapsing ? 'transition-spacing' : '',
-            smallScreen ? 'fixed h-screen' : 'after-topbar sticky h-content sidebar-shadow',
+            smallScreen ? 'fixed h-screen' : 'after-topbar sticky h-content',
             smallScreen && ((collapsing && uncollapsed) || (!collapsing && !uncollapsed))
                 ? 'hidden-sidebar-lg'
                 : '',
         ]"
-        class="flex z-30 flex-col shrink-0 border-r w-sidebar-sm bg-navbar border-navbar"
+        class="flex z-30 flex-col shrink-0 w-sidebar-sm sidebar"
     >
         <div v-if="smallScreen && showUncollapsed" class="flex shrink-0 items-center bg-navbar h-topbar">
             <button aria-label="Close Menu" class="w-sidebar-sm" @click="emit('toggle-side-bar')">
-                <i class="text-2xl fas fa-times text-0" />
+                <i class="text-2xl fas fa-times" />
             </button>
-            <AppLogo />
+            <AppLogo only="dark" />
         </div>
 
         <div
             :class="[
-                showUncollapsed ? 'divide-y-0' : 'divide-y dark:divide-gray-700',
+                showUncollapsed ? '' : 'divide-y dark:divide-gray-700',
                 collapsing ? 'overflow-y-hidden' : 'overflow-y-auto scrollbar-none',
             ]"
         >
             <ul v-for="(section, i) in sections" :key="i">
-                <p
-                    class="py-0.5 pl-4 mt-3 text-sm uppercase text-0"
-                    :class="[showUncollapsed ? 'block' : 'hidden']"
-                >
+                <p class="py-0.5 pl-4 mt-3 text-sm uppercase" :class="[showUncollapsed ? 'block' : 'hidden']">
                     {{ section.name }}
                 </p>
                 <template v-for="link of section.links" :key="link">
                     <li>
                         <router-link
                             :to="link.to"
-                            class="flex items-center py-2 my-1 mx-auto w-11/12 opacity-80 tab text-0"
+                            class="flex items-center py-2 my-1 mx-auto w-11/12 opacity-80 tab"
                             :class="{ active: link.regActive.test($route.path) }"
                         >
                             <div
@@ -53,7 +50,7 @@
             </ul>
 
             <div class="flex gap-4 justify-center items-center p-4">
-                <p class="text-1 text-bold" :class="{ 'hidden': !showUncollapsed }">Mode Sombre</p>
+                <p class="text-bold" :class="{ 'hidden': !showUncollapsed }">Mode Sombre</p>
                 <SwitchInput :model-value="config.darkMode" @update:model-value="config.switchDarkMode()" />
             </div>
         </div>
@@ -90,15 +87,6 @@
 </script>
 
 <style lang="scss">
-    .sidebar-shadow {
-        clip-path: inset(0 -30px 0 0);
-        box-shadow: 0 0 15px 3px rgb(0 0 0 / 5%);
-
-        .dark & {
-            box-shadow: 0 0 20px 5px rgb(0 0 0 / 40%);
-        }
-    }
-
     .transition-spacing {
         transition: margin-left 600ms;
     }
