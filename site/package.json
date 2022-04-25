@@ -31,6 +31,7 @@
         "nanoid": "3.3.3",
         "pinia": "2.0.13",
         "typesense-instantsearch-adapter": "2.4.0",
+        "url": "0.11.0",
         "url-join": "5.0.0",
         "vue": "3.2.33",
         "vue-avatar-cropper": "6.0.9",
