@@ -22,15 +22,39 @@
             </button>
         </div>
 
-        <div v-else class="flex justify-between items-center h-full bg-transparent">
+        <div v-else class="flex justify-between items-center mr-4 h-full bg-transparent">
             <div class="mr-4">
-                <UserAvatar :img-src="auth.user.avatar" :username="auth.user.fullname" />
+                <Popper :offset-distance="8" :offset-skid="-110">
+                    <UserAvatar
+                        class="cursor-pointer"
+                        :img-src="auth.user.avatar"
+                        :username="auth.user.fullname"
+                    />
+                    <template #content>
+                        <div
+                            class="flex flex-col gap-4 pb-2 w-80 bg-[#ffffffcc] dark:bg-[#212121cc] rounded-b-lg shadow-md"
+                        >
+                            <div class="p-4">
+                                Connecté comme
+                                <b>{{ auth.user.fullname }}</b>
+                            </div>
+                            <div
+                                class="flex gap-6 items-center py-2 px-4 hover:bg-[#cccccccc] hover:dark:bg-[#777777cc] cursor-pointer"
+                                @click="emitter.emit('logout')"
+                            >
+                                <i class="text-xl fa-solid fa-arrow-right-from-bracket" />
+                                <div>Se déconnecter</div>
+                            </div>
+                        </div>
+                    </template>
+                </Popper>
             </div>
         </div>
     </nav>
 </template>
 
 <script setup>
+    import Popper from 'vue3-popper'
     // import UserCard from '@/components/App/Card/UserCard.vue'
     import UserAvatar from '@/components/User/UserAvatar.vue'
     import SearchBar from '@/components/Bar/SearchBar.vue'
