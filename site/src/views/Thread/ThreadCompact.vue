@@ -47,30 +47,27 @@
         </div>
 
         <div class="flex">
-            <!-- TODO: FIX OVERFLOW: replace actions by icons to gain space OR use hamburger bars -->
             <div class="w-full">
                 <div class="flex flex-col gap-3">
                     <ThreadPost :post="thread._post" />
 
-                    <div v-if="thread.replies.length > 0" class="mt-2">
-                        <div class="mb-1 ml-2">
-                            {{ `${thread.replies.length} réponse${thread.replies.length > 1 ? 's' : ''}` }}
-                        </div>
-                        <hr />
-                    </div>
-
-                    <AppAlert v-else type="info" class="mt-2">
-                        <!-- TODO: bonus for a first answer -->
-                        <template #title> Sois le premier à répondre à ce post ! </template>
-                        <template #message>
-                            <div class="mb-2">
-                                Personne n'a encore répondu à ce post : propose une première réponse 🌟
+                    <template v-if="thread.replies.length > 0">
+                        <div class="mt-2">
+                            <div class="mb-1 ml-2">
+                                {{
+                                    `${thread.replies.length} réponse${thread.replies.length > 1 ? 's' : ''}`
+                                }}
                             </div>
-                        </template>
-                    </AppAlert>
+                            <hr />
+                        </div>
+                        <ThreadReply v-for="(reply, i) in thread.replies" :key="i" :reply="reply" />
+                    </template>
 
-                    <ThreadReply v-for="(reply, i) in thread.replies" :key="i" :reply="reply" />
-                    <ThreadNewReply :thread-id="thread.contentMasterId" :parent-id="thread.post.contentId" />
+                    <ThreadNewReply
+                        :thread-id="thread.contentMasterId"
+                        :parent-id="thread.post.contentId"
+                        :first="thread.replies.length === 0"
+                    />
                 </div>
             </div>
 
@@ -137,7 +134,6 @@
 </template>
 
 <script setup>
-    import AppAlert from '@/components/App/AppAlert.vue'
     import AppTag from '@/components/App/AppTag.vue'
 
     import DatePreview from '@/components/App/Preview/DatePreview.vue'
