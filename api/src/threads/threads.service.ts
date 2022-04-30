@@ -67,7 +67,17 @@ export class ThreadsService {
   public async findAll(user: User, options?: Required<ListOptionsDto>): Promise<PaginatedResult<Thread>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
-    return await this.threadRepository.findWithPagination(
+
+    const result: Array<{ contentMaster: number; count: string }> = await this.contentRepository
+      .createQueryBuilder()
+      .count('contentId')
+      .select(['contentMaster', 'count'])
+      .where({ ...visibilityQuery, kind: ContentKind.Reply })
+      .groupBy('contentMaster')
+      .execute();
+    const allReplyCounts = new Map(result.map(entry => [entry.contentMaster, entry.count]));
+
+    const allThreads = await this.threadRepository.findWithPagination(
       options,
       visibilityQuery,
       {
@@ -76,6 +86,14 @@ export class ThreadsService {
         orderBy: { post: serializeOrder(options?.sortBy) },
       },
     );
+
+    allThreads.items = allThreads.items.map((thread) => {
+      // TODO: Maybe find a better way to add this property? Something virtual? computed on-the-fly? added elsewhere?
+      // @ts-expect-error: We add a new property to the object, but it's fine.
+      thread.replyCount = allReplyCounts.get(thread.contentMasterId);
+      return thread;
+    });
+    return allThreads;
   }
 
   public async findOne(user: User, contentMasterId: number): Promise<Thread> {
