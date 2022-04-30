@@ -72,7 +72,7 @@ export class ThreadsService {
       .createQueryBuilder()
       .count('contentId')
       .select(['contentMaster', 'count'])
-      .where({ ...visibilityQuery, kind: ContentKind.Reply })
+      .where({ ...visibilityQuery?.post, kind: ContentKind.Reply })
       .groupBy('contentMaster')
       .execute();
     const allReplyCounts = new Map(result.map(entry => [entry.contentMaster, entry.count]));
