@@ -1,8 +1,15 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { IsOptional, IsString } from 'class-validator';
-import { CreateTeamMemberDto } from './create-team-member.dto';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 
-export class UpdateTeamMemberDto extends PartialType(CreateTeamMemberDto) {
+export class UpdateTeamMemberDto {
+  @IsOptional()
+  @IsEnum(TeamRole)
+  role?: TeamRole;
+
+  @IsOptional()
+  @IsString()
+  roleLabel?: string;
+
   @IsOptional()
   @IsString()
   transferTo?: string;

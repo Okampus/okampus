@@ -20,12 +20,14 @@ import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
 import type { PaginatedResult } from '../shared/modules/pagination';
 import { SearchDto } from '../shared/modules/search/search.dto';
 import { User } from '../users/user.entity';
-import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { CreateTeamDto } from './dto/create-team.dto';
+import { MembershipRequestsListOptions } from './dto/membership-requests-list-options.dto';
 import { TeamListOptions } from './dto/team-list-options.dto';
+import { UpdateTeamMembershipRequestDto } from './dto/update-membership-request.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import type { TeamMember } from './entities/team-member.entity';
+import type { TeamMembershipRequest } from './entities/team-membership-request.entity';
 import { Team } from './entities/team.entity';
 import type { IndexedTeam } from './team-search.service';
 import { TeamSearchService } from './team-search.service';
@@ -76,64 +78,6 @@ export class TeamsController {
     return await this.teamsService.findNames();
   }
 
-  @Get('/memberships/:userId')
-  @CheckPolicies(ability => ability.can(Action.Read, User))
-  @SerializerTeamMemberIncludeTeam()
-  public async findTeamMemberships(
-    @Param('userId') userId: string,
-  ): Promise<PaginatedResult<TeamMember>> {
-    return this.teamsService.findTeamMembership(userId);
-  }
-
-  @Get(':teamId/members')
-  @CheckPolicies(ability => ability.can(Action.Read, Team))
-  @SerializerTeamMemberIncludeTeam()
-  public async findAllUsersInTeam(
-    @Param('teamId', ParseIntPipe) teamId: number,
-    @Query() query: PaginateDto,
-  ): Promise<PaginatedResult<TeamMember>> {
-    if (query.page) {
-      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
-      return await this.teamsService.findAllUsersInTeam(teamId, options);
-    }
-    return await this.teamsService.findAllUsersInTeam(teamId);
-  }
-
-  @Post(':teamId/members/:userId')
-  @CheckPolicies(ability => ability.can(Action.Update, Team))
-  @SerializerTeamMemberIncludeTeam()
-  public async addUserToTeam(
-    @Param('teamId', ParseIntPipe) teamId: number,
-    @Param('userId') userId: string,
-    @Body() createTeamMemberDto: CreateTeamMemberDto,
-    @CurrentUser() requester: User,
-  ): Promise<TeamMember> {
-    return await this.teamsService.addUserToTeam(requester, teamId, userId, createTeamMemberDto);
-  }
-
-  @Patch(':teamId/members/:userId')
-  @CheckPolicies(ability => ability.can(Action.Update, Team))
-  @SerializerTeamMemberIncludeTeam()
-  public async updateUserRole(
-    @Param('teamId', ParseIntPipe) teamId: number,
-    @Param('userId') userId: string,
-    @Body() updateTeamMemberDto: UpdateTeamMemberDto,
-    @CurrentUser() requester: User,
-  ): Promise<TeamMember> {
-    return await this.teamsService.updateUserRole(requester, teamId, userId, updateTeamMemberDto);
-  }
-
-  @Delete(':teamId/members/:userId')
-  @CheckPolicies(ability => ability.can(Action.Update, Team))
-  @SerializerIncludeTeamMembers()
-  public async removeUserFromTeam(
-    @Param('teamId', ParseIntPipe) teamId: number,
-    @Param('userId') userId: string,
-    @CurrentUser() requester: User,
-  ): Promise<void> {
-    await this.teamsService.removeUserFromTeam(requester, teamId, userId);
-  }
-
   @Get(':teamId')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   @SerializerIncludeTeamMembers()
@@ -157,5 +101,97 @@ export class TeamsController {
   @SerializerIncludeTeamMembers()
   public async remove(@Param('teamId', ParseIntPipe) teamId: number): Promise<void> {
     await this.teamsService.remove(teamId);
+  }
+
+  @Get('/memberships/:userId')
+  @CheckPolicies(ability => ability.can(Action.Read, User))
+  @SerializerTeamMemberIncludeTeam()
+  public async findTeamMemberships(
+    @Param('userId') userId: string,
+  ): Promise<PaginatedResult<TeamMember>> {
+    return this.teamsService.findTeamMembership(userId);
+  }
+
+  @Get(':teamId/members')
+  @CheckPolicies(ability => ability.can(Action.Read, Team))
+  @SerializerTeamMemberIncludeTeam()
+  public async findAllUsersInTeam(
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Query() query: PaginateDto,
+  ): Promise<PaginatedResult<TeamMember>> {
+    return await this.teamsService.findAllUsersInTeam(teamId, normalizePagination(query));
+  }
+
+  @Post(':teamId/members/:userId')
+  @CheckPolicies(ability => ability.can(Action.Update, Team))
+  @SerializerTeamMemberIncludeTeam()
+  public async inviteUserToTeam(
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('userId') userId: string,
+    @CurrentUser() requester: User,
+  ): Promise<TeamMembershipRequest> {
+    return await this.teamsService.inviteUserToTeam(requester, teamId, userId);
+  }
+
+  @Patch(':teamId/members/:userId')
+  @CheckPolicies(ability => ability.can(Action.Update, Team))
+  @SerializerTeamMemberIncludeTeam()
+  public async updateMember(
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('userId') userId: string,
+    @Body() updateTeamMemberDto: UpdateTeamMemberDto,
+    @CurrentUser() requester: User,
+  ): Promise<TeamMember> {
+    return await this.teamsService.updateMember(requester, teamId, userId, updateTeamMemberDto);
+  }
+
+  @Delete(':teamId/members/:userId')
+  @CheckPolicies(ability => ability.can(Action.Update, Team))
+  @SerializerIncludeTeamMembers()
+  public async removeUserFromTeam(
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('userId') userId: string,
+    @CurrentUser() requester: User,
+  ): Promise<void> {
+    await this.teamsService.removeUserFromTeam(requester, teamId, userId);
+  }
+
+  @Get('/memberships/:userId/requests')
+  @CheckPolicies(ability => ability.can(Action.Read, User))
+  public async findAllMembershipRequestsForUser(
+    @Param('userId') userId: string,
+    @Query() query: MembershipRequestsListOptions,
+  ): Promise<PaginatedResult<TeamMembershipRequest>> {
+    return await this.teamsService.findAllMembershipRequestsForUser(userId, normalizePagination(query));
+  }
+
+  @Get(':teamId/requests')
+  @CheckPolicies(ability => ability.can(Action.Read, Team))
+  public async findAllMembershipRequestsForTeam(
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Query() query: MembershipRequestsListOptions,
+  ): Promise<PaginatedResult<TeamMembershipRequest>> {
+    return await this.teamsService.findAllMembershipRequestsForTeam(teamId, normalizePagination(query));
+  }
+
+  @Post(':teamId/requests')
+  @CheckPolicies(ability => ability.can(Action.Read, Team))
+  public async requestJoinTeam(
+    @CurrentUser() user: User,
+    @Param('teamId', ParseIntPipe) teamId: number,
+  ): Promise<TeamMembershipRequest> {
+    return await this.teamsService.requestJoinTeam(user, teamId);
+  }
+
+  @Patch(':teamId/requests/:requestId')
+  // Give read permission only, because standard users use the same endpoint to accept/reject invitations.
+  @CheckPolicies(ability => ability.can(Action.Read, Team))
+  public async handleRequest(
+    @CurrentUser() user: User,
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('requestId', ParseIntPipe) requestId: number,
+    @Body() updateTeamMembershipRequestDto: UpdateTeamMembershipRequestDto,
+  ): Promise<TeamMembershipRequest> {
+    return await this.teamsService.handleRequest(user, teamId, requestId, updateTeamMembershipRequestDto.state);
   }
 }
