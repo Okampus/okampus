@@ -1,7 +1,7 @@
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { BaseRepository } from '../../shared/lib/repositories/base.repository';
+import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
 import { DailyInfo } from './daily-info.entity';
 import type { CreateDailyInfoDto } from './dto/create-daily-info.dto';

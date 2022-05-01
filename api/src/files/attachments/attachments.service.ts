@@ -1,7 +1,7 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Content } from '../../contents/entities/content.entity';
-import { BaseRepository } from '../../shared/lib/repositories/base.repository';
+import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { ContentKind } from '../../shared/lib/types/enums/content-kind.enum';
 import { assertPermissions } from '../../shared/lib/utils/assert-permission';
 import { Action } from '../../shared/modules/authorization';

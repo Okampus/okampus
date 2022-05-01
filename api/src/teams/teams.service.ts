@@ -3,7 +3,7 @@ import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
-import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { TeamRole } from '../shared/lib/types/enums/team-role.enum';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import { User } from '../users/user.entity';

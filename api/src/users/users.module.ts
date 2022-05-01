@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
 import { config } from '../shared/configs/config';
-import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { Role } from '../shared/modules/authorization/types/role.enum';
 import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
 import { Statistics } from '../statistics/statistics.entity';

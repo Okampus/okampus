@@ -4,7 +4,7 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import type { JwtSignOptions } from '@nestjs/jwt';
 import { JwtService } from '@nestjs/jwt';
 import { config } from '../shared/configs/config';
-import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import type { MyEfreiDto } from './dto/myefrei.dto';

@@ -5,7 +5,7 @@ import { SearchParams } from 'typesense/lib/Typesense/Documents';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { client } from '../shared/configs/typesense.config';
 import RequireTypesense from '../shared/lib/decorators/require-typesense.decorator';
-import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { SchoolYear } from '../shared/lib/types/enums/school-year.enum';
 import { authorizeNotFound, SearchService } from '../shared/modules/search/search.service';
 import { Subject } from './subject.entity';

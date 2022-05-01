@@ -2,7 +2,7 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '../../shared/lib/repositories/base.repository';
+import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { Cursus } from '../../shared/lib/types/enums/cursus.enum';
 import type { StudyDocFilter } from '../../shared/lib/types/enums/docs-filters.enum';
 import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';

@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { DailyInfo } from './daily-info/daily-info.entity';
 import { DailyMenu } from './daily-menus/daily-menu.entity';
 

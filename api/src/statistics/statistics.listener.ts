@@ -8,7 +8,7 @@ import { Content } from '../contents/entities/content.entity';
 import type { InfoDoc } from '../files/info-docs/info-doc.entity';
 import type { StudyDoc } from '../files/study-docs/study-doc.entity';
 import pointsConfig from '../shared/configs/points.config';
-import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
 import { Statistic } from '../shared/lib/types/enums/statistic.enum';
 import { isYesterday } from '../shared/lib/utils/date-utils';

@@ -1,7 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { BaseRepository } from '../shared/lib/orm/base.repository';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import type { User } from '../users/user.entity';
 import type { CreateBadgeDto } from './dto/create-badge.dto';

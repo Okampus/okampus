@@ -7,7 +7,7 @@ import { Favorite } from '../favorites/favorite.entity';
 import { Reaction } from '../reactions/reaction.entity';
 import { Report } from '../reports/report.entity';
 import type { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
-import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
 import { ContentMasterType } from '../shared/lib/types/enums/content-master-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';

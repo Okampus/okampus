@@ -5,7 +5,7 @@ import slugify from 'slugify';
 import { ContentsService } from '../contents/contents.service';
 import { Content } from '../contents/entities/content.entity';
 import type { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
-import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { ContentMasterType } from '../shared/lib/types/enums/content-master-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
