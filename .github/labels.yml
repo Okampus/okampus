@@ -81,7 +81,7 @@
 - name: 'scope: *'
   description: Issues and PRs related to the whole site.
   color: '9DCBE0'
-- name: 'scope: threads'
+- name: 'scope: forum'
   description: Issues and PRs related to the forum module.
   color: '9DCBE0'
 - name: 'scope: blog'
@@ -90,15 +90,18 @@
 - name: 'scope: admin'
   description: Issues and PRs related to the admin module.
   color: '9DCBE0'
-- name: 'scope: File Sharing'
+- name: 'scope: file sharing'
   description: Issues and PRs related to the file sharing module.
   color: '9DCBE0'
 - name: 'scope: user'
   description: Issues and PRs related to users and profiles.
   color: '9DCBE0'
 - name: 'scope: wiki'
-  description: Issues and PRs related to wiki pages.
+  description: Issues and PRs related to the wiki module.
   color: '9DCBE0'
 - name: 'scope: restaurant (crous)'
-  description: Issues and PRs related to restaurant (the CROUS).
+  description: Issues and PRs related to restaurant module (the CROUS).
+  color: '9DCBE0'
+- name: 'scope: clubs'
+  description: Issues and PRs related to the club module.
   color: '9DCBE0'
