@@ -1,2 +1,2 @@
-npx mikro-orm schema:update -r
+npx mikro-orm migration:up
 npm run start:prod

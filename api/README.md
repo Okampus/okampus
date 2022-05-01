@@ -15,7 +15,9 @@ Pour lancer l'API d'HorizonWeb localement, il faut suivre ces étapes :
 1. Dupliquez puis renommez le fichier `.env.example` dans le dossier `api/`, en `.env`.
 1. Remplissez ce fichier avec vos tokens et votre configuration. Pensez à bien remplir le nom d'utilisateur et mot de passe de votre base de données : les variables sont préfixées par `MIKRO_ORM_`. Si vous avez installé Typesense, vous devez aussi remplir la variable `TYPESENSE_API_KEY` avec la clé d'api que vous avez définie en le lançant.
 1. Installez les dépendences avec `npm install`.
-1. :warning: Initialisez la base de données postgreSQL avec `npx mikro-orm schema:create -r`
+1. :warning: Initialisez la base de données PostgreSQL avec `npx mikro-orm migration:up`.
+
+    Vous devrez probablement créer la base de données (vide) auparavant. Pensez à l'appeler comme vous l'avez configuré dans le fichier `.env` : `MIKRO_ORM_DB_NAME` (par défault, `horizon`). Avec `psql`, vous pouvez créer la base de données en lançant `psql -c "CREATE DATABASE IF NOT EXISTS horizon;"` dans votre terminal.
 1. Lancez l'API en mode "développement" avec `npm run dev`.
 
 ## Lancer HorizonWeb via Docker
@@ -33,6 +35,8 @@ $ npm start
 $ npm run lint
 # Appliquer automatiquement les règles de style de code
 $ npm run lint:fix
+# Migrer la base de données à la dernière version
+$ npx mikro-orm migration:up
 ```
 
 <!-- Link Dump -->
