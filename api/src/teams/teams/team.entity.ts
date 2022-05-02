@@ -14,7 +14,7 @@ import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import { Role } from '../../shared/modules/authorization/types/role.enum';
 import type { User } from '../../users/user.entity';
-import { TeamMember } from './team-member.entity';
+import { TeamMember } from '../members/team-member.entity';
 
 const ADMIN_ROLES = new Set([TeamRole.Owner, TeamRole.Leader]);
 

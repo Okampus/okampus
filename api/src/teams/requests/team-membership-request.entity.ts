@@ -8,9 +8,9 @@ import {
 } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { User } from '../../users/user.entity';
-import { MembershipRequestIssuer } from '../membership-request-issuer.enum';
-import { MembershipRequestState } from '../membership-request-state.enum';
-import { Team } from './team.entity';
+import { Team } from '../teams/team.entity';
+import { MembershipRequestIssuer } from '../types/membership-request-issuer.enum';
+import { MembershipRequestState } from '../types/membership-request-state.enum';
 
 @Entity()
 export class TeamMembershipRequest extends BaseEntity {

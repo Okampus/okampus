@@ -1,7 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import { Team } from '../teams/entities/team.entity';
+import { Team } from '../teams/teams/team.entity';
 import { User } from '../users/user.entity';
 import { ContactsController } from './contacts.controller';
 import { ContactsService } from './contacts.service';

@@ -12,7 +12,7 @@ import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import { User } from '../../users/user.entity';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import type { Team } from './team.entity';
+import type { Team } from '../teams/team.entity';
 
 @Entity()
 export class TeamMember extends BaseEntity {

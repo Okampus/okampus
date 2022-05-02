@@ -6,7 +6,7 @@ import {
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
-import type { Team } from '../../teams/entities/team.entity';
+import type { Team } from '../../teams/teams/team.entity';
 import type { User } from '../../users/user.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 

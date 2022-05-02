@@ -5,7 +5,7 @@ import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import { Team } from '../teams/entities/team.entity';
+import { Team } from '../teams/teams/team.entity';
 import type { User } from '../users/user.entity';
 import type { CreateContactAccountDto } from './dto/create-contact-account.dto';
 import type { CreateContactDto } from './dto/create-contact.dto';

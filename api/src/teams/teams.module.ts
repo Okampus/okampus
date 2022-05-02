@@ -1,30 +1,28 @@
-import { MikroOrmModule } from '@mikro-orm/nestjs';
-import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
-import { ProfileImage } from '../files/profile-images/profile-image.entity';
-import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import { User } from '../users/user.entity';
-import { TeamMember } from './entities/team-member.entity';
-import { TeamMembershipRequest } from './entities/team-membership-request.entity';
-import { Team } from './entities/team.entity';
-import { TeamSearchService } from './team-search.service';
-import { TeamsController } from './teams.controller';
-import { TeamsService } from './teams.service';
+import { RouterModule } from '@nestjs/core';
+import { MembersModule } from './members/members.module';
+import { MembershipsModule } from './memberships/memberships.module';
+import { RequestsModule } from './requests/requests.module';
+import { CoreTeamsModule } from './teams/teams.module';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([Team, TeamMember, TeamMembershipRequest, ProfileImage, User]),
+    RouterModule.register([{
+      path: 'teams',
+      module: CoreTeamsModule,
+      children: [
+        { path: 'memberships', module: MembershipsModule },
+        { path: ':teamId/members', module: MembersModule },
+        { path: ':teamId/requests', module: RequestsModule },
+      ],
+    }]),
+    CoreTeamsModule,
+    MembershipsModule,
+    MembersModule,
+    RequestsModule,
   ],
-  controllers: [TeamsController],
-  providers: [CaslAbilityFactory, TeamsService, TeamSearchService],
-  exports: [TeamsService],
+  controllers: [],
+  providers: [],
+  exports: [],
 })
-export class TeamsModule implements OnModuleInit {
-  constructor(
-    private readonly teamSearchService: TeamSearchService,
-  ) {}
-
-  public async onModuleInit(): Promise<void> {
-    await this.teamSearchService.init();
-  }
-}
+export class TeamsModule {}

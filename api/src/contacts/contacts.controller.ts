@@ -12,7 +12,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { SerializerIncludeTeamContacts } from '../shared/lib/decorators/serializers.decorator';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { Team } from '../teams/entities/team.entity';
+import { Team } from '../teams/teams/team.entity';
 import { User } from '../users/user.entity';
 import { ContactsService } from './contacts.service';
 import { CreateContactAccountDto } from './dto/create-contact-account.dto';

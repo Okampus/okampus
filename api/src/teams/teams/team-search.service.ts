@@ -3,11 +3,11 @@ import { Injectable } from '@nestjs/common';
 import type { CollectionCreateSchema } from 'typesense/lib/Typesense/Collections';
 import { SearchParams } from 'typesense/lib/Typesense/Documents';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
-import { client } from '../shared/configs/typesense.config';
-import RequireTypesense from '../shared/lib/decorators/require-typesense.decorator';
-import { BaseRepository } from '../shared/lib/orm/base.repository';
-import { authorizeNotFound, SearchService } from '../shared/modules/search/search.service';
-import { Team } from './entities/team.entity';
+import { client } from '../../shared/configs/typesense.config';
+import RequireTypesense from '../../shared/lib/decorators/require-typesense.decorator';
+import { BaseRepository } from '../../shared/lib/orm/base.repository';
+import { authorizeNotFound, SearchService } from '../../shared/modules/search/search.service';
+import { Team } from './team.entity';
 
 export interface IndexedTeam {
   name: string;
@@ -67,8 +67,8 @@ export class TeamSearchService extends SearchService<Team, IndexedTeam> {
       const teamIds = results.hits.map(hit => hit.document.id).map(Number);
       const teams = await this.teamRepository.find({ teamId: { $in: teamIds } });
       for (const hit of results.hits)
-        // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedSubject.id and
-        // Subject.subjectId. I know.
+        // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedTeam.id and
+        // Team.teamId. I know.
         hit.document = teams.find(team => team.teamId === hit.document.id)!;
     }
     // @ts-expect-error: Ditto.

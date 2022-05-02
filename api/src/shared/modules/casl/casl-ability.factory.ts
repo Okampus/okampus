@@ -16,7 +16,7 @@ import { DailyMenu } from '../../../restaurant/daily-menus/daily-menu.entity';
 import { Food } from '../../../restaurant/food/food.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
-import { Team } from '../../../teams/entities/team.entity';
+import { Team } from '../../../teams/teams/team.entity';
 import { Thread } from '../../../threads/thread.entity';
 import { User } from '../../../users/user.entity';
 import { WikiPage } from '../../../wiki/wiki-page.entity';

@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
+import { TeamKind } from '../../../shared/lib/types/enums/team-kind.enum';
 
 export class CreateTeamDto {
   @IsString()
