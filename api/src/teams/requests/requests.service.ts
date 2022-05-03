@@ -13,15 +13,15 @@ import { MembershipRequestState } from '../types/membership-request-state.enum';
 import { TeamMembershipRequest } from './team-membership-request.entity';
 
 @Injectable()
-export class RequestsService {
+export class TeamMembershipRequestsService {
   constructor(
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamMembershipRequest)
-    private readonly teamMembershipRepository: BaseRepository<TeamMembershipRequest>,
+    private readonly teamMembershipRequestRepository: BaseRepository<TeamMembershipRequest>,
   ) {}
 
-  public async requestJoinTeam(requester: User, teamId: number): Promise<TeamMembershipRequest> {
+  public async create(requester: User, teamId: number): Promise<TeamMembershipRequest> {
     // 1. Check that the given team exist, and fetch it.
     const team = await this.teamRepository.findOneOrFail(
       { teamId },
@@ -35,7 +35,7 @@ export class RequestsService {
 
     // 3. Check that the user has not already requested to join the team (BadRequest),
     // or has been invited to the team (Conflict)
-    const existingRequest = await this.teamMembershipRepository.findOne({
+    const existingRequest = await this.teamMembershipRequestRepository.findOne({
       team,
       user: requester,
       state: MembershipRequestState.Pending,
@@ -55,45 +55,12 @@ export class RequestsService {
       issuedBy: requester,
       issuer: MembershipRequestIssuer.User,
     });
-    await this.teamMembershipRepository.persistAndFlush(teamMembershipRequest);
+    await this.teamMembershipRequestRepository.persistAndFlush(teamMembershipRequest);
 
     return teamMembershipRequest;
   }
 
-  public async handleRequest(
-    user: User,
-    teamId: number,
-    requestId: number,
-    state: MembershipRequestState.Approved | MembershipRequestState.Rejected,
-  ): Promise<TeamMembershipRequest> {
-    const request = await this.teamMembershipRepository.findOneOrFail(
-      { teamMembershipRequestId: requestId },
-      { populate: ['team', 'user', 'issuedBy', 'handledBy'] },
-    );
-    const team = await this.teamRepository.findOneOrFail(
-      { teamId },
-      { populate: ['members'] },
-    );
-
-    // If it was requested by a user, then we have to check that the persone handling it in the team
-    // has the permission to do so.
-    if (request.issuer === MembershipRequestIssuer.User && !team.canAdminister(user))
-      throw new BadRequestException('Not a team admin');
-
-    request.handledBy = user;
-    request.handledAt = new Date();
-    request.state = state;
-    await this.teamMembershipRepository.flush();
-
-    if (state === MembershipRequestState.Approved) {
-      const teamMember = new TeamMember({ team, user, role: TeamRole.Member });
-      await this.teamMemberRepository.persistAndFlush(teamMember);
-    }
-
-    return request;
-  }
-
-  public async findAllMembershipRequestsForTeam(
+  public async findAll(
     teamId: number,
     options?: MembershipRequestsListOptions & Required<PaginateDto>,
   ): Promise<PaginatedResult<TeamMembershipRequest>> {
@@ -106,10 +73,38 @@ export class RequestsService {
     else if (options?.type === 'out')
       query = { ...query, issuer: MembershipRequestIssuer.Team };
 
-    return await this.teamMembershipRepository.findWithPagination(
+    return await this.teamMembershipRequestRepository.findWithPagination(
       options,
       { team: { teamId }, ...query },
       { orderBy: { createdAt: 'DESC' }, populate: ['team', 'user', 'issuedBy', 'handledBy'] },
     );
+  }
+
+  public async handleRequest(
+    user: User,
+    requestId: number,
+    state: MembershipRequestState.Approved | MembershipRequestState.Rejected,
+  ): Promise<TeamMembershipRequest> {
+    const request = await this.teamMembershipRequestRepository.findOneOrFail(
+      { teamMembershipRequestId: requestId },
+      { populate: ['team', 'user', 'issuedBy', 'handledBy'] },
+    );
+
+    // If it was requested by a user, then we have to check that the persone handling it in the team
+    // has the permission to do so.
+    if (request.issuer === MembershipRequestIssuer.User && !request.team.canAdminister(user))
+      throw new BadRequestException('Not a team admin');
+
+    request.handledBy = user;
+    request.handledAt = new Date();
+    request.state = state;
+    await this.teamMembershipRequestRepository.flush();
+
+    if (state === MembershipRequestState.Approved) {
+      const teamMember = new TeamMember({ team: request.team, user, role: TeamRole.Member });
+      await this.teamMemberRepository.persistAndFlush(teamMember);
+    }
+
+    return request;
   }
 }

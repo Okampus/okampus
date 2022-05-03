@@ -3,15 +3,15 @@ import { Module } from '@nestjs/common';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
 import { TeamMember } from '../members/team-member.entity';
 import { TeamMembershipRequest } from '../requests/team-membership-request.entity';
-import { MembershipsController } from './memberships.controller';
-import { MembershipsService } from './memberships.service';
+import { TeamMembershipsController } from './memberships.controller';
+import { TeamMembershipsService } from './memberships.service';
 
 @Module({
   imports: [
     MikroOrmModule.forFeature([TeamMember, TeamMembershipRequest]),
   ],
-  controllers: [MembershipsController],
-  providers: [CaslAbilityFactory, MembershipsService],
-  exports: [MembershipsService],
+  controllers: [TeamMembershipsController],
+  providers: [CaslAbilityFactory, TeamMembershipsService],
+  exports: [TeamMembershipsService],
 })
-export class MembershipsModule {}
+export class TeamMembershipsModule {}

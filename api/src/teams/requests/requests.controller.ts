@@ -17,32 +17,32 @@ import { User } from '../../users/user.entity';
 import { MembershipRequestsListOptions } from '../dto/membership-requests-list-options.dto';
 import { Team } from '../teams/team.entity';
 import { UpdateTeamMembershipRequestDto } from './dto/update-membership-request.dto';
-import { RequestsService } from './requests.service';
+import { TeamMembershipRequestsService } from './requests.service';
 import type { TeamMembershipRequest } from './team-membership-request.entity';
 
-@ApiTags('Teams Membership Requests')
+@ApiTags('Team Membership Requests')
 @Controller()
-export class RequestsController {
+export class TeamMembershipRequestsController {
   constructor(
-    private readonly requestsService: RequestsService,
+    private readonly requestsService: TeamMembershipRequestsService,
   ) {}
 
-  @Get()
+  @Post(':teamId')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
-  public async findAllMembershipRequestsForTeam(
-    @Param('teamId', ParseIntPipe) teamId: number,
-    @Query() query: MembershipRequestsListOptions,
-  ): Promise<PaginatedResult<TeamMembershipRequest>> {
-    return await this.requestsService.findAllMembershipRequestsForTeam(teamId, normalizePagination(query));
-  }
-
-  @Post()
-  @CheckPolicies(ability => ability.can(Action.Read, Team))
-  public async requestJoinTeam(
+  public async create(
     @CurrentUser() user: User,
     @Param('teamId', ParseIntPipe) teamId: number,
   ): Promise<TeamMembershipRequest> {
-    return await this.requestsService.requestJoinTeam(user, teamId);
+    return await this.requestsService.create(user, teamId);
+  }
+
+  @Get(':teamId')
+  @CheckPolicies(ability => ability.can(Action.Read, Team))
+  public async findAll(
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Query() query: MembershipRequestsListOptions,
+  ): Promise<PaginatedResult<TeamMembershipRequest>> {
+    return await this.requestsService.findAll(teamId, normalizePagination(query));
   }
 
   @Patch(':requestId')
@@ -50,10 +50,9 @@ export class RequestsController {
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   public async handleRequest(
     @CurrentUser() user: User,
-    @Param('teamId', ParseIntPipe) teamId: number,
     @Param('requestId', ParseIntPipe) requestId: number,
     @Body() updateTeamMembershipRequestDto: UpdateTeamMembershipRequestDto,
   ): Promise<TeamMembershipRequest> {
-    return await this.requestsService.handleRequest(user, teamId, requestId, updateTeamMembershipRequestDto.state);
+    return await this.requestsService.handleRequest(user, requestId, updateTeamMembershipRequestDto.state);
   }
 }

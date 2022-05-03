@@ -13,30 +13,30 @@ import { User } from '../../users/user.entity';
 import { MembershipRequestsListOptions } from '../dto/membership-requests-list-options.dto';
 import type { TeamMember } from '../members/team-member.entity';
 import type { TeamMembershipRequest } from '../requests/team-membership-request.entity';
-import { MembershipsService } from './memberships.service';
+import { TeamMembershipsService } from './memberships.service';
 
-@ApiTags('Teams Memberships')
+@ApiTags('Team Memberships')
 @Controller()
-export class MembershipsController {
+export class TeamMembershipsController {
   constructor(
-    private readonly membershipsService: MembershipsService,
+    private readonly membershipsService: TeamMembershipsService,
 ) {}
 
   @Get(':userId')
   @CheckPolicies(ability => ability.can(Action.Read, User))
   @SerializerTeamMemberIncludeTeam()
-  public async findTeamMemberships(
+  public async findOne(
     @Param('userId') userId: string,
   ): Promise<PaginatedResult<TeamMember>> {
-    return await this.membershipsService.findTeamMembership(userId);
+    return await this.membershipsService.findOne(userId);
   }
 
   @Get(':userId/requests')
   @CheckPolicies(ability => ability.can(Action.Read, User))
-  public async findAllMembershipRequestsForUser(
+  public async findAll(
     @Param('userId') userId: string,
     @Query() query: MembershipRequestsListOptions,
   ): Promise<PaginatedResult<TeamMembershipRequest>> {
-    return await this.membershipsService.findAllMembershipRequestsForUser(userId, normalizePagination(query));
+    return await this.membershipsService.findAll(userId, normalizePagination(query));
   }
 }

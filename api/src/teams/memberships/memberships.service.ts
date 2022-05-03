@@ -5,18 +5,18 @@ import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
 import type { MembershipRequestsListOptions } from '../dto/membership-requests-list-options.dto';
 import { TeamMember } from '../members/team-member.entity';
-import { MembershipRequestIssuer } from '../types/membership-request-issuer.enum';
 import { TeamMembershipRequest } from '../requests/team-membership-request.entity';
+import { MembershipRequestIssuer } from '../types/membership-request-issuer.enum';
 
 @Injectable()
-export class MembershipsService {
+export class TeamMembershipsService {
   constructor(
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamMembershipRequest)
-    private readonly teamMembershipRepository: BaseRepository<TeamMembershipRequest>,
+    private readonly teamMembershipRequestRepository: BaseRepository<TeamMembershipRequest>,
   ) {}
 
-  public async findTeamMembership(
+  public async findOne(
     userId: string,
     paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<TeamMember>> {
@@ -27,7 +27,7 @@ export class MembershipsService {
     );
   }
 
-  public async findAllMembershipRequestsForUser(
+  public async findAll(
     userId: string,
     options?: MembershipRequestsListOptions & Required<PaginateDto>,
   ): Promise<PaginatedResult<TeamMembershipRequest>> {
@@ -40,7 +40,7 @@ export class MembershipsService {
     else if (options?.type === 'out')
       query = { ...query, issuer: MembershipRequestIssuer.User };
 
-    return await this.teamMembershipRepository.findWithPagination(
+    return await this.teamMembershipRequestRepository.findWithPagination(
       options,
       { user: { userId }, ...query },
       { orderBy: { createdAt: 'DESC' }, populate: ['team', 'user', 'issuedBy', 'handledBy'] },

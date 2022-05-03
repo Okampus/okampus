@@ -34,7 +34,7 @@ export class TeamsController {
   constructor(
     private readonly teamsService: TeamsService,
     private readonly teamSearchService: TeamSearchService,
-) {}
+  ) {}
 
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Team))

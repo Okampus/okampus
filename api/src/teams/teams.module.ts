@@ -1,25 +1,25 @@
 import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
-import { MembersModule } from './members/members.module';
-import { MembershipsModule } from './memberships/memberships.module';
-import { RequestsModule } from './requests/requests.module';
+import { TeamMembersModule } from './members/members.module';
+import { TeamMembershipsModule } from './memberships/memberships.module';
+import { TeamMembershipRequestsModule } from './requests/requests.module';
 import { CoreTeamsModule } from './teams/teams.module';
 
 @Module({
   imports: [
     RouterModule.register([{
       path: 'teams',
-      module: CoreTeamsModule,
       children: [
-        { path: 'memberships', module: MembershipsModule },
-        { path: ':teamId/members', module: MembersModule },
-        { path: ':teamId/requests', module: RequestsModule },
+        { path: 'teams', module: CoreTeamsModule },
+        { path: 'memberships', module: TeamMembershipsModule },
+        { path: 'members', module: TeamMembersModule },
+        { path: 'requests', module: TeamMembershipRequestsModule },
       ],
     }]),
     CoreTeamsModule,
-    MembershipsModule,
-    MembersModule,
-    RequestsModule,
+    TeamMembershipsModule,
+    TeamMembersModule,
+    TeamMembershipRequestsModule,
   ],
   controllers: [],
   providers: [],

@@ -19,38 +19,38 @@ import { User } from '../../users/user.entity';
 import type { TeamMembershipRequest } from '../requests/team-membership-request.entity';
 import { Team } from '../teams/team.entity';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
-import { MembersService } from './members.service';
+import { TeamMembersService } from './members.service';
 import type { TeamMember } from './team-member.entity';
 
-@ApiTags('Teams Members')
+@ApiTags('Team Members')
 @Controller()
-export class MembersController {
+export class TeamMembersController {
   constructor(
-    private readonly membersService: MembersService,
+    private readonly membersService: TeamMembersService,
   ) {}
 
-  @Get()
-  @CheckPolicies(ability => ability.can(Action.Read, Team))
-  @SerializerTeamMemberIncludeTeam()
-  public async findAllUsersInTeam(
-    @Param('teamId', ParseIntPipe) teamId: number,
-    @Query() query: PaginateDto,
-  ): Promise<PaginatedResult<TeamMember>> {
-    return await this.membersService.findAllUsersInTeam(teamId, normalizePagination(query));
-  }
-
-  @Post(':userId')
+  @Post(':teamId/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, Team))
   @SerializerTeamMemberIncludeTeam()
-  public async inviteUserToTeam(
+  public async inviteUser(
     @Param('teamId', ParseIntPipe) teamId: number,
     @Param('userId') userId: string,
     @CurrentUser() requester: User,
   ): Promise<TeamMembershipRequest> {
-    return await this.membersService.inviteUserToTeam(requester, teamId, userId);
+    return await this.membersService.inviteUser(requester, teamId, userId);
   }
 
-  @Patch(':userId')
+  @Get(':teamId')
+  @CheckPolicies(ability => ability.can(Action.Read, Team))
+  @SerializerTeamMemberIncludeTeam()
+  public async findAllMembers(
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Query() query: PaginateDto,
+  ): Promise<PaginatedResult<TeamMember>> {
+    return await this.membersService.findAllMembers(teamId, normalizePagination(query));
+  }
+
+  @Patch(':teamId/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, Team))
   @SerializerTeamMemberIncludeTeam()
   public async updateMember(
@@ -62,14 +62,14 @@ export class MembersController {
     return await this.membersService.updateMember(requester, teamId, userId, updateTeamMemberDto);
   }
 
-  @Delete(':userId')
+  @Delete(':teamId/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, Team))
   @SerializerIncludeTeamMembers()
-  public async removeUserFromTeam(
+  public async removeMember(
     @Param('teamId', ParseIntPipe) teamId: number,
     @Param('userId') userId: string,
     @CurrentUser() requester: User,
   ): Promise<void> {
-    await this.membersService.removeUserFromTeam(requester, teamId, userId);
+    await this.membersService.removeMember(requester, teamId, userId);
   }
 }
