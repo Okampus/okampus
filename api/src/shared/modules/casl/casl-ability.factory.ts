@@ -16,6 +16,7 @@ import { DailyMenu } from '../../../restaurant/daily-menus/daily-menu.entity';
 import { Food } from '../../../restaurant/food/food.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
+import { TeamEvent } from '../../../teams/events/team-event.entity';
 import { Team } from '../../../teams/teams/team.entity';
 import { Thread } from '../../../threads/thread.entity';
 import { User } from '../../../users/user.entity';
@@ -42,6 +43,7 @@ export type Subjects = InferSubjects<
   | typeof Subject
   | typeof Tag
   | typeof Team
+  | typeof TeamEvent
   | typeof Thread
   | typeof User
   | typeof WikiPage>
@@ -141,8 +143,11 @@ export class CaslAbilityFactory {
       if (user.roles.includes(Role.RestaurantManager))
         allow(Action.Manage, [DailyInfo, DailyMenu, Food]);
 
-      if (user.roles.includes(Role.ClubManager))
+      if (user.roles.includes(Role.ClubManager)) {
         allow(Action.Manage, Team, isClub);
+        // @ts-expect-error
+        allow(Action.Manage, TeamEvent, { 'team.kind': TeamKind.Club });
+      }
     }
 
     forbid(Action.Delete, Content, { kind: ContentKind.Post })
