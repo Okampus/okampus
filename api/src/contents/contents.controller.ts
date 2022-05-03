@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-import { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
+import { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
 import type { PaginatedResult } from '../shared/modules/pagination';
@@ -53,7 +53,7 @@ export class ContentsController {
   @CheckPolicies(ability => ability.can(Action.Read, Content))
   public async findAllReplies(
     @CurrentUser() user: User,
-    @Query() query: ListOptionsDto,
+    @Query() query: ContentListOptionsDto,
     @Body() parentDto: ParentDto,
   ): Promise<PaginatedResult<Content>> {
     return await this.contentsService.findAllReplies(
@@ -67,7 +67,7 @@ export class ContentsController {
   @CheckPolicies(ability => ability.can(Action.Read, Content))
   public async findAllComments(
     @CurrentUser() user: User,
-    @Query() query: ListOptionsDto,
+    @Query() query: ContentListOptionsDto,
     @Body() parentDto: ParentDto,
   ): Promise<PaginatedResult<Content>> {
     return await this.contentsService.findAllComments(

@@ -1,7 +1,7 @@
 import { SortOrder } from './sort-order.enum';
-import type { SortDto } from './sort.dto';
+import type { ContentSortDto, SortDto } from './sort.dto';
 
-export function normalizeSort(sort: SortDto): Required<SortDto> {
+export function normalizeSort<T extends ContentSortDto | SortDto>(sort: T): Required<T> {
   sort.sortBy = sort.sortBy ?? SortOrder.Newest;
-  return sort as Required<SortDto>;
+  return sort as Required<T>;
 }

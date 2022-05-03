@@ -14,7 +14,7 @@ import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { SerializerExcludeContentAuthor } from '../shared/lib/decorators/serializers.decorator';
-import { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
+import { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { normalizePagination } from '../shared/modules/pagination';
@@ -48,7 +48,7 @@ export class BlogsController {
   @CheckPolicies(ability => ability.can(Action.Read, Blog))
   public async findAll(
     @CurrentUser() user: User,
-    @Query() query: ListOptionsDto,
+    @Query() query: ContentListOptionsDto,
   ): Promise<PaginatedResult<Blog>> {
     return await this.blogsService.findAll(user, { ...normalizePagination(query), ...normalizeSort(query) });
   }

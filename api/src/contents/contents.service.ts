@@ -1,7 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import type { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
+import type { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
@@ -90,7 +90,7 @@ export class ContentsService {
   public async findAllReplies(
     user: User,
     parentId: number,
-    options?: Required<ListOptionsDto>,
+    options?: Required<ContentListOptionsDto>,
   ): Promise<PaginatedResult<Content>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { isVisible: true };

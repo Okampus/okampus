@@ -6,7 +6,7 @@ import { Content } from '../contents/entities/content.entity';
 import { Favorite } from '../favorites/favorite.entity';
 import { Reaction } from '../reactions/reaction.entity';
 import { Report } from '../reports/report.entity';
-import type { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
+import type { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
 import { ContentMasterType } from '../shared/lib/types/enums/content-master-type.enum';
@@ -64,7 +64,7 @@ export class ThreadsService {
     return thread;
   }
 
-  public async findAll(user: User, options?: Required<ListOptionsDto>): Promise<PaginatedResult<Thread>> {
+  public async findAll(user: User, options?: Required<ContentListOptionsDto>): Promise<PaginatedResult<Thread>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
 

@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import slugify from 'slugify';
 import { ContentsService } from '../contents/contents.service';
 import { Content } from '../contents/entities/content.entity';
-import type { ListOptionsDto } from '../shared/lib/dto/list-options.dto';
+import type { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { ContentMasterType } from '../shared/lib/types/enums/content-master-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
@@ -52,7 +52,7 @@ export class BlogsService {
     return blog;
   }
 
-  public async findAll(user: User, options?: Required<ListOptionsDto>): Promise<PaginatedResult<Blog>> {
+  public async findAll(user: User, options?: Required<ContentListOptionsDto>): Promise<PaginatedResult<Blog>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
     return await this.blogRepository.findWithPagination(
