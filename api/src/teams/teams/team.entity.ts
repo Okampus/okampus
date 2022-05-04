@@ -40,11 +40,19 @@ export class Team extends BaseEntity {
   @Expose({ groups: [TEAM_MEMBERS_INCLUDED] })
   members = new Collection<TeamMember>(this);
 
+  @Property({ type: 'text' })
+  membershipRequestLink?: string;
+
+  @Property({ type: 'text' })
+  membershipRequestMessage?: string;
+
   constructor(options: {
     name: string;
     kind: TeamKind;
     description?: string;
     avatar?: string;
+    membershipRequestLink?: string;
+    membershipRequestMessage?: string;
   }) {
     super();
     this.name = options.name;
@@ -53,6 +61,10 @@ export class Team extends BaseEntity {
       this.description = options.description;
     if (options.avatar)
       this.avatar = options.avatar;
+    if (options.membershipRequestLink)
+      this.membershipRequestLink = options.membershipRequestLink;
+    if (options.membershipRequestMessage)
+      this.membershipRequestMessage = options.membershipRequestMessage;
   }
 
   public getMemberRoles(user: User): TeamRole[] {

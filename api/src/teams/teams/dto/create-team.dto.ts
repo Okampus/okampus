@@ -1,4 +1,10 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsOptional,
+  IsString,
+  IsUrl,
+  Length,
+} from 'class-validator';
 import { TeamKind } from '../../../shared/lib/types/enums/team-kind.enum';
 
 export class CreateTeamDto {
@@ -15,4 +21,13 @@ export class CreateTeamDto {
   @IsOptional()
   @IsString()
   avatar?: string;
+
+  @IsOptional()
+  @IsUrl()
+  membershipRequestLink?: string;
+
+  @IsOptional()
+  @IsString()
+  @Length(0, 500)
+  membershipRequestMessage?: string;
 }
