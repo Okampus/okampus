@@ -1,5 +1,6 @@
 import {
   Entity,
+  Index,
   ManyToOne,
   PrimaryKey,
   Property,
@@ -32,6 +33,7 @@ export class TeamEvent extends BaseEntity {
   createdBy!: User;
 
   @ManyToOne()
+  @Index()
   team!: Team;
 
   @Property({ type: 'text' })
@@ -44,6 +46,7 @@ export class TeamEvent extends BaseEntity {
   supervisor?: User;
 
   @Property()
+  @Index()
   private = false;
 
   @Property({ type: 'text' })

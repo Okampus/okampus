@@ -32,6 +32,7 @@ export class TeamMembershipRequest extends BaseEntity {
   issuer!: MembershipRequestIssuer;
 
   @Enum(() => MembershipRequestState)
+  @Index()
   state = MembershipRequestState.Pending;
 
   @ManyToOne({ onDelete: 'CASCADE' })

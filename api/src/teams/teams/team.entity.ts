@@ -2,6 +2,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Index,
   OneToMany,
   PrimaryKey,
   Property,
@@ -24,6 +25,7 @@ export class Team extends BaseEntity {
   teamId!: number;
 
   @Enum(() => TeamKind)
+  @Index()
   kind!: TeamKind;
 
   @Property({ type: 'text' })
