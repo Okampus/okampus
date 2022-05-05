@@ -90,6 +90,9 @@ export class TeamMembershipRequestsService {
       { populate: ['team', 'user', 'issuedBy', 'handledBy'] },
     );
 
+    if (request.state !== MembershipRequestState.Pending)
+      throw new BadRequestException('Request already handled');
+
     // If it was requested by a user, then we have to check that the persone handling it in the team
     // has the permission to do so.
     if (request.issuer === MembershipRequestIssuer.User && !request.team.canAdminister(user))
