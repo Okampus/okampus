@@ -46,7 +46,7 @@ export class AttachmentsService {
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
-    assertPermissions(ability, Action.Delete, attachment);
+    assertPermissions(ability, Action.Read, attachment);
 
     return attachment;
   }

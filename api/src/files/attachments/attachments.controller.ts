@@ -31,7 +31,7 @@ export class AttachmentsController {
   @UploadInterceptor()
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Attachment))
-  public async createAttachment(
+  public async create(
     @CurrentUser() user: User,
     @Body() createAttachmentDto: CreateAttachmentDto,
     @UploadedFile() file: Express.Multer.File,
@@ -52,7 +52,7 @@ export class AttachmentsController {
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Attachment))
-  public async findOneAttachment(
+  public async findOne(
     @CurrentUser() user: User,
     @Param('id') id: string,
   ): Promise<Attachment> {
@@ -60,8 +60,8 @@ export class AttachmentsController {
   }
 
   @Delete(':id')
-  @CheckPolicies(ability => ability.can(Action.Update, Attachment))
-  public async removeAttachment(
+  @CheckPolicies(ability => ability.can(Action.Delete, Attachment))
+  public async remove(
     @Param('id') id: string,
     @CurrentUser() user: User,
   ): Promise<void> {
