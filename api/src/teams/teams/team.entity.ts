@@ -69,21 +69,6 @@ export class Team extends BaseEntity {
       this.membershipRequestMessage = options.membershipRequestMessage;
   }
 
-  public getMemberRoles(user: User): TeamRole[] {
-    return this.members
-      .getItems()
-      .filter(member => member.user.userId === user.userId)
-      .map(member => member.role);
-  }
-
-  public isTeamAdmin(user: User): boolean {
-    return this.getMemberRoles(user).some(role => ADMIN_ROLES.has(role));
-  }
-
-  public isGlobalAdmin(user: User): boolean {
-    return user.roles.includes(Role.Admin) || (this.kind === TeamKind.Club && user.roles.includes(Role.ClubManager));
-  }
-
   public canAdminister(user: User): boolean {
     return this.isGlobalAdmin(user) || this.isTeamAdmin(user);
   }
@@ -96,5 +81,20 @@ export class Team extends BaseEntity {
       return this.isTeamAdmin(user);
 
     return this.getMemberRoles(user).includes(TeamRole.Owner);
+  }
+
+  private getMemberRoles(user: User): TeamRole[] {
+    return this.members
+      .getItems()
+      .filter(member => member.user.userId === user.userId)
+      .map(member => member.role);
+  }
+
+  private isTeamAdmin(user: User): boolean {
+    return this.getMemberRoles(user).some(role => ADMIN_ROLES.has(role));
+  }
+
+  private isGlobalAdmin(user: User): boolean {
+    return user.roles.includes(Role.Admin) || (this.kind === TeamKind.Club && user.roles.includes(Role.ClubManager));
   }
 }

@@ -105,7 +105,7 @@ export class ContactsService {
   ): Promise<TeamContactAccount> {
     const team = await this.teamsRepository.findOneOrFail({ teamId }, { populate: ['members'] });
     // TODO: Move this to CASL
-    if (!team.isTeamAdmin(requester))
+    if (!team.canAdminister(requester))
       throw new ForbiddenException('Not a team admin');
 
     const contact = await this.contactsRepository.findOneOrFail({ contactId: createContactAccountDto.contactId });
@@ -131,7 +131,7 @@ export class ContactsService {
       { populate: ['contact', 'team', 'team.members'] },
     );
     // TODO: Move this to CASL
-    if (!teamContact.team.isTeamAdmin(requester))
+    if (!teamContact.team.canAdminister(requester))
       throw new ForbiddenException('Not a team admin');
 
     wrap(teamContact).assign(updateContactDto);
@@ -145,7 +145,7 @@ export class ContactsService {
       { populate: ['team', 'team.members'] },
     );
     // TODO: Move this to CASL
-    if (!teamContact.team.isTeamAdmin(requester))
+    if (!teamContact.team.canAdminister(requester))
       throw new ForbiddenException('Not a team admin');
 
     await this.teamContactsAccountRepository.removeAndFlush(teamContact);
