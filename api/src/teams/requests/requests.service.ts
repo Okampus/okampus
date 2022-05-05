@@ -104,7 +104,7 @@ export class TeamMembershipRequestsService {
     await this.teamMembershipRequestRepository.flush();
 
     if (state === MembershipRequestState.Approved) {
-      const teamMember = new TeamMember({ team: request.team, user, role: TeamRole.Member });
+      const teamMember = new TeamMember({ team: request.team, user: request.user, role: TeamRole.Member });
       await this.teamMemberRepository.persistAndFlush(teamMember);
     }
 
