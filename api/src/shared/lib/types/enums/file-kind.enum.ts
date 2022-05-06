@@ -3,4 +3,5 @@ export enum FileKind {
   InfoDoc = 'info-doc',
   Attachment = 'attachment',
   StudyDoc = 'study-doc',
+  GalleryImage = 'gallery-image',
 }

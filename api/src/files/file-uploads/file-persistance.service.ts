@@ -11,6 +11,7 @@ import { UploadBucket } from '../../shared/lib/types/enums/upload-bucket.enum';
 export class FilePersistanceService {
   private static readonly fileKindBucket = {
     [FileKind.Attachment]: UploadBucket.Attachments,
+    [FileKind.GalleryImage]: UploadBucket.Galleries,
     [FileKind.InfoDoc]: UploadBucket.Documents,
     [FileKind.ProfileImage]: UploadBucket.ProfileImages,
     [FileKind.StudyDoc]: UploadBucket.Documents,
