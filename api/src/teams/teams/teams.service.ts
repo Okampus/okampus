@@ -49,11 +49,27 @@ export class TeamsService {
     if (filters.kind)
       options = { kind: filters.kind };
 
-    return await this.teamRepository.findWithPagination(
+    const result: Array<{ team: number; count: string }> = await this.teamMemberRepository
+      .createQueryBuilder()
+      .count('teamMemberId')
+      .select(['team', 'count'])
+      .groupBy('team')
+      .execute();
+    const allMemberCounts = new Map(result.map(entry => [entry.team, entry.count]));
+
+    const allTeams = await this.teamRepository.findWithPagination(
       paginationOptions,
       options,
       { orderBy: { name: 'ASC' } },
     );
+
+    allTeams.items = allTeams.items.map((team) => {
+      // TODO: Maybe find a better way to add this property? Something virtual? computed on-the-fly? added elsewhere?
+      // @ts-expect-error: We add a new property to the object, but it's fine.
+      team.memberCount = Number(allMemberCounts.get(team.teamId) ?? 0);
+      return team;
+    });
+    return allTeams;
   }
 
   public async findOne(teamId: number): Promise<Team> {

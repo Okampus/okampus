@@ -90,7 +90,7 @@ export class ThreadsService {
     allThreads.items = allThreads.items.map((thread) => {
       // TODO: Maybe find a better way to add this property? Something virtual? computed on-the-fly? added elsewhere?
       // @ts-expect-error: We add a new property to the object, but it's fine.
-      thread.replyCount = allReplyCounts.get(thread.contentMasterId);
+      thread.replyCount = Number(allReplyCounts.get(thread.contentMasterId) ?? 0);
       return thread;
     });
     return allThreads;
