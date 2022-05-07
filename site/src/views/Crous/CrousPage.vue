@@ -60,6 +60,7 @@
     import { i18n } from '@/shared/modules/i18n'
 
     import { FOOD_TYPES } from '@/shared/types/food-types.enum'
+    import { errorCodes } from '@/shared/errors/app-exceptions.enum'
 
     const START_DATE = new Date('2022-02-25')
 
@@ -103,7 +104,7 @@
                 }
             } catch (e) {
                 // TODO: globally improve status error catching
-                emitter.emit('error-route', { code: '404' })
+                emitter.emit('error-route', { code: errorCodes.NOT_FOUND })
             }
         }
     }

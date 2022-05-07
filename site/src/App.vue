@@ -23,13 +23,12 @@
                 @mousedown="hiding && collapsed !== collapsing && toggleSidebar()"
             >
                 <div
-                    class="flex-auto shrink-0 grow-1"
+                    class="flex-auto shrink-0 my-5 grow-1"
                     :class="{ 'pointer-events-none': hiding && collapsing != collapsed }"
                 >
                     <AppException v-if="error.code" :code="error.code" />
                     <router-view v-else />
                 </div>
-                <FooterBar class="shrink-0" />
             </div>
             <TopBar
                 ref="topbar"
@@ -42,7 +41,6 @@
 </template>
 
 <script setup>
-    import FooterBar from '@/components/Bar/FooterBar.vue'
     import SideBar from '@/components/Bar/SideBar.vue'
     import TopBar from '@/components/Bar/TopBar.vue'
     import FormLogin from '@/components/Form/FormLogin.vue'
@@ -62,6 +60,7 @@
     import { nextTick, reactive, ref, watch, watchEffect } from 'vue'
 
     import { isNil } from 'lodash'
+    import { errorCodes } from './shared/errors/app-exceptions.enum'
 
     const breakpoints = useBreakpoints({
         hideSidebar: 1024,
@@ -184,7 +183,7 @@
     emitter.on('logout', () => {
         auth.logOut().then(() => {
             if (route.meta?.requiresAuth) {
-                error.code = '401'
+                error.code = errorCodes.UNAUTHORIZED
                 error.path = route.path
             }
             cookies.remove('accessTokenExpiresAt')
@@ -201,7 +200,10 @@
     })
 
     watchEffect(() => {
-        if (error.code && (route.path !== error.path || (error.code === '401' && auth.loggedIn))) {
+        if (
+            error.code &&
+            (route.path !== error.path || (error.code === errorCodes.UNAUTHORIZED && auth.loggedIn))
+        ) {
             error.code = null
             error.path = null
         }
@@ -216,7 +218,6 @@
     @import '@/assets/scss/animations/bg-anims';
     @import '@/assets/scss/components/button';
     @import '@/assets/scss/components/card';
-
     @import '@/assets/scss/components/easymde';
     @import '@/assets/scss/components/input';
     @import '@/assets/scss/components/link';

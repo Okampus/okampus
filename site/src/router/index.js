@@ -1,3 +1,4 @@
+import { errorCodes } from '@/shared/errors/app-exceptions.enum'
 import { emitter } from '@/shared/modules/emitter'
 import { useAuthStore } from '@/store/auth.store'
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
@@ -150,7 +151,7 @@ const routes = [
         path: '/:pathMatch(.*)*',
         component: () => import('@/views/App/AppException.vue'),
         props: {
-            code: '404',
+            code: errorCodes.NOT_FOUND,
         },
         meta: {
             requiresAuth: true,
@@ -176,7 +177,7 @@ const router = createRouter({
 router.afterEach((to) => {
     const auth = useAuthStore()
     if (to.meta?.requiresAuth && !auth.loggedIn) {
-        emitter.emit('error-route', { code: '401', path: to.path })
+        emitter.emit('error-route', { code: errorCodes.UNAUTHORIZED, path: to.path })
     }
 })
 

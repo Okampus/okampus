@@ -152,6 +152,7 @@
     import { useThreadsStore } from '@/store/threads.store'
 
     import { getStatus } from '@/utils/errors'
+    import { errorCodes } from '@/shared/errors/app-exceptions.enum'
 
     const route = useRoute()
     const threads = useThreadsStore()
@@ -161,7 +162,7 @@
         if (route.name === 'threads') {
             const threadId = route.params.id
             if (!isPositiveInteger(threadId)) {
-                emitter.emit('error-route', '404')
+                emitter.emit('error-route', errorCodes.NOT_FOUND)
                 return
             }
 
