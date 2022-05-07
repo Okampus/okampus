@@ -40,13 +40,6 @@ $logo-black-url: url('@/assets/img/logos/horizon_logo_black.png');
 @include tailwind-color('divide', 'divide-color', 1);
 @include tailwind-color('from', '', 2);
 @include tailwind-color('to', '', 2);
-@include tailwind-color('border', 'border-color', 2);
-
-.border-navbar {
-    border-color: #e4e4e7;
-
-    @apply dark:border-black;
-}
 
 .logo {
     background: $logo-black-url no-repeat 0 0;

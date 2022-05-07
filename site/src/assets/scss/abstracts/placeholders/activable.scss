@@ -1,16 +1,15 @@
-%left-label-active.active {
-    @apply opacity-80 bg-sky-100;
+%tab-active.active {
+    @apply bg-slate-600/50 text-blue-500;
 
-    color: #4b7bec;
-    background-color: #767d8e30;
-    border-radius: 1rem;
+    &:hover {
+        @apply bg-slate-800/50 text-blue-600;
+    }
 
     .dark & {
-        color: #1042c2;
-        background-color: #00000038;
-    }
-}
+        @apply bg-slate-700/50 text-blue-600;
 
-%text-opaque-active.active {
-    opacity: 1;
+        &:hover {
+            @apply bg-slate-900/50 text-blue-500;
+        }
+    }
 }

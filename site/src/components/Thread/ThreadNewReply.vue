@@ -79,6 +79,6 @@
     @import '@/assets/scss/colors';
 
     .arrow-left {
-        @apply w-0 h-0 border-t-[1rem] border-b-[1rem] border-r-[1rem] border-t-transparent border-b-transparent border-r-0-light dark:border-r-0-dark bg-card-meta;
+        @apply w-0 h-0 border-t-[1rem] border-b-[1rem] border-r-[1rem] border-t-transparent border-b-transparent bg-card-meta dark:border-r-black border-r-white;
     }
 </style>

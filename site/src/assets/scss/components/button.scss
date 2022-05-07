@@ -5,12 +5,12 @@
 
 %button-raised {
     @extend %button-flat;
-    @apply flex justify-center items-center h-fit mt-1.5;
+    @apply flex justify-center items-center h-fit w-fit mt-1.5;
 
     box-shadow: 0 0 1px rgb(0 0 0 / 40%);
 
     & > :first-child {
-        @apply px-4 py-2 relative bottom-[0.3rem] w-full rounded;
+        @apply px-4 py-2 relative bottom-[0.3rem] w-fit rounded;
 
         box-shadow: inset 0 0 3px rgb(255 255 255 / 50%);
     }
@@ -27,15 +27,15 @@
 
 .button {
     @extend %button-raised;
-    @apply text-white bg-blue-600 dark:bg-blue-800
-        hover:bg-blue-700 hover:dark:bg-blue-900
-        active:bg-blue-800 active:dark:bg-indigo-900
+    @apply text-white bg-indigo-600 dark:bg-indigo-800
+        hover:bg-indigo-700 hover:dark:bg-indigo-900
+        active:bg-indigo-800 active:dark:bg-indigo-900
         disabled:bg-gray-600 disabled:dark:bg-gray-800;
 
     & > :first-child {
-        @apply bg-blue-500 dark:bg-blue-700
-            hover:bg-blue-600 dark:hover:bg-blue-800
-            active:bg-blue-700 dark:active:bg-blue-900;
+        @apply bg-indigo-500 dark:bg-indigo-700
+            hover:bg-indigo-600 dark:hover:bg-indigo-800
+            active:bg-indigo-700 dark:active:bg-indigo-900;
     }
 }
 

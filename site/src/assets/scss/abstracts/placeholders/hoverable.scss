@@ -1,11 +1,7 @@
-%text-hover:hover {
-    color: #4b7bec;
+%tab-hover:hover {
+    @apply bg-slate-600/50;
 
     .dark & {
-        color: #1042c2;
+        @apply bg-slate-700/50;
     }
-}
-
-%text-opaque-hover:hover {
-    opacity: 1;
 }

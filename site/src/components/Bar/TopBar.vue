@@ -14,17 +14,12 @@
         </div>
 
         <div v-if="!auth.loggedIn" class="flex shrink-0 justify-center items-center mr-4">
-            <button class="button" @click="emitter.emit('login')">
-                <div class="flex items-center">
-                    <p class="mr-2 font-semibold uppercase text-md">Se connecter</p>
-                    <i class="text-lg fas fa-sign-in-alt" />
-                </div>
-            </button>
+            <LoginButton />
         </div>
 
         <div v-else class="flex justify-between items-center mr-4 h-full bg-transparent">
             <div class="mr-4">
-                <Popper :offset-distance="8" :offset-skid="-110">
+                <Popper :offset-distance="8" offset-skid="-110">
                     <UserAvatar
                         class="cursor-pointer"
                         :img-src="auth.user.avatar"
@@ -32,14 +27,14 @@
                     />
                     <template #content>
                         <div
-                            class="flex flex-col gap-4 pb-2 w-80 bg-[#ffffffcc] dark:bg-[#212121cc] rounded-b-lg shadow-md"
+                            class="flex flex-col gap-4 pb-2 w-80 bg-white/70 dark:bg-gray-800/70 rounded-b-lg shadow-md"
                         >
                             <div class="p-4">
                                 Connecté comme
                                 <b>{{ auth.user.fullname }}</b>
                             </div>
                             <div
-                                class="flex gap-6 items-center py-2 px-4 hover:bg-[#cccccccc] hover:dark:bg-[#777777cc] cursor-pointer"
+                                class="flex gap-6 items-center py-2 px-4 hover:bg-gray-200/70 hover:dark:bg-gray-600/70 cursor-pointer"
                                 @click="emitter.emit('logout')"
                             >
                                 <i class="text-xl fa-solid fa-arrow-right-from-bracket" />
@@ -57,6 +52,7 @@
     import Popper from 'vue3-popper'
     // import UserCard from '@/components/App/Card/UserCard.vue'
     import UserAvatar from '@/components/User/UserAvatar.vue'
+    import LoginButton from '@/components/Button/LoginButton.vue'
     import SearchBar from '@/components/Bar/SearchBar.vue'
     import AppLogo from '@/components/App/AppLogo.vue'
 

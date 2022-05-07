@@ -1,18 +1,16 @@
 .topbar {
-    color: #ddd;
-    background-color: #0d2a35;
+    @apply bg-slate-800 text-gray-200;
 
     .dark & {
-        background-color: #051519;
+        @apply bg-slate-900;
     }
 }
 
 .sidebar {
-    color: #ddd;
-    background-color: #163541;
+    @apply bg-slate-700 text-gray-200;
 
     .dark & {
-        background-color: #081f25;
+        @apply bg-slate-800;
     }
 }
 
