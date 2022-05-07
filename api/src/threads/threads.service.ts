@@ -68,15 +68,6 @@ export class ThreadsService {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
 
-    const result: Array<{ contentMaster: number; count: string }> = await this.contentRepository
-      .createQueryBuilder()
-      .count('contentId')
-      .select(['contentMaster', 'count'])
-      .where({ ...visibilityQuery?.post, kind: ContentKind.Reply })
-      .groupBy('contentMaster')
-      .execute();
-    const allReplyCounts = new Map(result.map(entry => [entry.contentMaster, entry.count]));
-
     const allThreads = await this.threadRepository.findWithPagination(
       options,
       visibilityQuery,
@@ -86,11 +77,34 @@ export class ThreadsService {
         orderBy: { post: serializeOrder(options?.sortBy) },
       },
     );
+    const threadIds = allThreads.items.map(thread => thread.contentMasterId);
+
+    const allReplies: Array<{ contentMaster: number; count: string }> = await this.contentRepository
+      .createQueryBuilder()
+      .count('contentId')
+      .select(['contentMaster', 'count'])
+      .where({ ...visibilityQuery?.post, kind: ContentKind.Reply, contentMaster: { $in: threadIds } })
+      .groupBy('contentMaster')
+      .execute();
+    const allReplyCounts = new Map(allReplies.map(entry => [entry.contentMaster, entry.count]));
+
+    const favorites = await this.favoriteRepository.find({
+      user,
+      content: { kind: ContentKind.Post, contentMasterId: { $in: threadIds } },
+    });
+    const votes = await this.voteRepository.find({
+      user,
+      content: { kind: ContentKind.Post, contentMasterId: { $in: threadIds } },
+    });
 
     allThreads.items = allThreads.items.map((thread) => {
-      // TODO: Maybe find a better way to add this property? Something virtual? computed on-the-fly? added elsewhere?
+      // TODO: Maybe find a better way to add these properties? Something virtual? computed on-the-fly? added elsewhere?
       // @ts-expect-error: We add a new property to the object, but it's fine.
       thread.replyCount = Number(allReplyCounts.get(thread.contentMasterId) ?? 0);
+      // @ts-expect-error: We add a new property to the object, but it's fine.
+      thread.vote = votes.find(({ content }) => content.contentMasterId === thread.contentMasterId)?.value ?? 0;
+      // @ts-expect-error: We add a new property to the object, but it's fine.
+      thread.favorited = favorites.some(({ content }) => content.contentMasterId === thread.contentMasterId);
       return thread;
     });
     return allThreads;
