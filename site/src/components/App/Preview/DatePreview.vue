@@ -1,20 +1,23 @@
 <template>
-    <!-- TODO: add on hover extra date info -->
-    <span class="flex items-center">
-        {{ timeAgo(date, 'long') }}
-    </span>
+    <AppTip :tip="dateString">
+        <span class="flex items-center">
+            {{ timeAgo(date, 'long') }}
+        </span>
+    </AppTip>
 </template>
 
-<script>
+<script setup>
     import { timeAgo } from '@/utils/timeAgo'
+    import AppTip from '../AppTip.vue'
 
-    export default {
-        props: {
-            date: {
-                type: String,
-                default: '',
-            },
+    const props = defineProps({
+        date: {
+            type: String,
+            required: true,
         },
-        methods: { timeAgo },
-    }
+    })
+
+    const dateString = new Intl.DateTimeFormat('fr', { dateStyle: 'full', timeStyle: 'long' }).format(
+        new Date(props.date),
+    )
 </script>
