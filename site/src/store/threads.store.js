@@ -41,6 +41,9 @@ export const useThreadsStore = defineStore('threads', {
 
             thread._type = threadTypes[thread.type]
 
+            thread.userSolved = !isNil(thread.opValidatedWith)
+            thread.adminSolved = !isNil(thread.adminValidatedWith)
+
             thread.contents = thread.contents?.map((content) => this.initContent(thread, content)) ?? []
 
             thread._post = computed(() =>

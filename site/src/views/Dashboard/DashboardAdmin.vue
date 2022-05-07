@@ -143,7 +143,7 @@
             //     attrs: (thread) => ({ tags: thread.tags }),
             //     slot: () => {},
             //     value: (thread) => thread.tags,
-            //     comp: ['tags-list', '@/components/List/TagsList.vue'],
+            //     comp: ['tags-list', '@/components/List/TagList.vue'],
             //     name: 'Tags',
             // },
             actions: {

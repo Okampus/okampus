@@ -6,8 +6,8 @@
             <div class="flex items-center self-center">
                 <UpvoteIcon
                     :full="true"
-                    :width="40"
-                    :height="40"
+                    :width="'2.5rem'"
+                    :height="'2.5rem'"
                     class="p-2 hover:text-blue-500 cursor-pointer"
                     :class="[content.interactions.voted === 1 ? 'text-green-600' : 'text-5']"
                     @click="
@@ -23,8 +23,8 @@
 
                 <DownvoteIcon
                     :full="true"
-                    :width="40"
-                    :height="40"
+                    :width="'2.5rem'"
+                    :height="'2.5rem'"
                     class="p-2 hover:text-blue-500 cursor-pointer"
                     :class="[content.interactions.voted === -1 ? 'text-red-600' : 'text-5']"
                     @click="

@@ -1,5 +1,5 @@
 <template>
-    <router-link to="/" class="flex items-center cursor-pointer">
+    <router-link to="/" class="flex items-center cursor-pointer select-none">
         <div
             class="mr-[0.5rem] w-[2.5rem] h-[2.5rem] logo"
             :="only === 'none' ? { 'allow-dark': '' } : only === 'dark' ? { 'dark': '' } : {}"

@@ -6,10 +6,10 @@
             `text-${tagColor}-700 dark:text-${tagColor}-200`,
             large ? 'px-5 gap-3 py-2' : 'px-3 gap-1.5 py-1',
         ]"
-        class="flex items-center whitespace-normal rounded-full cursor-pointer bg-opacity-/90"
+        class="flex justify-center items-center whitespace-normal rounded-full cursor-pointer bg-opacity-/90"
     >
-        <i v-if="icon" class="fas" :class="`fa-${icon}`" />
-        <div>{{ tagName }}</div>
+        <i v-if="icon" :class="`fa fa-${icon}`" />
+        <div v-if="tagName">{{ tagName }}</div>
         <i v-if="closable" class="text-sm fas" :class="`fa-times`" @click="emit('close')" />
     </div>
 </template>
@@ -18,7 +18,7 @@
     defineProps({
         tagName: {
             type: String,
-            default: '<Vide>',
+            default: '',
         },
         tagColor: {
             type: String,
