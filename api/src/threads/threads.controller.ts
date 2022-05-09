@@ -14,7 +14,6 @@ import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { SerializerExcludeContentAuthor } from '../shared/lib/decorators/serializers.decorator';
-import { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { normalizePagination } from '../shared/modules/pagination';
@@ -25,6 +24,7 @@ import { User } from '../users/user.entity';
 import { AssigneesDto } from './dto/assignees.dto';
 import { CreateThreadDto } from './dto/create-thread.dto';
 import { TagsDto } from './dto/tags.dto';
+import { ThreadListOptionsDto } from './dto/thread-list-options.dto';
 import { UpdateThreadDto } from './dto/update-thread.dto';
 import type { ThreadInteractions } from './thread-interactions.interface';
 import { ThreadSearchService } from './thread-search.service';
@@ -51,9 +51,13 @@ export class ThreadsController {
   @CheckPolicies(ability => ability.can(Action.Read, Thread))
   public async findAll(
     @CurrentUser() user: User,
-    @Query() query: ContentListOptionsDto,
+    @Query() options: ThreadListOptionsDto,
   ): Promise<PaginatedResult<Thread>> {
-    return await this.threadsService.findAll(user, { ...normalizePagination(query), ...normalizeSort(query) });
+    return await this.threadsService.findAll(
+      user,
+      options,
+      { ...normalizePagination(options), ...normalizeSort(options) },
+    );
   }
 
   @UseGuards(TypesenseEnabledGuard)

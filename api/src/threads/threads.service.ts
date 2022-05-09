@@ -1,3 +1,4 @@
+import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
@@ -19,6 +20,7 @@ import { Tag } from '../tags/tag.entity';
 import { User } from '../users/user.entity';
 import { Vote } from '../votes/vote.entity';
 import type { CreateThreadDto } from './dto/create-thread.dto';
+import type { ThreadListOptionsDto } from './dto/thread-list-options.dto';
 import type { UpdateThreadDto } from './dto/update-thread.dto';
 import type { ThreadInteractions } from './thread-interactions.interface';
 import { ThreadSearchService } from './thread-search.service';
@@ -64,13 +66,23 @@ export class ThreadsService {
     return thread;
   }
 
-  public async findAll(user: User, options?: Required<ContentListOptionsDto>): Promise<PaginatedResult<Thread>> {
+  public async findAll(
+    user: User,
+    filters?: ThreadListOptionsDto,
+    options?: Required<ContentListOptionsDto>,
+  ): Promise<PaginatedResult<Thread>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
-    const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
+    const visibility = canSeeHiddenContent ? {} : { isVisible: true };
+    let query: FilterQuery<Thread> = {};
+
+    if (visibility?.isVisible)
+      query = { ...query, post: visibility };
+    if (typeof filters?.type !== 'undefined')
+      query = { ...query, type: filters.type };
 
     const allThreads = await this.threadRepository.findWithPagination(
       options,
-      visibilityQuery,
+      query,
       {
         // TODO: Remove 'post.lastEdit' once we add activities
         populate: ['post', 'tags', 'assignees', 'post.author', 'post.lastEdit', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'],
@@ -83,7 +95,7 @@ export class ThreadsService {
       .createQueryBuilder()
       .count('contentId')
       .select(['contentMaster', 'count'])
-      .where({ ...visibilityQuery?.post, kind: ContentKind.Reply, contentMaster: { $in: threadIds } })
+      .where({ ...visibility, kind: ContentKind.Reply, contentMaster: { $in: threadIds } })
       .groupBy('contentMaster')
       .execute();
     const allReplyCounts = new Map(allReplies.map(entry => [entry.contentMaster, entry.count]));
