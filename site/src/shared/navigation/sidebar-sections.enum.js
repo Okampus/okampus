@@ -28,10 +28,17 @@ export const sections = computed(() => {
                       links: [
                           {
                               to: '/admin/threads',
-                              regActive: /^\/admin/,
+                              regActive: /^\/admin\/threads/,
                               textSmall: 'Admin',
                               textLarge: 'Modération',
                               icon: 'columns',
+                          },
+                          {
+                              to: '/admin/association',
+                              regActive: /^\/admin\/association/,
+                              textSmall: 'Association',
+                              textLarge: 'Association',
+                              icon: 'gear',
                           },
                       ],
                   },

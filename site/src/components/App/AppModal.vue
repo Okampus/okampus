@@ -30,7 +30,6 @@
     const emit = defineEmits(['close'])
 
     const closeOnKeydown = (e) => {
-        console.log(e)
         if (e.key === 'Escape') {
             emit('close')
         }

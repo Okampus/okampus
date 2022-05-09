@@ -49,7 +49,7 @@
                     <strong> Miniature </strong>
                     <div class="flex">
                         <!-- TODO: File input -->
-                        <label class="py-2 px-4 bg-primary-3 rounded-md text-0">
+                        <label class="py-2 px-4 rounded-md bg-primary-3 text-0">
                             <span class="block">Changer l'image</span>
                             <input type="file" class="hidden" />
                         </label>

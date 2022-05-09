@@ -21,7 +21,7 @@
                                 v-for="item in modelValue"
                                 name="inputComponent"
                                 :item="item"
-                                :deleteItem="deleteItem"
+                                :delete-item="deleteItem"
                             />
                             <!-- IMPORTANT :value="currentRefinement" -->
                             <input
@@ -50,10 +50,10 @@
                                 <template #default="{ items }">
                                     <div v-if="items.length != 0">
                                         <slot
-                                            :indexSelected="indexSelected"
-                                            :keyEnter="keyEnter"
+                                            :index-selected="indexSelected"
+                                            :key-enter="keyEnter"
                                             :items="items"
-                                            :addItem="addItem"
+                                            :add-item="addItem"
                                             @click="close"
                                         />
                                     </div>

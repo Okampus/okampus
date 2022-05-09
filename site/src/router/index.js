@@ -11,6 +11,13 @@ const routes = [
             requiresAuth: false,
         },
     },
+    {
+        path: '/admin/association',
+        component: () => import('@/views/Dashboard/DashboardAssociation.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
 
     {
         path: '/admin/:tab',
