@@ -17,14 +17,17 @@
     </CardPage>
 </template>
 
-<script>
+<script setup>
+    import CardPage from '@/views/App/CardPage.vue'
     import AppTabs from '@/components/App/AppTabs.vue'
     import ProfileClubs from '@/components/User/MyProfile/ProfileClubs.vue'
     import ProfileModal from '@/components/User/MyProfile/ProfileModal.vue'
     import ProfileSettings from '@/components/User/MyProfile/ProfileSettings.vue'
     import ExternalAccount from '@/components/User/MyProfile/ProfileSocials.vue'
-    import CardPage from '../App/CardPage.vue'
+    import { useRoute } from 'vue-router'
+    import { ref } from 'vue'
 
+    const route = useRoute()
     const tabs = [
         {
             id: 'profile',
@@ -33,12 +36,12 @@
         },
         {
             id: 'socials',
-            name: 'Discord',
-            icon: ['fab', 'discord'],
+            name: 'Contacts',
+            icon: 'mail-bulk',
         },
         {
             id: 'clubs',
-            name: 'Associations',
+            name: 'Mes associations',
             icon: 'user',
         },
         {
@@ -47,44 +50,28 @@
             icon: 'universal-access',
         },
     ]
+    let currentTab = ref(tabs.findIndex((t) => t.id === route.params.component))
 
-    export default {
-        components: {
-            ProfileModal,
-            ExternalAccount,
-            ProfileSettings,
-            AppTabs,
-            ProfileClubs,
-            CardPage,
-        },
-        inheritAttrs: false,
-        data() {
-            return {
-                currentTab: tabs.findIndex((t) => t.id === this.$route.params.component),
-                tabs,
-                accounts: [
-                    {
-                        name: 'Mail',
-                        icon: 'envelope',
-                    },
-                    {
-                        name: 'LinkedIn',
-                        icon: ['fab', 'linkedin'],
-                    },
-                    {
-                        name: 'Discord',
-                        icon: ['fab', 'discord'],
-                    },
-                    {
-                        name: 'Instagram',
-                        icon: ['fab', 'instagram'],
-                    },
-                    {
-                        name: 'GitHub',
-                        icon: ['fab', 'github'],
-                    },
-                ],
-            }
-        },
-    }
+    // const accounts = [
+    //     {
+    //         name: 'Mail',
+    //         icon: 'envelope',
+    //     },
+    //     {
+    //         name: 'LinkedIn',
+    //         icon: ['fab', 'linkedin'],
+    //     },
+    //     {
+    //         name: 'Discord',
+    //         icon: ['fab', 'discord'],
+    //     },
+    //     {
+    //         name: 'Instagram',
+    //         icon: ['fab', 'instagram'],
+    //     },
+    //     {
+    //         name: 'GitHub',
+    //         icon: ['fab', 'github'],
+    //     },
+    // ]
 </script>

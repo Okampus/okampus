@@ -6,7 +6,7 @@
         <div class="flex flex-col justify-between ml-4">
             <div>
                 <div class="flex gap-2 text-lg text-0">
-                    <div class="my-auto font-bold">{{ user.fullname }} {{ user.fullname.toUpperCase() }}</div>
+                    <div class="my-auto font-bold">{{ user.firstname }} {{ user.lastname }}</div>
                     <AppTag
                         :tag-name="schoolRoleItem[$i18n.locale]"
                         :tag-color="schoolRoleItem.color"

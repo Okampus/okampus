@@ -136,6 +136,13 @@ export const sections = computed(() => {
                       name: 'Communauté',
                       links: [
                           {
+                              to: '/clubs/',
+                              regActive: /^\/clubs/,
+                              textSmall: 'Associations',
+                              textLarge: 'Associations',
+                              icon: 'users',
+                          },
+                          {
                               to: '/users/',
                               regActive: /^\/users/,
                               textSmall: 'Utilisateurs',

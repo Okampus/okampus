@@ -99,6 +99,7 @@ const routes = [
     },
 
     {
+        name: 'settings',
         path: '/me/favorites',
         component: () => import('@/views/User/UserFavoriteList.vue'),
         meta: {
@@ -115,6 +116,7 @@ const routes = [
     },
 
     {
+        name: 'profile',
         path: '/users/:userId',
         component: () => import('@/views/User/UserProfile.vue'),
         meta: {
@@ -142,6 +144,22 @@ const routes = [
     {
         path: '/crous/new',
         component: () => import('@/views/Crous/CrousNew.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
+        path: '/clubs',
+        component: () => import('@/views/Clubs/ClubsList.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
+        path: '/clubs/:clubId',
+        component: () => import('@/views/Clubs/ClubView.vue'),
         meta: {
             requiresAuth: true,
         },

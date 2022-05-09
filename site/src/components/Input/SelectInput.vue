@@ -3,11 +3,11 @@
         <button class="flex gap-3 items-center py-2 px-3 raised select">
             <div
                 ref="select"
-                class="overflow-hidden whitespace-nowrap"
-                :class="modelValue === null || modelValue === undefined ? 'text-placeholder' : 'text-1'"
+                class="overflow-hidden min-w-fit whitespace-nowrap"
+                :class="currentChoice === -1 ? 'text-placeholder' : 'text-1'"
                 :style="maxContentWidth ? `width: ${max}px` : ''"
             >
-                {{ choices[currentChoice] || buttonName }}
+                {{ currentChoice !== -1 ? choices[currentChoice] : buttonName }}
             </div>
             <div class="flex flex-col">
                 <i class="text-[0.7rem] fas fa-chevron-up" />

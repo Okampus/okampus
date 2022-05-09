@@ -1,6 +1,6 @@
 <template>
     <Suspense>
-        <ProfileClubsAsync></ProfileClubsAsync>
+        <ClubsListAsync></ClubsListAsync>
         <template #fallback>
             <AppLoader :size="3" />
         </template>
@@ -9,5 +9,5 @@
 
 <script setup>
     import AppLoader from '@/components/App/AppLoader.vue'
-    import ProfileClubsAsync from './ProfileClubAsync.vue'
+    import ClubsListAsync from '@/views/Clubs/ClubsListAsync.vue'
 </script>
