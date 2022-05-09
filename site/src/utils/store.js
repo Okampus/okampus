@@ -1,6 +1,7 @@
 import { isEmpty } from 'lodash'
 
 export function onItems(func, args) {
+    console.log(args)
     if (!isEmpty(args)) {
         return ({ data: { items, ...pageInfo } }) => func({ ...args, items, pageInfo })
     }

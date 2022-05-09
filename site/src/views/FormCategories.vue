@@ -12,11 +12,7 @@
 
             <div>
                 <div for="doc-type">Catégorie<span class="text-red-500">*</span></div>
-                <SelectInput
-                    v-model="model[0].categorie"
-                    :choices="listOfCategories"
-                    :ico="listOfCategories"
-                />
+                <SelectInput v-model="model[0].categorie" :choices="listOfCategories" />
                 <div v-if="v$.model[0].typePaiement.$error" class="flex flex-col">
                     <AppAlert v-for="(error, i) in v$.model[0].typePaiement.$errors" :key="i" type="error">
                         <template #message>
@@ -159,7 +155,7 @@
     import SelectInput from '@/components/Input/SelectInput.vue'
     import useVuelidate from '@vuelidate/core'
     import { required } from '@vuelidate/validators'
-    import CardPage from '../App/CardPage.vue'
+    import CardPage from '@/views/App/CardPage.vue'
     /* import { useCategoriesStore } from '@/store/categories.store'
 
     const categories = useCategoriesStore() */

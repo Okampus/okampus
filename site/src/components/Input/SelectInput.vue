@@ -33,6 +33,7 @@
                         >
                             <i v-if="i === currentChoice" class="shrink-0 w-6 h-6 font-bold fas fa-check" />
                             <div>
+                                <i :class="'shrink-0 w-6 h-6 font-bold fas fa-' + ico" />
                                 {{ choice }}
                             </div>
                         </div>
@@ -55,6 +56,10 @@
             default: 'Choix',
         },
         choices: {
+            type: Array,
+            default: () => [],
+        },
+        ico: {
             type: Array,
             default: () => [],
         },

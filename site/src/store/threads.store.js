@@ -25,6 +25,7 @@ export const useThreadsStore = defineStore('threads', {
     state: () => ({
         threads: [],
     }),
+
     actions: {
         initThread({ threadId, thread = null }) {
             thread = thread ?? this.threads.find(sameThread(threadId))
