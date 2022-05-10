@@ -685,10 +685,12 @@ span.CodeMirror-selectedtext {
 }
 
 .editor-statusbar {
-    padding: 8px 10px;
-    font-size: 12px;
-    color: #959694;
-    text-align: right;
+    display: none;
+
+    // padding: 8px 10px;
+    // font-size: 12px;
+    // color: #959694;
+    // text-align: right;
 }
 
 .EasyMDEContainer.sided--no-fullscreen .editor-statusbar {

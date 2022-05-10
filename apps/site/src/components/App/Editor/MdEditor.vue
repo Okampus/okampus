@@ -1,12 +1,6 @@
 <template>
     <div>
         <textarea ref="editor" />
-        <!-- <vue-easymde
-            ref="editor"
-            :model-value="props.modelValue"
-            :options="{ maxHeight: '15rem' }"
-            @update:model-value="(value) => emit('update:modelValue', value)"
-        /> -->
         <div class="flex flex-row gap-4 items-center">
             <p
                 v-if="cancellable"
@@ -15,32 +9,26 @@
             >
                 Annuler
             </p>
-            <Popper :hover="true" placement="top" :arrow="true" offset-distance="3">
-                <p
-                    v-if="sendable"
-                    class="mt-2 text-base font-bold tracking-wide uppercase"
-                    :class="[
-                        charCount > minCharCount
-                            ? 'text-blue-500 cursor-pointer'
-                            : 'text-gray-500 cursor-not-allowed',
-                    ]"
-                    @click="charCount > minCharCount ? emit('send') : null"
-                >
-                    Envoyer
-                </p>
-                <template v-if="charCount < minCharCount" #content>
-                    <div class="card-tip">Tu dois au moins écrire {{ minCharCount }} caractères.</div>
-                </template>
-            </Popper>
+            <template v-if="sendable">
+                <div class="mt-2 text-base font-bold tracking-wide">
+                    <AppTip
+                        v-if="charCount < minCharCount"
+                        :tip="`Tu dois au moins écrire ${minCharCount} caractères.`"
+                    >
+                        <p class="text-gray-500 cursor-not-allowed">Envoyer</p>
+                    </AppTip>
+
+                    <p v-else class="text-blue-500 uppercase cursor-pointer" @click="emit('send')">Envoyer</p>
+                </div>
+            </template>
             <slot name="error" class="mt-2" />
         </div>
-        {{ props.modelValue }}
     </div>
 </template>
 
 <script setup>
-    import Popper from 'vue3-popper'
     import EasyMDE from 'easymde'
+    import AppTip from '../AppTip.vue'
 
     import { onMounted, ref } from 'vue'
 
