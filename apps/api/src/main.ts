@@ -1,3 +1,7 @@
+// Hack to get Multer to register its typings into the global scope, because why not
+// https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47780#issuecomment-790684085
+import 'multer';
+
 import path from 'node:path';
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';

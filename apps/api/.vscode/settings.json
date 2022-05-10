@@ -1,0 +1,8 @@
+{
+  "editor.insertSpaces": true,
+  "editor.tabSize" : 2,
+  "javascript.preferences.quoteStyle" : "single",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+}

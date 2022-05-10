@@ -5,11 +5,15 @@ data
 .env
 private/
 
+# Modules
+/node_modules
+
 # Logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.turbo
 
 # OS
 .DS_Store

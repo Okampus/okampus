@@ -17,80 +17,55 @@
   "npm": {
     "packageRules": [
       {
-        "groupName": "Backend linting tools",
-        "commitMessageTopic": "linting tools for the backend",
-        "commitMessageExtra": null,
-        "matchPaths": ["api/**"],
-        "addLabels": ["target: backend", "type: dependencies"],
-        "reviewers": ["noftaly"],
-        "matchUpdateTypes": ["major", "minor", "patch"],
-        "matchPackagePatterns": [".*lint.*"]
-      },
-      {
         "groupName": "Backend dependencies",
         "commitMessageTopic": "backend dependencies",
-        "commitMessageExtra": null,
-        "matchPaths": ["api/**"],
+        "matchPaths": ["apps/api/**"],
         "addLabels": ["target: backend", "type: dependencies"],
         "reviewers": ["noftaly"],
-        "matchUpdateTypes": ["minor", "patch", "bump"],
-        "excludePackagePatterns": [".*lint.*"]
+        "matchUpdateTypes": ["minor", "patch", "bump"]
       },
       {
-        "groupName": "Major Backend dependencies",
+        "groupName": "Major backend dependencies",
         "commitMessageTopic": "backend dependencies",
         "commitMessageExtra": "(major)",
-        "matchPaths": ["api/**"],
+        "matchPaths": ["apps/api/**"],
         "addLabels": ["target: backend", "type: dependencies"],
         "reviewers": ["noftaly"],
-        "matchUpdateTypes": ["major"],
-        "excludePackagePatterns": [".*lint.*"]
+        "matchUpdateTypes": ["major"]
       },
       {
         "groupName": "Backend dependencies maintenance",
         "commitMessageTopic": "backend dependencies",
         "commitMessageExtra": "(maintenance)",
-        "matchPaths": ["api/**"],
+        "matchPaths": ["apps/api/**"],
         "addLabels": ["target: backend", "type: dependencies"],
         "reviewers": ["noftaly"],
         "matchUpdateTypes": ["pin", "digest", "lockFileMaintenance"]
       },
 
       {
-        "groupName": "Linting tools for Frontend",
-        "commitMessageTopic": "linting tools for the frontend",
-        "commitMessageExtra": null,
-        "matchPaths": ["site/**"],
-        "addLabels": ["target: frontend", "type: dependencies"],
-        "reviewers": ["iv-stpn"],
-        "matchUpdateTypes": ["major", "minor", "patch"],
-        "matchPackagePatterns": [".*lint.*"]
-      },
-      {
         "groupName": "Frontend dependencies",
         "commitMessageTopic": "frontend dependencies",
         "commitMessageExtra": null,
-        "matchPaths": ["site/**"],
+        "matchPaths": ["apps/site/**"],
         "addLabels": ["target: frontend", "type: dependencies"],
         "reviewers": ["iv-stpn"],
-        "matchUpdateTypes": ["minor", "patch", "bump"],
-        "excludePackagePatterns": [".*lint.*"]
+        "matchUpdateTypes": ["minor", "patch", "bump"]
       },
       {
         "groupName": "Major Frontend dependencies",
         "commitMessageTopic": "frontend dependencies",
         "commitMessageExtra": "(major)",
-        "matchPaths": ["site/**"],
+        "matchPaths": ["apps/site/**"],
         "addLabels": ["target: frontend", "type: dependencies"],
         "reviewers": ["iv-stpn"],
-        "matchUpdateTypes": ["major"],
-        "excludePackagePatterns": [".*lint.*"]
+        "matchUpdateTypes": ["major"]
       },
       {
         "groupName": "Frontend dependencies maintenance",
         "commitMessageTopic": "frontend dependencies",
         "commitMessageExtra": "(maintenance)",
-        "matchPaths": ["site/**"],
+        "matchPaths": ["apps/site/**"],
         "addLabels": ["target: frontend", "type: dependencies"],
         "reviewers": ["iv-stpn"],
         "matchUpdateTypes": ["pin", "digest", "lockFileMaintenance"]

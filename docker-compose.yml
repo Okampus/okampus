@@ -36,13 +36,13 @@ services:
       TYPESENSE_ENABLE_CORS: "true"
 
   api:
-    build: ./api
+    build: ./apps/api
     restart: always
     depends_on:
       - database
       - typesense
     volumes:
-      - ./api/uploads:/app/uploads
+      - ./apps/api/uploads:/app/uploads
     environment:
       WAIT_HOSTS: database:5432, typesense:8108
       MIKRO_ORM_HOST: ${MIKRO_ORM_HOST}

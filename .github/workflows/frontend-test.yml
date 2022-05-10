@@ -6,12 +6,12 @@ on:
       - dev
       - master
     paths:
-      - 'site/**'
+      - 'apps/site/**'
       - '!*/**/*.md'
       - '.github/workflows/frontend-test.yml'
   pull_request:
     paths:
-      - 'site/**'
+      - 'apps/site/**'
       - '!*/**/*.md'
       - '.github/workflows/frontend-test.yml'
 
@@ -32,8 +32,8 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          path: ./site/node_modules/
-          key: ${{ runner.os }}-build-${{ hashFiles('./site/package-lock.json') }}
+          path: ./apps/site/node_modules/
+          key: ${{ runner.os }}-build-${{ hashFiles('./apps/site/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-
 
@@ -45,11 +45,11 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-        working-directory: site
+        working-directory: apps/site
 
       - name: Build project
         run: npm run build
-        working-directory: site
+        working-directory: apps/site
 
   lint:
     name: Lint
@@ -64,10 +64,8 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          path: ./site/node_modules/
-          key: ${{ runner.os }}-build-${{ hashFiles('./site/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-
+          path: ./apps/site/node_modules/
+          key: ${{ runner.os }}-build-${{ hashFiles('./apps/site/package-lock.json') }}
 
       - name: Install Node v16
         uses: actions/setup-node@v3
@@ -77,16 +75,16 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-        working-directory: site
+        working-directory: apps/site
 
       - name: Run ESLint
         run: npm run lint
-        working-directory: site
+        working-directory: apps/site
 
       - name: Run Prettier
         run: npm run prettier
-        working-directory: site
+        working-directory: apps/site
 
       - name: Run Stylelint
         run: npm run stylelint
-        working-directory: site
+        working-directory: apps/site

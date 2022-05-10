@@ -39,5 +39,5 @@ Si vous préférez utiliser Docker, un container est disponible. Il vous suffit 
 <!-- Link Dump -->
 
 [Node.js]: https://nodejs.org/en/download/
-[le README du backend]: ./api/README.md
-[le README du frontend]: ./site/README.md
+[le README du backend]: ./apps/api/README.md
+[le README du frontend]: ./apps/site/README.md
