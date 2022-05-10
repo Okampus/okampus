@@ -13,9 +13,9 @@
                 :class="[mode === 'vertical' ? 'justify-center' : 'items-center']"
             >
                 <AppTag
-                    :tag-name="schoolRoleItem[$i18n.locale]"
-                    :tag-color="schoolRoleItem.color"
-                    :icon="schoolRoleItem.icon"
+                    :tag-name="roleItem[$i18n.locale]"
+                    :tag-color="roleItem.color"
+                    :icon="roleItem.icon"
                 />
                 <!-- <div v-if="user.schoolRole === 'student'" class="flex gap-1 items-center text-2">
                     <i class="fas fa-trophy" />
@@ -26,43 +26,26 @@
     </div>
 </template>
 
-<script>
-    import schoolRolesEnum from '@/shared/types/school-roles.enum'
-    import { abbrNumbers } from '@/utils/abbrNumbers'
+<script setup>
+    import rolesEnum from '@/shared/types/school-roles.enum'
+    // import { abbrNumbers } from '@/utils/abbrNumbers'
     import AppTag from '@/components/App/AppTag.vue'
     import UserAvatar from '@/components/User/UserAvatar.vue'
 
-    export default {
-        components: { AppTag, UserAvatar },
-        props: {
-            user: {
-                type: Object,
-                default: () => {},
-            },
-            mode: {
-                type: String,
-                default: 'horizontal',
-            },
-            imgSize: {
-                type: Number,
-                default: 3.2,
-            },
-            textClass: {
-                type: String,
-                default: 'text-base text-0',
-            },
-            textClassInfo: {
-                type: String,
-                default: 'text-sm text-gray-600 dark:text-gray-400',
-            },
+    const props = defineProps({
+        user: {
+            type: Object,
+            required: true,
         },
-        data() {
-            return {
-                schoolRoleItem: schoolRolesEnum.find(
-                    (role) => role.key === (this.user.schoolRole || 'horizon'),
-                ),
-            }
+        imgSize: {
+            type: Number,
+            default: 3,
         },
-        methods: { abbrNumbers },
-    }
+        mode: {
+            type: String,
+            default: 'horizontal',
+        },
+    })
+
+    const roleItem = rolesEnum.find((role) => role.key === (props.user.schoolRole || 'horizon'))
 </script>

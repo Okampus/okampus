@@ -1,50 +1,27 @@
 <template>
-    <div class="flex flex-col mx-4 md:mx-auto md:w-23/24 text-0">
-        <div class="flex gap-10 items-end my-6">
-            <div class="flex flex-col gap-2">
-                <p class="text-3xl break-all text-1">{{ thread.title }}</p>
-                <div class="flex gap-4 items-center text-2">
-                    <AppTag
-                        :icon="thread._type.icon"
-                        :tag-color="thread._type.color"
-                        :tag-name="thread._type[$i18n.locale]"
-                        :large="true"
-                    />
-                    <div class="flex gap-8">
-                        <div class="flex flex-col">
-                            <div class="text-sm tracking-tight text-2">Post créé par</div>
-                            <div class="flex gap-2 items-center text-0">
-                                <div class="flex">
-                                    <div>{{ thread.getUser(thread.post.author)?.fullname }}</div>
-                                    <div>,</div>
-                                </div>
-                                <p class="text-sm text-1">
-                                    <DatePreview :date="thread.createdAt" />
-                                </p>
-                            </div>
-                        </div>
-                        <div class="flex flex-col">
-                            <div class="text-sm tracking-tight text-2">
-                                <!-- TODO: link to last action -->
-                                <a class="link-blue"> Dernière action </a> par
-                            </div>
-                            <div class="flex gap-2 items-center text-0">
-                                <div class="flex">
-                                    <div>{{ thread.lastUpdatedBy?.fullname }}</div>
-                                    <div>,</div>
-                                </div>
-                                <p class="text-sm text-1">
-                                    <DatePreview :date="thread.lastUpdatedAt" />
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ml-10 button" @click="emitter.emit('scroll-to-anchor', 'new-reply')">
-                        <p>Répondre</p>
-                    </div>
-                </div>
-            </div>
+    <div class="flex flex-col gap-5 mx-4 md:mx-auto md:w-23/24 text-0">
+        <div class="flex gap-5">
+            <AppTag
+                :icon="thread._type.icon"
+                :tag-color="thread._type.color"
+                :tag-name="thread._type[$i18n.locale]"
+            />
+            <p class="text-2xl break-all text-1">{{ thread.title }}</p>
         </div>
+
+        <!-- <div class="flex flex-row gap-3">
+            <UserAvatar
+                :img-src="thread.getUser(thread._post.author).avatar"
+                :size="size"
+                :username="fullname(thread.getUser(thread._post.author))"
+            />
+            <div class="flex flex-col">
+                <div>
+                    {{ fullname(thread.getUser(thread._post.author)) }}
+                </div>
+                <DatePreview class="text-sm text-2" :date="thread.createdAt" />
+            </div>
+        </div> -->
 
         <div class="flex">
             <div class="w-full">
@@ -52,13 +29,12 @@
                     <ThreadPost :post="thread._post" />
 
                     <template v-if="thread.replies.length > 0">
-                        <div class="mt-2">
+                        <div class="my-3">
                             <div class="mb-1 ml-2">
                                 {{
                                     `${thread.replies.length} réponse${thread.replies.length > 1 ? 's' : ''}`
                                 }}
                             </div>
-                            <hr />
                         </div>
                         <ThreadReply v-for="(reply, i) in thread.replies" :key="i" :reply="reply" />
                     </template>
@@ -135,9 +111,10 @@
 
 <script setup>
     import AppTag from '@/components/App/AppTag.vue'
-
-    import DatePreview from '@/components/App/Preview/DatePreview.vue'
+    // import { fullname } from '@/utils/users'
+    // import DatePreview from '@/components/App/Preview/DatePreview.vue'
     import UserPreview from '@/components/App/Preview/UserPreview.vue'
+    // import { timeAgo } from '@/utils/timeAgo'
 
     import ThreadPost from '@/components/Thread/ThreadPost.vue'
     import ThreadReply from '@/components/Thread/ThreadReply.vue'
@@ -153,6 +130,8 @@
 
     import { getStatus } from '@/utils/errors'
     import { errorCodes } from '@/shared/errors/app-exceptions.enum'
+    // import UserAvatar from '@/components/User/UserAvatar.vue'
+    // import DatePreview from '@/components/App/Preview/DatePreview.vue'
 
     const route = useRoute()
     const threads = useThreadsStore()
