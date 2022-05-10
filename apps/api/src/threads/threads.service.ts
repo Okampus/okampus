@@ -9,6 +9,7 @@ import { Reaction } from '../reactions/reaction.entity';
 import { Report } from '../reports/report.entity';
 import type { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
+import { Colors } from '../shared/lib/types/enums/colors.enum';
 import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
 import { ContentMasterType } from '../shared/lib/types/enums/content-master-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
@@ -48,6 +49,13 @@ export class ThreadsService {
 
     // TODO: Keep the original order
     const tags = await this.tagRepository.find({ name: { $in: createThreadDto.tags } });
+    const newTags: Tag[] = createThreadDto.tags
+      .filter(tag => !tags.some(t => t.name === tag))
+      .map(name => new Tag({ name, color: Colors.Blue }));
+    if (newTags.length > 0) {
+      await this.tagRepository.persistAndFlush(newTags);
+      thread.tags.add(...newTags);
+    }
     thread.tags.add(...tags);
 
     const assignees = await this.userRepository.find({ userId: { $in: createThreadDto.assignees } });
