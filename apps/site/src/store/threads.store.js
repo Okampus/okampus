@@ -137,6 +137,12 @@ export const useThreadsStore = defineStore('threads', {
                 this.threads = threads.map((thread) => {
                     thread.post.author.fullname =
                         thread.post.author.firstname + ' ' + thread.post.author.lastname
+                    thread.contents = [thread.post]
+                    thread.contents[0].interactions = new ContentInteractions()
+                    if (thread.voted !== 0) {
+                        thread.contents[0].interactions.voted = thread.voted
+                    }
+
                     return thread
                 })
             }

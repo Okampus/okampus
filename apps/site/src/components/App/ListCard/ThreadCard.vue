@@ -1,11 +1,33 @@
 <template>
     <div v-if="thread" class="flex flex-row gap-6 py-3 pr-7 pl-5 w-full xs:rounded-xl bg-2 text-2">
         <div class="flex flex-col gap-1 items-center">
-            <UpvoteIcon :full="false" :width="'1.4rem'" :height="'1.4rem'" class="text-6" />
+            <UpvoteIcon
+                :full="thread.post.interactions.voted === 1"
+                width="1.5rem"
+                height="1.5rem"
+                class="hover:text-blue-500 cursor-pointer"
+                :class="[thread.post.interactions.voted === 1 ? 'text-green-600' : 'text-5']"
+                @click="
+                    thread.post.interactions.voted === 1
+                        ? threads.voteContent(thread.post.contentId, 0)
+                        : threads.voteContent(thread.post.contentId, 1)
+                "
+            />
             <div class="text-xl">
                 {{ abbrNumbers(thread.post.upvotes - thread.post.downvotes) }}
             </div>
-            <DownvoteIcon :full="false" :width="'1.4rem'" :height="'1.4rem'" class="text-6" />
+            <DownvoteIcon
+                :full="thread.post.interactions.voted === -1"
+                width="1.5rem"
+                height="1.5rem"
+                class="hover:text-blue-500 cursor-pointer"
+                :class="[thread.post.interactions.voted === -1 ? 'text-red-600' : 'text-5']"
+                @click="
+                    thread.post.interactions.voted === -1
+                        ? threads.voteContent(thread.post.contentId, 0)
+                        : threads.voteContent(thread.post.contentId, -1)
+                "
+            />
         </div>
         <div class="flex flex-col">
             <AppTip :tip="`${threadTypes[thread.type]?.fr}`">
@@ -122,13 +144,12 @@
 
 <script setup>
     import { fullname, getRole } from '@/utils/users'
-
     // import TagList from '@/components/List/TagList.vue'
     // import UserPreview from '@/components/App/Preview/UserPreview.vue'
     import AppTag from '@/components/App/AppTag.vue'
 
     // import Popper from 'vue3-popper'
-    // import { useThreadsStore } from '@/store/threads.store'
+    import { useThreadsStore } from '@/store/threads.store'
 
     import threadTypes from '@/shared/types/thread-types.enum'
 
@@ -141,7 +162,7 @@
     // import UserPreview from '../Preview/UserPreview.vue'
     import UserAvatar from '@/components/User/UserAvatar.vue'
 
-    // const thread = useThreadsStore()
+    const threads = useThreadsStore()
 
     defineProps({
         thread: {
