@@ -40,20 +40,20 @@
                     <i :class="`fas fa-${threadTypes[thread.type]?.icon}`" class="text-xl" />
                 </div>
             </AppTip>
-            <AppTip :tip="`${thread.replyCount} réponses`">
+            <AppTip :tip="`${thread.replyCount} réponse${thread.replyCount > 1 ? 's' : ''}`">
                 <div
                     class="flex flex-row gap-2 justify-center items-center p-1 mt-3 rounded cursor-pointer select-none"
                     :class="
                         thread.opValidatedWith || thread.adminValidatedWith ? 'bg-green-500 text-white' : ''
                     "
                 >
+                    <p>{{ abbrNumbers(thread.replyCount) }}</p>
                     <i
                         v-if="thread.opValidatedWith && thread.adminValidatedWith"
                         class="fa fa-double-check"
                     />
                     <i v-else-if="thread.opValidatedWith" class="fa fa-check" />
-                    <p>{{ abbrNumbers(thread.replyCount) }}</p>
-                    <i class="text-sm fa fa-message" />
+                    <i v-else class="text-sm fa fa-message" />
                 </div>
             </AppTip>
         </div>
@@ -71,7 +71,6 @@
 
             <div class="flex gap-6 items-center mt-1 w-full text-xs">
                 <div class="flex gap-2 items-center">
-                    <i class="text-base fa fa-pen-to-square icon-color" />
                     <UserAvatar
                         :img-src="thread.post.author.avatar"
                         :username="fullname(thread.post.author)"
@@ -88,49 +87,18 @@
                     <i class="text-base fa fa-calendar icon-color" />
                     <DatePreview class="ml-2" :date="thread.createdAt" />
                 </div>
-                <AppTag v-if="thread.tags.length > 0" :tag-name="thread.tags[0].name" />
-                <!-- <TagList class="w-fit" :tags="thread.tags" /> -->
-            </div>
-            <!-- <UserPreview
-                class="mt-2"
-                :user="thread.post.author"
-                :img-size="1.5"
-                :show-role-name="false"
-                tag-class="text-xs !p-0 w-6 h-6"
-                text-class="text-sm"
-            /> -->
-        </div>
-        <!-- <div class="flex flex-col">
-            <div class="flex flex-row gap-4 items-center">
-                <div class="flex gap-2">
-                    <AppTag
-                        :icon="threadTypes[thread.type]?.icon"
-                        :tag-color="threadTypes[thread.type]?.color"
-                        :tag-name="threadTypes[thread.type]?.fr"
-                        class="text-xs"
-                    />
-                    <p class="text-sm">de</p>
-                    <UserPreview
-                        :user="thread.post.author"
-                        :img-size="1.5"
-                        :show-role-name="false"
-                        tag-class="text-xs !p-0 w-6 h-6"
-                        text-class="text-sm"
-                    />
+                <div
+                    v-if="thread.createdAt !== thread.post.lastEdit.createdAt"
+                    class="flex gap-2 items-center"
+                >
+                    <i class="text-base fa fa-clock-rotate-left icon-color" />
+                    <DatePreview class="ml-2" :date="thread.createdAt" />
                 </div>
-                <DatePreview class="text-sm" :date="thread.createdAt" />
+
+                <!-- TEMP: display only first tag -->
+                <AppTag v-if="thread.tags.length > 0" :tag-name="thread.tags[0].name" />
             </div>
-            <router-link
-                :to="`/threads/${thread.contentMasterId}`"
-                class="mt-2 text-2xl font-semibold hover:underline line-clamp-1 text-0"
-            >
-                {{ thread.title }}
-            </router-link>
-            <p class="mt-1 text-base text-justify line-clamp-2 text-2">
-                {{ thread.post.body }}
-            </p>
-            <TagList class="mt-3 w-full" :tags="thread.tags" />
-        </div> -->
+        </div>
     </div>
     <div v-else class="flex py-3 px-5 space-x-2 font-semibold rounded-lg">
         <p class="text-lg text-0">Erreur: Ce post est vide.</p>
