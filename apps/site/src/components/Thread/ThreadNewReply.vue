@@ -1,6 +1,6 @@
 <template>
     <div>
-        <AppAlert v-if="first" type="info" class="mt-2 rounded-b-none">
+        <AppAlert v-if="first" type="info" class="mt-2 dark:!bg-blue-900 rounded-b-none">
             <!-- TODO: bonus for a first answer -->
             <template #title> Sois le premier à répondre à ce post ! </template>
             <template #message>
@@ -14,7 +14,7 @@
             id="new-reply"
             class="flex flex-row p-4 text-lg bg-card-meta"
             :class="
-                first ? 'border-2 border-blue-100 dark:border-blue-700 rounded-b-lg' : 'shadow-md rounded-lg'
+                first ? 'border-2 border-blue-100 dark:border-blue-900 rounded-b-lg' : 'shadow-md rounded-lg'
             "
         >
             <UserAvatar :img-src="auth?.user?.avatar" :username="auth?.user?.fullname" />
