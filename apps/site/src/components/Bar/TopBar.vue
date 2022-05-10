@@ -19,7 +19,7 @@
 
         <div v-else class="flex justify-between items-center mr-4 h-full bg-transparent">
             <div class="mr-4">
-                <Popper :offset-distance="8" offset-skid="-110">
+                <Popper offset-distance="8" offset-skid="-110">
                     <UserAvatar
                         class="cursor-pointer"
                         :img-src="auth.user.avatar"
@@ -50,7 +50,6 @@
 
 <script setup>
     import Popper from 'vue3-popper'
-    // import UserCard from '@/components/App/Card/UserCard.vue'
     import UserAvatar from '@/components/User/UserAvatar.vue'
     import LoginButton from '@/components/Button/LoginButton.vue'
     import SearchBar from '@/components/Bar/SearchBar.vue'

@@ -1,5 +1,5 @@
 <template>
-    <Popper :hover="onHover" :offset-distance="5">
+    <Popper :hover="onHover" offset-distance="5">
         <slot />
         <template #content>
             <div class="p-2.5 text-base text-gray-100 bg-gray-900/90 dark:bg-black/90 rounded-md">
