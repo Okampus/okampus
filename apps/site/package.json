@@ -1,6 +1,6 @@
 {
     "name": "horizon-site",
-    "version": "0.1.1",
+    "version": "0.1.0-alpha.2",
     "description": "Front-end of horizon-efrei.fr",
     "author": "Horizon Front-end Dev. Team",
     "private": true,
@@ -8,7 +8,7 @@
     "scripts": {
         "dev": "vite",
         "lint": "eslint './src/**/*.{js,vue}'",
-        "lint:fix": "npm run lint -- --fix --debug",
+        "lint:fix": "npm run lint -- --fix",
         "prettier": "prettier './src/**/*.{js,vue}' --check",
         "prettier:fix": "prettier './src/**/*.{js,vue}' --write",
         "stylelint": "stylelint './src/**/*.{vue,css,scss}'",
