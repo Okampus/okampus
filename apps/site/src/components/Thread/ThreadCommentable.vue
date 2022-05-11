@@ -1,6 +1,11 @@
 <template>
     <div
         class="flex gap-5 items-stretch p-4 rounded-none shadow-md md:rounded-lg bg-card-within-1 content-parent"
+        :class="
+            thread.post.contentId !== content.contentId && thread.opValidatedWith
+                ? 'border-2 border-green-600'
+                : ''
+        "
     >
         <div class="flex flex-col gap-1 items-center">
             <UpvoteIcon
@@ -31,42 +36,6 @@
                 "
             />
         </div>
-        <!-- <div
-            class="flex flex-col shrink-0 gap-2 p-4 w-[12rem] text-lg rounded-none md:rounded-lg md:rounded-r-none bg-card-meta"
-        >
-            <div class="flex items-center self-center">
-                <UpvoteIcon
-                    :full="true"
-                    :width="'2.5rem'"
-                    :height="'2.5rem'"
-                    class="p-2 hover:text-blue-500 cursor-pointer"
-                    :class="[content.interactions.voted === 1 ? 'text-green-600' : 'text-5']"
-                    @click="
-                        content.interactions.voted === 1
-                            ? threads.voteContent(content.contentId, 0)
-                            : threads.voteContent(content.contentId, 1)
-                    "
-                />
-
-                <div class="text-lg text-center">
-                    {{ content.upvotes - content.downvotes }}
-                </div>
-
-                <DownvoteIcon
-                    :full="true"
-                    :width="'2.5rem'"
-                    :height="'2.5rem'"
-                    class="p-2 hover:text-blue-500 cursor-pointer"
-                    :class="[content.interactions.voted === -1 ? 'text-red-600' : 'text-5']"
-                    @click="
-                        content.interactions.voted === -1
-                            ? threads.voteContent(content.contentId, 0)
-                            : threads.voteContent(content.contentId, -1)
-                    "
-                />
-            </div>
-            <UserPreview :user="content._author" mode="vertical" />
-        </div> -->
 
         <div class="flex flex-col gap-4 w-full">
             <div class="flex flex-row justify-between items-center">
@@ -80,6 +49,29 @@
                         {{ fullname(content._author) }}
                     </div>
                     <DatePreview class="text-sm text-2" :date="content.createdAt" />
+                    <template v-if="thread.post.contentId !== content.contentId">
+                        <i v-if="thread.opValidatedWith" class="text-base text-green-600 fa fa-check" />
+                        <i
+                            v-else-if="thread.post.author === auth.user.userId"
+                            class="text-sm cursor-pointer fa fa-check text-5"
+                            @click="
+                                threads.validateThreadWithContent(content.contentMasterId, content.contentId)
+                            "
+                        />
+
+                        <AppTag v-if="thread.adminValidatedWith" tag-name="Officiel" tag-color="orange" />
+                        <i
+                            v-else-if="auth.user.roles.includes('admin')"
+                            class="text-sm cursor-pointer fa fa-check-double text-5"
+                            @click="
+                                threads.validateThreadWithContent(
+                                    content.contentMasterId,
+                                    content.contentId,
+                                    true,
+                                )
+                            "
+                        />
+                    </template>
                 </div>
                 <div class="flex gap-2 items-center text-3" :class="unfocusedContentClass">
                     <div
@@ -153,6 +145,7 @@
 <script setup>
     // import AppDateAndModified from '../App/AppDateAndModified.vue'
     // import UserPreview from '../App/Preview/UserPreview.vue'
+
     import ThreadCommentList from './ThreadCommentList.vue'
     import UpvoteIcon from '../App/Icon/UpvoteIcon.vue'
     import DownvoteIcon from '../App/Icon/DownvoteIcon.vue'
@@ -160,17 +153,20 @@
     import { abbrNumbers } from '@/utils/abbrNumbers'
 
     import { useThreadsStore } from '@/store/threads.store'
+    import { useAuthStore } from '@/store/auth.store'
 
     import { getLinkContent, report } from '@/shared/actions/thread.actions'
     import { computed } from 'vue'
 
     // import { getContentDemonstrative, isContentFeminine } from '@/shared/types/content-kinds.enum'
     // import { capitalize } from 'lodash'
+
     import UserAvatar from '../User/UserAvatar.vue'
     import DatePreview from '../App/Preview/DatePreview.vue'
+    import AppTag from '../App/AppTag.vue'
 
     const threads = useThreadsStore()
-    const unfocusedContentClass = ['opacity-60', 'content-show-focused']
+    const auth = useAuthStore()
 
     const props = defineProps({
         content: {
@@ -178,6 +174,9 @@
             required: true,
         },
     })
+
+    const thread = threads.threads.find((thread) => thread.contentMasterId === props.content.contentMasterId)
+    const unfocusedContentClass = ['opacity-60', 'content-show-focused']
 
     const actions = [report, getLinkContent]
     const actionsShown = computed(() =>

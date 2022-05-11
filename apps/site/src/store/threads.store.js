@@ -219,6 +219,29 @@ export const useThreadsStore = defineStore('threads', {
         // async forceDeleteThread(id) {
         //     return await $axios.delete(`threads/${id}`).then(() => this.removeThread(id))
         // },
+        async validateThreadWithContent(threadId, contentId, admin = false) {
+            return await $axios
+                .patch(
+                    `/threads/${threadId}`,
+                    admin
+                        ? {
+                              adminValidatedWith: contentId,
+                          }
+                        : {
+                              opValidatedWith: contentId,
+                          },
+                )
+                .then(() => {
+                    const thread = this.threads.find(sameThread(threadId))
+                    if (thread) {
+                        if (admin) {
+                            thread.adminValidatedWith = contentId
+                        } else {
+                            thread.opValidatedWith = contentId
+                        }
+                    }
+                })
+        },
 
         async addContent(threadId, content, kind) {
             return await $axios
