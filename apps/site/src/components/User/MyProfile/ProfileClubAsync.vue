@@ -102,7 +102,7 @@
                                 association"
                             </p>
                         </div>
-                        <div class="flex w-full">
+                        <div class="flex gap-4 w-full">
                             <ul class="flex flex-col">
                                 <!-- {{
                                     club
@@ -116,9 +116,17 @@
                                     <div class="my-auto truncate w-50">
                                         {{ club.name }}
                                     </div>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li
+                                    v-for="club in clubList.items"
+                                    :key="club"
+                                    class="flex gap-2 pr-2 w-full h-10"
+                                >
                                     <div class="flex gap-1 my-auto w-6 text-sm">
-                                        <p class="my-auto">{{ club.members ? club.members.length : 1 }}</p>
-                                        <i class="my-auto fas fa-user"></i>
+                                        <p class="my-auto">{{ club.memberCount }}</p>
+                                        <i class="my-auto fas fa-users"></i>
                                     </div>
                                 </li>
                             </ul>
@@ -156,7 +164,7 @@
                             {{ clubSelected.team.name }}
                         </div>
                     </div>
-                    <h3 class="mb-8 text-lg">Informations de l'association</h3>
+                    <h3 class="mb-4 text-lg">Informations de l'association</h3>
                     <div class="flex mb-4">
                         <div class="flex mr-6 w-full">
                             <div class="flex flex-col mr-8 mb-4 w-fit">
@@ -203,7 +211,7 @@
                         :with-credentials="true"
                     />
                     <div>
-                        <h3 class="mb-4 text-lg">Invitations en attente</h3>
+                        <h3 class="mt-8 text-lg">Invitations en attente</h3>
                         <div v-if="requests.length > 0" class="flex">
                             <div class="flex flex-col gap-2 w-48">
                                 <div
@@ -252,7 +260,7 @@
                     </div>
 
                     <div>
-                        <h3 class="my-4 text-lg">Liste des Membres</h3>
+                        <h3 class="mt-8 text-lg">Liste des Membres</h3>
                         <div class="flex gap-8">
                             <div class="flex flex-col gap-2">
                                 <div v-for="member in members" :key="member.teamMemberId" class="flex gap-2">
@@ -269,18 +277,26 @@
                             </div>
                             <div class="flex flex-col gap-2 mt-1">
                                 <div v-for="member in members" :key="member.teamMemberId" class="h-8">
-                                    {{ member.role }}
+                                    {{
+                                        member.roleLabel
+                                            ? member.roleLabel
+                                            : Object.keys(roles).find((a) => roles[a] === member.role)
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col gap-2">
-                                <button
-                                    v-for="member in members"
-                                    :key="member.teamMemberId"
-                                    class="h-8 text-red-500"
-                                    @click="() => kickMember(member.user.userId)"
-                                >
-                                    Kick
-                                </button>
+                                <div v-for="member in members" :key="member.teamMemberId">
+                                    <button v-if="member.role === 'owner'" class="h-8 text-red-500">
+                                        Transmettre le rôle
+                                    </button>
+                                    <button
+                                        v-else
+                                        class="h-8 text-red-500"
+                                        @click="() => kickMember(member.user.userId)"
+                                    >
+                                        Virer de l'association
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <!-- <div v-if="clubMembers != undefined && clubMembers != null">
@@ -322,6 +338,36 @@
                                 </li>
                             </ul>
                         </div> -->
+                    </div>
+                    <div>
+                        <h3 class="mt-8 text-lg">Paramètres de l'adhésion</h3>
+                        <p class="mb-2 text-sm">
+                            Lors de sa demande d'adhésion, un utilisateur recevra une pop-up personnalisable :
+                            vous pouvez lui laisser un message et le rediriger vers un espace permettant de
+                            lui demander plus d'informations
+                        </p>
+                        <form action="">
+                            <div class="flex flex-col gap-2">
+                                <label class="my-auto" for="adhesion_msg">Message d'adhésion</label>
+                                <textarea
+                                    id="adhesion_msg"
+                                    class="resize-none input"
+                                    name="adhesion_msg"
+                                    rows="3"
+                                    placeholder="Message d'adhésion"
+                                ></textarea>
+                                <label class="my-auto" for="adhesion_link"
+                                    >Lien de complétion de candidature</label
+                                >
+                                <input
+                                    id="adhesion_link"
+                                    class="input"
+                                    name="adhesion_link"
+                                    type="text"
+                                    placeholder="Exemple : https://docs.google.com/forms/d/e/exemple/viewform?usp=sf_link"
+                                />
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
