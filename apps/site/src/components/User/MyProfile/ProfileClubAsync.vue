@@ -142,143 +142,144 @@
                             {{ clubSelected.team.name }}
                         </div>
                     </div>
-                    <h3 class="mb-4 text-lg">Informations de l'association</h3>
-                    <div class="flex mb-4">
-                        <div class="flex mr-6 w-full">
-                            <div class="flex flex-col mr-8 mb-4 w-fit">
-                                <div class="relative mx-auto mb-2">
-                                    <UserAvatar
-                                        :img-src="clubSelected.team.avatar"
-                                        :alt="clubSelected.team.name + ' icon'"
-                                        :size="5"
-                                        :username="clubSelected.team.name"
-                                    />
-                                    <button
-                                        class="hidden absolute right-4 bottom-0 md:block"
-                                        @click="showImage()"
-                                    >
-                                        <i
-                                            class="absolute -bottom-2 px-1 text-lg rounded-full border fa fa-camera bg-2 border-color-2"
+                    <DrawerMenu title="Informations de l'association">
+                        <template #default>
+                            <div class="flex my-4">
+                                <div class="flex mr-6 w-full">
+                                    <div class="flex flex-col mr-8 mb-4 w-fit">
+                                        <div class="relative mx-auto mb-2">
+                                            <UserAvatar
+                                                :img-src="clubSelected.team.avatar"
+                                                :alt="clubSelected.team.name + ' icon'"
+                                                :size="5"
+                                                :username="clubSelected.team.name"
+                                            />
+                                            <button
+                                                class="hidden absolute right-4 bottom-0 md:block"
+                                                @click="showImage()"
+                                            >
+                                                <i
+                                                    class="absolute -bottom-2 px-1 text-lg rounded-full border fa fa-camera bg-2 border-color-2"
+                                                />
+                                            </button>
+                                        </div>
+                                        <div class="flex justify-between mx-auto">
+                                            <div class="mr-2 w-full capitalize whitespace-nowrap bg-1">
+                                                {{ clubSelected.team.name }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col w-full">
+                                        <label for="description" class="text-lg">Description</label>
+                                        <textarea
+                                            v-model="clubSelected.team.description"
+                                            name="description"
+                                            class="resize-none input"
+                                            rows="5"
                                         />
-                                    </button>
-                                </div>
-                                <div class="flex justify-between mx-auto">
-                                    <div class="mr-2 w-full capitalize whitespace-nowrap bg-1">
-                                        {{ clubSelected.team.name }}
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex flex-col w-full">
-                                <label for="description" class="text-lg">Description</label>
-                                <textarea
-                                    v-model="clubSelected.team.description"
-                                    name="description"
-                                    class="resize-none input"
-                                    rows="5"
-                                />
-                                <button class="mt-2 button" @click="patchDescription()">
-                                    <p>Enregistrer</p>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                        </template>
+                    </DrawerMenu>
                     <AvatarCropper
                         v-model="avatarShown"
                         field="file"
                         img-format="jpg"
-                        :url="`${apiUrl}files/profile-images`"
+                        :url="`${apiUrl}/files/profile-images`"
                         lang-type="fr"
                         :with-credentials="true"
+                        @crop-upload-success="cropUploadSuccess"
                     />
                     <div>
-                        <h3 class="mt-8 text-lg">Invitations en attente</h3>
-                        <div v-if="requests.length > 0" class="flex">
-                            <div class="flex flex-col gap-2 w-48">
-                                <div
-                                    v-for="request in requests"
-                                    :key="request.teamMembershipRequestId"
-                                    class="flex flex-col gap-2"
-                                >
-                                    <div class="flex gap-2">
-                                        <UserAvatar
-                                            :img-src="request.user.avatar"
-                                            :alt="request.user.name + ' icon'"
-                                            :size="2"
-                                            :username="request.user.firstname + ' ' + request.user.lastname"
-                                        />
-                                        <div class="flex flex-col my-auto">
-                                            {{ request.user.firstname + ' ' + request.user.lastname }}
-                                        </div>
-                                    </div>
+                        <DrawerMenu class="mt-8" title="Invitations en attente">
+                            <template #default>
+                                <div v-if="requests.length > 0" class="flex">
+                                    <table>
+                                        <tr
+                                            v-for="request in requests"
+                                            :key="request.teamMembershipRequestId"
+                                            class="flex gap-8 items-center even:bg-gray-200"
+                                        >
+                                            <td class="flex gap-2 items-center w-44">
+                                                <UserAvatar
+                                                    :img-src="request.user.avatar"
+                                                    :alt="request.user.name + ' icon'"
+                                                    :size="2"
+                                                    :username="
+                                                        request.user.firstname + ' ' + request.user.lastname
+                                                    "
+                                                />
+                                                <div class="truncate">
+                                                    {{ request.user.firstname + ' ' + request.user.lastname }}
+                                                </div>
+                                            </td>
+                                            <td class="w-24">
+                                                <p class="my-auto text-sm text-green-500">
+                                                    {{ request.state }}
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <button
+                                                    class="my-auto text-sm text-blue-500"
+                                                    @click="() => acceptDemand(request)"
+                                                >
+                                                    Accepter la demande
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
-                            </div>
-                            <div class="flex flex-col mr-4">
-                                <div
-                                    v-for="request in requests"
-                                    :key="request.teamMembershipRequestId"
-                                    class="flex flex-col gap-2 my-1 h-8"
-                                >
-                                    <p class="my-auto text-sm text-green-500">{{ request.state }}</p>
-                                </div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div
-                                    v-for="request in requests"
-                                    :key="request.teamMembershipRequestId"
-                                    class="flex flex-col gap-2 my-1 h-8"
-                                >
-                                    <button
-                                        class="my-auto text-sm text-blue-500"
-                                        @click="() => acceptDemand(request)"
-                                    >
-                                        Accepter la demande
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div v-else>Vous n'avez pas de demandes d'adhésions en attente</div>
+                                <div v-else>Vous n'avez pas de demandes d'adhésions en attente</div>
+                            </template>
+                        </DrawerMenu>
+                        <h3 class="mt-8 text-lg"></h3>
                     </div>
-
                     <div>
-                        <h3 class="mt-8 text-lg">Liste des Membres</h3>
-                        <table class="w-full">
-                            <tr
-                                v-for="member in members"
-                                :key="member.teamMemberId"
-                                class="flex gap-4 items-center w-full even:bg-gray-200"
-                            >
-                                <td class="my-1">
-                                    <UserAvatar
-                                        :img-src="member.user.avatar"
-                                        :alt="member.user.name + ' icon'"
-                                        :size="2"
-                                        :username="member.user.firstname + ' ' + member.user.lastname"
-                                    />
-                                </td>
-                                <td class="w-60 truncate">
-                                    {{ member.user.firstname + ' ' + member.user.lastname }}
-                                </td>
-                                <td class="w-32">
-                                    {{
-                                        member.roleLabel
-                                            ? member.roleLabel
-                                            : Object.keys(roles).find((role) => roles[role] === member.role)
-                                    }}
-                                </td>
-                                <td class="w-48">
-                                    <button v-if="member.role === 'owner'" class="text-red-500">
-                                        Transmettre le rôle
-                                    </button>
-                                    <button
-                                        v-else
-                                        class="text-red-500"
-                                        @click="() => kickMember(member.user.userId)"
+                        <DrawerMenu class="mt-8" title="Liste des Membres">
+                            <template #default>
+                                <table class="w-full">
+                                    <tr
+                                        v-for="member in members"
+                                        :key="member.teamMemberId"
+                                        class="flex gap-4 items-center w-full even:bg-gray-200"
                                     >
-                                        Virer de l'association
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
+                                        <td class="my-1">
+                                            <UserAvatar
+                                                :img-src="member.user.avatar"
+                                                :alt="member.user.name + ' icon'"
+                                                :size="2"
+                                                :username="member.user.firstname + ' ' + member.user.lastname"
+                                            />
+                                        </td>
+                                        <td class="w-60 truncate">
+                                            {{ member.user.firstname + ' ' + member.user.lastname }}
+                                        </td>
+                                        <td class="w-32">
+                                            {{
+                                                member.roleLabel
+                                                    ? member.roleLabel
+                                                    : Object.keys(roles).find(
+                                                          (role) => roles[role] === member.role,
+                                                      )
+                                            }}
+                                        </td>
+                                        <td class="w-48">
+                                            <button v-if="member.role === 'owner'" class="text-red-500">
+                                                Transmettre le rôle
+                                            </button>
+                                            <button
+                                                v-else
+                                                class="text-red-500"
+                                                @click="() => kickMember(member.user.userId)"
+                                            >
+                                                Virer de l'association
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </template>
+                        </DrawerMenu>
                         <!-- <div v-if="clubMembers != undefined && clubMembers != null">
                             <ul>
                                 <li v-for="member in clubMembers" :key="member" class="flex gap-4">
@@ -320,35 +321,40 @@
                         </div> -->
                     </div>
                     <div>
-                        <h3 class="mt-8 text-lg">Paramètres de l'adhésion</h3>
-                        <p class="mb-2 text-sm">
-                            Lors de sa demande d'adhésion, un utilisateur recevra une pop-up personnalisable :
-                            vous pouvez lui laisser un message et le rediriger vers un espace permettant de
-                            lui demander plus d'informations
-                        </p>
-                        <form action="">
-                            <div class="flex flex-col gap-2">
-                                <label class="my-auto" for="adhesion_msg">Message d'adhésion</label>
-                                <textarea
-                                    id="adhesion_msg"
-                                    class="resize-none input"
-                                    name="adhesion_msg"
-                                    rows="3"
-                                    placeholder="Exemple : Merci d'avoir demandé à rejoindre notre formidable association, afin de finir votre inscription veuillez remplir le formulaire ci-dessous : "
-                                ></textarea>
-                                <label class="my-auto" for="adhesion_link"
-                                    >Lien de complétion de candidature</label
-                                >
-                                <input
-                                    id="adhesion_link"
-                                    class="input"
-                                    name="adhesion_link"
-                                    type="text"
-                                    placeholder="Exemple : https://docs.google.com/forms/d/e/exemple/viewform?usp=sf_link"
-                                />
-                            </div>
-                        </form>
-                        <button class="mt-2 button" @click="patchDescription()">
+                        <DrawerMenu class="mt-8" title="Paramètres de l'adhésion">
+                            <template #default>
+                                <p class="mb-2 text-sm">
+                                    Lors de sa demande d'adhésion, un utilisateur recevra une pop-up
+                                    personnalisable : vous pouvez lui laisser un message et le rediriger vers
+                                    un espace permettant de lui demander plus d'informations
+                                </p>
+                                <form action="">
+                                    <div class="flex flex-col gap-2">
+                                        <label class="my-auto" for="adhesion_msg">Message d'adhésion</label>
+                                        <textarea
+                                            id="adhesion_msg"
+                                            v-model="clubSelected.team.membershipRequestMessage"
+                                            class="resize-none input"
+                                            name="adhesion_msg"
+                                            rows="3"
+                                            placeholder="Exemple : Merci d'avoir demandé à rejoindre notre formidable association, afin de finir votre inscription veuillez remplir le formulaire ci-dessous : "
+                                        ></textarea>
+                                        <label class="my-auto" for="adhesion_link"
+                                            >Lien de complétion de candidature</label
+                                        >
+                                        <input
+                                            id="adhesion_link"
+                                            v-model="clubSelected.team.membershipRequestLink"
+                                            class="input"
+                                            name="adhesion_link"
+                                            type="text"
+                                            placeholder="Exemple : https://docs.google.com/forms/d/e/exemple/viewform?usp=sf_link"
+                                        />
+                                    </div>
+                                </form>
+                            </template>
+                        </DrawerMenu>
+                        <button class="mt-8 button" @click="patchClub()">
                             <p>Enregistrer</p>
                         </button>
                     </div>
@@ -368,6 +374,7 @@
     import { useProfilesStore } from '@/store/profile.store'
     import { getStatus } from '@/utils/errors'
     import { ref, watch } from 'vue'
+    import DrawerMenu from '@/components/DrawerMenu.vue'
 
     // import _ from 'lodash'
     // import { watch } from 'vue'
@@ -413,6 +420,19 @@
             .getMe()
             .then((res) => {
                 me.value = res
+            })
+            .catch((err) => {
+                emitter.emit('error-route', { code: getStatus(err.response) })
+            })
+    }
+
+    const cropUploadSuccess = async (data) => {
+        await club
+            .patchClub(clubSelected.value.team.teamId, {
+                avatar: data.profileImageId,
+            })
+            .then((res) => {
+                clubSelected.value.team = res
             })
             .catch((err) => {
                 emitter.emit('error-route', { code: getStatus(err.response) })
@@ -492,23 +512,15 @@
             })
     }
 
-    const patchDescription = async () => {
+    const patchClub = async () => {
+        const { description, membershipRequestLink, membershipRequestMessage } = {
+            ...clubSelected.value.team,
+        }
         await club
             .patchClub(clubSelected.value.team.teamId, {
-                description: clubSelected.value.team.description,
-            })
-            .then((res) => {
-                clubSelected.value.team = res
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
-
-    const patchAdhesion = async () => {
-        await club
-            .patchClub(clubSelected.value.team.teamId, {
-                adhesionLink: clubSelected.value.team.adhesionLink,
+                description,
+                membershipRequestLink,
+                membershipRequestMessage,
             })
             .then((res) => {
                 clubSelected.value.team = res

@@ -11,15 +11,23 @@
                 Votre demande pour rejoindre l’association
                 <span class="font-bold">{{ props.request.team.name }}</span> a bien été transmise.
             </p>
-            <h2 class="mt-4 text-lg font-bold text-center text-1">Message de l'association</h2>
-            <p class="mt-2 text-base text-center text-1">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo sapiente, rem reprehenderit
-                nostrum quas maiores iste similique facilis error obcaecati dolores tenetur eligendi! Fugiat,
-                nemo!
+            <h2
+                v-if="props.request.team.membershipRequestMessage"
+                class="mt-4 text-lg font-bold text-center text-1"
+            >
+                Message de l'association
+            </h2>
+            <p v-if="props.request.team.membershipRequestMessage" class="mt-2 text-base text-center text-1">
+                {{ props.request.team.membershipRequestMessage }}
             </p>
-            <button class="p-2 mt-8 w-fit text-base text-center text-white bg-green-500 rounded-md">
-                Poursuivre la demande
-            </button>
+            <a
+                v-if="props.request.team.membershipRequestLink"
+                :href="props.request.team.membershipRequestLink"
+            >
+                <button class="p-2 mt-8 w-fit text-base text-center text-white bg-green-500 rounded-md">
+                    Poursuivre la demande
+                </button>
+            </a>
         </div>
     </div>
 </template>
