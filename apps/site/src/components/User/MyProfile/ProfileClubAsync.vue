@@ -93,7 +93,6 @@
                                 association"
                             </p>
                         </div>
-<<<<<<< HEAD
                         <table class="w-full">
                             <tr
                                 v-for="club in clubList.items"
@@ -101,23 +100,10 @@
                                 class="flex gap-2 items-center w-full even:bg-gray-200"
                             >
                                 <td class="flex gap-2 my-1 w-60">
-=======
-                        <div class="flex gap-4 w-full">
-                            <ul class="flex flex-col">
-                                <!-- {{
-                                    club
-                                }} -->
-                                <li
-                                    v-for="club in clubList.items"
-                                    :key="club"
-                                    class="flex gap-2 pr-2 w-full h-10"
-                                >
->>>>>>> Advance in Club Settings
                                     <UserAvatar :img-src="club.avatar" size="2" :username="club.name" />
                                     <div class="my-auto truncate w-50">
                                         {{ club.name }}
                                     </div>
-<<<<<<< HEAD
                                 </td>
                                 <td class="flex gap-2 w-12 text-sm">
                                     <p class="my-auto">{{ club.memberCount }}</p>
@@ -126,26 +112,6 @@
                                 <td>
                                     <button class="my-auto text-sm text-blue-500">
                                         Demander à rejoindre
-=======
-                                </li>
-                            </ul>
-                            <ul>
-                                <li
-                                    v-for="club in clubList.items"
-                                    :key="club"
-                                    class="flex gap-2 pr-2 w-full h-10"
-                                >
-                                    <div class="flex gap-1 my-auto w-6 text-sm">
-                                        <p class="my-auto">{{ club.memberCount }}</p>
-                                        <i class="my-auto fas fa-users"></i>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="flex flex-col">
-                                <div v-for="(club, idx) in clubList.items" :key="idx" class="my-1 h-8">
-                                    <button class="my-auto text-1">
-                                        <p class="text-sm text-blue-500">Demander à rejoindre</p>
->>>>>>> Advance in Club Settings
                                     </button>
                                 </td>
                             </tr>
@@ -176,7 +142,6 @@
                             {{ clubSelected.team.name }}
                         </div>
                     </div>
-<<<<<<< HEAD
                     <DrawerMenu title="Informations de l'association">
                         <template #default>
                             <div class="flex my-4">
@@ -211,25 +176,6 @@
                                             name="description"
                                             class="resize-none input"
                                             rows="5"
-=======
-                    <h3 class="mb-4 text-lg">Informations de l'association</h3>
-                    <div class="flex mb-4">
-                        <div class="flex mr-6 w-full">
-                            <div class="flex flex-col mr-8 mb-4 w-fit">
-                                <div class="relative mx-auto mb-2">
-                                    <UserAvatar
-                                        :img-src="clubSelected.team.avatar"
-                                        :alt="clubSelected.team.name + ' icon'"
-                                        :size="5"
-                                        :username="clubSelected.team.name"
-                                    />
-                                    <button
-                                        class="hidden absolute right-4 bottom-0 md:block"
-                                        @click="showImage()"
-                                    >
-                                        <i
-                                            class="absolute -bottom-2 px-1 text-lg rounded-full border fa fa-camera bg-2 border-color-2"
->>>>>>> Advance in Club Settings
                                         />
                                     </div>
                                 </div>
@@ -246,7 +192,6 @@
                         @crop-upload-success="cropUploadSuccess"
                     />
                     <div>
-<<<<<<< HEAD
                         <DrawerMenu class="mt-8" title="Invitations en attente">
                             <template #default>
                                 <div v-if="requests.length > 0" class="flex">
@@ -284,50 +229,6 @@
                                             </td>
                                         </tr>
                                     </table>
-=======
-                        <h3 class="mt-8 text-lg">Invitations en attente</h3>
-                        <div v-if="requests.length > 0" class="flex">
-                            <div class="flex flex-col gap-2 w-48">
-                                <div
-                                    v-for="request in requests"
-                                    :key="request.teamMembershipRequestId"
-                                    class="flex flex-col gap-2"
-                                >
-                                    <div class="flex gap-2">
-                                        <UserAvatar
-                                            :img-src="request.user.avatar"
-                                            :alt="request.user.name + ' icon'"
-                                            :size="2"
-                                            :username="request.user.firstname + ' ' + request.user.lastname"
-                                        />
-                                        <div class="flex flex-col my-auto">
-                                            {{ request.user.firstname + ' ' + request.user.lastname }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col mr-4">
-                                <div
-                                    v-for="request in requests"
-                                    :key="request.teamMembershipRequestId"
-                                    class="flex flex-col gap-2 my-1 h-8"
-                                >
-                                    <p class="my-auto text-sm text-green-500">{{ request.state }}</p>
-                                </div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div
-                                    v-for="request in requests"
-                                    :key="request.teamMembershipRequestId"
-                                    class="flex flex-col gap-2 my-1 h-8"
-                                >
-                                    <button
-                                        class="my-auto text-sm text-blue-500"
-                                        @click="() => acceptDemand(request)"
-                                    >
-                                        Accepter la demande
-                                    </button>
->>>>>>> Advance in Club Settings
                                 </div>
                                 <div v-else>Vous n'avez pas de demandes d'adhésions en attente</div>
                             </template>
@@ -335,7 +236,6 @@
                         <h3 class="mt-8 text-lg"></h3>
                     </div>
                     <div>
-<<<<<<< HEAD
                         <DrawerMenu class="mt-8" title="Liste des Membres">
                             <template #default>
                                 <table class="w-full">
@@ -395,47 +295,6 @@
                                 </button>
                             </template>
                         </DrawerMenu>
-=======
-                        <h3 class="mt-8 text-lg">Liste des Membres</h3>
-                        <div class="flex gap-8">
-                            <div class="flex flex-col gap-2">
-                                <div v-for="member in members" :key="member.teamMemberId" class="flex gap-2">
-                                    <UserAvatar
-                                        :img-src="member.user.avatar"
-                                        :alt="member.user.firstname + ' ' + member.user.lastname + ' icon'"
-                                        :size="2"
-                                        :username="member.user.firstname + ' ' + member.user.lastname"
-                                    />
-                                    <div class="flex flex-col my-auto">
-                                        {{ member.user.firstname + ' ' + member.user.lastname }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-2 mt-1">
-                                <div v-for="member in members" :key="member.teamMemberId" class="h-8">
-                                    {{
-                                        member.roleLabel
-                                            ? member.roleLabel
-                                            : Object.keys(roles).find((a) => roles[a] === member.role)
-                                    }}
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <div v-for="member in members" :key="member.teamMemberId">
-                                    <button v-if="member.role === 'owner'" class="h-8 text-red-500">
-                                        Transmettre le rôle
-                                    </button>
-                                    <button
-                                        v-else
-                                        class="h-8 text-red-500"
-                                        @click="() => kickMember(member.user.userId)"
-                                    >
-                                        Virer de l'association
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
->>>>>>> Advance in Club Settings
                         <!-- <div v-if="clubMembers != undefined && clubMembers != null">
                             <ul>
                                 <li v-for="member in clubMembers" :key="member" class="flex gap-4">
@@ -477,7 +336,6 @@
                         </div> -->
                     </div>
                     <div>
-<<<<<<< HEAD
                         <DrawerMenu class="mt-8" title="Paramètres de l'adhésion">
                             <template #default>
                                 <p class="mb-2 text-sm">
@@ -514,36 +372,6 @@
                         <button class="mt-8 button" @click="patchClub()">
                             <p>Enregistrer</p>
                         </button>
-=======
-                        <h3 class="mt-8 text-lg">Paramètres de l'adhésion</h3>
-                        <p class="mb-2 text-sm">
-                            Lors de sa demande d'adhésion, un utilisateur recevra une pop-up personnalisable :
-                            vous pouvez lui laisser un message et le rediriger vers un espace permettant de
-                            lui demander plus d'informations
-                        </p>
-                        <form action="">
-                            <div class="flex flex-col gap-2">
-                                <label class="my-auto" for="adhesion_msg">Message d'adhésion</label>
-                                <textarea
-                                    id="adhesion_msg"
-                                    class="resize-none input"
-                                    name="adhesion_msg"
-                                    rows="3"
-                                    placeholder="Message d'adhésion"
-                                ></textarea>
-                                <label class="my-auto" for="adhesion_link"
-                                    >Lien de complétion de candidature</label
-                                >
-                                <input
-                                    id="adhesion_link"
-                                    class="input"
-                                    name="adhesion_link"
-                                    type="text"
-                                    placeholder="Exemple : https://docs.google.com/forms/d/e/exemple/viewform?usp=sf_link"
-                                />
-                            </div>
-                        </form>
->>>>>>> Advance in Club Settings
                     </div>
                 </div>
             </div>

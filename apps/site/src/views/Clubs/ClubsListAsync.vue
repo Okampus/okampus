@@ -3,11 +3,7 @@
         <div>
             <h3 class="pl-10 mb-8 text-4xl font-bold text-0">Liste des associations</h3>
             <!-- grid 3 columns for each clubs centered-->
-<<<<<<< HEAD
             <div class="flex flex-wrap gap-8 justify-center w-full">
-=======
-            <div class="grid grid-cols-1 gap-y-8 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
->>>>>>> Advance in Club Settings
                 <!-- <ClubCard v-for="club in clubs" :key="club.id" :club="club" /> -->
                 <div v-for="club in clubList.items" :key="club.teamId">
                     <div
