@@ -142,8 +142,8 @@
                             {{ clubSelected.team.name }}
                         </div>
                     </div>
-                    <DrawerMenu title="Informations de l'association">
-                        <template #default>
+                    <div>
+                        <div>
                             <div class="flex my-4">
                                 <div class="flex mr-6 w-full">
                                     <div class="flex flex-col mr-8 mb-4 w-fit">
@@ -180,8 +180,20 @@
                                     </div>
                                 </div>
                             </div>
-                        </template>
-                    </DrawerMenu>
+                            <div class="flex flex-col w-full">
+                                <label for="description" class="text-lg">Description</label>
+                                <textarea
+                                    v-model="clubSelected.team.description"
+                                    name="description"
+                                    class="resize-none input"
+                                    rows="5"
+                                />
+                                <button class="mt-2 button" @click="patchDescription()">
+                                    <p>Enregistrer</p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <AvatarCropper
                         v-model="avatarShown"
                         field="file"
@@ -236,65 +248,45 @@
                         <h3 class="mt-8 text-lg"></h3>
                     </div>
                     <div>
-                        <DrawerMenu class="mt-8" title="Liste des Membres">
-                            <template #default>
-                                <table class="w-full">
-                                    <tr
-                                        v-for="member in members"
-                                        :key="member.teamMemberId"
-                                        class="flex gap-4 items-center w-full h-12 even:bg-gray-200"
+                        <h3 class="mt-8 text-lg">Liste des Membres</h3>
+                        <table class="w-full">
+                            <tr
+                                v-for="member in members"
+                                :key="member.teamMemberId"
+                                class="flex gap-4 items-center w-full even:bg-gray-200"
+                            >
+                                <td class="my-1">
+                                    <UserAvatar
+                                        :img-src="member.user.avatar"
+                                        :alt="member.user.name + ' icon'"
+                                        :size="2"
+                                        :username="member.user.firstname + ' ' + member.user.lastname"
+                                    />
+                                </td>
+                                <td class="w-60 truncate">
+                                    {{ member.user.firstname + ' ' + member.user.lastname }}
+                                </td>
+                                <td class="w-32">
+                                    {{
+                                        member.roleLabel
+                                            ? member.roleLabel
+                                            : Object.keys(roles).find((role) => roles[role] === member.role)
+                                    }}
+                                </td>
+                                <td class="w-48">
+                                    <button v-if="member.role === 'owner'" class="text-red-500">
+                                        Transmettre le rôle
+                                    </button>
+                                    <button
+                                        v-else
+                                        class="text-red-500"
+                                        @click="() => kickMember(member.user.userId)"
                                     >
-                                        <td class="my-1">
-                                            <UserAvatar
-                                                :img-src="member.user.avatar"
-                                                :alt="member.user.name + ' icon'"
-                                                :size="2"
-                                                :username="member.user.firstname + ' ' + member.user.lastname"
-                                            />
-                                        </td>
-                                        <td class="w-44 truncate">
-                                            {{ member.user.firstname + ' ' + member.user.lastname }}
-                                        </td>
-                                        <td class="w-44">
-                                            <SelectInput
-                                                v-if="member.role != 'owner'"
-                                                v-model="member.role"
-                                                :choices="Object.keys(roles)"
-                                                :model-value="
-                                                    Object.keys(roles).findIndex(
-                                                        (role) => member.role === roles[role],
-                                                    )
-                                                "
-                                            />
-                                            <div v-else class="pl-3">Président</div>
-                                        </td>
-                                        <td class="w-32">
-                                            <input
-                                                v-model="member.roleLabel"
-                                                type="text"
-                                                class="w-32 input"
-                                                placeholder="Role Label"
-                                            />
-                                        </td>
-                                        <td class="w-48">
-                                            <button v-if="member.role === 'owner'" class="text-red-500">
-                                                Transmettre le rôle
-                                            </button>
-                                            <button
-                                                v-else
-                                                class="text-red-500"
-                                                @click="() => kickMember(member.user.userId)"
-                                            >
-                                                Virer de l'association
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <button class="mt-4 button" @click="patchMembership(member)">
-                                    <p>Enregistrer</p>
-                                </button>
-                            </template>
-                        </DrawerMenu>
+                                        Virer de l'association
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
                         <!-- <div v-if="clubMembers != undefined && clubMembers != null">
                             <ul>
                                 <li v-for="member in clubMembers" :key="member" class="flex gap-4">
@@ -336,40 +328,35 @@
                         </div> -->
                     </div>
                     <div>
-                        <DrawerMenu class="mt-8" title="Paramètres de l'adhésion">
-                            <template #default>
-                                <p class="mb-2 text-sm">
-                                    Lors de sa demande d'adhésion, un utilisateur recevra une pop-up
-                                    personnalisable : vous pouvez lui laisser un message et le rediriger vers
-                                    un espace permettant de lui demander plus d'informations
-                                </p>
-                                <form action="">
-                                    <div class="flex flex-col gap-2">
-                                        <label class="my-auto" for="adhesion_msg">Message d'adhésion</label>
-                                        <textarea
-                                            id="adhesion_msg"
-                                            v-model="clubSelected.team.membershipRequestMessage"
-                                            class="resize-none input"
-                                            name="adhesion_msg"
-                                            rows="3"
-                                            placeholder="Exemple : Merci d'avoir demandé à rejoindre notre formidable association, afin de finir votre inscription veuillez remplir le formulaire ci-dessous : "
-                                        ></textarea>
-                                        <label class="my-auto" for="adhesion_link"
-                                            >Lien de complétion de candidature</label
-                                        >
-                                        <input
-                                            id="adhesion_link"
-                                            v-model="clubSelected.team.membershipRequestLink"
-                                            class="input"
-                                            name="adhesion_link"
-                                            type="text"
-                                            placeholder="Exemple : https://docs.google.com/forms/d/e/exemple/viewform?usp=sf_link"
-                                        />
-                                    </div>
-                                </form>
-                            </template>
-                        </DrawerMenu>
-                        <button class="mt-8 button" @click="patchClub()">
+                        <h3 class="mt-8 text-lg">Paramètres de l'adhésion</h3>
+                        <p class="mb-2 text-sm">
+                            Lors de sa demande d'adhésion, un utilisateur recevra une pop-up personnalisable :
+                            vous pouvez lui laisser un message et le rediriger vers un espace permettant de
+                            lui demander plus d'informations
+                        </p>
+                        <form action="">
+                            <div class="flex flex-col gap-2">
+                                <label class="my-auto" for="adhesion_msg">Message d'adhésion</label>
+                                <textarea
+                                    id="adhesion_msg"
+                                    class="resize-none input"
+                                    name="adhesion_msg"
+                                    rows="3"
+                                    placeholder="Exemple : Merci d'avoir demandé à rejoindre notre formidable association, afin de finir votre inscription veuillez remplir le formulaire ci-dessous : "
+                                ></textarea>
+                                <label class="my-auto" for="adhesion_link"
+                                    >Lien de complétion de candidature</label
+                                >
+                                <input
+                                    id="adhesion_link"
+                                    class="input"
+                                    name="adhesion_link"
+                                    type="text"
+                                    placeholder="Exemple : https://docs.google.com/forms/d/e/exemple/viewform?usp=sf_link"
+                                />
+                            </div>
+                        </form>
+                        <button class="mt-2 button" @click="patchDescription()">
                             <p>Enregistrer</p>
                         </button>
                     </div>
@@ -541,15 +528,10 @@
             })
     }
 
-    const patchClub = async () => {
-        const { description, membershipRequestLink, membershipRequestMessage } = {
-            ...clubSelected.value.team,
-        }
+    const patchDescription = async () => {
         await club
             .patchClub(clubSelected.value.team.teamId, {
-                description,
-                membershipRequestLink,
-                membershipRequestMessage,
+                description: clubSelected.value.team.description,
             })
             .then((res) => {
                 clubSelected.value.team = res
@@ -559,21 +541,17 @@
             })
     }
 
-    const patchMembership = async () => {
-        const changes = members.value.filter((member) => {
-            const memb = oldMembers.value.find((old) => old.user.userId === member.user.userId)
-            return member.role != memb.role || member.roleLabel != memb.roleLabel
-        })
-        changes.map(async (membership) => {
-            await club
-                .patchMembership(membership.team.teamId, membership.user.userId, {
-                    role: membership.role,
-                    roleLabel: membership.roleLabel,
-                })
-                .then(() => {
-                    loadMembers(clubSelected.value.team.teamId)
-                })
-        })
+    const patchAdhesion = async () => {
+        await club
+            .patchClub(clubSelected.value.team.teamId, {
+                adhesionLink: clubSelected.value.team.adhesionLink,
+            })
+            .then((res) => {
+                clubSelected.value.team = res
+            })
+            .catch((err) => {
+                emitter.emit('error-route', { code: getStatus(err.response) })
+            })
     }
 
     await loadMe()
