@@ -52,45 +52,36 @@
                         <div v-if="clubs.items.length === 0" class="mb-8">
                             Vous n'avez pas encore rejoint d'Association
                         </div>
-                        <div v-else class="flex">
-                            <!-- {{ clubs }} -->
-                            <div class="flex flex-col">
-                                <div
-                                    v-for="(club, idx) in clubs.items"
-                                    :key="idx"
-                                    class="flex items-center my-2 h-8"
-                                >
-                                    <div class="flex mr-2">
-                                        <UserAvatar
-                                            :img-src="club.team.avatar"
-                                            size="2"
-                                            :username="club.team.name"
-                                        />
-                                        <div class="my-auto ml-2">
-                                            {{ club.team.name }}
-                                        </div>
+                        <table v-else class="w-full">
+                            <tr
+                                v-for="(club, idx) in clubs.items"
+                                :key="idx"
+                                class="flex gap-2 items-center w-full even:bg-gray-200"
+                            >
+                                <td class="flex gap-2 my-1 w-60">
+                                    <UserAvatar
+                                        :img-src="club.team.avatar"
+                                        size="2"
+                                        :username="club.team.name"
+                                    />
+                                    <div class="truncate">
+                                        {{ club.team.name }}
                                     </div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div
-                                    v-for="(club, idx) in clubs.items"
-                                    :key="idx"
-                                    class="flex items-center my-2 h-8"
-                                >
-                                    <div class="ml-2">
+                                </td>
+                                <td class="flex gap-2 items-center w-24">
+                                    <div>
                                         {{ Object.keys(roles).find((role) => roles[role] === club.role) }}
                                     </div>
                                     <button
-                                        class="flex my-auto ml-4 text-red-500 text-1 text-md"
+                                        class="flex text-red-500 text-1 text-md"
                                         @click="leaveClub(club.team.teamId)"
                                     >
-                                        <font-awesome-icon icon="times" class="my-auto text-red-500" />
+                                        <font-awesome-icon icon="times" class="text-red-500" />
                                         <p class="my-auto text-sm text-red-500">Quitter</p>
                                     </button>
-                                </div>
-                            </div>
-                        </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <div id="join">
                         <div>
@@ -102,42 +93,29 @@
                                 association"
                             </p>
                         </div>
-                        <div class="flex gap-4 w-full">
-                            <ul class="flex flex-col">
-                                <!-- {{
-                                    club
-                                }} -->
-                                <li
-                                    v-for="club in clubList.items"
-                                    :key="club"
-                                    class="flex gap-2 pr-2 w-full h-10"
-                                >
+                        <table class="w-full">
+                            <tr
+                                v-for="club in clubList.items"
+                                :key="club"
+                                class="flex gap-2 items-center w-full even:bg-gray-200"
+                            >
+                                <td class="flex gap-2 my-1 w-60">
                                     <UserAvatar :img-src="club.avatar" size="2" :username="club.name" />
                                     <div class="my-auto truncate w-50">
                                         {{ club.name }}
                                     </div>
-                                </li>
-                            </ul>
-                            <ul>
-                                <li
-                                    v-for="club in clubList.items"
-                                    :key="club"
-                                    class="flex gap-2 pr-2 w-full h-10"
-                                >
-                                    <div class="flex gap-1 my-auto w-6 text-sm">
-                                        <p class="my-auto">{{ club.memberCount }}</p>
-                                        <i class="my-auto fas fa-users"></i>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="flex flex-col">
-                                <div v-for="(club, idx) in clubList.items" :key="idx" class="my-1 h-8">
-                                    <button class="my-auto text-1">
-                                        <p class="text-sm text-blue-500">Demander à rejoindre</p>
+                                </td>
+                                <td class="flex gap-2 w-12 text-sm">
+                                    <p class="my-auto">{{ club.memberCount }}</p>
+                                    <i class="my-auto fas fa-users"></i>
+                                </td>
+                                <td>
+                                    <button class="my-auto text-sm text-blue-500">
+                                        Demander à rejoindre
                                     </button>
-                                </div>
-                            </div>
-                        </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -198,10 +176,12 @@
                                     class="resize-none input"
                                     rows="5"
                                 />
+                                <button class="mt-2 button" @click="patchDescription()">
+                                    <p>Enregistrer</p>
+                                </button>
                             </div>
                         </div>
                     </div>
-
                     <AvatarCropper
                         v-model="avatarShown"
                         field="file"
@@ -261,44 +241,44 @@
 
                     <div>
                         <h3 class="mt-8 text-lg">Liste des Membres</h3>
-                        <div class="flex gap-8">
-                            <div class="flex flex-col gap-2">
-                                <div v-for="member in members" :key="member.teamMemberId" class="flex gap-2">
+                        <table class="w-full">
+                            <tr
+                                v-for="member in members"
+                                :key="member.teamMemberId"
+                                class="flex gap-4 items-center w-full even:bg-gray-200"
+                            >
+                                <td class="my-1">
                                     <UserAvatar
                                         :img-src="member.user.avatar"
-                                        :alt="member.user.firstname + ' ' + member.user.lastname + ' icon'"
+                                        :alt="member.user.name + ' icon'"
                                         :size="2"
                                         :username="member.user.firstname + ' ' + member.user.lastname"
                                     />
-                                    <div class="flex flex-col my-auto">
-                                        {{ member.user.firstname + ' ' + member.user.lastname }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-2 mt-1">
-                                <div v-for="member in members" :key="member.teamMemberId" class="h-8">
+                                </td>
+                                <td class="w-60 truncate">
+                                    {{ member.user.firstname + ' ' + member.user.lastname }}
+                                </td>
+                                <td class="w-32">
                                     {{
                                         member.roleLabel
                                             ? member.roleLabel
-                                            : Object.keys(roles).find((a) => roles[a] === member.role)
+                                            : Object.keys(roles).find((role) => roles[role] === member.role)
                                     }}
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <div v-for="member in members" :key="member.teamMemberId">
-                                    <button v-if="member.role === 'owner'" class="h-8 text-red-500">
+                                </td>
+                                <td class="w-48">
+                                    <button v-if="member.role === 'owner'" class="text-red-500">
                                         Transmettre le rôle
                                     </button>
                                     <button
                                         v-else
-                                        class="h-8 text-red-500"
+                                        class="text-red-500"
                                         @click="() => kickMember(member.user.userId)"
                                     >
                                         Virer de l'association
                                     </button>
-                                </div>
-                            </div>
-                        </div>
+                                </td>
+                            </tr>
+                        </table>
                         <!-- <div v-if="clubMembers != undefined && clubMembers != null">
                             <ul>
                                 <li v-for="member in clubMembers" :key="member" class="flex gap-4">
@@ -354,7 +334,7 @@
                                     class="resize-none input"
                                     name="adhesion_msg"
                                     rows="3"
-                                    placeholder="Message d'adhésion"
+                                    placeholder="Exemple : Merci d'avoir demandé à rejoindre notre formidable association, afin de finir votre inscription veuillez remplir le formulaire ci-dessous : "
                                 ></textarea>
                                 <label class="my-auto" for="adhesion_link"
                                     >Lien de complétion de candidature</label
@@ -368,6 +348,9 @@
                                 />
                             </div>
                         </form>
+                        <button class="mt-2 button" @click="patchDescription()">
+                            <p>Enregistrer</p>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -381,6 +364,7 @@
     import UserAvatar from '@/components/User/UserAvatar.vue'
     import { emitter } from '@/shared/modules/emitter'
     import { useAuthStore } from '@/store/auth.store'
+    import { useClubsStore } from '@/store/clubs.store'
     import { useProfilesStore } from '@/store/profile.store'
     import { getStatus } from '@/utils/errors'
     import { ref, watch } from 'vue'
@@ -390,6 +374,7 @@
     const apiUrl = import.meta.env.VITE_API_URL
     const profile = useProfilesStore()
     const auth = useAuthStore()
+    const club = useClubsStore()
     const clubs = ref([])
     const me = ref(null)
     const componentSelected = ref(1)
@@ -501,6 +486,32 @@
             .removeMember(userId, clubSelected.value.team.teamId)
             .then(() => {
                 loadMembers(clubSelected.value.team.teamId)
+            })
+            .catch((err) => {
+                emitter.emit('error-route', { code: getStatus(err.response) })
+            })
+    }
+
+    const patchDescription = async () => {
+        await club
+            .patchClub(clubSelected.value.team.teamId, {
+                description: clubSelected.value.team.description,
+            })
+            .then((res) => {
+                clubSelected.value.team = res
+            })
+            .catch((err) => {
+                emitter.emit('error-route', { code: getStatus(err.response) })
+            })
+    }
+
+    const patchAdhesion = async () => {
+        await club
+            .patchClub(clubSelected.value.team.teamId, {
+                adhesionLink: clubSelected.value.team.adhesionLink,
+            })
+            .then((res) => {
+                clubSelected.value.team = res
             })
             .catch((err) => {
                 emitter.emit('error-route', { code: getStatus(err.response) })
