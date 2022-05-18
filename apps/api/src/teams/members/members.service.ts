@@ -126,7 +126,7 @@ export class TeamMembersService {
         { team: { teamId }, user: { userId: transferTo } },
       );
       transferMemberTarget.role = TeamRole.Owner;
-      targetTeamMember.role = TeamRole.Leader;
+      targetTeamMember.role = TeamRole.Coowner;
     }
 
     wrap(targetTeamMember).assign(updatedPros);

@@ -1,4 +1,5 @@
 import type { FilterQuery } from '@mikro-orm/core';
+import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
@@ -10,6 +11,8 @@ import { TeamMember } from '../members/team-member.entity';
 import { Team } from '../teams/team.entity';
 import { MembershipRequestIssuer } from '../types/membership-request-issuer.enum';
 import { MembershipRequestState } from '../types/membership-request-state.enum';
+import type { CreateTeamMembershipRequestDto } from './dto/create-membership-request-copy.dto';
+import type { UpdateTeamMembershipRequestDto } from './dto/update-membership-request.dto';
 import { TeamMembershipRequest } from './team-membership-request.entity';
 
 @Injectable()
@@ -21,7 +24,11 @@ export class TeamMembershipRequestsService {
     private readonly teamMembershipRequestRepository: BaseRepository<TeamMembershipRequest>,
   ) {}
 
-  public async create(requester: User, teamId: number): Promise<TeamMembershipRequest> {
+  public async create(
+    requester: User,
+    teamId: number,
+    createTeamMembershipRequestDto: CreateTeamMembershipRequestDto,
+  ): Promise<TeamMembershipRequest> {
     // 1. Check that the given team exist, and fetch it.
     const team = await this.teamRepository.findOneOrFail(
       { teamId },
@@ -54,6 +61,7 @@ export class TeamMembershipRequestsService {
       user: requester,
       issuedBy: requester,
       issuer: MembershipRequestIssuer.User,
+      role: createTeamMembershipRequestDto.role,
     });
     await this.teamMembershipRequestRepository.persistAndFlush(teamMembershipRequest);
 
@@ -80,6 +88,35 @@ export class TeamMembershipRequestsService {
     );
   }
 
+  public async update(
+    user: User,
+    requestId: number,
+    updateTeamMembershipRequestDto: UpdateTeamMembershipRequestDto,
+  ): Promise<TeamMembershipRequest> {
+    const request = await this.teamMembershipRequestRepository.findOneOrFail(
+      { teamMembershipRequestId: requestId },
+      { populate: ['team', 'team.members', 'user', 'issuedBy', 'handledBy'] },
+    );
+
+    if (request.state !== MembershipRequestState.Pending)
+      throw new BadRequestException('Request already handled');
+
+    if (
+      (request.issuer === MembershipRequestIssuer.User && request.user.userId !== user.userId)
+      || !request.team.canAdminister(user)
+    )
+      throw new BadRequestException('Not a team admin');
+
+    const handlerMember = await this.teamMemberRepository.findOneOrFail({ user });
+    if (request.role === TeamRole.Owner && handlerMember.role !== TeamRole.Owner)
+      throw new BadRequestException('Not the owner');
+
+    wrap(request).assign(updateTeamMembershipRequestDto);
+    await this.teamMembershipRequestRepository.flush();
+
+    return request;
+  }
+
   public async handleRequest(
     user: User,
     requestId: number,
@@ -87,7 +124,7 @@ export class TeamMembershipRequestsService {
   ): Promise<TeamMembershipRequest> {
     const request = await this.teamMembershipRequestRepository.findOneOrFail(
       { teamMembershipRequestId: requestId },
-      { populate: ['team', 'user', 'issuedBy', 'handledBy'] },
+      { populate: ['team', 'team.members', 'user', 'issuedBy', 'handledBy'] },
     );
 
     if (request.state !== MembershipRequestState.Pending)
@@ -98,14 +135,22 @@ export class TeamMembershipRequestsService {
     if (request.issuer === MembershipRequestIssuer.User && !request.team.canAdminister(user))
       throw new BadRequestException('Not a team admin');
 
+    const handlerMember = await this.teamMemberRepository.findOneOrFail({ user });
+    if (request.role === TeamRole.Owner && handlerMember.role !== TeamRole.Owner)
+      throw new BadRequestException('Not the owner');
+
     request.handledBy = user;
     request.handledAt = new Date();
     request.state = state;
     await this.teamMembershipRequestRepository.flush();
 
     if (state === MembershipRequestState.Approved) {
-      const teamMember = new TeamMember({ team: request.team, user: request.user, role: TeamRole.Member });
-      await this.teamMemberRepository.persistAndFlush(teamMember);
+      if (request.role === TeamRole.Owner)
+        handlerMember.role = TeamRole.Coowner;
+
+      const teamMember = new TeamMember({ team: request.team, user: request.user, role: request.role });
+      this.teamMemberRepository.persist(teamMember);
+      await this.teamMemberRepository.flush();
     }
 
     return request;

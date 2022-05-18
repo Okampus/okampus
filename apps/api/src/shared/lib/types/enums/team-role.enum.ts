@@ -1,6 +1,8 @@
 export enum TeamRole {
   Owner = 'owner',
-  Leader = 'leader',
+  Coowner = 'coowner',
+  Treasurer = 'treasurer',
+  Secretary = 'secretary',
   Manager = 'manager',
   Member = 'member',
 }

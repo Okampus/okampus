@@ -1,7 +1,4 @@
-import { IsIn } from 'class-validator';
-import { MembershipRequestState } from '../../types/membership-request-state.enum';
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateTeamMembershipRequestDto } from './create-membership-request-copy.dto';
 
-export class UpdateTeamMembershipRequestDto {
-  @IsIn([MembershipRequestState.Approved, MembershipRequestState.Rejected])
-  state: MembershipRequestState.Approved | MembershipRequestState.Rejected;
-}
+export class UpdateTeamMembershipRequestDto extends PartialType(CreateTeamMembershipRequestDto) {}

@@ -7,6 +7,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import { User } from '../../users/user.entity';
 import { Team } from '../teams/team.entity';
 import { MembershipRequestIssuer } from '../types/membership-request-issuer.enum';
@@ -35,6 +36,9 @@ export class TeamMembershipRequest extends BaseEntity {
   @Index()
   state = MembershipRequestState.Pending;
 
+  @Enum(() => TeamRole)
+  role = TeamRole.Member;
+
   @ManyToOne({ onDelete: 'CASCADE' })
   handledBy?: User;
 
@@ -48,6 +52,7 @@ export class TeamMembershipRequest extends BaseEntity {
     team: Team;
     user: User;
     message?: string;
+    role?: TeamRole;
     issuer: MembershipRequestIssuer;
     issuedBy: User;
   }) {
@@ -57,5 +62,8 @@ export class TeamMembershipRequest extends BaseEntity {
     this.message = options.message;
     this.issuer = options.issuer;
     this.issuedBy = options.issuedBy;
+
+    if (options.role)
+      this.role = options.role;
   }
 }

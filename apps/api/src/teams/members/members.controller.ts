@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
-import { SerializerIncludeTeamMembers, SerializerTeamMemberIncludeTeam } from '../../shared/lib/decorators/serializers.decorator';
+import { SerializerTeamMemberIncludeTeam } from '../../shared/lib/decorators/serializers.decorator';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination, PaginateDto } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
@@ -31,7 +31,6 @@ export class TeamMembersController {
 
   @Post(':teamId/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, Team))
-  @SerializerTeamMemberIncludeTeam()
   public async inviteUser(
     @Param('teamId', ParseIntPipe) teamId: number,
     @Param('userId') userId: string,
@@ -64,7 +63,6 @@ export class TeamMembersController {
 
   @Delete(':teamId/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, Team))
-  @SerializerIncludeTeamMembers()
   public async removeMember(
     @Param('teamId', ParseIntPipe) teamId: number,
     @Param('userId') userId: string,

@@ -17,7 +17,7 @@ import { Role } from '../../shared/modules/authorization/types/role.enum';
 import type { User } from '../../users/user.entity';
 import { TeamMember } from '../members/team-member.entity';
 
-const ADMIN_ROLES = new Set([TeamRole.Owner, TeamRole.Leader]);
+const ADMIN_ROLES = new Set([TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasurer, TeamRole.Secretary]);
 
 @Entity()
 export class Team extends BaseEntity {
