@@ -30,6 +30,9 @@ export const useClubsStore = defineStore('clubs', {
                 .patch(`teams/teams/${clubId}`, props)
                 .then((res) => this.replaceClub(res.data))
         },
+        async patchMembership(teamId, userId, props) {
+            return await $axios.patch(`teams/members/${teamId}/${userId}`, props).then((res) => res.data)
+        },
         // async patchUser(props) {
         //     return await $axios.patch('users', props).then((res) => this.replaceUser(res.data))
         // },
