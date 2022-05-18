@@ -242,7 +242,7 @@
                                     <tr
                                         v-for="member in members"
                                         :key="member.teamMemberId"
-                                        class="flex gap-4 items-center w-full even:bg-gray-200"
+                                        class="flex gap-4 items-center w-full h-12 even:bg-gray-200"
                                     >
                                         <td class="my-1">
                                             <UserAvatar
@@ -252,17 +252,29 @@
                                                 :username="member.user.firstname + ' ' + member.user.lastname"
                                             />
                                         </td>
-                                        <td class="w-60 truncate">
+                                        <td class="w-44 truncate">
                                             {{ member.user.firstname + ' ' + member.user.lastname }}
                                         </td>
+                                        <td class="w-44">
+                                            <SelectInput
+                                                v-if="member.role != 'owner'"
+                                                v-model="member.role"
+                                                :choices="Object.keys(roles)"
+                                                :model-value="
+                                                    Object.keys(roles).findIndex(
+                                                        (role) => member.role === roles[role],
+                                                    )
+                                                "
+                                            />
+                                            <div v-else class="pl-3">Président</div>
+                                        </td>
                                         <td class="w-32">
-                                            {{
-                                                member.roleLabel
-                                                    ? member.roleLabel
-                                                    : Object.keys(roles).find(
-                                                          (role) => roles[role] === member.role,
-                                                      )
-                                            }}
+                                            <input
+                                                v-model="member.roleLabel"
+                                                type="text"
+                                                class="w-32 input"
+                                                placeholder="Role Label"
+                                            />
                                         </td>
                                         <td class="w-48">
                                             <button v-if="member.role === 'owner'" class="text-red-500">
@@ -278,6 +290,9 @@
                                         </td>
                                     </tr>
                                 </table>
+                                <button class="mt-4 button" @click="patchMembership(member)">
+                                    <p>Enregistrer</p>
+                                </button>
                             </template>
                         </DrawerMenu>
                         <!-- <div v-if="clubMembers != undefined && clubMembers != null">
@@ -542,6 +557,23 @@
             .catch((err) => {
                 emitter.emit('error-route', { code: getStatus(err.response) })
             })
+    }
+
+    const patchMembership = async () => {
+        const changes = members.value.filter((member) => {
+            const memb = oldMembers.value.find((old) => old.user.userId === member.user.userId)
+            return member.role != memb.role || member.roleLabel != memb.roleLabel
+        })
+        changes.map(async (membership) => {
+            await club
+                .patchMembership(membership.team.teamId, membership.user.userId, {
+                    role: membership.role,
+                    roleLabel: membership.roleLabel,
+                })
+                .then(() => {
+                    loadMembers(clubSelected.value.team.teamId)
+                })
+        })
     }
 
     await loadMe()

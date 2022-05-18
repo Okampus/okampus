@@ -1,5 +1,5 @@
 <template>
-    <div class="pl-4 border-l-2 border-gray-200">
+    <div class=" ">
         <div class="flex gap-2 items-center">
             <i
                 class="text-base fas"
@@ -8,7 +8,7 @@
             ></i>
             <h3 class="text-lg">{{ props.title }}</h3>
         </div>
-        <div v-if="isOpen" class="mt-4">
+        <div v-if="isOpen" class="pt-4 pl-4 ml-[0.375rem] border-l-2 border-gray-400">
             <slot></slot>
         </div>
     </div>
