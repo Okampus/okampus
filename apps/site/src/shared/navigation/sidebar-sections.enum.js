@@ -26,13 +26,13 @@ export const sections = computed(() => {
                   {
                       name: 'Admin',
                       links: [
-                          {
-                              to: '/admin/threads',
-                              regActive: /^\/admin\/threads/,
-                              textSmall: 'Admin',
-                              textLarge: 'Modération',
-                              icon: 'columns',
-                          },
+                          //   {
+                          //       to: '/admin/threads',
+                          //       regActive: /^\/admin\/threads/,
+                          //       textSmall: 'Admin',
+                          //       textLarge: 'Modération',
+                          //       icon: 'columns',
+                          //   },
                           {
                               to: '/admin/association',
                               regActive: /^\/admin\/association/,
@@ -45,29 +45,29 @@ export const sections = computed(() => {
               ]
             : []),
 
-        ...(auth.loggedIn
-            ? [
-                  {
-                      name: 'Forum',
-                      links: [
-                          {
-                              to: '/threads',
-                              regActive: /^\/threads(?!\/new)/,
-                              textSmall: 'Forum',
-                              textLarge: 'Efrei Forum',
-                              icon: 'comments',
-                          },
-                          {
-                              to: '/threads/new',
-                              regActive: /^\/threads\/new$/,
-                              textSmall: 'Poster',
-                              textLarge: 'Créer un post',
-                              icon: 'question-circle',
-                          },
-                      ],
-                  },
-              ]
-            : []),
+        // ...(auth.loggedIn
+        //     ? [
+        //           {
+        //               name: 'Forum',
+        //               links: [
+        //                   {
+        //                       to: '/threads',
+        //                       regActive: /^\/threads(?!\/new)/,
+        //                       textSmall: 'Forum',
+        //                       textLarge: 'Efrei Forum',
+        //                       icon: 'comments',
+        //                   },
+        //                   {
+        //                       to: '/threads/new',
+        //                       regActive: /^\/threads\/new$/,
+        //                       textSmall: 'Poster',
+        //                       textLarge: 'Créer un post',
+        //                       icon: 'question-circle',
+        //                   },
+        //               ],
+        //           },
+        //       ]
+        //     : []),
 
         // ...(auth.loggedIn
         //     ? [
@@ -163,13 +163,13 @@ export const sections = computed(() => {
                               textLarge: 'Mon compte',
                               icon: 'user-cog',
                           },
-                          {
-                              to: '/me/favorites',
-                              regActive: /^\/me\/favorites/,
-                              textSmall: 'Mes favoris',
-                              textLarge: 'Mes favoris',
-                              icon: 'crown',
-                          },
+                          //   {
+                          //       to: '/me/favorites',
+                          //       regActive: /^\/me\/favorites/,
+                          //       textSmall: 'Mes favoris',
+                          //       textLarge: 'Mes favoris',
+                          //       icon: 'crown',
+                          //   },
                       ],
                   },
               ]

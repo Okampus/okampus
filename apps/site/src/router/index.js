@@ -19,100 +19,99 @@ const routes = [
         },
     },
 
-    {
-        path: '/admin/:tab',
-        component: () => import('@/views/Dashboard/DashboardAdmin.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     path: '/admin/:tab',
+    //     component: () => import('@/views/Dashboard/DashboardAdmin.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
     {
         path: '/auth',
         component: () => import('@/views/App/AuthPage.vue'),
     },
 
-    {
-        path: '/articles',
-        component: () => import('@/views/Blog/BlogList.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     path: '/articles',
+    //     component: () => import('@/views/Blog/BlogList.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
-    {
-        path: '/articles/new',
-        component: () => import('@/views/Blog/BlogNew.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     path: '/articles/new',
+    //     component: () => import('@/views/Blog/BlogNew.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
-    {
-        path: '/articles/:id',
-        component: () => import('@/views/Blog/BlogShow.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     path: '/articles/:id',
+    //     component: () => import('@/views/Blog/BlogShow.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
-    {
-        path: '/articles/admin',
-        component: () => import('@/views/Blog/BlogAdmin.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     path: '/articles/admin',
+    //     component: () => import('@/views/Blog/BlogAdmin.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
-    {
-        path: '/threads',
-        component: () => import('@/views/Thread/ThreadHome.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     path: '/threads',
+    //     component: () => import('@/views/Thread/ThreadHome.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
-    {
-        path: '/threads/new',
-        component: () => import('@/views/Thread/ThreadNew.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     path: '/threads/new',
+    //     component: () => import('@/views/Thread/ThreadNew.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
-    {
-        name: 'threads',
-        path: '/threads/:id',
-        component: () => import('@/views/Thread/ThreadView.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     name: 'threads',
+    //     path: '/threads/:id',
+    //     component: () => import('@/views/Thread/ThreadView.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
-    {
-        path: '/docs',
-        component: () => import('@/views/Document/DocumentList.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     path: '/docs',
+    //     component: () => import('@/views/Document/DocumentList.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
-    {
-        path: '/docs/new',
-        component: () => import('@/views/Document/DocumentNew.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     path: '/docs/new',
+    //     component: () => import('@/views/Document/DocumentNew.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
-    {
-        name: 'settings',
-        path: '/me/favorites',
-        component: () => import('@/views/User/UserFavoriteList.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     path: '/me/favorites',
+    //     component: () => import('@/views/User/UserFavoriteList.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
     {
         path: '/me/:component',
@@ -140,22 +139,22 @@ const routes = [
         },
     },
 
-    {
-        name: 'crous',
-        path: '/crous/daily/:date',
-        component: () => import('@/views/Crous/CrousView.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     name: 'crous',
+    //     path: '/crous/daily/:date',
+    //     component: () => import('@/views/Crous/CrousView.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
-    {
-        path: '/crous/new',
-        component: () => import('@/views/Crous/CrousNew.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     path: '/crous/new',
+    //     component: () => import('@/views/Crous/CrousNew.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
     {
         path: '/clubs',
