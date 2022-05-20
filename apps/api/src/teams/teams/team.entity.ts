@@ -35,6 +35,15 @@ export class Team extends BaseEntity {
   description?: string;
 
   @Property({ type: 'text' })
+  longDescription?: string;
+
+  @Property({ type: 'text' })
+  category: string;
+
+  @Property()
+  tags: string[] = [];
+
+  @Property({ type: 'text' })
   avatar?: string | null;
 
   @OneToMany(() => TeamMember, member => member.team)
@@ -51,18 +60,26 @@ export class Team extends BaseEntity {
   constructor(options: {
     name: string;
     kind: TeamKind;
+    category: string;
     description?: string;
+    longDescription?: string;
     avatar?: string;
+    tags?: string[];
     membershipRequestLink?: string;
     membershipRequestMessage?: string;
   }) {
     super();
     this.name = options.name;
     this.kind = options.kind;
+    this.category = options.category;
     if (options.description)
       this.description = options.description;
+    if (options.longDescription)
+      this.longDescription = options.longDescription;
     if (options.avatar)
       this.avatar = options.avatar;
+    if (options.tags)
+      this.tags = options.tags;
     if (options.membershipRequestLink)
       this.membershipRequestLink = options.membershipRequestLink;
     if (options.membershipRequestMessage)

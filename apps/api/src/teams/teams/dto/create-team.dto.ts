@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsEnum,
   IsOptional,
   IsString,
@@ -16,7 +17,19 @@ export class CreateTeamDto {
 
   @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  longDescription?: string;
+
+  @IsString()
+  category: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  tags?: string[];
 
   @IsOptional()
   @IsString()
