@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="p-0 pb-2 mx-auto rounded-b-none text-1 card">
+        <div class="p-0 pb-2 mx-auto mt-0 rounded-b-none text-1 card">
             <div class="">
                 <div class="relative w-full h-48">
                     <div class="w-full h-full bg-blue-200" />

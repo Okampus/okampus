@@ -44,7 +44,7 @@
                     <div id="userClubs">
                         <div class="flex">
                             <h1 class="text-lg">Tes associations</h1>
-                            <a class="flex gap-2 my-auto ml-4 text-sm text-blue-500" href="#join">
+                            <a class="flex gap-2 my-auto ml-4 text-sm text-blue-500" href="#clubs">
                                 <font-awesome-icon class="my-auto" icon="plus" />
                                 <div class="my-auto">Rejoindre une association</div>
                             </a>
