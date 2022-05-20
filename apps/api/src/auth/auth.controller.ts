@@ -80,7 +80,13 @@ export class AuthController {
   }
 
   @Get('me')
-  public me(@CurrentUser() user: User): User {
+  public me(
+    @Request() req: Req,
+    @CurrentUser() user: User & { accessTokenExpiresAt: string; refreshTokenExpiresAt: string },
+  ): User & { accessTokenExpiresAt: string; refreshTokenExpiresAt: string } {
+    user.accessTokenExpiresAt = req.signedCookies.accessTokenExpiresAt;
+    user.refreshTokenExpiresAt = req.signedCookies.refreshTokenExpiresAt;
+
     return user;
   }
 }
