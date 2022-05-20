@@ -54,27 +54,27 @@
                         </div>
                         <table v-else class="w-full">
                             <tr
-                                v-for="(club, idx) in clubs.items"
+                                v-for="(_club, idx) in clubs.items"
                                 :key="idx"
                                 class="flex gap-2 items-center w-full even:bg-gray-200"
                             >
                                 <td class="flex gap-2 my-1 w-60">
                                     <UserAvatar
-                                        :img-src="club.team.avatar"
+                                        :img-src="_club.team.avatar"
                                         size="2"
-                                        :username="club.team.name"
+                                        :username="_club.team.name"
                                     />
                                     <div class="truncate">
-                                        {{ club.team.name }}
+                                        {{ _club.team.name }}
                                     </div>
                                 </td>
                                 <td class="flex gap-2 items-center w-24">
                                     <div>
-                                        {{ Object.keys(roles).find((role) => roles[role] === club.role) }}
+                                        {{ Object.keys(roles).find((role) => roles[role] === _club.role) }}
                                     </div>
                                     <button
                                         class="flex text-red-500 text-1 text-md"
-                                        @click="leaveClub(club.team.teamId)"
+                                        @click="leaveClub(_club.team.teamId)"
                                     >
                                         <font-awesome-icon icon="times" class="text-red-500" />
                                         <p class="my-auto text-sm text-red-500">Quitter</p>
@@ -95,18 +95,18 @@
                         </div>
                         <table class="w-full">
                             <tr
-                                v-for="club in clubList.items"
-                                :key="club"
+                                v-for="_club in clubList.items"
+                                :key="_club"
                                 class="flex gap-2 items-center w-full even:bg-gray-200"
                             >
                                 <td class="flex gap-2 my-1 w-60">
-                                    <UserAvatar :img-src="club.avatar" size="2" :username="club.name" />
+                                    <UserAvatar :img-src="_club.avatar" size="2" :username="_club.name" />
                                     <div class="my-auto truncate w-50">
-                                        {{ club.name }}
+                                        {{ _club.name }}
                                     </div>
                                 </td>
                                 <td class="flex gap-2 w-12 text-sm">
-                                    <p class="my-auto">{{ club.memberCount }}</p>
+                                    <p class="my-auto">{{ _club.memberCount }}</p>
                                     <i class="my-auto fas fa-users"></i>
                                 </td>
                                 <td>
@@ -579,6 +579,7 @@
     await loadMe()
     await loadClubs()
     await loadClubList()
+
     watch(clubSelected, async () => {
         if (Number.isInteger(clubSelected.value)) {
             await changeSelectedClub(clubSelected.value)

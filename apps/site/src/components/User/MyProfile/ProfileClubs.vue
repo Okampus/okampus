@@ -1,6 +1,6 @@
 <template>
     <Suspense>
-        <ProfileClubsAsync></ProfileClubsAsync>
+        <ProfileClubsAsync />
         <template #fallback>
             <AppLoader :size="3" />
         </template>
