@@ -49,10 +49,11 @@
                 >
                     <p>{{ abbrNumbers(thread.replyCount) }}</p>
                     <i
-                        v-if="thread.opValidatedWith && thread.adminValidatedWith"
-                        class="fa fa-double-check"
+                        v-if="thread.adminValidatedWith && thread.opValidatedWith"
+                        class="fa fa-check-double"
                     />
                     <i v-else-if="thread.opValidatedWith" class="fa fa-check" />
+                    <i v-else-if="thread.adminValidatedWith" class="fa fa-shield" />
                     <i v-else class="text-sm fa fa-message" />
                 </div>
             </AppTip>

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="tags.length != 0" ref="parent" class="flex relative items-center m-2">
+    <div v-if="tags.length != 0" ref="parent" class="flex relative items-center">
         <Transition name="fade">
             <div v-if="leftGradient" class="flex absolute justify-center items-center h-full">
                 <div
