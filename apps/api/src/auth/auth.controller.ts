@@ -31,16 +31,23 @@ export class AuthController {
 
   @Public()
   @Post('login')
-  public async login(@Body() body: LoginDto, @Response({ passthrough: true }) res: Res): Promise<User> {
+  public async login(@Body() body: LoginDto, @Response({ passthrough: true }) res: Res):
+  Promise<User & { accessTokenExpiresAt: string; refreshTokenExpiresAt: string }> {
     const user = await this.authService.validatePassword(body.username, body.password);
     const login = await this.authService.login(user);
+
+    (user as User & { accessTokenExpiresAt: string; refreshTokenExpiresAt: string })
+    .accessTokenExpiresAt = login.accessTokenExpiresAt.toString();
+
+    (user as User & { accessTokenExpiresAt: string; refreshTokenExpiresAt: string })
+    .refreshTokenExpiresAt = login.refreshTokenExpiresAt.toString();
 
     res.cookie('accessToken', login.accessToken, cookieOptions)
       .cookie('refreshToken', login.refreshToken, cookieOptions)
       .cookie('accessTokenExpiresAt', login.accessTokenExpiresAt, cookiePublicOptions)
       .cookie('refreshTokenExpiresAt', login.refreshTokenExpiresAt, cookiePublicOptions);
 
-    return user;
+    return user as User & { accessTokenExpiresAt: string; refreshTokenExpiresAt: string };
   }
 
   @Public()
