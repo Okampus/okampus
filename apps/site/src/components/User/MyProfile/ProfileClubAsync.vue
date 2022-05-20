@@ -3,7 +3,7 @@
     <div class="text-2">
         <div class="flex h-12 border-b-2 border-color-2-alt">
             <button
-                v-if="userClubsPresident().length"
+                v-if="userClubsPresident().length > 0"
                 class="flex px-4 my-auto w-1/2"
                 @click="changeSelectedComponent(1)"
             >
@@ -122,7 +122,7 @@
         </div>
 
         <!-- Gestion des assos (pres/ vice pres) -->
-        <div v-if="componentSelected === 2 && userClubsPresident().length >= 1">
+        <div v-if="componentSelected === 2 && userClubsPresident().length > 0">
             <div class="">
                 <div class="p-4 w-full sm:px-8">
                     <div class="flex gap-2 items-center mb-8">
@@ -408,11 +408,21 @@
     const members = ref([])
     const oldMembers = ref([])
 
-    const userClubsPresident = () => clubs.value.items.filter((club) => club.role === 'owner')
+    const userClubsPresident = () =>
+        clubs.value.items.filter(
+            (club) =>
+                club.role === 'owner' ||
+                club.role === 'coowner' ||
+                club.role === 'treasurer' ||
+                club.role === 'secretary',
+        )
+
     const changeSelectedClub = async (club) => {
-        clubSelected.value = userClubsPresident()[club]
-        await loadRequests(clubSelected.value.team.teamId)
-        await loadMembers(clubSelected.value.team.teamId)
+        if (userClubsPresident().length > 0) {
+            clubSelected.value = userClubsPresident()[club]
+            await loadRequests(clubSelected.value.team.teamId)
+            await loadMembers(clubSelected.value.team.teamId)
+        }
     }
     const showImage = () => {
         avatarShown.value = !avatarShown.value
@@ -420,8 +430,10 @@
 
     const roles = {
         'Président': 'owner',
-        'Bureau': 'leader',
-        'Bureau étendu': 'manager',
+        'Vice-président': 'coowner',
+        'Trésorier': 'treasurer',
+        'Secrétaire': 'secretary',
+        'Bureau': 'manager',
         'Membre': 'member',
     }
 
@@ -459,10 +471,12 @@
             .getClubs(userId)
             .then(async (res) => {
                 clubs.value = res
-                clubSelected.value = userClubsPresident()[0]
-                const teamId = clubSelected.value.team.teamId
-                loadRequests(teamId)
-                loadMembers(teamId)
+                if (userClubsPresident().length > 0) {
+                    clubSelected.value = userClubsPresident()[0]
+                    const teamId = clubSelected.value.team.teamId
+                    loadRequests(teamId)
+                    loadMembers(teamId)
+                }
             })
             .catch((err) => {
                 emitter.emit('error-route', { code: getStatus(err.response) })
