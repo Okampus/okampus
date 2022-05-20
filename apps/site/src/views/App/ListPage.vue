@@ -1,7 +1,7 @@
 <template>
     <Suspense>
         <template #default>
-            <ListPageAsync :base-route="baseRoute" :store-callback="storeCallback">
+            <ListPageAsync :base-route="baseRoute" :route-name="routeName" :store-callback="storeCallback">
                 <template #default="{ items }">
                     <slot :items="items" />
                 </template>
@@ -26,6 +26,9 @@
         baseRoute: {
             type: String,
             required: true,
+        },
+        routeName: {
+            type: String,
         },
         storeCallback: {
             type: Function,

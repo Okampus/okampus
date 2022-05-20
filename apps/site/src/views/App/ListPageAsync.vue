@@ -46,6 +46,9 @@
             type: String,
             required: true,
         },
+        routeName: {
+            type: String,
+        },
         storeCallback: {
             type: Function,
             required: true,
@@ -56,7 +59,7 @@
     const router = useRouter()
 
     const getPageAndQuery = async () => {
-        if (route.path === props.baseRoute) {
+        if (route.name === props.routeName || route.path === props.baseRoute) {
             const queryPage = isNil(route.query?.page) ? '1' : route.query?.page
 
             if (!isPositiveInteger(queryPage)) {

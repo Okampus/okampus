@@ -1,5 +1,5 @@
 <template>
-    <div class="flex p-4 xs:rounded-xl bg-content">
+    <div class="flex mx-4 p-4 xs:rounded-xl bg-content">
         <div class="my-auto min-w-fit">
             <UserAvatar :img-src="user.avatar" :username="fullname" />
         </div>
