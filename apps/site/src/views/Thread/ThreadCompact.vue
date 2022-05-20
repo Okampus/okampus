@@ -120,7 +120,7 @@
     import ThreadReply from '@/components/Thread/ThreadReply.vue'
     import ThreadNewReply from '@/components/Thread/ThreadNewReply.vue'
 
-    import { isPositiveInteger } from '@/utils/conditions'
+    import { isPositiveInteger } from '@/utils/stringUtils'
     import { emitter } from '@/shared/modules/emitter'
 
     import { nextTick, watch, ref } from 'vue'

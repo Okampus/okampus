@@ -20,7 +20,7 @@
     import { reactive, watch } from 'vue'
 
     import { emitter } from '@/shared/modules/emitter'
-    import { isPositiveInteger } from '@/utils/conditions'
+    import { isPositiveInteger } from '@/utils/stringUtils'
 
     import { isNil } from 'lodash'
     import { getStatus } from '@/utils/errors'
