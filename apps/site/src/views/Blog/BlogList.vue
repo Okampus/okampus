@@ -99,7 +99,7 @@
 
 <script>
     import { articles, categories } from '@/fake/blog'
-    import { users } from '@/fake/users'
+    import { users } from '@/fake/blog'
 
     import { timeAgo } from '@/utils/timeAgo'
 

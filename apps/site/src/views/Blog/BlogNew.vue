@@ -117,7 +117,7 @@
 </template>
 
 <script>
-    import { users } from '@/fake/users'
+    import { users } from '@/fake/blog'
 
     import TagInput from '@/components/Input/TagInput.vue'
     import MdEditor from '@/components/App/Editor/MdEditor.vue'
