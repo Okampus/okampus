@@ -7,7 +7,6 @@ import { onData } from '@/utils/store'
 import { isEmpty } from 'lodash'
 
 import { useLocalStorage } from '@vueuse/core'
-import { useCookies } from 'vue3-cookies'
 
 import logOutOnExpire from '@/utils/logOutOnExpire'
 
@@ -26,17 +25,12 @@ export const useAuthStore = defineStore('auth', {
             return await $axios.post('auth/login', user).then(
                 onData((data) => {
                     this.updateUser(data)
-                    logOutOnExpire()
+                    logOutOnExpire(data)
                 }),
             )
         },
         async logOut() {
             this.user = {}
-
-            const cookies = useCookies().cookies
-            cookies.remove('accessTokenExpiresAt')
-            cookies.remove('refreshTokenExpiresAt')
-
             return await $axios.get('auth/logout')
         },
     },

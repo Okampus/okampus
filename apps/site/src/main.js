@@ -3,7 +3,6 @@ import App from '@/App.vue'
 import { createApp } from 'vue'
 
 import InstantSearch from 'vue-instantsearch/vue3/es'
-import VueCookies from 'vue3-cookies'
 import { createPinia } from 'pinia'
 
 import axios from '@/shared/config/axios.config'
@@ -31,6 +30,6 @@ app.config.errorHandler = (error, vm, info) => {
 }
 
 // TODO: remove injection of modules in favor of composition API
-app.use(store).use(createPinia()).use(router).use(i18n).use(InstantSearch).use(VueCookies)
+app.use(store).use(createPinia()).use(router).use(i18n).use(InstantSearch)
 
 app.mount('#app')

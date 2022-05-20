@@ -53,7 +53,6 @@
     import { useAuthStore } from '@/store/auth.store'
     import { useUserConfigStore } from '@/store/user-config.store'
     import { useRoute } from 'vue-router'
-    import { useCookies } from 'vue3-cookies'
 
     import logOutOnExpire from '@/utils/logOutOnExpire'
 
@@ -134,7 +133,6 @@
 
     const auth = useAuthStore()
     const route = useRoute()
-    const cookies = useCookies().cookies
 
     if (config.darkMode) {
         document.documentElement.classList.add('dark')
@@ -186,8 +184,6 @@
                 error.code = errorCodes.UNAUTHORIZED
                 error.path = route.path
             }
-            cookies.remove('accessTokenExpiresAt')
-            cookies.remove('refreshTokenExpiresAt')
         })
     })
 
@@ -209,7 +205,7 @@
         }
     })
 
-    nextTick(() => logOutOnExpire())
+    nextTick(() => logOutOnExpire(auth.user))
 </script>
 
 <style lang="scss">
