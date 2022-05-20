@@ -1,6 +1,6 @@
 <template>
     <Suspense>
-        <ProfileModalAsync></ProfileModalAsync>
+        <ProfileModalAsync />
         <template #fallback>
             <AppLoader :size="3" />
         </template>

@@ -29,7 +29,9 @@
                                 ref="input"
                                 class="grow h-full bg-transparent outline-none"
                                 :placeholder="
-                                    modelValue.length == 0 ? 'Rechercher une ressource sur Okampus...' : ''
+                                    modelValue.length == 0
+                                        ? 'Rechercher une ressource sur Okampus...'
+                                        : ''
                                 "
                                 type="search"
                                 @input="refine($event.currentTarget.value), (indexSelected = null)"
