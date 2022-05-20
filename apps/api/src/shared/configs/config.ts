@@ -66,7 +66,7 @@ export const config = createProfiguration<Config>({
     env: 'PORT',
   },
   baseUrl: {
-    default: 'horizon-efrei.fr',
+    default: 'okampus.fr',
     format: String,
     env: 'BASE_URL',
   },
@@ -232,12 +232,12 @@ export const config = createProfiguration<Config>({
   },
   adminAccount: {
     username: {
-      default: 'horizon-admin',
+      default: 'okampus-admin',
       format: String,
       env: 'ADMIN_ACCOUNT_USERNAME',
     },
     firstName: {
-      default: 'Horizon',
+      default: 'Okampus',
       format: String,
       env: 'ADMIN_ACCOUNT_FIRST_NAME',
     },

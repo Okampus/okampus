@@ -21,25 +21,25 @@
                 <div class="flex gap-2 items-center w-full">
                     <i class="text-amber-500 fa-solid fa-triangle-exclamation"></i>
 
-                    <div>Horizon</div>
+                    <div>Association 1</div>
                     <div class="text-sm text-gray-500">Passation pas encore faite</div>
                 </div>
                 <div class="flex gap-2 items-center w-full">
                     <i class="text-amber-500 fa-solid fa-triangle-exclamation"></i>
 
-                    <div>Horizon</div>
+                    <div>Association 2</div>
                     <div class="text-sm text-gray-500">Passation pas encore faite</div>
                 </div>
                 <div class="flex gap-2 items-center w-full">
                     <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
 
-                    <div>Horizon</div>
+                    <div>Association 3</div>
                     <div class="text-sm text-gray-500">Budjet depassé</div>
                 </div>
                 <div class="flex gap-2 items-center w-full">
                     <i class="text-amber-500 fa-solid fa-triangle-exclamation"></i>
 
-                    <div>Horizon</div>
+                    <div>Association 4</div>
                     <div class="text-sm text-gray-500">Passation pas encore faite</div>
                 </div>
             </div>
@@ -61,55 +61,55 @@
                             <td class="w-1/24">
                                 <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
                             </td>
-                            <td class="">Horizon 1</td>
+                            <td>Association 1</td>
                             <td class="grid grow grid-cols-3 gap-2 items-center text-xs text-gray-400">
                                 <div class="flex gap-1 items-center">
                                     <i class="fas fa-star"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Président</div>
                                 </div>
                                 <div class="flex gap-1 items-center">
                                     <i class="fa-solid fa-sack-dollar"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Trésorier</div>
                                 </div>
                                 <div class="flex gap-1 items-center">
                                     <i class="fa-solid fa-pen-nib"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Secrétaire</div>
                                 </div>
                             </td>
                         </tr>
                         <tr class="flex gap-2 items-center">
                             <td class="w-1/24"><i class="text-green-500 fa-solid fa-check"></i></td>
-                            <td>Horizon 1</td>
+                            <td>Association 2</td>
                             <td class="grid grow grid-cols-3 gap-2 items-center text-xs text-gray-400">
                                 <div class="flex gap-1 items-center">
                                     <i class="fas fa-star"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Président</div>
                                 </div>
                                 <div class="flex gap-1 items-center">
                                     <i class="fa-solid fa-sack-dollar"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Trésorier</div>
                                 </div>
                                 <div class="flex gap-1 items-center">
                                     <i class="fa-solid fa-pen-nib"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Secrétaire</div>
                                 </div>
                             </td>
                         </tr>
                         <tr class="flex gap-2 items-center">
                             <td class="w-1/24"><i class="text-green-500 fa-solid fa-check"></i></td>
-                            <td>Horizon 1</td>
+                            <td>Association 3</td>
                             <td class="grid grow grid-cols-3 gap-2 items-center text-xs text-gray-400">
                                 <div class="flex gap-1 items-center">
                                     <i class="fas fa-star"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Président</div>
                                 </div>
                                 <div class="flex gap-1 items-center">
                                     <i class="fa-solid fa-sack-dollar"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Trésorier</div>
                                 </div>
                                 <div class="flex gap-1 items-center">
                                     <i class="fa-solid fa-pen-nib"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Secrétaire</div>
                                 </div>
                             </td>
                         </tr>
@@ -117,19 +117,19 @@
                             <td class="w-1/24">
                                 <i class="text-green-500 fa-solid fa-check"></i>
                             </td>
-                            <td>Horizon 1</td>
+                            <td>Association 4</td>
                             <td class="grid grow grid-cols-3 gap-2 items-center text-xs text-gray-400">
                                 <div class="flex gap-1 items-center">
                                     <i class="fas fa-star"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Président</div>
                                 </div>
                                 <div class="flex gap-1 items-center">
                                     <i class="fa-solid fa-sack-dollar"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Trésorier</div>
                                 </div>
                                 <div class="flex gap-1 items-center">
                                     <i class="fa-solid fa-pen-nib"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Secrétaire</div>
                                 </div>
                             </td>
                         </tr>
@@ -137,39 +137,19 @@
                             <td class="w-1/24">
                                 <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
                             </td>
-                            <td>Horizon 1</td>
+                            <td>Association 5</td>
                             <td class="grid grow grid-cols-3 gap-2 items-center text-xs text-gray-400">
                                 <div class="flex gap-1 items-center">
                                     <i class="fas fa-star"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Président</div>
                                 </div>
                                 <div class="flex gap-1 items-center">
                                     <i class="fa-solid fa-sack-dollar"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Trésorier</div>
                                 </div>
                                 <div class="flex gap-1 items-center">
                                     <i class="fa-solid fa-pen-nib"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="flex gap-2 items-center">
-                            <td class="w-1/24">
-                                <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
-                            </td>
-                            <td>Horizon 1</td>
-                            <td class="grid grow grid-cols-3 gap-2 items-center text-xs text-gray-400">
-                                <div class="flex gap-1 items-center">
-                                    <i class="fas fa-star"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
-                                </div>
-                                <div class="flex gap-1 items-center">
-                                    <i class="fa-solid fa-sack-dollar"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
-                                </div>
-                                <div class="flex gap-1 items-center">
-                                    <i class="fa-solid fa-pen-nib"></i>
-                                    <div class="truncate">Ivan Lasnier</div>
+                                    <div class="truncate">Secrétaire</div>
                                 </div>
                             </td>
                         </tr>

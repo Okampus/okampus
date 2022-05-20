@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         Merci de vouloir nous faire part d'un bug !
-        C'est ici que vous pouvez signaler un bug concernant le site web ou l'API de https://horizon-efrei.fr
+        C'est ici que vous pouvez signaler un bug concernant le site web ou l'API de https://okampus.fr
 
   - type: dropdown
     id: scope

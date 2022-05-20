@@ -1,8 +1,8 @@
 {
-    "name": "horizon-site",
+    "name": "okampus-site",
     "version": "0.1.0-alpha.2",
-    "description": "Front-end of horizon-efrei.fr",
-    "author": "Horizon Front-end Dev. Team",
+    "description": "Front-end of okampus",
+    "author": "okampus Front-end Dev. Team",
     "private": true,
     "license": "MIT",
     "scripts": {

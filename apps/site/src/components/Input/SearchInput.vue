@@ -30,7 +30,7 @@
                                 class="grow h-full bg-transparent outline-none"
                                 :placeholder="
                                     modelValue.length == 0
-                                        ? 'Rechercher une ressource sur Horizon Efrei...'
+                                        ? 'Rechercher une ressource sur Okampus...'
                                         : ''
                                 "
                                 type="search"

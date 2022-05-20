@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-    import rolesEnum from '@/shared/types/school-roles.enum'
+    import rolesEnum, { DEFAULT_ROLE } from '@/shared/types/school-roles.enum'
     // import { abbrNumbers } from '@/utils/abbrNumbers'
     import AppTag from '@/components/App/AppTag.vue'
     import UserAvatar from '@/components/User/UserAvatar.vue'
@@ -47,5 +47,5 @@
         },
     })
 
-    const roleItem = rolesEnum.find((role) => role.key === (props.user.schoolRole || 'horizon'))
+    const roleItem = rolesEnum.find((role) => role.key === (props.user.schoolRole || DEFAULT_ROLE))
 </script>

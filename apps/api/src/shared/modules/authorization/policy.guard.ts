@@ -1,7 +1,7 @@
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import type { HorizonRequest } from '../../lib/types/interfaces/horizon-request.interface';
+import type { AuthRequest } from '../../lib/types/interfaces/auth-request.interface';
 import type { AppAbility } from '../casl/casl-ability.factory';
 import { CaslAbilityFactory } from '../casl/casl-ability.factory';
 import { CHECK_POLICIES_KEY } from './check-policies.decorator';
@@ -19,7 +19,7 @@ export class PoliciesGuard implements CanActivate {
     if (policyHandlers.length === 0)
       return true;
 
-    const user = context.switchToHttp().getRequest<HorizonRequest>()?.user;
+    const user = context.switchToHttp().getRequest<AuthRequest>()?.user;
     if (!user)
       return false;
 

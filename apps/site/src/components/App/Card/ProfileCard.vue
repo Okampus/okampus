@@ -36,7 +36,7 @@
 
 <script>
     import UserAvatar from '@/components/User/UserAvatar.vue'
-    import schoolRolesEnum from '@/shared/types/school-roles.enum'
+    import schoolRolesEnum, { DEFAULT_ROLE } from '@/shared/types/school-roles.enum'
     import AppTag from '../AppTag.vue'
 
     export default {
@@ -50,7 +50,7 @@
         data() {
             return {
                 schoolRoleItem: schoolRolesEnum.find(
-                    (role) => role.key === (this.user.schoolRole || 'horizon'),
+                    (role) => role.key === (this.user.schoolRole || DEFAULT_ROLE),
                 ),
             }
         },

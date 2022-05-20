@@ -72,7 +72,7 @@ export const sections = computed(() => {
         // ...(auth.loggedIn
         //     ? [
         //           {
-        //               name: 'Horizon Cloud',
+        //               name: 'Okampus Cloud',
         //               links: [
         //                   {
         //                       to: '/docs',

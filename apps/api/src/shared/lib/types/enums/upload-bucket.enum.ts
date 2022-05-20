@@ -1,6 +1,6 @@
 export enum UploadBucket {
-  ProfileImages = 'horizon-profile-images',
-  Documents = 'horizon-documents',
-  Attachments = 'horizon-attachments',
-  Galleries = 'horizon-galleries',
+  ProfileImages = 'okampus-profile-images',
+  Documents = 'okampus-documents',
+  Attachments = 'okampus-attachments',
+  Galleries = 'okampus-galleries',
 }

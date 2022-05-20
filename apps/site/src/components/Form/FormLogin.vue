@@ -47,7 +47,7 @@
                                 class="py-3 w-full text-sm font-medium text-white uppercase bg-gray-500 hover:bg-gray-400 rounded-sm focus:outline-none hover:shadow-none"
                                 @click="login"
                             >
-                                Connexion Horizon
+                                Connexion Okampus
                             </button>
                         </div>
 

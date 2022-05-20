@@ -21,3 +21,5 @@ export default [
         color: 'red',
     },
 ]
+
+export const DEFAULT_ROLE = 'okampus'

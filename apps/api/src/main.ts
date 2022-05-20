@@ -34,8 +34,8 @@ async function attemptTypesenseConnection(): Promise<void> {
 
 function setupSwagger(app: NestExpressApplication): void {
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Horizon Web API')
-    .setDescription('REST API for HorizonWeb')
+    .setTitle('Okampus Web API')
+    .setDescription('REST API for Okampus')
     .setVersion('1.0')
     .build();
 

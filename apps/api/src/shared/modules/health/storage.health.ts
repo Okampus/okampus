@@ -14,7 +14,7 @@ export class StorageHealthIndicator extends HealthIndicator {
   public async pingCheck(key: string, bucket: 'attachments' | 'documents' | 'profile-images'): Promise<HealthIndicatorResult> {
     try {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      await this.s3.headBucket({ Bucket: `horizon-${bucket}` }).promise();
+      await this.s3.headBucket({ Bucket: `okampus-${bucket}` }).promise();
       return this.getStatus(`${key}-${bucket}`, true);
     } catch (error: unknown) {
       const awsError = error as AWSError;

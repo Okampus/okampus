@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         Merci de vouloir nous faire part d'un bug !
-        C'est ici que vous pouvez signaler un problème de design concernant le site web de https://horizon-efrei.fr
+        C'est ici que vous pouvez signaler un problème de design concernant le site web de https://okampus.fr
 
   - type: textarea
     id: steps

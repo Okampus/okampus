@@ -1,12 +1,12 @@
 name: Idée
-description: Proposez une idée pour HorizonWeb !
+description: Proposez une idée pour Okampus !
 labels: ["type: enhancement", "status: unconfirmed"]
 body:
   - type: markdown
     attributes:
       value: |
         Merci de vouloir nous faire part d'une idée que vous avez !
-        C'est ici que vous pouvez proposer une idée ou une suggestion, aussi générale qu'elle soit, concernant le site web ou l'API de https://horizon-efrei.fr
+        C'est ici que vous pouvez proposer une idée ou une suggestion, aussi générale qu'elle soit, concernant le site web ou l'API de https://okampus.fr
 
   - type: dropdown
     id: scope

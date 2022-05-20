@@ -12,7 +12,7 @@ Sur votre PR, n'ayez pas peur de faire autant de commits dont vous avez besoin, 
 Pour contribuer à ce repo, n'hésitez pas à créer un nouveau fork et à soumettre une Pull Request, en suivant ces instructions :
 
 1. Forkez, clonez, et selectionnez la branche `dev`.
-   `git clone https://github.com/<votre pseudo>/HorizonWeb`
+   `git clone https://github.com/<votre pseudo>/okampus`
 1. **Créez une nouvelle branche sur votre fork.**
    `git checkout -b feature/<votre-feature>`
 1. Faites vos changements.
@@ -25,9 +25,9 @@ Pour contribuer à ce repo, n'hésitez pas à créer un nouveau fork et à soume
 ⚠️ Utilisez l'anglais pour vos commits, les commentaires dans votre code, les messages de logs dans la console, les variables et tout autre objet compris directement dans le code.\
 Les messages visibles par les utilisateurs sur le frontend, votre PR, vos issues etc. doivent être en **français**.
 
-## Lancer HorizonWeb localement
+## Lancer Okampus localement
 
-Pour lancer HorizonWeb localement, il faut suivre ces étapes :
+Pour lancer Okampus localement, il faut suivre ces étapes :
 
 - Pour le backend : voir les instructions sur [le README du backend].
 - Pour le frontend : voir les instructions sur [le README du frontend].

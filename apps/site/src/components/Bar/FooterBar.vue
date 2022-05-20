@@ -5,7 +5,7 @@
             <div class="flex flex-col gap-2 items-center xs:flex-row">
                 <p>Made with</p>
                 <i class="hover:text-red-500 transition-transform hover:scale-125 fas fa-heart" />
-                <p>by Horizon</p>
+                <p>by Okampus</p>
                 <div class="flex gap-1 items-center">
                     <i class="text-sm far fa-copyright" />
                     <p>{{ new Date().getFullYear() }}</p>

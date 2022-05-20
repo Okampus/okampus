@@ -1,13 +1,13 @@
-<h1 align="center">HorizonWeb — Site</h1>
+<h1 align="center">Okampus — Site</h1>
 <p align="center">
-  🖥 Le projet de forum d'entraide étudiante de Horizon !
+  Dépôt GitHub public du frontend d'Okampus
 </p>
 
 <h3 align="center">Frontend & Site</h1>
 
-## Lancer HorizonWeb — Site localement
+## Lancer Okampus — Site localement
 
-Pour lancer le site d'HorizonWeb localement, il faut suivre ces étapes :
+Pour lancer le site d'Okampus localement, il faut suivre ces étapes :
 
 1. Lancez l'API, en suivant [les instructions du backend].
 1. Installez [Node.js]. Vérifiez bien d'avoir Node.js v16+ ou plus quand vous faites `node -v`.

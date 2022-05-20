@@ -14,7 +14,7 @@
                                     <label class="flex grow items-center">
                                         <input
                                             class="grow p-2 border-b-2 md:text-lg lg:text-xl text-4 bg-1"
-                                            placeholder="Rechercher une ressource sur Horizon Efrei..."
+                                            placeholder="Rechercher une ressource sur Okampus..."
                                             type="search"
                                             autofocus
                                             :value="currentRefinement"
@@ -51,7 +51,7 @@
                 @click="showSearchbar = true"
             >
                 <i class="mr-2 fas fa-search" />
-                <span>Rechercher sur Horizon Web</span>
+                <span>Rechercher sur Okampus</span>
             </div>
         </div>
 

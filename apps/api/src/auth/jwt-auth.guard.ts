@@ -3,7 +3,7 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { IS_PUBLIC_KEY } from '../shared/lib/constants';
-import type { HorizonRequest } from '../shared/lib/types/interfaces/horizon-request.interface';
+import type { AuthRequest } from '../shared/lib/types/interfaces/auth-request.interface';
 import type { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
@@ -32,12 +32,12 @@ export class JwtAuthGuard implements CanActivate {
     if (isPublic)
       return true;
 
-    const request = context.switchToHttp().getRequest<HorizonRequest>();
+    const request = context.switchToHttp().getRequest<AuthRequest>();
     request.user = await this.handleRequest(request);
     return request.user !== null;
   }
 
-  private async handleRequest(request: HorizonRequest): Promise<User> {
+  private async handleRequest(request: AuthRequest): Promise<User> {
     const token = request.signedCookies?.accessToken;
     if (!token)
       throw new UnauthorizedException('Token not provided');
