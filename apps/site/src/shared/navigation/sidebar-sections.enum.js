@@ -93,29 +93,29 @@ export const sections = computed(() => {
         //       ]
         //     : []),
 
-        ...(auth.loggedIn
-            ? [
-                  {
-                      name: 'Crous',
-                      links: [
-                          {
-                              to: '/crous/daily/today',
-                              regActive: /^\/crous(?!\/new)/,
-                              textSmall: 'Menu',
-                              textLarge: 'Menu du Crous',
-                              icon: 'utensils',
-                          },
-                          {
-                              to: '/crous/new',
-                              regActive: /^\/crous\/new$/,
-                              textSmall: 'Crous',
-                              textLarge: 'Gestion du Crous',
-                              icon: 'apple-alt',
-                          },
-                      ],
-                  },
-              ]
-            : []),
+        // ...(auth.loggedIn
+        //     ? [
+        //           {
+        //               name: 'Crous',
+        //               links: [
+        //                   {
+        //                       to: '/crous/daily/today',
+        //                       regActive: /^\/crous(?!\/new)/,
+        //                       textSmall: 'Menu',
+        //                       textLarge: 'Menu du Crous',
+        //                       icon: 'utensils',
+        //                   },
+        //                   {
+        //                       to: '/crous/new',
+        //                       regActive: /^\/crous\/new$/,
+        //                       textSmall: 'Crous',
+        //                       textLarge: 'Gestion du Crous',
+        //                       icon: 'apple-alt',
+        //                   },
+        //               ],
+        //           },
+        //       ]
+        //     : []),
 
         // {
         //     name: 'Pause Café',
