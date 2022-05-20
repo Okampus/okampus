@@ -6,7 +6,7 @@
                     <i class="text-2xl text-white fas fa-bars" />
                 </button>
             </div>
-            <AppLogo only="dark" />
+            <AppLogo />
         </div>
 
         <div class="relative grow mx-6 bg-transparent">
