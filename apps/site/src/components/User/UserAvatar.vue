@@ -12,7 +12,7 @@
         class="shrink-0 rounded-full select-none avatar"
         :class="[!imgSrc ? 'avatar flex items-center justify-center' : '']"
     >
-        <div v-if="!imgSrc" class="m-auto w-fit h-fit text-white" :style="{ fontSize: `${size / 2}rem` }">
+        <div v-if="!imgSrc" class="m-auto w-fit h-fit text-white" :style="{ fontSize: `${size / 2.3}rem` }">
             {{ getInitialsFromName(username) }}
         </div>
     </div>
@@ -37,16 +37,18 @@
         data: function () {
             return {
                 colors: [
-                    '#0070f3',
                     '#00a854',
                     '#dd0031',
                     '#f5a623',
                     '#5e2ca5',
                     '#ff0097',
-                    '#0026ca',
                     '#ff9502',
                     '#00b8d4',
                     '#868e96',
+                    '#1e90aa',
+                    '#f5c542',
+                    '#9c27b0',
+                    '#888',
                 ],
             }
         },
