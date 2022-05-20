@@ -1,15 +1,15 @@
 import App from '@/App.vue'
 
 import { createApp } from 'vue'
-
-import InstantSearch from 'vue-instantsearch/vue3/es'
 import { createPinia } from 'pinia'
 
-import axios from '@/shared/config/axios.config'
+import InstantSearch from 'vue-instantsearch/vue3/es'
+import Particles from 'particles.vue3'
 
 import { emitter } from '@/shared/modules/emitter'
 import { i18n } from '@/shared/modules/i18n'
 
+import axios from '@/shared/config/axios.config'
 import router from '@/router/index'
 import store from '@/old-store'
 
@@ -30,6 +30,6 @@ app.config.errorHandler = (error, vm, info) => {
 }
 
 // TODO: remove injection of modules in favor of composition API
-app.use(store).use(createPinia()).use(router).use(i18n).use(InstantSearch)
+app.use(store).use(createPinia()).use(router).use(i18n).use(InstantSearch).use(Particles)
 
 app.mount('#app')

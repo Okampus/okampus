@@ -1,7 +1,7 @@
 @use 'sass:string';
 @use 'sass:list';
 
-$logo-light-url: url('@/assets/img/logos/logo_light.png');
+$logo-light-url: url('@/assets/img/logos/logo_dark.png');
 $logo-dark-url: url('@/assets/img/logos/logo_dark.png');
 
 @mixin tailwind-color($tailwind-property, $name: '', $tailwind-property-count: 6) {

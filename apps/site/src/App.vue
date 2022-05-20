@@ -23,7 +23,7 @@
                 @mousedown="hiding && collapsed !== collapsing && toggleSidebar()"
             >
                 <div
-                    class="flex-auto shrink-0 my-5 grow-1"
+                    class="flex-auto shrink-0 grow-1"
                     :class="{ 'pointer-events-none': hiding && collapsing != collapsed }"
                 >
                     <AppException v-if="error.code" :code="error.code" />

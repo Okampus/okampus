@@ -5,8 +5,9 @@ import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router
 
 const routes = [
     {
+        name: 'Home',
         path: '/',
-        component: () => import('@/views/App/LandingPage.vue'),
+        component: () => import('@/views/App/HomePage.vue'),
         meta: {
             requiresAuth: false,
         },

@@ -19,12 +19,12 @@
 
         <div
             :class="[
-                'flex flex-col',
+                'flex flex-col py-4',
                 collapsing ? 'overflow-y-hidden' : 'overflow-y-auto scrollbar-none',
                 showUncollapsed ? 'gap-6' : 'gap-0.5',
             ]"
         >
-            <router-link
+            <!-- <router-link
                 to="/"
                 class="flex items-center py-1.5 mt-2 mb-1 tab"
                 :class="[{ active: /^\/$/.test($route.path) }, showUncollapsed ? 'mx-2 mt-4' : 'mx-1.5']"
@@ -38,7 +38,7 @@
                         >Accueil</span
                     >
                 </div>
-            </router-link>
+            </router-link> -->
 
             <ul v-for="(section, i) in sections" :key="i">
                 <p
@@ -79,10 +79,10 @@
                 </template>
             </ul>
 
-            <div v-if="!auth.loggedIn" class="flex flex-col gap-2 justify-center items-center py-2 text-sm">
-                <p v-if="showUncollapsed" class="text-base text-center">
-                    Connectez-vous pour accéder aux espaces.
-                </p>
+            <div
+                v-if="!auth.loggedIn && route.name !== 'Home'"
+                class="flex flex-col gap-2 justify-center items-center py-2 text-sm"
+            >
                 <LoginButton :only-icon="!showUncollapsed" />
             </div>
 
@@ -103,6 +103,7 @@
     import { computed } from 'vue'
 
     import { useAuthStore } from '@/store/auth.store'
+    import { useRoute } from 'vue-router'
     import { useUserConfigStore } from '@/store/user-config.store'
     import AppTip from '../App/AppTip.vue'
 
@@ -126,6 +127,7 @@
     const showUncollapsed = computed(() => props.uncollapsed || props.collapsing)
 
     const auth = useAuthStore()
+    const route = useRoute()
     const config = useUserConfigStore()
 </script>
 
