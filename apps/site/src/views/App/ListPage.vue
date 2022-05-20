@@ -1,7 +1,12 @@
 <template>
     <Suspense>
         <template #default>
-            <ListPageAsync :base-route="baseRoute" :route-name="routeName" :store-callback="storeCallback">
+            <ListPageAsync
+                class="mt-4"
+                :base-route="baseRoute"
+                :route-name="routeName"
+                :store-callback="storeCallback"
+            >
                 <template #default="{ items }">
                     <slot :items="items" />
                 </template>
