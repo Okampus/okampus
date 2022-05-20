@@ -3,7 +3,7 @@
         <div>
             <h3 class="pl-10 mb-8 text-4xl font-bold text-0">Liste des associations</h3>
             <!-- grid 3 columns for each clubs centered-->
-            <div class="grid grid-cols-1 gap-y-8 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            <div class="flex flex-wrap gap-8 justify-center w-full">
                 <!-- <ClubCard v-for="club in clubs" :key="club.id" :club="club" /> -->
                 <div v-for="club in clubList.items" :key="club.teamId">
                     <div
@@ -45,8 +45,14 @@
             </div>
         </div>
         <div v-if="showPopUp">
-            <JoinPopUp v-model="showPopUp" :request="joinRequest" />
+            <JoinPopUp v-model="showPopUp" :show="showPopUp" :request="joinRequest" @close="closePopUp" />
         </div>
+        <AppToast
+            v-model:active="showReport"
+            message="Vous avez déjà émis une requête pour rejoindre cette association."
+            type="error"
+        >
+        </AppToast>
     </AppView>
 </template>
 
@@ -59,6 +65,7 @@
     import UserAvatar from '@/components/User/UserAvatar.vue'
     import JoinPopUp from '@/components/Clubs/JoinPopUp.vue'
     import { useAuthStore } from '@/store/auth.store'
+    import AppToast from '@/components/App/AppToast.vue'
 
     const clubs = useClubsStore()
     const clubList = ref([])
@@ -66,6 +73,7 @@
     const auth = useAuthStore()
     const me = ref(null)
     const joinRequest = ref(null)
+    const showReport = ref(false)
     //load clubs
     const loadClubList = async () => {
         await clubs
@@ -90,10 +98,19 @@
     }
 
     const joinClub = async (teamId) => {
-        await clubs.postMembershipRequest(teamId).then((res) => {
-            joinRequest.value = res
-            showPopUp.value = true
-        })
+        await clubs
+            .postMembershipRequest(teamId)
+            .then((res) => {
+                joinRequest.value = res
+                showPopUp.value = true
+            })
+            .catch(() => {
+                showReport.value = true
+            })
+    }
+
+    const closePopUp = () => {
+        showPopUp.value = false
     }
 
     await loadClubList()

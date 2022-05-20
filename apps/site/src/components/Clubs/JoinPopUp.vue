@@ -1,5 +1,5 @@
 <template>
-    <div class="flex absolute top-0 flex-col justify-center w-full h-full">
+    <AppModal :show="props.show">
         <div
             class="flex relative flex-col justify-center items-center p-4 mx-auto w-[36rem] min-h-fit rounded-md shadow-lg bg-1"
         >
@@ -29,23 +29,33 @@
                 </button>
             </a>
         </div>
-    </div>
+    </AppModal>
 </template>
 
 <script setup>
     // import { ref } from 'vue'
+    import AppModal from '../App/AppModal.vue'
 
     const props = defineProps({
         request: {
             type: Object,
             required: true,
         },
+        show: {
+            type: Boolean,
+            required: true,
+        },
+
         // modelValue: {
         //     type: Boolean,
         //     // required: true,
         // },
     })
+
+    const emit = defineEmits(['close'])
+
     const close = () => {
-        // props.modelValue.value = false
+        console.log('close')
+        emit('close')
     }
 </script>
