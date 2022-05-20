@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col items-center m-20 text-0">
         <router-link to="/" class="mb-10 w-fit">
-            <div class="h-[5.5rem] w-[16.5rem] w- logo" allow-dark="" />
+            <div class="w-[16.5rem] h-[5.5rem] w- logo" allow-dark="" />
         </router-link>
         <div class="text-xl text-blue-700 uppercase">
             <template v-if="!online">

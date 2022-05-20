@@ -29,6 +29,7 @@
         },
         routeName: {
             type: String,
+            default: null,
         },
         storeCallback: {
             type: Function,
