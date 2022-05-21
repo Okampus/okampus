@@ -36,6 +36,10 @@ export class CreateTeamDto {
   avatar?: string;
 
   @IsOptional()
+  @IsString()
+  banner?: string;
+
+  @IsOptional()
   @IsUrl()
   membershipRequestLink?: string;
 

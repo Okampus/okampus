@@ -25,12 +25,15 @@ export class TeamsService {
   ) {}
 
   public async create(user: User, createTeamDto: CreateTeamDto): Promise<Team> {
-    const { avatar, ...dto } = createTeamDto;
+    const { avatar, banner, ...dto } = createTeamDto;
 
     const team = new Team(dto);
 
     if (avatar)
-      await this.setAvatar(avatar, team);
+      await this.setAvatar(avatar, 'avatar', team);
+
+    if (banner)
+      await this.setAvatar(banner, 'banner', team);
 
     await this.teamRepository.persistAndFlush(team);
     await this.teamSearchService.add(team);
@@ -96,12 +99,17 @@ export class TeamsService {
     if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
-    const { avatar, ...dto } = updateTeamDto;
+    const { avatar, banner, ...dto } = updateTeamDto;
 
     if (avatar)
-      await this.setAvatar(avatar, team);
+      await this.setAvatar(avatar, 'avatar', team);
     else
       team.avatar = null;
+
+    if (banner)
+      await this.setAvatar(banner, 'banner', team);
+    else
+      team.banner = null;
 
     wrap(team).assign(dto);
     await this.teamRepository.flush();
@@ -115,14 +123,14 @@ export class TeamsService {
     await this.teamSearchService.remove(team.teamId.toString());
   }
 
-  private async setAvatar(profileImageId: string, team: Team): Promise<void> {
+  private async setAvatar(profileImageId: string, type: 'avatar' | 'banner', team: Team): Promise<void> {
     // Get the avatar image and validate it
     const avatarImage = await this.profileImageRepository.findOne({ profileImageId }, { populate: ['file'] });
     if (!avatarImage || !avatarImage.isAvailableFor('team', team.teamId))
-      throw new BadRequestException('Invalid avatar image');
+      throw new BadRequestException(`Invalid ${type} image`);
 
-    // Update the team's avatar
-    team.avatar = avatarImage.file.url;
+    // Update the team's image
+    team[type] = avatarImage.file.url;
 
     // Update the target type of the image
     if (!avatarImage.team) {

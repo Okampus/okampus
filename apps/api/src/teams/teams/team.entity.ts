@@ -46,6 +46,9 @@ export class Team extends BaseEntity {
   @Property({ type: 'text' })
   avatar?: string | null;
 
+  @Property({ type: 'text' })
+  banner?: string | null;
+
   @OneToMany(() => TeamMember, member => member.team)
   @TransformCollection()
   @Expose({ groups: [TEAM_MEMBERS_INCLUDED] })
@@ -64,6 +67,7 @@ export class Team extends BaseEntity {
     description?: string;
     longDescription?: string;
     avatar?: string;
+    banner?: string;
     tags?: string[];
     membershipRequestLink?: string;
     membershipRequestMessage?: string;
@@ -78,6 +82,8 @@ export class Team extends BaseEntity {
       this.longDescription = options.longDescription;
     if (options.avatar)
       this.avatar = options.avatar;
+    if (options.banner)
+      this.banner = options.banner;
     if (options.tags)
       this.tags = options.tags;
     if (options.membershipRequestLink)
