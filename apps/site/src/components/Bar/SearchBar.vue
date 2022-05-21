@@ -71,11 +71,11 @@
     import typesenseConfig from '@/shared/config/typesense.config'
 
     import {
-        BLOGS,
+        // BLOGS,
         TEAMS,
-        INFO_DOCS,
-        STUDY_DOCS,
-        SUBJECTS,
+        // INFO_DOCS,
+        // STUDY_DOCS,
+        // SUBJECTS,
         THREADS,
     } from '@/shared/types/typesense-index-names.enum'
 
@@ -90,26 +90,26 @@
                 queryBy: 'title,body,tags',
                 queryByWeights: '10, 1, 5',
             },
-            [BLOGS]: {
-                queryBy: 'title,body,tags',
-                queryByWeights: '10, 1, 5',
-            },
+            // [BLOGS]: {
+            //     queryBy: 'title,body,tags',
+            //     queryByWeights: '10, 1, 5',
+            // },
             [TEAMS]: {
                 queryBy: 'name',
                 queryByWeights: '10',
             },
-            [STUDY_DOCS]: {
-                queryBy: 'name,subjectEnglishName,subjectName',
-                queryByWeights: '10, 5, 5',
-            },
-            [INFO_DOCS]: {
-                queryBy: 'name',
-                queryByWeights: '10',
-            },
-            [SUBJECTS]: {
-                queryBy: 'name,code',
-                queryByWeights: '1,1',
-            },
+            // [STUDY_DOCS]: {
+            //     queryBy: 'name,subjectEnglishName,subjectName',
+            //     queryByWeights: '10, 5, 5',
+            // },
+            // [INFO_DOCS]: {
+            //     queryBy: 'name',
+            //     queryByWeights: '10',
+            // },
+            // [SUBJECTS]: {
+            //     queryBy: 'name,code',
+            //     queryByWeights: '1,1',
+            // },
         },
     })
 
@@ -121,55 +121,55 @@
             indexName: THREADS,
             title: 'Tous les threads',
             titleIcon: 'comments',
-            routerBase: 'post',
+            routerBase: 'threads',
             resultTitle: (item) => item.title,
             resultBody: (item) => item.body,
             resultIcon: (item) => threadTypes?.[item.type]?.icon ?? 'hashtag',
         },
-        {
-            indexName: STUDY_DOCS,
-            title: 'Tous les documents',
-            titleIcon: 'file',
-            routerBase: 'file',
-            resultTitle: (item) => item.name,
-            resultBody: (item) => item.subjectName,
-            resultIcon: () => 'file',
-        },
-        {
-            indexName: INFO_DOCS,
-            title: 'Tous les documents informatifs',
-            titleIcon: 'file',
-            routerBase: 'file',
-            resultTitle: (item) => item.name,
-            resultBody: (item) => item.subjectName,
-            resultIcon: () => 'file',
-        },
-        {
-            indexName: BLOGS,
-            title: 'Tous les articles',
-            titleIcon: 'newspaper',
-            routerBase: 'article',
-            resultTitle: (item) => item.title,
-            resultBody: (item) => item.body,
-            resultIcon: () => 'newspaper',
-        },
+        // {
+        //     indexName: STUDY_DOCS,
+        //     title: 'Tous les documents',
+        //     titleIcon: 'file',
+        //     routerBase: 'files',
+        //     resultTitle: (item) => item.name,
+        //     resultBody: (item) => item.subjectName,
+        //     resultIcon: () => 'file',
+        // },
+        // {
+        //     indexName: INFO_DOCS,
+        //     title: 'Tous les documents informatifs',
+        //     titleIcon: 'file',
+        //     routerBase: 'files',
+        //     resultTitle: (item) => item.name,
+        //     resultBody: (item) => item.subjectName,
+        //     resultIcon: () => 'file',
+        // },
+        // {
+        //     indexName: BLOGS,
+        //     title: 'Tous les articles',
+        //     titleIcon: 'newspaper',
+        //     routerBase: 'article',
+        //     resultTitle: (item) => item.title,
+        //     resultBody: (item) => item.body,
+        //     resultIcon: () => 'newspaper',
+        // },
         {
             indexName: TEAMS,
             title: 'Toutes les associations',
             titleIcon: 'user-friends',
-            routerBase: 'club',
+            routerBase: 'clubs',
             resultTitle: (item) => item.name,
             resultBody: (item) => item.category,
             resultIcon: () => 'user-friends',
         },
-        {
-            indexName: SUBJECTS,
-            title: 'Toutes les matieres',
-            titleIcon: 'book',
-            routerBase: 'subject',
-            resultTitle: (item) => item.name,
-            resultBody: (item) => item.code,
-            resultIcon: () => 'book',
-        },
+        // {
+        //     indexName: SUBJECTS,
+        //     title: 'Toutes les matieres',
+        //     titleIcon: 'book',
+        //     routerBase: 'subject',
+        //     resultTitle: (item) => item.name,
+        //     resultBody: (item) => item.code,
+        //     resultIcon: () => 'book',
+        // },
     ])
 </script>
