@@ -2,7 +2,7 @@
     <ListPage :base-route="baseRoute" :store-callback="threads.getThreads" resource-name="thread">
         <template #default="{ items }">
             <div class="flex flex-col gap-4">
-                <ThreadCard v-for="(thread, i) in items" :key="i" :thread="thread" />
+                <ThreadCard v-for="thread in items" :key="thread.contentMasterId" :thread="thread" />
             </div>
         </template>
     </ListPage>
