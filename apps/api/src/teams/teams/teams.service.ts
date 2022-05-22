@@ -52,13 +52,40 @@ export class TeamsService {
     if (filters.kind)
       options = { kind: filters.kind };
 
-    const result: Array<{ team: number; count: string }> = await this.teamMemberRepository
+    const memberCountResult: Array<{ team: number; count: string }> = await this.teamMemberRepository
       .createQueryBuilder()
       .count('teamMemberId')
       .select(['team', 'count'])
       .groupBy('team')
       .execute();
-    const allMemberCounts = new Map(result.map(entry => [entry.team, entry.count]));
+    const allMemberCounts = new Map(memberCountResult.map(entry => [entry.team, entry.count]));
+
+    // TODO: 💩 to improve & optimize
+    const ownerResult: Array<{ team: number; user: User }> = await this.teamMemberRepository
+      .createQueryBuilder('teamMember')
+      .select(['team', 'user'])
+      .where({ role: TeamRole.Owner })
+      .joinAndSelect('user', 'user')
+      .execute();
+    const allOwners = new Map(ownerResult.map(entry => [entry.team, entry.user]));
+
+    // TODO: 💩 to improve & optimize
+    const treasurerResult: Array<{ team: number; user: User }> = await this.teamMemberRepository
+      .createQueryBuilder('teamMember')
+      .select(['team', 'user'])
+      .where({ role: TeamRole.Treasurer })
+      .joinAndSelect('user', 'user')
+      .execute();
+    const allTreasurers = new Map(treasurerResult.map(entry => [entry.team, entry.user]));
+
+    // TODO: 💩 to improve & optimize
+    const secretaryResult: Array<{ team: number; user: User }> = await this.teamMemberRepository
+      .createQueryBuilder('teamMember')
+      .select(['team', 'user'])
+      .where({ role: TeamRole.Secretary })
+      .joinAndSelect('user', 'user')
+      .execute();
+    const allSecretaries = new Map(secretaryResult.map(entry => [entry.team, entry.user]));
 
     const allTeams = await this.teamRepository.findWithPagination(
       paginationOptions,
@@ -70,6 +97,15 @@ export class TeamsService {
       // TODO: Maybe find a better way to add this property? Something virtual? computed on-the-fly? added elsewhere?
       // @ts-expect-error: We add a new property to the object, but it's fine.
       team.memberCount = Number(allMemberCounts.get(team.teamId) ?? 0);
+
+      // TODO: 💩 💩 💩 to improve & optimize
+      (team as Team & { owner: User | null; treasurer: User | null; secretary: User | null })
+        .owner = allOwners.get(team.teamId) ?? null;
+      (team as Team & { owner: User | null; treasurer: User | null;
+        secretary: User | null; }).treasurer = allTreasurers.get(team.teamId) ?? null;
+      (team as Team & { owner: User | null; treasurer: User | null;
+        secretary: User | null; }).secretary = allSecretaries.get(team.teamId) ?? null;
+
       return team;
     });
     return allTeams;
