@@ -42,8 +42,8 @@ export class AuthController {
     (user as User & { accessTokenExpiresAt: string; refreshTokenExpiresAt: string })
     .refreshTokenExpiresAt = login.refreshTokenExpiresAt.toString();
 
-    res.cookie('accessToken', login.accessToken, cookieOptions)
-      .cookie('refreshToken', login.refreshToken, cookieOptions)
+    res.cookie('accessToken', login.accessToken, { ...cookieOptions, maxAge: config.get('tokens.accessTokenExpirationSeconds') * 1000 })
+      .cookie('refreshToken', login.refreshToken, { ...cookieOptions, maxAge: config.get('tokens.refreshTokenExpirationSeconds') * 1000 })
       .cookie('accessTokenExpiresAt', login.accessTokenExpiresAt, cookiePublicOptions)
       .cookie('refreshTokenExpiresAt', login.refreshTokenExpiresAt, cookiePublicOptions);
 
@@ -63,8 +63,8 @@ export class AuthController {
   public async myefreiCallback(@CurrentUser() user: User, @Response() res: Res): Promise<void> {
     const login = await this.authService.login(user);
 
-    res.cookie('accessToken', login.accessToken, cookieOptions)
-      .cookie('refreshToken', login.refreshToken, cookieOptions)
+    res.cookie('accessToken', login.accessToken, { ...cookieOptions, maxAge: config.get('tokens.accessTokenExpirationSeconds') * 1000 })
+      .cookie('refreshToken', login.refreshToken, { ...cookieOptions, maxAge: config.get('tokens.refreshTokenExpirationSeconds') * 1000 })
       .cookie('accessTokenExpiresAt', login.accessTokenExpiresAt, cookiePublicOptions)
       .cookie('refreshTokenExpiresAt', login.refreshTokenExpiresAt, cookiePublicOptions)
       .redirect(`${computedConfig.frontendUrl + (config.get('nodeEnv') === 'development' ? '/#' : '')}/auth`);
