@@ -16,7 +16,9 @@ export const useClubsStore = defineStore('clubs', {
             return club
         },
         async getClubs() {
-            return await $axios.get('teams/teams').then((res) => this.replaceClubs(res.data))
+            return await $axios
+                .get('teams/teams', { params: { itemsPerPage: 100 } })
+                .then((res) => this.replaceClubs(res.data))
         },
         async getClub(clubId) {
             return await $axios.get(`teams/teams/${clubId}`).then((res) => this.replaceClub(res.data))
