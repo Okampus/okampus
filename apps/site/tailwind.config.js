@@ -96,6 +96,36 @@ module.exports = {
                     dark: '#5e5e5e',
                 },
             },
+            borderColor: {
+                0: {
+                    light: '#fff',
+                    dark: '#000',
+                },
+                1: {
+                    light: '#fafafa',
+                    dark: '#0A0E18',
+                },
+                2: {
+                    light: '#ededed',
+                    dark: '#1b1d21',
+                },
+                3: {
+                    light: '#ccc',
+                    dark: '#222',
+                },
+                4: {
+                    light: '#bbb',
+                    dark: '#323030',
+                },
+                5: {
+                    light: '#aaa',
+                    dark: '#444',
+                },
+                6: {
+                    light: '#999',
+                    dark: '#5e5e5e',
+                },
+            },
             divideColor: {
                 0: {
                     light: '#d4d4d4',
