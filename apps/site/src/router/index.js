@@ -5,7 +5,7 @@ import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router
 
 const routes = [
     {
-        name: 'Home',
+        name: 'home',
         path: '/',
         component: () => import('@/views/App/HomePage.vue'),
         meta: {
@@ -157,9 +157,45 @@ const routes = [
     //     },
     // },
 
+    // {
+    //     path: '/search',
+    //     component: () => import('@/views/SearchResults.vue'),
+    //     children: [
+    //         {
+    //             path: 'clubs',
+    //             component: () => import('@/views/List/ClubList.vue'),
+    //             meta: {
+    //                 requiresAuth: true,
+    //             },
+    //         },
+    //         {
+    //             path: 'clubs/:tab',
+    //             component: () => import('@/views/List/ClubList.vue'),
+    //             meta: {
+    //                 requiresAuth: true,
+    //             },
+    //         },
+    //     ],
+    // },
+
+    // {
+    //     path: '/clubs',
+    //     redirect: '/search/clubs',
+    // },
+
+    // {
+    //     path: '/search/clubs',
+    //     strict: true,
+    //     component: () => import('@/views/List/ClubList.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
+
     {
-        path: '/clubs',
-        component: () => import('@/views/Clubs/ClubsList.vue'),
+        path: '/search/clubs/:tab*',
+        name: 'search-clubs',
+        component: () => import('@/views/List/ClubList.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -198,6 +234,19 @@ if (import.meta.env.DEV) {
 const router = createRouter({
     history: import.meta.env.DEV ? createWebHashHistory() : createWebHistory(),
     routes,
+})
+
+// Remove trailing slashes
+router.beforeEach((to, _, next) => {
+    if (to.fullPath === '/') {
+        next()
+    } else if (to.fullPath.endsWith('/')) {
+        next(to.fullPath.slice(0, -1))
+    } else if (to.fullPath.match(/\/\?/)) {
+        next(to.fullPath.replace(/\/\?/, '?'))
+    } else {
+        next()
+    }
 })
 
 router.afterEach((to) => {
