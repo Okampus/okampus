@@ -5,7 +5,7 @@
                 <div class="flex justify-center py-3 w-10/12 bg-indigo-700 rounded-xl opacity-100">
                     <div class="w-[12rem] h-[4rem] logo" />
                 </div>
-                <div class="mt-4 text-2xl text-center">Connectez-vous pour accéder aux espaces 🔒</div>
+                <div class="mt-8 text-2xl text-center">Connectez-vous pour accéder aux espaces 🔒</div>
             </div>
         </AppLogin>
         <div v-else class="flex z-10 flex-col gap-4 p-4 rounded-xl text-0 bg-opacity/80 bg-3">
@@ -13,7 +13,7 @@
                 {{ new Date().getHours() > 19 ? 'Bonsoir' : 'Bonjour' }}
                 {{ auth.user.firstname.split(' ')[0] }} !
             </div>
-            <router-link class="text-2xl text-blue-600 dark:text-blue-400" to="/clubs"
+            <router-link class="text-2xl text-blue-600 dark:text-blue-400" to="/search/clubs"
                 >Voir les associations<i class="ml-2 fa fa-arrow-right"
             /></router-link>
         </div>
