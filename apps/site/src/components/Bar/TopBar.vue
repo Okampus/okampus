@@ -1,5 +1,5 @@
 <template>
-    <nav class="flex fixed top-0 left-0 justify-between items-center w-full topbar h-topbar text-1">
+    <nav class="flex fixed top-0 left-0 z-20 justify-between items-center w-full topbar h-topbar text-1">
         <div class="flex items-center w-sidebar-lg">
             <div class="flex shrink-0 justify-center w-sidebar-sm">
                 <button aria-label="Open Menu" @click="$emit('toggle-side-bar')">
@@ -13,14 +13,14 @@
             <SearchBar />
         </div>
 
-        <template v-if="route.name !== 'Home' || auth.loggedIn">
+        <template v-if="route.name !== 'home' || auth.loggedIn">
             <div v-if="!auth.loggedIn" class="flex shrink-0 justify-center items-center mr-4">
                 <LoginButton />
             </div>
 
             <div v-else class="flex justify-between items-center mr-4 h-full bg-transparent">
                 <div class="mr-4">
-                    <Popper offset-distance="8" offset-skid="-110">
+                    <Popper offset-distance="6" offset-skid="-95">
                         <UserAvatar
                             class="cursor-pointer"
                             :img-src="auth.user.avatar"
@@ -28,18 +28,32 @@
                         />
                         <template #content>
                             <div
-                                class="flex flex-col gap-4 pb-2 w-80 bg-white/70 dark:bg-gray-800/70 rounded-b-lg shadow-md"
+                                class="flex flex-col gap-2 pb-2 w-64 bg-white/95 dark:bg-gray-800/95 rounded-b-lg shadow-md"
                             >
-                                <div class="p-4">
-                                    Connecté comme
-                                    <b>{{ auth.user.fullname }}</b>
+                                <div class="flex gap-3 px-4 pt-4">
+                                    <UserAvatar :img-src="auth.user.avatar" :username="auth.user.fullname" />
+                                    <div>
+                                        <div class="font-bold line-clamp-1">
+                                            {{ auth.user.fullname }}
+                                        </div>
+                                        <div class="line-clamp-1">{{ auth.user.email }}</div>
+                                    </div>
                                 </div>
+
+                                <hr class="self-center mt-2 w-11/12 h-[1px] bg-gray-500/20 border-none" />
+                                <router-link
+                                    class="flex gap-6 items-center py-2 px-4 hover:bg-gray-200/95 hover:dark:bg-gray-600/95 cursor-pointer"
+                                    to="/me/profile"
+                                >
+                                    <i class="text-xl fa-solid fa-user" />
+                                    <div>Mon profil</div>
+                                </router-link>
                                 <div
-                                    class="flex gap-6 items-center py-2 px-4 hover:bg-gray-200/70 hover:dark:bg-gray-600/70 cursor-pointer"
+                                    class="flex gap-6 items-center py-2 px-4 hover:bg-gray-200/95 hover:dark:bg-gray-600/95 cursor-pointer"
                                     @click="emitter.emit('logout')"
                                 >
                                     <i class="text-xl fa-solid fa-arrow-right-from-bracket" />
-                                    <div>Se déconnecter</div>
+                                    <div>Déconnexion</div>
                                 </div>
                             </div>
                         </template>
