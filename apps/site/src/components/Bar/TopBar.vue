@@ -20,7 +20,8 @@
 
             <div v-else class="flex justify-between items-center mr-4 h-full bg-transparent">
                 <div class="mr-4">
-                    <Popper offset-distance="6" offset-skid="-95">
+                    <!-- TODO: on small screen, use full screen modal -->
+                    <Popper offset-distance="6" offset-skid="-80">
                         <UserAvatar
                             class="cursor-pointer"
                             :img-src="auth.user.avatar"

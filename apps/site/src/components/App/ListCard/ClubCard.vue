@@ -6,7 +6,7 @@
             :name="club.name"
             :data="club.category"
         />
-        <div class="flex flex-col items-start mx-5 h-full">
+        <div class="flex flex-col items-start mx-3 h-full md:mx-5">
             <div class="flex justify-between w-full">
                 <div class="flex gap-3 items-start pt-2">
                     <div class="p-1 -mt-10 rounded-2xl bg-2">
@@ -18,10 +18,10 @@
                         />
                     </div>
                     <router-link class="mt-2" :to="`/search/clubs/${clubTypes[club.category].link}`">
-                        <AppLabel>{{ club.category }}</AppLabel>
+                        <AppLabel class="line-clamp-1">{{ club.category }}</AppLabel>
                     </router-link>
                 </div>
-                <i class="self-center text-xl fa fa-ellipsis text-2" />
+                <i class="self-center ml-3 text-xl md:-mr-1 fa fa-ellipsis text-2" />
                 <!-- TODO: buttons -->
             </div>
 

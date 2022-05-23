@@ -65,7 +65,7 @@
 
             if (!isPositiveInteger(queryPage)) {
                 emitter.emit('show-toast', {
-                    message: `La page '${queryPage}' n'existe pas. Redirection sur la page 1...`,
+                    message: `La page '${queryPage}' n'existe pas. Redirection sur la page 1 ↪️`,
                     type: 'warning',
                     duration: 5000,
                 })
@@ -80,7 +80,7 @@
                 .then(({ items, pageInfo }) => {
                     if (!items.length && query.page > 1) {
                         emitter.emit('show-toast', {
-                            message: `La page ${props.page} est vide. Redirection sur la page 1.`,
+                            message: `La page ${props.page} est vide. Redirection sur la page 1 ↪️`,
                             type: 'info',
                             duration: 5000,
                         })

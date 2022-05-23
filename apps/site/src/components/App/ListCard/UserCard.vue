@@ -1,7 +1,7 @@
 <template>
-    <div class="flex p-4 mx-4 xs:rounded-xl bg-content">
+    <div class="flex gap-4 p-4 mx-4 xs:rounded-xl bg-content">
         <UserAvatar :size="4" class="px-2 my-auto min-w-fit" :img-src="user.avatar" :username="fullname" />
-        <div class="flex flex-col gap-2 ml-4">
+        <div class="flex flex-col gap-1.5 ml-4">
             <div class="flex gap-3 text-lg text-0 align-items">
                 <div class="my-auto font-bold">{{ fullname }}</div>
                 <AppTag

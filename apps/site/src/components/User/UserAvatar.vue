@@ -9,8 +9,11 @@
                 ? { background: `no-repeat url(${imgSrc})`, backgroundSize: 'cover' }
                 : { backgroundColor: getColorFromData(username) }),
         }"
-        class="shrink-0 rounded-full select-none avatar"
-        :class="[!imgSrc ? 'avatar flex items-center justify-center' : '']"
+        class="shrink-0 select-none avatar"
+        :class="[
+            { 'flex items-center justify-center': !imgSrc },
+            roundedFull ? 'rounded-full' : 'rounded-xl',
+        ]"
     >
         <div v-if="!imgSrc" class="m-auto w-fit h-fit text-white" :style="{ fontSize: `${size / 2.3}rem` }">
             {{ getInitialsFromName(username) }}
@@ -25,6 +28,10 @@
                 type: String,
                 default: null,
             },
+            profileLink: {
+                type: String,
+                default: null,
+            },
             size: {
                 type: Number,
                 default: 3,
@@ -32,6 +39,10 @@
             username: {
                 type: String,
                 default: 'Anonyme',
+            },
+            roundedFull: {
+                type: Boolean,
+                default: true,
             },
         },
         data: function () {

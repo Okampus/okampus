@@ -11,7 +11,7 @@
 .card {
     @include get-color('text', 0);
     @include get-color('bg', 1);
-    @apply md:shadow-md md:rounded-lg py-4 px-6;
+    @apply shadow-md rounded-lg py-4 px-6;
 }
 
 .card-2 {

@@ -15,7 +15,7 @@
                     @click="handleClick"
                     @drop="handleChange"
                 >
-                    <font-awesome-icon v-show="loading != 1" icon="file-upload" class="text-2xl" />
+                    <i v-show="loading != 1" class="fa fa-file-arrow-up text-2xl" />
 
                     <span v-show="loading !== 1" class="vicp-hint">{{ lang.hint }}</span>
 

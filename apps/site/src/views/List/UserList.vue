@@ -14,11 +14,4 @@
     import ListPage from '../App/ListPage.vue'
 
     const users = useUsersStore()
-
-    defineProps({
-        baseRoute: {
-            type: String,
-            required: true,
-        },
-    })
 </script>

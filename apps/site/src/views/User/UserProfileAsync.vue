@@ -7,7 +7,7 @@
                     <div class="absolute -bottom-8 left-8">
                         <UserAvatar
                             :img-src="user.avatar"
-                            size="4.5"
+                            :size="4.5"
                             :username="user.firstname + ' ' + user.lastname"
                         />
                     </div>

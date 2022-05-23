@@ -5,7 +5,7 @@
                 <div class="relative w-full h-48">
                     <div class="w-full h-full bg-blue-200" />
                     <div class="absolute -bottom-8 left-8">
-                        <UserAvatar :img-src="club.avatar" size="4.5" :username="club.name" />
+                        <UserAvatar :img-src="club.avatar" :size="4.5" :username="club.name" />
                     </div>
                 </div>
                 <div class="px-4 pb-6 mt-8 w-full shadow-lg">
