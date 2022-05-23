@@ -36,9 +36,9 @@ export const sections = computed(() => {
                           {
                               to: '/admin/association',
                               regActive: /^\/admin\/association/,
-                              textSmall: 'Association',
-                              textLarge: 'Association',
-                              icon: 'gear',
+                              textSmall: 'Admin asso',
+                              textLarge: 'Gestion des assos',
+                              icon: 'users-gear',
                           },
                       ],
                   },
@@ -143,18 +143,18 @@ export const sections = computed(() => {
                       name: 'Communauté',
                       links: [
                           {
-                              to: '/clubs/',
-                              regActive: /^\/clubs/,
-                              textSmall: 'Associations',
+                              to: '/search/clubs/',
+                              regActive: /^\/search\/clubs/,
+                              textSmall: 'Assos',
                               textLarge: 'Associations',
-                              icon: 'users',
+                              icon: 'people-group',
                           },
                           {
                               to: '/users/',
                               regActive: /^\/users/,
-                              textSmall: 'Utilisateurs',
+                              textSmall: 'Profils',
                               textLarge: 'Utilisateurs',
-                              icon: 'users',
+                              icon: 'user-group',
                           },
                           {
                               to: '/me/profile',

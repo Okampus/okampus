@@ -24,22 +24,6 @@
                 showUncollapsed ? 'gap-6' : 'gap-0.5',
             ]"
         >
-            <!-- <router-link
-                to="/"
-                class="flex items-center py-1.5 mt-2 mb-1 tab"
-                :class="[{ active: /^\/$/.test($route.path) }, showUncollapsed ? 'mx-2 mt-4' : 'mx-1.5']"
-            >
-                <div
-                    class="flex items-center w-full"
-                    :class="[showUncollapsed ? 'flex-row ml-3 gap-4' : 'flex-col mb-1']"
-                >
-                    <i class="shrink-0 text-base fas fa-home" />
-                    <span :class="showUncollapsed ? 'text-sm tracking-normal' : 'text-xs tracking-tight'"
-                        >Accueil</span
-                    >
-                </div>
-            </router-link> -->
-
             <ul v-for="(section, i) in sections" :key="i">
                 <p
                     v-if="showUncollapsed"
@@ -51,7 +35,7 @@
                     <li>
                         <router-link
                             :to="link.to"
-                            class="flex items-center my-1 tab reveal"
+                            class="flex items-center my-1 sidebar-tab reveal"
                             :class="[
                                 { active: link.regActive.test($route.path) },
                                 showUncollapsed ? 'mx-2 h-9' : 'mx-1.5 py-1',
@@ -79,13 +63,6 @@
                 </template>
             </ul>
 
-            <div
-                v-if="!auth.loggedIn && route.name !== 'Home'"
-                class="flex flex-col gap-2 justify-center items-center py-2 text-sm"
-            >
-                <LoginButton :only-icon="!showUncollapsed" />
-            </div>
-
             <div class="flex gap-4 justify-center items-center p-4">
                 <p class="text-sm text-bold" :class="{ 'hidden': !showUncollapsed }">Mode Sombre</p>
                 <SwitchInput :model-value="config.darkMode" @update:model-value="config.switchDarkMode()" />
@@ -97,13 +74,10 @@
 <script setup>
     import AppLogo from '@/components/App/AppLogo.vue'
     import SwitchInput from '@/components/Input/SwitchInput.vue'
-    import LoginButton from '@/components/Button/LoginButton.vue'
 
     import { sections } from '@/shared/navigation/sidebar-sections.enum'
     import { computed } from 'vue'
 
-    import { useAuthStore } from '@/store/auth.store'
-    import { useRoute } from 'vue-router'
     import { useUserConfigStore } from '@/store/user-config.store'
     import AppTip from '../App/AppTip.vue'
 
@@ -126,8 +100,6 @@
 
     const showUncollapsed = computed(() => props.uncollapsed || props.collapsing)
 
-    const auth = useAuthStore()
-    const route = useRoute()
     const config = useUserConfigStore()
 </script>
 
