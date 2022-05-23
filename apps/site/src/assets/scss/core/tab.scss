@@ -1,6 +1,11 @@
 @import '@/assets/scss/abstracts/placeholders/activable';
 @import '@/assets/scss/abstracts/placeholders/hoverable';
 
+.sidebar-tab {
+    @apply cursor-pointer rounded-lg;
+    @extend %sidebar-tab-hover, %sidebar-tab-active;
+}
+
 .tab {
     @apply cursor-pointer rounded-lg;
     @extend %tab-hover, %tab-active;

@@ -1,4 +1,4 @@
-%tab-active.active {
+%sidebar-tab-active.active {
     @apply bg-slate-600/50 text-blue-500;
 
     &:hover {
@@ -9,7 +9,23 @@
         @apply bg-slate-700/50 text-blue-600;
 
         &:hover {
-            @apply bg-slate-900/50 text-blue-500;
+            @apply bg-slate-900/30 text-blue-500;
+        }
+    }
+}
+
+%tab-active.active {
+    @apply bg-gray-400/30 text-blue-500;
+
+    &:hover {
+        @apply bg-gray-500/30 text-blue-600;
+    }
+
+    .dark & {
+        @apply bg-slate-700/50 text-blue-600;
+
+        &:hover {
+            @apply bg-slate-700/30 text-blue-500;
         }
     }
 }
