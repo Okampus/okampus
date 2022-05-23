@@ -5,17 +5,15 @@
     </div>
 </template>
 
-<script>
-    export default {
-        props: {
-            emoji: {
-                type: String,
-                required: true,
-            },
-            type: {
-                type: String,
-                default: 'text',
-            },
+<script setup>
+    defineProps({
+        emoji: {
+            type: String,
+            required: true,
         },
-    }
+        type: {
+            type: String,
+            default: 'text',
+        },
+    })
 </script>

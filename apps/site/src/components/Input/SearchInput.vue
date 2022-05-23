@@ -1,4 +1,3 @@
-/* eslint-disable */
 <template>
     <ais-instant-search
         :search-client="typesenseInstantsearchAdapter?.searchClient ?? (() => {})"
@@ -29,9 +28,7 @@
                                 ref="input"
                                 class="grow h-full bg-transparent outline-none"
                                 :placeholder="
-                                    modelValue.length == 0
-                                        ? 'Rechercher une ressource sur Okampus...'
-                                        : ''
+                                    modelValue.length == 0 ? 'Rechercher une ressource sur Okampus...' : ''
                                 "
                                 type="search"
                                 @input="refine($event.currentTarget.value), (indexSelected = null)"
@@ -58,11 +55,7 @@
                                         />
                                     </div>
                                     <div v-else class="flex flex-col gap-2 justify-center items-center h-24">
-                                        <AppEmoji
-                                            v-bind="
-                                                sadFaces[Math.floor(Math.random() * (sadFaces.length - 1))]
-                                            "
-                                        />
+                                        <AppSadFace />
                                         <div class="">Pas de résultat ...</div>
                                     </div>
                                 </template>
@@ -75,82 +68,69 @@
     </ais-instant-search>
 </template>
 
-<script>
+<script setup>
     import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
     import Popper from 'vue3-popper'
-    import AppEmoji from '../App/AppEmoji.vue'
+    import AppSadFace from '../AppSadFace.vue'
     import $typesense from '@/shared/config/typesense.config'
-    import sadFacesEnum from '@/shared/types/sad-faces.enum'
+    import { computed, ref } from 'vue'
 
-    export default {
-        components: {
-            AppEmoji,
-            Popper,
+    const props = defineProps({
+        indexObject: {
+            type: Object,
+            required: true,
         },
-        props: {
-            indexObject: {
-                type: Object,
-                required: true,
-            },
-            modelValue: {
-                type: Array,
-                required: true,
-            },
-            itemLimit: {
-                type: Number,
-                default() {
-                    return 0
+        modelValue: {
+            type: Array,
+            required: true,
+        },
+        itemLimit: {
+            type: Number,
+            default: 0,
+        },
+    })
+
+    const emit = defineEmits(['update:modelValue'])
+
+    const input = ref(null)
+
+    const keyEnter = ref(false)
+    const focusInput = ref(false)
+    const indexSelected = ref(null)
+
+    const indexName = computed(() => Object.getOwnPropertyNames(props.indexObject)[0])
+    const typesenseInstantsearchAdapter = computed(
+        () =>
+            new TypesenseInstantSearchAdapter({
+                ...$typesense,
+                additionalSearchParameters: {
+                    limit_hits: 10,
+                    per_page: 10,
                 },
-            },
-        },
-        emits: ['update:modelValue'],
-        data() {
-            return {
-                keyEnter: false,
-                focusInput: false,
-                indexSelected: null,
-                sadFaces: sadFacesEnum,
-                Math,
-            }
-        },
-        computed: {
-            indexName() {
-                return Object.getOwnPropertyNames(this.indexObject)[0]
-            },
-            typesenseInstantsearchAdapter() {
-                return new TypesenseInstantSearchAdapter({
-                    ...$typesense,
-                    additionalSearchParameters: {
-                        limit_hits: 10,
-                        per_page: 10,
-                    },
-                    collectionSpecificSearchParameters: this.indexObject,
-                })
-            },
-        },
-        methods: {
-            focusSearchbar() {
-                this.showSearchBar = true
-                if (this.modelValue.length != this.itemLimit) {
-                    this.$refs.input.focus()
-                }
-            },
-            addItem(item) {
-                this.$refs.input.value = ''
-                this.$refs.input.focus()
-                const temp = this.modelValue
-                if (temp.length == this.itemLimit) {
-                    temp.shift()
-                }
-                temp.push(item)
-                this.$emit('update:modelValue', temp)
-            },
-            deleteItem(item) {
-                const temp = this.modelValue
-                temp.pop(item)
-                this.$emit('update:modelValue', temp)
-            },
-        },
+                collectionSpecificSearchParameters: props.indexObject,
+            }),
+    )
+
+    const focusSearchbar = () => {
+        if (props.modelValue.length !== props.itemLimit) this.input.value.focus()
+    }
+
+    const addItem = (item) => {
+        emit('update:modelValue', [
+            ...(props.modelValue.length === props.itemLimit
+                ? [...props.modelValue.slice(1), item]
+                : [...props.modelValue, item]),
+            item,
+        ])
+        this.input.value.focus()
+        this.input.value.value = ''
+    }
+
+    const deleteItem = (item) => {
+        emit(
+            'update:modelValue',
+            props.modelValue.filter((i) => i !== item),
+        )
     }
 </script>
 
