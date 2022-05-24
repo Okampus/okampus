@@ -16,6 +16,7 @@ import { Public } from '../shared/lib/decorators/public.decorator';
 import { MyEfreiOidcEnabledGuard } from '../shared/lib/guards/myefrei-oidc-enabled.guard';
 import { User } from '../users/user.entity';
 import { AuthService } from './auth.service';
+import type { TokenResponse } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { MyEfreiAuthGuard } from './myefrei-auth.guard';
 
@@ -31,23 +32,18 @@ export class AuthController {
 
   @Public()
   @Post('login')
-  public async login(@Body() body: LoginDto, @Response({ passthrough: true }) res: Res):
-  Promise<User & { accessTokenExpiresAt: string; refreshTokenExpiresAt: string }> {
+  public async login(@Body() body: LoginDto, @Response({ passthrough: true }) res: Res): Promise<User> {
     const user = await this.authService.validatePassword(body.username, body.password);
     const login = await this.authService.login(user);
 
-    (user as User & { accessTokenExpiresAt: string; refreshTokenExpiresAt: string })
-    .accessTokenExpiresAt = login.accessTokenExpiresAt.toString();
+    // @ts-expect-error: This is a hack to make the login response work with the frontend.
+    user.accessTokenExpiresAt = login.accessTokenExpiresAt.toString();
+    // @ts-expect-error: This is a hack to make the login response work with the frontend.
+    user.refreshTokenExpiresAt = login.refreshTokenExpiresAt.toString();
 
-    (user as User & { accessTokenExpiresAt: string; refreshTokenExpiresAt: string })
-    .refreshTokenExpiresAt = login.refreshTokenExpiresAt.toString();
+    this.addAuthCookies(res, login);
 
-    res.cookie('accessToken', login.accessToken, { ...cookieOptions, maxAge: config.get('tokens.accessTokenExpirationSeconds') * 1000 })
-      .cookie('refreshToken', login.refreshToken, { ...cookieOptions, maxAge: config.get('tokens.refreshTokenExpirationSeconds') * 1000 })
-      .cookie('accessTokenExpiresAt', login.accessTokenExpiresAt, cookiePublicOptions)
-      .cookie('refreshTokenExpiresAt', login.refreshTokenExpiresAt, cookiePublicOptions);
-
-    return user as User & { accessTokenExpiresAt: string; refreshTokenExpiresAt: string };
+    return user;
   }
 
   @Public()
@@ -63,10 +59,7 @@ export class AuthController {
   public async myefreiCallback(@CurrentUser() user: User, @Response() res: Res): Promise<void> {
     const login = await this.authService.login(user);
 
-    res.cookie('accessToken', login.accessToken, { ...cookieOptions, maxAge: config.get('tokens.accessTokenExpirationSeconds') * 1000 })
-      .cookie('refreshToken', login.refreshToken, { ...cookieOptions, maxAge: config.get('tokens.refreshTokenExpirationSeconds') * 1000 })
-      .cookie('accessTokenExpiresAt', login.accessTokenExpiresAt, cookiePublicOptions)
-      .cookie('refreshTokenExpiresAt', login.refreshTokenExpiresAt, cookiePublicOptions)
+    this.addAuthCookies(res, login)
       .redirect(`${computedConfig.frontendUrl + (config.get('nodeEnv') === 'development' ? '/#' : '')}/auth`);
   }
 
@@ -95,5 +88,12 @@ export class AuthController {
     user.refreshTokenExpiresAt = req.signedCookies.refreshTokenExpiresAt;
 
     return user;
+  }
+
+  private addAuthCookies(res: Res, tokens: TokenResponse): Res {
+    return res.cookie('accessToken', tokens.accessToken, { ...cookieOptions, maxAge: config.get('tokens.accessTokenExpirationSeconds') * 1000 })
+      .cookie('refreshToken', tokens.refreshToken, { ...cookieOptions, maxAge: config.get('tokens.refreshTokenExpirationSeconds') * 1000 })
+      .cookie('accessTokenExpiresAt', tokens.accessTokenExpiresAt, cookiePublicOptions)
+      .cookie('refreshTokenExpiresAt', tokens.refreshTokenExpiresAt, cookiePublicOptions);
   }
 }
