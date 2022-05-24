@@ -12,7 +12,7 @@
                         j === 0 ? 'rounded-t' : '',
                         j === tabParent.tabs.length - 1 ? 'rounded-b' : '',
                     ]"
-                    @click="setTab(tab)"
+                    @click="setTab(tab, true)"
                 >
                     <div class="whitespace-nowrap">{{ tab.name }}</div>
                     <LabelSimple v-if="tab.amount" class="ml-6 bg-gray-500/50 hover:bg-gray-500/50">{{
@@ -32,7 +32,7 @@
                     i === 0 ? 'rounded-t' : '',
                     i === tabs.length - 1 ? 'rounded-b' : '',
                 ]"
-                @click="setTab(tabParent)"
+                @click="setTab(tabParent, true)"
             >
                 <div>{{ tabParent.name }}</div>
                 <div v-if="tabParent.amount" class="ml-6">({{ tabParent.amount }})</div>
@@ -82,13 +82,15 @@
 
     const route = useRoute()
 
-    const setTab = (tab) => {
+    const setTab = (tab, force = false) => {
         emit('update:modelValue', tab.id)
-        history.pushState(
-            {},
-            null,
-            (import.meta.env.DEV ? '/#' : '') + (tab.route ? tab.route : `${props.baseRoute}/${tab.id}`),
-        )
+        if (tab.strict || force) {
+            history.pushState(
+                {},
+                null,
+                (import.meta.env.DEV ? '/#' : '') + (tab.route ? tab.route : `${props.baseRoute}/${tab.id}`),
+            )
+        }
     }
 
     const setCurrentTab = () => {
@@ -109,25 +111,24 @@
 
         if (tab) {
             setTab(tab)
-            return
+        } else {
+            emitter.emit('show-toast', {
+                message: `L'onglet '${route.fullPath
+                    .split(props.baseRoute)[1]
+                    .slice(1)}' n'existe pas. Redirection sur l'onglet par défaut ↪️`,
+                type: 'warning',
+                duration: 5000,
+            })
+
+            const defaultTab = isMultiTab
+                ? props.tabs
+                      .map((tab) => tab.tabs)
+                      .flat()
+                      .find((tab) => tab.id === props.defaultTabId)
+                : props.tabs.find((tab) => tab.id === props.defaultTabId)
+
+            setTab(defaultTab, true)
         }
-
-        emitter.emit('show-toast', {
-            message: `L'onglet '${route.fullPath
-                .split(props.baseRoute)[1]
-                .slice(1)}' n'existe pas. Redirection sur l'onglet par défaut ↪️`,
-            type: 'warning',
-            duration: 5000,
-        })
-
-        const defaultTab = isMultiTab
-            ? props.tabs
-                  .map((tab) => tab.tabs)
-                  .flat()
-                  .find((tab) => tab.id === props.defaultTabId)
-            : props.tabs.find((tab) => tab.id === props.defaultTabId)
-
-        setTab(defaultTab)
     }
 
     setTab(
