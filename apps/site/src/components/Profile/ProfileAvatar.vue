@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-    import colors from '@/shared/assets/colors'
+    import { getColorFromData } from '@/utils/colors'
 
     defineProps({
         avatar: {
@@ -57,14 +57,6 @@
             default: true,
         },
     })
-
-    const getColorFromData = (string) => {
-        const hash = string.split('').reduce((a, b) => {
-            a = (a << 5) - a + b.charCodeAt(0)
-            return a & a
-        }, 0)
-        return colors[((hash % colors.length) + colors.length) % colors.length]
-    }
 
     const getInitialsFromName = (name) => {
         const nameArray = name.split(' ')

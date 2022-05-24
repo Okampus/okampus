@@ -4,7 +4,7 @@
     >
         <ProfileBanner
             class="w-full h-20 rounded-t-lg"
-            :img-src="club.banner"
+            :banner="club.banner"
             :name="club.name"
             :data="club.category"
         />
