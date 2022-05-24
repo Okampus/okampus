@@ -1,4 +1,4 @@
-export default [
+export const ROLES = [
     {
         key: 'student',
         fr: 'Étudiant',
@@ -29,4 +29,5 @@ export default [
     },
 ]
 
-export const DEFAULT_ROLE = 'no-role'
+export const DEFAULT_ROLE_NAME = 'no-role'
+export const DEFAULT_ROLE = ROLES.find((role) => role.key === DEFAULT_ROLE_NAME)

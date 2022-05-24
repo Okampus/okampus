@@ -39,7 +39,7 @@
 
 <style lang="scss">
     .profile-banner {
-        @apply text-center;
+        @apply text-center bg-white text-black;
 
         &::before {
             @apply text-sm h-full block overflow-hidden text-ellipsis;

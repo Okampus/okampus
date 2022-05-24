@@ -36,9 +36,8 @@
 
 <script>
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-
-    import schoolRolesEnum, { DEFAULT_ROLE } from '@/shared/types/school-roles.enum'
     import LabelTag from '@/components/UI/Label/LabelTag.vue'
+    import { getRole } from '@/utils/users'
 
     export default {
         components: { ProfileAvatar, LabelTag },
@@ -50,9 +49,7 @@
         },
         data() {
             return {
-                schoolRoleItem: schoolRolesEnum.find(
-                    (role) => role.key === (this.user.schoolRole || DEFAULT_ROLE),
-                ),
+                schoolRoleItem: getRole(this.user),
             }
         },
     }

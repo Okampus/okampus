@@ -68,10 +68,10 @@
 
 <style lang="scss">
     .profile-avatar {
-        @apply flex shrink-0 justify-center items-center select-none text-center;
+        @apply flex shrink-0 justify-center items-center select-none text-center bg-white;
 
         &::before {
-            @apply text-sm h-full block overflow-hidden text-ellipsis rounded-xl text-0-light dark:text-0-dark;
+            @apply text-sm h-full block overflow-hidden text-ellipsis rounded-xl text-black;
         }
 
         &.full::before {
