@@ -60,32 +60,11 @@ export class TeamsService {
       .execute();
     const allMemberCounts = new Map(memberCountResult.map(entry => [entry.team, entry.count]));
 
-    // TODO: 💩 to improve & optimize
-    const ownerResult: Array<{ team: number; user: User }> = await this.teamMemberRepository
-      .createQueryBuilder('teamMember')
-      .select(['team', 'user'])
-      .where({ role: TeamRole.Owner })
-      .joinAndSelect('user', 'user')
-      .execute();
-    const allOwners = new Map(ownerResult.map(entry => [entry.team, entry.user]));
-
-    // TODO: 💩 to improve & optimize
-    const treasurerResult: Array<{ team: number; user: User }> = await this.teamMemberRepository
-      .createQueryBuilder('teamMember')
-      .select(['team', 'user'])
-      .where({ role: TeamRole.Treasurer })
-      .joinAndSelect('user', 'user')
-      .execute();
-    const allTreasurers = new Map(treasurerResult.map(entry => [entry.team, entry.user]));
-
-    // TODO: 💩 to improve & optimize
-    const secretaryResult: Array<{ team: number; user: User }> = await this.teamMemberRepository
-      .createQueryBuilder('teamMember')
-      .select(['team', 'user'])
-      .where({ role: TeamRole.Secretary })
-      .joinAndSelect('user', 'user')
-      .execute();
-    const allSecretaries = new Map(secretaryResult.map(entry => [entry.team, entry.user]));
+    const boardRoles = [TeamRole.Owner, TeamRole.Treasurer, TeamRole.Secretary];
+    const teamBoardMembers = await this.teamMemberRepository.find(
+      { role: { $in: boardRoles } },
+      { populate: ['team', 'user'] },
+    );
 
     const allTeams = await this.teamRepository.findWithPagination(
       paginationOptions,
@@ -98,13 +77,14 @@ export class TeamsService {
       // @ts-expect-error: We add a new property to the object, but it's fine.
       team.memberCount = Number(allMemberCounts.get(team.teamId) ?? 0);
 
-      // TODO: 💩 💩 💩 to improve & optimize
-      (team as Team & { owner: User | null; treasurer: User | null; secretary: User | null })
-        .owner = allOwners.get(team.teamId) ?? null;
-      (team as Team & { owner: User | null; treasurer: User | null;
-        secretary: User | null; }).treasurer = allTreasurers.get(team.teamId) ?? null;
-      (team as Team & { owner: User | null; treasurer: User | null;
-        secretary: User | null; }).secretary = allSecretaries.get(team.teamId) ?? null;
+      const predicate = (role: TeamRole) =>
+        (member: TeamMember) => member.team.teamId === team.teamId && member.role === role;
+      // @ts-expect-error: We add a new property to the object, but it's fine.
+      team.owner = teamBoardMembers.find(predicate(TeamRole.Owner))?.user ?? null;
+      // @ts-expect-error: We add a new property to the object, but it's fine.
+      team.treasurer = teamBoardMembers.find(predicate(TeamRole.Treasurer))?.user ?? null;
+      // @ts-expect-error: We add a new property to the object, but it's fine.
+      team.secretary = teamBoardMembers.find(predicate(TeamRole.Secretary))?.user ?? null;
 
       return team;
     });
