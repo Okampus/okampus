@@ -1,7 +1,11 @@
 <template>
     <router-link to="/" class="flex items-center cursor-pointer select-none">
         <div
-            class="mr-[0.5rem] w-[7.5rem] h-[2.5rem] logo"
+            class="mr-[0.5rem] logo"
+            :style="{
+                width: `${scale * 7.5}rem`,
+                height: `${scale * 2.5}rem`,
+            }"
             :="only === 'none' ? { 'allow-dark': '' } : only === 'dark' ? { 'dark': '' } : {}"
         />
         <!-- <img
@@ -23,8 +27,8 @@
     export default {
         props: {
             scale: {
-                type: String,
-                default: '1',
+                type: Number,
+                default: 1,
             },
             only: {
                 type: String,

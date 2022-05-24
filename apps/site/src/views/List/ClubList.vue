@@ -1,10 +1,14 @@
 <template>
-    <Suspense>
-        <ClubsListAsync />
-        <template #fallback>
-            <AppLoader :size="3" />
-        </template>
-    </Suspense>
+    <Transition mode="out-in" name="switch-fade">
+        <keep-alive>
+            <Suspense>
+                <ClubsListAsync />
+                <template #fallback>
+                    <AppLoader />
+                </template>
+            </Suspense>
+        </keep-alive>
+    </Transition>
 </template>
 
 <script setup>
