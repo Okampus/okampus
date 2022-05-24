@@ -32,11 +32,11 @@
                             >
                                 <div class="flex gap-3 px-4 pt-4">
                                     <UserAvatar :img-src="auth.user.avatar" :username="auth.user.fullname" />
-                                    <div>
-                                        <div class="font-bold line-clamp-1">
+                                    <div class="w-[calc(100%-5rem)]">
+                                        <div class="overflow-hidden font-bold text-ellipsis">
                                             {{ auth.user.fullname }}
                                         </div>
-                                        <div class="line-clamp-1">{{ auth.user.email }}</div>
+                                        <div class="overflow-hidden text-ellipsis">{{ auth.user.email }}</div>
                                     </div>
                                 </div>
 
