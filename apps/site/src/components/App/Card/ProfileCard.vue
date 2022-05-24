@@ -1,7 +1,7 @@
 <template>
     <div class="flex p-4 xs:rounded-xl bg-content">
         <div class="my-auto min-w-fit">
-            <ProfileAvatar :img-src="user.avatar" :username="user.fullname" />
+            <ProfileAvatar :avatar="user.avatar" :name="user.fullname" />
         </div>
         <div class="flex flex-col justify-between ml-4">
             <div>

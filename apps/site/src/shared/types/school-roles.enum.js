@@ -20,6 +20,13 @@ export default [
         icon: 'shield-alt',
         color: 'red',
     },
+    {
+        key: 'no-role',
+        fr: 'N/A',
+        en: 'N/A',
+        icon: 'ghost',
+        color: 'gray',
+    },
 ]
 
-export const DEFAULT_ROLE = 'okampus'
+export const DEFAULT_ROLE = 'no-role'

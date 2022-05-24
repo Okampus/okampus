@@ -9,8 +9,8 @@
                         <div class="flex flex-col mr-8 mb-4 w-fit">
                             <div class="relative mx-auto mb-2">
                                 <ProfileAvatar
-                                    :img-src="me.avatar"
-                                    :username="me.firstname + ' ' + me.lastname"
+                                    :avatar="me.avatar"
+                                    :name="me.firstname + ' ' + me.lastname"
                                     :size="5"
                                 />
 

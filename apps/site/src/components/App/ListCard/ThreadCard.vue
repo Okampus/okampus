@@ -73,8 +73,8 @@
             <div class="flex gap-6 items-center mt-1 w-full text-xs">
                 <div class="flex gap-2 items-center">
                     <ProfileAvatar
-                        :img-src="thread.post.author.avatar"
-                        :username="fullname(thread.post.author)"
+                        :avatar="thread.post.author.avatar"
+                        :name="fullname(thread.post.author)"
                         :size="1.8"
                     />
                     <div class="text-xs">

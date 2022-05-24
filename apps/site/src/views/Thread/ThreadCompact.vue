@@ -11,9 +11,9 @@
 
         <!-- <div class="flex flex-row gap-3">
             <ProfileAvatar
-                :img-src="thread.getUser(thread._post.author).avatar"
+                :avatar="thread.getUser(thread._post.author).avatar"
                 :size="size"
-                :username="fullname(thread.getUser(thread._post.author))"
+                :name="fullname(thread.getUser(thread._post.author))"
             />
             <div class="flex flex-col">
                 <div>

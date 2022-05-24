@@ -1,89 +1,91 @@
 <template>
-    <div
-        role="img"
-        :alt="`Photo de profil de ${username}`"
+    <img
+        v-if="avatar"
         :style="{
             width: `${size}rem`,
             height: `${size}rem`,
-            ...(imgSrc
-                ? { background: `no-repeat url(${imgSrc})`, backgroundSize: 'cover' }
-                : { backgroundColor: getColorFromData(username) }),
         }"
-        class="shrink-0 select-none avatar"
-        :class="[
-            { 'flex items-center justify-center': !imgSrc },
-            roundedFull ? 'rounded-full' : 'rounded-xl',
-        ]"
+        loading="lazy"
+        class="profile-avatar"
+        :src="avatar"
+        :alt="`${name}`"
+        :title="`Photo de profil de ${name}`"
+        :class="[roundedFull ? 'rounded-full full' : 'rounded-xl']"
+    />
+
+    <div
+        v-else
+        role="img"
+        :alt="`${name}`"
+        :title="`Photo de profil de ${name}`"
+        :style="{
+            width: `${size}rem`,
+            height: `${size}rem`,
+            backgroundColor: getColorFromData(name),
+        }"
+        class="profile-avatar"
+        :class="[roundedFull ? 'rounded-full full' : 'rounded-xl']"
     >
-        <div v-if="!imgSrc" class="m-auto w-fit h-fit text-white" :style="{ fontSize: `${size / 2.3}rem` }">
-            {{ getInitialsFromName(username) }}
+        <div class="m-auto w-fit h-fit text-white" :style="{ fontSize: `${size / 2.3}rem` }">
+            {{ getInitialsFromName(name) }}
         </div>
     </div>
 </template>
 
-<script>
-    export default {
-        props: {
-            imgSrc: {
-                type: String,
-                default: null,
-            },
-            profileLink: {
-                type: String,
-                default: null,
-            },
-            size: {
-                type: Number,
-                default: 3,
-            },
-            username: {
-                type: String,
-                default: 'Anonyme',
-            },
-            roundedFull: {
-                type: Boolean,
-                default: true,
-            },
+<script setup>
+    import colors from '@/shared/assets/colors'
+
+    defineProps({
+        avatar: {
+            type: String,
+            default: null,
         },
-        data: function () {
-            return {
-                colors: [
-                    '#00a854',
-                    '#dd0031',
-                    '#f5a623',
-                    '#5e2ca5',
-                    '#ff0097',
-                    '#ff9502',
-                    '#00b8d4',
-                    '#868e96',
-                    '#1e90aa',
-                    '#f5c542',
-                    '#9c27b0',
-                    '#888',
-                ],
-            }
+        name: {
+            type: String,
+            default: 'Anonyme',
         },
-        methods: {
-            getColorFromData(string) {
-                const hash = string.split('').reduce((a, b) => {
-                    a = (a << 5) - a + b.charCodeAt(0)
-                    return a & a
-                }, 0)
-                return this.colors[((hash % this.colors.length) + this.colors.length) % this.colors.length]
-            },
-            getInitialsFromName(name) {
-                const nameArray = name.split(' ')
-                return (
-                    nameArray[0].charAt(0) +
-                    (nameArray.length > 1 ? nameArray[nameArray.length - 1].charAt(0) : '')
-                )
-            },
+        profileLink: {
+            type: String,
+            default: null,
         },
+        size: {
+            type: Number,
+            default: 3,
+        },
+        roundedFull: {
+            type: Boolean,
+            default: true,
+        },
+    })
+
+    const getColorFromData = (string) => {
+        const hash = string.split('').reduce((a, b) => {
+            a = (a << 5) - a + b.charCodeAt(0)
+            return a & a
+        }, 0)
+        return colors[((hash % colors.length) + colors.length) % colors.length]
+    }
+
+    const getInitialsFromName = (name) => {
+        const nameArray = name.split(' ')
+        return (
+            nameArray[0].charAt(0) + (nameArray.length > 1 ? nameArray[nameArray.length - 1].charAt(0) : '')
+        )
     }
 </script>
 
 <style lang="scss">
-    .avatar {
+    .profile-avatar {
+        @apply flex shrink-0 justify-center items-center select-none text-center;
+
+        &::before {
+            @apply text-sm h-full block overflow-hidden text-ellipsis rounded-xl text-0-light dark:text-0-dark;
+        }
+
+        &.full::before {
+            @apply rounded-full;
+        }
+
         box-shadow: inset 0 0 7px rgb(0 0 0 / 15%);
 
         .dark & {

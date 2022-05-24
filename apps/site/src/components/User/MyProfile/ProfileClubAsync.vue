@@ -60,9 +60,9 @@
                             >
                                 <td class="flex gap-2 my-1 w-60">
                                     <ProfileAvatar
-                                        :img-src="_club.team.avatar"
+                                        :avatar="_club.team?.avatar"
                                         size="2"
-                                        :username="_club.team.name"
+                                        :name="_club.team?.name"
                                     />
                                     <div class="truncate">
                                         {{ _club.team.name }}
@@ -100,7 +100,7 @@
                                 class="flex gap-2 items-center w-full even:bg-gray-200"
                             >
                                 <td class="flex gap-2 my-1 w-60">
-                                    <ProfileAvatar :img-src="_club.avatar" size="2" :username="_club.name" />
+                                    <ProfileAvatar :avatar="_club?.avatar" size="2" :name="_club?.name" />
                                     <div class="my-auto truncate w-50">
                                         {{ _club.name }}
                                     </div>
@@ -149,7 +149,7 @@
                                     <div class="flex flex-col mr-8 mb-4 w-fit">
                                         <div class="relative mx-auto mb-2">
                                             <ProfileAvatar
-                                                :img-src="clubSelected.team.avatar"
+                                                :avatar="clubSelected.team.avatar"
                                                 :alt="clubSelected.team.name + ' icon'"
                                                 :size="5"
                                                 :username="clubSelected.team.name"
@@ -203,10 +203,10 @@
                                         >
                                             <td class="flex gap-2 items-center w-44">
                                                 <ProfileAvatar
-                                                    :img-src="request.user.avatar"
+                                                    :avatar="request.user.avatar"
                                                     :alt="request.user.name + ' icon'"
                                                     :size="2"
-                                                    :username="
+                                                    :name="
                                                         request.user.firstname + ' ' + request.user.lastname
                                                     "
                                                 />
@@ -246,10 +246,10 @@
                                     >
                                         <td class="my-1">
                                             <ProfileAvatar
-                                                :img-src="member.user.avatar"
+                                                :avatar="member.user.avatar"
                                                 :alt="member.user.name + ' icon'"
                                                 :size="2"
-                                                :username="member.user.firstname + ' ' + member.user.lastname"
+                                                :name="member.user.firstname + ' ' + member.user.lastname"
                                             />
                                         </td>
                                         <td class="w-44 truncate">
@@ -299,7 +299,7 @@
                             <ul>
                                 <li v-for="member in clubMembers" :key="member" class="flex gap-4">
                                     <ProfileAvatar
-                                        :src="member.user.avatar"
+                                        :avatar="member.user.avatar"
                                         :alt="`${member.user.fullname}'s' avatar`"
                                         size="8"
                                         class="my-auto"

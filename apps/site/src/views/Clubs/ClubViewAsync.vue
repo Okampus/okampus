@@ -5,7 +5,7 @@
                 <div class="relative w-full h-48">
                     <div class="w-full h-full bg-blue-200" />
                     <div class="absolute -bottom-8 left-8">
-                        <ProfileAvatar :img-src="club.avatar" :size="4.5" :username="club.name" />
+                        <ProfileAvatar :avatar="club.avatar" :size="4.5" :name="club.name" />
                     </div>
                 </div>
                 <div class="px-4 pb-6 mt-8 w-full shadow-lg">
@@ -33,9 +33,9 @@
                         class="flex flex-col flex-wrap justify-between items-center p-4 mb-4 w-48 h-48 rounded-lg shadow-md bg-2"
                     >
                         <ProfileAvatar
-                            :img-src="club.members.find((member) => member.role === 'owner').avatar"
+                            :avatar="club.members.find((member) => member.role === 'owner').avatar"
                             size="6"
-                            :username="
+                            :name="
                                 club.members.find((member) => member.role === 'owner').user.firstname +
                                 ' ' +
                                 club.members.find((member) => member.role === 'owner').user.lastname
@@ -59,9 +59,9 @@
                         class="flex flex-col flex-wrap justify-between items-center p-4 mb-4 w-48 h-48 rounded-lg shadow-md bg-2"
                     >
                         <ProfileAvatar
-                            :img-src="club.members.find((member) => member.role === 'owner').avatar"
+                            :avatar="club.members.find((member) => member.role === 'owner').avatar"
                             size="6"
-                            :username="
+                            :name="
                                 club.members.find((member) => member.role === 'owner').user.firstname +
                                 ' ' +
                                 club.members.find((member) => member.role === 'owner').user.lastname

@@ -5,7 +5,7 @@
             <div class="flex flex-col gap-4 items-start mx-5">
                 <div class="flex justify-between w-full">
                     <div class="p-1 -mt-10 rounded-full bg-1">
-                        <ProfileAvatar :img-src="user.avatar" :size="4.5" :username="fullname(user)" />
+                        <ProfileAvatar :avatar="user?.avatar" :size="4.5" :name="fullname(user)" />
                     </div>
                     <!-- TODO: buttons -->
                 </div>

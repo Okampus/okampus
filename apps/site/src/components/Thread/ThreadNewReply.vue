@@ -17,7 +17,7 @@
                 first ? 'border-2 border-blue-100 dark:border-blue-900 rounded-b-lg' : 'shadow-md rounded-lg'
             "
         >
-            <ProfileAvatar :img-src="auth?.user?.avatar" :username="auth?.user?.fullname" />
+            <ProfileAvatar :avatar="auth.user?.avatar" :username="fullname(auth.user)" />
             <div class="mt-2 ml-3 arrow-left bg-1" />
             <div class="block w-[calc(100%-6rem)]">
                 <MdEditor v-model="body" uid="new-reply" :sendable="true" @send="sendReply" />
@@ -29,15 +29,16 @@
 <script setup>
     import AlertInline from '@/components/UI/Alert/AlertInline.vue'
 
-    import { REPLY } from '@/shared/types/content-kinds.enum'
-
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import MdEditor from '@/components/Input/Editor/MdEditor.vue'
+
+    import { emitter } from '@/shared/modules/emitter'
 
     import { useAuthStore } from '@/store/auth.store'
     import { useThreadsStore } from '@/store/threads.store'
 
-    import { emitter } from '@/shared/modules/emitter'
+    import { REPLY } from '@/shared/types/content-kinds.enum'
+    import { fullname } from '@/utils/users'
 
     import { ref } from 'vue'
 

@@ -6,9 +6,9 @@
                     <div class="w-full h-full banner" />
                     <div class="absolute -bottom-8 left-8">
                         <ProfileAvatar
-                            :img-src="user.avatar"
+                            :avatar="user.avatar"
                             :size="4.5"
-                            :username="user.firstname + ' ' + user.lastname"
+                            :name="user.firstname + ' ' + user.lastname"
                         />
                     </div>
                 </div>
@@ -40,9 +40,9 @@
                                 <div v-for="club in clubs.items" :key="club" class="flex mr-4 mb-4 h-16">
                                     <p class="my-auto">
                                         <ProfileAvatar
-                                            :img-src="club.team.avatar"
+                                            :avatar="club.team.avatar"
                                             :alt="`${club.team.name} Logo`"
-                                            :username="club.team.name"
+                                            :name="club.team.name"
                                             size="4"
                                             class="rounded-full shadow-inner"
                                         ></ProfileAvatar>

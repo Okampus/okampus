@@ -14,7 +14,7 @@
                 />
                 <div class="flex mt-3 min-w-fit lg:m-0">
                     <div class="flex pr-4 min-w-fit lg:ml-3">
-                        <ProfileAvatar :img-src="user.avatar" :username="user.fullname" />
+                        <ProfileAvatar :avatar="user.avatar" :name="user.fullname" />
                         <div class="flex flex-col ml-3 text-sm text-0">
                             <p class="whitespace-nowrap">Poster en tant que</p>
                             <strong class="text-base whitespace-nowrap">{{ user.fullname }}</strong>

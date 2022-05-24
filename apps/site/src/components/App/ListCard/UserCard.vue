@@ -1,14 +1,19 @@
 <template>
     <div class="flex gap-4 p-4 mx-4 xs:rounded-xl bg-content">
-        <ProfileAvatar :size="4" class="px-2 my-auto min-w-fit" :img-src="user.avatar" :username="fullname" />
+        <ProfileAvatar
+            :size="4"
+            class="px-2 my-auto min-w-fit"
+            :avatar="user.avatar"
+            :name="fullname(user)"
+        />
         <div class="flex flex-col gap-1.5 ml-4">
             <div class="flex gap-3 text-lg text-0 align-items">
-                <div class="my-auto font-bold">{{ fullname }}</div>
+                <div class="my-auto font-bold">{{ fullname(user) }}</div>
                 <LabelTag
                     class="text-sm"
-                    :tag-name="roleItem[$i18n.locale]"
-                    :tag-color="roleItem.color"
-                    :icon="roleItem.icon"
+                    :tag-name="role[$i18n.locale]"
+                    :tag-color="role.color"
+                    :icon="role.icon"
                 />
                 <TipPopper :tip="`${user.points} points`">
                     <div class="flex gap-2 w-fit text-5 align-items">
@@ -35,7 +40,8 @@
     import TipPopper from '@/components/UI/Tip/TipPopper.vue'
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    import rolesEnum from '@/shared/types/school-roles.enum'
+
+    import { fullname, getRole } from '@/utils/users'
 
     const props = defineProps({
         user: {
@@ -44,6 +50,5 @@
         },
     })
 
-    const fullname = props.user.firstname.split(' ')[0] + ' ' + props.user.lastname
-    const roleItem = rolesEnum.find((role) => role.key === props.user.schoolRole)
+    const role = getRole(props.user)
 </script>

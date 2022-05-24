@@ -14,9 +14,9 @@
                     <div class="p-1 -mt-10 rounded-2xl bg-2">
                         <ProfileAvatar
                             :rounded-full="false"
-                            :img-src="club.avatar"
+                            :avatar="club.avatar"
                             :size="4.5"
-                            :username="club.name"
+                            :name="club.name"
                         />
                     </div>
                     <router-link class="mt-2" :to="`/clubs/${clubTypes[club.category].link}`">
@@ -67,8 +67,8 @@
                                             class="relative border-2 border-2-light dark:border-2-dark !shadow-none"
                                             :class="specialMembersActive[i] ? 'hovered' : ''"
                                             :size="3"
-                                            :img-src="specialMember.member.avatar"
-                                            :username="fullname(specialMember.member)"
+                                            :avatar="specialMember.member.avatar"
+                                            :name="fullname(specialMember.member)"
                                         />
                                     </template>
                                     <template v-else>
@@ -76,8 +76,8 @@
                                             <ProfileAvatar
                                                 class="relative border-2 border-2-light dark:border-2-dark !shadow-none cursor-pointer hovered"
                                                 :size="3"
-                                                :img-src="specialMember.member.avatar"
-                                                :username="fullname(specialMember.member)"
+                                                :avatar="specialMember.member.avatar"
+                                                :name="fullname(specialMember.member)"
                                             />
                                         </router-link>
                                     </template>

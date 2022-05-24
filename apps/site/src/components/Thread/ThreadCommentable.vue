@@ -41,9 +41,9 @@
             <div class="flex flex-row justify-between items-center">
                 <div class="flex gap-3 items-center">
                     <ProfileAvatar
-                        :img-src="content._author.avatar"
+                        :avatar="content._author.avatar"
                         :size="2.5"
-                        :username="fullname(content._author)"
+                        :name="fullname(content._author)"
                     />
                     <div>
                         {{ fullname(content._author) }}

@@ -24,21 +24,18 @@
                     <Popper offset-distance="6" offset-skid="-80">
                         <ProfileAvatar
                             class="cursor-pointer"
-                            :img-src="auth.user.avatar"
-                            :username="auth.user.fullname"
+                            :avatar="auth.user.avatar"
+                            :name="fullname(auth.user)"
                         />
                         <template #content>
                             <div
                                 class="flex flex-col gap-2 pb-2 w-64 bg-white/95 dark:bg-gray-800/95 rounded-b-lg shadow-md"
                             >
                                 <div class="flex gap-3 px-4 pt-4">
-                                    <ProfileAvatar
-                                        :img-src="auth.user.avatar"
-                                        :username="auth.user.fullname"
-                                    />
+                                    <ProfileAvatar :avatar="auth.user.avatar" :name="fullname(auth.user)" />
                                     <div class="w-[calc(100%-5rem)]">
                                         <div class="overflow-hidden font-bold text-ellipsis">
-                                            {{ auth.user.fullname }}
+                                            {{ fullname(auth.user) }}
                                         </div>
                                         <div class="overflow-hidden text-ellipsis">{{ auth.user.email }}</div>
                                     </div>
@@ -78,6 +75,8 @@
     import { emitter } from '@/shared/modules/emitter'
     import { useAuthStore } from '@/store/auth.store'
     import { useRoute } from 'vue-router'
+
+    import { fullname } from '@/utils/users'
 
     const auth = useAuthStore()
     const route = useRoute()
