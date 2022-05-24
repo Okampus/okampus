@@ -81,10 +81,10 @@
         await clubs
             .getClubs()
             .then((res) => {
-                clubList.value = res.items
-                clubListByCategory.value = groupBy(res.items, 'category')
+                clubList.value = res
+                clubListByCategory.value = groupBy(res, 'category')
 
-                tabs[ALL].tabs[ALL].amount = res.items.length
+                tabs[ALL].tabs[ALL].amount = res.length
 
                 categories.value = Object.keys(clubListByCategory.value)
                 tabs[CATEGORIES].tabs = Object.entries(clubListByCategory.value).map((category) => ({
@@ -97,10 +97,6 @@
                 emitter.emit('error-route', { code: getStatus(err.response) })
             })
     }
-
-    // const closePopUp = () => {
-    //     showPopUp.value = false
-    // }
 
     await loadClubList()
 </script>

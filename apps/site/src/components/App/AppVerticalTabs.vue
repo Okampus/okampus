@@ -1,9 +1,5 @@
 <template>
     <div class="flex flex-col shrink-0 p-2 h-fit rounded bg-2 text-2" :class="isMultiTab ? 'py-4' : 'gap-2'">
-        <!-- {{ route.params.tab }}
-        {{ route.path }}
-        {{ modelValue }}
-        {{ route.fullPath.split(props.baseRoute)[1] }} -->
         <template v-for="(tabParent, i) in tabs" :key="i">
             <div v-if="isMultiTab" class="flex flex-col grow-0">
                 <div class="mb-2 ml-3 text-xs font-bold uppercase text-5">{{ tabParent.title }}</div>
@@ -19,7 +15,9 @@
                     @click="setTab(tab)"
                 >
                     <div class="whitespace-nowrap">{{ tab.name }}</div>
-                    <div v-if="tab.amount" class="ml-8">({{ tab.amount }})</div>
+                    <AppLabel v-if="tab.amount" class="ml-8 bg-gray-500/50 hover:bg-gray-500/50">{{
+                        abbrNumbers(tab.amount)
+                    }}</AppLabel>
                 </div>
                 <hr
                     v-if="i !== tabs.length - 1"
@@ -44,11 +42,13 @@
 </template>
 
 <script setup>
-    // import { isNil } from 'lodash'
-    // import { watchEffect } from 'vue'
+    import AppLabel from './AppLabel.vue'
+
     import { emitter } from '@/shared/modules/emitter'
     import { watch } from 'vue'
     import { useRoute } from 'vue-router'
+
+    import { abbrNumbers } from '@/utils/abbrNumbers'
 
     const props = defineProps({
         tabs: {
@@ -153,22 +153,6 @@
 
     setCurrentTab()
 
-    // const setTab = (tabId) => {
-    //     const tab =
-    //         props.tabs.find((t) => t.id === tabId || ) ?? props.tabs.find((t) => t.id === props.defaultTabId)
-    //     history.pushState({}, null, tab.route ? tab.route : `${props.baseRoute}/${tab.id}`)
-    //     emit('update:modelValue', tab.id)
-    // }
-
-    // setTab(route?.params?.tab)
-
-    // const getTab = (route) =>
-    //     props.tabs.map((tab) => tab.id).includes(route?.params?.tab)
-    //         ? route.params.tab
-    //         : setTab(props.defaultTab)
-
-    // emit('update:modelValue', getTab(route))
-
     watch(
         () => route.fullPath,
         () => {
@@ -177,14 +161,4 @@
             }
         },
     )
-
-    // watchEffect(() => {
-    //     if (
-    //         props.tabs
-    //             .map((tab) => `${props.baseRoute}/${tab.id}`)
-    //             .some((path) => route.path.startsWith(path))
-    //     ) {
-    //         emit('update:modelValue', getTab(route))
-    //     }
-    // })
 </script>

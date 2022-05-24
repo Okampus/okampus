@@ -1,6 +1,6 @@
 <template>
     <div class="p-4 -mb-4">
-        <div v-if="user" class="flex flex-col pb-6 w-[16em] rounded-2xl shadow-2xl bg-0">
+        <div v-if="user" class="flex flex-col pb-6 w-[18em] rounded-2xl shadow-2xl bg-0">
             <AppBanner class="w-full h-16 rounded-t-lg" :name="fullname(user)" :img-src="user.banner" />
             <div class="flex flex-col gap-4 items-start mx-5">
                 <div class="flex justify-between w-full">
@@ -9,12 +9,12 @@
                     </div>
                     <!-- TODO: buttons -->
                 </div>
-                <div>
-                    <h3 v-if="title" class="text-lg font-bold truncate text-0">
-                        {{ title }}
-                    </h3>
-                    <h3 class="text-lg truncate text-0">
+                <div class="w-full">
+                    <h3 class="text-lg font-semibold line-clamp-1 text-0">
                         {{ fullname(user) }}
+                    </h3>
+                    <h3 v-if="title" class="text-base line-clamp-1 text-0">
+                        {{ title }}
                     </h3>
                 </div>
                 <div v-if="user.description">

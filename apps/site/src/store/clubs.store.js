@@ -1,3 +1,4 @@
+import { onItems } from '@/utils/store'
 import { defineStore } from 'pinia'
 import $axios from '../shared/config/axios.config'
 
@@ -18,7 +19,7 @@ export const useClubsStore = defineStore('clubs', {
         async getClubs() {
             return await $axios
                 .get('teams/teams', { params: { itemsPerPage: 100 } })
-                .then((res) => this.replaceClubs(res.data))
+                .then(onItems(this.replaceClubs))
         },
         async getClub(clubId) {
             return await $axios.get(`teams/teams/${clubId}`).then((res) => this.replaceClub(res.data))
@@ -27,7 +28,6 @@ export const useClubsStore = defineStore('clubs', {
             return await $axios.post(`teams/requests/${clubId}`).then((res) => res.data)
         },
         async patchClub(clubId, props) {
-            console.log({ props })
             return await $axios
                 .patch(`teams/teams/${clubId}`, props)
                 .then((res) => this.replaceClub(res.data))
