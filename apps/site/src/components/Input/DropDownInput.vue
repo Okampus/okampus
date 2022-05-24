@@ -7,11 +7,11 @@
                 <div
                     v-for="(button, _, i) in buttons"
                     :key="i"
-                    class="group flex gap-2 items-center py-2 px-4 text-center rounded-xl"
+                    class="group flex gap-2 items-center py-2 px-4 text-center rounded-xl cursor-pointer select-none"
                     :class="button.class"
                     @click="button.action()"
                 >
-                    <i class="fas" :class="`fa-${button.icon}`" />
+                    <i class="fas" :class="`fa-${button.icon ?? 'square'}`" />
                     <div>
                         {{ button.name }}
                     </div>

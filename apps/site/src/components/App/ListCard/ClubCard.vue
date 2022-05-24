@@ -23,8 +23,9 @@
                         <AppLabel class="line-clamp-1">{{ club.category }}</AppLabel>
                     </router-link>
                 </div>
-                <i class="self-center ml-3 text-xl md:-mr-1 fa fa-ellipsis text-2" />
-                <!-- TODO: buttons -->
+                <DropDownInput :buttons="buttons">
+                    <i class="self-center mt-1 ml-3 text-xl cursor-pointer md:-mr-1 fa fa-ellipsis text-2" />
+                </DropDownInput>
             </div>
 
             <div class="flex flex-col justify-between w-full h-full">
@@ -98,13 +99,17 @@
     import { abbrNumbers } from '@/utils/abbrNumbers'
     import { clubRoleNames } from '@/shared/types/club-roles.enum'
     import { clubTypes } from '@/shared/types/club-types.enum'
+    import { ref } from 'vue'
+    import { getURL } from '@/utils/routeUtils'
 
     import AppBanner from '../AppBanner.vue'
-    import UserAvatar from '@/components/User/UserAvatar.vue'
-    import AppTip from '../AppTip.vue'
-    import { ref } from 'vue'
-    import UserAboutCard from '@/components/User/UserAboutCard.vue'
     import AppLabel from '../AppLabel.vue'
+    import AppTip from '../AppTip.vue'
+    import UserAvatar from '@/components/User/UserAvatar.vue'
+    import UserAboutCard from '@/components/User/UserAboutCard.vue'
+    import DropDownInput from '@/components/Input/DropDownInput.vue'
+    import { emitter } from '@/shared/modules/emitter'
+    import { useRouter } from 'vue-router'
 
     const joinClub = (club) => {
         console.log('joinClub', club)
@@ -124,6 +129,37 @@
     ].filter((specialMember) => !!specialMember.member)
 
     const specialMembersActive = ref(specialMembers.map(() => false))
+
+    const router = useRouter()
+    const buttons = [
+        {
+            name: 'Lien',
+            icon: 'fas fa-link',
+            class: 'hover:bg-blue-500',
+            action: async () => {
+                try {
+                    await navigator.clipboard.writeText(getURL(`/clubs/${props.club.teamId}`))
+                    emitter.emit('show-toast', {
+                        message: `Lien de ${props.club.name} copié.`,
+                        type: 'info',
+                    })
+                } catch (err) {
+                    emitter.emit('show-toast', {
+                        message: `Une erreur est survenue lors de la copie du lien de ${props.club.name}.`,
+                        type: 'error',
+                    })
+                }
+            },
+        },
+        {
+            name: 'Profil',
+            icon: 'fas fa-address-book',
+            class: 'hover:bg-gray-500',
+            action: () => {
+                router.push(`/clubs/${props.club.teamId}`)
+            },
+        },
+    ]
 </script>
 
 <style lang="scss">
