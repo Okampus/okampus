@@ -225,7 +225,7 @@ export const config = createProfiguration<Config>({
       env: 'MYEFREI_OIDC_SCOPES',
     },
     callbackUri: {
-      default: 'https://api.horizon-efrei.fr/auth/myefrei/callback',
+      default: 'https://api.okampus.fr/auth/myefrei/callback',
       format: String,
       env: 'MYEFREI_OIDC_CALLBACK_URI',
     },
