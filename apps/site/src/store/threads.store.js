@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 import { upsert } from '@/utils/arrays'
 import { onData, onItems } from '@/utils/store'
 
-import ContentInteractions from '@/models/content-interactions'
+import ContentInteractions from '@/shared/models/content-interactions'
 import { COMMENT, ENDPOINTS, POST, REPLY } from '@/shared/types/content-kinds.enum'
 import threadTypes from '@/shared/types/thread-types.enum'
 
