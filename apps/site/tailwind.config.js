@@ -56,7 +56,7 @@ module.exports = {
             colors: {
                 transparent: 'rgba(0, 0, 0, 0)',
                 'dark-1': '#0d1117',
-                'dark-2': '#1c1f24',
+                'dark-2': '#121725',
                 'dark-3': '#2b2f36',
                 'dark-4': '#3a3f44',
                 'dark-5': '#4a4f52',
@@ -73,11 +73,11 @@ module.exports = {
                 },
                 1: {
                     light: '#fafafa',
-                    dark: '#0A0E18',
+                    dark: '#010409',
                 },
                 2: {
                     light: '#ededed',
-                    dark: '#1b1d21',
+                    dark: '#121725',
                 },
                 3: {
                     light: '#ccc',
@@ -103,11 +103,11 @@ module.exports = {
                 },
                 1: {
                     light: '#fafafa',
-                    dark: '#0A0E18',
+                    dark: '#010409',
                 },
                 2: {
                     light: '#ededed',
-                    dark: '#1b1d21',
+                    dark: '#121725',
                 },
                 3: {
                     light: '#ccc',

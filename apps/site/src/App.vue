@@ -19,7 +19,7 @@
             <div
                 ref="content"
                 :class="{ 'brightness-50': hiding && collapsing != collapsed }"
-                class="flex overflow-auto relative flex-col w-full bg-app h-content after-topbar app-scrollbar"
+                class="flex overflow-auto relative flex-col w-full bg-1 h-content after-topbar app-scrollbar"
                 @mousedown="hiding && collapsed !== collapsing && toggleSidebar()"
             >
                 <div
