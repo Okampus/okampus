@@ -8,12 +8,14 @@
                 <div class="mt-8 text-2xl text-center">Connectez-vous pour accéder aux espaces 🔒</div>
             </div>
         </AppLogin>
-        <div v-else class="flex z-10 flex-col gap-4 p-4 rounded-xl text-0 bg-opacity/80 bg-3">
+        <div v-else class="flex z-10 flex-col gap-4 p-4 min-w-[20rem] rounded-xl text-0 bg-opacity/80 bg-2">
             <div class="text-3xl">
                 {{ new Date().getHours() > 19 ? 'Bonsoir' : 'Bonjour' }}
                 {{ auth.user.firstname.split(' ')[0] }} !
             </div>
-            <router-link class="text-2xl text-blue-600 dark:text-blue-400" to="/search/clubs"
+            <router-link
+                class="text-2xl text-blue-600 dark:text-blue-400 hover-arrow-right"
+                to="/search/clubs"
                 >Voir les associations<i class="ml-2 fa fa-arrow-right"
             /></router-link>
         </div>
@@ -68,3 +70,25 @@
 
     const auth = useAuthStore()
 </script>
+
+<style lang="scss">
+    .hover-arrow-right {
+        transition: color 0.3s ease-in-out;
+
+        & i {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        &:hover {
+            @apply text-blue-600;
+
+            .dark & {
+                color: #0af;
+            }
+
+            & i {
+                transform: translateX(6px);
+            }
+        }
+    }
+</style>
