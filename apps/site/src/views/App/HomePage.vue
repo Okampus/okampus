@@ -13,9 +13,7 @@
                 {{ new Date().getHours() > 19 ? 'Bonsoir' : 'Bonjour' }}
                 {{ auth.user.firstname.split(' ')[0] }} !
             </div>
-            <router-link
-                class="text-2xl text-blue-600 dark:text-blue-400 hover-arrow-right"
-                to="/search/clubs"
+            <router-link class="text-2xl text-blue-600 dark:text-blue-400 hover-arrow-right" to="/clubs"
                 >Voir les associations<i class="ml-2 fa fa-arrow-right"
             /></router-link>
         </div>

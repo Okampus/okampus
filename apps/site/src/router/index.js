@@ -123,18 +123,18 @@ const routes = [
     },
 
     {
-        name: 'profile',
-        path: '/users/:userId',
-        component: () => import('@/views/User/UserProfile.vue'),
+        name: 'users',
+        path: '/users',
+        component: () => import('@/views/List/UserList.vue'),
         meta: {
             requiresAuth: true,
         },
     },
 
     {
-        name: 'users',
-        path: '/users',
-        component: () => import('@/views/List/UserList.vue'),
+        name: 'profile',
+        path: '/user/:userId',
+        component: () => import('@/views/User/UserProfile.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -178,22 +178,8 @@ const routes = [
     //     ],
     // },
 
-    // {
-    //     path: '/clubs',
-    //     redirect: '/search/clubs',
-    // },
-
-    // {
-    //     path: '/search/clubs',
-    //     strict: true,
-    //     component: () => import('@/views/List/ClubList.vue'),
-    //     meta: {
-    //         requiresAuth: true,
-    //     },
-    // },
-
     {
-        path: '/search/clubs/:tab*',
+        path: '/clubs/:tab*',
         name: 'search-clubs',
         component: () => import('@/views/List/ClubList.vue'),
         meta: {
@@ -202,7 +188,7 @@ const routes = [
     },
 
     {
-        path: '/clubs/:clubId',
+        path: '/club/:clubId',
         component: () => import('@/views/Clubs/ClubView.vue'),
         meta: {
             requiresAuth: true,

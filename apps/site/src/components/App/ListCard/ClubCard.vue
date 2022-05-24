@@ -29,7 +29,7 @@
             </div>
 
             <div class="flex flex-col justify-between w-full h-full">
-                <router-link class="mt-2" :to="`/clubs/${club.teamId}`">
+                <router-link class="mt-2" :to="`/club/${club.teamId}`">
                     <h3 class="text-xl font-bold hover:underline line-clamp-1 text-1">
                         {{ club.name }}
                     </h3>
@@ -140,7 +140,7 @@
             class: 'hover:bg-blue-500',
             action: async () => {
                 try {
-                    await navigator.clipboard.writeText(getURL(`/clubs/${props.club.teamId}`))
+                    await navigator.clipboard.writeText(getURL(`/club/${props.club.teamId}`))
                     emitter.emit('show-toast', {
                         message: `Lien de ${props.club.name} copié.`,
                         type: 'info',

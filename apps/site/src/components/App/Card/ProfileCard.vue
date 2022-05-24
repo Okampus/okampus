@@ -18,7 +18,7 @@
                 </div>
                 <router-link
                     class="flex gap-1 my-auto ml-1 text-blue-500 hover:underline"
-                    :to="`/users/${user.userId}`"
+                    :to="`/user/${user.userId}`"
                 >
                     <i class="fas fa-external-link-alt" />
                     <div>Voir le profil</div>

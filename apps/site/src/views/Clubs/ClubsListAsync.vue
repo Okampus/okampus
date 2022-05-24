@@ -3,7 +3,7 @@
         <VerticalTabs
             v-model="currentTab"
             :tabs="tabs"
-            base-route="/search/clubs"
+            base-route="/clubs"
             route-name="search-clubs"
             class="sticky top-6"
         />
@@ -12,8 +12,7 @@
             <div class="text-2xl font-bold">Aucune association ne correspond à ces critères.</div>
             <div class="text-lg">
                 Regardez la
-                <router-link to="/search/clubs" class="link-blue">liste de tous les associations</router-link
-                >.
+                <router-link to="/clubs" class="link-blue">liste de tous les associations</router-link>.
             </div>
         </div>
         <div v-else class="flex flex-wrap gap-6 w-fit h-fit">
@@ -45,7 +44,7 @@
             tabs: [
                 {
                     id: 'all',
-                    route: '/search/clubs',
+                    route: '/clubs',
                     name: 'Toutes les assos',
                 },
                 {
