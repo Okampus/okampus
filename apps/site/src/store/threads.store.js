@@ -222,7 +222,7 @@ export const useThreadsStore = defineStore('threads', {
         async validateThreadWithContent(threadId, contentId, admin = false) {
             return await $axios
                 .patch(
-                    `/threads/${threadId}`,
+                    `threads/${threadId}`,
                     admin
                         ? {
                               adminValidatedWith: contentId,

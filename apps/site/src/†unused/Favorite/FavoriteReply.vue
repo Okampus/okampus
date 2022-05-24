@@ -12,7 +12,7 @@
                         Publié par {{ reply.author.fullname }} {{ timeAgo(new Date(reply.createdAt)) }}
                     </p>
                     <!-- TODO: find parent post to link it -->
-                    <!-- <router-link :to="`/threads/${reply.post.postId}`" class="mr-4 text-lg line-clamp-2 text-0"> -->
+                    <!-- <router-link :to="`/post/${reply.post.postId}`" class="mr-4 text-lg line-clamp-2 text-0"> -->
                     {{ reply.body }}
                     <!-- </router-link> -->
                 </div>

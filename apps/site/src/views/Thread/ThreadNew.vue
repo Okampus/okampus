@@ -3,7 +3,7 @@
         v-model:active="success"
         message="Création réussie ! Tu vas être redirigé sur ton post."
         type="success"
-        @close="router.push(`/threads/${newThreadId}`)"
+        @close="router.push(`/post/${newThreadId}`)"
     />
     <CardPage>
         <div class="flex flex-col space-y-5">

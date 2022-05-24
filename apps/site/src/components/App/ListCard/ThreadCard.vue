@@ -60,7 +60,7 @@
         </div>
         <div class="flex flex-col gap-1.5 w-full">
             <router-link
-                :to="`/threads/${thread.contentMasterId}`"
+                :to="`/post/${thread.contentMasterId}`"
                 class="text-xl font-semibold hover:underline line-clamp-1 text-0"
             >
                 {{ thread.title }}

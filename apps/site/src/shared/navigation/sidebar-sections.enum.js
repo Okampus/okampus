@@ -34,8 +34,8 @@ export const sections = computed(() => {
                           //       icon: 'columns',
                           //   },
                           {
-                              to: '/admin/association',
-                              regActive: /^\/admin\/association/,
+                              to: '/admin/clubs',
+                              regActive: /^\/admin\/clubs/,
                               textSmall: 'Admin asso',
                               textLarge: 'Gestion des assos',
                               icon: 'users-gear',
@@ -140,8 +140,20 @@ export const sections = computed(() => {
         ...(auth.loggedIn
             ? [
                   {
-                      name: 'Communauté',
+                      name: 'Espaces',
                       links: [
+                          {
+                              to: '/posts',
+                              regActive: /^\/posts?/,
+                              textSmall: 'Forum',
+                              textLarge: 'Forum',
+                              icon: 'comments',
+                              button: {
+                                  text: 'Créer un post',
+                                  to: '/post/new',
+                                  icon: 'circle-plus',
+                              },
+                          },
                           {
                               to: '/clubs/',
                               regActive: /^\/clubs?/,
@@ -149,6 +161,11 @@ export const sections = computed(() => {
                               textLarge: 'Associations',
                               icon: 'people-group',
                           },
+                      ],
+                  },
+                  {
+                      name: 'Communauté',
+                      links: [
                           {
                               to: '/users/',
                               regActive: /^\/(users?|me)/,

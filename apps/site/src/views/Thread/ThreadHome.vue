@@ -1,6 +1,6 @@
 <template>
     <!-- TODO: add filtering, tab, info panel -->
-    <ListPage base-route="/threads" :store-callback="threads.getThreads">
+    <ListPage base-route="/posts" :store-callback="threads.getThreads">
         <template #default="{ items }">
             <ThreadList :threads="items" />
         </template>

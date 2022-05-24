@@ -29,7 +29,7 @@
                 <!-- TODO: Retrieve thread data -->
                 <!-- <div class="flex">
                     <router-link
-                        :to="`/threads/${post.postId}`"
+                        :to="`/post/${post.postId}`"
                         class="mr-4 text-xl font-semibold whitespace-nowrap text-0"
                     >
                         {{ post.title }}

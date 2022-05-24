@@ -14,7 +14,7 @@
                     </p>
                     <!-- TODO: find parent post to link it -->
                     <!-- <router-link
-                        :to="`/threads/${comment.post.postId}`"
+                        :to="`/post/${comment.post.postId}`"
                         class="mr-4 text-lg line-clamp-2 text-0"
                     > -->
                     {{ comment.body }}

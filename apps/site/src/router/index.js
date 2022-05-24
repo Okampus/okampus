@@ -13,7 +13,7 @@ const routes = [
         },
     },
     {
-        path: '/admin/association',
+        path: '/admin/clubs',
         component: () => import('@/views/Dashboard/DashboardAssociation.vue'),
         meta: {
             requiresAuth: true,
@@ -65,30 +65,31 @@ const routes = [
     //     },
     // },
 
-    // {
-    //     path: '/threads',
-    //     component: () => import('@/views/Thread/ThreadHome.vue'),
-    //     meta: {
-    //         requiresAuth: true,
-    //     },
-    // },
+    {
+        path: '/posts',
+        component: () => import('@/views/Thread/ThreadHome.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
 
-    // {
-    //     path: '/threads/new',
-    //     component: () => import('@/views/Thread/ThreadNew.vue'),
-    //     meta: {
-    //         requiresAuth: true,
-    //     },
-    // },
+    {
+        path: '/post/new',
+        // component: () => import('@/views/Thread/ThreadNew.vue'),
+        component: () => import('@/views/App/HomePage.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
 
-    // {
-    //     name: 'threads',
-    //     path: '/threads/:id',
-    //     component: () => import('@/views/Thread/ThreadView.vue'),
-    //     meta: {
-    //         requiresAuth: true,
-    //     },
-    // },
+    {
+        name: 'threads',
+        path: '/post/:id[0-9]+',
+        component: () => import('@/views/Thread/ThreadView.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
 
     // {
     //     path: '/docs',
