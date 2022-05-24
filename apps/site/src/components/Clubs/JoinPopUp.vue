@@ -1,5 +1,5 @@
 <template>
-    <AppModal :show="props.show">
+    <ModalPopup :show="props.show">
         <div
             class="flex relative flex-col justify-center items-center p-4 mx-auto w-[36rem] min-h-fit rounded-md shadow-lg bg-1"
         >
@@ -29,12 +29,12 @@
                 </button>
             </a>
         </div>
-    </AppModal>
+    </ModalPopup>
 </template>
 
 <script setup>
     // import { ref } from 'vue'
-    import AppModal from '../App/AppModal.vue'
+    import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
 
     const props = defineProps({
         request: {

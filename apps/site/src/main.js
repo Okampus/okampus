@@ -10,7 +10,6 @@ import { emitter } from '@/shared/modules/emitter'
 import { i18n } from '@/shared/modules/i18n'
 
 import router from '@/router/index'
-import store from '@/old-store'
 
 import '@/assets/css/tailwind.css'
 
@@ -49,6 +48,6 @@ app.config.errorHandler = (error, vm, info) => {
 }
 
 // TODO: remove injection of modules in favor of composition API
-app.use(store).use(createPinia()).use(router).use(i18n).use(InstantSearch).use(Particles)
+app.use(createPinia()).use(router).use(i18n).use(InstantSearch).use(Particles)
 
 app.mount('#app')

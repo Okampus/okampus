@@ -26,7 +26,7 @@
             @scroll.passive="getScroll"
         >
             <div v-for="(el, index) in tags" :key="index" class="inline-block">
-                <AppTag :tag-name="el.name" :tag-color="el.color" />
+                <LabelTag :tag-name="el.name" :tag-color="el.color" />
             </div>
         </div>
 
@@ -46,9 +46,10 @@
 </template>
 
 <script>
-    import AppTag from '@/components/App/AppTag.vue'
+    import LabelTag from '@/components/UI/Label/LabelTag.vue'
+
     export default {
-        components: { AppTag },
+        components: { LabelTag },
         props: {
             tags: {
                 type: Array,

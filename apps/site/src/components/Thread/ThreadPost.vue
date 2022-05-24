@@ -31,7 +31,7 @@
 
 <script setup>
     import ThreadCommentable from '@/components/Thread/ThreadCommentable.vue'
-    import MdEditableRender from '@/components/App/Editor/MdEditableRender.vue'
+    import MdEditableRender from '@/components/Input/Editor/MdEditableRender.vue'
 
     import { edit, favorite, removeContent } from '@/shared/actions/thread.actions'
     import { useThreadsStore } from '@/store/threads.store'

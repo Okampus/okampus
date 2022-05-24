@@ -5,7 +5,7 @@
                 <div class="relative w-full h-48">
                     <div class="w-full h-full bg-blue-200" />
                     <div class="absolute -bottom-8 left-8">
-                        <UserAvatar :img-src="club.avatar" :size="4.5" :username="club.name" />
+                        <ProfileAvatar :img-src="club.avatar" :size="4.5" :username="club.name" />
                     </div>
                 </div>
                 <div class="px-4 pb-6 mt-8 w-full shadow-lg">
@@ -32,7 +32,7 @@
                     <div
                         class="flex flex-col flex-wrap justify-between items-center p-4 mb-4 w-48 h-48 rounded-lg shadow-md bg-2"
                     >
-                        <UserAvatar
+                        <ProfileAvatar
                             :img-src="club.members.find((member) => member.role === 'owner').avatar"
                             size="6"
                             :username="
@@ -58,7 +58,7 @@
                     <!-- <div
                         class="flex flex-col flex-wrap justify-between items-center p-4 mb-4 w-48 h-48 rounded-lg shadow-md bg-2"
                     >
-                        <UserAvatar
+                        <ProfileAvatar
                             :img-src="club.members.find((member) => member.role === 'owner').avatar"
                             size="6"
                             :username="
@@ -122,7 +122,8 @@
 
 <script setup>
     // import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
-    import UserAvatar from '@/components/User/UserAvatar.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+
     import { useRoute } from 'vue-router'
     import { ref, nextTick } from 'vue'
     import { useClubsStore } from '@/store/clubs.store'

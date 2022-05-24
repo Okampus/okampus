@@ -8,7 +8,7 @@
                     <div class="flex mr-6 w-full">
                         <div class="flex flex-col mr-8 mb-4 w-fit">
                             <div class="relative mx-auto mb-2">
-                                <UserAvatar
+                                <ProfileAvatar
                                     :img-src="me.avatar"
                                     :username="me.firstname + ' ' + me.lastname"
                                     :size="5"
@@ -86,9 +86,10 @@
     // import { blagues } from '@/assets/blagues/blagues'
     // import AppLoader from '@/components/App/AppLoader.vue'
     // import SelectInput from '@/components/Input/SelectInput.vue'
-    import { blagues } from '@/assets/blagues/blagues'
     import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue'
-    import UserAvatar from '@/components/User/UserAvatar.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+
+    import { blagues } from '@/assets/blagues/blagues'
     import { emitter } from '@/shared/modules/emitter'
     import { useAuthStore } from '@/store/auth.store'
     import { useProfilesStore } from '@/store/profile.store'

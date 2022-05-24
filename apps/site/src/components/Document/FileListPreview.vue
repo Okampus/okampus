@@ -100,9 +100,9 @@
                             <div
                                 class="flex invisible group-hover:visible justify-center items-center hover:cursor-pointer"
                             >
-                                <DropDownInput :buttons="dropDownButtons(file)">
+                                <ModalDropdown :buttons="dropDownButtons(file)">
                                     <i class="fas fa-ellipsis-h" />
-                                </DropDownInput>
+                                </ModalDropdown>
                             </div>
                         </td>
                     </tr>
@@ -177,14 +177,16 @@
 
 <script>
     import DocumentIcon from '@/components/Document/DocumentIcon.vue'
-    import DropDownInput from '@/components/Input/DropDownInput.vue'
-    import formatBytes from '@/utils/formatByteSize'
+    import ModalDropdown from '@/components/UI/Modal/ModalDropdown.vue'
     import Popper from 'vue3-popper'
+
+    import formatBytes from '@/utils/formatByteSize'
+
     export default {
         components: {
             DocumentIcon,
             Popper,
-            DropDownInput,
+            ModalDropdown,
         },
         props: {
             fileList: {

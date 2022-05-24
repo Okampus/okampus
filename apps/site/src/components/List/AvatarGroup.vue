@@ -2,7 +2,7 @@
     <div class="flex gap-4 items-center ml-2">
         <div class="flex" :class="{ 'gap-1': !compact }">
             <div v-for="(_, i) in Array(numberShown)" :key="i" :class="{ '-ml-2': compact }">
-                <UserAvatar :img-src="users[i].avatar" :username="fullname(users[i])" :size="iconSize" />
+                <ProfileAvatar :img-src="users[i].avatar" :username="fullname(users[i])" :size="iconSize" />
             </div>
         </div>
 
@@ -14,7 +14,7 @@
 
 <script setup>
     import { fullname } from '@/utils/users'
-    import UserAvatar from '../User/UserAvatar.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
     defineProps({
         users: {

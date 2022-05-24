@@ -1,19 +1,20 @@
 <template>
     <!-- TODO: Solve unexpected overflow! -->
     <CardPage>
-        <AppTabs v-model:tab="currentTab" :tabs="tabs" route-base="/admin">
+        <HorizontalTabs v-model:tab="currentTab" :tabs="tabs" route-base="/admin">
             <template v-for="(tabColumns, tabName, i) in dashboardTabs" #[tabName] :key="i">
                 <div :class="tabs[currentTab].id === tabName ? 'block' : 'invisible'">
                     <DashboardCore :columns="tabColumns" :items="dashboardData[tabName]" />
                 </div>
             </template>
-        </AppTabs>
+        </HorizontalTabs>
     </CardPage>
 </template>
 
 <script setup>
     import DashboardCore from '@/components/Dashboard/DashboardCore.vue'
-    import AppTabs from '@/components/App/AppTabs.vue'
+    import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
+
     import CardPage from '@/views/App/CardPage.vue'
 
     import threadTypes from '@/shared/types/thread-types.enum'
@@ -73,7 +74,7 @@
         //         attrs: (user) => ({ date: user.createdAt }),
         //         slot: (user) => user.createdAt,
         //         value: () => '',
-        //         comp: ['date-preview', '@/components/App/Preview/DatePreview.vue'],
+        //         comp: ['date-preview', '@/components/UI/Tip/TipRelativeDate.vue'],
         //         sort: 0,
         //         name: 'Créé',
         //     },
@@ -81,7 +82,7 @@
         //         attrs: (user) => ({ date: user.updatedAt }),
         //         slot: (user) => user.updatedAt,
         //         value: () => '',
-        //         comp: ['date-preview', '@/components/App/Preview/DatePreview.vue'],
+        //         comp: ['date-preview', '@/components/UI/Tip/TipRelativeDate.vue'],
         //         name: 'Dernière mise à jour',
         //     },
         // },
@@ -121,14 +122,14 @@
                 attrs: (thread) => ({ date: thread?.post?.lastEdit?.createdAt }),
                 slot: (thread) => thread.post.lastEdit.createdAt,
                 value: () => '',
-                comp: ['date-preview', '@/components/App/Preview/DatePreview.vue'],
+                comp: ['date-preview', '@/components/UI/Tip/TipRelativeDate.vue'],
                 name: 'Dernière activité',
             },
             createdAt: {
                 attrs: (thread) => ({ date: thread?.post?.createdAt }),
                 slot: (thread) => thread.post.createdAt,
                 value: () => '',
-                comp: ['date-preview', '@/components/App/Preview/DatePreview.vue'],
+                comp: ['date-preview', '@/components/UI/Tip/TipRelativeDate.vue'],
                 sort: 0,
                 name: 'Date de création',
             },
@@ -169,21 +170,21 @@
                 attrs: (report) => ({ 'content': report.reason }),
                 slot: () => {},
                 value: (report) => report.reason,
-                comp: ['md-renderer', '@/components/App/Editor/MdRenderer.vue'],
+                comp: ['md-renderer', '@/components/Input/Editor/MdRenderer.vue'],
                 name: 'Raison',
             },
             contentId: {
                 attrs: (report) => ({ 'content': report?.content?.body }),
                 slot: () => {},
                 value: (report) => report.content.body,
-                comp: ['md-renderer', '@/components/App/Editor/MdRenderer.vue'],
+                comp: ['md-renderer', '@/components/Input/Editor/MdRenderer.vue'],
                 name: 'Contenu lié',
             },
             date: {
                 attrs: (report) => ({ date: report.createdAt }),
                 slot: (report) => report.createdAt,
                 value: (report) => report.createdAt,
-                comp: ['date-preview', '@/components/App/Preview/DatePreview.vue'],
+                comp: ['date-preview', '@/components/UI/Tip/TipRelativeDate.vue'],
                 name: 'Fait',
             },
         },

@@ -1,6 +1,6 @@
 <template>
     <div class="flex gap-4 py-6 mx-auto w-23/24 h-full">
-        <AppModal :show="filePreview != null" @close="filePreview = null">
+        <ModalPopup :show="filePreview != null" @close="filePreview = null">
             <div class="flex gap-2 card">
                 <div class="flex justify-center items-center">
                     <DocumentIcon
@@ -21,7 +21,7 @@
                     </div>
                 </div>
             </div>
-        </AppModal>
+        </ModalPopup>
         <div class="hidden md:block min-w-1/5 card">
             <FileFolder
                 v-if="studyDocFileTree.length > 0"
@@ -173,19 +173,22 @@
 </template>
 
 <script>
-    import fileIcon from '@/assets/img/doctype/file.png'
-    import AppModal from '@/components/App/AppModal.vue'
+    import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
     import DocumentIcon from '@/components/Document/DocumentIcon.vue'
     import FileFolder from '@/components/Document/FileFolder.vue'
-    import formatBytes from '@/utils/formatByteSize'
     import FileListPreview from '@/components/Document/FileListPreview.vue'
-    import _ from 'lodash'
     import Popper from 'vue3-popper'
+
+    import fileIcon from '@/assets/img/doctype/file.png'
+
+    import _ from 'lodash'
+    import formatBytes from '@/utils/formatByteSize'
+
     export default {
         components: {
             FileFolder,
             FileListPreview,
-            AppModal,
+            ModalPopup,
             DocumentIcon,
             Popper,
         },

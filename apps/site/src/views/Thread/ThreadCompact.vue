@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-5 mx-4 md:mx-auto md:w-23/24 text-0">
         <div class="flex gap-5">
-            <AppTag
+            <LabelTag
                 :icon="thread._type.icon"
                 :tag-color="thread._type.color"
                 :tag-name="thread._type[$i18n.locale]"
@@ -10,7 +10,7 @@
         </div>
 
         <!-- <div class="flex flex-row gap-3">
-            <UserAvatar
+            <ProfileAvatar
                 :img-src="thread.getUser(thread._post.author).avatar"
                 :size="size"
                 :username="fullname(thread.getUser(thread._post.author))"
@@ -19,7 +19,6 @@
                 <div>
                     {{ fullname(thread.getUser(thread._post.author)) }}
                 </div>
-                <DatePreview class="text-sm text-2" :date="thread.createdAt" />
             </div>
         </div> -->
 
@@ -53,7 +52,7 @@
                         <div class="mr-4 font-bold text-md">Tags</div>
                     </div>
                     <div v-if="thread.tags?.length" class="flex flex-wrap">
-                        <AppTag
+                        <LabelTag
                             v-for="tag in thread.tags"
                             :key="tag"
                             class="mr-1 mb-1"
@@ -110,9 +109,8 @@
 </template>
 
 <script setup>
-    import AppTag from '@/components/App/AppTag.vue'
+    import LabelTag from '@/components/UI/Label/LabelTag.vue'
     // import { fullname } from '@/utils/users'
-    // import DatePreview from '@/components/App/Preview/DatePreview.vue'
     import UserPreview from '@/components/App/Preview/UserPreview.vue'
     // import { timeAgo } from '@/utils/timeAgo'
 
@@ -130,8 +128,7 @@
 
     import { getStatus } from '@/utils/errors'
     import { errorCodes } from '@/shared/errors/app-exceptions.enum'
-    // import UserAvatar from '@/components/User/UserAvatar.vue'
-    // import DatePreview from '@/components/App/Preview/DatePreview.vue'
+    // import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
     const route = useRoute()
     const threads = useThreadsStore()

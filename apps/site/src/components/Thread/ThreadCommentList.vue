@@ -15,7 +15,7 @@
                             : threads.voteContent(comment.contentId, 1)
                     "
                 >
-                    <UpvoteIcon
+                    <IconUpvote
                         :full="true"
                         :width="12"
                         :class="comment.interactions.voted === 1 ? 'fill-green-500' : 'fill-gray-500'"
@@ -43,7 +43,7 @@
                         />
                         <span v-if="!comment.editing" class="inline-flex gap-1 items-center tracking-tight">
                             <span class="link-blue">{{ comment._author.fullname }}</span>
-                            <AppDateAndModified
+                            <TipRelativeDateModified
                                 :created-at="comment.createdAt"
                                 :modified-at="comment.lastEdit.createdAt"
                             />
@@ -70,11 +70,11 @@
                                     <div
                                         class="text-sm rounded-lg cursor-pointer comment-ellipsis-dropdown text-5"
                                     >
-                                        <DropDownInput :buttons="hiddenActions(i)">
+                                        <ModalDropdown :buttons="hiddenActions(i)">
                                             <i
                                                 class="py-1 px-2 fas fa-ellipsis-h comment-ellipsis-dropdown-icon"
                                             />
-                                        </DropDownInput>
+                                        </ModalDropdown>
                                     </div>
                                 </div>
                             </span>
@@ -121,11 +121,13 @@
 </template>
 
 <script setup>
-    import MdEditableRender from '@/components/App/Editor/MdEditableRender.vue'
-    import MdEditor from '@/components/App/Editor/MdEditor.vue'
+    import MdEditableRender from '@/components/Input/Editor/MdEditableRender.vue'
+    import MdEditor from '@/components/Input/Editor/MdEditor.vue'
 
-    import DropDownInput from '@/components/Input/DropDownInput.vue'
-    import UpvoteIcon from '@/components/App/Icon/UpvoteIcon.vue'
+    import ModalDropdown from '@/components/UI/Modal/ModalDropdown.vue'
+    import IconUpvote from '@/icons/IconUpvote.vue'
+
+    import TipRelativeDateModified from '@/components/UI/Tip/TipRelativeDateModified.vue'
 
     import Popper from 'vue3-popper'
 
@@ -139,7 +141,6 @@
     import { capitalize } from 'lodash'
 
     import { computed, ref } from 'vue'
-    import AppDateAndModified from '../App/AppDateAndModified.vue'
 
     const auth = useAuthStore()
     const threads = useThreadsStore()

@@ -50,7 +50,7 @@
 
 <script setup>
     import { computed, defineAsyncComponent, ref } from 'vue'
-    import SelectMultiCheckbox from '@/components/Input/SelectMultiCheckbox.vue'
+    import SelectMultiCheckbox from '@/components/Dashboard/SelectMultiCheckbox.vue'
 
     import { camelToSentenceCase } from '@/utils/caseUtils'
 

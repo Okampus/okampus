@@ -3,7 +3,7 @@
         class="flex gap-3 items-center min-h-fit text-sm"
         :class="[mode === 'vertical' ? 'flex-col gap-1' : 'gap-3']"
     >
-        <UserAvatar :size="imgSize" :img-src="user.avatar" :username="user.fullname ?? 'Anonyme'" />
+        <ProfileAvatar :size="imgSize" :img-src="user.avatar" :username="user.fullname ?? 'Anonyme'" />
         <div class="flex flex-col gap-1" :class="[mode === 'vertical' ? 'justify-center items-center' : '']">
             <div class="text-sm text-1">
                 {{ user.fullname ?? 'Anonyme' }}
@@ -12,7 +12,7 @@
                 class="flex flex-col gap-2"
                 :class="[mode === 'vertical' ? 'justify-center' : 'items-center']"
             >
-                <AppTag
+                <LabelTag
                     :tag-name="roleItem[$i18n.locale]"
                     :tag-color="roleItem.color"
                     :icon="roleItem.icon"
@@ -27,10 +27,11 @@
 </template>
 
 <script setup>
+    import LabelTag from '@/components/UI/Label/LabelTag.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+
     import rolesEnum, { DEFAULT_ROLE } from '@/shared/types/school-roles.enum'
     // import { abbrNumbers } from '@/utils/abbrNumbers'
-    import AppTag from '@/components/App/AppTag.vue'
-    import UserAvatar from '@/components/User/UserAvatar.vue'
 
     const props = defineProps({
         user: {

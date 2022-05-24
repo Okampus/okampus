@@ -55,7 +55,7 @@
                                         />
                                     </div>
                                     <div v-else class="flex flex-col gap-2 justify-center items-center h-24">
-                                        <AppSadFace />
+                                        <EmojiSad />
                                         <div class="">Pas de résultat ...</div>
                                     </div>
                                 </template>
@@ -71,7 +71,7 @@
 <script setup>
     import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
     import Popper from 'vue3-popper'
-    import AppSadFace from '../AppSadFace.vue'
+    import EmojiSad from '@/icons/Emoji/EmojiSad.vue'
     import $typesense from '@/shared/config/typesense.config'
     import { computed, ref } from 'vue'
 

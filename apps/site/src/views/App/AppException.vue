@@ -25,8 +25,8 @@
         </div>
 
         <div class="flex flex-row gap-5">
-            <HomeButton />
-            <LoginButton v-if="props.code === errorCodes.UNAUTHORIZED" />
+            <ButtonHome />
+            <ButtonLogin v-if="props.code === errorCodes.UNAUTHORIZED" />
         </div>
     </div>
 </template>
@@ -36,8 +36,8 @@
     import { i18n } from '@/shared/modules/i18n'
     import { errorCodes, messages } from '@/shared/errors/app-exceptions.enum.js'
 
-    import HomeButton from '@/components/Button/HomeButton.vue'
-    import LoginButton from '@/components/Button/LoginButton.vue'
+    import ButtonHome from '@/components/UI/Button/ButtonHome.vue'
+    import ButtonLogin from '@/components/UI/Button/ButtonLogin.vue'
 
     const props = defineProps({
         code: {

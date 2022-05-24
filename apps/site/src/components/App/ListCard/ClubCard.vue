@@ -2,7 +2,7 @@
     <div
         class="flex flex-col pb-4 w-full min-w-[15rem] rounded-lg shadow-xl sm:w-[calc(50%-1.5rem)] xl:w-[calc(33%-1.5rem)] bg-2"
     >
-        <AppBanner
+        <ProfileBanner
             class="w-full h-20 rounded-t-lg"
             :img-src="club.banner"
             :name="club.name"
@@ -12,20 +12,20 @@
             <div class="flex justify-between w-full">
                 <div class="flex gap-3 items-start pt-2">
                     <div class="p-1 -mt-10 rounded-2xl bg-2">
-                        <UserAvatar
+                        <ProfileAvatar
                             :rounded-full="false"
                             :img-src="club.avatar"
                             :size="4.5"
                             :username="club.name"
                         />
                     </div>
-                    <router-link class="mt-2" :to="`/search/clubs/${clubTypes[club.category].link}`">
-                        <AppLabel class="line-clamp-1">{{ club.category }}</AppLabel>
+                    <router-link class="mt-2" :to="`/clubs/${clubTypes[club.category].link}`">
+                        <LabelSimple class="line-clamp-1">{{ club.category }}</LabelSimple>
                     </router-link>
                 </div>
-                <DropDownInput :buttons="buttons">
+                <ModalDropdown :buttons="buttons">
                     <i class="self-center mt-1 ml-3 text-xl cursor-pointer md:-mr-1 fa fa-ellipsis text-2" />
-                </DropDownInput>
+                </ModalDropdown>
             </div>
 
             <div class="flex flex-col justify-between w-full h-full">
@@ -46,7 +46,7 @@
                     </button>
                     <div class="flex flex-row-reverse gap-1 ml-4 text-0">
                         <div v-for="(specialMember, i) in specialMembers" :key="i" class="-ml-3">
-                            <AppTip
+                            <TipPopper
                                 placement="top"
                                 offset="7"
                                 class="z-100"
@@ -63,7 +63,7 @@
                                 </template>
                                 <div class="pt-2 h-16 avatar-hover">
                                     <template v-if="isMobile">
-                                        <UserAvatar
+                                        <ProfileAvatar
                                             class="relative border-2 border-2-light dark:border-2-dark !shadow-none"
                                             :class="specialMembersActive[i] ? 'hovered' : ''"
                                             :size="3"
@@ -72,8 +72,8 @@
                                         />
                                     </template>
                                     <template v-else>
-                                        <router-link :to="`/users/${specialMember.member.userId}`">
-                                            <UserAvatar
+                                        <router-link :to="`/user/${specialMember.member.userId}`">
+                                            <ProfileAvatar
                                                 class="relative border-2 border-2-light dark:border-2-dark !shadow-none cursor-pointer hovered"
                                                 :size="3"
                                                 :img-src="specialMember.member.avatar"
@@ -82,7 +82,7 @@
                                         </router-link>
                                     </template>
                                 </div>
-                            </AppTip>
+                            </TipPopper>
                         </div>
                     </div>
                     <span v-if="props.club.memberCount > specialMembers.length" class="text-0"
@@ -102,12 +102,14 @@
     import { ref } from 'vue'
     import { getURL } from '@/utils/routeUtils'
 
-    import AppBanner from '../AppBanner.vue'
-    import AppLabel from '../AppLabel.vue'
-    import AppTip from '../AppTip.vue'
-    import UserAvatar from '@/components/User/UserAvatar.vue'
+    import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
+    import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
+    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
+
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import UserAboutCard from '@/components/User/UserAboutCard.vue'
-    import DropDownInput from '@/components/Input/DropDownInput.vue'
+    import ModalDropdown from '@/components/UI/Modal/ModalDropdown.vue'
+
     import { emitter } from '@/shared/modules/emitter'
     import { useRouter } from 'vue-router'
 

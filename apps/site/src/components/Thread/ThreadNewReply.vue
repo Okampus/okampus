@@ -1,6 +1,6 @@
 <template>
     <div>
-        <AppAlert v-if="first" type="info" class="mt-2 dark:!bg-blue-900 rounded-b-none">
+        <AlertInline v-if="first" type="info" class="mt-2 dark:!bg-blue-900 rounded-b-none">
             <!-- TODO: bonus for a first answer -->
             <template #title> Sois le premier à répondre à ce post ! </template>
             <template #message>
@@ -8,7 +8,7 @@
                     Personne n'a encore répondu à ce post : propose une première réponse 🌟
                 </div>
             </template>
-        </AppAlert>
+        </AlertInline>
         <p v-else class="mt-2 ml-6 label-title">Répondre à ce post</p>
         <div
             id="new-reply"
@@ -17,7 +17,7 @@
                 first ? 'border-2 border-blue-100 dark:border-blue-900 rounded-b-lg' : 'shadow-md rounded-lg'
             "
         >
-            <UserAvatar :img-src="auth?.user?.avatar" :username="auth?.user?.fullname" />
+            <ProfileAvatar :img-src="auth?.user?.avatar" :username="auth?.user?.fullname" />
             <div class="mt-2 ml-3 arrow-left bg-1" />
             <div class="block w-[calc(100%-6rem)]">
                 <MdEditor v-model="body" uid="new-reply" :sendable="true" @send="sendReply" />
@@ -27,12 +27,12 @@
 </template>
 
 <script setup>
-    import AppAlert from '@/components/App/AppAlert.vue'
+    import AlertInline from '@/components/UI/Alert/AlertInline.vue'
 
     import { REPLY } from '@/shared/types/content-kinds.enum'
 
-    import UserAvatar from '@/components/User/UserAvatar.vue'
-    import MdEditor from '@/components/App/Editor/MdEditor.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    import MdEditor from '@/components/Input/Editor/MdEditor.vue'
 
     import { useAuthStore } from '@/store/auth.store'
     import { useThreadsStore } from '@/store/threads.store'

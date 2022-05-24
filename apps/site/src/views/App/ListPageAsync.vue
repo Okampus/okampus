@@ -14,7 +14,7 @@
 
 <script setup>
     import SelectInput from '@/components/Input/SelectInput.vue'
-    import PageFooter from '@/components/App/Pagination/PageFooter.vue'
+    import PageFooter from '@/components/Pagination/PageFooter.vue'
 
     import { useRoute, useRouter } from 'vue-router'
     import { reactive, watch } from 'vue'

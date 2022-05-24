@@ -8,7 +8,7 @@
         "
     >
         <div class="flex flex-col gap-1 items-center">
-            <UpvoteIcon
+            <IconUpvote
                 :full="content.interactions.voted === 1"
                 :width="'2rem'"
                 :height="'2rem'"
@@ -23,7 +23,7 @@
             <div class="text-xl">
                 {{ abbrNumbers(content.upvotes - content.downvotes) }}
             </div>
-            <DownvoteIcon
+            <IconDownvote
                 :full="content.interactions.voted === -1"
                 :width="'2rem'"
                 :height="'2rem'"
@@ -40,7 +40,7 @@
         <div class="flex flex-col gap-4 w-full">
             <div class="flex flex-row justify-between items-center">
                 <div class="flex gap-3 items-center">
-                    <UserAvatar
+                    <ProfileAvatar
                         :img-src="content._author.avatar"
                         :size="2.5"
                         :username="fullname(content._author)"
@@ -48,7 +48,7 @@
                     <div>
                         {{ fullname(content._author) }}
                     </div>
-                    <DatePreview class="text-sm text-2" :date="content.createdAt" />
+                    <TipRelativeDate class="text-sm text-2" :date="content.createdAt" />
                     <template v-if="thread.post.contentId !== content.contentId">
                         <i v-if="thread.opValidatedWith" class="text-base text-green-600 fa fa-check" />
                         <i
@@ -59,7 +59,7 @@
                             "
                         />
 
-                        <AppTag v-if="thread.adminValidatedWith" tag-name="Officiel" tag-color="orange" />
+                        <LabelTag v-if="thread.adminValidatedWith" tag-name="Officiel" tag-color="orange" />
                         <i
                             v-else-if="auth.user.roles.includes('admin')"
                             class="text-sm cursor-pointer fa fa-check-double text-5"
@@ -111,7 +111,7 @@
             <div class="flex justify-between items-center" :class="unfocusedContentClass">
                 <div class="flex gap-1 items-center text-sm text-4">
                     Posté
-                    <AppDateAndModified
+                    <TipRelativeDateModified
                         :created-at="content.createdAt"
                         :modified-at="content.lastEdit.createdAt"
                     />
@@ -143,12 +143,12 @@
 </template>
 
 <script setup>
-    // import AppDateAndModified from '../App/AppDateAndModified.vue'
+    // import TipRelativeDateModified from '@/components/UI/Tip/TipRelativeDateModified.vue'
     // import UserPreview from '../App/Preview/UserPreview.vue'
 
     import ThreadCommentList from './ThreadCommentList.vue'
-    import UpvoteIcon from '../App/Icon/UpvoteIcon.vue'
-    import DownvoteIcon from '../App/Icon/DownvoteIcon.vue'
+    import IconUpvote from '@/icons/IconUpvote.vue'
+    import IconDownvote from '@/icons/IconDownvote.vue'
     import { fullname } from '@/utils/users'
     import { abbrNumbers } from '@/utils/abbrNumbers'
 
@@ -161,9 +161,9 @@
     // import { getContentDemonstrative, isContentFeminine } from '@/shared/types/content-kinds.enum'
     // import { capitalize } from 'lodash'
 
-    import UserAvatar from '../User/UserAvatar.vue'
-    import DatePreview from '../App/Preview/DatePreview.vue'
-    import AppTag from '../App/AppTag.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
+    import LabelTag from '@/components/UI/Label/LabelTag.vue'
 
     const threads = useThreadsStore()
     const auth = useAuthStore()

@@ -5,7 +5,7 @@
                 <div class="relative w-full h-48">
                     <div class="w-full h-full banner" />
                     <div class="absolute -bottom-8 left-8">
-                        <UserAvatar
+                        <ProfileAvatar
                             :img-src="user.avatar"
                             :size="4.5"
                             :username="user.firstname + ' ' + user.lastname"
@@ -39,13 +39,13 @@
                             <div class="flex flex-wrap mt-2">
                                 <div v-for="club in clubs.items" :key="club" class="flex mr-4 mb-4 h-16">
                                     <p class="my-auto">
-                                        <UserAvatar
+                                        <ProfileAvatar
                                             :img-src="club.team.avatar"
                                             :alt="`${club.team.name} Logo`"
                                             :username="club.team.name"
                                             size="4"
                                             class="rounded-full shadow-inner"
-                                        ></UserAvatar>
+                                        ></ProfileAvatar>
                                     </p>
                                     <div class="my-auto ml-2 w-32">
                                         <div class="-mb-1 text-lg font-bold truncate last:text-clip">
@@ -107,7 +107,8 @@
 
 <script setup>
     // import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
-    import UserAvatar from '@/components/User/UserAvatar.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+
     import { useRoute } from 'vue-router'
     import { watch, ref, nextTick } from 'vue'
     import { useProfilesStore } from '@/store/profile.store'

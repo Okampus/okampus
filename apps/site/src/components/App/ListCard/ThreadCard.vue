@@ -1,7 +1,7 @@
 <template>
     <div v-if="thread" class="flex flex-row gap-6 py-3 pr-7 pl-5 w-full xs:rounded-xl bg-2 text-2">
         <div class="flex flex-col gap-1 items-center">
-            <UpvoteIcon
+            <IconUpvote
                 :full="thread.post.interactions.voted === 1"
                 width="1.5rem"
                 height="1.5rem"
@@ -16,7 +16,7 @@
             <div class="text-xl">
                 {{ abbrNumbers(thread.post.upvotes - thread.post.downvotes) }}
             </div>
-            <DownvoteIcon
+            <IconDownvote
                 :full="thread.post.interactions.voted === -1"
                 width="1.5rem"
                 height="1.5rem"
@@ -30,7 +30,7 @@
             />
         </div>
         <div class="flex flex-col">
-            <AppTip :tip="`${threadTypes[thread.type]?.fr}`">
+            <TipPopper :tip="`${threadTypes[thread.type]?.fr}`">
                 <div
                     class="flex justify-center items-center w-[3.3rem] h-[3.3rem] rounded-lg cursor-pointer"
                     :class="`bg-${threadTypes[thread.type]?.color}-100 dark:bg-${
@@ -39,8 +39,8 @@
                 >
                     <i :class="`fas fa-${threadTypes[thread.type]?.icon}`" class="text-xl" />
                 </div>
-            </AppTip>
-            <AppTip :tip="`${thread.replyCount} réponse${thread.replyCount > 1 ? 's' : ''}`">
+            </TipPopper>
+            <TipPopper :tip="`${thread.replyCount} réponse${thread.replyCount > 1 ? 's' : ''}`">
                 <div
                     class="flex flex-row gap-2 justify-center items-center p-1 mt-3 rounded cursor-pointer select-none"
                     :class="
@@ -56,7 +56,7 @@
                     <i v-else-if="thread.adminValidatedWith" class="fa fa-shield" />
                     <i v-else class="text-sm fa fa-message" />
                 </div>
-            </AppTip>
+            </TipPopper>
         </div>
         <div class="flex flex-col gap-1.5 w-full">
             <router-link
@@ -72,32 +72,32 @@
 
             <div class="flex gap-6 items-center mt-1 w-full text-xs">
                 <div class="flex gap-2 items-center">
-                    <UserAvatar
+                    <ProfileAvatar
                         :img-src="thread.post.author.avatar"
                         :username="fullname(thread.post.author)"
                         :size="1.8"
                     />
                     <div class="text-xs">
                         {{ fullname(thread.post.author) }}
-                        <AppTip :tip="getRole(thread.post.author)[$i18n.locale]">
+                        <TipPopper :tip="getRole(thread.post.author)[$i18n.locale]">
                             <i class="ml-1" :class="`fa fa-${getRole(thread.post.author).icon}`" />
-                        </AppTip>
+                        </TipPopper>
                     </div>
                 </div>
                 <div class="flex gap-2 items-center">
                     <i class="text-base fa fa-calendar icon-color" />
-                    <DatePreview class="ml-2" :date="thread.createdAt" />
+                    <TipRelativeDate class="ml-2" :date="thread.createdAt" />
                 </div>
                 <div
                     v-if="thread.createdAt !== thread.post.lastEdit.createdAt"
                     class="flex gap-2 items-center"
                 >
                     <i class="text-base fa fa-clock-rotate-left icon-color" />
-                    <DatePreview class="ml-2" :date="thread.createdAt" />
+                    <TipRelativeDate class="ml-2" :date="thread.createdAt" />
                 </div>
 
                 <!-- TEMP: display only first tag -->
-                <AppTag v-if="thread.tags.length > 0" :tag-name="thread.tags[0].name" />
+                <LabelTag v-if="thread.tags.length > 0" :tag-name="thread.tags[0].name" />
             </div>
         </div>
     </div>
@@ -112,10 +112,16 @@
 </template>
 
 <script setup>
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    import LabelTag from '@/components/UI/Label/LabelTag.vue'
+    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
+    import IconUpvote from '@/icons/IconUpvote.vue'
+    import IconDownvote from '@/icons/IconDownvote.vue'
+    import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
+
     import { fullname, getRole } from '@/utils/users'
     // import TagList from '@/components/List/TagList.vue'
     // import UserPreview from '@/components/App/Preview/UserPreview.vue'
-    import AppTag from '@/components/App/AppTag.vue'
 
     // import Popper from 'vue3-popper'
     import { useThreadsStore } from '@/store/threads.store'
@@ -124,12 +130,7 @@
 
     // import { timeAgo } from '@/utils/timeAgo'
     import { abbrNumbers } from '@/utils/abbrNumbers'
-    import AppTip from '../AppTip.vue'
-    import UpvoteIcon from '../Icon/UpvoteIcon.vue'
-    import DownvoteIcon from '../Icon/DownvoteIcon.vue'
-    import DatePreview from '../Preview/DatePreview.vue'
     // import UserPreview from '../Preview/UserPreview.vue'
-    import UserAvatar from '@/components/User/UserAvatar.vue'
 
     const threads = useThreadsStore()
 

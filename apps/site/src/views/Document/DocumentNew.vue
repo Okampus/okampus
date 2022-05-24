@@ -28,7 +28,7 @@
                             />
                         </label>
                         <div v-if="v$.stepsModel[0].docName.$error" class="flex flex-col">
-                            <AppAlert
+                            <AlertInline
                                 v-for="(error, i) in v$.stepsModel[0].docName.$errors"
                                 :key="i"
                                 type="error"
@@ -38,7 +38,7 @@
                                         {{ error.$message }}
                                     </div>
                                 </template>
-                            </AppAlert>
+                            </AlertInline>
                         </div>
                     </div>
 
@@ -83,7 +83,7 @@
                             ]"
                         />
                         <div v-if="v$.stepsModel[0].files.$error" class="flex flex-col">
-                            <AppAlert
+                            <AlertInline
                                 v-for="(error, i) in v$.stepsModel[0].files.$errors"
                                 :key="i"
                                 type="error"
@@ -93,7 +93,7 @@
                                         {{ error.$message }}
                                     </div>
                                 </template>
-                            </AppAlert>
+                            </AlertInline>
                         </div>
                     </div>
                     {{ v$.stepsModel[1].docType }}
@@ -115,7 +115,7 @@
                             />
                         </label>
                         <div v-if="v$.stepsModel[1].docYear.$error" class="flex flex-col">
-                            <AppAlert
+                            <AlertInline
                                 v-for="(error, i) in v$.stepsModel[1].docYear.$errors"
                                 :key="i"
                                 type="error"
@@ -125,7 +125,7 @@
                                         {{ error.$message }}
                                     </div>
                                 </template>
-                            </AppAlert>
+                            </AlertInline>
                         </div>
                     </div>
                     <div v-if="stepsModel[0].docType == 'studyDoc'" class="flex flex-col gap-4">
@@ -198,7 +198,7 @@
                                 </SearchInput>
                             </div>
                             <div v-if="v$.stepsModel[1].docSubject.$error" class="flex flex-col">
-                                <AppAlert
+                                <AlertInline
                                     v-for="(error, i) in v$.stepsModel[1].docSubject.$errors"
                                     :key="i"
                                     type="error"
@@ -208,7 +208,7 @@
                                             {{ error.$message }}
                                         </div>
                                     </template>
-                                </AppAlert>
+                                </AlertInline>
                             </div>
                         </div>
                         <RadioInput
@@ -240,7 +240,7 @@
                                 ]"
                             />
                             <div v-if="v$.stepsModel[1].docContent.$error" class="flex flex-col">
-                                <AppAlert
+                                <AlertInline
                                     v-for="(error, i) in v$.stepsModel[1].docContent.$errors"
                                     :key="i"
                                     type="error"
@@ -250,7 +250,7 @@
                                             {{ error.$message }}
                                         </div>
                                     </template>
-                                </AppAlert>
+                                </AlertInline>
                             </div>
                         </div>
                         <div
@@ -279,7 +279,7 @@
                                 :choices="['Sujet', 'Corrigé', 'Sujet + Corrigé', 'Copie d\'étudiant']"
                             />
                             <div v-if="v$.stepsModel[1].docFlags.$error" class="flex flex-col">
-                                <AppAlert
+                                <AlertInline
                                     v-for="(error, i) in v$.stepsModel[1].docFlags.$errors"
                                     :key="i"
                                     type="error"
@@ -289,7 +289,7 @@
                                             {{ error.$message }}
                                         </div>
                                     </template>
-                                </AppAlert>
+                                </AlertInline>
                             </div>
                         </div>
                     </div>
@@ -301,7 +301,7 @@
                                 :choices="['L1', 'L2', 'L3', 'M1', 'M2']"
                             />
                             <div v-if="v$.stepsModel[1].docSchoolYear.$error" class="flex flex-col">
-                                <AppAlert
+                                <AlertInline
                                     v-for="(error, i) in v$.stepsModel[1].docSchoolYear.$errors"
                                     :key="i"
                                     type="error"
@@ -311,7 +311,7 @@
                                             {{ error.$message }}
                                         </div>
                                     </template>
-                                </AppAlert>
+                                </AlertInline>
                             </div>
                         </div>
                     </div>
@@ -343,7 +343,7 @@
                         Je suis d'accord<span class="text-red-500">*</span>
                     </label>
                     <div v-if="v$.stepsModel[2].acceptCondition.$error" class="flex flex-col">
-                        <AppAlert
+                        <AlertInline
                             v-for="(error, i) in v$.stepsModel[2].acceptCondition.$errors"
                             :key="i"
                             type="error"
@@ -353,7 +353,7 @@
                                     {{ error.$message }}
                                 </div>
                             </template>
-                        </AppAlert>
+                        </AlertInline>
                     </div>
                 </section>
             </template>
@@ -362,15 +362,16 @@
 </template>
 
 <script>
-    import AppAlert from '@/components/App/AppAlert.vue'
+    import AlertInline from '@/components/UI/Alert/AlertInline.vue'
     import FormMultiStep from '@/components/Form/FormMultiStep.vue'
     import FileInput from '@/components/Input/FileInput.vue'
     import RadioInput from '@/components/Input/RadioInput.vue'
     import SearchInput from '@/components/Input/SearchInput.vue'
     import SelectInput from '@/components/Input/SelectInput.vue'
+    import CardPage from '../App/CardPage.vue'
+
     import useVuelidate from '@vuelidate/core'
     import { integer, maxLength, required, requiredIf, sameAs } from '@vuelidate/validators'
-    import CardPage from '../App/CardPage.vue'
 
     export default {
         components: {
@@ -379,7 +380,7 @@
             FileInput,
             FormMultiStep,
             SearchInput,
-            AppAlert,
+            AlertInline,
             CardPage,
         },
         props: {

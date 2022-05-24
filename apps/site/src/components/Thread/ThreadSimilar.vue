@@ -6,17 +6,17 @@
                 {{ thread.title }}
             </div>
             <div class="flex flex-wrap">
-                <AppTag v-for="tag in thread.tags" :key="tag" :name="tag.title" :tag-color="tag.color" />
+                <LabelTag v-for="tag in thread.tags" :key="tag" :name="tag.title" :tag-color="tag.color" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import AppTag from '@/components/App/AppTag.vue'
+    import LabelTag from '@/components/UI/Label/LabelTag.vue'
 
     export default {
-        components: { AppTag },
+        components: { LabelTag },
         props: {
             thread: {
                 type: Object,

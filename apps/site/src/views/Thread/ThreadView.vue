@@ -2,7 +2,7 @@
     <Suspense>
         <template #default>
             <div>
-                <FormReport
+                <ThreadFormReport
                     :show="!!report.content"
                     :content="report.content"
                     @close="report.content = null"
@@ -18,7 +18,7 @@
 
 <script setup>
     import AppLoader from '@/components/App/AppLoader.vue'
-    import FormReport from '@/components/Form/FormReport.vue'
+    import ThreadFormReport from '@/components/Thread/ThreadFormReport.vue'
     import ThreadCompact from './ThreadCompact.vue'
 
     import { emitter } from '@/shared/modules/emitter'

@@ -7,11 +7,11 @@
             <p><i class="fas fa-plus"></i> Ajouter</p>
         </button>
     </div>
-    <!-- <AppModal :show="showModal" @close="handleModal = false">
+    <!-- <ModalPopup :show="showModal" @close="handleModal = false">
             <Transition name="fade">
                 <p>zj</p>
             </Transition>
-        </AppModal> -->
+        </ModalPopup> -->
     <div class="grid grid-cols-3 gap-4 my-2">
         <AccountingCard
             v-for="el in data"
@@ -24,9 +24,9 @@
         />
     </div>
 
-    <AppTabs v-model:tab="currentTab" :tabs="tabs" route-base="/test">
+    <HorizontalTabs v-model:tab="currentTab" :tabs="tabs" route-base="/test">
         <DashboardCore :columns="tabs" />
-    </AppTabs>
+    </HorizontalTabs>
 
     <!--
             Creer un tableau pour le tbody ...
@@ -40,8 +40,10 @@
 </template>
 
 <script setup>
+    import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
+
     import DashboardCore from '@/components/Dashboard/DashboardCore.vue'
-    /* import AppModal from '@/components/App/AppModal.vue' */
+    // import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
     import { ref, computed } from 'vue'
     import AccountingCard from '@/components/App/Card/AccountingCard.vue'
 

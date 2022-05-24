@@ -1,21 +1,21 @@
 <template>
     <div class="flex gap-4 p-4 mx-4 xs:rounded-xl bg-content">
-        <UserAvatar :size="4" class="px-2 my-auto min-w-fit" :img-src="user.avatar" :username="fullname" />
+        <ProfileAvatar :size="4" class="px-2 my-auto min-w-fit" :img-src="user.avatar" :username="fullname" />
         <div class="flex flex-col gap-1.5 ml-4">
             <div class="flex gap-3 text-lg text-0 align-items">
                 <div class="my-auto font-bold">{{ fullname }}</div>
-                <AppTag
+                <LabelTag
                     class="text-sm"
                     :tag-name="roleItem[$i18n.locale]"
                     :tag-color="roleItem.color"
                     :icon="roleItem.icon"
                 />
-                <AppTip :tip="`${user.points} points`">
+                <TipPopper :tip="`${user.points} points`">
                     <div class="flex gap-2 w-fit text-5 align-items">
                         <i class="pt-1 fas fa-trophy" />
                         <div>{{ user.points }}</div>
                     </div>
-                </AppTip>
+                </TipPopper>
             </div>
             <div class="line-clamp-2">
                 {{ user.description }}
@@ -64,10 +64,11 @@
 </template>
 
 <script setup>
-    import UserAvatar from '@/components/User/UserAvatar.vue'
+    import LabelTag from '@/components/UI/Label/LabelTag.vue'
+    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
+
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import rolesEnum from '@/shared/types/school-roles.enum'
-    import AppTip from '../AppTip.vue'
-    import AppTag from '../AppTag.vue'
 
     const props = defineProps({
         user: {

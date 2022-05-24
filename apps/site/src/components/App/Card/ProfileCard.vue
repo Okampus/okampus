@@ -1,13 +1,13 @@
 <template>
     <div class="flex p-4 xs:rounded-xl bg-content">
         <div class="my-auto min-w-fit">
-            <UserAvatar :img-src="user.avatar" :username="user.fullname" />
+            <ProfileAvatar :img-src="user.avatar" :username="user.fullname" />
         </div>
         <div class="flex flex-col justify-between ml-4">
             <div>
                 <div class="flex gap-2 text-lg text-0">
                     <div class="my-auto font-bold">{{ user.firstname }} {{ user.lastname }}</div>
-                    <AppTag
+                    <LabelTag
                         :tag-name="schoolRoleItem[$i18n.locale]"
                         :tag-color="schoolRoleItem.color"
                         :icon="schoolRoleItem.icon"
@@ -35,12 +35,13 @@
 </template>
 
 <script>
-    import UserAvatar from '@/components/User/UserAvatar.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+
     import schoolRolesEnum, { DEFAULT_ROLE } from '@/shared/types/school-roles.enum'
-    import AppTag from '../AppTag.vue'
+    import LabelTag from '@/components/UI/Label/LabelTag.vue'
 
     export default {
-        components: { UserAvatar, AppTag },
+        components: { ProfileAvatar, LabelTag },
         props: {
             user: {
                 type: Object,

@@ -6,7 +6,7 @@
         v-bind="focused ? { 'focused': 'true' } : {}"
         @focus="tagsInput.focus()"
     >
-        <AppTag
+        <LabelTag
             v-for="(tag, idx) in tags"
             :key="idx"
             :tag-name="tag"
@@ -29,7 +29,8 @@
 </template>
 
 <script setup>
-    import AppTag from '@/components/App/AppTag.vue'
+    import LabelTag from '@/components/UI/Label/LabelTag.vue'
+
     import { ref } from 'vue'
 
     const props = defineProps({

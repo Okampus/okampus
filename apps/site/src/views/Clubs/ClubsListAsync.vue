@@ -1,6 +1,6 @@
 <template>
     <div class="flex gap-2 my-6 mx-4 max-w-6xl md:gap-6 xl:mx-auto">
-        <AppVerticalTabs
+        <VerticalTabs
             v-model="currentTab"
             :tabs="tabs"
             base-route="/search/clubs"
@@ -8,7 +8,7 @@
             class="sticky top-6"
         />
         <div v-if="currentClubs.length === 0" class="w-full text-center text-0">
-            <AppSadFace class="mb-3 text-3xl" />
+            <EmojiSad class="mb-3 text-3xl" />
             <div class="text-2xl font-bold">Aucune association ne correspond à ces critères.</div>
             <div class="text-lg">
                 Regardez la
@@ -23,9 +23,9 @@
 </template>
 
 <script setup>
-    import AppVerticalTabs from '@/components/App/AppVerticalTabs.vue'
+    import VerticalTabs from '@/components/UI/Tabs/VerticalTabs.vue'
     import ClubCard from '@/components/App/ListCard/ClubCard.vue'
-    import AppSadFace from '@/components/AppSadFace.vue'
+    import EmojiSad from '@/icons/Emoji/EmojiSad.vue'
 
     import { clubTypes, linkToClubType } from '@/shared/types/club-types.enum'
 

@@ -1,6 +1,6 @@
 <template>
     <CardPage>
-        <AppTabs v-model:tab="currentTab" :tabs="tabs" route-base="/me">
+        <HorizontalTabs v-model:tab="currentTab" :tabs="tabs" route-base="/me">
             <template #profile>
                 <ProfileModal />
             </template>
@@ -13,13 +13,14 @@
             <template #profile-settings>
                 <ProfileSettings />
             </template>
-        </AppTabs>
+        </HorizontalTabs>
     </CardPage>
 </template>
 
 <script setup>
     import CardPage from '@/views/App/CardPage.vue'
-    import AppTabs from '@/components/App/AppTabs.vue'
+    import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
+
     import ProfileClubs from '@/components/User/MyProfile/ProfileClubs.vue'
     import ProfileModal from '@/components/User/MyProfile/ProfileModal.vue'
     import ProfileSettings from '@/components/User/MyProfile/ProfileSettings.vue'

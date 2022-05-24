@@ -1,5 +1,5 @@
 <template>
-    <AppToast
+    <AlertToast
         v-model:active="success"
         message="Création réussie ! Tu vas être redirigé sur ton post."
         type="success"
@@ -17,10 +17,11 @@
                     placeholder="Titre clair, descriptif et complet"
                     @input="v$.title.$touch"
                 />
-                <AppError
-                    v-if="v$.title.$error"
-                    :error="`Un titre de post doit faire entre ${titleCharLimit[0]} et ${titleCharLimit[1]} caractères.`"
-                />
+                <div v-if="v$.title.$error" class="text-red-500">
+                    {{
+                        `Un titre de post doit faire entre ${titleCharLimit[0]} et ${titleCharLimit[1]} caractères.`
+                    }}
+                </div>
             </div>
 
             <div>
@@ -45,11 +46,9 @@
                     button-name="Type de post"
                     :choices="threadTypes.map((type) => type[$i18n.locale])"
                 />
-                <AppError
-                    v-if="v$.type.$error"
-                    :error="`Choisis un type de post dans la liste.`"
-                    success="Type de post valide"
-                />
+                <div v-if="v$.type.$error" class="text-red-500">
+                    Choisissez un type de post dans la liste.
+                </div>
             </div>
 
             <div>
@@ -66,10 +65,11 @@
                         @input="v$.body.$touch"
                     >
                         <template #error>
-                            <AppError
-                                v-if="v$.body.$error"
-                                :error="`Une description de post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`"
-                            />
+                            <div v-if="v$.body.$error" class="text-red-500">
+                                {{
+                                    `Une description de post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`
+                                }}
+                            </div>
                         </template>
                     </MdEditor>
                 </div>
@@ -101,11 +101,9 @@
                     @input="tagsError = null"
                     @keydown="v$.tags.$touch"
                 />
-                <AppError
-                    v-if="tagsError !== null"
-                    :error="tagsError || `Un post doit avoir au moins ${minTags} tags.`"
-                    success="Tags valides"
-                />
+                <div v-if="tagsError !== null" class="text-red-500">
+                    {{ tagsError || `Un post doit avoir au moins ${minTags} tags.` }}
+                </div>
             </div>
 
             <div class="flex gap-4 items-center h-12">
@@ -113,12 +111,12 @@
                     <p>Valider mon post</p>
                 </button>
 
-                <AppAlert v-if="error !== null" type="error" :dismissable="true" @dismiss="error = null">
+                <AlertInline v-if="error !== null" type="error" :dismissable="true" @dismiss="error = null">
                     <template #message>
                         <span class="font-bold">Échec de création du post !</span>
                         ({{ error || 'Erreur inconnue' }})
                     </template>
-                </AppAlert>
+                </AlertInline>
             </div>
 
             <!-- TODO: add second panel (dos and don'ts of a good post) -->
@@ -128,13 +126,11 @@
 
 <script setup>
     import CardPage from '@/views/App/CardPage.vue'
-    import AppToast from '@/components/App/AppToast.vue'
-
-    import AppAlert from '@/components/App/AppAlert.vue'
-    import AppError from '@/components/App/AppError.vue'
+    import AlertToast from '@/components/UI/Alert/AlertToast.vue'
+    import AlertInline from '@/components/UI/Alert/AlertInline.vue'
 
     import SelectInput from '@/components/Input/SelectInput.vue'
-    import MdEditor from '@/components/App/Editor/MdEditor.vue'
+    import MdEditor from '@/components/Input/Editor/MdEditor.vue'
     import TagInput from '@/components/Input/TagInput.vue'
 
     import Popper from 'vue3-popper'

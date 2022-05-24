@@ -1,6 +1,6 @@
 <template>
     <div>
-        <AppToast
+        <AlertToast
             v-model:active="toast.show"
             :message="toast.message"
             :type="toast.type"
@@ -9,7 +9,7 @@
         <FormLogin v-model:show-login="showLogin" />
 
         <div class="flex flex-row w-screen h-screen z-1">
-            <SideBar
+            <LayoutSidebar
                 ref="sidebar"
                 :uncollapsed="collapsed"
                 :collapsing="collapsing"
@@ -38,7 +38,7 @@
                     </router-view>
                 </div>
             </div>
-            <TopBar
+            <LayoutTopbar
                 ref="topbar"
                 :class="{ 'brightness-50': hiding && collapsing != collapsed }"
                 @mousedown="hiding && collapsed !== collapsing && toggleSidebar()"
@@ -49,10 +49,10 @@
 </template>
 
 <script setup>
-    import SideBar from '@/components/Bar/SideBar.vue'
-    import TopBar from '@/components/Bar/TopBar.vue'
+    import LayoutSidebar from '@/components/Layout/LayoutSidebar.vue'
+    import LayoutTopbar from '@/components/Layout/LayoutTopbar.vue'
     import FormLogin from '@/components/Form/FormLogin.vue'
-    import AppToast from '@/components/App/AppToast.vue'
+    import AlertToast from '@/components/UI/Alert/AlertToast.vue'
     import AppException from '@/views/App/AppException.vue'
 
     import { useBreakpoints } from '@vueuse/core'

@@ -59,7 +59,7 @@
                                 class="flex gap-2 items-center w-full even:bg-gray-200"
                             >
                                 <td class="flex gap-2 my-1 w-60">
-                                    <UserAvatar
+                                    <ProfileAvatar
                                         :img-src="_club.team.avatar"
                                         size="2"
                                         :username="_club.team.name"
@@ -100,7 +100,7 @@
                                 class="flex gap-2 items-center w-full even:bg-gray-200"
                             >
                                 <td class="flex gap-2 my-1 w-60">
-                                    <UserAvatar :img-src="_club.avatar" size="2" :username="_club.name" />
+                                    <ProfileAvatar :img-src="_club.avatar" size="2" :username="_club.name" />
                                     <div class="my-auto truncate w-50">
                                         {{ _club.name }}
                                     </div>
@@ -148,7 +148,7 @@
                                 <div class="flex mr-6 w-full">
                                     <div class="flex flex-col mr-8 mb-4 w-fit">
                                         <div class="relative mx-auto mb-2">
-                                            <UserAvatar
+                                            <ProfileAvatar
                                                 :img-src="clubSelected.team.avatar"
                                                 :alt="clubSelected.team.name + ' icon'"
                                                 :size="5"
@@ -202,7 +202,7 @@
                                             class="flex gap-8 items-center even:bg-gray-200"
                                         >
                                             <td class="flex gap-2 items-center w-44">
-                                                <UserAvatar
+                                                <ProfileAvatar
                                                     :img-src="request.user.avatar"
                                                     :alt="request.user.name + ' icon'"
                                                     :size="2"
@@ -245,7 +245,7 @@
                                         class="flex gap-4 items-center w-full h-12 even:bg-gray-200"
                                     >
                                         <td class="my-1">
-                                            <UserAvatar
+                                            <ProfileAvatar
                                                 :img-src="member.user.avatar"
                                                 :alt="member.user.name + ' icon'"
                                                 :size="2"
@@ -298,7 +298,7 @@
                         <!-- <div v-if="clubMembers != undefined && clubMembers != null">
                             <ul>
                                 <li v-for="member in clubMembers" :key="member" class="flex gap-4">
-                                    <UserAvatar
+                                    <ProfileAvatar
                                         :src="member.user.avatar"
                                         :alt="`${member.user.fullname}'s' avatar`"
                                         size="8"
@@ -382,14 +382,15 @@
 <script setup>
     import SelectInput from '@/components/Input/SelectInput.vue'
     import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue'
-    import UserAvatar from '@/components/User/UserAvatar.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    import DrawerMenu from '@/components/DrawerMenu.vue'
+
     import { emitter } from '@/shared/modules/emitter'
     import { useAuthStore } from '@/store/auth.store'
     import { useClubsStore } from '@/store/clubs.store'
     import { useProfilesStore } from '@/store/profile.store'
     import { getStatus } from '@/utils/errors'
     import { ref, watch } from 'vue'
-    import DrawerMenu from '@/components/DrawerMenu.vue'
 
     // import _ from 'lodash'
     // import { watch } from 'vue'
