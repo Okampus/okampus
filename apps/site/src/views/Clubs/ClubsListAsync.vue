@@ -1,5 +1,5 @@
 <template>
-    <div class="flex gap-6 my-6 mx-auto max-w-[80rem]">
+    <div class="flex gap-2 my-6 mx-4 max-w-6xl md:gap-6 lg:mx-auto">
         <AppVerticalTabs
             v-model="currentTab"
             :tabs="tabs"

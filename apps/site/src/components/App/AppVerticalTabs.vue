@@ -15,7 +15,7 @@
                     @click="setTab(tab)"
                 >
                     <div class="whitespace-nowrap">{{ tab.name }}</div>
-                    <AppLabel v-if="tab.amount" class="ml-8 bg-gray-500/50 hover:bg-gray-500/50">{{
+                    <AppLabel v-if="tab.amount" class="ml-6 bg-gray-500/50 hover:bg-gray-500/50">{{
                         abbrNumbers(tab.amount)
                     }}</AppLabel>
                 </div>

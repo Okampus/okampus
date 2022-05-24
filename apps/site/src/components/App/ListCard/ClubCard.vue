@@ -1,5 +1,7 @@
 <template>
-    <div class="flex flex-col pb-4 w-[16rem] rounded-lg shadow-xl md:w-[21rem] bg-2">
+    <div
+        class="flex flex-col pb-4 w-full min-w-[15rem] rounded-lg shadow-xl sm:w-[calc(50%-1.5rem)] xl:w-[calc(33%-1.5rem)] bg-2"
+    >
         <AppBanner
             class="w-full h-20 rounded-t-lg"
             :img-src="club.banner"
