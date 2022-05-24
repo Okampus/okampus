@@ -32,7 +32,7 @@ export class TeamEvent extends BaseEntity {
   @ManyToOne()
   createdBy!: User;
 
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   @Index()
   team!: Team;
 
