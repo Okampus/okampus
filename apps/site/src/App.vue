@@ -27,7 +27,15 @@
                     :class="{ 'pointer-events-none': hiding && collapsing != collapsed }"
                 >
                     <AppException v-if="error.code" :code="error.code" />
-                    <router-view v-else />
+                    <!-- Experimenting with frontend caching / TODO: check for performance & memory leak issues -->
+                    <router-view v-else v-slot="{ Component, route }">
+                        <keep-alive>
+                            <component
+                                :is="Component"
+                                :key="route.meta.usePathKey ? route.path : undefined"
+                            />
+                        </keep-alive>
+                    </router-view>
                 </div>
             </div>
             <TopBar
@@ -132,7 +140,7 @@
     const config = useUserConfigStore()
 
     const auth = useAuthStore()
-    const route = useRoute()
+    const currentRoute = useRoute()
 
     if (config.darkMode) {
         document.documentElement.classList.add('dark')
@@ -175,14 +183,14 @@
 
     emitter.on('error-route', ({ code, path }) => {
         error.code = code
-        error.path = path ?? route.path
+        error.path = path ?? currentRoute.path
     })
 
     emitter.on('logout', () => {
         auth.logOut().then(() => {
-            if (route.meta?.requiresAuth) {
+            if (currentRoute.meta?.requiresAuth) {
                 error.code = errorCodes.UNAUTHORIZED
-                error.path = route.path
+                error.path = currentRoute.path
             }
         })
     })
@@ -198,7 +206,7 @@
     watchEffect(() => {
         if (
             error.code &&
-            (route.path !== error.path || (error.code === errorCodes.UNAUTHORIZED && auth.loggedIn))
+            (currentRoute.path !== error.path || (error.code === errorCodes.UNAUTHORIZED && auth.loggedIn))
         ) {
             error.code = null
             error.path = null
