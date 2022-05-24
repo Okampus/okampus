@@ -7,11 +7,13 @@
             route-name="search-clubs"
             class="sticky top-6"
         />
-        <div v-if="currentClubs.length === 0" class="w-full text-0">
-            <div class="text-2xl font-bold text-center">Aucune association ne correspond à ces critères.</div>
-            <div class="text-lg text-center">
+        <div v-if="currentClubs.length === 0" class="w-full text-center text-0">
+            <AppSadFace class="mb-3 text-3xl" />
+            <div class="text-2xl font-bold">Aucune association ne correspond à ces critères.</div>
+            <div class="text-lg">
                 Regardez la
-                <router-link to="threads" class="link-blue">liste de tous les associations</router-link>.
+                <router-link to="/search/clubs" class="link-blue">liste de tous les associations</router-link
+                >.
             </div>
         </div>
         <div v-else class="flex flex-wrap gap-6 w-fit h-fit">
@@ -23,6 +25,8 @@
 <script setup>
     import AppVerticalTabs from '@/components/App/AppVerticalTabs.vue'
     import ClubCard from '@/components/App/ListCard/ClubCard.vue'
+    import AppSadFace from '@/components/AppSadFace.vue'
+
     import { clubTypes, linkToClubType } from '@/shared/types/club-types.enum'
 
     import { computed, ref } from 'vue'
@@ -46,7 +50,7 @@
                 },
                 {
                     id: 'my-clubs',
-                    name: 'Mes assos',
+                    name: 'Mes associations',
                 },
             ],
         },

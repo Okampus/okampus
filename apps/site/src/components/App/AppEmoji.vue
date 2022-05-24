@@ -1,6 +1,6 @@
 <template>
     <i v-if="type === 'icon'" class="fas" :class="`fa-${emoji}`" />
-    <div v-else class="text-lg">
+    <div v-else class="text-0">
         {{ emoji }}
     </div>
 </template>

@@ -8,7 +8,7 @@ export default [
         type: 'text',
     },
     {
-        emoji: ':\\',
+        emoji: ':/',
         type: 'text',
     },
     {
@@ -16,28 +16,28 @@ export default [
         type: 'text',
     },
     {
-        emoji: ':ꓷ',
-        type: 'text',
-    },
-    {
-        emoji: ':[',
-        type: 'text',
-    },
-    {
-        emoji: 'grimace',
-        type: 'icon',
-    },
-    {
-        emoji: 'sad-cry',
-        type: 'icon',
-    },
-    {
-        emoji: 'grin-beam-sweat',
-        type: 'icon',
-    },
-    {
         emoji: 'dizzy',
         type: 'icon',
+    },
+    {
+        emoji: 'heart-crack',
+        type: 'icon',
+    },
+    {
+        emoji: '😕',
+        type: 'text',
+    },
+    {
+        emoji: '💔',
+        type: 'text',
+    },
+    {
+        emoji: '😵',
+        type: 'text',
+    },
+    {
+        emoji: '😵‍💫',
+        type: 'text',
     },
     {
         emoji: 'surprise',
