@@ -48,7 +48,7 @@
                                 <i :class="`fas fa-${link.icon}`" class="shrink-0 text-base" />
                                 <template v-if="showUncollapsed">
                                     <span class="text-sm tracking-normal">{{ link.textLarge }}</span>
-                                    <div class="hidden mr-3 ml-auto revealed">
+                                    <div class="mr-3 ml-auto opacity-0 revealed">
                                         <TipPopper v-if="link.button" :tip="link.button.text">
                                             <router-link :to="link.button.to">
                                                 <i class="text-lg" :class="`fa fa-${link.button.icon}`" />
@@ -109,6 +109,8 @@
     }
 
     .reveal:hover .revealed {
-        @apply block;
+        @apply opacity-100;
+
+        transition: opacity 300ms;
     }
 </style>

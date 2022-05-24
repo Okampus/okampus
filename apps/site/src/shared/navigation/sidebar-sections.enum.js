@@ -151,17 +151,15 @@ export const sections = computed(() => {
                           },
                           {
                               to: '/users/',
-                              regActive: /^\/users?/,
+                              regActive: /^\/(users?|me)/,
                               textSmall: 'Profils',
                               textLarge: 'Utilisateurs',
                               icon: 'user-group',
-                          },
-                          {
-                              to: '/me/profile',
-                              regActive: /^\/me\/profile/,
-                              textSmall: 'Compte',
-                              textLarge: 'Mon compte',
-                              icon: 'user-cog',
+                              button: {
+                                  text: 'Mon compte',
+                                  to: '/me/profile',
+                                  icon: 'user-cog',
+                              },
                           },
                           //   {
                           //       to: '/me/favorites',
