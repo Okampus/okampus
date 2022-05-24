@@ -1,34 +1,53 @@
 <template>
-    <Suspense>
-        <template #default>
-            <ListPageAsync
-                class="mt-4"
-                :base-route="baseRoute"
-                :route-name="routeName"
-                :store-callback="storeCallback"
-            >
-                <template #default="{ items }">
-                    <slot :items="items" />
-                </template>
-            </ListPageAsync>
-        </template>
+    <Transition mode="out-in" name="switch-fade">
+        <Suspense>
+            <template #default>
+                <ListPageAsync
+                    class="mt-4"
+                    :route-base="routeBase"
+                    :route-name="routeName"
+                    :callback="callback"
+                >
+                    <template #default="{ items }">
+                        <slot v-if="items.length" :items="items" />
+                        <div v-else class="text-center text-0">
+                            <EmojiSad class="my-3 text-3xl" />
+                            <div class="text-2xl font-bold">
+                                Aucun{{ resource.frFeminine ? 'e' : '' }} {{ resource.name.fr }} ne correspond
+                                à ces critères.
+                            </div>
+                            <div class="text-lg">
+                                Essayez la
+                                <router-link :to="routeBase" class="link-blue"
+                                    >liste de tou{{ resource.frFeminine ? 'te' : '' }}s les
+                                    {{ resource.name.fr }}s</router-link
+                                >.
+                            </div>
+                        </div>
+                    </template>
+                </ListPageAsync>
+            </template>
 
-        <template #fallback>
-            <AppLoader :size="3" />
-        </template>
-    </Suspense>
+            <template #fallback>
+                <AppLoader />
+            </template>
+        </Suspense>
+    </Transition>
 </template>
 
 <script setup>
     import ListPageAsync from '@/views/App/ListPageAsync.vue'
     import AppLoader from '@/components/App/AppLoader.vue'
+    import EmojiSad from '@/icons/Emoji/EmojiSad.vue'
 
-    defineProps({
-        sortTypes: {
-            type: Array,
-            default: () => [],
+    import { RESOURCE_NAMES, DEFAULT } from '@/shared/types/resource-names.enum'
+
+    const props = defineProps({
+        type: {
+            type: String,
+            required: true,
         },
-        baseRoute: {
+        routeBase: {
             type: String,
             required: true,
         },
@@ -36,9 +55,11 @@
             type: String,
             default: null,
         },
-        storeCallback: {
+        callback: {
             type: Function,
             required: true,
         },
     })
+
+    const resource = RESOURCE_NAMES?.[props.type] ?? RESOURCE_NAMES[DEFAULT]
 </script>

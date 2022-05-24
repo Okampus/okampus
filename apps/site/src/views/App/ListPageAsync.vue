@@ -3,7 +3,7 @@
         <SelectInput v-if="sortTypes.length" />
         <slot :items="results.items" />
         <PageFooter
-            :base-route="baseRoute"
+            :route-base="routeBase"
             :current-page="query.page"
             :total-pages="results.totalPages"
             :items-per-page="query.itemsPerPage"
@@ -42,7 +42,7 @@
             type: Array,
             default: () => [],
         },
-        baseRoute: {
+        routeBase: {
             type: String,
             required: true,
         },
@@ -50,7 +50,7 @@
             type: String,
             default: null,
         },
-        storeCallback: {
+        callback: {
             type: Function,
             required: true,
         },
@@ -60,7 +60,7 @@
     const router = useRouter()
 
     const getPageAndQuery = async () => {
-        if (route.name === props.routeName || route.path === props.baseRoute) {
+        if (route.name === props.routeName || route.path === props.routeBase) {
             const queryPage = isNil(route.query?.page) ? '1' : route.query?.page
 
             if (!isPositiveInteger(queryPage)) {
@@ -69,14 +69,14 @@
                     type: 'warning',
                     duration: 5000,
                 })
-                router.push(props.baseRoute)
+                router.push(props.routeBase)
                 return
             }
 
             query.page = parseInt(queryPage)
 
             await props
-                .storeCallback(query)
+                .callback(query)
                 .then(({ items, pageInfo }) => {
                     if (!items.length && query.page > 1) {
                         emitter.emit('show-toast', {
@@ -84,7 +84,7 @@
                             type: 'info',
                             duration: 5000,
                         })
-                        router.push(props.baseRoute)
+                        router.push(props.routeBase)
                     } else {
                         results.items = items
                         results.totalPages = pageInfo.totalPages

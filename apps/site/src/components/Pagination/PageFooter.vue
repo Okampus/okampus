@@ -2,7 +2,7 @@
     <div v-if="totalItemCount > 0" class="flex gap-3 justify-center items-center py-3 px-6">
         <i
             class="p-3 hover:bg-4-light hover:dark:bg-4-dark rounded-md cursor-pointer fa fa-chevron-left text-0"
-            @click="currentPage > 1 && router.push(`${baseRoute}?page=${currentPage - 1}`)"
+            @click="currentPage > 1 && router.push(`${routeBase}?page=${currentPage - 1}`)"
         />
         <template v-for="(page, i) in pages" :key="i">
             <div
@@ -28,7 +28,7 @@
                                 isNumeric(pageInput) &&
                                 parseInt(pageInput) <= totalPages
                             ) {
-                                router.push(`${props.baseRoute}?page=${parseInt(pageInput)}`)
+                                router.push(`${props.routeBase}?page=${parseInt(pageInput)}`)
                                 currentInput = null
                                 pageInput = null
                             }
@@ -39,7 +39,7 @@
             </div>
             <router-link
                 v-else
-                :to="`${baseRoute}?page=${page}`"
+                :to="`${routeBase}?page=${page}`"
                 class="py-2 w-10 h-10 text-lg leading-tight text-center rounded-md text-0"
                 :class="[page === currentPage ? 'bg-blue-500' : 'hover:bg-3-light dark:hover:bg-3-dark']"
                 >{{ page }}</router-link
@@ -47,7 +47,7 @@
         </template>
         <i
             class="p-3 hover:bg-4-light hover:dark:bg-4-dark rounded-md cursor-pointer fa fa-chevron-right text-0"
-            @click="currentPage < totalPages && router.push(`${baseRoute}?page=${currentPage + 1}`)"
+            @click="currentPage < totalPages && router.push(`${routeBase}?page=${currentPage + 1}`)"
         />
     </div>
 </template>
@@ -63,7 +63,7 @@
     const maxPagesShown = numberPagesShownAround * 2 + 1
 
     const props = defineProps({
-        baseRoute: {
+        routeBase: {
             type: String,
             required: true,
         },

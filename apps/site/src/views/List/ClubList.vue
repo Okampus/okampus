@@ -1,13 +1,11 @@
 <template>
     <Transition mode="out-in" name="switch-fade">
-        <keep-alive>
-            <Suspense>
-                <ClubsListAsync />
-                <template #fallback>
-                    <AppLoader />
-                </template>
-            </Suspense>
-        </keep-alive>
+        <Suspense>
+            <ClubsListAsync />
+            <template #fallback>
+                <AppLoader />
+            </template>
+        </Suspense>
     </Transition>
 </template>
 
