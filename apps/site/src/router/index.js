@@ -15,7 +15,7 @@ const routes = [
 
     {
         path: '/admin/clubs',
-        component: () => import('@/views/Dashboard/DashboardAssociation.vue'),
+        component: () => import('@/views/Dashboard/DashboardClub.vue'),
         meta: {
             requiresAuth: true,
         },
