@@ -1,21 +1,21 @@
 <template>
-    <div class="flex gap-2 my-6 mx-4 max-w-6xl md:gap-6 xl:mx-auto">
+    <div class="flex gap-4 my-6 mx-4 max-w-6xl md:gap-8 xl:mx-auto">
         <VerticalTabs
             v-model="currentTab"
             :tabs="tabs"
             base-route="/clubs"
-            route-name="search-clubs"
+            route-name="clubs"
             class="sticky top-6"
         />
         <div v-if="currentClubs.length === 0" class="w-full text-center text-0">
             <EmojiSad class="mb-3 text-3xl" />
             <div class="text-2xl font-bold">Aucune association ne correspond à ces critères.</div>
             <div class="text-lg">
-                Regardez la
-                <router-link to="/clubs" class="link-blue">liste de tous les associations</router-link>.
+                Essayez la
+                <router-link to="/clubs" class="link-blue">liste de toutes les associations</router-link>.
             </div>
         </div>
-        <div v-else class="flex flex-wrap gap-6 w-fit h-fit">
+        <div v-else class="flex flex-wrap gap-4 w-fit h-fit">
             <ClubCard v-for="club in currentClubs" :key="club.teamId" :club="club" />
         </div>
     </div>

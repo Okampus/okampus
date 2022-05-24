@@ -12,6 +12,7 @@ const routes = [
             requiresAuth: false,
         },
     },
+
     {
         path: '/admin/clubs',
         component: () => import('@/views/Dashboard/DashboardAssociation.vue'),
@@ -67,7 +68,7 @@ const routes = [
 
     {
         path: '/posts',
-        component: () => import('@/views/Thread/ThreadHome.vue'),
+        component: () => import('@/views/List/ThreadList.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -180,8 +181,8 @@ const routes = [
     // },
 
     {
+        name: 'clubs',
         path: '/clubs/:tab*',
-        name: 'search-clubs',
         component: () => import('@/views/List/ClubList.vue'),
         meta: {
             requiresAuth: true,

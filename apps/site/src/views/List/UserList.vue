@@ -1,5 +1,5 @@
 <template>
-    <ListPage base-route="/users" route-name="users" :store-callback="users.getUsers">
+    <ListPage :base-route="baseRoute" :route-name="routeName" :store-callback="users.getUsers">
         <template #default="{ items }">
             <div class="flex flex-col gap-4">
                 <UserCard v-for="user in items" :key="user.userId" :user="user" />
@@ -14,4 +14,15 @@
     import ListPage from '../App/ListPage.vue'
 
     const users = useUsersStore()
+
+    defineProps({
+        baseRoute: {
+            type: String,
+            default: '/users',
+        },
+        routeName: {
+            type: String,
+            default: 'users',
+        },
+    })
 </script>
