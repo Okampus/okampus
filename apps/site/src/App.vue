@@ -64,7 +64,7 @@
 
     import logOutOnExpire from '@/utils/logOutOnExpire'
 
-    import { nextTick, reactive, ref, watch, watchEffect } from 'vue'
+    import { inject, nextTick, reactive, ref, watch, watchEffect } from 'vue'
 
     import { isNil } from 'lodash'
     import { errorCodes } from './shared/errors/app-exceptions.enum'
@@ -85,6 +85,8 @@
     const collapsed = ref(false)
 
     const showLogin = ref(false)
+
+    document.documentElement.style.setProperty('--font-size-base', inject('isMobile')() ? '12px' : '13px')
 
     const switchCollapsed = (event) => {
         if (event.propertyName !== 'margin-left') return
@@ -260,7 +262,7 @@
 
     // TODO: Adapt font size to screen size (for small screen sizes)
     html {
-        font-size: 12px;
+        font-size: var(--font-size-base);
     }
 
     @media (min-width: 768px) {

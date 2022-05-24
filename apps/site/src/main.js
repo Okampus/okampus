@@ -9,7 +9,6 @@ import Particles from 'particles.vue3'
 import { emitter } from '@/shared/modules/emitter'
 import { i18n } from '@/shared/modules/i18n'
 
-import axios from '@/shared/config/axios.config'
 import router from '@/router/index'
 import store from '@/old-store'
 
@@ -33,8 +32,8 @@ const mobileCheck = function () {
     return check
 }
 
-app.config.globalProperties.$axios = axios
 app.config.globalProperties.isMobile = mobileCheck()
+app.provide('isMobile', mobileCheck)
 app.config.globalProperties.noop = () => {}
 app.config.globalProperties.emptyObj = () => ({})
 app.config.globalProperties.emptyList = () => []
