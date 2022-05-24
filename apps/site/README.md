@@ -32,4 +32,4 @@ $ npm run format
 <!-- Link Dump -->
 [les instructions du backend]: ../api/README.md
 [Node.js]: https://nodejs.org/en/download/
-[une clé spéciale, de recherche uniquement]: https://typesense.org/docs/0.22.1/api/api-keys.html#search-only-api-key
+[une clé spéciale, de recherche uniquement]: https://typesense.org/docs/latest/api/api-keys.html#search-only-api-key

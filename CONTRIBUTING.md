@@ -11,14 +11,16 @@ Sur votre PR, n'ayez pas peur de faire autant de commits dont vous avez besoin, 
 
 Pour contribuer à ce repo, n'hésitez pas à créer un nouveau fork et à soumettre une Pull Request, en suivant ces instructions :
 
+1. Si possible, ouvrez en amont une issue pour s'assurer que c'est un problème que l'équipe souhaite résoudre, qui n'est pas déjà en train d'être travaillé, et afin de documenter votre travail et de pouvoir vous donner des suggestions et des conseils.
 1. Forkez, clonez, et selectionnez la branche `dev`.
    `git clone https://github.com/<votre pseudo>/okampus`
 1. **Créez une nouvelle branche sur votre fork.**
    `git checkout -b feature/<votre-feature>`
-1. Faites vos changements.
+1. Faites vos changements dans le code
 1. Assurez-vous que le lint passe avec `npm run lint`.
-1. Pensez-bien à tester vos changements de manière **intensive**.
+1. **Pensez-bien à tester vos changements de manière intensive.**
 1. Commitez vos changements avec des commits le plus possible organisés et clairs, puis pushez-les.
+   Veillez à suivre le style "[conventional commits](https://conventionalcommits.org/)" pour les noms de vos commits.
    `git add <fichiers modifiés>` puis `git commit -m "<description>"` puis `git push origin <votre branche>`
 1. Soumettez une Pull Request! Assurez-vous que votre PR fait bien un changement dans un domaine précis : 1 PR = 1 changement (n'ajoutez pas 3 endpoints et 4 bugfixes en une seule PR).
 

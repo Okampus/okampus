@@ -10,15 +10,14 @@
 Pour lancer l'API d'Okampus localement, il faut suivre ces étapes :
 
 1. Installez [Node.js]. Vérifiez bien d'avoir Node.js v16+ ou plus quand vous faites `node -v`.
-1. Installez [PostgreSQL 14].
-1. (Optionel) Installez [Typesense] et démarrez-le avec les drapeaux `--data-dir=/tmp/typesense-data` et `--api-key=votre_clé_dapi`.
-1. Dupliquez puis renommez le fichier `.env.example` dans le dossier `apps/api/`, en `.env`.
-1. Remplissez ce fichier avec vos tokens et votre configuration. Pensez à bien remplir le nom d'utilisateur et mot de passe de votre base de données : les variables sont préfixées par `MIKRO_ORM_`. Si vous avez installé Typesense, vous devez aussi remplir la variable `TYPESENSE_API_KEY` avec la clé d'api que vous avez définie en le lançant.
-1. Installez les dépendences avec `npm install`.
-1. :warning: Initialisez la base de données PostgreSQL avec `npx mikro-orm migration:up`.
-
+2. Dupliquez puis renommez le fichier `.env.example` dans le dossier `apps/api/`, en `.env`.
+3. Remplissez ce fichier avec vos tokens et votre configuration. Pensez à bien remplir le nom d'utilisateur et mot de passe de votre base de données : les variables sont préfixées par `MIKRO_ORM_`. Si vous avez installé Typesense, vous devez aussi remplir la variable `TYPESENSE_API_KEY` avec la clé d'api que vous avez définie en le lançant.
+4. Installez [PostgreSQL 14].
+5. (Optionel) Installez [Typesense] et démarrez-le avec les drapeaux `--data-dir=` (suivi du même chemin que celui que vous donnez à la variable d'environnement `TYPESENSE_DATA_DIR`), et `--api-key=` (suivi de la même valeur que celle que vous donnez à la variable d'environnement `TYPESENSE_API_KEY`).
+6. Installez les dépendences avec `npm install`.
+7. :warning: Initialisez la base de données PostgreSQL avec `npx mikro-orm migration:up`.
     Vous devrez probablement créer la base de données (vide) auparavant. Pensez à l'appeler comme vous l'avez configuré dans le fichier `.env` : `MIKRO_ORM_DB_NAME` (par défault, `okampus`). Avec `psql`, vous pouvez créer la base de données en lançant `psql -c "CREATE DATABASE IF NOT EXISTS okampus;"` dans votre terminal.
-1. Lancez l'API en mode "développement" avec `npm run dev`.
+8. Lancez l'API en mode "développement" avec `npm run dev`.
 
 ## Lancer Okampus via Docker
 

@@ -17,18 +17,9 @@
 - name: 'status: blocked'
   description: PRs that are blocked by other issues/PRs.
   color: 'E85247'
-- name: 'status: won''t do'
-  description: Issues and PRs that won't be treated.
-  color: 'E85247'
 - name: 'status: needs testing'
   description: PRs that need testing from the author or volunteers.
   color: 'A55124'
-- name: 'status: duplicate'
-  description: Issues/PRs that are duplicated.
-  color: 'CFD3D7'
-- name: 'status: invalid'
-  description: Issues/PRs that are invalid and won't be treated.
-  color: 'CFD3D7'
 - name: 'status: help wanted'
   description: Issues that need assistance from volunteers or PRs that need help to proceed.
   color: '008672'
@@ -38,9 +29,6 @@
 - name: 'status: approved'
   description: Issues and PRs that have been approved.
   color: '8CE098'
-- name: 'status: denied'
-  description: Issues and PRs that have been denied.
-  color: 'E85247'
 
 - name: 'priority: critical'
   description: Issues that must be fixed or PRs that must be finished and merged with MAXIMUM PRIORITY.
@@ -57,19 +45,6 @@
 - name: 'priority: lowest'
   description: Issues that must be fixed or PRs that must be finished with the looowwwest priority.
   color: '41FC02'
-
-- name: 'difficulty: complex'
-  description: Issues that are quite complex to finish.
-  color: 'E0B325'
-- name: 'difficulty: medium'
-  description: Issues that are not easy to finish.
-  color: 'DDE025'
-- name: 'difficulty: easy'
-  description: Issues that are easy to finish.
-  color: 'C3E025'
-- name: 'difficulty: trivial'
-  description: Issues that are very easy to finish.
-  color: '85E025'
 
 - name: 'target: backend'
   description: Issues and PRs that act on the backend.
@@ -96,12 +71,15 @@
 - name: 'scope: user'
   description: Issues and PRs related to users and profiles.
   color: '9DCBE0'
+- name: 'scope: auth'
+  description: Issues and PRs related to authentication.
+  color: '9DCBE0'
 - name: 'scope: wiki'
   description: Issues and PRs related to the wiki module.
   color: '9DCBE0'
 - name: 'scope: restaurant (crous)'
   description: Issues and PRs related to restaurant module (the CROUS).
   color: '9DCBE0'
-- name: 'scope: clubs'
-  description: Issues and PRs related to the club module.
+- name: 'scope: teams'
+  description: Issues and PRs related to the teams module.
   color: '9DCBE0'
