@@ -66,7 +66,7 @@ export class User extends BaseEntity {
   banner?: string;
 
   @Property({ type: 'text' })
-  description?: string;
+  shortDescription?: string;
 
   @Expose({ groups: [STATISTICS_INCLUDED] })
   @OneToOne(() => Statistics, stats => stats.user, { cascade: [Cascade.ALL] })
@@ -88,8 +88,8 @@ export class User extends BaseEntity {
       this.color = options.color;
     if (options.signature)
       this.signature = options.signature;
-    if (options.description)
-      this.description = options.description;
+    if (options.shortDescription)
+      this.shortDescription = options.shortDescription;
   }
 
   public async setPassword(password: string): Promise<void> {

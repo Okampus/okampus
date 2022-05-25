@@ -50,5 +50,5 @@ export class RegisterDto {
 
   @IsOptional()
   @IsString()
-  description?: string;
+  shortDescription?: string;
 }

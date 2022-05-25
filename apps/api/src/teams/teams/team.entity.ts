@@ -32,7 +32,7 @@ export class Team extends BaseEntity {
   name!: string;
 
   @Property({ type: 'text' })
-  description?: string;
+  shortDescription?: string;
 
   @Property({ type: 'text' })
   longDescription?: string;
@@ -64,7 +64,7 @@ export class Team extends BaseEntity {
     name: string;
     kind: TeamKind;
     category: string;
-    description?: string;
+    shortDescription?: string;
     longDescription?: string;
     avatar?: string;
     banner?: string;
@@ -76,8 +76,8 @@ export class Team extends BaseEntity {
     this.name = options.name;
     this.kind = options.kind;
     this.category = options.category;
-    if (options.description)
-      this.description = options.description;
+    if (options.shortDescription)
+      this.shortDescription = options.shortDescription;
     if (options.longDescription)
       this.longDescription = options.longDescription;
     if (options.avatar)

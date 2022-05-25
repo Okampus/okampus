@@ -17,7 +17,7 @@ export class CreateTeamDto {
 
   @IsOptional()
   @IsString()
-  description?: string;
+  shortDescription?: string;
 
   @IsOptional()
   @IsString()

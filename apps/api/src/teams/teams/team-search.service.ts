@@ -11,7 +11,7 @@ import { Team } from './team.entity';
 
 export interface IndexedTeam {
   name: string;
-  description?: string;
+  shortDescription?: string;
   kind: string;
   id: string;
 }
@@ -23,7 +23,7 @@ export class TeamSearchService extends SearchService<Team, IndexedTeam> {
     fields: [
       { name: 'name', type: 'string' },
       { name: 'kind', type: 'string' },
-      { name: 'description', type: 'string', optional: true },
+      { name: 'shortDescription', type: 'string', optional: true },
     ],
   };
 
@@ -78,7 +78,7 @@ export class TeamSearchService extends SearchService<Team, IndexedTeam> {
   public toIndexedEntity(team: Team): IndexedTeam {
     return {
       name: team.name,
-      description: team.description,
+      shortDescription: team.shortDescription,
       kind: team.kind,
       id: team.teamId.toString(),
     };
