@@ -117,9 +117,12 @@ export class AuthController {
   }
 
   private addAuthCookies(res: Res, tokens: TokenResponse): Res {
-    return res.cookie('accessToken', tokens.accessToken, { ...cookieOptions, maxAge: config.get('tokens.accessTokenExpirationSeconds') * 1000 })
-      .cookie('refreshToken', tokens.refreshToken, { ...cookieOptions, maxAge: config.get('tokens.refreshTokenExpirationSeconds') * 1000 })
-      .cookie('accessTokenExpiresAt', tokens.accessTokenExpiresAt, cookiePublicOptions)
-      .cookie('refreshTokenExpiresAt', tokens.refreshTokenExpiresAt, cookiePublicOptions);
+    const maxAgeAccess = config.get('tokens.accessTokenExpirationSeconds') * 1000;
+    const maxAgeRefresh = config.get('tokens.refreshTokenExpirationSeconds') * 1000;
+
+    return res.cookie('accessToken', tokens.accessToken, { ...cookieOptions, maxAge: maxAgeAccess })
+      .cookie('refreshToken', tokens.refreshToken, { ...cookieOptions, maxAge: maxAgeRefresh })
+      .cookie('accessTokenExpiresAt', tokens.accessTokenExpiresAt, { ...cookiePublicOptions, maxAge: maxAgeAccess })
+      .cookie('refreshTokenExpiresAt', tokens.refreshTokenExpiresAt, { ...cookiePublicOptions, maxAge: maxAgeRefresh });
   }
 }
