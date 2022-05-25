@@ -85,6 +85,7 @@ const routes = [
     // },
 
     {
+        name: 'me',
         path: '/me/:tab*',
         component: () => import('@/views/User/UserSettings.vue'),
         meta: {

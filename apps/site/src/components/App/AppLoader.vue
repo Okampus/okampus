@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-6 justify-center items-center -mt-10 w-full h-full text-6xl text-0">
+    <div class="flex flex-col gap-6 justify-center items-center w-full h-[90%] text-6xl text-0">
         <AppLogo :scale="2" />
         <svg
             class="text-white animate-spin"

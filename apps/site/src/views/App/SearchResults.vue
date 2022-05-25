@@ -29,25 +29,28 @@
     const BASE_ROUTE = 'search'
     const ROUTE_NAME = 'search'
 
-    const THREADS = 0
+    const THREADS = 'threads'
+    const USERS = 'users'
 
-    const tabs = ref([
+    const tabs = [
         {
-            id: 'threads',
+            id: THREADS,
             route: '/search',
-            name: 'Threads',
+            name: 'Posts',
         },
         {
-            id: 'users',
-            name: 'Users',
+            id: USERS,
+            name: 'Utilisateurs',
         },
-    ])
+    ]
 
-    const searchables = {
-        threads: { component: ThreadList },
-        users: { component: UserList },
+    const DEFAULT_TAB = tabs[0]
+
+    const components = {
+        [THREADS]: ThreadList,
+        [USERS]: UserList,
     }
 
     const currentTab = ref(null)
-    const currentComponent = computed(() => searchables[currentTab.value ?? tabs.value[THREADS].id].component)
+    const currentComponent = computed(() => components[currentTab.value ?? DEFAULT_TAB.id])
 </script>

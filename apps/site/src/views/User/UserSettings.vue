@@ -1,49 +1,57 @@
 <template>
-    <CardPage>
-        <HorizontalTabs v-model:tab="currentTab" :tabs="tabs" route-base="/me">
-            <template #profile>
-                <SettingsModal />
-            </template>
-            <template #socials>
-                <SettingsSocials />
-            </template>
-            <template #clubs>
-                <SettingsClubs />
-            </template>
-        </HorizontalTabs>
-    </CardPage>
+    <div class="flex flex-col gap-6 m-10">
+        <HorizontalTabs v-model="currentTab" :tabs="tabs" route-base="/me" route-name="me" />
+        <div class="grow justify-center">
+            <keep-alive>
+                <component :is="currentComponent" />
+            </keep-alive>
+        </div>
+    </div>
 </template>
 
 <script setup>
-    import CardPage from '@/views/App/CardPage.vue'
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
 
+    import AppSuspense from '../App/AppSuspense.vue'
+
+    import SettingsAccount from '@/components/User/Settings/SettingsAccount.vue'
     import SettingsClubs from '@/components/User/Settings/SettingsClubs.vue'
-    import SettingsModal from '@/components/User/Settings/SettingsModal.vue'
     import SettingsSocials from '@/components/User/Settings/SettingsSocials.vue'
 
-    import { useRoute } from 'vue-router'
-    import { ref } from 'vue'
+    import { computed, ref, h } from 'vue'
 
-    const route = useRoute()
+    const PROFILE = 'profile'
+    const CLUBS = 'clubs'
+    const SOCIALS = 'socials'
+
     const tabs = [
         {
-            id: 'profile',
+            id: PROFILE,
             name: 'Profil',
             icon: 'address-card',
         },
         {
-            id: 'socials',
-            name: 'Contacts',
-            icon: 'mail-bulk',
-        },
-        {
-            id: 'clubs',
+            id: CLUBS,
             name: 'Mes associations',
             icon: 'user',
         },
+        {
+            id: SOCIALS,
+            name: 'Contacts',
+            icon: 'mail-bulk',
+        },
     ]
-    let currentTab = ref(tabs.findIndex((t) => t.id === route.params.tab))
+
+    const DEFAULT_TAB = tabs[0]
+
+    const components = {
+        [PROFILE]: h(AppSuspense, { key: PROFILE }, { default: () => h(SettingsAccount) }),
+        [CLUBS]: h(AppSuspense, { key: CLUBS }, { default: () => h(SettingsClubs) }),
+        [SOCIALS]: h(AppSuspense, { key: SOCIALS }, { default: () => h(SettingsSocials) }),
+    }
+
+    const currentTab = ref(null)
+    const currentComponent = computed(() => components[currentTab.value ?? DEFAULT_TAB.id])
 
     // const accounts = [
     //     {

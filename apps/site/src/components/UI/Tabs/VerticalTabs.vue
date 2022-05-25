@@ -7,11 +7,7 @@
                     v-for="(tab, j) in tabParent.tabs"
                     :key="j"
                     class="flex justify-between items-center px-2 mt-0.5 h-10 select-none tab"
-                    :class="[
-                        tab.id === modelValue ? 'active' : 'text-1',
-                        j === 0 ? 'rounded-t' : '',
-                        j === tabParent.tabs.length - 1 ? 'rounded-b' : '',
-                    ]"
+                    :class="tab.id === modelValue ? 'active' : 'text-1'"
                     @click="setTab(tab, true)"
                 >
                     <div class="whitespace-nowrap">{{ tab.name }}</div>
@@ -27,11 +23,7 @@
             <div
                 v-else
                 class="flex justify-between items-center px-2 h-10 select-none tab"
-                :class="[
-                    tabParent.id === modelValue ? 'active' : '',
-                    i === 0 ? 'rounded-t' : '',
-                    i === tabs.length - 1 ? 'rounded-b' : '',
-                ]"
+                :class="tabParent.id === modelValue ? 'active' : ''"
                 @click="setTab(tabParent, true)"
             >
                 <div>{{ tabParent.name }}</div>
@@ -71,8 +63,8 @@
             required: true,
         },
         modelValue: {
-            type: String,
-            default: (props) => props.defaultTab,
+            type: [String, null],
+            required: true,
         },
     })
 
