@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -7,14 +8,23 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Put,
   Query,
+  UploadedFile,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Express } from 'express';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
+import { FileUploadsService } from '../../files/file-uploads/file-uploads.service';
+import { ProfileImage } from '../../files/profile-images/profile-image.entity';
+import { ProfileImagesService } from '../../files/profile-images/profile-images.service';
+import { simpleImageMimeTypeRegex } from '../../shared/configs/mime-type';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { SerializerIncludeTeamMembers } from '../../shared/lib/decorators/serializers.decorator';
+import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { TypesenseEnabledGuard } from '../../shared/lib/guards/typesense-enabled.guard';
+import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
@@ -33,6 +43,9 @@ import { TeamsService } from './teams.service';
 export class TeamsController {
   constructor(
     private readonly teamsService: TeamsService,
+    private readonly profileImagesService: ProfileImagesService,
+    private readonly filesService: FileUploadsService,
+
     private readonly teamSearchService: TeamSearchService,
   ) {}
 
@@ -96,5 +109,43 @@ export class TeamsController {
   @SerializerIncludeTeamMembers()
   public async remove(@Param('teamId', ParseIntPipe) teamId: number): Promise<void> {
     await this.teamsService.remove(teamId);
+  }
+
+  @Put(':teamId/avatar')
+  @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
+  @CheckPolicies(ability => ability.can(Action.Create, ProfileImage))
+  public async updateAvatar(
+    @CurrentUser() user: User,
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<Team> {
+    if (!file)
+      throw new BadRequestException('No file provided');
+
+    const fileUpload = await this.filesService.create(user, file, FileKind.ProfileImage);
+    const profileImage = await this.profileImagesService.create(fileUpload);
+
+    console.log('oiuiii');
+    return await this.teamsService.updateProfileImage(user, teamId, 'avatar', profileImage);
+  }
+
+  @Put(':teamId/banner')
+  @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
+  @CheckPolicies(
+    ability => ability.can(Action.Create, ProfileImage),
+    ability => ability.can(Action.Update, User),
+  )
+  public async updateBanner(
+    @CurrentUser() user: User,
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @UploadedFile() banner: Express.Multer.File,
+  ): Promise<Team> {
+    if (!banner)
+      throw new BadRequestException('No file provided');
+
+    const fileUpload = await this.filesService.create(user, banner, FileKind.ProfileImage);
+    const profileImage = await this.profileImagesService.create(fileUpload);
+
+    return await this.teamsService.updateProfileImage(user, teamId, 'banner', profileImage);
   }
 }

@@ -2,7 +2,9 @@ import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
+import { FileUploadsModule } from '../files/file-uploads/file-uploads.module';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
+import { ProfileImagesModule } from '../files/profile-images/profile-images.module';
 import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { Role } from '../shared/modules/authorization/types/role.enum';
@@ -19,6 +21,8 @@ import './user.subscriber';
   imports: [
     MikroOrmModule.forFeature([ProfileImage, User, Statistics, BadgeUnlock]),
     StatisticsModule,
+    ProfileImagesModule,
+    FileUploadsModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, UserSearchService],

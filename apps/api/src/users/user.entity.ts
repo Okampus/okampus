@@ -63,7 +63,7 @@ export class User extends BaseEntity {
   signature?: string;
 
   @Property({ type: 'text' })
-  banner?: string;
+  banner?: string | null;
 
   @Property({ type: 'text' })
   shortDescription?: string;

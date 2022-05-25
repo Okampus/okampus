@@ -2,6 +2,7 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { FileUpload } from '../../files/file-uploads/file-upload.entity';
 import { ProfileImage } from '../../files/profile-images/profile-image.entity';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
@@ -117,15 +118,19 @@ export class TeamsService {
 
     const { avatar, banner, ...dto } = updateTeamDto;
 
-    if (avatar)
-      await this.setAvatar(avatar, 'avatar', team);
-    else
-      team.avatar = null;
+    if (typeof avatar !== 'undefined') {
+      if (avatar)
+        await this.setAvatar(avatar, 'avatar', team);
+      else
+        team.avatar = null;
+    }
 
-    if (banner)
-      await this.setAvatar(banner, 'banner', team);
-    else
-      team.banner = null;
+    if (typeof banner !== 'undefined') {
+      if (banner)
+        await this.setAvatar(banner, 'banner', team);
+      else
+        team.banner = null;
+    }
 
     wrap(team).assign(dto);
     await this.teamRepository.flush();
@@ -139,9 +144,30 @@ export class TeamsService {
     await this.teamSearchService.remove(team.teamId.toString());
   }
 
-  private async setAvatar(profileImageId: string, type: 'avatar' | 'banner', team: Team): Promise<void> {
+  public async updateProfileImage(user: User, teamId: number, type: 'avatar' | 'banner', profileImage: ProfileImage): Promise<Team> {
+    const team = await this.teamRepository.findOneOrFail(
+      { teamId },
+      { populate: ['members'] },
+    );
+
+    // TODO: Move this to CASL
+    if (!team.canAdminister(user))
+      throw new ForbiddenException('Not a team admin');
+
+    await this.setAvatar(profileImage, type, team);
+
+    await this.profileImageRepository.flush();
+    await this.teamRepository.flush();
+    return team;
+  }
+
+  private async setAvatar(profileImage: ProfileImage | string, type: 'avatar' | 'banner', team: Team): Promise<void> {
     // Get the avatar image and validate it
-    const avatarImage = await this.profileImageRepository.findOne({ profileImageId }, { populate: ['file'] });
+    const profileImageId = typeof profileImage === 'string' ? profileImage : profileImage.profileImageId;
+    const avatarImage = profileImage instanceof ProfileImage && profileImage.file instanceof FileUpload
+      ? profileImage
+      : await this.profileImageRepository.findOne({ profileImageId }, { populate: ['file'] });
+
     if (!avatarImage || !avatarImage.isAvailableFor('team', team.teamId))
       throw new BadRequestException(`Invalid ${type} image`);
 

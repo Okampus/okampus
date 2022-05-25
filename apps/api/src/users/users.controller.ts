@@ -1,17 +1,27 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   Param,
   Patch,
+  Put,
   Query,
+  UploadedFile,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Express } from 'express';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
+import { FileUploadsService } from '../files/file-uploads/file-uploads.service';
+import { ProfileImage } from '../files/profile-images/profile-image.entity';
+import { ProfileImagesService } from '../files/profile-images/profile-images.service';
+import { simpleImageMimeTypeRegex } from '../shared/configs/mime-type';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
+import { UploadInterceptor } from '../shared/lib/decorators/upload-interceptor.decorator';
 import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
+import { FileKind } from '../shared/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
 import type { PaginatedResult } from '../shared/modules/pagination';
@@ -28,6 +38,9 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
+    private readonly profileImagesService: ProfileImagesService,
+    private readonly filesService: FileUploadsService,
+
     private readonly userSearchService: UserSearchService,
   ) {}
 
@@ -48,14 +61,14 @@ export class UsersController {
   }
 
   @Get()
-  public async async(@Query() query: PaginateDto): Promise<PaginatedResult<User>> {
+  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<User>> {
     return await this.usersService.findAll(normalizePagination(query));
   }
 
-  @Delete(':id')
+  @Delete(':userId')
   @CheckPolicies(ability => ability.can(Action.Delete, User))
-  public async deleteUser(@Param('id') id: string): Promise<void> {
-    await this.usersService.deleteUser(id);
+  public async delete(@Param('userId') id: string): Promise<void> {
+    await this.usersService.delete(id);
   }
 
   @Get('/:userId/statistics')
@@ -64,10 +77,49 @@ export class UsersController {
   }
 
   @Patch()
-  public async updateOne(
+  @CheckPolicies(ability => ability.can(Action.Update, User))
+  public async update(
     @CurrentUser() user: User,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<User> {
-    return await this.usersService.updateUser(user.userId, updateUserDto);
+    return await this.usersService.update(user.userId, updateUserDto);
+  }
+
+  @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
+  @Put('/avatar')
+  @CheckPolicies(
+    ability => ability.can(Action.Create, ProfileImage),
+    ability => ability.can(Action.Update, User),
+  )
+  public async updateAvatar(
+    @CurrentUser() user: User,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<User> {
+    if (!file)
+      throw new BadRequestException('No file provided');
+
+    const fileUpload = await this.filesService.create(user, file, FileKind.ProfileImage);
+    const profileImage = await this.profileImagesService.create(fileUpload);
+
+    return await this.usersService.updateProfileImage(user, 'avatar', profileImage);
+  }
+
+  @Put('/banner')
+  @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
+  @CheckPolicies(
+    ability => ability.can(Action.Create, ProfileImage),
+    ability => ability.can(Action.Update, User),
+  )
+  public async updateBanner(
+    @CurrentUser() user: User,
+    @UploadedFile() banner: Express.Multer.File,
+  ): Promise<User> {
+    if (!banner)
+      throw new BadRequestException('No file provided');
+
+    const fileUpload = await this.filesService.create(user, banner, FileKind.ProfileImage);
+    const profileImage = await this.profileImagesService.create(fileUpload);
+
+    return await this.usersService.updateProfileImage(user, 'banner', profileImage);
   }
 }
