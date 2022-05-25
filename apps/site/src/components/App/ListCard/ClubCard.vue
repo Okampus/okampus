@@ -71,7 +71,7 @@
                                         <ProfileAvatar
                                             class="relative !shadow-none"
                                             :class="specialMembersActive[i] ? 'hovered' : ''"
-                                            :size="3"
+                                            :size="2.5"
                                             :avatar="specialMember.member.avatar"
                                             :name="fullname(specialMember.member)"
                                         />
@@ -80,7 +80,7 @@
                                         <router-link :to="`/user/${specialMember.member.userId}`">
                                             <ProfileAvatar
                                                 class="relative !shadow-none cursor-pointer hovered"
-                                                :size="3"
+                                                :size="2.5"
                                                 :avatar="specialMember.member.avatar"
                                                 :name="fullname(specialMember.member)"
                                             />
@@ -177,7 +177,7 @@
         &:hover {
             z-index: 20;
             filter: contrast(110%);
-            transform: scale(102%);
+            transform: scale(101%);
         }
     }
 
