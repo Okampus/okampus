@@ -18,6 +18,7 @@ import type { PaginatedResult } from '../../shared/modules/pagination';
 import { User } from '../../users/user.entity';
 import type { TeamMembershipRequest } from '../requests/team-membership-request.entity';
 import { Team } from '../teams/team.entity';
+import { InviteMemberDto } from './dto/invite-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { TeamMembersService } from './members.service';
 import type { TeamMember } from './team-member.entity';
@@ -34,9 +35,10 @@ export class TeamMembersController {
   public async inviteUser(
     @Param('teamId', ParseIntPipe) teamId: number,
     @Param('userId') userId: string,
+    @Body() inviteMemberDto: InviteMemberDto,
     @CurrentUser() requester: User,
   ): Promise<TeamMembershipRequest> {
-    return await this.membersService.inviteUser(requester, teamId, userId);
+    return await this.membersService.inviteUser(requester, teamId, userId, inviteMemberDto);
   }
 
   @Get(':teamId')

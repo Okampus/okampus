@@ -10,10 +10,12 @@ import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
 import { User } from '../../users/user.entity';
+import { TeamMembershipRequestsService } from '../requests/requests.service';
 import { TeamMembershipRequest } from '../requests/team-membership-request.entity';
 import { Team } from '../teams/team.entity';
 import { MembershipRequestIssuer } from '../types/membership-request-issuer.enum';
 import { MembershipRequestState } from '../types/membership-request-state.enum';
+import type { InviteMemberDto } from './dto/invite-member.dto';
 import type { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { TeamMember } from './team-member.entity';
 
@@ -25,12 +27,15 @@ export class TeamMembersService {
     @InjectRepository(TeamMembershipRequest)
     private readonly teamMembershipRequestRepository: BaseRepository<TeamMembershipRequest>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+
+    private readonly teamMembershipRequestsService: TeamMembershipRequestsService,
   ) {}
 
   public async inviteUser(
     requester: User,
     teamId: number,
     invitedUserId: string,
+    inviteMemberDto: InviteMemberDto,
   ): Promise<TeamMembershipRequest> {
     // 1. Check that the given team and user exist, and fetch them.
     const team = await this.teamRepository.findOneOrFail(
@@ -51,6 +56,26 @@ export class TeamMembersService {
       user: invitedUser,
       state: MembershipRequestState.Pending,
     });
+
+    if (inviteMemberDto.force && team.isGlobalAdmin(requester)) {
+      let forcedRequest = existingRequest;
+      if (!forcedRequest) {
+        forcedRequest = new TeamMembershipRequest({
+          team,
+          user: invitedUser,
+          issuedBy: requester,
+          issuer: MembershipRequestIssuer.Team,
+        });
+        await this.teamMembershipRequestRepository.persistAndFlush(forcedRequest);
+      }
+      await this.teamMembershipRequestsService.handleRequest(
+        requester,
+        forcedRequest.teamMembershipRequestId,
+        MembershipRequestState.Approved,
+      );
+      return forcedRequest;
+    }
+
     if (existingRequest) {
       // eslint-disable-next-line unicorn/prefer-ternary
       if (existingRequest.issuer === MembershipRequestIssuer.Team)

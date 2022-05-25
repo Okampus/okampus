@@ -106,6 +106,10 @@ export class Team extends BaseEntity {
     return this.getMemberRoles(user).includes(TeamRole.Owner);
   }
 
+  public isGlobalAdmin(user: User): boolean {
+    return user.roles.includes(Role.Admin) || (this.kind === TeamKind.Club && user.roles.includes(Role.ClubManager));
+  }
+
   private getMemberRoles(user: User): TeamRole[] {
     return this.members
       .getItems()
@@ -115,9 +119,5 @@ export class Team extends BaseEntity {
 
   private isTeamAdmin(user: User): boolean {
     return this.getMemberRoles(user).some(role => ADMIN_ROLES.has(role));
-  }
-
-  private isGlobalAdmin(user: User): boolean {
-    return user.roles.includes(Role.Admin) || (this.kind === TeamKind.Club && user.roles.includes(Role.ClubManager));
   }
 }
