@@ -69,7 +69,7 @@
     import { emitter } from '@/shared/modules/emitter'
     import { useAuthStore } from '@/store/auth.store'
     import { useProfilesStore } from '@/store/profile.store'
-    import { getStatus } from '@/utils/errors'
+    // import { getStatus } from '@/utils/errors'
     import { ref, watch } from 'vue'
     import SelectInput from '@/components/Input/SelectInput.vue'
 
@@ -79,36 +79,36 @@
     const contactsTypes = ref([])
     const me = ref(null)
 
-    const loadMe = async () => {
-        await auth
-            .getMe()
-            .then((res) => {
-                me.value = res
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const loadMe = async () => {
+    //     await auth
+    //         .getMe()
+    //         .then((res) => {
+    //             me.value = res
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
 
-    const loadContacts = async () => {
-        await profile
-            .getContacts(me.value.userId)
-            .then((res) => (contacts.value = res))
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const loadContacts = async () => {
+    //     await profile
+    //         .getContacts(me.value.userId)
+    //         .then((res) => (contacts.value = res))
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
 
-    const loadContactsTypes = async () => {
-        await profile
-            .getContactsTypes()
-            .then((res) => {
-                contactsTypes.value = res
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const loadContactsTypes = async () => {
+    //     await profile
+    //         .getContactsTypes()
+    //         .then((res) => {
+    //             contactsTypes.value = res
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
 
     const addLineAccount = () => {
         contacts.value.push({
@@ -128,9 +128,9 @@
         contacts.value.splice(idx, 1)
     }
 
-    await loadMe()
-    await loadContacts()
-    await loadContactsTypes()
+    // await loadMe()
+    // await loadContacts()
+    // await loadContactsTypes()
 
     // watch(
     //     () => contacts.value,

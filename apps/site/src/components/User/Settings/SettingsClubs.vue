@@ -389,7 +389,7 @@
     import { useAuthStore } from '@/store/auth.store'
     import { useClubsStore } from '@/store/clubs.store'
     import { useProfilesStore } from '@/store/profile.store'
-    import { getStatus } from '@/utils/errors'
+    // import { getStatusAxiosError } from '@/utils/errors'
     import { ref, watch } from 'vue'
 
     // import _ from 'lodash'
@@ -409,196 +409,196 @@
     const members = ref([])
     const oldMembers = ref([])
 
-    const userClubsPresident = () =>
-        clubs.value.items.filter(
-            (club) =>
-                club.role === 'owner' ||
-                club.role === 'coowner' ||
-                club.role === 'treasurer' ||
-                club.role === 'secretary',
-        )
+    // const userClubsPresident = () =>
+    //     clubs.value.items.filter(
+    //         (club) =>
+    //             club.role === 'owner' ||
+    //             club.role === 'coowner' ||
+    //             club.role === 'treasurer' ||
+    //             club.role === 'secretary',
+    //     )
 
-    const changeSelectedClub = async (club) => {
-        if (userClubsPresident().length > 0) {
-            clubSelected.value = userClubsPresident()[club]
-            await loadRequests(clubSelected.value.team.teamId)
-            await loadMembers(clubSelected.value.team.teamId)
-        }
-    }
-    const showImage = () => {
-        avatarShown.value = !avatarShown.value
-    }
+    // const changeSelectedClub = async (club) => {
+    //     if (userClubsPresident().length > 0) {
+    //         clubSelected.value = userClubsPresident()[club]
+    //         await loadRequests(clubSelected.value.team.teamId)
+    //         await loadMembers(clubSelected.value.team.teamId)
+    //     }
+    // }
+    // const showImage = () => {
+    //     avatarShown.value = !avatarShown.value
+    // }
 
-    const roles = {
-        'Président': 'owner',
-        'Vice-président': 'coowner',
-        'Trésorier': 'treasurer',
-        'Secrétaire': 'secretary',
-        'Bureau': 'manager',
-        'Membre': 'member',
-    }
+    // const roles = {
+    //     'Président': 'owner',
+    //     'Vice-président': 'coowner',
+    //     'Trésorier': 'treasurer',
+    //     'Secrétaire': 'secretary',
+    //     'Bureau': 'manager',
+    //     'Membre': 'member',
+    // }
 
-    const changeSelectedComponent = (numb) => {
-        componentSelected.value = numb
-    }
+    // const changeSelectedComponent = (numb) => {
+    //     componentSelected.value = numb
+    // }
 
-    const loadMe = async () => {
-        await auth
-            .getMe()
-            .then((res) => {
-                me.value = res
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const loadMe = async () => {
+    //     await auth
+    //         .getMe()
+    //         .then((res) => {
+    //             me.value = res
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
 
-    const cropUploadSuccess = async (data) => {
-        await club
-            .patchClub(clubSelected.value.team.teamId, {
-                avatar: data.profileImageId,
-            })
-            .then((res) => {
-                clubSelected.value.team = res
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const cropUploadSuccess = async (data) => {
+    //     await club
+    //         .patchClub(clubSelected.value.team.teamId, {
+    //             avatar: data.profileImageId,
+    //         })
+    //         .then((res) => {
+    //             clubSelected.value.team = res
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
 
-    const loadClubs = async () => {
-        const userId = me.value.userId
-        await profile
-            .getClubs(userId)
-            .then(async (res) => {
-                clubs.value = res
-                if (userClubsPresident().length > 0) {
-                    clubSelected.value = userClubsPresident()[0]
-                    const teamId = clubSelected.value.team.teamId
-                    loadRequests(teamId)
-                    loadMembers(teamId)
-                }
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const loadClubs = async () => {
+    //     const userId = me.value.userId
+    //     await profile
+    //         .getClubs(userId)
+    //         .then(async (res) => {
+    //             clubs.value = res
+    //             if (userClubsPresident().length > 0) {
+    //                 clubSelected.value = userClubsPresident()[0]
+    //                 const teamId = clubSelected.value.team.teamId
+    //                 loadRequests(teamId)
+    //                 loadMembers(teamId)
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
 
-    const loadClubList = async () => {
-        await profile
-            .getClubsList()
-            .then((res) => {
-                clubList.value = res
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const loadClubList = async () => {
+    //     await profile
+    //         .getClubsList()
+    //         .then((res) => {
+    //             clubList.value = res
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
 
-    const loadRequests = async (teamId) => {
-        await profile
-            .getMembershipsRequests(teamId)
-            .then((res) => {
-                requests.value = res.items
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const loadRequests = async (teamId) => {
+    //     await profile
+    //         .getMembershipsRequests(teamId)
+    //         .then((res) => {
+    //             requests.value = res.items
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
 
-    const acceptDemand = async (request) => {
-        await profile
-            .acceptMembershipRequest(request.teamMembershipRequestId)
-            .then(() => {
-                loadRequests(clubSelected.value.team.teamId)
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const acceptDemand = async (request) => {
+    //     await profile
+    //         .acceptMembershipRequest(request.teamMembershipRequestId)
+    //         .then(() => {
+    //             loadRequests(clubSelected.value.team.teamId)
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
 
-    const loadMembers = async (teamId) => {
-        await profile
-            .getMembers(teamId)
-            .then((res) => {
-                members.value = res.items
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-        oldMembers.value = JSON.parse(JSON.stringify(members.value))
-    }
+    // const loadMembers = async (teamId) => {
+    //     await profile
+    //         .getMembers(teamId)
+    //         .then((res) => {
+    //             members.value = res.items
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    //     oldMembers.value = JSON.parse(JSON.stringify(members.value))
+    // }
 
-    //TODO leaveClub
+    // //TODO leaveClub
 
-    const kickMember = async (userId) => {
-        await profile
-            .removeMember(userId, clubSelected.value.team.teamId)
-            .then(() => {
-                loadMembers(clubSelected.value.team.teamId)
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const kickMember = async (userId) => {
+    //     await profile
+    //         .removeMember(userId, clubSelected.value.team.teamId)
+    //         .then(() => {
+    //             loadMembers(clubSelected.value.team.teamId)
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
 
-    const patchClub = async () => {
-        const { description, membershipRequestLink, membershipRequestMessage } = {
-            ...clubSelected.value.team,
-        }
-        await club
-            .patchClub(clubSelected.value.team.teamId, {
-                description,
-                membershipRequestLink,
-                membershipRequestMessage,
-            })
-            .then((res) => {
-                clubSelected.value.team = res
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const patchClub = async () => {
+    //     const { description, membershipRequestLink, membershipRequestMessage } = {
+    //         ...clubSelected.value.team,
+    //     }
+    //     await club
+    //         .patchClub(clubSelected.value.team.teamId, {
+    //             description,
+    //             membershipRequestLink,
+    //             membershipRequestMessage,
+    //         })
+    //         .then((res) => {
+    //             clubSelected.value.team = res
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
 
-    const patchMembership = async () => {
-        const changes = members.value.filter((member) => {
-            const memb = oldMembers.value.find((old) => old.user.userId === member.user.userId)
-            return member.role != memb.role || member.roleLabel != memb.roleLabel
-        })
-        changes.map(async (membership) => {
-            await club
-                .patchMembership(membership.team.teamId, membership.user.userId, {
-                    role: membership.role,
-                    roleLabel: membership.roleLabel,
-                })
-                .then(() => {
-                    loadMembers(clubSelected.value.team.teamId)
-                })
-        })
-    }
+    // const patchMembership = async () => {
+    //     const changes = members.value.filter((member) => {
+    //         const memb = oldMembers.value.find((old) => old.user.userId === member.user.userId)
+    //         return member.role != memb.role || member.roleLabel != memb.roleLabel
+    //     })
+    //     changes.map(async (membership) => {
+    //         await club
+    //             .patchMembership(membership.team.teamId, membership.user.userId, {
+    //                 role: membership.role,
+    //                 roleLabel: membership.roleLabel,
+    //             })
+    //             .then(() => {
+    //                 loadMembers(clubSelected.value.team.teamId)
+    //             })
+    //     })
+    // }
 
-    await loadMe()
-    await loadClubs()
-    await loadClubList()
+    // await loadMe()
+    // await loadClubs()
+    // await loadClubList()
 
-    watch(clubSelected, async () => {
-        if (Number.isInteger(clubSelected.value)) {
-            await changeSelectedClub(clubSelected.value)
-        }
-    })
-    watch(
-        members,
-        () => {
-            members.value.map((member) => {
-                if (Number.isInteger(member.role)) {
-                    member.role = roles[Object.keys(roles)[member.role]]
-                }
-            })
-        },
-        {
-            deep: true,
-        },
-    )
+    // watch(clubSelected, async () => {
+    //     if (Number.isInteger(clubSelected.value)) {
+    //         await changeSelectedClub(clubSelected.value)
+    //     }
+    // })
+    // watch(
+    //     members,
+    //     () => {
+    //         members.value.map((member) => {
+    //             if (Number.isInteger(member.role)) {
+    //                 member.role = roles[Object.keys(roles)[member.role]]
+    //             }
+    //         })
+    //     },
+    //     {
+    //         deep: true,
+    //     },
+    // )
     // export default {
     //     data() {
     //         return {

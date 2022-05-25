@@ -113,7 +113,7 @@
     import { watch, ref, nextTick } from 'vue'
     import { useProfilesStore } from '@/store/profile.store'
     import { emitter } from '@/shared/modules/emitter'
-    import { getStatus } from '@/utils/errors'
+    // import { getStatus } from '@/utils/errors'
     import { useAuthStore } from '@/store/auth.store'
 
     const route = useRoute()
@@ -124,73 +124,73 @@
     const clubs = ref(null)
     const me = ref(null)
 
-    const loadProfile = async () => {
-        if (route.name === 'profile') {
-            const userId = route.params.userId
-            await profiles
-                .getUser(userId)
-                .then((res) => {
-                    user.value = res
-                    nextTick(() => {
-                        if (route.hash) {
-                            emitter.emit('scroll-to-anchor', route.hash)
-                        }
-                    })
-                })
-                .catch((err) => {
-                    emitter.emit('error-route', { code: getStatus(err.response) })
-                })
-        }
-    }
+    // const loadProfile = async () => {
+    //     if (route.name === 'profile') {
+    //         const userId = route.params.userId
+    //         await profiles
+    //             .getUser(userId)
+    //             .then((res) => {
+    //                 user.value = res
+    //                 nextTick(() => {
+    //                     if (route.hash) {
+    //                         emitter.emit('scroll-to-anchor', route.hash)
+    //                     }
+    //                 })
+    //             })
+    //             .catch((err) => {
+    //                 emitter.emit('error-route', { code: getStatus(err.response) })
+    //             })
+    //     }
+    // }
 
-    const loadContacts = async () => {
-        if (route.name === 'profile') {
-            const userId = route.params.userId
-            await profiles
-                .getContacts(userId)
-                .then((res) => {
-                    contacts.value = res
-                    nextTick(() => {
-                        if (route.hash) {
-                            emitter.emit('scroll-to-anchor', route.hash)
-                        }
-                    })
-                })
-                .catch((err) => {
-                    emitter.emit('error-route', { code: getStatus(err.response) })
-                })
-        }
-    }
+    // const loadContacts = async () => {
+    //     if (route.name === 'profile') {
+    //         const userId = route.params.userId
+    //         await profiles
+    //             .getContacts(userId)
+    //             .then((res) => {
+    //                 contacts.value = res
+    //                 nextTick(() => {
+    //                     if (route.hash) {
+    //                         emitter.emit('scroll-to-anchor', route.hash)
+    //                     }
+    //                 })
+    //             })
+    //             .catch((err) => {
+    //                 emitter.emit('error-route', { code: getStatus(err.response) })
+    //             })
+    //     }
+    // }
 
-    const loadClubs = async () => {
-        if (route.name === 'profile') {
-            const userId = route.params.userId
-            await profiles
-                .getClubs(userId)
-                .then((res) => {
-                    clubs.value = res
-                    nextTick(() => {
-                        if (route.hash) {
-                            emitter.emit('scroll-to-anchor', route.hash)
-                        }
-                    })
-                })
-                .catch((err) => {
-                    emitter.emit('error-route', { code: getStatus(err.response) })
-                })
-        }
-    }
+    // const loadClubs = async () => {
+    //     if (route.name === 'profile') {
+    //         const userId = route.params.userId
+    //         await profiles
+    //             .getClubs(userId)
+    //             .then((res) => {
+    //                 clubs.value = res
+    //                 nextTick(() => {
+    //                     if (route.hash) {
+    //                         emitter.emit('scroll-to-anchor', route.hash)
+    //                     }
+    //                 })
+    //             })
+    //             .catch((err) => {
+    //                 emitter.emit('error-route', { code: getStatus(err.response) })
+    //             })
+    //     }
+    // }
 
-    const loadMe = async () => {
-        await auth
-            .getMe()
-            .then((res) => {
-                me.value = res
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const loadMe = async () => {
+    //     await auth
+    //         .getMe()
+    //         .then((res) => {
+    //             me.value = res
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
 
     // const roles = {
     //     'Président': 'president',

@@ -3,6 +3,7 @@
         <router-link to="/" class="mb-10 w-fit">
             <div class="w-[16.5rem] h-[5.5rem] w- logo" allow-dark="" />
         </router-link>
+
         <div class="text-xl text-blue-700 uppercase">
             <template v-if="!online">
                 {{ offline.error }}
@@ -13,9 +14,6 @@
         </div>
 
         <div class="mb-20 text-4xl text-center">
-            <!-- TODO: check API health
-                L'API <a class="link-blue" href="api.horizon-efrei.fr">api.horizon-efrei.fr</a> n'est pas
-                accessible depuis ce réseau. -->
             <template v-if="!online">
                 {{ offline.description }}
             </template>
@@ -32,7 +30,7 @@
 </template>
 
 <script setup>
-    import { onMounted, onUnmounted, ref } from 'vue'
+    import { onMounted, onUnmounted, ref, watch } from 'vue'
     import { i18n } from '@/shared/modules/i18n'
     import { errorCodes, messages } from '@/shared/errors/app-exceptions.enum.js'
 
@@ -52,9 +50,8 @@
         ? messages[props.code][i18n.global.locale]
         : messages[errorCodes.UNKNOWN][i18n.global.locale]
 
-    // console.log(message, props.code, typeof props.code, errorCodes)
-
     const online = ref(navigator.onLine)
+
     onMounted(() => {
         window.addEventListener('offline', () => (online.value = false))
         window.addEventListener('online', () => (online.value = true))
@@ -64,4 +61,13 @@
         window.removeEventListener('offline', () => (online.value = false))
         window.removeEventListener('online', () => (online.value = true))
     })
+
+    watch(
+        () => online.value,
+        (currentlyOnline, previouslyOnline) => {
+            if (!previouslyOnline && currentlyOnline) {
+                window.location.reload()
+            }
+        },
+    )
 </script>

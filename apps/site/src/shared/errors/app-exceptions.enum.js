@@ -3,7 +3,7 @@ export const errorCodes = {
     BAD_REQUEST: '400',
     UNAUTHORIZED: '401',
     FORBIDDEN: '403',
-    NETWORK_ERROR: 'NETWORK_ERROR',
+    NETWORK_ERROR: '0',
     OFFLINE: 'OFFLINE',
     UNKNOWN: 'UNKNOWN',
 }
@@ -52,11 +52,15 @@ export const messages = {
     [errorCodes.NETWORK_ERROR]: {
         fr: {
             error: 'Erreur réseau',
-            description: 'Une erreur réseau est survenue.',
+            description: `L'API ${
+                import.meta.env.VITE_API_URL
+            } est hors ligne ou n'est pas accessible depuis ce réseau.`,
         },
         en: {
             error: 'Network error',
-            description: 'A network error occurred.',
+            description: `The API ${
+                import.meta.env.VITE_API_URL
+            } is offline or is not accessible from this network.`,
         },
     },
     [errorCodes.OFFLINE]: {

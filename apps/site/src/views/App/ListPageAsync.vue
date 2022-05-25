@@ -23,7 +23,7 @@
     import { isPositiveInteger } from '@/utils/stringUtils'
 
     import { isNil } from 'lodash'
-    import { getStatus } from '@/utils/errors'
+    import { getStatusAxiosError } from '@/utils/errors'
 
     const query = reactive({
         page: 1,
@@ -92,8 +92,7 @@
                     }
                 })
                 .catch((err) => {
-                    console.log('ListPage Error: ', err)
-                    emitter.emit('error-route', { code: getStatus(err.response) })
+                    emitter.emit('error-route', { code: getStatusAxiosError(err) })
                 })
         }
     }

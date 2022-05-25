@@ -128,28 +128,28 @@
     import { ref, nextTick } from 'vue'
     import { useClubsStore } from '@/store/clubs.store'
     import { emitter } from '@/shared/modules/emitter'
-    import { getStatus } from '@/utils/errors'
+    // import { getStatus } from '@/utils/errors'
 
     const route = useRoute()
     const clubStore = useClubsStore()
     const club = ref(null)
 
-    const loadClub = async () => {
-        const clubId = route.params.clubId
-        await clubStore
-            .getClub(clubId)
-            .then((res) => {
-                club.value = res
-                nextTick(() => {
-                    if (route.hash) {
-                        emitter.emit('scroll-to-anchor', route.hash)
-                    }
-                })
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const loadClub = async () => {
+    //     const clubId = route.params.clubId
+    //     await clubStore
+    //         .getClub(clubId)
+    //         .then((res) => {
+    //             club.value = res
+    //             nextTick(() => {
+    //                 if (route.hash) {
+    //                     emitter.emit('scroll-to-anchor', route.hash)
+    //                 }
+    //             })
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
 
     // const loadMe = async () => {
     //     await auth

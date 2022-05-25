@@ -1,5 +1,5 @@
 <template>
-    <div class="flex gap-4 my-6 mx-4 max-w-7xl md:gap-8 xl:mx-auto">
+    <div class="flex gap-4 my-10 mx-4 max-w-7xl md:gap-8 xl:mx-auto">
         <VerticalTabs
             v-model="currentTab"
             :tabs="tabs"
@@ -30,7 +30,7 @@
 
     import { computed, ref } from 'vue'
     import { emitter } from '@/shared/modules/emitter'
-    import { getStatus } from '@/utils/errors'
+    import { getStatusAxiosError } from '@/utils/errors'
 
     import { useClubsStore } from '@/store/clubs.store'
     import { groupBy } from 'lodash'
@@ -97,7 +97,7 @@
                 }))
             })
             .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
+                emitter.emit('error-route', { code: getStatusAxiosError(err) })
             })
     }
 

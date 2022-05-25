@@ -126,7 +126,7 @@
 
     import { useThreadsStore } from '@/store/threads.store'
 
-    import { getStatus } from '@/utils/errors'
+    import { getStatusAxiosError } from '@/utils/errors'
     import { errorCodes } from '@/shared/errors/app-exceptions.enum'
     // import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
@@ -153,7 +153,7 @@
                     })
                 })
                 .catch((err) => {
-                    emitter.emit('error-route', { code: getStatus(err.response) })
+                    emitter.emit('error-route', { code: getStatusAxiosError(err) })
                 })
         }
     }

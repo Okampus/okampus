@@ -54,7 +54,7 @@
     import { useRestaurantStore } from '@/store/restaurant.store'
     import { useRoute } from 'vue-router'
     import { emitter } from '@/shared/modules/emitter'
-    import { getStatus } from '@/utils/errors'
+    import { getStatusAxiosError } from '@/utils/errors'
     import { isNil, isEmpty } from 'lodash'
 
     import { i18n } from '@/shared/modules/i18n'
@@ -99,7 +99,7 @@
                         })
                         // TODO: globally improve status error catching
                         .catch((err) => {
-                            emitter.emit('error-route', { code: getStatus(err.response) })
+                            emitter.emit('error-route', { code: getStatusAxiosError(err) })
                         })
                 }
             } catch (e) {

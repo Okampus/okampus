@@ -93,7 +93,7 @@
     import { emitter } from '@/shared/modules/emitter'
     import { useAuthStore } from '@/store/auth.store'
     import { useProfilesStore } from '@/store/profile.store'
-    import { getStatus } from '@/utils/errors'
+    // import { getStatus } from '@/utils/errors'
     import { ref } from 'vue'
 
     // import _ from 'lodash';
@@ -101,23 +101,23 @@
 
     // const socialAccounts = []
     const apiUrl = import.meta.env.VITE_API_URL
-    const auth = useAuthStore()
+    // const auth = useAuthStore()
     const profile = useProfilesStore()
     const me = ref(null)
     let submitSuccess = 0
     let avatarShown = ref(false)
     let submitMessage = ''
 
-    const loadMe = async () => {
-        await auth
-            .getMe()
-            .then((res) => {
-                me.value = res
-            })
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-    }
+    // const loadMe = async () => {
+    //     await auth
+    //         .getMe()
+    //         .then((res) => {
+    //             me.value = res
+    //         })
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    // }
     const showImage = () => {
         avatarShown.value = !avatarShown.value
     }
@@ -125,23 +125,23 @@
         console.log(jsonData.profileImageId)
     }
 
-    const getJoke = () => {
-        const blague = blagues[Math.floor(Math.random() * blagues.length)]
-        return blague.question + '\n' + blague.answer
-    }
-    const submit = async () => {
-        await profile
-            .patchUser({
-                description: me.value.description !== '' ? me.value.description : getJoke(),
-            })
-            .then((res) => (me.value = res))
-            .catch((err) => {
-                emitter.emit('error-route', { code: getStatus(err.response) })
-            })
-        console.log('submited')
-    }
+    // const getJoke = () => {
+    //     const blague = blagues[Math.floor(Math.random() * blagues.length)]
+    //     return blague.question + '\n' + blague.answer
+    // }
+    // const submit = async () => {
+    //     await profile
+    //         .patchUser({
+    //             description: me.value.description !== '' ? me.value.description : getJoke(),
+    //         })
+    //         .then((res) => (me.value = res))
+    //         .catch((err) => {
+    //             emitter.emit('error-route', { code: getStatus(err.response) })
+    //         })
+    //     console.log('submited')
+    // }
 
-    await loadMe()
+    // await loadMe()
     // export default {
     //     computed: {
     //         user() {
