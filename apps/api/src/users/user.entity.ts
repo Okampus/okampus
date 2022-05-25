@@ -14,7 +14,7 @@ import { Exclude, Expose } from 'class-transformer';
 import type { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { STATISTICS_INCLUDED } from '../shared/lib/constants';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
-import { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
+import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
 import { Role } from '../shared/modules/authorization/types/role.enum';
 import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
 // eslint-disable-next-line import/no-cycle
@@ -75,13 +75,21 @@ export class User extends BaseEntity {
   @Property()
   points = 0;
 
-  constructor(options: UserCreationOptions) {
+  constructor(options: Omit<UserCreationOptions, 'avatar' | 'banner' | 'password'>) {
     super();
     this.userId = options.userId;
     this.email = options.email;
     this.firstname = options.firstname;
     this.lastname = options.lastname;
     this.schoolRole = options.schoolRole;
+    if (options.roles)
+      this.roles = options.roles;
+    if (options.color)
+      this.color = options.color;
+    if (options.signature)
+      this.signature = options.signature;
+    if (options.description)
+      this.description = options.description;
   }
 
   public async setPassword(password: string): Promise<void> {

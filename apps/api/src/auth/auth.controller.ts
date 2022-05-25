@@ -14,20 +14,29 @@ import { computedConfig, config } from '../shared/configs/config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Public } from '../shared/lib/decorators/public.decorator';
 import { MyEfreiOidcEnabledGuard } from '../shared/lib/guards/myefrei-oidc-enabled.guard';
+import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { User } from '../users/user.entity';
+import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import type { TokenResponse } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 import { MyEfreiAuthGuard } from './myefrei-auth.guard';
 
 const cookieOptions = config.get('cookies.options');
 const cookiePublicOptions = { ...config.get('cookies.options'), httpOnly: false };
+
+interface TokenExpiringPayload {
+  accessTokenExpiresAt: string;
+  refreshTokenExpiresAt: string;
+}
 
 @ApiTags('Authentication')
 @Controller({ path: 'auth' })
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
+    private readonly usersService: UsersService,
   ) {}
 
   @Public()
@@ -36,14 +45,29 @@ export class AuthController {
     const user = await this.authService.validatePassword(body.username, body.password);
     const login = await this.authService.login(user);
 
-    // @ts-expect-error: This is a hack to make the login response work with the frontend.
-    user.accessTokenExpiresAt = login.accessTokenExpiresAt.toString();
-    // @ts-expect-error: This is a hack to make the login response work with the frontend.
-    user.refreshTokenExpiresAt = login.refreshTokenExpiresAt.toString();
-
+    this.addTokens(user, {
+      accessTokenExpiresAt: login.accessTokenExpiresAt.toString(),
+      refreshTokenExpiresAt: login.refreshTokenExpiresAt.toString(),
+    });
     this.addAuthCookies(res, login);
 
     return user;
+  }
+
+  // This endpoint is not public because the only way to connect to our website is through the SSO. There are only a
+  // very few rare cases where we want to manually create an account, and it has to be done by an admin.
+  @CheckPolicies(ability => ability.can(Action.Create, User))
+  @Post('register')
+  public async register(@Body() dto: RegisterDto): Promise<User> {
+    try {
+      const user = await this.usersService.create(dto);
+      return await this.usersService.findOneById(user.userId);
+    } catch (error) {
+      if (error.code === '23505')
+        throw new BadRequestException('UserID already taken');
+
+      throw error;
+    }
   }
 
   @Public()
@@ -80,14 +104,16 @@ export class AuthController {
   }
 
   @Get('me')
-  public me(
-    @Request() req: Req,
-    @CurrentUser() user: User & { accessTokenExpiresAt: string; refreshTokenExpiresAt: string },
-  ): User & { accessTokenExpiresAt: string; refreshTokenExpiresAt: string } {
-    user.accessTokenExpiresAt = req.signedCookies.accessTokenExpiresAt;
-    user.refreshTokenExpiresAt = req.signedCookies.refreshTokenExpiresAt;
+  public me(@Request() req: Req, @CurrentUser() user: User): TokenExpiringPayload & User {
+    return this.addTokens(user, req.signedCookies as TokenExpiringPayload);
+  }
 
-    return user;
+  private addTokens(user: User, tokens: TokenExpiringPayload): TokenExpiringPayload & User {
+    // @ts-expect-error: This is a hack to make the login response work with the frontend.
+    user.accessTokenExpiresAt = tokens.accessTokenExpiresAt;
+    // @ts-expect-error: This is a hack to make the login response work with the frontend.
+    user.refreshTokenExpiresAt = tokens.refreshTokenExpiresAt;
+    return user as TokenExpiringPayload & User;
   }
 
   private addAuthCookies(res: Res, tokens: TokenResponse): Res {

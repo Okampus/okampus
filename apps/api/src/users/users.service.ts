@@ -22,13 +22,20 @@ export class UsersService {
   ) {}
 
   public async findOneById(userId: string): Promise<User> {
-    return await this.userRepository.findOneOrFail({ userId });
+    return await this.userRepository.findOneOrFail({ userId }, { refresh: true });
   }
 
   public async create(options: UserCreationOptions): Promise<User> {
     const user = new User(options);
     if (options?.password)
       await user.setPassword(options.password);
+
+    if (typeof options.avatar !== 'undefined')
+      await this.setAvatar(options.avatar, 'avatar', user);
+
+    if (typeof options.banner !== 'undefined')
+      await this.setAvatar(options.banner, 'banner', user);
+
     await this.userRepository.persistAndFlush(user);
     await this.userSearchService.add(user);
     return user;

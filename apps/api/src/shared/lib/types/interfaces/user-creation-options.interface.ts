@@ -1,10 +1,3 @@
-import type { SchoolRole } from '../../../modules/authorization/types/school-role.enum';
+import type { RegisterDto } from '../../../../auth/dto/register.dto';
 
-export interface UserCreationOptions {
-  userId: string;
-  email: string;
-  firstname: string;
-  lastname: string;
-  schoolRole: SchoolRole;
-  password?: string;
-}
+export type UserCreationOptions = Omit<RegisterDto, 'password'> & Pick<Partial<RegisterDto>, 'password'>;
