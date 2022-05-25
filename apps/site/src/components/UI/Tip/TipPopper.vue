@@ -3,6 +3,8 @@
         :locked="true"
         :arrow="true"
         :hover="onHover"
+        :z-index="100"
+        :open-delay="delay"
         :offset-distance="offset"
         :placement="placement"
         @close:popper="$emit('close')"
@@ -33,6 +35,10 @@
             type: Boolean,
             default: true,
         },
+        delay: {
+            type: Number,
+            default: 0,
+        },
         tip: {
             type: String,
             default: '',
@@ -49,3 +55,9 @@
 
     defineEmits(['close', 'open'])
 </script>
+
+<style>
+    .popper {
+        position: fixed !important;
+    }
+</style>

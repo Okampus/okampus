@@ -1,6 +1,7 @@
 <template>
     <div
-        class="flex flex-col pb-4 w-full min-w-[15rem] rounded-lg shadow-xl sm:w-[calc(50%-1.5rem)] xl:w-[calc(33%-1.5rem)] bg-2"
+        class="flex relative flex-col pb-4 w-full min-w-[15rem] rounded-lg shadow-xl sm:w-[calc(50%-1.5rem)] xl:w-[calc(33%-1.5rem)] card-hover bg-2"
+        @click.self="router.push(`/club/${club.teamId}`)"
     >
         <ProfileBanner
             class="w-full h-20 rounded-t-lg"
@@ -20,11 +21,15 @@
                         />
                     </div>
                     <router-link class="mt-2" :to="`/clubs/${clubTypes[club.category].link}`">
-                        <LabelSimple class="line-clamp-1">{{ club.category }}</LabelSimple>
+                        <LabelSimple class="text-xs bg-slate-600/40 hover:bg-slate-400/40 line-clamp-1">{{
+                            club.category
+                        }}</LabelSimple>
                     </router-link>
                 </div>
                 <ModalDropdown :buttons="buttons">
-                    <i class="self-center mt-1 ml-3 text-xl cursor-pointer md:-mr-1 fa fa-ellipsis text-2" />
+                    <i
+                        class="self-center px-3 pt-2 pb-1 text-xl cursor-context-menu md:-mr-1 fa fa-ellipsis text-2"
+                    />
                 </ModalDropdown>
             </div>
 
@@ -39,8 +44,8 @@
                 </router-link>
                 <div class="flex flex-row justify-between items-center mt-3 w-full h-12">
                     <button
-                        class="py-1.5 px-4 -ml-1 w-fit font-semibold text-center text-white bg-blue-600 rounded-full"
-                        @click="() => joinClub(club.teamId)"
+                        class="py-1 px-3 -ml-1 w-fit font-semibold text-center text-white bg-blue-600 hover:bg-blue-700 rounded-full"
+                        @click="joinClub"
                     >
                         Rejoindre
                     </button>
@@ -48,8 +53,8 @@
                         <div v-for="(specialMember, i) in specialMembers" :key="i" class="-ml-3">
                             <TipPopper
                                 placement="top"
-                                offset="7"
-                                class="z-100"
+                                offset="12"
+                                :delay="200"
                                 @open="specialMembersActive[i] = true"
                                 @close="specialMembersActive[i] = false"
                             >
@@ -64,7 +69,7 @@
                                 <div class="pt-2 h-16 avatar-hover">
                                     <template v-if="isMobile">
                                         <ProfileAvatar
-                                            class="relative border-2 border-2-light dark:border-2-dark !shadow-none"
+                                            class="relative !shadow-none"
                                             :class="specialMembersActive[i] ? 'hovered' : ''"
                                             :size="3"
                                             :avatar="specialMember.member.avatar"
@@ -74,7 +79,7 @@
                                     <template v-else>
                                         <router-link :to="`/user/${specialMember.member.userId}`">
                                             <ProfileAvatar
-                                                class="relative border-2 border-2-light dark:border-2-dark !shadow-none cursor-pointer hovered"
+                                                class="relative !shadow-none cursor-pointer hovered"
                                                 :size="3"
                                                 :avatar="specialMember.member.avatar"
                                                 :name="fullname(specialMember.member)"
@@ -113,8 +118,9 @@
     import { emitter } from '@/shared/modules/emitter'
     import { useRouter } from 'vue-router'
 
-    const joinClub = (club) => {
-        console.log('joinClub', club)
+    const joinClub = (e) => {
+        e.preventDefault()
+        console.log('joinClub')
     }
 
     const props = defineProps({
@@ -158,22 +164,31 @@
             icon: 'fas fa-address-book',
             class: 'hover:bg-gray-500',
             action: () => {
-                router.push(`/clubs/${props.club.teamId}`)
+                router.push(`/club/${props.club.teamId}`)
             },
         },
     ]
 </script>
 
 <style lang="scss">
+    .card-hover {
+        transition: filter 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+        &:hover {
+            z-index: 20;
+            filter: contrast(110%);
+            transform: scale(102%);
+        }
+    }
+
     .avatar-hover {
         & * {
             transition: margin-top 0.2s ease-in-out;
         }
 
         &:hover .hovered {
-            @apply -mt-3;
-
-            z-index: 100;
+            transition: margin-top 0.2s ease-in-out 200ms;
+            @apply -mt-1;
         }
     }
 </style>

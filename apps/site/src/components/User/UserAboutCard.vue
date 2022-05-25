@@ -1,6 +1,6 @@
 <template>
     <div class="p-4 -mb-4">
-        <div v-if="user" class="flex flex-col pb-6 w-[18em] rounded-2xl shadow-2xl bg-0">
+        <div v-if="user" class="flex flex-col pb-6 w-[18em] rounded-2xl shadow-2xl cursor-default bg-0">
             <ProfileBanner class="w-full h-16 rounded-t-lg" :name="fullname(user)" :banner="user.banner" />
             <div class="flex flex-col gap-4 items-start mx-5">
                 <div class="flex justify-between w-full">
