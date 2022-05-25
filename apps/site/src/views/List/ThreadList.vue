@@ -20,11 +20,11 @@
     defineProps({
         routeBase: {
             type: String,
-            default: '/threads',
+            default: '/posts',
         },
         routeName: {
             type: String,
-            default: 'threads',
+            default: 'posts',
         },
     })
 </script>

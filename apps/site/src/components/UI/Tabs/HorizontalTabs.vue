@@ -58,10 +58,10 @@
         },
         methods: {
             getTabFromRoute() {
-                return this.tabs.findIndex((t) => t.id === this.$route.params.component)
+                return this.tabs.findIndex((t) => t.id === this.$route.params.tab)
             },
             updateComponent() {
-                if (this.$route.params.component) {
+                if (this.$route.params.tab) {
                     const newTab = this.getTabFromRoute()
                     if (newTab !== this.tab) {
                         this.$emit('update:tab', newTab)

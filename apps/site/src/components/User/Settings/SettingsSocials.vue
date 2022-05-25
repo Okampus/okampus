@@ -1,6 +1,6 @@
 <template>
     <Suspense>
-        <ProfileSocialsAsync></ProfileSocialsAsync>
+        <SettingsSocialsAsync></SettingsSocialsAsync>
         <template #fallback>
             <AppLoader :size="3" />
         </template>
@@ -9,5 +9,5 @@
 
 <script setup>
     import AppLoader from '@/components/App/AppLoader.vue'
-    import ProfileSocialsAsync from './ProfileSocialsAsync.vue'
+    import SettingsSocialsAsync from './SettingsSocialsAsync.vue'
 </script>

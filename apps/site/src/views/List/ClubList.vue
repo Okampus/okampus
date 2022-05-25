@@ -1,7 +1,7 @@
 <template>
     <Transition mode="out-in" name="switch-fade">
         <Suspense>
-            <ClubsListAsync />
+            <ClubListAsync />
             <template #fallback>
                 <AppLoader />
             </template>
@@ -11,5 +11,5 @@
 
 <script setup>
     import AppLoader from '@/components/App/AppLoader.vue'
-    import ClubsListAsync from '@/views/Clubs/ClubsListAsync.vue'
+    import ClubListAsync from '@/views/List/ClubListAsync.vue'
 </script>

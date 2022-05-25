@@ -1,13 +1,13 @@
 <template>
     <Suspense>
-        <UserProfileAsync></UserProfileAsync>
+        <ProfileClubAsync />
         <template #fallback>
-            <AppLoader :size="3" />
+            <AppLoader />
         </template>
     </Suspense>
 </template>
 
 <script setup>
     import AppLoader from '@/components/App/AppLoader.vue'
-    import UserProfileAsync from './UserProfileAsync.vue'
+    import ProfileClubAsync from '@/views/Profile/ProfileClubAsync.vue'
 </script>

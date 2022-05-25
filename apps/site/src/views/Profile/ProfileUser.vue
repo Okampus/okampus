@@ -1,13 +1,13 @@
 <template>
     <Suspense>
-        <ProfileModalAsync />
+        <ProfileUserAsync />
         <template #fallback>
-            <AppLoader :size="3" />
+            <AppLoader />
         </template>
     </Suspense>
 </template>
 
 <script setup>
     import AppLoader from '@/components/App/AppLoader.vue'
-    import ProfileModalAsync from './ProfileModalAsync.vue'
+    import ProfileUserAsync from '@/views/Profile/ProfileUserAsync.vue'
 </script>

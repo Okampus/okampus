@@ -85,8 +85,8 @@ const routes = [
     // },
 
     {
-        path: '/me/:component',
-        component: () => import('@/views/User/UserMyProfile.vue'),
+        path: '/me/:tab*',
+        component: () => import('@/views/User/UserSettings.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -94,7 +94,7 @@ const routes = [
 
     // {
     //     path: '/me/favorites',
-    //     component: () => import('@/views/User/UserFavoriteList.vue'),
+    //     component: () => import('@/views/User/UserFavorites.vue'),
     //     meta: {
     //         requiresAuth: true,
     //     },
@@ -112,7 +112,7 @@ const routes = [
     {
         name: 'user',
         path: '/user/:userId',
-        component: () => import('@/views/User/UserProfile.vue'),
+        component: () => import('@/views/Profile/ProfileUser.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -135,27 +135,6 @@ const routes = [
     //     },
     // },
 
-    // {
-    //     path: '/search',
-    //     component: () => import('@/views/SearchResults.vue'),
-    //     children: [
-    //         {
-    //             path: 'clubs',
-    //             component: () => import('@/views/List/ClubList.vue'),
-    //             meta: {
-    //                 requiresAuth: true,
-    //             },
-    //         },
-    //         {
-    //             path: 'clubs/:tab',
-    //             component: () => import('@/views/List/ClubList.vue'),
-    //             meta: {
-    //                 requiresAuth: true,
-    //             },
-    //         },
-    //     ],
-    // },
-
     {
         name: 'clubs',
         path: '/clubs/:tab*',
@@ -166,8 +145,9 @@ const routes = [
     },
 
     {
+        name: 'club',
         path: '/club/:clubId',
-        component: () => import('@/views/Clubs/ClubView.vue'),
+        component: () => import('@/views/Profile/ProfileClub.vue'),
         meta: {
             requiresAuth: true,
         },

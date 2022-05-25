@@ -2,16 +2,13 @@
     <CardPage>
         <HorizontalTabs v-model:tab="currentTab" :tabs="tabs" route-base="/me">
             <template #profile>
-                <ProfileModal />
+                <SettingsModal />
             </template>
             <template #socials>
-                <ExternalAccount />
+                <SettingsSocials />
             </template>
             <template #clubs>
-                <ProfileClubs />
-            </template>
-            <template #profile-settings>
-                <ProfileSettings />
+                <SettingsClubs />
             </template>
         </HorizontalTabs>
     </CardPage>
@@ -21,10 +18,10 @@
     import CardPage from '@/views/App/CardPage.vue'
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
 
-    import ProfileClubs from '@/components/User/MyProfile/ProfileClubs.vue'
-    import ProfileModal from '@/components/User/MyProfile/ProfileModal.vue'
-    import ProfileSettings from '@/components/User/MyProfile/ProfileSettings.vue'
-    import ExternalAccount from '@/components/User/MyProfile/ProfileSocials.vue'
+    import SettingsClubs from '@/components/User/Settings/SettingsClubs.vue'
+    import SettingsModal from '@/components/User/Settings/SettingsModal.vue'
+    import SettingsSocials from '@/components/User/Settings/SettingsSocials.vue'
+
     import { useRoute } from 'vue-router'
     import { ref } from 'vue'
 
@@ -45,13 +42,8 @@
             name: 'Mes associations',
             icon: 'user',
         },
-        {
-            id: 'profile-settings',
-            name: 'Accessibilité',
-            icon: 'universal-access',
-        },
     ]
-    let currentTab = ref(tabs.findIndex((t) => t.id === route.params.component))
+    let currentTab = ref(tabs.findIndex((t) => t.id === route.params.tab))
 
     // const accounts = [
     //     {
