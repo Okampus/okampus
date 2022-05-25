@@ -14,6 +14,15 @@ const routes = [
     },
 
     {
+        name: 'search',
+        path: '/search/:tab*',
+        component: () => import('@/views/App/SearchResults.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
         path: '/admin/clubs',
         component: () => import('@/views/Dashboard/DashboardClub.vue'),
         meta: {
@@ -34,38 +43,6 @@ const routes = [
         component: () => import('@/views/App/AuthPage.vue'),
     },
 
-    // {
-    //     path: '/articles',
-    //     component: () => import('@/views/Blog/BlogList.vue'),
-    //     meta: {
-    //         requiresAuth: true,
-    //     },
-    // },
-
-    // {
-    //     path: '/articles/new',
-    //     component: () => import('@/views/Blog/BlogNew.vue'),
-    //     meta: {
-    //         requiresAuth: true,
-    //     },
-    // },
-
-    // {
-    //     path: '/articles/:id',
-    //     component: () => import('@/views/Blog/BlogShow.vue'),
-    //     meta: {
-    //         requiresAuth: true,
-    //     },
-    // },
-
-    // {
-    //     path: '/articles/admin',
-    //     component: () => import('@/views/Blog/BlogAdmin.vue'),
-    //     meta: {
-    //         requiresAuth: true,
-    //     },
-    // },
-
     {
         path: '/posts',
         component: () => import('@/views/List/ThreadList.vue'),
@@ -74,17 +51,16 @@ const routes = [
         },
     },
 
-    {
-        path: '/post/new',
-        // component: () => import('@/views/Thread/ThreadNew.vue'),
-        component: () => import('@/views/App/HomePage.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     path: '/post/new',
+    //     component: () => import('@/views/Thread/ThreadNew.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
     {
-        name: 'threads',
+        name: 'post',
         path: '/post/:id[0-9]+',
         component: () => import('@/views/Thread/ThreadView.vue'),
         meta: {
@@ -108,14 +84,6 @@ const routes = [
     //     },
     // },
 
-    // {
-    //     path: '/me/favorites',
-    //     component: () => import('@/views/User/UserFavoriteList.vue'),
-    //     meta: {
-    //         requiresAuth: true,
-    //     },
-    // },
-
     {
         path: '/me/:component',
         component: () => import('@/views/User/UserMyProfile.vue'),
@@ -123,6 +91,14 @@ const routes = [
             requiresAuth: true,
         },
     },
+
+    // {
+    //     path: '/me/favorites',
+    //     component: () => import('@/views/User/UserFavoriteList.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
 
     {
         name: 'users',
@@ -134,7 +110,7 @@ const routes = [
     },
 
     {
-        name: 'profile',
+        name: 'user',
         path: '/user/:userId',
         component: () => import('@/views/User/UserProfile.vue'),
         meta: {

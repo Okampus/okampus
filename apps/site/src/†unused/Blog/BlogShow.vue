@@ -228,6 +228,41 @@
 </template>
 
 <script>
+    // TODO: router
+    //
+
+    // {
+    //     path: '/articles',
+    //     component: () => import('@/views/Blog/BlogList.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
+
+    // {
+    //     path: '/articles/new',
+    //     component: () => import('@/views/Blog/BlogNew.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
+
+    // {
+    //     path: '/articles/:id',
+    //     component: () => import('@/views/Blog/BlogShow.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
+
+    // {
+    //     path: '/articles/admin',
+    //     component: () => import('@/views/Blog/BlogAdmin.vue'),
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
+
     import { blogProfiles, articles } from '@/fake/blog'
     import { readingTime } from '@/utils/readingTime'
     import { timeAgo } from '@/utils/timeAgo'
