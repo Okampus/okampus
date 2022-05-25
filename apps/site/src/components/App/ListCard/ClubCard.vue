@@ -49,7 +49,10 @@
                     >
                         Rejoindre
                     </button>
-                    <div class="flex flex-row-reverse gap-1 ml-4 text-0">
+                    <div class="flex flex-row-reverse gap-1 items-center ml-4 text-0">
+                        <span v-if="props.club.memberCount > specialMembers.length" class="text-0"
+                            >+ {{ abbrNumbers(props.club.memberCount - specialMembers.length) }}</span
+                        >
                         <div v-for="(specialMember, i) in specialMembers" :key="i" class="-ml-3">
                             <TipPopper
                                 placement="top"
@@ -66,10 +69,10 @@
                                         }`"
                                     />
                                 </template>
-                                <div class="pt-2 h-16 avatar-hover">
+                                <div class="h-12 rounded-full avatar-hover">
                                     <template v-if="isMobile">
                                         <ProfileAvatar
-                                            class="relative !shadow-none"
+                                            class="relative p-1 rounded-full !shadow-none bg-2"
                                             :class="specialMembersActive[i] ? 'hovered' : ''"
                                             :size="2.5"
                                             :avatar="specialMember.member.avatar"
@@ -79,7 +82,7 @@
                                     <template v-else>
                                         <router-link :to="`/user/${specialMember.member.userId}`">
                                             <ProfileAvatar
-                                                class="relative !shadow-none cursor-pointer hovered"
+                                                class="relative p-1 rounded-full !shadow-none cursor-pointer hovered bg-2"
                                                 :size="2.5"
                                                 :avatar="specialMember.member.avatar"
                                                 :name="fullname(specialMember.member)"
@@ -90,9 +93,6 @@
                             </TipPopper>
                         </div>
                     </div>
-                    <span v-if="props.club.memberCount > specialMembers.length" class="text-0"
-                        >+ {{ abbrNumbers(props.club.memberCount - specialMembers.length) }}</span
-                    >
                 </div>
             </div>
         </div>
@@ -131,9 +131,9 @@
     })
 
     const specialMembers = [
-        { role: 'owner', member: props.club.owner },
         { role: 'treasurer', member: props.club.treasurer },
         { role: 'secretary', member: props.club.secretary },
+        { role: 'owner', member: props.club.owner },
     ].filter((specialMember) => !!specialMember.member)
 
     const specialMembersActive = ref(specialMembers.map(() => false))
