@@ -4,7 +4,7 @@
             <ProfileBanner class="w-full h-16 rounded-t-lg" :name="fullname(user)" :banner="user.banner" />
             <div class="flex flex-col gap-4 items-start mx-5">
                 <div class="flex justify-between w-full">
-                    <div class="p-1 -mt-10 rounded-full bg-1">
+                    <div class="z-10 p-1 -mt-10 rounded-full bg-1">
                         <ProfileAvatar :avatar="user?.avatar" :size="4.5" :name="fullname(user)" />
                     </div>
                     <!-- TODO: buttons -->

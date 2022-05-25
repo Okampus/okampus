@@ -1,41 +1,46 @@
 <template>
-    <img
-        v-if="avatar"
-        :style="{
-            width: `${size}rem`,
-            height: `${size}rem`,
-        }"
-        loading="lazy"
-        class="profile-avatar"
-        :src="avatar"
-        :alt="`${name}`"
-        :title="`Photo de profil de ${name}`"
-        :class="[roundedFull ? 'rounded-full full' : 'rounded-xl']"
-    />
-
-    <div
-        v-else
-        role="img"
-        :alt="`${name}`"
-        :title="`Photo de profil de ${name}`"
-        :style="{
-            width: `${size}rem`,
-            height: `${size}rem`,
-            backgroundColor: getColorFromData(name),
-        }"
-        class="profile-avatar"
-        :class="[roundedFull ? 'rounded-full full' : 'rounded-xl']"
-    >
-        <div class="m-auto w-fit h-fit text-white" :style="{ fontSize: `${size / 2.3}rem` }">
-            {{ getInitialsFromName(name) }}
+    <div class="relative">
+        <img
+            v-if="avatar"
+            :style="avatarSizeStyle"
+            loading="lazy"
+            class="profile-avatar"
+            :src="avatar"
+            :alt="`${name}`"
+            :title="`Photo de profil de ${name}`"
+            :class="[...roundedClass, loaded ? 'text-black' : 'text-transparent']"
+            @load="loaded = true"
+            @error="loaded = true"
+        />
+        <div
+            v-if="avatar && !loaded"
+            class="absolute top-0 left-0 bg-slate-300 dark:bg-slate-600 animate-pulse"
+            :class="roundedClass"
+            :style="avatarSizeStyle"
+        />
+        <div
+            v-else-if="!avatar"
+            role="img"
+            :alt="`${name}`"
+            :title="`Photo de profil de ${name}`"
+            :style="{ ...avatarSizeStyle, backgroundColor: getColorFromData(name) }"
+            class="profile-avatar"
+            :class="roundedClass"
+        >
+            <div class="m-auto w-fit h-fit text-white" :style="{ fontSize: `${size / 2.3}rem` }">
+                {{ getInitialsFromName(name) }}
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
     import { getColorFromData } from '@/utils/colors'
+    import { ref } from 'vue'
 
-    defineProps({
+    const loaded = ref(false)
+
+    const props = defineProps({
         avatar: {
             type: String,
             default: null,
@@ -58,6 +63,13 @@
         },
     })
 
+    const avatarSizeStyle = {
+        width: `${props.size}rem`,
+        height: `${props.size}rem`,
+    }
+
+    const roundedClass = [props.roundedFull ? 'rounded-full full' : 'rounded-xl']
+
     const getInitialsFromName = (name) => {
         const nameArray = name.split(' ')
         return (
@@ -71,7 +83,7 @@
         @apply flex shrink-0 justify-center items-center select-none text-center bg-white;
 
         &::before {
-            @apply text-sm h-full block overflow-hidden text-ellipsis rounded-xl text-black;
+            @apply text-sm h-full w-full block overflow-hidden text-ellipsis rounded-xl mt-3;
         }
 
         &.full::before {

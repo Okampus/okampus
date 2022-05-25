@@ -11,7 +11,7 @@
         <div class="flex flex-col items-start mx-3 h-full md:mx-5">
             <div class="flex justify-between w-full">
                 <div class="flex gap-3 items-start pt-2">
-                    <div class="p-1 -mt-10 rounded-2xl bg-2">
+                    <div class="z-10 p-1 -mt-10 rounded-2xl bg-2">
                         <ProfileAvatar
                             :rounded-full="false"
                             :avatar="club.avatar"
