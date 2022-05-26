@@ -78,6 +78,9 @@
     import { emitter } from '@/shared/modules/emitter'
     import { reactive, ref } from 'vue'
 
+    import { TOAST_ERRORS } from '@/utils/errors'
+    import { errorCodes } from '@/shared/errors/app-exceptions.enum'
+
     const myEfreiAuthUrl = `${import.meta.env.VITE_API_URL}/auth/myefrei`
 
     const auth = useAuthStore()
@@ -110,11 +113,15 @@
                     type: 'success',
                 })
             })
-            .catch(() => {
-                emitter.emit('show-toast', {
-                    message: 'Identifiants incorrects.',
-                    type: 'error',
-                })
+            .catch((err) => {
+                if (err.response?.status === 0) {
+                    emitter.emit('show-toast', TOAST_ERRORS[errorCodes.NETWORK_ERROR])
+                } else {
+                    emitter.emit('show-toast', {
+                        message: 'Identifiants incorrects.',
+                        type: 'error',
+                    })
+                }
             })
     }
 </script>
