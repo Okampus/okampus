@@ -67,8 +67,8 @@ export class UsersController {
 
   @Delete(':userId')
   @CheckPolicies(ability => ability.can(Action.Delete, User))
-  public async delete(@Param('userId') id: string): Promise<void> {
-    await this.usersService.delete(id);
+  public async delete(@Param('userId') userId: string): Promise<void> {
+    await this.usersService.delete(userId);
   }
 
   @Get('/:userId/statistics')
@@ -76,13 +76,14 @@ export class UsersController {
     return await this.usersService.getUserStats(userId);
   }
 
-  @Patch()
+  @Patch('/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, User))
   public async update(
     @CurrentUser() user: User,
+    @Param('userId') userId: string,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<User> {
-    return await this.usersService.update(user.userId, updateUserDto);
+    return await this.usersService.update(user, userId, updateUserDto);
   }
 
   @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })

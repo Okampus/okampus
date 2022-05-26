@@ -9,6 +9,7 @@ import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { Role } from '../shared/modules/authorization/types/role.enum';
 import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
+import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { Statistics } from '../statistics/statistics.entity';
 import { StatisticsModule } from '../statistics/statistics.module';
 import { UserSearchService } from './user-search.service';
@@ -25,7 +26,7 @@ import './user.subscriber';
     FileUploadsModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, UserSearchService],
+  providers: [CaslAbilityFactory, UsersService, UserSearchService],
   exports: [UsersService],
 })
 export class UsersModule implements OnModuleInit {

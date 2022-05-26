@@ -5,6 +5,9 @@ import { FileUpload } from '../files/file-uploads/file-upload.entity';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
+import { assertPermissions } from '../shared/lib/utils/assert-permission';
+import { Action } from '../shared/modules/authorization';
+import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import { Statistics } from '../statistics/statistics.entity';
 import { StatisticsService } from '../statistics/statistics.service';
@@ -14,12 +17,14 @@ import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
+  // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(Statistics) private readonly statisticsRepository: BaseRepository<Statistics>,
     @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
     private readonly userSearchService: UserSearchService,
     private readonly statisticsService: StatisticsService,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   public async findOneById(userId: string): Promise<User> {
@@ -46,8 +51,11 @@ export class UsersService {
     return user;
   }
 
-  public async update(userId: string, updateUserDto: UpdateUserDto): Promise<User> {
+  public async update(requester: User, userId: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.findOneOrFail({ userId }, { populate: ['badges'] });
+
+    const ability = this.caslAbilityFactory.createForUser(requester);
+    assertPermissions(ability, Action.Update, user);
 
     const { avatar, banner, ...dto } = updateUserDto;
 

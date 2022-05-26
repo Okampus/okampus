@@ -91,6 +91,11 @@ export class CaslAbilityFactory {
       // This is all managed by-hand inside the services.
       allow(Action.Update, Team);
 
+      forbid(Action.Update, User)
+        .because('Not the user');
+      allow(Action.Update, User, { userId: user.userId })
+        .because('Not the user');
+
       if (user.roles.includes(Role.Moderator)) {
         allow(Action.Read, 'all');
         allow(Action.Update, 'all');
@@ -154,10 +159,6 @@ export class CaslAbilityFactory {
 
     forbid(Action.Delete, Content, { kind: ContentKind.Post })
       .because('Cannot delete posts, only threads');
-    forbid(Action.Update, User)
-      .because('Not the user');
-    allow(Action.Update, User, { userId: user.userId })
-      .because('Not the user');
     /* eslint-enable @typescript-eslint/naming-convention */
 
     ForbiddenError.setDefaultMessage(error => `Cannot perform ${error.action.toLowerCase()} on a ${error.subjectType.toLowerCase()}`);
