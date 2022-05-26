@@ -31,8 +31,18 @@ export const useUsersStore = defineStore('users', {
         async getUser(id) {
             return await $axios.get(`users/${id}`).then(onData(this.replaceUser))
         },
-        async updateUser(user) {
-            return await $axios.patch(`users/${user.userId}`, user).then(onData(this.replaceUser))
+        async updateUser(id, user) {
+            return await $axios.patch(`users/${id}`, user).then(onData(this.replaceUser))
+        },
+        async changeImage(formData, uploadType, config = {}) {
+            return await $axios
+                .put(`users/${uploadType}`, formData, {
+                    ...config,
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+                .then(onData(this.replaceUser))
         },
     },
 })

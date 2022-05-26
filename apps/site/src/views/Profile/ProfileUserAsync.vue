@@ -22,7 +22,7 @@
                                 </div>
                                 <router-link
                                     v-if="me.userId === user.userId"
-                                    to="/me/profile"
+                                    to="/me"
                                     class="my-auto ml-8"
                                 >
                                     <div

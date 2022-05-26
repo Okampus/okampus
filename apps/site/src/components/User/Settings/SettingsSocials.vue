@@ -3,11 +3,11 @@
         <div class="flex">
             <div class="text-lg">Comptes Externes</div>
             <button class="flex my-auto ml-4 text-sm text-blue-500" @click="addLineAccount()">
-                <font-awesome-icon icon="plus" />
+                <i class="fa fa-plus" />
                 <div>Ajouter un compte</div>
             </button>
         </div>
-        <div v-if="contacts === undefined || contacts.length === 0">
+        <!-- <div v-if="contacts === undefined || contacts.length === 0">
             Vous n'avez pas encore lié de compte externe
         </div>
 
@@ -61,7 +61,7 @@
             <div>
                 <p class="px-5">Enregistrer</p>
             </div>
-        </button>
+        </button> -->
     </div>
 </template>
 

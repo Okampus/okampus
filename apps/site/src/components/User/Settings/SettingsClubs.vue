@@ -1,7 +1,7 @@
 <template>
     <!-- TODO: Refactor all my-auto -->
     <div class="text-2">
-        <div class="flex h-12 border-b-2 border-color-2-alt">
+        <!-- <div class="flex h-12 border-b-2 border-color-2-alt">
             <button
                 v-if="userClubsPresident().length > 0"
                 class="flex px-4 my-auto w-1/2"
@@ -37,7 +37,6 @@
                 </div>
             </button>
         </div>
-        <!-- Gestion de ses assos (Général pour tout le monde) -->
         <div v-if="componentSelected === 1" class="p-4 sm:px-8">
             <div class="flex flex-col">
                 <div class="mb-2">
@@ -121,7 +120,6 @@
             </div>
         </div>
 
-        <!-- Gestion des assos (pres/ vice pres) -->
         <div v-if="componentSelected === 2 && userClubsPresident().length > 0">
             <div class="">
                 <div class="p-4 w-full sm:px-8">
@@ -295,7 +293,6 @@
                                 </button>
                             </template>
                         </DrawerMenu>
-                        <!-- <div v-if="clubMembers != undefined && clubMembers != null">
                             <ul>
                                 <li v-for="member in clubMembers" :key="member" class="flex gap-4">
                                     <ProfileAvatar
@@ -333,7 +330,7 @@
                                     </button>
                                 </li>
                             </ul>
-                        </div> -->
+                        </div>
                     </div>
                     <div>
                         <DrawerMenu class="mt-8" title="Paramètres de l'adhésion">
@@ -375,13 +372,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script setup>
     import SelectInput from '@/components/Input/SelectInput.vue'
-    import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue'
+    // import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import DrawerMenu from '@/components/DrawerMenu.vue'
 

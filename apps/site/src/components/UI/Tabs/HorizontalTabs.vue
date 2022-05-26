@@ -3,7 +3,7 @@
         <div
             v-for="(tab, i) in tabs"
             :key="i"
-            class="flex gap-3 justify-center items-center py-3 w-full text-lg tab"
+            class="flex gap-3 justify-center items-center py-2 px-4 my-2 tab"
             :class="tab.id === modelValue ? 'active' : 'text-1'"
             @click="setTab(tab, true)"
         >

@@ -15,7 +15,7 @@ export const useAuthStore = defineStore('auth', {
 
     actions: {
         updateUser(user) {
-            this.user = { ...user, fullname: user.firstname.split(' ')[0] + ' ' + user.lastname }
+            this.user = { ...this.user, ...user }
             return user
         },
         async getMe() {

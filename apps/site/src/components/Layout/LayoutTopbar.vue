@@ -44,7 +44,7 @@
                                 <hr class="self-center mt-2 w-11/12 h-[1px] bg-gray-500/20 border-none" />
                                 <router-link
                                     class="flex gap-6 items-center py-2 px-4 hover:bg-gray-200/95 hover:dark:bg-gray-600/95 cursor-pointer"
-                                    to="/me/profile"
+                                    to="/me"
                                 >
                                     <i class="text-xl fa-solid fa-user" />
                                     <div>Mon profil</div>

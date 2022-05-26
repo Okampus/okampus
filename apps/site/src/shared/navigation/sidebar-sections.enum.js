@@ -174,7 +174,7 @@ export const sections = computed(() => {
                               icon: 'user-group',
                               button: {
                                   text: 'Mon compte',
-                                  to: '/me/profile',
+                                  to: '/me',
                                   icon: 'user-cog',
                               },
                           },
