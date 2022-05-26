@@ -1,51 +1,56 @@
-<!-- eslint-disable  -->
 <template>
     <div v-if="modelValue" class="vue-image-crop-upload">
-        <div class="vicp-wrap bg-2 rounded-lg">
-            <div class="vicp-close" @click="off">
+        <div class="rounded-lg vicp-wrap bg-2">
+            <div class="vicp-close" @click="close">
                 <i class="vicp-icon4" />
             </div>
 
-            <div v-show="step == 1" class="vicp-step1">
+            <div v-show="step === STEP_UPLOAD" class="vicp-step1">
                 <div
                     class="vicp-drop-area input"
                     @dragleave="preventDefault"
                     @dragover="preventDefault"
                     @dragenter="preventDefault"
-                    @click="handleClick"
-                    @drop="handleChange"
+                    @click="clickOnDropArea"
+                    @drop="fileInputChange"
                 >
-                    <i v-show="loading != 1" class="fa fa-file-arrow-up text-2xl" />
+                    <i v-show="loading !== LOADING_UPLOADING" class="text-2xl fa fa-file-arrow-up" />
 
-                    <span v-show="loading !== 1" class="vicp-hint">{{ lang.hint }}</span>
+                    <span v-show="loading !== LOADING_UPLOADING" class="vicp-hint">{{ lang.hint }}</span>
 
                     <span v-show="!isSupported" class="vicp-no-supported-hint">{{ lang.noSupported }}</span>
 
                     <input
                         v-show="false"
-                        v-if="step == 1"
-                        ref="fileinput"
+                        v-if="step === STEP_UPLOAD"
+                        ref="fileInput"
                         type="file"
                         accept="image/*"
-                        @change="handleChange"
+                        @change="fileInputChange"
                     />
                 </div>
                 <div v-show="hasError" class="vicp-error"><i class="vicp-icon2" /> {{ errorMsg }}</div>
-                <div class="vicp-operate text-blue-500">
-                    <a @click="off" @mousedown="ripple">{{ lang.btn.off }}</a>
+                <div class="text-blue-500 vicp-operate">
+                    <a @click="close">{{ lang.btn.off }}</a>
                 </div>
             </div>
 
-            <div v-if="step == 2" class="vicp-step2">
+            <div v-if="step === STEP_CROP" class="vicp-step2">
                 <div class="vicp-crop">
                     <div v-show="true" class="vicp-crop-left">
-                        <div class="vicp-img-container" @wheel.prevent="handleMouseWheel">
+                        <div class="vicp-img-container" @wheel.prevent="handleZoom">
                             <img
                                 ref="img"
                                 :src="sourceImgUrl"
-                                :style="sourceImgStyle"
+                                :style="{
+                                    top: `${scale.y + sourceImgMasking.y}px`,
+                                    left: `${scale.x + sourceImgMasking.x}px`,
+                                    width: `${scale.width}px`,
+                                    height: `${scale.height}px`,
+                                }"
                                 class="vicp-img"
                                 draggable="false"
+                                @load="onLoadImg"
                                 @drag="preventDefault"
                                 @dragstart="preventDefault"
                                 @dragend="preventDefault"
@@ -73,64 +78,68 @@
                                 step="1"
                                 min="0"
                                 max="100"
-                                @mousemove="zoomChange"
+                                @mousemove="(e) => zoomImg(e.target.value)"
                             />
                             <i
                                 class="vicp-icon5"
-                                @mousedown="startZoomSub"
-                                @mouseout="endZoomSub"
-                                @mouseup="endZoomSub"
+                                @mousedown="startZoom(-1)"
+                                @mouseout="scale.zooming = false"
+                                @mouseup="scale.zooming = false"
                             />
                             <i
                                 class="vicp-icon6"
-                                @mousedown="startZoomAdd"
-                                @mouseout="endZoomAdd"
-                                @mouseup="endZoomAdd"
+                                @mousedown="startZoom(1)"
+                                @mouseout="scale.zooming = false"
+                                @mouseup="scale.zooming = false"
                             />
                         </div>
 
-                        <div v-if="!noRotate" class="vicp-rotate">
+                        <div class="vicp-rotate">
                             <i @click="rotateImg">↻</i>
                         </div>
                     </div>
-                    <div v-show="true" class="vicp-crop-right">
+                    <div class="vicp-crop-right">
                         <div class="vicp-preview">
-                            <div v-if="!noSquare" class="vicp-preview-item">
+                            <div class="vicp-preview-item">
                                 <img :src="createImgUrl" :style="previewStyle" />
                                 <span>{{ lang.preview }}</span>
                             </div>
-                            <div v-if="!noCircle" class="vicp-preview-item vicp-preview-item-circle">
+                            <div class="vicp-preview-item vicp-preview-item-circle">
                                 <img :src="createImgUrl" :style="previewStyle" />
                                 <span>{{ lang.preview }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="vicp-operate text-blue-500">
-                    <a @click="setStep(1)" @mousedown="ripple">{{ lang.btn.back }}</a>
-                    <a class="vicp-operate-btn" @click="prepareUpload" @mousedown="ripple">{{
-                        lang.btn.save
-                    }}</a>
+                <div class="text-blue-500 vicp-operate">
+                    <a @click="step = STEP_UPLOAD">{{ lang.btn.back }}</a>
+                    <a class="vicp-operate-btn" @click="upload">{{ lang.btn.save }}</a>
                 </div>
             </div>
 
-            <div v-if="step == 3" class="vicp-step3">
+            <div v-if="step === STEP_SUCCESS" class="vicp-step3">
                 <div class="vicp-upload">
-                    <span v-show="loading === 1" class="vicp-loading">{{ lang.loading }}</span>
+                    <span v-show="loading === LOADING_UPLOADING" class="vicp-loading">{{
+                        lang.loading
+                    }}</span>
                     <div class="vicp-progress-wrap">
-                        <span v-show="loading === 1" class="vicp-progress" :style="progressStyle" />
+                        <span
+                            v-show="loading === LOADING_UPLOADING"
+                            class="vicp-progress"
+                            :style="{ width: `${progress}%` }"
+                        />
                     </div>
-                    <div v-show="hasError" class="vicp-error text-red-500">
+                    <div v-show="hasError" class="text-red-500 vicp-error">
                         <i class="vicp-icon2" /> {{ errorMsg }}
                     </div>
-                    <div v-show="loading === 2" class="vicp-success text-blue-500 flex">
-                        <font-awesome-icon icon="check" class="mr-2" />
+                    <div v-show="loading === LOADING_SUCCESS" class="flex text-blue-500 vicp-success">
+                        <i class="mr-2 fa fa-check" />
                         {{ lang.success }}
                     </div>
                 </div>
-                <div class="vicp-operate text-blue-500">
-                    <a @click="setStep(2)" @mousedown="ripple">{{ lang.btn.back }}</a>
-                    <a @click="off" @mousedown="ripple">{{ lang.btn.close }}</a>
+                <div class="text-blue-500 vicp-operate">
+                    <a @click="step = STEP_CROP">{{ lang.btn.back }}</a>
+                    <a @click="close">{{ lang.btn.close }}</a>
                 </div>
             </div>
             <canvas v-show="false" ref="canvas" :width="width" :height="height" />
@@ -138,672 +147,578 @@
     </div>
 </template>
 
-<script>
-    'use strict'
+<script setup>
     import language from './utils/language.js'
-    import mimes from './utils/mimes.js'
     import data2blob from './utils/data2blob.js'
-    import effectRipple from './utils/effectRipple.js'
 
-    export default {
-        props: {
-            field: {
-                type: String,
-                'default': 'avatar',
-            },
-            ki: {
-                type: String,
-                'default': '0',
-            },
-            modelValue: {
-                type: Boolean,
-                'default': true,
-            },
-            url: {
-                type: String,
-                'default': '',
-            },
-            params: {
-                type: Object,
-                'default': () => null,
-            },
-            headers: {
-                type: Object,
-                'default': () => null,
-            },
-            width: {
-                type: Number,
-                default: 200,
-            },
-            height: {
-                type: Number,
-                default: 200,
-            },
-            noRotate: {
-                type: Boolean,
-                default: true,
-            },
-            noCircle: {
-                type: Boolean,
-                default: false,
-            },
-            noSquare: {
-                type: Boolean,
-                default: false,
-            },
-            maxSize: {
-                type: Number,
-                'default': 10240,
-            },
-            langType: {
-                type: String,
-                'default': 'zh',
-            },
-            langExt: {
-                type: Object,
-                'default': () => null,
-            },
-            imgFormat: {
-                type: String,
-                'default': 'png',
-            },
-            imgBgc: {
-                type: String,
-                'default': '#fff',
-            },
-            withCredentials: {
-                type: Boolean,
-                'default': false,
-            },
-            method: {
-                type: String,
-                'default': 'POST',
-            },
-            initialImgUrl: {
-                type: String,
-                'default': '',
-            },
-            allowImgFormat: {
-                type: Array,
-                'default': () => ['gif', 'jpg', 'png'],
-            },
+    import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+    import { height } from 'tailwindcss/defaultTheme'
+
+    import { clamp } from 'lodash'
+
+    const props = defineProps({
+        modelValue: {
+            type: Boolean,
+            required: true,
         },
-
-        emits: ['src-file-set', 'crop-success', 'update:modelValue'],
-
-        data() {
-            let that = this,
-                { imgFormat, allowImgFormat, langType, langExt, width, height } = that,
-                isSupported = true,
-                tempImgFormat = allowImgFormat.indexOf(imgFormat) === -1 ? 'jpg' : imgFormat,
-                lang = language[langType] ? language[langType] : language['en'],
-                mime = mimes[tempImgFormat]
-
-            if (langExt) {
-                Object.assign(lang, langExt)
-            }
-            if (typeof FormData != 'function') {
-                isSupported = false
-            }
-            return {
-                mime,
-
-                lang,
-                isSupported,
-                // isSupportTouch: document.hasOwnProperty("ontouchstart"),
-
-                step: 1,
-
-                loading: 0,
-                progress: 0,
-
-                hasError: false,
-                errorMsg: '',
-
-                ratio: width / height,
-
-                sourceImg: null,
-                sourceImgUrl: this.initialImgUrl,
-                createImgUrl: this.initialImgUrl,
-
-                sourceImgMouseDown: {
-                    on: false,
-                    mX: 0,
-                    mY: 0,
-                    x: 0,
-                    y: 0,
-                },
-
-                previewContainer: {
-                    width: 100,
-                    height: 100,
-                },
-
-                sourceImgContainer: {
-                    width: 240,
-                    height: 184,
-                },
-
-                scale: {
-                    zoomAddOn: false,
-                    zoomSubOn: false,
-                    range: 1,
-
-                    x: 0,
-                    y: 0,
-                    width: 0,
-                    height: 0,
-                    maxWidth: 0,
-                    maxHeight: 0,
-                    minWidth: 0,
-                    minHeight: 0,
-                    naturalWidth: 0,
-                    naturalHeight: 0,
-                },
-            }
+        uploadType: {
+            type: String,
+            default: 'avatar',
         },
-
-        computed: {
-            progressStyle() {
-                let { progress } = this
-                return { width: progress + '%' }
-            },
-            sourceImgStyle() {
-                let { scale, sourceImgMasking } = this,
-                    top = scale.y + sourceImgMasking.y + 'px',
-                    left = scale.x + sourceImgMasking.x + 'px'
-                return {
-                    top,
-                    left,
-                    width: scale.width + 'px',
-                    height: scale.height + 'px',
-                }
-            },
-            sourceImgMasking() {
-                let { width, height, ratio, sourceImgContainer } = this,
-                    sic = sourceImgContainer,
-                    sicRatio = sic.width / sic.height,
-                    x = 0,
-                    y = 0,
-                    w = sic.width,
-                    h = sic.height,
-                    scale = 1
-                if (ratio < sicRatio) {
-                    scale = sic.height / height
-                    w = sic.height * ratio
-                    x = (sic.width - w) / 2
-                }
-                if (ratio > sicRatio) {
-                    scale = sic.width / width
-                    h = sic.width / ratio
-                    y = (sic.height - h) / 2
-                }
-                return {
-                    scale,
-                    x,
-                    y,
-                    width: w,
-                    height: h,
-                }
-            },
-            sourceImgShadeStyle() {
-                let { sourceImgMasking, sourceImgContainer } = this,
-                    sic = sourceImgContainer,
-                    sim = sourceImgMasking,
-                    w = sim.width == sic.width ? sim.width : (sic.width - sim.width) / 2,
-                    h = sim.height == sic.height ? sim.height : (sic.height - sim.height) / 2
-                return {
-                    width: w + 'px',
-                    height: h + 'px',
-                }
-            },
-            previewStyle() {
-                let { ratio, previewContainer } = this,
-                    pc = previewContainer,
-                    w = pc.width,
-                    h = pc.height,
-                    pcRatio = w / h
-                if (ratio < pcRatio) {
-                    w = pc.height * ratio
-                }
-                if (ratio > pcRatio) {
-                    h = pc.width / ratio
-                }
-                return {
-                    width: w + 'px',
-                    height: h + 'px',
-                }
-            },
+        uploadField: {
+            type: String,
+            default: 'file',
         },
-
-        watch: {
-            modelValue(newValue) {
-                if (newValue && this.loading != 1) {
-                    this.reset()
-                }
-            },
+        callback: {
+            type: Function,
+            required: true,
         },
-
-        created() {
-            document.addEventListener('keyup', this.handleEscClose)
+        width: {
+            type: Number,
+            default: 150,
         },
-
-        beforeUnmount() {
-            document.removeEventListener('keyup', this.handleEscClose)
+        height: {
+            type: Number,
+            default: 150,
         },
-
-        mounted() {
-            if (this.sourceImgUrl) {
-                this.startCrop()
-            }
+        maxSize: {
+            // Max size in KB
+            type: Number,
+            default: 1024 * 2, // 2 MB
         },
-
-        methods: {
-            handleEscClose(e) {
-                if (this.modelValue && (e.key == 'Escape' || e.keyCode == 27)) {
-                    this.off()
-                }
-            },
-            ripple(e) {
-                effectRipple(e)
-            },
-            off() {
-                setTimeout(() => {
-                    this.$emit('update:modelValue', false)
-                    if (this.step == 3 && this.loading == 2) {
-                        this.setStep(1)
-                    }
-                }, 200)
-            },
-            setStep(no) {
-                setTimeout(() => {
-                    this.step = no
-                }, 200)
-            },
-
-            preventDefault(e) {
-                e.preventDefault()
-                return false
-            },
-            handleClick(e) {
-                if (this.loading !== 1) {
-                    if (e.target !== this.$refs.fileinput) {
-                        e.preventDefault()
-                        if (document.activeElement !== this.$refs) {
-                            this.$refs.fileinput.click()
-                        }
-                    }
-                }
-            },
-            handleChange(e) {
-                e.preventDefault()
-                if (this.loading !== 1) {
-                    let files = e.target.files || e.dataTransfer.files
-                    this.reset()
-                    if (this.checkFile(files[0])) {
-                        this.setSourceImg(files[0])
-                    }
-                }
-            },
-
-            checkFile(file) {
-                let that = this,
-                    { lang, maxSize } = that
-                if (file.type.indexOf('image') === -1) {
-                    that.hasError = true
-                    that.errorMsg = lang.error.onlyImg
-                    return false
-                }
-
-                if (file.size / 1024 > maxSize) {
-                    that.hasError = true
-                    that.errorMsg = lang.error.outOfSize + maxSize + 'kb'
-                    return false
-                }
-                return true
-            },
-            reset() {
-                let that = this
-                that.loading = 0
-                that.hasError = false
-                that.errorMsg = ''
-                that.progress = 0
-            },
-            setSourceImg(file) {
-                this.$emit('src-file-set', file.name, file.type, file.size)
-                let that = this,
-                    fr = new FileReader()
-                fr.onload = function () {
-                    that.sourceImgUrl = fr.result
-                    that.startCrop()
-                }
-                fr.readAsDataURL(file)
-            },
-            startCrop() {
-                let that = this,
-                    { width, height, ratio, scale, sourceImgUrl, sourceImgMasking, lang } = that,
-                    sim = sourceImgMasking,
-                    img = new Image()
-                img.src = sourceImgUrl
-                img.onload = function () {
-                    let nWidth = img.naturalWidth,
-                        nHeight = img.naturalHeight,
-                        nRatio = nWidth / nHeight,
-                        w = sim.width,
-                        h = sim.height,
-                        x = 0,
-                        y = 0
-                    if (nWidth < width || nHeight < height) {
-                        that.hasError = true
-                        that.errorMsg = lang.error.lowestPx + width + '*' + height
-                        return false
-                    }
-                    if (ratio > nRatio) {
-                        h = w / nRatio
-                        y = (sim.height - h) / 2
-                    }
-                    if (ratio < nRatio) {
-                        w = h * nRatio
-                        x = (sim.width - w) / 2
-                    }
-                    scale.range = 0
-                    scale.x = x
-                    scale.y = y
-                    scale.width = w
-                    scale.height = h
-                    scale.minWidth = w
-                    scale.minHeight = h
-                    scale.maxWidth = nWidth * sim.scale
-                    scale.maxHeight = nHeight * sim.scale
-                    scale.naturalWidth = nWidth
-                    scale.naturalHeight = nHeight
-                    that.sourceImg = img
-                    that.createImg()
-                    that.setStep(2)
-                }
-            },
-            imgStartMove(e) {
-                e.preventDefault()
-                if (!e.targetTouches) {
-                    return false
-                }
-                let et = e.targetTouches ? e.targetTouches[0] : e,
-                    { sourceImgMouseDown, scale } = this,
-                    simd = sourceImgMouseDown
-                simd.mX = et.screenX
-                simd.mY = et.screenY
-                simd.x = scale.x
-                simd.y = scale.y
-                simd.on = true
-            },
-            imgMove(e) {
-                e.preventDefault()
-                if (!e.targetTouches) {
-                    return false
-                }
-                let et = e.targetTouches ? e.targetTouches[0] : e,
-                    {
-                        sourceImgMouseDown: { on, mX, mY, x, y },
-                        scale,
-                        sourceImgMasking,
-                    } = this,
-                    sim = sourceImgMasking,
-                    nX = et.screenX,
-                    nY = et.screenY,
-                    dX = nX - mX,
-                    dY = nY - mY,
-                    rX = x + dX,
-                    rY = y + dY
-                if (!on) return
-                if (rX > 0) {
-                    rX = 0
-                }
-                if (rY > 0) {
-                    rY = 0
-                }
-                if (rX < sim.width - scale.width) {
-                    rX = sim.width - scale.width
-                }
-                if (rY < sim.height - scale.height) {
-                    rY = sim.height - scale.height
-                }
-                scale.x = rX
-                scale.y = rY
-            },
-            rotateImg() {
-                let {
-                        sourceImg,
-                        scale: { naturalWidth, naturalHeight },
-                    } = this,
-                    width = naturalHeight,
-                    height = naturalWidth,
-                    canvas = this.$refs.canvas,
-                    ctx = canvas.getContext('2d')
-                canvas.width = width
-                canvas.height = height
-                ctx.clearRect(0, 0, width, height)
-
-                ctx.fillStyle = 'rgba(0,0,0,0)'
-                ctx.fillRect(0, 0, width, height)
-
-                ctx.translate(width, 0)
-                ctx.rotate((Math.PI * 90) / 180)
-
-                ctx.drawImage(sourceImg, 0, 0, naturalWidth, naturalHeight)
-                let imgUrl = canvas.toDataURL(mimes['png'])
-
-                this.sourceImgUrl = imgUrl
-                this.startCrop()
-            },
-            handleMouseWheel(e) {
-                e = e || window.event
-                let { scale } = this
-                if (e.wheelDelta) {
-                    if (e.wheelDelta > 0) {
-                        this.zoomImg(scale.range >= 100 ? 100 : ++scale.range)
-                    }
-                    if (e.wheelDelta < 0) {
-                        this.zoomImg(scale.range <= 0 ? 0 : --scale.range)
-                    }
-                } else if (e.detail) {
-                    if (e.detail > 0) {
-                        this.zoomImg(scale.range >= 100 ? 100 : ++scale.range)
-                    }
-                    if (e.detail < 0) {
-                        this.zoomImg(scale.range <= 0 ? 0 : --scale.range)
-                    }
-                }
-            },
-            startZoomAdd() {
-                let that = this,
-                    { scale } = that
-                scale.zoomAddOn = true
-
-                function zoom() {
-                    if (scale.zoomAddOn) {
-                        let range = scale.range >= 100 ? 100 : ++scale.range
-                        that.zoomImg(range)
-                        setTimeout(function () {
-                            zoom()
-                        }, 60)
-                    }
-                }
-                zoom()
-            },
-            endZoomAdd() {
-                this.scale.zoomAddOn = false
-            },
-            startZoomSub() {
-                let that = this,
-                    { scale } = that
-                scale.zoomSubOn = true
-
-                function zoom() {
-                    if (scale.zoomSubOn) {
-                        let range = scale.range <= 0 ? 0 : --scale.range
-                        that.zoomImg(range)
-                        setTimeout(function () {
-                            zoom()
-                        }, 60)
-                    }
-                }
-                zoom()
-            },
-            endZoomSub() {
-                let { scale } = this
-                scale.zoomSubOn = false
-            },
-            zoomChange(e) {
-                this.zoomImg(e.target.value)
-            },
-            zoomImg(newRange) {
-                let that = this,
-                    { sourceImgMasking, scale } = this,
-                    { maxWidth, maxHeight, minWidth, minHeight, width, height, x, y } = scale,
-                    sim = sourceImgMasking,
-                    sWidth = sim.width,
-                    sHeight = sim.height,
-                    nWidth = minWidth + ((maxWidth - minWidth) * newRange) / 100,
-                    nHeight = minHeight + ((maxHeight - minHeight) * newRange) / 100,
-                    nX = sWidth / 2 - (nWidth / width) * (sWidth / 2 - x),
-                    nY = sHeight / 2 - (nHeight / height) * (sHeight / 2 - y)
-
-                if (nX > 0) {
-                    nX = 0
-                }
-                if (nY > 0) {
-                    nY = 0
-                }
-                if (nX < sWidth - nWidth) {
-                    nX = sWidth - nWidth
-                }
-                if (nY < sHeight - nHeight) {
-                    nY = sHeight - nHeight
-                }
-
-                scale.x = nX
-                scale.y = nY
-                scale.width = nWidth
-                scale.height = nHeight
-                scale.range = newRange
-                setTimeout(function () {
-                    if (scale.range == newRange) {
-                        that.createImg()
-                    }
-                }, 300)
-            },
-            createImg(e) {
-                let that = this,
-                    {
-                        imgFormat,
-                        imgBgc,
-                        mime,
-                        sourceImg,
-                        scale: { x, y, width, height },
-                        sourceImgMasking: { scale },
-                    } = that,
-                    canvas = that.$refs.canvas,
-                    ctx = canvas.getContext('2d')
-                if (e) {
-                    that.sourceImgMouseDown.on = false
-                }
-                canvas.width = that.width
-                canvas.height = that.height
-                ctx.clearRect(0, 0, that.width, that.height)
-
-                if (imgFormat == 'png') {
-                    ctx.fillStyle = 'rgba(0,0,0,0)'
-                } else {
-                    ctx.fillStyle = imgBgc
-                }
-                ctx.fillRect(0, 0, that.width, that.height)
-
-                ctx.drawImage(sourceImg, x / scale, y / scale, width / scale, height / scale)
-                that.createImgUrl = canvas.toDataURL(mime)
-            },
-            prepareUpload() {
-                let { url, createImgUrl, field, ki } = this
-                this.$emit('crop-success', createImgUrl, field, ki)
-                if (typeof url == 'string' && url) {
-                    this.upload()
-                } else {
-                    this.off()
-                }
-            },
-            upload() {
-                let that = this,
-                    {
-                        lang,
-                        imgFormat,
-                        mime,
-                        url,
-                        params,
-                        headers,
-                        field,
-                        ki,
-                        createImgUrl,
-                        withCredentials,
-                        method,
-                    } = this,
-                    fmData = new FormData()
-
-                if (typeof params == 'object' && params) {
-                    Object.keys(params).forEach((k) => {
-                        fmData.append(k, params[k])
-                    })
-                }
-
-                fmData.append(field, data2blob(createImgUrl, mime), field + '.' + imgFormat)
-
-                const uploadProgress = function (event) {
-                    if (event.lengthComputable) {
-                        that.progress = (100 * Math.round(event.loaded)) / event.total
-                    }
-                }
-
-                that.reset()
-                that.loading = 1
-                that.setStep(3)
-                new Promise(function (resolve, reject) {
-                    let client = new XMLHttpRequest()
-                    client.open(method, url, true)
-                    client.withCredentials = withCredentials
-                    client.onreadystatechange = function () {
-                        if (this.readyState !== 4) {
-                            return
-                        }
-                        if (this.status === 200 || this.status === 201 || this.staus === 202) {
-                            resolve(JSON.parse(this.responseText))
-                        } else {
-                            reject(this.status)
-                        }
-                    }
-                    client.upload.addEventListener('progress', uploadProgress, false)
-                    if (typeof headers == 'object' && headers) {
-                        Object.keys(headers).forEach((k) => {
-                            client.setRequestHeader(k, headers[k])
-                        })
-                    }
-                    client.send(fmData)
-                }).then(
-                    function (resData) {
-                        if (that.modelValue) {
-                            that.loading = 2
-                            that.$emit('crop-upload-success', resData, field, ki)
-                        }
-                    },
-                    function (sts) {
-                        if (that.modelValue) {
-                            that.loading = 3
-                            that.hasError = true
-                            that.errorMsg = lang.fail
-                            that.$emit('crop-upload-fail', sts, field, ki)
-                        }
-                    },
-                )
-            },
+        minSize: {
+            type: Number,
+            default: 0,
         },
+        allowImgFormat: {
+            type: Array,
+            default: () => ['gif', 'jpg', 'png'],
+        },
+        initialImgUrl: {
+            type: String,
+            default: '',
+        },
+    })
+
+    const emit = defineEmits([
+        'src-file-set',
+        'crop-success',
+        'crop-upload-success',
+        'crop-upload-fail',
+        'update:modelValue',
+    ])
+
+    // Constants
+
+    const STEP_UPLOAD = 1
+    const STEP_CROP = 2
+    const STEP_SUCCESS = 3
+
+    const LOADING_NONE = 0
+    const LOADING_UPLOADING = 1
+    const LOADING_SUCCESS = 2
+    const LOADING_FAIL = 3
+
+    const IMG_FORMAT = 'png'
+    const IMG_MIME = 'image/png'
+
+    const lang = language['fr']
+
+    const ratio = props.width / props.height
+
+    // Datas
+    const step = ref(STEP_UPLOAD)
+    const loading = ref(LOADING_NONE)
+    const progress = ref(0)
+
+    const hasError = ref(false)
+    const errorMsg = ref('')
+
+    const sourceImgUrl = ref('')
+    const createImgUrl = ref('')
+
+    const isSupported = typeof FormData === 'function' && typeof FileReader === 'function'
+
+    const sourceImgMouseDown = ref({
+        on: false,
+        mX: 0,
+        mY: 0,
+        x: 0,
+        y: 0,
+    })
+
+    const previewContainer = ref({
+        width: 100,
+        height: 100,
+    })
+
+    const sourceImgContainer = ref({
+        width: 240,
+        height: 184,
+    })
+
+    const scale = ref({
+        zooming: false,
+        range: 1,
+
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        maxWidth: 0,
+        maxHeight: 0,
+        minWidth: 0,
+        minHeight: 0,
+        originalWidth: 0,
+        originalHeight: 0,
+    })
+
+    // Close & mount
+    const close = () => {
+        emit('update:modelValue', false)
+        if (step.value === STEP_SUCCESS && loading.value == LOADING_SUCCESS) {
+            step.value = STEP_UPLOAD
+        }
     }
+
+    const closeOnEsc = (e) => {
+        if (e.key == 'Escape' || e.keyCode == 27) {
+            close()
+        }
+    }
+
+    onMounted(() => {
+        document.addEventListener('keydown', closeOnEsc)
+        if (props.sourceImgUrl) {
+            step.value = STEP_CROP
+            sourceImgUrl.value = props.sourceImgUrl
+        }
+    })
+
+    onUnmounted(() => {
+        document.removeEventListener('keydown', closeOnEsc)
+    })
+
+    // Refs
+    const fileInput = ref(null)
+    const canvas = ref(null)
+    const img = ref(null)
+
+    const sourceImgMasking = computed(() => {
+        const container = sourceImgContainer.value
+        const containerRatio = container.width / container.height
+        if (ratio < containerRatio) {
+            return {
+                scale: container.height / props.height,
+                x: (container.width - container.height * ratio) / 2,
+                y: 0,
+                width: container.height * ratio,
+                height: container.height,
+            }
+        }
+
+        if (ratio > containerRatio) {
+            return {
+                scale: container.width / props.width,
+                x: 0,
+                y: (container.height - container.width / ratio) / 2,
+                width: container.width,
+                height: container.width / ratio,
+            }
+        }
+
+        return { scale: 1, x: 0, y: 0, width: container.width, height: container.height }
+    })
+
+    const sourceImgShadeStyle = computed(() => {
+        const container = sourceImgContainer.value
+        const mask = sourceImgMasking.value
+        return {
+            width: `${container.width === mask.width ? mask.width : (container.width - mask.width) / 2}px`,
+            height: `${
+                container.height === mask.height ? mask.height : (container.height - mask.height) / 2
+            }px`,
+        }
+    })
+
+    const previewStyle = computed(() => {
+        const preview = previewContainer.value
+        const previewRatio = preview.width / preview.height
+        return {
+            width: `${ratio < previewRatio ? preview.width : preview.height * ratio}px`,
+            height: `${ratio < previewRatio ? preview.width / ratio : preview.height}px`,
+        }
+    })
+
+    const reset = () => {
+        loading.value = LOADING_NONE
+        hasError.value = false
+        errorMsg.value = ''
+        progress.value = 0
+    }
+
+    watch(
+        () => props.modelValue,
+        (val) => {
+            if (val && loading.value !== LOADING_UPLOADING) {
+                reset()
+            }
+        },
+    )
+
+    const preventDefault = (e) => {
+        e.preventDefault()
+        return false
+    }
+
+    const clickOnDropArea = () => {
+        if (loading.value !== LOADING_UPLOADING) {
+            fileInput.value.click()
+        }
+    }
+
+    const fileInputChange = (e) => {
+        // e.preventDefault()
+        if (loading.value !== LOADING_UPLOADING) {
+            let files = e.target.files || e.dataTransfer.files
+
+            reset()
+            if (files && checkFile(files[0])) {
+                setSourceImg(files[0])
+            }
+        }
+    }
+
+    const checkFile = (file) => {
+        if (file.type.indexOf('image') === -1) {
+            hasError.value = true
+            errorMsg.value = lang.error.onlyImg
+            return false
+        }
+
+        if (file.size / 1024 > props.maxSize) {
+            hasError.value = true
+            errorMsg.value = lang.error.outOfSize + props.maxSize + 'kb'
+            return false
+        }
+        return true
+    }
+
+    const setSourceImg = (file) => {
+        emit('src-file-set', file.name, file.type, file.size)
+
+        const fr = new FileReader()
+        fr.addEventListener('load', () => {
+            step.value = STEP_CROP
+            sourceImgUrl.value = fr.result
+            // startCrop()
+        })
+
+        fr.readAsDataURL(file)
+    }
+
+    const onLoadImg = () => {
+        const mask = sourceImgMasking.value
+
+        const imgWidth = img.value.naturalWidth
+        const imgHeight = img.value.naturalHeight
+        const imgRatio = imgWidth / imgHeight
+
+        if (imgWidth < props.width || imgHeight < props.height) {
+            step.value = STEP_UPLOAD
+            hasError.value = true
+            errorMsg.value = lang.error.lowestPx + props.width + '*' + props.height
+            return false
+        }
+        const width = ratio > imgRatio ? mask.width : mask.height * imgRatio
+        const height = ratio > imgRatio ? mask.width / imgRatio : mask.height
+
+        const x = ratio > imgRatio ? 0 : (mask.width - props.width) / 2
+        const y = ratio > imgRatio ? (mask.height - props.height) / 2 : 0
+
+        scale.value = {
+            ...scale.value,
+            range: 0,
+            x,
+            y,
+            width,
+            height,
+            minWidth: width,
+            minHeight: height,
+            maxWidth: imgWidth * mask.scale,
+            maxHeight: imgHeight * mask.scale,
+            originalWidth: imgWidth,
+            originalHeight: imgHeight,
+        }
+
+        createImg()
+
+        step.value = STEP_CROP
+    }
+
+    // img.value.src = sourceImgUrl
+    // }
+
+    // const startCrop = () => {
+    //     const mask = sourceImgMasking.value
+
+    //     img.value.onload = () => {
+    //         const imgWidth = img.value.naturalWidth
+    //         const imgHeight = img.value.naturalHeight
+    //         const imgRatio = imgWidth / imgHeight
+
+    //         if (imgWidth < props.width || imgHeight < props.height) {
+    //             hasError.value = true
+    //             errorMsg.value = lang.error.lowestPx + width + '*' + height
+    //             return false
+    //         }
+    //         const width = ratio > imgRatio ? mask.width : mask.height * imgRatio
+    //         const height = ratio > imgRatio ? mask.width / imgRatio : mask.height
+
+    //         const x = ratio > imgRatio ? 0 : (mask.width - width) / 2
+    //         const y = ratio > imgRatio ? (mask.height - height) / 2 : 0
+
+    //         scale.value = {
+    //             ...scale.value,
+    //             range: 0,
+    //             x,
+    //             y,
+    //             width,
+    //             height,
+    //             minWidth: width,
+    //             minHeight: height,
+    //             maxWidth: imgWidth * mask.scale,
+    //             maxHeight: imgHeight * mask.scale,
+    //             originalWidth: imgWidth,
+    //             originalHeight: imgHeight,
+    //         }
+
+    //         sourceImg.value = img.value
+    //         createImg()
+
+    //         step.value = STEP_CROP
+    //     }
+
+    //     // img.value.src = sourceImgUrl
+    // }
+
+    const imgStartMove = (e) => {
+        e.preventDefault()
+        if (!e.targetTouches) {
+            return false
+        }
+
+        const et = e.targetTouches[0]
+        sourceImgMouseDown.value = {
+            ...sourceImgMouseDown.value,
+            mx: et.screenX,
+            my: et.screenY,
+            x: et.clientX,
+            y: et.clientY,
+            on: true,
+        }
+    }
+
+    const imgMove = (e) => {
+        e.preventDefault()
+        if (!e.targetTouches) {
+            return false
+        }
+
+        const et = e.targetTouches[0]
+        const { mx, my, x, y, on } = sourceImgMouseDown.value
+        if (!on) return
+
+        const mask = sourceImgMasking.value
+
+        const { currX, currY } = { currX: et.screenX, currY: et.screenY }
+        const { dX, dY } = { dX: currX - mx, dY: currY - my }
+        const { rX, rY } = {
+            rX: clamp(x + dX, 0, mask.width - scale.value.width),
+            rY: clamp(y + dY, 0, mask.height - scale.value.height),
+        }
+
+        scale.value.x = rX
+        scale.value.y = rY
+    }
+
+    const rotateImg = () => {
+        const { imgWidth, imgHeight } = {
+            imgWidth: scale.value.originalWidth,
+            imgHeight: scale.value.originalHeight,
+        }
+
+        canvas.value.width = imgWidth
+        canvas.value.height = imgHeight
+
+        const ctx = canvas.value.getContext('2d')
+        ctx.clearRect(0, 0, imgWidth, imgHeight)
+
+        ctx.fillStyle = '#fff'
+        ctx.fillRect(0, 0, imgWidth, imgHeight)
+
+        ctx.translate(imgWidth, 0)
+        ctx.rotate((Math.PI / 180) * 90)
+
+        ctx.drawImage(img.value, 0, 0, imgWidth, imgHeight)
+        sourceImgUrl.value = canvas.value.toDataURL(IMG_MIME)
+        // startCrop()
+    }
+
+    const handleZoom = (e) => {
+        e = e || window.event
+        scale.value.range = clamp(scale.value.range + (e.wheelDelta / 120 || e.detail / 3), 100, 0)
+        zoomImg(scale.value.range)
+    }
+
+    const startZoom = (delta) => {
+        scale.value.zooming = true
+
+        const zoom = () => {
+            if (scale.value.zooming) {
+                scale.value.range = clamp(scale.value.range + delta, 100, 0)
+                zoomImg(scale.value.range)
+                setTimeout(zoom, 50)
+            }
+        }
+        zoom()
+    }
+
+    const zoomImg = (newRange) => {
+        const mask = sourceImgMasking.value
+        const centerX = mask.width / 2
+        const centerY = mask.height / 2
+
+        const { maxWidth, maxHeight, minWidth, minHeight, width, height, x, y } = scale.value
+
+        const nWidth = minWidth + ((maxWidth - minWidth) * newRange) / 100
+        const nHeight = minHeight + ((maxHeight - minHeight) * newRange) / 100
+
+        const nX = clamp(centerX - (nWidth / width) * (centerX - x), 0, mask.width - width)
+        const nY = clamp(centerY - (nHeight / height) * (centerY - y), 0, mask.height - height)
+
+        scale.value = { ...scale.value, x: nX, y: nY, width: nWidth, height: nHeight, range: newRange }
+
+        // Delay in case the user is still zooming
+        setTimeout(() => scale.value.range == newRange && createImg(), 100)
+    }
+
+    const createImg = (e) => {
+        const ctx = canvas.value.getContext('2d')
+
+        if (e) {
+            sourceImgMouseDown.value.on = false
+        }
+
+        const { x, y, width, height } = scale.value
+        const mask = sourceImgMasking.value
+
+        canvas.value.width = width
+        canvas.value.height = height
+
+        ctx.clearRect(0, 0, width, height)
+        ctx.fillStyle = 'rgba(0'
+        ctx.fillRect(0, 0, width, height)
+        ctx.drawImage(img.value, x / mask.scale, y / mask.scale, width / mask.scale, height / mask.scale)
+        createImgUrl.value = canvas.value.toDataURL(IMG_MIME)
+    }
+
+    const upload = () => {
+        emit('crop-success', createImgUrl.value)
+
+        const fmData = new FormData()
+        fmData.append(
+            props.uploadField,
+            data2blob(createImgUrl.value, IMG_MIME),
+            `${props.uploadField}.${IMG_FORMAT}`,
+        )
+
+        const onUploadProgress = (event) => {
+            if (event.lengthComputable) {
+                progress.value = (100 * Math.round(event.loaded)) / event.total
+            }
+        }
+
+        reset()
+        loading.value = LOADING_UPLOADING
+        step.value = STEP_SUCCESS
+
+        try {
+            const resData = props.callback(fmData, props.uploadType, { onUploadProgress })
+            emit('crop-upload-success', resData[props.uploadType])
+            loading.value = LOADING_SUCCESS
+        } catch (err) {
+            console.log('AVATAR-CROP ERROR', err)
+            loading.value = LOADING_FAIL
+            hasError.value = true
+            errorMsg.value = lang.fail
+            emit('crop-upload-fail')
+        }
+    }
+
+    // export default {
+    //     methods: {
+    //         prepareUpload() {
+    //             let { url, createImgUrl, field } = this
+    //             this.$emit('crop-success', createImgUrl, field)
+    //             if (typeof url == 'string' && url) {
+    //                 this.upload()
+    //             } else {
+    //                 this.off()
+    //             }
+    //         },
+    //         upload() {
+    //             let that = this,
+    //                 { lang, imgFormat, mime, url, field, createImgUrl } = this,
+    //                 fmData = new FormData()
+
+    //             fmData.append(field, data2blob(createImgUrl, mime), field + '.' + imgFormat)
+
+    //             const uploadProgress = function (event) {
+    //                 if (event.lengthComputable) {
+    //                     progress = (100 * Math.round(event.loaded)) / event.total
+    //                 }
+    //             }
+
+    //             reset()
+    //             loading = 1
+    //             step.value = STEP_SUCCESS
+    //             new Promise(function (resolve, reject) {
+    //                 let client = new XMLHttpRequest()
+    //                 client.open('POST', url, true)
+    //                 client.withCredentials = true
+    //                 client.onreadystatechange = function () {
+    //                     if (this.readyState !== 4) {
+    //                         return
+    //                     }
+    //                     if (this.status === 200 || this.status === 201 || this.staus === 202) {
+    //                         resolve(JSON.parse(this.responseText))
+    //                     } else {
+    //                         reject(this.status)
+    //                     }
+    //                 }
+    //                 client.upload.addEventListener('progress', uploadProgress, false)
+
+    //                 client.send(fmData)
+    //             }).then(
+    //                 function (resData) {
+    //                     if (modelValue) {
+    //                         loading = 2
+    //                         $emit('crop-upload-success', resData, field)
+    //                     }
+    //                 },
+    //                 function (sts) {
+    //                     if (modelValue) {
+    //                         loading = 3
+    //                         hasError = true
+    //                         errorMsg = lang.fail
+    //                         $emit('crop-upload-fail', sts, field)
+    //                     }
+    //                 },
+    //             )
+    //         },
+    //     },
+    // }
 </script>
 
 <style>
