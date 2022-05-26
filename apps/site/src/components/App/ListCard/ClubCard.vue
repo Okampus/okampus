@@ -39,7 +39,7 @@
                         {{ club.name }}
                     </h3>
                     <div class="mt-1 text-sm text-2">
-                        {{ club.description }}
+                        {{ club.shortDescription }}
                     </div>
                 </router-link>
                 <div class="flex flex-row justify-between items-center mt-3 w-full h-12">

@@ -23,7 +23,7 @@
                 </TipPopper>
             </div>
             <div class="line-clamp-2 text-1">
-                {{ user.description }}
+                {{ user.shortDescription }}
             </div>
             <router-link class="text-blue-500 hover:underline" :to="`/user/${user.userId}`">
                 <div class="flex gap-2 text-lg">
