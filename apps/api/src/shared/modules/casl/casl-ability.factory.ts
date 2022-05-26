@@ -7,10 +7,10 @@ import type { Contact } from '../../../contacts/entities/contact.entity';
 import { Content } from '../../../contents/entities/content.entity';
 import { Favorite } from '../../../favorites/favorite.entity';
 import { Attachment } from '../../../files/attachments/attachment.entity';
-import { GalleryImage } from '../../../files/galleries/gallery-image.entity';
 import { InfoDoc } from '../../../files/info-docs/info-doc.entity';
 import { ProfileImage } from '../../../files/profile-images/profile-image.entity';
 import { StudyDoc } from '../../../files/study-docs/study-doc.entity';
+import { TeamFile } from '../../../files/team-files/team-file.entity';
 import { Report } from '../../../reports/report.entity';
 import { DailyInfo } from '../../../restaurant/daily-info/daily-info.entity';
 import { DailyMenu } from '../../../restaurant/daily-menus/daily-menu.entity';
@@ -37,7 +37,6 @@ export type Subjects = InferSubjects<
   | typeof DailyMenu
   | typeof Favorite
   | typeof Food
-  | typeof GalleryImage
   | typeof InfoDoc
   | typeof ProfileImage
   | typeof Report
@@ -46,6 +45,7 @@ export type Subjects = InferSubjects<
   | typeof Tag
   | typeof Team
   | typeof TeamEvent
+  | typeof TeamFile
   | typeof Thread
   | typeof User
   | typeof WikiPage>
@@ -153,7 +153,7 @@ export class CaslAbilityFactory {
       if (user.roles.includes(Role.ClubManager)) {
         allow(Action.Manage, Team, isClub);
         // @ts-expect-error
-        allow(Action.Manage, [TeamEvent, GalleryImage], { 'team.kind': TeamKind.Club });
+        allow(Action.Manage, [TeamEvent, TeamFile], { 'team.kind': TeamKind.Club });
       }
     }
 

@@ -1,5 +1,6 @@
 import {
   Entity,
+  Enum,
   ManyToOne,
   OneToOne,
   PrimaryKey,
@@ -7,13 +8,14 @@ import {
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { TeamFileType } from '../../shared/lib/types/enums/team-file-type.enum';
 import { Team } from '../../teams/teams/team.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 
 @Entity()
-export class GalleryImage extends BaseEntity {
+export class TeamFile extends BaseEntity {
   @PrimaryKey()
-  galleryImageId: string = nanoid(32);
+  teamFileId: string = nanoid(32);
 
   @OneToOne({ onDelete: 'CASCADE' })
   file!: FileUpload;
@@ -21,18 +23,23 @@ export class GalleryImage extends BaseEntity {
   @ManyToOne()
   team!: Team;
 
+  @Enum(() => TeamFileType)
+  type!: TeamFileType;
+
   @Property({ type: 'text' })
-  caption?: string;
+  description?: string;
 
   constructor(options: {
     team: Team;
     file: FileUpload;
-    caption?: string;
+    type: TeamFileType;
+    description?: string;
   }) {
     super();
     this.file = options.file;
     this.team = options.team;
-    if (options.caption)
-      this.caption = options.caption;
+    this.type = options.type;
+    if (options.description)
+      this.description = options.description;
   }
 }

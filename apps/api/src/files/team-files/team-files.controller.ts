@@ -20,72 +20,72 @@ import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
-import { CreateGalleryImageDto } from './dto/create-gallery-image.dto';
-import { GalleryImageListOptions } from './dto/gallery-image-list-options.dto';
-import { UpdateGalleryImageDto } from './dto/update-gallery-image.dto';
-import { GalleryImage } from './gallery-image.entity';
-import { GalleriesService } from './gallery.service';
+import { CreateTeamFileDto } from './dto/create-team-file.dto';
+import { TeamFileListOptions } from './dto/team-file-list-options.dto';
+import { UpdateTeamFileDto } from './dto/update-team-file.dto';
+import { TeamFile } from './team-file.entity';
+import { TeamFilesService } from './team-files.service';
 
-@ApiTags('Galleries')
+@ApiTags('TeamFiles')
 @Controller()
-export class GalleriesController {
+export class TeamFilesController {
   constructor(
-    private readonly galleriesService: GalleriesService,
+    private readonly teamFilesService: TeamFilesService,
     private readonly filesService: FileUploadsService,
   ) {}
 
   @UploadInterceptor()
   @Post()
-  @CheckPolicies(ability => ability.can(Action.Create, GalleryImage))
+  @CheckPolicies(ability => ability.can(Action.Create, TeamFile))
   public async create(
     @CurrentUser() user: User,
-    @Body() createAttachmentDto: CreateGalleryImageDto,
+    @Body() createAttachmentDto: CreateTeamFileDto,
     @UploadedFile() file: Express.Multer.File,
-  ): Promise<GalleryImage> {
+  ): Promise<TeamFile> {
     if (!file)
       throw new BadRequestException('No file provided');
 
     const fileUpload = await this.filesService.create(
       user,
       file,
-      FileKind.GalleryImage,
+      FileKind.TeamFile,
       createAttachmentDto.fileLastModifiedAt,
     );
-    return await this.galleriesService.create(user, createAttachmentDto, fileUpload);
+    return await this.teamFilesService.create(user, createAttachmentDto, fileUpload);
   }
 
   @Get()
-  @CheckPolicies(ability => ability.can(Action.Read, GalleryImage))
+  @CheckPolicies(ability => ability.can(Action.Read, TeamFile))
   public async findAll(
-    @Query() options: GalleryImageListOptions,
-  ): Promise<PaginatedResult<GalleryImage>> {
-    return await this.galleriesService.findAll(normalizePagination(options));
+    @Query() options: TeamFileListOptions,
+  ): Promise<PaginatedResult<TeamFile>> {
+    return await this.teamFilesService.findAll(normalizePagination(options));
   }
 
   @Get(':imageId')
-  @CheckPolicies(ability => ability.can(Action.Read, GalleryImage))
+  @CheckPolicies(ability => ability.can(Action.Read, TeamFile))
   public async findOne(
     @Param('imageId') imageId: string,
-  ): Promise<GalleryImage> {
-    return await this.galleriesService.findOne(imageId);
+  ): Promise<TeamFile> {
+    return await this.teamFilesService.findOne(imageId);
   }
 
   @Patch(':imageId')
-  @CheckPolicies(ability => ability.can(Action.Update, GalleryImage))
+  @CheckPolicies(ability => ability.can(Action.Update, TeamFile))
   public async update(
     @Param('imageId') imageId: string,
-    @Body() updateGalleryImageDto: UpdateGalleryImageDto,
+    @Body() updateGalleryImageDto: UpdateTeamFileDto,
     @CurrentUser() user: User,
-  ): Promise<GalleryImage> {
-    return await this.galleriesService.update(user, imageId, updateGalleryImageDto);
+  ): Promise<TeamFile> {
+    return await this.teamFilesService.update(user, imageId, updateGalleryImageDto);
   }
 
   @Delete(':imageId')
-  @CheckPolicies(ability => ability.can(Action.Delete, GalleryImage))
+  @CheckPolicies(ability => ability.can(Action.Delete, TeamFile))
   public async remove(
     @Param('imageId') imageId: string,
     @CurrentUser() user: User,
   ): Promise<void> {
-    await this.galleriesService.remove(user, imageId);
+    await this.teamFilesService.remove(user, imageId);
   }
 }

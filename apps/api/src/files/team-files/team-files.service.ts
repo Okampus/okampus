@@ -6,59 +6,61 @@ import type { PaginatedResult } from '../../shared/modules/pagination';
 import { Team } from '../../teams/teams/team.entity';
 import type { User } from '../../users/user.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
-import type { CreateGalleryImageDto } from './dto/create-gallery-image.dto';
-import type { GalleryImageListOptions } from './dto/gallery-image-list-options.dto';
-import type { UpdateGalleryImageDto } from './dto/update-gallery-image.dto';
-import { GalleryImage } from './gallery-image.entity';
+import type { CreateTeamFileDto } from './dto/create-team-file.dto';
+import type { TeamFileListOptions } from './dto/team-file-list-options.dto';
+import type { UpdateTeamFileDto } from './dto/update-team-file.dto';
+import { TeamFile } from './team-file.entity';
 
 @Injectable()
-export class GalleriesService {
+export class TeamFilesService {
   constructor(
-    @InjectRepository(GalleryImage) private readonly galleryImageRepository: BaseRepository<GalleryImage>,
+    @InjectRepository(TeamFile) private readonly teamFileRepository: BaseRepository<TeamFile>,
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
   ) {}
 
   public async create(
     user: User,
-    createGalleryImageDto: CreateGalleryImageDto,
+    createGalleryImageDto: CreateTeamFileDto,
     file: FileUpload,
-  ): Promise<GalleryImage> {
+  ): Promise<TeamFile> {
     const team = await this.teamRepository.findOneOrFail({ teamId: createGalleryImageDto.teamId });
 
     if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
-    const image = new GalleryImage({ ...createGalleryImageDto, team, file });
-    await this.galleryImageRepository.persistAndFlush(image);
-    return image;
+    const teamFile = new TeamFile({ ...createGalleryImageDto, team, file });
+    await this.teamFileRepository.persistAndFlush(teamFile);
+    return teamFile;
   }
 
-  public async findOne(galleryImageId: string): Promise<GalleryImage> {
-    return await this.galleryImageRepository.findOneOrFail(
-      { galleryImageId },
+  public async findOne(teamFileId: string): Promise<TeamFile> {
+    return await this.teamFileRepository.findOneOrFail(
+      { teamFileId },
       { populate: ['file', 'file.user', 'team'] },
     );
   }
 
   public async findAll(
-    options: Required<GalleryImageListOptions>,
-  ): Promise<PaginatedResult<GalleryImage>> {
+    options: Required<TeamFileListOptions>,
+  ): Promise<PaginatedResult<TeamFile>> {
     const team = await this.teamRepository.findOneOrFail({ teamId: options.teamId });
 
-    return await this.galleryImageRepository.findWithPagination(
+    const query = options.type ? { type: options.type } : {};
+
+    return await this.teamFileRepository.findWithPagination(
       options,
-      { team },
+      { team, ...query },
       { populate: ['file', 'file.user', 'team'] },
     );
   }
 
   public async update(
     user: User,
-    galleryImageId: string,
-    updateGalleryImageDto: UpdateGalleryImageDto,
-  ): Promise<GalleryImage> {
-    const image = await this.galleryImageRepository.findOneOrFail(
-      { galleryImageId },
+    teamFileId: string,
+    updateGalleryImageDto: UpdateTeamFileDto,
+  ): Promise<TeamFile> {
+    const image = await this.teamFileRepository.findOneOrFail(
+      { teamFileId },
       { populate: ['file', 'file.user', 'team', 'team.members'] },
     );
 
@@ -66,20 +68,20 @@ export class GalleriesService {
       throw new ForbiddenException('Not a team admin');
 
     wrap(image).assign(updateGalleryImageDto);
-    await this.galleryImageRepository.persistAndFlush(image);
+    await this.teamFileRepository.persistAndFlush(image);
     return image;
   }
 
 
-  public async remove(user: User, galleryImageId: string): Promise<void> {
-    const image = await this.galleryImageRepository.findOneOrFail(
-      { galleryImageId },
+  public async remove(user: User, teamFileId: string): Promise<void> {
+    const image = await this.teamFileRepository.findOneOrFail(
+      { teamFileId },
       { populate: ['file', 'file.user', 'team', 'team.members'] },
     );
 
     if (!image.team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
-    await this.galleryImageRepository.removeAndFlush(image);
+    await this.teamFileRepository.removeAndFlush(image);
   }
 }
