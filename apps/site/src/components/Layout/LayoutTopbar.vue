@@ -27,7 +27,7 @@
                             :avatar="auth.user.avatar"
                             :name="fullname(auth.user)"
                         />
-                        <template #content>
+                        <template #content="{ close }">
                             <div
                                 class="flex flex-col gap-2 pb-2 w-64 bg-white/95 dark:bg-gray-800/95 rounded-b-lg shadow-md"
                             >
@@ -45,6 +45,7 @@
                                 <router-link
                                     class="flex gap-6 items-center py-2 px-4 hover:bg-gray-200/95 hover:dark:bg-gray-600/95 cursor-pointer"
                                     to="/me"
+                                    @click="close"
                                 >
                                     <i class="text-xl fa-solid fa-user" />
                                     <div>Mon profil</div>
