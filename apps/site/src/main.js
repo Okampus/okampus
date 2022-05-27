@@ -10,6 +10,8 @@ import { plugin, defaultConfig } from '@formkit/vue'
 import { generateClasses } from '@formkit/themes'
 import formkitTheme from '@/formkit.theme'
 
+import { fr } from '@formkit/i18n'
+
 import { emitter } from '@/shared/modules/emitter'
 import { i18n } from '@/shared/modules/i18n'
 
@@ -60,6 +62,8 @@ app.use(createPinia())
     .use(
         plugin,
         defaultConfig({
+            locales: { fr },
+            locale: 'fr',
             config: {
                 classes: generateClasses(formkitTheme),
             },
