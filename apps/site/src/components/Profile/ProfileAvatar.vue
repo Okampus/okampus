@@ -83,7 +83,7 @@
         @apply flex shrink-0 justify-center items-center select-none text-center bg-white;
 
         &::before {
-            @apply text-sm h-full w-full block overflow-hidden text-ellipsis rounded-xl mt-3;
+            @apply text-xs h-[calc(100%-0.6rem)] w-full block overflow-hidden text-ellipsis rounded-xl mt-2;
         }
 
         &.full::before {
