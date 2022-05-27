@@ -41,6 +41,7 @@
     import { useRoute } from 'vue-router'
 
     import { abbrNumbers } from '@/utils/abbrNumbers'
+    import { getCurrentPath } from '@/utils/routeUtils'
 
     const props = defineProps({
         tabs: {
@@ -92,20 +93,20 @@
                   .flat()
                   .find(
                       (tab) =>
-                          '/' + tab.id === route.fullPath.split(props.baseRoute)[1] ||
-                          tab.route === route.fullPath,
+                          '/' + tab.id === getCurrentPath().split(props.baseRoute)[1] ||
+                          tab.route === getCurrentPath(),
                   )
             : props.tabs.find(
                   (tab) =>
-                      '/' + tab.id === route.fullPath.split(props.baseRoute)[1] ||
-                      tab.route === route.fullPath,
+                      '/' + tab.id === getCurrentPath().split(props.baseRoute)[1] ||
+                      tab.route === getCurrentPath(),
               )
 
         if (tab) {
             setTab(tab)
         } else {
             emitter.emit('show-toast', {
-                message: `L'onglet '${route.fullPath
+                message: `L'onglet '${getCurrentPath()
                     .split(props.baseRoute)[1]
                     .slice(1)}' n'existe pas. Redirection sur l'onglet par défaut ↪️`,
                 type: 'warning',
@@ -130,8 +131,8 @@
                   .flat()
                   .find(
                       (tab) =>
-                          '/' + tab.id === route.fullPath.split(props.baseRoute)[1] ||
-                          tab.route === route.fullPath,
+                          '/' + tab.id === getCurrentPath().split(props.baseRoute)[1] ||
+                          tab.route === getCurrentPath(),
                   ) ??
                   props.tabs
                       .map((tab) => tab.tabs)
@@ -139,8 +140,8 @@
                       .find((tab) => tab.id === props.defaultTabId)
             : props.tabs.find(
                   (tab) =>
-                      '/' + tab.id === route.fullPath.split(props.baseRoute)[1] ||
-                      tab.route === route.fullPath,
+                      '/' + tab.id === getCurrentPath().split(props.baseRoute)[1] ||
+                      tab.route === getCurrentPath(),
               ) ?? props.tabs.find((tab) => tab.id === props.defaultTabId),
     )
 
@@ -149,7 +150,7 @@
     watch(
         () => route.fullPath,
         () => {
-            if (route.name === props.routeName) {
+            if (route.name === props.routeName && route.fullPath.startsWith(props.routeBase)) {
                 setCurrentTab()
             }
         },

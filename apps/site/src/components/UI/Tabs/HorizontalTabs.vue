@@ -17,6 +17,7 @@
     import { emitter } from '@/shared/modules/emitter'
     import { watch } from 'vue'
     import { useRoute } from 'vue-router'
+    import { getCurrentPath } from '@/utils/routeUtils'
 
     const props = defineProps({
         tabs: {
@@ -63,14 +64,15 @@
     const setCurrentTab = () => {
         const tab = props.tabs.find(
             (tab) =>
-                '/' + tab.id === route.fullPath.split(props.routeBase)[1] || tab.route === route.fullPath,
+                '/' + tab.id === getCurrentPath().split(props.routeBase)?.[1] ||
+                tab.route === getCurrentPath(),
         )
 
         if (tab) {
             setTab(tab)
         } else {
             emitter.emit('show-toast', {
-                message: `L'onglet '${route.fullPath
+                message: `L'onglet '${getCurrentPath()
                     .split(props.routeBase)[1]
                     .slice(1)}' n'existe pas. Redirection sur l'onglet par défaut ↪️`,
                 type: 'warning',
@@ -86,7 +88,8 @@
     setTab(
         props.tabs.find(
             (tab) =>
-                '/' + tab.id === route.fullPath.split(props.routeBase)[1] || tab.route === route.fullPath,
+                '/' + tab.id === getCurrentPath().split(props.routeBase)?.[1] ||
+                tab.route === getCurrentPath(),
         ) ?? props.tabs.find((tab) => tab.id === props.defaultTabId),
     )
 
@@ -95,7 +98,7 @@
     watch(
         () => route.fullPath,
         () => {
-            if (route.name === props.routeName) {
+            if (route.name === props.routeName && route.fullPath.startsWith(props.routeBase)) {
                 setCurrentTab()
             }
         },

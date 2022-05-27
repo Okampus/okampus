@@ -1,7 +1,7 @@
 <template>
     <Transition mode="out-in" name="switch-fade">
-        <div class="flex gap-6 m-6 max-w-7xl md:gap-10 xl:mx-auto">
-            <div class="flex flex-col shrink-0 gap-4 w-[14rem] text-0">
+        <div class="flex gap-6 items-start py-6 mx-6 max-w-7xl h-full md:gap-10 xl:mx-auto">
+            <div class="flex flex-col shrink-0 gap-6 w-[14rem] text-0">
                 <div class="relative">
                     <AvatarCropper
                         v-model="editingAvatar"
@@ -22,9 +22,9 @@
                     <div class="text-xl font-semibold">{{ fullname(me) }}</div>
                     <div class="text-3">{{ me.userId }}</div>
                 </div>
-                <div class="flex flex-col gap-2">
+                <div class="flex flex-col">
                     <div class="text-lg font-semibold text-1">Statut</div>
-                    <div v-if="editingStatus" class="flex flex-col gap-2">
+                    <div v-if="editingStatus" class="flex flex-col gap-2 mt-2">
                         <textarea :value="status" rows="4" class="resize-none input" />
                         <div class="flex gap-2">
                             <div
@@ -57,7 +57,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col grow">
+            <div class="flex flex-col grow self-stretch">
                 <HorizontalTabs
                     v-model="currentTab"
                     class="ml-10"
@@ -67,11 +67,9 @@
                 />
                 <hr class="self-center w-[calc(100%-3rem)] h-[1px] bg-gray-500/20 border-none" />
                 <div class="flex flex-col grow">
-                    <div class="grow justify-center items-stretch mt-6">
-                        <keep-alive>
-                            <component :is="currentComponent" />
-                        </keep-alive>
-                    </div>
+                    <keep-alive>
+                        <component :is="currentComponent" />
+                    </keep-alive>
                 </div>
             </div>
         </div>
@@ -86,6 +84,7 @@
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
+    import SettingsOverview from '@/components/User/Settings/SettingsOverview.vue'
     import SettingsClubs from '@/components/User/Settings/SettingsClubs.vue'
     import SettingsSocials from '@/components/User/Settings/SettingsSocials.vue'
 
@@ -103,18 +102,25 @@
 
     const uploadAvatarUrl = `${import.meta.env.VITE_API_URL}/users/avatar`
 
+    const OVERVIEW = 'overview'
     const CLUBS = 'clubs'
     const SOCIALS = 'socials'
 
     const tabs = [
         {
+            id: OVERVIEW,
+            name: 'Aperçu',
+            route: '/me',
+            icon: 'user',
+        },
+        {
             id: CLUBS,
-            name: 'Mes associations',
+            name: 'Mes assos',
             icon: 'user',
         },
         {
             id: SOCIALS,
-            name: 'Contacts',
+            name: 'Intégrations',
             icon: 'mail-bulk',
         },
     ]
@@ -126,6 +132,7 @@
     const DEFAULT_TAB = tabs[0]
 
     const components = {
+        [OVERVIEW]: h(AppSuspense, { key: OVERVIEW }, { default: () => h(SettingsOverview) }),
         [CLUBS]: h(AppSuspense, { key: CLUBS }, { default: () => h(SettingsClubs) }),
         [SOCIALS]: h(AppSuspense, { key: SOCIALS }, { default: () => h(SettingsSocials) }),
     }
