@@ -24,3 +24,5 @@ export const clubRoleNames = {
         'en': 'Member',
     },
 }
+
+export const specialRoles = ['owner', 'coowner', 'treasurer', 'secretary', 'manager']
