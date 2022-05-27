@@ -58,16 +58,22 @@
     import { useBreakpoints } from '@vueuse/core'
 
     import { emitter } from '@/shared/modules/emitter'
-    import { useAuthStore } from '@/store/auth.store'
-    import { useUserConfigStore } from '@/store/user-config.store'
-    import { useRoute } from 'vue-router'
-
     import logOutOnExpire from '@/utils/logOutOnExpire'
 
     import { inject, nextTick, reactive, ref, watch, watchEffect } from 'vue'
+    // import { computed } from 'vue'
 
     import { isNil } from 'lodash'
     import { errorCodes } from './shared/errors/app-exceptions.enum'
+
+    import { useRoute } from 'vue-router'
+    import { useAuthStore } from '@/store/auth.store'
+    import { useUserConfigStore } from '@/store/user-config.store'
+
+    const currentRoute = useRoute()
+
+    const config = useUserConfigStore()
+    const auth = useAuthStore()
 
     const breakpoints = useBreakpoints({
         hideSidebar: 1024,
@@ -79,6 +85,10 @@
     const content = ref(null)
 
     const hiding = breakpoints.smaller('hideSidebar')
+
+    // TODO: hide sidebar on some routes for better navigation
+    // const hideSidebarOnRoute = computed(() => currentRoute.fullPath !== '/')
+
     const uncollapsing = breakpoints.greater('uncollapseSidebar')
 
     const collapsing = ref(false)
@@ -138,11 +148,6 @@
             )
         }
     }
-
-    const config = useUserConfigStore()
-
-    const auth = useAuthStore()
-    const currentRoute = useRoute()
 
     if (config.darkMode) {
         document.documentElement.classList.add('dark')
@@ -225,6 +230,7 @@
     @import '@/assets/scss/components/button';
     @import '@/assets/scss/components/card';
     @import '@/assets/scss/components/easymde';
+    @import '@/assets/scss/components/avatar-cropper';
     @import '@/assets/scss/components/input';
     @import '@/assets/scss/components/link';
     @import '@/assets/scss/components/select';

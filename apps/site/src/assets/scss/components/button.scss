@@ -76,3 +76,17 @@
             active:bg-green-700 dark:active:bg-green-900;
     }
 }
+
+.button-grey {
+    transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
+
+    @apply bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 shadow-white cursor-pointer;
+
+    .dark &:hover {
+        filter: brightness(1.2);
+    }
+
+    &.with-shadow:hover {
+        box-shadow: 0 2px 12px 0 rgb(255 255 255 / 50%);
+    }
+}
