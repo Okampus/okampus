@@ -74,15 +74,12 @@
     const emit = defineEmits(['update:modelValue'])
 
     const route = useRoute()
+    const getTabRoute = (tab) => tab.route?.value ?? tab.route ?? `${props.routeBase}/${tab.id}`
 
     const setTab = (tab, force = false) => {
         emit('update:modelValue', tab.id)
         if (tab.strict || force) {
-            history.pushState(
-                {},
-                null,
-                (import.meta.env.DEV ? '/#' : '') + (tab.route ? tab.route : `${props.baseRoute}/${tab.id}`),
-            )
+            history.pushState({}, null, (import.meta.env.DEV ? '/#' : '') + getTabRoute(tab))
         }
     }
 
@@ -94,12 +91,12 @@
                   .find(
                       (tab) =>
                           '/' + tab.id === getCurrentPath().split(props.baseRoute)[1] ||
-                          tab.route === getCurrentPath(),
+                          getTabRoute(tab) === getCurrentPath(),
                   )
             : props.tabs.find(
                   (tab) =>
                       '/' + tab.id === getCurrentPath().split(props.baseRoute)[1] ||
-                      tab.route === getCurrentPath(),
+                      getTabRoute(tab) === getCurrentPath(),
               )
 
         if (tab) {
@@ -132,7 +129,7 @@
                   .find(
                       (tab) =>
                           '/' + tab.id === getCurrentPath().split(props.baseRoute)[1] ||
-                          tab.route === getCurrentPath(),
+                          getTabRoute(tab) === getCurrentPath(),
                   ) ??
                   props.tabs
                       .map((tab) => tab.tabs)
@@ -141,7 +138,7 @@
             : props.tabs.find(
                   (tab) =>
                       '/' + tab.id === getCurrentPath().split(props.baseRoute)[1] ||
-                      tab.route === getCurrentPath(),
+                      getTabRoute(tab) === getCurrentPath(),
               ) ?? props.tabs.find((tab) => tab.id === props.defaultTabId),
     )
 

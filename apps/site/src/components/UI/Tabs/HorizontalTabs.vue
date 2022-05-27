@@ -1,5 +1,5 @@
 <template>
-    <div class="flex gap-2 mb-2">
+    <div class="flex gap-2">
         <div
             v-for="(tab, i) in tabs"
             :key="i"
@@ -49,15 +49,12 @@
     const emit = defineEmits(['update:modelValue'])
 
     const route = useRoute()
+    const getTabRoute = (tab) => tab.route?.value ?? tab.route ?? `${props.routeBase}/${tab.id}`
 
     const setTab = (tab, force = false) => {
         emit('update:modelValue', tab.id)
         if (tab.strict || force) {
-            history.pushState(
-                {},
-                null,
-                (import.meta.env.DEV ? '/#' : '') + (tab.route ? tab.route : `${props.routeBase}/${tab.id}`),
-            )
+            history.pushState({}, null, (import.meta.env.DEV ? '/#' : '') + getTabRoute(tab))
         }
     }
 
@@ -65,7 +62,7 @@
         const tab = props.tabs.find(
             (tab) =>
                 '/' + tab.id === getCurrentPath().split(props.routeBase)?.[1] ||
-                tab.route === getCurrentPath(),
+                getTabRoute(tab) === getCurrentPath(),
         )
 
         if (tab) {
@@ -89,7 +86,7 @@
         props.tabs.find(
             (tab) =>
                 '/' + tab.id === getCurrentPath().split(props.routeBase)?.[1] ||
-                tab.route === getCurrentPath(),
+                getTabRoute(tab) === getCurrentPath(),
         ) ?? props.tabs.find((tab) => tab.id === props.defaultTabId),
     )
 
