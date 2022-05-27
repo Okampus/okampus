@@ -3,7 +3,7 @@
         <VerticalTabs
             v-model="currentTab"
             :tabs="tabs"
-            base-route="/clubs"
+            route-base="/clubs"
             route-name="clubs"
             class="sticky top-6"
         />

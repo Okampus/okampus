@@ -55,7 +55,7 @@
                     ? props.tabs[0].tabs[0].id
                     : props.tabs[0].id,
         },
-        baseRoute: {
+        routeBase: {
             type: String,
             required: true,
         },
@@ -90,12 +90,12 @@
                   .flat()
                   .find(
                       (tab) =>
-                          '/' + tab.id === getCurrentPath().split(props.baseRoute)[1] ||
+                          '/' + tab.id === getCurrentPath().split(props.routeBase)[1] ||
                           getTabRoute(tab) === getCurrentPath(),
                   )
             : props.tabs.find(
                   (tab) =>
-                      '/' + tab.id === getCurrentPath().split(props.baseRoute)[1] ||
+                      '/' + tab.id === getCurrentPath().split(props.routeBase)[1] ||
                       getTabRoute(tab) === getCurrentPath(),
               )
 
@@ -104,7 +104,7 @@
         } else {
             emitter.emit('show-toast', {
                 message: `L'onglet '${getCurrentPath()
-                    .split(props.baseRoute)[1]
+                    .split(props.routeBase)[1]
                     .slice(1)}' n'existe pas. Redirection sur l'onglet par défaut ↪️`,
                 type: 'warning',
                 duration: 5000,
@@ -128,7 +128,7 @@
                   .flat()
                   .find(
                       (tab) =>
-                          '/' + tab.id === getCurrentPath().split(props.baseRoute)[1] ||
+                          '/' + tab.id === getCurrentPath().split(props.routeBase)[1] ||
                           getTabRoute(tab) === getCurrentPath(),
                   ) ??
                   props.tabs
@@ -137,7 +137,7 @@
                       .find((tab) => tab.id === props.defaultTabId)
             : props.tabs.find(
                   (tab) =>
-                      '/' + tab.id === getCurrentPath().split(props.baseRoute)[1] ||
+                      '/' + tab.id === getCurrentPath().split(props.routeBase)[1] ||
                       getTabRoute(tab) === getCurrentPath(),
               ) ?? props.tabs.find((tab) => tab.id === props.defaultTabId),
     )

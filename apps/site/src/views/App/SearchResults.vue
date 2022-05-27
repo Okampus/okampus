@@ -3,7 +3,7 @@
         <VerticalTabs
             v-model="currentTab"
             :tabs="tabs"
-            :base-route="`/${BASE_ROUTE}`"
+            :route-base="`/${BASE_ROUTE}`"
             :route-name="ROUTE_NAME"
             class="sticky top-6"
         />
