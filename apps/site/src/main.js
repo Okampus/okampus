@@ -6,6 +6,10 @@ import { createPinia } from 'pinia'
 import InstantSearch from 'vue-instantsearch/vue3/es'
 import Particles from 'particles.vue3'
 
+import { plugin, defaultConfig } from '@formkit/vue'
+import { generateClasses } from '@formkit/themes'
+import formkitTheme from '@/formkit.theme'
+
 import { emitter } from '@/shared/modules/emitter'
 import { i18n } from '@/shared/modules/i18n'
 
@@ -48,6 +52,18 @@ app.config.errorHandler = (error, vm, info) => {
 }
 
 // TODO: remove injection of modules in favor of composition API
-app.use(createPinia()).use(router).use(i18n).use(InstantSearch).use(Particles)
+app.use(createPinia())
+    .use(router)
+    .use(i18n)
+    .use(InstantSearch)
+    .use(Particles)
+    .use(
+        plugin,
+        defaultConfig({
+            config: {
+                classes: generateClasses(formkitTheme),
+            },
+        }),
+    )
 
 app.mount('#app')
