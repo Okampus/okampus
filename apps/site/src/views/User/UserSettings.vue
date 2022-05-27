@@ -1,13 +1,14 @@
 <template>
     <Transition mode="out-in" name="switch-fade">
-        <div class="flex gap-6 items-start py-6 mx-6 max-w-7xl h-full md:gap-10 xl:mx-auto">
+        <div class="flex gap-8 items-start py-6 mx-6 max-w-7xl h-full md:gap-14 xl:mx-auto">
             <div class="flex flex-col shrink-0 gap-6 w-[14rem] text-0">
                 <div class="relative">
                     <AvatarCropper
                         v-model="editingAvatar"
                         :upload-url="uploadAvatarUrl"
                         :request-options="{ method: 'PUT', credentials: 'include' }"
-                        upload-file-name="image.png"
+                        :labels="{ submit: 'Valider', cancel: 'Annuler' }"
+                        :cropper-options="{ aspectRatio: 1, zoomable: true, movable: true }"
                         @error="onAvatarUploadFailure"
                         @completed="onAvatarUploadSuccess"
                     />
@@ -65,7 +66,7 @@
                     route-base="/me"
                     route-name="me"
                 />
-                <hr class="self-center w-[calc(100%-3rem)] h-[1px] bg-gray-500/20 border-none" />
+                <hr class="self-center mb-2 w-[calc(100%-3rem)] h-[1px] bg-gray-500/20 border-none" />
                 <div class="flex flex-col grow">
                     <keep-alive>
                         <component :is="currentComponent" />
@@ -86,7 +87,8 @@
 
     import SettingsOverview from '@/components/User/Settings/SettingsOverview.vue'
     import SettingsClubs from '@/components/User/Settings/SettingsClubs.vue'
-    import SettingsSocials from '@/components/User/Settings/SettingsSocials.vue'
+    // import SettingsSocials from '@/components/User/Settings/SettingsSocials.vue'
+    import WIP from '@/views/App/WIP.vue'
 
     import { computed, ref, h } from 'vue'
 
@@ -134,7 +136,7 @@
     const components = {
         [OVERVIEW]: h(AppSuspense, { key: OVERVIEW }, { default: () => h(SettingsOverview) }),
         [CLUBS]: h(AppSuspense, { key: CLUBS }, { default: () => h(SettingsClubs) }),
-        [SOCIALS]: h(AppSuspense, { key: SOCIALS }, { default: () => h(SettingsSocials) }),
+        [SOCIALS]: h(AppSuspense, { key: SOCIALS }, { default: () => h(WIP) }),
     }
 
     const currentTab = ref(null)
@@ -154,52 +156,37 @@
             })
             .catch((err) => {
                 emitter.emit('show-toast', {
-                    message: `Erreur: ${err.toString()}`,
+                    message: `Erreur: ${err.message}`,
                     type: 'error',
                 })
             })
     }
+
     const onAvatarUploadFailure = (err) => {
-        console.error('Failed to upload avatar')
-        emitter.emit('show-toast', {
-            message: `Erreur: ${err.toString()}`,
-            type: 'failure',
-        })
+        if (!err?.context?.response) {
+            emitter.emit('show-toast', {
+                message: `Erreur: ${err.message}`,
+                type: 'failure',
+            })
+        }
     }
 
     const onAvatarUploadSuccess = (avatar) => {
-        avatar.response.json().then((user) => {
-            auth.updateUser(user)
-            me.value = { ...me.value, ...user }
-        })
+        if (avatar?.response?.status === 200) {
+            avatar.response.json().then((user) => {
+                auth.updateUser(user)
+                me.value = { ...me.value, ...user }
+            })
 
-        emitter.emit('show-toast', {
-            message: 'Avatar mis à jour.',
-            type: 'success',
-        })
+            emitter.emit('show-toast', {
+                message: 'Avatar mis à jour.',
+                type: 'success',
+            })
+        } else {
+            emitter.emit('show-toast', {
+                message: `Erreur: ${avatar?.response?.statusText ?? 'Erreur inconnue'}`,
+                type: 'failure',
+            })
+        }
     }
 </script>
-
-<style lang="scss">
-    .button-grey {
-        transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
-
-        @apply bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 shadow-white;
-
-        .dark &:hover {
-            filter: brightness(1.2);
-        }
-
-        &.with-shadow:hover {
-            box-shadow: 0 2px 12px 0 rgb(255 255 255 / 50%);
-        }
-    }
-
-    .avatar-cropper .avatar-cropper-container .avatar-cropper-footer .avatar-cropper-btn {
-        @apply bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-400;
-    }
-
-    .avatar-cropper-container {
-        @apply rounded-xl overflow-hidden;
-    }
-</style>

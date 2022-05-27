@@ -14,21 +14,31 @@
                     <div
                         v-for="membership in clubs.userMemberships"
                         :key="membership.team.teamId"
-                        class="flex gap-3 py-2"
+                        class="flex justify-between items-center py-2"
                     >
-                        <ProfileAvatar
-                            :avatar="membership.team.avatar"
-                            :name="membership.team.name"
-                            :size="3.5"
-                            :rounded-full="false"
-                        />
-                        <div class="flex flex-col">
-                            <div class="flex gap-1.5 font-semibold text-1">
-                                <div class="font-semibold">{{ membership.team.name }}</div>
-                                <div>•</div>
-                                <div class="text-2">{{ clubRoleNames[membership.role].fr }}</div>
+                        <div class="flex gap-3">
+                            <ProfileAvatar
+                                :avatar="membership.team.avatar"
+                                :name="membership.team.name"
+                                :size="3.5"
+                                :rounded-full="false"
+                            />
+                            <div class="flex flex-col">
+                                <div class="flex gap-1.5 font-semibold text-1">
+                                    <div class="font-semibold">{{ membership.team.name }}</div>
+                                    <div>•</div>
+                                    <div class="text-2">{{ clubRoleNames[membership.role].fr }}</div>
+                                </div>
+                                <div class="text-3">{{ membership.team.memberCount }}</div>
                             </div>
-                            <div class="text-3">{{ membership.team.memberCount }}</div>
+                        </div>
+
+                        <div v-if="specialRoles.includes(membership.role)">
+                            <router-link
+                                :to="`/club/${membership.team.teamId}/manage`"
+                                class="text-lg text-blue-500 uppercase"
+                                >Gérer</router-link
+                            >
                         </div>
                     </div>
                 </template>
@@ -68,7 +78,7 @@
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
-    import { clubRoleNames } from '@/shared/types/club-roles.enum'
+    import { clubRoleNames, specialRoles } from '@/shared/types/club-roles.enum'
 
     import { useClubsStore } from '@/store/clubs.store'
     import { useAuthStore } from '@/store/auth.store'

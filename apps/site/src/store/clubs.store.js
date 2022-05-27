@@ -53,9 +53,7 @@ export const useClubsStore = defineStore('clubs', {
         },
 
         async patchClub(clubId, props) {
-            return await $axios
-                .patch(`teams/teams/${clubId}`, props)
-                .then((res) => this.replaceClub(res.data))
+            return await $axios.patch(`teams/teams/${clubId}`, props).then(onData(this.replaceClub))
         },
 
         async postMembershipRequest(clubId) {

@@ -113,7 +113,7 @@ const routes = [
     {
         name: 'user',
         path: '/user/:userId',
-        component: () => import('@/views/Profile/ProfileUser.vue'),
+        component: () => import('@/views/App/WIP.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -146,9 +146,18 @@ const routes = [
     },
 
     {
+        name: 'manage-club',
+        path: '/club/:clubId/manage/:tab*',
+        component: () => import('@/views/Profile/ProfileManageClub.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
         name: 'club',
         path: '/club/:clubId',
-        component: () => import('@/views/Profile/ProfileClub.vue'),
+        component: () => import('@/views/App/WIP.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -198,6 +207,10 @@ router.afterEach((to) => {
     const auth = useAuthStore()
     if (to.meta?.requiresAuth && !auth.loggedIn) {
         emitter.emit('error-route', { code: errorCodes.UNAUTHORIZED, path: to.path })
+    }
+
+    if (to.meta?.hasPermission && !auth.hasPermission()) {
+        emitter.emit('error-route', { code: errorCodes.FORBIDDEN, path: to.path })
     }
 })
 
