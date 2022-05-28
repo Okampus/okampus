@@ -1,3 +1,13 @@
+.switch-enter-active,
+.switch-leave-active {
+    transition: all 0.5s ease;
+}
+
+.switch-enter-from,
+.switch-leave-to {
+    opacity: 0;
+}
+
 .switch-fade-enter-active {
     transition: opacity 0.2s ease;
 }

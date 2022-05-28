@@ -19,6 +19,7 @@
         "serve": "vite preview"
     },
     "dependencies": {
+        "@chenfengyuan/vue-countdown": "^2.0.0",
         "@formkit/i18n": "^1.0.0-beta.8",
         "@formkit/themes": "^1.0.0-beta.8",
         "@formkit/vue": "^1.0.0-beta.8",
@@ -35,6 +36,7 @@
         "nanoid": "3.3.4",
         "particles.vue3": "1.11.0",
         "pinia": "2.0.14",
+        "tailwind-children": "^0.5.0",
         "tsparticles": "1.28.0",
         "typesense-instantsearch-adapter": "2.4.0",
         "url": "0.11.0",

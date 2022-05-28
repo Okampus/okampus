@@ -3,13 +3,9 @@
         <div class="flex flex-col items-center">
             <slot />
 
-            <div v-if="show === 'sso'" class="my-8 rounded-full button">
-                <a
-                    class="py-3 !px-6 w-full text-2xl font-medium text-center text-white bg-blue-700 hover:bg-blue-600 !rounded-full focus:outline-none shadow-xl"
-                    :href="myEfreiAuthUrl"
-                    >Connexion myEfrei<i class="ml-2 fa fa-sign-in"
-                /></a>
-            </div>
+            <a v-if="show === 'sso'" class="my-8 text-2xl button-submit" :href="myEfreiAuthUrl"
+                >Connexion myEfrei<i class="ml-2 fa fa-sign-in"
+            /></a>
 
             <form
                 v-if="show === 'login'"
