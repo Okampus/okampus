@@ -11,9 +11,11 @@
                     @click="setTab(tab, true)"
                 >
                     <div class="whitespace-nowrap">{{ tab.name }}</div>
-                    <LabelSimple v-if="tab.amount" class="ml-6 bg-gray-500/50 hover:bg-gray-500/50">{{
-                        abbrNumbers(tab.amount)
-                    }}</LabelSimple>
+                    <LabelSimple
+                        v-if="tab.amount || tab.amount === 0"
+                        class="ml-6 bg-gray-500/50 hover:bg-gray-500/50"
+                        >{{ abbrNumbers(tab.amount) }}</LabelSimple
+                    >
                 </div>
                 <hr
                     v-if="i !== tabs.length - 1"
@@ -27,7 +29,9 @@
                 @click="setTab(tabParent, true)"
             >
                 <div>{{ tabParent.name }}</div>
-                <div v-if="tabParent.amount" class="ml-6">({{ tabParent.amount }})</div>
+                <div v-if="tabParent.amount || tabParent.amount === 0" class="ml-6">
+                    ({{ abbrNumbers(tabParent.amount) }})
+                </div>
             </div>
         </template>
     </div>

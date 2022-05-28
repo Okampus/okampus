@@ -160,6 +160,10 @@
     const roles = Object.entries(clubRoleNames).map(([value, name]) => ({ value, label: name.fr }))
 
     const ALL = 0
+    const ALL_LABEL = 'all'
+    const MY_CLUBS = 1
+    const MY_CLUBS_LABEL = 'my-clubs'
+
     const CATEGORIES = 1
 
     const clubList = ref([])
@@ -196,8 +200,10 @@
     }
 
     const currentClubs = computed(() =>
-        currentTab.value === 'all'
+        currentTab.value === ALL_LABEL
             ? clubList.value
+            : currentTab.value === MY_CLUBS_LABEL
+            ? clubList.value.filter((club) => !!club.membership && club.membership !== IS_WAITING)
             : categories.value.includes(linkToClubType[currentTab.value])
             ? clubListByCategory.value[linkToClubType[currentTab.value]]
             : [],
@@ -220,7 +226,6 @@
                 }))
             })
             .catch((err) => {
-                console.log('Error', err)
                 emitter.emit('error-route', { code: getStatusAxiosError(err) })
             })
     }
@@ -233,9 +238,11 @@
                     clubList.value.find((club) => club.teamId === membership.team.teamId).membership =
                         specialRoles.includes(membership.role) ? IS_SPECIAL_ROLE : IS_MEMBER
                 })
+                tabs[ALL].tabs[MY_CLUBS].amount = clubList.value.filter(
+                    (club) => !!club.membership && club.membership !== IS_WAITING,
+                ).length
             })
             .catch((err) => {
-                console.log('Error', err)
                 emitter.emit('error-route', { code: getStatusAxiosError(err) })
             })
     }
@@ -253,7 +260,6 @@
                     })
             })
             .catch((err) => {
-                console.log('Error', err)
                 emitter.emit('error-route', { code: getStatusAxiosError(err) })
             })
     }
