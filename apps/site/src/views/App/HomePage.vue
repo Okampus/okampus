@@ -78,7 +78,7 @@
                         class="self-end mt-10 min-w-[3rem] text-lg text-center select-none button-submit"
                         :class="counting ? 'opacity-50' : ''"
                         :disabled="counting"
-                        @click="auth.agreeToTerms"
+                        @click="agreeToTerms"
                     >
                         <vue-countdown
                             v-if="counting"
@@ -87,7 +87,7 @@
                             @end="onCountdownEnd"
                             >{{ totalSeconds }}</vue-countdown
                         >
-                        <div v-else>J'ai pris connaissance de ces informations</div>
+                        <div v-else>J'ai pris connaissance de ces informations et souhaite continuer</div>
                     </div>
                 </div>
             </div>
@@ -110,7 +110,7 @@
             <div v-else class="flex absolute top-0 left-0 z-10 justify-center items-center w-full h-full">
                 <div class="flex z-10 flex-col gap-4 p-4 min-w-[20rem] rounded-xl text-0 bg-opacity/80 bg-2">
                     <div class="text-3xl">
-                        {{ new Date().getHours() > 19 ? 'Bonsoir' : 'Bonjour' }}
+                        {{ new Date().getHours() > 19 || new Date().getHours() < 6 ? 'Bonsoir' : 'Bonjour' }}
                         {{ auth.user.firstname.split(' ')[0] }} !
                     </div>
                     <router-link
@@ -177,6 +177,12 @@
 
     const onCountdownEnd = () => {
         counting.value = false
+    }
+
+    const agreeToTerms = () => {
+        if (!counting.value) {
+            auth.agreeToTerms()
+        }
     }
 </script>
 
