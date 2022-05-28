@@ -18,15 +18,20 @@
                 :data="club.category"
             />
             <div
+                v-if="!club.banner"
                 class="flex absolute inset-0 flex-col justify-center items-center m-auto text-center text-white"
             >
                 <div class="text-2xl font-semibold">Votre association n'a pas de bannière !</div>
                 <div>Ajoutez une bannière pour présenter votre association.</div>
             </div>
             <div
-                class="flex absolute top-5 right-5 justify-center items-center w-10 h-10 bg-white rounded-full"
+                class="flex absolute top-5 right-5 justify-center items-center w-10 h-10 bg-white rounded-full cursor-pointer"
             >
-                <i class="text-xl text-blue-500 fa fa-plus" @click="editingBanner = true" />
+                <i
+                    class="text-xl text-blue-500 fa"
+                    :class="club.banner ? 'fa-pen' : 'fa-plus'"
+                    @click="editingBanner = true"
+                />
             </div>
         </div>
         <div class="flex">

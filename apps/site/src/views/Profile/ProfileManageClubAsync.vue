@@ -27,7 +27,7 @@
                 />
             </div>
         </div>
-        <div class="flex flex-col px-4 w-full max-w-6xl md:gap-8 xl:mx-auto">
+        <div class="flex flex-col px-4 w-full max-w-6xl xl:mx-auto">
             <keep-alive>
                 <component :is="currentComponent" v-model:club="club" />
             </keep-alive>

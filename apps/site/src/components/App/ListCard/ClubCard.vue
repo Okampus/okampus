@@ -28,7 +28,7 @@
                 </div>
                 <ModalDropdown :buttons="buttons">
                     <i
-                        class="self-center px-3 pt-2 pb-1 text-xl cursor-context-menu md:-mr-1 fa fa-ellipsis text-2"
+                        class="self-center px-3 pt-2 pb-1 text-xl cursor-pointer md:-mr-1 fa fa-ellipsis text-2"
                     />
                 </ModalDropdown>
             </div>
@@ -49,8 +49,8 @@
                     >
                         Rejoindre
                     </button>
-                    <div class="flex flex-row-reverse gap-1 items-center ml-4 text-0">
-                        <span v-if="props.club.memberCount > specialMembers.length" class="text-0"
+                    <div class="flex flex-row-reverse gap-1 ml-4 text-0">
+                        <span v-if="props.club.memberCount > specialMembers.length" class="my-auto text-0"
                             >+ {{ abbrNumbers(props.club.memberCount - specialMembers.length) }}</span
                         >
                         <div v-for="(specialMember, i) in specialMembers" :key="i" class="-ml-3">
@@ -140,7 +140,7 @@
         {
             name: 'Lien',
             icon: 'fas fa-link',
-            class: 'hover:bg-blue-500',
+            class: 'hover:bg-blue-300 dark:hover:bg-blue-500',
             action: async () => {
                 try {
                     await navigator.clipboard.writeText(getURL(`/club/${props.club.teamId}`))
@@ -159,7 +159,7 @@
         {
             name: 'Profil',
             icon: 'fas fa-address-book',
-            class: 'hover:bg-gray-500',
+            class: 'hover:bg-gray-300 dark:hover:bg-gray-500',
             action: () => {
                 router.push(`/club/${props.club.teamId}`)
             },

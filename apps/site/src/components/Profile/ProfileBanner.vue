@@ -61,7 +61,7 @@
         @apply text-center bg-white w-full h-full;
 
         &::before {
-            @apply text-xs h-[calc(100%-0.6rem)] block overflow-hidden text-ellipsis mt-2 w-full;
+            @apply text-xs h-full block overflow-hidden text-ellipsis pt-2 w-full;
         }
     }
 </style>

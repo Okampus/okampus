@@ -27,7 +27,7 @@
                 "
             >
                 <template #default="{ close }">
-                    <div class="flex flex-col justify-center items-center card">
+                    <div class="flex flex-col justify-center items-center py-8 px-10 card">
                         <div class="text-2xl font-semibold">
                             Vous vous apprêtez à rejoindre {{ joiningClub.name }} !
                         </div>
@@ -40,12 +40,12 @@
                             ref="joinForm"
                             v-model="joinFormData"
                             type="form"
-                            form-class="flex flex-col mt-6"
+                            form-class="flex flex-col mt-6 max-w-lg"
                             :actions="false"
                             @submit="joinFormSubmit"
                         >
                             <FormKit
-                                label="Ton rôle"
+                                label="Votre rôle souhaité"
                                 type="radio"
                                 name="role"
                                 :validation="[['required']]"
@@ -55,7 +55,7 @@
                             <FormKit
                                 type="text"
                                 name="discord"
-                                label="Ton ID Discord (avec le #)"
+                                label="Votre ID Discord (avec le #)"
                                 :validation="[
                                     ['required'],
                                     [
@@ -71,11 +71,11 @@
                             <FormKit
                                 type="text"
                                 name="reason"
-                                label="Raison d'adhésion"
+                                label="La raison de votre adhésion"
                                 help="Décrivez en quelques mots la raison de votre adhésion."
                             />
                         </FormKit>
-                        <div class="flex gap-6 mt-6">
+                        <div class="flex gap-4 self-end mt-6">
                             <div class="button-cancel" @click="close">Annuler</div>
                             <div class="button-submit with-shadow" @click="joinForm.node.submit()">
                                 Valider ma demande d'adhésion

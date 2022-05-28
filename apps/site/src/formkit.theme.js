@@ -8,10 +8,10 @@ const textClassification = {
       border-transparent
       formkit-invalid:ouline-red-500
     `,
-    input: 'w-full input',
+    input: 'block w-full input',
 }
 const boxClassification = {
-    fieldset: 'max-w-md rounded-md px-3 pb-2 bg-3 shadow',
+    fieldset: 'rounded-md px-3 pb-2 bg-3 shadow mb-2',
     legend: 'font-bold text-sm',
     wrapper: 'flex items-center mb-1 cursor-pointer',
     input: 'form-check-input appearance-none h-4 w-4 mr-2 border border-gray-400 rounded-sm bg-white checked:bg-blue-600 focus:outline-none focus:ring-0 transition duration-200 cursor-pointer',
@@ -31,7 +31,7 @@ export default {
     // the global key will apply to all inputs
     global: {
         outer: 'mt-3 formkit-disabled:opacity-50',
-        help: 'text-xs text-gray-500',
+        help: 'text-xs text-gray-500 mb-2 mt-1',
         messages: 'list-none p-0 mt-1 mb-0',
         message: 'text-red-500 mb-3 text-xs',
     },
@@ -46,7 +46,7 @@ export default {
     email: textClassification,
     file: {
         label: 'block mb-1 font-bold text-sm',
-        inner: 'max-w-md cursor-pointer',
+        inner: 'cursor-pointer',
         input: 'text-gray-600 text-sm mb-1 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:bg-blue-500 file:text-white hover:file:bg-blue-600',
         noFiles: 'block text-gray-800 text-sm mb-1',
         fileItem: 'block flex text-gray-800 text-sm mb-1',
@@ -60,7 +60,6 @@ export default {
         input: boxClassification.input.replace('rounded-sm', 'rounded-full'),
     },
     range: {
-        inner: 'max-w-md',
         input: 'form-range appearance-none w-full h-2 p-0 bg-gray-200 rounded-full focus:outline-none focus:ring-0 focus:shadow-none',
     },
     search: textClassification,
@@ -70,7 +69,7 @@ export default {
     text: textClassification,
     textarea: {
         ...textClassification,
-        input: 'block w-full h-32 px-3 border-none text-base text-gray-700 placeholder-gray-400 focus:shadow-outline',
+        input: 'block w-full input',
     },
     time: textClassification,
     url: textClassification,
