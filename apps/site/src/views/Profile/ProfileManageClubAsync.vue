@@ -37,6 +37,8 @@
 
 <script setup>
     import ManageHomepage from '@/components/Profile/Manage/ManageHomepage.vue'
+    import ManageDrive from '@/components/Profile/Manage/ManageDrive.vue'
+
     import WIP from '@/views/App/WIP.vue'
 
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
@@ -60,6 +62,7 @@
     const HOME = 'home'
     const REQUESTS = 'requests'
     const MEMBERS = 'members'
+    const DRIVE = 'drive'
     const ACTIVITY = 'activity'
     const SETTINGS = 'settings'
 
@@ -74,6 +77,11 @@
             id: REQUESTS,
             name: "Demandes d'adhésion",
             icon: 'envelope',
+        },
+        {
+            id: DRIVE,
+            name: 'Drive',
+            icon: 'file-arrow-down',
         },
         {
             id: MEMBERS,
@@ -100,6 +108,7 @@
     const components = {
         [HOME]: ManageHomepage,
         [REQUESTS]: h(WIP, { key: REQUESTS }),
+        [DRIVE]: ManageDrive,
         [MEMBERS]: h(WIP, { key: MEMBERS }),
         [ACTIVITY]: h(WIP, { key: ACTIVITY }),
         [SETTINGS]: h(WIP, { key: SETTINGS }),
