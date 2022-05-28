@@ -7,6 +7,7 @@ export const useClubsStore = defineStore('clubs', {
         clubs: [],
         userMemberships: [],
         userMembershipRequests: [],
+        clubMembershipRequests: [],
         club: {},
     }),
     actions: {
@@ -15,14 +16,19 @@ export const useClubsStore = defineStore('clubs', {
             return clubs
         },
 
-        replaceUserMemberships(clubs) {
-            this.userMemberships = clubs
-            return clubs
+        replaceUserMemberships(memberships) {
+            this.userMemberships = memberships
+            return memberships
         },
 
-        replaceUserMembershipRequests(clubs) {
-            this.userMembershipRequests = clubs
-            return clubs
+        replaceUserMembershipRequests(requests) {
+            this.userMembershipRequests = requests
+            return requests
+        },
+
+        replaceClubMembershipRequests(requests) {
+            this.clubMembershipRequests = requests
+            return requests
         },
 
         replaceClub(club) {
@@ -46,6 +52,12 @@ export const useClubsStore = defineStore('clubs', {
             return await $axios
                 .get(`teams/memberships/${user.userId}/requests`, { params: { itemsPerPage: 100 } })
                 .then(onItems(this.replaceUserMembershipRequests))
+        },
+
+        async getRequestsOfClub(clubId) {
+            return await $axios
+                .get(`teams/requests/${clubId}`)
+                .then(onItems(this.replaceClubMembershipRequests))
         },
 
         async getClub(clubId) {
