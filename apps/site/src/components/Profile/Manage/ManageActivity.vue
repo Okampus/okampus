@@ -87,6 +87,14 @@
                 </div>
             </div>
         </div>
+        <div class="mt-4">
+            <h2 class="mb-4 text-2xl">Evenements de votre association</h2>
+            <div class="flex flex-col gap-8">
+                <div v-for="event in events" :key="event">
+                    <ClubEventCard :event="event"></ClubEventCard>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
