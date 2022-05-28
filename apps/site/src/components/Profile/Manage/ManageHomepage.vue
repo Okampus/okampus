@@ -56,7 +56,7 @@
         </div>
         <div class="flex flex-col grow ml-4">
             <div class="flex justify-between">
-                <div class="text-2xl font-semibold text-0">{{ club.name }}</div>
+                <div class="mt-1 text-2xl font-semibold text-0">{{ club.name }}</div>
 
                 <ModalPopup :show="editingPage" @close="editingPage = false">
                     <template #default="{ close }">
@@ -87,7 +87,15 @@
                             </FormKit>
                             <div class="flex gap-4 self-end mt-6">
                                 <div class="button-cancel" @click="close">Annuler</div>
-                                <div class="button-submit with-shadow" @click="updateClubForm.node.submit()">
+                                <div
+                                    class="button-submit with-shadow"
+                                    @click="
+                                        () => {
+                                            updateClubForm.node.submit()
+                                            close()
+                                        }
+                                    "
+                                >
                                     Valider
                                 </div>
                             </div>
@@ -95,9 +103,9 @@
                     </template>
                 </ModalPopup>
 
-                <div class="-mt-4 mr-4 text-xl button-submit" @click="editingPage = true">Modifier</div>
+                <div class="-mt-5 mr-4 mb-3 text-xl button-submit" @click="editingPage = true">Modifier</div>
             </div>
-            <div class="text-2">{{ club.shortDescription }}</div>
+            <div class="mt-1 text-2">{{ club.shortDescription }}</div>
         </div>
     </div>
     <div class="flex flex-col gap-5 p-4 mt-4 rounded-xl text-2 bg-2">

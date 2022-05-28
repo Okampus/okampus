@@ -33,13 +33,19 @@
                             </div>
                         </div>
 
-                        <div v-if="specialRoles.includes(membership.role)">
-                            <router-link
-                                :to="`/club/${membership.team.teamId}/manage`"
-                                class="text-lg text-blue-500 uppercase"
-                                >Gérer</router-link
-                            >
-                        </div>
+                        <router-link
+                            v-if="specialRoles.includes(membership.role)"
+                            :to="`/club/${membership.team.teamId}/manage`"
+                            class="text-lg button-submit"
+                            >Gérer</router-link
+                        >
+
+                        <router-link
+                            v-else
+                            :to="`/club/${membership.team.teamId}`"
+                            class="text-lg button-submit"
+                            >Voir le profil</router-link
+                        >
                     </div>
                 </template>
                 <div v-else class="flex flex-col gap-4 items-center my-6">
