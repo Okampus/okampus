@@ -61,8 +61,71 @@
             </template>
             <template v-else-if="currentTab === REQUEST">
                 <template v-if="clubs.userMembershipRequests.length">
-                    <div v-for="request in clubs.userMembershipRequests" :key="request" class="text-red-500">
-                        {{ request }}
+                    <div
+                        v-for="request in clubs.userMembershipRequests"
+                        :key="request.teamMembershipRequestId"
+                        class="flex justify-between items-center py-2"
+                    >
+                        <div class="flex gap-3">
+                            <ProfileAvatar
+                                :avatar="request.team.avatar"
+                                :name="request.team.name"
+                                :size="3.5"
+                                :rounded-full="false"
+                            />
+                            <div class="flex flex-col">
+                                <div class="flex gap-1.5 text-1">
+                                    <div class="font-semibold">{{ request.team.name }}</div>
+                                    <div>•</div>
+                                    <div class="text-3">{{ request.team.memberCount }}</div>
+                                </div>
+                                <div class="flex gap-1.5">
+                                    <div>Comme</div>
+                                    <div class="text-2">{{ clubRoleNames[request.role].fr }}</div>
+                                    <div>•</div>
+                                    <div class="flex gap-1">
+                                        <div>Demandé</div>
+                                        <TipRelativeDateModified :date="request.createdAt" />
+                                    </div>
+                                    <template v-if="request.state === APPROVED">
+                                        <div>•</div>
+                                        <div class="flex gap-1">
+                                            <div>{{ statusNames[APPROVED].fr }}</div>
+                                            <TipRelativeDateModified :date="request.handledAt" />
+                                        </div>
+                                    </template>
+                                    <template v-else-if="request.state === REJECTED">
+                                        <div>•</div>
+                                        <div class="flex gap-1">
+                                            <div>{{ statusNames[REJECTED].fr }}</div>
+                                            <TipRelativeDateModified :date="request.handledAt" />
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex gap-2 justify-center items-center py-1 px-3 w-36 text-white rounded-xl"
+                            :class="{
+                                'bg-green-500 hover:bg-green-600': request.state === APPROVED,
+                                'bg-red-500 hover:bg-red-600': request.state === REJECTED,
+                                'bg-gray-500/50 hover:bg-gray-600/50': request.state === PENDING,
+                            }"
+                        >
+                            <template v-if="request.state === APPROVED">
+                                <i class="fa fa-check" />
+                                <div>{{ statusNames[APPROVED].fr }}</div>
+                            </template>
+                            <template v-else-if="request.state === REJECTED">
+                                <i class="fa fa-xmark" />
+                                <div>{{ statusNames[REJECTED].fr }}</div>
+                            </template>
+                            <template v-else-if="request.state === PENDING">
+                                <i class="fa fa-envelope" />
+                                <div>{{ statusNames[PENDING].fr }}</div>
+                            </template>
+                        </div>
                     </div>
                 </template>
                 <div v-else class="flex flex-col gap-4 items-center my-6">
@@ -83,8 +146,10 @@
 <script setup>
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    import TipRelativeDateModified from '@/components/UI/Tip/TipRelativeDateModified.vue'
 
     import { clubRoleNames, specialRoles } from '@/shared/types/club-roles.enum'
+    import { APPROVED, REJECTED, PENDING, statusNames } from '@/shared/types/club-requests.enum'
 
     import { useClubsStore } from '@/store/clubs.store'
     import { useAuthStore } from '@/store/auth.store'
@@ -115,311 +180,6 @@
     ]
 
     await Promise.all([clubs.getMembershipsOf(auth.user), clubs.getMembershipRequestsOf(auth.user)])
-
-    // console.log('CLUBS', clubs)
-    // await Promise.all([clubs.getClubsOf(auth.user), clubs.getRequestsOf(auth.user)])
-
-    // import SelectInput from '@/components/Input/SelectInput.vue'
-    // // import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue'
-    // import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    // import DrawerMenu from '@/components/DrawerMenu.vue'
-
-    // import { emitter } from '@/shared/modules/emitter'
-    // import { useAuthStore } from '@/store/auth.store'
-    // import { useClubsStore } from '@/store/clubs.store'
-    // import { useProfilesStore } from '@/store/profile.store'
-    // // import { getStatusAxiosError } from '@/utils/errors'
-    // import { ref, watch } from 'vue'
-
-    // import _ from 'lodash'
-    // import { watch } from 'vue'
-    // const apiUrl = import.meta.env.VITE_API_URL
-    // const profile = useProfilesStore()
-    // const auth = useAuthStore()
-    // const club = useClubsStore()
-    // const clubs = ref([])
-    // const me = ref(null)
-    // const componentSelected = ref(1)
-    // // const addingClub = ref(null)
-    // const clubList = ref([])
-    // const clubSelected = ref(null)
-    // const avatarShown = ref(false)
-    // const requests = ref([])
-    // const members = ref([])
-    // const oldMembers = ref([])
-
-    // const userClubsPresident = () =>
-    //     clubs.value.items.filter(
-    //         (club) =>
-    //             club.role === 'owner' ||
-    //             club.role === 'coowner' ||
-    //             club.role === 'treasurer' ||
-    //             club.role === 'secretary',
-    //     )
-
-    // const changeSelectedClub = async (club) => {
-    //     if (userClubsPresident().length > 0) {
-    //         clubSelected.value = userClubsPresident()[club]
-    //         await loadRequests(clubSelected.value.team.teamId)
-    //         await loadMembers(clubSelected.value.team.teamId)
-    //     }
-    // }
-    // const showImage = () => {
-    //     avatarShown.value = !avatarShown.value
-    // }
-
-    // const roles = {
-    //     'Président': 'owner',
-    //     'Vice-président': 'coowner',
-    //     'Trésorier': 'treasurer',
-    //     'Secrétaire': 'secretary',
-    //     'Bureau': 'manager',
-    //     'Membre': 'member',
-    // }
-
-    // const changeSelectedComponent = (numb) => {
-    //     componentSelected.value = numb
-    // }
-
-    // const loadMe = async () => {
-    //     await auth
-    //         .getMe()
-    //         .then((res) => {
-    //             me.value = res
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatus(err.response) })
-    //         })
-    // }
-
-    // const cropUploadSuccess = async (data) => {
-    //     await club
-    //         .patchClub(clubSelected.value.team.teamId, {
-    //             avatar: data.profileImageId,
-    //         })
-    //         .then((res) => {
-    //             clubSelected.value.team = res
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatus(err.response) })
-    //         })
-    // }
-
-    // const loadClubs = async () => {
-    //     const userId = me.value.userId
-    //     await profile
-    //         .getClubs(userId)
-    //         .then(async (res) => {
-    //             clubs.value = res
-    //             if (userClubsPresident().length > 0) {
-    //                 clubSelected.value = userClubsPresident()[0]
-    //                 const teamId = clubSelected.value.team.teamId
-    //                 loadRequests(teamId)
-    //                 loadMembers(teamId)
-    //             }
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatus(err.response) })
-    //         })
-    // }
-
-    // const loadClubList = async () => {
-    //     await profile
-    //         .getClubsList()
-    //         .then((res) => {
-    //             clubList.value = res
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatus(err.response) })
-    //         })
-    // }
-
-    // const loadRequests = async (teamId) => {
-    //     await profile
-    //         .getMembershipsRequests(teamId)
-    //         .then((res) => {
-    //             requests.value = res.items
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatus(err.response) })
-    //         })
-    // }
-
-    // const acceptDemand = async (request) => {
-    //     await profile
-    //         .acceptMembershipRequest(request.teamMembershipRequestId)
-    //         .then(() => {
-    //             loadRequests(clubSelected.value.team.teamId)
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatus(err.response) })
-    //         })
-    // }
-
-    // const loadMembers = async (teamId) => {
-    //     await profile
-    //         .getMembers(teamId)
-    //         .then((res) => {
-    //             members.value = res.items
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatus(err.response) })
-    //         })
-    //     oldMembers.value = JSON.parse(JSON.stringify(members.value))
-    // }
-
-    // //TODO leaveClub
-
-    // const kickMember = async (userId) => {
-    //     await profile
-    //         .removeMember(userId, clubSelected.value.team.teamId)
-    //         .then(() => {
-    //             loadMembers(clubSelected.value.team.teamId)
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatus(err.response) })
-    //         })
-    // }
-
-    // const patchClub = async () => {
-    //     const { description, membershipRequestLink, membershipRequestMessage } = {
-    //         ...clubSelected.value.team,
-    //     }
-    //     await club
-    //         .patchClub(clubSelected.value.team.teamId, {
-    //             description,
-    //             membershipRequestLink,
-    //             membershipRequestMessage,
-    //         })
-    //         .then((res) => {
-    //             clubSelected.value.team = res
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatus(err.response) })
-    //         })
-    // }
-
-    // const patchMembership = async () => {
-    //     const changes = members.value.filter((member) => {
-    //         const memb = oldMembers.value.find((old) => old.user.userId === member.user.userId)
-    //         return member.role != memb.role || member.roleLabel != memb.roleLabel
-    //     })
-    //     changes.map(async (membership) => {
-    //         await club
-    //             .patchMembership(membership.team.teamId, membership.user.userId, {
-    //                 role: membership.role,
-    //                 roleLabel: membership.roleLabel,
-    //             })
-    //             .then(() => {
-    //                 loadMembers(clubSelected.value.team.teamId)
-    //             })
-    //     })
-    // }
-
-    // await loadMe()
-    // await loadClubs()
-    // await loadClubList()
-
-    // watch(clubSelected, async () => {
-    //     if (Number.isInteger(clubSelected.value)) {
-    //         await changeSelectedClub(clubSelected.value)
-    //     }
-    // })
-    // watch(
-    //     members,
-    //     () => {
-    //         members.value.map((member) => {
-    //             if (Number.isInteger(member.role)) {
-    //                 member.role = roles[Object.keys(roles)[member.role]]
-    //             }
-    //         })
-    //     },
-    //     {
-    //         deep: true,
-    //     },
-    // )
-    // export default {
-    //     data() {
-    //         return {
-    //             user: this.$store.state.auth.user,
-    //             userClubs: this.$store.state.user.clubs,
-    //             clubSelected: null,
-    //             componentSelected: 1,
-    //             clubImageShown: false,
-    //             clubMembers: null,
-    //             showAddForm: false,
-    //             addingClub: null,
-    //             submitSuccessNewMember: 0,
-    //         }
-    //     },
-    //     computed: {
-    //         clubs() {
-    //             return this.$store.state.user.enumClubs
-    //         },
-    //         userClubsPresident() {
-    //             return this.userClubs.filter((club) => club.role === 'president')
-    //         },
-    //         clubsLoaded() {
-    //             return this.$store.state.user.clubsLoaded
-    //         },
-    //     },
-    //     mounted() {
-    //         if (this.user != null && this.user != undefined) {
-    //             this.$store.dispatch('user/getClubs')
-    //         }
-    //     },
-    //     methods: {
-    //         showImage: function showImage() {
-    //             if (this.clubImageShown) {
-    //                 this.clubImageShown = false
-    //             } else {
-    //                 this.clubImageShown = true
-    //             }
-    //         },
-    //         changeSelectedClub: function changeSelect(club) {
-    //             this.clubSelected = club
-    //         },
-    //         changeSelectedComponent: function changeSelectedComponent(component) {
-    //             this.componentSelected = component
-    //         },
-    //         addLineClub: function addLineClub() {
-    //             this.userClubs.push({
-    //                 role: null,
-    //                 club: { clubId: null },
-    //             })
-    //         },
-    //         toggleShowAddForm: function toggleShowAddForm() {
-    //             this.showAddForm = !this.showAddForm
-    //         },
-    //         signUp: function signUp() {
-    //             this.submitSuccessNewMember = 0
-    //             this.$store
-    //                 .dispatch('user/addClubMember', {
-    //                     clubId: this.clubs[this.addingClub].clubId,
-    //                     userId: this.user.userId,
-    //                 })
-    //                 .then(() => {
-    //                     this.submitSuccessNewMember = 1
-    //                     this.addingClub = null
-    //                 })
-    //                 .catch(() => {
-    //                     this.submitSuccessNewMember = -1
-    //                 })
-    //         },
-    //         kickUser: function kickUser(memberId) {
-    //             this.$store.dispatch('user/deleteClubMember', {
-    //                 clubId: this.clubSelected.club.clubId,
-    //                 userId: memberId,
-    //             })
-    //         },
-    //         leaveClub: function leaveClub(clubId) {
-    //             this.$store.dispatch('user/deleteClubMember', {
-    //                 clubId,
-    //                 userId: this.user.userId,
-    //             })
-    //         },
-    //     },
-    // }
 </script>
 
 <style lang="scss">
