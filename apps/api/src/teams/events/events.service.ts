@@ -1,7 +1,7 @@
 import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import type { ListOptionsDto } from '../../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
@@ -136,6 +136,10 @@ export class TeamEventsService {
       if (!membership)
         throw new ForbiddenException('Not a team member');
     }
+
+    const existing = await this.teamEventRegistrationRepository.count({ user, event: { teamEventId } });
+    if (existing)
+      throw new BadRequestException('Already registered');
 
     const registration = new TeamEventRegistration({ user, event });
 
