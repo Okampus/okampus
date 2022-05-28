@@ -62,6 +62,7 @@ export class TeamMembershipRequestsService {
       issuedBy: requester,
       issuer: MembershipRequestIssuer.User,
       role: createTeamMembershipRequestDto.role,
+      meta: createTeamMembershipRequestDto.meta,
     });
     await this.teamMembershipRequestRepository.persistAndFlush(teamMembershipRequest);
 

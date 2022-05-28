@@ -50,7 +50,6 @@ export class TeamMembershipRequestsController {
   }
 
   @Patch(':requestId')
-  // Give read permission only, because standard users use the same endpoint to accept/reject invitations.
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   public async update(
     @CurrentUser() user: User,

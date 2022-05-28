@@ -29,6 +29,9 @@ export class TeamMembershipRequest extends BaseEntity {
   @Property({ type: 'text' })
   message?: string;
 
+  @Property({ type: 'json', nullable: true })
+  meta?: object;
+
   @Enum(() => MembershipRequestIssuer)
   issuer!: MembershipRequestIssuer;
 
@@ -51,18 +54,22 @@ export class TeamMembershipRequest extends BaseEntity {
   constructor(options: {
     team: Team;
     user: User;
-    message?: string;
-    role?: TeamRole;
     issuer: MembershipRequestIssuer;
     issuedBy: User;
+    meta?: object;
+    message?: string;
+    role?: TeamRole;
   }) {
     super();
     this.team = options.team;
     this.user = options.user;
-    this.message = options.message;
     this.issuer = options.issuer;
     this.issuedBy = options.issuedBy;
 
+    if (options.meta)
+      this.meta = options.meta;
+    if (options.message)
+      this.message = options.message;
     if (options.role)
       this.role = options.role;
   }
