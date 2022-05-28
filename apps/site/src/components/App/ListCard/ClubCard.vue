@@ -42,13 +42,42 @@
                         {{ club.shortDescription }}
                     </div>
                 </router-link>
+
                 <div class="flex flex-row justify-between items-center mt-3 w-full h-12">
                     <button
+                        v-if="!club.membership"
                         class="py-1 px-3 -ml-1 w-fit font-semibold text-center text-white bg-blue-600 hover:bg-blue-700 rounded-full"
                         @click="emit('request', club.teamId)"
                     >
                         Rejoindre
                     </button>
+                    <template v-else-if="club.membership === IS_WAITING">
+                        <router-link
+                            :to="`/club/${club.teamId}`"
+                            class="flex gap-2 items-center py-1 px-3 -ml-1 w-fit font-semibold text-center text-white bg-gray-400/60 hover:bg-gray-500/60 rounded-full"
+                        >
+                            <i class="fa fa-envelope" />
+                            <div>En attente</div>
+                        </router-link>
+                    </template>
+                    <template v-else-if="club.membership === IS_MEMBER">
+                        <router-link
+                            :to="`/club/${club.teamId}`"
+                            class="flex gap-2 items-center py-1 px-3 -ml-1 w-fit font-semibold text-center text-white bg-indigo-500 hover:bg-indigo-600 rounded-full"
+                        >
+                            <i class="fa fa-user" />
+                            <div>Profil</div>
+                        </router-link>
+                    </template>
+                    <template v-else-if="club.membership === IS_SPECIAL_ROLE">
+                        <router-link
+                            :to="`/club/${club.teamId}/manage`"
+                            class="flex gap-2 items-center py-1 px-3 -ml-1 w-fit font-semibold text-center text-white bg-green-500 hover:bg-green-600 rounded-full"
+                        >
+                            <i class="fa fa-gear" />
+                            <div>Gérer</div>
+                        </router-link>
+                    </template>
                     <div class="flex flex-row-reverse gap-1 ml-4 text-0">
                         <span v-if="props.club.memberCount > specialMembers.length" class="my-auto text-0"
                             >+ {{ abbrNumbers(props.club.memberCount - specialMembers.length) }}</span
@@ -102,7 +131,7 @@
 <script setup>
     import { fullname } from '@/utils/users'
     import { abbrNumbers } from '@/utils/abbrNumbers'
-    import { clubRoleNames } from '@/shared/types/club-roles.enum'
+    import { clubRoleNames, IS_MEMBER, IS_SPECIAL_ROLE, IS_WAITING } from '@/shared/types/club-roles.enum'
     import { clubTypes } from '@/shared/types/club-types.enum'
     import { ref } from 'vue'
     import { getURL } from '@/utils/routeUtils'

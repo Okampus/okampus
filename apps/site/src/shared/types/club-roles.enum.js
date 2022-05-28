@@ -26,3 +26,7 @@ export const clubRoleNames = {
 }
 
 export const specialRoles = ['owner', 'coowner', 'treasurer', 'secretary', 'manager']
+
+export const IS_WAITING = 1
+export const IS_MEMBER = 2
+export const IS_SPECIAL_ROLE = 3

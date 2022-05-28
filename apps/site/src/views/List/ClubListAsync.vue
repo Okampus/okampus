@@ -7,6 +7,7 @@
             route-name="clubs"
             class="sticky top-6"
         />
+
         <div v-if="currentClubs.length === 0" class="w-full text-center text-0">
             <EmojiSad class="mb-3 text-3xl" />
             <div class="text-2xl font-bold">Aucune association ne correspond à ces critères.</div>
@@ -15,6 +16,7 @@
                 <router-link to="/clubs" class="link-blue">liste de toutes les associations</router-link>.
             </div>
         </div>
+
         <div v-else class="flex flex-wrap gap-4 w-fit h-fit">
             <ModalPopup
                 :show="showJoinForm"
@@ -84,6 +86,7 @@
                     </div>
                 </template>
             </ModalPopup>
+
             <ClubCard
                 v-for="club in currentClubs"
                 :key="club.teamId"
@@ -111,11 +114,20 @@
     import { emitter } from '@/shared/modules/emitter'
     import { getStatusAxiosError } from '@/utils/errors'
 
+    import { useAuthStore } from '@/store/auth.store'
     import { useClubsStore } from '@/store/clubs.store'
     import { groupBy } from 'lodash'
-    import { clubRoleNames } from '@/shared/types/club-roles.enum'
+    import {
+        clubRoleNames,
+        specialRoles,
+        IS_WAITING,
+        IS_MEMBER,
+        IS_SPECIAL_ROLE,
+    } from '@/shared/types/club-roles.enum'
 
+    const auth = useAuthStore()
     const clubs = useClubsStore()
+
     const currentTab = ref(null)
     const tabs = [
         {
@@ -159,15 +171,20 @@
     )
 
     const joinFormSubmit = async (data) => {
+        const { role, ...meta } = data
+
         await clubs
-            .postMembershipRequest(joiningClubId.value, data)
-            .then((data) => {
-                console.log(data)
+            .postMembershipRequest(joiningClubId.value, { role, meta })
+            .then(() => {
+                // TODO: add request to requests ; check if requests were already made
+                emitter.emit('show-toast', {
+                    message: "Votre demande d'adhésion a bien été envoyée !",
+                    type: 'success',
+                })
             })
             .catch((err) => {
-                console.log('Error', err)
                 emitter.emit('show-toast', {
-                    message: `Erreur: ${JSON.stringify(err)}`,
+                    message: `Erreur: ${err.message}`,
                     type: 'error',
                 })
             })
@@ -198,9 +215,44 @@
                 }))
             })
             .catch((err) => {
+                console.log('Error', err)
+                emitter.emit('error-route', { code: getStatusAxiosError(err) })
+            })
+    }
+
+    const getMemberships = async () => {
+        await clubs
+            .getMembershipsOf(auth.user)
+            .then((memberships) => {
+                memberships.forEach((membership) => {
+                    clubList.value.find((club) => club.teamId === membership.team.teamId).membership =
+                        specialRoles.includes(membership.role) ? IS_SPECIAL_ROLE : IS_MEMBER
+                })
+            })
+            .catch((err) => {
+                console.log('Error', err)
+                emitter.emit('error-route', { code: getStatusAxiosError(err) })
+            })
+    }
+
+    const PENDING_STATE = 'pending'
+    const getRequests = async () => {
+        await clubs
+            .getMembershipRequestsOf(auth.user)
+            .then((requests) => {
+                requests
+                    .filter((request) => request.state == PENDING_STATE)
+                    .forEach((request) => {
+                        clubList.value.find((club) => club.teamId === request.team.teamId).membership =
+                            IS_WAITING
+                    })
+            })
+            .catch((err) => {
+                console.log('Error', err)
                 emitter.emit('error-route', { code: getStatusAxiosError(err) })
             })
     }
 
     await loadClubList()
+    await Promise.all([getMemberships(), getRequests()])
 </script>
