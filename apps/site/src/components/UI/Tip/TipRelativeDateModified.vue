@@ -5,7 +5,9 @@
             <Popper :hover="true" placement="top" :arrow="true" offset-distance="3">
                 <span class="text-xs cursor-default select-none text-3">(modifié)</span>
                 <template #content>
-                    <div class="card-tip">Modifié <TipRelativeDate :date="modifiedAt" /></div>
+                    <div class="p-2.5 text-base text-gray-100 bg-gray-900/90 dark:bg-black/90 rounded-md">
+                        {{ modifiedAtDateString }}
+                    </div>
                 </template>
             </Popper>
         </span>
@@ -16,7 +18,7 @@
     import Popper from 'vue3-popper'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
 
-    defineProps({
+    const props = defineProps({
         createdAt: {
             type: [String, Date],
             required: true,
@@ -26,4 +28,9 @@
             default: null,
         },
     })
+
+    const modifiedAtDateString = new Intl.DateTimeFormat('fr', {
+        dateStyle: 'full',
+        timeStyle: 'long',
+    }).format(new Date(props.modifiedAt))
 </script>

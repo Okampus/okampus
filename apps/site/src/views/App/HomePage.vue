@@ -26,7 +26,7 @@
                             >
                             pour participer officiellement à la bêta du site.
                             <span class="text-sm italic"
-                                >Retrouvez toutes les informations sur le projet sur
+                                >Retrouvez toutes les informations du projet sur
                                 <a
                                     target="_blank"
                                     class="p-0.5 mx-1 font-mono bg-[#474e7d] hover:bg-[#5865f2] rounded cursor-pointer text-0"

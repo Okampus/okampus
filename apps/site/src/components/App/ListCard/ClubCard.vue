@@ -53,7 +53,7 @@
                     </button>
                     <template v-else-if="club.membership === IS_WAITING">
                         <router-link
-                            :to="`/club/${club.teamId}`"
+                            :to="`/me/clubs/requests`"
                             class="flex gap-2 items-center py-1 px-3 -ml-1 w-fit font-semibold text-center text-white bg-gray-400/60 hover:bg-gray-500/60 rounded-full"
                         >
                             <i class="fa fa-envelope" />
@@ -65,7 +65,7 @@
                             :to="`/club/${club.teamId}`"
                             class="flex gap-2 items-center py-1 px-3 -ml-1 w-fit font-semibold text-center text-white bg-indigo-500 hover:bg-indigo-600 rounded-full"
                         >
-                            <i class="fa fa-user" />
+                            <i class="fa fa-users" />
                             <div>Profil</div>
                         </router-link>
                     </template>
@@ -78,6 +78,7 @@
                             <div>Gérer</div>
                         </router-link>
                     </template>
+
                     <div class="flex flex-row-reverse gap-1 ml-4 text-0">
                         <span v-if="props.club.memberCount > specialMembers.length" class="my-auto text-0"
                             >+ {{ abbrNumbers(props.club.memberCount - specialMembers.length) }}</span

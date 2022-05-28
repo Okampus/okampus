@@ -44,7 +44,12 @@
                             type="form"
                             form-class="flex flex-col mt-6 max-w-lg"
                             :actions="false"
-                            @submit="joinFormSubmit"
+                            @submit="
+                                (data) => {
+                                    joinFormSubmit(data)
+                                    close()
+                                }
+                            "
                         >
                             <FormKit
                                 label="Votre rôle souhaité"
@@ -176,7 +181,7 @@
         await clubs
             .postMembershipRequest(joiningClubId.value, { role, meta })
             .then(() => {
-                // TODO: add request to requests ; check if requests were already made
+                clubList.value.find((club) => club.teamId === joiningClubId.value).membership = IS_WAITING
                 emitter.emit('show-toast', {
                     message: "Votre demande d'adhésion a bien été envoyée !",
                     type: 'success',
@@ -241,7 +246,7 @@
             .getMembershipRequestsOf(auth.user)
             .then((requests) => {
                 requests
-                    .filter((request) => request.state == PENDING_STATE)
+                    .filter((request) => request.state === PENDING_STATE)
                     .forEach((request) => {
                         clubList.value.find((club) => club.teamId === request.team.teamId).membership =
                             IS_WAITING

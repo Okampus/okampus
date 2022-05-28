@@ -29,7 +29,6 @@
                                     <div>•</div>
                                     <div class="text-2">{{ clubRoleNames[membership.role].fr }}</div>
                                 </div>
-                                <div class="text-3">{{ membership.team.memberCount }}</div>
                             </div>
                         </div>
 
@@ -76,29 +75,25 @@
                             <div class="flex flex-col">
                                 <div class="flex gap-1.5 text-1">
                                     <div class="font-semibold">{{ request.team.name }}</div>
-                                    <div>•</div>
-                                    <div class="text-3">{{ request.team.memberCount }}</div>
+                                    <div class="text-sm">(comme {{ clubRoleNames[request.role].fr }})</div>
                                 </div>
-                                <div class="flex gap-1.5">
-                                    <div>Comme</div>
-                                    <div class="text-2">{{ clubRoleNames[request.role].fr }}</div>
-                                    <div>•</div>
+                                <div class="flex gap-1.5 text-sm">
                                     <div class="flex gap-1">
                                         <div>Demandé</div>
-                                        <TipRelativeDateModified :date="request.createdAt" />
+                                        <TipRelativeDate :date="request.createdAt" />
                                     </div>
                                     <template v-if="request.state === APPROVED">
                                         <div>•</div>
                                         <div class="flex gap-1">
                                             <div>{{ statusNames[APPROVED].fr }}</div>
-                                            <TipRelativeDateModified :date="request.handledAt" />
+                                            <TipRelativeDate :date="request.handledAt" />
                                         </div>
                                     </template>
                                     <template v-else-if="request.state === REJECTED">
                                         <div>•</div>
                                         <div class="flex gap-1">
                                             <div>{{ statusNames[REJECTED].fr }}</div>
-                                            <TipRelativeDateModified :date="request.handledAt" />
+                                            <TipRelativeDate :date="request.handledAt" />
                                         </div>
                                     </template>
                                 </div>
@@ -146,7 +141,7 @@
 <script setup>
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    import TipRelativeDateModified from '@/components/UI/Tip/TipRelativeDateModified.vue'
+    import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
 
     import { clubRoleNames, specialRoles } from '@/shared/types/club-roles.enum'
     import { APPROVED, REJECTED, PENDING, statusNames } from '@/shared/types/club-requests.enum'
