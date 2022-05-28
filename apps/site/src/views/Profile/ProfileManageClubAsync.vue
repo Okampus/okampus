@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-6">
         <div class="bg-2 text-0">
-            <div class="flex flex-col px-4 w-full max-w-6xl md:gap-8 xl:mx-auto">
+            <div class="flex flex-col centered-container">
                 <div class="flex gap-4 justify-between items-center py-4">
                     <div class="flex gap-4 items-center">
                         <ProfileAvatar
@@ -27,7 +27,7 @@
                 />
             </div>
         </div>
-        <div class="flex flex-col px-4 w-full max-w-6xl xl:mx-auto">
+        <div class="flex flex-col centered-container">
             <keep-alive>
                 <component :is="currentComponent" v-model:club="club" />
             </keep-alive>

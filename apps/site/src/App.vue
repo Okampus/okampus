@@ -229,6 +229,7 @@
     @import '@/assets/scss/animations/bg-anims';
     @import '@/assets/scss/components/button';
     @import '@/assets/scss/components/card';
+    @import '@/assets/scss/components/container';
     @import '@/assets/scss/components/easymde';
     @import '@/assets/scss/components/avatar-cropper';
     @import '@/assets/scss/components/input';
