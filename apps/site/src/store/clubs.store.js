@@ -9,6 +9,7 @@ export const useClubsStore = defineStore('clubs', {
         userMembershipRequests: [],
         clubMembershipRequests: [],
         club: {},
+        events: [],
     }),
     actions: {
         replaceClubs(clubs) {
@@ -34,6 +35,11 @@ export const useClubsStore = defineStore('clubs', {
         replaceClub(club) {
             this.club = club
             return club
+        },
+
+        replaceEvents(events) {
+            this.events = events
+            return events
         },
 
         async getClubs() {
@@ -78,6 +84,16 @@ export const useClubsStore = defineStore('clubs', {
 
         async handleRequest(requestId, data) {
             return await $axios.put(`teams/requests/${requestId}`, data).then((res) => res.data)
+        },
+
+        async getEvents(clubId) {
+            return await $axios
+                .get(`teams/events?teamId=${clubId}`)
+                .then((res) => this.replaceEvents(res.data))
+        },
+
+        async joinEvent(eventId) {
+            return await $axios.post(`teams/events/${eventId}/registrations`).then((res) => res.data)
         },
     },
 })

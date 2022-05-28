@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mb-32">
         <h1 class="text-3xl font-bold">Gérer les activités de votre association</h1>
         <div class="p-4 mx-auto mt-4 w-[36rem] rounded-lg shadow-md bg-2">
             <h2 class="pb-4 text-2xl border-b-2 border-gray-400">Créer un évenement</h2>
@@ -59,11 +59,28 @@
             />
             <FormKit type="submit" label="Créer l'évenement" />
         </div>
+        <div class="mt-4">
+            <h2 class="mb-4 text-2xl">Evenements de votre association</h2>
+            <div class="flex flex-col gap-8">
+                <div v-for="event in events" :key="event">
+                    <ClubEventCard :event="event"></ClubEventCard>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup>
     import { ref } from 'vue'
+    import ClubEventCard from '@/components/Club/ClubEventCard.vue'
+    import { useClubsStore } from '@/store/clubs.store'
+
+    const props = defineProps({
+        club: {
+            type: Object,
+            required: true,
+        },
+    })
 
     const eventTitle = ref('')
     const eventDate = ref(null)
@@ -71,4 +88,19 @@
     const eventDuration = ref(1)
     const eventLocation = ref('')
     const eventType = ref('Public')
+    const events = ref([])
+    const clubs = useClubsStore()
+
+    const loadEvents = () => {
+        clubs
+            .getEvents(props.club.teamId)
+            .then((res) => {
+                events.value = res.items
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    await loadEvents()
 </script>
