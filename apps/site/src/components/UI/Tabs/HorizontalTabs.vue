@@ -61,17 +61,17 @@
     const setCurrentTab = () => {
         const tab = props.tabs.find(
             (tab) =>
-                '/' + tab.id === getCurrentPath().split(props.routeBase)?.[1] ||
-                getTabRoute(tab) === getCurrentPath(),
+                tab.id ===
+                    getCurrentPath()
+                        .split(props.routeBase + '/')?.[1]
+                        ?.split('/')?.[0] || getTabRoute(tab) === getCurrentPath(),
         )
 
         if (tab) {
             setTab(tab)
         } else {
             emitter.emit('show-toast', {
-                message: `L'onglet '${getCurrentPath()
-                    .split(props.routeBase)[1]
-                    .slice(1)}' n'existe pas. Redirection sur l'onglet par défaut ↪️`,
+                message: `L'onglet '${getCurrentPath()}' n'existe pas. Redirection sur l'onglet par défaut ↪️`,
                 type: 'warning',
                 duration: 5000,
             })
@@ -81,14 +81,6 @@
             setTab(defaultTab, true)
         }
     }
-
-    setTab(
-        props.tabs.find(
-            (tab) =>
-                '/' + tab.id === getCurrentPath().split(props.routeBase)?.[1] ||
-                getTabRoute(tab) === getCurrentPath(),
-        ) ?? props.tabs.find((tab) => tab.id === props.defaultTabId),
-    )
 
     setCurrentTab()
 

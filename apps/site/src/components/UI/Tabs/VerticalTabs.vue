@@ -90,13 +90,17 @@
                   .flat()
                   .find(
                       (tab) =>
-                          '/' + tab.id === getCurrentPath().split(props.routeBase)[1] ||
-                          getTabRoute(tab) === getCurrentPath(),
+                          tab.id ===
+                              getCurrentPath()
+                                  .split(props.routeBase + '/')?.[1]
+                                  ?.split('/')?.[0] || getTabRoute(tab) === getCurrentPath(),
                   )
             : props.tabs.find(
                   (tab) =>
-                      '/' + tab.id === getCurrentPath().split(props.routeBase)[1] ||
-                      getTabRoute(tab) === getCurrentPath(),
+                      tab.id ===
+                          getCurrentPath()
+                              .split(props.routeBase + '/')?.[1]
+                              ?.split('/')?.[0] || getTabRoute(tab) === getCurrentPath(),
               )
 
         if (tab) {
@@ -120,27 +124,6 @@
             setTab(defaultTab, true)
         }
     }
-
-    setTab(
-        isMultiTab
-            ? props.tabs
-                  .map((tab) => tab.tabs)
-                  .flat()
-                  .find(
-                      (tab) =>
-                          '/' + tab.id === getCurrentPath().split(props.routeBase)[1] ||
-                          getTabRoute(tab) === getCurrentPath(),
-                  ) ??
-                  props.tabs
-                      .map((tab) => tab.tabs)
-                      .flat()
-                      .find((tab) => tab.id === props.defaultTabId)
-            : props.tabs.find(
-                  (tab) =>
-                      '/' + tab.id === getCurrentPath().split(props.routeBase)[1] ||
-                      getTabRoute(tab) === getCurrentPath(),
-              ) ?? props.tabs.find((tab) => tab.id === props.defaultTabId),
-    )
 
     setCurrentTab()
 
