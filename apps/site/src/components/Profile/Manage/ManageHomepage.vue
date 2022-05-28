@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col text-2">
+    <div class="flex flex-col pb-4 rounded-xl text-2 bg-2">
         <div class="relative">
             <AvatarCropper
                 v-model="editingBanner"
@@ -54,26 +54,62 @@
                 @click="editingAvatar = true"
             />
         </div>
-        <div class="flex">
-            <div class="flex flex-col grow ml-4">
-                <div class="flex justify-between">
-                    <div class="text-2xl font-semibold text-0">{{ club.name }}</div>
+        <div class="flex flex-col grow ml-4">
+            <div class="flex justify-between">
+                <div class="text-2xl font-semibold text-0">{{ club.name }}</div>
 
-                    <ModalPopup :show="editingPage" @close="editingPage = false">
-                        <template #default="{ close }">
-                            <div class="card">
-                                <FormKit type="text" />
-                                <div @click="close">Test</div>
+                <ModalPopup :show="editingPage" @close="editingPage = false">
+                    <template #default="{ close }">
+                        <div class="flex flex-col justify-center items-center py-8 px-10 card">
+                            <div class="text-2xl">Modification des informations de l'association</div>
+                            <FormKit
+                                id="update-club-data"
+                                ref="updateClubForm"
+                                v-model="clubData"
+                                :actions="false"
+                                form-class="flex flex-col mt-6 w-full max-w-xl"
+                                type="form"
+                                @submit="updateClubData"
+                            >
+                                <FormKit
+                                    type="text"
+                                    name="shortDescription"
+                                    label="Description courte"
+                                    help="Description de l'association présente sous le nom"
+                                />
+                                <FormKit
+                                    type="textarea"
+                                    name="longDescription"
+                                    label="Description longue"
+                                    rows="6"
+                                    help="Description longue de l'association"
+                                />
+                            </FormKit>
+                            <div class="flex gap-4 self-end mt-6">
+                                <div class="button-cancel" @click="close">Annuler</div>
+                                <div class="button-submit with-shadow" @click="updateClubForm.node.submit()">
+                                    Valider
+                                </div>
                             </div>
-                        </template>
-                    </ModalPopup>
+                        </div>
+                    </template>
+                </ModalPopup>
 
-                    <div class="-mt-4 mr-4 text-2xl text-blue-500 cursor-pointer" @click="editingPage = true">
-                        Modifier
-                    </div>
-                </div>
-                <div class="text-2">{{ club.shortDescription }}</div>
+                <div class="-mt-4 mr-4 text-xl button-submit" @click="editingPage = true">Modifier</div>
             </div>
+            <div class="text-2">{{ club.shortDescription }}</div>
+        </div>
+    </div>
+    <div class="flex flex-col gap-5 p-4 mt-4 rounded-xl text-2 bg-2">
+        <div>
+            <div class="mb-2 text-lg font-semibold">Catégorie de l'association</div>
+            <router-link :to="`/clubs/${clubTypes[club.category].link}`">
+                <LabelSimple class="bg-slate-600/40 hover:bg-slate-400/40">{{ club.category }}</LabelSimple>
+            </router-link>
+        </div>
+        <div>
+            <div class="mb-2 text-lg font-semibold">Description de l'association</div>
+            <div class="text-2">{{ club.longDescription }}</div>
         </div>
     </div>
 </template>
@@ -83,7 +119,9 @@
     import ProfileBanner from '../ProfileBanner.vue'
     import ProfileAvatar from '../ProfileAvatar.vue'
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
+    import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
 
+    import { clubTypes } from '@/shared/types/club-types.enum'
     import { useClubsStore } from '@/store/clubs.store'
     import { emitter } from '@/shared/modules/emitter'
     import { ref } from 'vue'
@@ -98,6 +136,31 @@
     const emit = defineEmits(['update:club'])
 
     const clubs = useClubsStore()
+    const clubData = ref({
+        shortDescription: ref(props.club.shortDescription),
+        longDescription: ref(props.club.longDescription),
+    })
+
+    const updateClubForm = ref(null)
+
+    const updateClubData = async (data) => {
+        await clubs
+            .patchClub(props.club.teamId, data)
+            .then((newClub) => {
+                emit('update:club', newClub)
+                emitter.emit('show-toast', {
+                    message: "Les informations de l'association ont bien été mises à jour.",
+                    type: 'success',
+                })
+            })
+            .catch((err) => {
+                console.log('Error', err)
+                emitter.emit('show-toast', {
+                    message: `Erreur: ${JSON.stringify(err)}`,
+                    type: 'error',
+                })
+            })
+    }
 
     const uploadTypeUrl = (type) => `${import.meta.env.VITE_API_URL}/teams/teams/${props.club.teamId}/${type}`
 
