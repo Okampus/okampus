@@ -12,6 +12,7 @@ import { Team } from '../teams/team.entity';
 import { MembershipRequestIssuer } from '../types/membership-request-issuer.enum';
 import { MembershipRequestState } from '../types/membership-request-state.enum';
 import type { CreateTeamMembershipRequestDto } from './dto/create-membership-request-copy.dto';
+import type { PutTeamMembershipRequestDto } from './dto/put-membership-request-copy.dto';
 import type { UpdateTeamMembershipRequestDto } from './dto/update-membership-request.dto';
 import { TeamMembershipRequest } from './team-membership-request.entity';
 
@@ -121,7 +122,7 @@ export class TeamMembershipRequestsService {
   public async handleRequest(
     user: User,
     requestId: number,
-    state: MembershipRequestState.Approved | MembershipRequestState.Rejected,
+    updateTeamMembershipRequestDto: PutTeamMembershipRequestDto,
   ): Promise<TeamMembershipRequest> {
     const request = await this.teamMembershipRequestRepository.findOneOrFail(
       { teamMembershipRequestId: requestId },
@@ -142,10 +143,11 @@ export class TeamMembershipRequestsService {
 
     request.handledBy = user;
     request.handledAt = new Date();
-    request.state = state;
+    request.handledMessage = updateTeamMembershipRequestDto.handledMessage;
+    request.state = updateTeamMembershipRequestDto.state;
     await this.teamMembershipRequestRepository.flush();
 
-    if (state === MembershipRequestState.Approved) {
+    if (updateTeamMembershipRequestDto.state === MembershipRequestState.Approved) {
       if (request.role === TeamRole.Owner)
         handlerMember.role = TeamRole.Coowner;
 

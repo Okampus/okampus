@@ -71,7 +71,7 @@ export class TeamMembersService {
       await this.teamMembershipRequestsService.handleRequest(
         requester,
         forcedRequest.teamMembershipRequestId,
-        MembershipRequestState.Approved,
+        { state: MembershipRequestState.Approved },
       );
       return forcedRequest;
     }

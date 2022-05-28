@@ -26,9 +26,6 @@ export class TeamMembershipRequest extends BaseEntity {
   @Index()
   user!: User;
 
-  @Property({ type: 'text' })
-  message?: string;
-
   @Property({ type: 'json', nullable: true })
   meta?: object;
 
@@ -48,6 +45,9 @@ export class TeamMembershipRequest extends BaseEntity {
   @Property()
   handledAt?: Date;
 
+  @Property({ type: 'text' })
+  handledMessage?: string;
+
   @ManyToOne({ onDelete: 'CASCADE' })
   issuedBy!: User;
 
@@ -57,7 +57,7 @@ export class TeamMembershipRequest extends BaseEntity {
     issuer: MembershipRequestIssuer;
     issuedBy: User;
     meta?: object;
-    message?: string;
+    handledMessage?: string;
     role?: TeamRole;
   }) {
     super();
@@ -68,8 +68,8 @@ export class TeamMembershipRequest extends BaseEntity {
 
     if (options.meta)
       this.meta = options.meta;
-    if (options.message)
-      this.message = options.message;
+    if (options.handledMessage)
+      this.handledMessage = options.handledMessage;
     if (options.role)
       this.role = options.role;
   }

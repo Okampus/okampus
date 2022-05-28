@@ -67,6 +67,6 @@ export class TeamMembershipRequestsController {
     @Param('requestId', ParseIntPipe) requestId: number,
     @Body() updateTeamMembershipRequestDto: PutTeamMembershipRequestDto,
   ): Promise<TeamMembershipRequest> {
-    return await this.requestsService.handleRequest(user, requestId, updateTeamMembershipRequestDto.state);
+    return await this.requestsService.handleRequest(user, requestId, updateTeamMembershipRequestDto);
   }
 }
