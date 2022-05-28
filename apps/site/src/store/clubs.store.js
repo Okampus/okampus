@@ -86,7 +86,7 @@ export const useClubsStore = defineStore('clubs', {
             return await $axios.put(`teams/requests/${requestId}`, data).then((res) => res.data)
         },
 
-        async getEvents(clubId) {
+        async getTeamEvents(clubId) {
             return await $axios
                 .get(`teams/events?teamId=${clubId}`)
                 .then((res) => this.replaceEvents(res.data))
@@ -94,6 +94,9 @@ export const useClubsStore = defineStore('clubs', {
 
         async joinEvent(eventId) {
             return await $axios.post(`teams/events/${eventId}/registrations`).then((res) => res.data)
+        },
+        async getEvents() {
+            return await $axios.get('teams/events').then((res) => this.replaceEvents(res.data))
         },
     },
 })

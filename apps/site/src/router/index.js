@@ -164,6 +164,15 @@ const routes = [
     },
 
     {
+        name: 'events',
+        path: '/events',
+        component: () => import('@/views/List/EventList.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
         path: '/:pathMatch(.*)*',
         component: () => import('@/views/App/AppException.vue'),
         props: {

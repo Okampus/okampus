@@ -93,7 +93,7 @@
 
     const loadEvents = () => {
         clubs
-            .getEvents(props.club.teamId)
+            .getTeamEvents(props.club.teamId)
             .then((res) => {
                 events.value = res.items
             })
