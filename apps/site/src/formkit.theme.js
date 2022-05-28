@@ -2,26 +2,21 @@
 // many input types are identical in how
 // we want to style them.
 const textClassification = {
-    label: 'block mb-1 font-bold text-sm formkit-invalid:text-red-500',
+    label: 'ml-3 block mb-1 font-bold text-sm formkit-invalid:text-red-500',
     inner: `
-      max-w-md
       border
-      border-gray-400
-      formkit-invalid:border-red-500
-      rounded-lg mb-1
-      overflow-hidden
-      focus-within:border-blue-500
+      border-transparent
+      formkit-invalid:ouline-red-500
     `,
-    input: 'w-full h-10 px-3 border-none text-base text-gray-700 placeholder-gray-400',
+    input: 'w-full input',
 }
 const boxClassification = {
-    fieldset: 'max-w-md border border-gray-400 rounded-md px-2 pb-1',
+    fieldset: 'max-w-md rounded-md px-3 pb-2 bg-3 shadow',
     legend: 'font-bold text-sm',
     wrapper: 'flex items-center mb-1 cursor-pointer',
-    help: 'mb-2',
-    input: 'form-check-input appearance-none h-4 w-4 mr-2 border border-gray-500 rounded-sm bg-white checked:bg-blue-500 focus:outline-none focus:ring-0 transition duration-200 cursor-pointer',
-    label: 'text-sm text-gray-700',
-    options: 'flex flex-wrap gap-2',
+    input: 'form-check-input appearance-none h-4 w-4 mr-2 border border-gray-400 rounded-sm bg-white checked:bg-blue-600 focus:outline-none focus:ring-0 transition duration-200 cursor-pointer',
+    label: 'text-sm text-1',
+    options: 'flex flex-wrap gap-3 pt-2',
     inner: 'flex items-center justify-center',
 }
 const buttonClassification = {
@@ -35,10 +30,10 @@ const buttonClassification = {
 export default {
     // the global key will apply to all inputs
     global: {
-        outer: 'mb-5 formkit-disabled:opacity-50',
+        outer: 'mt-3 formkit-disabled:opacity-50',
         help: 'text-xs text-gray-500',
         messages: 'list-none p-0 mt-1 mb-0',
-        message: 'text-red-500 mb-1 text-xs',
+        message: 'text-red-500 mb-3 text-xs',
     },
     button: buttonClassification,
     color: {

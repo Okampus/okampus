@@ -16,12 +16,91 @@
             </div>
         </div>
         <div v-else class="flex flex-wrap gap-4 w-fit h-fit">
-            <ClubCard v-for="club in currentClubs" :key="club.teamId" :club="club" />
+            <ModalPopup
+                :show="showJoinForm"
+                @close="showJoinForm = false"
+                @closed="
+                    () => {
+                        joiningClubId = null
+                        joinFormData = {}
+                    }
+                "
+            >
+                <template #default="{ close }">
+                    <div class="flex flex-col justify-center items-center card">
+                        <div class="text-2xl font-semibold">
+                            Vous vous apprêtez à rejoindre {{ joiningClub.name }} !
+                        </div>
+                        <div class="text-sm text-2">
+                            Mais d'abord, donnez du contexte sur votre demande d'adhésion.
+                        </div>
+
+                        <FormKit
+                            id="join-club"
+                            ref="joinForm"
+                            v-model="joinFormData"
+                            type="form"
+                            form-class="flex flex-col mt-6"
+                            :actions="false"
+                            @submit="joinFormSubmit"
+                        >
+                            <FormKit
+                                label="Ton rôle"
+                                type="radio"
+                                name="role"
+                                :validation="[['required']]"
+                                help="Quel rôle souhaitez-vous obtenir ?"
+                                :options="roles"
+                            />
+                            <FormKit
+                                type="text"
+                                name="discord"
+                                label="Ton ID Discord (avec le #)"
+                                :validation="[
+                                    ['required'],
+                                    [
+                                        'matches',
+                                        /^(?!(here|everyone))^(?!.*(discord|```)).[^\@\#\:]{2,32}#\d{4}$/s,
+                                    ],
+                                ]"
+                                :validation-messages="{
+                                    matches: 'ID Discord invalide.',
+                                }"
+                                help="ex. Jérôme#4555, Arno#1234..."
+                            />
+                            <FormKit
+                                type="text"
+                                name="reason"
+                                label="Raison d'adhésion"
+                                help="Décrivez en quelques mots la raison de votre adhésion."
+                            />
+                        </FormKit>
+                        <div class="flex gap-6 mt-6">
+                            <div class="button-cancel" @click="close">Annuler</div>
+                            <div class="button-submit with-shadow" @click="joinForm.node.submit()">
+                                Valider ma demande d'adhésion
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </ModalPopup>
+            <ClubCard
+                v-for="club in currentClubs"
+                :key="club.teamId"
+                :club="club"
+                @request="
+                    (clubId) => {
+                        showJoinForm = true
+                        joiningClubId = clubId
+                    }
+                "
+            />
         </div>
     </div>
 </template>
 
 <script setup>
+    import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
     import VerticalTabs from '@/components/UI/Tabs/VerticalTabs.vue'
     import ClubCard from '@/components/App/ListCard/ClubCard.vue'
     import EmojiSad from '@/icons/Emoji/EmojiSad.vue'
@@ -34,6 +113,7 @@
 
     import { useClubsStore } from '@/store/clubs.store'
     import { groupBy } from 'lodash'
+    import { clubRoleNames } from '@/shared/types/club-roles.enum'
 
     const clubs = useClubsStore()
     const currentTab = ref(null)
@@ -60,12 +140,38 @@
         },
     ]
 
+    const roles = Object.entries(clubRoleNames).map(([value, name]) => ({ value, label: name.fr }))
+
     const ALL = 0
     const CATEGORIES = 1
 
     const clubList = ref([])
     const clubListByCategory = ref({})
     const categories = ref([])
+
+    const showJoinForm = ref(false)
+
+    const joinForm = ref(null)
+    const joinFormData = ref({})
+    const joiningClubId = ref(null)
+    const joiningClub = computed(
+        () => clubList.value.find((club) => club.teamId === joiningClubId.value) ?? { name: '' },
+    )
+
+    const joinFormSubmit = async (data) => {
+        await clubs
+            .postMembershipRequest(joiningClubId.value, data)
+            .then((data) => {
+                console.log(data)
+            })
+            .catch((err) => {
+                console.log('Error', err)
+                emitter.emit('show-toast', {
+                    message: `Erreur: ${JSON.stringify(err)}`,
+                    type: 'error',
+                })
+            })
+    }
 
     const currentClubs = computed(() =>
         currentTab.value === 'all'
@@ -74,11 +180,6 @@
             ? clubListByCategory.value[linkToClubType[currentTab.value]]
             : [],
     )
-
-    // const showPopUp = ref(false)
-    // const joinRequest = ref(null)
-    // const showReport = ref(false)
-    // load clubs
 
     const loadClubList = async () => {
         await clubs

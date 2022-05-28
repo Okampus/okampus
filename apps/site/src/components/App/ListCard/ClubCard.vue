@@ -21,7 +21,7 @@
                         />
                     </div>
                     <router-link class="mt-2" :to="`/clubs/${clubTypes[club.category].link}`">
-                        <LabelSimple class="text-xs bg-slate-600/40 hover:bg-slate-400/40 line-clamp-1">{{
+                        <LabelSimple class="text-xs bg-slate-600/40 hover:bg-slate-400/40">{{
                             club.category
                         }}</LabelSimple>
                     </router-link>
@@ -45,7 +45,7 @@
                 <div class="flex flex-row justify-between items-center mt-3 w-full h-12">
                     <button
                         class="py-1 px-3 -ml-1 w-fit font-semibold text-center text-white bg-blue-600 hover:bg-blue-700 rounded-full"
-                        @click="joinClub"
+                        @click="emit('request', club.teamId)"
                     >
                         Rejoindre
                     </button>
@@ -118,17 +118,14 @@
     import { emitter } from '@/shared/modules/emitter'
     import { useRouter } from 'vue-router'
 
-    const joinClub = (e) => {
-        e.preventDefault()
-        console.log('joinClub')
-    }
-
     const props = defineProps({
         club: {
             type: Object,
             required: true,
         },
     })
+
+    const emit = defineEmits(['request'])
 
     const specialMembers = [
         { role: 'treasurer', member: props.club.treasurer },

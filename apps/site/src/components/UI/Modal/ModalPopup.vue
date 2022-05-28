@@ -1,6 +1,6 @@
 <template>
     <Teleport to="body">
-        <Transition name="modal">
+        <Transition name="modal" @after-leave="emit('closed')">
             <div v-show="show" class="absolute top-0 left-0 z-40 w-screen h-screen">
                 <div
                     class="fixed top-0 left-0 z-50 rounded-lg"
@@ -27,7 +27,7 @@
         },
     })
 
-    const emit = defineEmits(['close'])
+    const emit = defineEmits(['close', 'closed'])
 
     const closeOnKeydown = (e) => {
         if (e.key === 'Escape') {

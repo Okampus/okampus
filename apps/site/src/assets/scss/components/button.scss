@@ -90,3 +90,27 @@
         box-shadow: 0 2px 12px 0 rgb(255 255 255 / 50%);
     }
 }
+
+.button-submit {
+    transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out, background-color 0.2s ease-in-out;
+
+    @apply bg-blue-500 hover:bg-blue-600 cursor-pointer text-white rounded-lg px-3 py-2;
+
+    .dark &:hover {
+        filter: contrast(1.2);
+    }
+
+    &.with-shadow:hover {
+        @apply shadow-md shadow-blue-400/50;
+    }
+}
+
+.button-cancel {
+    transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out, background-color 0.2s ease-in-out;
+
+    @apply bg-gray-500 hover:bg-gray-600 cursor-pointer text-white rounded-lg px-3 py-2;
+
+    .dark &:hover {
+        filter: contrast(1.2);
+    }
+}
