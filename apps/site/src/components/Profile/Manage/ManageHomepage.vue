@@ -111,6 +111,7 @@
     <div class="flex flex-col gap-5 p-4 mt-4 rounded-xl shadow-xl text-2  bg-2">
         <div>
             <div class="mb-2 text-lg font-semibold">Catégorie de l'association</div>
+            {{ clubTypes[club.category] }}
             <router-link :to="`/clubs/${clubTypes[club.category].link}`">
                 <LabelSimple class="bg-slate-600/40 hover:bg-slate-400/40">{{ club.category }}</LabelSimple>
             </router-link>
