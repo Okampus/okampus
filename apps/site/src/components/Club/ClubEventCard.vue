@@ -35,14 +35,16 @@
         </div> -->
         <!-- <ProfileAvatar :name="props.event.team.name"></ProfileAvatar> -->
         <div class="flex flex-col gap-2">
-            <div class="flex flex-col w-[26rem] h-80 rounded-lg bg-2">
-                <p class="pt-4">
-                    <span class="font-bold">{{ props.event.team.name }}</span> organise un évenement
-                </p>
-                <div class="flex gap-8 items-center p-2 w-full h-12 rounded-t-lg bg-2">
+            <div class="flex flex-col w-[26rem] h-72 rounded-lg bg-2">
+                <div class="w-full h-24 bg-blue-400 rounded-t-lg"></div>
+                <div class="items-center py-1 px-2 -mt-6 ml-4 w-fit rounded-md bg-1">
+                    <div class="flex gap-2">
+                        <i class="text-md fas fa-location-dot"></i>
+                        <p class="text-sm">{{ props.event.place }}</p>
+                    </div>
                     <div class="flex gap-2 items-center">
-                        <i class="text-xl fas fa-calendar"></i>
-                        <div>
+                        <i class="text-md fas fa-calendar"></i>
+                        <div class="text-sm">
                             Du
                             <span class="font-bold">
                                 {{
@@ -62,20 +64,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-full h-24 bg-blue-400"></div>
-                <div class="flex gap-2 justify-end items-center py-1 px-2 -mt-4 ml-4 w-fit rounded-full bg-1">
-                    <i class="text-md fas fa-location-dot"></i>
-                    <p class="text-sm">{{ props.event.place }}</p>
-                </div>
                 <div class="p-4">
+                    <p class="mb-2">
+                        <span class="font-bold">{{ props.event.team.name }}</span> organise un évenement
+                    </p>
                     <div class="flex flex-col">
                         <h3 class="text-2xl font-bold">{{ props.event.shortDescription }}</h3>
-                        <p>{{ props.event.longDescription }}</p>
                     </div>
                     <div class="flex gap-2 mt-4 w-full">
-                        <button class="py-2 px-4 mt-2 w-1/2 font-bold text-white bg-blue-500 rounded-full">
+                        <a
+                            :href="`#/events/${props.event.teamEventId}`"
+                            class="py-2 px-4 mt-2 w-1/2 font-bold text-white bg-blue-500 rounded-full"
+                        >
                             Plus d'informations
-                        </button>
+                        </a>
                         <button
                             class="py-2 px-4 mt-2 w-1/2 font-bold text-white bg-green-500 rounded-full"
                             @click="joinEvent"
@@ -91,7 +93,7 @@
 
 <script setup>
     import { useClubsStore } from '@/store/clubs.store'
-    import ProfileAvatar from '../Profile/ProfileAvatar.vue'
+    // import ProfileAvatar from '../Profile/ProfileAvatar.vue'
     import { emitter } from '@/shared/modules/emitter'
 
     const props = defineProps({
@@ -108,7 +110,7 @@
             .joinEvent(props.event.teamEventId)
             .then(() =>
                 emitter.emit('show-toast', {
-                    message: "Vous avez bien rejoint l'évenement.",
+                    message: 'Votre inscription a bien été prise en compte',
                     type: 'success',
                 }),
             )

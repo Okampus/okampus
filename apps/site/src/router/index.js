@@ -173,6 +173,15 @@ const routes = [
     },
 
     {
+        name: 'event',
+        path: '/events/:eventId',
+        component: () => import('@/views/TeamEvent.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
         path: '/:pathMatch(.*)*',
         component: () => import('@/views/App/AppException.vue'),
         props: {
