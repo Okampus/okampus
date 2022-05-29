@@ -28,9 +28,9 @@
             </div>
         </div>
         <div class="flex flex-col centered-container">
-            <keep-alive>
-                <component :is="currentComponent" v-model:club="club" />
-            </keep-alive>
+            <!-- <keep-alive> -->
+            <component :is="currentComponent" v-model:club="club" />
+            <!-- </keep-alive> -->
         </div>
     </div>
 </template>

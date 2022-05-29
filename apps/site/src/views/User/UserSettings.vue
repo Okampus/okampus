@@ -68,9 +68,9 @@
                 />
                 <hr class="self-center mb-2 w-[calc(100%-3rem)] h-[1px] bg-gray-500/20 border-none" />
                 <div class="flex flex-col grow">
-                    <keep-alive>
-                        <component :is="currentComponent" />
-                    </keep-alive>
+                    <!-- <keep-alive> -->
+                    <component :is="currentComponent" />
+                    <!-- </keep-alive> -->
                 </div>
             </div>
         </div>
