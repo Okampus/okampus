@@ -1,8 +1,8 @@
 <template>
-    <div class="flex flex-col gap-6">
+    <div class="flex relative flex-col gap-6">
         <div class="bg-2 text-0">
-            <div class="flex flex-col centered-container">
-                <div class="flex gap-4 justify-between items-center py-4">
+            <div class="flex sticky top-0 z-30 flex-col centered-container">
+                <div class="flex gap-4 justify-between items-center pt-4">
                     <div class="flex gap-4 items-center">
                         <ProfileAvatar
                             :avatar="club.avatar"
@@ -37,6 +37,7 @@
 
 <script setup>
     import ManageHomepage from '@/components/Profile/Manage/ManageHomepage.vue'
+    import ManageRequests from '@/components/Profile/Manage/ManageRequests.vue'
     import ManageDrive from '@/components/Profile/Manage/ManageDrive.vue'
 
     import WIP from '@/views/App/WIP.vue'
@@ -64,18 +65,17 @@
     const MEMBERS = 'members'
     const DRIVE = 'drive'
     const ACTIVITY = 'activity'
-    const SETTINGS = 'settings'
 
     const tabs = [
         {
             id: HOME,
-            name: "Vue d'accueil",
+            name: 'Accueil',
             route: clubManageRoute,
             icon: 'house',
         },
         {
             id: REQUESTS,
-            name: "Demandes d'adhésion",
+            name: 'Adhésions',
             icon: 'envelope',
         },
         {
@@ -93,11 +93,6 @@
             name: 'Activité',
             icon: 'history',
         },
-        {
-            id: SETTINGS,
-            name: 'Paramètres',
-            icon: 'cog',
-        },
     ]
     const DEFAULT_TAB = tabs[0]
 
@@ -107,11 +102,10 @@
 
     const components = {
         [HOME]: ManageHomepage,
-        [REQUESTS]: h(WIP, { key: REQUESTS }),
+        [REQUESTS]: ManageRequests,
         [DRIVE]: ManageDrive,
         [MEMBERS]: h(WIP, { key: MEMBERS }),
         [ACTIVITY]: h(WIP, { key: ACTIVITY }),
-        [SETTINGS]: h(WIP, { key: SETTINGS }),
     }
     const currentComponent = computed(() => components[currentTab.value ?? DEFAULT_TAB.id])
 

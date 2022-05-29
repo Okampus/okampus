@@ -75,5 +75,9 @@ export const useClubsStore = defineStore('clubs', {
         async patchMembership(teamId, userId, props) {
             return await $axios.patch(`teams/members/${teamId}/${userId}`, props).then((res) => res.data)
         },
+
+        async handleRequest(requestId, data) {
+            return await $axios.put(`teams/requests/${requestId}`, data).then((res) => res.data)
+        },
     },
 })

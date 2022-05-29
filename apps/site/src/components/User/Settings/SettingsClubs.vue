@@ -83,20 +83,24 @@
                                 </div>
                                 <div class="flex gap-1.5 text-sm">
                                     <div class="flex gap-1">
-                                        <div>Demandé</div>
+                                        <div class="text-2">Demandé</div>
                                         <TipRelativeDate :date="request.createdAt" />
                                     </div>
                                     <template v-if="request.state === APPROVED">
                                         <div>•</div>
                                         <div class="flex gap-1">
-                                            <div>{{ statusNames[APPROVED][$i18n.locale] }}</div>
+                                            <div class="text-2">
+                                                {{ statusNames[APPROVED][$i18n.locale] }}
+                                            </div>
                                             <TipRelativeDate :date="request.handledAt" />
                                         </div>
                                     </template>
                                     <template v-else-if="request.state === REJECTED">
                                         <div>•</div>
                                         <div class="flex gap-1">
-                                            <div>{{ statusNames[REJECTED][$i18n.locale] }}</div>
+                                            <div class="text-2">
+                                                {{ statusNames[REJECTED][$i18n.locale] }}
+                                            </div>
                                             <TipRelativeDate :date="request.handledAt" />
                                         </div>
                                     </template>
@@ -104,13 +108,82 @@
                             </div>
                         </div>
 
+                        <ModalPopup
+                            :show="showRequestModal"
+                            @close="showRequestModal = false"
+                            @closed="shownRequest = null"
+                        >
+                            <template #default="{ close }">
+                                <div class="flex flex-col card">
+                                    <div class="mb-6 text-2xl">
+                                        Formulaire d'adhésion pour {{ shownRequest?.team?.name ?? '' }}
+                                    </div>
+                                    <div class="flex flex-col gap-4">
+                                        <div>
+                                            <div class="text-base text-gray-400/80">Rôle souhaité</div>
+                                            <div class="text-xl text-0">
+                                                {{
+                                                    clubRoleNames[shownRequest?.role ?? '']?.[$i18n.locale] ??
+                                                    ''
+                                                }}
+                                            </div>
+                                        </div>
+                                        <div
+                                            v-for="[field, value] in Object.entries(shownRequest?.meta ?? {})"
+                                            :key="field"
+                                        >
+                                            <div class="text-base text-gray-400/80">
+                                                {{ capitalize(field) }}
+                                            </div>
+                                            <div class="text-xl text-0">{{ value }}</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-base text-gray-400/80">
+                                                <div>Statut</div>
+                                                <div
+                                                    class="text-xl text-0"
+                                                    :class="{
+                                                        '!text-green-500': shownRequest?.state === APPROVED,
+                                                        '!text-red-500': shownRequest?.state === REJECTED,
+                                                        '!text-gray-500/90': shownRequest?.state === PENDING,
+                                                    }"
+                                                >
+                                                    {{
+                                                        statusNames[shownRequest?.state ?? '']?.[
+                                                            $i18n.locale
+                                                        ] ?? ''
+                                                    }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div v-if="shownRequest?.state === REJECTED" class="flex flex-col">
+                                            <div class="text-lg text-gray-400/80">Raison du refus</div>
+                                            <div
+                                                class="text-2xl text-0"
+                                                :class="!shownRequest.handledMessage ? 'italic' : ''"
+                                            >
+                                                {{ shownRequest.handledMessage || 'Pas de raison donnée.' }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="self-center mt-10 button-cancel" @click="close">Fermer</div>
+                                </div>
+                            </template>
+                        </ModalPopup>
+
                         <div
-                            class="flex gap-2 justify-center items-center py-1 px-3 w-36 text-white rounded-xl"
+                            class="flex gap-2 justify-center items-center py-1 px-3 w-36 text-white rounded-xl cursor-pointer"
                             :class="{
                                 'bg-green-500 hover:bg-green-600': request.state === APPROVED,
                                 'bg-red-500 hover:bg-red-600': request.state === REJECTED,
                                 'bg-gray-500/50 hover:bg-gray-600/50': request.state === PENDING,
                             }"
+                            @click="
+                                () => {
+                                    showRequestModal = true
+                                    shownRequest = request
+                                }
+                            "
                         >
                             <template v-if="request.state === APPROVED">
                                 <i class="fa fa-check" />
@@ -146,6 +219,9 @@
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
+    import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
+
+    import { capitalize } from 'lodash'
 
     import { clubRoleNames, specialRoles } from '@/shared/types/club-roles.enum'
     import { APPROVED, REJECTED, PENDING, statusNames } from '@/shared/types/club-requests.enum'
@@ -156,6 +232,9 @@
 
     const auth = useAuthStore()
     const clubs = useClubsStore()
+
+    const showRequestModal = ref(false)
+    const shownRequest = ref(null)
 
     const MEMBER = 'active'
     const REQUEST = 'requests'
