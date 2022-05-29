@@ -36,8 +36,13 @@
         <!-- <ProfileAvatar :name="props.event.team.name"></ProfileAvatar> -->
         <div class="flex flex-col gap-2">
             <div class="flex flex-col w-[26rem] h-72 rounded-lg bg-2">
-                <div class="w-full h-24 bg-blue-400 rounded-t-lg"></div>
-                <div class="items-center py-1 px-2 -mt-6 ml-4 w-fit rounded-md bg-1">
+                <!-- <div class="w-full h-24 bg-blue-400 rounded-t-lg"></div> -->
+                <ProfileBanner
+                    class="z-10 p-0 h-24"
+                    :name="props.event.shortDescription"
+                    :data="props.event.team.name"
+                ></ProfileBanner>
+                <div class="z-20 items-center py-1 px-2 -mt-6 ml-4 w-fit rounded-md bg-1">
                     <div class="flex gap-2">
                         <i class="text-md fas fa-location-dot"></i>
                         <p class="text-sm">{{ props.event.place }}</p>
@@ -71,19 +76,19 @@
                     <div class="flex flex-col">
                         <h3 class="text-2xl font-bold">{{ props.event.shortDescription }}</h3>
                     </div>
-                    <div class="flex gap-2 mt-4 w-full">
+                    <div class="flex gap-2 justify-center mt-4 w-full">
                         <a
                             :href="`#/events/${props.event.teamEventId}`"
                             class="py-2 px-4 mt-2 w-1/2 font-bold text-white bg-blue-500 rounded-full"
                         >
                             Plus d'informations
                         </a>
-                        <button
+                        <!-- <button
                             class="py-2 px-4 mt-2 w-1/2 font-bold text-white bg-green-500 rounded-full"
                             @click="joinEvent"
                         >
                             S'inscrire
-                        </button>
+                        </button> -->
                     </div>
                 </div>
             </div>
@@ -92,10 +97,10 @@
 </template>
 
 <script setup>
-    import { useClubsStore } from '@/store/clubs.store'
+    // import { useClubsStore } from '@/store/clubs.store'
     // import ProfileAvatar from '../Profile/ProfileAvatar.vue'
-    import { emitter } from '@/shared/modules/emitter'
-
+    // import { emitter } from '@/shared/modules/emitter'
+    import ProfileBanner from '../Profile/ProfileBanner.vue'
     const props = defineProps({
         event: {
             type: Object,
@@ -103,22 +108,22 @@
         },
     })
 
-    const clubs = useClubsStore()
+    // const clubs = useClubsStore()
 
-    const joinEvent = async () => {
-        await clubs
-            .joinEvent(props.event.teamEventId)
-            .then(() =>
-                emitter.emit('show-toast', {
-                    message: 'Votre inscription a bien été prise en compte',
-                    type: 'success',
-                }),
-            )
-            .catch(
-                emitter.emit('show-toast', {
-                    message: "Erreur lors de l'opération",
-                    type: 'failure',
-                }),
-            )
-    }
+    // const joinEvent = async () => {
+    //     await clubs
+    //         .joinEvent(props.event.teamEventId)
+    //         .then(() =>
+    //             emitter.emit('show-toast', {
+    //                 message: 'Votre inscription a bien été prise en compte',
+    //                 type: 'success',
+    //             }),
+    //         )
+    //         .catch(
+    //             emitter.emit('show-toast', {
+    //                 message: "Erreur lors de l'opération",
+    //                 type: 'failure',
+    //             }),
+    //         )
+    // }
 </script>

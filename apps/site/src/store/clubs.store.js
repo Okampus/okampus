@@ -119,5 +119,8 @@ export const useClubsStore = defineStore('clubs', {
         //         .get(`teams/events/registrations?userId=${userId}`)
         //         .then((res) => this.replaceEvent(res.data))
         // },
+        async unRegisterEvent(eventId) {
+            return await $axios.delete(`teams/events/${eventId}/registrations`).then((res) => res.data)
+        },
     },
 })

@@ -32,7 +32,6 @@
     me.value = auth.user
 
     const loadEvents = async () => {
-        console.log('Helloooo', me.value)
         if (me.value) {
             const eventss = await clubs
                 .getEvents()
