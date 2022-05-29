@@ -2,8 +2,8 @@
     <Popper offset-distance="0" :interactive="false">
         <slot />
 
-        <template #content>
-            <div class="flex flex-col p-2 card">
+        <template #content="{ close }">
+            <div class="flex flex-col p-2 card" @mouseleave="close">
                 <div
                     v-for="(button, _, i) in buttons"
                     :key="i"

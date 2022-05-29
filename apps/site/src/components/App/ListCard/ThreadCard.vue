@@ -30,7 +30,7 @@
             />
         </div>
         <div class="flex flex-col">
-            <TipPopper :tip="`${threadTypes[thread.type]?.fr}`">
+            <TipPopper :tip="`${threadTypes[thread.type]?.[$i18n.locale]}`">
                 <div
                     class="flex justify-center items-center w-[3.3rem] h-[3.3rem] rounded-lg cursor-pointer"
                     :class="`bg-${threadTypes[thread.type]?.color}-100 dark:bg-${

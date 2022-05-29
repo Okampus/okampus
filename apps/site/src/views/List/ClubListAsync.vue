@@ -1,11 +1,11 @@
 <template>
-    <div class="flex gap-4 my-10 centered-container">
+    <div class="flex gap-4 my-8 centered-container">
         <VerticalTabs
             v-model="currentTab"
             :tabs="tabs"
             route-base="/clubs"
             route-name="clubs"
-            class="sticky top-6"
+            class="sticky top-8"
         />
 
         <div v-if="currentClubs.length === 0" class="w-full text-center text-0">
@@ -116,7 +116,10 @@
     import { clubTypes, linkToClubType } from '@/shared/types/club-types.enum'
 
     import { computed, ref } from 'vue'
+
     import { emitter } from '@/shared/modules/emitter'
+    import { i18n } from '@/shared/modules/i18n'
+
     import { getStatusAxiosError } from '@/utils/errors'
 
     import { useAuthStore } from '@/store/auth.store'
@@ -157,7 +160,7 @@
         },
     ]
 
-    const roles = Object.entries(clubRoleNames).map(([value, name]) => ({ value, label: name.fr }))
+    const roles = Object.entries(clubRoleNames).map(([value, name]) => ({ value, label: name[i18n.locale] }))
 
     const ALL = 0
     const ALL_LABEL = 'all'

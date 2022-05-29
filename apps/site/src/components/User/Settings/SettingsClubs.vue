@@ -27,7 +27,9 @@
                                 <div class="flex gap-1.5 font-semibold text-1">
                                     <div class="font-semibold">{{ membership.team.name }}</div>
                                     <div>•</div>
-                                    <div class="text-2">{{ clubRoleNames[membership.role].fr }}</div>
+                                    <div class="text-2">
+                                        {{ clubRoleNames[membership.role][$i18n.locale] }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -75,7 +77,9 @@
                             <div class="flex flex-col">
                                 <div class="flex gap-1.5 text-1">
                                     <div class="font-semibold">{{ request.team.name }}</div>
-                                    <div class="text-sm">(comme {{ clubRoleNames[request.role].fr }})</div>
+                                    <div class="text-sm">
+                                        (comme {{ clubRoleNames[request.role][$i18n.locale] }})
+                                    </div>
                                 </div>
                                 <div class="flex gap-1.5 text-sm">
                                     <div class="flex gap-1">
@@ -85,14 +89,14 @@
                                     <template v-if="request.state === APPROVED">
                                         <div>•</div>
                                         <div class="flex gap-1">
-                                            <div>{{ statusNames[APPROVED].fr }}</div>
+                                            <div>{{ statusNames[APPROVED][$i18n.locale] }}</div>
                                             <TipRelativeDate :date="request.handledAt" />
                                         </div>
                                     </template>
                                     <template v-else-if="request.state === REJECTED">
                                         <div>•</div>
                                         <div class="flex gap-1">
-                                            <div>{{ statusNames[REJECTED].fr }}</div>
+                                            <div>{{ statusNames[REJECTED][$i18n.locale] }}</div>
                                             <TipRelativeDate :date="request.handledAt" />
                                         </div>
                                     </template>
@@ -110,15 +114,15 @@
                         >
                             <template v-if="request.state === APPROVED">
                                 <i class="fa fa-check" />
-                                <div>{{ statusNames[APPROVED].fr }}</div>
+                                <div>{{ statusNames[APPROVED][$i18n.locale] }}</div>
                             </template>
                             <template v-else-if="request.state === REJECTED">
                                 <i class="fa fa-xmark" />
-                                <div>{{ statusNames[REJECTED].fr }}</div>
+                                <div>{{ statusNames[REJECTED][$i18n.locale] }}</div>
                             </template>
                             <template v-else-if="request.state === PENDING">
                                 <i class="fa fa-envelope" />
-                                <div>{{ statusNames[PENDING].fr }}</div>
+                                <div>{{ statusNames[PENDING][$i18n.locale] }}</div>
                             </template>
                         </div>
                     </div>

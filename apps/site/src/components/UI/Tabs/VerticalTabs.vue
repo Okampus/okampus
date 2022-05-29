@@ -1,5 +1,8 @@
 <template>
-    <div class="flex flex-col shrink-0 p-2 h-fit rounded bg-2 text-2" :class="isMultiTab ? 'py-4' : 'gap-2'">
+    <div
+        class="flex flex-col shrink-0 p-2 h-fit rounded shadow-xl bg-2 text-2"
+        :class="isMultiTab ? 'py-4' : 'gap-2'"
+    >
         <template v-for="(tabParent, i) in tabs" :key="i">
             <div v-if="isMultiTab" class="flex flex-col grow-0">
                 <div class="mb-2 ml-3 text-xs font-bold uppercase text-5">{{ tabParent.title }}</div>
