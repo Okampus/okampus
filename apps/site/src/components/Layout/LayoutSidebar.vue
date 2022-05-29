@@ -8,7 +8,7 @@
                 ? 'hidden-sidebar-lg'
                 : '',
         ]"
-        class="flex z-30 flex-col shrink-0 w-sidebar-sm sidebar"
+        class="flex z-50 flex-col shrink-0 w-sidebar-sm sidebar"
     >
         <div v-if="smallScreen && showUncollapsed" class="flex shrink-0 items-center h-topbar">
             <button aria-label="Close Menu" class="w-sidebar-sm" @click="emit('toggle-side-bar')">
