@@ -160,7 +160,10 @@
         },
     ]
 
-    const roles = Object.entries(clubRoleNames).map(([value, name]) => ({ value, label: name[i18n.locale] }))
+    const roles = Object.entries(clubRoleNames).map(([value, name]) => ({
+        value,
+        label: name[i18n.global.locale],
+    }))
 
     const ALL = 0
     const ALL_LABEL = 'all'
