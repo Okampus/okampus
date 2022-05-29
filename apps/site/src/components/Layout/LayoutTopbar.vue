@@ -1,5 +1,5 @@
 <template>
-    <nav class="flex fixed top-0 left-0 z-20 justify-between items-center w-full topbar h-topbar text-1">
+    <nav class="flex fixed top-0 left-0 z-50 justify-between items-center w-full topbar h-topbar text-1">
         <div class="flex items-center w-sidebar-lg">
             <div class="flex shrink-0 justify-center w-sidebar-sm">
                 <button aria-label="Open Menu" @click="$emit('toggle-side-bar')">
@@ -13,7 +13,7 @@
             <LayoutSearch />
         </div>
 
-        <template v-if="route.name !== 'home' || auth.loggedIn">
+        <template v-if="!isHome || auth.loggedIn">
             <div v-if="!auth.loggedIn" class="flex shrink-0 justify-center items-center mr-4">
                 <ButtonLogin />
             </div>
@@ -78,9 +78,13 @@
     import { useRoute } from 'vue-router'
 
     import { fullname } from '@/utils/users'
+    import { getCurrentPath } from '@/utils/routeUtils'
+    import { computed } from 'vue'
 
     const auth = useAuthStore()
     const route = useRoute()
+
+    const isHome = computed(() => route.name === 'home' || getCurrentPath() === '/')
 
     defineEmits(['toggle-side-bar'])
 </script>
