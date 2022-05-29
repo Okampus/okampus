@@ -77,15 +77,19 @@
                             />
                             <FormKit
                                 type="text"
-                                name="reason"
+                                name="raison"
                                 label="La raison de votre adhésion"
                                 help="Décrivez en quelques mots la raison de votre adhésion."
                             />
                         </FormKit>
                         <div class="flex gap-4 self-end mt-6">
                             <div class="button-cancel" @click="close">Annuler</div>
-                            <div class="button-submit with-shadow" @click="joinForm.node.submit()">
-                                Valider ma demande d'adhésion
+                            <div
+                                class="flex gap-2 items-center button-submit with-shadow"
+                                @click="joinForm.node.submit()"
+                            >
+                                <i class="text-lg fa fa-envelope" />
+                                <div>Envoyer ma demande</div>
                             </div>
                         </div>
                     </div>

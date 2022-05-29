@@ -1,3 +1,48 @@
+/* Prev Scrolling */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-fade-enter {
+    opacity: 0;
+    transform: translateY(100%);
+}
+
+/* Back Scrolling */
+.slide-fade-reverse-enter-active,
+.slide-fade-reverse-leave-active {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-fade-reverse-enter {
+    opacity: 0;
+    transform: translateY(-100%);
+}
+
+.slide-fade-reverse-leave-to {
+    opacity: 0;
+    transform: translateY(100%);
+}
+
+.slide-fade-leave-to {
+    opacity: 0;
+    transform: translateY(-100%);
+}
+
+.slide-y-leave-active,
+.slide-y-enter-active {
+    transition: 1s;
+}
+
+.slide-y-enter {
+    transform: translate(100%, 0);
+}
+
+.slide-y-leave-to {
+    transform: translate(-100%, 0);
+}
+
 .switch-enter-active,
 .switch-leave-active {
     transition: all 0.5s ease;
