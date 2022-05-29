@@ -8,8 +8,11 @@ export const useUsersStore = defineStore('users', {
         users: [],
     }),
     actions: {
-        replaceUsers(users, pageInfo) {
+        async replaceUsers(users, pageInfo) {
             this.users = users
+            await users.forEach(async (element, idx) => {
+                this.users[idx] = await this.getUserClub(element)
+            })
             return { items: users, pageInfo }
         },
         replaceUser(user) {
@@ -33,6 +36,11 @@ export const useUsersStore = defineStore('users', {
         },
         async updateUser(id, user) {
             return await $axios.patch(`users/${id}`, user).then(onData(this.replaceUser))
+        },
+        async getUserClub(user) {
+            return await $axios
+                .get(`teams/memberships/${user.userId}`)
+                .then((res) => ({ ...user, clubs: res.data.items }))
         },
         async changeImage(formData, uploadType, config = {}) {
             return await $axios

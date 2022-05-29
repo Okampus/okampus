@@ -25,10 +25,24 @@
             <div class="line-clamp-2 text-1">
                 {{ user.shortDescription }}
             </div>
-            <router-link class="text-blue-500 hover:underline" :to="`/user/${user.userId}`">
-                <div class="flex gap-2 text-lg">
+            <div class="flex flex-wrap gap-1">
+                <ProfileAvatar
+                    v-for="club in user.clubs"
+                    :key="club"
+                    :avatar="club.team.avatar"
+                    :name="club.team.name"
+                    size="2"
+                    :class="
+                        specialRoles.find((role) => role === club.role)
+                            ? 'border-2 border-yellow-300 rounded-full'
+                            : ''
+                    "
+                />
+            </div>
+            <router-link class="w-32 text-blue-500 hover:underline" :to="`/user/${user.userId}`">
+                <div class="flex gap-2 min-w-fit text-lg">
                     <i class="pt-1 fas fa-external-link-alt" />
-                    <div>Voir le profil</div>
+                    <div class="whitespace-nowrap">Voir le profil</div>
                 </div>
             </router-link>
         </div>
@@ -42,6 +56,7 @@
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
     import { fullname, getRole } from '@/utils/users'
+    import { specialRoles } from '@/shared/types/club-roles.enum'
 
     const props = defineProps({
         user: {

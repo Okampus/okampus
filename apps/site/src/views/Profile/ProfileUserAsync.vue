@@ -1,18 +1,56 @@
 <template>
     <div>
-        <div class="pb-2 mx-auto text-1">
-            <div class="p-0 pb-6 rounded-b-none card">
-                <div class="relative w-full h-48">
-                    <div class="w-full h-full banner" />
-                    <div class="absolute -bottom-8 left-8">
-                        <ProfileAvatar
-                            :avatar="user.avatar"
-                            :size="4.5"
-                            :name="user.firstname + ' ' + user.lastname"
-                        />
-                    </div>
+        <ProfileBanner
+            :name="fullname(user)"
+            :banner="user.banner"
+            class="p-0 mt-8 h-32 centered-container"
+            :data="fullname(user)"
+        ></ProfileBanner>
+        <div class="py-4 centered-container bg-0 text-0">
+            <div class="flex gap-4 items-center">
+                <ProfileAvatar
+                    :avatar="user.avatar"
+                    :size="4.5"
+                    :name="user.firstname + ' ' + user.lastname"
+                />
+                <div class="flex flex-col">
+                    <p class="mt-2 -mb-2 text-2xl font-bold">{{ fullname(user) }}</p>
+                    <p class="text-lg text-2">{{ user.shortDescription }}</p>
                 </div>
-                <div class="px-4 mt-8 w-full">
+            </div>
+            <div class="flex flex-col md:flex-row">
+                <div>
+                    <h2 class="my-4 text-2xl font-bold">Les associations de {{ user.firstname }}</h2>
+                    <div v-if="clubs.items.length > 0" class="flex flex-wrap gap-x-4 gap-y-2 mt-4 w-full">
+                        <div v-for="club in clubs.items" :key="club" class="flex gap-2">
+                            <ProfileAvatar
+                                :avatar="club.team.avatar"
+                                :size="2"
+                                :name="club.team.name"
+                                :class="
+                                    specialRoles.find((role) => role === club.role)
+                                        ? 'border-2 h-fit border-yellow-300 rounded-full'
+                                        : ''
+                                "
+                            />
+                            <div class="flex flex-col justify-center">
+                                <p class="w-32 font-bold truncate">{{ club.team.name }}</p>
+                                <p class="-mt-2 w-32 truncate">{{ clubRoleNames[club.role].fr }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p v-else class="text-lg">Aucune association</p>
+                </div>
+                <div>
+                    <h2 class="my-4 text-2xl font-bold">L'activité de {{ user.firstname }}</h2>
+                    <div v-if="events.length > 0" class="flex flex-col gap-4 w-fit">
+                        <ClubEventCard v-for="event in events" :key="event" :event="event"></ClubEventCard>
+                    </div>
+                    <div v-else class="flex flex-col gap-4 w-fit">Pas d'activité</div>
+                </div>
+            </div>
+
+            <!-- <div class="px-4 mt-8 w-full">
                     <div class="flex flex-col pr-8 mb-4 space-y-4">
                         <div>
                             <div class="flex">
@@ -20,13 +58,9 @@
                                 <div class="my-auto ml-2 text-gray-500">
                                     {{ 'M2-F' }}
                                 </div>
-                                <router-link
-                                    v-if="me.userId === user.userId"
-                                    to="/me"
-                                    class="my-auto ml-8"
-                                >
+                                <router-link v-if="me.userId === user.userId" to="/me" class="my-auto ml-8">
                                     <div
-                                        class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded"
+                                        class="flex items-center py-1.5 px-2 rounded hover:bg-3-light hover:dark:bg-3-dark"
                                     >
                                         <i class="fas fa-pen-alt" />
                                     </div>
@@ -52,7 +86,7 @@
                                             {{ club.team.name }}
                                         </div>
                                         <div class="-mb-1">
-                                            <!-- {{ Object.keys(roles).find((role) => roles[role] === club.role) }} -->
+                                             {{ Object.keys(roles).find((role) => roles[role] === club.role) }}
                                             {{ club.role }}
                                         </div>
                                         <div class="text-sm truncate text-5">
@@ -63,11 +97,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div> -->
         </div>
 
-        <div class="flex flex-col md:flex-row">
+        <!-- <div class="flex flex-col md:flex-row">
             <div class="order-2 mt-0 mb-4 space-y-4 md:order-1 md:mr-4 md:ml-2 md:w-1/2 lg:w-2/3">
                 <div class="flex flex-col grow space-y-4 card">
                     <div class="text-xl">Activité</div>
@@ -101,7 +134,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -113,35 +146,59 @@
     import { watch, ref, nextTick } from 'vue'
     import { useProfilesStore } from '@/store/profile.store'
     import { emitter } from '@/shared/modules/emitter'
-    // import { getStatus } from '@/utils/errors'
-    import { useAuthStore } from '@/store/auth.store'
-
+    // import { useAuthStore } from '@/store/auth.store'
+    import { getStatusAxiosError } from '@/utils/errors'
+    import { fullname } from '@/utils/users'
+    import { clubRoleNames } from '@/shared/types/club-roles.enum'
+    import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
+    import { useClubsStore } from '@/store/clubs.store'
+    import ClubEventCard from '@/components/Club/ClubEventCard.vue'
+    import { specialRoles } from '@/shared/types/club-roles.enum'
     const route = useRoute()
     const profiles = useProfilesStore()
-    const auth = useAuthStore()
+    const clubStore = useClubsStore()
+    // const auth = useAuthStore()
     const user = ref(null)
-    const contacts = ref(null)
+    // const contacts = ref(null)
     const clubs = ref(null)
-    const me = ref(null)
+    const events = ref([])
+    // const me = ref(null)
 
-    // const loadProfile = async () => {
-    //     if (route.name === 'profile') {
-    //         const userId = route.params.userId
-    //         await profiles
-    //             .getUser(userId)
-    //             .then((res) => {
-    //                 user.value = res
-    //                 nextTick(() => {
-    //                     if (route.hash) {
-    //                         emitter.emit('scroll-to-anchor', route.hash)
-    //                     }
-    //                 })
-    //             })
-    //             .catch((err) => {
-    //                 emitter.emit('error-route', { code: getStatus(err.response) })
-    //             })
-    //     }
-    // }
+    const loadProfile = async () => {
+        if (route.name === 'user') {
+            const userId = route.params.userId
+            await profiles
+                .getUser(userId)
+                .then((res) => {
+                    user.value = res
+                    nextTick(() => {
+                        if (route.hash) {
+                            emitter.emit('scroll-to-anchor', route.hash)
+                        }
+                    })
+                })
+                .catch((err) => {
+                    emitter.emit('error-route', { code: getStatusAxiosError(err.response) })
+                })
+        }
+    }
+
+    const loadEvents = async () => {
+        const userId = route.params.userId
+        const eventss = await clubStore
+            .getEvents()
+            .then((res) => res.items)
+            .catch((err) => {
+                emitter.emit('error-route', { code: getStatusAxiosError(err) })
+            })
+        eventss.forEach(async (event) => {
+            await clubStore.getEventGuests(event.teamEventId).then((guests) => {
+                if (guests.items.find((guest) => guest.user.userId === userId)) {
+                    events.value.push(event)
+                }
+            })
+        })
+    }
 
     // const loadContacts = async () => {
     //     if (route.name === 'profile') {
@@ -162,24 +219,24 @@
     //     }
     // }
 
-    // const loadClubs = async () => {
-    //     if (route.name === 'profile') {
-    //         const userId = route.params.userId
-    //         await profiles
-    //             .getClubs(userId)
-    //             .then((res) => {
-    //                 clubs.value = res
-    //                 nextTick(() => {
-    //                     if (route.hash) {
-    //                         emitter.emit('scroll-to-anchor', route.hash)
-    //                     }
-    //                 })
-    //             })
-    //             .catch((err) => {
-    //                 emitter.emit('error-route', { code: getStatus(err.response) })
-    //             })
-    //     }
-    // }
+    const loadClubs = async () => {
+        if (route.name === 'user') {
+            const userId = route.params.userId
+            await profiles
+                .getClubs(userId)
+                .then((res) => {
+                    clubs.value = res
+                    nextTick(() => {
+                        if (route.hash) {
+                            emitter.emit('scroll-to-anchor', route.hash)
+                        }
+                    })
+                })
+                .catch((err) => {
+                    emitter.emit('error-route', { code: getStatusAxiosError(err.response) })
+                })
+        }
+    }
 
     // const loadMe = async () => {
     //     await auth
@@ -202,9 +259,11 @@
     // }
 
     await loadProfile()
-    await loadContacts()
+    // await loadContacts()
     await loadClubs()
-    await loadMe()
+    await loadEvents()
+
+    // await loadMe()
     // await loadContacts()
     watch(() => route.params.userId, loadProfile)
 </script>

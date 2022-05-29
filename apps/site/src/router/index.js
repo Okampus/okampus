@@ -113,7 +113,7 @@ const routes = [
     {
         name: 'user',
         path: '/user/:userId',
-        component: () => import('@/views/App/WIP.vue'),
+        component: () => import('@/views/Profile/ProfileUser.vue'),
         meta: {
             requiresAuth: true,
         },
