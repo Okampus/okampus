@@ -30,7 +30,7 @@
     import EasyMDE from 'easymde'
     import TipPopper from '@/components/UI/Tip/TipPopper.vue'
 
-    import { onMounted, ref } from 'vue'
+    import { onMounted, ref, watchEffect } from 'vue'
 
     const emit = defineEmits(['update:modelValue', 'cancel', 'send'])
     const props = defineProps({
@@ -81,10 +81,16 @@
             initialValue: props.modelValue,
             maxHeight: '15rem',
         })
-        // editor.value.getMDEInstance()
+
         mde.value.codemirror.on('change', () => {
             emit('update:modelValue', mde.value.value())
             charCount.value = mde.value.value().trim().length
         })
+    })
+
+    watchEffect(() => {
+        if (props.modelValue === '' && mde.value) {
+            mde.value.value('')
+        }
     })
 </script>

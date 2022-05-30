@@ -17,7 +17,7 @@
                 first ? 'border-2 border-blue-100 dark:border-blue-900 rounded-b-lg' : 'shadow-md rounded-lg'
             "
         >
-            <ProfileAvatar :avatar="auth.user?.avatar" :username="fullname(auth.user)" />
+            <ProfileAvatar :avatar="auth.user?.avatar" :name="fullname(auth.user)" />
             <div class="mt-2 ml-3 arrow-left bg-1" />
             <div class="block w-[calc(100%-6rem)]">
                 <MdEditor v-model="body" uid="new-reply" :sendable="true" @send="sendReply" />

@@ -1,26 +1,14 @@
 <template>
     <div v-if="thread" class="flex flex-col gap-5 mx-4 md:mx-auto md:w-23/24 text-0">
-        <div class="flex gap-5">
+        <div class="flex gap-5 items-center mt-5">
             <LabelTag
+                class="!py-2"
                 :icon="thread._type.icon"
                 :tag-color="thread._type.color"
                 :tag-name="thread._type[$i18n.locale]"
             />
-            <p class="text-2xl break-all text-1">{{ thread.title }}</p>
+            <p class="text-2xl font-bold break-all text-0">{{ thread.title }}</p>
         </div>
-
-        <!-- <div class="flex flex-row gap-3">
-            <ProfileAvatar
-                :avatar="thread.getUser(thread._post.author).avatar"
-                :size="size"
-                :name="fullname(thread.getUser(thread._post.author))"
-            />
-            <div class="flex flex-col">
-                <div>
-                    {{ fullname(thread.getUser(thread._post.author)) }}
-                </div>
-            </div>
-        </div> -->
 
         <div class="flex">
             <div class="w-full">
@@ -46,7 +34,7 @@
                 </div>
             </div>
 
-            <div class="hidden sticky top-0 ml-4 space-y-2 w-3/12 lg:block text-1">
+            <div class="hidden sticky top-4 self-start ml-4 space-y-2 w-3/12 lg:block text-1">
                 <div class="p-4 rounded-lg bg-card-within-1">
                     <div class="flex items-center mb-2 space-x-2 text-xl">
                         <div class="mr-4 font-bold text-md">Tags</div>
