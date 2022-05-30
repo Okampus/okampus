@@ -28,18 +28,20 @@
                 {{ user.shortDescription }}
             </div>
             <div class="flex flex-wrap gap-1 items-center">
-                <ProfileAvatar
-                    v-for="club in user.clubs"
-                    :key="club"
-                    :avatar="club.team.avatar"
-                    :name="club.team.name"
-                    size="2"
-                    :class="
-                        specialRoles.find((role) => role === club.role)
-                            ? 'border-2 border-yellow-300 rounded-full'
-                            : ''
-                    "
-                />
+                <template v-for="club in user.clubs" :key="club">
+                    <router-link :to="`/club/${club.team.teamId}`">
+                        <ProfileAvatar
+                            :avatar="club.team.avatar"
+                            :name="club.team.name"
+                            size="2"
+                            :class="
+                                specialRoles.find((role) => role === club.role)
+                                    ? 'border-2 border-yellow-300 rounded-full'
+                                    : ''
+                            "
+                        />
+                    </router-link>
+                </template>
             </div>
         </div>
     </div>

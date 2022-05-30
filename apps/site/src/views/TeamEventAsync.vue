@@ -51,12 +51,14 @@
                 <div clas="flex flex-col gap-1">
                     <div class="text-3xl font-bold">{{ event.shortDescription }}</div>
                     <div class="flex gap-3 items-center py-2">
-                        <ProfileAvatar :name="event.team.name" :avatar="event.team.avatar" :size="1.8" />
+                        <router-link :to="`/club/${event.team.teamId}`">
+                            <ProfileAvatar :name="event.team.name" :avatar="event.team.avatar" :size="1.8" />
+                        </router-link>
                         <div class="flex gap-1 items-center">
                             <div class="text-sm">Organisé par</div>
                             <router-link
                                 :to="`/club/${event.team.teamId}`"
-                                class="text-lg font-semibold text-0"
+                                class="text-lg font-semibold hover:underline text-0"
                                 >{{ event.team.name }}</router-link
                             >
                             <div>•</div>

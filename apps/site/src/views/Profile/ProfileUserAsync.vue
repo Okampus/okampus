@@ -21,20 +21,24 @@
                         v-if="memberships.length > 0"
                         class="flex flex-wrap gap-x-4 gap-y-2 items-center mt-4 w-full"
                     >
-                        <div v-for="club in memberships" :key="club" class="flex gap-2">
-                            <ProfileAvatar
-                                :avatar="club.team.avatar"
-                                :size="2"
-                                :name="club.team.name"
-                                :class="
-                                    specialRoles.find((role) => role === club.role)
-                                        ? 'border-2 h-fit border-yellow-300 rounded-full'
-                                        : ''
-                                "
-                            />
+                        <div v-for="membership in memberships" :key="membership" class="flex gap-2">
+                            <router-link :to="`/club/${membership.team.teamId}`">
+                                <ProfileAvatar
+                                    :avatar="membership.team.avatar"
+                                    :size="2"
+                                    :name="membership.team.name"
+                                    :class="
+                                        specialRoles.find((role) => role === membership.role)
+                                            ? 'border-2 h-fit border-yellow-300 rounded-full'
+                                            : ''
+                                    "
+                                />
+                            </router-link>
                             <div class="flex flex-col justify-center">
-                                <p class="w-32 font-semibold truncate">{{ club.team.name }}</p>
-                                <p class="-mt-2 w-32 truncate">{{ clubRoleNames[club.role].fr }}</p>
+                                <router-link :to="`/club/${membership.team.teamId}`" class="hover:underline">
+                                    <p class="w-32 font-semibold truncate">{{ membership.team.name }}</p>
+                                </router-link>
+                                <p class="-mt-2 w-32 truncate">{{ clubRoleNames[membership.role].fr }}</p>
                             </div>
                         </div>
                     </div>

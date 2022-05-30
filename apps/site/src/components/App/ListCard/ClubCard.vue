@@ -1,7 +1,6 @@
 <template>
     <div
         class="flex relative flex-col pb-4 w-full min-w-[15rem] rounded-lg shadow-xl sm:w-[calc(50%-1.5rem)] xl:w-[calc(33%-1.5rem)] card-hover bg-2"
-        @click.self="router.push(`/club/${club.teamId}`)"
     >
         <ProfileBanner
             class="w-full h-20 rounded-t-lg"

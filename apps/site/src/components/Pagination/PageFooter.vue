@@ -41,7 +41,11 @@
                 v-else
                 :to="`${routeBase}?page=${page}`"
                 class="py-2 w-10 h-10 text-lg leading-tight text-center rounded-md text-0"
-                :class="[page === currentPage ? 'bg-blue-500' : 'hover:bg-3-light dark:hover:bg-3-dark']"
+                :class="[
+                    page === currentPage
+                        ? 'bg-blue-500 !text-white'
+                        : 'hover:bg-3-light dark:hover:bg-3-dark',
+                ]"
                 >{{ page }}</router-link
             >
         </template>

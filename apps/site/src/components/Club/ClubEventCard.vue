@@ -1,13 +1,17 @@
 <template>
     <div class="flex flex-col min-w-[20rem] max-w-[30rem] rounded-xl bg-2 text-0">
         <div class="flex gap-4 p-4">
-            <ProfileAvatar :name="event.team.name" :avatar="event.team.avatar" />
+            <router-link :to="`/club/${event.team.teamId}`">
+                <ProfileAvatar :name="event.team.name" :avatar="event.team.avatar" />
+            </router-link>
             <div class="flex flex-col">
                 <div class="flex gap-1 items-center">
                     <div class="text-sm">Organisé par</div>
-                    <router-link :to="`/club/${event.team.teamId}`" class="text-lg font-semibold text-0">{{
-                        event.team.name
-                    }}</router-link>
+                    <router-link
+                        :to="`/club/${event.team.teamId}`"
+                        class="text-lg font-semibold hover:underline text-0"
+                        >{{ event.team.name }}</router-link
+                    >
                 </div>
                 <div class="flex gap-1 text-sm text-2">
                     <div>Ajouté</div>

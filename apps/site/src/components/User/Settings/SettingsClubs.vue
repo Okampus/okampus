@@ -17,15 +17,22 @@
                         class="flex justify-between items-center py-2"
                     >
                         <div class="flex gap-3">
-                            <ProfileAvatar
-                                :avatar="membership.team.avatar"
-                                :name="membership.team.name"
-                                :size="3.5"
-                                :rounded-full="false"
-                            />
+                            <router-link :to="`/club/${membership.team.teamId}`">
+                                <ProfileAvatar
+                                    :avatar="membership.team.avatar"
+                                    :name="membership.team.name"
+                                    :size="3.5"
+                                    :rounded-full="false"
+                                />
+                            </router-link>
                             <div class="flex flex-col">
                                 <div class="flex gap-1.5 font-semibold text-1">
-                                    <div class="font-semibold">{{ membership.team.name }}</div>
+                                    <router-link
+                                        :to="`/club/${membership.team.teamId}`"
+                                        class="hover:underline"
+                                    >
+                                        <div class="font-semibold">{{ membership.team.name }}</div>
+                                    </router-link>
                                     <div>•</div>
                                     <div class="text-2">
                                         {{ clubRoleNames[membership.role][$i18n.locale] }}
@@ -68,15 +75,19 @@
                         class="flex justify-between items-center py-2"
                     >
                         <div class="flex gap-3">
-                            <ProfileAvatar
-                                :avatar="request.team.avatar"
-                                :name="request.team.name"
-                                :size="3.5"
-                                :rounded-full="false"
-                            />
+                            <router-link :to="`/club/${request.team.teamId}`">
+                                <ProfileAvatar
+                                    :avatar="request.team.avatar"
+                                    :name="request.team.name"
+                                    :size="3.5"
+                                    :rounded-full="false"
+                                />
+                            </router-link>
                             <div class="flex flex-col">
                                 <div class="flex gap-1.5 text-1">
-                                    <div class="font-semibold">{{ request.team.name }}</div>
+                                    <router-link :to="`/club/${request.team.teamId}`" class="hover:underline">
+                                        <div class="font-semibold">{{ request.team.name }}</div>
+                                    </router-link>
                                     <div class="text-sm">
                                         (comme {{ clubRoleNames[request.role][$i18n.locale] }})
                                     </div>
@@ -116,7 +127,7 @@
                             <template #default="{ close }">
                                 <div class="flex flex-col card">
                                     <div class="mb-6 text-2xl">
-                                        Formulaire d'adhésion pour {{ shownRequest?.team?.name ?? '' }}
+                                        Formulaire d'adhésion à {{ shownRequest?.team?.name ?? '' }}
                                     </div>
                                     <div class="flex flex-col gap-4">
                                         <div>
