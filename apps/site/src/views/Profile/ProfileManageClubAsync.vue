@@ -93,8 +93,8 @@
         },
         {
             id: ACTIVITY,
-            name: 'Activité',
-            icon: 'history',
+            name: 'Events',
+            icon: 'calendar',
         },
     ]
     const DEFAULT_TAB = tabs[0]
