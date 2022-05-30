@@ -24,10 +24,6 @@ export const useUsersStore = defineStore('users', {
             }
             return user
         },
-        // upsertUser(user) {
-        //     this.users = upsert(this.users, user, 'userId')
-        //     return user
-        // },
         async getUsers(query) {
             return await $axios.get('users', { params: query }).then(onItems(this.replaceUsers))
         },

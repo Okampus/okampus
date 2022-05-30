@@ -27,7 +27,7 @@
             <div class="line-clamp-2 text-1">
                 {{ user.shortDescription }}
             </div>
-            <div class="flex flex-wrap gap-1">
+            <div class="flex flex-wrap gap-1 items-center">
                 <ProfileAvatar
                     v-for="club in user.clubs"
                     :key="club"
