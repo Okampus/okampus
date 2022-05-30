@@ -1,106 +1,65 @@
 <template>
-    <div class="flex flex-col">
-        <!-- <p class="text-lg">V1</p>
-        <div class="flex p-4 w-full h-40 rounded-lg shadow-md bg-2">
-            <div class="flex flex-col justify-center items-center mr-4">
-                <i class="text-[7rem] text-gray-500 fas fa-calendar-days"></i>
-            </div>
-            <div class="flex flex-col w-full h-full">
-                <div class="flex gap-8 items-center p-2 mb-4 w-full h-12 bg-gray-300 rounded-md">
-                    <div class="flex gap-2 items-center">
-                        <i class="text-xl fas fa-calendar"></i>
-                        <p>16/04/2022</p>
-                    </div>
-                    <div class="flex gap-2 items-center">
-                        <i class="text-xl fas fa-location-dot"></i>
-                        <p>Campus République</p>
-                    </div>
-                    <div class="flex gap-2 items-center">
-                        <i class="text-xl fas fa-clock-rotate-left"></i>
-                        <p>2h30</p>
-                    </div>
+    <div class="flex flex-col min-w-[20rem] max-w-[30rem] rounded-xl bg-2 text-0">
+        <div class="flex gap-4 p-4">
+            <ProfileAvatar :name="event.team.name" :avatar="event.team.avatar" />
+            <div class="flex flex-col">
+                <div class="flex gap-1 items-center">
+                    <div class="text-sm">Organisé par</div>
+                    <router-link :to="`/club/${event.team.teamId}`" class="text-lg font-semibold text-0">{{
+                        event.team.name
+                    }}</router-link>
                 </div>
-                <div class="flex justify-between w-full h-full">
-                    <div class="flex flex-col h-full">
-                        <h3 class="text-2xl font-bold">Rézal</h3>
-                        <p>Lan Multijoueur au campus république</p>
-                    </div>
-                    <div class="flex flex-col mr-16">
-                        <button class="py-2 px-4 mt-2 font-bold text-white bg-blue-500 rounded-full">
-                            Plus d'informations
-                        </button>
-                    </div>
+                <div class="flex gap-1 text-sm text-2">
+                    <div>Ajouté</div>
+                    <TipRelativeDate :date="event.createdAt" />
                 </div>
             </div>
-        </div> -->
-        <!-- <ProfileAvatar :name="props.event.team.name"></ProfileAvatar> -->
-        <div class="flex flex-col gap-2">
-            <div class="flex flex-col w-[26rem] h-72 rounded-lg bg-2">
-                <!-- <div class="w-full h-24 bg-blue-400 rounded-t-lg"></div> -->
-                <ProfileBanner
-                    class="z-10 p-0 h-24"
-                    :name="props.event.shortDescription"
-                    :data="props.event.team.name"
-                ></ProfileBanner>
-                <div class="z-20 items-center py-1 px-2 -mt-6 ml-4 w-fit rounded-md bg-1">
-                    <div class="flex gap-2">
-                        <i class="text-md fas fa-location-dot"></i>
-                        <p class="text-sm">{{ props.event.place }}</p>
-                    </div>
-                    <div class="flex gap-2 items-center">
-                        <i class="text-md fas fa-calendar"></i>
-                        <div class="text-sm">
-                            Du
-                            <span class="font-bold">
-                                {{
-                                    new Date(props.event.start).toLocaleDateString() +
-                                    ' ' +
-                                    new Date(props.event.start).toISOString().substr(11, 5)
-                                }}
-                            </span>
-                            au
-                            <span class="font-bold"
-                                >{{
-                                    new Date(props.event.end).toLocaleDateString() +
-                                    ' ' +
-                                    new Date(props.event.end).toISOString().substr(11, 5)
-                                }}
-                            </span>
-                        </div>
+        </div>
+
+        <ProfileBanner
+            class="h-24"
+            :name="event.shortDescription"
+            :data="event.team.name"
+            :rounded-top="false"
+        />
+
+        <div class="z-20 py-1.5 mx-4 -mt-[2.5rem] w-14 h-16 rounded-lg shadow-md bg-1">
+            <div class="text-xl font-bold text-center">{{ startDate.getDate() }}</div>
+            <div class="font-semibold text-center text-red-500/90 dark:text-red-400">{{ startMonth }}</div>
+        </div>
+
+        <div class="flex flex-col justify-between mx-5">
+            <div class="flex flex-col gap-1 self-start mt-4">
+                <div class="text-xs font-semibold uppercase text-3">{{ dateRangeString }}</div>
+                <div class="self-start mt-2 text-lg font-bold">{{ event.shortDescription }}</div>
+                <div class="flex gap-2 self-start text-sm text-3">
+                    <div>{{ event.price === 0 ? 'Gratuit' : `Prix: ${event.price}` }}</div>
+                    <div>•</div>
+                    <div class="flex gap-2 items-center text-2">
+                        <i class="text-xs fas fa-location-dot"></i>
+                        <div>{{ event.place }}</div>
                     </div>
                 </div>
-                <div class="p-4">
-                    <p class="mb-2">
-                        <span class="font-bold">{{ props.event.team.name }}</span> organise un évenement
-                    </p>
-                    <div class="flex flex-col">
-                        <h3 class="text-2xl font-bold">{{ props.event.shortDescription }}</h3>
-                    </div>
-                    <div class="flex gap-2 justify-center mt-4 w-full">
-                        <a
-                            :href="`#/events/${props.event.teamEventId}`"
-                            class="py-2 px-4 mt-2 w-1/2 font-bold text-white bg-blue-500 rounded-full"
-                        >
-                            Plus d'informations
-                        </a>
-                        <!-- <button
-                            class="py-2 px-4 mt-2 w-1/2 font-bold text-white bg-green-500 rounded-full"
-                            @click="joinEvent"
-                        >
-                            S'inscrire
-                        </button> -->
-                    </div>
-                </div>
+            </div>
+
+            <div class="self-center my-6">
+                <router-link
+                    :to="`/events/${event.teamEventId}`"
+                    class="py-2 px-4 w-1/2 font-bold text-white bg-blue-500 rounded-full"
+                >
+                    Plus d'informations
+                </router-link>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-    // import { useClubsStore } from '@/store/clubs.store'
-    // import ProfileAvatar from '../Profile/ProfileAvatar.vue'
-    // import { emitter } from '@/shared/modules/emitter'
+    import ProfileAvatar from '../Profile/ProfileAvatar.vue'
     import ProfileBanner from '../Profile/ProfileBanner.vue'
+    import TipRelativeDate from '../UI/Tip/TipRelativeDate.vue'
+    // import { useClubsStore } from '@/store/clubs.store'
+    // import { emitter } from '@/shared/modules/emitter'
     const props = defineProps({
         event: {
             type: Object,
@@ -108,22 +67,18 @@
         },
     })
 
-    // const clubs = useClubsStore()
+    const format = new Intl.DateTimeFormat('fr', {
+        month: 'short',
+    })
+    const startDate = new Date(props.event.start)
+    const endDate = new Date(props.event.end)
 
-    // const joinEvent = async () => {
-    //     await clubs
-    //         .joinEvent(props.event.teamEventId)
-    //         .then(() =>
-    //             emitter.emit('show-toast', {
-    //                 message: 'Votre inscription a bien été prise en compte',
-    //                 type: 'success',
-    //             }),
-    //         )
-    //         .catch(
-    //             emitter.emit('show-toast', {
-    //                 message: "Erreur lors de l'opération",
-    //                 type: 'failure',
-    //             }),
-    //         )
-    // }
+    const startMonth = format.format(startDate)
+    const endMonth = format.format(endDate)
+
+    const dateRangeString = `${startDate.getDate()} ${startMonth} ${startDate.getHours()}h${
+        startDate.getMinutes() ? startDate.getMinutes().toString().padStart(2, '0') : ''
+    } - ${endDate.getDate()} ${endMonth} ${endDate.getHours()}h${
+        endDate.getMinutes() ? endDate.getMinutes().toString().padStart(2, '0') : ''
+    }`
 </script>

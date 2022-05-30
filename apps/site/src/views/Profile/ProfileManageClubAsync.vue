@@ -58,7 +58,6 @@
 
     const clubId = computed(() => route.params.clubId)
     const clubManageRoute = computed(() => `/club/${route.params.clubId}/manage`)
-    const clubActivityRoute = computed(() => `/club/${route.params.clubId}/activity`)
 
     const club = ref(null)
 
@@ -93,7 +92,6 @@
         {
             id: ACTIVITY,
             name: 'Activité',
-            route: clubActivityRoute,
             icon: 'history',
         },
     ]

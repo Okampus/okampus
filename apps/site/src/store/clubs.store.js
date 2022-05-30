@@ -101,14 +101,17 @@ export const useClubsStore = defineStore('clubs', {
         async joinEvent(eventId) {
             return await $axios.post(`teams/events/${eventId}/registrations`).then((res) => res.data)
         },
+        async unregisterEvent(eventId) {
+            return await $axios.delete(`teams/events/${eventId}/registrations`).then((res) => res.data)
+        },
         async getEvents() {
-            return await $axios.get('teams/events').then((res) => this.replaceEvents(res.data))
+            return await $axios.get('teams/events').then(onItems(this.replaceEvents))
         },
         async createEvent(teamId, data) {
             return await $axios.post(`teams/events/${teamId}`, data).then((res) => res.data)
         },
         async getEvent(eventId) {
-            return await $axios.get(`teams/events/${eventId}`).then((res) => this.replaceEvent(res.data))
+            return await $axios.get(`teams/events/${eventId}`).then(onData(this.replaceEvent))
         },
         async getEventGuests(eventId) {
             return await $axios.get(`teams/events/${eventId}/registrations`).then((res) => res.data)
@@ -119,8 +122,5 @@ export const useClubsStore = defineStore('clubs', {
         //         .get(`teams/events/registrations?userId=${userId}`)
         //         .then((res) => this.replaceEvent(res.data))
         // },
-        async unRegisterEvent(eventId) {
-            return await $axios.delete(`teams/events/${eventId}/registrations`).then((res) => res.data)
-        },
     },
 })

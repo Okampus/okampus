@@ -1,19 +1,12 @@
 <template>
     <div class="flex flex-col gap-6 m-4 text-2">
-        <div>
-            <div class="text-lg text-0">Mes activités</div>
-
-            <div v-if="events.length === 0">Vous n'êtes inscris à aucun événement</div>
-            <div class="v-else">
-                <div v-for="event in events" :key="event">
-                    <ClubEventCard :event="event"></ClubEventCard>
-                </div>
+        <div class="text-lg text-0">Mes inscriptions</div>
+        <div v-if="events.length === 0">Vous n'êtes inscrit à aucun événement.</div>
+        <template v-else>
+            <div v-for="event in events" :key="event">
+                <ClubEventCard :event="event"></ClubEventCard>
             </div>
-        </div>
-        <div>
-            <div class="text-lg text-0">Mes inscriptions</div>
-            <div>Vous n'êtes inscrit à aucun événement.</div>
-        </div>
+        </template>
     </div>
 </template>
 
@@ -27,27 +20,23 @@
 
     const auth = useAuthStore()
     const clubs = useClubsStore()
-    const me = ref(null)
     const events = ref([])
-    me.value = auth.user
 
     const loadEvents = async () => {
-        if (me.value) {
-            const eventss = await clubs
-                .getEvents()
-                .then((res) => res.items)
-                .catch((err) => {
-                    emitter.emit('error-route', { code: getStatusAxiosError(err) })
-                })
-            eventss.forEach(async (event) => {
-                console.log(event)
-                await clubs.getEventGuests(event.teamEventId).then((guests) => {
-                    if (guests.items.find((guest) => guest.user.userId === me.value.userId)) {
-                        events.value.push(event)
-                    }
+        await clubs
+            .getEvents()
+            .then((teamEvents) => {
+                teamEvents.forEach(async (event) => {
+                    await clubs.getEventGuests(event.teamEventId).then((guests) => {
+                        if (guests.items.find((guest) => guest.user.userId === auth.user.userId)) {
+                            events.value.push(event)
+                        }
+                    })
                 })
             })
-        }
+            .catch((err) => {
+                emitter.emit('error-route', { code: getStatusAxiosError(err) })
+            })
     }
 
     await loadEvents()

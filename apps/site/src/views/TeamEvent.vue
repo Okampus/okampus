@@ -1,10 +1,12 @@
 <template>
-    <Suspense>
-        <TeamEventAsync />
-        <template #fallback>
-            <AppLoader />
-        </template>
-    </Suspense>
+    <Transition mode="out-in" name="switch-fade">
+        <Suspense>
+            <TeamEventAsync />
+            <template #fallback>
+                <AppLoader />
+            </template>
+        </Suspense>
+    </Transition>
 </template>
 
 <script setup>
