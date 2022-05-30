@@ -19,20 +19,20 @@
                         class="text-xl fas"
                         :class="dragover ? 'fa-cloud-download-alt' : 'fa-cloud-upload-alt'"
                     />
-                    <div>
+                    <div class="text-center">
                         <span class="text-blue-500 hover:underline"> Cliquez </span> ou glissez vos
                         {{ fileLimit != -1 ? fileLimit : '' }} fichiers ici !
                     </div>
                 </div>
                 <div
                     v-else
-                    class="grid overflow-y-scroll auto-rows-[100%] gap-2 h-full"
-                    :class="[fileLimit != 1 ? 'grid-cols-2 md:grid-cols-4 lg:grid-cols-6' : '']"
+                    class="grid overflow-y-scroll auto-rows-[100%] gap-2 w-full h-full"
+                    :class="[fileLimit != 1 ? 'grid-cols-2 md:grid-cols-4 lg:grid-cols-6' : 'grid-cols-1']"
                 >
                     <div
                         v-for="(file, index) in modelValue"
                         :key="index"
-                        class="rounded shadow-md text-1 bg-1"
+                        class="w-full rounded shadow-md text-1 bg-1"
                     >
                         <div
                             class="flex flex-col gap-2 justify-center items-center p-2 w-full h-19/24 border-b border-color-0"
@@ -43,17 +43,30 @@
                                 :src="URL.createObjectURL(file)"
                             />
                             <DocumentIcon v-else :file-name="file.name" :mime="file.type" />
-                            <div class="w-full">
-                                <div class="text-center truncate">
+                            <div class="w-full text-center">
+                                <div class="truncate">
                                     {{ file.name }}
                                 </div>
                             </div>
                         </div>
                         <div class="flex justify-between items-center p-2 w-full h-5/24">
                             {{ formatBytes(file.size, 0) }}
-                            <button title="Enlever le fichier" @click.prevent="removeFile(file)">
-                                <i class="text-red-500 fas fa-times" />
-                            </button>
+                            <div class="flex gap-2">
+                                <button
+                                    v-if="canDownload"
+                                    title="Télécharger le fichier"
+                                    @click.prevent="downloadFile(file)"
+                                >
+                                    <i class="text-blue-500 fa-solid fa-download"></i>
+                                </button>
+                                <button
+                                    v-if="canDelete === true"
+                                    title="Enlever le fichier"
+                                    @click.prevent="removeFile(file)"
+                                >
+                                    <i class="text-red-500 fas fa-times" />
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div
@@ -70,7 +83,7 @@
             </div>
         </div>
         <div class="flex justify-between">
-            <div :class="[modelValue.length == 0 || fileLimit == -1 ? 'invisible' : '']" class="text-2">
+            <div :class="[modelValue.length == 0 || fileLimit <= 1 ? 'invisible' : '']" class="text-2">
                 {{ modelValue.length }}/{{ fileLimit }}
             </div>
             <div :class="[totalFileSize <= sizeLimit * 0.5 ? 'invisible' : '']" class="text-2">
@@ -111,12 +124,20 @@
             regexMimes: {
                 type: Array,
                 default() {
-                    return String.raw`*`
+                    return ['.*']
                 },
             },
             sizeLimit: {
                 type: Number,
                 required: true,
+            },
+            canDelete: {
+                type: Boolean,
+                default: true,
+            },
+            canDownload: {
+                type: Boolean,
+                default: false,
             },
         },
         emits: ['update:modelValue'],
@@ -176,6 +197,14 @@
                     'update:modelValue',
                     this.modelValue.filter((f) => f != file),
                 )
+            },
+            downloadFile(file) {
+                console.log(file)
+                const url = URL.createObjectURL(file)
+                const a = document.createElement('a')
+                a.href = url
+                a.download = file.name
+                a.click()
             },
         },
     }

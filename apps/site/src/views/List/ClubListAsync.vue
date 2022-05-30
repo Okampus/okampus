@@ -254,6 +254,7 @@
                 ).length
             })
             .catch((err) => {
+                console.log('odk', err)
                 emitter.emit('error-route', { code: getStatusAxiosError(err) })
             })
     }
@@ -271,6 +272,7 @@
                     })
             })
             .catch((err) => {
+                console.log('ok', err)
                 emitter.emit('error-route', { code: getStatusAxiosError(err) })
             })
     }

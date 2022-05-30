@@ -11,6 +11,7 @@
 
 <script setup>
     import ManageDriveAsync from '@/components/Profile/Manage/ManageDriveAsync.vue'
+    import AppLoader from '@/components/App/AppLoader.vue'
 
     defineProps({
         club: {
