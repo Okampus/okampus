@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-5 mx-4 md:mx-auto md:w-23/24 text-0">
+    <div v-if="thread" class="flex flex-col gap-5 mx-4 md:mx-auto md:w-23/24 text-0">
         <div class="flex gap-5">
             <LabelTag
                 :icon="thread._type.icon"
@@ -135,10 +135,10 @@
     const thread = ref(null)
 
     const loadThread = async () => {
-        if (route.name === 'threads') {
+        if (route.name === 'post') {
             const threadId = route.params.id
             if (!isPositiveInteger(threadId)) {
-                emitter.emit('error-route', errorCodes.NOT_FOUND)
+                emitter.emit('error-route', { code: errorCodes.NOT_FOUND })
                 return
             }
 

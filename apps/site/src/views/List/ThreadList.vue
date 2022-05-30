@@ -1,7 +1,7 @@
 <template>
     <ListPage :route-base="routeBase" :route-name="routeName" :callback="threads.getThreads" :type="THREAD">
         <template #default="{ items }">
-            <div v-if="items.length" class="flex flex-col gap-4">
+            <div v-if="items.length" class="flex flex-col gap-4 centered-container">
                 <ThreadCard v-for="thread in items" :key="thread.contentMasterId" :thread="thread" />
             </div>
         </template>

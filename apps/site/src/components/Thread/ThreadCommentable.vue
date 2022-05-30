@@ -2,7 +2,9 @@
     <div
         class="flex gap-5 items-stretch p-4 rounded-none shadow-md md:rounded-lg bg-card-within-1 content-parent"
         :class="
-            thread.post.contentId !== content.contentId && thread.opValidatedWith
+            thread.adminValidatedWith?.contentId === content.contentId
+                ? 'border-2 border-orange-600'
+                : thread.opValidatedWith?.contentId === content.contentId
                 ? 'border-2 border-green-600'
                 : ''
         "
@@ -50,7 +52,10 @@
                     </div>
                     <TipRelativeDate class="text-sm text-2" :date="content.createdAt" />
                     <template v-if="thread.post.contentId !== content.contentId">
-                        <i v-if="thread.opValidatedWith" class="text-base text-green-600 fa fa-check" />
+                        <i
+                            v-if="thread.opValidatedWith?.contentId === content.contentId"
+                            class="text-base text-green-600 fa fa-check"
+                        />
                         <i
                             v-else-if="thread.post.author === auth.user.userId"
                             class="text-sm cursor-pointer fa fa-check text-5"
@@ -59,7 +64,11 @@
                             "
                         />
 
-                        <LabelTag v-if="thread.adminValidatedWith" tag-name="Officiel" tag-color="orange" />
+                        <LabelTag
+                            v-if="thread.adminValidatedWith?.contentId === content.contentId"
+                            tag-name="Officiel"
+                            tag-color="orange"
+                        />
                         <i
                             v-else-if="auth.user.roles.includes('admin')"
                             class="text-sm cursor-pointer fa fa-check-double text-5"

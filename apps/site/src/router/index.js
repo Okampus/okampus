@@ -51,17 +51,17 @@ const routes = [
         },
     },
 
-    // {
-    //     path: '/post/new',
-    //     component: () => import('@/views/Thread/ThreadNew.vue'),
-    //     meta: {
-    //         requiresAuth: true,
-    //     },
-    // },
+    {
+        path: '/post/new',
+        component: () => import('@/views/Thread/ThreadNew.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
 
     {
         name: 'post',
-        path: '/post/:id[0-9]+',
+        path: '/post/:id*',
         component: () => import('@/views/Thread/ThreadView.vue'),
         meta: {
             requiresAuth: true,
