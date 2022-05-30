@@ -9,21 +9,21 @@
                     class="w-full h-36"
                     :file-limit="1"
                     :size-limit="2000000"
-                ></FileInput>
+                />
                 <FilePreview
                     v-else
                     class="w-full h-36"
                     :file="doc.file[0].file"
                     :can-delete="true"
                     @delete="(val) => deleteFile(val)"
-                ></FilePreview>
+                />
             </div>
         </div>
         <div class="flex flex-col gap-4">
             <div class="text-lg">Galerie photo</div>
             <div class="grid grid-cols-1 gap-2 md:grid-cols-3">
                 <img
-                    v-for="(img, i) in clubsStore.club.files.filter((doc) => doc.type === 'gallery')"
+                    v-for="(img, i) in clubFiles.filter((doc) => doc.type === 'gallery')"
                     :key="i"
                     :src="img.file.url"
                     class="w-full h-36 aspect-ratio-16/9"
@@ -43,10 +43,14 @@
 </template>
 
 <script setup>
-    import { useClubsStore } from '@/store/clubs.store'
     import FileInput from '@/components/Input/FileInput.vue'
     import FilePreview from '@/components/Document/FilePreview.vue'
+
     import { ref, watch, computed } from 'vue'
+
+    import { useClubsStore } from '@/store/clubs.store'
+
+    import { emitter } from '@/shared/modules/emitter'
 
     const props = defineProps({
         club: {
@@ -55,8 +59,9 @@
         },
     })
 
-    const clubsStore = useClubsStore()
-    await clubsStore.getClubFiles(props.club.teamId)
+    const clubFiles = ref([])
+
+    const clubs = useClubsStore()
 
     const galleryInput = ref([])
 
@@ -64,9 +69,7 @@
         {
             name: 'Passation',
             file: computed(() =>
-                clubsStore.club.files.filter(
-                    (doc) => doc.description === 'handover' && doc.type === 'document',
-                ),
+                clubs.club.files.filter((doc) => doc.description === 'handover' && doc.type === 'document'),
             ),
             description: 'handover',
             model: [],
@@ -74,9 +77,7 @@
         {
             name: 'Status',
             file: computed(() =>
-                clubsStore.club.files.filter(
-                    (doc) => doc.description === 'statute' && doc.type === 'document',
-                ),
+                clubs.club.files.filter((doc) => doc.description === 'statute' && doc.type === 'document'),
             ),
             description: 'statute',
             model: [],
@@ -84,9 +85,7 @@
         {
             name: 'Réglement interieur',
             file: computed(() =>
-                clubsStore.club.files.filter(
-                    (doc) => doc.description === 'internal' && doc.type === 'document',
-                ),
+                clubs.club.files.filter((doc) => doc.description === 'internal' && doc.type === 'document'),
             ),
             description: 'internal',
             model: [],
@@ -98,8 +97,7 @@
             () => documentList.value[i].model,
             () => {
                 if (documentList.value[i].model.length) {
-                    console.log('ok')
-                    clubsStore.postClubFile(
+                    clubs.postClubFile(
                         props.club.teamId,
                         'document',
                         documentList.value[i].model[0],
@@ -113,15 +111,37 @@
     }
 
     const deleteFile = (fileId) => {
-        clubsStore.deleteClubFile(
-            clubsStore.club.files.find((el) => el.file.fileUploadId === fileId).teamFileId,
-        )
+        clubs.deleteClubFile(clubs.club.files.find((el) => el.file.fileUploadId === fileId).teamFileId)
     }
 
     const uploadGallery = () => {
         for (const el of galleryInput.value) {
-            clubsStore.postClubFile(props.club.teamId, 'gallery', el)
+            clubs.postClubFile(props.club.teamId, 'gallery', el)
         }
         galleryInput.value = []
     }
+
+    const getFiles = async () => {
+        await clubs
+            .getClubFiles(props.club.teamId)
+            .then((files) => {
+                clubFiles.value = files
+            })
+            .catch((err) => {
+                console.log(err)
+                emitter.emit('show-toast', {
+                    message: `Erreur lors du chargement des fichiers de l'association: ${err.message}`,
+                    type: 'error',
+                })
+            })
+    }
+
+    await getFiles()
+
+    watch(
+        () => props.club.teamId,
+        async () => {
+            await getFiles()
+        },
+    )
 </script>
