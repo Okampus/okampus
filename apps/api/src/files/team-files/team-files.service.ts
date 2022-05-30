@@ -23,7 +23,10 @@ export class TeamFilesService {
     createGalleryImageDto: CreateTeamFileDto,
     file: FileUpload,
   ): Promise<TeamFile> {
-    const team = await this.teamRepository.findOneOrFail({ teamId: createGalleryImageDto.teamId });
+    const team = await this.teamRepository.findOneOrFail(
+      { teamId: createGalleryImageDto.teamId },
+      { populate: ['members'] },
+    );
 
     if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
