@@ -9,6 +9,8 @@ export const useClubsStore = defineStore('clubs', {
         userMembershipRequests: [],
         clubMembershipRequests: [],
         club: {},
+        events: [],
+        event: {},
     }),
     actions: {
         replaceClubs(clubs) {
@@ -34,6 +36,16 @@ export const useClubsStore = defineStore('clubs', {
         replaceClub(club) {
             this.club = club
             return club
+        },
+
+        replaceEvents(events) {
+            this.events = events
+            return events
+        },
+
+        replaceEvent(event) {
+            this.event = event
+            return event
         },
 
         async getClubs() {
@@ -79,5 +91,36 @@ export const useClubsStore = defineStore('clubs', {
         async handleRequest(requestId, data) {
             return await $axios.put(`teams/requests/${requestId}`, data).then((res) => res.data)
         },
+
+        async getTeamEvents(clubId) {
+            return await $axios
+                .get(`teams/events?teamId=${clubId}`)
+                .then((res) => this.replaceEvents(res.data))
+        },
+
+        async joinEvent(eventId) {
+            return await $axios.post(`teams/events/${eventId}/registrations`).then((res) => res.data)
+        },
+        async unregisterEvent(eventId) {
+            return await $axios.delete(`teams/events/${eventId}/registrations`).then((res) => res.data)
+        },
+        async getEvents() {
+            return await $axios.get('teams/events').then(onItems(this.replaceEvents))
+        },
+        async createEvent(teamId, data) {
+            return await $axios.post(`teams/events/${teamId}`, data).then((res) => res.data)
+        },
+        async getEvent(eventId) {
+            return await $axios.get(`teams/events/${eventId}`).then(onData(this.replaceEvent))
+        },
+        async getEventGuests(eventId) {
+            return await $axios.get(`teams/events/${eventId}/registrations`).then((res) => res.data)
+        },
+        // async getPersonalEvents(userId) {
+        //     console.log('coucou toa')
+        //     return await $axios
+        //         .get(`teams/events/registrations?userId=${userId}`)
+        //         .then((res) => this.replaceEvent(res.data))
+        // },
     },
 })

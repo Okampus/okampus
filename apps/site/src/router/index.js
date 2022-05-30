@@ -113,7 +113,7 @@ const routes = [
     {
         name: 'user',
         path: '/user/:userId',
-        component: () => import('@/views/App/WIP.vue'),
+        component: () => import('@/views/Profile/ProfileUser.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -158,6 +158,24 @@ const routes = [
         name: 'club',
         path: '/club/:clubId',
         component: () => import('@/views/App/WIP.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
+        name: 'events',
+        path: '/events',
+        component: () => import('@/views/List/EventList.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
+        name: 'event',
+        path: '/events/:eventId',
+        component: () => import('@/views/TeamEvent.vue'),
         meta: {
             requiresAuth: true,
         },

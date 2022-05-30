@@ -8,14 +8,14 @@
             :src="avatar"
             :alt="`${name}`"
             :title="`Photo de profil de ${name}`"
-            :class="[...roundedClass, loaded ? 'text-black' : 'text-transparent']"
+            :class="[innerClass, ...roundedClass, loaded ? 'text-black' : 'text-transparent']"
             @load="loaded = true"
             @error="loaded = true"
         />
         <div
             v-if="avatar && !loaded"
             class="absolute top-0 left-0 bg-slate-300 dark:bg-slate-600 animate-pulse"
-            :class="roundedClass"
+            :class="[innerClass, roundedClass]"
             :style="avatarSizeStyle"
         />
         <div
@@ -25,7 +25,7 @@
             :title="`Photo de profil de ${name}`"
             :style="{ ...avatarSizeStyle, backgroundColor: getColorFromData(name) }"
             class="profile-avatar"
-            :class="roundedClass"
+            :class="[innerClass, roundedClass]"
         >
             <div class="m-auto w-fit h-fit text-white" :style="{ fontSize: `${size / 2.3}rem` }">
                 {{ getInitialsFromName(name) }}
@@ -60,6 +60,10 @@
         roundedFull: {
             type: Boolean,
             default: true,
+        },
+        innerClass: {
+            type: [String, Array, Object],
+            default: '',
         },
     })
 
