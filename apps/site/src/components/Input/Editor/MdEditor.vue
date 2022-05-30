@@ -4,13 +4,13 @@
         <div class="flex flex-row gap-4 items-center">
             <p
                 v-if="cancellable"
-                class="mt-2 text-base font-bold text-red-500 uppercase cursor-pointer"
+                class="mt-2 text-base tracking-wide text-red-500 uppercase cursor-pointer"
                 @click="emit('cancel')"
             >
                 Annuler
             </p>
             <template v-if="sendable">
-                <div class="mt-2 text-base font-bold tracking-wide">
+                <div class="mt-2 text-base">
                     <TipPopper
                         v-if="charCount < minCharCount"
                         :tip="`Tu dois au moins écrire ${minCharCount} caractères.`"
@@ -18,7 +18,13 @@
                         <p class="text-gray-500 cursor-not-allowed">Envoyer</p>
                     </TipPopper>
 
-                    <p v-else class="text-blue-500 uppercase cursor-pointer" @click="emit('send')">Envoyer</p>
+                    <p
+                        v-else
+                        class="tracking-wide text-blue-500 uppercase cursor-pointer"
+                        @click="emit('send')"
+                    >
+                        Envoyer
+                    </p>
                 </div>
             </template>
             <slot name="error" class="mt-2" />
