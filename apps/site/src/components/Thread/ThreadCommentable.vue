@@ -192,13 +192,3 @@
         actions.map((action) => action(props.content)).filter((action) => action.condition),
     )
 </script>
-
-<style lang="scss">
-    .content-show-focused {
-        transition: opacity 0.5s ease;
-
-        .content-parent:hover & {
-            opacity: 1;
-        }
-    }
-</style>
