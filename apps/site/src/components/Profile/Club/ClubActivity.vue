@@ -1,7 +1,7 @@
 <template>
     <Transition mode="out-in" name="switch-fade">
         <Suspense>
-            <ProfileUserAsync />
+            <ClubActivityAsync :club="club" />
             <template #fallback>
                 <AppLoader />
             </template>
@@ -10,6 +10,13 @@
 </template>
 
 <script setup>
+    import ClubActivityAsync from './ClubActivityAsync.vue'
     import AppLoader from '@/components/App/AppLoader.vue'
-    import ProfileUserAsync from '@/views/Profile/ProfileUserAsync.vue'
+
+    defineProps({
+        club: {
+            type: Object,
+            required: true,
+        },
+    })
 </script>

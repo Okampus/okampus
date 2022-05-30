@@ -1,10 +1,12 @@
 <template>
-    <Suspense>
-        <ProfileClubAsync />
-        <template #fallback>
-            <AppLoader />
-        </template>
-    </Suspense>
+    <Transition mode="out-in" name="switch-fade">
+        <Suspense>
+            <ProfileClubAsync />
+            <template #fallback>
+                <AppLoader />
+            </template>
+        </Suspense>
+    </Transition>
 </template>
 
 <script setup>

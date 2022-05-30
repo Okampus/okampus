@@ -11,16 +11,14 @@
         </Carousel>
 
         <h1 class="mt-16 text-3xl font-bold">Liste des événements</h1>
-        <div class="flex flex-row flex-wrap gap-4 justify-between items-center mx-14 mt-8">
-            <div v-for="event in events" :key="event" class="">
-                <ClubEventCard :event="event" />
-            </div>
+        <div class="flex flex-row flex-wrap gap-4 items-center mx-14 mt-8">
+            <ClubEventCard v-for="event in events" :key="event" :event="event" />
         </div>
     </div>
     <div v-else>
         <div class="flex flex-col justify-center items-center my-auto -mt-10 h-content text-0">
             <div class="text-center">
-                <i class="text-6xl fas fa-calendar-day"></i>
+                <i class="text-6xl fas fa-calendar-day" />
             </div>
             <div class="mt-8 text-center">
                 <h1 class="text-4xl font-bold">Aucun événement</h1>

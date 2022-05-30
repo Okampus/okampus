@@ -110,8 +110,18 @@
             >
                 Créer un nouvel événement
             </button>
-            <div class="flex flex-row flex-wrap gap-4 justify-center items-center mt-8">
+
+            <div
+                v-if="events.length > 0"
+                class="flex flex-row flex-wrap gap-4 justify-center items-center mt-8"
+            >
                 <ClubEventCard v-for="event in events" :key="event" :event="event" />
+            </div>
+            <div v-else>
+                <i class="text-3xl fas fa-calendar-day" />
+                <div class="text-lg font-semibold text-center">
+                    Votre association n'a pas encore prévu d'événéments.
+                </div>
             </div>
         </div>
     </div>
@@ -142,17 +152,19 @@
     const loadEvents = async () => {
         await clubs
             .getTeamEvents(props.club.teamId)
-            .then((res) => {
-                events.value = res.items
+            .then((teamEvents) => {
+                events.value = teamEvents
             })
             .catch((err) => {
                 console.log(err)
+                emitter.emit('show-toast', {
+                    message: `Erreur lors du chargement des événements: ${err.message}`,
+                    type: 'error',
+                })
             })
     }
 
     const createEvent = async (event) => {
-        console.log('createEvent', event)
-
         const start = new Date(event.eventDateStart)
         start.setHours(event.eventTimeStart.split(':')[0])
         start.setMinutes(event.eventTimeStart.split(':')[1])
@@ -180,7 +192,7 @@
             })
             .catch((err) => {
                 emitter.emit('show-toast', {
-                    message: `Erreur lors de la création de l'évenement : ${err.message}`,
+                    message: `Erreur lors de la création de l'évenement: ${err.message}`,
                     type: 'error',
                 })
             })

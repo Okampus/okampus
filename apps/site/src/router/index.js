@@ -156,8 +156,8 @@ const routes = [
 
     {
         name: 'club',
-        path: '/club/:clubId',
-        component: () => import('@/views/App/WIP.vue'),
+        path: '/club/:clubId/:tab*',
+        component: () => import('@/views/Profile/ProfileClub.vue'),
         meta: {
             requiresAuth: true,
         },

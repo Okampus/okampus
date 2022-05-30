@@ -1,5 +1,7 @@
 <template>
-    <div class="flex flex-col min-w-[20rem] max-w-[30rem] rounded-xl bg-2 text-0">
+    <div
+        class="flex flex-col min-w-[20rem] rounded-xl sm:w-[calc(50%-1.5rem)] xl:w-[calc(33%-1.5rem)] bg-2 text-0"
+    >
         <div class="flex gap-4 p-4">
             <router-link :to="`/club/${event.team.teamId}`">
                 <ProfileAvatar :name="event.team.name" :avatar="event.team.avatar" />

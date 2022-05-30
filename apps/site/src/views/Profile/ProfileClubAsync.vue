@@ -1,5 +1,59 @@
 <template>
     <div>
+        <ProfileBanner :name="club.name" :banner="club.banner" class="p-0 h-40" :rounded-top="false" />
+        <div class="flex flex-col gap-6 pt-4 text-0 bg-2">
+            <div class="flex gap-10 justify-between items-center centered-container">
+                <div class="flex gap-4 -mt-[5rem]">
+                    <ProfileAvatar
+                        :avatar="club.avatar"
+                        :size="9"
+                        :name="club.name"
+                        inner-class="border-4 border-white dark:border-black !sahdow-none"
+                    />
+                    <div class="flex flex-col mt-20">
+                        <p class="text-3xl font-semibold">{{ club.name }}</p>
+                        <p class="text-lg text-2">{{ club.shortDescription }}</p>
+                    </div>
+                </div>
+                <button
+                    v-if="!memberRole"
+                    class="py-2 px-3 -ml-1 w-fit text-xl font-semibold text-center text-white bg-blue-600 hover:bg-blue-700 rounded-full"
+                    @click="emit('request', club.teamId)"
+                >
+                    Rejoindre
+                </button>
+                <template v-else-if="memberRole === IS_WAITING">
+                    <router-link
+                        :to="`/me/clubs/requests`"
+                        class="flex gap-2 items-center py-2 px-3 -ml-1 w-fit text-xl font-semibold text-center text-white bg-gray-400/60 hover:bg-gray-500/60 rounded-full"
+                    >
+                        <i class="fa fa-envelope" />
+                        <div>En attente</div>
+                    </router-link>
+                </template>
+                <template v-else-if="memberRole === IS_SPECIAL_ROLE">
+                    <router-link
+                        :to="`/club/${club.teamId}/manage`"
+                        class="flex gap-2 items-center py-2 px-3 -ml-1 w-fit text-xl font-semibold text-center text-white bg-green-500 hover:bg-green-600 rounded-full"
+                    >
+                        <i class="fa fa-gear" />
+                        <div>Gérer</div>
+                    </router-link>
+                </template>
+            </div>
+            <HorizontalTabs
+                v-model="currentTab"
+                class="centered-container"
+                :tabs="tabs"
+                :route-base="clubRoute"
+                route-name="club"
+            />
+        </div>
+        <div class="mt-4 centered-container">
+            <component :is="currentComponent" :club="club" />
+        </div>
+    </div>
+    <!-- <div>
         <div class="p-0 pb-2 mx-auto mt-0 rounded-b-none text-1 card">
             <div class="">
                 <div class="relative w-full h-48">
@@ -54,8 +108,8 @@
                     </div>
                 </div>
                 <h1 class="mt-4 mb-2 text-xl">Les dernières activités</h1>
-                <div class="flex gap-4">
-                    <!-- <div
+                <div class="flex gap-4"> -->
+    <!-- <div
                         class="flex flex-col flex-wrap justify-between items-center p-4 mb-4 w-48 h-48 rounded-lg shadow-md bg-2"
                     >
                         <ProfileAvatar
@@ -78,11 +132,11 @@
                             <p class="text-gray-400">Président</p>
                         </div>
                     </div> -->
-                </div>
+    <!-- </div>
             </div>
-        </div>
+        </div> -->
 
-        <!-- <div class="flex flex-col md:flex-row">
+    <!-- <div class="flex flex-col md:flex-row">
             <div class="order-2 mt-0 mb-4 space-y-4 md:order-1 md:mr-4 md:ml-2 md:w-1/2 lg:w-2/3">
                 <div class="flex flex-col grow space-y-4 card">
                     <div class="text-xl">Activité</div>
@@ -117,61 +171,128 @@
                 </div>
             </div>
         </div> -->
-    </div>
+    <!-- </div> -->
 </template>
 
 <script setup>
-    // import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
+    import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
+
+    import ClubHomepage from '@/components/Profile/Club/ClubHomepage.vue'
+    import ManageDrive from '@/components/Profile/Manage/ManageDrive.vue'
+    import ClubActivity from '@/components/Profile/Club/ClubActivity.vue'
+    import WIP from '../App/WIP.vue'
+
+    import { computed, h, ref, watchEffect } from 'vue'
 
     import { useRoute } from 'vue-router'
-    import { ref, nextTick } from 'vue'
+
+    import { useAuthStore } from '@/store/auth.store'
     import { useClubsStore } from '@/store/clubs.store'
+
     import { emitter } from '@/shared/modules/emitter'
-    // import { getStatus } from '@/utils/errors'
+    import { getStatusAxiosError } from '@/utils/errors'
+    import { PENDING } from '@/shared/types/club-requests.enum'
+    import { IS_MEMBER, IS_SPECIAL_ROLE, IS_WAITING, specialRoles } from '@/shared/types/club-roles.enum'
+    import { errorCodes } from '@/shared/errors/app-exceptions.enum'
+    import { isPositiveInteger } from '@/utils/stringUtils'
 
     const route = useRoute()
-    const clubStore = useClubsStore()
+
+    const HOME = 'home'
+    const MEMBERS = 'members'
+    const DRIVE = 'drive'
+    const ACTIVITY = 'activity'
+
+    const clubRoute = computed(() => `/club/${route.params.clubId}`)
+
+    const currentTab = ref(null)
+    const tabs = [
+        {
+            id: HOME,
+            name: 'Accueil',
+            route: clubRoute,
+            icon: 'house',
+        },
+        {
+            id: DRIVE,
+            name: 'Drive',
+            icon: 'file-arrow-down',
+        },
+        {
+            id: MEMBERS,
+            name: 'Membres',
+            icon: 'users',
+        },
+        {
+            id: ACTIVITY,
+            name: 'Activité',
+            icon: 'history',
+        },
+    ]
+
+    const DEFAULT_TAB = tabs[0]
+
+    const components = {
+        [HOME]: ClubHomepage,
+        [DRIVE]: ManageDrive,
+        [MEMBERS]: h(WIP, { key: MEMBERS }),
+        [ACTIVITY]: ClubActivity,
+    }
+
+    const currentComponent = computed(() => components[currentTab.value ?? DEFAULT_TAB.id])
+
+    const auth = useAuthStore()
+
+    const clubs = useClubsStore()
     const club = ref(null)
 
-    // const loadClub = async () => {
-    //     const clubId = route.params.clubId
-    //     await clubStore
-    //         .getClub(clubId)
-    //         .then((res) => {
-    //             club.value = res
-    //             nextTick(() => {
-    //                 if (route.hash) {
-    //                     emitter.emit('scroll-to-anchor', route.hash)
-    //                 }
-    //             })
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatus(err.response) })
-    //         })
-    // }
+    const clubId = ref(route.params.clubId)
 
-    // const loadMe = async () => {
-    //     await auth
-    //         .getMe()
-    //         .then((res) => {
-    //             me.value = res
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatus(err.response) })
-    //         })
-    // }
+    const userMemberships = ref([])
+    const userRequests = ref([])
 
-    // const roles = {
-    //     'Président': 'president',
-    //     'Vice-Président': 'vice-president',
-    //     'Secretaire': 'secretary',
-    //     'Trésorier': 'treasurer',
-    //     'Manager': 'manager',
-    //     'Membre': 'member',
-    // }
+    const getRoleType = (role) => (specialRoles.includes(role) ? IS_SPECIAL_ROLE : role ? IS_MEMBER : null)
 
+    const memberRole = computed(
+        () =>
+            getRoleType(userMemberships.value.find((member) => member.team.teamId === clubId.value)?.role) ??
+            (userRequests.value.find(
+                (request) => request.team.teamId === clubId.value && request.state === PENDING,
+            )
+                ? IS_WAITING
+                : null),
+    )
+
+    const loadClub = async () => {
+        await clubs
+            .getClub(clubId.value)
+            .then((clubData) => {
+                club.value = clubData
+            })
+            .catch((err) => {
+                emitter.emit('error-route', { code: getStatusAxiosError(err) })
+            })
+    }
+
+    await clubs.getMembershipsOf(auth.user).then((memberships) => {
+        userMemberships.value = memberships
+    })
+    await clubs.getMembershipRequestsOf(auth.user).then((requests) => {
+        userRequests.value = requests
+    })
     await loadClub()
-    // await loadContacts()
-    // watch(() => route.params.clubId, loadClub)
+
+    watchEffect(async () => {
+        if (route.name === 'club') {
+            if (!isPositiveInteger(route.params.clubId)) {
+                emitter.emit('error-route', { code: errorCodes.NOT_FOUND })
+                return
+            }
+
+            clubId.value = parseInt(route.params.clubId)
+            await loadClub()
+        }
+    })
 </script>

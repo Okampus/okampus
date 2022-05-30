@@ -1,15 +1,15 @@
 <template>
     <div>
-        <ProfileBanner :name="fullname(user)" :banner="user.banner" class="p-0 h-32" :rounded-top="false" />
+        <ProfileBanner :name="fullname(user)" :banner="user.banner" class="p-0 h-40" :rounded-top="false" />
         <div class="py-4 centered-container text-0">
-            <div class="flex gap-4 items-center -mt-[4rem]">
+            <div class="flex gap-4 -mt-[5rem]">
                 <ProfileAvatar
                     :avatar="user.avatar"
-                    :size="8"
+                    :size="9"
                     :name="fullname(user)"
                     inner-class="border-4 border-white dark:border-black !sahdow-none"
                 />
-                <div class="flex flex-col mt-14">
+                <div class="flex flex-col mt-20">
                     <p class="text-3xl font-semibold">{{ fullname(user) }}</p>
                     <p class="text-lg text-2">{{ user.shortDescription }}</p>
                 </div>
@@ -59,12 +59,11 @@
 </template>
 
 <script setup>
-    // import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import ClubEventCard from '@/components/Club/ClubEventCard.vue'
 
-    import { watch, ref, nextTick } from 'vue'
+    import { watch, ref } from 'vue'
 
     import { useRoute } from 'vue-router'
 
@@ -95,11 +94,6 @@
             .getUser(userId.value)
             .then((userData) => {
                 user.value = userData
-                nextTick(() => {
-                    if (route.hash) {
-                        emitter.emit('scroll-to-anchor', route.hash)
-                    }
-                })
             })
             .catch((err) => {
                 emitter.emit('error-route', { code: getStatusAxiosError(err) })
@@ -128,11 +122,6 @@
             .getMembershipsOf({ userId: userId.value })
             .then((userMemberships) => {
                 memberships.value = userMemberships
-                nextTick(() => {
-                    if (route.hash) {
-                        emitter.emit('scroll-to-anchor', route.hash)
-                    }
-                })
             })
             .catch((err) => {
                 emitter.emit('error-route', { code: getStatusAxiosError(err) })
@@ -159,10 +148,3 @@
         },
     )
 </script>
-
-<style lang="scss">
-    .banner {
-        background-color: #771250;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='96' viewBox='0 0 60 96'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%2335313c' fill-opacity='0.44'%3E%3Cpath d='M36 10a6 6 0 0 1 12 0v12a6 6 0 0 1-6 6 6 6 0 0 0-6 6 6 6 0 0 1-12 0 6 6 0 0 0-6-6 6 6 0 0 1-6-6V10a6 6 0 1 1 12 0 6 6 0 0 0 12 0zm24 78a6 6 0 0 1-6-6 6 6 0 0 0-6-6 6 6 0 0 1-6-6V58a6 6 0 1 1 12 0 6 6 0 0 0 6 6v24zM0 88V64a6 6 0 0 0 6-6 6 6 0 0 1 12 0v12a6 6 0 0 1-6 6 6 6 0 0 0-6 6 6 6 0 0 1-6 6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-</style>
