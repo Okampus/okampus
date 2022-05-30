@@ -182,9 +182,9 @@
     import ClubHomepage from '@/components/Profile/Club/ClubHomepage.vue'
     import ManageDrive from '@/components/Profile/Manage/ManageDrive.vue'
     import ClubActivity from '@/components/Profile/Club/ClubActivity.vue'
-    import WIP from '../App/WIP.vue'
+    import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
 
-    import { computed, h, ref, watchEffect } from 'vue'
+    import { computed, ref, watchEffect } from 'vue'
 
     import { useRoute } from 'vue-router'
 
@@ -237,7 +237,7 @@
     const components = {
         [HOME]: ClubHomepage,
         [DRIVE]: ManageDrive,
-        [MEMBERS]: h(WIP, { key: MEMBERS }),
+        [MEMBERS]: ClubMembers,
         [ACTIVITY]: ClubActivity,
     }
 

@@ -53,6 +53,8 @@
     import { useClubsStore } from '@/store/clubs.store'
     import { isPositiveInteger } from '@/utils/stringUtils'
 
+    import ClubMembersAsync from '@/components/Profile/Club/ClubMembersAsync.vue'
+
     const route = useRoute()
     const clubs = useClubsStore()
 
@@ -105,7 +107,7 @@
         [HOME]: ManageHomepage,
         [REQUESTS]: ManageRequests,
         [DRIVE]: ManageDrive,
-        [MEMBERS]: h(WIP, { key: MEMBERS }),
+        [MEMBERS]: ClubMembersAsync,
         [ACTIVITY]: ManageActivity,
     }
     const currentComponent = computed(() => components[currentTab.value ?? DEFAULT_TAB.id])

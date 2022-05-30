@@ -9,6 +9,7 @@ export const useClubsStore = defineStore('clubs', {
         userMembershipRequests: [],
         clubMembershipRequests: [],
         club: { files: [] },
+        members: [],
         events: [],
         event: {},
     }),
@@ -20,6 +21,11 @@ export const useClubsStore = defineStore('clubs', {
 
         replaceUserMemberships(memberships) {
             this.userMemberships = memberships
+            return memberships
+        },
+
+        replaceClubMemberships(memberships) {
+            this.members = memberships
             return memberships
         },
 
@@ -64,6 +70,12 @@ export const useClubsStore = defineStore('clubs', {
             return await $axios
                 .get(`teams/memberships/${user.userId}/requests`, { params: { itemsPerPage: 100 } })
                 .then(onItems(this.replaceUserMembershipRequests))
+        },
+
+        async getMembershipsOfClub(clubId) {
+            return await $axios
+                .get(`teams/members/${clubId}`)
+                .then(onItems(this.replaceClubMembershipRequests))
         },
 
         async getRequestsOfClub(clubId) {
