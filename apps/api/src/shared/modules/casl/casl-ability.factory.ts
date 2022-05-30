@@ -89,7 +89,9 @@ export class CaslAbilityFactory {
       allow(Action.Interact, Content);
 
       // This is all managed by-hand inside the services.
-      allow(Action.Update, Team);
+      allow(Action.Manage, Team);
+      allow(Action.Manage, TeamEvent);
+      allow(Action.Manage, TeamFile);
 
       forbid(Action.Update, User)
         .because('Not the user');
