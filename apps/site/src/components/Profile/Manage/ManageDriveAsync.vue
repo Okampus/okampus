@@ -69,7 +69,7 @@
         {
             name: 'Passation',
             file: computed(() =>
-                clubs.club.files.filter((doc) => doc.description === 'handover' && doc.type === 'document'),
+                clubFiles.value.filter((doc) => doc.description === 'handover' && doc.type === 'document'),
             ),
             description: 'handover',
             model: [],
@@ -77,7 +77,7 @@
         {
             name: 'Status',
             file: computed(() =>
-                clubs.club.files.filter((doc) => doc.description === 'statute' && doc.type === 'document'),
+                clubFiles.value.filter((doc) => doc.description === 'statute' && doc.type === 'document'),
             ),
             description: 'statute',
             model: [],
@@ -85,7 +85,7 @@
         {
             name: 'Réglement interieur',
             file: computed(() =>
-                clubs.club.files.filter((doc) => doc.description === 'internal' && doc.type === 'document'),
+                clubFiles.value.filter((doc) => doc.description === 'internal' && doc.type === 'document'),
             ),
             description: 'internal',
             model: [],
@@ -111,7 +111,7 @@
     }
 
     const deleteFile = (fileId) => {
-        clubs.deleteClubFile(clubs.club.files.find((el) => el.file.fileUploadId === fileId).teamFileId)
+        clubs.deleteClubFile(clubFiles.value.find((el) => el.file.fileUploadId === fileId).teamFileId)
     }
 
     const uploadGallery = () => {
