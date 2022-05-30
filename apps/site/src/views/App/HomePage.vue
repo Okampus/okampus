@@ -83,7 +83,7 @@
                         <vue-countdown
                             v-if="counting"
                             v-slot="{ totalSeconds }"
-                            :time="10000"
+                            :time="5000"
                             @end="onCountdownEnd"
                             >{{ totalSeconds }}</vue-countdown
                         >
@@ -169,6 +169,8 @@
 <script setup>
     import VueCountdown from '@chenfengyuan/vue-countdown'
     import AppLogin from '@/components/App/AppLogin.vue'
+    import AppLogo from '@/components/App/AppLogo.vue'
+
     import { useAuthStore } from '@/store/auth.store'
     import { ref } from 'vue'
 
