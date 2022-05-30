@@ -99,7 +99,7 @@
                 <AppLogin class="absolute z-10 w-[80vw] opacity-90 md:w-[60vw] lg:w-[40vw]">
                     <div class="flex flex-col items-center -mt-12 w-full">
                         <div class="flex justify-center py-3 w-10/12 bg-indigo-700 rounded-xl opacity-100">
-                            <div class="w-[12rem] h-[4rem] logo" />
+                            <AppLogo :scale="1.6" only="dark" />
                         </div>
                         <div class="mt-8 text-2xl text-center">
                             Connectez-vous pour accéder aux espaces 🔒
