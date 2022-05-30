@@ -6,7 +6,7 @@
                 <div class="label-title">Raison</div>
 
                 <!-- TODO: Change editor to basic textarea ? -->
-                <textarea v-model="state.reason" class="input" rows="10" @input="v$.reason.$touch" />
+                <textarea v-model="state.reason" class="input" rows="6" cols="30" @input="v$.reason.$touch" />
 
                 <div v-if="v$.reason.$error" class="text-red-500">
                     {{
