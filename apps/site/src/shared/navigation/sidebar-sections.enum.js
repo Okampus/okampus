@@ -161,6 +161,13 @@ export const sections = computed(() => {
                               textLarge: 'Associations',
                               icon: 'people-group',
                           },
+                          {
+                              to: '/events/',
+                              regActive: /^\/events?/,
+                              textSmall: 'Events',
+                              textLarge: 'Evénements',
+                              icon: 'calendar-days',
+                          },
                       ],
                   },
                   {

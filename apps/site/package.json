@@ -48,6 +48,7 @@
         "vue-image-crop-upload": "3.0.3",
         "vue-instantsearch": "4.3.3",
         "vue-router": "4.0.15",
+        "vue3-carousel": "^0.1.40",
         "vue3-popper": "1.4.2",
         "vuex": "4.0.2"
     },

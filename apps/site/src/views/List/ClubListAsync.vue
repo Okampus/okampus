@@ -236,6 +236,7 @@
                 }))
             })
             .catch((err) => {
+                console.log('Jambon', err)
                 emitter.emit('error-route', { code: getStatusAxiosError(err) })
             })
     }

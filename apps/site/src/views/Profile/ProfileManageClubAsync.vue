@@ -40,6 +40,7 @@
     import ManageRequests from '@/components/Profile/Manage/ManageRequests.vue'
     import ManageDrive from '@/components/Profile/Manage/ManageDrive.vue'
 
+    import ManageActivity from '@/components/Profile/Manage/ManageActivity.vue'
     import WIP from '@/views/App/WIP.vue'
 
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
@@ -105,7 +106,7 @@
         [REQUESTS]: ManageRequests,
         [DRIVE]: ManageDrive,
         [MEMBERS]: h(WIP, { key: MEMBERS }),
-        [ACTIVITY]: h(WIP, { key: ACTIVITY }),
+        [ACTIVITY]: ManageActivity,
     }
     const currentComponent = computed(() => components[currentTab.value ?? DEFAULT_TAB.id])
 

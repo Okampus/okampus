@@ -1,6 +1,6 @@
 <template>
     <Transition mode="out-in" name="switch-fade">
-        <div class="flex gap-8 items-start py-6 mx-6 max-w-7xl h-full md:gap-14 xl:mx-auto">
+        <div class="flex gap-8 items-start py-6 mx-8 max-w-7xl h-full md:gap-14 xl:mx-auto">
             <div class="flex flex-col shrink-0 gap-6 w-[14rem] text-0">
                 <div class="relative">
                     <AvatarCropper
