@@ -71,12 +71,27 @@
                         <!-- TODO: Actions : Settings, Add -->
                     </div>
                     <div class="flex flex-col">
-                        <UserPreview
+                        <div
+                            v-for="(participant, i) in thread.participants"
+                            :key="i"
+                            class="flex gap-2 items-center"
+                        >
+                            <ProfileAvatar
+                                :size="2"
+                                :avatar="participant.avatar"
+                                :name="fullname(participant)"
+                            />
+                            {{ fullname(participant) }}
+                            <TipPopper :tip="getRole(participant[$i18n.locale])">
+                                <i class="ml-1" :class="`fa fa-${getRole(participant).icon}`" />
+                            </TipPopper>
+                        </div>
+                        <!-- <UserPreview
                             v-for="(participant, i) in thread.participants"
                             :key="i"
                             :user="participant"
                             mode="horizontal"
-                        />
+                        /> -->
                     </div>
                 </div>
                 <!-- <div class="card">
@@ -98,9 +113,9 @@
 
 <script setup>
     import LabelTag from '@/components/UI/Label/LabelTag.vue'
-    // import { fullname } from '@/utils/users'
+
     import UserPreview from '@/components/App/Preview/UserPreview.vue'
-    // import { timeAgo } from '@/utils/timeAgo'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
     import ThreadPost from '@/components/Thread/ThreadPost.vue'
     import ThreadReply from '@/components/Thread/ThreadReply.vue'
@@ -114,9 +129,10 @@
 
     import { useThreadsStore } from '@/store/threads.store'
 
-    import { getStatusAxiosError } from '@/utils/errors'
     import { errorCodes } from '@/shared/errors/app-exceptions.enum'
-    // import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+
+    import { getStatusAxiosError } from '@/utils/errors'
+    import { fullname, getRole } from '@/utils/users'
 
     const route = useRoute()
     const threads = useThreadsStore()
