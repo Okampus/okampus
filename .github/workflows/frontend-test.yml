@@ -5,6 +5,7 @@ on:
     branches:
       - dev
       - master
+      - ci/*
     paths:
       - 'apps/site/**'
       - '!*/**/*.md'
