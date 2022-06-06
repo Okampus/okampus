@@ -4,6 +4,6 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
     plugins: [vue()],
-    resolve: { alias: { '@/': resolve(__dirname, 'src/') } },
+    resolve: { alias: { '@': resolve(__dirname, 'src') } },
     server: { open: true },
 })
