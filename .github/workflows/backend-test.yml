@@ -33,8 +33,8 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          path: ./apps/api/node_modules/
-          key: ${{ runner.os }}-build-${{ hashFiles('./apps/api/package-lock.json') }}
+          path: ./node_modules/
+          key: ${{ runner.os }}-build-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-
 
@@ -46,7 +46,6 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-        # working-directory: apps/api
 
       - name: Build project
         run: npm run build
@@ -65,8 +64,8 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          path: ./apps/api/node_modules/
-          key: ${{ runner.os }}-build-${{ hashFiles('./apps/api/package-lock.json') }}
+          path: ./node_modules/
+          key: ${{ runner.os }}-build-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-
 
@@ -78,7 +77,6 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-        working-directory: apps/api
 
       - name: Run ESLint
         run: npm run lint
