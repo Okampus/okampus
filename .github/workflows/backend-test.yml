@@ -46,7 +46,7 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-        working-directory: apps/api
+        # working-directory: apps/api
 
       - name: Build project
         run: npm run build
