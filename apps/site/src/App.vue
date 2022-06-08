@@ -244,12 +244,14 @@
 
     @font-face {
         font-family: Montserrat;
+        font-weight: 100 900;
         src: url('@/assets/font/Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
     }
 
     @font-face {
         font-family: Montserrat;
         font-style: italic;
+        font-weight: 100 900;
         src: url('@/assets/font/Montserrat/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
     }
 
