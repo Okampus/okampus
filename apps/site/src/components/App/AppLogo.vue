@@ -1,13 +1,16 @@
 <template>
     <router-link to="/" class="flex items-center cursor-pointer select-none">
         <div
-            class="mr-[0.5rem] logo"
+            class="logo"
             :style="{
                 width: `${scale * 7.5}rem`,
                 height: `${scale * 2.5}rem`,
             }"
             :="only === 'none' ? { 'allow-dark': '' } : only === 'dark' ? { 'dark': '' } : {}"
         />
+        <div class="px-[0.1rem] mr-[0.5rem] ml-[0.3rem] text-xs font-bold text-2-light bg-0-light rounded">
+            BETA
+        </div>
         <!-- <img
             src="@/assets/img/logos/brand.png"
             alt=""
