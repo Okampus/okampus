@@ -18,6 +18,7 @@ import { Food } from '../../../restaurant/food/food.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
 import { TeamEvent } from '../../../teams/events/team-event.entity';
+import { TeamMetric } from '../../../teams/metrics/team-metric.entity';
 import { Team } from '../../../teams/teams/team.entity';
 import { Thread } from '../../../threads/thread.entity';
 import { User } from '../../../users/user.entity';
@@ -46,6 +47,7 @@ export type Subjects = InferSubjects<
   | typeof Team
   | typeof TeamEvent
   | typeof TeamFile
+  | typeof TeamMetric
   | typeof Thread
   | typeof User
   | typeof WikiPage>
@@ -156,6 +158,7 @@ export class CaslAbilityFactory {
         allow(Action.Manage, Team, isClub);
         // @ts-expect-error
         allow(Action.Manage, [TeamEvent, TeamFile], { 'team.kind': TeamKind.Club });
+        allow(Action.Manage, TeamMetric);
       }
     }
 

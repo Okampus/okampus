@@ -3,6 +3,7 @@ import { RouterModule } from '@nestjs/core';
 import { TeamEventsModule } from './events/events.module';
 import { TeamMembersModule } from './members/members.module';
 import { TeamMembershipsModule } from './memberships/memberships.module';
+import { TeamMetricsModule } from './metrics/metrics.module';
 import { TeamMembershipRequestsModule } from './requests/requests.module';
 import { CoreTeamsModule } from './teams/teams.module';
 
@@ -15,6 +16,7 @@ import { CoreTeamsModule } from './teams/teams.module';
         { path: 'events', module: TeamEventsModule },
         { path: 'memberships', module: TeamMembershipsModule },
         { path: 'members', module: TeamMembersModule },
+        { path: 'metrics', module: TeamMetricsModule },
         { path: 'requests', module: TeamMembershipRequestsModule },
       ],
     }]),
@@ -22,6 +24,7 @@ import { CoreTeamsModule } from './teams/teams.module';
     TeamEventsModule,
     TeamMembershipsModule,
     TeamMembersModule,
+    TeamMetricsModule,
     TeamMembershipRequestsModule,
   ],
   controllers: [],

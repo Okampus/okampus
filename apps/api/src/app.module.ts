@@ -3,6 +3,7 @@ import type { MiddlewareConsumer } from '@nestjs/common';
 import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ScheduleModule } from '@nestjs/schedule';
 import { SentryModule } from '@ntegral/nestjs-sentry';
 import { S3Module } from 'nestjs-s3';
 import { AppController } from './app.controller';
@@ -40,6 +41,7 @@ import { WikisModule } from './wiki/wikis.module';
     EventEmitterModule.forRoot(),
     MikroOrmModule.forRoot(),
     S3Module.forRoot(storageConfig),
+    ScheduleModule.forRoot(),
     SentryModule.forRoot(sentryConfig),
     CaslModule,
     AuthModule,

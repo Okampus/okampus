@@ -55,6 +55,9 @@ interface Config {
     lastName: string;
     password: string;
   };
+  settings: {
+    teamMetricsCron: string;
+  };
 }
 
 const logger = new Logger('Configuration');
@@ -250,6 +253,13 @@ export const config = createProfiguration<Config>({
       default: 'root',
       format: String,
       env: 'ADMIN_ACCOUNT_PASSWORD',
+    },
+  },
+  settings: {
+    teamMetricsCron: {
+      default: '*/15 * * * *',
+      format: String,
+      env: 'TEAM_METRICS_CRON',
     },
   },
 }, {
