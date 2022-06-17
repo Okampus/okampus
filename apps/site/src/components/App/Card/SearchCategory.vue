@@ -1,16 +1,6 @@
 <template>
     <div v-if="items.length != 0">
-        <div class="flex gap-2 items-center my-2 text-lg">
-            <i class="fas" :class="`fa-${indexType.titleIcon}`" />
 
-            <div class="text-sm text-1">
-                {{ indexType.title }}
-            </div>
-
-            <div v-if="items.length > 5" @click="resultExtended = !resultExtended">
-                <i class="fas" :class="resultExtended ? 'fa-chevron-up' : 'fa-chevron-down'" />
-            </div>
-        </div>
         <div class="flex flex-col gap-2">
             <transition-group name="search-fade">
                 <router-link

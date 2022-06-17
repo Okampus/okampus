@@ -11,7 +11,7 @@ export default {
     },
     cacheSearchResultsForSeconds: 2 * 60,
     additionalSearchParameters: {
-        limit_hits: 25,
-        per_page: 25,
+        limit_hits: 5,
+        per_page: 5,
     },
 }
