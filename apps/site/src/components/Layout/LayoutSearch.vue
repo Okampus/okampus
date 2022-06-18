@@ -88,7 +88,7 @@
                     class="p-1 text-slate-400 rounded border border-slate-400 rotate-90 fa-solid fa-arrow-turn-down"
                 ></i>
             </div>
-            <ais-hits class="absolute top-full z-40 w-full">
+            <ais-hits class="absolute top-full z-40 w-full max-w-2xl">
                 <template #default="{ items }">
                     <div
                         class="flex flex-col gap-2 p-2 text-white bg-slate-700 dark:bg-slate-800 rounded-b-md"
