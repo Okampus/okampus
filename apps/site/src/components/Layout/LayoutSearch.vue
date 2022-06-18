@@ -58,16 +58,16 @@
                 <div class="grow ml-2 h-full">
                     <i
                         class="w-full transition-all duration-300 fas fa-search"
-                        :class="{ 'translate-x-[95%]': !showSearchbar && searchRequest.length === 0 }"
+                        :class="{ 'translate-x-[95%]': !showSearchbar && currentSearchRequest.length === 0 }"
                     />
                 </div>
-                <div :class="{ 'hidden': showSearchbar || searchRequest.length !== 0 }">
+                <div :class="{ 'hidden': showSearchbar || currentSearchRequest.length !== 0 }">
                     <span> Rechercher sur Okampus... </span>
                 </div>
 
                 <ais-search-box
                     class="grow"
-                    :class="{ 'opacity-0': !showSearchbar && !searchRequest.length }"
+                    :class="{ 'opacity-0': !showSearchbar && !currentSearchRequest.length }"
                 >
                     <template #default="{ currentRefinement, refine }">
                         <input
@@ -75,16 +75,16 @@
                             type="text"
                             class="absolute top-0 left-10 w-[90%] h-full bg-inherit outline-none"
                             placeholder="Rechercher sur Okampus..."
-                            :value="currentRefinement"
+                            :value="currentSearchRequest"
                             @input="
                                 refine($event.currentTarget.value),
-                                    (searchRequest = $event.currentTarget.value)
+                                    (currentSearchRequest = $event.currentTarget.value)
                             "
                         />
                     </template>
                 </ais-search-box>
                 <i
-                    :class="{ 'opacity-0': !showSearchbar && searchRequest.length === 0 }"
+                    :class="{ 'opacity-0': !showSearchbar && currentSearchRequest.length === 0 }"
                     class="p-1 text-slate-400 rounded border border-slate-400 rotate-90 fa-solid fa-arrow-turn-down"
                 ></i>
             </div>
@@ -172,7 +172,7 @@
     const searchClient = typesenseAdapter.searchClient
     const input = ref(null)
     const showSearchbar = ref(false)
-    const searchRequest = ref('')
+    const currentSearchRequest = ref('')
     const searchBar = ref(null)
 
     onClickOutside(searchBar, () => {
@@ -182,6 +182,7 @@
     const router = useRouter()
     const resultClick = (route) => {
         showSearchbar.value = false
+        currentSearchRequest.value = ''
         router.push(route)
     }
 
