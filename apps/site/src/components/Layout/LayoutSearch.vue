@@ -102,7 +102,7 @@
                             @click="resultClick(item)"
                             @keypress.enter="resultClick(item)"
                         >
-                            <i class="p-3 bg-green-300 rounded-md fa-solid fa-people-group"></i>
+                            <i class="p-3 bg-green-400 rounded-md fa-solid fa-people-group"></i>
                             <div>{{ item.name }}</div>
                         </div>
                     </div>
