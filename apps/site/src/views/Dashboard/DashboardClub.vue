@@ -3,53 +3,55 @@
         <div class="grid grid-cols-4 gap-4 w-full text-center">
             <div
                 v-for="(n, i) in [
-                    { text: `% d'eleve dans une associations`, val: 10 },
-                    { text: 'Truc important', val: 10 },
-                    { text: 'Truc important', val: 120 },
-                    { text: 'Truc important', val: 11000 },
+                    {
+                        text: `Nombre d'associations`,
+                        color: 'blue',
+                        icon: 'fa-people-group',
+                        val: 52,
+                        change: 10,
+                    },
+                    {
+                        text: `% d'insertion`,
+                        color: 'cyan',
+                        icon: 'fa-arrows-down-to-people',
+                        val: 82,
+                        change: 10,
+                    },
+                    {
+                        text: `nb evenement`,
+                        color: 'teal',
+                        icon: 'fa-calendar-day',
+                        val: 56,
+                        change: -10,
+                    },
+                    { text: 'Nouveaux utilisateurs', color: 'amber', icon: 'fa-user', val: 5983, change: -5 },
                 ]"
                 :key="i"
-                class="flex flex-col justify-center items-center card"
+                class="flex justify-around items-center card"
             >
-                <div class="text-sm">{{ n.text }}</div>
-                <div class="text-xl">{{ n.val }}</div>
+                <i
+                    class="grow-0 p-3 rounded-full fa-solid"
+                    :class="`bg-${n.color}-300 text-${n.color}-600 ${n.icon}`"
+                ></i>
+
+                <div class="flex flex-col justify-center">
+                    <div class="flex relative gap-2 justify-center items-center">
+                        <div class="text-2xl">{{ n.val }}</div>
+                        <div
+                            class="p-0.5 text-xs rounded-full"
+                            :class="[
+                                n.change >= 0 ? 'text-green-600 bg-green-300' : 'text-red-600 bg-red-300',
+                            ]"
+                        >
+                            {{ n.change >= 0 ? '+' : '' }}{{ n.change }} %
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-400 uppercase">{{ n.text }}</div>
+                </div>
             </div>
         </div>
         <div class="grid grid-cols-2 gap-4 w-full">
-            <div class="flex flex-col gap-2 card">
-                <div class="w-full text-center border-b">Alertes</div>
-                <div class="flex gap-2 items-center w-full">
-                    <i class="text-amber-500 fa-solid fa-triangle-exclamation"></i>
-
-                    <div>Association 1</div>
-                    <div class="text-sm text-gray-500">Passation pas encore faite</div>
-                </div>
-                <div class="flex gap-2 items-center w-full">
-                    <i class="text-amber-500 fa-solid fa-triangle-exclamation"></i>
-
-                    <div>Association 2</div>
-                    <div class="text-sm text-gray-500">Passation pas encore faite</div>
-                </div>
-                <div class="flex gap-2 items-center w-full">
-                    <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
-
-                    <div>Association 3</div>
-                    <div class="text-sm text-gray-500">Budjet depassé</div>
-                </div>
-                <div class="flex gap-2 items-center w-full">
-                    <i class="text-amber-500 fa-solid fa-triangle-exclamation"></i>
-
-                    <div>Association 4</div>
-                    <div class="text-sm text-gray-500">Passation pas encore faite</div>
-                </div>
-            </div>
-            <div class="card">
-                <LineChart :chart-data="testData" :options="optionsA"></LineChart>
-            </div>
-            <div class="card">
-                <LineChart :chart-data="testData" :options="optionsB"></LineChart>
-            </div>
-            <div class="card">
+             <div class="card">
                 <table class="w-full">
                     <thead class="border-b">
                         <tr>
@@ -156,6 +158,42 @@
                     </tbody>
                 </table>
             </div>
+            <div class="card">
+                <LineChart :chart-data="testData" :options="optionsA"></LineChart>
+            </div>
+             <div class="card">
+                <LineChart :chart-data="testData" :options="optionsB"></LineChart>
+            </div>
+            <div class="flex flex-col gap-2 card">
+                <div class="w-full text-center border-b">Alertes</div>
+                <div class="flex gap-2 items-center w-full">
+                    <i class="text-amber-500 fa-solid fa-triangle-exclamation"></i>
+
+                    <div>Association 1</div>
+                    <div class="text-sm text-gray-500">Passation pas encore faite</div>
+                </div>
+                <div class="flex gap-2 items-center w-full">
+                    <i class="text-amber-500 fa-solid fa-triangle-exclamation"></i>
+
+                    <div>Association 2</div>
+                    <div class="text-sm text-gray-500">Passation pas encore faite</div>
+                </div>
+                <div class="flex gap-2 items-center w-full">
+                    <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
+
+                    <div>Association 3</div>
+                    <div class="text-sm text-gray-500">Budjet depassé</div>
+                </div>
+                <div class="flex gap-2 items-center w-full">
+                    <i class="text-amber-500 fa-solid fa-triangle-exclamation"></i>
+
+                    <div>Association 4</div>
+                    <div class="text-sm text-gray-500">Passation pas encore faite</div>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
 </template>
