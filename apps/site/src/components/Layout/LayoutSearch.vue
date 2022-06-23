@@ -103,7 +103,15 @@
                             @keypress.enter="resultClick(item)"
                         >
                             <i class="p-3 bg-green-400 rounded-md fa-solid fa-people-group"></i>
-                            <div>{{ item.name }}</div>
+                            <ais-highlight
+                                attribute="name"
+                                :hit="item"
+                                :class-names="{
+                                    'ais-Highlight-highlighted': 'font-bold',
+                                }"
+                                highlighted-tag-name="span"
+                            />
+
                         </div>
                     </div>
                 </template>
