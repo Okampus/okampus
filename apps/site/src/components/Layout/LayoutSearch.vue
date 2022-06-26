@@ -1,49 +1,5 @@
 <template>
-    <!-- TODO: Component pour afficher chaque hits + Utiliser SearchInput -->
     <div>
-        <!-- <ModalPopup ref="input" :show="showSearchbar" @close="showSearchbar = false">
-            <div class="w-full h-full card">
-                <ais-instant-search :search-client="searchClient" :index-name="THREADS" class="h-full">
-                    <div class="flex flex-col h-full">
-                        <ais-search-box autofocus>
-                            <template #default="{ currentRefinement, isSearchStalled, refine }">
-                                <div
-                                    class="flex justify-between items-center w-full cursor-pointer"
-                                    @click.prevent="showSearchbar = true"
-                                >
-                                    <label class="flex grow items-center">
-                                        <input
-                                            class="grow p-2 border-b-2 md:text-lg lg:text-xl text-4 bg-1"
-                                            placeholder="Rechercher une ressource sur Okampus..."
-                                            type="search"
-                                            autofocus
-                                            :value="currentRefinement"
-                                            @input="refine($event.currentTarget.value)"
-                                        />
-                                        <i class="ml-0.5 fas fa-search" />
-                                    </label>
-                                </div>
-                                <span :hidden="!isSearchStalled">Chargement...</span>
-                            </template>
-                        </ais-search-box>
-
-                        <div class="overflow-y-scroll h-full">
-                            <ais-index v-for="(index, i) in indexList" :key="i" :index-name="index.indexName">
-                                <ais-hits>
-                                    <template #default="{ items }">
-                                        <SearchCategory
-                                            :items="items"
-                                            :index-type="indexList[i]"
-                                            @close-modal="showSearchbar = false"
-                                        />
-                                    </template>
-                                </ais-hits>
-                            </ais-index>
-                        </div>
-                    </div>
-                </ais-instant-search>
-            </div>
-        </ModalPopup> -->
         <ais-instant-search
             :index-name="TEAMS"
             :search-client="searchClient"
@@ -107,11 +63,19 @@
                                 attribute="name"
                                 :hit="item"
                                 :class-names="{
-                                    'ais-Highlight-highlighted': 'font-bold',
+                                    'ais-Highlight-highlighted': 'font-bold underline',
                                 }"
                                 highlighted-tag-name="span"
                             />
-
+                            <ais-highlight
+                                attribute="shortDescription"
+                                class="text-xs text-gray-400"
+                                :hit="item"
+                                :class-names="{
+                                    'ais-Highlight-highlighted': 'font-bold underline',
+                                }"
+                                highlighted-tag-name="span"
+                            />
                         </div>
                     </div>
                 </template>
@@ -150,19 +114,7 @@
 </template>
 
 <script setup>
-    // import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
-    // import SearchCategory from '@/components/App/Card/SearchCategory.vue'
-    // import threadTypes from '@/shared/types/thread-types.enum'
     import typesenseConfig from '@/shared/config/typesense.config'
-    import {
-        // BLOGS,
-        TEAMS,
-        // INFO_DOCS,
-        // STUDY_DOCS,
-        // SUBJECTS,
-        THREADS,
-        USERS,
-    } from '@/shared/types/typesense-index-names.enum'
     import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
     import { ref } from 'vue'
     import { onClickOutside } from '@vueuse/core'
@@ -172,35 +124,11 @@
 
     const typesenseAdapter = new TypesenseInstantSearchAdapter({
         ...typesenseConfig,
-        collectionSpecificSearchParameters: {
-            [THREADS]: {
-                queryBy: 'title,body,tags,author',
-                queryByWeights: '10, 1, 5, 5',
-            },
-            // [BLOGS]: {
-            //     queryBy: 'title,body,tags',
-            //     queryByWeights: '10, 1, 5',
-            // },
-            [USERS]: {
-                queryBy: 'name,email,bio',
-                queryByWeights: '10, 1, 5',
-            },
-            [TEAMS]: {
-                queryBy: 'name',
-                queryByWeights: '10',
-            },
-            // [STUDY_DOCS]: {
-            //     queryBy: 'name,subjectEnglishName,subjectName',
-            //     queryByWeights: '10, 5, 5',
-            // },
-            // [INFO_DOCS]: {
-            //     queryBy: 'name',
-            //     queryByWeights: '10',
-            // },
-            // [SUBJECTS]: {
-            //     queryBy: 'name,code',
-            //     queryByWeights: '1,1',
-            // },
+        additionalSearchParameters: {
+            limit_hits: 5,
+            per_page: 5,
+            query_by: 'name, shortDescription',
+            query_by_weights: 'name:2, shortDescription:1',
         },
     })
 
@@ -227,61 +155,4 @@
     const deleteSearch = (item) => {
         recentSearch.value = _.remove(recentSearch.value, (el) => el.id !== item.id)
     }
-
-    // const indexList = ref([
-    //     {
-    //         indexName: THREADS,
-    //         title: 'Tous les threads',
-    //         titleIcon: 'comments',
-    //         routerBase: 'threads',
-    //         resultTitle: (item) => item.title,
-    //         resultBody: (item) => item.body,
-    //         resultIcon: (item) => threadTypes?.[item.type]?.icon ?? 'hashtag',
-    //     },
-    // {
-    //     indexName: STUDY_DOCS,
-    //     title: 'Tous les documents',
-    //     titleIcon: 'file',
-    //     routerBase: 'files',
-    //     resultTitle: (item) => item.name,
-    //     resultBody: (item) => item.subjectName,
-    //     resultIcon: () => 'file',
-    // },
-    // {
-    //     indexName: INFO_DOCS,
-    //     title: 'Tous les documents informatifs',
-    //     titleIcon: 'file',
-    //     routerBase: 'files',
-    //     resultTitle: (item) => item.name,
-    //     resultBody: (item) => item.subjectName,
-    //     resultIcon: () => 'file',
-    // },
-    // {
-    //     indexName: BLOGS,
-    //     title: 'Tous les articles',
-    //     titleIcon: 'newspaper',
-    //     routerBase: 'article',
-    //     resultTitle: (item) => item.title,
-    //     resultBody: (item) => item.body,
-    //     resultIcon: () => 'newspaper',
-    // },
-    // {
-    //     indexName: TEAMS,
-    //     title: 'Toutes les associations',
-    //     titleIcon: 'user-friends',
-    //     routerBase: 'clubs',
-    //     resultTitle: (item) => item.name,
-    //     resultBody: (item) => item.category,
-    //     resultIcon: () => 'user-friends',
-    // },
-    // {
-    //     indexName: SUBJECTS,
-    //     title: 'Toutes les matieres',
-    //     titleIcon: 'book',
-    //     routerBase: 'subject',
-    //     resultTitle: (item) => item.name,
-    //     resultBody: (item) => item.code,
-    //     resultIcon: () => 'book',
-    // },
-    // ])
 </script>

@@ -1,6 +1,5 @@
 <template>
     <div v-if="items.length != 0">
-
         <div class="flex flex-col gap-2">
             <transition-group name="search-fade">
                 <router-link
