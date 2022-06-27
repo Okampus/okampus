@@ -67,10 +67,10 @@
         },
     })
 
-    const avatarSizeStyle = {
+    const avatarSizeStyle = ref({
         width: `${props.size}rem`,
         height: `${props.size}rem`,
-    }
+    })
 
     const roundedClass = [props.roundedFull ? 'rounded-full full' : 'rounded-xl']
 
