@@ -125,7 +125,7 @@
             </div>
         </div>
         <div class="card">
-            <div class="overflow-x-scroll">
+            <div class="overflow-x-scroll snap-x snap-proximity">
                 <AppTable
                     class="w-max"
                     :items="clubStore.clubs"
@@ -187,7 +187,11 @@
                             :to="`/user/${owner.userId}`"
                             class="flex gap-1 items-center cursor-pointer"
                         >
-                            <ProfileAvatar :name="fullname(owner)" :avatar="owner.avatar"></ProfileAvatar>
+                            <ProfileAvatar
+                                :name="fullname(owner)"
+                                :avatar="owner.avatar"
+                                :size="2.5"
+                            ></ProfileAvatar>
                             <div>{{ fullname(owner) }}</div>
                         </router-link>
                     </template>
@@ -218,7 +222,7 @@
                         </router-link>
                     </template>
                     <template #shortDescription="{ shortDescription }">
-                        <div class="max-w-md text-sm">
+                        <div class="text-sm">
                             {{ shortDescription }}
                         </div>
                     </template>
