@@ -1,6 +1,6 @@
 <template>
     <div class="w-full h-full text-0">
-        <table class="border-collapse table-auto">
+        <table class="border-separate table-auto border-spacing-2">
             <thead>
                 <tr>
                     <th
@@ -8,17 +8,16 @@
                         :key="i"
                         :class="[header.class, { 'sticky left-0': i === 0 && firstColumnFixed }]"
                     >
-                        <div class="flex gap-2 items-center">
+                        <div class="flex gap-2 items-center cursor-pointer" @click="sortAction(header.name)">
                             <div>{{ header.text }}</div>
                             <i
                                 v-if="header.sortable"
-                                class="text-1 fas"
+                                class="text-2 fas"
                                 :class="{
                                     'fa-sort': header.sortable && sortBy !== header.name,
                                     'fa-sort-up': sortBy === header.name && sortDirection === 'asc',
                                     'fa-sort-down': sortBy === header.name && sortDirection === 'desc',
                                 }"
-                                @click="sortAction(header.name)"
                             />
                         </div>
                     </th>

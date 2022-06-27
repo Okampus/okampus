@@ -60,7 +60,7 @@
         <div class="grid grid-cols-2 gap-4 w-full">
             <div class="flex flex-col card">
                 <div class="mb-2 text-xl border-b">Evenement en attentes</div>
-                <div class="flex overflow-scroll flex-col gap-4 h-full">
+                <div class="flex overflow-y-scroll flex-col gap-4 h-full scrollbar-none">
                     <div
                         v-for="(club, i) in clubStore.clubs.slice(0, 5)"
                         :key="i"
@@ -93,35 +93,136 @@
                 <LineChart :chart-data="testDataA" :options="optionsA"></LineChart>
             </div>
             <div class="flex flex-col card">
-                <div class="text-xl border-b">Evenements</div>
+                <div class="text-xl border-b">Activité sur la platforme</div>
                 <LineChart :chart-data="testDataB" :options="optionsB"></LineChart>
             </div>
             <div class="flex flex-col gap-2 card">
-                <div class="w-full text-center border-b">Alertes</div>
+                <div class="text-xl border-b">Alertes</div>
                 <div class="flex gap-2 items-center w-full">
-                    <i class="text-amber-500 fa-solid fa-triangle-exclamation"></i>
+                    <i class="text-amber-400 fa-lg fa-solid fa-triangle-exclamation"></i>
 
-                    <div>Association 1</div>
-                    <div class="text-sm text-gray-500">Passation pas encore faite</div>
+                    <div class="text-gray-400">Association 1</div>
+                    <div class="">Passation pas encore faite</div>
                 </div>
                 <div class="flex gap-2 items-center w-full">
-                    <i class="text-amber-500 fa-solid fa-triangle-exclamation"></i>
+                    <i class="text-amber-400 fa-lg fa-solid fa-triangle-exclamation"></i>
 
-                    <div>Association 2</div>
-                    <div class="text-sm text-gray-500">Passation pas encore faite</div>
+                    <div class="text-gray-400">Association 2</div>
+                    <div class="">Passation pas encore faite</div>
                 </div>
                 <div class="flex gap-2 items-center w-full">
-                    <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
+                    <i class="text-red-400 fa-lg fa-solid fa-circle-exclamation"></i>
 
-                    <div>Association 3</div>
-                    <div class="text-sm text-gray-500">Budjet depassé</div>
+                    <div class="text-gray-400">Association 3</div>
+                    <div class="">Budjet depassé</div>
                 </div>
                 <div class="flex gap-2 items-center w-full">
-                    <i class="text-amber-500 fa-solid fa-triangle-exclamation"></i>
+                    <i class="text-amber-400 fa-lg fa-solid fa-triangle-exclamation"></i>
 
-                    <div>Association 4</div>
-                    <div class="text-sm text-gray-500">Passation pas encore faite</div>
+                    <div class="text-gray-400">Association 4</div>
+                    <div class="">Passation pas encore faite</div>
                 </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="overflow-x-scroll">
+                <AppTable
+                    class="w-max"
+                    :items="clubStore.clubs"
+                    :headers="[
+                        {
+                            name: 'name',
+                            text: 'Nom',
+                            class: 'p-2 z-10 border-b border-gray-300 bg-1',
+                            sortable: true,
+                        },
+
+                        {
+                            name: 'owner',
+                            text: 'Président',
+                            class: 'p-2 border-b border-gray-300',
+                        },
+                        {
+                            name: 'secretary',
+                            text: 'Secrétaire',
+                            class: 'p-2 border-b border-gray-300',
+                        },
+                        {
+                            name: 'treasurer',
+                            text: 'Trésorier',
+                            class: 'p-2  border-b border-gray-300',
+                        },
+                        {
+                            name: 'members',
+                            text: 'Membres',
+                            class: 'p-2 z-10 border-b border-gray-300 bg-1',
+                            sortable: true,
+                        },
+                        {
+                            name: 'budget',
+                            text: 'Budget',
+                            class: 'p-2  border-b border-gray-300',
+                            sortable: true,
+                        },
+                        {
+                            name: 'shortDescription',
+                            text: 'Description',
+                            class: 'p-2  border-b border-gray-300',
+                        },
+                    ]"
+                    :first-column-fixed="true"
+                >
+                    <template #name="{ avatar, name, category, teamId }">
+                        <router-link
+                            :to="`/club/${teamId}`"
+                            class="flex z-40 gap-1 items-center max-w-sm h-full bg-1"
+                        >
+                            <img :src="avatar" :alt="name" />
+                            <div>{{ name }}</div>
+                            <div class="text-xs text-gray-400">{{ category }}</div>
+                        </router-link>
+                    </template>
+                    <template #owner="{ owner }">
+                        <router-link
+                            :to="`/user/${owner.userId}`"
+                            class="flex gap-1 items-center cursor-pointer"
+                        >
+                            <ProfileAvatar :name="fullname(owner)" :avatar="owner.avatar"></ProfileAvatar>
+                            <div>{{ fullname(owner) }}</div>
+                        </router-link>
+                    </template>
+                    <template #secretary="{ secretary }">
+                        <router-link
+                            v-if="secretary"
+                            :to="`/user/${secretary.userId}`"
+                            class="flex gap-1 items-center cursor-pointer"
+                        >
+                            <ProfileAvatar
+                                :name="fullname(secretary)"
+                                :avatar="secretary.avatar"
+                            ></ProfileAvatar>
+                            <div>{{ fullname(secretary) }}</div>
+                        </router-link>
+                    </template>
+                    <template #treasurer="{ treasurer }">
+                        <router-link
+                            v-if="treasurer"
+                            :to="`/user/${treasurer.userId}`"
+                            class="flex gap-1 items-center cursor-pointer"
+                        >
+                            <ProfileAvatar
+                                :name="fullname(treasurer)"
+                                :avatar="treasurer.avatar"
+                            ></ProfileAvatar>
+                            <div>{{ fullname(treasurer) }}</div>
+                        </router-link>
+                    </template>
+                    <template #shortDescription="{ shortDescription }">
+                        <div class="max-w-md text-sm">
+                            {{ shortDescription }}
+                        </div>
+                    </template>
+                </AppTable>
             </div>
         </div>
     </div>
@@ -132,6 +233,9 @@
     import { Chart, registerables } from 'chart.js'
     import { useClubsStore } from '@/store/clubs.store'
     import AppTable from '@/components/App/AppTable.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    import { fullname } from '@/utils/users'
+
     const clubStore = useClubsStore()
     clubStore.getClubs()
 
