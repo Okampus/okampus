@@ -1,5 +1,5 @@
 <template>
-    <div class="relative shrink-0">
+    <div class="shrink-0">
         <img
             v-if="avatar"
             :style="avatarSizeStyle"
