@@ -43,10 +43,7 @@ export class TeamMetricsService {
       .createQueryBuilder()
       .count('user', true)
       .execute() as [col: { count: string }];
-    console.log('DEBUG ~ file: metrics.service.ts ~ line 47 ~ updateMetrics ~ uniqueMembershipCount', uniqueMembershipCount);
     pushMetric(TeamMetricName.UniqueMembershipCount, Number(uniqueMembershipCount.count));
-
-    // TODO: NewUserInsertionRate
 
     // EventCount
     const eventCount = await this.teamEventRepository.count({
