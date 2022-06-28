@@ -12,7 +12,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
-import { normalizePagination, PaginateDto } from '../../shared/modules/pagination';
+import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { normalizeSort } from '../../shared/modules/sorting';
 import { User } from '../../users/user.entity';
@@ -20,7 +20,6 @@ import { CreateTeamEventDto } from './dto/create-team-event.dto';
 import { ListTeamEventsDto } from './dto/list-team-events.dto';
 import { UpdateTeamEventDto } from './dto/update-team-event.dto';
 import { TeamEventsService } from './events.service';
-import type { TeamEventRegistration } from './team-event-registration.entity';
 import { TeamEvent } from './team-event.entity';
 
 @ApiTags('Team Events')
@@ -75,33 +74,5 @@ export class TeamEventsController {
     @CurrentUser() user: User,
   ): Promise<void> {
     await this.eventsService.remove(user, eventId);
-  }
-
-  @Post(':eventId/registrations')
-  @CheckPolicies(ability => ability.can(Action.Read, TeamEvent))
-  public async register(
-    @Param('eventId', ParseIntPipe) eventId: number,
-    @CurrentUser() user: User,
-  ): Promise<TeamEventRegistration> {
-    return await this.eventsService.register(user, eventId);
-  }
-
-  @Get(':eventId/registrations')
-  @CheckPolicies(ability => ability.can(Action.Read, TeamEvent))
-  public async findRegistrations(
-    @Param('eventId', ParseIntPipe) eventId: number,
-    @CurrentUser() user: User,
-    @Query() query: PaginateDto,
-  ): Promise<PaginatedResult<TeamEventRegistration>> {
-    return await this.eventsService.findRegistrations(user, eventId, normalizePagination(query));
-  }
-
-  @Delete(':eventId/registrations')
-  @CheckPolicies(ability => ability.can(Action.Read, TeamEvent))
-  public async removeRegistrations(
-    @Param('eventId', ParseIntPipe) eventId: number,
-    @CurrentUser() user: User,
-  ): Promise<void> {
-    await this.eventsService.unregister(user, eventId);
   }
 }

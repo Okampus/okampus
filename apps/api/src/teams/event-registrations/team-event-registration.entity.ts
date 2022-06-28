@@ -1,7 +1,7 @@
 import { Entity, ManyToOne, PrimaryKey } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { User } from '../../users/user.entity';
-import { TeamEvent } from './team-event.entity';
+import { TeamEvent } from '../events/team-event.entity';
 
 @Entity()
 export class TeamEventRegistration extends BaseEntity {

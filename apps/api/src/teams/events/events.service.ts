@@ -1,10 +1,10 @@
 import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import type { ListOptionsDto } from '../../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
-import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
+import type { PaginatedResult } from '../../shared/modules/pagination';
 import { serializeOrder } from '../../shared/modules/sorting';
 import { User } from '../../users/user.entity';
 import { TeamMember } from '../members/team-member.entity';
@@ -12,7 +12,6 @@ import { Team } from '../teams/team.entity';
 import type { CreateTeamEventDto } from './dto/create-team-event.dto';
 import type { ListTeamEventsDto } from './dto/list-team-events.dto';
 import type { UpdateTeamEventDto } from './dto/update-team-event.dto';
-import { TeamEventRegistration } from './team-event-registration.entity';
 import { TeamEvent } from './team-event.entity';
 
 @Injectable()
@@ -21,8 +20,6 @@ export class TeamEventsService {
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamEvent) private readonly teamEventRepository: BaseRepository<TeamEvent>,
-    @InjectRepository(TeamEventRegistration)
-    private readonly teamEventRegistrationRepository: BaseRepository<TeamEventRegistration>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
   ) {}
 
@@ -126,50 +123,5 @@ export class TeamEventsService {
       throw new ForbiddenException('Not a team admin');
 
     await this.teamEventRepository.removeAndFlush(event);
-  }
-
-  public async register(user: User, teamEventId: number): Promise<TeamEventRegistration> {
-    const event = await this.teamEventRepository.findOneOrFail({ teamEventId });
-
-    if (event.private) {
-      const membership = await this.teamMemberRepository.findOne({ user, team: { teamId: event.team.teamId } });
-      if (!membership)
-        throw new ForbiddenException('Not a team member');
-    }
-
-    const existing = await this.teamEventRegistrationRepository.count({ user, event: { teamEventId } });
-    if (existing)
-      throw new BadRequestException('Already registered');
-
-    const registration = new TeamEventRegistration({ user, event });
-
-    await this.teamEventRegistrationRepository.persistAndFlush(registration);
-    return registration;
-  }
-
-  public async findRegistrations(
-    user: User,
-    teamEventId: number,
-    paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<TeamEventRegistration>> {
-    const event = await this.teamEventRepository.findOneOrFail({ teamEventId });
-
-    if (event.private) {
-      const membership = await this.teamMemberRepository.findOne({ user, team: { teamId: event.team.teamId } });
-      if (!membership)
-        throw new ForbiddenException('Not a team member');
-    }
-
-    return await this.teamEventRegistrationRepository.findWithPagination(
-      paginationOptions,
-      { event: { teamEventId } },
-      { orderBy: { createdAt: 'ASC' }, populate: ['user', 'event'] },
-    );
-  }
-
-
-  public async unregister(user: User, teamEventId: number): Promise<void> {
-    const registration = await this.teamEventRegistrationRepository.findOneOrFail({ event: { teamEventId }, user });
-    await this.teamEventRegistrationRepository.removeAndFlush(registration);
   }
 }
