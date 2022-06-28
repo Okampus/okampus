@@ -7,6 +7,7 @@ import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { serializeOrder } from '../../shared/modules/sorting';
 import { User } from '../../users/user.entity';
+import { TeamEventRegistration } from '../event-registrations/team-event-registration.entity';
 import { TeamMember } from '../members/team-member.entity';
 import { Team } from '../teams/team.entity';
 import type { CreateTeamEventDto } from './dto/create-team-event.dto';
@@ -20,6 +21,8 @@ export class TeamEventsService {
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamEvent) private readonly teamEventRepository: BaseRepository<TeamEvent>,
+    @InjectRepository(TeamEventRegistration)
+    private readonly teamEventRegistrationRepository: BaseRepository<TeamEventRegistration>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
   ) {}
 
@@ -72,11 +75,22 @@ export class TeamEventsService {
     if (query.after)
       filter = { ...filter, start: { $gte: query.after } };
 
-    return await this.teamEventRepository.findWithPagination(
+    const events = await this.teamEventRepository.findWithPagination(
       options,
       filter,
       { orderBy: serializeOrder(options?.sortBy, 'start'), populate: ['supervisor', 'createdBy', 'team'] },
     );
+
+    const allRegistrations = await this.teamEventRegistrationRepository.find({ user });
+
+    events.items = events.items.map((event) => {
+      // TODO: Maybe find a better way to add these properties? Something virtual? computed on-the-fly? added elsewhere?
+      // @ts-expect-error: We add a new property to the object, but it's fine.
+      event.isRegistered = allRegistrations.some(r => r.event.teamEventId === event.teamEventId);
+      return event;
+    });
+
+    return events;
   }
 
   public async findOne(user: User, teamEventId: number): Promise<TeamEvent> {
