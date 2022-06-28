@@ -28,22 +28,22 @@ export class TeamMetricsService {
     const fifteenMinutesAgo = new Date();
     fifteenMinutesAgo.setMinutes(fifteenMinutesAgo.getMinutes() - 15);
 
-    const pushMetric = await this.metricSaverFactory();
+    const metrics: Array<ConstructorParameters<typeof TeamMetric>[0]> = [];
 
     // ClubCount
     const clubCount = await this.teamRepository.count({ kind: TeamKind.Club });
-    pushMetric(TeamMetricName.ClubCount, clubCount);
+    metrics.push({ name: TeamMetricName.ClubCount, value: clubCount });
 
     // MembershipCount
     const membershipCount = await this.teamMemberRepository.count(isClub);
-    pushMetric(TeamMetricName.MembershipCount, membershipCount);
+    metrics.push({ name: TeamMetricName.MembershipCount, value: membershipCount });
 
     // UniqueMembershipCount
-    const [uniqueMembershipCount] = await this.teamMemberRepository
+    const [{ count }] = await this.teamMemberRepository
       .createQueryBuilder()
       .count('user', true)
       .execute() as [col: { count: string }];
-    pushMetric(TeamMetricName.UniqueMembershipCount, Number(uniqueMembershipCount.count));
+    metrics.push({ name: TeamMetricName.UniqueMembershipCount, value: Number(count) || 0 });
 
     // EventCount
     const eventCount = await this.teamEventRepository.count({
@@ -53,7 +53,7 @@ export class TeamMetricsService {
         { start: { $lte: new Date() } },
       ],
     });
-    pushMetric(TeamMetricName.EventCount, eventCount);
+    metrics.push({ name: TeamMetricName.EventCount, value: eventCount });
 
     // CreatedEventCount
     const createdEventCount = await this.teamEventRepository.count({
@@ -63,9 +63,9 @@ export class TeamMetricsService {
         { createdAt: { $lte: new Date() } },
       ],
     });
-    pushMetric(TeamMetricName.CreatedEventCount, createdEventCount);
+    metrics.push({ name: TeamMetricName.CreatedEventCount, value: createdEventCount });
 
-    await this.teamMetricRepository.flush();
+    await this.teamMetricRepository.persistAndFlush(metrics.map(opts => new TeamMetric(opts)));
   }
 
   public async findAll(query: ListTeamMetricsDto): Promise<TeamMetric[]> {
@@ -76,6 +76,7 @@ export class TeamMetricsService {
       filters.createdAt = { $gt: query.after };
     } else {
       const oneMonthAgo = new Date();
+      oneMonthAgo.setHours(0, 0, 0, 0);
       oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
       filters.createdAt = { $gt: oneMonthAgo };
     }
@@ -84,24 +85,5 @@ export class TeamMetricsService {
       { name: query.name },
       { orderBy: { createdAt: 'ASC' } },
     );
-  }
-
-  private async metricSaverFactory(): Promise<(name: TeamMetricName, value: number) => void> {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const todaysMetrics = await this.teamMetricRepository.find({
-      createdAt: { $gt: today },
-    });
-
-    return (name: TeamMetricName, value: number): void => {
-      const metric = todaysMetrics.find(m => m.name === name);
-      if (metric) {
-        metric.dayValues.push(value);
-      } else {
-        const newMetric = new TeamMetric({ name, value });
-        this.teamMetricRepository.persist(newMetric);
-      }
-    };
   }
 }

@@ -12,8 +12,8 @@ export class TeamMetric extends BaseEntity {
   @PrimaryKey()
   teamMetricId!: number;
 
-  @Property({ type: 'number[]' })
-  dayValues: number[] = [];
+  @Property({ columnType: 'real' })
+  value!: number;
 
   @Enum(() => TeamMetricName)
   name!: TeamMetricName;
@@ -23,7 +23,7 @@ export class TeamMetric extends BaseEntity {
     name: TeamMetricName;
   }) {
     super();
-    this.dayValues.push(options.value);
+    this.value = options.value;
     this.name = options.name;
   }
 }
