@@ -8,7 +8,7 @@ ADD package*.json ./
 ADD . ./
 RUN chmod -R +x ./scripts
 RUN chmod 777 ./
-RUN npm install
+RUN npm install --force
 RUN npm run build
 
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait

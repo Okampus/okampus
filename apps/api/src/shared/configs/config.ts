@@ -10,6 +10,13 @@ interface Config {
     maxSize: number;
     path: string;
   };
+  typesense: {
+    enabled: boolean;
+    apiKey: string;
+    host: string;
+    port: number;
+    scheme: string;
+  };
   storage: {
     enabled: boolean;
     accessKeyId: string;
@@ -17,12 +24,10 @@ interface Config {
     endpoint: string;
     region: string;
   };
-  typesense: {
-    enabled: boolean;
-    apiKey: string;
+  redis: {
     host: string;
     port: number;
-    scheme: string;
+    password: string;
   };
   sentry: {
     enabled: boolean;
@@ -142,6 +147,23 @@ export const config = createProfiguration<Config>({
       default: 'region',
       format: String,
       env: 'STORAGE_REGION',
+    },
+  },
+  redis: {
+    host: {
+      default: 'localhost',
+      format: String,
+      env: 'REDIS_HOST',
+    },
+    port: {
+      default: 6379,
+      format: Number,
+      env: 'REDIS_PORT',
+    },
+    password: {
+      default: '',
+      format: String,
+      env: 'REDIS_PASSWORD',
     },
   },
   sentry: {

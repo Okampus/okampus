@@ -1,13 +1,21 @@
 version: '3.9'
 
 services:
+  redis:
+    ports:
+      - 16379:6379
+
   database:
     ports:
-      - 54321:5432
+      - 15432:5432
 
   pgadmin:
     ports:
       - 5050:5050
+
+  redis-commander:
+    ports:
+      - 8082:8081
 
   typesense:
     ports:

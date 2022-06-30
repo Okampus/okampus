@@ -19,6 +19,7 @@
   "dependencies": {
     "@casl/ability": "5.4.4",
     "@golevelup/profiguration": "0.2.1",
+    "@liaoliaots/nestjs-redis": "^8.2.2",
     "@mikro-orm/core": "4.5.9",
     "@mikro-orm/migrations": "4.5.9",
     "@mikro-orm/nestjs": "4.3.1",
@@ -49,6 +50,7 @@
     "express": "4.18.1",
     "express-session": "1.17.3",
     "helmet": "5.1.0",
+    "ioredis": "^5.1.0",
     "lodash.partition": "4.6.0",
     "markdown-to-text": "0.1.1",
     "morgan": "1.10.0",

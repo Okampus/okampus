@@ -1,3 +1,4 @@
+import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { MiddlewareConsumer } from '@nestjs/common';
 import { Module } from '@nestjs/common';
@@ -20,6 +21,7 @@ import { ReactionsModule } from './reactions/reactions.module';
 import { ReportsModule } from './reports/reports.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { config } from './shared/configs/config';
+import redisConfig from './shared/configs/redis.config';
 import sentryConfig from './shared/configs/sentry.config';
 import storageConfig from './shared/configs/storage.config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
@@ -40,6 +42,7 @@ import { WikisModule } from './wiki/wikis.module';
   imports: [
     EventEmitterModule.forRoot(),
     MikroOrmModule.forRoot(),
+    RedisModule.forRoot(redisConfig),
     S3Module.forRoot(storageConfig),
     ScheduleModule.forRoot(),
     SentryModule.forRoot(sentryConfig),

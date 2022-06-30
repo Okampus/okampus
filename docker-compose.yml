@@ -12,6 +12,10 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
 
+  redis:
+    image: redis:alpine
+    restart: always
+
   pgadmin:
     image: dpage/pgadmin4
     restart: always
@@ -24,6 +28,14 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PGADMIN_LISTEN_PORT: 5050
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    depends_on:
+      - redis
+    environment:
+      REDIS_HOSTS: local:redis:6379
+      PORT: 5051
 
   typesense:
     image: typesense/typesense:0.22.2
@@ -39,12 +51,13 @@ services:
     build: ./apps/api
     restart: always
     depends_on:
+      - redis
       - database
       - typesense
     volumes:
       - ./apps/api/uploads:/app/uploads
     environment:
-      WAIT_HOSTS: database:5432, typesense:8108
+      WAIT_HOSTS: database:5432, redis:6379, typesense:8108
       MIKRO_ORM_HOST: ${MIKRO_ORM_HOST}
       TYPESENSE_HOST: ${TYPESENSE_HOST}
       TYPESENSE_PORT: ${TYPESENSE_PORT}
