@@ -71,14 +71,12 @@
                             <div>Evenement {{ i }}</div>
                             <div class="text-xs text-gray-400">{{ club.name }}</div>
                         </div>
-
                         <div class="flex gap-2 items-center">
                             <div
                                 class="flex justify-center items-center p-2 w-8 h-8 text-green-400 hover:text-green-500 bg-green-200 hover:bg-green-300 rounded-full cursor-pointer"
                             >
                                 <i class="fa-solid fa-check"></i>
                             </div>
-
                             <div
                                 class="flex justify-center items-center p-2 w-8 h-8 text-red-400 hover:text-red-500 bg-red-200 hover:bg-red-300 rounded-full cursor-pointer"
                             >
@@ -89,11 +87,26 @@
                 </div>
             </div>
             <div class="flex flex-col card">
-                <div class="text-xl border-b">Evenements</div>
+                <div class="flex justify-between items-center pb-2 border-b">
+                    <div class="text-xl">Evenements</div>
+                    <SelectInput
+                        v-model="eventChartType"
+                        :choices="['Année', 'Semestre', 'Mois', 'Jour']"
+                        :values="['year', 'semester', 'month', 'day']"
+                    ></SelectInput>
+                </div>
+                {{ eventChartType }}
                 <LineChart :chart-data="testDataA" :options="optionsA"></LineChart>
             </div>
             <div class="flex flex-col card">
-                <div class="text-xl border-b">Activité sur la platforme</div>
+                <div class="flex justify-between items-center pb-2 border-b">
+                    <div class="text-xl">Activité sur la platforme</div>
+                    <SelectInput
+                        v-model="activityChartType"
+                        :choices="['Année', 'Semestre', 'Mois', 'Jour']"
+                        :values="['year', 'semester', 'month', 'day']"
+                    ></SelectInput>
+                </div>
                 <LineChart :chart-data="testDataB" :options="optionsB"></LineChart>
             </div>
             <div class="flex flex-col gap-2 card">
@@ -129,6 +142,7 @@
                 <AppTable
                     class="w-max"
                     :items="clubStore.clubs"
+                    table-layout="auto"
                     :headers="[
                         {
                             name: 'name',
@@ -136,7 +150,6 @@
                             class: 'p-2 z-10 border-b border-gray-300 bg-1',
                             sortable: true,
                         },
-
                         {
                             name: 'owner',
                             text: 'Président',
@@ -175,7 +188,7 @@
                     <template #name="{ avatar, name, category, teamId }">
                         <router-link
                             :to="`/club/${teamId}`"
-                            class="flex z-40 gap-1 items-center max-w-sm h-full bg-1"
+                            class="flex gap-1 items-center max-w-sm h-full bg-1"
                         >
                             <img :src="avatar" :alt="name" />
                             <div>{{ name }}</div>
@@ -222,7 +235,7 @@
                         </router-link>
                     </template>
                     <template #shortDescription="{ shortDescription }">
-                        <div class="text-sm">
+                        <div class="max-w-lg text-sm">
                             {{ shortDescription }}
                         </div>
                     </template>
@@ -239,11 +252,16 @@
     import AppTable from '@/components/App/AppTable.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import { fullname } from '@/utils/users'
+    import SelectInput from '@/components/Input/SelectInput.vue'
+    import { ref } from 'vue'
 
     const clubStore = useClubsStore()
     clubStore.getClubs()
 
     Chart.register(...registerables)
+
+    const eventChartType = ref('month')
+    const activityChartType = ref('month')
 
     const testDataA = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -251,9 +269,7 @@
             {
                 data: [130, 70, 60, 70, 50, 130, 190],
                 label: null,
-
                 borderColor: '#0ea5e9',
-
                 backgroundColor: '#bae6fd',
                 fill: true,
             },
@@ -266,9 +282,7 @@
             {
                 data: [130, 70, 60, 70, 50, 130, 190],
                 label: null,
-
                 borderColor: '#0ea5e9',
-
                 backgroundColor: '#bae6fd',
                 fill: true,
             },

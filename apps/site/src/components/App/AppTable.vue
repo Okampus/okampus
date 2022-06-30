@@ -1,5 +1,8 @@
 <template>
-    <table class="border-separate table-auto border-spacing-2">
+    <table
+        class="border-separate border-spacing-2"
+        :class="[tableLayout === 'auto' ? 'table-auto' : 'table-fixed']"
+    >
         <thead>
             <tr>
                 <th
@@ -50,6 +53,7 @@
         headers: { type: Array, required: true },
         firstColumnFixed: { type: Boolean, default: false },
         modelValue: { type: Array, default: null },
+        tableLayout: { type: String, default: 'auto' },
     })
 
     defineEmits(['update:modelValue'])
