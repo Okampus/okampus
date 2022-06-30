@@ -8,7 +8,6 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
-import session from 'express-session';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { computedConfig, config } from './shared/configs/config';
@@ -52,14 +51,6 @@ async function bootstrap(): Promise<void> {
   app.use(helmet());
   app.use(loggerMiddleware);
   app.use(cookieParser(config.get('cookies.signature')));
-  // TODO: Use redis for session storage, and ensure they are used only for the initial myEfrei login
-  app.use(
-    session({
-      secret: config.get('session.secret'),
-      resave: false,
-      saveUninitialized: false,
-    }),
-  );
 
   app.enableCors({ origin: computedConfig.frontendUrl, credentials: true });
   app.enableShutdownHooks();

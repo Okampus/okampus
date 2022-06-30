@@ -1,4 +1,4 @@
-import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { InjectRedis, RedisModule } from '@liaoliaots/nestjs-redis';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { MiddlewareConsumer } from '@nestjs/common';
 import { Module } from '@nestjs/common';
@@ -6,7 +6,11 @@ import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SentryModule } from '@ntegral/nestjs-sentry';
+import RedisStore from 'connect-redis';
+import session from 'express-session';
+import Redis from 'ioredis';
 import { S3Module } from 'nestjs-s3';
+import passport from 'passport';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
@@ -77,8 +81,24 @@ import { WikisModule } from './wiki/wikis.module';
   exports: [],
 })
 export class AppModule {
+  constructor(@InjectRedis() private readonly redis: Redis) {}
+
   public configure(consumer: MiddlewareConsumer): void {
     if (config.get('sentry.enabled'))
       consumer.apply(TraceMiddleware).forRoutes('*');
+
+    consumer
+      .apply(
+        session({
+          store: new (RedisStore(session))({ client: this.redis, logErrors: true }),
+          saveUninitialized: false,
+          secret: config.get('session.secret'),
+          resave: false,
+        }),
+        passport.initialize(),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        passport.session(),
+      )
+      .forRoutes('*');
   }
 }
