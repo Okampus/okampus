@@ -1,11 +1,12 @@
 import { InjectRedis, RedisModule } from '@liaoliaots/nestjs-redis';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { MiddlewareConsumer } from '@nestjs/common';
-import { Module } from '@nestjs/common';
-import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { Module, RequestMethod } from '@nestjs/common';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ScheduleModule } from '@nestjs/schedule';
-import { SentryModule } from '@ntegral/nestjs-sentry';
+import { SentryInterceptor, SentryModule } from '@ntegral/nestjs-sentry';
+import * as Sentry from '@sentry/node';
 import RedisStore from 'connect-redis';
 import session from 'express-session';
 import Redis from 'ioredis';
@@ -26,7 +27,7 @@ import { ReportsModule } from './reports/reports.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { config } from './shared/configs/config';
 import redisConfig from './shared/configs/redis.config';
-import sentryConfig from './shared/configs/sentry.config';
+import sentryConfig, { sentryInterceptorConfig } from './shared/configs/sentry.config';
 import storageConfig from './shared/configs/storage.config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
 import { TypesenseFilter } from './shared/lib/filters/typesense.filter';
@@ -76,6 +77,7 @@ import { WikisModule } from './wiki/wikis.module';
     { provide: APP_GUARD, useClass: PoliciesGuard },
     { provide: APP_FILTER, useClass: ExceptionsFilter },
     { provide: APP_FILTER, useClass: TypesenseFilter },
+    { provide: APP_INTERCEPTOR, useFactory: (): SentryInterceptor => new SentryInterceptor(sentryInterceptorConfig) },
   ],
   controllers: [AppController],
   exports: [],
@@ -84,9 +86,15 @@ export class AppModule {
   constructor(@InjectRedis() private readonly redis: Redis) {}
 
   public configure(consumer: MiddlewareConsumer): void {
-    if (config.get('sentry.enabled'))
-      consumer.apply(TraceMiddleware).forRoutes('*');
+    // Setup sentry
+    if (config.get('sentry.enabled')) {
+      consumer.apply(
+        Sentry.Handlers.requestHandler(),
+        TraceMiddleware,
+      ).forRoutes({ path: '*', method: RequestMethod.ALL });
+    }
 
+    // Setup redis for SSO sessions
     consumer
       .apply(
         session({

@@ -7,6 +7,7 @@ import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/comm
 import { NestFactory, Reflector } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as SentryTracing from '@sentry/tracing';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
@@ -45,6 +46,9 @@ function setupSwagger(app: NestExpressApplication): void {
 
 async function bootstrap(): Promise<void> {
   await attemptTypesenseConnection();
+
+  if (config.get('sentry.enabled'))
+    SentryTracing.addExtensionMethods();
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 

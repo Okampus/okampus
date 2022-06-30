@@ -6,6 +6,7 @@ interface Config {
   port: number;
   baseUrl: string;
   nodeEnv: 'development' | 'production' | 'test';
+  release: string;
   upload: {
     maxSize: number;
     path: string;
@@ -82,6 +83,11 @@ export const config = createProfiguration<Config>({
     default: 'development',
     format: ['development', 'production', 'test'],
     env: 'NODE_ENV',
+  },
+  release: {
+    default: '0.1.0-alpha.0',
+    format: String,
+    env: 'RELEASE',
   },
   upload: {
     maxSize: {
