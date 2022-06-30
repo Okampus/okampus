@@ -38,7 +38,7 @@ services:
       PORT: 5051
 
   typesense:
-    image: typesense/typesense:0.22.2
+    image: typesense/typesense:0.23.0
     restart: always
     volumes:
       - ./data/typesense:/tmp/typesense-data
