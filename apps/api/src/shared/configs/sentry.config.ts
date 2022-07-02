@@ -12,7 +12,7 @@ export default {
     new Sentry.Integrations.Http({ tracing: true }),
   ],
   beforeSend: (event, hint) => {
-    if (hint.originalException instanceof HttpException && hint.originalException.getStatus() < 500)
+    if (typeof hint !== 'undefined' && hint.originalException instanceof HttpException && hint.originalException.getStatus() < 500)
       return null;
 
     return event;
