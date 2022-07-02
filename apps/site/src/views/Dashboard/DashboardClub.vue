@@ -59,7 +59,7 @@
         </div>
         <div class="grid grid-cols-2 gap-4 w-full">
             <div class="flex flex-col card">
-                <div class="mb-2 text-xl border-b">Evenement en attentes</div>
+                <div class="pb-2 mb-2 text-xl border-b">Evenement en attentes</div>
                 <div class="flex overflow-y-scroll flex-col gap-4 h-full scrollbar-none">
                     <div
                         v-for="(club, i) in clubStore.clubs.slice(0, 5)"
@@ -110,7 +110,7 @@
                 <LineChart :chart-data="testDataB" :options="optionsB"></LineChart>
             </div>
             <div class="flex flex-col gap-2 card">
-                <div class="text-xl border-b">Alertes</div>
+                <div class="pb-2 text-xl border-b">Alertes</div>
                 <div class="flex gap-2 items-center w-full">
                     <i class="text-amber-400 fa-lg fa-solid fa-triangle-exclamation"></i>
 

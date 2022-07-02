@@ -31,21 +31,29 @@ export const useMetricsStore = defineStore('metrics', {
             this.uniqueMembershipCount = uniqueMembershipCount
             return uniqueMembershipCount
         },
-        async getClubCount() {
-            return await $axios.get('metrics/clubCount').then(onData(this.replaceClubCount))
-        },
-        async getEventCount() {
-            return await $axios.get('metrics/eventCount').then(onData(this.replaceEventCount))
-        },
-        async getMembershipCount() {
-            return await $axios.get('metrics/membershipCount').then(onData(this.replaceMembershipCount))
-        },
-        async getCreatedEventCount() {
-            return await $axios.get('metrics/createdEventCount').then(onData(this.replaceCreatedEventCount))
-        },
-        async getUniqueMembershipCount() {
+        async getClubCount(after, before) {
             return await $axios
-                .get('metrics/uniqueMembershipCount')
+                .get('metrics', { name: 'clubCount', after, before })
+                .then(onData(this.replaceClubCount))
+        },
+        async getEventCount(after, before) {
+            return await $axios
+                .get('metrics', { name: 'eventCount', after, before })
+                .then(onData(this.replaceEventCount))
+        },
+        async getMembershipCount(after, before) {
+            return await $axios
+                .get('metrics', { name: 'membershipCount', after, before })
+                .then(onData(this.replaceMembershipCount))
+        },
+        async getCreatedEventCount(after, before) {
+            return await $axios
+                .get('metrics', { name: 'eventCount', after, before })
+                .then(onData(this.replaceCreatedEventCount))
+        },
+        async getUniqueMembershipCount(after, before) {
+            return await $axios
+                .get('metrics', { name: 'uniqueMembershipCount', after, before })
                 .then(onData(this.replaceUniqueMembershipCount))
         },
     },
