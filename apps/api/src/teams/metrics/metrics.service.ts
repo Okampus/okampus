@@ -1,4 +1,3 @@
-import type { FilterQuery } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
@@ -69,21 +68,42 @@ export class TeamMetricsService {
   }
 
   public async findAll(query: ListTeamMetricsDto): Promise<TeamMetric[]> {
-    const filters: FilterQuery<TeamMetric> = { name: query.name };
+    let filters = {};
+
     if (query.before)
-      filters.createdAt = { $lt: query.before };
+      filters = { ...filters, $lt: query.before };
     if (query.after) {
-      filters.createdAt = { $gt: query.after };
+      filters = { ...filters, $gt: query.after };
     } else {
       const oneMonthAgo = new Date();
       oneMonthAgo.setHours(0, 0, 0, 0);
       oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-      filters.createdAt = { $gt: oneMonthAgo };
+      filters = { ...filters, $gt: oneMonthAgo };
     }
 
-    return await this.teamMetricRepository.find(
-      { name: query.name },
+    const metrics = await this.teamMetricRepository.find(
+      { createdAt: filters, name: query.name },
       { orderBy: { createdAt: 'ASC' } },
     );
+
+    if (!query.interval)
+      return metrics;
+
+    const start = metrics[0].createdAt;
+    const end = metrics[metrics.length - 1].createdAt;
+    start.setSeconds(0, 0);
+    end.setSeconds(0, 0);
+
+    const result = [];
+    for (let cursor = start.getTime(); cursor < end.getTime(); cursor += query.interval * 1000) {
+      const item = metrics.find((metric) => {
+        const roundedDate = new Date(metric.createdAt);
+        roundedDate.setSeconds(0, 0);
+        return roundedDate.getTime() === cursor;
+      });
+      if (item)
+        result.push(item);
+    }
+    return result;
   }
 }
