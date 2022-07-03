@@ -2,6 +2,7 @@ import {
   IsBoolean,
   IsDate,
   IsEnum,
+  IsInt,
   IsNumber,
   IsOptional,
   IsString,
@@ -65,4 +66,7 @@ export class CreateTeamEventDto {
   @IsOptional()
   @IsEnum(TeamEventState)
   state?: TeamEventState;
+
+  @IsInt()
+  formId: number;
 }

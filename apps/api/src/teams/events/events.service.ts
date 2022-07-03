@@ -1,7 +1,7 @@
 import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import type { ListOptionsDto } from '../../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.enum';
@@ -9,6 +9,7 @@ import type { PaginatedResult } from '../../shared/modules/pagination';
 import { serializeOrder } from '../../shared/modules/sorting';
 import { User } from '../../users/user.entity';
 import { TeamEventRegistration } from '../event-registrations/team-event-registration.entity';
+import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
 import { Team } from '../teams/team.entity';
 import type { CreateTeamEventDto } from './dto/create-team-event.dto';
@@ -18,12 +19,14 @@ import { TeamEvent } from './team-event.entity';
 
 @Injectable()
 export class TeamEventsService {
+  // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamEvent) private readonly teamEventRepository: BaseRepository<TeamEvent>,
     @InjectRepository(TeamEventRegistration)
     private readonly teamEventRegistrationRepository: BaseRepository<TeamEventRegistration>,
+    @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
   ) {}
 
@@ -37,10 +40,15 @@ export class TeamEventsService {
     if (createTeamEventDto.supervisor)
       supervisor = await this.userRepository.findOneOrFail({ userId: createTeamEventDto.supervisor });
 
+    const form = await this.teamFormRepository.findOneOrFail({ teamFormId: createTeamEventDto.formId, team });
+    if (form.isTemplate)
+      throw new BadRequestException('Form is a template');
+
     const event = new TeamEvent({
       ...createTeamEventDto,
       supervisor,
       team,
+      form,
       createdBy: user,
     });
 
@@ -120,7 +128,7 @@ export class TeamEventsService {
           { private: false, state: TeamEventState.Published },
         ],
       },
-      { populate: ['supervisor', 'createdBy', 'team', 'team.members'] },
+      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'form'] },
     );
     if (event.state === TeamEventState.Draft && !event.canEdit(user))
       throw new ForbiddenException('Event not published');

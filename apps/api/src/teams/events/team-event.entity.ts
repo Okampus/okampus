@@ -1,14 +1,17 @@
 import {
+  Cascade,
   Entity,
   Enum,
   Index,
   ManyToOne,
+  OneToOne,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.enum';
 import { User } from '../../users/user.entity';
+import { TeamForm } from '../forms/team-form.entity';
 import { Team } from '../teams/team.entity';
 
 @Entity()
@@ -63,6 +66,9 @@ export class TeamEvent extends BaseEntity {
   @Enum({ items: () => TeamEventState, default: TeamEventState.Published })
   state = TeamEventState.Published;
 
+  @OneToOne({ cascade: [Cascade.ALL] })
+  form: TeamForm;
+
   constructor(options: {
     start: Date;
     end: Date;
@@ -71,6 +77,7 @@ export class TeamEvent extends BaseEntity {
     createdBy: User;
     team: Team;
     place: string;
+    form: TeamForm;
     state?: TeamEventState;
     meetingPoint?: string;
     price?: number;
@@ -88,6 +95,7 @@ export class TeamEvent extends BaseEntity {
     this.createdBy = options.createdBy;
     this.team = options.team;
     this.place = options.place;
+    this.form = options.form;
 
     if (options.state)
       this.state = options.state;
