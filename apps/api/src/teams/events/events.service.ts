@@ -132,7 +132,7 @@ export class TeamEventsService {
   }
 
   public async remove(user: User, teamEventId: number): Promise<void> {
-    const event = await this.teamEventRepository.findOneOrFail({ teamEventId });
+    const event = await this.teamEventRepository.findOneOrFail({ teamEventId }, { populate: ['team', 'team.members'] });
     if (!event.canEdit(user))
       throw new ForbiddenException('Not a team admin');
 
