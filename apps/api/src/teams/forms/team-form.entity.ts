@@ -10,9 +10,9 @@ import { User } from '../../users/user.entity';
 import { Team } from '../teams/team.entity';
 
 @Entity()
-export class TeamFormTemplate extends BaseEntity {
+export class TeamForm extends BaseEntity {
   @PrimaryKey()
-  teamFormTemplateId!: number;
+  teamFormId!: number;
 
   @Property()
   name!: string;
@@ -30,9 +30,13 @@ export class TeamFormTemplate extends BaseEntity {
   @Index()
   team!: Team;
 
+  @Property()
+  isTemplate: boolean;
+
   constructor(options: {
     name: string;
     form: object;
+    isTemplate: boolean;
     createdBy: User;
     team: Team;
     description?: string;
@@ -42,6 +46,7 @@ export class TeamFormTemplate extends BaseEntity {
     this.form = options.form;
     this.createdBy = options.createdBy;
     this.team = options.team;
+    this.isTemplate = options.isTemplate;
 
     if (options.description)
       this.description = options.description;
