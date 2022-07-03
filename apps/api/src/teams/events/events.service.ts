@@ -4,6 +4,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import type { ListOptionsDto } from '../../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
+import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.enum';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { serializeOrder } from '../../shared/modules/sorting';
 import { User } from '../../users/user.entity';
@@ -26,18 +27,18 @@ export class TeamEventsService {
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
   ) {}
 
-  public async create(user: User, teamId: number, createTeamDto: CreateTeamEventDto): Promise<TeamEvent> {
+  public async create(user: User, teamId: number, createTeamEventDto: CreateTeamEventDto): Promise<TeamEvent> {
     const team = await this.teamRepository.findOneOrFail({ teamId }, { populate: ['members'] });
 
     if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
     let supervisor: User | null = null;
-    if (createTeamDto.supervisor)
-      supervisor = await this.userRepository.findOneOrFail({ userId: createTeamDto.supervisor });
+    if (createTeamEventDto.supervisor)
+      supervisor = await this.userRepository.findOneOrFail({ userId: createTeamEventDto.supervisor });
 
     const event = new TeamEvent({
-      ...createTeamDto,
+      ...createTeamEventDto,
       supervisor,
       team,
       createdBy: user,
@@ -57,14 +58,28 @@ export class TeamEventsService {
 
     let filter: FilterQuery<TeamEvent> = {};
     if (query.teamId && !teamIds.includes(query.teamId)) {
-      filter = { ...filter, team: { teamId: query.teamId }, private: false };
+      // We asked for the events of a team that the user is not a member of
+      // so we only search for public & published events
+      filter = {
+        team: { teamId: query.teamId },
+        private: false,
+        state: TeamEventState.Published,
+      };
     } else if (query.teamId) {
-      filter = { ...filter, team: { teamId: query.teamId } };
+      // We asked for the events of a team that the user is a member of
+      // so we search for all events, private or not.
+      filter = {
+        team: { teamId: query.teamId },
+        state: query.state ?? TeamEventState.Published,
+      };
     } else {
+      // We asked for all the events of all teams
+      // so we search for the public & private events of the teams the user is a member of
+      // and the public & published events of the teams the user is not a member of
       filter = {
         $or: [
-          { private: true, team: { $in: teamIds } },
-          { private: false },
+          { team: { $in: teamIds }, state: query.state ?? TeamEventState.Published },
+          { team: { $nin: teamIds }, private: false, state: TeamEventState.Published },
         ],
       };
     }
@@ -97,29 +112,33 @@ export class TeamEventsService {
     const memberships = await this.teamMemberRepository.find({ user });
     const teamIds = memberships.map(m => m.team.teamId);
 
-    return await this.teamEventRepository.findOneOrFail(
+    const event = await this.teamEventRepository.findOneOrFail(
       {
         teamEventId,
         $or: [
-          { private: true, team: { $in: teamIds } },
-          { private: false },
+          { team: { $in: teamIds } },
+          { private: false, state: TeamEventState.Published },
         ],
       },
-      { populate: ['supervisor', 'createdBy', 'team'] },
+      { populate: ['supervisor', 'createdBy', 'team', 'team.members'] },
     );
+    if (event.state === TeamEventState.Draft && !event.canEdit(user))
+      throw new ForbiddenException('Event not published');
+
+    return event;
   }
 
   public async update(
     user: User,
     teamEventId: number,
-    updateTeamDto: UpdateTeamEventDto,
+    updateTeamEventDto: UpdateTeamEventDto,
   ): Promise<TeamEvent> {
     const event = await this.teamEventRepository.findOneOrFail({ teamEventId }, { populate: ['team', 'team.members'] });
 
     if (!event.canEdit(user))
       throw new ForbiddenException('Not a team admin');
 
-    const { supervisor, ...dto } = updateTeamDto;
+    const { supervisor, ...dto } = updateTeamEventDto;
 
     if (supervisor) {
       const supervisorUser = await this.userRepository.findOneOrFail({ userId: supervisor });

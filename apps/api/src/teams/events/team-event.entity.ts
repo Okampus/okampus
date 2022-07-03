@@ -1,11 +1,13 @@
 import {
   Entity,
+  Enum,
   Index,
   ManyToOne,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.enum';
 import { User } from '../../users/user.entity';
 import { Team } from '../teams/team.entity';
 
@@ -20,11 +22,11 @@ export class TeamEvent extends BaseEntity {
   @Property()
   end!: Date;
 
-  @Property({ type: 'text' })
-  shortDescription!: string;
+  @Property()
+  name!: string;
 
   @Property({ type: 'text' })
-  longDescription!: string;
+  description!: string;
 
   @Property()
   price = 0;
@@ -58,14 +60,18 @@ export class TeamEvent extends BaseEntity {
   @Property({ type: 'text' })
   link?: string;
 
+  @Enum({ items: () => TeamEventState, default: TeamEventState.Published })
+  state = TeamEventState.Published;
+
   constructor(options: {
     start: Date;
     end: Date;
-    shortDescription: string;
-    longDescription: string;
+    name: string;
+    description: string;
     createdBy: User;
     team: Team;
     place: string;
+    state?: TeamEventState;
     meetingPoint?: string;
     price?: number;
     supervisor?: User | null;
@@ -77,12 +83,14 @@ export class TeamEvent extends BaseEntity {
     super();
     this.start = options.start;
     this.end = options.end;
-    this.shortDescription = options.shortDescription;
-    this.longDescription = options.longDescription;
+    this.name = options.name;
+    this.description = options.description;
     this.createdBy = options.createdBy;
     this.team = options.team;
     this.place = options.place;
 
+    if (options.state)
+      this.state = options.state;
     if (options.meetingPoint)
       this.meetingPoint = options.meetingPoint;
     if (typeof options.price !== 'undefined')

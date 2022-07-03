@@ -1,6 +1,7 @@
 import {
   IsBoolean,
   IsDate,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsString,
@@ -8,6 +9,7 @@ import {
   Length,
   Min,
 } from 'class-validator';
+import { TeamEventState } from '../../../shared/lib/types/enums/team-event-state.enum';
 
 export class CreateTeamEventDto {
   @IsDate()
@@ -18,11 +20,11 @@ export class CreateTeamEventDto {
 
   @IsString()
   @Length(5, 150)
-  shortDescription: string;
+  name: string;
 
   @IsString()
   @Length(5, 3000)
-  longDescription: string;
+  description: string;
 
   @IsString()
   @Length(5, 500)
@@ -59,4 +61,8 @@ export class CreateTeamEventDto {
   @IsOptional()
   @IsUrl()
   link?: string;
+
+  @IsOptional()
+  @IsEnum(TeamEventState)
+  state?: TeamEventState;
 }

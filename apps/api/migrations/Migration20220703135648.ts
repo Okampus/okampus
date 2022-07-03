@@ -1,10 +1,17 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20220703093937 extends Migration {
+export class Migration20220703135648 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('alter table "team_metric" drop constraint if exists "team_metric_value_check";');
     this.addSql('alter table "team_metric" alter column "value" type real using ("value"::real);');
+
+
+    this.addSql('alter table "team_event" rename column "short_description" to "name";');
+    this.addSql('alter table "team_event" rename column "long_description" to "description";');
+
+    this.addSql('alter table "team_event" add column "state" text check ("state" in (\'draft\', \'published\')) not null default \'published\';');
+
 
     this.addSql('create table "team_form_template" ("team_form_template_id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" varchar(255) not null, "description" text null, "form" jsonb not null, "created_by_id" varchar(255) not null, "team_id" int4 not null);');
     this.addSql('create index "team_form_template_team_id_index" on "team_form_template" ("team_id");');
