@@ -99,7 +99,7 @@
                         :values="['year', 'semester', 'month', 'day']"
                     ></SelectInput>
                 </div>
-                {{ eventChartType }}
+
                 <LineChart
                     :chart-data="{
                         datasets: [
@@ -309,8 +309,8 @@
                         week: 'DD/MM',
                         day: 'DD/MM',
                         hour: 'HH:mm',
-                        minute: 'HH:mm',
                     },
+                    tooltipFormat: 'HH:mm dd/MM/yy',
                 },
             },
             y: { min: 0 },
