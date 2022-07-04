@@ -87,7 +87,10 @@ export class MetricsService {
     if (!query.interval)
       return metrics;
 
-    const start = metrics[0].createdAt;
+    if (metrics.length === 0)
+      return [];
+
+    const start = query.before ?? metrics[0].createdAt;
     const end = metrics[metrics.length - 1].createdAt;
     start.setSeconds(0, 0);
     end.setSeconds(0, 0);
