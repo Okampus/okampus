@@ -2,7 +2,7 @@
     <div class="flex flex-col gap-4 my-8 mx-auto w-23/24">
         <div class="grid grid-cols-4 gap-4 w-full text-center">
             <div
-                v-for="(n, i) in [
+                v-for="(el, i) in [
                     {
                         text: `associations`,
                         color: 'blue',
@@ -14,11 +14,20 @@
                         text: `% d'insertion`,
                         color: 'sky',
                         icon: 'fa-arrows-down-to-people',
-                        val: 82,
-                        change: 9.3,
+                        val:
+
+                                metricsStore.uniqueMembershipCount[metricsStore.clubCount.length - 1] !== 0
+                                    ?.value ?metricsStore.userCount[metricsStore.userCount.length - 1]?.value /
+                                metricsStore.uniqueMembershipCount[metricsStore.clubCount.length - 1]
+                                    ?.value : 0,
+                        change:
+                            metricsStore.uniqueMembershipCount[0]?.value !== 0
+                                ? metricsStore.userCount[0]?.value /
+                                  metricsStore.uniqueMembershipCount[0]?.value
+                                : 0,
                     },
                     {
-                        text: `nb evenement`,
+                        text: `nbr evenement`,
                         color: 'emerald',
                         icon: 'fa-calendar-day',
                         val: metricsStore.eventCount[metricsStore.eventCount.length - 1]?.value,
@@ -28,8 +37,8 @@
                         text: 'utilisateurs',
                         color: 'indigo',
                         icon: 'fa-user',
-                        val: 5983,
-                        change: -5.4,
+                        val: metricsStore.userCount[metricsStore.userCount.length - 1]?.value,
+                        change: metricsStore.userCount[0]?.value,
                     },
                 ]"
                 :key="i"
@@ -37,27 +46,28 @@
             >
                 <div
                     class="flex grow-0 shrink-0 p-3 rounded-full"
-                    :class="`bg-${n.color}-300 text-${n.color}-600`"
+                    :class="`bg-${el.color}-300 text-${el.color}-600`"
                 >
-                    <i class="fa-solid" :class="n.icon"></i>
+                    <i class="fa-solid" :class="el.icon"></i>
                 </div>
                 <div class="flex flex-col justify-center">
                     <div class="flex relative gap-2 justify-center items-center">
-                        <div class="text-2xl">{{ n.val }}</div>
+                        <div class="text-2xl">{{ el.val }}</div>
                         <div
                             class="p-0.5 text-xs rounded-full"
                             :class="{
-                                'text-green-400 bg-green-200': (n.val - n.change) / n.val > 0,
-                                'text-red-400 bg-red-200': (n.val - n.change) / n.val < 0,
-                                'text-gray-400 bg-gray-200': (n.val - n.change) / n.val === 0 || n.val === 0,
+                                'text-green-400 bg-green-200': (el.val - el.change) / el.val > 0,
+                                'text-red-400 bg-red-200': (el.val - el.change) / el.val < 0,
+                                'text-gray-400 bg-gray-200':
+                                    (el.val - el.change) / el.val === 0 || el.val === 0,
                             }"
                         >
-                            <template v-if="(n.val - n.change) / n.val > 0">+</template>
-                            <template v-if="(n.val - n.change) / n.val === 0 || n.val === 0">~</template>
-                            {{ n.val !== 0 ? ((n.val - n.change) / n.val).toFixed(1) : 0 }} %
+                            <template v-if="(el.val - el.change) / el.val > 0">+</template>
+                            <template v-if="(el.val - el.change) / el.val === 0 || el.val === 0">~</template>
+                            {{ el.val !== 0 ? ((el.val - el.change) / el.val).toFixed(1) : 0 }} %
                         </div>
                     </div>
-                    <div class="text-xs text-gray-400 uppercase">{{ n.text }}</div>
+                    <div class="text-xs text-gray-400 uppercase">{{ el.text }}</div>
                 </div>
             </div>
         </div>
@@ -284,7 +294,7 @@
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import { fullname } from '@/utils/users'
     import SelectInput from '@/components/Input/SelectInput.vue'
-    import { ref, watch } from 'vue'
+    import { ref, watchEffect } from 'vue'
     import { useMetricsStore } from '@/store/metrics.store'
     import * as dayjs from 'dayjs'
     import duration from 'dayjs/plugin/duration'
@@ -347,20 +357,15 @@
         .subtract(dayjs.duration({ days: 6, hours: 23, minutes: 30 }))
         .toDate()
 
-    const weekDuration = dayjs.duration({ days: 6, hours: 23, minutes: 30 }).asSeconds()
+    const weekDuration = dayjs.duration({ days: 6, hours: 23, minutes: 45 }).asSeconds()
 
-    metricsStore.getClubCount(lastWeek, null, weekDuration)
+    metricsStore.getClubCount(lastWeek, null, dayjs.duration({ minutes: 15 }).asSeconds())
     metricsStore.getEventCount(lastWeek, null, weekDuration)
     metricsStore.getMembershipCount(lastWeek, null, weekDuration)
-    metricsStore.getCreatedEventCount(
-        dayjs().subtract(dayjs.duration(1, eventChartType.value)).toDate(),
-        null,
-        dayjs
-            .duration(intervalTable[eventChartType.value].count, intervalTable[eventChartType.value].unit)
-            .asSeconds(),
-    )
+    metricsStore.getUserCount(lastWeek, null, weekDuration)
+    metricsStore.getUniqueMembershipCount(lastWeek, null, weekDuration)
 
-    watch(eventChartType, () => {
+    watchEffect(() => {
         metricsStore.getCreatedEventCount(
             dayjs().subtract(dayjs.duration(1, eventChartType.value)).toDate(),
             null,
@@ -370,5 +375,5 @@
         )
     })
 
-    watch(activityChartType, () => {})
+    watchEffect(activityChartType, () => {})
 </script>
