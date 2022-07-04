@@ -1,6 +1,7 @@
 import type { AbilityClass, ExtractSubjectType, InferSubjects } from '@casl/ability';
 import { Ability, AbilityBuilder, ForbiddenError } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
+import { Announcement } from '../../../announcements/announcement.entity';
 import { Badge } from '../../../badges/entities/badge.entity';
 import { Blog } from '../../../blogs/blog.entity';
 import type { Contact } from '../../../contacts/entities/contact.entity';
@@ -24,12 +25,14 @@ import { Team } from '../../../teams/teams/team.entity';
 import { Thread } from '../../../threads/thread.entity';
 import { User } from '../../../users/user.entity';
 import { WikiPage } from '../../../wiki/wiki-page.entity';
+import { AnnouncementState } from '../../lib/types/enums/announcement-state.enum';
 import { ContentKind } from '../../lib/types/enums/content-kind.enum';
 import { TeamKind } from '../../lib/types/enums/team-kind.enum';
 import { Action } from '../authorization/types/action.enum';
 import { Role } from '../authorization/types/role.enum';
 
 export type Subjects = InferSubjects<
+  | typeof Announcement
   | typeof Attachment
   | typeof Badge
   | typeof Blog
@@ -81,9 +84,15 @@ export class CaslAbilityFactory {
       allow(Action.Manage, 'all');
     } else {
       allow(Action.Read, 'all');
-      forbid(Action.Read, Report);
+      forbid(Action.Read, [Report, Announcement, Metric]);
+
       // @ts-expect-error
       allow([Action.Read, Action.Update], Report, { 'user.userId': user.userId });
+
+      allow(Action.Read, Announcement, {
+        state: AnnouncementState.Committed,
+        displayFrom: { $lte: new Date() },
+      });
 
       allow(Action.Create, [Attachment, Content, Favorite, InfoDoc, StudyDoc, Tag, Thread]);
       allow(Action.Report, 'all');
@@ -107,7 +116,10 @@ export class CaslAbilityFactory {
         allow(Action.Read, 'all');
         allow(Action.Update, 'all');
         forbid(Action.Update, Badge);
-        allow(Action.Manage, [Blog, Content, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag, Thread, WikiPage]);
+        allow(
+          Action.Manage,
+          [Announcement, Blog, Content, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag, Thread, WikiPage],
+        );
       } else {
         // @ts-expect-error
         forbid(Action.Manage, [Blog, Thread], { 'post.isVisible': false })

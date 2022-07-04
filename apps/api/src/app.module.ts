@@ -12,6 +12,7 @@ import session from 'express-session';
 import Redis from 'ioredis';
 import { S3Module } from 'nestjs-s3';
 import passport from 'passport';
+import { AnnouncementsModule } from './announcements/announcements.module';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
@@ -46,13 +47,17 @@ import { WikisModule } from './wiki/wikis.module';
 
 @Module({
   imports: [
+    // Configs
+    CaslModule,
     EventEmitterModule.forRoot(),
     MikroOrmModule.forRoot(),
     RedisModule.forRoot(redisConfig),
     S3Module.forRoot(storageConfig),
     ScheduleModule.forRoot(),
     SentryModule.forRoot(sentryConfig),
-    CaslModule,
+
+    // Custom modules
+    AnnouncementsModule,
     AuthModule,
     BadgesModule,
     BlogsModule,
