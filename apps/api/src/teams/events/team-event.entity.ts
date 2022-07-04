@@ -11,7 +11,7 @@ import {
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.enum';
 import { User } from '../../users/user.entity';
-import { TeamForm } from '../forms/team-form.entity';
+import type { TeamForm } from '../forms/team-form.entity';
 import { Team } from '../teams/team.entity';
 
 @Entity()
@@ -67,7 +67,7 @@ export class TeamEvent extends BaseEntity {
   state = TeamEventState.Published;
 
   @OneToOne({ cascade: [Cascade.ALL] })
-  form: TeamForm;
+  form?: TeamForm | null = null;
 
   constructor(options: {
     start: Date;
@@ -77,11 +77,11 @@ export class TeamEvent extends BaseEntity {
     createdBy: User;
     team: Team;
     place: string;
-    form: TeamForm;
+    form?: TeamForm;
     state?: TeamEventState;
     meetingPoint?: string;
     price?: number;
-    supervisor?: User | null;
+    supervisor?: User;
     private?: boolean;
     preconditions?: string;
     questionFallback?: string;
@@ -95,8 +95,9 @@ export class TeamEvent extends BaseEntity {
     this.createdBy = options.createdBy;
     this.team = options.team;
     this.place = options.place;
-    this.form = options.form;
 
+    if (options.form)
+      this.form = options.form;
     if (options.state)
       this.state = options.state;
     if (options.meetingPoint)

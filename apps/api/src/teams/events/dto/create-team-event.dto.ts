@@ -43,7 +43,7 @@ export class CreateTeamEventDto {
 
   @IsString()
   @IsOptional()
-  supervisor?: string;
+  supervisorId?: string;
 
   @IsOptional()
   @IsBoolean()
@@ -67,6 +67,7 @@ export class CreateTeamEventDto {
   @IsEnum(TeamEventState)
   state?: TeamEventState;
 
+  @IsOptional()
   @IsInt()
-  formId: number;
+  formId?: number;
 }
