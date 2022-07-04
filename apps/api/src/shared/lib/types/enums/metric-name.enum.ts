@@ -4,4 +4,6 @@ export enum MetricName {
   ClubUniqueMembershipCount = 'clubUniqueMembershipCount',
   ClubEventCount = 'clubEventCount',
   ClubCreatedEventCount = 'clubCreatedEventCount',
+
+  UserCount = 'userCount',
 }

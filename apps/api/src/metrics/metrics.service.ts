@@ -8,6 +8,7 @@ import { TeamKind } from '../shared/lib/types/enums/team-kind.enum';
 import { TeamEvent } from '../teams/events/team-event.entity';
 import { TeamMember } from '../teams/members/team-member.entity';
 import { Team } from '../teams/teams/team.entity';
+import { User } from '../users/user.entity';
 import type { ListMetricsDto } from './dto/list-metrics.dto';
 import { Metric } from './metric.entity';
 
@@ -18,6 +19,7 @@ export class MetricsService {
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamEvent) private readonly teamEventRepository: BaseRepository<TeamEvent>,
+    @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
   ) {}
 
   @Cron(config.get('settings.metricsCron'))
@@ -61,6 +63,10 @@ export class MetricsService {
       ],
     });
     metrics.push({ name: MetricName.ClubCreatedEventCount, value: createdEventCount });
+
+    // UserCount
+    const userCount = await this.userRepository.count();
+    metrics.push({ name: MetricName.UserCount, value: userCount });
 
     await this.metricRepository.persistAndFlush(metrics.map(opts => new Metric(opts)));
   }
