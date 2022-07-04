@@ -23,7 +23,7 @@ export class Migration20220704073750 extends Migration {
     this.addSql('update "metric" set name=\'clubEventCount\' where name=\'eventCount\';');
     this.addSql('update "metric" set name=\'clubCreatedEventCount\' where name=\'createdEventCount\';');
 
-    this.addSql('alter table "metric" add constraint "metric_name_check" check ("name" in (\'clubCount\', \'clubMembershipCount\', \'clubUniqueMembershipCount\', \'clubEventCount\', \'clubCreatedEventCount\'));');
+    this.addSql('alter table "metric" add constraint "metric_name_check" check ("name" in (\'clubCount\', \'clubMembershipCount\', \'clubUniqueMembershipCount\', \'clubEventCount\', \'clubCreatedEventCount\', \'userCount\'));');
   }
 
 }
