@@ -4,6 +4,7 @@ import {
   TEAM_CONTACTS_INCLUDED,
   TEAM_CONTACTS_TEAM_INCLUDED,
   TEAM_MEMBERS_INCLUDED,
+  TEAMFORM_TEAM_INCLUDED,
   TEAMMEMBER_TEAM_INCLUDED,
 } from '../constants';
 
@@ -17,6 +18,10 @@ export function SerializerIncludeTeamMembers(): ReturnType<typeof applyDecorator
 
 export function SerializerTeamMemberIncludeTeam(): ReturnType<typeof applyDecorators> {
   return applyDecorators(SerializeOptions({ groups: [TEAMMEMBER_TEAM_INCLUDED] }));
+}
+
+export function SerializerTeamFormIncludeTeam(): ReturnType<typeof applyDecorators> {
+  return applyDecorators(SerializeOptions({ groups: [TEAMFORM_TEAM_INCLUDED] }));
 }
 
 export function SerializerIncludeTeamContacts(): ReturnType<typeof applyDecorators> {

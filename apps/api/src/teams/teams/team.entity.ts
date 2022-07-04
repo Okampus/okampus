@@ -4,6 +4,7 @@ import {
   Enum,
   Index,
   OneToMany,
+  OneToOne,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
@@ -15,6 +16,8 @@ import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import { Role } from '../../shared/modules/authorization/types/role.enum';
 import type { User } from '../../users/user.entity';
+
+import type { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
 
 const ADMIN_ROLES = new Set([TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasurer, TeamRole.Secretary]);
@@ -60,6 +63,9 @@ export class Team extends BaseEntity {
   @Property({ type: 'text' })
   membershipRequestMessage?: string;
 
+  @OneToOne('TeamForm')
+  membershipRequestForm?: TeamForm | null;
+
   constructor(options: {
     name: string;
     kind: TeamKind;
@@ -71,6 +77,7 @@ export class Team extends BaseEntity {
     tags?: string[];
     membershipRequestLink?: string;
     membershipRequestMessage?: string;
+    membershipRequestForm?: TeamForm;
   }) {
     super();
     this.name = options.name;
@@ -90,6 +97,8 @@ export class Team extends BaseEntity {
       this.membershipRequestLink = options.membershipRequestLink;
     if (options.membershipRequestMessage)
       this.membershipRequestMessage = options.membershipRequestMessage;
+    if (options.membershipRequestForm)
+      this.membershipRequestForm = options.membershipRequestForm;
   }
 
   public canAdminister(user: User): boolean {

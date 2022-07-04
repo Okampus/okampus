@@ -8,6 +8,7 @@ import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
 import type { User } from '../../users/user.entity';
+import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
 import type { CreateTeamDto } from './dto/create-team.dto';
 import type { TeamsFilterDto } from './dto/teams-filter.dto';
@@ -20,6 +21,7 @@ export class TeamsService {
   constructor(
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
+    @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
     @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
 
     private readonly teamSearchService: TeamSearchService,
@@ -95,7 +97,7 @@ export class TeamsService {
   public async findOne(teamId: number): Promise<Team> {
     return await this.teamRepository.findOneOrFail(
       { teamId },
-      { populate: ['members', 'members.user'] },
+      { populate: ['members', 'members.user', 'membershipRequestForm', 'membershipRequestForm.createdBy'] },
     );
   }
 
@@ -116,7 +118,12 @@ export class TeamsService {
     if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
-    const { avatar, banner, ...dto } = updateTeamDto;
+    const {
+      avatar,
+      banner,
+      membershipRequestFormId: teamFormId,
+      ...dto
+    } = updateTeamDto;
 
     if (typeof avatar !== 'undefined') {
       if (avatar)
@@ -130,6 +137,18 @@ export class TeamsService {
         await this.setAvatar(banner, 'banner', team);
       else
         team.banner = null;
+    }
+
+    // Check that the provided form id is valid, is a template, and is not already used
+    if (typeof teamFormId !== 'undefined') {
+      if (teamFormId) {
+        const form = await this.teamFormRepository.findOneOrFail({ teamFormId, team });
+        if (form.isTemplate)
+          throw new BadRequestException('Form is a template');
+        team.membershipRequestForm = form;
+      } else {
+        team.membershipRequestForm = null;
+      }
     }
 
     wrap(team).assign(dto);
