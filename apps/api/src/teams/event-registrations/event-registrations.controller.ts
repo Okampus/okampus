@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Body,
   Controller,
   Delete,
   Get,
@@ -15,6 +16,7 @@ import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { User } from '../../users/user.entity';
 import { TeamEvent } from '../events/team-event.entity';
+import { CreateTeamEventRegistrationDto } from './dto/create-team-event-registration.dto';
 import { ListRegisteredEventsDto } from './dto/list-registered-events.dto';
 import { TeamEventRegistrationsService } from './event-registrations.service';
 import type { TeamEventRegistration } from './team-event-registration.entity';
@@ -30,9 +32,10 @@ export class TeamEventRegistrationsController {
   @CheckPolicies(ability => ability.can(Action.Read, TeamEvent))
   public async create(
     @Param('eventId', ParseIntPipe) eventId: number,
+    @Body() createTeamEventRegistrationDto: CreateTeamEventRegistrationDto,
     @CurrentUser() user: User,
   ): Promise<TeamEventRegistration> {
-    return await this.eventRegistrationsService.create(user, eventId);
+    return await this.eventRegistrationsService.create(user, eventId, createTeamEventRegistrationDto);
   }
 
   @Get()
