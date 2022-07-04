@@ -7,6 +7,7 @@ import type { PaginatedResult, PaginateDto } from '../../shared/modules/paginati
 import type { User } from '../../users/user.entity';
 import { TeamEvent } from '../events/team-event.entity';
 import { TeamMember } from '../members/team-member.entity';
+import type { CreateTeamEventRegistrationDto } from './dto/create-team-event-registration.dto';
 import type { ListRegisteredEventsDto } from './dto/list-registered-events.dto';
 import { TeamEventRegistration } from './team-event-registration.entity';
 
@@ -19,7 +20,11 @@ export class TeamEventRegistrationsService {
     private readonly teamEventRegistrationRepository: BaseRepository<TeamEventRegistration>,
   ) {}
 
-  public async create(user: User, teamEventId: number): Promise<TeamEventRegistration> {
+  public async create(
+    user: User,
+    teamEventId: number,
+    createTeamEventRegistrationDto: CreateTeamEventRegistrationDto,
+  ): Promise<TeamEventRegistration> {
     const event = await this.teamEventRepository.findOneOrFail({ teamEventId }, { populate: ['createdBy', 'team'] });
 
     if (event.private) {
@@ -32,7 +37,11 @@ export class TeamEventRegistrationsService {
     if (existing)
       throw new BadRequestException('Already registered');
 
-    const registration = new TeamEventRegistration({ user, event });
+    const registration = new TeamEventRegistration({
+      user,
+      event,
+      status: createTeamEventRegistrationDto.status,
+    });
 
     await this.teamEventRegistrationRepository.persistAndFlush(registration);
     return registration;
@@ -58,7 +67,7 @@ export class TeamEventRegistrationsService {
      */
 
     if (query.eventId) {
-      const event = await this.teamEventRepository.findOneOrFail({ teamEventId: query.eventId }, { populate: ['team', 'team.members'] });
+      const event = await this.teamEventRepository.findOneOrFail({ teamEventId: query.eventId }, { populate: ['team', 'team.members'] } );
       if (!event.canEdit(user))
         throw new ForbiddenException('Cannot view registrations');
       filter = { ...filter, event: { teamEventId: query.eventId } };
@@ -84,7 +93,7 @@ export class TeamEventRegistrationsService {
         team: { teamId: registration.event.team.teamId },
       });
       if (!membership)
-        throw new ForbiddenException('Not a team member');
+throw new ForbiddenException('Not a team member');
     }
 
     return registration;

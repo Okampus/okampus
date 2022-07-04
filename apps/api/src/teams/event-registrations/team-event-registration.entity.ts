@@ -1,5 +1,11 @@
-import { Entity, ManyToOne, PrimaryKey } from '@mikro-orm/core';
+import {
+  Entity,
+  Enum,
+  ManyToOne,
+  PrimaryKey,
+} from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { RegisterStatus } from '../../shared/lib/types/enums/register-status.enum';
 import { User } from '../../users/user.entity';
 import { TeamEvent } from '../events/team-event.entity';
 
@@ -14,9 +20,17 @@ export class TeamEventRegistration extends BaseEntity {
   @ManyToOne({ onDelete: 'CASCADE' })
   user!: User;
 
-  constructor(options: { event: TeamEvent; user: User }) {
+  @Enum(() => RegisterStatus)
+  status!: RegisterStatus;
+
+  constructor(options: {
+    event: TeamEvent;
+    user: User;
+    status: RegisterStatus;
+  }) {
     super();
     this.event = options.event;
     this.user = options.user;
+    this.status = options.status;
   }
 }
