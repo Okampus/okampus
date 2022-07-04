@@ -22,6 +22,7 @@ import { ContentsModule } from './contents/contents.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { FilesModule } from './files/files.module';
 import { HealthModule } from './health/health.module';
+import { MetricsModule } from './metrics/metrics.module';
 import { ReactionsModule } from './reactions/reactions.module';
 import { ReportsModule } from './reports/reports.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
@@ -60,6 +61,7 @@ import { WikisModule } from './wiki/wikis.module';
     FavoritesModule,
     FilesModule,
     HealthModule,
+    MetricsModule,
     ReactionsModule,
     ReportsModule,
     RestaurantModule,

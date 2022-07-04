@@ -11,6 +11,7 @@ import { InfoDoc } from '../../../files/info-docs/info-doc.entity';
 import { ProfileImage } from '../../../files/profile-images/profile-image.entity';
 import { StudyDoc } from '../../../files/study-docs/study-doc.entity';
 import { TeamFile } from '../../../files/team-files/team-file.entity';
+import { Metric } from '../../../metrics/metric.entity';
 import { Report } from '../../../reports/report.entity';
 import { DailyInfo } from '../../../restaurant/daily-info/daily-info.entity';
 import { DailyMenu } from '../../../restaurant/daily-menus/daily-menu.entity';
@@ -19,7 +20,6 @@ import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
 import { TeamEvent } from '../../../teams/events/team-event.entity';
 import { TeamForm } from '../../../teams/forms/team-form.entity';
-import { TeamMetric } from '../../../teams/metrics/team-metric.entity';
 import { Team } from '../../../teams/teams/team.entity';
 import { Thread } from '../../../threads/thread.entity';
 import { User } from '../../../users/user.entity';
@@ -40,6 +40,7 @@ export type Subjects = InferSubjects<
   | typeof Favorite
   | typeof Food
   | typeof InfoDoc
+  | typeof Metric
   | typeof ProfileImage
   | typeof Report
   | typeof StudyDoc
@@ -49,7 +50,6 @@ export type Subjects = InferSubjects<
   | typeof TeamEvent
   | typeof TeamFile
   | typeof TeamForm
-  | typeof TeamMetric
   | typeof Thread
   | typeof User
   | typeof WikiPage>
@@ -161,7 +161,7 @@ export class CaslAbilityFactory {
         allow(Action.Manage, Team, isClub);
         // @ts-expect-error
         allow(Action.Manage, [TeamEvent, TeamFile], { 'team.kind': TeamKind.Club });
-        allow(Action.Manage, TeamMetric);
+        allow(Action.Manage, Metric);
       }
     }
 

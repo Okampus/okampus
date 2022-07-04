@@ -4,11 +4,11 @@ import {
   IsInt,
   IsOptional,
 } from 'class-validator';
-import { TeamMetricName } from '../../../shared/lib/types/enums/team-metric-type.enum';
+import { MetricName } from '../../shared/lib/types/enums/metric-name.enum';
 
-export class ListTeamMetricsDto {
-  @IsEnum(TeamMetricName)
-  name!: TeamMetricName;
+export class ListMetricsDto {
+  @IsEnum(MetricName)
+  name!: MetricName;
 
   @IsOptional()
   @IsDate()

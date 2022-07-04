@@ -1,73 +1,71 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { config } from '../../shared/configs/config';
-import { BaseRepository } from '../../shared/lib/orm/base.repository';
-import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
-import { TeamMetricName } from '../../shared/lib/types/enums/team-metric-type.enum';
-import { TeamEvent } from '../events/team-event.entity';
-import { TeamMember } from '../members/team-member.entity';
-import { Team } from '../teams/team.entity';
-import type { ListTeamMetricsDto } from './dto/list-team-metrics.dto';
-import { TeamMetric } from './team-metric.entity';
+import { config } from '../shared/configs/config';
+import { BaseRepository } from '../shared/lib/orm/base.repository';
+import { MetricName } from '../shared/lib/types/enums/metric-name.enum';
+import { TeamKind } from '../shared/lib/types/enums/team-kind.enum';
+import { TeamEvent } from '../teams/events/team-event.entity';
+import { TeamMember } from '../teams/members/team-member.entity';
+import { Team } from '../teams/teams/team.entity';
+import type { ListMetricsDto } from './dto/list-metrics.dto';
+import { Metric } from './metric.entity';
 
 @Injectable()
-export class TeamMetricsService {
+export class MetricsService {
   constructor(
+    @InjectRepository(Metric) private readonly metricRepository: BaseRepository<Metric>,
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
-    @InjectRepository(TeamMetric) private readonly teamMetricRepository: BaseRepository<TeamMetric>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamEvent) private readonly teamEventRepository: BaseRepository<TeamEvent>,
   ) {}
 
-  @Cron(config.get('settings.teamMetricsCron'))
+  @Cron(config.get('settings.metricsCron'))
   public async updateMetrics(): Promise<void> {
-    const isClub = { team: { kind: TeamKind.Club } };
-
     const fifteenMinutesAgo = new Date();
     fifteenMinutesAgo.setMinutes(fifteenMinutesAgo.getMinutes() - 15);
 
-    const metrics: Array<ConstructorParameters<typeof TeamMetric>[0]> = [];
+    const metrics: Array<ConstructorParameters<typeof Metric>[0]> = [];
 
     // ClubCount
     const clubCount = await this.teamRepository.count({ kind: TeamKind.Club });
-    metrics.push({ name: TeamMetricName.ClubCount, value: clubCount });
+    metrics.push({ name: MetricName.ClubCount, value: clubCount });
 
-    // MembershipCount
-    const membershipCount = await this.teamMemberRepository.count(isClub);
-    metrics.push({ name: TeamMetricName.MembershipCount, value: membershipCount });
+    // ClubMembershipCount
+    const membershipCount = await this.teamMemberRepository.count({ team: { kind: TeamKind.Club } });
+    metrics.push({ name: MetricName.ClubMembershipCount, value: membershipCount });
 
-    // UniqueMembershipCount
+    // ClubUniqueMembershipCount
     const [{ count }] = await this.teamMemberRepository
       .createQueryBuilder()
       .count('user', true)
       .execute() as [col: { count: string }];
-    metrics.push({ name: TeamMetricName.UniqueMembershipCount, value: Number(count) || 0 });
+    metrics.push({ name: MetricName.ClubUniqueMembershipCount, value: Number(count) || 0 });
 
-    // EventCount
+    // ClubEventCount
     const eventCount = await this.teamEventRepository.count({
-      ...isClub,
+      team: { kind: TeamKind.Club },
       $and: [
         { start: { $gt: fifteenMinutesAgo } },
         { start: { $lte: new Date() } },
       ],
     });
-    metrics.push({ name: TeamMetricName.EventCount, value: eventCount });
+    metrics.push({ name: MetricName.ClubEventCount, value: eventCount });
 
-    // CreatedEventCount
+    // ClubCreatedEventCount
     const createdEventCount = await this.teamEventRepository.count({
-      ...isClub,
+      team: { kind: TeamKind.Club },
       $and: [
         { createdAt: { $gt: fifteenMinutesAgo } },
         { createdAt: { $lte: new Date() } },
       ],
     });
-    metrics.push({ name: TeamMetricName.CreatedEventCount, value: createdEventCount });
+    metrics.push({ name: MetricName.ClubCreatedEventCount, value: createdEventCount });
 
-    await this.teamMetricRepository.persistAndFlush(metrics.map(opts => new TeamMetric(opts)));
+    await this.metricRepository.persistAndFlush(metrics.map(opts => new Metric(opts)));
   }
 
-  public async findAll(query: ListTeamMetricsDto): Promise<TeamMetric[]> {
+  public async findAll(query: ListMetricsDto): Promise<Metric[]> {
     let filters = {};
 
     if (query.before)
@@ -81,7 +79,7 @@ export class TeamMetricsService {
       filters = { ...filters, $gt: oneMonthAgo };
     }
 
-    const metrics = await this.teamMetricRepository.find(
+    const metrics = await this.metricRepository.find(
       { createdAt: filters, name: query.name },
       { orderBy: { createdAt: 'ASC' } },
     );

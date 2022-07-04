@@ -62,7 +62,7 @@ interface Config {
     password: string;
   };
   settings: {
-    teamMetricsCron: string;
+    metricsCron: string;
   };
 }
 
@@ -284,10 +284,10 @@ export const config = createProfiguration<Config>({
     },
   },
   settings: {
-    teamMetricsCron: {
+    metricsCron: {
       default: '*/15 * * * *',
       format: String,
-      env: 'TEAM_METRICS_CRON',
+      env: 'METRICS_CRON',
     },
   },
 }, {
