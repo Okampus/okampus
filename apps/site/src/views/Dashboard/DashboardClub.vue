@@ -7,8 +7,8 @@
                         text: `associations`,
                         color: 'blue',
                         icon: 'fa-people-group',
-                        val: 52,
-                        change: 10,
+                        val: metricsStore.clubCount[metricsStore.clubCount.length - 1]?.value,
+                        change: metricsStore.clubCount[0]?.value,
                     },
                     {
                         text: `% d'insertion`,
@@ -21,8 +21,8 @@
                         text: `nb evenement`,
                         color: 'emerald',
                         icon: 'fa-calendar-day',
-                        val: 56,
-                        change: -10.9,
+                        val: metricsStore.eventCount[metricsStore.eventCount.length - 1]?.value,
+                        change: metricsStore.eventCount[0]?.value,
                     },
                     {
                         text: 'utilisateurs',
@@ -46,11 +46,15 @@
                         <div class="text-2xl">{{ n.val }}</div>
                         <div
                             class="p-0.5 text-xs rounded-full"
-                            :class="[
-                                n.change >= 0 ? 'text-green-400 bg-green-200' : 'text-red-400 bg-red-200',
-                            ]"
+                            :class="{
+                                'text-green-400 bg-green-200': (n.val - n.change) / n.val > 0,
+                                'text-red-400 bg-red-200': (n.val - n.change) / n.val < 0,
+                                'text-gray-400 bg-gray-200': (n.val - n.change) / n.val === 0 || n.val === 0,
+                            }"
                         >
-                            {{ n.change >= 0 ? '+' : '' }}{{ n.change }} %
+                            <template v-if="(n.val - n.change) / n.val > 0">+</template>
+                            <template v-if="(n.val - n.change) / n.val === 0 || n.val === 0">~</template>
+                            {{ n.val !== 0 ? ((n.val - n.change) / n.val).toFixed(1) : 0 }} %
                         </div>
                     </div>
                     <div class="text-xs text-gray-400 uppercase">{{ n.text }}</div>
@@ -96,7 +100,20 @@
                     ></SelectInput>
                 </div>
                 {{ eventChartType }}
-                <LineChart :chart-data="testDataA" :options="optionsA"></LineChart>
+                <LineChart
+                    :chart-data="{
+                        datasets: [
+                            {
+                                data: metricsStore.createdEventCount,
+                                label: null,
+                                borderColor: '#0ea5e9',
+                                backgroundColor: '#bae6fd',
+                                fill: true,
+                            },
+                        ],
+                    }"
+                    :options="chartOptions"
+                ></LineChart>
             </div>
             <div class="flex flex-col card">
                 <div class="flex justify-between items-center pb-2 border-b">
@@ -107,7 +124,21 @@
                         :values="['year', 'semester', 'month', 'day']"
                     ></SelectInput>
                 </div>
-                <LineChart :chart-data="testDataB" :options="optionsB"></LineChart>
+                <LineChart
+                    :chart-data="{
+                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                        datasets: [
+                            {
+                                data: [130, 70, 60, 70, 50, 130, 190],
+                                label: null,
+                                borderColor: '#0ea5e9',
+                                backgroundColor: '#bae6fd',
+                                fill: true,
+                            },
+                        ],
+                    }"
+                    :options="chartOptions"
+                ></LineChart>
             </div>
             <div class="flex flex-col gap-2 card">
                 <div class="pb-2 text-xl border-b">Alertes</div>
@@ -253,63 +284,91 @@
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import { fullname } from '@/utils/users'
     import SelectInput from '@/components/Input/SelectInput.vue'
-    import { ref } from 'vue'
-
-    const clubStore = useClubsStore()
-    clubStore.getClubs()
+    import { ref, watch } from 'vue'
+    import { useMetricsStore } from '@/store/metrics.store'
+    import * as dayjs from 'dayjs'
+    import duration from 'dayjs/plugin/duration'
+    import 'chartjs-adapter-date-fns'
 
     Chart.register(...registerables)
+
+    const chartOptions = {
+        locale: 'fr-FR',
+        responsive: true,
+        parsing: {
+            xAxisKey: 'createdAt',
+            yAxisKey: 'value',
+        },
+        scales: {
+            x: {
+                type: 'time',
+                time: {
+                    displayFormats: {
+                        year: 'DD/MM',
+                        month: 'DD/MM',
+                        week: 'DD/MM',
+                        day: 'DD/MM',
+                        hour: 'HH:mm',
+                        minute: 'HH:mm',
+                    },
+                },
+            },
+            y: { min: 0 },
+        },
+        plugins: {
+            title: {
+                display: false,
+            },
+            legend: {
+                display: false,
+            },
+        },
+    }
 
     const eventChartType = ref('month')
     const activityChartType = ref('month')
 
-    const testDataA = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [
-            {
-                data: [130, 70, 60, 70, 50, 130, 190],
-                label: null,
-                borderColor: '#0ea5e9',
-                backgroundColor: '#bae6fd',
-                fill: true,
-            },
-        ],
+    const intervalTable = {
+        year: { unit: 'weeks', count: 1 },
+        semester: { unit: 'days', count: 3 },
+        month: { unit: 'days', count: 1 },
+        week: { unit: 'hours', count: 2 },
+        day: { unit: 'minutes', count: 15 },
     }
 
-    const testDataB = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [
-            {
-                data: [130, 70, 60, 70, 50, 130, 190],
-                label: null,
-                borderColor: '#0ea5e9',
-                backgroundColor: '#bae6fd',
-                fill: true,
-            },
-        ],
-    }
+    dayjs.extend(duration)
 
-    const optionsA = {
-        responsive: true,
-        plugins: {
-            title: {
-                display: false,
-            },
-            legend: {
-                display: false,
-            },
-        },
-    }
+    const clubStore = useClubsStore()
+    clubStore.getClubs()
 
-    const optionsB = {
-        responsive: true,
-        plugins: {
-            title: {
-                display: false,
-            },
-            legend: {
-                display: false,
-            },
-        },
-    }
+    const metricsStore = useMetricsStore()
+
+    const lastWeek = dayjs()
+        .subtract(dayjs.duration({ days: 6, hours: 23, minutes: 30 }))
+        .toDate()
+
+    const weekDuration = dayjs.duration({ days: 7, hours: 23, minutes: 30 }).asSeconds()
+
+    metricsStore.getClubCount(lastWeek, null, weekDuration)
+    metricsStore.getEventCount(lastWeek, null, weekDuration)
+    metricsStore.getMembershipCount(lastWeek, null, weekDuration)
+    metricsStore.getCreatedEventCount(
+        dayjs().subtract(dayjs.duration(1, eventChartType.value)).toDate(),
+        null,
+        dayjs
+            .duration(intervalTable[eventChartType.value].count, intervalTable[eventChartType.value].unit)
+            .asSeconds(),
+    )
+
+    watch(eventChartType, () => {
+        metricsStore.getCreatedEventCount(
+            dayjs().subtract(dayjs.duration(1, eventChartType.value)).toDate(),
+            null,
+            dayjs
+                .duration(intervalTable[eventChartType.value].count, intervalTable[eventChartType.value].unit)
+                .asSeconds(),
+        )
+    })
+
+    watch(activityChartType, () => {})
 </script>

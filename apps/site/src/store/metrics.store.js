@@ -31,29 +31,29 @@ export const useMetricsStore = defineStore('metrics', {
             this.uniqueMembershipCount = uniqueMembershipCount
             return uniqueMembershipCount
         },
-        async getClubCount(after, before) {
+        async getClubCount(after, before, interval) {
             return await $axios
-                .get('metrics', { name: 'clubCount', after, before })
+                .get('teams/metrics', { params: { name: 'clubCount', after, before, interval } })
                 .then(onData(this.replaceClubCount))
         },
-        async getEventCount(after, before) {
+        async getEventCount(after, before, interval) {
             return await $axios
-                .get('metrics', { name: 'eventCount', after, before })
+                .get('teams/metrics', { params: { name: 'eventCount', after, before, interval } })
                 .then(onData(this.replaceEventCount))
         },
-        async getMembershipCount(after, before) {
+        async getMembershipCount(after, before, interval) {
             return await $axios
-                .get('metrics', { name: 'membershipCount', after, before })
+                .get('teams/metrics', { params: { name: 'membershipCount', after, before, interval } })
                 .then(onData(this.replaceMembershipCount))
         },
-        async getCreatedEventCount(after, before) {
+        async getCreatedEventCount(after, before, interval) {
             return await $axios
-                .get('metrics', { name: 'eventCount', after, before })
+                .get('teams/metrics', { params: { name: 'eventCount', after, before, interval } })
                 .then(onData(this.replaceCreatedEventCount))
         },
-        async getUniqueMembershipCount(after, before) {
+        async getUniqueMembershipCount(after, before, interval) {
             return await $axios
-                .get('metrics', { name: 'uniqueMembershipCount', after, before })
+                .get('teams/metrics', { params: { name: 'uniqueMembershipCount', after, before, interval } })
                 .then(onData(this.replaceUniqueMembershipCount))
         },
     },
