@@ -70,4 +70,8 @@ export class CreateTeamEventDto {
   @IsOptional()
   @IsInt()
   formId?: number;
+
+  @IsOptional()
+  @IsInt()
+  templateId?: number;
 }

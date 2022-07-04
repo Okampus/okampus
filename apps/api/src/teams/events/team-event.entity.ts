@@ -69,6 +69,9 @@ export class TeamEvent extends BaseEntity {
   @OneToOne({ cascade: [Cascade.ALL] })
   form?: TeamForm | null = null;
 
+  @ManyToOne()
+  usedTemplate?: TeamEvent | null = null;
+
   constructor(options: {
     start: Date;
     end: Date;
@@ -77,6 +80,7 @@ export class TeamEvent extends BaseEntity {
     createdBy: User;
     team: Team;
     place: string;
+    usedTemplate?: TeamEvent;
     form?: TeamForm;
     state?: TeamEventState;
     meetingPoint?: string;
@@ -96,6 +100,8 @@ export class TeamEvent extends BaseEntity {
     this.team = options.team;
     this.place = options.place;
 
+    if (options.usedTemplate)
+      this.usedTemplate = options.usedTemplate;
     if (options.form)
       this.form = options.form;
     if (options.state)

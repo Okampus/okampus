@@ -1,4 +1,4 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { CreateTeamEventDto } from './create-team-event.dto';
 
-export class UpdateTeamEventDto extends PartialType(CreateTeamEventDto) {}
+export class UpdateTeamEventDto extends PartialType(OmitType(CreateTeamEventDto, ['templateId'])) {}

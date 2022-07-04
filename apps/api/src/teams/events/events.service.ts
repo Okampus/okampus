@@ -53,9 +53,18 @@ export class TeamEventsService {
         throw new BadRequestException('Form is already used');
     }
 
+    // Check that the provided event template id is valid and is a template
+    let usedTemplate: TeamEvent | undefined;
+    if (createTeamEventDto.templateId && createTeamEventDto.state !== TeamEventState.Template) {
+      usedTemplate = await this.teamEventRepository.findOneOrFail({ teamEventId: createTeamEventDto.templateId, team });
+      if (usedTemplate.state !== TeamEventState.Template)
+        throw new BadRequestException('Template is not a template');
+    }
+
     const event = new TeamEvent({
       ...createTeamEventDto,
       supervisor,
+      usedTemplate,
       team,
       form,
       createdBy: user,
@@ -137,7 +146,7 @@ export class TeamEventsService {
           { private: false, state: TeamEventState.Published },
         ],
       },
-      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'form'] },
+      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'form', 'usedTemplate'] },
     );
     if (event.state === TeamEventState.Draft && !event.canEdit(user))
       throw new ForbiddenException('Event not published');
@@ -154,6 +163,9 @@ export class TeamEventsService {
 
     if (!event.canEdit(user))
       throw new ForbiddenException('Not a team admin');
+
+    if (event.state === TeamEventState.Template && 'state' in updateTeamEventDto)
+      throw new BadRequestException('Cannot change state of a template');
 
     const { supervisorId, ...dto } = updateTeamEventDto;
 
