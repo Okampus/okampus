@@ -9,6 +9,7 @@ export const useMetricsStore = defineStore('metrics', {
         membershipCount: [],
         createdEventCount: [],
         uniqueMembershipCount: [],
+        userCount: [],
     }),
     actions: {
         replaceClubCount(clubCount) {
@@ -31,30 +32,39 @@ export const useMetricsStore = defineStore('metrics', {
             this.uniqueMembershipCount = uniqueMembershipCount
             return uniqueMembershipCount
         },
+        replaceUserCount(userCount) {
+            this.userCount = userCount
+            return userCount
+        },
         async getClubCount(after, before, interval) {
             return await $axios
-                .get('teams/metrics', { params: { name: 'clubCount', after, before, interval } })
+                .get('metrics', { params: { name: 'clubCount', after, before, interval } })
                 .then(onData(this.replaceClubCount))
         },
         async getEventCount(after, before, interval) {
             return await $axios
-                .get('teams/metrics', { params: { name: 'eventCount', after, before, interval } })
+                .get('metrics', { params: { name: 'clubEventCount', after, before, interval } })
                 .then(onData(this.replaceEventCount))
         },
         async getMembershipCount(after, before, interval) {
             return await $axios
-                .get('teams/metrics', { params: { name: 'membershipCount', after, before, interval } })
+                .get('metrics', { params: { name: 'clubMembershipCount', after, before, interval } })
                 .then(onData(this.replaceMembershipCount))
         },
         async getCreatedEventCount(after, before, interval) {
             return await $axios
-                .get('teams/metrics', { params: { name: 'eventCount', after, before, interval } })
+                .get('metrics', { params: { name: 'clubCreatedEventCount', after, before, interval } })
                 .then(onData(this.replaceCreatedEventCount))
         },
         async getUniqueMembershipCount(after, before, interval) {
             return await $axios
-                .get('teams/metrics', { params: { name: 'uniqueMembershipCount', after, before, interval } })
+                .get('metrics', { params: { name: 'clubUniqueMembershipCount', after, before, interval } })
                 .then(onData(this.replaceUniqueMembershipCount))
+        },
+        async getUserCount(after, before, interval) {
+            return await $axios
+                .get('metrics', { params: { name: 'userCount', after, before, interval } })
+                .then(onData(this.replaceUserCount))
         },
     },
 })

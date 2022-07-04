@@ -347,7 +347,7 @@
         .subtract(dayjs.duration({ days: 6, hours: 23, minutes: 30 }))
         .toDate()
 
-    const weekDuration = dayjs.duration({ days: 7, hours: 23, minutes: 30 }).asSeconds()
+    const weekDuration = dayjs.duration({ days: 6, hours: 23, minutes: 30 }).asSeconds()
 
     metricsStore.getClubCount(lastWeek, null, weekDuration)
     metricsStore.getEventCount(lastWeek, null, weekDuration)
