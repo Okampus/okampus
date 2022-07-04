@@ -72,6 +72,9 @@ export class TeamEvent extends BaseEntity {
   @ManyToOne()
   usedTemplate?: TeamEvent | null = null;
 
+  @Property({ type: 'json' })
+  meta: object = {};
+
   constructor(options: {
     start: Date;
     end: Date;
@@ -81,6 +84,7 @@ export class TeamEvent extends BaseEntity {
     team: Team;
     place: string;
     usedTemplate?: TeamEvent;
+    meta?: object;
     form?: TeamForm;
     state?: TeamEventState;
     meetingPoint?: string;
@@ -102,6 +106,8 @@ export class TeamEvent extends BaseEntity {
 
     if (options.usedTemplate)
       this.usedTemplate = options.usedTemplate;
+    if (options.meta)
+      this.meta = options.meta;
     if (options.form)
       this.form = options.form;
     if (options.state)

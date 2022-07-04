@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsInt,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
   IsUrl,
@@ -74,4 +75,7 @@ export class CreateTeamEventDto {
   @IsOptional()
   @IsInt()
   templateId?: number;
+
+  @IsObject()
+  meta?: object;
 }
