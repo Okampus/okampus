@@ -53,7 +53,7 @@ export class BlogsService {
   }
 
   public async findAll(user: User, options?: Required<ContentListOptionsDto>): Promise<PaginatedResult<Blog>> {
-    const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+    const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
     return await this.blogRepository.findWithPagination(
       options,

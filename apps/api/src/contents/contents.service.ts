@@ -98,7 +98,7 @@ export class ContentsService {
     parentId: number,
     options?: Required<ContentListOptionsDto>,
   ): Promise<PaginatedResult<Content>> {
-    const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+    const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { isVisible: true };
     return await this.contentRepository.findWithPagination(
       options,
@@ -116,7 +116,7 @@ export class ContentsService {
     parentId: number,
     options?: Required<PaginateDto>,
   ): Promise<PaginatedResult<Content>> {
-    const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+    const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { isVisible: true };
     return await this.contentRepository.findWithPagination(
       options,

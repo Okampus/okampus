@@ -79,7 +79,7 @@ export class ThreadsService {
     filters?: ThreadListOptionsDto,
     options?: Required<ContentListOptionsDto>,
   ): Promise<PaginatedResult<Thread>> {
-    const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+    const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
     const visibility = canSeeHiddenContent ? {} : { isVisible: true };
     let query: FilterQuery<Thread> = {};
 

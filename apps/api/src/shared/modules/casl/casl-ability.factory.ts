@@ -176,7 +176,7 @@ export class CaslAbilityFactory {
     });
   }
 
-  public canSeeHiddenContent(user: User): boolean {
-    return user.roles.includes(Role.Moderator);
+  public isModOrAdmin(user: User): boolean {
+    return user.roles.includes(Role.Moderator) || user.roles.includes(Role.Admin);
   }
 }

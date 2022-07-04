@@ -69,7 +69,7 @@ export class ReportsService {
     if (filters.forUserId)
       options = { ...options, user: { userId: filters.forUserId } };
     if (filters.throughContentId) {
-      const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+      const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
       const visibilityQuery = canSeeHiddenContent ? {} : { isVisible: true };
       options = { ...options, content: { contentId: filters.throughContentId, ...visibilityQuery } };
     }

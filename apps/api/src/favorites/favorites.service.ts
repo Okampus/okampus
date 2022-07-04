@@ -36,7 +36,7 @@ export class FavoritesService {
   }
 
   public async findAll(user: User, paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Favorite>> {
-    const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+    const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { content: { isVisible: true } };
     return await this.favoriteRepository.findWithPagination(
       paginationOptions,

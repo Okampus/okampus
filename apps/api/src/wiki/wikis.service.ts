@@ -23,7 +23,7 @@ export class WikisService {
   }
 
   public async findAll(user: User, paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<WikiPage>> {
-    const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+    const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { hidden: false };
     return await this.wikiPageRepository.findWithPagination(
       paginationOptions,
@@ -37,7 +37,7 @@ export class WikisService {
     category: string,
     paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<WikiPage>> {
-    const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+    const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { hidden: false };
     return await this.wikiPageRepository.findWithPagination(
       paginationOptions,
