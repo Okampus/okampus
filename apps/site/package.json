@@ -51,7 +51,8 @@
         "vue-router": "4.0.15",
         "vue3-carousel": "^0.1.40",
         "vue3-popper": "1.4.2",
-        "vuex": "4.0.2"
+        "vuex": "4.0.2",
+        "workbox-precaching": "^6.5.3"
     },
     "devDependencies": {
         "@babel/runtime": "^7.18.3",
@@ -80,6 +81,7 @@
         "stylelint-config-standard": "25.0.0",
         "stylelint-config-standard-scss": "3.0.0",
         "tailwindcss": "3.0.24",
-        "vite": "2.9.8"
+        "vite": "2.9.8",
+        "vite-plugin-pwa": "^0.12.2"
     }
 }
