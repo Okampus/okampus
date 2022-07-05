@@ -9,6 +9,7 @@ import {
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import { User } from '../../users/user.entity';
+import type { TeamForm } from '../forms/team-form.entity';
 import { Team } from '../teams/team.entity';
 import { MembershipRequestIssuer } from '../types/membership-request-issuer.enum';
 import { MembershipRequestState } from '../types/membership-request-state.enum';
@@ -51,11 +52,19 @@ export class TeamMembershipRequest extends BaseEntity {
   @ManyToOne({ onDelete: 'CASCADE' })
   issuedBy!: User;
 
+  @ManyToOne()
+  originalForm?: TeamForm | null;
+
+  @Property({ type: 'json' })
+  formSubmission?: object | null;
+
   constructor(options: {
     team: Team;
     user: User;
     issuer: MembershipRequestIssuer;
     issuedBy: User;
+    originalForm?: TeamForm | null;
+    formSubmission?: object | null;
     meta?: object;
     handledMessage?: string;
     role?: TeamRole;
@@ -66,6 +75,10 @@ export class TeamMembershipRequest extends BaseEntity {
     this.issuer = options.issuer;
     this.issuedBy = options.issuedBy;
 
+    if (options.originalForm)
+      this.originalForm = options.originalForm;
+    if (options.formSubmission)
+      this.formSubmission = options.formSubmission;
     if (options.meta)
       this.meta = options.meta;
     if (options.handledMessage)

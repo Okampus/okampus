@@ -1,4 +1,9 @@
-import { IsEnum, IsObject, IsOptional } from 'class-validator';
+import {
+  IsEnum,
+  IsInt,
+  IsObject,
+  IsOptional,
+} from 'class-validator';
 import { TeamRole } from '../../../shared/lib/types/enums/team-role.enum';
 
 export class CreateTeamMembershipRequestDto {
@@ -9,4 +14,12 @@ export class CreateTeamMembershipRequestDto {
   @IsOptional()
   @IsObject()
   meta?: object;
+
+  @IsOptional()
+  @IsInt()
+  originalFormId?: number;
+
+  @IsOptional()
+  @IsObject()
+  formSubmission?: object;
 }

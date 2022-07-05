@@ -42,12 +42,11 @@ export class TeamFormsService {
     query: ListTeamFormsDto,
     options?: Required<ListOptionsDto>,
   ): Promise<PaginatedResult<TeamForm>> {
-    const forms = await this.teamFormRepository.findWithPagination(
+    return await this.teamFormRepository.findWithPagination(
       options,
       { team: { teamId: query.teamId }, isTemplate: query.isTemplate },
       { populate: ['createdBy', 'team'] },
     );
-    return forms;
   }
 
   public async findOne(teamFormId: number): Promise<TeamForm> {

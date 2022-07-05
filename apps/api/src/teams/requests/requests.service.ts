@@ -7,12 +7,13 @@ import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
 import type { User } from '../../users/user.entity';
 import type { MembershipRequestsListOptions } from '../dto/membership-requests-list-options.dto';
+import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
 import { Team } from '../teams/team.entity';
 import { MembershipRequestIssuer } from '../types/membership-request-issuer.enum';
 import { MembershipRequestState } from '../types/membership-request-state.enum';
-import type { CreateTeamMembershipRequestDto } from './dto/create-membership-request-copy.dto';
-import type { PutTeamMembershipRequestDto } from './dto/put-membership-request-copy.dto';
+import type { CreateTeamMembershipRequestDto } from './dto/create-membership-request.dto';
+import type { PutTeamMembershipRequestDto } from './dto/put-membership-request.dto';
 import type { UpdateTeamMembershipRequestDto } from './dto/update-membership-request.dto';
 import { TeamMembershipRequest } from './team-membership-request.entity';
 
@@ -20,6 +21,7 @@ import { TeamMembershipRequest } from './team-membership-request.entity';
 export class TeamMembershipRequestsService {
   constructor(
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
+    @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamMembershipRequest)
     private readonly teamMembershipRequestRepository: BaseRepository<TeamMembershipRequest>,
@@ -56,9 +58,18 @@ export class TeamMembershipRequestsService {
         throw new ConflictException('Pending user invitation');
     }
 
-    // 4. Create the request.
+    // 4. Check that the form is valid
+    const formFields = await this.getAndValidateFormSubmission(
+      team.membershipRequestForm,
+      createTeamMembershipRequestDto.originalFormId,
+      createTeamMembershipRequestDto.formSubmission,
+      false,
+    );
+
+    // 5. Create the request.
     const teamMembershipRequest = new TeamMembershipRequest({
       team,
+      ...formFields,
       user: requester,
       issuedBy: requester,
       issuer: MembershipRequestIssuer.User,
@@ -97,23 +108,26 @@ export class TeamMembershipRequestsService {
   ): Promise<TeamMembershipRequest> {
     const request = await this.teamMembershipRequestRepository.findOneOrFail(
       { teamMembershipRequestId: requestId },
-      { populate: ['team', 'team.members', 'user', 'issuedBy', 'handledBy'] },
+      { populate: ['team', 'team.members', 'user'] },
     );
 
+    // 1. Check that the request is still pending
     if (request.state !== MembershipRequestState.Pending)
       throw new BadRequestException('Request already handled');
 
-    if (
-      (request.issuer === MembershipRequestIssuer.User && request.user.userId !== user.userId)
-      || !request.team.canAdminister(user)
-    )
+    // 2. Check that the user is either the issuer of the request, or a team admin
+    if (request.issuer === MembershipRequestIssuer.User && request.user !== user && !request.team.canAdminister(user))
       throw new BadRequestException('Not a team admin');
 
-    const handlerMember = await this.teamMemberRepository.findOneOrFail({ user });
-    if (request.role === TeamRole.Owner && handlerMember.role !== TeamRole.Owner)
-      throw new BadRequestException('Not the owner');
+    // 3. Check that the form is valid
+    const formFields = await this.getAndValidateFormSubmission(
+      request.team.membershipRequestForm,
+      updateTeamMembershipRequestDto.originalFormId,
+      updateTeamMembershipRequestDto.formSubmission,
+      true,
+    );
 
-    wrap(request).assign(updateTeamMembershipRequestDto);
+    wrap(request).assign({ ...updateTeamMembershipRequestDto, ...formFields });
     await this.teamMembershipRequestRepository.flush();
 
     return request;
@@ -157,5 +171,37 @@ export class TeamMembershipRequestsService {
     }
 
     return request;
+  }
+
+  private async getAndValidateFormSubmission(
+    teamForm?: TeamForm | null,
+    askedFormId?: number | null,
+    formSubmission?: object | null,
+    canOmitFields = false,
+  ): Promise<{ formSubmission?: object | null; originalForm?: TeamForm | null }> {
+    // Step 1 — don't change anything as nothing was asked
+    if (canOmitFields && typeof askedFormId === 'undefined' && typeof formSubmission === 'undefined')
+      return {};
+
+    // Step 2 — update the form submission / original form only if they are both defined,
+    // and there is an actual form required
+    if (teamForm && askedFormId && formSubmission) {
+      if (askedFormId !== teamForm.teamFormId)
+        throw new BadRequestException('Wrong form');
+
+      const form = await this.teamFormRepository.findOneOrFail({ teamFormId: askedFormId });
+      if (form.isTemplate)
+        throw new BadRequestException('Form is a template');
+
+      return { formSubmission, originalForm: form };
+    }
+
+    // Step 3 + Step 4 + Step 5 — We cannot update the form submission / original form individually,
+    // and even less if there is a required form
+    if (teamForm || askedFormId || formSubmission)
+      throw new BadRequestException('Invalid form entries');
+
+    // Step 6 — Either one of form submission / original form are all null, so we set them all to null
+    return { formSubmission: null, originalForm: null };
   }
 }

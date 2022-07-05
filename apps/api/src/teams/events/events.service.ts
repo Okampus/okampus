@@ -187,7 +187,7 @@ export class TeamEventsService {
         throw new BadRequestException('Form is already used');
     }
 
-    wrap(event).assign(dto);
+    wrap(event).assign({ ...dto, form });
     await this.teamEventRepository.flush();
     return event;
   }
