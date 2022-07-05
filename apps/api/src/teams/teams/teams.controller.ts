@@ -21,7 +21,7 @@ import { ProfileImage } from '../../files/profile-images/profile-image.entity';
 import { ProfileImagesService } from '../../files/profile-images/profile-images.service';
 import { simpleImageMimeTypeRegex } from '../../shared/configs/mime-type';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
-import { SerializerIncludeTeamMembers } from '../../shared/lib/decorators/serializers.decorator';
+import { SerializerIncludeTeamForm, SerializerIncludeTeamMembers } from '../../shared/lib/decorators/serializers.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { TypesenseEnabledGuard } from '../../shared/lib/guards/typesense-enabled.guard';
 import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
@@ -40,6 +40,7 @@ import { TeamsService } from './teams.service';
 
 @ApiTags('Teams')
 @Controller()
+@SerializerIncludeTeamForm()
 export class TeamsController {
   constructor(
     private readonly teamsService: TeamsService,

@@ -5,6 +5,7 @@ export const TEAMMEMBER_TEAM_INCLUDED = 'TeamMemberTeamIncluded';
 export const TEAM_MEMBERS_INCLUDED = 'TeamMembersIncluded';
 
 export const TEAMFORM_TEAM_INCLUDED = 'TeamFormTeamIncluded';
+export const TEAM_FORM_INCLUDED = 'TeamFormIncluded';
 
 export const TEAM_CONTACTS_INCLUDED = 'TealContactsIncluded';
 export const TEAM_CONTACTS_TEAM_INCLUDED = 'TeamContactsTeamIncluded';

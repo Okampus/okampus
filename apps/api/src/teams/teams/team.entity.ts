@@ -9,7 +9,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Expose } from 'class-transformer';
-import { TEAM_MEMBERS_INCLUDED } from '../../shared/lib/constants';
+import { TEAM_FORM_INCLUDED, TEAM_MEMBERS_INCLUDED } from '../../shared/lib/constants';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
@@ -64,6 +64,7 @@ export class Team extends BaseEntity {
   membershipRequestMessage?: string;
 
   @OneToOne('TeamForm')
+  @Expose({ groups: [TEAM_FORM_INCLUDED] })
   membershipRequestForm?: TeamForm | null;
 
   constructor(options: {

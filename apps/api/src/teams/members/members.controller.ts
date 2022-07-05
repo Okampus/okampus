@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
-import { SerializerTeamMemberIncludeTeam } from '../../shared/lib/decorators/serializers.decorator';
+import { SerializerIncludeTeamForm, SerializerTeamMemberIncludeTeam } from '../../shared/lib/decorators/serializers.decorator';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination, PaginateDto } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
@@ -25,6 +25,7 @@ import type { TeamMember } from './team-member.entity';
 
 @ApiTags('Team Members')
 @Controller()
+@SerializerIncludeTeamForm()
 export class TeamMembersController {
   constructor(
     private readonly membersService: TeamMembersService,
