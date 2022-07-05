@@ -15,11 +15,10 @@
                         color: 'sky',
                         icon: 'fa-arrows-down-to-people',
                         val:
-
-                                metricsStore.uniqueMembershipCount[metricsStore.clubCount.length - 1] !== 0
-                                    ?.value ?metricsStore.userCount[metricsStore.userCount.length - 1]?.value /
-                                metricsStore.uniqueMembershipCount[metricsStore.clubCount.length - 1]
-                                    ?.value : 0,
+                            metricsStore.uniqueMembershipCount[metricsStore.clubCount.length - 1] !== 0?.value
+                                ? metricsStore.userCount[metricsStore.userCount.length - 1]?.value /
+                                  metricsStore.uniqueMembershipCount[metricsStore.clubCount.length - 1]?.value
+                                : 0,
                         change:
                             metricsStore.uniqueMembershipCount[0]?.value !== 0
                                 ? metricsStore.userCount[0]?.value /
@@ -104,7 +103,7 @@
                 <div class="flex justify-between items-center pb-2 border-b">
                     <div class="text-xl">Evenements</div>
                     <SelectInput
-                        v-model="eventChartType"
+                        v-model="eventChartRange"
                         :choices="['Année', 'Semestre', 'Mois', 'Jour']"
                         :values="['year', 'semester', 'month', 'day']"
                     ></SelectInput>
@@ -129,7 +128,7 @@
                 <div class="flex justify-between items-center pb-2 border-b">
                     <div class="text-xl">Activité sur la platforme</div>
                     <SelectInput
-                        v-model="activityChartType"
+                        v-model="activityChartRange"
                         :choices="['Année', 'Semestre', 'Mois', 'Jour']"
                         :values="['year', 'semester', 'month', 'day']"
                     ></SelectInput>
@@ -314,10 +313,10 @@
                 type: 'time',
                 time: {
                     displayFormats: {
-                        year: 'DD/MM',
-                        month: 'DD/MM',
-                        week: 'DD/MM',
-                        day: 'DD/MM',
+                        year: 'dd/MM',
+                        month: 'dd/MM',
+                        week: 'dd/MM',
+                        day: 'dd/MM',
                         hour: 'HH:mm',
                     },
                     tooltipFormat: 'HH:mm dd/MM/yy',
@@ -335,8 +334,8 @@
         },
     }
 
-    const eventChartType = ref('month')
-    const activityChartType = ref('month')
+    const eventChartRange = ref('month')
+    const activityChartRange = ref('month')
 
     const intervalTable = {
         year: { unit: 'weeks', count: 1 },
@@ -354,7 +353,7 @@
     const metricsStore = useMetricsStore()
 
     const lastWeek = dayjs()
-        .subtract(dayjs.duration({ days: 6, hours: 23, minutes: 30 }))
+        .subtract(dayjs.duration({ days: 6, hours: 10, minutes: 30 }))
         .toDate()
 
     const weekDuration = dayjs.duration({ days: 6, hours: 23, minutes: 45 }).asSeconds()
@@ -367,13 +366,16 @@
 
     watchEffect(() => {
         metricsStore.getCreatedEventCount(
-            dayjs().subtract(dayjs.duration(1, eventChartType.value)).toDate(),
+            dayjs().subtract(dayjs.duration(1, eventChartRange.value)).toDate(),
             null,
             dayjs
-                .duration(intervalTable[eventChartType.value].count, intervalTable[eventChartType.value].unit)
+                .duration(
+                    intervalTable[eventChartRange.value].count,
+                    intervalTable[eventChartRange.value].unit,
+                )
                 .asSeconds(),
         )
     })
 
-    watchEffect(activityChartType, () => {})
+    watchEffect(activityChartRange, () => {})
 </script>
