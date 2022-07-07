@@ -3,7 +3,7 @@
         <div class="flex flex-col items-center">
             <slot />
 
-            <a v-if="show === 'sso'" class="my-8 text-2xl button-submit" :href="myEfreiAuthUrl"
+            <a v-if="show === 'sso'" role="button" class="my-8 text-2xl button-blue" :href="myEfreiAuthUrl"
                 >Connexion myEfrei<i class="ml-2 fa fa-sign-in"
             /></a>
 
@@ -47,9 +47,7 @@
                 </div>
 
                 <!-- TODO: Error message when login fails -->
-                <div class="mt-4 w-full button-green">
-                    <button class="!w-full" type="submit" @click="login">Connexion Okampus</button>
-                </div>
+                <button class="mt-4 w-full button-green" @click="login">Connexion Okampus</button>
 
                 <div class="flex my-4 text-slate-500">
                     <div>ou</div>

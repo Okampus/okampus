@@ -171,8 +171,8 @@
                         />
                     </FormKit>
                     <div class="flex gap-4 self-end mt-6">
-                        <div class="button-cancel" @click="close">Annuler</div>
-                        <div class="button-submit with-shadow" @click="joinEvent">Valider</div>
+                        <button class="button-grey" @click="close">Annuler</button>
+                        <button class="button-blue" @click="joinEvent">Valider</button>
                     </div>
                 </div>
             </template>

@@ -36,7 +36,7 @@
                 :size-limit="20000000"
             ></FileInput>
             <div class="flex flex-row-reverse">
-                <div class="button-submit" @click="uploadGallery">Envoyer</div>
+                <button class="button-blue" @click="uploadGallery">Envoyer</button>
             </div>
         </div>
     </div>

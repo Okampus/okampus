@@ -1,126 +1,48 @@
-%button-flat,
-.button-flat {
-    @apply rounded-md font-medium cursor-pointer select-none;
-}
+%button {
+    transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
+    @apply text-white cursor-pointer rounded-lg px-3 py-2;
 
-%button-raised {
-    @extend %button-flat;
-    @apply flex justify-center items-center h-fit w-fit mt-1.5;
-
-    box-shadow: 0 0 1px rgb(0 0 0 / 40%);
-
-    & > :first-child {
-        @apply px-4 py-2 relative bottom-[0.3rem] w-fit rounded;
-
-        box-shadow: inset 0 0 3px rgb(255 255 255 / 50%);
-    }
-
-    &[disabled] > :first-child {
-        @apply bg-gray-500 dark:bg-gray-700 cursor-not-allowed;
-    }
-
-    &:not([disabled]) > :first-child {
-        @apply transform active:translate-y-[0.14rem]
-            transition duration-75 ease-in-out;
+    &:hover {
+        filter: brightness(1.4);
     }
 }
 
-.button {
-    @extend %button-raised;
-    @apply text-white bg-indigo-600 dark:bg-indigo-800
-        hover:bg-indigo-700 hover:dark:bg-indigo-900
-        active:bg-indigo-800 active:dark:bg-indigo-900
-        disabled:bg-gray-600 disabled:dark:bg-gray-800;
+.button-blue {
+    @extend %button;
 
-    & > :first-child {
-        @apply bg-indigo-500 dark:bg-indigo-700
-            hover:bg-indigo-600 dark:hover:bg-indigo-800
-            active:bg-indigo-700 dark:active:bg-indigo-900;
-    }
-}
+    background-color: #1b73d5;
 
-.button-blue-gradient {
-    @extend %button-raised;
-
-    background: linear-gradient(to right, #45aaf2, #1d98df);
-
-    & > :first-child {
-        background: linear-gradient(to right, #45aaf2, #1d98df);
-    }
-}
-
-.button-red {
-    @extend %button-raised;
-    @apply text-white bg-red-600 dark:bg-red-800
-        hover:bg-red-700 hover:dark:bg-red-900
-        active:bg-red-800 active:dark:bg-red-900
-        disabled:bg-gray-600 disabled:dark:bg-gray-800;
-
-    & > :first-child {
-        @apply bg-red-500 dark:bg-red-700
-            hover:bg-red-600 dark:hover:bg-red-800
-            active:bg-red-700 dark:active:bg-red-900;
+    &:hover {
+        box-shadow: 0 0 8px #50a7ff;
     }
 }
 
 .button-green {
-    @extend %button-raised;
-    @apply text-white bg-green-600 dark:bg-green-800
-        hover:bg-green-700 hover:dark:bg-green-900
-        active:bg-green-800 active:dark:bg-green-900
-        disabled:bg-gray-600 disabled:dark:bg-gray-800;
+    @extend %button;
 
-    & > :first-child {
-        @apply bg-green-500 dark:bg-green-700
-            hover:bg-green-600 dark:hover:bg-green-800
-            active:bg-green-700 dark:active:bg-green-900;
+    background-color: #0ecc54;
+
+    &:hover {
+        box-shadow: 0 0 8px #7ee763;
     }
 }
 
 .button-grey {
-    transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
+    @extend %button;
 
-    @apply bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 shadow-white cursor-pointer;
+    @apply bg-gray-500;
 
-    .dark &:hover {
-        filter: brightness(1.2);
-    }
-
-    &.with-shadow:hover {
-        box-shadow: 0 2px 12px 0 rgb(255 255 255 / 50%);
+    &:hover {
+        box-shadow: 0 0 8px 0 rgb(255 255 255 / 50%);
     }
 }
 
-.button-submit {
-    transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out, background-color 0.2s ease-in-out;
+.button-red {
+    @extend %button;
 
-    @apply bg-blue-500 hover:bg-blue-600 cursor-pointer text-white rounded-lg px-3 py-2;
+    background: #f72d13;
 
-    .dark &:hover {
-        filter: contrast(1.2);
-    }
-
-    &.with-shadow:hover {
-        @apply shadow-md shadow-blue-400/50;
-    }
-}
-
-.button-cancel {
-    transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out, background-color 0.2s ease-in-out;
-
-    @apply bg-gray-500 hover:bg-gray-600 cursor-pointer text-white rounded-lg px-3 py-2;
-
-    .dark &:hover {
-        filter: contrast(1.2);
-    }
-}
-
-.button-refuse {
-    transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out, background-color 0.2s ease-in-out;
-
-    @apply bg-red-500 hover:bg-red-600 cursor-pointer text-white rounded-lg px-3 py-2;
-
-    .dark &:hover {
-        filter: contrast(1.2);
+    &:hover {
+        box-shadow: 0 0 8px #e45d4b;
     }
 }

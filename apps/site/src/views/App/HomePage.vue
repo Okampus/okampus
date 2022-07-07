@@ -75,7 +75,7 @@
                         </li>
                     </ol>
                     <div
-                        class="self-end mt-10 min-w-[3rem] text-lg text-center select-none button-submit"
+                        class="self-end mt-10 min-w-[3rem] text-lg text-center select-none button-blue"
                         :class="counting ? 'opacity-50' : ''"
                         :disabled="counting"
                         @click="agreeToTerms"

@@ -157,12 +157,13 @@
                                 </div>
                             </div>
                             <div class="flex gap-2 justify-center items-center mt-2 w-full">
-                                <div class="text-center button" @click="downloadFileGroup">
-                                    <div class="flex gap-2 justify-center items-center">
-                                        <i class="fas fa-arrow-down" />
-                                        <div>Télécharger</div>
-                                    </div>
-                                </div>
+                                <button
+                                    class="flex gap-2 justify-center items-center text-center button-blue"
+                                    @click="downloadFileGroup"
+                                >
+                                    <i class="fas fa-arrow-down" />
+                                    <div>Télécharger</div>
+                                </button>
                             </div>
                         </div>
                     </div>

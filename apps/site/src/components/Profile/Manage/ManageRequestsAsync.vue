@@ -56,12 +56,12 @@
                             </div>
                         </div>
                         <div v-if="shownRequest?.state === PENDING" class="flex gap-4 self-end mt-6">
-                            <div class="flex gap-2 items-center button-refuse" @click="refusing = true">
+                            <div class="flex gap-2 items-center button-red" @click="refusing = true">
                                 <i class="fa fa-xmark" />
                                 <div>Refuser</div>
                             </div>
                             <div
-                                class="flex gap-2 items-center button-submit with-shadow"
+                                class="flex gap-2 items-center button-blue"
                                 @click="
                                     () => {
                                         approve()
@@ -73,7 +73,7 @@
                                 <div>Accepter</div>
                             </div>
                         </div>
-                        <div v-else class="self-center mt-10 button-cancel" @click="close">Fermer</div>
+                        <div v-else class="self-center mt-10 button-blue" @click="close">Fermer</div>
                     </template>
                     <template v-else>
                         <div class="mb-6 text-2xl">
@@ -105,9 +105,9 @@
                             />
                         </div>
                         <div class="flex gap-4 self-end mt-8">
-                            <div class="button-cancel with-shadow" @click="refusing = false">Annuler</div>
+                            <div class="button-grey" @click="refusing = false">Annuler</div>
                             <div
-                                class="button-refuse with-shadow"
+                                class="button-red"
                                 @click="
                                     () => {
                                         refuse()

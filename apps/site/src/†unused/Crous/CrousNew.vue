@@ -50,7 +50,7 @@
                     </div>
                 </template>
             </div>
-            <button class="button" @click="sendDaily">
+            <button class="button-blue" @click="sendDaily">
                 <span>Enregistrer</span>
             </button>
         </div>

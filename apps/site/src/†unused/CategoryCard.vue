@@ -15,7 +15,8 @@
                     required
                 />
                 <button class="shrink-0 my-5 w-full button-green" @click="handleSelected">
-                    <p><i class="fas fa-pen"></i> Modifier le nom</p>
+                    <i class="fas fa-pen" />
+                    Modifier le nom
                 </button>
             </form>
         </div>

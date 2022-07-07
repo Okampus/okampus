@@ -94,10 +94,10 @@
                     </FormKit>
 
                     <div class="flex gap-4 self-end mt-6">
-                        <div class="button-cancel" @click="close">Annuler</div>
-                        <div class="button-submit with-shadow" @click="createForm.node.submit()">
+                        <button class="button-red" @click="close">Annuler</button>
+                        <button class="button-blue" @click="createForm.node.submit()">
                             Créer l'événement
-                        </div>
+                        </button>
                     </div>
                 </div>
             </template>

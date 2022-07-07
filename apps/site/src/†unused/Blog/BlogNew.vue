@@ -21,16 +21,16 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button class="button">
+                        <button class="button-blue">
                             <p class="text-sm">Publier</p>
                         </button>
-                        <button class="button">
+                        <button class="button-blue">
                             <p class="text-sm">Sauvegarder</p>
                         </button>
-                        <button class="button">
+                        <button class="button-blue">
                             <p class="text-sm">Aperçu</p>
                         </button>
-                        <button class="button">
+                        <button class="button-blue">
                             <p class="text-sm">Fermer</p>
                         </button>
                     </div>

@@ -44,14 +44,14 @@
                         <router-link
                             v-if="specialRoles.includes(membership.role)"
                             :to="`/club/${membership.team.teamId}/manage`"
-                            class="text-lg button-submit"
+                            class="text-lg button-blue"
                             >Gérer</router-link
                         >
 
                         <router-link
                             v-else
                             :to="`/club/${membership.team.teamId}`"
-                            class="text-lg button-submit"
+                            class="text-lg button-blue"
                             >Voir le profil</router-link
                         >
                     </div>

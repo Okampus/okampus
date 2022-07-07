@@ -49,7 +49,7 @@
                 <ProfileAvatar :rounded-full="false" :avatar="club.avatar" :size="6" :name="club.name" />
             </div>
 
-            <i
+            <button
                 class="flex justify-center items-center mt-1 ml-1 w-10 h-10 text-xl rounded-full border-2 border-2-light dark:border-2-dark button-grey fa fa-camera"
                 @click="editingAvatar = true"
             />
@@ -86,9 +86,9 @@
                                 />
                             </FormKit>
                             <div class="flex gap-4 self-end mt-6">
-                                <div class="button-cancel" @click="close">Annuler</div>
-                                <div
-                                    class="button-submit with-shadow"
+                                <button class="button-grey" @click="close">Annuler</button>
+                                <button
+                                    class="button-blue"
                                     @click="
                                         () => {
                                             updateClubForm.node.submit()
@@ -97,13 +97,13 @@
                                     "
                                 >
                                     Valider
-                                </div>
+                                </button>
                             </div>
                         </div>
                     </template>
                 </ModalPopup>
 
-                <div class="-mt-5 mr-4 mb-3 text-xl button-submit" @click="editingPage = true">Modifier</div>
+                <div class="-mt-5 mr-4 mb-3 text-xl button-grey" @click="editingPage = true">Modifier</div>
             </div>
             <div class="mt-1 text-2">{{ club.shortDescription }}</div>
         </div>

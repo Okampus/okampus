@@ -14,8 +14,8 @@
                     />
                     <ProfileAvatar :avatar="me.avatar" :name="fullname(me)" :size="14" />
 
-                    <i
-                        class="flex absolute right-0 bottom-0 justify-center items-center w-12 h-12 text-xl rounded-full border-4 border-2-light dark:border-2-dark cursor-pointer button-grey fa fa-camera"
+                    <button
+                        class="flex absolute right-0 bottom-0 justify-center items-center w-12 h-12 text-xl rounded-full border-4 border-2-light dark:border-2-dark !shadow-none cursor-pointer button-grey fa fa-camera"
                         @click="editingAvatar = true"
                     />
                 </div>
@@ -49,13 +49,13 @@
                             @click="editingStatus = true"
                         />
                     </div>
-                    <div
+                    <button
                         v-else
-                        class="flex gap-4 justify-center items-center py-1 rounded-full cursor-pointer button-grey with-shadow"
+                        class="flex gap-4 justify-center items-center py-1 rounded-full cursor-pointer button-grey"
                         @click="editingStatus = true"
                     >
                         <i class="text-lg fa fa-icons" />Définir un statut
-                    </div>
+                    </button>
                 </div>
             </div>
             <div class="flex flex-col grow self-stretch">

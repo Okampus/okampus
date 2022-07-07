@@ -50,7 +50,11 @@
             Revenir
         </button>
 
-        <button v-if="currentStep != steps.length - 1" class="w-1/3 button" @click.prevent="emitNextStep">
+        <button
+            v-if="currentStep != steps.length - 1"
+            class="w-1/3 button-blue"
+            @click.prevent="emitNextStep"
+        >
             <p>Suivant</p>
         </button>
 
