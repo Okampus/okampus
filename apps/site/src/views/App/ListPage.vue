@@ -2,12 +2,7 @@
     <Transition mode="out-in" name="switch-fade">
         <Suspense>
             <template #default>
-                <ListPageAsync
-                    class="mt-4"
-                    :route-base="routeBase"
-                    :route-name="routeName"
-                    :callback="callback"
-                >
+                <ListPageAsync :route-base="routeBase" :route-name="routeName" :callback="callback">
                     <template #default="{ items }">
                         <slot v-if="items.length" :items="items" />
                         <div v-else class="text-center text-0">

@@ -1,5 +1,5 @@
 <template>
-    <div class="flex gap-4 my-8 centered-container">
+    <div class="flex gap-4 centered-container">
         <VerticalTabs
             v-model="currentTab"
             :tabs="tabs"
@@ -83,14 +83,14 @@
                             />
                         </FormKit>
                         <div class="flex gap-4 self-end mt-6">
-                            <div class="button-cancel" @click="close">Annuler</div>
-                            <div
-                                class="flex gap-2 items-center button-submit with-shadow"
+                            <button class="button-cancel" @click="close">Annuler</button>
+                            <button
+                                class="flex gap-2 items-center button-submit"
                                 @click="joinForm.node.submit()"
                             >
                                 <i class="text-lg fa fa-envelope" />
                                 <div>Envoyer ma demande</div>
-                            </div>
+                            </button>
                         </div>
                     </div>
                 </template>
