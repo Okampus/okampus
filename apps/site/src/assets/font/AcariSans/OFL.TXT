@@ -1,4 +1,5 @@
-Copyright 2011 The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat)
+﻿Copyright (c)2015, HK Grotesk Latin by Alfredo Marco Pradil (ammpradil@gmail.com) and HK Grotesk Cyrillic by Stefan Peev (http://www.contextbg.net/). HK Grotesk is a trademark of Alfredo Marco Pradil.
+Copyright (c) 2018-2022 The Acari Sans Project Authors (https://github.com/cssobral2013/acari-sans)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
@@ -90,4 +91,4 @@ COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
 DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
-OTHER DEALINGS IN THE FONT SOFTWARE.
+OTHER DEALINGS IN THE FONT SOFTWARE.Copyright (c) 2015, Alfredo Marco Pradil (<http://behance.net/pradil | ammpradil@gmail.com>),

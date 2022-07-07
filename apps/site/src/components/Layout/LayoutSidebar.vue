@@ -27,7 +27,7 @@
             <ul v-for="(section, i) in sections" :key="i">
                 <p
                     v-if="showUncollapsed"
-                    class="mb-2.5 ml-6 text-[0.78rem] font-semibold tracking-wide text-gray-300 uppercase"
+                    class="mb-2.5 ml-6 text-[0.8rem] font-semibold text-gray-200 uppercase title-font"
                 >
                     {{ section.name }}
                 </p>
@@ -35,7 +35,7 @@
                     <li>
                         <router-link
                             :to="link.to"
-                            class="flex items-center my-1 sidebar-tab reveal"
+                            class="flex items-center my-1 text-gray-200 sidebar-tab reveal"
                             :class="[
                                 { active: link.regActive.test($route.path) },
                                 showUncollapsed ? 'mx-2 h-9' : 'mx-1.5 py-1',
@@ -45,9 +45,12 @@
                                 class="flex items-center w-full"
                                 :class="[showUncollapsed ? 'flex-row ml-3 gap-4' : 'flex-col mb-1']"
                             >
-                                <i :class="`fas fa-${link.icon}`" class="shrink-0 text-base" />
+                                <div class="flex justify-center items-center w-4">
+                                    <i :class="`fas fa-${link.icon}`" class="shrink-0 text-base" />
+                                </div>
+
                                 <template v-if="showUncollapsed">
-                                    <span class="text-sm tracking-normal">{{ link.textLarge }}</span>
+                                    <span class="text-base title-font">{{ link.textLarge }}</span>
                                     <div class="mr-3 ml-auto opacity-0 revealed">
                                         <TipPopper v-if="link.button" :tip="link.button.text">
                                             <router-link :to="link.button.to">
@@ -56,7 +59,9 @@
                                         </TipPopper>
                                     </div>
                                 </template>
-                                <span v-else class="text-xs tracking-tight">{{ link.textSmall }}</span>
+                                <span v-else class="text-xs tracking-tight title-font">{{
+                                    link.textSmall
+                                }}</span>
                             </div>
                         </router-link>
                     </li>

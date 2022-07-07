@@ -16,6 +16,7 @@
                 :small-screen="hiding"
                 @toggle-side-bar="toggleSidebar"
             />
+
             <div
                 ref="content"
                 :class="{ 'brightness-50': hiding && collapsing != collapsed }"
@@ -38,6 +39,7 @@
                     </router-view>
                 </div>
             </div>
+
             <LayoutTopbar
                 ref="topbar"
                 :class="{ 'brightness-50': hiding && collapsing != collapsed }"
@@ -224,8 +226,9 @@
 </script>
 
 <style lang="scss">
-    @import '@/assets/scss/colors';
     @import '@/assets/scss/app';
+    @import '@/assets/scss/colors';
+    @import '@/assets/scss/fonts';
     @import '@/assets/scss/animations/bg-anims';
     @import '@/assets/scss/components/button';
     @import '@/assets/scss/components/card';
@@ -242,31 +245,12 @@
     @import '@/assets/scss/core/spacing';
     @import '@/assets/scss/core/tab';
 
-    @font-face {
-        font-family: Montserrat;
-        font-weight: 100 900;
-        src: url('@/assets/font/Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
-    }
-
-    @font-face {
-        font-family: Montserrat;
-        font-style: italic;
-        font-weight: 100 900;
-        src: url('@/assets/font/Montserrat/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
-    }
-
-    @font-face {
-        font-family: Fredoka;
-        src: url('@/assets/font/Fredoka/Fredoka-VariableFont_wdth,wght.ttf') format('truetype');
-    }
-
     * {
-        font-family: Montserrat, sans-serif;
-        font-weight: 450;
+        font-family: Poppins, sans-serif;
     }
 
-    .header {
-        font-family: Fredoka, sans-serif;
+    .title-font {
+        font-family: AcariSans, sans-serif;
     }
 
     // TODO: Adapt font size to screen size (for small screen sizes)
