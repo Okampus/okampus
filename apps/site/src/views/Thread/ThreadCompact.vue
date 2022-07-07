@@ -14,7 +14,6 @@
             <div class="w-full">
                 <div class="flex flex-col gap-3">
                     <ThreadPost :post="thread._post" />
-
                     <template v-if="thread.replies.length > 0">
                         <div class="my-3">
                             <div class="mb-1 ml-2">
@@ -23,7 +22,7 @@
                                 }}
                             </div>
                         </div>
-                        <ThreadReply v-for="(reply, i) in thread.replies" :key="i" :reply="reply" />
+                        <ThreadReply v-for="reply in thread.replies" :key="reply.contentId" :reply="reply" />
                     </template>
 
                     <ThreadNewReply
