@@ -11,6 +11,9 @@ export default defineConfig({
             includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
             registerType: 'autoUpdate',
             strategies: 'injectManifest',
+            srcDir: resolve(__dirname, 'src'),
+            destDir: resolve(__dirname, 'dist'),
+            filename: 'sw.js',
             manifest: {
                 name: 'Okampus',
                 short_name: 'Okampus',
