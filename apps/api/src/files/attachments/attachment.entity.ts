@@ -21,11 +21,13 @@ export class Attachment extends BaseEntity {
   content?: Content;
 
   constructor(options: {
-    content: Content;
     file: FileUpload;
+    content?: Content;
   }) {
     super();
     this.file = options.file;
-    this.content = options.content;
+
+    if (options.content)
+      this.content = options.content;
   }
 }

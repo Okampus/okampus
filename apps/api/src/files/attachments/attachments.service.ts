@@ -20,6 +20,9 @@ export class AttachmentsService {
   ) {}
 
   public async assertCanCreateAttachment(user: User, createAttachmentDto: CreateAttachmentDto): Promise<boolean> {
+    if (!createAttachmentDto.contentId)
+      return true;
+
     const content = await this.contentRepository.findOneOrFail({ contentId: createAttachmentDto.contentId });
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -32,7 +35,10 @@ export class AttachmentsService {
   }
 
   public async create(createAttachmentDto: CreateAttachmentDto, file: FileUpload): Promise<Attachment> {
-    const content = await this.contentRepository.findOneOrFail({ contentId: createAttachmentDto.contentId });
+    let content: Content | undefined;
+
+    if (createAttachmentDto.contentId)
+      content = await this.contentRepository.findOneOrFail({ contentId: createAttachmentDto.contentId });
 
     const attachment = new Attachment({ ...createAttachmentDto, content, file });
     await this.attachmentRepository.persistAndFlush(attachment);
