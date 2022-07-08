@@ -2,7 +2,7 @@
     <div>
         <div class="overflow-x-scroll snap-x snap-proximity">
             <AppTable
-                class="w-max"
+                class="w-max text-1"
                 :items="clubStore.clubs"
                 table-layout="auto"
                 :headers="[
@@ -63,7 +63,7 @@
                 :first-column-fixed="true"
             >
                 <template #name="{ avatar, name, category, teamId }">
-                    <router-link :to="`/club/${teamId}`" class="flex gap-1 items-center max-w-sm h-full bg-1">
+                    <router-link :to="`/club/${teamId}`" class="flex gap-1 items-center max-w-xs h-full bg-1">
                         <img :src="avatar" :alt="name" />
                         <div>{{ name }}</div>
                         <div class="text-xs text-gray-400">{{ category }}</div>
