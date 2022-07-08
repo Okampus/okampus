@@ -7,13 +7,13 @@ export default defineConfig({
     plugins: [
         vue(),
         VitePWA({
-            mode: 'development',
+            mode: import.meta.env,
             includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
             registerType: 'autoUpdate',
             strategies: 'injectManifest',
             srcDir: resolve(__dirname, 'src'),
-            destDir: resolve(__dirname, 'dist'),
             filename: 'sw.js',
+            base: '/',
             manifest: {
                 name: 'Okampus',
                 short_name: 'Okampus',
@@ -30,17 +30,11 @@ export default defineConfig({
                         sizes: '512x512',
                         type: 'image/png',
                     },
-                    {
-                        src: 'icon-512x512.png',
-                        sizes: '512x512',
-                        type: 'image/png',
-                        purpose: 'any maskable',
-                    },
                 ],
             },
             devOptions: {
                 enabled: true,
-                type: 'autoUpdate',
+                type: 'module',
                 autoUpdate: {
                     enabled: true,
                     interval: 60,
