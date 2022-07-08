@@ -2,7 +2,7 @@
     <div>
         <ProfileBanner :name="club.name" :banner="club.banner" class="p-0 h-40" :rounded-top="false" />
         <div class="flex flex-col gap-6 pt-4 text-0 bg-2">
-            <div class="flex gap-10 justify-between items-center centered-container">
+            <div class="flex gap-10 justify-between items-center mb-0 centered-container">
                 <div class="flex gap-4 -mt-[5rem]">
                     <ProfileAvatar
                         :avatar="club.avatar"
@@ -43,7 +43,7 @@
             </div>
             <HorizontalTabs
                 v-model="currentTab"
-                class="centered-container"
+                class="my-0 centered-container"
                 :tabs="tabs"
                 :route-base="clubRoute"
                 route-name="club"

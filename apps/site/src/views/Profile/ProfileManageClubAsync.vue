@@ -1,7 +1,7 @@
 <template>
     <div class="flex relative flex-col">
         <div class="bg-2 text-0">
-            <div class="flex sticky top-0 z-30 flex-col centered-container">
+            <div class="flex sticky top-0 z-30 flex-col mb-0 centered-container">
                 <div class="flex gap-4 justify-between items-center pt-4">
                     <div class="flex gap-4 items-center">
                         <ProfileAvatar
