@@ -22,21 +22,21 @@ const routes = [
         },
     },
 
-    {
-        path: '/admin/clubs',
-        component: () => import('@/views/Dashboard/DashboardClub.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
-
     // {
-    //     path: '/admin/:tab',
-    //     component: () => import('@/views/Dashboard/DashboardAdmin.vue'),
+    //     path: '/admin/clubs',
+    //     component: () => import('@/views/Dashboard/DashboardClub.vue'),
     //     meta: {
     //         requiresAuth: true,
     //     },
     // },
+
+    {
+        path: '/admin/:tab*',
+        component: () => import('@/views/Dashboard/DashboardAdmin.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
 
     {
         path: '/auth',

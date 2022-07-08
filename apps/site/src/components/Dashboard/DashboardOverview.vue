@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-4 my-8 mx-auto w-23/24">
+    <div class="flex flex-col gap-4">
         <div class="grid grid-cols-4 gap-4 w-full text-center">
             <div
                 v-for="(el, i) in [
@@ -26,7 +26,7 @@
                                 : 0,
                     },
                     {
-                        text: `nbr evenement`,
+                        text: `evenements`,
                         color: 'emerald',
                         icon: 'fa-calendar-day',
                         val: metricsStore.eventCount[metricsStore.eventCount.length - 1]?.value,
@@ -177,111 +177,6 @@
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="overflow-x-scroll snap-x snap-proximity">
-                <AppTable
-                    class="w-max"
-                    :items="clubStore.clubs"
-                    table-layout="auto"
-                    :headers="[
-                        {
-                            name: 'name',
-                            text: 'Nom',
-                            class: 'p-2 z-10 border-b border-gray-300 bg-1',
-                            sortable: true,
-                        },
-                        {
-                            name: 'owner',
-                            text: 'Président',
-                            class: 'p-2 border-b border-gray-300',
-                        },
-                        {
-                            name: 'secretary',
-                            text: 'Secrétaire',
-                            class: 'p-2 border-b border-gray-300',
-                        },
-                        {
-                            name: 'treasurer',
-                            text: 'Trésorier',
-                            class: 'p-2  border-b border-gray-300',
-                        },
-                        {
-                            name: 'members',
-                            text: 'Membres',
-                            class: 'p-2 z-10 border-b border-gray-300 bg-1',
-                            sortable: true,
-                        },
-                        {
-                            name: 'budget',
-                            text: 'Budget',
-                            class: 'p-2  border-b border-gray-300',
-                            sortable: true,
-                        },
-                        {
-                            name: 'shortDescription',
-                            text: 'Description',
-                            class: 'p-2  border-b border-gray-300',
-                        },
-                    ]"
-                    :first-column-fixed="true"
-                >
-                    <template #name="{ avatar, name, category, teamId }">
-                        <router-link
-                            :to="`/club/${teamId}`"
-                            class="flex gap-1 items-center max-w-sm h-full bg-1"
-                        >
-                            <img :src="avatar" :alt="name" />
-                            <div>{{ name }}</div>
-                            <div class="text-xs text-gray-400">{{ category }}</div>
-                        </router-link>
-                    </template>
-                    <template #owner="{ owner }">
-                        <router-link
-                            :to="`/user/${owner.userId}`"
-                            class="flex gap-1 items-center cursor-pointer"
-                        >
-                            <ProfileAvatar
-                                :name="fullname(owner)"
-                                :avatar="owner.avatar"
-                                :size="2.5"
-                            ></ProfileAvatar>
-                            <div>{{ fullname(owner) }}</div>
-                        </router-link>
-                    </template>
-                    <template #secretary="{ secretary }">
-                        <router-link
-                            v-if="secretary"
-                            :to="`/user/${secretary.userId}`"
-                            class="flex gap-1 items-center cursor-pointer"
-                        >
-                            <ProfileAvatar
-                                :name="fullname(secretary)"
-                                :avatar="secretary.avatar"
-                            ></ProfileAvatar>
-                            <div>{{ fullname(secretary) }}</div>
-                        </router-link>
-                    </template>
-                    <template #treasurer="{ treasurer }">
-                        <router-link
-                            v-if="treasurer"
-                            :to="`/user/${treasurer.userId}`"
-                            class="flex gap-1 items-center cursor-pointer"
-                        >
-                            <ProfileAvatar
-                                :name="fullname(treasurer)"
-                                :avatar="treasurer.avatar"
-                            ></ProfileAvatar>
-                            <div>{{ fullname(treasurer) }}</div>
-                        </router-link>
-                    </template>
-                    <template #shortDescription="{ shortDescription }">
-                        <div class="max-w-lg text-sm">
-                            {{ shortDescription }}
-                        </div>
-                    </template>
-                </AppTable>
-            </div>
-        </div>
     </div>
 </template>
 
@@ -289,9 +184,7 @@
     import { LineChart } from 'vue-chart-3'
     import { Chart, registerables } from 'chart.js'
     import { useClubsStore } from '@/store/clubs.store'
-    import AppTable from '@/components/App/AppTable.vue'
-    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    import { fullname } from '@/utils/users'
+
     import SelectInput from '@/components/Input/SelectInput.vue'
     import { ref, watchEffect } from 'vue'
     import { useMetricsStore } from '@/store/metrics.store'
