@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "okampus.pwa",
+            "sha256_cert_fingerprints": [
+                "E7:3C:7F:79:B1:97:4A:61:AE:A1:83:1B:99:5C:50:D5:FA:99:1E:AE:11:73:CE:6A:F3:67:AF:A5:D4:30:3F:F5"
+            ]
+        }
+    }
+]
