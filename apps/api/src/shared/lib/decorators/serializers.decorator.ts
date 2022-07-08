@@ -29,6 +29,10 @@ export function SerializerIncludeTeamForm(): ReturnType<typeof applyDecorators> 
   return applyDecorators(SerializeOptions({ groups: [TEAM_FORM_INCLUDED] }));
 }
 
+export function SerializerIncludeTeamMembersAndForm(): ReturnType<typeof applyDecorators> {
+  return applyDecorators(SerializeOptions({ groups: [TEAM_MEMBERS_INCLUDED, TEAM_FORM_INCLUDED] }));
+}
+
 export function SerializerIncludeTeamContacts(): ReturnType<typeof applyDecorators> {
   return applyDecorators(SerializeOptions({ groups: [TEAM_CONTACTS_INCLUDED] }));
 }

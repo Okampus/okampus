@@ -21,7 +21,7 @@ import { ProfileImage } from '../../files/profile-images/profile-image.entity';
 import { ProfileImagesService } from '../../files/profile-images/profile-images.service';
 import { simpleImageMimeTypeRegex } from '../../shared/configs/mime-type';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
-import { SerializerIncludeTeamForm, SerializerIncludeTeamMembers } from '../../shared/lib/decorators/serializers.decorator';
+import { SerializerIncludeTeamMembersAndForm } from '../../shared/lib/decorators/serializers.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { TypesenseEnabledGuard } from '../../shared/lib/guards/typesense-enabled.guard';
 import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
@@ -40,7 +40,6 @@ import { TeamsService } from './teams.service';
 
 @ApiTags('Teams')
 @Controller()
-@SerializerIncludeTeamForm()
 export class TeamsController {
   constructor(
     private readonly teamsService: TeamsService,
@@ -52,7 +51,7 @@ export class TeamsController {
 
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Team))
-  @SerializerIncludeTeamMembers()
+  @SerializerIncludeTeamMembersAndForm()
   public async create(
     @Body() createTagDto: CreateTeamDto,
     @CurrentUser() user: User,
@@ -62,7 +61,7 @@ export class TeamsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Team))
-  @SerializerIncludeTeamMembers()
+  @SerializerIncludeTeamMembersAndForm()
   public async findAll(
     @Query() options: TeamListOptions,
     ): Promise<PaginatedResult<Team>> {
@@ -89,14 +88,14 @@ export class TeamsController {
 
   @Get(':teamId')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
-  @SerializerIncludeTeamMembers()
+  @SerializerIncludeTeamMembersAndForm()
   public async findOne(@Param('teamId', ParseIntPipe) teamId: number): Promise<Team> {
     return await this.teamsService.findOne(teamId);
   }
 
   @Patch(':teamId')
   @CheckPolicies(ability => ability.can(Action.Update, Team))
-  @SerializerIncludeTeamMembers()
+  @SerializerIncludeTeamMembersAndForm()
   public async update(
     @Param('teamId', ParseIntPipe) teamId: number,
     @Body() updateSubjectDto: UpdateTeamDto,
@@ -107,7 +106,7 @@ export class TeamsController {
 
   @Delete(':teamId')
   @CheckPolicies(ability => ability.can(Action.Delete, Team))
-  @SerializerIncludeTeamMembers()
+  @SerializerIncludeTeamMembersAndForm()
   public async remove(@Param('teamId', ParseIntPipe) teamId: number): Promise<void> {
     await this.teamsService.remove(teamId);
   }
@@ -126,7 +125,6 @@ export class TeamsController {
     const fileUpload = await this.filesService.create(user, file, FileKind.ProfileImage);
     const profileImage = await this.profileImagesService.create(fileUpload);
 
-    console.log('oiuiii');
     return await this.teamsService.updateProfileImage(user, teamId, 'avatar', profileImage);
   }
 
