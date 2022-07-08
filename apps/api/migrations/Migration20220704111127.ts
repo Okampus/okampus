@@ -10,7 +10,7 @@ export class Migration20220704111127 extends Migration {
     this.addSql('alter table "team_event" add column "used_template_id" int4 null;');
     this.addSql('alter table "team_event" add constraint "team_event_used_template_id_foreign" foreign key ("used_template_id") references "team_event" ("team_event_id") on update cascade on delete set null;');
 
-    this.addSql('alter table "team_event" add column "meta" jsonb not null;');
+    this.addSql('alter table "team_event" add column "meta" jsonb not null default \'{}\'::jsonb;');
   }
 
 }
