@@ -1,6 +1,6 @@
 <template>
     <TipPopper :tip="dateString">
-        <span class="flex items-center">
+        <span class="flex items-center cursor-default">
             {{ timeAgo(date, 'long') }}
         </span>
     </TipPopper>
@@ -12,7 +12,7 @@
 
     const props = defineProps({
         date: {
-            type: String,
+            type: [String, Date],
             required: true,
         },
     })

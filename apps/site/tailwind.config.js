@@ -143,15 +143,15 @@ module.exports = {
                 },
                 1: {
                     light: '#1a1e28',
-                    dark: '#dedede',
+                    dark: '#fbfbfb',
                 },
                 2: {
                     light: '#3a3e48',
-                    dark: '#ccc',
+                    dark: '#dedede',
                 },
                 3: {
                     light: '#5a5e78',
-                    dark: '#bbb',
+                    dark: '#ccc',
                 },
                 4: {
                     light: '#727070',

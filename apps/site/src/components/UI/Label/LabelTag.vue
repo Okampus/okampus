@@ -4,7 +4,7 @@
             `bg-${tagColor}-100 dark:bg-${tagColor}-900`,
             `hover:bg-${tagColor}-200 dark:hover:bg-${tagColor}-800`,
             `text-${tagColor}-700 dark:text-${tagColor}-200`,
-            large ? 'px-5 gap-3 py-2' : 'px-3 gap-1.5 py-1',
+            large ? 'px-5 gap-3 py-1' : 'px-3 gap-1.5 py-0.5',
         ]"
         class="flex justify-center items-center whitespace-normal rounded-full cursor-pointer bg-opacity-/90"
     >
