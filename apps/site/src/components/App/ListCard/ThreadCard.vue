@@ -1,35 +1,22 @@
 <template>
-    <div v-if="thread" class="flex flex-row gap-6 py-3 pr-7 pl-5 w-full xs:rounded-xl bg-2 text-2">
-        <div class="flex flex-col gap-1 items-center">
-            <IconUpvote
-                :full="thread.post.interactions.voted === 1"
-                width="1.5rem"
-                height="1.5rem"
-                class="hover:text-blue-500 cursor-pointer"
-                :class="[thread.post.interactions.voted === 1 ? 'text-green-600' : 'text-5']"
-                @click="
-                    thread.post.interactions.voted === 1
-                        ? threads.voteContent(thread.post.contentId, 0)
-                        : threads.voteContent(thread.post.contentId, 1)
-                "
-            />
-            <div class="text-xl">
-                {{ abbrNumbers(thread.post.upvotes - thread.post.downvotes) }}
-            </div>
-            <IconDownvote
-                :full="thread.post.interactions.voted === -1"
-                width="1.5rem"
-                height="1.5rem"
-                class="hover:text-blue-500 cursor-pointer"
-                :class="[thread.post.interactions.voted === -1 ? 'text-red-600' : 'text-5']"
-                @click="
-                    thread.post.interactions.voted === -1
-                        ? threads.voteContent(thread.post.contentId, 0)
-                        : threads.voteContent(thread.post.contentId, -1)
-                "
-            />
-        </div>
-        <div class="flex flex-col">
+    <div v-if="thread" class="flex flex-row gap-6 py-3 pr-7 pl-5 w-full md:rounded-xl bg-2 text-2">
+        <VoteInput
+            :downvotes="thread.post.downvotes"
+            :upvotes="thread.post.upvotes"
+            :vote="thread.vote"
+            :vote-action="
+                (vote) =>
+                    threads
+                        .voteContent(thread.post.contentId, vote)
+                        .then(
+                            () =>
+                                (threads.threads.find(
+                                    (t) => t.contentMasterId === thread.contentMasterId,
+                                ).vote = vote),
+                        )
+            "
+        />
+        <!-- <div class="flex flex-col">
             <TipPopper :tip="`${threadTypes[thread.type]?.[$i18n.locale]}`">
                 <div
                     class="flex justify-center items-center w-[3.3rem] h-[3.3rem] rounded-lg cursor-pointer"
@@ -57,21 +44,35 @@
                     <i v-else class="text-sm fa fa-message" />
                 </div>
             </TipPopper>
-        </div>
-        <div class="flex flex-col gap-1.5 w-full">
-            <router-link
-                :to="`/post/${thread.contentMasterId}`"
-                class="text-xl font-semibold hover:underline line-clamp-1 text-0"
-            >
-                {{ thread.title }}
-            </router-link>
+        </div> -->
+        <div class="flex flex-col gap-2.5 w-full">
+            <div class="flex flex-wrap gap-2">
+                <router-link
+                    :to="`/forum/post/${thread.contentMasterId}`"
+                    class="pr-2 font-semibold hover:underline text-0"
+                    :class="small ? 'text-base' : 'text-xl'"
+                >
+                    {{ thread.title }}
+                </router-link>
+                <LabelTag
+                    v-for="(tag, i) in thread.tags"
+                    :key="i"
+                    class="inline"
+                    :class="small ? 'text-xs' : 'text-sm'"
+                    :tag-name="tag.name"
+                />
+            </div>
 
-            <div class="text-sm text-justify line-clamp-2 text-2">
+            <div class="flex">
+                <UserActivity :user="thread.post.author" action-text="Publié" :action-at="thread.createdAt" />
+            </div>
+
+            <div class="text-sm text-justify line-clamp-2 text-1">
                 {{ thread.post.body }}
             </div>
 
             <div class="flex gap-6 items-center mt-1 w-full text-xs">
-                <div class="flex gap-2 items-center">
+                <!-- <div class="flex gap-2 items-center">
                     <ProfileAvatar
                         :avatar="thread.post.author.avatar"
                         :name="fullname(thread.post.author)"
@@ -94,11 +95,26 @@
                 >
                     <i class="text-base fa fa-clock-rotate-left icon-color" />
                     <TipRelativeDate class="ml-2" :date="thread.createdAt" />
-                </div>
+                </div> -->
+                <!-- <Carousel class="mx-6 w-[calc(100%-4rem)]" :settings="settings" :breakpoints="breakpoints">
+                    <Slide v-for="tag in thread.tags" :key="tag">
+                        <LabelTag :tag-name="tag.name" />
+                    </Slide>
 
-                <!-- TEMP: display only first tag -->
-                <LabelTag v-if="thread.tags.length > 0" :tag-name="thread.tags[0].name" />
+                    <template #addons>
+                        <Navigation />
+                    </template>
+                </Carousel> -->
             </div>
+            <!-- <Carousel class="mx-6 w-[calc(100%-4rem)]" :settings="settings" :breakpoints="breakpoints">
+                <Slide v-for="tag in thread.tags" :key="tag">
+                    <LabelTag :tag-name="tag.name" />
+                </Slide>
+
+                <template #addons>
+                    <Navigation />
+                </template>
+            </Carousel> -->
         </div>
     </div>
     <div v-else class="flex py-3 px-5 space-x-2 font-semibold rounded-lg">
@@ -109,41 +125,62 @@
             Signalez ce bug !
         </router-link>
     </div>
+
+    <!-- <swiper slides-per-view="auto" class="w-[calc(100%-4rem)]">
+        <swiper-slide v-for="tag in thread.tags" :key="tag">
+            <LabelTag :tag-name="tag.name" />
+        </swiper-slide>
+    </swiper> -->
 </template>
 
 <script setup>
-    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    import LabelTag from '@/components/UI/Label/LabelTag.vue'
-    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
-    import IconUpvote from '@/icons/IconUpvote.vue'
-    import IconDownvote from '@/icons/IconDownvote.vue'
-    import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
+    // Import Swiper Vue.js components
+    // import { Swiper, SwiperSlide } from 'swiper/vue'
 
-    import { fullname, getRole } from '@/utils/users'
+    // Import Swiper styles
+    import 'swiper/css'
+
+    import VoteInput from '@/components/Input/VoteInput.vue'
+    import UserActivity from '@/components/App/General/UserActivity.vue'
+    // import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    import LabelTag from '@/components/UI/Label/LabelTag.vue'
+    // import TipPopper from '@/components/UI/Tip/TipPopper.vue'
+    // import IconUpvote from '@/icons/IconUpvote.vue'
+    // import IconDownvote from '@/icons/IconDownvote.vue'
+    // import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
+
+    // import { fullname, getRole } from '@/utils/users'
     // import TagList from '@/components/List/TagList.vue'
     // import UserPreview from '@/components/App/Preview/UserPreview.vue'
 
     // import Popper from 'vue3-popper'
     import { useThreadsStore } from '@/store/threads.store'
 
-    import threadTypes from '@/shared/types/thread-types.enum'
+    // import threadTypes from '@/shared/types/thread-types.enum'
 
     // import { timeAgo } from '@/utils/timeAgo'
-    import { abbrNumbers } from '@/utils/abbrNumbers'
-    // import UserPreview from '../Preview/UserPreview.vue'
-
-    const threads = useThreadsStore()
+    // import { abbrNumbers } from '@/utils/abbrNumbers'
 
     defineProps({
         thread: {
             type: Object,
             required: true,
         },
+        small: {
+            type: Boolean,
+            default: false,
+        },
     })
+
+    const threads = useThreadsStore()
 </script>
 
 <style>
     .icon-color {
         @apply text-gray-300;
+    }
+
+    .swiper-slide {
+        width: auto;
     }
 </style>
