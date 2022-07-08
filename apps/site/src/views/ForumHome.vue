@@ -101,7 +101,7 @@
 </template>
 
 <script setup>
-    import ChatBubble from '@/assets/img/forum/chat-bubble-dynamic-gradient.png'
+    import ChatBubble from '@/assets/img/3dicons/chat-bubble.png'
     import AppTitle from '@/components/App/AppTitle.vue'
     import UserActivity from '@/components/App/General/UserActivity.vue'
     import RecentThreadList from '@/components/List/RecentThreadList.vue'

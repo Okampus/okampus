@@ -18,7 +18,7 @@
     <div v-else>
         <div class="flex flex-col justify-center items-center my-auto -mt-10 h-content text-0">
             <div class="text-center">
-                <i class="text-6xl fas fa-calendar-day" />
+                <img class="w-48 h-48" :src="Calendar" />
             </div>
             <div class="mt-8 text-center">
                 <h1 class="text-4xl font-bold">Aucun événement</h1>
@@ -29,6 +29,7 @@
 </template>
 
 <script setup>
+    import Calendar from '@/assets/img/3dicons/calendar.png'
     import 'vue3-carousel/dist/carousel.css'
     import { Carousel, Slide, Navigation } from 'vue3-carousel'
 

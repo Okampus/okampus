@@ -103,7 +103,7 @@
             </template>
         </ModalPopup>
 
-        <div class="flex flex-col items-center mt-4">
+        <div class="flex flex-col gap-8 items-center">
             <button
                 class="py-2 px-8 mb-4 w-fit text-lg font-bold text-white bg-green-500 rounded-full"
                 @click="showCreateForm = true"
@@ -117,9 +117,9 @@
             >
                 <ClubEventCard v-for="event in events" :key="event" :event="event" />
             </div>
-            <div v-else>
-                <i class="text-3xl fas fa-calendar-day" />
-                <div class="text-lg font-semibold text-center">
+            <div v-else class="flex flex-col gap-4 items-center">
+                <img class="w-48 h-48" :src="Calendar" />
+                <div class="text-lg font-semibold text-center text-0">
                     Votre association n'a pas encore prévu d'événéments.
                 </div>
             </div>
@@ -128,6 +128,8 @@
 </template>
 
 <script setup>
+    import Calendar from '@/assets/img/3dicons/calendar.png'
+
     import ClubEventCard from '@/components/Club/ClubEventCard.vue'
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
 
