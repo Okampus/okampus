@@ -1,5 +1,5 @@
 <template>
-    <div class="flex relative flex-col gap-6">
+    <div class="flex relative flex-col">
         <div class="bg-2 text-0">
             <div class="flex sticky top-0 z-30 flex-col centered-container">
                 <div class="flex gap-4 justify-between items-center pt-4">
@@ -41,13 +41,12 @@
     import ManageDrive from '@/components/Profile/Manage/ManageDrive.vue'
 
     import ManageActivity from '@/components/Profile/Manage/ManageActivity.vue'
-    import WIP from '@/views/App/WIP.vue'
 
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
 
-    import { computed, h, ref, watchEffect } from 'vue'
+    import { computed, ref, watchEffect } from 'vue'
 
     import { useRoute } from 'vue-router'
     import { useClubsStore } from '@/store/clubs.store'

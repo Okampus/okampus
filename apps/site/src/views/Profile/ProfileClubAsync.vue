@@ -49,7 +49,7 @@
                 route-name="club"
             />
         </div>
-        <div class="mt-4 centered-container">
+        <div class="centered-container">
             <component :is="currentComponent" :club="club" />
         </div>
     </div>
