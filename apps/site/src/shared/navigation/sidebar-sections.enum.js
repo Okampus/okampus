@@ -36,8 +36,8 @@ export const sections = computed(() => {
                           {
                               to: '/admin/clubs',
                               regActive: /^\/admin\/clubs/,
-                              textSmall: 'Admin asso',
-                              textLarge: 'Gestion des assos',
+                              textSmall: 'Adm. assos',
+                              textLarge: 'Adm. associations',
                               icon: 'users-gear',
                           },
                       ],
@@ -143,14 +143,14 @@ export const sections = computed(() => {
                       name: 'Espaces',
                       links: [
                           {
-                              to: '/posts',
-                              regActive: /^\/posts?/,
+                              to: '/forum',
+                              regActive: /^\/forum?/,
                               textSmall: 'Forum',
                               textLarge: 'Forum',
                               icon: 'comments',
                               button: {
                                   text: 'Créer un post',
-                                  to: '/post/new',
+                                  to: '/forum/post/new',
                                   icon: 'circle-plus',
                               },
                           },

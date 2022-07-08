@@ -44,7 +44,15 @@ const routes = [
     },
 
     {
-        path: '/posts',
+        path: '/forum',
+        component: () => import('@/views/ForumHome.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
+        path: '/forum/posts',
         component: () => import('@/views/List/ThreadList.vue'),
         meta: {
             requiresAuth: true,
@@ -52,7 +60,7 @@ const routes = [
     },
 
     {
-        path: '/post/new',
+        path: '/forum/post/new',
         component: () => import('@/views/Thread/ThreadNew.vue'),
         meta: {
             requiresAuth: true,
@@ -61,7 +69,7 @@ const routes = [
 
     {
         name: 'post',
-        path: '/post/:id*',
+        path: '/forum/post/:id*',
         component: () => import('@/views/Thread/ThreadView.vue'),
         meta: {
             requiresAuth: true,
