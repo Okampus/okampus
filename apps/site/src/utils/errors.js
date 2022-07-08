@@ -4,7 +4,7 @@ export const getStatusAxiosError = (err) => err.response?.status?.toString() ?? 
 
 export const TOAST_ERRORS = {
     [errorCodes.NETWORK_ERROR]: {
-        message: "Erreur réseau - L'API est hors ligne ou n'est pas accessible depuis ce réseau.",
+        message: "ERREUR RÉSEAU : L'API est hors ligne ou n'est pas accessible depuis ce réseau.",
         type: 'error',
     },
 }
