@@ -72,6 +72,8 @@
     import { useAuthStore } from '@/store/auth.store'
     import { useUserConfigStore } from '@/store/user-config.store'
 
+    import 'swiper/css'
+
     const currentRoute = useRoute()
 
     const config = useUserConfigStore()
