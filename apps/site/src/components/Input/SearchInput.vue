@@ -41,7 +41,7 @@
                 </ais-search-box>
 
                 <template #content="{ close }">
-                    <div class="overflow-y-scroll p-2 rounded-b-lg border border-t-0 shadow-lg bg-1">
+                    <div class="overflow-y-scroll p-2 rounded-b-lg border border-t-0 shadow-md bg-1">
                         <ais-index :index-name="indexName">
                             <ais-hits class="flex flex-col gap-2 w-full">
                                 <template #default="{ items }">

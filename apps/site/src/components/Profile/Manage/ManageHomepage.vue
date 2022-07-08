@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col pb-4 rounded-xl shadow-xl text-2 bg-2">
+    <div class="flex flex-col pb-4 rounded-xl shadow-md text-2 bg-2">
         <div class="relative">
             <AvatarCropper
                 v-model="editingBanner"
@@ -108,7 +108,7 @@
             <div class="mt-1 text-2">{{ club.shortDescription }}</div>
         </div>
     </div>
-    <div class="flex flex-col gap-5 p-4 mt-4 rounded-xl shadow-xl text-2 bg-2">
+    <div class="flex flex-col gap-5 p-4 mt-4 rounded-xl shadow-md text-2 bg-2">
         <div>
             <div class="mb-2 text-lg font-semibold">Catégorie de l'association</div>
             <router-link :to="`/clubs/${clubTypes[club.category].link}`">

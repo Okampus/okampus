@@ -71,7 +71,7 @@
                                             <i class="text-xs text-blue-500 cursor-auto fas fa-certificate" />
                                             <template #content>
                                                 <div
-                                                    class="p-2 px-3 whitespace-nowrap rounded shadow-lg bg-1"
+                                                    class="p-2 px-3 whitespace-nowrap rounded shadow-md bg-1"
                                                 >
                                                     Partagé par un prof
                                                 </div>

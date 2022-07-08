@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-col shrink-0 p-2 h-fit rounded shadow-lg bg-2 text-2"
+        class="flex flex-col shrink-0 p-2 h-fit rounded shadow-md bg-2 text-2"
         :class="isMultiTab ? 'py-4' : 'gap-2'"
     >
         <template v-for="(tabParent, i) in tabs" :key="i">

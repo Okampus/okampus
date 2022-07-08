@@ -27,5 +27,5 @@ button.raised {
 %popover,
 .popover {
     @include get-color('bg', 2);
-    @apply p-3 rounded-lg shadow-lg;
+    @apply p-3 rounded-lg shadow-md;
 }

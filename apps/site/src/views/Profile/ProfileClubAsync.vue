@@ -62,7 +62,7 @@
                         <ProfileAvatar :avatar="club.avatar" :size="4.5" :name="club.name" />
                     </div>
                 </div>
-                <div class="px-4 pb-6 mt-8 w-full shadow-lg">
+                <div class="px-4 pb-6 mt-8 w-full shadow-md">
                     <div class="flex flex-col pr-8 mb-4 space-y-4">
                         <div>
                             <div class="flex">

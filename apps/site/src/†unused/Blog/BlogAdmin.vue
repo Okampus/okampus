@@ -4,7 +4,7 @@
         <div
             v-for="(card, i) in cards"
             :key="i"
-            class="group flex justify-between items-center p-3 font-medium text-white rounded-md border-b-4 shadow-lg md:flex-col"
+            class="group flex justify-between items-center p-3 font-medium text-white rounded-md border-b-4 shadow-md md:flex-col"
             :class="card.class"
         >
             <div class="flex space-x-4 text-center md:flex-col md:space-x-0">
@@ -36,7 +36,7 @@
             <div
                 v-for="(statistic, j) in statistics"
                 :key="j"
-                class="group flex justify-between items-center p-3 font-medium text-white bg-blue-500 dark:bg-gray-800 rounded-md border-b-4 border-blue-600 dark:border-gray-600 shadow-lg"
+                class="group flex justify-between items-center p-3 font-medium text-white bg-blue-500 dark:bg-gray-800 rounded-md border-b-4 border-blue-600 dark:border-gray-600 shadow-md"
             >
                 <div class="text-left">
                     <p class="text-2xl">

@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-5 p-4 rounded-xl shadow-xl text-2 bg-2">
+    <div class="flex flex-col gap-5 p-4 rounded-xl shadow-md text-2 bg-2">
         <div>
             <div class="mb-2 text-lg font-semibold">Catégorie de l'association</div>
             <router-link :to="`/clubs/${clubTypes[club.category].link}`">
