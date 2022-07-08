@@ -16,10 +16,6 @@ export default [
         type: 'text',
     },
     {
-        emoji: 'dizzy',
-        type: 'icon',
-    },
-    {
         emoji: 'heart-crack',
         type: 'icon',
     },
@@ -29,14 +25,6 @@ export default [
     },
     {
         emoji: '💔',
-        type: 'text',
-    },
-    {
-        emoji: '😵',
-        type: 'text',
-    },
-    {
-        emoji: '😵‍💫',
         type: 'text',
     },
     {
