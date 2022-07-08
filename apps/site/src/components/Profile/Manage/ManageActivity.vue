@@ -177,13 +177,12 @@
 
         await clubs
             .createEvent(props.club.teamId, {
-                shortDescription: event.eventTitle,
-                longDescription: event.eventDescription,
+                name: event.eventTitle,
+                description: event.eventDescription,
                 start: start,
                 end: end,
                 place: event.eventLocation,
                 private: event.eventType === 'Privé',
-                preconditions: 'aaaaaa',
             })
             .then(() => {
                 emitter.emit('show-toast', {
