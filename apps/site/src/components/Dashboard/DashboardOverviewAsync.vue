@@ -74,11 +74,7 @@
             <div class="flex flex-col card">
                 <div class="pb-2 mb-2 text-xl border-b">Evenement en attentes</div>
                 <div class="flex overflow-y-scroll flex-col gap-4 h-full scrollbar-none">
-                    <div
-                        v-for="(club, i) in clubStore.clubs.slice(0, 5)"
-                        :key="i"
-                        class="flex gap-2 justify-between"
-                    >
+                    <div v-for="(event, i) in clubStore.events" :key="i" class="flex gap-2 justify-between">
                         <div class="flex gap-2 items-center">
                             <img class="w-5 h-5" :src="club.avatar" :alt="club.name" />
                             <div>Evenement {{ i }}</div>
@@ -242,6 +238,7 @@
 
     const clubStore = useClubsStore()
     await clubStore.getClubs()
+    await clubStore.getEvents()
 
     const metricsStore = useMetricsStore()
 

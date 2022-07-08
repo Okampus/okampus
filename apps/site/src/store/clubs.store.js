@@ -124,8 +124,8 @@ export const useClubsStore = defineStore('clubs', {
             return await $axios.put(`teams/requests/${requestId}`, data).then((res) => res.data)
         },
 
-        async getTeamEvents(clubId) {
-            return await $axios.get(`teams/events?teamId=${clubId}`).then(onItems(this.replaceEvents))
+        async getTeamEvents(teamId) {
+            return await $axios.get('teams/events', { params: { teamId } }).then(onItems(this.replaceEvents))
         },
 
         async joinEvent(eventId, data) {
