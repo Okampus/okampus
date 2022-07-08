@@ -147,15 +147,27 @@ export const useClubsStore = defineStore('clubs', {
             return await $axios.get(`teams/event-registrations?eventId=${eventId}`).then((res) => res.data)
         },
 
-        replaceFiles(request) {
+        replaceClubFiles(request) {
             this.club.files = request
             return request
         },
 
-        async getClubFiles(teamId) {
+        replaceClubsFiles({ teamId, items }) {
+            this.clubs.find((club) => club.teamId === teamId).files = items
+        },
+
+        async getClubFiles(teamId, type) {
             return await $axios
-                .get('/files/team-files', { params: { teamId, itemsPerPage: 100 } })
-                .then(onItems(this.replaceFiles))
+                .get('/files/team-files', { params: { teamId, type, itemsPerPage: 100 } })
+                .then(onItems(this.replaceClubFiles))
+        },
+
+        async getClubsFiles(type) {
+            for (const teamId of this.clubs.map((club) => club.teamId)) {
+                await $axios
+                    .get('/files/team-files', { params: { teamId, type, itemsPerPage: 100 } })
+                    .then(onItems(this.replaceClubsFiles, { teamId }))
+            }
         },
 
         async postClubFile(teamId, type, file, description = null) {

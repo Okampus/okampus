@@ -40,6 +40,21 @@
                         sortable: true,
                     },
                     {
+                        name: 'handover',
+                        text: 'Passation',
+                        class: 'p-2  border-b border-gray-300',
+                    },
+                    {
+                        name: 'statute',
+                        text: 'Statut',
+                        class: 'p-2  border-b border-gray-300',
+                    },
+                    {
+                        name: 'internal',
+                        text: 'Réglement interieur',
+                        class: 'p-2  border-b border-gray-300',
+                    },
+                    {
                         name: 'shortDescription',
                         text: 'Description',
                         class: 'p-2  border-b border-gray-300',
@@ -84,6 +99,62 @@
                         <div>{{ fullname(treasurer) }}</div>
                     </router-link>
                 </template>
+                <template #handover="{ files }">
+                    <div
+                        v-if="files?.filter((file) => file?.description === 'handover')[0]"
+                        class="flex justify-center items-center"
+                    >
+                        <a :href="files.filter((file) => file?.description === 'handover')[0]?.file?.url">
+                            <DocumentIcon
+                                class="w-8 h-8"
+                                :file-name="
+                                    files.filter((file) => file?.description === 'handover')[0]?.file?.name
+                                "
+                                :mime="
+                                    files.filter((file) => file?.description === 'handover')[0]?.file
+                                        ?.mimeType
+                                "
+                            />
+                        </a>
+                    </div>
+                </template>
+                <template #statute="{ files }">
+                    <div
+                        v-if="files?.filter((file) => file?.description === 'statute')[0]"
+                        class="flex justify-center items-center"
+                    >
+                        <a :href="files.filter((file) => file?.description === 'statute')[0]?.file?.url">
+                            <DocumentIcon
+                                class="w-8 h-8"
+                                :file-name="
+                                    files.filter((file) => file?.description === 'statute')[0]?.file?.name
+                                "
+                                :mime="
+                                    files.filter((file) => file?.description === 'statute')[0]?.file?.mimeType
+                                "
+                            />
+                        </a>
+                    </div>
+                </template>
+                <template #internal="{ files }">
+                    <div
+                        v-if="files?.filter((file) => file?.description === 'internal')[0]"
+                        class="flex justify-center items-center"
+                    >
+                        <a :href="files.filter((file) => file?.description === 'internal')[0]?.file?.url">
+                            <DocumentIcon
+                                class="w-8 h-8"
+                                :file-name="
+                                    files.filter((file) => file?.description === 'internal')[0]?.file?.name
+                                "
+                                :mime="
+                                    files.filter((file) => file?.description === 'internal')[0]?.file
+                                        ?.mimeType
+                                "
+                            />
+                        </a>
+                    </div>
+                </template>
                 <template #shortDescription="{ shortDescription }">
                     <div class="max-w-lg text-sm">
                         {{ shortDescription }}
@@ -99,7 +170,9 @@
     import AppTable from '@/components/App/AppTable.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import { fullname } from '@/utils/users'
+    import DocumentIcon from '@/components/Document/DocumentIcon.vue'
 
     const clubStore = useClubsStore()
     await clubStore.getClubs()
+    await clubStore.getClubsFiles('document')
 </script>

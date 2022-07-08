@@ -33,11 +33,7 @@
                     :class="{ 'sticky left-0': k === 0 && firstColumnFixed }"
                     class="h-1 snap-start"
                 >
-                    <slot
-                        v-if="typeof item[header.name] !== 'undefined' && slots[header.name]"
-                        :name="header.name"
-                        :="item"
-                    ></slot>
+                    <slot v-if="slots[header.name]" :name="header.name" :="item"></slot>
                     <div v-else class="p-2">{{ item[header.name] }}</div>
                 </td>
             </tr>
