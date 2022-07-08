@@ -3,7 +3,7 @@
     @apply text-white cursor-pointer rounded-lg px-3 py-2;
 
     &:hover {
-        filter: brightness(1.4);
+        filter: brightness(1.3);
     }
 }
 
@@ -24,6 +24,16 @@
 
     &:hover {
         box-shadow: 0 0 8px #7ee763;
+    }
+}
+
+.button-yellow {
+    @extend %button;
+
+    background-color: #e7b734;
+
+    &:hover {
+        box-shadow: 0 0 8px #e2b63e;
     }
 }
 

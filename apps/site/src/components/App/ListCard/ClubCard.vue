@@ -197,16 +197,6 @@
 </script>
 
 <style lang="scss">
-    .card-hover {
-        transition: filter 0.2s ease-in-out, transform 0.2s ease-in-out;
-
-        &:hover {
-            z-index: 20;
-            filter: contrast(110%);
-            transform: scale(101%);
-        }
-    }
-
     .avatar-hover {
         & * {
             transition: margin-top 0.2s ease-in-out;
