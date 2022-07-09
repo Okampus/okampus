@@ -12,6 +12,8 @@ export const useClubsStore = defineStore('clubs', {
         members: [],
         events: [],
         event: {},
+        forms: {},
+        form: {},
     }),
     actions: {
         replaceClubs(clubs) {
@@ -52,6 +54,16 @@ export const useClubsStore = defineStore('clubs', {
         replaceEvent(event) {
             this.event = event
             return event
+        },
+
+        replaceForms(forms) {
+            this.forms = forms
+            return forms
+        },
+
+        replaceForm(form) {
+            this.form = form
+            return form
         },
 
         async getClubs() {
@@ -100,6 +112,14 @@ export const useClubsStore = defineStore('clubs', {
             return await $axios.patch(`teams/members/${teamId}/${userId}`, props).then((res) => res.data)
         },
 
+        async removeMembership(teamId, userId) {
+            return await $axios.delete(`teams/members/${teamId}/${userId}`).then((res) => res.data)
+        },
+
+        async getMembersOfClub(clubId) {
+            return await $axios.get(`teams/members/${clubId}`).then(onItems(this.replaceClubMemberships))
+        },
+
         async handleRequest(requestId, data) {
             return await $axios.put(`teams/requests/${requestId}`, data).then((res) => res.data)
         },
@@ -111,11 +131,8 @@ export const useClubsStore = defineStore('clubs', {
         async joinEvent(eventId) {
             return await $axios.post(`teams/event-registrations/${eventId}`).then((res) => res.data)
         },
-        async unregisterEvent(eventId) {
-            return await $axios.delete(`teams/event-registrations/${eventId}`).then((res) => res.data)
-        },
-        async getEventGuests(eventId) {
-            return await $axios.get(`teams/event-registrations?eventId=${eventId}`).then((res) => res.data)
+        async unregisterEvent(registrationId) {
+            return await $axios.delete(`teams/event-registrations/${registrationId}`).then((res) => res.data)
         },
         async getEvents() {
             return await $axios.get('teams/events').then(onItems(this.replaceEvents))
@@ -126,6 +143,9 @@ export const useClubsStore = defineStore('clubs', {
         async getEvent(eventId) {
             return await $axios.get(`teams/events/${eventId}`).then(onData(this.replaceEvent))
         },
+        async getEventGuests(eventId) {
+            return await $axios.get(`teams/event-registrations?eventId=${eventId}`).then((res) => res.data)
+        },
 
         replaceFiles(request) {
             this.club.files = request
@@ -134,7 +154,7 @@ export const useClubsStore = defineStore('clubs', {
 
         async getClubFiles(teamId) {
             return await $axios
-                .get('files/team-files', { params: { teamId, itemsPerPage: 100 } })
+                .get('/files/team-files', { params: { teamId, itemsPerPage: 100 } })
                 .then(onItems(this.replaceFiles))
         },
 
@@ -146,16 +166,34 @@ export const useClubsStore = defineStore('clubs', {
             formData.append('type', type)
             formData.append('teamId', teamId)
 
-            return await $axios.post('files/team-files', formData).then(onData(this.club.files.push))
+            return await $axios.post('/files/team-files', formData).then(onData(this.club.files.push))
         },
 
         async deleteClubFile(teamFileId) {
             return await $axios
-                .delete(`files/team-files/${teamFileId}`)
+                .delete(`/files/team-files/${teamFileId}`)
                 .then(
                     () =>
                         (this.club.files = this.club.files.filter((file) => file.teamFileId !== teamFileId)),
                 )
+        },
+
+        async getForms(clubId, isTemplate) {
+            return await $axios
+                .get(`teams/forms?teamId=${clubId}&isTemplate=${isTemplate}`)
+                .then(onItems(this.replaceForms))
+        },
+
+        async getForm(formId) {
+            return await $axios.get(`teams/forms/${formId}`).then(onData(this.replaceForm))
+        },
+
+        async postForm(clubId, data) {
+            return await $axios.post(`teams/forms/${clubId}`, data).then(onData(this.replaceForm))
+        },
+
+        async patchForm(formId, data) {
+            return await $axios.patch(`teams/forms/${formId}`, data).then(onData(this.replaceForm))
         },
     },
 })

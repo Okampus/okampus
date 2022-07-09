@@ -41,19 +41,34 @@
                             </div>
                         </div>
 
-                        <router-link
-                            v-if="specialRoles.includes(membership.role)"
-                            :to="`/club/${membership.team.teamId}/manage`"
-                            class="text-lg button-blue"
-                            >Gérer</router-link
-                        >
-
-                        <router-link
-                            v-else
-                            :to="`/club/${membership.team.teamId}`"
-                            class="text-lg button-blue"
-                            >Voir le profil</router-link
-                        >
+                        <div class="flex gap-2">
+                            <button
+                                v-if="specialRoles.includes(membership.role)"
+                                class="text-lg bg-red-500 hover:bg-red-600 button-submit"
+                                @click="() => transferRole(membership)"
+                            >
+                                Transmettre le rôle
+                            </button>
+                            <button
+                                v-else
+                                class="text-lg bg-red-500 hover:bg-red-600 button-submit"
+                                @click="() => leaveClub(membership)"
+                            >
+                                Quitter
+                            </button>
+                            <router-link
+                                v-if="specialRoles.includes(membership.role)"
+                                :to="`/club/${membership.team.teamId}/manage`"
+                                class="text-lg button-submit"
+                                >Gérer</router-link
+                            >
+                            <router-link
+                                v-else
+                                :to="`/club/${membership.team.teamId}`"
+                                class="text-lg button-submit"
+                                >Voir le profil</router-link
+                            >
+                        </div>
                     </div>
                 </template>
                 <div v-else class="flex flex-col gap-4 items-center my-6">
@@ -223,6 +238,44 @@
                 </div>
             </template>
         </div>
+        <ModalPopup :show="showTransferModal" @close="showTransferModal = false">
+            <template #default="{ close }">
+                <div
+                    v-if="currentMembership"
+                    class="flex flex-col justify-center items-center py-8 px-10 card"
+                >
+                    <div class="text-2xl font-semibold">
+                        Vous vous apprêtez à transmettre votre rôle de
+                        {{ clubRoleNames[currentMembership.role][$i18n.locale] }}
+                    </div>
+                    <div class="text-sm text-2">En transmettant votre rôle, vous le perdrez vous même.</div>
+                    <div
+                        v-if="members.filter((memb) => !specialRoles.includes(memb.role)).length > 0"
+                        class="flex flex-col gap-4 mt-4"
+                    >
+                        <div
+                            v-for="member of members.filter((memb) => !specialRoles.includes(memb.role))"
+                            :key="member"
+                            class="flex gap-2 items-center"
+                        >
+                            <ProfileAvatar
+                                :avatar="member.user.avatar"
+                                :name="fullname(member.user)"
+                                size="2"
+                            ></ProfileAvatar>
+                            <p>{{ fullname(member.user) }}</p>
+                            <button class="button-submit with-shadow" @click="() => transfer(member)">
+                                Transmettre le rôle
+                            </button>
+                        </div>
+                    </div>
+                    <div v-else>Il n'existe pas de membre auquel vous pouvez transmettre votre rôle</div>
+                    <div class="flex gap-4 self-end mt-6">
+                        <div class="button-cancel" @click="close">Annuler</div>
+                    </div>
+                </div>
+            </template>
+        </ModalPopup>
     </div>
 </template>
 
@@ -231,6 +284,8 @@
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
+
+    import { fullname } from '@/utils/users'
 
     import { capitalize } from 'lodash'
 
@@ -247,10 +302,55 @@
     const showRequestModal = ref(false)
     const shownRequest = ref(null)
 
+    const members = ref([])
+    const showTransferModal = ref(false)
+
     const MEMBER = 'active'
     const REQUEST = 'requests'
 
     const currentTab = ref(null)
+
+    const currentMembership = ref(null)
+
+    const leaveClub = async (membership) => {
+        clubs
+            .removeMembership(membership.team.teamId, membership.user.userId)
+            .then(() => clubs.getMembershipsOf(auth.user))
+            .catch((err) => {
+                console.error(err)
+            })
+    }
+
+    const transferRole = async (membership) => {
+        currentMembership.value = membership
+        clubs.getMembershipsOfClub(membership.team.teamId).then((memberships) => {
+            members.value = memberships
+            showTransferModal.value = true
+        })
+    }
+
+    const transfer = (member) => {
+        showTransferModal.value = false
+        const role = currentMembership.value.role
+        clubs
+            .patchMembership(currentMembership.value.team.teamId, currentMembership.value.user.userId, {
+                role: 'member',
+            })
+            .then(() => {
+                clubs.getMembershipsOf(auth.user).then((memberships) => {
+                    members.value = memberships
+                })
+            })
+        clubs
+            .patchMembership(member.team.teamId, member.user.userId, {
+                role: role,
+            })
+            .then(() => {
+                clubs.getMembershipsOf(auth.user).then((memberships) => {
+                    members.value = memberships
+                })
+            })
+    }
 
     const tabs = [
         {
