@@ -109,10 +109,13 @@ export const useClubsStore = defineStore('clubs', {
         },
 
         async joinEvent(eventId) {
-            return await $axios.post(`teams/events/${eventId}/registrations`).then((res) => res.data)
+            return await $axios.post(`teams/event-registrations/${eventId}`).then((res) => res.data)
         },
         async unregisterEvent(eventId) {
-            return await $axios.delete(`teams/events/${eventId}/registrations`).then((res) => res.data)
+            return await $axios.delete(`teams/event-registrations/${eventId}`).then((res) => res.data)
+        },
+        async getEventGuests(eventId) {
+            return await $axios.get(`teams/event-registrations?eventId=${eventId}`).then((res) => res.data)
         },
         async getEvents() {
             return await $axios.get('teams/events').then(onItems(this.replaceEvents))
@@ -123,9 +126,6 @@ export const useClubsStore = defineStore('clubs', {
         async getEvent(eventId) {
             return await $axios.get(`teams/events/${eventId}`).then(onData(this.replaceEvent))
         },
-        async getEventGuests(eventId) {
-            return await $axios.get(`teams/events/${eventId}/registrations`).then((res) => res.data)
-        },
 
         replaceFiles(request) {
             this.club.files = request
@@ -134,7 +134,7 @@ export const useClubsStore = defineStore('clubs', {
 
         async getClubFiles(teamId) {
             return await $axios
-                .get('/files/team-files', { params: { teamId, itemsPerPage: 100 } })
+                .get('files/team-files', { params: { teamId, itemsPerPage: 100 } })
                 .then(onItems(this.replaceFiles))
         },
 
@@ -146,12 +146,12 @@ export const useClubsStore = defineStore('clubs', {
             formData.append('type', type)
             formData.append('teamId', teamId)
 
-            return await $axios.post('/files/team-files', formData).then(onData(this.club.files.push))
+            return await $axios.post('files/team-files', formData).then(onData(this.club.files.push))
         },
 
         async deleteClubFile(teamFileId) {
             return await $axios
-                .delete(`/files/team-files/${teamFileId}`)
+                .delete(`files/team-files/${teamFileId}`)
                 .then(
                     () =>
                         (this.club.files = this.club.files.filter((file) => file.teamFileId !== teamFileId)),

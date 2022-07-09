@@ -75,7 +75,7 @@ export const useRestaurantStore = defineStore('restaurant', {
             )
         },
         async getDate(date) {
-            const { data } = await $axios.get(`/restaurant/date?date=${date}`)
+            const { data } = await $axios.get(`restaurant/date?date=${date}`)
 
             const foods = isNil(data.menu) ? [] : [...new Set(dishTypes.map((key) => data.menu[key]).flat())]
 
@@ -88,28 +88,28 @@ export const useRestaurantStore = defineStore('restaurant', {
         },
         async getItems(type, query) {
             return await $axios
-                .get(`/restaurant/${types[type].endpoint}`, { params: query })
+                .get(`restaurant/${types[type].endpoint}`, { params: query })
                 .then(onItems(this.replaceItems, { type }))
         },
         async getItem(type, id) {
             return await $axios
-                .get(`/restaurant/${types[type].endpoint}/${id}`)
+                .get(`restaurant/${types[type].endpoint}/${id}`)
                 .then(onData(this.replaceItem, { type }))
         },
         async addItem(type, item) {
             return await $axios
-                .post(`/restaurant/${types[type].endpoint}`, item)
+                .post(`restaurant/${types[type].endpoint}`, item)
                 .then(onData(this.replaceItem, { type }))
         },
         async updateItem(type, item) {
             const { [types[type].idKey]: id, ...updatedItem } = item
             return await $axios
-                .patch(`/restaurant/${types[type].endpoint}/${id}`, updatedItem)
+                .patch(`restaurant/${types[type].endpoint}/${id}`, updatedItem)
                 .then(onData(this.replaceItem, { type }))
         },
         async deleteItem(type, id) {
             return await $axios
-                .delete(`/restaurant/${types[type].endpoint}/${id}`)
+                .delete(`restaurant/${types[type].endpoint}/${id}`)
                 .then(onData(this.removeItem, { type }))
         },
     },
