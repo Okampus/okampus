@@ -183,6 +183,7 @@
                 end: end,
                 place: event.eventLocation,
                 private: event.eventType === 'Privé',
+                meta: {},
             })
             .then(() => {
                 emitter.emit('show-toast', {
