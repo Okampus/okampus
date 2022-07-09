@@ -7,7 +7,6 @@ import {
   IsObject,
   IsOptional,
   IsString,
-  IsUrl,
   Length,
   Min,
 } from 'class-validator';
@@ -33,11 +32,6 @@ export class CreateTeamEventDto {
   place: string;
 
   @IsOptional()
-  @IsString()
-  @Length(5, 500)
-  meetingPoint?: string;
-
-  @IsOptional()
   @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 2 })
   @Min(0)
   price?: number;
@@ -49,20 +43,6 @@ export class CreateTeamEventDto {
   @IsOptional()
   @IsBoolean()
   private?: boolean;
-
-  @IsOptional()
-  @IsString()
-  @Length(5, 500)
-  preconditions?: string;
-
-  @IsOptional()
-  @IsString()
-  @Length(5, 500)
-  questionFallback?: string;
-
-  @IsOptional()
-  @IsUrl()
-  link?: string;
 
   @IsOptional()
   @IsEnum(TeamEventState)

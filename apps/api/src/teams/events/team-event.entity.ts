@@ -44,24 +44,12 @@ export class TeamEvent extends BaseEntity {
   @Property({ type: 'text' })
   place!: string;
 
-  @Property({ type: 'text' })
-  meetingPoint?: string;
-
   @ManyToOne()
   supervisor?: User;
 
   @Property()
   @Index()
   private = false;
-
-  @Property({ type: 'text' })
-  preconditions?: string;
-
-  @Property({ type: 'text' })
-  questionFallback?: string;
-
-  @Property({ type: 'text' })
-  link?: string;
 
   @Enum({ items: () => TeamEventState, default: TeamEventState.Published })
   state = TeamEventState.Published;
@@ -87,13 +75,9 @@ export class TeamEvent extends BaseEntity {
     meta?: object;
     form?: TeamForm;
     state?: TeamEventState;
-    meetingPoint?: string;
     price?: number;
     supervisor?: User;
     private?: boolean;
-    preconditions?: string;
-    questionFallback?: string;
-    link?: string;
   }) {
     super();
     this.start = options.start;
@@ -112,20 +96,12 @@ export class TeamEvent extends BaseEntity {
       this.form = options.form;
     if (options.state)
       this.state = options.state;
-    if (options.meetingPoint)
-      this.meetingPoint = options.meetingPoint;
     if (typeof options.price !== 'undefined')
       this.price = options.price;
     if (options.supervisor)
       this.supervisor = options.supervisor;
     if (typeof options.private !== 'undefined')
       this.private = options.private;
-    if (options.preconditions)
-      this.preconditions = options.preconditions;
-    if (options.questionFallback)
-      this.questionFallback = options.questionFallback;
-    if (options.link)
-      this.link = options.link;
   }
 
   public canEdit(user: User): boolean {
