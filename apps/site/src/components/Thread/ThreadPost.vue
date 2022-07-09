@@ -6,7 +6,10 @@
                 v-model:content="body"
                 :uid="`post-${post.contentId}`"
                 @send="
-                    threads.updateContent(post.contentMasterId, { contentId: post.contentId, body: $event })
+                    threads.updateContent(post.contentMasterId, {
+                        contentId: post.contentId,
+                        body: $event,
+                    })
                 "
             />
         </template>
@@ -35,7 +38,7 @@
 
     import { edit, favorite, removeContent } from '@/shared/actions/thread.actions'
     import { useThreadsStore } from '@/store/threads.store'
-    import { computed, ref } from 'vue'
+    import { computed, ref, watchEffect } from 'vue'
 
     const props = defineProps({
         post: {
@@ -45,6 +48,7 @@
     })
 
     const body = ref(props.post.body)
+    watchEffect(() => (body.value = props.post.body))
 
     const threads = useThreadsStore()
     const actions = [favorite, edit, removeContent]
