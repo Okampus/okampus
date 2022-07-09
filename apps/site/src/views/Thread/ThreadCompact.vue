@@ -69,7 +69,8 @@
                         <div class="mr-4 font-bold text-md">Participants</div>
                         <!-- TODO: Actions : Settings, Add -->
                     </div>
-                    <div class="flex flex-col">
+                    <div class="flex flex-col gap-4">
+                        <!-- TODO: Improve with UserActivity, last activity on thread -->
                         <div
                             v-for="(participant, i) in thread.participants"
                             :key="i"
@@ -80,17 +81,13 @@
                                 :avatar="participant.avatar"
                                 :name="fullname(participant)"
                             />
-                            {{ fullname(participant) }}
-                            <TipPopper :tip="getRole(participant[$i18n.locale])">
-                                <i class="ml-1" :class="`fa fa-${getRole(participant).icon}`" />
-                            </TipPopper>
+                            <div class="inline">
+                                {{ fullname(participant) }}
+                                <TipPopper :tip="getRole(participant)[$i18n.locale]">
+                                    <i class="ml-1" :class="`fa fa-${getRole(participant).icon}`" />
+                                </TipPopper>
+                            </div>
                         </div>
-                        <!-- <UserPreview
-                            v-for="(participant, i) in thread.participants"
-                            :key="i"
-                            :user="participant"
-                            mode="horizontal"
-                        /> -->
                     </div>
                 </div>
                 <!-- <div class="card">
@@ -119,6 +116,8 @@
     import ThreadPost from '@/components/Thread/ThreadPost.vue'
     import ThreadReply from '@/components/Thread/ThreadReply.vue'
     import ThreadNewReply from '@/components/Thread/ThreadNewReply.vue'
+
+    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
 
     import { isPositiveInteger } from '@/utils/stringUtils'
     import { emitter } from '@/shared/modules/emitter'
