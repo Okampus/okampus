@@ -7,8 +7,8 @@
                         text: `associations`,
                         color: 'blue',
                         icon: 'fa-people-group',
-                        val: metricsStore.clubCount[metricsStore.clubCount.length - 1]?.value,
-                        change: metricsStore.clubCount[0]?.value,
+                        val: metricsStore.clubCount[metricsStore.clubCount.length - 1]?.value ?? 0,
+                        change: metricsStore.clubCount[0]?.value ?? 0,
                     },
                     {
                         text: `% d'insertion`,
@@ -74,20 +74,26 @@
             <div class="flex flex-col card">
                 <div class="pb-2 mb-2 text-xl border-b">Evenement en attentes</div>
                 <div class="flex overflow-y-scroll flex-col gap-4 h-full scrollbar-none">
-                    <div v-for="(event, i) in clubStore.events" :key="i" class="flex gap-2 justify-between">
+                    <div
+                        v-for="(event, i) in clubStore.events.filter((el) => el.state === 'published')"
+                        :key="i"
+                        class="flex gap-2 justify-between"
+                    >
                         <div class="flex gap-2 items-center">
-                            <img class="w-5 h-5" :src="club.avatar" :alt="club.name" />
-                            <div>Evenement {{ i }}</div>
-                            <div class="text-xs text-gray-400">{{ club.name }}</div>
+                            <img :src="event.team.avatar" :alt="event.team.name" />
+                            <div>{{ event.name }}</div>
+                            <div class="text-sm text-gray-400">{{ event.team.name }}</div>
                         </div>
                         <div class="flex gap-2 items-center">
                             <div
                                 class="flex justify-center items-center p-2 w-8 h-8 text-green-400 hover:text-green-500 bg-green-200 hover:bg-green-300 rounded-full cursor-pointer"
+                                @click="clubStore.patchEvents(event.teamEventId, { state: 'approved' })"
                             >
                                 <i class="fa-solid fa-check"></i>
                             </div>
                             <div
                                 class="flex justify-center items-center p-2 w-8 h-8 text-red-400 hover:text-red-500 bg-red-200 hover:bg-red-300 rounded-full cursor-pointer"
+                                @click="clubStore.patchEvents(event.teamEventId, { state: 'rejected' })"
                             >
                                 <i class="fa-solid fa-xmark"></i>
                             </div>

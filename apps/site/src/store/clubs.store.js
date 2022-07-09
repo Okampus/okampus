@@ -66,6 +66,10 @@ export const useClubsStore = defineStore('clubs', {
             return form
         },
 
+        modifyEvents({ eventId, data }) {
+            this.events[this.events.findIndex((event) => event.teamEventId === eventId)] = data
+        },
+
         async getClubs() {
             return await $axios
                 .get('teams/teams', { params: { itemsPerPage: 100 } })
@@ -136,6 +140,11 @@ export const useClubsStore = defineStore('clubs', {
         },
         async getEvents(query) {
             return await $axios.get('teams/events', { params: query }).then(onItems(this.replaceEvents))
+        },
+        async patchEvents(eventId, data) {
+            return await $axios
+                .patch(`teams/events/${eventId}`, data)
+                .then(onData(this.modifyEvents, { eventId }))
         },
         async createEvent(teamId, data) {
             return await $axios.post(`teams/events/${teamId}`, data).then((res) => res.data)
