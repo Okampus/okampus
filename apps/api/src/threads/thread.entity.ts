@@ -59,6 +59,7 @@ export class Thread extends ContentMaster {
     type: ThreadType;
   }) {
     super(options);
+    this.title = options.title;
     this.type = options.type;
   }
 }
