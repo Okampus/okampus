@@ -227,8 +227,8 @@
         },
         {
             id: ACTIVITY,
-            name: 'Activité',
-            icon: 'history',
+            name: 'Évents',
+            icon: 'calendar',
         },
     ]
 

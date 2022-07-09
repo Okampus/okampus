@@ -16,13 +16,11 @@
         </div>
     </div>
     <div v-else>
-        <div class="flex flex-col justify-center items-center my-auto -mt-10 h-content text-0">
+        <div class="flex flex-col gap-6 justify-center items-center my-auto -mt-10 h-content text-0">
+            <img class="w-48 h-48" :src="Calendar" />
             <div class="text-center">
-                <img class="w-48 h-48" :src="Calendar" />
-            </div>
-            <div class="mt-8 text-center">
                 <h1 class="text-4xl font-bold">Aucun événement</h1>
-                <p class="text-lg">Il n'y a aucun événement à afficher pour le moment.</p>
+                <p class="text-lg">Aucun événement n'a été prévu pour le moment.</p>
             </div>
         </div>
     </div>
