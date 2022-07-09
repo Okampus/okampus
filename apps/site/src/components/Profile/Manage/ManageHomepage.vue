@@ -21,8 +21,8 @@
                 v-if="!club.banner"
                 class="flex absolute inset-0 flex-col justify-center items-center m-auto text-center text-white"
             >
-                <div class="text-2xl font-semibold">Votre association n'a pas de bannière !</div>
-                <div>Ajoutez une bannière pour présenter votre association.</div>
+                <div class="text-2xl font-semibold">{{ club.name }} n'a pas de bannière !</div>
+                <div>Ajoutez une bannière pour présenter {{ club.name }}.</div>
             </div>
             <div
                 class="flex absolute top-5 right-5 justify-center items-center w-10 h-10 bg-white rounded-full cursor-pointer"

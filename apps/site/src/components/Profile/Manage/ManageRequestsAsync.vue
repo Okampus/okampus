@@ -198,7 +198,7 @@
                 <i class="fas fa-user-friends"></i>
                 <div>Aucune demande d'adhésion pour le moment</div>
                 <div class="text-base text-2">
-                    Invitez des amis à rejoindre votre association depuis votre page !
+                    Invitez des amis à rejoindre {{ club.name }} depuis votre page !
                 </div>
             </div>
         </div>
