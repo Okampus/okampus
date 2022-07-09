@@ -29,15 +29,15 @@
                         text: `evenements`,
                         color: 'emerald',
                         icon: 'fa-calendar-day',
-                        val: metricsStore.eventCount[metricsStore.eventCount.length - 1]?.value,
-                        change: metricsStore.eventCount[0]?.value,
+                        val: metricsStore.eventCount[metricsStore.eventCount.length - 1]?.value ?? 0,
+                        change: metricsStore.eventCount[0]?.value ?? 0,
                     },
                     {
                         text: 'utilisateurs',
                         color: 'indigo',
                         icon: 'fa-user',
-                        val: metricsStore.userCount[metricsStore.userCount.length - 1]?.value,
-                        change: metricsStore.userCount[0]?.value,
+                        val: metricsStore.userCount[metricsStore.userCount.length - 1]?.value ?? 0,
+                        change: metricsStore.userCount[0]?.value ?? 0,
                     },
                 ]"
                 :key="i"
@@ -131,16 +131,7 @@
                 </div>
                 <LineChart
                     :chart-data="{
-                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                        datasets: [
-                            {
-                                data: [130, 70, 60, 70, 50, 130, 190],
-                                label: null,
-                                borderColor: '#0ea5e9',
-                                backgroundColor: '#bae6fd',
-                                fill: true,
-                            },
-                        ],
+                        datasets: [{ data: [] }],
                     }"
                     :options="chartOptions"
                 ></LineChart>
