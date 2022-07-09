@@ -7,7 +7,7 @@
     "license": "MIT",
     "scripts": {
         "dev": "vite",
-        "lint": "eslint ./src/**/*.{js,vue}",
+        "lint": "eslint './src/**/*.{js,vue}'",
         "lint:fix": "npm run lint -- --fix",
         "prettier": "prettier './src/**/*.{js,vue}' --check",
         "prettier:fix": "prettier './src/**/*.{js,vue}' --write",
