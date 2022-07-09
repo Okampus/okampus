@@ -8,6 +8,7 @@ import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
+import { MailService } from '../shared/modules/mail/mail.service';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import { serializeOrder } from '../shared/modules/sorting';
 import type { User } from '../users/user.entity';
@@ -23,6 +24,7 @@ export class ContentsService {
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
     @InjectRepository(ContentEdit) private readonly contentEditRepository: BaseRepository<ContentEdit>,
     @InjectRepository(ContentMaster) private readonly contentMasterRepository: BaseRepository<ContentMaster>,
+    private readonly mailService: MailService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -59,6 +61,8 @@ export class ContentsService {
       await this.contentMasterRepository.flush();
     }
 
+    void this.mailService.newThreadContent(content);
+
     return content;
   }
 
@@ -83,6 +87,8 @@ export class ContentsService {
       master.participants.add(user);
       await this.contentMasterRepository.flush();
     }
+
+    void this.mailService.newThreadContent(content);
 
     return content;
   }

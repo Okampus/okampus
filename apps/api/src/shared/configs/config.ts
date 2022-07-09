@@ -34,6 +34,11 @@ interface Config {
     enabled: boolean;
     dsn: string;
   };
+  novu: {
+    enabled: boolean;
+    apiKey: string;
+    appId: string;
+  };
   tokens: {
     accessTokenSecret: string;
     accessTokenExpirationSeconds: number;
@@ -182,6 +187,23 @@ export const config = createProfiguration<Config>({
       default: 'https://sentry.io',
       format: String,
       env: 'SENTRY_DSN',
+    },
+  },
+  novu: {
+    enabled: {
+      default: false,
+      format: Boolean,
+      env: 'NOVU_ENABLED',
+    },
+    apiKey: {
+      default: 'api-key',
+      format: String,
+      env: 'NOVU_API_KEY',
+    },
+    appId: {
+      default: 'app-id',
+      format: String,
+      env: 'NOVU_APP_ID',
     },
   },
   tokens: {

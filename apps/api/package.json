@@ -38,6 +38,8 @@
     "@nestjs/schedule": "2.0.1",
     "@nestjs/swagger": "5.2.1",
     "@nestjs/terminus": "8.1.0",
+    "@novu/node": "^0.5.1",
+    "@novu/sendgrid": "^0.5.1",
     "@ntegral/nestjs-sentry": "3.0.7",
     "@sentry/node": "7.3.1",
     "@sentry/tracing": "7.3.1",
