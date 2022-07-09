@@ -7,7 +7,7 @@
     "license": "MIT",
     "scripts": {
         "dev": "vite",
-        "lint": "eslint './src/**/*.{js,vue}'",
+        "lint": "eslint ./src/**/*.{js,vue}",
         "lint:fix": "npm run lint -- --fix",
         "prettier": "prettier './src/**/*.{js,vue}' --check",
         "prettier:fix": "prettier './src/**/*.{js,vue}' --write",
@@ -52,6 +52,7 @@
         "vue-router": "4.0.15",
         "vue3-carousel": "^0.1.40",
         "vue3-popper": "1.4.2",
+        "vuedraggable": "^4.1.0",
         "vuex": "4.0.2",
         "workbox-precaching": "^6.5.3"
     },

@@ -92,7 +92,6 @@
     import 'vue-cal/dist/vuecal.css'
     import 'vue-cal/dist/i18n/fr.js'
 
-    import 'v-calendar/dist/style.css'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
     import { getColorFromData } from '@/utils/colors'
