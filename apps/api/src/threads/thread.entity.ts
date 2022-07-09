@@ -29,9 +29,6 @@ const validatedContentTransformer = ({ value }: { value: Content }): DeepPartial
 
 @Entity({ discriminatorValue: ContentMasterType.Thread })
 export class Thread extends ContentMaster {
-  @Property({ type: 'text' })
-  title!: string;
-
   @Enum(() => ThreadType)
   type!: ThreadType;
 
@@ -62,7 +59,6 @@ export class Thread extends ContentMaster {
     type: ThreadType;
   }) {
     super(options);
-    this.title = options.title;
     this.type = options.type;
   }
 }

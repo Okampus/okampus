@@ -5,6 +5,7 @@ import {
   ManyToMany,
   OneToOne,
   PrimaryKey,
+  Property,
 } from '@mikro-orm/core';
 // eslint-disable-next-line import/no-cycle
 import { Content } from '../../../contents/entities/content.entity';
@@ -22,6 +23,9 @@ export abstract class ContentMaster extends BaseEntity {
   @PrimaryKey()
   contentMasterId!: number;
 
+  @Property({ type: 'text' })
+  title!: string;
+
   @ManyToMany()
   @TransformCollection()
   tags = new Collection<Tag>(this);
@@ -36,8 +40,12 @@ export abstract class ContentMaster extends BaseEntity {
   @Enum(() => ContentMasterType)
   kind: ContentMasterType;
 
-  constructor(options: { post?: Content }) {
+  constructor(options: {
+    title: string;
+    post?: Content;
+  }) {
     super();
+    this.title = options.title;
     if (options.post)
       this.post = options.post;
   }
