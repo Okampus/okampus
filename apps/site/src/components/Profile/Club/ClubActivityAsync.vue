@@ -6,10 +6,14 @@
         <i class="text-6xl fas fa-calendar-day" />
         <div class="text-xl text-center">{{ club.name }} n'a pas encore prévu d'événéments.</div>
     </div>
+    <div class="mt-8">
+        <EventsCalendar :events="events"></EventsCalendar>
+    </div>
 </template>
 
 <script setup>
     import ClubEventCard from '../../Club/ClubEventCard.vue'
+    import EventsCalendar from '@/components/Events/EventsCalendar.vue'
     import { ref, watch } from 'vue'
 
     import { useClubsStore } from '@/store/clubs.store'
