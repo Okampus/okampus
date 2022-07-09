@@ -29,10 +29,9 @@ export class ReportsService {
     const user = await this.userRepository.findOneOrFail({ userId });
 
     let content: Content | null = null;
-    if (createReportDto.contentId)
-      content = await this.contentRepository.findOne({ contentId: createReportDto.contentId });
+    if (createReportDto.contentId) {
+      content = await this.contentRepository.findOneOrFail({ contentId: createReportDto.contentId });
 
-    if (content) {
       const ability = this.caslAbilityFactory.createForUser(reporter);
       assertPermissions(ability, Action.Report, content);
     }
