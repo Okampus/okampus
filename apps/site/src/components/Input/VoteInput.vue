@@ -29,7 +29,7 @@
     import IconDownvote from '@/icons/IconDownvote.vue'
 
     import { abbrNumbers } from '@/utils/abbrNumbers'
-    import { ref } from 'vue'
+    import { ref, watchEffect } from 'vue'
 
     const props = defineProps({
         downvotes: {
@@ -58,8 +58,8 @@
         },
     })
 
-    const tryVote = (vote) => {
-        props.voteAction(vote).catch((err) => {
+    const tryVote = async (vote) => {
+        await props.voteAction(vote).catch((err) => {
             displayedUpvotes.value = props.upvotes
             displayedDownvotes.value = props.downvotes
             displayedVote.value = props.vote
@@ -74,31 +74,37 @@
     const displayedDownvotes = ref(props.downvotes)
     const displayedVote = ref(props.vote)
 
-    const unvote = (vote) => {
+    watchEffect(() => {
+        displayedUpvotes.value = props.upvotes
+        displayedDownvotes.value = props.downvotes
+        displayedVote.value = props.vote
+    })
+
+    const unvote = async (vote) => {
         if (vote === 1) {
             displayedUpvotes.value -= 1
         } else {
             displayedDownvotes.value -= 1
         }
         displayedVote.value = 0
-        tryVote(0)
+        await tryVote(0)
     }
 
-    const upvote = () => {
+    const upvote = async () => {
         if (displayedVote.value === -1) {
             displayedDownvotes.value -= 1
         }
         displayedUpvotes.value += 1
         displayedVote.value = 1
-        tryVote(1)
+        await tryVote(1)
     }
 
-    const downvote = () => {
+    const downvote = async () => {
         if (displayedVote.value === 1) {
             displayedUpvotes.value -= 1
         }
         displayedDownvotes.value += 1
         displayedVote.value = -1
-        tryVote(-1)
+        await tryVote(-1)
     }
 </script>

@@ -149,7 +149,6 @@ export const useThreadsStore = defineStore('threads', {
             return { items: threads, pageInfo }
         },
         addInteraction(thread, type, interaction, newInteraction = false) {
-            console.log('addInteraction', type, interaction, newInteraction)
             if (isNil(thread)) {
                 thread = this.threads.find((thread) =>
                     thread.contents?.some(sameContent(interaction.content.contentId)),
@@ -159,8 +158,13 @@ export const useThreadsStore = defineStore('threads', {
             const content = thread.contents.find(sameContent(interaction.content.contentId))
 
             if (type == 'votes' && newInteraction) {
-                content.upvotes += content.interactions.voted === 1 ? -1 : interaction.value === 1 ? 1 : 0
-                content.downvotes += content.interactions.voted === -1 ? -1 : interaction.value === -1 ? 1 : 0
+                const vote =
+                    content.kind === POST
+                        ? thread.vote ?? content.interactions.voted
+                        : content.interactions.voted
+                console.log('VOTE', vote, interaction.value, content.upvotes, content.downvotes)
+                content.upvotes += vote === 1 ? -1 : interaction.value === 1 ? 1 : 0
+                content.downvotes += vote === -1 ? -1 : interaction.value === -1 ? 1 : 0
             }
 
             content.interactions.addInteraction(type, interaction)
@@ -262,9 +266,15 @@ export const useThreadsStore = defineStore('threads', {
 
         // TODO: add interaction before, and then remove in case of an error (instead of waiting for the query to be resolved)
         async voteContent(id, value) {
-            return await $axios
-                .put(`votes/${id}`, { value })
-                .then(onData((vote) => this.addInteraction(null, 'votes', vote, true)))
+            return await $axios.put(`votes/${id}`, { value }).then(
+                onData((vote) => {
+                    this.addInteraction(null, 'votes', vote, true)
+                    const thread = this.threads.find((thread) => thread.contents?.some(sameContent(id)))
+                    if (thread.post.contentId === id) {
+                        thread.vote = vote.value
+                    }
+                }),
+            )
         },
         async addFavorite(contentId) {
             return await $axios

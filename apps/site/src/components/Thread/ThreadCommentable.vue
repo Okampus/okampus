@@ -10,32 +10,11 @@
         "
     >
         <div class="flex flex-col gap-1 items-center">
-            <IconUpvote
-                :full="content.interactions.voted === 1"
-                :width="'2rem'"
-                :height="'2rem'"
-                class="hover:text-blue-500 cursor-pointer"
-                :class="[content.interactions.voted === 1 ? 'text-green-600' : 'text-5']"
-                @click="
-                    content.interactions.voted === 1
-                        ? threads.voteContent(content.contentId, 0)
-                        : threads.voteContent(content.contentId, 1)
-                "
-            />
-            <div class="text-xl">
-                {{ abbrNumbers(content.upvotes - content.downvotes) }}
-            </div>
-            <IconDownvote
-                :full="content.interactions.voted === -1"
-                :width="'2rem'"
-                :height="'2rem'"
-                class="hover:text-blue-500 cursor-pointer"
-                :class="[content.interactions.voted === -1 ? 'text-red-600' : 'text-5']"
-                @click="
-                    content.interactions.voted === -1
-                        ? threads.voteContent(content.contentId, 0)
-                        : threads.voteContent(content.contentId, -1)
-                "
+            <VoteInput
+                :downvotes="content.downvotes"
+                :upvotes="content.upvotes"
+                :vote="content.interactions.voted"
+                :vote-action="(vote) => threads.voteContent(content.contentId, vote)"
             />
         </div>
 
@@ -156,23 +135,21 @@
     // import UserPreview from '../App/Preview/UserPreview.vue'
 
     import ThreadCommentList from './ThreadCommentList.vue'
-    import IconUpvote from '@/icons/IconUpvote.vue'
-    import IconDownvote from '@/icons/IconDownvote.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
+    import LabelTag from '@/components/UI/Label/LabelTag.vue'
+    import VoteInput from '@/components/Input/VoteInput.vue'
+
+    import { computed } from 'vue'
+
     import { fullname } from '@/utils/users'
-    import { abbrNumbers } from '@/utils/abbrNumbers'
+    import { getLinkContent, report } from '@/shared/actions/thread.actions'
 
     import { useThreadsStore } from '@/store/threads.store'
     import { useAuthStore } from '@/store/auth.store'
 
-    import { getLinkContent, report } from '@/shared/actions/thread.actions'
-    import { computed } from 'vue'
-
     // import { getContentDemonstrative, isContentFeminine } from '@/shared/types/content-kinds.enum'
     // import { capitalize } from 'lodash'
-
-    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
-    import LabelTag from '@/components/UI/Label/LabelTag.vue'
 
     const threads = useThreadsStore()
     const auth = useAuthStore()

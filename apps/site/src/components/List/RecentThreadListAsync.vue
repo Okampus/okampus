@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col">
         <ThreadCard
-            v-for="thread in posts"
+            v-for="thread in threads.threads"
             :key="thread.contentMasterId"
             :small="true"
             :thread="thread"
@@ -15,5 +15,5 @@
     import { useThreadsStore } from '@/store/threads.store'
 
     const threads = useThreadsStore()
-    const posts = (await threads.getThreads({ itemsPerPage: 5 })).items
+    await threads.getThreads({ itemsPerPage: 5 })
 </script>

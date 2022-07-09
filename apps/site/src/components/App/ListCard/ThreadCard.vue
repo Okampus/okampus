@@ -1,20 +1,10 @@
 <template>
     <div v-if="thread" class="flex flex-row gap-6 py-3 pr-7 pl-5 w-full card-2 text-2">
         <VoteInput
-            :downvotes="thread.post.downvotes"
-            :upvotes="thread.post.upvotes"
+            :downvotes="post.downvotes"
+            :upvotes="post.upvotes"
             :vote="thread.vote"
-            :vote-action="
-                (vote) =>
-                    threads
-                        .voteContent(thread.post.contentId, vote)
-                        .then(
-                            () =>
-                                (threads.threads.find(
-                                    (t) => t.contentMasterId === thread.contentMasterId,
-                                ).vote = vote),
-                        )
-            "
+            :vote-action="(vote) => threads.voteContent(post.contentId, vote)"
         />
         <!-- <div class="flex flex-col">
             <TipPopper :tip="`${threadTypes[thread.type]?.[$i18n.locale]}`">
@@ -64,7 +54,11 @@
             </div>
 
             <div class="flex">
-                <UserActivity :user="thread.post.author" action-text="Publié" :action-at="thread.createdAt" />
+                <UserActivity
+                    :user="thread._post?._author ?? thread.post.author"
+                    action-text="Publié"
+                    :action-at="thread.createdAt"
+                />
             </div>
 
             <div class="text-sm text-justify line-clamp-2 text-1">
@@ -155,13 +149,15 @@
 
     // import Popper from 'vue3-popper'
     import { useThreadsStore } from '@/store/threads.store'
+    import { computed } from 'vue'
+    import { POST } from '@/shared/types/content-kinds.enum'
 
     // import threadTypes from '@/shared/types/thread-types.enum'
 
     // import { timeAgo } from '@/utils/timeAgo'
     // import { abbrNumbers } from '@/utils/abbrNumbers'
 
-    defineProps({
+    const props = defineProps({
         thread: {
             type: Object,
             required: true,
@@ -173,6 +169,7 @@
     })
 
     const threads = useThreadsStore()
+    const post = computed(() => props.thread.contents.find((c) => c.kind === POST))
 </script>
 
 <style>
