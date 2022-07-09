@@ -229,7 +229,7 @@
 
     const clubStore = useClubsStore()
     await clubStore.getClubs()
-    await clubStore.getEvents()
+    await clubStore.getEvents({ state: 'published' })
 
     const metricsStore = useMetricsStore()
 

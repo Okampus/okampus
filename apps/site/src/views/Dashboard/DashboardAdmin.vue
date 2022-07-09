@@ -8,7 +8,7 @@
             route-name="admin"
         >
         </HorizontalTabs>
-        <component :is="components[currentTab]"></component>
+        <keep-alive> <component :is="components[currentTab]" /> </keep-alive>
     </div>
 </template>
 

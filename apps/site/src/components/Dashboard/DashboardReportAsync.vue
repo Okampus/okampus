@@ -32,11 +32,7 @@
             </template>
             <template #author="{ content: { author } }">
                 <router-link :to="`/user/${author.userId}`" class="flex gap-1 items-center cursor-pointer">
-                    <ProfileAvatar
-                        :name="fullname(author.firstname, author.lastname)"
-                        :avatar="author.avatar"
-                        :size="2.5"
-                    >
+                    <ProfileAvatar :name="fullname(author)" :avatar="author.avatar" :size="2.5">
                     </ProfileAvatar>
                     <div>
                         {{ fullname(author) }}
@@ -45,11 +41,7 @@
             </template>
             <template #reporter="{ reporter }">
                 <router-link :to="`/user/${reporter.userId}`" class="flex gap-1 items-center cursor-pointer">
-                    <ProfileAvatar
-                        :name="fullname(reporter.firstname, reporter.lastname)"
-                        :avatar="reporter.avatar"
-                        :size="2.5"
-                    >
+                    <ProfileAvatar :name="fullname(reporter)" :avatar="reporter.avatar" :size="2.5">
                     </ProfileAvatar>
                     <div>{{ fullname(reporter) }}</div>
                 </router-link>
