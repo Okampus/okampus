@@ -16,6 +16,7 @@
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
     import DashboardOverview from '@/components/Dashboard/DashboardOverview.vue'
     import DashboardClubs from '@/components/Dashboard/DashboardClubs.vue'
+    import DashboardReport from '@/components/Dashboard/DashboardReport.vue'
     import { ref } from 'vue'
     import { useReportsStore } from '@/store/reports.store'
 
@@ -36,7 +37,7 @@
     ]
 
     const currentTab = ref('overview')
-    const components = { 'overview': DashboardOverview, 'clubs': DashboardClubs }
+    const components = { 'overview': DashboardOverview, 'clubs': DashboardClubs, 'reports': DashboardReport }
 
     const reports = useReportsStore()
 
