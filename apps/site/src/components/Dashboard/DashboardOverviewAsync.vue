@@ -70,8 +70,11 @@
                 </div>
             </div>
         </div>
-        <div class="grid grid-cols-1 gap-4 w-full md:grid-cols-2">
-            <div class="flex flex-col card">
+        <div class="grid grid-cols-1 auto-rows-fr gap-4 w-full md:grid-cols-2">
+            <div
+                v-if="clubStore.events.filter((el) => el.state === 'published').length"
+                class="flex flex-col card"
+            >
                 <div class="pb-2 mb-2 text-xl border-b">Evenement en attentes</div>
                 <div class="flex overflow-y-scroll flex-col gap-4 h-full scrollbar-none">
                     <div
