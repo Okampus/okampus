@@ -1,58 +1,59 @@
 <template>
-    <div>
-        <ProfileBanner :name="fullname(user)" :banner="user.banner" class="p-0 h-40" :rounded-top="false" />
-        <div class="py-4 centered-container text-0">
-            <div class="flex gap-4 -mt-[5rem]">
-                <ProfileAvatar
-                    :avatar="user.avatar"
-                    :size="9"
-                    :name="fullname(user)"
-                    inner-class="border-4 border-white dark:border-black !sahdow-none"
-                />
-                <div class="flex flex-col mt-20">
-                    <p class="text-3xl font-semibold">{{ fullname(user) }}</p>
-                    <p class="text-lg text-2">{{ user.shortDescription }}</p>
-                </div>
+    <ProfileBanner :name="fullname(user)" :banner="user.banner" class="p-0 h-40" :rounded-top="false" />
+    <div class="centered-container-padded text-0">
+        <div class="flex gap-4 -mt-[5rem]">
+            <ProfileAvatar
+                :avatar="user.avatar"
+                :size="9"
+                :name="fullname(user)"
+                inner-class="border-4 border-white dark:border-black !sahdow-none"
+            />
+            <div class="flex flex-col mt-20">
+                <p class="text-3xl font-semibold">{{ fullname(user) }}</p>
+                <p class="text-lg text-2">{{ user.shortDescription }}</p>
             </div>
-            <div class="flex flex-col gap-10 justify-between md:flex-row">
-                <div>
-                    <h2 class="my-4 text-2xl font-semibold">Associations</h2>
-                    <div
-                        v-if="memberships.length > 0"
-                        class="flex flex-wrap gap-x-4 gap-y-2 items-center mt-4 w-full"
-                    >
-                        <div v-for="membership in memberships" :key="membership" class="flex gap-2">
-                            <router-link :to="`/club/${membership.team.teamId}`">
-                                <ProfileAvatar
-                                    :avatar="membership.team.avatar"
-                                    :size="2"
-                                    :name="membership.team.name"
-                                    :class="
-                                        specialRoles.find((role) => role === membership.role)
-                                            ? 'border-2 h-fit border-yellow-300 rounded-full'
-                                            : ''
-                                    "
-                                />
+        </div>
+
+        <div class="flex flex-col gap-10 justify-between md:flex-row">
+            <div class="flex flex-col gap-4">
+                <h2 class="my-4 text-2xl font-semibold">Associations</h2>
+                <div
+                    v-if="memberships.length > 0"
+                    class="flex flex-wrap gap-x-4 gap-y-2 items-center mt-4 w-full"
+                >
+                    <div v-for="membership in memberships" :key="membership" class="flex gap-2">
+                        <router-link :to="`/club/${membership.team.teamId}`">
+                            <ProfileAvatar
+                                :avatar="membership.team.avatar"
+                                :size="2"
+                                :name="membership.team.name"
+                                :class="
+                                    specialRoles.find((role) => role === membership.role)
+                                        ? 'border-2 h-fit border-yellow-300 rounded-full'
+                                        : ''
+                                "
+                            />
+                        </router-link>
+                        <div class="flex flex-col justify-center">
+                            <router-link :to="`/club/${membership.team.teamId}`" class="hover:underline">
+                                <p class="w-32 font-semibold truncate">{{ membership.team.name }}</p>
                             </router-link>
-                            <div class="flex flex-col justify-center">
-                                <router-link :to="`/club/${membership.team.teamId}`" class="hover:underline">
-                                    <p class="w-32 font-semibold truncate">{{ membership.team.name }}</p>
-                                </router-link>
-                                <p class="-mt-2 w-32 truncate">{{ clubRoleNames[membership.role].fr }}</p>
-                            </div>
+                            <p class="-mt-2 w-32 truncate">{{ clubRoleNames[membership.role].fr }}</p>
                         </div>
                     </div>
-                    <p v-else class="text-lg italic">
-                        {{ user.firstname.split(' ')[0] }} ne fait pas partie d'une association.
-                    </p>
                 </div>
-                <div>
-                    <h2 class="my-4 text-2xl font-semibold">Activité</h2>
-                    <div v-if="events.length > 0" class="flex flex-col gap-4 w-fit">
-                        <ClubEventCard v-for="event in events" :key="event" :event="event"></ClubEventCard>
-                    </div>
-                    <div v-else class="flex flex-col gap-4 w-fit">Pas d'activité</div>
+                <p v-else class="text-lg italic">
+                    {{ user.firstname.split(' ')[0] }} ne fait pas partie d'associations.
+                </p>
+            </div>
+
+            <div class="flex flex-col shrink-0 gap-4 w-[20rem]">
+                <h2 class="my-4 text-2xl font-semibold">Activité</h2>
+
+                <div v-if="events.length > 0" class="flex flex-col gap-4 w-fit">
+                    <ClubEventCard v-for="event in events" :key="event" :event="event"></ClubEventCard>
                 </div>
+                <div v-else class="flex flex-col gap-4 w-fit">Aucune activité récente</div>
             </div>
         </div>
     </div>
