@@ -1,20 +1,30 @@
 <template>
-    <div class="flex gap-2">
-        <div
-            v-for="(tab, i) in tabs"
-            :key="i"
-            class="flex gap-3 justify-center items-center py-2 px-4 my-2 tab"
-            :class="tab.id === modelValue ? 'active' : 'text-1'"
-            @click="setTab(tab, true)"
-        >
-            <i :class="`fas fa-${tab.icon}`" />
-            <p class="title-font">{{ tab.name }}</p>
-        </div>
-    </div>
+    <Swiper slides-per-view="auto" :space-between="20" class="w-full" @swiper="(s) => (swiper = s)">
+        <SwiperSlide v-for="(tab, i) in tabs" :key="i" class="!w-fit">
+            <div
+                class="flex gap-3 justify-center items-center py-2 px-4 my-2 tab"
+                :class="tab.id === modelValue ? 'active' : 'text-1'"
+                @click="setTab(tab, true)"
+            >
+                <i :class="`fas fa-${tab.icon}`" />
+                <p class="title-font">{{ tab.name }}</p>
+                <LabelSimple
+                    v-if="tab.amount || tab.amount === 0"
+                    class="bg-gray-500/50 hover:bg-gray-500/50"
+                    >{{ abbrNumbers(tab.amount) }}</LabelSimple
+                >
+            </div>
+        </SwiperSlide>
+    </Swiper>
 </template>
 
 <script setup>
+    import LabelSimple from '../Label/LabelSimple.vue'
+    import { Swiper, SwiperSlide } from 'swiper/vue'
+
+    import { abbrNumbers } from '@/utils/abbrNumbers'
     import { emitter } from '@/shared/modules/emitter'
+
     import { watch } from 'vue'
     import { useRoute } from 'vue-router'
     import { getCurrentPath } from '@/utils/routeUtils'
@@ -27,10 +37,6 @@
         defaultTabId: {
             type: String,
             default: (props) => props.tabs[0].id,
-        },
-        mode: {
-            type: String,
-            default: 'tabs',
         },
         modelValue: {
             type: [String, null],
