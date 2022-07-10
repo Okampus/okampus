@@ -40,6 +40,13 @@
                                 { active: link.regActive.test($route.path) },
                                 showUncollapsed ? 'mx-2 h-9' : 'mx-1.5 py-1',
                             ]"
+                            @click="
+                                () => {
+                                    if (smallScreen && showUncollapsed) {
+                                        emit('toggle-side-bar')
+                                    }
+                                }
+                            "
                         >
                             <div
                                 class="flex items-center w-full"
@@ -110,12 +117,12 @@
 
 <style lang="scss">
     .transition-spacing {
-        transition: margin-left 600ms;
+        transition: margin-left 0.3s;
     }
 
     .reveal:hover .revealed {
         @apply opacity-100;
 
-        transition: opacity 300ms;
+        transition: opacity 0.2s;
     }
 </style>
