@@ -52,6 +52,11 @@
                 </Swiper>
             </div>
 
+            <div class="flex flex-col gap-6 px-4 lg:hidden">
+                <AppTitle title="Tags récents" icon="fas fa-tags" class="pl-4" />
+                <RecentTagList :swipe="true" />
+            </div>
+
             <div class="flex flex-col gap-6">
                 <AppTitle title="Espaces du forum" icon="fas fa-comments" class="px-4 mt-2" />
                 <div class="flex flex-col gap-4">
@@ -77,6 +82,11 @@
                         </div>
                     </router-link>
                 </div>
+
+                <div class="flex flex-col gap-6">
+                    <AppTitle title="Posts récents" icon="fas fa-signs-post" class="pl-4" />
+                    <RecentThreadList />
+                </div>
             </div>
         </div>
 
@@ -92,9 +102,10 @@
                     />
                 </div>
             </div>
-            <div class="flex flex-col gap-6">
-                <AppTitle title="Post récents" icon="fas fa-signs-post" class="pl-4" />
-                <RecentThreadList />
+
+            <div class="hidden flex-col gap-6 lg:flex">
+                <AppTitle title="Tags récents" icon="fas fa-tags" class="pl-4" />
+                <RecentTagList />
             </div>
         </div>
     </div>
@@ -105,6 +116,7 @@
     import AppTitle from '@/components/App/AppTitle.vue'
     import UserActivity from '@/components/App/General/UserActivity.vue'
     import RecentThreadList from '@/components/List/RecentThreadList.vue'
+    import RecentTagList from '@/components/List/RecentTagList.vue'
 
     import { Swiper, SwiperSlide } from 'swiper/vue'
 

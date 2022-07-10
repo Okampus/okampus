@@ -23,6 +23,7 @@ const differentContent = (id) => (content) => content.contentId !== id
 // TODO: optimize content operations with currentThread? & refactor
 export const useThreadsStore = defineStore('threads', {
     state: () => ({
+        tags: [],
         threads: [],
     }),
 
@@ -205,6 +206,10 @@ export const useThreadsStore = defineStore('threads', {
 
         async getThreads(query) {
             return await $axios.get('threads', { params: query }).then(onItems(this.replaceThreads))
+        },
+
+        async getTags(query) {
+            return await $axios.get('tags', { params: query }).then(onItems((tags) => (this.tags = tags)))
         },
 
         async addThread(thread) {
