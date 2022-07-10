@@ -1,32 +1,44 @@
 <template>
     <Transition mode="out-in" name="switch-fade">
-        <div class="flex gap-8 items-start py-6 mx-8 max-w-7xl h-full md:gap-14 xl:mx-auto">
-            <div class="flex flex-col shrink-0 gap-6 w-[14rem] text-0">
-                <div class="relative">
-                    <AvatarCropper
-                        v-model="editingAvatar"
-                        :upload-url="uploadAvatarUrl"
-                        :request-options="{ method: 'PUT', credentials: 'include' }"
-                        :labels="{ submit: 'Valider', cancel: 'Annuler' }"
-                        :cropper-options="{ aspectRatio: 1, zoomable: true, movable: true }"
-                        @error="onAvatarUploadFailure"
-                        @completed="onAvatarUploadSuccess"
-                    />
-                    <ProfileAvatar :avatar="me.avatar" :name="fullname(me)" :size="14" />
-
-                    <button
-                        class="flex absolute right-0 bottom-0 justify-center items-center w-12 h-12 text-xl rounded-full border-4 border-2-light dark:border-2-dark !shadow-none cursor-pointer button-grey fa fa-camera"
-                        @click="editingAvatar = true"
-                    />
+        <div class="flex flex-col gap-10 md:flex-row centered-container-padded">
+            <div class="flex flex-col gap-4 w-full md:w-auto">
+                <div class="flex gap-5 md:flex-col">
+                    <div class="relative">
+                        <AvatarCropper
+                            v-model="editingAvatar"
+                            :upload-url="uploadAvatarUrl"
+                            :request-options="{ method: 'PUT', credentials: 'include' }"
+                            :labels="{ submit: 'Valider', cancel: 'Annuler' }"
+                            :cropper-options="{ aspectRatio: 1, zoomable: true, movable: true }"
+                            @error="onAvatarUploadFailure"
+                            @completed="onAvatarUploadSuccess"
+                        />
+                        <ProfileAvatar
+                            class="hidden lg:block"
+                            :avatar="me.avatar"
+                            :name="fullname(me)"
+                            :size="14"
+                        />
+                        <ProfileAvatar
+                            class="lg:hidden md-max:hidden"
+                            :avatar="me.avatar"
+                            :name="fullname(me)"
+                            :size="12"
+                        />
+                        <ProfileAvatar class="md:hidden" :avatar="me.avatar" :name="fullname(me)" :size="6" />
+                        <button
+                            class="flex absolute right-0 bottom-0 justify-center items-center w-12 h-12 text-lg rounded-full border-4 border-2-light dark:border-2-dark !shadow-none cursor-pointer md:text-xl button-grey fa fa-camera"
+                            @click="editingAvatar = true"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <div class="text-lg font-semibold md:text-xl text-0">{{ fullname(me) }}</div>
+                        <div class="text-3">{{ me.userId }}</div>
+                    </div>
                 </div>
-                <div class="flex flex-col flex-1">
-                    <div class="text-xl font-semibold">{{ fullname(me) }}</div>
-                    <div class="text-3">{{ me.userId }}</div>
-                </div>
-                <div class="flex flex-col">
-                    <div class="text-lg font-semibold text-1">Statut</div>
-                    <div v-if="editingStatus" class="flex flex-col gap-2 mt-2">
-                        <textarea :value="status" rows="4" class="resize-none input" />
+                <div class="flex flex-col w-full md:w-auto">
+                    <div v-if="editingStatus" class="flex flex-col gap-2 items-end mt-2">
+                        <textarea :value="status" rows="4" class="w-full resize-none input" />
                         <div class="flex gap-2">
                             <button
                                 class="flex gap-2 items-center py-1 text-sm button-green"
@@ -51,26 +63,18 @@
                     </div>
                     <button
                         v-else
-                        class="flex gap-4 justify-center items-center py-1 rounded-full cursor-pointer button-grey"
+                        class="flex gap-4 justify-center items-center py-1 cursor-pointer button-grey"
                         @click="editingStatus = true"
                     >
-                        <i class="text-lg fa fa-icons" />Définir un statut
+                        <i class="text-base md:text-lg fa fa-icons" />Définir un statut
                     </button>
                 </div>
             </div>
-            <div class="flex flex-col grow self-stretch">
-                <HorizontalTabs
-                    v-model="currentTab"
-                    class="ml-10"
-                    :tabs="tabs"
-                    route-base="/me"
-                    route-name="me"
-                />
-                <hr class="self-center mb-2 w-[calc(100%-3rem)] h-[1px] bg-gray-500/20 border-none" />
-                <div class="flex flex-col grow">
-                    <!-- <keep-alive> -->
+
+            <div class="flex flex-col">
+                <HorizontalTabs v-model="currentTab" :tabs="tabs" route-base="/me" route-name="me" />
+                <div class="flex flex-col">
                     <component :is="currentComponent" />
-                    <!-- </keep-alive> -->
                 </div>
             </div>
         </div>
