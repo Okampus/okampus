@@ -16,10 +16,10 @@ module.exports = {
     darkMode: 'class', // or 'media' or 'class'
     theme: {
         screens: {
-            'xs': '475px',
+            'xs': '408px',
             ...defaultTheme.screens,
             '3xl': '1800px',
-            'xs-max': { max: '474px' },
+            'xs-max': { max: '407px' },
             'sm-max': { max: '639px' },
             'md-max': { max: '767px' },
             'lg-max': { max: '1023px' },
