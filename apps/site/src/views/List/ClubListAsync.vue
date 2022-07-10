@@ -1,11 +1,19 @@
 <template>
-    <div class="flex gap-4 centered-container-padded">
+    <div class="flex flex-col gap-4 md:flex-row centered-container-padded">
         <VerticalTabs
             v-model="currentTab"
             :tabs="tabs"
             route-base="/clubs"
             route-name="clubs"
-            class="sticky top-8"
+            class="hidden sticky top-8 md:block"
+        />
+
+        <HorizontalTabs
+            v-model="currentTab"
+            :tabs="tabs"
+            route-base="/clubs"
+            route-name="clubs"
+            class="sticky top-0 md:hidden"
         />
 
         <div v-if="currentClubs.length === 0" class="w-full text-center text-0">
@@ -116,6 +124,7 @@
 <script setup>
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
     import VerticalTabs from '@/components/UI/Tabs/VerticalTabs.vue'
+    import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
     import ClubCard from '@/components/App/ListCard/ClubCard.vue'
     import EmojiSad from '@/icons/Emoji/EmojiSad.vue'
     import FormKitRenderer from '@/components/FormKit/FormKitRenderer.vue'
