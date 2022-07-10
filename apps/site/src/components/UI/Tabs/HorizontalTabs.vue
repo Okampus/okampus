@@ -1,6 +1,6 @@
 <template>
     <Swiper slides-per-view="auto" :space-between="20" class="w-full" @swiper="(s) => (swiper = s)">
-        <SwiperSlide v-for="(tab, i) in tabs" :key="i" class="!w-fit">
+        <SwiperSlide v-for="(tab, i) in computedTabs" :key="i" class="!w-fit">
             <div
                 class="flex gap-3 justify-center items-center py-2 px-4 my-2 tab"
                 :class="tab.id === modelValue ? 'active' : 'text-1'"
@@ -25,7 +25,7 @@
     import { abbrNumbers } from '@/utils/abbrNumbers'
     import { emitter } from '@/shared/modules/emitter'
 
-    import { watch } from 'vue'
+    import { computed, watch } from 'vue'
     import { useRoute } from 'vue-router'
     import { getCurrentPath } from '@/utils/routeUtils'
 
@@ -36,7 +36,10 @@
         },
         defaultTabId: {
             type: String,
-            default: (props) => props.tabs[0].id,
+            default: (props) =>
+                Object.prototype.hasOwnProperty.call(props.tabs[0], 'tabs')
+                    ? props.tabs[0].tabs[0].id
+                    : props.tabs[0].id,
         },
         modelValue: {
             type: [String, null],
@@ -52,6 +55,10 @@
         },
     })
 
+    const computedTabs = computed(() =>
+        props.tabs.map((tab) => (Array.isArray(tab?.tabs) ? tab.tabs : [tab])).flat(),
+    )
+
     const emit = defineEmits(['update:modelValue'])
 
     const route = useRoute()
@@ -65,7 +72,7 @@
     }
 
     const setCurrentTab = () => {
-        const tab = props.tabs.find(
+        const tab = computedTabs.value.find(
             (tab) =>
                 tab.id ===
                     getCurrentPath()
@@ -82,7 +89,7 @@
                 duration: 5000,
             })
 
-            const defaultTab = props.tabs.find((tab) => tab.id === props.defaultTabId)
+            const defaultTab = computedTabs.value.find((tab) => tab.id === props.defaultTabId)
 
             setTab(defaultTab, true)
         }
