@@ -32,7 +32,7 @@
 <script setup>
     import FileInput from '@/components/Input/FileInput.vue'
     import FilePreview from '@/components/Document/FilePreview.vue'
-    import { ref, watch, computed } from 'vue'
+    import { ref, watch } from 'vue'
     import { useClubsStore } from '@/store/clubs.store'
 
     const props = defineProps({
