@@ -1,6 +1,8 @@
 <template>
-    <div class="flex gap-4 items-start card-2">
-        <div class="flex flex-col gap-3 items-center">
+    <div
+        class="flex gap-4 items-start w-full min-w-[12rem] max-w-[30rem] xs:w-[calc(50%-0.7rem)] xl:w-[calc(33%-0.7rem)] card-2 card-hover"
+    >
+        <div class="flex flex-col shrink-0 gap-3 items-center">
             <ProfileAvatar :size="4" class="px-2 min-w-fit" :avatar="user.avatar" :name="fullname(user)" />
 
             <TipPopper :tip="`${user.points} points`">
@@ -25,16 +27,18 @@
                     :icon="role.icon"
                 />
             </div>
+
             <div class="line-clamp-2 text-1">
                 {{ user.shortDescription }}
             </div>
+
             <div class="flex flex-wrap gap-1 items-center">
-                <template v-for="club in user.clubs" :key="club">
+                <template v-for="club in user.clubs?.slice(0, 4)" :key="club">
                     <router-link :to="`/club/${club.team.teamId}`">
                         <ProfileAvatar
                             :avatar="club.team.avatar"
                             :name="club.team.name"
-                            size="2"
+                            size="3"
                             :class="
                                 specialRoles.find((role) => role === club.role)
                                     ? 'border-2 border-yellow-300 rounded-full'
@@ -43,6 +47,13 @@
                         />
                     </router-link>
                 </template>
+
+                <router-link :to="`/user/${user.userId}`" class="ml-2">
+                    <i
+                        v-if="user.clubs?.length > 4"
+                        class="flex justify-center items-center w-8 h-8 text-xl text-white rounded-full fas fa-plus button-blue"
+                    />
+                </router-link>
             </div>
         </div>
     </div>

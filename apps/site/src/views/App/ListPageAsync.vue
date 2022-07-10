@@ -27,7 +27,7 @@
 
     const query = reactive({
         page: 1,
-        itemsPerPage: 10,
+        itemsPerPage: 12,
         sortBy: null,
     })
 
