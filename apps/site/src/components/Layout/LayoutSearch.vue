@@ -6,25 +6,25 @@
                 :search-client="searchClient"
                 :class="[
                     showSearchbar && windowWidth <= 767
-                        ? 'w-screen top-0 left-0 z-[60] absolute h-topbar topbar flex items-center justify-center'
+                        ? 'w-screen h-screen top-0 left-0 z-[60] absolute flex justify-center'
                         : 'hidden',
                 ]"
                 class="grow gap-2 justify-center mx-auto md:flex"
             >
                 <div
                     ref="searchBar"
-                    class="flex relative gap-4 justify-center items-center p-2 w-full max-w-2xl h-11 text-white bg-slate-700 dark:bg-slate-800 rounded-t-md outline-none cursor-text select-none"
+                    class="flex relative gap-4 justify-center items-center p-2 w-full h-16 text-white bg-slate-700 dark:bg-slate-800 rounded-t-md outline-none cursor-text select-none md:max-w-2xl md:h-min"
                     :class="{ 'rounded-b-md': !showSearchbar }"
                     @click="input.focus(), (showSearchbar = true)"
                 >
-                    <div class="grow ml-2 h-full">
+                    <div class="flex grow items-center ml-2 h-full">
                         <i
                             class="w-full transition-all duration-300 fas fa-search"
                             :class="{ 'translate-x-[95%]': !showSearchbar && searchInput.length === 0 }"
                         />
                     </div>
                     <div :class="{ 'hidden': showSearchbar || searchInput.length !== 0 }">
-                        <span> Rechercher sur Okampus... </span>
+                        <span> Rechercher sur Okampus...</span>
                     </div>
 
                     <ais-search-box
@@ -48,12 +48,13 @@
                     </ais-search-box>
                     <i
                         :class="{ 'opacity-0': !showSearchbar && searchInput.length === 0 }"
-                        class="p-1 text-slate-400 rounded border border-slate-400 rotate-90 fa-solid fa-arrow-turn-down"
+                        class="z-50 p-1 text-white cursor-pointer fa-solid fa-xmark"
+                        @click.stop=";(showSearchbar = false), (searchInput = '')"
                     ></i>
                 </div>
                 <ais-hits
                     v-if="!recentSearch.length || searchInput.length"
-                    class="absolute top-11 z-40 w-full max-w-2xl md:top-full"
+                    class="absolute z-40 w-full h-max md:top-full md:max-w-2xl after-topbar"
                 >
                     <template #default="{ items }">
                         <div
@@ -92,7 +93,7 @@
                 </ais-hits>
                 <div
                     v-else
-                    class="flex absolute top-11 z-40 flex-col gap-2 p-2 w-full max-w-2xl text-white bg-slate-700 dark:bg-slate-800 rounded-b-md md:top-full"
+                    class="flex absolute z-40 flex-col gap-2 p-2 w-full text-white bg-slate-700 dark:bg-slate-800 rounded-b-md md:top-full md:max-w-2xl after-topbar"
                     :class="{ 'absolute hidden': !showSearchbar || !recentSearch }"
                 >
                     <div
