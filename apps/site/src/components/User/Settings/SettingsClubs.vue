@@ -44,28 +44,24 @@
                         <div class="flex gap-2">
                             <button
                                 v-if="specialRoles.includes(membership.role)"
-                                class="text-lg bg-red-500 hover:bg-red-600 button-submit"
+                                class="text-lg button-red"
                                 @click="() => transferRole(membership)"
                             >
                                 Transmettre le rôle
                             </button>
-                            <button
-                                v-else
-                                class="text-lg bg-red-500 hover:bg-red-600 button-submit"
-                                @click="() => leaveClub(membership)"
-                            >
+                            <button v-else class="text-lg button-red" @click="() => leaveClub(membership)">
                                 Quitter
                             </button>
                             <router-link
                                 v-if="specialRoles.includes(membership.role)"
                                 :to="`/club/${membership.team.teamId}/manage`"
-                                class="text-lg button-submit"
+                                class="text-lg button-blue"
                                 >Gérer</router-link
                             >
                             <router-link
                                 v-else
                                 :to="`/club/${membership.team.teamId}`"
-                                class="text-lg button-submit"
+                                class="text-lg button-blue"
                                 >Voir le profil</router-link
                             >
                         </div>
@@ -75,9 +71,7 @@
                     <div class="text-lg text-2">Vous n'êtes actuellement membre d'aucune association.</div>
                     <i class="text-8xl fas fa-puzzle-piece" />
 
-                    <router-link
-                        class="mt-4 text-2xl text-blue-600 dark:text-blue-400 hover-arrow-right"
-                        to="/clubs"
+                    <router-link class="mt-4 text-xl button-blue" to="/clubs"
                         >Découvrir les associations<i class="ml-2 fa fa-arrow-right"
                     /></router-link>
                 </div>
@@ -264,7 +258,7 @@
                                 size="2"
                             ></ProfileAvatar>
                             <p>{{ fullname(member.user) }}</p>
-                            <button class="button-submit with-shadow" @click="() => transfer(member)">
+                            <button class="button-blue" @click="() => transfer(member)">
                                 Transmettre le rôle
                             </button>
                         </div>

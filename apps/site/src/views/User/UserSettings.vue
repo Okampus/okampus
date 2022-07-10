@@ -28,18 +28,18 @@
                     <div v-if="editingStatus" class="flex flex-col gap-2 mt-2">
                         <textarea :value="status" rows="4" class="resize-none input" />
                         <div class="flex gap-2">
-                            <div
-                                class="flex gap-2 items-center py-2 px-3 text-sm text-white bg-green-500 dark:bg-green-700 rounded-lg cursor-pointer"
+                            <button
+                                class="flex gap-2 items-center py-1 text-sm button-green"
                                 @click="submitStatus"
                             >
                                 Enregistrer
-                            </div>
-                            <div
-                                class="flex gap-2 items-center py-2 px-3 text-sm bg-gray-200 dark:bg-slate-700 rounded-lg cursor-pointer text-0 dark:"
+                            </button>
+                            <button
+                                class="flex gap-2 items-center py-1 text-sm button-grey"
                                 @click="editingStatus = false"
                             >
                                 Annuler
-                            </div>
+                            </button>
                         </div>
                     </div>
                     <div v-else-if="me.shortDescription">

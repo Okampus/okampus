@@ -107,9 +107,7 @@
             </div>
 
             <div class="flex gap-4 items-center h-12">
-                <button class="shrink-0 button-green" @click="submit">
-                    <p>Valider mon post</p>
-                </button>
+                <button class="shrink-0 button-green" @click="submit">Valider mon post</button>
 
                 <AlertInline v-if="error !== null" type="error" :dismissable="true" @dismiss="error = null">
                     <template #message>

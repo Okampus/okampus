@@ -49,15 +49,11 @@
                 <ProfileAvatar :rounded-full="false" :avatar="club.avatar" :size="6" :name="club.name" />
             </div>
 
-            <button
-                class="flex justify-center items-center mt-1 ml-1 w-10 h-10 text-xl rounded-full border-2 border-2-light dark:border-2-dark button-grey fa fa-camera"
-                @click="editingAvatar = true"
-            />
-        </div>
-        <div class="flex flex-col grow ml-4">
-            <div class="flex justify-between">
-                <div class="mt-1 text-2xl font-semibold text-0">{{ club.name }}</div>
-
+            <div class="flex justify-between items-start w-full">
+                <button
+                    class="flex justify-center items-center mt-2 ml-2 w-8 h-8 text-lg rounded-full button-grey fa fa-camera"
+                    @click="editingAvatar = true"
+                />
                 <ModalPopup :show="editingPage" @close="editingPage = false">
                     <template #default="{ close }">
                         <div class="flex flex-col justify-center items-center py-8 px-10 card">
@@ -102,8 +98,12 @@
                         </div>
                     </template>
                 </ModalPopup>
-
-                <div class="-mt-5 mr-4 mb-3 text-xl button-grey" @click="editingPage = true">Modifier</div>
+                <div class="mt-2 mr-4 text-base button-grey" @click="editingPage = true">Modifier</div>
+            </div>
+        </div>
+        <div class="flex flex-col grow ml-4">
+            <div class="flex justify-between">
+                <div class="mt-1 text-2xl font-semibold text-0">{{ club.name }}</div>
             </div>
             <div class="mt-1 text-2">{{ club.shortDescription }}</div>
         </div>

@@ -95,17 +95,17 @@
                         <div>{{ event.place }}</div>
                     </div>
                 </div>
-                <div class="flex flex-col justify-center">
+                <div class="flex flex-col gap-2 justify-center">
                     <button
                         v-if="guests.items.find((g) => g.user.userId === auth.user.userId) === undefined"
-                        class="py-2 px-8 mb-1 w-fit text-lg font-bold text-white bg-green-500 rounded-full"
+                        class="py-1 px-2 text-lg font-semibold rounded-full button-green"
                         @click="showJoinForm = true"
                     >
                         S'inscrire
                     </button>
                     <button
                         v-else
-                        class="py-2 px-8 mb-1 w-fit text-lg font-bold text-white bg-red-500 rounded-full"
+                        class="py-1 px-2 text-lg font-semibold rounded-full button-red"
                         @click="
                             () =>
                                 unregister(
@@ -118,7 +118,7 @@
                     </button>
                     <button
                         v-if="isAdmin"
-                        class="py-2 px-8 mb-4 ml-auto w-fit text-lg font-bold text-white bg-blue-500 rounded-full"
+                        class="py-1 px-2 text-lg font-semibold rounded-full button-blue"
                         @click="showAdmin = true"
                     >
                         Gérer
@@ -230,7 +230,7 @@
                                 </td>
                                 <td>
                                     <button
-                                        class="py-1 px-2 text-white bg-red-500 rounded-md text-md"
+                                        class="py-1 px-2 button-red"
                                         @click="() => unregister(guest.teamEventRegistrationId)"
                                     >
                                         Désinscrire

@@ -16,17 +16,12 @@
             <div class="flex gap-4 items-center">
                 <button
                     v-if="auth.user.userId === membership.user.userId"
-                    class="py-2 px-3 -ml-1 w-fit text-xl font-semibold text-center text-white bg-red-500 hover:bg-red-600 rounded-full"
+                    class="py-1 font-semibold rounded-full button-red"
                     @click="transferRole(membership)"
                 >
-                    Transmettre le rôle
+                    Transmettre le rôle de {{ clubRoleNames[membership.role].fr }}
                 </button>
-                <p
-                    v-if="membership.role === 'owner' || auth.user.userId === membership.user.userId"
-                    class="text-lg font-bold"
-                >
-                    {{ clubRoleNames[membership.role].fr }}
-                </p>
+
                 <SelectInput
                     v-else
                     v-model="membership.role"
@@ -34,17 +29,18 @@
                     :choices="Object.keys(clubRoleNames).map((role) => clubRoleNames[role].fr)"
                     :values="Object.keys(clubRoleNames)"
                     @update:model-value="() => patchRole(membership)"
-                ></SelectInput>
+                />
 
                 <router-link
                     v-if="!memberRole"
                     :to="`/user/${membership.user.userId}`"
-                    class="py-2 px-3 -ml-1 w-fit text-xl font-semibold text-center text-white bg-blue-600 hover:bg-blue-700 rounded-full"
+                    class="py-1 font-semibold rounded-full button-blue"
                 >
                     Profil
                 </router-link>
             </div>
         </div>
+
         <ModalPopup :show="showTransferModal" @close="showTransferModal = false">
             <template #default="{ close }">
                 <div
@@ -71,14 +67,14 @@
                                 size="2"
                             ></ProfileAvatar>
                             <p>{{ fullname(member.user) }}</p>
-                            <button class="button-submit with-shadow" @click="() => transfer(member)">
+                            <button class="button-blue" @click="() => transfer(member)">
                                 Transmettre le rôle
                             </button>
                         </div>
                     </div>
                     <div v-else>Il n'existe pas de membre auquel vous pouvez transmettre votre rôle</div>
-                    <div class="flex gap-4 self-end mt-6">
-                        <div class="py-1 px-4 text-white bg-gray-500 rounded-md" @click="close">Annuler</div>
+                    <div class="flex self-end mt-6">
+                        <div class="button-grey" @click="close">Annuler</div>
                     </div>
                 </div>
             </template>

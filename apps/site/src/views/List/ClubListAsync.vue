@@ -87,9 +87,9 @@
                         </FormKit>
                         <FormKitRenderer :schema="schema"></FormKitRenderer>
                         <div class="flex gap-4 self-end mt-6">
-                            <button class="button-cancel" @click="close">Annuler</button>
+                            <button class="button-red" @click="close">Annuler</button>
                             <button
-                                class="flex gap-2 items-center button-submit"
+                                class="flex gap-2 items-center button-blue"
                                 @click="joinForm.node.submit()"
                             >
                                 <i class="text-lg fa fa-envelope" />

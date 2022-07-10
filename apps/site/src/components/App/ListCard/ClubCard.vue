@@ -45,7 +45,7 @@
                 <div class="flex flex-row justify-between items-center mt-3 w-full h-12">
                     <button
                         v-if="!club.membership"
-                        class="py-1 px-3 -ml-1 w-fit font-semibold text-center text-white bg-blue-600 hover:bg-blue-700 rounded-full"
+                        class="py-1 -ml-1 font-semibold text-center rounded-full button-blue"
                         @click="emit('request', club.teamId)"
                     >
                         Rejoindre
@@ -53,7 +53,7 @@
                     <template v-else-if="club.membership === IS_WAITING">
                         <router-link
                             :to="`/me/clubs/requests`"
-                            class="flex gap-2 items-center py-1 px-3 -ml-1 w-fit font-semibold text-center text-white bg-gray-400/60 hover:bg-gray-500/60 rounded-full"
+                            class="flex gap-2 items-center py-1 -ml-1 font-semibold rounded-full button-grey"
                         >
                             <i class="fa fa-envelope" />
                             <div>En attente</div>
@@ -62,7 +62,7 @@
                     <template v-else-if="club.membership === IS_MEMBER">
                         <router-link
                             :to="`/club/${club.teamId}`"
-                            class="flex gap-2 items-center py-1 px-3 -ml-1 w-fit font-semibold text-center text-white bg-indigo-500 hover:bg-indigo-600 rounded-full"
+                            class="flex gap-2 items-center py-1 -ml-1 font-semibold rounded-full button-indigo"
                         >
                             <i class="fa fa-users" />
                             <div>Profil</div>
@@ -71,7 +71,7 @@
                     <template v-else-if="club.membership === IS_SPECIAL_ROLE">
                         <router-link
                             :to="`/club/${club.teamId}/manage`"
-                            class="flex gap-2 items-center py-1 px-3 -ml-1 w-fit font-semibold text-center text-white bg-green-500 hover:bg-green-600 rounded-full"
+                            class="flex gap-2 items-center py-1 -ml-1 font-semibold rounded-full button-green"
                         >
                             <i class="fa fa-gear" />
                             <div>Gérer</div>

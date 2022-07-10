@@ -17,6 +17,16 @@
     }
 }
 
+.button-indigo {
+    @extend %button;
+
+    background-color: #6366f1;
+
+    &:hover {
+        box-shadow: 0 0 8px #8894ff;
+    }
+}
+
 .button-green {
     @extend %button;
 

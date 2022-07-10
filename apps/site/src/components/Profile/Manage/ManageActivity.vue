@@ -125,10 +125,13 @@
                 <img class="w-48 h-48" :src="Calendar" />
 
                 <div class="text-center">
-                    <h1 class="text-3xl font-semibold">{{ club.name }} n'a pas encore d'événéments 😢 !</h1>
+                    <h1 class="text-3xl font-semibold">{{ club.name }} n'a pas encore d'événéments 😢</h1>
                 </div>
             </div>
-            <button class="py-3 px-4 text-xl font-semibold button-green" @click="showCreateForm = true">
+            <button
+                class="py-3 px-4 text-xl font-semibold rounded-full button-green"
+                @click="showCreateForm = true"
+            >
                 Créer un nouvel événement {{ events.length === 0 ? ' dès maintenant !' : '' }}
             </button>
         </div>

@@ -15,7 +15,7 @@
                 </div>
 
                 <button
-                    class="font-bold text-blue-500"
+                    class="font-semibold button-blue"
                     @click="
                         () => {
                             if (v$.$invalid) {
