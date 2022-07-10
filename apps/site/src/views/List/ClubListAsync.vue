@@ -1,4 +1,7 @@
 <template>
+    <div class="sticky top-0 z-50 px-2 md:hidden bg-1">
+        <HorizontalTabs v-model="currentTab" :tabs="tabs" route-base="/clubs" route-name="clubs" />
+    </div>
     <div class="flex flex-col gap-4 md:flex-row centered-container-padded">
         <VerticalTabs
             v-model="currentTab"
@@ -6,14 +9,6 @@
             route-base="/clubs"
             route-name="clubs"
             class="hidden sticky top-8 md:block"
-        />
-
-        <HorizontalTabs
-            v-model="currentTab"
-            :tabs="tabs"
-            route-base="/clubs"
-            route-name="clubs"
-            class="sticky top-0 md:hidden"
         />
 
         <div v-if="currentClubs.length === 0" class="w-full text-center text-0">

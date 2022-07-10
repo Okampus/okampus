@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex relative flex-col pb-4 w-full min-w-[12rem] max-w-[30rem] rounded-lg shadow-md xs:w-[calc(50%-0.5rem)] xl:w-[calc(33%-0.5rem)] card-hover bg-2"
+        class="flex relative flex-col pb-4 w-full min-w-[12rem] max-w-[30rem] rounded-lg shadow-md xs:w-[calc(50%-0.7rem)] xl:w-[calc(33%-0.7rem)] card-hover bg-2"
     >
         <ProfileBanner
             class="w-full h-20 rounded-t-lg"
@@ -8,7 +8,7 @@
             :name="club.name"
             :data="club.category"
         />
-        <div class="flex flex-col items-start mx-3 h-full md:mx-5">
+        <div class="flex flex-col items-center mx-3 h-full md:mx-5">
             <div class="flex justify-between w-full">
                 <div class="flex gap-3 items-start pt-2">
                     <div class="z-10 p-1 -mt-10 rounded-2xl bg-2">
