@@ -19,10 +19,11 @@
                         class="text-xl fas"
                         :class="dragover ? 'fa-cloud-download-alt' : 'fa-cloud-upload-alt'"
                     />
-                    <div class="text-center">
+                    <div v-if="!message.length" class="text-center">
                         <span class="text-blue-500 hover:underline"> Cliquez </span> ou glissez vos
                         {{ fileLimit != -1 ? fileLimit : '' }} fichiers ici !
                     </div>
+                    <div v-else class="text-center" v-html="message"></div>
                 </div>
                 <div
                     v-else
@@ -130,6 +131,10 @@
             sizeLimit: {
                 type: Number,
                 required: true,
+            },
+            message: {
+                type: String,
+                default: '',
             },
             canDelete: {
                 type: Boolean,

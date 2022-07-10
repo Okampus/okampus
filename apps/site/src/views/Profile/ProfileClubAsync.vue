@@ -180,7 +180,7 @@
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
 
     import ClubHomepage from '@/components/Profile/Club/ClubHomepage.vue'
-    import ManageDrive from '@/components/Profile/Manage/ManageDrive.vue'
+    import ClubDriveVue from '@/components/Profile/Club/ClubDrive.vue'
     import ClubActivity from '@/components/Profile/Club/ClubActivity.vue'
     import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
 
@@ -236,7 +236,7 @@
 
     const components = {
         [HOME]: ClubHomepage,
-        [DRIVE]: ManageDrive,
+        [DRIVE]: ClubDriveVue,
         [MEMBERS]: ClubMembers,
         [ACTIVITY]: ClubActivity,
     }

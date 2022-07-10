@@ -1,5 +1,5 @@
 <template>
-    <div class="relative shrink-0">
+    <div class="shrink-0">
         <img
             v-if="avatar"
             :style="avatarSizeStyle"
@@ -67,10 +67,10 @@
         },
     })
 
-    const avatarSizeStyle = {
+    const avatarSizeStyle = ref({
         width: `${props.size}rem`,
         height: `${props.size}rem`,
-    }
+    })
 
     const roundedClass = [props.roundedFull ? 'rounded-full full' : 'rounded-xl']
 

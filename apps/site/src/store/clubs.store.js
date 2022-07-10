@@ -66,6 +66,10 @@ export const useClubsStore = defineStore('clubs', {
             return form
         },
 
+        modifyEvents({ eventId, data }) {
+            this.events[this.events.findIndex((event) => event.teamEventId === eventId)] = data
+        },
+
         async getClubs() {
             return await $axios
                 .get('teams/teams', { params: { itemsPerPage: 100 } })
@@ -124,8 +128,8 @@ export const useClubsStore = defineStore('clubs', {
             return await $axios.put(`teams/requests/${requestId}`, data).then((res) => res.data)
         },
 
-        async getTeamEvents(clubId) {
-            return await $axios.get(`teams/events?teamId=${clubId}`).then(onItems(this.replaceEvents))
+        async getTeamEvents(teamId) {
+            return await $axios.get('teams/events', { params: { teamId } }).then(onItems(this.replaceEvents))
         },
 
         async joinEvent(eventId, data) {
@@ -137,6 +141,11 @@ export const useClubsStore = defineStore('clubs', {
         async getEvents(query) {
             return await $axios.get('teams/events', { params: query }).then(onItems(this.replaceEvents))
         },
+        async patchEvents(eventId, data) {
+            return await $axios
+                .patch(`teams/events/${eventId}`, data)
+                .then(onData(this.modifyEvents, { eventId }))
+        },
         async createEvent(teamId, data) {
             return await $axios.post(`teams/events/${teamId}`, data).then((res) => res.data)
         },
@@ -147,15 +156,31 @@ export const useClubsStore = defineStore('clubs', {
             return await $axios.get(`teams/event-registrations?eventId=${eventId}`).then((res) => res.data)
         },
 
-        replaceFiles(request) {
+        replaceClubFiles(request) {
             this.club.files = request
             return request
         },
 
-        async getClubFiles(teamId) {
+        replaceClubsFiles({ teamId, items }) {
+            this.clubs.find((club) => club.teamId === teamId).files = items
+        },
+
+        addClubFile(file) {
+            this.club.files.push(file)
+        },
+
+        async getClubFiles(teamId, type) {
             return await $axios
-                .get('/files/team-files', { params: { teamId, itemsPerPage: 100 } })
-                .then(onItems(this.replaceFiles))
+                .get('/files/team-files', { params: { teamId, type, itemsPerPage: 100 } })
+                .then(onItems(this.replaceClubFiles))
+        },
+
+        async getClubsFiles(type) {
+            for (const teamId of this.clubs.map((club) => club.teamId)) {
+                await $axios
+                    .get('/files/team-files', { params: { teamId, type, itemsPerPage: 100 } })
+                    .then(onItems(this.replaceClubsFiles, { teamId }))
+            }
         },
 
         async postClubFile(teamId, type, file, description = null) {
@@ -166,7 +191,13 @@ export const useClubsStore = defineStore('clubs', {
             formData.append('type', type)
             formData.append('teamId', teamId)
 
-            return await $axios.post('/files/team-files', formData).then(onData(this.club.files.push))
+            return await $axios.post('files/team-files', formData).then(onData(this.addClubFile))
+        },
+
+        async deleteClubFileByFileId(fileId) {
+            await this.deleteClubFile(
+                this.club.files.find((file) => file.file.fileUploadId === fileId).teamFileId,
+            )
         },
 
         async deleteClubFile(teamFileId) {
