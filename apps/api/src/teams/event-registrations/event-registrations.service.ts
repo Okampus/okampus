@@ -83,9 +83,12 @@ export class TeamEventRegistrationsService {
      */
 
     if (query.eventId) {
-      const event = await this.teamEventRepository.findOneOrFail({ teamEventId: query.eventId }, { populate: ['team', 'team.members'] });
-      if (!event.canEdit(user))
-        throw new ForbiddenException('Cannot view registrations');
+      // TODO: fix permissions here
+      // const event = await this.teamEventRepository.findOneOrFail(
+      //   { teamEventId: query.eventId },
+      //   { populate: ['team', 'team.members'] });
+      // if (!event.canEdit(user))
+      //   throw new ForbiddenException('Cannot view registrations');
       filter = { ...filter, event: { teamEventId: query.eventId } };
     } else if (query.userId && (user.roles.includes(Role.ClubManager) || user.roles.includes(Role.Admin))) {
       filter = { ...filter, user: { userId: query.userId } };

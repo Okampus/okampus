@@ -193,12 +193,14 @@
                 </div>
             </div>
         </template>
-        <div v-else class="flex flex-col py-4">
-            <div class="text-3xl text-center">
-                <i class="fas fa-user-friends"></i>
-                <div>Aucune demande d'adhésion pour le moment</div>
-                <div class="text-base text-2">
-                    Invitez des amis à rejoindre votre association depuis votre page !
+
+        <div v-else class="flex flex-col gap-6 items-center pb-4 text-0">
+            <img class="w-40 h-40" :src="Boy" />
+
+            <div class="text-center">
+                <div class="text-3xl font-semibold">Aucune demande d'adhésion pour le moment</div>
+                <div class="text-xl text-2">
+                    Invitez des amis à rejoindre {{ club.name }} depuis votre page !
                 </div>
             </div>
         </div>
@@ -209,6 +211,8 @@
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
     import ProfileAvatar from '../ProfileAvatar.vue'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
+
+    import Boy from '@/assets/img/3dicons/boy.png'
 
     import { capitalize } from 'lodash'
     import { ref, watchEffect } from 'vue'

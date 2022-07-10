@@ -17,6 +17,8 @@ import type { ListTeamEventsDto } from './dto/list-team-events.dto';
 import type { UpdateTeamEventDto } from './dto/update-team-event.dto';
 import { TeamEvent } from './team-event.entity';
 
+const stateVisible = { $in: [TeamEventState.Published, TeamEventState.Approved] };
+
 @Injectable()
 export class TeamEventsService {
   // eslint-disable-next-line max-params
@@ -89,14 +91,14 @@ export class TeamEventsService {
       filter = {
         team: { teamId: query.teamId },
         private: false,
-        state: TeamEventState.Published,
+        state: stateVisible,
       };
     } else if (query.teamId) {
       // We asked for the events of a team that the user is a member of
       // so we search for all events, private or not.
       filter = {
         team: { teamId: query.teamId },
-        state: query.state ?? TeamEventState.Published,
+        state: query.state ?? stateVisible,
       };
     } else {
       // We asked for all the events of all teams
@@ -104,11 +106,12 @@ export class TeamEventsService {
       // and the public & published events of the teams the user is not a member of
       filter = {
         $or: [
-          { team: { $in: teamIds }, state: query.state ?? TeamEventState.Published },
-          { team: { $nin: teamIds }, private: false, state: TeamEventState.Published },
+          { team: { $in: teamIds }, state: query.state ?? stateVisible },
+          { team: { $nin: teamIds }, private: false, state: stateVisible },
         ],
       };
     }
+
     if (typeof query.priceBelow !== 'undefined')
       filter = { ...filter, price: { $lte: query.priceBelow } };
     if (query.before)
@@ -143,7 +146,7 @@ export class TeamEventsService {
         teamEventId,
         $or: [
           { team: { $in: teamIds } },
-          { private: false, state: TeamEventState.Published },
+          { private: false, state: stateVisible },
         ],
       },
       { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'form', 'usedTemplate'] },

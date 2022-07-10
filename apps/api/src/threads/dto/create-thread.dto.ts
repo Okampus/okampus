@@ -6,7 +6,7 @@ import { AssigneesDto } from './assignees.dto';
 import { TagsDto } from './tags.dto';
 
 export class CreateThreadDto extends IntersectionType(AssigneesDto, TagsDto, PickType(CreateOrphanContentDto, ['body'])) {
-  @Length(15, 100)
+  @Length(10, 100)
   @IsString()
   title: string;
 

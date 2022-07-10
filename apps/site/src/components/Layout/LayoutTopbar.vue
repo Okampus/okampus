@@ -19,48 +19,46 @@
             </div>
 
             <div v-else class="flex justify-between items-center mr-4 h-full bg-transparent">
-                <div class="mr-4">
-                    <!-- TODO: on small screen, use full screen modal -->
-                    <Popper offset-distance="6" offset-skid="-80">
-                        <ProfileAvatar
-                            class="cursor-pointer"
-                            :avatar="auth.user.avatar"
-                            :name="fullname(auth.user)"
-                        />
-                        <template #content="{ close }">
-                            <div
-                                class="flex flex-col gap-2 pb-2 w-64 bg-white/95 dark:bg-gray-800/95 rounded-b-lg shadow-md"
-                            >
-                                <div class="flex gap-3 px-4 pt-4">
-                                    <ProfileAvatar :avatar="auth.user.avatar" :name="fullname(auth.user)" />
-                                    <div class="w-[calc(100%-5rem)]">
-                                        <div class="overflow-hidden font-bold text-ellipsis">
-                                            {{ fullname(auth.user) }}
-                                        </div>
-                                        <div class="overflow-hidden text-ellipsis">{{ auth.user.email }}</div>
+                <!-- TODO: on small screen, use full screen modal -->
+                <Popper offset-distance="6" offset-skid="-80">
+                    <ProfileAvatar
+                        class="cursor-pointer"
+                        :avatar="auth.user.avatar"
+                        :name="fullname(auth.user)"
+                    />
+                    <template #content="{ close }">
+                        <div
+                            class="flex flex-col gap-2 pb-2 w-64 bg-white dark:bg-gray-800 rounded-b-lg shadow-md opacity-[0.96] text-1"
+                        >
+                            <div class="flex gap-3 px-4 pt-4">
+                                <ProfileAvatar :avatar="auth.user.avatar" :name="fullname(auth.user)" />
+                                <div class="w-[calc(100%-5rem)]">
+                                    <div class="overflow-hidden font-bold text-ellipsis">
+                                        {{ fullname(auth.user) }}
                                     </div>
-                                </div>
-
-                                <hr class="self-center mt-2 w-11/12 h-[1px] bg-gray-500/20 border-none" />
-                                <router-link
-                                    class="flex gap-6 items-center py-2 px-4 hover:bg-gray-200/95 hover:dark:bg-gray-600/95 cursor-pointer"
-                                    to="/me"
-                                    @click="close"
-                                >
-                                    <i class="text-xl fa-solid fa-user" />
-                                    <div>Mon profil</div>
-                                </router-link>
-                                <div
-                                    class="flex gap-6 items-center py-2 px-4 hover:bg-gray-200/95 hover:dark:bg-gray-600/95 cursor-pointer"
-                                    @click="emitter.emit('logout')"
-                                >
-                                    <i class="text-xl fa-solid fa-arrow-right-from-bracket" />
-                                    <div>Déconnexion</div>
+                                    <div class="overflow-hidden text-ellipsis">{{ auth.user.email }}</div>
                                 </div>
                             </div>
-                        </template>
-                    </Popper>
-                </div>
+
+                            <hr class="self-center mt-2 w-11/12 h-[1px] bg-gray-500/20 border-none" />
+                            <router-link
+                                class="flex gap-6 items-center py-2 px-4 hover:bg-gray-200 hover:dark:bg-gray-600 cursor-pointer"
+                                to="/me"
+                                @click="close"
+                            >
+                                <i class="text-xl fa-solid fa-user" />
+                                <div>Mon profil</div>
+                            </router-link>
+                            <div
+                                class="flex gap-6 items-center py-2 px-4 hover:bg-gray-200 hover:dark:bg-gray-600 cursor-pointer"
+                                @click="emitter.emit('logout')"
+                            >
+                                <i class="text-xl fa-solid fa-arrow-right-from-bracket" />
+                                <div>Déconnexion</div>
+                            </div>
+                        </div>
+                    </template>
+                </Popper>
             </div>
         </template>
     </nav>

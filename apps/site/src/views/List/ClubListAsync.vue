@@ -1,5 +1,5 @@
 <template>
-    <div class="flex gap-4 centered-container">
+    <div class="flex gap-4 centered-container-padded">
         <VerticalTabs
             v-model="currentTab"
             :tabs="tabs"

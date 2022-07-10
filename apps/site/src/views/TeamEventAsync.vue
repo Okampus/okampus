@@ -170,6 +170,15 @@
                     <div class="text-sm text-2">
                         Mais d'abord, donnez du contexte sur votre demande de participation.
                     </div>
+                    <div class="flex justify-center mt-8 w-full">
+                        <FormKit
+                            v-model="status"
+                            label="A quel point êtes vous sur de vous inscrire à cet événement ?"
+                            type="radio"
+                            name="status"
+                            :options="statusOptions"
+                        ></FormKit>
+                    </div>
                     <FormKit
                         id="join-club"
                         ref="joinForm"
@@ -295,6 +304,7 @@
     const startMonth = ref('')
     const startDay = ref('')
     const endMonth = ref('')
+    const status = ref('')
 
     const now = new Date()
     const timeUntil = computed(() => (startDate.value ? startDate.value.getTime() - now.getTime() : 0))
@@ -307,6 +317,21 @@
                 endDate.value.getMinutes() ? endDate.value.getMinutes().toString().padStart(2, '0') : ''
             }`,
     )
+
+    const statusOptions = [
+        {
+            value: 'sure',
+            label: 'Sur',
+        },
+        {
+            value: 'maybe',
+            label: 'Peut-être',
+        },
+        {
+            value: 'notsure',
+            label: 'Pas sur',
+        },
+    ]
 
     const guests = ref([])
     const showJoinForm = ref(false)
@@ -374,7 +399,7 @@
 
     const joinEvent = async () => {
         await clubs
-            .joinEvent(eventId.value)
+            .joinEvent(eventId.value, { status: status.value })
             .then(async () => {
                 emitter.emit('show-toast', {
                     message: 'Votre inscription a bien été prise en compte',

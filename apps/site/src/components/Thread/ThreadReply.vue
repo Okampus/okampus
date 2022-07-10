@@ -35,7 +35,7 @@
 
     import { edit, favorite, removeContent } from '@/shared/actions/thread.actions'
     import { useThreadsStore } from '@/store/threads.store'
-    import { computed, ref } from 'vue'
+    import { computed, ref, watchEffect } from 'vue'
 
     const props = defineProps({
         reply: {
@@ -45,6 +45,8 @@
     })
 
     const body = ref(props.reply.body)
+    watchEffect(() => (body.value = props.reply.body))
+
     const actions = [favorite, edit, removeContent]
     const actionsShown = computed(() =>
         actions.map((action) => action(props.reply)).filter((action) => action.condition),

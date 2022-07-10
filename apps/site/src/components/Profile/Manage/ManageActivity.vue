@@ -115,34 +115,30 @@
         </ModalPopup>
 
         <div class="flex flex-col gap-8 items-center">
-            <button
-                class="py-2 px-8 mb-4 w-fit text-lg font-bold text-white bg-green-500 rounded-full"
-                @click="showCreateForm = true"
-            >
-                Créer un nouvel événement
-            </button>
-
             <div
                 v-if="events.length > 0"
                 class="flex flex-row flex-wrap gap-4 justify-center items-center mt-8"
             >
                 <ClubEventCard v-for="event in events" :key="event" :event="event" />
             </div>
-            <div v-else class="flex flex-col gap-4 items-center">
+            <div v-else class="flex flex-col gap-6 items-center text-0">
                 <img class="w-48 h-48" :src="Calendar" />
-                <div class="text-lg font-semibold text-center text-0">
-                    Votre association n'a pas encore prévu d'événéments.
+
+                <div class="text-center">
+                    <h1 class="text-3xl font-semibold">{{ club.name }} n'a pas encore d'événéments 😢 !</h1>
                 </div>
             </div>
+            <button class="py-3 px-4 text-xl font-semibold button-green" @click="showCreateForm = true">
+                Créer un nouvel événement {{ events.length === 0 ? ' dès maintenant !' : '' }}
+            </button>
         </div>
     </div>
 </template>
 
 <script setup>
-    import Calendar from '@/assets/img/3dicons/calendar.png'
-
     import ClubEventCard from '@/components/Club/ClubEventCard.vue'
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
+    import Calendar from '@/assets/img/3dicons/calendar.png'
 
     import { ref } from 'vue'
     import { useClubsStore } from '@/store/clubs.store'

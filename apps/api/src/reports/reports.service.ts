@@ -39,7 +39,7 @@ export class ReportsService {
 
     const reports = await this.reportRepository.count({ content, user, reporter });
     if (reports !== 0)
-      throw new BadRequestException('User already reported through this content');
+      throw new BadRequestException('User already reported through this content or no content linked to this user.');
 
     const report = new Report({
       ...createReportDto,

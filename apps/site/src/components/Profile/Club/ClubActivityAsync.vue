@@ -2,9 +2,13 @@
     <div v-if="events.length > 0" class="flex flex-row flex-wrap gap-4 justify-center items-center">
         <ClubEventCard v-for="event in events" :key="event" :event="event" />
     </div>
-    <div v-else class="flex flex-col gap-4 items-center pt-8 text-0">
-        <i class="text-6xl fas fa-calendar-day" />
-        <div class="text-xl text-center">{{ club.name }} n'a pas encore prévu d'événéments.</div>
+    <div v-else class="flex flex-col gap-6 items-center pt-8 text-0">
+        <img class="w-48 h-48" :src="Calendar" />
+
+        <div class="text-center">
+            <h1 class="text-4xl font-bold">Aucun événement</h1>
+            <p class="text-lg">{{ club.name }} n'a pas encore prévu d'événéments.</p>
+        </div>
     </div>
     <div class="mt-8">
         <EventsCalendar :events="events"></EventsCalendar>
@@ -14,8 +18,9 @@
 <script setup>
     import ClubEventCard from '../../Club/ClubEventCard.vue'
     import EventsCalendar from '@/components/Events/EventsCalendar.vue'
-    import { ref, watch } from 'vue'
+    import Calendar from '@/assets/img/3dicons/calendar.png'
 
+    import { ref, watch } from 'vue'
     import { useClubsStore } from '@/store/clubs.store'
     import { emitter } from '@/shared/modules/emitter'
 

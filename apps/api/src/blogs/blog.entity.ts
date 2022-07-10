@@ -10,9 +10,6 @@ export class Blog extends ContentMaster {
   slug!: string;
 
   @Property({ type: 'text' })
-  title!: string;
-
-  @Property({ type: 'text' })
   category!: string;
 
   @Property({ type: 'text' })
@@ -39,7 +36,6 @@ export class Blog extends ContentMaster {
     locationName?: string;
   }) {
     super(options);
-    this.title = options.title;
     this.slug = options.slug;
     this.category = options.category;
     this.isDraft = options.isDraft;
