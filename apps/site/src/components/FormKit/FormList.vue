@@ -11,7 +11,7 @@
                                 name="selectedForm"
                                 :value="form.teamFormId"
                             />
-                            <p class="ml-2 text-lg font-bold text-black capitalize">{{ form.name }}</p>
+                            <p class="ml-2 text-lg font-bold capitalize">{{ form.name }}</p>
                         </div>
                         <button @click="() => modifyForm(form)">
                             <i class="w-6 text-blue-500 fas fa-pen"></i>
