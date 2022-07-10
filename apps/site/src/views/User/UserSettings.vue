@@ -107,6 +107,7 @@
     const OVERVIEW = 'overview'
     const CLUBS = 'clubs'
     const SOCIALS = 'socials'
+    const FAVORITES = 'favorites'
 
     const tabs = [
         {
@@ -118,7 +119,12 @@
         {
             id: CLUBS,
             name: 'Mes assos',
-            icon: 'user',
+            icon: 'users',
+        },
+        {
+            id: FAVORITES,
+            name: 'Mes favoris',
+            icon: 'star',
         },
         {
             id: SOCIALS,
@@ -137,6 +143,7 @@
         [OVERVIEW]: h(AppSuspense, { key: OVERVIEW }, { default: () => h(SettingsOverview) }),
         [CLUBS]: h(AppSuspense, { key: CLUBS }, { default: () => h(SettingsClubs) }),
         [SOCIALS]: h(AppSuspense, { key: SOCIALS }, { default: () => h(WIP) }),
+        [FAVORITES]: h(AppSuspense, { key: SOCIALS }, { default: () => h(WIP) }),
     }
 
     const currentTab = ref(null)
