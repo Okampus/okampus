@@ -1,5 +1,5 @@
 <template>
-    <div v-if="thread" class="flex flex-row gap-6 py-3 pr-7 pl-5 w-full card-2 text-2">
+    <div v-if="thread" class="flex flex-row gap-6 py-3 pr-7 pl-5 w-full card-2 text-2 card-hover">
         <VoteInput
             :downvotes="post.downvotes"
             :upvotes="post.upvotes"
