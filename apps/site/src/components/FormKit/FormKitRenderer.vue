@@ -7,7 +7,6 @@
 <script setup>
     import { FormKitSchema } from '@formkit/vue'
 
-    const emit = defineEmits(['submit'])
     const props = defineProps({
         schema: {
             type: Array,
