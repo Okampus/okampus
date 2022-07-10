@@ -45,15 +45,16 @@
 
             <div class="flex flex-col gap-6 px-4 lg:hidden">
                 <AppTitle title="Membres du staff" icon="fas fa-people-group" />
-                <div class="flex items-start mx-5">
+                <div class="flex gap-5 items-start mx-5">
                     <SwiperButton class="mt-2" type="prev" :swiper="swiper" :small="true" />
                     <Swiper
-                        slides-per-view="auto"
-                        :space-between="20"
+                        :slides-per-view="1"
+                        :slides-centered="true"
+                        :loop="true"
                         class="items-start"
                         @swiper="(s) => (swiper = s)"
                     >
-                        <SwiperSlide v-for="(staff, i) in staffMembers" :key="i" class="max-w-[15rem]">
+                        <SwiperSlide v-for="(staff, i) in staffMembers" :key="i">
                             <UserActivity :user="staff" :custom-string="staff.title" />
                         </SwiperSlide>
                     </Swiper>

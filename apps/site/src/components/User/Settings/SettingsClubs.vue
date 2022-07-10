@@ -44,32 +44,36 @@
                         <div class="flex gap-2">
                             <button
                                 v-if="specialRoles.includes(membership.role)"
-                                class="text-lg button-red"
+                                class="text-xs lg:text-lg button-red"
                                 @click="() => transferRole(membership)"
                             >
                                 Transmettre le rôle
                             </button>
-                            <button v-else class="text-lg button-red" @click="() => leaveClub(membership)">
+                            <button
+                                v-else
+                                class="text-xs lg:text-lg button-red"
+                                @click="() => leaveClub(membership)"
+                            >
                                 Quitter
                             </button>
                             <router-link
                                 v-if="specialRoles.includes(membership.role)"
                                 :to="`/club/${membership.team.teamId}/manage`"
-                                class="text-lg button-blue"
+                                class="text-xs lg:text-lg button-blue"
                                 >Gérer</router-link
                             >
                             <router-link
                                 v-else
                                 :to="`/club/${membership.team.teamId}`"
-                                class="text-lg button-blue"
+                                class="text-xs md:text-lg button-blue"
                                 >Voir le profil</router-link
                             >
                         </div>
                     </div>
                 </template>
                 <div v-else class="flex flex-col gap-4 items-center my-6">
+                    <img class="w-48 h-48" :src="Puzzle" />
                     <div class="text-lg text-2">Vous n'êtes actuellement membre d'aucune association.</div>
-                    <i class="text-8xl fas fa-puzzle-piece" />
 
                     <router-link class="mt-4 text-xl button-blue" to="/clubs"
                         >Découvrir les associations<i class="ml-2 fa fa-arrow-right"
@@ -221,14 +225,12 @@
                     </div>
                 </template>
                 <div v-else class="flex flex-col gap-4 items-center my-6">
+                    <img class="w-48 h-48" :src="Puzzle" />
                     <div class="text-lg text-2">Vous n'avez pas de demandes d'adhésion en cours.</div>
-                    <i class="text-8xl fas fa-puzzle-piece" />
 
-                    <router-link
-                        class="mt-4 text-2xl text-blue-600 dark:text-blue-400 hover-arrow-right"
-                        to="/clubs"
-                        >Découvrir les associations<i class="ml-2 fa fa-arrow-right"
-                    /></router-link>
+                    <router-link class="mt-4 text-xl button-blue" to="/clubs"
+                        >Découvrir les associations<i class="ml-2 fa fa-arrow-right" />
+                    </router-link>
                 </div>
             </template>
         </div>
@@ -278,6 +280,8 @@
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
+
+    import Puzzle from '@/assets/img/3dicons/puzzle.png'
 
     import { fullname } from '@/utils/users'
 
