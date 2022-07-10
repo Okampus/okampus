@@ -7,8 +7,8 @@
             :class="tab.id === modelValue ? 'active' : 'text-1'"
             @click="setTab(tab, true)"
         >
-            <i class="fas" :class="`fa-${tab.icon}`" />
-            <p>{{ tab.name }}</p>
+            <i :class="`fas fa-${tab.icon}`" />
+            <p class="title-font">{{ tab.name }}</p>
         </div>
     </div>
 </template>

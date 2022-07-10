@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-4 justify-center items-center self-center m-10 w-full text-2xl text-0">
         <img class="w-48 h-48" :src="Rocket" />
-        <div class="text-5xl font-semibold">Ça arrive prochainement ! ✨</div>
+        <div class="text-6xl font-semibold title-font">Ça arrive prochainement ! ✨</div>
         <div class="flex flex-col gap-1 items-center text-xl">
             Restez au courant des prochaines mises à jour et donnez votre avis sur le
             <a
