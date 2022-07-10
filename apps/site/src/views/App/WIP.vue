@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4 justify-center items-center self-center m-10 w-full text-2xl text-0">
-        <img class="w-48 h-48" :src="Rocket" />
+        <img class="w-48 h-48" :src="Tools" />
         <div class="text-4xl font-semibold text-center xl:text-6xl title-font">
             Ça arrive prochainement ! ✨
         </div>
@@ -18,5 +18,5 @@
 
 <script setup>
     import okampus from '@/assets/img/logos/okampus.png'
-    import Rocket from '@/assets/img/3dicons/rocket.png'
+    import Tools from '@/assets/img/3dicons/tools.png'
 </script>
