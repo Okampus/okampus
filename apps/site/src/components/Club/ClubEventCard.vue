@@ -37,7 +37,7 @@
             <div class="font-semibold text-center text-red-500/90 dark:text-red-400">{{ startMonth }}</div>
         </div>
 
-        <div class="flex flex-col justify-between mx-5">
+        <div class="flex flex-col justify-between mx-5 h-full">
             <div class="flex flex-col gap-1 self-start mt-4">
                 <router-link :to="`/events/${event.teamEventId}`" class="font-bold hover:underline">{{
                     event.name

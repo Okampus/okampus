@@ -11,8 +11,8 @@
                 :centered-slides="true"
                 @swiper="(s) => (swiper = s)"
             >
-                <SwiperSlide v-for="event in events" :key="event" class="py-2 max-w-[20rem]">
-                    <ClubEventCard class="!w-full" :event="event" />
+                <SwiperSlide v-for="event in events" :key="event" class="py-2 max-w-[20rem] !h-auto">
+                    <ClubEventCard class="!w-full h-full" :event="event" />
                 </SwiperSlide>
             </Swiper>
             <button class="button-next button-blue" @click="swiper?.slideNext?.(200)">
@@ -21,7 +21,7 @@
         </div>
 
         <h1 class="mt-16 text-3xl font-bold">Liste des événements</h1>
-        <div class="flex flex-row flex-wrap gap-4 items-center mx-14 mt-8">
+        <div class="flex flex-wrap gap-4 mx-14 mt-8">
             <ClubEventCard v-for="event in events" :key="event" :event="event" />
         </div>
     </div>
@@ -55,7 +55,7 @@
 
     const loadEvents = async () => {
         await clubs
-            .getEvents()
+            .getEvents({ itemsPerPage: 100 })
             .then((teamEvents) => {
                 events.value = teamEvents
                 console.log('events', events.value, teamEvents)
