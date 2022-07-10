@@ -116,7 +116,7 @@
 </script>
 
 <style>
-    /* stylelint-disable-next-line selector-class-pattern */
+    /* stylelint-disable */
     .vuecal__event {
         position: relative;
         padding: 0;
@@ -124,17 +124,13 @@
         border: 0;
     }
 
-    /* stylelint-disable-next-line selector-class-pattern */
     .vuecal__event:focus,
-    /* stylelint-disable-next-line selector-class-pattern */
     .vuecal__event:hover {
         overflow: visible;
         background-color: none;
         box-shadow: none;
     }
-    /* stylelint-disable-next-line selector-class-pattern */
     .vuecal__cells.month-view .vuecal__cell,
-    /* stylelint-disable-next-line selector-class-pattern */
     .vuecal__cells.week-view .vuecal__cell {
         min-height: 4em;
     }
