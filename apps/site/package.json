@@ -44,6 +44,7 @@
         "url-join": "5.0.0",
         "vue": "3.2.33",
         "vue-avatar-cropper": "^6.0.9",
+        "vue-cal": "^4.2.0",
         "vue-chart-3": "^3.1.8",
         "vue-i18n": "9.2.0-beta.35",
         "vue-image-crop-upload": "3.0.3",
@@ -51,6 +52,7 @@
         "vue-router": "4.0.15",
         "vue3-carousel": "^0.1.40",
         "vue3-popper": "1.4.2",
+        "vuedraggable": "^4.1.0",
         "vuex": "4.0.2",
         "workbox-precaching": "^6.5.3"
     },

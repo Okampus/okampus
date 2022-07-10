@@ -95,20 +95,33 @@
                         <div>{{ event.place }}</div>
                     </div>
                 </div>
-                <div class="flex justify-center">
+                <div class="flex flex-col justify-center">
                     <button
                         v-if="guests.items.find((g) => g.user.userId === auth.user.userId) === undefined"
-                        class="py-2 px-8 mb-4 w-fit text-lg font-bold text-white bg-green-500 rounded-full"
+                        class="py-2 px-8 mb-1 w-fit text-lg font-bold text-white bg-green-500 rounded-full"
                         @click="showJoinForm = true"
                     >
                         S'inscrire
                     </button>
                     <button
                         v-else
-                        class="py-2 px-8 mb-4 w-fit text-lg font-bold text-white bg-red-500 rounded-full"
-                        @click="unregister"
+                        class="py-2 px-8 mb-1 w-fit text-lg font-bold text-white bg-red-500 rounded-full"
+                        @click="
+                            () =>
+                                unregister(
+                                    guests.items.find((g) => g.user.userId === auth.user.userId)
+                                        .teamEventRegistrationId,
+                                )
+                        "
                     >
                         Se désinscrire
+                    </button>
+                    <button
+                        v-if="isAdmin"
+                        class="py-2 px-8 mb-4 ml-auto w-fit text-lg font-bold text-white bg-blue-500 rounded-full"
+                        @click="showAdmin = true"
+                    >
+                        Gérer
                     </button>
                 </div>
             </div>
@@ -147,6 +160,7 @@
                 <div v-else class="italic text-">Il n'y a personne d'inscrit pour l'instant.</div>
             </div>
         </div>
+
         <ModalPopup :show="showJoinForm" @close="showJoinForm = false">
             <template #default="{ close }">
                 <div class="flex flex-col justify-center items-center py-8 px-10 card">
@@ -179,9 +193,65 @@
                             help="Décrivez en quelques mots la raison de votre participation."
                         />
                     </FormKit>
+                    <FormKitRenderer :schema="event.form.form"></FormKitRenderer>
                     <div class="flex gap-4 self-end mt-6">
                         <button class="button-grey" @click="close">Annuler</button>
                         <button class="button-blue" @click="joinEvent">Valider</button>
+                    </div>
+                </div>
+            </template>
+        </ModalPopup>
+        <ModalPopup :show="showAdmin" @close="showAdmin = false">
+            <template #default="{ close }">
+                <div class="flex flex-col justify-center items-center py-8 px-10 w-[48rem] card">
+                    <div class="text-2xl font-semibold">
+                        Voici l'onglet de gestion de
+                        <span class="font-bold">{{ event.shortDescription }}</span>
+                    </div>
+                    <div class="text-sm text-2">
+                        Gérer la présence des membres, les diverses infos de l'évenement ...
+                    </div>
+                    <table v-if="guests.items.length > 0" class="flex flex-col gap-2 mt-8">
+                        <thead class="flex gap-2 items-center">
+                            <tr class="w-56">
+                                Invité
+                            </tr>
+                            <tr class="w-30">
+                                Présence
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="guest in guests.items"
+                                :key="guest.teamEventRegistrationId"
+                                class="flex gap-2 items-center h-8 even:border-y-2 border-grey-600"
+                            >
+                                <td class="flex gap-2 items-center w-56 truncate">
+                                    <ProfileAvatar
+                                        :avatar="guest.user.avatar"
+                                        :name="fullname(guest.user)"
+                                        size="2"
+                                    />
+                                    <p>{{ fullname(guest.user) }}</p>
+                                </td>
+                                <td class="w-30">
+                                    <SelectInput :choices="['Présent', 'Absent']"></SelectInput>
+                                </td>
+                                <td>
+                                    <button
+                                        class="py-1 px-2 text-white bg-red-500 rounded-md text-md"
+                                        @click="() => unregister(guest.teamEventRegistrationId)"
+                                    >
+                                        Désinscrire
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p v-else class="mt-4">Personne n'est encore inscrit à l'évenement</p>
+
+                    <div class="flex gap-4 self-end mt-6">
+                        <div class="button-cancel" @click="close">Fermer</div>
                     </div>
                 </div>
             </template>
@@ -195,6 +265,7 @@
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
+    import SelectInput from '@/components/Input/SelectInput.vue'
 
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
 
@@ -210,12 +281,16 @@
     import { getStatusAxiosError } from '@/utils/errors'
     import { isPositiveInteger } from '@/utils/stringUtils'
 
+    import { specialRoles } from '@/shared/types/club-roles.enum'
+
     import { fullname } from '@/utils/users'
+    import FormKitRenderer from '@/components/FormKit/FormKitRenderer.vue'
 
     const route = useRoute()
 
     const clubs = useClubsStore()
     const auth = useAuthStore()
+    const isAdmin = ref(false)
 
     const event = ref(null)
 
@@ -260,6 +335,7 @@
 
     const guests = ref([])
     const showJoinForm = ref(false)
+    const showAdmin = ref(false)
 
     const eventId = ref(route.params.eventId)
 
@@ -302,12 +378,12 @@
             })
     }
 
-    const unregister = async () => {
+    const unregister = async (teamEventRegistrationId) => {
         await clubs
-            .unregisterEvent(eventId.value)
+            .unregisterEvent(teamEventRegistrationId)
             .then(() => {
                 emitter.emit('show-toast', {
-                    message: 'Vous vous êtes désinscrit avec succès !',
+                    message: 'Membre désinscrit avec succès !',
                     type: 'success',
                 })
                 loadEvent()
@@ -340,14 +416,27 @@
             )
     }
 
+    const loadClubs = async () => {
+        await clubs.getMembershipsOf(auth.user).then((res) => {
+            console.log({ res })
+            res.filter((m) => m.team.teamId === event.value.team.teamId).forEach((m) => {
+                if (specialRoles.includes(m.role)) {
+                    isAdmin.value = true
+                }
+            })
+        })
+    }
+
     await loadEvent()
     await loadGuests()
+    await loadClubs()
 
     watchEffect(async () => {
         eventId.value = route.params.eventId
         if (route.name === 'event' && isPositiveInteger(eventId.value)) {
             await loadEvent()
             await loadGuests()
+            await loadClubs()
         }
     })
 </script>

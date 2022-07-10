@@ -24,6 +24,9 @@
             </div>
         </div>
     </div>
+    <div class="mx-16 mt-32">
+        <EventsCalendar :events="events"></EventsCalendar>
+    </div>
 </template>
 
 <script setup>
@@ -34,6 +37,7 @@
     import { useClubsStore } from '@/store/clubs.store'
     import { ref } from 'vue'
     import ClubEventCard from '@/components/Club/ClubEventCard.vue'
+    import EventsCalendar from '@/components/Events/EventsCalendar.vue'
 
     const breakpoints = {
         // 700px and up

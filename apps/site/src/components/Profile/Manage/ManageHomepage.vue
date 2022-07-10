@@ -120,6 +120,16 @@
             <div class="text-2">{{ club.longDescription }}</div>
         </div>
     </div>
+    <div class="flex flex-col gap-5 p-4 mt-4 rounded-xl shadow-xl text-2 bg-2">
+        <div>
+            <div class="text-lg font-semibold">Formulaire d'inscription</div>
+            <p>
+                Vous pouvez décider de modifier le formulaire nécessaire à la demande pour rejoindre votre
+                association
+            </p>
+        </div>
+        <FormList :club-id="club.teamId" @submit="(formId) => changeForm(formId)"></FormList>
+    </div>
 </template>
 
 <script setup>
@@ -128,6 +138,7 @@
     import ProfileAvatar from '../ProfileAvatar.vue'
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
+    import FormList from '@/components/FormKit/FormList.vue'
 
     import { clubTypes } from '@/shared/types/club-types.enum'
     import { useClubsStore } from '@/store/clubs.store'
@@ -148,6 +159,10 @@
         shortDescription: ref(props.club.shortDescription),
         longDescription: ref(props.club.longDescription),
     })
+
+    const changeForm = async (formId) => {
+        await clubs.patchClub(props.club.teamId, { membershipRequestFormId: formId })
+    }
 
     const updateClubForm = ref(null)
 

@@ -82,6 +82,7 @@
                                 help="Décrivez en quelques mots la raison de votre adhésion."
                             />
                         </FormKit>
+                        <FormKitRenderer :schema="schema"></FormKitRenderer>
                         <div class="flex gap-4 self-end mt-6">
                             <button class="button-cancel" @click="close">Annuler</button>
                             <button
@@ -102,6 +103,7 @@
                 :club="club"
                 @request="
                     (clubId) => {
+                        loadSchema(club.teamId)
                         showJoinForm = true
                         joiningClubId = clubId
                     }
@@ -116,6 +118,7 @@
     import VerticalTabs from '@/components/UI/Tabs/VerticalTabs.vue'
     import ClubCard from '@/components/App/ListCard/ClubCard.vue'
     import EmojiSad from '@/icons/Emoji/EmojiSad.vue'
+    import FormKitRenderer from '@/components/FormKit/FormKitRenderer.vue'
 
     import { clubTypes, linkToClubType } from '@/shared/types/club-types.enum'
 
@@ -179,6 +182,7 @@
     const clubList = ref([])
     const clubListByCategory = ref({})
     const categories = ref([])
+    const schema = ref([])
 
     const showJoinForm = ref(false)
 
@@ -275,6 +279,12 @@
                 console.log('ok', err)
                 emitter.emit('error-route', { code: getStatusAxiosError(err) })
             })
+    }
+
+    const loadSchema = async (clubId) => {
+        clubs.getClub(clubId).then((club) => {
+            schema.value = club?.membershipRequestForm.form ?? null
+        })
     }
 
     await loadClubList()
