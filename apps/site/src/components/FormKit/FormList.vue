@@ -72,6 +72,8 @@
         },
     })
 
+    const emit = defineEmits(['submit'])
+
     const modifyForm = (form) => {
         createForm.value = true
         currentForm.value = form.teamFormId
@@ -104,11 +106,7 @@
     watch(
         () => chosedForm.value,
         async () => {
-            await clubs
-                .patchClub(props.clubId, { membershipRequestFormId: chosedForm.value })
-                .then(async () => {
-                    await loadTeamForm()
-                })
+            emit('submit', chosedForm.value)
         },
     )
 </script>

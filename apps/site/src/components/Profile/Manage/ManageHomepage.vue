@@ -128,7 +128,7 @@
                 association
             </p>
         </div>
-        <FormList :club-id="club.teamId"></FormList>
+        <FormList :club-id="club.teamId" @submit="(formId) => changeForm(formId)"></FormList>
     </div>
 </template>
 
@@ -159,6 +159,10 @@
         shortDescription: ref(props.club.shortDescription),
         longDescription: ref(props.club.longDescription),
     })
+
+    const changeForm = async (formId) => {
+        await clubs.patchClub(props.club.teamId, { membershipRequestFormId: formId })
+    }
 
     const updateClubForm = ref(null)
 

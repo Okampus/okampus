@@ -184,6 +184,7 @@
                             help="Décrivez en quelques mots la raison de votre participation."
                         />
                     </FormKit>
+                    <FormKitRenderer :schema="event.form.form"></FormKitRenderer>
                     <div class="flex gap-4 self-end mt-6">
                         <button class="button-grey" @click="close">Annuler</button>
                         <button class="button-blue" @click="joinEvent">Valider</button>
@@ -274,6 +275,7 @@
     import { specialRoles } from '@/shared/types/club-roles.enum'
 
     import { fullname } from '@/utils/users'
+    import FormKitRenderer from '@/components/FormKit/FormKitRenderer.vue'
 
     const route = useRoute()
 

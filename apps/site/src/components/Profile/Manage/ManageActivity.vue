@@ -2,102 +2,113 @@
     <div>
         <ModalPopup :show="showCreateForm" @close="showCreateForm = false">
             <template #default="{ close }">
-                <div class="flex flex-col gap-4 justify-center items-center py-8 px-10 card">
-                    <div class="w-full">
-                        <div class="text-2xl font-semibold">Créer un événement</div>
-                        <div class="text-sm text-2">
-                            Mais d'abord, donnez du contexte sur votre demande de participation.
-                        </div>
-                    </div>
-
-                    <FormKit
-                        ref="createForm"
-                        v-model="createEventData"
-                        :actions="false"
-                        type="form"
-                        class="flex flex-col gap-4"
-                        @submit="
-                            (data) => {
-                                createEvent(data)
-                                close()
-                            }
-                        "
-                    >
+                <div class="flex flex-col gap-4 justify-center items-center py-8 px-10 h-[80vh] card">
+                    <div class="overflow-y-scroll">
                         <div class="w-full">
-                            <FormKit
-                                name="eventTitle"
-                                outer-class="w-full"
-                                :validation="[['required'], ['length', 5]]"
-                                type="text"
-                                label="Titre de l'évenement"
-                                placeholder="Titre de l'évenement"
-                            />
-                            <FormKit
-                                name="eventDescription"
-                                outer-class="w-full"
-                                :validation="[['required'], ['length', 5]]"
-                                type="text"
-                                label="Description de l'évenement"
-                                placeholder="Description de l'évenement"
-                            />
-                        </div>
-                        <div class="w-full">
-                            <div class="flex gap-2 w-full">
-                                <FormKit
-                                    name="eventDateStart"
-                                    outer-class="w-full"
-                                    :validation="[['required']]"
-                                    type="date"
-                                    label="Date de début"
-                                />
-                                <FormKit
-                                    name="eventTimeStart"
-                                    outer-class="w-full"
-                                    :validation="[['required']]"
-                                    type="time"
-                                    label="Heure de début"
-                                />
-                            </div>
-                            <div class="flex gap-2 w-full">
-                                <FormKit
-                                    name="eventDateEnd"
-                                    outer-class="w-full"
-                                    :validation="[['required']]"
-                                    type="date"
-                                    label="Date de fin"
-                                />
-                                <FormKit
-                                    name="eventTimeEnd"
-                                    :validation="[['required']]"
-                                    outer-class="w-full"
-                                    type="time"
-                                    label="Heure de fin"
-                                />
+                            <div class="text-2xl font-semibold">Créer un événement</div>
+                            <div class="text-sm text-2">
+                                Mais d'abord, donnez du contexte sur votre demande de participation.
                             </div>
                         </div>
                         <FormKit
-                            name="eventLocation"
-                            :validation="[['required']]"
-                            outer-class="w-full"
-                            type="text"
-                            label="Lieu"
-                            placeholder="Lieu"
-                        />
-                        <FormKit
-                            name="eventType"
-                            :options="['Public', 'Privé']"
-                            :validation="[['required']]"
-                            type="radio"
-                            label="Type d'évenement"
-                            help="Choisir d'ouvrir l'évenement à tout le monde ou seulement aux membres de l'assocition"
-                        />
-                    </FormKit>
-
-                    <div class="flex gap-4 self-end mt-6">
-                        <button class="button-red" @click="close">Annuler</button>
-                        <button class="button-blue" @click="createForm.node.submit()">
-                            Créer l'événement
-                        </button>
+                            ref="createForm"
+                            v-model="createEventData"
+                            :actions="false"
+                            type="form"
+                            class="flex flex-col gap-4"
+                            @submit="
+                                (data) => {
+                                    createEvent(data)
+                                    close()
+                                }
+                            "
+                        >
+                            <div class="w-full">
+                                <FormKit
+                                    name="eventTitle"
+                                    outer-class="w-full"
+                                    :validation="[['required'], ['length', 5]]"
+                                    type="text"
+                                    label="Titre de l'évenement"
+                                    placeholder="Titre de l'évenement"
+                                />
+                                <FormKit
+                                    name="eventDescription"
+                                    outer-class="w-full"
+                                    :validation="[['required'], ['length', 5]]"
+                                    type="text"
+                                    label="Description de l'évenement"
+                                    placeholder="Description de l'évenement"
+                                />
+                            </div>
+                            <div class="w-full">
+                                <div class="flex gap-2 w-full">
+                                    <FormKit
+                                        name="eventDateStart"
+                                        outer-class="w-full"
+                                        :validation="[['required']]"
+                                        type="date"
+                                        label="Date de début"
+                                    />
+                                    <FormKit
+                                        name="eventTimeStart"
+                                        outer-class="w-full"
+                                        :validation="[['required']]"
+                                        type="time"
+                                        label="Heure de début"
+                                    />
+                                </div>
+                                <div class="flex gap-2 w-full">
+                                    <FormKit
+                                        name="eventDateEnd"
+                                        outer-class="w-full"
+                                        :validation="[['required']]"
+                                        type="date"
+                                        label="Date de fin"
+                                    />
+                                    <FormKit
+                                        name="eventTimeEnd"
+                                        :validation="[['required']]"
+                                        outer-class="w-full"
+                                        type="time"
+                                        label="Heure de fin"
+                                    />
+                                </div>
+                            </div>
+                            <FormKit
+                                name="eventLocation"
+                                :validation="[['required']]"
+                                outer-class="w-full"
+                                type="text"
+                                label="Lieu"
+                                placeholder="Lieu"
+                            />
+                            <FormKit
+                                name="eventType"
+                                :options="['Public', 'Privé']"
+                                :validation="[['required']]"
+                                type="radio"
+                                label="Type d'évenement"
+                                help="Choisir d'ouvrir l'évenement à tout le monde ou seulement aux membres de l'assocition"
+                            />
+                        </FormKit>
+                        <div class="bg-2 card">
+                            <h2 class="text-lg font-bold">Formulaire D'inscription</h2>
+                            <p class="mb-4">
+                                Vous pouvez décider de modifier le formulaire nécessaire à la demande pour
+                                rejoindre votre évenement.
+                            </p>
+                            <FormList
+                                :club-id="props.club.teamId"
+                                @submit="(formId) => (form = formId)"
+                            ></FormList>
+                        </div>
+                        <div class="flex gap-4 self-end mt-6">
+                            <button class="button-red" @click="close">Annuler</button>
+                            <button class="button-blue" @click="createForm.node.submit()">
+                                Créer l'événement
+                            </button>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -136,6 +147,7 @@
     import { ref } from 'vue'
     import { useClubsStore } from '@/store/clubs.store'
     import { emitter } from '@/shared/modules/emitter'
+    import FormList from '@/components/FormKit/FormList.vue'
 
     const props = defineProps({
         club: {
@@ -150,6 +162,7 @@
 
     const events = ref([])
     const clubs = useClubsStore()
+    const form = ref(null)
 
     const loadEvents = async () => {
         await clubs
@@ -183,6 +196,8 @@
                 end: end,
                 place: event.eventLocation,
                 private: event.eventType === 'Privé',
+                formId: form.value,
+                meta: {},
             })
             .then(() => {
                 emitter.emit('show-toast', {
