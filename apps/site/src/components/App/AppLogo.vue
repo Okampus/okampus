@@ -3,14 +3,12 @@
         <div
             class="logo"
             :style="{
-                width: `${scale * 7.5}rem`,
-                height: `${scale * 2.5}rem`,
+                width: `${scale * 7.4}rem`,
+                height: `${scale * 2.4}rem`,
             }"
             :="only === 'none' ? { 'allow-dark': '' } : only === 'dark' ? { 'dark': '' } : {}"
         />
-        <div class="px-[0.1rem] mr-[0.5rem] ml-[0.3rem] text-xs font-bold text-2-light bg-0-light rounded">
-            BETA
-        </div>
+        <div class="px-[0.1rem] ml-[0.3rem] text-[8px] font-bold text-2-light bg-0-light rounded">BETA</div>
         <!-- <img
             src="@/assets/img/logos/brand.png"
             alt=""
