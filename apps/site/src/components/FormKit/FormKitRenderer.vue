@@ -1,8 +1,6 @@
 <template>
     <div class="w-full">
-        <FormKit type="form" @submit="submit">
-            <FormKitSchema :schema="props.schema" />
-        </FormKit>
+        <FormKitSchema :schema="props.schema" />
     </div>
 </template>
 
@@ -16,8 +14,4 @@
             required: true,
         },
     })
-
-    const submit = () => {
-        emit('submit')
-    }
 </script>
