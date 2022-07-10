@@ -20,7 +20,7 @@
 
             <div v-else class="flex justify-between items-center mr-4 h-full bg-transparent">
                 <!-- TODO: on small screen, use full screen modal -->
-                <Popper offset-distance="6" offset-skid="-80">
+                <Popper offset-distance="6" offset-skid="-85">
                     <ProfileAvatar
                         class="cursor-pointer"
                         :avatar="auth.user.avatar"
@@ -41,19 +41,18 @@
                             </div>
 
                             <hr class="self-center mt-2 w-11/12 h-[1px] bg-gray-500/20 border-none" />
-                            <router-link
-                                class="flex gap-6 items-center py-2 px-4 hover:bg-gray-200 hover:dark:bg-gray-600 cursor-pointer"
-                                to="/me"
-                                @click="close"
-                            >
-                                <i class="text-xl fa-solid fa-user" />
+                            <router-link class="topbar-popup-item" to="/me" @click="close">
+                                <i class="fas fa-user" />
                                 <div>Mon profil</div>
                             </router-link>
-                            <div
-                                class="flex gap-6 items-center py-2 px-4 hover:bg-gray-200 hover:dark:bg-gray-600 cursor-pointer"
-                                @click="emitter.emit('logout')"
-                            >
-                                <i class="text-xl fa-solid fa-arrow-right-from-bracket" />
+
+                            <router-link class="topbar-popup-item" to="/rgpd" @click="close">
+                                <i class="fas fa-database" />
+                                <div>Mes données (RGPD)</div>
+                            </router-link>
+
+                            <div class="topbar-popup-item" @click="emitter.emit('logout')">
+                                <i class="fas fa-arrow-right-from-bracket" />
                                 <div>Déconnexion</div>
                             </div>
                         </div>
@@ -86,3 +85,13 @@
 
     defineEmits(['toggle-side-bar'])
 </script>
+
+<style lang="scss">
+    .topbar-popup-item {
+        @apply flex gap-6 items-center py-2 px-4 hover:bg-gray-200 hover:dark:bg-gray-600 cursor-pointer;
+
+        & i {
+            @apply text-xl;
+        }
+    }
+</style>

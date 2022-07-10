@@ -44,6 +44,11 @@ const routes = [
     },
 
     {
+        path: '/rgpd',
+        component: () => import('@/views/App/PrivacyPolicy.vue'),
+    },
+
+    {
         path: '/forum',
         component: () => import('@/views/ForumHome.vue'),
         meta: {
