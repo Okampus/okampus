@@ -25,7 +25,14 @@
                                     @vnode-updated="() => patchSchema(index)"
                                 ></FormKit>
                                 <div class="mt-4">
-                                    <FormKit type="checkbox" label="Champ requis"></FormKit>
+                                    <FormKit
+                                        v-model="element.required"
+                                        type="checkbox"
+                                        label="Champ requis"
+                                        @update:model-value="
+                                            () => (element.validation = element.required ? 'required' : null)
+                                        "
+                                    ></FormKit>
                                 </div>
                                 <button class="mt-6 text-red-500" @click="() => removeOne(index)">
                                     <i class="fas fa-times"></i>
@@ -133,6 +140,7 @@
             $formkit: 'text',
             label: '',
             help: '',
+            validation: null,
         })
     }
 
