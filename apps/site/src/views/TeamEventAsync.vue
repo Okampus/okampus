@@ -184,7 +184,7 @@
                             help="Décrivez en quelques mots la raison de votre participation."
                         />
                     </FormKit>
-                    <FormKitRenderer :schema="event.form.form"></FormKitRenderer>
+                    <FormKitRenderer :schema="event.form?.form ?? []"></FormKitRenderer>
                     <div class="flex gap-4 self-end mt-6">
                         <button class="button-grey" @click="close">Annuler</button>
                         <button class="button-blue" @click="joinEvent">Valider</button>
