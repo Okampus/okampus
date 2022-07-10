@@ -92,7 +92,7 @@
                 </ais-hits>
                 <div
                     v-else
-                    class="flex absolute top-full z-40 flex-col gap-2 p-2 w-full max-w-2xl text-white bg-slate-700 dark:bg-slate-800 rounded-b-md"
+                    class="flex absolute top-11 z-40 flex-col gap-2 p-2 w-full max-w-2xl text-white bg-slate-700 dark:bg-slate-800 rounded-b-md md:top-full"
                     :class="{ 'absolute hidden': !showSearchbar || !recentSearch }"
                 >
                     <div
