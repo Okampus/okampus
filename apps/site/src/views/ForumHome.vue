@@ -45,11 +45,11 @@
 
             <div class="flex flex-col gap-6 px-4 lg:hidden">
                 <AppTitle title="Membres du staff" icon="fas fa-people-group" />
-                <swiper slides-per-view="auto" :space-between="20">
-                    <swiper-slide v-for="(staff, i) in staffMembers" :key="i" class="max-w-[15rem]">
+                <Swiper slides-per-view="auto" :space-between="20">
+                    <SwiperSlide v-for="(staff, i) in staffMembers" :key="i" class="max-w-[15rem]">
                         <UserActivity :user="staff" :custom-string="staff.title" />
-                    </swiper-slide>
-                </swiper>
+                    </SwiperSlide>
+                </Swiper>
             </div>
 
             <div class="flex flex-col gap-6">

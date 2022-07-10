@@ -1,14 +1,24 @@
 <template>
     <div v-if="events.length" class="mt-10 centered-container text-0">
-        <Carousel class="mx-6 w-[calc(100%-4rem)]" :settings="settings" :breakpoints="breakpoints">
-            <Slide v-for="event in events" :key="event">
-                <ClubEventCard :event="event" />
-            </Slide>
-
-            <template #addons>
-                <Navigation />
-            </template>
-        </Carousel>
+        <div class="flex items-center mx-5 -space-x-4">
+            <button class="button-prev button-blue" @click="() => swiper?.slidePrev?.(200)">
+                <i class="fas fa-angle-left" />
+            </button>
+            <Swiper
+                slides-per-view="auto"
+                :space-between="20"
+                :loop="true"
+                :centered-slides="true"
+                @swiper="(s) => (swiper = s)"
+            >
+                <SwiperSlide v-for="event in events" :key="event" class="py-2 max-w-[20rem]">
+                    <ClubEventCard class="!w-full" :event="event" />
+                </SwiperSlide>
+            </Swiper>
+            <button class="button-next button-blue" @click="swiper?.slideNext?.(200)">
+                <i class="fas fa-angle-right" />
+            </button>
+        </div>
 
         <h1 class="mt-16 text-3xl font-bold">Liste des événements</h1>
         <div class="flex flex-row flex-wrap gap-4 items-center mx-14 mt-8">
@@ -31,47 +41,17 @@
 
 <script setup>
     import Calendar from '@/assets/img/3dicons/calendar.png'
-    import 'vue3-carousel/dist/carousel.css'
-    import { Carousel, Slide, Navigation } from 'vue3-carousel'
+
+    import { Swiper, SwiperSlide } from 'swiper/vue'
 
     import { useClubsStore } from '@/store/clubs.store'
     import { ref } from 'vue'
     import ClubEventCard from '@/components/Club/ClubEventCard.vue'
     import EventsCalendar from '@/components/Events/EventsCalendar.vue'
 
-    const breakpoints = {
-        // 700px and up
-        500: {
-            itemsToShow: 1.5,
-        },
-        700: {
-            itemsToShow: 2,
-        },
-        900: {
-            itemsToShow: 2.5,
-        },
-        // 1024 and up
-        1280: {
-            itemsToShow: 3,
-        },
-    }
-
-    const settings = {
-        autoplay: 5000,
-        wrapAround: true,
-        itemsToShow: 1,
-        snapAlign: 'center',
-    }
-
+    const swiper = ref(null)
     const clubs = useClubsStore()
     const events = ref([])
-
-    // const scrollLeft = () => {
-    //     carousselContainer.value.scrollLeft -= 200
-    // }
-    // const scrollRight = () => {
-    //     carousselContainer.value.scrollLeft += 200
-    // }
 
     const loadEvents = async () => {
         await clubs
@@ -87,14 +67,8 @@
 </script>
 
 <style lang="scss">
-    /* stylelint-disable selector-class-pattern */
-    .carousel__prev,
-    .carousel__next {
-        box-sizing: content-box;
-        border: 5px solid white;
-
-        .dark & {
-            border: 5px solid #000;
-        }
+    .button-prev,
+    .button-next {
+        @apply rounded-full w-12 h-12 text-2xl shrink-0 flex items-center justify-center z-50;
     }
 </style>

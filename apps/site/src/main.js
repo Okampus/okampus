@@ -18,6 +18,7 @@ import { i18n } from '@/shared/modules/i18n'
 import router from '@/router/index'
 
 import '@/assets/css/tailwind.css'
+import 'swiper/css/bundle'
 
 const app = createApp(App)
 
