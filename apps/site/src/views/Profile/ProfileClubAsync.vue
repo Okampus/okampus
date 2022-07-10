@@ -2,7 +2,7 @@
     <div>
         <ProfileBanner :name="club.name" :banner="club.banner" class="p-0 h-40" :rounded-top="false" />
         <div class="flex flex-col gap-6 pt-4 text-0 bg-2">
-            <div class="flex gap-10 justify-between items-center mb-0 centered-container">
+            <div class="flex gap-4 justify-between items-start py-0 mb-0 centered-container-padded">
                 <div class="flex gap-4 -mt-[5rem]">
                     <ProfileAvatar
                         :avatar="club.avatar"
@@ -10,7 +10,7 @@
                         :name="club.name"
                         inner-class="border-4 border-white dark:border-black !sahdow-none"
                     />
-                    <div class="flex flex-col mt-20">
+                    <div class="flex flex-col mt-[5.1rem]">
                         <p class="text-3xl font-semibold">{{ club.name }}</p>
                         <p class="text-lg text-2">{{ club.shortDescription }}</p>
                     </div>
@@ -45,15 +45,12 @@
                 </template>
             </div>
 
-            <HorizontalTabs
-                v-model="currentTab"
-                class="my-0 centered-container"
-                :tabs="tabs"
-                :route-base="clubRoute"
-                route-name="club"
-            />
+            <div class="py-0 centered-container-padded">
+                <HorizontalTabs v-model="currentTab" :tabs="tabs" :route-base="clubRoute" route-name="club" />
+            </div>
         </div>
-        <div class="centered-container">
+
+        <div class="py-4 centered-container">
             <component :is="currentComponent" :club="club" />
         </div>
     </div>

@@ -195,7 +195,7 @@
         </template>
 
         <div v-else class="flex flex-col gap-6 items-center pb-4 text-0">
-            <img class="w-40 h-40" :src="Boy" />
+            <img class="w-40 h-40" :src="Megaphone" />
 
             <div class="text-center">
                 <div class="text-3xl font-semibold">Aucune demande d'adhésion pour le moment</div>
@@ -212,7 +212,7 @@
     import ProfileAvatar from '../ProfileAvatar.vue'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
 
-    import Boy from '@/assets/img/3dicons/boy.png'
+    import Megaphone from '@/assets/img/3dicons/megaphone.png'
 
     import { capitalize } from 'lodash'
     import { ref, watchEffect } from 'vue'
