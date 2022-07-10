@@ -1,5 +1,5 @@
 <template>
-    <div class="text-left">
+    <div class="w-full">
         <FormKit type="form" @submit="submit">
             <FormKitSchema :schema="props.schema" />
         </FormKit>
