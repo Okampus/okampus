@@ -1,7 +1,7 @@
 <template>
     <Transition mode="out-in" name="switch-fade">
         <Suspense>
-            <RecentTagListAsync />
+            <RecentTagListAsync :swipe="swipe" />
             <template #fallback>
                 <div class="flex justify-center mt-4 w-full">
                     <div class="w-[3.5rem] h-[3.5rem]">
@@ -35,4 +35,5 @@
 
 <script setup>
     import RecentTagListAsync from '@/components/List/RecentTagListAsync.vue'
+    defineProps({ swipe: { type: Boolean, default: false } })
 </script>

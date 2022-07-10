@@ -45,11 +45,20 @@
 
             <div class="flex flex-col gap-6 px-4 lg:hidden">
                 <AppTitle title="Membres du staff" icon="fas fa-people-group" />
-                <Swiper slides-per-view="auto" :space-between="20">
-                    <SwiperSlide v-for="(staff, i) in staffMembers" :key="i" class="max-w-[15rem]">
-                        <UserActivity :user="staff" :custom-string="staff.title" />
-                    </SwiperSlide>
-                </Swiper>
+                <div class="flex items-start mx-5">
+                    <SwiperButton class="mt-2" type="prev" :swiper="swiper" :small="true" />
+                    <Swiper
+                        slides-per-view="auto"
+                        :space-between="20"
+                        class="items-start"
+                        @swiper="(s) => (swiper = s)"
+                    >
+                        <SwiperSlide v-for="(staff, i) in staffMembers" :key="i" class="max-w-[15rem]">
+                            <UserActivity :user="staff" :custom-string="staff.title" />
+                        </SwiperSlide>
+                    </Swiper>
+                    <SwiperButton class="mt-2" type="next" :swiper="swiper" :small="true" />
+                </div>
             </div>
 
             <div class="flex flex-col gap-6 px-4 lg:hidden">
@@ -116,13 +125,15 @@
     import AppTitle from '@/components/App/AppTitle.vue'
     import UserActivity from '@/components/App/General/UserActivity.vue'
     import RecentThreadList from '@/components/List/RecentThreadList.vue'
+    import SwiperButton from '@/components/App/Swiper/SwiperButton.vue'
     import RecentTagList from '@/components/List/RecentTagList.vue'
-
-    import { Swiper, SwiperSlide } from 'swiper/vue'
 
     import anne from '@/assets/img/staff/anne.jpeg'
     import christophe from '@/assets/img/staff/christophe.jpeg'
     import rene from '@/assets/img/staff/rene.jpeg'
+
+    import { Swiper, SwiperSlide } from 'swiper/vue'
+    import { ref } from 'vue'
 
     const forumTabs = [
         {
@@ -168,5 +179,13 @@
             avatar: rene,
             title: 'Directeur des études du cycle M',
         },
+        {
+            firstname: 'Okampus',
+            lastname: 'Admin',
+            schoolRole: 'admin',
+            title: "Responsable d'Okampus",
+        },
     ]
+
+    const swiper = ref(null)
 </script>

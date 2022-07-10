@@ -1,5 +1,5 @@
 <template>
-    <div class="flex gap-3 items-center">
+    <div class="flex gap-3 items-start">
         <ProfileAvatar :size="3" :avatar="user.avatar" :name="fullname(user)" />
         <div class="flex flex-col">
             <div class="flex gap-1 items-center text-0">

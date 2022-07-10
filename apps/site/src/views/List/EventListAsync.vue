@@ -1,9 +1,7 @@
 <template>
     <div v-if="events.length" class="mt-10 centered-container text-0">
         <div class="flex items-center mx-5 -space-x-4">
-            <button class="button-prev button-blue" @click="() => swiper?.slidePrev?.(200)">
-                <i class="fas fa-angle-left" />
-            </button>
+            <SwiperButton type="prev" :swiper="swiper" />
             <Swiper
                 slides-per-view="auto"
                 :space-between="20"
@@ -15,9 +13,7 @@
                     <ClubEventCard class="!w-full h-full" :event="event" />
                 </SwiperSlide>
             </Swiper>
-            <button class="button-next button-blue" @click="swiper?.slideNext?.(200)">
-                <i class="fas fa-angle-right" />
-            </button>
+            <SwiperButton type="next" :swiper="swiper" />
         </div>
 
         <h1 class="mt-16 text-3xl font-bold">Liste des événements</h1>
@@ -40,14 +36,16 @@
 </template>
 
 <script setup>
+    import ClubEventCard from '@/components/Club/ClubEventCard.vue'
+    import EventsCalendar from '@/components/Events/EventsCalendar.vue'
+    import SwiperButton from '@/components/App/Swiper/SwiperButton.vue'
+
     import Calendar from '@/assets/img/3dicons/calendar.png'
 
     import { Swiper, SwiperSlide } from 'swiper/vue'
 
     import { useClubsStore } from '@/store/clubs.store'
     import { ref } from 'vue'
-    import ClubEventCard from '@/components/Club/ClubEventCard.vue'
-    import EventsCalendar from '@/components/Events/EventsCalendar.vue'
 
     const swiper = ref(null)
     const clubs = useClubsStore()
@@ -65,10 +63,3 @@
 
     await loadEvents()
 </script>
-
-<style lang="scss">
-    .button-prev,
-    .button-next {
-        @apply rounded-full w-12 h-12 text-2xl shrink-0 flex items-center justify-center z-50;
-    }
-</style>
