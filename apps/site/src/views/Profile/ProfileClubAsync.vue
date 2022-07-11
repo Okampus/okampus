@@ -229,7 +229,7 @@
         },
         {
             id: DRIVE,
-            name: 'Drive',
+            name: 'Documents légaux',
             icon: 'file-arrow-down',
         },
         {

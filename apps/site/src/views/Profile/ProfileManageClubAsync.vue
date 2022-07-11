@@ -76,19 +76,19 @@
             icon: 'house',
         },
         {
+            id: MEMBERS,
+            name: 'Membres',
+            icon: 'users',
+        },
+        {
             id: REQUESTS,
-            name: 'Adhésions',
+            name: "Demandes d'adhésion",
             icon: 'envelope',
         },
         {
             id: DRIVE,
-            name: 'Drive',
+            name: 'Documents légaux',
             icon: 'file-arrow-down',
-        },
-        {
-            id: MEMBERS,
-            name: 'Membres',
-            icon: 'users',
         },
         {
             id: ACTIVITY,
