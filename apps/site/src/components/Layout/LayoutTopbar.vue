@@ -41,9 +41,18 @@
                             </div>
 
                             <hr class="self-center mt-2 w-11/12 h-[1px] bg-gray-500/20 border-none" />
-                            <router-link class="topbar-popup-item" to="/me" @click="close">
+                            <router-link
+                                class="topbar-popup-item"
+                                :to="`/user/${auth.user.userId}`"
+                                @click="close"
+                            >
                                 <i class="fas fa-user" />
                                 <div>Mon profil</div>
+                            </router-link>
+
+                            <router-link class="topbar-popup-item" to="/me" @click="close">
+                                <i class="fas fa-gear" />
+                                <div>Paramètres</div>
                             </router-link>
 
                             <router-link class="topbar-popup-item" to="/rgpd" @click="close">

@@ -8,9 +8,20 @@
                 :name="fullname(user)"
                 inner-class="border-4 border-white dark:border-black !sahdow-none"
             />
-            <div class="flex flex-col mt-20">
-                <p class="text-3xl font-semibold">{{ fullname(user) }}</p>
-                <p class="text-lg text-2">{{ user.shortDescription }}</p>
+            <div class="flex gap-10 justify-between items-start w-full">
+                <div class="flex flex-col mt-20 md:mt-16">
+                    <p class="text-3xl font-semibold">{{ fullname(user) }}</p>
+                    <p class="text-lg text-2">{{ user.shortDescription }}</p>
+                </div>
+                <router-link
+                    v-if="auth.user.userId === userId"
+                    to="/me"
+                    role="button"
+                    class="flex gap-2 items-center mt-20 font-semibold rounded-full md:mt-16 button-green"
+                >
+                    <i class="fas fa-gear" />
+                    Paramètres
+                </router-link>
             </div>
         </div>
 
@@ -68,8 +79,9 @@
 
     import { useRoute } from 'vue-router'
 
-    import { useClubsStore } from '@/store/clubs.store'
+    import { useAuthStore } from '@/store/auth.store'
     import { useUsersStore } from '@/store/users.store'
+    import { useClubsStore } from '@/store/clubs.store'
 
     import { emitter } from '@/shared/modules/emitter'
 
@@ -81,6 +93,7 @@
 
     const route = useRoute()
 
+    const auth = useAuthStore()
     const users = useUsersStore()
     const clubs = useClubsStore()
 
