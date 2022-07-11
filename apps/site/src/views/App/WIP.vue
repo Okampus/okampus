@@ -1,5 +1,7 @@
 <template>
-    <div class="flex flex-col gap-4 justify-center items-center self-center m-10 w-full text-2xl text-0">
+    <div
+        class="flex flex-col gap-4 justify-center items-center self-center p-10 pb-[14%] w-full h-full text-2xl text-0"
+    >
         <img class="w-48 h-48" :src="Tools" />
         <div class="text-4xl font-semibold text-center xl:text-6xl title-font">
             Ça arrive prochainement ! ✨

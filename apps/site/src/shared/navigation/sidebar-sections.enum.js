@@ -10,7 +10,7 @@ export const sections = computed(() => {
                       name: 'Dév',
                       links: [
                           {
-                              to: '/test',
+                              to: '/test/',
                               regActive: /^\/test/,
                               textSmall: 'Page test',
                               textLarge: 'Page de test',
@@ -34,7 +34,7 @@ export const sections = computed(() => {
                           //       icon: 'columns',
                           //   },
                           {
-                              to: '/admin/clubs',
+                              to: '/admin/clubs/',
                               regActive: /^\/admin\/clubs/,
                               textSmall: 'Adm. assos',
                               textLarge: 'Adm. associations',
@@ -143,7 +143,7 @@ export const sections = computed(() => {
                       name: 'Espaces',
                       links: [
                           {
-                              to: '/forum',
+                              to: '/forum/',
                               regActive: /^\/forum?/,
                               textSmall: 'Forum',
                               textLarge: 'Forum',
@@ -171,8 +171,48 @@ export const sections = computed(() => {
                       ],
                   },
                   {
+                      name: 'Services',
+                      links: [
+                          {
+                              to: '/docs/',
+                              regActive: /^\/docs?/,
+                              textSmall: 'Docs sharing',
+                              textLarge: 'Archives étudiantes',
+                              icon: 'file',
+                          },
+                          {
+                              to: '/restaurant/',
+                              regActive: /^\/restaurant?/,
+                              textSmall: 'CROUS',
+                              textLarge: 'CROUS',
+                              icon: 'utensils',
+                          },
+                          {
+                              to: '/lost-found/',
+                              regActive: /^\/lost-found?/,
+                              textSmall: 'Lost & Found',
+                              textLarge: 'Objets trouvés',
+                              icon: 'people-group',
+                          },
+                          {
+                              to: '/wiki/',
+                              regActive: /^\/wiki?/,
+                              textSmall: 'Wiki',
+                              textLarge: 'Wiki interne',
+                              icon: 'info',
+                          },
+                      ],
+                  },
+                  {
                       name: 'Communauté',
                       links: [
+                          {
+                              to: '/community/',
+                              regActive: /^\/community/,
+                              textSmall: 'Communauté',
+                              textLarge: 'Communauté',
+                              icon: 'icons',
+                          },
                           {
                               to: '/users/',
                               regActive: /^\/(users?|me)/,

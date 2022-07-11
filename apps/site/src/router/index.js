@@ -81,13 +81,21 @@ const routes = [
         },
     },
 
-    // {
-    //     path: '/docs',
-    //     component: () => import('@/views/Document/DocumentList.vue'),
-    //     meta: {
-    //         requiresAuth: true,
-    //     },
-    // },
+    {
+        path: '/wiki',
+        component: () => import('@/views/App/WIP.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
+        path: '/docs',
+        component: () => import('@/views/App/WIP.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
 
     // {
     //     path: '/docs/new',
@@ -96,6 +104,30 @@ const routes = [
     //         requiresAuth: true,
     //     },
     // },
+
+    {
+        path: '/restaurant',
+        component: () => import('@/views/App/WIP.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
+        path: '/lost-found',
+        component: () => import('@/views/App/WIP.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
+        path: '/community',
+        component: () => import('@/views/App/WIP.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
 
     {
         name: 'me',
