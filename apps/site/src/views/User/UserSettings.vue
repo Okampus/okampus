@@ -36,9 +36,9 @@
                         <div class="text-3">{{ me.userId }}</div>
                     </div>
                 </div>
-                <div class="flex flex-col w-full md:w-auto">
+                <div class="flex flex-col md:w-48 lg:w-56 md-max:w-full">
                     <div v-if="editingStatus" class="flex flex-col gap-2 items-end mt-2">
-                        <textarea :value="status" rows="4" class="w-full resize-none md:w-48 lg:w-56 input" />
+                        <textarea :value="status" rows="4" class="w-full resize-none input" />
                         <div class="flex gap-2">
                             <button
                                 class="flex gap-2 items-center py-1 text-sm button-green"
@@ -54,8 +54,17 @@
                             </button>
                         </div>
                     </div>
-                    <div v-else-if="me.shortDescription" class="inline-flex gap-2 items-center text-0">
-                        <div class="inline">
+                    <div v-else-if="me.shortDescription" class="break-words text-0">
+                        <p class="inline">
+                            {{ me.shortDescription }}
+                        </p>
+                        <button
+                            class="inline-flex justify-center items-center p-2 ml-2 w-6 h-6 rounded-full button-blue"
+                            @click="editingStatus = true"
+                        >
+                            <i class="text-xs fa fa-pen" />
+                        </button>
+                        <!-- <div class="inline whitespace-nowrap break-words">
                             {{ me.shortDescription }}
                         </div>
                         <button
@@ -63,7 +72,7 @@
                             @click="editingStatus = true"
                         >
                             <i class="text-xs fa fa-pen" />
-                        </button>
+                        </button> -->
                     </div>
                     <button
                         v-else
