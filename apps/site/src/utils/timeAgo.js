@@ -1,4 +1,4 @@
-export function timeAgo(dateString, style) {
+export function timeAgo(dateString, style, limit = true) {
     const date = dateString instanceof Date ? dateString : new Date(dateString)
     const formatter = new Intl.RelativeTimeFormat('fr', { style: style ?? 'short' })
 
@@ -14,7 +14,7 @@ export function timeAgo(dateString, style) {
 
     const secondsElapsed = parseInt((date.getTime() - Date.now()) / 1000)
 
-    if (secondsElapsed >= -1) {
+    if (limit && secondsElapsed >= -1) {
         // TODO: internationalize
         return "il y a moins d'une seconde"
     }
