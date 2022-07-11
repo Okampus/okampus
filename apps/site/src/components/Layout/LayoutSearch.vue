@@ -19,8 +19,12 @@
                 >
                     <div class="flex grow items-center ml-2 h-full">
                         <i
-                            class="w-full transition-all duration-300 fas fa-search"
-                            :class="{ 'translate-x-[95%]': !showSearchbar && searchInput.length === 0 }"
+                            class="w-full transition-all duration-300 fas"
+                            :class="[
+                                !showSearchbar ? 'fa-search' : 'fa-arrow-left',
+                                { 'translate-x-[95%]': !showSearchbar && searchInput.length === 0 },
+                            ]"
+                            @click.stop="showSearchbar = false"
                         />
                     </div>
                     <div :class="{ 'hidden': showSearchbar || searchInput.length !== 0 }">
@@ -49,17 +53,18 @@
                     <i
                         :class="{ 'opacity-0': !showSearchbar && searchInput.length === 0 }"
                         class="z-50 p-1 text-white cursor-pointer fa-solid fa-xmark"
-                        @click.stop=";(showSearchbar = false), (searchInput = '')"
+                        @click.stop="searchInput = ''"
                     ></i>
                 </div>
+
                 <ais-hits
                     v-if="!recentSearch.length || searchInput.length"
                     class="absolute z-40 w-full h-max md:top-full md:max-w-2xl after-topbar"
                 >
                     <template #default="{ items }">
                         <div
-                            class="flex flex-col gap-2 p-2 text-white bg-slate-700 dark:bg-slate-800 rounded-b-md"
-                            :class="{ 'absolute hidden': !showSearchbar || !items.length }"
+                            class="flex flex-col gap-2 p-2 h-screen text-white bg-slate-700 dark:bg-slate-800 rounded-b-md md:h-max"
+                            :class="{ 'absolute hidden': !showSearchbar }"
                         >
                             <div
                                 v-for="(item, i) in items"
@@ -91,9 +96,10 @@
                         </div>
                     </template>
                 </ais-hits>
+
                 <div
                     v-else
-                    class="flex absolute z-40 flex-col gap-2 p-2 w-full text-white bg-slate-700 dark:bg-slate-800 rounded-b-md md:top-full md:max-w-2xl after-topbar"
+                    class="flex absolute z-40 flex-col gap-2 p-2 w-full h-screen text-white bg-slate-700 dark:bg-slate-800 rounded-b-md md:top-full md:max-w-2xl md:h-min after-topbar"
                     :class="{ 'absolute hidden': !showSearchbar || !recentSearch }"
                 >
                     <div
