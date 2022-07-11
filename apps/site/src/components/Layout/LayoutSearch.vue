@@ -21,7 +21,7 @@
                         <i
                             class="w-full transition-all duration-300 fas"
                             :class="[
-                                !showSearchbar ? 'fa-search' : 'fa-arrow-left',
+                                !showSearchbar ? 'fa-search' : 'fa-arrow-left cursor-pointer',
                                 { 'translate-x-[95%]': !showSearchbar && searchInput.length === 0 },
                             ]"
                             @click.stop="showSearchbar = false"
@@ -46,7 +46,9 @@
                                     refine($event.currentTarget.value),
                                         (searchInput = $event.currentTarget.value)
                                 "
-                                @keypress.enter="router.push('/search/', { searchInput })"
+                                @keypress.enter="
+                                    router.push('/search/', { searchInput }), (showSearchbar = false)
+                                "
                             />
                         </template>
                     </ais-search-box>
