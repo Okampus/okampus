@@ -84,9 +84,9 @@
                 </div>
             </div>
 
-            <div class="flex flex-col">
+            <div class="flex flex-col w-full">
                 <HorizontalTabs v-model="currentTab" :tabs="tabs" route-base="/me" route-name="me" />
-                <div class="flex flex-col">
+                <div class="flex flex-col w-full">
                     <component :is="currentComponent" />
                 </div>
             </div>

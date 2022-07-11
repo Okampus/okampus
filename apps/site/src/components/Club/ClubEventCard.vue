@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-col w-full min-w-[13rem] max-w-[40rem] rounded-xl sm:w-[calc(50%-1.5rem)] xl:w-[calc(33%-1.5rem)] card-hover bg-2 text-0"
+        class="flex flex-col w-full min-w-[13rem] max-w-[40rem] rounded-xl sm:w-[calc(50%-1rem)] xl:w-[calc(33%-1rem)] card-hover bg-2 text-0"
     >
         <!-- <div class="flex gap-4 p-4">
             <router-link :to="`/club/${event.team.teamId}`">
