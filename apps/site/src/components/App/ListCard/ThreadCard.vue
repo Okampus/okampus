@@ -51,6 +51,14 @@
                     :class="small ? 'text-xs' : 'text-sm'"
                     :tag-name="tag.name"
                 />
+
+                <div v-if="thread.hidden" class="flex gap-1 items-center ml-4 text-yellow-500">
+                    <i class="fas fa-eye-slash" />
+                    <div>
+                        {{ capitalize(getContentDemonstrative(content.kind)) }}
+                        est masqué{{ isContentFeminine(content.kind) ? 'e' : '' }}
+                    </div>
+                </div>
             </div>
 
             <div class="flex">

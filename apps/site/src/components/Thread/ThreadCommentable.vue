@@ -26,6 +26,14 @@
                         :action-at="content.createdAt"
                         action-text="Publié"
                     />
+
+                    <div v-if="content.hidden" class="flex gap-1 items-center ml-4 text-yellow-500">
+                        <i class="fas fa-eye-slash" />
+                        <div>
+                            {{ capitalize(getContentDemonstrative(POST)) }}
+                            est masqué{{ isContentFeminine(POST) ? 'e' : '' }}
+                        </div>
+                    </div>
                     <!-- <ProfileAvatar
                         :avatar="content._author.avatar"
                         :size="2.5"
@@ -143,6 +151,8 @@
     import LabelTag from '@/components/UI/Label/LabelTag.vue'
     import VoteInput from '@/components/Input/VoteInput.vue'
     import UserActivity from '../App/General/UserActivity.vue'
+
+    import { POST } from '@/shared/types/content-kinds.enum'
 
     import { computed } from 'vue'
 
