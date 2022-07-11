@@ -39,20 +39,23 @@
 
         <div class="flex flex-col justify-between mx-5 h-full">
             <div class="flex flex-col gap-3.5 self-start mt-4">
-                <div class="flex flex-col gap-1">
+                <div class="flex flex-col">
                     <router-link
                         :to="`/events/${event.teamEventId}`"
                         class="text-lg font-bold hover:underline"
                         >{{ event.name }}</router-link
                     >
 
-                    <div class="flex gap-1 items-center text-lg">
+                    <div class="flex gap-2 items-center text-lg">
                         <TipRelativeDate
                             :date="event.start"
                             :limit="false"
-                            text-class="font-semibold uppercase"
+                            text-class="font-semibold uppercase text-base"
                         />
-                        <div class="text-blue-500">{{ countdown }}</div>
+                        <div v-if="startDate > now" class="italic font-semibold text-blue-500">
+                            {{ countdown }}
+                        </div>
+                        <LabelSimple v-else class="!bg-gray-500 !hover:bg-gray-500">Passé</LabelSimple>
                     </div>
                 </div>
                 <div class="flex flex-col gap-2">
@@ -94,6 +97,7 @@
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
+    import LabelSimple from '../UI/Label/LabelSimple.vue'
 
     const props = defineProps({
         event: {
@@ -108,7 +112,9 @@
     const startDate = new Date(props.event.start)
     const endDate = new Date(props.event.end)
 
+    const now = new Date()
+
     const startMonth = getMonth.format(startDate)
     const dateRangeString = getDateRangeString(startDate, endDate)
-    const countdown = getCountdown(new Date(), startDate)
+    const countdown = getCountdown(now, startDate)
 </script>
