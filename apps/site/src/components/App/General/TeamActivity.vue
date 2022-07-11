@@ -1,19 +1,15 @@
 <template>
     <div class="flex gap-3 items-start">
-        <router-link :to="user.userId ? `/user/${user.userId}` : 'users'">
-            <ProfileAvatar :size="3" :avatar="user.avatar" :name="fullname(user)" />
+        <router-link :to="team.teamId ? `/club/${team.teamId}` : '/clubs'">
+            <ProfileAvatar :size="3" :avatar="team.avatar" :name="team.name" />
         </router-link>
         <div class="flex flex-col">
-            <div class="flex gap-1 items-center text-0">
-                <router-link
-                    :to="user.userId ? `/user/${user.userId}` : 'users'"
-                    class="text-sm font-semibold hover:underline"
-                    >{{ fullname(user) }}</router-link
-                >
-                <TipPopper :tip="getRole(user)[$i18n.locale]">
-                    <i class="ml-1" :class="`fa fa-${getRole(user).icon}`" />
-                </TipPopper>
-            </div>
+            <router-link
+                class="text-sm font-semibold hover:underline"
+                :to="team.teamId ? `/club/${team.teamId}` : '/clubs'"
+            >
+                {{ team.name }}
+            </router-link>
 
             <div class="text-sm text-4">
                 <div v-if="customString">
@@ -27,13 +23,11 @@
 
 <script setup>
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
+    // import TipPopper from '@/components/UI/Tip/TipPopper.vue'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
 
-    import { fullname, getRole } from '@/utils/users'
-
     defineProps({
-        user: {
+        team: {
             type: Object,
             required: true,
         },
