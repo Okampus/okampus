@@ -63,7 +63,11 @@
                 :first-column-fixed="true"
             >
                 <template #name="{ avatar, name, category, teamId }">
-                    <TeamActivity :team="{ avatar, name, category, teamId }" :custom-string="category" />
+                    <TeamActivity
+                        class="z-50 h-full bg-1"
+                        :team="{ avatar, name, category, teamId }"
+                        :custom-string="category"
+                    />
                     <!-- <router-link :to="`/club/${teamId}`" class="flex gap-1 items-center max-w-xs h-full bg-1">
                         <img :src="avatar" :alt="name" />
                         <div>{{ name }}</div>
