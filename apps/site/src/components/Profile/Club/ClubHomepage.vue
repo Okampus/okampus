@@ -1,15 +1,19 @@
 <template>
     <iframe
-        class="aspect-[16/9] inline float-left p-5 h-fit md:w-[30rem] md-max:w-full"
+        class="aspect-[16/9] inline float-left pr-6 pb-6 h-fit"
+        :class="club.longDescription ? 'md:w-[30rem] md-max:mb-4 md-max:w-full' : 'w-full'"
         src="https://www.youtube.com/embed/gfxmxDQ6sPM"
         frameborder="0"
         allowfullscreen
     />
-    <div class="mb-2 text-xl font-semibold text-1">Qu'est-ce que {{ club.name }} ?</div>
-    <div class="md-max:text-lg text-2">{{ club.longDescription }}</div>
+    <div v-if="club.longDescription">
+        <div class="mb-4 text-xl font-semibold md-max:text-2xl text-1">Qu'est-ce que {{ club.name }} ?</div>
+        <MdRenderer class="space-y-4 md-max:text-lg text-2" :content="club.longDescription" />
+    </div>
 </template>
 
 <script setup>
+    import MdRenderer from '@/components/Input/Editor/MdRenderer.vue'
     defineProps({
         club: {
             type: Object,

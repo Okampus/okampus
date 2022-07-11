@@ -21,6 +21,7 @@
             highlight: function (markdown) {
                 return hljs.highlightAuto(markdown).value
             },
+            breaks: true,
         }),
     )
 
