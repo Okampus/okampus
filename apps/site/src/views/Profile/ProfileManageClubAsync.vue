@@ -1,7 +1,7 @@
 <template>
     <div class="flex relative flex-col">
         <div class="bg-2 text-0">
-            <div class="flex sticky top-0 z-30 flex-col pb-0 centered-container">
+            <div class="flex sticky top-0 z-30 flex-col pb-0 centered-container-padded">
                 <div class="flex gap-4 justify-between items-center pt-4">
                     <div class="flex gap-4 items-center">
                         <ProfileAvatar
@@ -15,8 +15,11 @@
                             Vue administrateur
                         </LabelSimple>
                     </div>
-                    <router-link :to="`/club/${clubId}`" class="text-lg text-blue-500">
+                    <router-link :to="`/club/${clubId}`" class="hidden text-lg text-blue-500 md:block">
                         Voir en tant que visiteur
+                    </router-link>
+                    <router-link :to="`/club/${clubId}`" class="text-lg text-blue-500 md:hidden">
+                        Vue visiteur
                     </router-link>
                 </div>
                 <HorizontalTabs
@@ -27,7 +30,7 @@
                 />
             </div>
         </div>
-        <div class="flex flex-col centered-container">
+        <div class="flex flex-col centered-container-padded">
             <!-- <keep-alive> -->
             <component :is="currentComponent" :key="club" v-model:club="club" />
             <!-- </keep-alive> -->
@@ -36,6 +39,7 @@
 </template>
 
 <script setup>
+    import WIP from '@/views/App/WIP.vue'
     import ManageHomepage from '@/components/Profile/Manage/ManageHomepage.vue'
     import ManageRequests from '@/components/Profile/Manage/ManageRequests.vue'
     import ManageDrive from '@/components/Profile/Manage/ManageDrive.vue'
@@ -67,6 +71,7 @@
     const MEMBERS = 'members'
     const DRIVE = 'drive'
     const ACTIVITY = 'activity'
+    const TREASURY = 'treasury'
 
     const tabs = [
         {
@@ -95,6 +100,11 @@
             name: 'Events',
             icon: 'calendar',
         },
+        {
+            id: TREASURY,
+            name: 'Trésorerie',
+            icon: 'sack-dollar',
+        },
     ]
     const DEFAULT_TAB = tabs[0]
 
@@ -108,6 +118,7 @@
         [DRIVE]: ManageDrive,
         [MEMBERS]: ClubMembersAsync,
         [ACTIVITY]: ManageActivity,
+        [TREASURY]: WIP,
     }
     const currentComponent = computed(() => components[currentTab.value ?? DEFAULT_TAB.id])
 

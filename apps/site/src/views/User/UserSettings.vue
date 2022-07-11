@@ -129,7 +129,7 @@
     const tabs = [
         {
             id: OVERVIEW,
-            name: 'Aperçu',
+            name: 'Général',
             route: '/me',
             icon: 'user',
         },
@@ -145,7 +145,7 @@
         },
         {
             id: SOCIALS,
-            name: 'Intégrations',
+            name: 'Mes réseaux',
             icon: 'mail-bulk',
         },
     ]
