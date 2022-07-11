@@ -100,18 +100,20 @@
                                 </template>
                                 <div class="h-12 rounded-full avatar-hover">
                                     <template v-if="isMobile">
-                                        <ProfileAvatar
-                                            class="relative p-1 rounded-full !shadow-none bg-2"
-                                            :class="specialMembersActive[i] ? 'hovered' : ''"
-                                            :size="2.5"
-                                            :avatar="specialMember.member.avatar"
-                                            :name="fullname(specialMember.member)"
-                                        />
+                                        <div class="p-1">
+                                            <ProfileAvatar
+                                                class="relative p-1 rounded-full !shadow-none bg-2"
+                                                :class="specialMembersActive[i] ? 'hovered' : ''"
+                                                :size="2.5"
+                                                :avatar="specialMember.member.avatar"
+                                                :name="fullname(specialMember.member)"
+                                            />
+                                        </div>
                                     </template>
                                     <template v-else>
-                                        <router-link :to="`/user/${specialMember.member.userId}`">
+                                        <router-link class="p-1" :to="`/user/${specialMember.member.userId}`">
                                             <ProfileAvatar
-                                                class="relative p-1 rounded-full !shadow-none cursor-pointer hovered bg-2"
+                                                class="relative rounded-full !shadow-none cursor-pointer hovered bg-2"
                                                 :size="2.5"
                                                 :avatar="specialMember.member.avatar"
                                                 :name="fullname(specialMember.member)"

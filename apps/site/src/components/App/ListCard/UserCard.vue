@@ -3,7 +3,7 @@
         class="flex gap-4 items-start w-full min-w-[12rem] max-w-[30rem] xs:w-[calc(50%-0.7rem)] xl:w-[calc(33%-0.7rem)] card-2 card-hover"
     >
         <div class="flex flex-col shrink-0 gap-3 items-center">
-            <ProfileAvatar :size="4" class="px-2 min-w-fit" :avatar="user.avatar" :name="fullname(user)" />
+            <ProfileAvatar :size="4" class="min-w-fit" :avatar="user.avatar" :name="fullname(user)" />
 
             <TipPopper :tip="`${user.points} points`">
                 <div class="inline-flex flex-nowrap gap-2 ml-1 w-fit text-5 align-items">
