@@ -63,19 +63,16 @@
                 :first-column-fixed="true"
             >
                 <template #name="{ avatar, name, category, teamId }">
-                    <router-link :to="`/club/${teamId}`" class="flex gap-1 items-center max-w-xs h-full bg-1">
+                    <TeamActivity :team="{ avatar, name, category, teamId }" :custom-string="category" />
+                    <!-- <router-link :to="`/club/${teamId}`" class="flex gap-1 items-center max-w-xs h-full bg-1">
                         <img :src="avatar" :alt="name" />
                         <div>{{ name }}</div>
                         <div class="text-xs text-gray-400">{{ category }}</div>
-                    </router-link>
+                    </router-link> -->
                 </template>
                 <template #owner="{ owner }">
                     <router-link :to="`/user/${owner.userId}`" class="flex gap-1 items-center cursor-pointer">
-                        <ProfileAvatar
-                            :name="fullname(owner)"
-                            :avatar="owner.avatar"
-                            :size="2.5"
-                        ></ProfileAvatar>
+                        <ProfileAvatar :name="fullname(owner)" :avatar="owner.avatar" :size="2.5" />
                         <div>{{ fullname(owner) }}</div>
                     </router-link>
                 </template>
@@ -166,11 +163,13 @@
 </template>
 
 <script setup>
-    import { useClubsStore } from '@/store/clubs.store'
     import AppTable from '@/components/App/AppTable.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    import { fullname } from '@/utils/users'
     import DocumentIcon from '@/components/Document/DocumentIcon.vue'
+    import TeamActivity from '../App/General/TeamActivity.vue'
+
+    import { useClubsStore } from '@/store/clubs.store'
+    import { fullname } from '@/utils/users'
 
     const clubStore = useClubsStore()
     await clubStore.getClubs()
