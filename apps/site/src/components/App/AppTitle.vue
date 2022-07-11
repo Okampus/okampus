@@ -1,6 +1,6 @@
 <template>
     <div class="flex gap-3 items-center text-lg text-0">
-        <i :class="`text-3 ${icon}`" />
+        <i :class="`text-3 ${icon} w-6`" />
         <div class="font-bold">{{ title }}</div>
     </div>
 </template>
