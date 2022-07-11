@@ -48,11 +48,16 @@
                     </router-link>
                 </template>
 
-                <router-link :to="`/user/${user.userId}`" class="ml-2">
-                    <i
+                <router-link
+                    v-if="user.clubs?.length > 4"
+                    :to="`/user/${user.userId}`"
+                    class="ml-2 link-blue"
+                >
+                    + {{ user.clubs.length - 4 }} assos
+                    <!-- <i
                         v-if="user.clubs?.length > 4"
                         class="flex justify-center items-center w-8 h-8 text-xl text-white rounded-full fas fa-plus button-blue"
-                    />
+                    /> -->
                 </router-link>
             </div>
         </div>
