@@ -72,7 +72,12 @@
     import { useAuthStore } from '@/store/auth.store'
     import { useUserConfigStore } from '@/store/user-config.store'
 
+    import SwiperCore, { EffectCoverflow } from 'swiper'
+
     import 'swiper/css'
+    import 'swiper/css/effect-coverflow'
+
+    SwiperCore.use([EffectCoverflow])
 
     const currentRoute = useRoute()
 

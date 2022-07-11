@@ -1,7 +1,7 @@
 <template>
     <button
         class="flex z-50 shrink-0 justify-center items-center rounded-full button-blue"
-        :class="small ? 'w-6 h-6 text-lg' : 'w-12 h-12 text-2xl'"
+        :class="small ? 'w-6 h-6 text-lg' : 'w-10 h-10 text-2xl'"
         @click="slideFunc"
     >
         <i :class="type === 'next' ? 'fas fa-angle-right' : 'fas fa-angle-left'" />
@@ -13,7 +13,7 @@
 
     const props = defineProps({
         swiper: {
-            type: [Object, null],
+            type: [Object, Array, null],
             required: true,
         },
         small: {
@@ -26,7 +26,11 @@
         },
     })
 
+    const toArr = (arrOrNot) => (!Array.isArray(arrOrNot) ? [arrOrNot] : arrOrNot)
+
     const slideFunc = computed(() =>
-        props.type === 'next' ? () => props.swiper?.slideNext?.(200) : () => props.swiper?.slidePrev?.(200),
+        props.type === 'next'
+            ? () => toArr(props.swiper).forEach((swiper) => swiper.slideNext?.(200))
+            : () => toArr(props.swiper).forEach((swiper) => swiper.slidePrev?.(200)),
     )
 </script>
