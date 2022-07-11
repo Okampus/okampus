@@ -11,7 +11,15 @@
                         inner-class="border-4 border-white dark:border-black !sahdow-none"
                     />
                     <div class="flex flex-col mt-[5.1rem]">
-                        <p class="text-3xl font-semibold">{{ club.name }}</p>
+                        <div class="flex gap-3 items-center">
+                            <p class="text-3xl font-semibold">{{ club.name }}</p>
+
+                            <router-link :to="`/clubs/${clubTypes[club.category].link}`">
+                                <LabelSimple class="bg-slate-600/40 hover:bg-slate-400/40">{{
+                                    club.category
+                                }}</LabelSimple>
+                            </router-link>
+                        </div>
                         <p class="text-lg text-2">{{ club.shortDescription }}</p>
                     </div>
                 </div>
@@ -185,6 +193,8 @@
     import ClubActivity from '@/components/Profile/Club/ClubActivity.vue'
     import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
 
+    import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
+
     import { computed, ref, watchEffect } from 'vue'
 
     import { useRoute } from 'vue-router'
@@ -198,6 +208,7 @@
     import { IS_MEMBER, IS_SPECIAL_ROLE, IS_WAITING, specialRoles } from '@/shared/types/club-roles.enum'
     import { errorCodes } from '@/shared/errors/app-exceptions.enum'
     import { isPositiveInteger } from '@/utils/stringUtils'
+    import { clubTypes } from '@/shared/types/club-types.enum'
 
     const route = useRoute()
 
