@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="events.length" class="mt-10 centered-container text-0">
+        <div v-if="events.length" class="flex flex-col gap-4 mt-10 centered-container text-0">
             <div class="flex items-center mx-5 -space-x-4">
                 <SwiperButton type="prev" :swiper="swiper" />
                 <Swiper
@@ -16,7 +16,7 @@
                 </Swiper>
                 <SwiperButton type="next" :swiper="swiper" />
             </div>
-            <h1 class="mt-16 text-3xl font-bold">Liste des événements</h1>
+            <div class="mt-10 ml-10 text-3xl font-semibold">Tous les événements ({{ events.length }})</div>
             <div class="flex flex-wrap gap-4 mx-14 mt-8">
                 <ClubEventCard v-for="event in events" :key="event" :event="event" />
             </div>
