@@ -75,18 +75,14 @@
                 v-if="clubStore.events.filter((el) => el.state === 'published').length"
                 class="flex flex-col card"
             >
-                <div class="pb-2 mb-2 text-xl border-b">Evenement en attentes</div>
+                <div class="pb-2 mb-2 text-xl border-b">Evénements en attente</div>
                 <div class="flex overflow-y-scroll flex-col gap-4 h-full scrollbar-none">
                     <div
                         v-for="(event, i) in clubStore.events.filter((el) => el.state === 'published')"
                         :key="i"
                         class="flex gap-2 justify-between"
                     >
-                        <div class="flex gap-2 items-center">
-                            <img :src="event.team.avatar" :alt="event.team.name" />
-                            <div>{{ event.name }}</div>
-                            <div class="text-sm text-gray-400">{{ event.team.name }}</div>
-                        </div>
+                        <TeamActivity :team="event.team" :custom-string="event.name" />
                         <div class="flex gap-2 items-center">
                             <div
                                 class="flex justify-center items-center p-2 w-8 h-8 text-green-400 hover:text-green-500 bg-green-200 hover:bg-green-300 rounded-full cursor-pointer"
@@ -177,11 +173,13 @@
 </template>
 
 <script setup>
+    import SelectInput from '@/components/Input/SelectInput.vue'
+    import TeamActivity from '../App/General/TeamActivity.vue'
+
     import { LineChart } from 'vue-chart-3'
     import { Chart, registerables } from 'chart.js'
     import { useClubsStore } from '@/store/clubs.store'
 
-    import SelectInput from '@/components/Input/SelectInput.vue'
     import { ref, watchEffect } from 'vue'
     import { useMetricsStore } from '@/store/metrics.store'
     import 'chartjs-adapter-date-fns'
