@@ -38,7 +38,7 @@
                         <ProfileAvatar
                             :avatar="club.team.avatar"
                             :name="club.team.name"
-                            size="3"
+                            :size="3"
                             :class="
                                 specialRoles.find((role) => role === club.role)
                                     ? 'border-2 border-yellow-300 rounded-full'

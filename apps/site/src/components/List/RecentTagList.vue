@@ -7,7 +7,7 @@
                     <div class="w-[3.5rem] h-[3.5rem]">
                         <svg
                             class="text-white animate-spin"
-                            :style="{ width: `${size}rem`, height: `${size}rem` }"
+                            :style="{ width: `3rem`, height: `3rem` }"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"

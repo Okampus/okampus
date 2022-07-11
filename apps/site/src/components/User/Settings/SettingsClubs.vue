@@ -257,8 +257,8 @@
                             <ProfileAvatar
                                 :avatar="member.user.avatar"
                                 :name="fullname(member.user)"
-                                size="2"
-                            ></ProfileAvatar>
+                                :size="2"
+                            />
                             <p>{{ fullname(member.user) }}</p>
                             <button class="button-blue" @click="() => transfer(member)">
                                 Transmettre le rôle

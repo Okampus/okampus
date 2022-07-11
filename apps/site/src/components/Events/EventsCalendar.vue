@@ -20,8 +20,8 @@
                         <ProfileAvatar
                             :avatar="event.event.team.avatar"
                             :name="event.event.team.name"
-                            size="1"
-                        ></ProfileAvatar>
+                            :size="1"
+                        />
                     </div>
                 </div>
             </div>
@@ -35,10 +35,10 @@
                     >
                         <div class="flex gap-2 items-center">
                             <ProfileAvatar
-                                size="2"
+                                :size="2"
                                 :avatar="event.event.team.avatar"
                                 :name="event.event.team.name"
-                            ></ProfileAvatar>
+                            />
                             <p class="truncate">{{ event.title }}</p>
                         </div>
                     </div>

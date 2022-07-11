@@ -8,7 +8,7 @@
                 :class="{ 'highlight-active': comment.active }"
             >
                 <div
-                    class="flex shrink-0 gap-0.5 items-center w-[2.5rem] cursor-pointer text-5"
+                    class="flex shrink-0 gap-1.5 items-center w-[3rem] cursor-pointer text-5"
                     @click="
                         comment.interactions.voted === 1
                             ? threads.voteContent(comment.contentId, 0)
@@ -17,7 +17,7 @@
                 >
                     <IconUpvote
                         :full="true"
-                        :width="12"
+                        :width="0.8"
                         :class="comment.interactions.voted === 1 ? 'fill-green-500' : 'fill-gray-500'"
                     />
                     {{ comment.upvotes }}

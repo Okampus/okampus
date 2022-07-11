@@ -1,23 +1,12 @@
 <template>
     <div v-if="!swipe" class="flex flex-wrap gap-4">
-        <LabelTag
-            v-for="(tag, i) in threads.tags"
-            :key="i"
-            class="inline"
-            :class="small ? 'text-xs' : 'text-sm'"
-            :tag-name="tag.name"
-        />
+        <LabelTag v-for="(tag, i) in threads.tags" :key="i" class="inline text-xs" :tag-name="tag.name" />
     </div>
     <div v-else class="flex items-center mx-5">
         <SwiperButton type="prev" :swiper="swiper" :small="true" />
         <Swiper slides-per-view="auto" :space-between="10" class="items-start" @swiper="(s) => (swiper = s)">
             <SwiperSlide v-for="(tag, i) in threads.tags" :key="i" class="max-w-[15rem]">
-                <LabelTag
-                    :key="i"
-                    class="inline"
-                    :class="small ? 'text-xs' : 'text-sm'"
-                    :tag-name="tag.name"
-                />
+                <LabelTag :key="i" class="inline text-xs" :tag-name="tag.name" />
             </SwiperSlide>
         </Swiper>
         <SwiperButton type="next" :swiper="swiper" :small="true" />

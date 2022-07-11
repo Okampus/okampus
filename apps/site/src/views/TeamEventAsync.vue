@@ -221,7 +221,7 @@
                                     <ProfileAvatar
                                         :avatar="guest.user.avatar"
                                         :name="fullname(guest.user)"
-                                        size="2"
+                                        :size="2"
                                     />
                                     <p>{{ fullname(guest.user) }}</p>
                                 </td>

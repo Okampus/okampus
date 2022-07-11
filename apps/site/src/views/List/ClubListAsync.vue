@@ -1,117 +1,115 @@
 <template>
-    <div class="sticky top-0 z-50 px-2 md:hidden bg-1">
-        <HorizontalTabs v-model="currentTab" :tabs="tabs" route-base="/clubs" route-name="clubs" />
-    </div>
-    <div class="flex flex-col gap-4 md:flex-row centered-container-padded">
-        <VerticalTabs
-            v-model="currentTab"
-            :tabs="tabs"
-            route-base="/clubs"
-            route-name="clubs"
-            class="hidden sticky top-8 md:block"
-        />
-
-        <div v-if="currentClubs.length === 0" class="w-full text-center text-0">
-            <EmojiSad class="mb-3 text-3xl" />
-            <div class="text-2xl font-bold">Aucune association ne correspond à ces critères.</div>
-            <div class="text-lg">
-                Essayez la
-                <router-link to="/clubs" class="link-blue">liste de toutes les associations</router-link>.
-            </div>
+    <div>
+        <div class="sticky top-0 z-50 px-2 md:hidden bg-1">
+            <HorizontalTabs v-model="currentTab" :tabs="tabs" route-base="/clubs" route-name="clubs" />
         </div>
-
-        <div v-else class="flex flex-wrap gap-4 w-fit h-fit">
-            <ModalPopup
-                :show="showJoinForm"
-                @close="showJoinForm = false"
-                @closed="
-                    () => {
-                        joiningClubId = null
-                        joinFormData = {}
-                    }
-                "
-            >
-                <template #default="{ close }">
-                    <div class="flex flex-col justify-center items-center py-8 px-10 card">
-                        <div class="text-2xl font-semibold">
-                            Vous vous apprêtez à rejoindre {{ joiningClub.name }} !
-                        </div>
-                        <div class="text-sm text-2">
-                            Mais d'abord, donnez du contexte sur votre demande d'adhésion.
-                        </div>
-
-                        <FormKit
-                            id="join-club"
-                            ref="joinForm"
-                            v-model="joinFormData"
-                            type="form"
-                            form-class="flex flex-col mt-6 max-w-lg"
-                            :actions="false"
-                            @submit="
-                                (data) => {
-                                    joinFormSubmit(data)
-                                    close()
-                                }
-                            "
-                        >
-                            <FormKit
-                                label="Votre rôle souhaité"
-                                type="radio"
-                                name="role"
-                                :validation="[['required']]"
-                                help="Quel rôle souhaitez-vous obtenir ?"
-                                :options="roles"
-                            />
-                            <FormKit
-                                type="text"
-                                name="discord"
-                                label="Votre ID Discord (avec le #)"
-                                :validation="[
-                                    ['required'],
-                                    [
-                                        'matches',
-                                        /^(?!(here|everyone))^(?!.*(discord|```)).[^\@\#\:]{2,32}#\d{4}$/s,
-                                    ],
-                                ]"
-                                :validation-messages="{
-                                    matches: 'ID Discord invalide.',
-                                }"
-                                help="ex. Jérôme#4555, Arno#1234..."
-                            />
-                            <FormKit
-                                type="text"
-                                name="raison"
-                                label="La raison de votre adhésion"
-                                help="Décrivez en quelques mots la raison de votre adhésion."
-                            />
-                        </FormKit>
-                        <FormKitRenderer :schema="schema"></FormKitRenderer>
-                        <div class="flex gap-4 self-end mt-6">
-                            <button class="button-red" @click="close">Annuler</button>
-                            <button
-                                class="flex gap-2 items-center button-blue"
-                                @click="joinForm.node.submit()"
-                            >
-                                <i class="text-lg fa fa-envelope" />
-                                <div>Envoyer ma demande</div>
-                            </button>
-                        </div>
-                    </div>
-                </template>
-            </ModalPopup>
-
-            <ClubCard
-                v-for="club in currentClubs"
-                :key="club.teamId"
-                :club="club"
-                @request="
-                    (clubId) => {
-                        loadSchema(club.teamId)
-                        showJoinForm = true
-                        joiningClubId = clubId
-                    }
-                "
+        <div class="flex flex-col gap-4 md:flex-row centered-container-padded">
+            <VerticalTabs
+                v-model="currentTab"
+                :tabs="tabs"
+                route-base="/clubs"
+                route-name="clubs"
+                class="hidden sticky top-8 md:block"
             />
+            <div v-if="currentClubs.length === 0" class="w-full text-center text-0">
+                <EmojiSad class="mb-3 text-3xl" />
+                <div class="text-2xl font-bold">Aucune association ne correspond à ces critères.</div>
+                <div class="text-lg">
+                    Essayez la
+                    <router-link to="/clubs" class="link-blue">liste de toutes les associations</router-link>.
+                </div>
+            </div>
+            <div v-else class="flex flex-wrap gap-4 w-fit h-fit">
+                <ModalPopup
+                    :show="showJoinForm"
+                    @close="showJoinForm = false"
+                    @closed="
+                        () => {
+                            joiningClubId = null
+                            joinFormData = {}
+                        }
+                    "
+                >
+                    <template #default="{ close }">
+                        <div class="flex flex-col justify-center items-center py-8 px-10 card">
+                            <div class="text-2xl font-semibold">
+                                Vous vous apprêtez à rejoindre {{ joiningClub.name }} !
+                            </div>
+                            <div class="text-sm text-2">
+                                Mais d'abord, donnez du contexte sur votre demande d'adhésion.
+                            </div>
+                            <FormKit
+                                id="join-club"
+                                ref="joinForm"
+                                v-model="joinFormData"
+                                type="form"
+                                form-class="flex flex-col mt-6 max-w-lg"
+                                :actions="false"
+                                @submit="
+                                    (data) => {
+                                        joinFormSubmit(data)
+                                        close()
+                                    }
+                                "
+                            >
+                                <FormKit
+                                    label="Votre rôle souhaité"
+                                    type="radio"
+                                    name="role"
+                                    :validation="[['required']]"
+                                    help="Quel rôle souhaitez-vous obtenir ?"
+                                    :options="roles"
+                                />
+                                <FormKit
+                                    type="text"
+                                    name="discord"
+                                    label="Votre ID Discord (avec le #)"
+                                    :validation="[
+                                        ['required'],
+                                        [
+                                            'matches',
+                                            /^(?!(here|everyone))^(?!.*(discord|```)).[^\@\#\:]{2,32}#\d{4}$/s,
+                                        ],
+                                    ]"
+                                    :validation-messages="{
+                                        matches: 'ID Discord invalide.',
+                                    }"
+                                    help="ex. Jérôme#4555, Arno#1234..."
+                                />
+                                <FormKit
+                                    type="text"
+                                    name="raison"
+                                    label="La raison de votre adhésion"
+                                    help="Décrivez en quelques mots la raison de votre adhésion."
+                                />
+                            </FormKit>
+                            <FormKitRenderer :schema="schema"></FormKitRenderer>
+                            <div class="flex gap-4 self-end mt-6">
+                                <button class="button-red" @click="close">Annuler</button>
+                                <button
+                                    class="flex gap-2 items-center button-blue"
+                                    @click="joinForm.node.submit()"
+                                >
+                                    <i class="text-lg fa fa-envelope" />
+                                    <div>Envoyer ma demande</div>
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </ModalPopup>
+                <ClubCard
+                    v-for="club in currentClubs"
+                    :key="club.teamId"
+                    :club="club"
+                    @request="
+                        (clubId) => {
+                            loadSchema(club.teamId)
+                            showJoinForm = true
+                            joiningClubId = clubId
+                        }
+                    "
+                />
+            </div>
         </div>
     </div>
 </template>
