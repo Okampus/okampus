@@ -1,7 +1,7 @@
 <template>
     <div>
         <AppTable
-            class="w-full"
+            class="w-full text-0"
             :items="reportStore.reports"
             table-layout="fixed"
             :headers="[
@@ -12,12 +12,12 @@
                 },
                 {
                     name: 'author',
-                    text: 'Auteur',
+                    text: 'Auteur originel',
                     class: 'p-2 border-b border-gray-300',
                 },
                 {
                     name: 'reporter',
-                    text: 'Rapporteur',
+                    text: 'Signalé par',
                     class: 'p-2 border-b border-gray-300',
                 },
                 {
