@@ -30,20 +30,20 @@
 .button-green {
     @extend %button;
 
-    background-color: #0ecc54;
+    background-color: #0ca74c;
 
     &:hover {
-        box-shadow: 0 0 8px #7ee763;
+        box-shadow: 0 0 8px #2b9c0f;
     }
 }
 
 .button-yellow {
     @extend %button;
 
-    background-color: #e7b734;
+    background-color: #d6a726;
 
     &:hover {
-        box-shadow: 0 0 8px #e2b63e;
+        box-shadow: 0 0 8px #daa924;
     }
 }
 

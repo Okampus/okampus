@@ -144,14 +144,14 @@
             description: "Espace de forum 'classique' - posez vos questions, obtenez une réponse.",
         },
         {
-            color: 'bg-[#0ecc54]',
+            color: 'bg-[#0ca74c]',
             icon: 'fas fa-bullhorn',
             title: 'Signalements & Ticketing',
             description:
                 'Suivi des problèmes remontés via un système de ticketing - signalez, résolvez des problèmes.',
         },
         {
-            color: 'bg-[#e7b734]',
+            color: 'bg-[#d6a726]',
             icon: 'fas fa-lightbulb',
             title: 'Boîte à idées',
             description: 'Proposez des idées pour votre école et réagissez à celles de vos collègues !',
