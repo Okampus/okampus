@@ -383,7 +383,7 @@
 
     const joinEvent = async () => {
         await clubs
-            .joinEvent(eventId.value)
+            .joinEvent(eventId.value, { status: 'sure' })
             .then(async () => {
                 emitter.emit('show-toast', {
                     message: 'Votre inscription a bien été prise en compte',
