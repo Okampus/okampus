@@ -1,13 +1,11 @@
 [
     {
-        "relation": [
-            "delegate_permission/common.handle_all_urls"
-        ],
+        "relation": ["delegate_permission/common.handle_all_urls"],
         "target": {
             "namespace": "android_app",
-            "package_name": "okampus.pwa",
+            "package_name": "fr.okampus.efrei.twa",
             "sha256_cert_fingerprints": [
-                "E7:3C:7F:79:B1:97:4A:61:AE:A1:83:1B:99:5C:50:D5:FA:99:1E:AE:11:73:CE:6A:F3:67:AF:A5:D4:30:3F:F5"
+                "04:44:CF:50:D0:EF:B6:7D:73:F5:57:CD:32:04:C5:AC:BA:80:AC:DA:9A:F4:96:39:A1:ED:31:75:EF:22:1C:81"
             ]
         }
     }
