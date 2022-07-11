@@ -5,7 +5,7 @@
                 <ProfileBanner
                     class="h-full"
                     :name="event.shortDescription"
-                    :data="event.team.name"
+                    :data="event.team.category"
                     :rounded-top="false"
                 />
 

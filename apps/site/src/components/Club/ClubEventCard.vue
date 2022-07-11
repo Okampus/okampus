@@ -23,7 +23,7 @@
         </div> -->
 
         <div class="relative">
-            <ProfileBanner class="h-24" :name="event.shortDescription" :data="event.team.name" />
+            <ProfileBanner class="h-24" :name="event.shortDescription" :data="event.team.category" />
             <router-link :to="`/club/${event.team.teamId}`" class="absolute top-4 right-4">
                 <ProfileAvatar :name="event.team.name" :avatar="event.team.avatar" />
             </router-link>
