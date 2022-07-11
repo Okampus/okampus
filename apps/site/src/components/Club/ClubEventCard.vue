@@ -38,40 +38,47 @@
         </div>
 
         <div class="flex flex-col justify-between mx-5 h-full">
-            <div class="flex flex-col gap-1 self-start mt-4">
-                <router-link :to="`/events/${event.teamEventId}`" class="font-bold hover:underline">{{
-                    event.name
-                }}</router-link>
-                <div class="flex gap-2 items-center">
-                    <div class="w-6">📅</div>
-                    <div class="text-sm tracking-tight">{{ dateRangeString }}</div>
-                </div>
-                <div class="flex gap-2 items-center">
-                    <div class="w-6">📍</div>
-                    <div class="text-sm tracking-tight">{{ event.place }}</div>
-                </div>
-                <!-- <div class="text-xs font-semibold uppercase text-3">{{ dateRangeString }}</div>
-                <div class="self-start mt-2 text-lg font-bold">{{ event.shortDescription }}</div>
-                <div class="flex gap-2 self-start text-sm text-3">
-                    <div>{{ event.price === 0 ? 'Gratuit' : `Prix: ${event.price}` }}</div>
-                    <div>•</div>
-                    <div class="flex gap-2 items-center text-2">
-                        <i class="text-xs fas fa-location-dot"></i>
-                        <div>{{ event.place }}</div>
+            <div class="flex flex-col gap-3.5 self-start mt-4">
+                <div class="flex flex-col gap-1">
+                    <router-link
+                        :to="`/events/${event.teamEventId}`"
+                        class="text-lg font-bold hover:underline"
+                        >{{ event.name }}</router-link
+                    >
+
+                    <div class="flex gap-1 items-center text-lg">
+                        <TipRelativeDate
+                            :date="event.start"
+                            :limit="false"
+                            text-class="font-semibold uppercase"
+                        />
+                        <div class="text-blue-500">{{ countdown }}</div>
                     </div>
-                </div> -->
+                </div>
+                <div class="flex flex-col gap-2">
+                    <div class="flex gap-2 items-center">
+                        <div class="w-6">📍</div>
+                        <div class="text-sm tracking-tight">{{ event.place }}</div>
+                    </div>
+                    <div class="flex gap-2 items-start">
+                        <div class="w-6">📅</div>
+                        <div class="flex flex-col gap-1 text-sm tracking-tight">
+                            <div>{{ dateRangeString }}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="self-center my-6">
                 <router-link
                     :to="`/events/${event.teamEventId}`"
-                    class="hidden font-semibold rounded-full xs:block button-blue"
+                    class="hidden font-semibold rounded-full md:block button-blue"
                 >
                     Rejoindre l'événement
                 </router-link>
                 <router-link
                     :to="`/events/${event.teamEventId}`"
-                    class="block font-semibold rounded-full xs:hidden button-blue"
+                    class="block font-semibold rounded-full md:hidden button-blue"
                 >
                     Rejoindre
                 </router-link>
@@ -82,12 +89,12 @@
 
 <script setup>
     import { i18n } from '@/shared/modules/i18n'
+    import { getDateRangeString, getCountdown } from '@/utils/dateUtils'
 
-    import ProfileAvatar from '../Profile/ProfileAvatar.vue'
-    import ProfileBanner from '../Profile/ProfileBanner.vue'
-    // import TipRelativeDate from '../UI/Tip/TipRelativeDate.vue'
-    // import { useClubsStore } from '@/store/clubs.store'
-    // import { emitter } from '@/shared/modules/emitter'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
+    import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
+
     const props = defineProps({
         event: {
             type: Object,
@@ -102,14 +109,6 @@
     const endDate = new Date(props.event.end)
 
     const startMonth = getMonth.format(startDate)
-
-    const fullDateFormat = new Intl.DateTimeFormat(i18n.global.locale, {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-    })
-
-    const dateRangeString = fullDateFormat.formatRange(startDate, endDate)
+    const dateRangeString = getDateRangeString(startDate, endDate)
+    const countdown = getCountdown(new Date(), startDate)
 </script>
