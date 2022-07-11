@@ -1,44 +1,44 @@
 <template>
     <div class="flex flex-col gap-12 lg:flex-row centered-container">
         <div class="flex flex-col gap-6">
-            <div class="flex flex-col gap-6 p-10 card-2">
+            <div class="flex flex-col p-10 sm:gap-6 card-2">
                 <div class="flex gap-4 md:gap-10">
                     <div class="flex flex-col gap-6 md:gap-8">
                         <div class="text-2xl font-bold md:text-3xl title-font">
-                            Demandez, signalez, partagez vos idées 🚀
+                            Demandez, signalez, partagez vos idées&nbsp;!
                         </div>
-                        <div class="hidden text-sm text-justify xs:block md:text-base text-2">
+                        <div class="hidden text-sm text-justify sm:block md:text-base text-2">
                             Posez vos questions, répondez à celles des autres, signalez des problèmes et
                             demandez à ce que les votres soient résolus... et proposer des idées pour l'école,
                             la vie associative ou Okampus !
                         </div>
                     </div>
-                    <img class="-mt-2 w-32 h-32 sm:w-48 sm:h-48" :src="ChatBubble" />
+                    <img class="-mt-2 w-24 h-24 sm:w-48 sm:h-48" :src="ChatBubble" />
                 </div>
                 <div class="flex gap-4">
                     <router-link
                         to="/forum/post/new"
                         role="button"
-                        class="flex gap-3 items-center button-blue"
+                        class="flex gap-3 items-center sm-max:py-1 button-blue"
                     >
-                        <i class="text-base xs:text-xl fas fa-plus" />
-                        <div class="text-xs xs:text-base">Question</div>
+                        <i class="text-base sm:text-lg fas fa-plus" />
+                        <div class="text-lg sm:text-base">Question</div>
                     </router-link>
                     <router-link
                         to="/forum/post/new"
                         role="button"
-                        class="flex gap-3 items-center button-green"
+                        class="flex gap-3 items-center sm-max:py-1 button-green"
                     >
-                        <i class="text-base xs:text-xl fas fa-plus" />
-                        <div class="text-xs xs:text-base">Problème</div>
+                        <i class="text-base sm:text-lg fas fa-plus" />
+                        <div class="text-lg sm:text-base">Problème</div>
                     </router-link>
                     <router-link
                         to="/forum/post/new"
                         role="button"
-                        class="flex gap-3 items-center button-yellow"
+                        class="flex gap-3 items-center sm-max:py-1 button-yellow"
                     >
-                        <i class="text-base xs:text-xl fas fa-plus" />
-                        <div class="text-xs xs:text-base">Idée</div>
+                        <i class="text-base sm:text-lg fas fa-plus" />
+                        <div class="text-lg sm:text-base">Idée</div>
                     </router-link>
                 </div>
             </div>
@@ -63,7 +63,7 @@
             </div>
 
             <div class="flex flex-col gap-6 px-4 lg:hidden">
-                <AppTitle title="Tags récents" icon="fas fa-tags" class="pl-4" />
+                <AppTitle title="Tags récents" icon="fas fa-tags" />
                 <RecentTagList :swipe="true" />
             </div>
 
