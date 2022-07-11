@@ -184,9 +184,9 @@
     import SelectInput from '@/components/Input/SelectInput.vue'
     import { ref, watchEffect } from 'vue'
     import { useMetricsStore } from '@/store/metrics.store'
-    import * as dayjs from 'dayjs'
-    import duration from 'dayjs/plugin/duration'
     import 'chartjs-adapter-date-fns'
+
+    import dayjs from '@/shared/modules/dayjs'
 
     Chart.register(...registerables)
 
@@ -233,8 +233,6 @@
         week: { unit: 'hours', count: 2 },
         day: { unit: 'minutes', count: 15 },
     }
-
-    dayjs.extend(duration)
 
     const clubStore = useClubsStore()
     await clubStore.getClubs()
