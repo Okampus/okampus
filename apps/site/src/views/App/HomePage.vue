@@ -5,63 +5,42 @@
                 v-if="!auth.agreedToTerms"
                 class="flex absolute top-0 left-0 z-10 justify-center items-center w-full h-full"
             >
-                <div class="flex flex-col p-6 m-6 max-w-3xl max-h-[calc(100%-3rem)] rounded-xl bg-0 text-1">
-                    <div class="mb-10">
+                <div
+                    class="flex flex-col gap-6 p-6 m-6 max-w-3xl max-h-[calc(100%-3rem)] rounded-xl bg-0 text-1"
+                >
+                    <div class="mb-4">
                         <div class="text-3xl font-semibold text-center text-0">
                             Bienvenue sur la bêta de Okampus !
                         </div>
                     </div>
 
-                    <div>
+                    <div class="text-xl">
                         Rejoignez le
-                        <a class="mx-1 link-blue" href="https://discord.gg/RSgTfjGQpU">Discord Okampus</a>
-                        pour participer officiellement à la bêta du site.
-                    </div>
-
-                    <div>
-                        <div class="mb-3">
-                            <a
-                                class="mr-1 font-mono link-blue"
-                                href="https://www.myefrei.fr/public/sso/donnees-personnelles"
-                                >La SSO myEfrei</a
-                            >
-                            est nécessaire pour accéder à Okampus.
-                        </div>
-                        Votre <b class="text-0">prénom, nom, ID et adresse mail Efrei</b> sont les seules
-                        données récupérées, nécessaires pour vous identifier.
-                    </div>
-
-                    <div>
-                        <div class="mb-3">Vos informations sont publiques sur votre profil.</div>
-                        <div class="mb-3">
-                            Durant la bêta, il n'y aura pas de garantie que vous puissiez supprimer
-                            manuellement les données et contenus que vous ajoutez.
-                        </div>
-                        Pour demander la suppression de vos données personnelles et l'anonymisation de vos
-                        contenus,
-                        <a class="mr-1 font-mono link-blue" href="mailto:rgpd@okampus.fr"
-                            >envoyez un mail à rgpd@okampus.fr</a
+                        <a class="mx-1 font-semibold underline link-blue" href="https://discord.gg/RSgTfjGQpU"
+                            >Discord Okampus</a
                         >
+                        pour suivre l'avancée de la bêta, donner vos avis et échanger par rapport au projet.
+                    </div>
+
+                    <div class="text-xl">
+                        Retrouvez toutes les informations relatives aux données personnelles sur
+                        <router-link to="/rgpd" class="link-blue">https://okampus.fr/rgpd</router-link>.
                     </div>
 
                     <div>
-                        Les conditions générales d'utilisation, mentions légales et informations RGPD seront
-                        mises à jour en production.
-                    </div>
-
-                    <div>
-                        Pour toute question ou remarque,
-                        <a class="mr-1 font-mono link-blue" href="https://discord.gg/RSgTfjGQpU"
-                            >contactez-nous sur Discord</a
-                        >
-                        ou
-                        <a class="mr-1 font-mono link-blue" href="mailto:bonjour@okampus.fr"
+                        Pour toute question ou remarque ne pouvant pas être transmise sur Discord
+                        <a class="link-blue" href="mailto:bonjour@okampus.fr"
                             >envoyez un mail à bonjour@okampus.fr</a
                         >
                     </div>
 
+                    <div>
+                        N.B. Les seuls cookies utilisés par Okampus sont des tokens d'authentification
+                        nécessaires au fonctionnement de la plateforme.
+                    </div>
+
                     <div
-                        class="self-end mt-10 min-w-[3rem] text-lg text-center select-none button-blue"
+                        class="mt-4 min-w-[3rem] text-lg text-center select-none button-blue"
                         :class="counting ? 'opacity-50' : ''"
                         :disabled="counting"
                         @click="agreeToTerms"
