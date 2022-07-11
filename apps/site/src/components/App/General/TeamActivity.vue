@@ -5,17 +5,17 @@
         </router-link>
         <div class="flex flex-col">
             <router-link
-                class="text-sm font-semibold hover:underline"
+                class="text-sm font-semibold hover:underline line-clamp-1"
                 :to="team.teamId ? `/club/${team.teamId}` : '/clubs'"
             >
                 {{ team.name }}
             </router-link>
 
-            <div class="text-sm text-4">
-                <div v-if="customString">
+            <div class="text-sm line-clamp-1 text-4">
+                <template v-if="customString">
                     {{ customString }}
-                </div>
-                <div v-else>{{ actionText }} <TipRelativeDate :date="actionAt" /></div>
+                </template>
+                <template v-else>{{ actionText }} <TipRelativeDate :date="actionAt" /></template>
             </div>
         </div>
     </div>

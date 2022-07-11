@@ -21,7 +21,12 @@
         <div class="flex flex-col gap-4 w-full">
             <div class="flex flex-row justify-between items-center">
                 <div class="flex gap-3 items-center">
-                    <ProfileAvatar
+                    <UserActivity
+                        :user="content._author"
+                        :action-at="content.createdAt"
+                        action-text="Publié"
+                    />
+                    <!-- <ProfileAvatar
                         :avatar="content._author.avatar"
                         :size="2.5"
                         :name="fullname(content._author)"
@@ -29,7 +34,8 @@
                     <div>
                         {{ fullname(content._author) }}
                     </div>
-                    <TipRelativeDate class="text-sm text-2" :date="content.createdAt" />
+                    <TipRelativeDate class="text-sm text-2" :date="content.createdAt" /> -->
+
                     <template v-if="thread.post.contentId !== content.contentId">
                         <i
                             v-if="thread.opValidatedWith?.contentId === content.contentId"
@@ -133,16 +139,13 @@
 <script setup>
     // import TipRelativeDateModified from '@/components/UI/Tip/TipRelativeDateModified.vue'
     // import UserPreview from '../App/Preview/UserPreview.vue'
-
     import ThreadCommentList from './ThreadCommentList.vue'
-    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
     import LabelTag from '@/components/UI/Label/LabelTag.vue'
     import VoteInput from '@/components/Input/VoteInput.vue'
+    import UserActivity from '../App/General/UserActivity.vue'
 
     import { computed } from 'vue'
 
-    import { fullname } from '@/utils/users'
     import { getLinkContent, report } from '@/shared/actions/thread.actions'
 
     import { useThreadsStore } from '@/store/threads.store'

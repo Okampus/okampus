@@ -32,8 +32,14 @@
                     v-if="memberships.length > 0"
                     class="flex flex-wrap gap-x-4 gap-y-2 items-center mt-4 w-full"
                 >
-                    <div v-for="membership in memberships" :key="membership" class="flex gap-2">
-                        <router-link :to="`/club/${membership.team.teamId}`">
+                    <TeamActivity
+                        v-for="membership in memberships"
+                        :key="membership"
+                        :team="membership.team"
+                        :custom-string="clubRoleNames[membership.role].fr"
+                        class="w-40"
+                    />
+                    <!-- <router-link :to="`/club/${membership.team.teamId}`">
                             <ProfileAvatar
                                 :avatar="membership.team.avatar"
                                 :size="2"
@@ -50,8 +56,8 @@
                                 <p class="w-32 font-semibold truncate">{{ membership.team.name }}</p>
                             </router-link>
                             <p class="-mt-2 w-32 truncate">{{ clubRoleNames[membership.role].fr }}</p>
-                        </div>
-                    </div>
+                        </div> -->
+                    <!-- </div> -->
                 </div>
                 <p v-else class="text-lg italic">
                     {{ user.firstname.split(' ')[0] }} ne fait pas partie d'associations.
@@ -62,7 +68,12 @@
                 <h2 class="my-4 text-2xl font-semibold">Activité</h2>
 
                 <div v-if="events.length > 0" class="flex flex-col gap-4 w-fit">
-                    <ClubEventCard v-for="event in events" :key="event" :event="event"></ClubEventCard>
+                    <ClubEventCard
+                        v-for="event in events"
+                        :key="event.eventId"
+                        :event="event"
+                        class="!w-full"
+                    ></ClubEventCard>
                 </div>
                 <div v-else class="flex flex-col gap-4 w-fit">Aucune activité récente</div>
             </div>
@@ -74,6 +85,7 @@
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import ClubEventCard from '@/components/Club/ClubEventCard.vue'
+    import TeamActivity from '@/components/App/General/TeamActivity.vue'
 
     import { watch, ref } from 'vue'
 
@@ -89,7 +101,7 @@
     import { fullname } from '@/utils/users'
 
     import { clubRoleNames } from '@/shared/types/club-roles.enum'
-    import { specialRoles } from '@/shared/types/club-roles.enum'
+    // import { specialRoles } from '@/shared/types/club-roles.enum'
 
     const route = useRoute()
 

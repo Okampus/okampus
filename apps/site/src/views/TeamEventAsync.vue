@@ -55,7 +55,7 @@
             <div class="flex flex-col gap-6 w-full md-max:px-8">
                 <div class="flex flex-col gap-2">
                     <div class="text-3xl font-bold">{{ event.name }}</div>
-                    <TeamActivity :team="event.team" action-text="A créé" :action-at="event.createdAt" />
+                    <TeamActivity :team="event.team" action-text="Créé" :action-at="event.createdAt" />
 
                     <!-- <router-link :to="`/club/${event.team.teamId}`">
                                 <ProfileAvatar :name="event.team.name" :avatar="event.team.avatar" :size="2" />
@@ -223,16 +223,18 @@
             </div>
         </div> -->
 
-        <div class="text-lg md:max-w-[30rem] md-max:px-8">{{ event.description }}</div>
+        <div class="text-lg md-max:px-8">{{ event.description }}</div>
 
-        <div class="flex flex-col gap-4 md:max-w-[30rem] md-max:px-8">
+        <div class="flex flex-col gap-4 md-max:px-8">
             <div class="text-2xl font-semibold">Inscrits</div>
             <div v-if="guests.totalItemCount > 0" class="flex items-center">
-                <div v-for="guest in guests.items" :key="guest" class="-mr-6">
-                    <ProfileAvatar :avatar="guest.user.avatar" :name="fullname(guest.user)" />
+                <div v-for="guest in guests.items" :key="guest" class="-mr-3">
+                    <router-link :to="`/user/${guest.user.userId}`">
+                        <ProfileAvatar :avatar="guest.user.avatar" :name="fullname(guest.user)" />
+                    </router-link>
                 </div>
                 <div v-if="guests.totalItemCount > guests.itemsPerPage" class="ml-7 text-lg">
-                    +{{ guests.totalItemCount - guests.itemsPerPage }}
+                    + {{ guests.totalItemCount - guests.itemsPerPage }}
                 </div>
             </div>
             <div v-else class="italic text-">Il n'y a personne d'inscrit pour l'instant.</div>
