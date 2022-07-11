@@ -19,7 +19,7 @@
                 >
                     <div class="flex grow items-center ml-2 h-full">
                         <i
-                            class="w-full transition-all duration-300 fas"
+                            class="w-full transition-all duration-300 fas fa-lg"
                             :class="[
                                 !showSearchbar ? 'fa-search' : 'fa-arrow-left cursor-pointer',
                                 { 'translate-x-[95%]': !showSearchbar && searchInput.length === 0 },
@@ -52,11 +52,13 @@
                             />
                         </template>
                     </ais-search-box>
-                    <i
+                    <div
+                        class="flex z-50 items-center p-1 text-white cursor-pointer"
                         :class="{ 'opacity-0': !showSearchbar && searchInput.length === 0 }"
-                        class="z-50 p-1 text-white cursor-pointer fa-solid fa-xmark"
                         @click.stop="searchInput = ''"
-                    ></i>
+                    >
+                        <i class="text-lg leading-none fa-solid fa-xmark"></i>
+                    </div>
                 </div>
 
                 <ais-hits
@@ -65,13 +67,13 @@
                 >
                     <template #default="{ items }">
                         <div
-                            class="flex flex-col gap-2 p-2 h-screen text-white bg-slate-700 dark:bg-slate-800 rounded-b-md md:h-max"
+                            class="flex flex-col h-screen text-white bg-slate-700 dark:bg-slate-800 rounded-b-md md:h-min"
                             :class="{ 'absolute hidden': !showSearchbar }"
                         >
                             <div
                                 v-for="(item, i) in items"
                                 :key="i"
-                                class="flex gap-4 items-center p-2 hover:bg-slate-800 focus:bg-slate-800 dark:hover:bg-slate-900 dark:focus:bg-slate-900 rounded-md outline-none cursor-pointer"
+                                class="flex gap-4 items-center p-2 m-1 hover:bg-slate-800 focus:bg-slate-800 dark:hover:bg-slate-900 dark:focus:bg-slate-900 rounded-md outline-none cursor-pointer"
                                 tabindex="0"
                                 @click="resultClick(item)"
                                 @keypress.enter="resultClick(item)"
