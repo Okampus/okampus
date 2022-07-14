@@ -51,10 +51,18 @@ async function bootstrap(): Promise<void> {
   if (config.get('sentry.enabled'))
     SentryTracing.addExtensionMethods();
 
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, { bodyParser: false });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(express.json());
-  if (config.get('enableHelmet'))
+
+  if (config.get('nodeEnv') === 'production') {
     app.use(helmet());
+  } else {
+    // Disable those rules to make the GraphQL playground work
+    app.use(helmet({
+      contentSecurityPolicy: false,
+      crossOriginEmbedderPolicy: false,
+    }));
+  }
   app.use(loggerMiddleware);
   app.use(cookieParser(config.get('cookies.signature')));
 
