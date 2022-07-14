@@ -20,7 +20,17 @@
                 </div>
             </div>
             <div v-else class="flex flex-wrap gap-4 w-fit h-fit">
-                <ModalPopup
+                <ClubJoinForm
+                    v-model:show="showJoinForm"
+                    :club="joiningClub"
+                    @closed="joiningClubId = null"
+                    @submitted="
+                        () =>
+                            (clubList.value.find((club) => club.teamId === joiningClubId.value).membership =
+                                IS_WAITING)
+                    "
+                />
+                <!-- <ModalPopup
                     :show="showJoinForm"
                     @close="showJoinForm = false"
                     @closed="
@@ -96,14 +106,14 @@
                             </div>
                         </div>
                     </template>
-                </ModalPopup>
+                </ModalPopup> -->
                 <ClubCard
                     v-for="club in currentClubs"
                     :key="club.teamId"
                     :club="club"
                     @request="
                         (clubId) => {
-                            loadSchema(club.teamId)
+                            // loadSchema(club.teamId)
                             showJoinForm = true
                             joiningClubId = clubId
                         }
@@ -115,32 +125,24 @@
 </template>
 
 <script setup>
-    import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
     import VerticalTabs from '@/components/UI/Tabs/VerticalTabs.vue'
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
     import ClubCard from '@/components/App/ListCard/ClubCard.vue'
+    import ClubJoinForm from '@/components/Club/ClubJoinForm.vue'
     import EmojiSad from '@/icons/Emoji/EmojiSad.vue'
-    import FormKitRenderer from '@/components/FormKit/FormKitRenderer.vue'
 
     import { clubTypes, linkToClubType } from '@/shared/types/club-types.enum'
 
     import { computed, ref } from 'vue'
 
     import { emitter } from '@/shared/modules/emitter'
-    import { i18n } from '@/shared/modules/i18n'
 
     import { getStatusAxiosError } from '@/utils/errors'
 
     import { useAuthStore } from '@/store/auth.store'
     import { useClubsStore } from '@/store/clubs.store'
     import { groupBy } from 'lodash'
-    import {
-        clubRoleNames,
-        specialRoles,
-        IS_WAITING,
-        IS_MEMBER,
-        IS_SPECIAL_ROLE,
-    } from '@/shared/types/club-roles.enum'
+    import { specialRoles, IS_WAITING, IS_MEMBER, IS_SPECIAL_ROLE } from '@/shared/types/club-roles.enum'
 
     const auth = useAuthStore()
     const clubs = useClubsStore()
@@ -169,11 +171,6 @@
         },
     ]
 
-    const roles = Object.entries(clubRoleNames).map(([value, name]) => ({
-        value,
-        label: name[i18n.global.locale],
-    }))
-
     const ALL = 0
     const ALL_LABEL = 'all'
     const MY_CLUBS = 1
@@ -184,36 +181,16 @@
     const clubList = ref([])
     const clubListByCategory = ref({})
     const categories = ref([])
-    const schema = ref([])
+    // const schema = ref([])
 
     const showJoinForm = ref(false)
 
-    const joinForm = ref(null)
-    const joinFormData = ref({})
+    // const joinForm = ref(null)
+    // const joinFormData = ref({})
     const joiningClubId = ref(null)
     const joiningClub = computed(
         () => clubList.value.find((club) => club.teamId === joiningClubId.value) ?? { name: '' },
     )
-
-    const joinFormSubmit = async (data) => {
-        const { role, ...meta } = data
-
-        await clubs
-            .postMembershipRequest(joiningClubId.value, { role, meta })
-            .then(() => {
-                clubList.value.find((club) => club.teamId === joiningClubId.value).membership = IS_WAITING
-                emitter.emit('show-toast', {
-                    message: "Votre demande d'adhésion a bien été envoyée !",
-                    type: 'success',
-                })
-            })
-            .catch((err) => {
-                emitter.emit('show-toast', {
-                    message: `Erreur: ${err.message}`,
-                    type: 'error',
-                })
-            })
-    }
 
     const currentClubs = computed(() =>
         currentTab.value === ALL_LABEL
@@ -283,11 +260,11 @@
             })
     }
 
-    const loadSchema = async (clubId) => {
-        clubs.getClub(clubId).then((club) => {
-            schema.value = club?.membershipRequestForm.form ?? null
-        })
-    }
+    // const loadSchema = async (clubId) => {
+    //     clubs.getClub(clubId).then((club) => {
+    //         schema.value = club?.membershipRequestForm.form ?? null
+    //     })
+    // }
 
     await loadClubList()
     await Promise.all([getMemberships(), getRequests()])

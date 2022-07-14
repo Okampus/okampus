@@ -1,5 +1,6 @@
 <template>
     <div>
+        <ClubJoinForm v-model:show="showJoinForm" :club="club" @submitted="setRequestWaiting" />
         <ProfileBanner
             :name="club.name"
             :banner="club.banner"
@@ -32,8 +33,8 @@
 
                 <button
                     v-if="!memberRole"
-                    class="py-1 px-2 text-lg font-semibold rounded-full button-blue"
-                    @click="emit('request', club.teamId)"
+                    class="py-1 text-lg font-semibold rounded-full button-blue"
+                    @click="showJoinForm = true"
                 >
                     Rejoindre
                 </button>
@@ -200,6 +201,7 @@
     import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
 
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
+    import ClubJoinForm from '@/components/Club/ClubJoinForm.vue'
 
     import { computed, ref, watchEffect } from 'vue'
 
@@ -271,6 +273,8 @@
     const userMemberships = ref([])
     const userRequests = ref([])
 
+    const showJoinForm = ref(false)
+
     const getRoleType = (role) => (specialRoles.includes(role) ? IS_SPECIAL_ROLE : role ? IS_MEMBER : null)
 
     const memberRole = computed(
@@ -301,6 +305,15 @@
         userRequests.value = requests
     })
     await loadClub()
+
+    const setRequestWaiting = () => {
+        const request = userRequests.value.find((request) => request.team.teamId === clubId.value)
+        if (request) {
+            request.state = PENDING
+        } else {
+            userRequests.value.push({ team: { teamId: clubId.value }, state: PENDING })
+        }
+    }
 
     watchEffect(async () => {
         if (route.name === 'club') {

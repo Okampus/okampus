@@ -19,16 +19,9 @@
                 </Swiper>
                 <Swiper
                     class="hidden sm:block"
-                    effect="coverflow"
+                    :space-between="20"
                     :slides-per-view="3"
                     :loop="true"
-                    :coverflow-effect="{
-                        rotate: 40,
-                        stretch: 0,
-                        depth: 100,
-                        modifier: 1.2,
-                        slideShadows: true,
-                    }"
                     :centered-slides="true"
                     @swiper="(s) => (swiper = s)"
                 >
