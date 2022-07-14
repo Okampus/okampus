@@ -1,6 +1,8 @@
 import {
   BadRequestException,
   Body,
+  CacheInterceptor,
+  CacheTTL,
   Controller,
   Delete,
   Get,
@@ -10,6 +12,7 @@ import {
   Query,
   UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Express } from 'express';
@@ -46,6 +49,8 @@ export class UsersController {
     private readonly userSearchService: UserSearchService,
   ) {}
 
+  @CacheTTL(60 * 60 * 24 * 3) // 3 days in seconds
+  @UseInterceptors(CacheInterceptor)
   @Get('/gdpr-dump')
   public async getGdprDump(@CurrentUser() user: User): Promise<object> {
     return await this.gdprService.getGdprDump(user);
