@@ -19,11 +19,12 @@ export class ExceptionsFilter implements ExceptionFilter {
     else
       Object.assign(response, error);
 
-    host
-      .switchToHttp()
-      .getResponse()
-      .status(statusCode)
-      .json(response);
+    if (host.getType() === 'http') {
+      host.switchToHttp()
+        .getResponse()
+        .status(statusCode)
+        .json(response);
+    }
 
     return response;
   }

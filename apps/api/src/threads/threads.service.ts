@@ -17,6 +17,7 @@ import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { PaginatedResult } from '../shared/modules/pagination';
 import { serializeOrder } from '../shared/modules/sorting';
+import { ContentSortOrder } from '../shared/modules/sorting/sort-order.enum';
 import { Tag } from '../tags/tag.entity';
 import { User } from '../users/user.entity';
 import { Vote } from '../votes/vote.entity';
@@ -93,8 +94,8 @@ export class ThreadsService {
       query,
       {
         // TODO: Remove 'post.lastEdit' once we add activities
-        populate: ['post', 'tags', 'assignees', 'post.author', 'post.lastEdit', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'],
-        orderBy: { post: serializeOrder(options?.sortBy) },
+        populate: ['post', 'tags', 'assignees', 'post.author', 'post.lastEdit', 'post.edits', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'],
+        orderBy: { post: serializeOrder(options?.sortBy ?? ContentSortOrder.Newest) },
       },
     );
     const threadIds = allThreads.items.map(thread => thread.contentMasterId);
@@ -133,7 +134,7 @@ export class ThreadsService {
   public async findOne(user: User, contentMasterId: number): Promise<Thread> {
     const thread: Thread & { contents?: Content[] } = await this.threadRepository.findOneOrFail(
       { contentMasterId },
-      { populate: ['tags', 'assignees', 'participants', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
+      { populate: ['post.edits', 'tags', 'assignees', 'participants', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);

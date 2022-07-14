@@ -22,7 +22,7 @@ export class CreateBadgeDto {
   icon: string;
 
   @IsString()
-  serie: string;
+  series: string;
 
   @IsEnum(Statistic)
   statistic: Statistic;

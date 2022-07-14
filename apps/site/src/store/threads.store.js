@@ -62,6 +62,7 @@ export const useThreadsStore = defineStore('threads', {
             content.contentMasterId = thread.contentMasterId
 
             content.interactions = new ContentInteractions()
+            console.log('CONTENT', thread.contents)
             content.comments = computed(() =>
                 thread.contents?.filter(
                     (c) => c.parent.contentId === content.contentId && c.kind === COMMENT,

@@ -1,3 +1,5 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum ThreadType {
   Question,
   Suggestion,
@@ -5,3 +7,5 @@ export enum ThreadType {
   Discussion,
   Other,
 }
+
+registerEnumType(ThreadType, { name: 'ThreadType' });

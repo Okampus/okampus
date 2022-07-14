@@ -4,6 +4,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Exclude, Transform } from 'class-transformer';
 import { CONTENT_AUTHOR_EXCLUDED } from '../../shared/lib/constants';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
@@ -11,21 +12,27 @@ import { User } from '../../users/user.entity';
 // eslint-disable-next-line import/no-cycle
 import { Content } from './content.entity';
 
+@ObjectType()
 @Entity()
 export class ContentEdit extends BaseEntity {
+  @Field(() => Int)
   @PrimaryKey()
   contentEditId!: number;
 
+  @Field()
   @Property({ type: 'text' })
   body!: string;
 
+  @Field(() => Int)
   @Property()
   editOrder!: number;
 
+  @Field(() => Content)
   @ManyToOne({ onDelete: 'CASCADE' })
   @Exclude()
   parent!: Content;
 
+  @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })
   @Transform(({ obj }: { obj: ContentEdit }) => obj.editedBy.userId, { groups: [CONTENT_AUTHOR_EXCLUDED] })
   editedBy!: User;

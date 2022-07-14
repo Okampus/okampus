@@ -9,9 +9,11 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcrypt';
 import { Exclude, Expose } from 'class-transformer';
-import type { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
+// eslint-disable-next-line import/no-cycle
+import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { STATISTICS_INCLUDED } from '../shared/lib/constants';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
@@ -20,14 +22,18 @@ import { SchoolRole } from '../shared/modules/authorization/types/school-role.en
 // eslint-disable-next-line import/no-cycle
 import { Statistics } from '../statistics/statistics.entity';
 
+@ObjectType()
 @Entity()
 export class User extends BaseEntity {
+  @Field()
   @PrimaryKey()
   userId: string;
 
+  @Field()
   @Property({ type: 'text' })
   firstname!: string;
 
+  @Field()
   @Property({ type: 'text' })
   lastname!: string;
 
@@ -35,36 +41,46 @@ export class User extends BaseEntity {
   @Exclude()
   password?: string;
 
+  @Field()
   @Property({ type: 'text' })
   @Index()
   email!: string;
 
+  @Field(() => [BadgeUnlock], { nullable: true })
   @OneToMany('BadgeUnlock', 'user')
-  @Exclude()
+  // @Exclude()
   badges = new Collection<BadgeUnlock>(this);
 
   // TODO: Add full 'reputation' support
+  @Field(() => Int)
   @Property()
   reputation = 0;
 
+  @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
   avatar?: string | null;
 
+  @Field(() => [Role], { nullable: true })
   @Enum({ items: () => Role, array: true, default: [Role.User] })
   roles: Role[] = [Role.User];
 
+  @Field(() => SchoolRole)
   @Enum(() => SchoolRole)
   schoolRole!: SchoolRole;
 
+  @Field()
   @Property({ type: 'text' })
   color?: string;
 
+  @Field()
   @Property({ type: 'text' })
   signature?: string;
 
+  @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
   banner?: string | null;
 
+  @Field()
   @Property({ type: 'text' })
   shortDescription?: string;
 
@@ -72,6 +88,7 @@ export class User extends BaseEntity {
   @OneToOne(() => Statistics, stats => stats.user, { cascade: [Cascade.ALL] })
   statistics?: Statistics;
 
+  @Field(() => Int)
   @Property()
   points = 0;
 

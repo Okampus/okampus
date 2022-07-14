@@ -11,6 +11,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Exclude, Transform } from 'class-transformer';
 import { CONTENT_AUTHOR_EXCLUDED } from '../../shared/lib/constants';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
@@ -23,60 +24,77 @@ import { User } from '../../users/user.entity';
 // eslint-disable-next-line import/no-cycle
 import { ContentEdit } from './content-edit.entity';
 
+@ObjectType()
 @Entity()
 export class Content extends BaseEntity {
+  @Field(() => Int)
   @PrimaryKey()
   contentId!: number;
 
+  @Field()
   @Property({ type: 'text' })
   body!: string;
 
+  @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })
   @Transform(({ obj }: { obj: Content }) => obj.author.userId, { groups: [CONTENT_AUTHOR_EXCLUDED] })
   author!: User;
 
+  @Field(() => Int)
   @Property()
   upvotes = 0;
 
+  @Field(() => Int)
   @Property()
   @Transform(({ obj }: { obj: Content }) => (obj.kind === ContentKind.Comment ? undefined : obj.downvotes))
   downvotes = 0;
 
+  @Field(() => Int)
   @Property()
   votes = 0;
 
+  @Field(() => ContentKind)
   @Enum(() => ContentKind)
   @Index()
   kind!: ContentKind;
 
+  @Field(() => Content)
   @ManyToOne({ onDelete: 'CASCADE' })
   @Transform(({ obj }: { obj: Content }) => ({ contentId: obj.parent?.contentId, kind: obj.parent?.kind }))
   parent?: Content;
 
+  @Field(() => [ContentEdit], { nullable: true })
   @OneToMany(() => ContentEdit, edit => edit.parent)
   @TransformCollection()
-  @Exclude()
+  // @Exclude()
   edits = new Collection<ContentEdit>(this);
 
+  @Field(() => Int)
   @Enum(() => ContentMasterType)
   contentMasterType!: ContentMasterType;
 
+  @Field(() => ContentMaster)
   @ManyToOne({ onDelete: 'CASCADE' })
   @Exclude()
   contentMaster!: ContentMaster;
 
+  @Field(() => Int)
   @Property({ persist: false })
   contentMasterId!: number;
 
+  @Field(() => Boolean)
   @Property()
   hidden = false;
 
+  @Field(() => Boolean)
   @Property()
   isVisible = true;
 
+  @Field(() => Int)
   @Property()
   reportCount = 0;
 
+  @Field(() => ContentEdit)
   @OneToOne()
   lastEdit?: ContentEdit;
 

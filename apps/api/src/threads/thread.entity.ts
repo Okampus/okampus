@@ -7,6 +7,7 @@ import {
   OneToOne,
   Property,
 } from '@mikro-orm/core';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
 import type { Content } from '../contents/entities/content.entity';
 import { TransformCollection } from '../shared/lib/decorators/transform-collection.decorator';
@@ -27,8 +28,10 @@ const validatedContentTransformer = ({ value }: { value: Content }): DeepPartial
   }
   : null);
 
+@ObjectType()
 @Entity({ discriminatorValue: ContentMasterType.Thread })
 export class Thread extends ContentMaster {
+  @Field(() => ThreadType)
   @Enum(() => ThreadType)
   type!: ThreadType;
 

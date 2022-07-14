@@ -7,6 +7,7 @@ interface Config {
   baseUrl: string;
   nodeEnv: 'development' | 'production' | 'test';
   release: string;
+  enableHelmet: boolean;
   upload: {
     maxSize: number;
     path: string;
@@ -93,6 +94,11 @@ export const config = createProfiguration<Config>({
     default: '0.1.0-alpha.0',
     format: String,
     env: 'RELEASE',
+  },
+  enableHelmet: {
+    default: true,
+    format: Boolean,
+    env: 'ENABLE_HELMET',
   },
   upload: {
     maxSize: {

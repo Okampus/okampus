@@ -107,7 +107,7 @@ export class ContentsService {
         ...visibilityQuery,
         parent: { contentId: parentId },
       },
-      { populate: ['author', 'lastEdit', 'parent'], orderBy: serializeOrder(options?.sortBy) },
+      { populate: ['author', 'lastEdit', 'parent', 'edits'], orderBy: serializeOrder(options?.sortBy) },
     );
   }
 
@@ -125,12 +125,12 @@ export class ContentsService {
         ...visibilityQuery,
         parent: { contentId: parentId },
       },
-      { populate: ['author', 'lastEdit', 'parent', 'parent.parent'] },
+      { populate: ['author', 'lastEdit', 'parent', 'parent.parent', 'edits'] },
     );
   }
 
   public async findOne(user: User, contentId: number): Promise<Content> {
-    const content = await this.contentRepository.findOneOrFail({ contentId }, { populate: ['author', 'lastEdit', 'parent', 'parent.parent'] });
+    const content = await this.contentRepository.findOneOrFail({ contentId }, { populate: ['author', 'lastEdit', 'parent', 'parent.parent', 'edits'] });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, content);

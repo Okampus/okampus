@@ -1,3 +1,5 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum Colors {
   Amber = 'amber',
   Blue = 'blue',
@@ -22,3 +24,5 @@ export enum Colors {
   Yellow = 'yellow',
   Zinc = 'zinc',
 }
+
+registerEnumType(Colors, { name: 'Colors' });

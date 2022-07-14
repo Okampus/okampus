@@ -1,9 +1,13 @@
+import { join } from 'node:path';
 import { InjectRedis, RedisModule } from '@liaoliaots/nestjs-redis';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import type { ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriver } from '@nestjs/apollo';
 import type { MiddlewareConsumer } from '@nestjs/common';
 import { Module, RequestMethod } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { GraphQLModule } from '@nestjs/graphql';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SentryInterceptor, SentryModule } from '@ntegral/nestjs-sentry';
 import * as Sentry from '@sentry/node';
@@ -28,9 +32,11 @@ import { ReactionsModule } from './reactions/reactions.module';
 import { ReportsModule } from './reports/reports.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { config } from './shared/configs/config';
+
 import redisConfig from './shared/configs/redis.config';
 import sentryConfig, { sentryInterceptorConfig } from './shared/configs/sentry.config';
 import storageConfig from './shared/configs/storage.config';
+
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
 import { TypesenseFilter } from './shared/lib/filters/typesense.filter';
 import { TraceMiddleware } from './shared/lib/middlewares/trace.middleware';
@@ -41,6 +47,7 @@ import { SubjectsModule } from './subjects/subjects.module';
 import { TagsModule } from './tags/tags.module';
 import { TeamsModule } from './teams/teams.module';
 import { ThreadsModule } from './threads/threads.module';
+import { ThreadResolver } from './threads/threads.resolver';
 import { UsersModule } from './users/users.module';
 import { VotesModule } from './votes/votes.module';
 import { WikisModule } from './wiki/wikis.module';
@@ -78,6 +85,14 @@ import { WikisModule } from './wiki/wikis.module';
     UsersModule,
     VotesModule,
     WikisModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      bodyParserConfig: false,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
+      debug: true,
+      playground: true,
+    }),
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
@@ -85,6 +100,7 @@ import { WikisModule } from './wiki/wikis.module';
     { provide: APP_FILTER, useClass: ExceptionsFilter },
     { provide: APP_FILTER, useClass: TypesenseFilter },
     { provide: APP_INTERCEPTOR, useFactory: (): SentryInterceptor => new SentryInterceptor(sentryInterceptorConfig) },
+    ThreadResolver,
   ],
   controllers: [AppController],
   exports: [],

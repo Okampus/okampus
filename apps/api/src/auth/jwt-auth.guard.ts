@@ -1,6 +1,7 @@
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import { IS_PUBLIC_KEY } from '../shared/lib/constants';
 import type { AuthRequest } from '../shared/lib/types/interfaces/auth-request.interface';
@@ -32,7 +33,9 @@ export class JwtAuthGuard implements CanActivate {
     if (isPublic)
       return true;
 
-    const request = context.switchToHttp().getRequest<AuthRequest>();
+    const request: AuthRequest = context.getType() === 'http'
+      ? context.switchToHttp().getRequest<AuthRequest>()
+      : GqlExecutionContext.create(context).getContext().req;
     request.user = await this.handleRequest(request);
     return request.user !== null;
   }

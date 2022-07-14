@@ -9,6 +9,7 @@ import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as SentryTracing from '@sentry/tracing';
 import cookieParser from 'cookie-parser';
+import express from 'express';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { computedConfig, config } from './shared/configs/config';
@@ -51,9 +52,10 @@ async function bootstrap(): Promise<void> {
   if (config.get('sentry.enabled'))
     SentryTracing.addExtensionMethods();
 
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
-  app.use(helmet());
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { bodyParser: false });
+  app.use(express.json());
+  if (config.get('enableHelmet'))
+    app.use(helmet());
   app.use(loggerMiddleware);
   app.use(cookieParser(config.get('cookies.signature')));
 
