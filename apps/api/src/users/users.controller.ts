@@ -28,6 +28,7 @@ import type { PaginatedResult } from '../shared/modules/pagination';
 import { SearchDto } from '../shared/modules/search/search.dto';
 import type { Statistics } from '../statistics/statistics.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { GdprService } from './gdpr/gdpr.service';
 import { UserSearchService } from './user-search.service';
 import type { IndexedUser } from './user-search.service';
 import { User } from './user.entity';
@@ -40,9 +41,15 @@ export class UsersController {
     private readonly usersService: UsersService,
     private readonly profileImagesService: ProfileImagesService,
     private readonly filesService: FileUploadsService,
+    private readonly gdprService: GdprService,
 
     private readonly userSearchService: UserSearchService,
   ) {}
+
+  @Get('/gdpr-dump')
+  public async getGdprDump(@CurrentUser() user: User): Promise<object> {
+    return await this.gdprService.getGdprDump(user);
+  }
 
   @Get(':userId')
   public async findOne(@Param('userId') userId: string): Promise<User> {

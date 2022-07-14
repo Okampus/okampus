@@ -12,6 +12,7 @@ import { SchoolRole } from '../shared/modules/authorization/types/school-role.en
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { Statistics } from '../statistics/statistics.entity';
 import { StatisticsModule } from '../statistics/statistics.module';
+import { GdprModule } from './gdpr/gdpr.module';
 import { UserSearchService } from './user-search.service';
 import { User } from './user.entity';
 import { UsersController } from './users.controller';
@@ -24,6 +25,7 @@ import './user.subscriber';
     StatisticsModule,
     ProfileImagesModule,
     FileUploadsModule,
+    GdprModule,
   ],
   controllers: [UsersController],
   providers: [CaslAbilityFactory, UsersService, UserSearchService],
