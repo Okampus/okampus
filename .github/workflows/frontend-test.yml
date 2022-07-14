@@ -27,16 +27,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Cache node modules
-        uses: actions/cache@v3
-        id: cache
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ./node_modules/
-          key: ${{ runner.os }}-build-${{ hashFiles('./package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-
+      # - name: Cache node modules
+      #   uses: actions/cache@v3
+      #   id: cache
+      #   env:
+      #     cache-name: cache-node-modules
+      #   with:
+      #     path: ./node_modules/
+      #     key: ${{ runner.os }}-build-${{ hashFiles('./package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-build-
 
       - name: Install Node ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -44,7 +44,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        # if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Build project
@@ -58,16 +58,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Cache node modules
-        uses: actions/cache@v3
-        id: cache
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ./node_modules/
-          key: ${{ runner.os }}-build-${{ hashFiles('./package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-
+      # - name: Cache node modules
+      #   uses: actions/cache@v3
+      #   id: cache
+      #   env:
+      #     cache-name: cache-node-modules
+      #   with:
+      #     path: ./node_modules/
+      #     key: ${{ runner.os }}-build-${{ hashFiles('./package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-build-
 
       - name: Install Node v16
         uses: actions/setup-node@v3
@@ -75,7 +75,7 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        # if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Run ESLint
