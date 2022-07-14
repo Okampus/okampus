@@ -33,7 +33,6 @@ async function attemptTypesenseConnection(): Promise<void> {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function setupSwagger(app: NestExpressApplication): void {
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Okampus Web API')
@@ -78,9 +77,7 @@ async function bootstrap(): Promise<void> {
 
   app.set('trust proxy', false);
 
-  // FIXME: re-enable swagger when @nestjs/swagger is fixed
-  // See https://github.com/nestjs/swagger/issues/1979
-  // setupSwagger(app);
+  setupSwagger(app);
 
   await app.listen(config.get('port'));
   const url = await app.getUrl();
