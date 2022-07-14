@@ -1,8 +1,5 @@
-import { join } from 'node:path';
 import { InjectRedis, RedisModule } from '@liaoliaots/nestjs-redis';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import type { ApolloDriverConfig } from '@nestjs/apollo';
-import { ApolloDriver } from '@nestjs/apollo';
 import type { MiddlewareConsumer } from '@nestjs/common';
 import { Module, RequestMethod } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
@@ -31,8 +28,9 @@ import { MetricsModule } from './metrics/metrics.module';
 import { ReactionsModule } from './reactions/reactions.module';
 import { ReportsModule } from './reports/reports.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
-import { config } from './shared/configs/config';
 
+import { config } from './shared/configs/config';
+import graphqlConfig from './shared/configs/graphql.config';
 import redisConfig from './shared/configs/redis.config';
 import sentryConfig, { sentryInterceptorConfig } from './shared/configs/sentry.config';
 import storageConfig from './shared/configs/storage.config';
@@ -57,6 +55,7 @@ import { WikisModule } from './wiki/wikis.module';
     // Configs
     CaslModule,
     EventEmitterModule.forRoot(),
+    GraphQLModule.forRoot(graphqlConfig),
     MikroOrmModule.forRoot(),
     RedisModule.forRoot(redisConfig),
     S3Module.forRoot(storageConfig),
@@ -85,14 +84,6 @@ import { WikisModule } from './wiki/wikis.module';
     UsersModule,
     VotesModule,
     WikisModule,
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      bodyParserConfig: false,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      sortSchema: true,
-      debug: true,
-      playground: true,
-    }),
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
