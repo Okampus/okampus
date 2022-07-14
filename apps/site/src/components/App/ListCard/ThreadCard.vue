@@ -69,9 +69,12 @@
                 />
             </div>
 
-            <div class="text-sm text-justify line-clamp-2 text-1">
+            <router-link
+                :to="`/forum/post/${thread.contentMasterId}`"
+                class="text-sm text-justify line-clamp-2 text-1"
+            >
                 {{ thread.post.body }}
-            </div>
+            </router-link>
 
             <div class="flex gap-6 items-center mt-1 w-full text-xs">
                 <!-- <div class="flex gap-2 items-center">
