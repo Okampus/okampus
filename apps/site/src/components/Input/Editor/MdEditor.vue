@@ -35,8 +35,10 @@
 <script setup>
     import EasyMDE from 'easymde'
     import TipPopper from '@/components/UI/Tip/TipPopper.vue'
+    import { toRaw } from 'vue'
 
-    import { onMounted, ref, watchEffect } from 'vue'
+    // import { onMounted, ref, watchEffect } from 'vue'
+    import { onMounted, ref } from 'vue'
 
     const emit = defineEmits(['update:modelValue', 'cancel', 'send'])
     const props = defineProps({
@@ -73,14 +75,17 @@
     const editor = ref(null)
     const charCount = ref(props.modelValue ? props.modelValue.length : 0)
 
+    const mde = ref(null)
+    const setMde = (val) => toRaw(mde.value.codemirror).setValue(val)
+
     defineExpose({
         charCount,
         editor,
+        mde,
+        setMde,
     })
 
-    const mde = ref(null)
     onMounted(() => {
-        console.log('editor', editor.value)
         mde.value = new EasyMDE({
             autoDownloadFontAwesome: false,
             element: editor.value,
@@ -94,9 +99,9 @@
         })
     })
 
-    watchEffect(() => {
-        if (props.modelValue === '' && mde.value) {
-            mde.value.value('')
-        }
-    })
+    // watchEffect(() => {
+    //     if (props.modelValue === '' && mde.value) {
+    //         mde.value.value('')
+    //     }
+    // })
 </script>

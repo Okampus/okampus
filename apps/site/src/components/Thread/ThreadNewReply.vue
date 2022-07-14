@@ -20,7 +20,7 @@
             <ProfileAvatar :avatar="auth.user?.avatar" :name="fullname(auth.user)" />
             <div class="mt-2 ml-3 arrow-left bg-1" />
             <div class="block w-[calc(100%-6rem)]">
-                <MdEditor v-model="body" uid="new-reply" :sendable="true" @send="sendReply" />
+                <MdEditor ref="editor" v-model="body" uid="new-reply" :sendable="true" @send="sendReply" />
             </div>
         </div>
     </div>
@@ -58,6 +58,7 @@
     })
 
     const body = ref('')
+    const editor = ref(null)
 
     const sendReply = () => {
         threads
@@ -69,7 +70,8 @@
                 })
                 emitter.emit('scroll-to-anchor', `content-${content.contentId}`)
             })
-        body.value = ''
+
+        editor.value.setMde('')
     }
 
     const auth = useAuthStore()
