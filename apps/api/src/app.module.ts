@@ -1,7 +1,7 @@
 import { InjectRedis, RedisModule } from '@liaoliaots/nestjs-redis';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { MiddlewareConsumer } from '@nestjs/common';
-import { Module, RequestMethod } from '@nestjs/common';
+import { CacheModule, Module, RequestMethod } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -29,6 +29,7 @@ import { ReactionsModule } from './reactions/reactions.module';
 import { ReportsModule } from './reports/reports.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 
+import cacheConfig from './shared/configs/cache.config';
 import { config } from './shared/configs/config';
 import graphqlConfig from './shared/configs/graphql.config';
 import redisConfig from './shared/configs/redis.config';
@@ -53,6 +54,7 @@ import { WikisModule } from './wiki/wikis.module';
 @Module({
   imports: [
     // Configs
+    CacheModule.register(cacheConfig),
     CaslModule,
     EventEmitterModule.forRoot(),
     GraphQLModule.forRoot(graphqlConfig),
