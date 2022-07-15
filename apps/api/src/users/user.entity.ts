@@ -11,7 +11,7 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcrypt';
-import { Exclude, Expose } from 'class-transformer';
+import { Expose } from 'class-transformer';
 // eslint-disable-next-line import/no-cycle
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { STATISTICS_INCLUDED } from '../shared/lib/constants';
@@ -37,8 +37,8 @@ export class User extends BaseEntity {
   @Property({ type: 'text' })
   lastname!: string;
 
-  @Property({ type: 'text' })
-  @Exclude()
+  @Property({ type: 'text', hidden: true })
+  // @Exclude()
   password?: string;
 
   @Field()

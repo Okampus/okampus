@@ -3,8 +3,8 @@
 import 'multer';
 
 import path from 'node:path';
-import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
-import { NestFactory, Reflector } from '@nestjs/core';
+import { Logger, ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as SentryTracing from '@sentry/tracing';
@@ -66,7 +66,6 @@ async function bootstrap(): Promise<void> {
     forbidNonWhitelisted: true,
     whitelist: true,
   }));
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   if (!config.get('storage.enabled')) {
     app.useStaticAssets(

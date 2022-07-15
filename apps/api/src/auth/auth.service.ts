@@ -32,12 +32,16 @@ export class AuthService {
         { email: userQuery.toLowerCase() },
       ],
     });
-    if (user && !user.password)
-      throw new BadRequestException('Password is not set');
-    if (!user || !(await user.validatePassword(password)))
-      throw new UnauthorizedException('Invalid credentials');
+    if (user) {
+      const userPassword = this.userRepository.createQueryBuilder().select('password').where({ userId: user.userId });
+      if (!userPassword)
+        throw new BadRequestException('Password is not set');
+      if (!(await user.validatePassword(password)))
+        throw new UnauthorizedException('Invalid credentials');
 
-    return user;
+      return user;
+    }
+    throw new BadRequestException('Invalid credentials');
   }
 
   public async login(user: User): Promise<TokenResponse> {
