@@ -6,6 +6,7 @@
 
 # Compiled output
 /dist
+/dev-dist
 /node_modules
 
 # Logs
