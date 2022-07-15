@@ -13,6 +13,7 @@ RUN npm run build
 
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
 RUN chmod +x /wait
+RUN chown api:api /app/src/schema.gql
 
 EXPOSE 8081
 USER api
