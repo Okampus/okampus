@@ -1,6 +1,6 @@
 <template>
     <div class="flex gap-3 items-start">
-        <router-link :to="user.userId ? `/user/${user.userId}` : 'users'">
+        <router-link :to="user.userId ? `/user/${user.userId}` : 'users'" class="shrink-0">
             <ProfileAvatar :size="3" :avatar="user.avatar" :name="fullname(user)" />
         </router-link>
         <div class="flex flex-col">

@@ -1,6 +1,6 @@
 <template>
     <div class="flex gap-3 items-start">
-        <router-link :to="team.teamId ? `/club/${team.teamId}` : '/clubs'">
+        <router-link :to="team.teamId ? `/club/${team.teamId}` : '/clubs'" class="shrink-0">
             <ProfileAvatar :size="3" :avatar="team.avatar" :name="team.name" />
         </router-link>
         <div class="flex flex-col">
