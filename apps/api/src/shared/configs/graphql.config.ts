@@ -49,11 +49,11 @@ export default {
               if (decoded.aud !== 'ws')
                 throw new AuthenticationError('Invalid token');
 
-                try {
-                  await jwtService.verifyAsync<Token>(wsToken, authService.getTokenOptions('ws'));
-                } catch {
-                  throw new AuthenticationError('Invalid token');
-                }
+              try {
+                await jwtService.verifyAsync<Token>(wsToken, authService.getTokenOptions('ws'));
+              } catch {
+                throw new AuthenticationError('Falsified token');
+              }
 
               const user = await usersService.findOneById(decoded.sub);
               return { context: { user, headers: connectionParamsLowerKeys } };

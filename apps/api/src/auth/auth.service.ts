@@ -72,7 +72,7 @@ export class AuthService {
     try {
       await this.jwtService.verifyAsync<Token>(refreshToken, this.getTokenOptions('refresh'));
     } catch {
-      throw new UnauthorizedException('Invalid token');
+      throw new UnauthorizedException('Falsified token');
     }
 
     const user = await this.userRepository.findOneOrFail({ userId: decoded.sub });
@@ -90,7 +90,7 @@ export class AuthService {
     try {
       await this.jwtService.verifyAsync<Token>(accessToken, this.getTokenOptions('access'));
     } catch {
-      throw new UnauthorizedException('Invalid token');
+      throw new UnauthorizedException('Falsified token');
     }
 
     return this.getWsToken(decoded.sub);

@@ -69,7 +69,7 @@ export class JwtAuthGuard implements CanActivate {
     try {
       await this.jwtService.verifyAsync<Token>(token, this.authService.getTokenOptions('access'));
     } catch {
-      throw new UnauthorizedException('Invalid token');
+      throw new UnauthorizedException('Falsified token');
     }
 
     return await this.userService.findOneById(decoded.sub);
