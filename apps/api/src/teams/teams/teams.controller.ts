@@ -21,13 +21,13 @@ import { ProfileImage } from '../../files/profile-images/profile-image.entity';
 import { ProfileImagesService } from '../../files/profile-images/profile-images.service';
 import { simpleImageMimeTypeRegex } from '../../shared/configs/mime-type';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
-import { SerializerIncludeTeamMembersAndForm } from '../../shared/lib/decorators/serializers.decorator';
+// Import { SerializerIncludeTeamMembersAndForm } from '../../shared/lib/decorators/serializers.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { TypesenseEnabledGuard } from '../../shared/lib/guards/typesense-enabled.guard';
 import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
-import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
+import { normalizePagination } from '../../shared/modules/pagination';
 import { SearchDto } from '../../shared/modules/search/search.dto';
 import { User } from '../../users/user.entity';
 import { TeamListOptions } from '../dto/team-list-options.dto';
@@ -36,6 +36,7 @@ import { UpdateTeamDto } from './dto/update-team.dto';
 import type { IndexedTeam } from './team-search.service';
 import { TeamSearchService } from './team-search.service';
 import { Team } from './team.entity';
+import type { TeamInfo } from './teams.service';
 import { TeamsService } from './teams.service';
 
 @ApiTags('Teams')
@@ -51,7 +52,7 @@ export class TeamsController {
 
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Team))
-  @SerializerIncludeTeamMembersAndForm()
+  // @SerializerIncludeTeamMembersAndForm()
   public async create(
     @Body() createTagDto: CreateTeamDto,
     @CurrentUser() user: User,
@@ -61,11 +62,12 @@ export class TeamsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Team))
-  @SerializerIncludeTeamMembersAndForm()
+  // @SerializerIncludeTeamMembersAndForm()
   public async findAll(
     @Query() options: TeamListOptions,
-    ): Promise<PaginatedResult<Team>> {
-    return await this.teamsService.findAll(options, normalizePagination(options));
+    ): Promise<PaginatedResult<TeamInfo>> {
+    const teams = await this.teamsService.findAll(options, normalizePagination(options));
+    return teams;
   }
 
   @UseGuards(TypesenseEnabledGuard)
@@ -88,14 +90,14 @@ export class TeamsController {
 
   @Get(':teamId')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
-  @SerializerIncludeTeamMembersAndForm()
+  // @SerializerIncludeTeamMembersAndForm()
   public async findOne(@Param('teamId', ParseIntPipe) teamId: number): Promise<Team> {
     return await this.teamsService.findOne(teamId);
   }
 
   @Patch(':teamId')
   @CheckPolicies(ability => ability.can(Action.Update, Team))
-  @SerializerIncludeTeamMembersAndForm()
+  // @SerializerIncludeTeamMembersAndForm()
   public async update(
     @Param('teamId', ParseIntPipe) teamId: number,
     @Body() updateSubjectDto: UpdateTeamDto,
@@ -106,7 +108,7 @@ export class TeamsController {
 
   @Delete(':teamId')
   @CheckPolicies(ability => ability.can(Action.Delete, Team))
-  @SerializerIncludeTeamMembersAndForm()
+  // @SerializerIncludeTeamMembersAndForm()
   public async remove(@Param('teamId', ParseIntPipe) teamId: number): Promise<void> {
     await this.teamsService.remove(teamId);
   }

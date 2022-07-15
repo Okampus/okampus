@@ -5,7 +5,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { SerializerIncludeTeamForm, SerializerTeamMemberIncludeTeam } from '../../shared/lib/decorators/serializers.decorator';
+// Import { SerializerIncludeTeamForm, SerializerTeamMemberIncludeTeam }
+// from '../../shared/lib/decorators/serializers.decorator';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
@@ -17,7 +18,7 @@ import { TeamMembershipsService } from './memberships.service';
 
 @ApiTags('Team Memberships')
 @Controller()
-@SerializerIncludeTeamForm()
+// @SerializerIncludeTeamForm()
 export class TeamMembershipsController {
   constructor(
     private readonly membershipsService: TeamMembershipsService,
@@ -25,7 +26,7 @@ export class TeamMembershipsController {
 
   @Get(':userId')
   @CheckPolicies(ability => ability.can(Action.Read, User))
-  @SerializerTeamMemberIncludeTeam()
+  // @SerializerTeamMemberIncludeTeam()
   public async findOne(
     @Param('userId') userId: string,
   ): Promise<PaginatedResult<TeamMember>> {

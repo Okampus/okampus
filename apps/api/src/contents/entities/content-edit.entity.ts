@@ -6,7 +6,7 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
-import { CONTENT_AUTHOR_EXCLUDED } from '../../shared/lib/constants';
+// Import { CONTENT_AUTHOR_EXCLUDED } from '../../shared/lib/constants';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { User } from '../../users/user.entity';
 // eslint-disable-next-line import/no-cycle
@@ -34,7 +34,7 @@ export class ContentEdit extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })
-  @Transform(({ obj }: { obj: ContentEdit }) => obj.editedBy.userId, { groups: [CONTENT_AUTHOR_EXCLUDED] })
+  @Transform(({ obj }: { obj: ContentEdit }) => obj.editedBy.userId)
   editedBy!: User;
 
   constructor(options: {

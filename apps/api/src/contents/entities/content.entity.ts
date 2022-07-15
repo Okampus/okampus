@@ -13,7 +13,7 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
-import { CONTENT_AUTHOR_EXCLUDED } from '../../shared/lib/constants';
+// Import { CONTENT_AUTHOR_EXCLUDED } from '../../shared/lib/constants';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 // eslint-disable-next-line import/no-cycle
@@ -37,7 +37,7 @@ export class Content extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })
-  @Transform(({ obj }: { obj: Content }) => obj.author.userId, { groups: [CONTENT_AUTHOR_EXCLUDED] })
+  @Transform(({ obj }: { obj: Content }) => obj.author.userId)
   author!: User;
 
   @Field(() => Int)
@@ -64,7 +64,7 @@ export class Content extends BaseEntity {
   parent?: Content;
 
   @Field(() => [ContentEdit], { nullable: true })
-  @OneToMany(() => ContentEdit, edit => edit.parent)
+  @OneToMany('ContentEdit', 'parent')
   @TransformCollection()
   // @Exclude()
   edits = new Collection<ContentEdit>(this);

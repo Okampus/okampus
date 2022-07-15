@@ -8,8 +8,8 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Expose } from 'class-transformer';
-import { TEAM_FORM_INCLUDED, TEAM_MEMBERS_INCLUDED } from '../../shared/lib/constants';
+// Import { Expose } from 'class-transformer';
+// import { TEAM_FORM_INCLUDED, TEAM_MEMBERS_INCLUDED } from '../../shared/lib/constants';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
@@ -18,7 +18,7 @@ import { Role } from '../../shared/modules/authorization/types/role.enum';
 import type { User } from '../../users/user.entity';
 
 import type { TeamForm } from '../forms/team-form.entity';
-import { TeamMember } from '../members/team-member.entity';
+import type { TeamMember } from '../members/team-member.entity';
 
 const ADMIN_ROLES = new Set([TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasurer, TeamRole.Secretary]);
 
@@ -52,9 +52,9 @@ export class Team extends BaseEntity {
   @Property({ type: 'text' })
   banner?: string | null;
 
-  @OneToMany(() => TeamMember, member => member.team)
+  @OneToMany('TeamMember', 'team')
   @TransformCollection()
-  @Expose({ groups: [TEAM_MEMBERS_INCLUDED] })
+  // @Expose({ groups: [TEAM_MEMBERS_INCLUDED] })
   members = new Collection<TeamMember>(this);
 
   @Property({ type: 'text' })
@@ -64,7 +64,7 @@ export class Team extends BaseEntity {
   membershipRequestMessage?: string;
 
   @OneToOne('TeamForm')
-  @Expose({ groups: [TEAM_FORM_INCLUDED] })
+  // @Expose({ groups: [TEAM_FORM_INCLUDED] })
   membershipRequestForm?: TeamForm | null;
 
   constructor(options: {

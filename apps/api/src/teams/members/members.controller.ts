@@ -11,7 +11,8 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
-import { SerializerIncludeTeamForm, SerializerTeamMemberIncludeTeam } from '../../shared/lib/decorators/serializers.decorator';
+// Import { SerializerIncludeTeamForm, SerializerTeamMemberIncludeTeam }
+// from '../../shared/lib/decorators/serializers.decorator';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination, PaginateDto } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
@@ -25,7 +26,7 @@ import type { TeamMember } from './team-member.entity';
 
 @ApiTags('Team Members')
 @Controller()
-@SerializerIncludeTeamForm()
+// @SerializerIncludeTeamForm()
 export class TeamMembersController {
   constructor(
     private readonly membersService: TeamMembersService,
@@ -44,7 +45,7 @@ export class TeamMembersController {
 
   @Get(':teamId')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
-  @SerializerTeamMemberIncludeTeam()
+  // @SerializerTeamMemberIncludeTeam()
   public async findAllMembers(
     @Param('teamId', ParseIntPipe) teamId: number,
     @Query() query: PaginateDto,
@@ -54,7 +55,7 @@ export class TeamMembersController {
 
   @Patch(':teamId/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, Team))
-  @SerializerTeamMemberIncludeTeam()
+  // @SerializerTeamMemberIncludeTeam()
   public async updateMember(
     @Param('teamId', ParseIntPipe) teamId: number,
     @Param('userId') userId: string,

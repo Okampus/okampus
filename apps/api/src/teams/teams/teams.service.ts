@@ -16,6 +16,13 @@ import type { UpdateTeamDto } from './dto/update-team.dto';
 import { TeamSearchService } from './team-search.service';
 import { Team } from './team.entity';
 
+export interface TeamInfo extends Team {
+  memberCount?: number;
+  owner?: User | null;
+  secretary?: User | null;
+  treasurer?: User | null;
+}
+
 @Injectable()
 export class TeamsService {
   constructor(
@@ -50,7 +57,7 @@ export class TeamsService {
   public async findAll(
     filters: TeamsFilterDto,
     paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<Team>> {
+  ): Promise<PaginatedResult<TeamInfo>> {
     let options: FilterQuery<Team> = {};
     if (filters.kind)
       options = { kind: filters.kind };
@@ -76,21 +83,24 @@ export class TeamsService {
     );
 
     allTeams.items = allTeams.items.map((team) => {
-      // TODO: Maybe find a better way to add this property? Something virtual? computed on-the-fly? added elsewhere?
-      // @ts-expect-error: We add a new property to the object, but it's fine.
-      team.memberCount = Number(allMemberCounts.get(team.teamId) ?? 0);
+      const teamInfo = {
+        ...team,
+        memberCount: 0,
+        owner: null as (User | null),
+        treasurer: null as (User | null),
+        secretary: null as (User | null),
+      };
+      teamInfo.memberCount = Number(allMemberCounts.get(team.teamId) ?? 0);
 
       const predicate = (role: TeamRole) =>
         (member: TeamMember) => member.team.teamId === team.teamId && member.role === role;
-      // @ts-expect-error: We add a new property to the object, but it's fine.
-      team.owner = teamBoardMembers.find(predicate(TeamRole.Owner))?.user ?? null;
-      // @ts-expect-error: We add a new property to the object, but it's fine.
-      team.treasurer = teamBoardMembers.find(predicate(TeamRole.Treasurer))?.user ?? null;
-      // @ts-expect-error: We add a new property to the object, but it's fine.
-      team.secretary = teamBoardMembers.find(predicate(TeamRole.Secretary))?.user ?? null;
 
-      return team;
-    });
+      teamInfo.owner = teamBoardMembers.find(predicate(TeamRole.Owner))?.user ?? null;
+      teamInfo.treasurer = teamBoardMembers.find(predicate(TeamRole.Treasurer))?.user ?? null;
+      teamInfo.secretary = teamBoardMembers.find(predicate(TeamRole.Secretary))?.user ?? null;
+
+      return teamInfo;
+    }) as TeamInfo[];
     return allTeams;
   }
 

@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-import { SerializerIncludeTeamContacts } from '../shared/lib/decorators/serializers.decorator';
+// Import { SerializerIncludeTeamContacts } from '../shared/lib/decorators/serializers.decorator';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { Team } from '../teams/teams/team.entity';
 import { User } from '../users/user.entity';
@@ -25,7 +25,7 @@ import type { UserContactAccount } from './entities/user-contact-account.entity'
 
 @ApiTags('Contacts')
 @Controller({ path: 'contacts' })
-@SerializerIncludeTeamContacts()
+// @SerializerIncludeTeamContacts()
 export class ContactsController {
   constructor(
     private readonly contactsService: ContactsService,

@@ -13,7 +13,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-import { SerializerExcludeContentAuthor } from '../shared/lib/decorators/serializers.decorator';
+// Import { SerializerExcludeContentAuthor } from '../shared/lib/decorators/serializers.decorator';
 import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { normalizePagination } from '../shared/modules/pagination';
@@ -41,7 +41,7 @@ export class ThreadsController {
   ) {}
 
   @Post()
-  @SerializerExcludeContentAuthor()
+  // @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Create, Thread))
   public async create(@CurrentUser() user: User, @Body() createThreadDto: CreateThreadDto): Promise<Thread> {
     return await this.threadsService.create(user, createThreadDto);
@@ -73,7 +73,7 @@ export class ThreadsController {
   }
 
   @Get(':id')
-  @SerializerExcludeContentAuthor()
+  // @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Read, Thread))
   public async findOne(
     @CurrentUser() user: User,
@@ -92,7 +92,7 @@ export class ThreadsController {
   }
 
   @Patch(':id')
-  @SerializerExcludeContentAuthor()
+  // @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Update, Thread))
   public async update(
     @CurrentUser() user: User,
@@ -109,7 +109,7 @@ export class ThreadsController {
   }
 
   @Post(':id/tags')
-  @SerializerExcludeContentAuthor()
+  // @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Interact, Thread))
   public async addTags(
     @Param('id', ParseIntPipe) id: number,
@@ -128,7 +128,7 @@ export class ThreadsController {
   }
 
   @Post(':id/assignees')
-  @SerializerExcludeContentAuthor()
+  // @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Interact, Thread))
   public async addAssignees(
     @Param('id', ParseIntPipe) id: number,

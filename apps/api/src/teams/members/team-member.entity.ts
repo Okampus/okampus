@@ -6,8 +6,8 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Expose } from 'class-transformer';
-import { TEAMMEMBER_TEAM_INCLUDED } from '../../shared/lib/constants';
+// Import { Expose } from 'class-transformer';
+// Import { TEAMMEMBER_TEAM_INCLUDED } from '../../shared/lib/constants';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import { User } from '../../users/user.entity';
@@ -23,8 +23,8 @@ export class TeamMember extends BaseEntity {
   @Index()
   user!: User;
 
-  @ManyToOne('Team', { onDelete: 'CASCADE' })
-  @Expose({ groups: [TEAMMEMBER_TEAM_INCLUDED] })
+  @ManyToOne({ onDelete: 'CASCADE' })
+  // @Expose({ groups: [TEAMMEMBER_TEAM_INCLUDED] })
   @Index()
   team!: Team;
 
