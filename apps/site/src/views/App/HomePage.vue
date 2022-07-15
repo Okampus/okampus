@@ -34,9 +34,9 @@
                         >
                     </div>
 
-                    <div>
-                        N.B. Les seuls cookies utilisés par Okampus sont des tokens d'authentification
-                        nécessaires au fonctionnement de la plateforme.
+                    <div class="italic">
+                        Les cookies utilisés par Okampus sont des tokens d'authentification nécessaires à la
+                        gestion des permissions sur la plateforme.
                     </div>
 
                     <div
@@ -48,7 +48,7 @@
                         <vue-countdown
                             v-if="counting"
                             v-slot="{ totalSeconds }"
-                            :time="3000"
+                            :time="4000"
                             @end="onCountdownEnd"
                             >{{ totalSeconds }}</vue-countdown
                         >
