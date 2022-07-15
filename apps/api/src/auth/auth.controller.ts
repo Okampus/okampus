@@ -103,6 +103,15 @@ export class AuthController {
     new BadRequestException('Missing refresh token');
   }
 
+  @Post('ws-token')
+  public async wsToken(@Request() req: Req, @Response() res: Res): Promise<void> {
+    const wsToken = await this.authService.getWsTokenWithAccessToken(req.signedCookies?.accessToken as string);
+    if (wsToken)
+      res.cookie('wsToken', wsToken, { ...cookiePublicOptions, maxAge: config.get('tokens.wsTokenExpirationSeconds') * 1000 }).send();
+
+    new BadRequestException('Missing access token');
+  }
+
   @Get('me')
   public me(@Request() req: Req, @CurrentUser() user: User): TokenExpiringPayload & User {
     return this.addTokens(user, req.signedCookies as TokenExpiringPayload);

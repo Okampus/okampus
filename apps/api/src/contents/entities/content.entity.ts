@@ -12,7 +12,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Exclude, Transform } from 'class-transformer';
+import { Transform } from 'class-transformer';
 import { CONTENT_AUTHOR_EXCLUDED } from '../../shared/lib/constants';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
@@ -75,7 +75,7 @@ export class Content extends BaseEntity {
 
   @Field(() => ContentMaster)
   @ManyToOne({ onDelete: 'CASCADE' })
-  @Exclude()
+  // @Exclude()
   contentMaster!: ContentMaster;
 
   @Field(() => Int)

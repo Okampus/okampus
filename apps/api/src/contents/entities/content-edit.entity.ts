@@ -5,7 +5,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Exclude, Transform } from 'class-transformer';
+import { Transform } from 'class-transformer';
 import { CONTENT_AUTHOR_EXCLUDED } from '../../shared/lib/constants';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { User } from '../../users/user.entity';
@@ -29,7 +29,7 @@ export class ContentEdit extends BaseEntity {
 
   @Field(() => Content)
   @ManyToOne({ onDelete: 'CASCADE' })
-  @Exclude()
+  // @Exclude()
   parent!: Content;
 
   @Field(() => User)

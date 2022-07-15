@@ -3,24 +3,15 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
-import type { GqlWebsocketContext } from '../shared/configs/graphql.config';
 import { IS_PUBLIC_KEY } from '../shared/lib/constants';
-import type { CookiesAuthRequest } from '../shared/lib/types/interfaces/auth-request.interface';
+import type { CookiesAuthRequest, HeaderAuthRequest } from '../shared/lib/types/interfaces/auth-request.interface';
 import type { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
-
-export interface Token {
-  sub: string;
-  aud: string;
-}
-
-export interface GqlContext extends GqlWebsocketContext {
-  req: CookiesAuthRequest;
-}
+import type { Token } from './jwt-auth.guard';
 
 @Injectable()
-export class JwtAuthGuard implements CanActivate {
+export class WsAuthGuard implements CanActivate {
   reflector: Reflector;
 
   constructor(
@@ -31,31 +22,23 @@ export class JwtAuthGuard implements CanActivate {
     this.reflector = new Reflector();
   }
 
-  public async canActivate(ctx: ExecutionContext): Promise<boolean> {
+  public async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-      ctx.getHandler(),
-      ctx.getClass(),
+      context.getHandler(),
+      context.getClass(),
     ]);
     if (isPublic)
       return true;
 
-
-    if (ctx.getType() === 'http') {
-      const request = ctx.switchToHttp().getRequest<CookiesAuthRequest>();
-      request.user = await this.handleRequest(request);
-      return Boolean(request.user);
-    }
-    const { req, context }: GqlContext = GqlExecutionContext.create(ctx).getContext();
-
-    if (context?.headers)
-      return Boolean(context.user);
-
-    req.user = await this.handleRequest(req);
-    return Boolean(req.user);
+    const request: HeaderAuthRequest = context.getType() === 'http'
+      ? context.switchToHttp().getRequest<CookiesAuthRequest>()
+      : GqlExecutionContext.create(context).getContext().req;
+    request.user = await this.handleRequest(request);
+    return request.user !== null;
   }
 
-  private async handleRequest(request: CookiesAuthRequest): Promise<User> {
-    const token = request.signedCookies?.accessToken;
+  private async handleRequest(request: HeaderAuthRequest): Promise<User> {
+    const token = request.headers?.authorization;
     if (!token)
       throw new UnauthorizedException('Token not provided');
 
@@ -63,11 +46,12 @@ export class JwtAuthGuard implements CanActivate {
     if (!decoded)
       throw new BadRequestException('Failed to decode JWT');
 
-    if (decoded.aud !== 'http')
+    if (decoded.aud !== 'ws')
       throw new UnauthorizedException('Invalid token');
 
+
     try {
-      await this.jwtService.verifyAsync<Token>(token, this.authService.getTokenOptions('access'));
+      await this.jwtService.verifyAsync<Token>(token, this.authService.getTokenOptions('ws'));
     } catch {
       throw new UnauthorizedException('Invalid token');
     }

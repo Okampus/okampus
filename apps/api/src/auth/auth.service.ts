@@ -41,7 +41,7 @@ export class AuthService {
   }
 
   public async login(user: User): Promise<TokenResponse> {
-    const payload: Token = { sub: user.userId };
+    const payload: Token = { sub: user.userId, aud: 'http' };
 
     return {
       accessToken: await this.jwtService.signAsync(payload, this.getTokenOptions('access')),
@@ -53,10 +53,17 @@ export class AuthService {
     };
   }
 
+  public async getWsToken(userId: string): Promise<string> {
+    return await this.jwtService.signAsync({ sub: userId, aud: 'ws' }, this.getTokenOptions('ws'));
+  }
+
   public async loginWithRefreshToken(refreshToken: string): Promise<TokenResponse> {
     const decoded = this.jwtService.decode(refreshToken) as Token;
     if (!decoded)
       throw new BadRequestException('Failed to decode JWT');
+
+    if (decoded.aud !== 'http')
+      throw new UnauthorizedException('Invalid token');
 
     try {
       await this.jwtService.verifyAsync<Token>(refreshToken, this.getTokenOptions('refresh'));
@@ -68,7 +75,24 @@ export class AuthService {
     return this.login(user);
   }
 
-  public getTokenOptions(type: 'access' | 'refresh'): JwtSignOptions {
+  public async getWsTokenWithAccessToken(accessToken: string): Promise<string> {
+    const decoded = this.jwtService.decode(accessToken) as Token;
+    if (!decoded)
+      throw new BadRequestException('Failed to decode JWT');
+
+    if (decoded.aud !== 'http')
+      throw new UnauthorizedException('Invalid token');
+
+    try {
+      await this.jwtService.verifyAsync<Token>(accessToken, this.getTokenOptions('access'));
+    } catch {
+      throw new UnauthorizedException('Invalid token');
+    }
+
+    return this.getWsToken(decoded.sub);
+  }
+
+  public getTokenOptions(type: 'access' | 'refresh' | 'ws'): JwtSignOptions {
     const options: JwtSignOptions = {
       secret: config.get(`tokens.${type}TokenSecret`),
     };

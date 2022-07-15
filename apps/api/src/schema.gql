@@ -100,10 +100,22 @@ type ContentMaster {
   updatedAt: DateTime!
 }
 
+input CreateThreadDto {
+  assignees: [String!]
+  body: String!
+  tags: [String!]
+  title: String
+  type: ThreadType!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type Mutation {
+  addThread(thread: CreateThreadDto!): Thread!
+}
 
 type Query {
   thread(id: Int): [Thread!]!
@@ -123,6 +135,10 @@ enum SchoolRole {
   Teacher
 }
 
+type Subscription {
+  threadAdded: Thread!
+}
+
 type Tag {
   color: Colors!
   createdAt: DateTime!
@@ -132,8 +148,13 @@ type Tag {
 }
 
 type Thread {
+  adminValidatedBy: User
+  adminValidatedWith: Content
+  assignees: [User!]!
   contentMasterId: Int!
   createdAt: DateTime!
+  locked: Boolean!
+  opValidatedWith: Content
   post: Content!
   tags: [Tag!]!
   title: String!
