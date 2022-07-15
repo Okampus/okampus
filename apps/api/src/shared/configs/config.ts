@@ -4,7 +4,8 @@ import type { CookieOptions } from 'express';
 
 interface Config {
   port: number;
-  baseUrl: string;
+  frontendUrl: string;
+  baseDomain: string;
   nodeEnv: 'development' | 'production' | 'test';
   release: string;
   enableHelmet: boolean;
@@ -82,10 +83,15 @@ export const config = createProfiguration<Config>({
     format: Number,
     env: 'PORT',
   },
-  baseUrl: {
+  frontendUrl: {
     default: 'okampus.fr',
     format: String,
-    env: 'BASE_URL',
+    env: 'FRONTEND_URL',
+  },
+  baseDomain: {
+    default: 'okampus.fr',
+    format: String,
+    env: 'BASE_DOMAIN',
   },
   nodeEnv: {
     default: 'development',
@@ -342,15 +348,15 @@ export const config = createProfiguration<Config>({
 export const computedConfig = {
   apiUrl: config.get('nodeEnv') === 'development'
     ? `http://localhost:${config.get('port')}`
-    : `https://api.${config.get('baseUrl')}`,
+    : `https://api.${config.get('baseDomain')}`,
   frontendUrl: config.get('nodeEnv') === 'development'
     ? 'http://localhost:3000'
-    : `https://${config.get('baseUrl')}`,
+    : `https://${config.get('frontendUrl')}`,
 } as const;
 
 config.set('cookies.options', {
   signed: true,
   secure: config.get('nodeEnv') === 'production',
   httpOnly: true,
-  domain: config.get('nodeEnv') === 'production' ? config.get('baseUrl') : undefined,
+  domain: config.get('nodeEnv') === 'production' ? `.${config.get('baseDomain')}` : undefined,
 });

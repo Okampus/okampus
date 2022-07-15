@@ -33,7 +33,7 @@ export class MailService {
           author: content.author.getFullName(),
           threadTitle: content.contentMaster.title,
           message: content.body,
-          threadUrl: `${config.get('baseUrl')}/forum/post/${content.contentMasterId}`,
+          threadUrl: `${config.get('frontendUrl')}/forum/post/${content.contentMasterId}`,
         },
         to: this.toRecipient(participant),
       });
