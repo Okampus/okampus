@@ -84,12 +84,12 @@ export const config = createProfiguration<Config>({
     env: 'PORT',
   },
   frontendUrl: {
-    default: 'okampus.fr',
+    default: 'localhost',
     format: String,
     env: 'FRONTEND_URL',
   },
   baseDomain: {
-    default: 'okampus.fr',
+    default: 'localhost',
     format: String,
     env: 'BASE_DOMAIN',
   },
