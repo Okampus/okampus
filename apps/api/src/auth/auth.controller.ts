@@ -26,11 +26,6 @@ import { MyEfreiAuthGuard } from './myefrei-auth.guard';
 const cookieOptions = config.get('cookies.options');
 const cookiePublicOptions = { ...config.get('cookies.options'), httpOnly: false };
 
-interface TokenExpiringPayload {
-  accessTokenExpiresAt: string;
-  refreshTokenExpiresAt: string;
-}
-
 @ApiTags('Authentication')
 @Controller({ path: 'auth' })
 export class AuthController {
@@ -45,10 +40,6 @@ export class AuthController {
     const user = await this.authService.validatePassword(body.username, body.password);
     const login = await this.authService.login(user);
 
-    this.addTokens(user, {
-      accessTokenExpiresAt: login.accessTokenExpiresAt.toString(),
-      refreshTokenExpiresAt: login.refreshTokenExpiresAt.toString(),
-    });
     this.addAuthCookies(res, login);
 
     return user;
@@ -90,8 +81,10 @@ export class AuthController {
   @Public()
   @Get('logout')
   public logout(@Response({ passthrough: true }) res: Res): void {
-    res.cookie('accessToken', '', { ...cookieOptions, maxAge: 0 })
-      .cookie('refreshToken', '', { ...cookieOptions, maxAge: 0 });
+    res.cookie('accessToken', '', { ...cookiePublicOptions, maxAge: 0 })
+      .cookie('refreshToken', '', { ...cookiePublicOptions, maxAge: 0 })
+      .cookie('accessTokenExpiresAt', '', { ...cookiePublicOptions, maxAge: 0 })
+      .cookie('refreshTokenExpiresAt', '', { ...cookiePublicOptions, maxAge: 0 });
   }
 
   @Post('refresh-token')
@@ -113,16 +106,8 @@ export class AuthController {
   }
 
   @Get('me')
-  public me(@Request() req: Req, @CurrentUser() user: User): TokenExpiringPayload & User {
-    return this.addTokens(user, req.signedCookies as TokenExpiringPayload);
-  }
-
-  private addTokens(user: User, tokens: TokenExpiringPayload): TokenExpiringPayload & User {
-    // @ts-expect-error: This is a hack to make the login response work with the frontend.
-    user.accessTokenExpiresAt = tokens.accessTokenExpiresAt;
-    // @ts-expect-error: This is a hack to make the login response work with the frontend.
-    user.refreshTokenExpiresAt = tokens.refreshTokenExpiresAt;
-    return user as TokenExpiringPayload & User;
+  public me(@CurrentUser() user: User): User {
+    return user;
   }
 
   private addAuthCookies(res: Res, tokens: TokenResponse): Res {
