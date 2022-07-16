@@ -12,7 +12,8 @@ module.exports = {
     ],
     ignorePatterns: ['dist/*', 'node_modules/*'],
     rules: {
-        'vue/component-name-in-template-casing': ['error', 'PascalCase'],
+        'vue/no-multiple-template-root': 'error',
+        'vue/component-name-in-template-casing': 'error',
         'vue/arrow-spacing': ['error', { before: true, after: true }],
 
         'arrow-body-style': ['error', 'as-needed'],

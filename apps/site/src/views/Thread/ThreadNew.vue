@@ -1,125 +1,125 @@
 <template>
-    <AlertToast
-        v-model:active="success"
-        message="Création réussie ! Tu vas être redirigé sur ton post."
-        type="success"
-        @close="router.push(`/forum/post/${newThreadId}`)"
-    />
-    <CardPage>
-        <div class="flex flex-col space-y-5">
-            <div>
-                <div class="label-title">Titre</div>
-                <input
-                    v-model="formState.title"
-                    class="w-full input"
-                    type="text"
-                    name="title"
-                    placeholder="Titre clair, descriptif et complet"
-                    @input="v$.title.$touch"
-                />
-                <div v-if="v$.title.$error" class="text-red-500">
-                    {{
-                        `Un titre de post doit faire entre ${titleCharLimit[0]} et ${titleCharLimit[1]} caractères.`
-                    }}
-                </div>
-            </div>
-
-            <div>
-                <div class="label-title">
-                    Type de post
-                    <Popper :hover="true" placement="right">
-                        <i class="ml-1 text-sm text-slate-400 fas fa-info-circle" />
-                        <template #content>
-                            <div class="font-normal popover">
-                                <ul>
-                                    Types possibles:
-                                    <li v-for="(type, i) in threadTypes" :key="i" class="text-blue-700">
-                                        {{ type[$i18n.locale] }}
-                                    </li>
-                                </ul>
-                            </div>
-                        </template>
-                    </Popper>
-                </div>
-                <SelectInput
-                    v-model="formState.type"
-                    button-name="Type de post"
-                    :choices="threadTypes.map((type) => type[$i18n.locale])"
-                />
-                <div v-if="v$.type.$error" class="text-red-500">
-                    Choisissez un type de post dans la liste.
-                </div>
-            </div>
-
-            <div>
-                <div class="label-title">Contenu</div>
+    <div>
+        <AlertToast
+            v-model:active="success"
+            message="Création réussie ! Tu vas être redirigé sur ton post."
+            type="success"
+            @close="router.push(`/forum/post/${newThreadId}`)"
+        />
+        <CardPage>
+            <div class="flex flex-col space-y-5">
                 <div>
-                    <MdEditor
-                        ref="editor"
-                        v-model="formState.body"
-                        uid="new-thread"
-                        name="editor"
-                        mode="json"
-                        :char-count="editorCharLimit[1]"
-                        placeholder="Décris le plus précisément ce que tu souhaites faire et comment nous pouvons t'aider !"
-                        @input="v$.body.$touch"
-                    >
-                        <template #error>
-                            <div v-if="v$.body.$error" class="text-red-500">
-                                {{
-                                    `Une description de post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`
-                                }}
-                            </div>
-                        </template>
-                    </MdEditor>
+                    <div class="label-title">Titre</div>
+                    <input
+                        v-model="formState.title"
+                        class="w-full input"
+                        type="text"
+                        name="title"
+                        placeholder="Titre clair, descriptif et complet"
+                        @input="v$.title.$touch"
+                    />
+                    <div v-if="v$.title.$error" class="text-red-500">
+                        {{
+                            `Un titre de post doit faire entre ${titleCharLimit[0]} et ${titleCharLimit[1]} caractères.`
+                        }}
+                    </div>
                 </div>
-            </div>
-
-            <div>
-                <div class="label-title">
-                    Tags
-                    <Popper :hover="true">
-                        <i class="ml-1 text-sm text-slate-400 fas fa-info-circle" />
-                        <template #content>
-                            <div class="max-w-sm font-normal popover">
-                                Ajoute des tags décrivant le sujet de ton post <br />
-                                <div class="mt-1.5 text-sm">
-                                    <span class="font-bold">NOTE :</span> pour des tags de plusieurs mots,
-                                    <span class="underline">séparer les mots avec des tirets</span> plutôt que
-                                    des espaces
+                <div>
+                    <div class="label-title">
+                        Type de post
+                        <Popper :hover="true" placement="right">
+                            <i class="ml-1 text-sm text-slate-400 fas fa-info-circle" />
+                            <template #content>
+                                <div class="font-normal popover">
+                                    <ul>
+                                        Types possibles:
+                                        <li v-for="(type, i) in threadTypes" :key="i" class="text-blue-700">
+                                            {{ type[$i18n.locale] }}
+                                        </li>
+                                    </ul>
                                 </div>
-                            </div>
+                            </template>
+                        </Popper>
+                    </div>
+                    <SelectInput
+                        v-model="formState.type"
+                        button-name="Type de post"
+                        :choices="threadTypes.map((type) => type[$i18n.locale])"
+                    />
+                    <div v-if="v$.type.$error" class="text-red-500">
+                        Choisissez un type de post dans la liste.
+                    </div>
+                </div>
+                <div>
+                    <div class="label-title">Contenu</div>
+                    <div>
+                        <MdEditor
+                            ref="editor"
+                            v-model="formState.body"
+                            uid="new-thread"
+                            name="editor"
+                            mode="json"
+                            :char-count="editorCharLimit[1]"
+                            placeholder="Décris le plus précisément ce que tu souhaites faire et comment nous pouvons t'aider !"
+                            @input="v$.body.$touch"
+                        >
+                            <template #error>
+                                <div v-if="v$.body.$error" class="text-red-500">
+                                    {{
+                                        `Une description de post doit faire entre ${editorCharLimit[0]} et ${editorCharLimit[1]} caractères.`
+                                    }}
+                                </div>
+                            </template>
+                        </MdEditor>
+                    </div>
+                </div>
+                <div>
+                    <div class="label-title">
+                        Tags
+                        <Popper :hover="true">
+                            <i class="ml-1 text-sm text-slate-400 fas fa-info-circle" />
+                            <template #content>
+                                <div class="max-w-sm font-normal popover">
+                                    Ajoute des tags décrivant le sujet de ton post <br />
+                                    <div class="mt-1.5 text-sm">
+                                        <span class="font-bold">NOTE :</span> pour des tags de plusieurs mots,
+                                        <span class="underline">séparer les mots avec des tirets</span> plutôt
+                                        que des espaces
+                                    </div>
+                                </div>
+                            </template>
+                        </Popper>
+                    </div>
+                    <TagInput
+                        v-model="formState.tags"
+                        name="tags"
+                        placeholder="Entre le nom du tag puis appuie sur espace/entrée..."
+                        @error="tagsError = tagErrorEnum[$event][i18n.global.locale]"
+                        @input="tagsError = null"
+                        @keydown="v$.tags.$touch"
+                    />
+                    <div v-if="tagsError !== null" class="text-red-500">
+                        {{ tagsError || `Un post doit avoir au moins ${minTags} tags.` }}
+                    </div>
+                </div>
+                <div class="flex gap-4 items-center h-12">
+                    <button class="shrink-0 button-green" @click="submit">Valider mon post</button>
+                    <AlertInline
+                        v-if="error !== null"
+                        type="error"
+                        :dismissable="true"
+                        @dismiss="error = null"
+                    >
+                        <template #message>
+                            <span class="font-bold">Échec de création du post !</span>
+                            ({{ error || 'Erreur inconnue' }})
                         </template>
-                    </Popper>
+                    </AlertInline>
                 </div>
-
-                <TagInput
-                    v-model="formState.tags"
-                    name="tags"
-                    placeholder="Entre le nom du tag puis appuie sur espace/entrée..."
-                    @error="tagsError = tagErrorEnum[$event][i18n.global.locale]"
-                    @input="tagsError = null"
-                    @keydown="v$.tags.$touch"
-                />
-                <div v-if="tagsError !== null" class="text-red-500">
-                    {{ tagsError || `Un post doit avoir au moins ${minTags} tags.` }}
-                </div>
+                <!-- TODO: add second panel (dos and don'ts of a good post) -->
             </div>
-
-            <div class="flex gap-4 items-center h-12">
-                <button class="shrink-0 button-green" @click="submit">Valider mon post</button>
-
-                <AlertInline v-if="error !== null" type="error" :dismissable="true" @dismiss="error = null">
-                    <template #message>
-                        <span class="font-bold">Échec de création du post !</span>
-                        ({{ error || 'Erreur inconnue' }})
-                    </template>
-                </AlertInline>
-            </div>
-
-            <!-- TODO: add second panel (dos and don'ts of a good post) -->
-        </div>
-    </CardPage>
+        </CardPage>
+    </div>
 </template>
 
 <script setup>

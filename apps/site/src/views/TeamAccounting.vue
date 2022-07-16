@@ -1,42 +1,41 @@
 <template>
-    <!-- TODO: add filtering, tab, info panel -->
-    <div class="flex">
-        <h3 class="pl-10 mb-8 text-3xl font-bold text-0">Trésorerie</h3>
-        <div class="grow h-14 ..."></div>
-        <button class="shrink-0 button-green" @click="handleModal">
-            <p><i class="fas fa-plus"></i> Ajouter</p>
-        </button>
-    </div>
-    <!-- <ModalPopup :show="showModal" @close="handleModal = false">
-            <Transition name="fade">
-                <p>zj</p>
-            </Transition>
-        </ModalPopup> -->
-    <div class="grid grid-cols-3 gap-4 my-2">
-        <AccountingCard
-            v-for="el in data"
-            :key="el"
-            class="p-5"
-            :categorie-name="el.name"
-            :icon="el.icon"
-            :montant="el.price"
-            :color="el.color"
-        />
-    </div>
-
-    <HorizontalTabs v-model:tab="currentTab" :tabs="tabs" route-base="/test">
-        <DashboardCore :columns="tabs" />
-    </HorizontalTabs>
-
-    <!--
-            Creer un tableau pour le tbody ...
-            Il sera passer en props par :items
-
-            <button class="absolute inset-y-0 right-0 mr-8 w-16">
-                <i class="mx-3 fas fa-pencil" @click="handleCategorie" />
-                <i class="mx-3 fas fa-trash" @click="deleteCategorie" />
+    <div>
+        <!-- TODO: add filtering, tab, info panel -->
+        <div class="flex">
+            <h3 class="pl-10 mb-8 text-3xl font-bold text-0">Trésorerie</h3>
+            <div class="grow h-14 ..."></div>
+            <button class="shrink-0 button-green" @click="handleModal">
+                <p><i class="fas fa-plus"></i> Ajouter</p>
             </button>
-        -->
+        </div>
+        <!-- <ModalPopup :show="showModal" @close="handleModal = false">
+                <Transition name="fade">
+                    <p>zj</p>
+                </Transition>
+            </ModalPopup> -->
+        <div class="grid grid-cols-3 gap-4 my-2">
+            <AccountingCard
+                v-for="el in data"
+                :key="el"
+                class="p-5"
+                :categorie-name="el.name"
+                :icon="el.icon"
+                :montant="el.price"
+                :color="el.color"
+            />
+        </div>
+        <HorizontalTabs v-model:tab="currentTab" :tabs="tabs" route-base="/test">
+            <DashboardCore :columns="tabs" />
+        </HorizontalTabs>
+        <!--
+                Creer un tableau pour le tbody ...
+                Il sera passer en props par :items
+                <button class="absolute inset-y-0 right-0 mr-8 w-16">
+                    <i class="mx-3 fas fa-pencil" @click="handleCategorie" />
+                    <i class="mx-3 fas fa-trash" @click="deleteCategorie" />
+                </button>
+            -->
+    </div>
 </template>
 
 <script setup>

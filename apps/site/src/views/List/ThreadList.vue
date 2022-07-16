@@ -11,12 +11,9 @@
 <script setup>
     import ThreadCard from '@/components/App/ListCard/ThreadCard.vue'
     import ListPage from '@/views/App/ListPage.vue'
-
     import { THREAD } from '@/shared/types/resource-names.enum'
     import { useThreadsStore } from '@/store/threads.store'
-
     const threads = useThreadsStore()
-
     defineProps({
         routeBase: {
             type: String,

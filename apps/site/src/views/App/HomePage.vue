@@ -1,134 +1,141 @@
 <template>
-    <div class="relative h-content">
-        <Transition name="switch">
-            <div
-                v-if="!auth.agreedToTerms"
-                class="flex absolute top-0 left-0 z-10 justify-center items-center w-full h-full"
-            >
+    <div>
+        <div class="relative h-content">
+            <Transition name="switch">
                 <div
-                    class="flex flex-col gap-6 p-6 m-6 max-w-3xl max-h-[calc(100%-3rem)] rounded-xl bg-0 text-1"
+                    v-if="!auth.agreedToTerms"
+                    class="flex absolute top-0 left-0 z-10 justify-center items-center w-full h-full"
                 >
-                    <div class="mb-4">
-                        <div class="text-3xl font-semibold text-center text-0">
-                            Bienvenue sur la bêta de Okampus !
-                        </div>
-                    </div>
-
-                    <div class="text-xl">
-                        Rejoignez le
-                        <a class="mx-1 font-semibold underline link-blue" href="https://discord.gg/RSgTfjGQpU"
-                            >Discord Okampus</a
-                        >
-                        pour suivre l'avancée de la bêta, donner vos avis et échanger par rapport au projet.
-                    </div>
-
-                    <div class="text-xl">
-                        Retrouvez toutes les informations relatives aux données personnelles sur
-                        <router-link to="/rgpd" class="link-blue">https://okampus.fr/rgpd</router-link>.
-                    </div>
-
-                    <div>
-                        Pour toute question ou remarque ne pouvant pas être transmise sur Discord
-                        <a class="link-blue" href="mailto:bonjour@okampus.fr"
-                            >envoyez un mail à bonjour@okampus.fr</a
-                        >
-                    </div>
-
-                    <div class="italic">
-                        Les cookies utilisés par Okampus sont des tokens d'authentification nécessaires à la
-                        gestion des permissions sur la plateforme.
-                    </div>
-
                     <div
-                        class="mt-4 min-w-[3rem] text-lg text-center select-none button-blue"
-                        :class="counting ? 'opacity-50' : ''"
-                        :disabled="counting"
-                        @click="agreeToTerms"
+                        class="flex flex-col gap-6 p-6 m-6 max-w-3xl max-h-[calc(100%-3rem)] rounded-xl bg-0 text-1"
                     >
-                        <vue-countdown
-                            v-if="counting"
-                            v-slot="{ totalSeconds }"
-                            :time="4000"
-                            @end="onCountdownEnd"
-                            >{{ totalSeconds }}</vue-countdown
+                        <div class="mb-4">
+                            <div class="text-3xl font-semibold text-center text-0">
+                                Bienvenue sur la bêta de Okampus !
+                            </div>
+                        </div>
+                        <div class="text-xl">
+                            Rejoignez le
+                            <a
+                                class="mx-1 font-semibold underline link-blue"
+                                href="https://discord.gg/RSgTfjGQpU"
+                                >Discord Okampus</a
+                            >
+                            pour suivre l'avancée de la bêta, donner vos avis et échanger par rapport au
+                            projet.
+                        </div>
+                        <div class="text-xl">
+                            Retrouvez toutes les informations relatives aux données personnelles sur
+                            <router-link to="/rgpd" class="link-blue">https://okampus.fr/rgpd</router-link>.
+                        </div>
+                        <div>
+                            Pour toute question ou remarque ne pouvant pas être transmise sur Discord
+                            <a class="link-blue" href="mailto:bonjour@okampus.fr"
+                                >envoyez un mail à bonjour@okampus.fr</a
+                            >
+                        </div>
+                        <div class="italic">
+                            Les cookies utilisés par Okampus sont des tokens d'authentification nécessaires à
+                            la gestion des permissions sur la plateforme.
+                        </div>
+                        <div
+                            class="mt-4 min-w-[3rem] text-lg text-center select-none button-blue"
+                            :class="counting ? 'opacity-50' : ''"
+                            :disabled="counting"
+                            @click="agreeToTerms"
                         >
-                        <div v-else>J'ai pris connaissance de ces informations et souhaite continuer</div>
-                    </div>
-                </div>
-            </div>
-
-            <div
-                v-else-if="!auth.loggedIn"
-                class="flex absolute top-0 left-0 z-10 justify-center items-center w-full h-full"
-            >
-                <AppLogin class="absolute z-10 w-[80vw] opacity-90 md:w-[60vw] lg:w-[40vw]">
-                    <div class="flex flex-col items-center -mt-12 w-full">
-                        <div class="flex justify-center py-3 w-10/12 bg-indigo-700 rounded-xl opacity-100">
-                            <AppLogo :scale="1.6" only="dark" />
-                        </div>
-                        <div class="mt-8 text-2xl text-center">
-                            Connectez-vous pour accéder aux espaces 🔒
+                            <vue-countdown
+                                v-if="counting"
+                                v-slot="{ totalSeconds }"
+                                :time="4000"
+                                @end="onCountdownEnd"
+                                >{{ totalSeconds }}</vue-countdown
+                            >
+                            <div v-else>J'ai pris connaissance de ces informations et souhaite continuer</div>
                         </div>
                     </div>
-                </AppLogin>
-            </div>
-            <div v-else class="flex absolute top-0 left-0 z-10 justify-center items-center w-full h-full">
-                <div class="flex z-10 flex-col gap-4 p-4 min-w-[20rem] rounded-xl text-0 bg-opacity/80 bg-2">
-                    <div class="text-3xl">
-                        {{ new Date().getHours() > 19 || new Date().getHours() < 6 ? 'Bonsoir' : 'Bonjour' }}
-                        {{ auth.user.firstname.split(' ')[0] }} !
-                    </div>
-                    <router-link
-                        class="text-2xl text-blue-600 dark:text-blue-400 hover-arrow-right"
-                        to="/clubs"
-                        >Voir les associations<i class="ml-2 fa fa-arrow-right"
-                    /></router-link>
                 </div>
-            </div>
-        </Transition>
-    </div>
-    <Particles
-        id="tsparticles"
-        class="absolute top-0 w-full h-content"
-        :options="{
-            background: {
-                color: '#013',
-            },
-            particles: {
-                number: {
-                    value: 150,
+                <div
+                    v-else-if="!auth.loggedIn"
+                    class="flex absolute top-0 left-0 z-10 justify-center items-center w-full h-full"
+                >
+                    <AppLogin class="absolute z-10 w-[80vw] opacity-90 md:w-[60vw] lg:w-[40vw]">
+                        <div class="flex flex-col items-center -mt-12 w-full">
+                            <div
+                                class="flex justify-center py-3 w-10/12 bg-indigo-700 rounded-xl opacity-100"
+                            >
+                                <AppLogo :scale="1.6" only="dark" />
+                            </div>
+                            <div class="mt-8 text-2xl text-center">
+                                Connectez-vous pour accéder aux espaces 🔒
+                            </div>
+                        </div>
+                    </AppLogin>
+                </div>
+                <div v-else class="flex absolute top-0 left-0 z-10 justify-center items-center w-full h-full">
+                    <div
+                        class="flex z-10 flex-col gap-4 p-4 min-w-[20rem] rounded-xl text-0 bg-opacity/80 bg-2"
+                    >
+                        <div class="text-3xl">
+                            {{
+                                new Date().getHours() > 19 || new Date().getHours() < 6
+                                    ? 'Bonsoir'
+                                    : 'Bonjour'
+                            }}
+                            {{ auth.user.firstname.split(' ')[0] }} !
+                        </div>
+                        <router-link
+                            class="text-2xl text-blue-600 dark:text-blue-400 hover-arrow-right"
+                            to="/clubs"
+                            >Voir les associations<i class="ml-2 fa fa-arrow-right"
+                        /></router-link>
+                    </div>
+                </div>
+            </Transition>
+        </div>
+        <Particles
+            id="tsparticles"
+            class="absolute top-0 w-full h-content"
+            :options="{
+                background: {
+                    color: '#013',
                 },
-                move: {
-                    direction: 'none',
-                    enable: true,
-                    outModes: {
-                        default: 'out',
-                        /* out */
+                particles: {
+                    number: {
+                        value: 150,
                     },
-                    random: true,
-                    speed: 0.1,
-                    straight: false,
-                },
-                opacity: {
-                    animation: {
+                    move: {
+                        direction: 'none',
                         enable: true,
-                        speed: 1,
-                        sync: false,
+                        outModes: {
+                            default: 'out',
+                            /* out */
+                        },
+                        random: true,
+                        speed: 0.1,
+                        straight: false,
                     },
-                    value: {
-                        min: 0,
-                        max: 1,
+                    opacity: {
+                        animation: {
+                            enable: true,
+                            speed: 1,
+                            sync: false,
+                        },
+                        value: {
+                            min: 0,
+                            max: 1,
+                        },
+                    },
+                    size: {
+                        value: {
+                            min: 1,
+                            max: 3,
+                        },
                     },
                 },
-                size: {
-                    value: {
-                        min: 1,
-                        max: 3,
-                    },
-                },
-            },
-        }"
-    />
+            }"
+        />
+    </div>
 </template>
 
 <script setup>
