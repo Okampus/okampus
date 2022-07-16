@@ -66,7 +66,16 @@
         </div>
 
         <div class="py-4 centered-container">
-            <component :is="currentComponent" :club="club" />
+            <Transition mode="out-in" name="switch-fade">
+                <KeepAlive>
+                    <Suspense timeout="0">
+                        <component :is="currentComponent" :club="club" />
+                        <template #fallback>
+                            <AppLoader />
+                        </template>
+                    </Suspense>
+                </KeepAlive>
+            </Transition>
         </div>
     </div>
     <!-- <div>
@@ -196,12 +205,14 @@
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
 
     import ClubHomepage from '@/components/Profile/Club/ClubHomepage.vue'
-    import ClubDriveVue from '@/components/Profile/Club/ClubDrive.vue'
-    import ClubActivity from '@/components/Profile/Club/ClubActivity.vue'
-    import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
+    import ClubDriveAsync from '@/components/Profile/Club/ClubDriveAsync.vue'
+    import ClubActivityAsync from '@/components/Profile/Club/ClubActivityAsync.vue'
+    import ClubMembersAsync from '@/components/Profile/Club/ClubMembersAsync.vue'
 
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
     import ClubJoinForm from '@/components/Club/ClubJoinForm.vue'
+
+    import AppLoader from '@/components/App/AppLoader.vue'
 
     import { computed, ref, watchEffect } from 'vue'
 
@@ -256,9 +267,9 @@
 
     const components = {
         [HOME]: ClubHomepage,
-        [DRIVE]: ClubDriveVue,
-        [MEMBERS]: ClubMembers,
-        [ACTIVITY]: ClubActivity,
+        [DRIVE]: ClubDriveAsync,
+        [MEMBERS]: ClubMembersAsync,
+        [ACTIVITY]: ClubActivityAsync,
     }
 
     const currentComponent = computed(() => components[currentTab.value ?? DEFAULT_TAB.id])

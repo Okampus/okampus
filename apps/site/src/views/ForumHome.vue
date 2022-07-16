@@ -64,7 +64,9 @@
 
             <div class="flex flex-col gap-6 px-4 lg:hidden">
                 <AppTitle title="Tags récents" icon="fas fa-tags" />
-                <RecentTagList :swipe="true" />
+                <AppSuspense>
+                    <RecentTagListAsync :swipe="true" />
+                </AppSuspense>
             </div>
 
             <div class="flex flex-col gap-6">
@@ -95,7 +97,9 @@
 
                 <div class="flex flex-col gap-6">
                     <AppTitle title="Posts récents" icon="fas fa-signs-post" class="pl-4" />
-                    <RecentThreadList />
+                    <AppSuspense>
+                        <RecentThreadListAsync />
+                    </AppSuspense>
                 </div>
             </div>
         </div>
@@ -115,7 +119,9 @@
 
             <div class="hidden flex-col gap-6 lg:flex">
                 <AppTitle title="Tags récents" icon="fas fa-tags" class="pl-4" />
-                <RecentTagList />
+                <AppSuspense>
+                    <RecentTagListAsync />
+                </AppSuspense>
             </div>
         </div>
     </div>
@@ -125,9 +131,12 @@
     import ChatBubble from '@/assets/img/3dicons/chat-bubble.png'
     import AppTitle from '@/components/App/AppTitle.vue'
     import UserActivity from '@/components/App/General/UserActivity.vue'
-    import RecentThreadList from '@/components/List/RecentThreadList.vue'
     import SwiperButton from '@/components/App/Swiper/SwiperButton.vue'
-    import RecentTagList from '@/components/List/RecentTagList.vue'
+
+    import RecentThreadListAsync from '@/components/List/RecentThreadListAsync.vue'
+    import RecentTagListAsync from '@/components/List/RecentTagListAsync.vue'
+
+    import AppSuspense from '@/views/App/AppSuspense.vue'
 
     import anne from '@/assets/img/staff/anne.jpeg'
     import christophe from '@/assets/img/staff/christophe.jpeg'

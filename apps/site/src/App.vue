@@ -28,15 +28,29 @@
                     :class="{ 'pointer-events-none': hiding && collapsing != collapsed }"
                 >
                     <AppException v-if="error.code" :code="error.code" />
+                    <RouterView v-else v-slot="{ Component }">
+                        <template v-if="Component">
+                            <Transition mode="out-in" name="switch-fade">
+                                <KeepAlive>
+                                    <Suspense timeout="0">
+                                        <component :is="Component" />
+                                        <template #fallback>
+                                            <AppLoader />
+                                        </template>
+                                    </Suspense>
+                                </KeepAlive>
+                            </Transition>
+                        </template>
+                    </RouterView>
                     <!-- Experimenting with frontend caching / TODO: check for performance & memory leak issues -->
-                    <router-view v-else v-slot="{ Component, route }">
+                    <!-- <router-view v-else v-slot="{ Component, route }">
                         <keep-alive>
                             <component
                                 :is="Component"
                                 :key="route.meta.usePathKey ? route.path : undefined"
                             />
                         </keep-alive>
-                    </router-view>
+                    </router-view> -->
                 </div>
             </div>
 
@@ -56,6 +70,7 @@
     import FormLogin from '@/components/Form/FormLogin.vue'
     import AlertToast from '@/components/UI/Alert/AlertToast.vue'
     import AppException from '@/views/App/AppException.vue'
+    import AppLoader from './components/App/AppLoader.vue'
 
     import { useBreakpoints } from '@vueuse/core'
 

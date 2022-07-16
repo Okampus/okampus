@@ -1,6 +1,6 @@
 <template>
     <Transition mode="out-in" name="switch-fade">
-        <Suspense>
+        <Suspense timeout="0">
             <template #default>
                 <ListPageAsync :route-base="routeBase" :route-name="routeName" :callback="callback">
                     <template #default="{ items }">

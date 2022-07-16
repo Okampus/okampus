@@ -158,7 +158,7 @@ const routes = [
     {
         name: 'user',
         path: '/user/:userId',
-        component: () => import('@/views/Profile/ProfileUser.vue'),
+        component: () => import('@/views/Profile/ProfileUserAsync.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -167,7 +167,7 @@ const routes = [
     // {
     //     name: 'crous',
     //     path: '/crous/daily/:date',
-    //     component: () => import('@/views/Crous/CrousView.vue'),
+    //     component: () => import('@/views/Crous/CrousPage.vue'),
     //     meta: {
     //         requiresAuth: true,
     //     },
@@ -184,7 +184,7 @@ const routes = [
     {
         name: 'clubs',
         path: '/clubs/:tab*',
-        component: () => import('@/views/List/ClubList.vue'),
+        component: () => import('@/views/List/ClubListAsync.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -193,7 +193,7 @@ const routes = [
     {
         name: 'manage-club',
         path: '/club/:clubId/manage/:tab*',
-        component: () => import('@/views/Profile/ProfileManageClub.vue'),
+        component: () => import('@/views/Profile/ProfileManageClubAsync.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -202,7 +202,7 @@ const routes = [
     {
         name: 'club',
         path: '/club/:clubId/:tab*',
-        component: () => import('@/views/Profile/ProfileClub.vue'),
+        component: () => import('@/views/Profile/ProfileClubAsync.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -211,7 +211,7 @@ const routes = [
     {
         name: 'events',
         path: '/events',
-        component: () => import('@/views/List/EventList.vue'),
+        component: () => import('@/views/List/EventListAsync.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -220,7 +220,7 @@ const routes = [
     {
         name: 'event',
         path: '/events/:eventId',
-        component: () => import('@/views/TeamEvent.vue'),
+        component: () => import('@/views/TeamEventAsync.vue'),
         meta: {
             requiresAuth: true,
         },

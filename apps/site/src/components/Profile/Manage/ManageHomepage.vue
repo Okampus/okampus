@@ -1,134 +1,137 @@
 <template>
-    <div class="flex flex-col pb-4 rounded-xl shadow-md text-2 bg-2">
-        <div class="relative">
-            <AvatarCropper
-                v-model="editingBanner"
-                :upload-url="uploadTypeUrl('banner')"
-                :request-options="{ method: 'PUT', credentials: 'include' }"
-                :output-options="{ width: 990, height: 130 }"
-                :cropper-options="{ aspectRatio: 9.9 / 1.3, zoomable: true, movable: true }"
-                :labels="{ submit: 'Valider', cancel: 'Annuler' }"
-                @error="onUploadFailure"
-                @completed="(res) => onUploadSuccess(res, 'banner')"
-            />
-            <ProfileBanner
-                class="w-full h-36 rounded-t-lg"
-                :banner="club.banner"
-                :name="club.name"
-                :data="club.category"
-            />
-            <div
-                v-if="!club.banner"
-                class="flex absolute inset-0 flex-col justify-center items-center m-auto text-center text-white"
-            >
-                <div class="text-2xl font-semibold">{{ club.name }} n'a pas de bannière !</div>
-                <div>Ajoutez une bannière pour présenter {{ club.name }}.</div>
-            </div>
-            <div
-                class="flex absolute top-5 right-5 justify-center items-center w-10 h-10 bg-white rounded-full cursor-pointer"
-            >
-                <i
-                    class="text-xl text-blue-500 fa"
-                    :class="club.banner ? 'fa-pen' : 'fa-plus'"
-                    @click="editingBanner = true"
-                />
-            </div>
-        </div>
-        <div class="flex">
-            <div class="z-10 p-1 -mt-[3.5rem] ml-4 w-fit rounded-2xl bg-2">
+    <div>
+        <div class="flex flex-col pb-4 rounded-xl shadow-md text-2 bg-2">
+            <div class="relative">
                 <AvatarCropper
-                    v-model="editingAvatar"
-                    :upload-url="uploadTypeUrl('avatar')"
+                    v-model="editingBanner"
+                    :upload-url="uploadTypeUrl('banner')"
                     :request-options="{ method: 'PUT', credentials: 'include' }"
-                    :cropper-options="{ aspectRatio: 1, zoomable: true, movable: true }"
+                    :output-options="{ width: 990, height: 130 }"
+                    :cropper-options="{ aspectRatio: 9.9 / 1.3, zoomable: true, movable: true }"
                     :labels="{ submit: 'Valider', cancel: 'Annuler' }"
-                    upload-file-name="image.png"
                     @error="onUploadFailure"
-                    @completed="(res) => onUploadSuccess(res, 'avatar')"
+                    @completed="(res) => onUploadSuccess(res, 'banner')"
                 />
-                <ProfileAvatar :rounded-full="false" :avatar="club.avatar" :size="6" :name="club.name" />
+                <ProfileBanner
+                    class="w-full h-36 rounded-t-lg"
+                    :banner="club.banner"
+                    :name="club.name"
+                    :data="club.category"
+                />
+                <div
+                    v-if="!club.banner"
+                    class="flex absolute inset-0 flex-col justify-center items-center m-auto text-center text-white"
+                >
+                    <div class="text-2xl font-semibold">{{ club.name }} n'a pas de bannière !</div>
+                    <div>Ajoutez une bannière pour présenter {{ club.name }}.</div>
+                </div>
+                <div
+                    class="flex absolute top-5 right-5 justify-center items-center w-10 h-10 bg-white rounded-full cursor-pointer"
+                >
+                    <i
+                        class="text-xl text-blue-500 fa"
+                        :class="club.banner ? 'fa-pen' : 'fa-plus'"
+                        @click="editingBanner = true"
+                    />
+                </div>
             </div>
-
-            <div class="flex justify-between items-start w-full">
-                <button
-                    class="flex justify-center items-center mt-2 ml-2 w-8 h-8 text-lg rounded-full button-grey fa fa-camera"
-                    @click="editingAvatar = true"
-                />
-                <ModalPopup :show="editingPage" @close="editingPage = false">
-                    <template #default="{ close }">
-                        <div class="flex flex-col justify-center items-center py-8 px-10 card">
-                            <div class="text-2xl">Modification des informations de l'association</div>
-                            <FormKit
-                                id="update-club-data"
-                                ref="updateClubForm"
-                                v-model="clubData"
-                                :actions="false"
-                                form-class="flex flex-col mt-6 w-full max-w-xl"
-                                type="form"
-                                @submit="updateClubData"
-                            >
+            <div class="flex">
+                <div class="z-10 p-1 -mt-[3.5rem] ml-4 w-fit rounded-2xl bg-2">
+                    <AvatarCropper
+                        v-model="editingAvatar"
+                        :upload-url="uploadTypeUrl('avatar')"
+                        :request-options="{ method: 'PUT', credentials: 'include' }"
+                        :cropper-options="{ aspectRatio: 1, zoomable: true, movable: true }"
+                        :labels="{ submit: 'Valider', cancel: 'Annuler' }"
+                        upload-file-name="image.png"
+                        @error="onUploadFailure"
+                        @completed="(res) => onUploadSuccess(res, 'avatar')"
+                    />
+                    <ProfileAvatar :rounded-full="false" :avatar="club.avatar" :size="6" :name="club.name" />
+                </div>
+                <div class="flex justify-between items-start w-full">
+                    <button
+                        class="flex justify-center items-center mt-2 ml-2 w-8 h-8 text-lg rounded-full button-grey fa fa-camera"
+                        @click="editingAvatar = true"
+                    />
+                    <ModalPopup :show="editingPage" @close="editingPage = false">
+                        <template #default="{ close }">
+                            <div class="flex flex-col justify-center items-center py-8 px-10 card">
+                                <div class="text-2xl">Modification des informations de l'association</div>
                                 <FormKit
-                                    type="text"
-                                    name="shortDescription"
-                                    label="Description courte"
-                                    help="Description de l'association présente sous le nom"
-                                />
-                                <FormKit
-                                    type="textarea"
-                                    name="longDescription"
-                                    label="Description longue"
-                                    rows="6"
-                                    help="Description longue de l'association"
-                                />
-                            </FormKit>
-                            <div class="flex gap-4 self-end mt-6">
-                                <button class="button-grey" @click="close">Annuler</button>
-                                <button
-                                    class="button-blue"
-                                    @click="
-                                        () => {
-                                            updateClubForm.node.submit()
-                                            close()
-                                        }
-                                    "
+                                    id="update-club-data"
+                                    ref="updateClubForm"
+                                    v-model="clubData"
+                                    :actions="false"
+                                    form-class="flex flex-col mt-6 w-full max-w-xl"
+                                    type="form"
+                                    @submit="updateClubData"
                                 >
-                                    Valider
-                                </button>
+                                    <FormKit
+                                        type="text"
+                                        name="shortDescription"
+                                        label="Description courte"
+                                        help="Description de l'association présente sous le nom"
+                                    />
+                                    <FormKit
+                                        type="textarea"
+                                        name="longDescription"
+                                        label="Description longue"
+                                        rows="6"
+                                        help="Description longue de l'association"
+                                    />
+                                </FormKit>
+                                <div class="flex gap-4 self-end mt-6">
+                                    <button class="button-grey" @click="close">Annuler</button>
+                                    <button
+                                        class="button-blue"
+                                        @click="
+                                            () => {
+                                                updateClubForm.node.submit()
+                                                close()
+                                            }
+                                        "
+                                    >
+                                        Valider
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </template>
-                </ModalPopup>
-                <div class="mt-2 mr-4 text-base button-grey" @click="editingPage = true">Modifier</div>
+                        </template>
+                    </ModalPopup>
+                    <div class="mt-2 mr-4 text-base button-grey" @click="editingPage = true">Modifier</div>
+                </div>
+            </div>
+            <div class="flex flex-col grow ml-4">
+                <div class="flex justify-between">
+                    <div class="mt-1 text-2xl font-semibold text-0">{{ club.name }}</div>
+                </div>
+                <div class="mt-1 text-2">{{ club.shortDescription }}</div>
             </div>
         </div>
-        <div class="flex flex-col grow ml-4">
-            <div class="flex justify-between">
-                <div class="mt-1 text-2xl font-semibold text-0">{{ club.name }}</div>
+        <div class="flex flex-col gap-5 p-4 mt-4 rounded-xl shadow-md text-2 bg-2">
+            <div>
+                <div class="mb-2 text-lg font-semibold">Catégorie de l'association</div>
+                <router-link :to="`/clubs/${clubTypes[club.category].link}`">
+                    <LabelSimple class="bg-slate-600/40 hover:bg-slate-400/40">{{
+                        club.category
+                    }}</LabelSimple>
+                </router-link>
             </div>
-            <div class="mt-1 text-2">{{ club.shortDescription }}</div>
+            <div>
+                <div class="mb-2 text-lg font-semibold">Description de l'association</div>
+                <div class="text-2">{{ club.longDescription }}</div>
+            </div>
         </div>
-    </div>
-    <div class="flex flex-col gap-5 p-4 mt-4 rounded-xl shadow-md text-2 bg-2">
-        <div>
-            <div class="mb-2 text-lg font-semibold">Catégorie de l'association</div>
-            <router-link :to="`/clubs/${clubTypes[club.category].link}`">
-                <LabelSimple class="bg-slate-600/40 hover:bg-slate-400/40">{{ club.category }}</LabelSimple>
-            </router-link>
+        <div class="flex flex-col gap-5 p-4 mt-4 rounded-xl shadow-xl text-2 bg-2">
+            <div>
+                <div class="text-lg font-semibold">Formulaire d'inscription</div>
+                <p>
+                    Vous pouvez décider de modifier le formulaire nécessaire à la demande pour rejoindre votre
+                    association
+                </p>
+            </div>
+            <FormList :club-id="club.teamId" @submit="(formId) => changeForm(formId)"></FormList>
         </div>
-        <div>
-            <div class="mb-2 text-lg font-semibold">Description de l'association</div>
-            <div class="text-2">{{ club.longDescription }}</div>
-        </div>
-    </div>
-    <div class="flex flex-col gap-5 p-4 mt-4 rounded-xl shadow-xl text-2 bg-2">
-        <div>
-            <div class="text-lg font-semibold">Formulaire d'inscription</div>
-            <p>
-                Vous pouvez décider de modifier le formulaire nécessaire à la demande pour rejoindre votre
-                association
-            </p>
-        </div>
-        <FormList :club-id="club.teamId" @submit="(formId) => changeForm(formId)"></FormList>
     </div>
 </template>
 

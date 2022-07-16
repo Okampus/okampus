@@ -31,24 +31,32 @@
             </div>
         </div>
         <div class="flex flex-col centered-container-padded">
-            <!-- <keep-alive> -->
-            <component :is="currentComponent" :key="club" v-model:club="club" />
-            <!-- </keep-alive> -->
+            <Transition mode="out-in" name="switch-fade">
+                <KeepAlive>
+                    <Suspense timeout="0">
+                        <component :is="currentComponent" v-model:club="club" />
+                        <template #fallback>
+                            <AppLoader />
+                        </template>
+                    </Suspense>
+                </KeepAlive>
+            </Transition>
         </div>
     </div>
 </template>
 
 <script setup>
     import WIP from '@/views/App/WIP.vue'
-    import ManageHomepage from '@/components/Profile/Manage/ManageHomepage.vue'
-    import ManageRequests from '@/components/Profile/Manage/ManageRequests.vue'
-    import ManageDrive from '@/components/Profile/Manage/ManageDrive.vue'
 
-    import ManageActivity from '@/components/Profile/Manage/ManageActivity.vue'
+    import ManageHomepage from '@/components/Profile/Manage/ManageHomepage.vue'
+    import ManageRequestsAsync from '@/components/Profile/Manage/ManageRequestsAsync.vue'
+    import ManageDriveAsync from '@/components/Profile/Manage/ManageDriveAsync.vue'
+    import ManageActivityAsync from '@/components/Profile/Manage/ManageActivityAsync.vue'
 
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
+    import AppLoader from '@/components/App/AppLoader.vue'
 
     import { computed, ref, watchEffect } from 'vue'
 
@@ -114,10 +122,10 @@
 
     const components = {
         [HOME]: ManageHomepage,
-        [REQUESTS]: ManageRequests,
-        [DRIVE]: ManageDrive,
+        [REQUESTS]: ManageRequestsAsync,
+        [DRIVE]: ManageDriveAsync,
         [MEMBERS]: ClubMembersAsync,
-        [ACTIVITY]: ManageActivity,
+        [ACTIVITY]: ManageActivityAsync,
         [TREASURY]: WIP,
     }
     const currentComponent = computed(() => components[currentTab.value ?? DEFAULT_TAB.id])

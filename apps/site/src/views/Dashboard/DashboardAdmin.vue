@@ -8,38 +8,58 @@
             route-name="admin"
         >
         </HorizontalTabs>
-        <keep-alive> <component :is="components[currentTab]" /> </keep-alive>
+
+        <Transition mode="out-in" name="switch-fade">
+            <KeepAlive>
+                <Suspense timeout="0">
+                    <component :is="components[currentTab]" />
+                    <template #fallback>
+                        <AppLoader />
+                    </template>
+                </Suspense>
+            </KeepAlive>
+        </Transition>
     </div>
 </template>
 
 <script setup>
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
-    import DashboardOverview from '@/components/Dashboard/DashboardOverview.vue'
-    import DashboardClubs from '@/components/Dashboard/DashboardClubs.vue'
-    import DashboardReport from '@/components/Dashboard/DashboardReport.vue'
+    import DashboardOverviewAsync from '@/components/Dashboard/DashboardOverviewAsync.vue'
+    import DashboardClubsAsync from '@/components/Dashboard/DashboardClubsAsync.vue'
+    import DashboardReportAsync from '@/components/Dashboard/DashboardReportAsync.vue'
+
+    import AppLoader from '@/components/App/AppLoader.vue'
+
     import { ref } from 'vue'
-    import { useReportsStore } from '@/store/reports.store'
+
+    const OVERVIEW = 'overview'
+    const CLUBS = 'clubs'
+    const REPORTS = 'reports'
 
     // TODO: router: redirect unknown tabs to 404
     // TODO: add tab for user (and tabs for other contents)
     const tabs = [
         {
-            id: 'overview',
+            id: OVERVIEW,
             name: "Vue d'ensemble",
             icon: 'chart-bar',
         },
-        { id: 'clubs', name: 'Associations', icon: 'users' },
         {
-            id: 'reports',
+            id: CLUBS,
+            name: 'Associations',
+            icon: 'users',
+        },
+        {
+            id: REPORTS,
             name: 'Signalements',
             icon: 'flag',
         },
     ]
 
-    const currentTab = ref('overview')
-    const components = { 'overview': DashboardOverview, 'clubs': DashboardClubs, 'reports': DashboardReport }
-
-    const reports = useReportsStore()
-
-    reports.getReports({ page: 1 })
+    const currentTab = ref(OVERVIEW)
+    const components = {
+        [OVERVIEW]: DashboardOverviewAsync,
+        [CLUBS]: DashboardClubsAsync,
+        [REPORTS]: DashboardReportAsync,
+    }
 </script>
