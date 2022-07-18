@@ -83,9 +83,9 @@ export class BlogSearchService extends SearchService<Blog, IndexedBlog> {
   public toIndexedEntity(blog: Blog): IndexedBlog {
     return {
       title: blog.title,
-      body: removeMarkdown(blog.post!.body),
+      body: removeMarkdown(blog.post.body),
       category: blog.category,
-      author: blog.post!.author.getFullName(),
+      author: blog.post.author.getFullName(),
       tags: blog.tags.toArray().map(tag => tag.name),
       id: blog.contentMasterId.toString(),
     };
