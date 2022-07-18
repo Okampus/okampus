@@ -10,7 +10,6 @@ import { SentryInterceptor, SentryModule } from '@ntegral/nestjs-sentry';
 import * as Sentry from '@sentry/node';
 import RedisStore from 'connect-redis';
 import session from 'express-session';
-import { PubSub } from 'graphql-subscriptions';
 import Redis from 'ioredis';
 import { S3Module } from 'nestjs-s3';
 import passport from 'passport';
@@ -98,7 +97,6 @@ import { WikisModule } from './wiki/wikis.module';
     { provide: APP_FILTER, useClass: ExceptionsFilter },
     { provide: APP_FILTER, useClass: TypesenseFilter },
     { provide: APP_INTERCEPTOR, useFactory: (): SentryInterceptor => new SentryInterceptor(sentryInterceptorConfig) },
-    { provide: 'PUB_SUB', useValue: new PubSub() },
     ThreadResolver,
   ],
   controllers: [AppController],
