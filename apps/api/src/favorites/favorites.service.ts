@@ -27,6 +27,8 @@ export class FavoritesService {
     const favorite = new Favorite({ content, user });
     try {
       await this.favoriteRepository.persistAndFlush(favorite);
+      content.nFavorites++;
+      await this.contentRepository.flush();
     } catch (error) {
       if (error instanceof UniqueConstraintViolationException)
         throw new BadRequestException('Content is already favorited');
@@ -72,6 +74,21 @@ export class FavoritesService {
     return favorite;
   }
 
+  // Public async update(user: User, contentId: number, active: boolean): Promise<Favorite> {
+  //   const content = await this.contentRepository.findOneOrFail({ contentId });
+
+  //   const ability = this.caslAbilityFactory.createForUser(user);
+  //   assertPermissions(ability, Action.Interact, content);
+
+  //   const favorite = await this.favoriteRepository.findOneOrFail({ content, user });
+  //   if (favorite.active !== active) {
+  //     favorite.active = active;
+  //     await this.favoriteRepository.flush();
+  //   }
+
+  //   return favorite;
+  // }
+
   public async remove(contentId: number, user: User): Promise<void> {
     const favorite = await this.favoriteRepository.findOneOrFail({ content: { contentId }, user });
 
@@ -79,5 +96,9 @@ export class FavoritesService {
     assertPermissions(ability, Action.Interact, favorite.content);
 
     await this.favoriteRepository.removeAndFlush(favorite);
+
+    const content = await this.contentRepository.findOneOrFail({ contentId });
+    content.nFavorites--;
+    await this.contentRepository.flush();
   }
 }
