@@ -26,7 +26,6 @@ import { CreateThreadDto } from './dto/create-thread.dto';
 import { TagsDto } from './dto/tags.dto';
 import { ThreadListOptionsDto } from './dto/thread-list-options.dto';
 import { UpdateThreadDto } from './dto/update-thread.dto';
-import type { ThreadInteractions } from './thread-interactions.interface';
 import { ThreadSearchService } from './thread-search.service';
 import type { IndexedThread } from './thread-search.service';
 import { Thread } from './thread.entity';
@@ -41,7 +40,6 @@ export class ThreadsController {
   ) {}
 
   @Post()
-  // @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Create, Thread))
   public async create(@CurrentUser() user: User, @Body() createThreadDto: CreateThreadDto): Promise<Thread> {
     return await this.threadsService.create(user, createThreadDto);
@@ -73,7 +71,6 @@ export class ThreadsController {
   }
 
   @Get(':id')
-  // @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Read, Thread))
   public async findOne(
     @CurrentUser() user: User,
@@ -82,17 +79,7 @@ export class ThreadsController {
     return await this.threadsService.findOne(user, id);
   }
 
-  @Get(':id/interactions')
-  @CheckPolicies(ability => ability.can(Action.Read, Thread))
-  public async findInteractions(
-    @CurrentUser() user: User,
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<ThreadInteractions> {
-    return await this.threadsService.findInteractions(user, id);
-  }
-
   @Patch(':id')
-  // @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Update, Thread))
   public async update(
     @CurrentUser() user: User,
@@ -109,7 +96,6 @@ export class ThreadsController {
   }
 
   @Post(':id/tags')
-  // @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Interact, Thread))
   public async addTags(
     @Param('id', ParseIntPipe) id: number,
@@ -128,7 +114,6 @@ export class ThreadsController {
   }
 
   @Post(':id/assignees')
-  // @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Interact, Thread))
   public async addAssignees(
     @Param('id', ParseIntPipe) id: number,

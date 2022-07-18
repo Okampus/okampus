@@ -1,8 +1,7 @@
-import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { IsBoolean, IsOptional } from 'class-validator';
-import { CreateContentDto } from './create-content.dto';
+import { CreateOrphanContentDto } from './create-orphan-content.dto';
 
-export class UpdateContentDto extends PartialType(OmitType(CreateContentDto, ['contentMasterType', 'parentId'])) {
+export class UpdateContentDto extends CreateOrphanContentDto {
   @IsBoolean()
   @IsOptional()
   hidden: boolean;

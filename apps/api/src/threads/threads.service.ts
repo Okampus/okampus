@@ -3,15 +3,12 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { ContentsService } from '../contents/contents.service';
+
 import { Content } from '../contents/entities/content.entity';
-import { Favorite } from '../favorites/favorite.entity';
-import { Reaction } from '../reactions/reaction.entity';
-import { Report } from '../reports/report.entity';
 import type { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { Colors } from '../shared/lib/types/enums/colors.enum';
 import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
-import { ContentMasterType } from '../shared/lib/types/enums/content-master-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
@@ -20,11 +17,11 @@ import { serializeOrder } from '../shared/modules/sorting';
 import { ContentSortOrder } from '../shared/modules/sorting/sort-order.enum';
 import { Tag } from '../tags/tag.entity';
 import { User } from '../users/user.entity';
-import { Vote } from '../votes/vote.entity';
+import { Validation } from '../validations/entities/validation.entity';
+import { ValidationsService } from '../validations/validations.service';
 import type { CreateThreadDto } from './dto/create-thread.dto';
 import type { ThreadListOptionsDto } from './dto/thread-list-options.dto';
 import type { UpdateThreadDto } from './dto/update-thread.dto';
-import type { ThreadInteractions } from './thread-interactions.interface';
 import { ThreadSearchService } from './thread-search.service';
 import { Thread } from './thread.entity';
 
@@ -36,23 +33,24 @@ export class ThreadsService {
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
-    @InjectRepository(Favorite) private readonly favoriteRepository: BaseRepository<Favorite>,
-    @InjectRepository(Reaction) private readonly reactionRepository: BaseRepository<Reaction>,
-    @InjectRepository(Vote) private readonly voteRepository: BaseRepository<Vote>,
-    @InjectRepository(Report) private readonly reportRepository: BaseRepository<Report>,
+    @InjectRepository(Validation) private readonly validationRepository: BaseRepository<Validation>,
     private readonly contentsService: ContentsService,
     private readonly threadSearchService: ThreadSearchService,
+    private readonly validationsService: ValidationsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   public async create(user: User, createThreadDto: CreateThreadDto): Promise<Thread> {
-    const thread = new Thread(createThreadDto);
+    const post = await this.contentsService.createPost(user, createThreadDto);
+    const thread = new Thread({ ...createThreadDto, post });
+    post.contentMaster = thread;
 
     // TODO: Keep the original order
     const tags = await this.tagRepository.find({ name: { $in: createThreadDto.tags } });
     const newTags: Tag[] = createThreadDto.tags
       .filter(tag => !tags.some(t => t.name === tag))
       .map(name => new Tag({ name, color: Colors.Blue }));
+
     if (newTags.length > 0) {
       await this.tagRepository.persistAndFlush(newTags);
       thread.tags.add(...newTags);
@@ -61,14 +59,9 @@ export class ThreadsService {
 
     const assignees = await this.userRepository.find({ userId: { $in: createThreadDto.assignees } });
     thread.assignees.add(...assignees);
-
     thread.participants.add(user);
 
-    thread.post = await this.contentsService.createPost(user, thread, {
-      ...createThreadDto,
-      contentMasterType: ContentMasterType.Thread,
-    });
-
+    await this.contentRepository.flush();
     await this.threadRepository.persistAndFlush(thread);
     await this.threadSearchService.add(thread);
 
@@ -94,84 +87,36 @@ export class ThreadsService {
       query,
       {
         // TODO: Remove 'post.lastEdit' once we add activities
-        populate: ['post', 'tags', 'assignees', 'post.author', 'post.lastEdit', 'post.edits', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'],
+        populate: ['post', 'tags', 'assignees', 'post.author', 'post.lastEdit', 'post.edits', 'opValidation', 'adminValidations'],
         orderBy: { post: serializeOrder(options?.sortBy ?? ContentSortOrder.Newest) },
       },
     );
-    const threadIds = allThreads.items.map(thread => thread.contentMasterId);
 
-    const allReplies: Array<{ contentMaster: number; count: string }> = await this.contentRepository
-      .createQueryBuilder()
-      .count('contentId')
-      .select(['contentMaster', 'count'])
-      .where({ ...visibility, kind: ContentKind.Reply, contentMaster: { $in: threadIds } })
-      .groupBy('contentMaster')
-      .execute();
-    const allReplyCounts = new Map(allReplies.map(entry => [entry.contentMaster, entry.count]));
-
-    const favorites = await this.favoriteRepository.find({
-      user,
-      content: { kind: ContentKind.Post, contentMasterId: { $in: threadIds } },
-    });
-    const votes = await this.voteRepository.find({
-      user,
-      content: { kind: ContentKind.Post, contentMasterId: { $in: threadIds } },
-    });
-
-    allThreads.items = allThreads.items.map((thread) => {
-      // TODO: Maybe find a better way to add these properties? Something virtual? computed on-the-fly? added elsewhere?
-      // @ts-expect-error: We add a new property to the object, but it's fine.
-      thread.replyCount = Number(allReplyCounts.get(thread.contentMasterId) ?? 0);
-      // @ts-expect-error: We add a new property to the object, but it's fine.
-      thread.vote = votes.find(({ content }) => content.contentMasterId === thread.contentMasterId)?.value ?? 0;
-      // @ts-expect-error: We add a new property to the object, but it's fine.
-      thread.favorited = favorites.some(({ content }) => content.contentMasterId === thread.contentMasterId);
-      return thread;
-    });
     return allThreads;
   }
 
   public async findOne(user: User, contentMasterId: number): Promise<Thread> {
-    const thread: Thread & { contents?: Content[] } = await this.threadRepository.findOneOrFail(
+    const thread = await this.threadRepository.findOneOrFail(
       { contentMasterId },
-      { populate: ['post.edits', 'tags', 'assignees', 'participants', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
+      { populate: ['post.edits', 'tags', 'assignees', 'participants', 'opValidation', 'adminValidations'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, thread);
 
-    const contents = await this.contentRepository.find(
-      { contentMaster: thread },
-      { populate: ['author', 'lastEdit'] },
-    );
-    thread.contents = contents;
+    // Const contents = await this.contentRepository.find(
+    //   { contentMaster: thread },
+    //   { populate: ['author', 'lastEdit'] },
+    // );
+    // thread.contents = contents;
 
     return thread;
-  }
-
-  public async findInteractions(user: User, contentMasterId: number): Promise<ThreadInteractions> {
-    const thread = await this.threadRepository.findOneOrFail({ contentMasterId }, { populate: ['post'] });
-
-    const ability = this.caslAbilityFactory.createForUser(user);
-    assertPermissions(ability, Action.Read, thread);
-
-    const favorites = await this.favoriteRepository.find({ user, content: { contentMaster: thread } });
-    const reactions = await this.reactionRepository.find({ user, content: { contentMaster: thread } });
-    const votes = await this.voteRepository.find({ user, content: { contentMaster: thread } });
-    const reports = await this.reportRepository.find({ reporter: user, content: { contentMaster: thread } });
-
-    return {
-      favorites,
-      reactions,
-      votes,
-      reports,
-    };
   }
 
   public async update(user: User, contentMasterId: number, updateThreadDto: UpdateThreadDto): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
       { contentMasterId },
-      { populate: ['post', 'post.lastEdit', 'tags', 'assignees', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
+      { populate: ['post', 'post.lastEdit', 'tags', 'assignees', 'opValidation', 'adminValidations'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -184,8 +129,7 @@ export class ThreadsService {
     const {
       tags: wantedTags,
       assignees: wantedAssignees,
-      opValidatedWith,
-      adminValidatedWith,
+      validatedWithContent,
       ...updatedProps
     } = updateThreadDto;
 
@@ -207,21 +151,22 @@ export class ThreadsService {
       }
     }
 
-    const validationReplyQuery = { kind: ContentKind.Reply, contentMaster: { contentMasterId } };
+    if (typeof validatedWithContent === 'number') {
+      const content = await this.contentRepository.findOneOrFail({
+        contentId: validatedWithContent,
+        kind: ContentKind.Reply,
+        contentMaster: { contentMasterId },
+      });
 
-    if (typeof opValidatedWith !== 'undefined') {
-      thread.opValidatedWith = opValidatedWith
-        ? await this.contentRepository.findOneOrFail({ contentId: opValidatedWith, ...validationReplyQuery })
-        : null;
-    }
+      if (content.author.userId === user.userId) {
+        if (thread.opValidation)
+          await this.validationsService.remove(thread.opValidation?.content.contentId, user);
 
-    if (typeof adminValidatedWith !== 'undefined') {
-      thread.adminValidatedWith = adminValidatedWith
-        ? await this.contentRepository.findOneOrFail({ contentId: adminValidatedWith, ...validationReplyQuery })
-        : null;
-      thread.adminValidatedBy = adminValidatedWith
-        ? user
-        : null;
+        thread.opValidation = await this.validationsService.create(validatedWithContent, user);
+      } else {
+        thread.adminValidations.add(await this.validationsService.create(validatedWithContent, user));
+      }
+      await this.validationRepository.flush();
     }
 
     if (updatedProps)
@@ -245,7 +190,7 @@ export class ThreadsService {
   public async addTags(contentMasterId: number, newTags: string[]): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
       { contentMasterId },
-      { populate: ['post', 'tags', 'assignees', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
+      { populate: ['post', 'tags', 'assignees', 'opValidation', 'adminValidations'] },
     );
 
     const tags = await this.tagRepository.find({ name: { $in: newTags } });
@@ -265,7 +210,7 @@ export class ThreadsService {
   public async addAssignees(contentMasterId: number, assignees: string[]): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
       { contentMasterId },
-      { populate: ['post', 'tags', 'assignees', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'] },
+      { populate: ['post', 'tags', 'assignees', 'opValidation', 'adminValidations'] },
     );
 
     const users = await this.userRepository.find({ userId: { $in: assignees } });

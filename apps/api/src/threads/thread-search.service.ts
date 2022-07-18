@@ -81,8 +81,8 @@ export class ThreadSearchService extends SearchService<Thread, IndexedThread> {
   public toIndexedEntity(thread: Thread): IndexedThread {
     return {
       title: thread.title,
-      body: removeMarkdown(thread.post!.body),
-      author: thread.post!.author.getFullName(),
+      body: removeMarkdown(thread.post.body),
+      author: thread.post.author.getFullName(),
       tags: thread.tags.toArray().map(tag => tag.name),
       id: thread.contentMasterId.toString(),
     };

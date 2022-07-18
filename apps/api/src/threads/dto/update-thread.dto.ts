@@ -9,9 +9,5 @@ export class UpdateThreadDto extends PartialType(CreateThreadDto) {
 
   @IsInt()
   @IsOptional()
-  opValidatedWith?: number;
-
-  @IsInt()
-  @IsOptional()
-  adminValidatedWith?: number;
+  validatedWithContent?: number;
 }

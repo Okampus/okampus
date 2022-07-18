@@ -3,7 +3,7 @@ import type { TriggerRecipientsType } from '@novu/node';
 import { Novu } from '@novu/node';
 import type { Content } from '../../../contents/entities/content.entity';
 import type { User } from '../../../users/user.entity';
-import { config } from '../../configs/config';
+import { computedConfig, config } from '../../configs/config';
 
 @Injectable()
 export class MailService {
@@ -18,25 +18,27 @@ export class MailService {
     if (!config.get('novu.enabled'))
       return;
 
-    const participants = content.contentMaster.participants.isInitialized()
-      ? content.contentMaster.participants.getItems()
-      : await content.contentMaster.participants.loadItems();
+    if (content.contentMaster) {
+      const participants = content.contentMaster.participants.isInitialized()
+        ? content.contentMaster.participants.getItems()
+        : await content.contentMaster.participants.loadItems();
 
-    for (const participant of participants) {
-      if (participant.email === content.author.email)
-        continue;
+      for (const participant of participants) {
+        if (participant.email === content.author.email)
+          continue;
 
-      // eslint-disable-next-line no-await-in-loop
-      await this.novu!.trigger('new-thread-content', {
-        payload: {
-          firstname: participant.firstname,
-          author: content.author.getFullName(),
-          threadTitle: content.contentMaster.title,
-          message: content.body,
-          threadUrl: `${config.get('frontendUrl')}/forum/post/${content.contentMasterId}`,
-        },
-        to: this.toRecipient(participant),
-      });
+        // eslint-disable-next-line no-await-in-loop
+        await this.novu!.trigger('new-thread-content', {
+          payload: {
+            firstname: participant.firstname,
+            author: content.author.getFullName(),
+            threadTitle: content.contentMaster.title,
+            message: content.body,
+            threadUrl: `${computedConfig.frontendUrl}/forum/post/${content.contentMaster.contentMasterId}`,
+          },
+          to: this.toRecipient(participant),
+        });
+      }
     }
   }
 
