@@ -5,41 +5,38 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Content } from '../contents/entities/content.entity';
-import { BaseEntity } from '../shared/lib/entities/base.entity';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import type { Content } from '../contents/entities/content.entity';
+import { BaseContentInteraction } from '../shared/lib/entities/base-content-interaction.entity';
 import { User } from '../users/user.entity';
 
+@ObjectType()
 @Entity()
-export class Report extends BaseEntity {
+export class Report extends BaseContentInteraction {
+  @Field(() => Int)
   @PrimaryKey()
   reportId!: number;
 
-  @ManyToOne()
-  @Index()
-  reporter!: User;
-
+  @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })
   @Index()
-  user!: User;
+  target!: User;
 
-  @ManyToOne({ onDelete: 'CASCADE' })
-  @Index()
-  content?: Content;
-
+  @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
   reason?: string;
 
   constructor(options: {
     user: User;
-    reporter: User;
-    content?: Content | null;
+    target: User;
+    content: Content;
     reason?: string | null;
   }) {
     super();
+    this.content = options.content;
+    this.contentMaster = options.content.contentMaster;
     this.user = options.user;
-    this.reporter = options.reporter;
-    if (options.content)
-      this.content = options.content;
+    this.target = options.target;
     if (options.reason)
       this.reason = options.reason;
   }

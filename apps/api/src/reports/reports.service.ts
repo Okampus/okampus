@@ -25,25 +25,21 @@ export class ReportsService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async create(userId: string, reporter: User, createReportDto: CreateReportDto): Promise<Report> {
-    const user = await this.userRepository.findOneOrFail({ userId });
+  public async create(targetUserId: string, user: User, createReportDto: CreateReportDto): Promise<Report> {
+    const target = await this.userRepository.findOneOrFail({ userId: targetUserId });
+    const content = await this.contentRepository.findOneOrFail({ contentId: createReportDto.contentId });
 
-    let content: Content | null = null;
-    if (createReportDto.contentId) {
-      content = await this.contentRepository.findOneOrFail({ contentId: createReportDto.contentId });
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Report, content);
 
-      const ability = this.caslAbilityFactory.createForUser(reporter);
-      assertPermissions(ability, Action.Report, content);
-    }
-
-    const reports = await this.reportRepository.count({ content, user, reporter });
+    const reports = await this.reportRepository.count({ content, user, target });
     if (reports !== 0)
       throw new BadRequestException('User already reported through this content or no content linked to this user.');
 
     const report = new Report({
       ...createReportDto,
       content,
-      reporter,
+      target,
       user,
     });
 
@@ -51,7 +47,7 @@ export class ReportsService {
     await this.reportSearchService.add(report);
 
     if (content) {
-      content.reportCount++;
+      content.nReports++;
       await this.contentRepository.flush();
     }
 
@@ -65,9 +61,9 @@ export class ReportsService {
   ): Promise<PaginatedResult<Report>> {
     let options: FilterQuery<Report> = {};
     if (filters.byUserId)
-      options = { ...options, reporter: { userId: filters.byUserId } };
+      options = { ...options, user: { userId: filters.byUserId } };
     if (filters.forUserId)
-      options = { ...options, user: { userId: filters.forUserId } };
+      options = { ...options, target: { userId: filters.forUserId } };
     if (filters.throughContentId) {
       const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
       const visibilityQuery = canSeeHiddenContent ? {} : { isVisible: true };
@@ -77,12 +73,12 @@ export class ReportsService {
     return await this.reportRepository.findWithPagination(
       paginationOptions,
       options,
-      { populate: ['content', 'user'], orderBy: { createdAt: 'DESC' } },
+      { populate: ['content', 'target'], orderBy: { createdAt: 'DESC' } },
     );
   }
 
   public async findOne(user: User, reportId: number): Promise<Report> {
-    const report = await this.reportRepository.findOneOrFail({ reportId }, { populate: ['content', 'user', 'reporter'] });
+    const report = await this.reportRepository.findOneOrFail({ reportId }, { populate: ['content', 'user', 'target'] });
 
     if (report.content) {
       const ability = this.caslAbilityFactory.createForUser(user);
@@ -95,7 +91,7 @@ export class ReportsService {
   public async update(user: User, reportId: number, updateReportDto: UpdateReportDto): Promise<Report> {
     const report = await this.reportRepository.findOneOrFail(
       { reportId },
-      { populate: ['content', 'user', 'reporter'] },
+      { populate: ['content', 'user', 'target'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -119,7 +115,7 @@ export class ReportsService {
     await this.reportSearchService.remove(report.reportId.toString());
 
     if (report.content) {
-      report.content.reportCount--;
+      report.content.nReports--;
       await this.contentRepository.flush();
     }
   }

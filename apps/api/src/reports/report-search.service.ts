@@ -11,8 +11,8 @@ import { authorizeNotFound, SearchService } from '../shared/modules/search/searc
 import { Report } from './report.entity';
 
 export interface IndexedReport {
-  reporter: string;
   user: string;
+  target: string;
   reason?: string;
   body?: string;
   id: string;
@@ -24,8 +24,8 @@ export class ReportSearchService extends SearchService<Report, IndexedReport> {
   private static readonly schema: CollectionCreateSchema = {
     name: 'reports',
     fields: [
-      { name: 'reporter', type: 'string' },
       { name: 'user', type: 'string' },
+      { name: 'target', type: 'string' },
       { name: 'reason', type: 'string', optional: true },
       { name: 'body', type: 'string', optional: true },
       { name: 'createdAt', type: 'string' },
@@ -82,8 +82,8 @@ export class ReportSearchService extends SearchService<Report, IndexedReport> {
 
   public toIndexedEntity(report: Report): IndexedReport {
     return {
-      reporter: report.reporter.userId,
       user: report.user.userId,
+      target: report.target.userId,
       reason: report.reason,
       body: report.content ? removeMarkdown(report.content.body) : undefined,
       id: report.reportId.toString(),
