@@ -18,8 +18,8 @@ export class FavoritesService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async create(contentId: number, user: User): Promise<Favorite> {
-    const content = await this.contentRepository.findOneOrFail({ contentId }, { populate: ['parent'] });
+  public async create(id: number, user: User): Promise<Favorite> {
+    const content = await this.contentRepository.findOneOrFail({ id }, { populate: ['parent'] });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, content);
@@ -27,7 +27,7 @@ export class FavoritesService {
     const favorite = new Favorite({ content, user });
     try {
       await this.favoriteRepository.persistAndFlush(favorite);
-      content.nFavorites++;
+      content.favoriteCount++;
       await this.contentRepository.flush();
     } catch (error) {
       if (error instanceof UniqueConstraintViolationException)
@@ -54,9 +54,9 @@ export class FavoritesService {
     );
   }
 
-  public async findOne(contentId: number, user: User): Promise<Favorite | null> {
+  public async findOne(id: number, user: User): Promise<Favorite | null> {
     const favorite = await this.favoriteRepository.findOne(
-      { content: { contentId }, user },
+      { content: { id }, user },
       {
         populate: [
           'user',
@@ -74,8 +74,8 @@ export class FavoritesService {
     return favorite;
   }
 
-  // Public async update(user: User, contentId: number, active: boolean): Promise<Favorite> {
-  //   const content = await this.contentRepository.findOneOrFail({ contentId });
+  // Public async update(user: User, id: number, active: boolean): Promise<Favorite> {
+  //   const content = await this.contentRepository.findOneOrFail({ id });
 
   //   const ability = this.caslAbilityFactory.createForUser(user);
   //   assertPermissions(ability, Action.Interact, content);
@@ -89,16 +89,16 @@ export class FavoritesService {
   //   return favorite;
   // }
 
-  public async remove(contentId: number, user: User): Promise<void> {
-    const favorite = await this.favoriteRepository.findOneOrFail({ content: { contentId }, user });
+  public async remove(id: number, user: User): Promise<void> {
+    const favorite = await this.favoriteRepository.findOneOrFail({ content: { id }, user });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, favorite.content);
 
     await this.favoriteRepository.removeAndFlush(favorite);
 
-    const content = await this.contentRepository.findOneOrFail({ contentId });
-    content.nFavorites--;
+    const content = await this.contentRepository.findOneOrFail({ id });
+    content.favoriteCount--;
     await this.contentRepository.flush();
   }
 }

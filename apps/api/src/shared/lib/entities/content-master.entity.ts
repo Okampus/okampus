@@ -32,7 +32,7 @@ import { BaseEntity } from './base.entity';
 export abstract class ContentMaster extends BaseEntity {
   @Field(() => Int)
   @PrimaryKey()
-  contentMasterId!: number;
+  id!: number;
 
   @Field()
   @Property({ type: 'text' })

@@ -46,20 +46,20 @@ export class WikisService {
     );
   }
 
-  public async findOne(wikiId: number): Promise<WikiPage> {
-    return await this.wikiPageRepository.findOneOrFail({ wikiPageId: wikiId });
+  public async findOne(id: number): Promise<WikiPage> {
+    return await this.wikiPageRepository.findOneOrFail({ id });
   }
 
-  public async update(wikiId: number, updateWikiDto: UpdateWikiPageDto): Promise<WikiPage> {
-    const wiki = await this.wikiPageRepository.findOneOrFail({ wikiPageId: wikiId });
+  public async update(id: number, updateWikiDto: UpdateWikiPageDto): Promise<WikiPage> {
+    const wiki = await this.wikiPageRepository.findOneOrFail({ id });
 
     wrap(wiki).assign(updateWikiDto);
     await this.wikiPageRepository.flush();
     return wiki;
   }
 
-  public async remove(wikiId: number): Promise<void> {
-    const wiki = await this.wikiPageRepository.findOneOrFail({ wikiPageId: wikiId });
+  public async remove(id: number): Promise<void> {
+    const wiki = await this.wikiPageRepository.findOneOrFail({ id });
     await this.wikiPageRepository.removeAndFlush(wiki);
   }
 }

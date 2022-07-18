@@ -16,8 +16,8 @@ export class VotesService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async findOne(user: User, contentId: number): Promise<Vote> {
-    const content = await this.contentRepository.findOneOrFail({ contentId });
+  public async findOne(user: User, id: number): Promise<Vote> {
+    const content = await this.contentRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, content);
@@ -25,8 +25,8 @@ export class VotesService {
     return await this.votesRepository.findOne({ content, user }) ?? this.noVote(user, content);
   }
 
-  public async update(user: User, contentId: number, value: -1 | 0 | 1): Promise<Content> {
-    const content = await this.contentRepository.findOneOrFail({ contentId });
+  public async update(user: User, id: number, value: -1 | 0 | 1): Promise<Content> {
+    const content = await this.contentRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, content);
@@ -46,25 +46,25 @@ export class VotesService {
     // eslint-disable-next-line unicorn/prefer-switch
     if (previousValue === 0) {
       if (value === 1)
-        content.upvotes += 1;
+        content.upvoteCount += 1;
       else
-        content.downvotes += 1;
+        content.downvoteCount += 1;
     } else if (previousValue === 1) {
-      content.upvotes -= 1;
+      content.upvoteCount -= 1;
       if (value === -1)
-        content.downvotes += 1;
+        content.downvoteCount += 1;
     } else if (previousValue === -1) {
-      content.downvotes -= 1;
+      content.downvoteCount -= 1;
       if (value === 1)
-        content.upvotes += 1;
+        content.upvoteCount += 1;
     }
 
     await this.contentRepository.flush();
     return content;
   }
 
-  // Public async neutralize(user: User, contentId: number): Promise<NoVote | Vote> {
-  //   const content = await this.contentRepository.findOneOrFail({ contentId });
+  // Public async neutralize(user: User, id: number): Promise<NoVote | Vote> {
+  //   const content = await this.contentRepository.findOneOrFail({ id });
 
   //   const ability = this.caslAbilityFactory.createForUser(user);
   //   assertPermissions(ability, Action.Interact, content);
@@ -77,9 +77,9 @@ export class VotesService {
 
   //   // Update content
   //   if (oldVote?.value === 1)
-  //     content.nUpvotes--;
+  //     content.upvoteCount--;
   //   else if (oldVote?.value === -1)
-  //     content.nDownvotes--;
+  //     content.downvoteCount--;
 
   //   await this.contentRepository.flush();
   //   return this.noVote(user, content);
@@ -87,7 +87,7 @@ export class VotesService {
 
   private noVote(user: User, content: Content): Vote {
     return {
-      voteId: -1,
+      id: -1,
       content,
       user,
       value: 0,

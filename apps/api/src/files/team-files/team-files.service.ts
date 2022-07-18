@@ -24,7 +24,7 @@ export class TeamFilesService {
     file: FileUpload,
   ): Promise<TeamFile> {
     const team = await this.teamRepository.findOneOrFail(
-      { teamId: createGalleryImageDto.teamId },
+      { id: createGalleryImageDto.id },
       { populate: ['members'] },
     );
 
@@ -36,9 +36,9 @@ export class TeamFilesService {
     return teamFile;
   }
 
-  public async findOne(teamFileId: string): Promise<TeamFile> {
+  public async findOne(id: string): Promise<TeamFile> {
     return await this.teamFileRepository.findOneOrFail(
-      { teamFileId },
+      { id },
       { populate: ['file', 'file.user', 'team'] },
     );
   }
@@ -46,7 +46,7 @@ export class TeamFilesService {
   public async findAll(
     options: Required<TeamFileListOptions>,
   ): Promise<PaginatedResult<TeamFile>> {
-    const team = await this.teamRepository.findOneOrFail({ teamId: options.teamId });
+    const team = await this.teamRepository.findOneOrFail({ id: options.id });
 
     const query = options.type ? { type: options.type } : {};
 
@@ -59,11 +59,11 @@ export class TeamFilesService {
 
   public async update(
     user: User,
-    teamFileId: string,
+    id: string,
     updateGalleryImageDto: UpdateTeamFileDto,
   ): Promise<TeamFile> {
     const image = await this.teamFileRepository.findOneOrFail(
-      { teamFileId },
+      { id },
       { populate: ['file', 'file.user', 'team', 'team.members'] },
     );
 
@@ -76,9 +76,9 @@ export class TeamFilesService {
   }
 
 
-  public async remove(user: User, teamFileId: string): Promise<void> {
+  public async remove(user: User, id: string): Promise<void> {
     const image = await this.teamFileRepository.findOneOrFail(
-      { teamFileId },
+      { id },
       { populate: ['file', 'file.user', 'team', 'team.members'] },
     );
 

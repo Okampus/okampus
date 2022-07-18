@@ -25,7 +25,7 @@ const ADMIN_ROLES = new Set([TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasure
 @Entity()
 export class Team extends BaseEntity {
   @PrimaryKey()
-  teamId!: number;
+  id!: number;
 
   @Enum(() => TeamKind)
   @Index()
@@ -123,7 +123,7 @@ export class Team extends BaseEntity {
   private getMemberRoles(user: User): TeamRole[] {
     return this.members
       .getItems()
-      .filter(member => member.user.userId === user.userId)
+      .filter(member => member.user.id === user.id)
       .map(member => member.role);
   }
 

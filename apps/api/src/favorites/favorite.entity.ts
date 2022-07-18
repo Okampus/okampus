@@ -13,7 +13,7 @@ import type { User } from '../users/user.entity';
 export class Favorite extends BaseContentInteraction {
   @Field(() => Int)
   @PrimaryKey()
-  favoriteId!: number;
+  id!: number;
 
   @Field(() => Boolean)
   @Property({ default: true })

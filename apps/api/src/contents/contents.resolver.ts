@@ -48,9 +48,9 @@ export class ContentResolver {
     @Parent() content: Content,
     @Context() batchContext: ContextBatch,
   ): Promise<Content[]> {
-    if (batchContext?.batchContents?.[content.contentId])
-      return batchContext.batchContents[content.contentId];
-    const paginatedThreads = await this.contentsService.findAllChildren(user, content.contentId);
+    if (batchContext?.batchContents?.[content.id])
+      return batchContext.batchContents[content.id];
+    const paginatedThreads = await this.contentsService.findAllChildren(user, content.id);
     return paginatedThreads.items;
   }
 
@@ -61,8 +61,8 @@ export class ContentResolver {
     @Context() batchContext: ContextBatch,
   ): Promise<ContentInteractions> {
     if (batchContext.batchInteractions)
-      return batchContext.batchInteractions[content.contentId] ?? DEFAULT_INTERACTIONS;
-    return await this.contentsService.findInteractions(user, content.contentId);
+      return batchContext.batchInteractions[content.id] ?? DEFAULT_INTERACTIONS;
+    return await this.contentsService.findInteractions(user, content.id);
   }
 
   @Mutation(() => Content)

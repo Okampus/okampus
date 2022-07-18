@@ -32,7 +32,7 @@ import { ContentEdit } from './content-edit.entity';
 export class Content extends BaseEntity {
   @Field(() => Int)
   @PrimaryKey()
-  contentId!: number;
+  id!: number;
 
   @Field()
   @Property({ type: 'text' })
@@ -40,33 +40,33 @@ export class Content extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })
-  @Transform(({ obj }: { obj: Content }) => obj.author.userId)
+  @Transform(({ obj }: { obj: Content }) => obj.author.id)
   author!: User;
 
   @Field(() => Int)
   @Property()
-  nUpvotes = 0;
+  upvoteCount = 0;
 
   @Field(() => Int)
   @Property()
-  @Transform(({ obj }: { obj: Content }) => (obj.kind === ContentKind.Comment ? undefined : obj.nDownvotes))
-  nDownvotes = 0;
+  @Transform(({ obj }: { obj: Content }) => (obj.kind === ContentKind.Comment ? undefined : obj.downvoteCount))
+  downvoteCount = 0;
 
   @Field(() => Int)
   @Property()
-  nTotalVotes = 0;
+  totalVoteCount = 0;
 
   @Field(() => Int)
   @Property()
-  nReports = 0;
+  reportCount = 0;
 
   @Field(() => Int)
   @Property()
-  nFavorites = 0;
+  favoriteCount = 0;
 
   @Field(() => Int)
   @Property()
-  nReplies = 0;
+  replyCount = 0;
 
   @OneToMany('Reaction', 'content', { cascade: [Cascade.ALL] })
   @TransformCollection()
@@ -91,7 +91,7 @@ export class Content extends BaseEntity {
 
   @Field(() => Content)
   @ManyToOne({ onDelete: 'CASCADE' })
-  @Transform(({ obj }: { obj: Content }) => ({ contentId: obj.parent?.contentId, kind: obj.parent?.kind }))
+  @Transform(({ obj }: { obj: Content }) => ({ id: obj.parent?.id, kind: obj.parent?.kind }))
   parent?: Content;
 
   @Field(() => [ContentEdit], { nullable: true })
@@ -136,7 +136,7 @@ export class Content extends BaseEntity {
   @BeforeUpdate()
   public beforeUpdate(event: EventArgs<this>): void {
     const payload = event.changeSet?.payload;
-    if (payload && ('nUpvotes' in payload || 'nDownvotes' in payload))
-      this.nTotalVotes = this.nUpvotes - this.nDownvotes;
+    if (payload && ('upvoteCount' in payload || 'downvoteCount' in payload))
+      this.totalVoteCount = this.upvoteCount - this.downvoteCount;
   }
 }

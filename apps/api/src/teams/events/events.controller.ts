@@ -29,14 +29,14 @@ export class TeamEventsController {
     private readonly eventsService: TeamEventsService,
   ) {}
 
-  @Post(':teamId')
+  @Post(':id')
   @CheckPolicies(ability => ability.can(Action.Create, TeamEvent))
   public async create(
-    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() createTeamEventDto: CreateTeamEventDto,
     @CurrentUser() user: User,
   ): Promise<TeamEvent> {
-    return await this.eventsService.create(user, teamId, createTeamEventDto);
+    return await this.eventsService.create(user, id, createTeamEventDto);
   }
 
   @Get()
@@ -48,31 +48,31 @@ export class TeamEventsController {
     return await this.eventsService.findAll(user, query, { ...normalizePagination(query), ...normalizeSort(query) });
   }
 
-  @Get(':eventId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, TeamEvent))
   public async findOne(
-    @Param('eventId', ParseIntPipe) eventId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
   ): Promise<TeamEvent> {
-    return await this.eventsService.findOne(user, eventId);
+    return await this.eventsService.findOne(user, id);
   }
 
-  @Patch(':eventId')
+  @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, TeamEvent))
   public async update(
-    @Param('eventId', ParseIntPipe) eventId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateTeamEventDto: UpdateTeamEventDto,
     @CurrentUser() user: User,
   ): Promise<TeamEvent> {
-    return await this.eventsService.update(user, eventId, updateTeamEventDto);
+    return await this.eventsService.update(user, id, updateTeamEventDto);
   }
 
-  @Delete(':eventId')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, TeamEvent))
   public async remove(
-    @Param('eventId', ParseIntPipe) eventId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
   ): Promise<void> {
-    await this.eventsService.remove(user, eventId);
+    await this.eventsService.remove(user, id);
   }
 }

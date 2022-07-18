@@ -53,8 +53,8 @@ export class ThreadSearchService extends SearchService<Thread, IndexedThread> {
   }
 
   @RequireTypesense()
-  public async remove(threadId: string): Promise<void> {
-    await this.documents.delete(threadId).catch(authorizeNotFound);
+  public async remove(id: string): Promise<void> {
+    await this.documents.delete(id).catch(authorizeNotFound);
   }
 
   @RequireTypesense()
@@ -68,11 +68,11 @@ export class ThreadSearchService extends SearchService<Thread, IndexedThread> {
 
     if (results.hits?.length) {
       const threadIds = results.hits.map(hit => hit.document.id).map(Number);
-      const threads = await this.threadRepository.find({ contentMasterId: { $in: threadIds } });
+      const threads = await this.threadRepository.find({ id: { $in: threadIds } });
       for (const hit of results.hits)
         // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedThread.id and
         // Thread.threadId. I know.
-        hit.document = threads.find(thread => thread.threadId === hit.document.id)!;
+        hit.document = threads.find(thread => thread.id === hit.document.id)!;
     }
     // @ts-expect-error: Ditto.
     return results;
@@ -84,7 +84,7 @@ export class ThreadSearchService extends SearchService<Thread, IndexedThread> {
       body: removeMarkdown(thread.post.body),
       author: thread.post.author.getFullName(),
       tags: thread.tags.toArray().map(tag => tag.name),
-      id: thread.contentMasterId.toString(),
+      id: thread.id.toString(),
     };
   }
 }

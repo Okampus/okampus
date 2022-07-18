@@ -22,24 +22,24 @@ export class VotesController {
     private readonly votesService: VotesService,
   ) {}
 
-  @Put(':contentId')
+  @Put(':id')
   @CheckPolicies(ability => ability.can(Action.Interact, Content))
   public async add(
     @CurrentUser() user: User,
-    @Param('contentId', ParseIntPipe) contentId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() voteDto: VoteDto,
   ): Promise<Content> {
     // If (voteDto.value === 0)
-    //   return this.votesService.neutralize(user, contentId);
-    return await this.votesService.update(user, contentId, voteDto.value);
+    //   return this.votesService.neutralize(user, id);
+    return await this.votesService.update(user, id, voteDto.value);
   }
 
-  @Get(':contentId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Content))
   public async findAll(
     @CurrentUser() user: User,
-    @Param('contentId', ParseIntPipe) contentId: number,
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<Vote> {
-    return await this.votesService.findOne(user, contentId);
+    return await this.votesService.findOne(user, id);
   }
 }

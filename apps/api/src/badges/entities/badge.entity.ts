@@ -14,7 +14,7 @@ import { Statistic } from '../../shared/lib/types/enums/statistic.enum';
 export class Badge extends BaseEntity {
   @Field(() => Int)
   @PrimaryKey()
-  badgeId!: number;
+  id!: number;
 
   // Readable name of the badge
   @Field()

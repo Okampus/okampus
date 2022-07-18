@@ -11,7 +11,7 @@ import type { Food } from '../food/food.entity';
 @Entity()
 export class DailyMenu extends BaseEntity {
   @PrimaryKey()
-  date!: Date;
+  id!: Date;
 
   @ManyToMany()
   @TransformCollection()
@@ -27,6 +27,6 @@ export class DailyMenu extends BaseEntity {
 
   constructor(options: { date: Date }) {
     super();
-    this.date = options.date;
+    this.id = options.date;
   }
 }

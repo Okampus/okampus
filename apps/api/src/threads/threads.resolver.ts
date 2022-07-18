@@ -40,7 +40,7 @@ export class ThreadResolver {
     @Context() batchContext: ContextBatch,
   ): Promise<Thread | null> {
     const thread = await this.threadsService.findOne(user, id);
-    batchContext.batchInteractions = await this.contentsService.getInteractionsByMaster(user.userId, id);
+    batchContext.batchInteractions = await this.contentsService.getInteractionsByMaster(user.id, id);
     batchContext.batchContents = await this.contentsService.getContentsByMaster(id);
 
     return thread;

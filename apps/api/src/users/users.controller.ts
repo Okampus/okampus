@@ -56,9 +56,9 @@ export class UsersController {
     return await this.gdprService.getGdprDump(user);
   }
 
-  @Get(':userId')
-  public async findOne(@Param('userId') userId: string): Promise<User> {
-    return await this.usersService.findOneById(userId);
+  @Get(':id')
+  public async findOne(@Param('id') id: string): Promise<User> {
+    return await this.usersService.findOneById(id);
   }
 
   @UseGuards(TypesenseEnabledGuard)
@@ -77,25 +77,25 @@ export class UsersController {
     return await this.usersService.findAll(normalizePagination(query));
   }
 
-  @Delete(':userId')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, User))
-  public async delete(@Param('userId') userId: string): Promise<void> {
-    await this.usersService.delete(userId);
+  public async delete(@Param('id') id: string): Promise<void> {
+    await this.usersService.delete(id);
   }
 
-  @Get('/:userId/statistics')
-  public async getUserStats(@Param('userId') userId: string): Promise<Statistics | null> {
-    return await this.usersService.getUserStats(userId);
+  @Get('/:id/statistics')
+  public async getUserStats(@Param('id') id: string): Promise<Statistics | null> {
+    return await this.usersService.getUserStats(id);
   }
 
-  @Patch('/:userId')
+  @Patch('/:id')
   @CheckPolicies(ability => ability.can(Action.Update, User))
   public async update(
     @CurrentUser() user: User,
-    @Param('userId') userId: string,
+    @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<User> {
-    return await this.usersService.update(user, userId, updateUserDto);
+    return await this.usersService.update(user, id, updateUserDto);
   }
 
   @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })

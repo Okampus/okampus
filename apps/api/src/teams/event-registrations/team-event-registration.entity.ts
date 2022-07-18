@@ -14,7 +14,7 @@ import type { TeamForm } from '../forms/team-form.entity';
 @Entity()
 export class TeamEventRegistration extends BaseEntity {
   @PrimaryKey()
-  teamEventRegistrationId!: number;
+  id!: number;
 
   @ManyToOne({ onDelete: 'CASCADE' })
   event!: TeamEvent;

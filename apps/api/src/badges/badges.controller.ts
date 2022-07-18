@@ -38,34 +38,34 @@ export class BadgesController {
     return await this.badgesService.findAll(normalizePagination(query));
   }
 
-  @Get('/user/:userId')
+  @Get('/user/:id')
   @CheckPolicies(ability => ability.can(Action.Read, Badge))
   public async findAllForUser(
-    @Param('userId') userId: string,
+    @Param('id') id: string,
     @Query() query: PaginateDto,
   ): Promise<PaginatedResult<BadgeUnlock>> {
     if (query.page) {
       const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
-      return await this.badgesService.findAllForUser(userId, options);
+      return await this.badgesService.findAllForUser(id, options);
     }
-    return await this.badgesService.findAllForUser(userId);
+    return await this.badgesService.findAllForUser(id);
   }
 
-  @Get(':badgeId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Badge))
-  public async findOne(@Param('badgeId', ParseIntPipe) badgeId: number): Promise<Badge> {
-    return await this.badgesService.findOne(badgeId);
+  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Badge> {
+    return await this.badgesService.findOne(id);
   }
 
-  @Patch(':badgeId')
+  @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Badge))
-  public async update(@Param('badgeId', ParseIntPipe) badgeId: number, @Body() updateBadgeDto: UpdateBadgeDto): Promise<Badge> {
-    return await this.badgesService.update(badgeId, updateBadgeDto);
+  public async update(@Param('id', ParseIntPipe) id: number, @Body() updateBadgeDto: UpdateBadgeDto): Promise<Badge> {
+    return await this.badgesService.update(id, updateBadgeDto);
   }
 
-  @Delete(':badgeId')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, Badge))
-  public async remove(@Param('badgeId', ParseIntPipe) badgeId: number): Promise<void> {
-    await this.badgesService.remove(badgeId);
+  public async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    await this.badgesService.remove(id);
   }
 }

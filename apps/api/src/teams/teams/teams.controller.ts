@@ -84,41 +84,41 @@ export class TeamsController {
 
   @Get('/names')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
-  public async findNames(): Promise<Array<Pick<Team, 'avatar' | 'name' | 'teamId'>>> {
+  public async findNames(): Promise<Array<Pick<Team, 'avatar' | 'id' | 'name'>>> {
     return await this.teamsService.findNames();
   }
 
-  @Get(':teamId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   // @SerializerIncludeTeamMembersAndForm()
-  public async findOne(@Param('teamId', ParseIntPipe) teamId: number): Promise<Team> {
-    return await this.teamsService.findOne(teamId);
+  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Team> {
+    return await this.teamsService.findOne(id);
   }
 
-  @Patch(':teamId')
+  @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Team))
   // @SerializerIncludeTeamMembersAndForm()
   public async update(
-    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateSubjectDto: UpdateTeamDto,
     @CurrentUser() requester: User,
   ): Promise<Team> {
-    return await this.teamsService.update(requester, teamId, updateSubjectDto);
+    return await this.teamsService.update(requester, id, updateSubjectDto);
   }
 
-  @Delete(':teamId')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, Team))
   // @SerializerIncludeTeamMembersAndForm()
-  public async remove(@Param('teamId', ParseIntPipe) teamId: number): Promise<void> {
-    await this.teamsService.remove(teamId);
+  public async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    await this.teamsService.remove(id);
   }
 
-  @Put(':teamId/avatar')
+  @Put(':id/avatar')
   @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
   @CheckPolicies(ability => ability.can(Action.Create, ProfileImage))
   public async updateAvatar(
     @CurrentUser() user: User,
-    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('id', ParseIntPipe) id: number,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<Team> {
     if (!file)
@@ -127,10 +127,10 @@ export class TeamsController {
     const fileUpload = await this.filesService.create(user, file, FileKind.ProfileImage);
     const profileImage = await this.profileImagesService.create(fileUpload);
 
-    return await this.teamsService.updateProfileImage(user, teamId, 'avatar', profileImage);
+    return await this.teamsService.updateProfileImage(user, id, 'avatar', profileImage);
   }
 
-  @Put(':teamId/banner')
+  @Put(':id/banner')
   @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
   @CheckPolicies(
     ability => ability.can(Action.Create, ProfileImage),
@@ -138,7 +138,7 @@ export class TeamsController {
   )
   public async updateBanner(
     @CurrentUser() user: User,
-    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('id', ParseIntPipe) id: number,
     @UploadedFile() banner: Express.Multer.File,
   ): Promise<Team> {
     if (!banner)
@@ -147,6 +147,6 @@ export class TeamsController {
     const fileUpload = await this.filesService.create(user, banner, FileKind.ProfileImage);
     const profileImage = await this.profileImagesService.create(fileUpload);
 
-    return await this.teamsService.updateProfileImage(user, teamId, 'banner', profileImage);
+    return await this.teamsService.updateProfileImage(user, id, 'banner', profileImage);
   }
 }

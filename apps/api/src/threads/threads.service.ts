@@ -57,7 +57,7 @@ export class ThreadsService {
     }
     thread.tags.add(...tags);
 
-    const assignees = await this.userRepository.find({ userId: { $in: createThreadDto.assignees } });
+    const assignees = await this.userRepository.find({ id: { $in: createThreadDto.assignees } });
     thread.assignees.add(...assignees);
     thread.participants.add(user);
 
@@ -95,9 +95,9 @@ export class ThreadsService {
     return allThreads;
   }
 
-  public async findOne(user: User, contentMasterId: number): Promise<Thread> {
+  public async findOne(user: User, id: number): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
-      { contentMasterId },
+      { id },
       { populate: ['post.edits', 'tags', 'assignees', 'participants', 'opValidation', 'adminValidations'] },
     );
 
@@ -113,9 +113,9 @@ export class ThreadsService {
     return thread;
   }
 
-  public async update(user: User, contentMasterId: number, updateThreadDto: UpdateThreadDto): Promise<Thread> {
+  public async update(user: User, id: number, updateThreadDto: UpdateThreadDto): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
-      { contentMasterId },
+      { id },
       { populate: ['post', 'post.lastEdit', 'tags', 'assignees', 'opValidation', 'adminValidations'] },
     );
 
@@ -146,21 +146,21 @@ export class ThreadsService {
       if (wantedAssignees.length === 0) {
         thread.assignees.removeAll();
       } else {
-        const assignees = await this.userRepository.find({ userId: { $in: wantedAssignees } });
+        const assignees = await this.userRepository.find({ id: { $in: wantedAssignees } });
         thread.assignees.set(assignees);
       }
     }
 
     if (typeof validatedWithContent === 'number') {
       const content = await this.contentRepository.findOneOrFail({
-        contentId: validatedWithContent,
+        id: validatedWithContent,
         kind: ContentKind.Reply,
-        contentMaster: { contentMasterId },
+        contentMaster: { id },
       });
 
-      if (content.author.userId === user.userId) {
+      if (content.author.id === user.id) {
         if (thread.opValidation)
-          await this.validationsService.remove(thread.opValidation?.content.contentId, user);
+          await this.validationsService.remove(thread.opValidation?.content.id, user);
 
         thread.opValidation = await this.validationsService.create(validatedWithContent, user);
       } else {
@@ -177,19 +177,19 @@ export class ThreadsService {
     return thread;
   }
 
-  public async remove(user: User, contentMasterId: number): Promise<void> {
-    const thread = await this.threadRepository.findOneOrFail({ contentMasterId });
+  public async remove(user: User, id: number): Promise<void> {
+    const thread = await this.threadRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, thread);
 
     await this.threadRepository.removeAndFlush(thread);
-    await this.threadSearchService.remove(thread.contentMasterId.toString());
+    await this.threadSearchService.remove(thread.id.toString());
   }
 
-  public async addTags(contentMasterId: number, newTags: string[]): Promise<Thread> {
+  public async addTags(id: number, newTags: string[]): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
-      { contentMasterId },
+      { id },
       { populate: ['post', 'tags', 'assignees', 'opValidation', 'adminValidations'] },
     );
 
@@ -199,30 +199,30 @@ export class ThreadsService {
     return thread;
   }
 
-  public async removeTags(contentMasterId: number, droppedTags: string[]): Promise<void> {
-    const thread = await this.threadRepository.findOneOrFail({ contentMasterId }, { populate: ['tags'] });
+  public async removeTags(id: number, droppedTags: string[]): Promise<void> {
+    const thread = await this.threadRepository.findOneOrFail({ id }, { populate: ['tags'] });
 
     const tags = await this.tagRepository.find({ name: { $in: droppedTags } });
     thread.tags.remove(...tags);
     await this.threadRepository.flush();
   }
 
-  public async addAssignees(contentMasterId: number, assignees: string[]): Promise<Thread> {
+  public async addAssignees(id: number, assignees: string[]): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
-      { contentMasterId },
+      { id },
       { populate: ['post', 'tags', 'assignees', 'opValidation', 'adminValidations'] },
     );
 
-    const users = await this.userRepository.find({ userId: { $in: assignees } });
+    const users = await this.userRepository.find({ id: { $in: assignees } });
     thread.assignees.add(...users.filter(user => !thread.assignees.contains(user)));
     await this.threadRepository.flush();
     return thread;
   }
 
-  public async removeAssignees(contentMasterId: number, assignees: string[]): Promise<void> {
-    const thread = await this.threadRepository.findOneOrFail({ contentMasterId }, { populate: ['assignees'] });
+  public async removeAssignees(id: number, assignees: string[]): Promise<void> {
+    const thread = await this.threadRepository.findOneOrFail({ id }, { populate: ['assignees'] });
 
-    const users = await this.userRepository.find({ userId: { $in: assignees } });
+    const users = await this.userRepository.find({ id: { $in: assignees } });
     thread.assignees.remove(...users);
     await this.threadRepository.flush();
   }

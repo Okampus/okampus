@@ -7,6 +7,10 @@ import {
 import { TeamRole } from '../../../shared/lib/types/enums/team-role.enum';
 
 export class CreateTeamMembershipRequestDto {
+  @IsOptional()
+  @IsInt()
+  id?: number;
+
   @IsEnum(TeamRole)
   @IsOptional()
   role?: TeamRole;
@@ -14,10 +18,6 @@ export class CreateTeamMembershipRequestDto {
   @IsOptional()
   @IsObject()
   meta?: object;
-
-  @IsOptional()
-  @IsInt()
-  originalFormId?: number;
 
   @IsOptional()
   @IsObject()

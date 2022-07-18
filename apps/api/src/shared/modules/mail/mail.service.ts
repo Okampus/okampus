@@ -34,7 +34,7 @@ export class MailService {
             author: content.author.getFullName(),
             threadTitle: content.contentMaster.title,
             message: content.body,
-            threadUrl: `${computedConfig.frontendUrl}/forum/post/${content.contentMaster.contentMasterId}`,
+            threadUrl: `${computedConfig.frontendUrl}/forum/post/${content.contentMaster.id}`,
           },
           to: this.toRecipient(participant),
         });
@@ -44,7 +44,7 @@ export class MailService {
 
   private toRecipient(user: User): TriggerRecipientsType {
     return {
-      subscriberId: user.userId,
+      subscriberId: user.id,
       firstName: user.firstname,
       lastName: user.lastname,
       email: user.email,

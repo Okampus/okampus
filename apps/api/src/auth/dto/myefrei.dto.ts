@@ -4,7 +4,7 @@ import { SchoolRole } from '../../shared/modules/authorization/types/school-role
 
 export class MyEfreiDto {
   @IsString()
-  userId: string;
+  id: string;
 
   @IsString()
   firstname: string;
@@ -19,7 +19,7 @@ export class MyEfreiDto {
   schoolRole: SchoolRole;
 
   constructor(data: MyEfreiUserinfoResponse) {
-    this.userId = data.sub;
+    this.id = data.sub;
     this.firstname = data.given_name!;
     this.lastname = data.family_name!;
     this.email = data.email!;

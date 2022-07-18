@@ -27,8 +27,8 @@ export class ValidationsResolver {
   }
 
   @Mutation(() => Validation)
-  public async addValidation(@CurrentUser() user: User, @Args('contentId') contentId: number): Promise<Validation> {
-    const createdValidation = await this.validationsService.create(contentId, user);
+  public async addValidation(@CurrentUser() user: User, @Args('id') id: number): Promise<Validation> {
+    const createdValidation = await this.validationsService.create(id, user);
     await this.pubSub.publish('validationAdded', { createdValidation });
     return createdValidation;
   }

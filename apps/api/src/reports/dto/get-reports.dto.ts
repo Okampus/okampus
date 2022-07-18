@@ -3,13 +3,13 @@ import { IsInt, IsOptional, IsString } from 'class-validator';
 export class GetReportsDto {
   @IsOptional()
   @IsString()
-  byUserId?: string;
+  byid?: string;
 
   @IsOptional()
   @IsString()
-  forUserId?: string;
+  forid?: string;
 
   @IsOptional()
   @IsInt()
-  throughContentId?: number;
+  throughid?: number;
 }

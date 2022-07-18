@@ -5,7 +5,7 @@ import { ListOptionsDto } from '../../../shared/lib/dto/list-options.dto';
 
 export class ListTeamFormsDto extends PartialType(ListOptionsDto) {
   @IsInt()
-  teamId: number;
+  id: number;
 
   @Transform(({ obj }) => obj.isTemplate === 'true')
   @IsBoolean()

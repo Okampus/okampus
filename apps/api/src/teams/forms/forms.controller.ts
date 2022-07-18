@@ -30,14 +30,14 @@ export class TeamFormsController {
     private readonly teamFormsService: TeamFormsService,
   ) {}
 
-  @Post(':teamId')
+  @Post(':id')
   @CheckPolicies(ability => ability.can(Action.Create, TeamForm))
   public async create(
-    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() createTeamFormDto: CreateTeamFormDto,
     @CurrentUser() user: User,
   ): Promise<TeamForm> {
-    return await this.teamFormsService.create(user, teamId, createTeamFormDto);
+    return await this.teamFormsService.create(user, id, createTeamFormDto);
   }
 
   @Get()
@@ -48,30 +48,30 @@ export class TeamFormsController {
     return await this.teamFormsService.findAll(query, normalizePagination(query));
   }
 
-  @Get(':formId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, TeamForm))
   public async findOne(
-    @Param('formId', ParseIntPipe) formId: number,
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<TeamForm> {
-    return await this.teamFormsService.findOne(formId);
+    return await this.teamFormsService.findOne(id);
   }
 
-  @Patch(':formId')
+  @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, TeamForm))
   public async update(
-    @Param('formId', ParseIntPipe) formId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateTeamFormDto: UpdateTeamFormDto,
     @CurrentUser() user: User,
   ): Promise<TeamForm> {
-    return await this.teamFormsService.update(user, formId, updateTeamFormDto);
+    return await this.teamFormsService.update(user, id, updateTeamFormDto);
   }
 
-  @Delete(':formId')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, TeamForm))
   public async remove(
-    @Param('formId', ParseIntPipe) formId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
   ): Promise<void> {
-    await this.teamFormsService.remove(user, formId);
+    await this.teamFormsService.remove(user, id);
   }
 }

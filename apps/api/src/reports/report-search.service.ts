@@ -55,8 +55,8 @@ export class ReportSearchService extends SearchService<Report, IndexedReport> {
   }
 
   @RequireTypesense()
-  public async remove(reportId: string): Promise<void> {
-    await this.documents.delete(reportId).catch(authorizeNotFound);
+  public async remove(id: string): Promise<void> {
+    await this.documents.delete(id).catch(authorizeNotFound);
   }
 
   @RequireTypesense()
@@ -69,12 +69,12 @@ export class ReportSearchService extends SearchService<Report, IndexedReport> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
-      const reportIds = results.hits.map(hit => hit.document.id).map(Number);
-      const reports = await this.reportRepository.find({ reportId: { $in: reportIds } });
+      const ids = results.hits.map(hit => hit.document.id).map(Number);
+      const reports = await this.reportRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
         // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedReport.id and
-        // Report.reportId. I know.
-        hit.document = reports.find(report => report.reportId.toString() === hit.document.id)!;
+        // Report.id. I know.
+        hit.document = reports.find(report => report.id.toString() === hit.document.id)!;
     }
     // @ts-expect-error: Ditto.
     return results;
@@ -82,11 +82,11 @@ export class ReportSearchService extends SearchService<Report, IndexedReport> {
 
   public toIndexedEntity(report: Report): IndexedReport {
     return {
-      user: report.user.userId,
-      target: report.target.userId,
+      user: report.user.id,
+      target: report.target.id,
       reason: report.reason,
       body: report.content ? removeMarkdown(report.content.body) : undefined,
-      id: report.reportId.toString(),
+      id: report.id.toString(),
       createdAt: report.createdAt.toString(),
     };
   }

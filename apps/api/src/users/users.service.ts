@@ -27,8 +27,8 @@ export class UsersService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async findOneById(userId: string): Promise<User> {
-    return await this.userRepository.findOneOrFail({ userId }, { refresh: true });
+  public async findOneById(id: string): Promise<User> {
+    return await this.userRepository.findOneOrFail({ id }, { refresh: true });
   }
 
   public async create(options: UserCreationOptions): Promise<User> {
@@ -51,8 +51,8 @@ export class UsersService {
     return user;
   }
 
-  public async update(requester: User, userId: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.userRepository.findOneOrFail({ userId }, { populate: ['badges'] });
+  public async update(requester: User, id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.userRepository.findOneOrFail({ id }, { populate: ['badges'] });
 
     const ability = this.caslAbilityFactory.createForUser(requester);
     assertPermissions(ability, Action.Update, user);
@@ -83,14 +83,14 @@ export class UsersService {
     return await this.userRepository.findWithPagination(paginationOptions, {}, { orderBy: { lastname: 'ASC' } });
   }
 
-  public async delete(userId: string): Promise<void> {
-    const user = await this.userRepository.findOneOrFail({ userId });
-    await this.userSearchService.remove(userId);
+  public async delete(id: string): Promise<void> {
+    const user = await this.userRepository.findOneOrFail({ id });
+    await this.userSearchService.remove(id);
     await this.userRepository.removeAndFlush(user);
   }
 
-  public async getUserStats(userId: string): Promise<Statistics> {
-    const stats = await this.statisticsRepository.findOneOrFail({ user: { userId } });
+  public async getUserStats(id: string): Promise<Statistics> {
+    const stats = await this.statisticsRepository.findOneOrFail({ user: { id } });
     const streaks = await this.statisticsService.getAllStreaks(stats);
     return { ...stats, ...streaks };
   }
@@ -104,12 +104,12 @@ export class UsersService {
 
   private async setAvatar(profileImage: ProfileImage | string, type: 'avatar' | 'banner', user: User): Promise<void> {
     // Get the avatar image and validate it
-    const profileImageId = typeof profileImage === 'string' ? profileImage : profileImage.profileImageId;
+    const id = typeof profileImage === 'string' ? profileImage : profileImage.id;
     const avatarImage = profileImage instanceof ProfileImage && profileImage.file instanceof FileUpload
       ? profileImage
-      : await this.profileImageRepository.findOne({ profileImageId }, { populate: ['file'] });
+      : await this.profileImageRepository.findOne({ id }, { populate: ['file'] });
 
-    if (!avatarImage || !avatarImage.isAvailableFor('user', user.userId))
+    if (!avatarImage || !avatarImage.isAvailableFor('user', user.id))
       throw new BadRequestException(`Invalid ${type} image`);
 
     // Update the user's image

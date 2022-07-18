@@ -28,14 +28,14 @@ export class TeamEventRegistrationsController {
     private readonly eventRegistrationsService: TeamEventRegistrationsService,
   ) {}
 
-  @Post(':eventId')
+  @Post(':id')
   @CheckPolicies(ability => ability.can(Action.Read, TeamEvent))
   public async create(
-    @Param('eventId', ParseIntPipe) eventId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() createTeamEventRegistrationDto: CreateTeamEventRegistrationDto,
     @CurrentUser() user: User,
   ): Promise<TeamEventRegistration> {
-    return await this.eventRegistrationsService.create(user, eventId, createTeamEventRegistrationDto);
+    return await this.eventRegistrationsService.create(user, id, createTeamEventRegistrationDto);
   }
 
   @Get()
@@ -50,21 +50,21 @@ export class TeamEventRegistrationsController {
     return await this.eventRegistrationsService.findAll(user, query, normalizePagination(query));
   }
 
-  @Get(':registrationId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, TeamEvent))
   public async findOne(
-    @Param('registrationId', ParseIntPipe) registrationId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
   ): Promise<TeamEventRegistration> {
-    return await this.eventRegistrationsService.findOne(user, registrationId);
+    return await this.eventRegistrationsService.findOne(user, id);
   }
 
-  @Delete(':registrationId')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Read, TeamEvent))
   public async remove(
-    @Param('registrationId', ParseIntPipe) registrationId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
   ): Promise<void> {
-    await this.eventRegistrationsService.remove(user, registrationId);
+    await this.eventRegistrationsService.remove(user, id);
   }
 }

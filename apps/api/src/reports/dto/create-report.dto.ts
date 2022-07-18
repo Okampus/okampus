@@ -7,7 +7,7 @@ import {
 
 export class CreateReportDto {
   @IsInt()
-  contentId: number;
+  id: number;
 
   @Length(10, 2000)
   @IsString()

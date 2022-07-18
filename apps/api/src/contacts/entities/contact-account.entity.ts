@@ -15,7 +15,7 @@ import { Contact } from './contact.entity';
 })
 export abstract class ContactAccount extends BaseEntity {
   @PrimaryKey()
-  contactAccountId!: number;
+  id!: number;
 
   @Enum()
   // @Exclude()

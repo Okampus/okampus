@@ -26,12 +26,12 @@ export class ProfileImagesService {
     return await this.profileImageRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'user'] });
   }
 
-  public async findOne(profileImageId: string): Promise<ProfileImage> {
-    return await this.profileImageRepository.findOneOrFail({ profileImageId }, { populate: ['file', 'user'] });
+  public async findOne(id: string): Promise<ProfileImage> {
+    return await this.profileImageRepository.findOneOrFail({ id }, { populate: ['file', 'user'] });
   }
 
-  public async remove(user: User, profileImageId: string): Promise<void> {
-    const profileImage = await this.profileImageRepository.findOneOrFail({ profileImageId }, { populate: ['file'] });
+  public async remove(user: User, id: string): Promise<void> {
+    const profileImage = await this.profileImageRepository.findOneOrFail({ id }, { populate: ['file'] });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, profileImage);

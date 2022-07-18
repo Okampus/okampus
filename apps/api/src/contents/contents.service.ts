@@ -73,8 +73,8 @@ export class ContentsService {
     return content;
   }
 
-  public async updateParticipants(action: 'add' | 'remove', user: User, contentMasterId: number): Promise<void> {
-    const master = await this.contentMasterRepository.findOneOrFail({ contentMasterId }, { populate: ['participants'] });
+  public async updateParticipants(action: 'add' | 'remove', user: User, id: number): Promise<void> {
+    const master = await this.contentMasterRepository.findOneOrFail({ id }, { populate: ['participants'] });
     if ((action === 'add' && !master.participants.contains(user)) || (action === 'remove' && master.participants.contains(user))) {
       if (action === 'add')
         master.participants.add(user);
@@ -87,7 +87,7 @@ export class ContentsService {
 
   public async createReply(user: User, createContentDto: CreateContentDto): Promise<Content> {
     const parent = await this.contentRepository.findOneOrFail(
-      { contentId: createContentDto.parentId, kind: ContentKind.Post },
+      { id: createContentDto.parentId, kind: ContentKind.Post },
       { populate: ['author'] },
     );
 
@@ -95,13 +95,13 @@ export class ContentsService {
     assertPermissions(ability, Action.Interact, parent);
 
     const content = this.createAndPersistContent(createContentDto, ContentKind.Reply, user, parent);
-    parent.nReplies++;
+    parent.replyCount++;
 
     await this.contentEditRepository.flush();
     await this.contentRepository.flush();
 
     if (content.contentMaster)
-      await this.updateParticipants('add', user, content.contentMaster.contentMasterId);
+      await this.updateParticipants('add', user, content.contentMaster.id);
 
     void this.mailService.newThreadContent(content);
 
@@ -110,7 +110,7 @@ export class ContentsService {
 
   public async createComment(user: User, createContentDto: CreateContentDto): Promise<Content> {
     const parent = await this.contentRepository.findOneOrFail(
-      { contentId: createContentDto.parentId, kind: { $in: [ContentKind.Post, ContentKind.Reply] } },
+      { id: createContentDto.parentId, kind: { $in: [ContentKind.Post, ContentKind.Reply] } },
       { populate: ['author'] },
     );
 
@@ -118,13 +118,13 @@ export class ContentsService {
     assertPermissions(ability, Action.Interact, parent);
 
     const content = this.createAndPersistContent(createContentDto, ContentKind.Comment, user, parent);
-    parent.nReplies++;
+    parent.replyCount++;
 
     await this.contentEditRepository.flush();
     await this.contentRepository.flush();
 
     if (content.contentMaster)
-      await this.updateParticipants('add', user, content.contentMaster.contentMasterId);
+      await this.updateParticipants('add', user, content.contentMaster.id);
 
     void this.mailService.newThreadContent(content);
 
@@ -143,7 +143,7 @@ export class ContentsService {
       {
         kind: ContentKind.Reply,
         ...visibilityQuery,
-        parent: { contentId: parentId },
+        parent: { id: parentId },
       },
       { populate: ['author', 'lastEdit', 'edits'], orderBy: serializeOrder(options?.sortBy) },
     );
@@ -161,7 +161,7 @@ export class ContentsService {
   //     {
   //       kind: ContentKind.Reply,
   //       ...visibilityQuery,
-  //       parent: { contentId: parentId },
+  //       parent: { id: parentId },
   //     },
   //     { populate: ['author', 'lastEdit', 'parent', 'edits'], orderBy: serializeOrder(options?.sortBy) },
   //   );
@@ -179,14 +179,14 @@ export class ContentsService {
   //     {
   //       kind: ContentKind.Comment,
   //       ...visibilityQuery,
-  //       parent: { contentId: parentId },
+  //       parent: { id: parentId },
   //     },
   //     { populate: ['author', 'lastEdit', 'parent', 'parent.parent', 'edits'] },
   //   );
   // }
 
-  public async findOne(user: User, contentId: number): Promise<Content> {
-    const content = await this.contentRepository.findOneOrFail({ contentId }, { populate: ['author', 'lastEdit', 'parent', 'parent.parent', 'edits'] });
+  public async findOne(user: User, id: number): Promise<Content> {
+    const content = await this.contentRepository.findOneOrFail({ id }, { populate: ['author', 'lastEdit', 'parent', 'parent.parent', 'edits'] });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, content);
@@ -203,12 +203,12 @@ export class ContentsService {
       reactions: (record: ContentInteractions, interaction: Reaction) => { record.reactions.push(interaction); },
     };
 
-    const master = await this.contentMasterRepository.findOneOrFail({ contentMasterId });
+    const master = await this.contentMasterRepository.findOneOrFail({ id: contentMasterId });
     await this.contentMasterRepository.populate(master, Object.keys(fieldsAction), {
-          favorites: { user: { userId } },
-          votes: { user: { userId } },
-          reports: { user: { userId } },
-          reactions: { contentMaster: { contentMasterId } },
+          favorites: { user: { id: userId } },
+          votes: { user: { id: userId } },
+          reports: { user: { id: userId } },
+          reactions: { contentMaster: { id: contentMasterId } },
     });
 
     const userInteractionByContent = {} as Record<number, ContentInteractions>;
@@ -220,42 +220,42 @@ export class ContentsService {
 
     for (const field of Object.keys(fieldsAction) as InteractionType[]) {
       for (const interaction of master[field])
-        fieldsAction[field](getOrCreate(interaction.content.contentId), interaction);
+        fieldsAction[field](getOrCreate(interaction.content.id), interaction);
     }
 
     return userInteractionByContent;
   }
 
-  public async getContentsByMaster(contentMasterId: number): Promise<Record<number, Content[]>> {
+  public async getContentsByMaster(id: number): Promise<Record<number, Content[]>> {
     const contentsByParent = {} as Record<number, Content[]>;
-    const getOrCreate = (contentId: number): Content[] => {
-      if (!contentsByParent[contentId])
-        contentsByParent[contentId] = [];
-      return contentsByParent[contentId];
+    const getOrCreate = (id: number): Content[] => {
+      if (!contentsByParent[id])
+        contentsByParent[id] = [];
+      return contentsByParent[id];
     };
 
     const contents = await this.contentRepository.find(
-      { contentMaster: { contentMasterId }, parent: { $ne: undefined } },
+      { contentMaster: { id }, parent: { $ne: undefined } },
       { populate: ['author', 'lastEdit', 'edits'] },
     );
     for (const content of contents) {
-      if (content?.parent?.contentId)
-        getOrCreate(content.parent.contentId).push(content);
+      if (content?.parent?.id)
+        getOrCreate(content.parent.id).push(content);
     }
 
     return contentsByParent;
   }
 
   // Highly unoptimised query - use only when querying one or few contents
-  public async findInteractions(user: User, contentId: number): Promise<ContentInteractions> {
-    const content = await this.contentRepository.findOneOrFail({ contentId });
+  public async findInteractions(user: User, id: number): Promise<ContentInteractions> {
+    const content = await this.contentRepository.findOneOrFail({ id });
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, content);
 
-    const reactions = await this.reactionRepository.find({ content: { contentId } });
-    const userFavorited = await this.favoriteRepository.findOne({ content: { contentId }, user });
-    const userVoted = await this.voteRepository.findOne({ user, content: { contentId } });
-    const userReported = await this.reportRepository.findOne({ user, content: { contentId } });
+    const reactions = await this.reactionRepository.find({ content: { id } });
+    const userFavorited = await this.favoriteRepository.findOne({ content: { id }, user });
+    const userVoted = await this.voteRepository.findOne({ user, content: { id } });
+    const userReported = await this.reportRepository.findOne({ user, content: { id } });
 
     return {
       reactions,
@@ -267,10 +267,10 @@ export class ContentsService {
 
   public async findEdits(
     user: User,
-    contentId: number,
+    id: number,
     paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<ContentEdit>> {
-    const content = await this.contentRepository.findOneOrFail({ contentId });
+    const content = await this.contentRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, content);
@@ -282,9 +282,9 @@ export class ContentsService {
     );
   }
 
-  public async update(user: User, contentId: number, updateContentDto: UpdateContentDto): Promise<Content> {
+  public async update(user: User, id: number, updateContentDto: UpdateContentDto): Promise<Content> {
     const content = await this.contentRepository.findOneOrFail(
-      { contentId },
+      { id },
       { populate: ['author', 'lastEdit', 'parent'] },
     );
 
@@ -296,15 +296,15 @@ export class ContentsService {
     if (typeof updateContentDto.hidden === 'boolean') {
       if (content.contentMaster) {
         const nContentsOnMaster = await this.contentRepository.count({
-          contentMaster: { contentMasterId: content.contentMaster.contentMasterId },
+          contentMaster: { id: content.contentMaster.id },
           author: user,
           hidden: false,
         });
 
         if (nContentsOnMaster === 0 && content.hidden && !updateContentDto.hidden)
-          await this.updateParticipants('add', user, content.contentMaster.contentMasterId);
+          await this.updateParticipants('add', user, content.contentMaster.id);
         else if (nContentsOnMaster === 1 && !content.hidden && updateContentDto.hidden)
-          await this.updateParticipants('remove', user, content.contentMaster.contentMasterId);
+          await this.updateParticipants('remove', user, content.contentMaster.id);
       }
 
       await this.contentRepository.nativeUpdate({
@@ -337,23 +337,23 @@ export class ContentsService {
     return content;
   }
 
-  public async remove(user: User, contentId: number): Promise<void> {
-    const content = await this.contentRepository.findOneOrFail({ contentId });
+  public async remove(user: User, id: number): Promise<void> {
+    const content = await this.contentRepository.findOneOrFail({ id });
     if (content.parent)
-      content.parent.nReplies--;
+      content.parent.replyCount--;
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, content);
 
     if (content.contentMaster) {
       const nContentsOnMaster = await this.contentRepository.count({
-        contentMaster: { contentMasterId: content.contentMaster.contentMasterId },
+        contentMaster: { id: content.contentMaster.id },
         author: user,
         hidden: false,
       });
 
       if (nContentsOnMaster === 1)
-        await this.updateParticipants('remove', user, content.contentMaster.contentMasterId);
+        await this.updateParticipants('remove', user, content.contentMaster.id);
     }
 
     await this.contentRepository.removeAndFlush(content);

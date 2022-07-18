@@ -78,10 +78,10 @@ export class CaslAbilityFactory {
     const { can: allow, cannot: forbid, build } = new AbilityBuilder<AppAbility>(Ability as AbilityClass<AppAbility>);
 
     /* eslint-disable @typescript-eslint/naming-convention */
-    const isAuthor = { 'author.userId': user.userId } as const;
-    const isFileUploader = { 'file.user.userId': user.userId } as const;
+    const isAuthor = { 'author.id': user.id } as const;
+    const isFileUploader = { 'file.user.id': user.id } as const;
     const isClub = { kind: TeamKind.Club } as const;
-    const isMe = { 'user.userId': user.userId } as const;
+    const isMe = { 'user.userId': user.id } as const;
 
     if (user.roles.includes(Role.Admin)) {
       allow(Action.Manage, 'all');
@@ -112,7 +112,7 @@ export class CaslAbilityFactory {
 
       forbid(Action.Update, User)
         .because('Not the user');
-      allow(Action.Update, User, { userId: user.userId })
+      allow(Action.Update, User, { id: user.id })
         .because('Not the user');
 
       if (user.roles.includes(Role.Moderator)) {

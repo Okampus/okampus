@@ -17,7 +17,7 @@ import { MembershipRequestState } from '../types/membership-request-state.enum';
 @Entity()
 export class TeamMembershipRequest extends BaseEntity {
   @PrimaryKey()
-  teamMembershipRequestId!: number;
+  id!: number;
 
   @ManyToOne({ onDelete: 'CASCADE' })
   @Index()

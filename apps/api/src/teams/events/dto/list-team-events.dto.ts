@@ -13,7 +13,7 @@ import { TeamEventState } from '../../../shared/lib/types/enums/team-event-state
 export class ListTeamEventsDto extends PartialType(ListOptionsDto) {
   @IsOptional()
   @IsInt()
-  teamId?: number;
+  id?: number;
 
   @IsOptional()
   @IsDate()

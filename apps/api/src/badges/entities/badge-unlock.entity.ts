@@ -21,7 +21,7 @@ import { Badge } from './badge.entity';
 export class BadgeUnlock extends BaseEntity {
   @Field(() => Int)
   @PrimaryKey()
-  badgeUnlockId!: number;
+  id!: number;
 
   @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })

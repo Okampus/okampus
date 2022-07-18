@@ -55,8 +55,8 @@ export class BlogSearchService extends SearchService<Blog, IndexedBlog> {
   }
 
   @RequireTypesense()
-  public async remove(blogId: string): Promise<void> {
-    await this.documents.delete(blogId).catch(authorizeNotFound);
+  public async remove(id: string): Promise<void> {
+    await this.documents.delete(id).catch(authorizeNotFound);
   }
 
   @RequireTypesense()
@@ -69,12 +69,12 @@ export class BlogSearchService extends SearchService<Blog, IndexedBlog> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
-      const blogIds = results.hits.map(hit => hit.document.id).map(Number);
-      const blogs = await this.blogRepository.find({ contentMasterId: { $in: blogIds } });
+      const ids = results.hits.map(hit => hit.document.id).map(Number);
+      const blogs = await this.blogRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
         // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedBlog.id and
-        // Blog.blogId. I know.
-        hit.document = blogs.find(blog => blog.blogId === hit.document.id)!;
+        // Blog.id. I know.
+        hit.document = blogs.find(blog => blog.id === hit.document.id)!;
     }
     // @ts-expect-error: Ditto.
     return results;
@@ -87,7 +87,7 @@ export class BlogSearchService extends SearchService<Blog, IndexedBlog> {
       category: blog.category,
       author: blog.post.author.getFullName(),
       tags: blog.tags.toArray().map(tag => tag.name),
-      id: blog.contentMasterId.toString(),
+      id: blog.id.toString(),
     };
   }
 }

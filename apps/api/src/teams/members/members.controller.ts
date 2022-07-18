@@ -43,14 +43,14 @@ export class TeamMembersController {
     return await this.membersService.inviteUser(requester, teamId, userId, inviteMemberDto);
   }
 
-  @Get(':teamId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   // @SerializerTeamMemberIncludeTeam()
   public async findAllMembers(
-    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Query() query: PaginateDto,
   ): Promise<PaginatedResult<TeamMember>> {
-    return await this.membersService.findAllMembers(teamId, normalizePagination(query));
+    return await this.membersService.findAllMembers(id, normalizePagination(query));
   }
 
   @Patch(':teamId/:userId')

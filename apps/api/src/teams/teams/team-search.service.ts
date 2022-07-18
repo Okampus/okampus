@@ -50,8 +50,8 @@ export class TeamSearchService extends SearchService<Team, IndexedTeam> {
   }
 
   @RequireTypesense()
-  public async remove(teamId: string): Promise<void> {
-    await this.documents.delete(teamId).catch(authorizeNotFound);
+  public async remove(id: string): Promise<void> {
+    await this.documents.delete(id).catch(authorizeNotFound);
   }
 
   @RequireTypesense()
@@ -64,12 +64,12 @@ export class TeamSearchService extends SearchService<Team, IndexedTeam> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
-      const teamIds = results.hits.map(hit => hit.document.id).map(Number);
-      const teams = await this.teamRepository.find({ teamId: { $in: teamIds } });
+      const ids = results.hits.map(hit => hit.document.id).map(Number);
+      const teams = await this.teamRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
         // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedTeam.id and
-        // Team.teamId. I know.
-        hit.document = teams.find(team => team.teamId === hit.document.id)!;
+        // Team.id. I know.
+        hit.document = teams.find(team => team.id === hit.document.id)!;
     }
     // @ts-expect-error: Ditto.
     return results;
@@ -80,7 +80,7 @@ export class TeamSearchService extends SearchService<Team, IndexedTeam> {
       name: team.name,
       shortDescription: team.shortDescription,
       kind: team.kind,
-      id: team.teamId.toString(),
+      id: team.id.toString(),
     };
   }
 }

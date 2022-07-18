@@ -24,21 +24,21 @@ export class TeamMembershipsController {
     private readonly membershipsService: TeamMembershipsService,
 ) {}
 
-  @Get(':userId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, User))
   // @SerializerTeamMemberIncludeTeam()
   public async findOne(
-    @Param('userId') userId: string,
+    @Param('id') id: string,
   ): Promise<PaginatedResult<TeamMember>> {
-    return await this.membershipsService.findOne(userId);
+    return await this.membershipsService.findOne(id);
   }
 
-  @Get(':userId/requests')
+  @Get(':id/requests')
   @CheckPolicies(ability => ability.can(Action.Read, User))
   public async findAll(
-    @Param('userId') userId: string,
+    @Param('id') id: string,
     @Query() query: MembershipRequestsListOptions,
   ): Promise<PaginatedResult<TeamMembershipRequest>> {
-    return await this.membershipsService.findAll(userId, normalizePagination(query));
+    return await this.membershipsService.findAll(id, normalizePagination(query));
   }
 }

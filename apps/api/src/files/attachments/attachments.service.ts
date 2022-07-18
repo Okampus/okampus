@@ -20,10 +20,10 @@ export class AttachmentsService {
   ) {}
 
   public async assertCanCreateAttachment(user: User, createAttachmentDto: CreateAttachmentDto): Promise<boolean> {
-    if (!createAttachmentDto.contentId)
+    if (!createAttachmentDto.id)
       return true;
 
-    const content = await this.contentRepository.findOneOrFail({ contentId: createAttachmentDto.contentId });
+    const content = await this.contentRepository.findOneOrFail({ id: createAttachmentDto.id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, content);
@@ -37,17 +37,17 @@ export class AttachmentsService {
   public async create(createAttachmentDto: CreateAttachmentDto, file: FileUpload): Promise<Attachment> {
     let content: Content | undefined;
 
-    if (createAttachmentDto.contentId)
-      content = await this.contentRepository.findOneOrFail({ contentId: createAttachmentDto.contentId });
+    if (createAttachmentDto.id)
+      content = await this.contentRepository.findOneOrFail({ id: createAttachmentDto.id });
 
     const attachment = new Attachment({ ...createAttachmentDto, content, file });
     await this.attachmentRepository.persistAndFlush(attachment);
     return attachment;
   }
 
-  public async findOne(user: User, attachmentId: string): Promise<Attachment> {
+  public async findOne(user: User, id: string): Promise<Attachment> {
     const attachment = await this.attachmentRepository.findOneOrFail(
-      { attachmentId },
+      { id },
       { populate: ['file', 'file.user', 'content'] },
     );
 
@@ -57,9 +57,9 @@ export class AttachmentsService {
     return attachment;
   }
 
-  public async remove(user: User, attachmentId: string): Promise<void> {
+  public async remove(user: User, id: string): Promise<void> {
     const attachment = await this.attachmentRepository.findOneOrFail(
-      { attachmentId },
+      { id },
       { populate: ['file', 'file.user', 'content'] },
     );
 

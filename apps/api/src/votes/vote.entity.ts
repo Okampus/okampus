@@ -13,7 +13,7 @@ import type { User } from '../users/user.entity';
 export class Vote extends BaseContentInteraction {
   @Field(() => Int)
   @PrimaryKey()
-  voteId!: number;
+  id!: number;
 
   @Field(() => Int)
   @Enum()

@@ -17,7 +17,7 @@ import type { Team } from '../teams/team.entity';
 @Entity()
 export class TeamMember extends BaseEntity {
   @PrimaryKey()
-  teamMemberId!: number;
+  id!: number;
 
   @ManyToOne({ onDelete: 'CASCADE' })
   @Index()

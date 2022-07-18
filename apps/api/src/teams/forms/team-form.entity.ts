@@ -14,7 +14,7 @@ import { Team } from '../teams/team.entity';
 @Entity()
 export class TeamForm extends BaseEntity {
   @PrimaryKey()
-  teamFormId!: number;
+  id!: number;
 
   @Property()
   name!: string;

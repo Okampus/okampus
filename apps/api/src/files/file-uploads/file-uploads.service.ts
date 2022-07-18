@@ -14,10 +14,10 @@ export class FileUploadsService {
     private readonly filePersistanceService: FilePersistanceService,
   ) {}
 
-  public async findOne(fileUploadId: string): Promise<FileUpload> {
+  public async findOne(id: string): Promise<FileUpload> {
     // TODO: Maybe the user won't have access to this file. There can be some restrictions
     // (i.e. "sensitive"/"removed" files)
-    return await this.fileUploadRepository.findOneOrFail({ fileUploadId }, { populate: ['user'] });
+    return await this.fileUploadRepository.findOneOrFail({ id }, { populate: ['user'] });
   }
 
   public async create(
@@ -39,7 +39,7 @@ export class FileUploadsService {
     await this.fileUploadRepository.persistAndFlush(fileDocument);
     const infos = await this.filePersistanceService.upload(file, {
       path: fileDocument.getPath(),
-      key: fileDocument.fileUploadId,
+      key: fileDocument.id,
       kind: fileKind,
     });
 

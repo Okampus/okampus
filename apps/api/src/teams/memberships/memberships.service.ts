@@ -17,18 +17,18 @@ export class TeamMembershipsService {
   ) {}
 
   public async findOne(
-    userId: string,
+    id: string,
     paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<TeamMember>> {
     return await this.teamMemberRepository.findWithPagination(
       paginationOptions,
-      { user: { userId } },
+      { user: { id } },
       { populate: ['user', 'team'], orderBy: { team: { name: 'ASC' } } },
     );
   }
 
   public async findAll(
-    userId: string,
+    id: string,
     options?: MembershipRequestsListOptions & Required<PaginateDto>,
   ): Promise<PaginatedResult<TeamMembershipRequest>> {
     let query: FilterQuery<TeamMembershipRequest> = {};
@@ -42,7 +42,7 @@ export class TeamMembershipsService {
 
     return await this.teamMembershipRequestRepository.findWithPagination(
       options,
-      { user: { userId }, ...query },
+      { user: { id }, ...query },
       { orderBy: { createdAt: 'DESC' }, populate: ['team', 'user', 'issuedBy', 'handledBy'] },
     );
   }

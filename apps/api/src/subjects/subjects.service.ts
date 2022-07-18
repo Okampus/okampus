@@ -32,12 +32,12 @@ export class SubjectsService {
     return await this.subjectRepository.findWithPagination(paginationOptions);
   }
 
-  public async findOne(subjectId: string): Promise<Subject> {
-    return await this.subjectRepository.findOneOrFail({ subjectId });
+  public async findOne(id: string): Promise<Subject> {
+    return await this.subjectRepository.findOneOrFail({ id });
   }
 
-  public async update(subjectId: string, updateSubjectDto: UpdateSubjectDto): Promise<Subject> {
-    const subject = await this.subjectRepository.findOneOrFail({ subjectId });
+  public async update(id: string, updateSubjectDto: UpdateSubjectDto): Promise<Subject> {
+    const subject = await this.subjectRepository.findOneOrFail({ id });
 
     wrap(subject).assign(updateSubjectDto);
     await this.subjectRepository.flush();
@@ -45,9 +45,9 @@ export class SubjectsService {
     return subject;
   }
 
-  public async remove(subjectId: string): Promise<void> {
-    const subject = await this.subjectRepository.findOneOrFail({ subjectId });
+  public async remove(id: string): Promise<void> {
+    const subject = await this.subjectRepository.findOneOrFail({ id });
     await this.subjectRepository.removeAndFlush(subject);
-    await this.subjectSearchService.remove(subject.subjectId);
+    await this.subjectSearchService.remove(subject.id);
   }
 }

@@ -12,11 +12,11 @@ export class RestaurantService {
   ) {}
 
   public async findOneDateMenu(date: Date): Promise<DailyMenu | null> {
-    return await this.dailyMenuRepository.findOne({ date: this.getDayQuery(date) }, { populate: ['starters', 'dishes', 'desserts'] });
+    return await this.dailyMenuRepository.findOne({ id: this.getDayQuery(date) }, { populate: ['starters', 'dishes', 'desserts'] });
   }
 
   public async findAllDateInfo(date: Date): Promise<DailyInfo | null> {
-    return await this.dailyInfoRepository.findOne({ date: this.getDayQuery(date) });
+    return await this.dailyInfoRepository.findOne({ id: this.getDayQuery(date) });
   }
 
   private getDayQuery(date: Date): { $gte: Date; $lt: Date } {

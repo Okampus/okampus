@@ -27,27 +27,27 @@ export class DailyInfoService {
     return info;
   }
 
-  public async findOne(date: Date): Promise<DailyInfo> {
-    return await this.dailyInfoRepository.findOneOrFail({ date });
+  public async findOne(id: Date): Promise<DailyInfo> {
+    return await this.dailyInfoRepository.findOneOrFail({ id });
   }
 
   public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<DailyInfo>> {
     return await this.dailyInfoRepository.findWithPagination(
       paginationOptions,
       {},
-      { orderBy: { date: 'ASC' } },
+      { orderBy: { id: 'ASC' } },
     );
   }
 
-  public async update(date: Date, updateDailyInfoDto: Partial<NormalizedDate<UpdateDailyInfoDto>>): Promise<DailyInfo> {
-    const info = await this.dailyInfoRepository.findOneOrFail({ date });
+  public async update(id: Date, updateDailyInfoDto: Partial<NormalizedDate<UpdateDailyInfoDto>>): Promise<DailyInfo> {
+    const info = await this.dailyInfoRepository.findOneOrFail({ id });
     wrap(info).assign(updateDailyInfoDto);
     await this.dailyInfoRepository.flush();
     return info;
   }
 
-  public async remove(date: Date): Promise<void> {
-    const dailyInfo = await this.dailyInfoRepository.findOneOrFail({ date });
+  public async remove(id: Date): Promise<void> {
+    const dailyInfo = await this.dailyInfoRepository.findOneOrFail({ id });
     await this.dailyInfoRepository.removeAndFlush(dailyInfo);
   }
 }

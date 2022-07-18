@@ -14,7 +14,7 @@ import type { User } from '../../users/user.entity';
 export class Validation extends BaseContentInteraction {
   @Field(() => Int)
   @PrimaryKey()
-  validationId!: number;
+  id!: number;
 
   @Field(() => Boolean)
   @Property({ default: true })

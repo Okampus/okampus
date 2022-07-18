@@ -46,29 +46,29 @@ export class AnnouncementsController {
     return await this.announcementsService.findAll(user, query, normalizePagination(query));
   }
 
-  @Get(':announcementId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Announcement))
   public async findOne(
-    @Param('announcementId', ParseIntPipe) announcementId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
   ): Promise<Announcement> {
-    return await this.announcementsService.findOne(user, announcementId);
+    return await this.announcementsService.findOne(user, id);
   }
 
-  @Patch(':announcementId')
+  @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Announcement))
   public async update(
-    @Param('announcementId', ParseIntPipe) announcementId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateAnnouncementDto: UpdateAnnouncementDto,
   ): Promise<Announcement> {
-    return await this.announcementsService.update(announcementId, updateAnnouncementDto);
+    return await this.announcementsService.update(id, updateAnnouncementDto);
   }
 
-  @Delete(':announcementId')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, Announcement))
   public async remove(
-    @Param('announcementId', ParseIntPipe) announcementId: number,
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<void> {
-    await this.announcementsService.remove(announcementId);
+    await this.announcementsService.remove(id);
   }
 }

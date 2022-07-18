@@ -45,21 +45,21 @@ export class WikisController {
     return await this.wikisService.findAll(user, normalizePagination(query));
   }
 
-  @Get(':wikiPageId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, WikiPage))
-  public async findOne(@Param('wikiPageId', ParseIntPipe) wikiPageId: number): Promise<WikiPage | null> {
-    return await this.wikisService.findOne(wikiPageId);
+  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<WikiPage | null> {
+    return await this.wikisService.findOne(id);
   }
 
-  @Patch(':wikiPageId')
+  @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, WikiPage))
-  public async update(@Param('wikiPageId', ParseIntPipe) wikiPageId: number, @Body() updateWikiPageDto: UpdateWikiPageDto): Promise<WikiPage> {
-    return await this.wikisService.update(wikiPageId, updateWikiPageDto);
+  public async update(@Param('id', ParseIntPipe) id: number, @Body() updateWikiPageDto: UpdateWikiPageDto): Promise<WikiPage> {
+    return await this.wikisService.update(id, updateWikiPageDto);
   }
 
-  @Delete(':wikiPageId')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, WikiPage))
-  public async remove(@Param('wikiPageId', ParseIntPipe) wikiPageId: number): Promise<void> {
-    await this.wikisService.remove(wikiPageId);
+  public async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    await this.wikisService.remove(id);
   }
 }

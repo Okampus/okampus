@@ -28,12 +28,12 @@ export class AuthService {
   public async validatePassword(userQuery: string, password: string): Promise<User> {
     const user = await this.userRepository.findOne({
       $or: [
-        { userId: { $ilike: userQuery } },
+        { id: { $ilike: userQuery } },
         { email: userQuery.toLowerCase() },
       ],
     });
     if (user) {
-      const userPassword = this.userRepository.createQueryBuilder().select('password').where({ userId: user.userId });
+      const userPassword = this.userRepository.createQueryBuilder().select('password').where({ id: user.id });
       if (!userPassword)
         throw new BadRequestException('Password is not set');
       if (!(await user.validatePassword(password)))
@@ -45,7 +45,7 @@ export class AuthService {
   }
 
   public async login(user: User): Promise<TokenResponse> {
-    const payload: Token = { sub: user.userId, aud: 'http' };
+    const payload: Token = { sub: user.id, aud: 'http' };
 
     return {
       accessToken: await this.jwtService.signAsync(payload, this.getTokenOptions('access')),
@@ -57,8 +57,8 @@ export class AuthService {
     };
   }
 
-  public async getWsToken(userId: string): Promise<string> {
-    return await this.jwtService.signAsync({ sub: userId, aud: 'ws' }, this.getTokenOptions('ws'));
+  public async getWsToken(id: string): Promise<string> {
+    return await this.jwtService.signAsync({ sub: id, aud: 'ws' }, this.getTokenOptions('ws'));
   }
 
   public async loginWithRefreshToken(refreshToken: string): Promise<TokenResponse> {
@@ -75,7 +75,7 @@ export class AuthService {
       throw new UnauthorizedException('Falsified token');
     }
 
-    const user = await this.userRepository.findOneOrFail({ userId: decoded.sub });
+    const user = await this.userRepository.findOneOrFail({ id: decoded.sub });
     return this.login(user);
   }
 
@@ -109,7 +109,7 @@ export class AuthService {
   }
 
   public async createOrUpdate(userInfo: MyEfreiDto): Promise<User> {
-    const user = await this.userRepository.findOne({ userId: userInfo.userId });
+    const user = await this.userRepository.findOne({ id: userInfo.id });
     if (!user)
       return await this.usersService.create(userInfo);
 

@@ -46,8 +46,8 @@ export class FoodSearchService extends SearchService<Food, IndexedFood> {
   }
 
   @RequireTypesense()
-  public async remove(foodId: string): Promise<void> {
-    await this.documents.delete(foodId).catch(authorizeNotFound);
+  public async remove(id: string): Promise<void> {
+    await this.documents.delete(id).catch(authorizeNotFound);
   }
 
   @RequireTypesense()
@@ -60,12 +60,12 @@ export class FoodSearchService extends SearchService<Food, IndexedFood> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
-      const foodIds = results.hits.map(hit => hit.document.id).map(Number);
-      const foods = await this.foodRepository.find({ foodId: { $in: foodIds } });
+      const ids = results.hits.map(hit => hit.document.id).map(Number);
+      const foods = await this.foodRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
         // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedFood.id and
-        // Food.foodId. I know.
-        hit.document = foods.find(food => food.foodId === hit.document.id)!;
+        // Food.id. I know.
+        hit.document = foods.find(food => food.id === hit.document.id)!;
     }
     // @ts-expect-error: Ditto.
     return results;
@@ -74,7 +74,7 @@ export class FoodSearchService extends SearchService<Food, IndexedFood> {
   public toIndexedEntity(food: Food): IndexedFood {
     return {
       name: food.name,
-      id: food.foodId.toString(),
+      id: food.id.toString(),
     };
   }
 }

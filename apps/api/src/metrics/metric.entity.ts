@@ -10,7 +10,7 @@ import { MetricName } from '../shared/lib/types/enums/metric-name.enum';
 @Entity()
 export class Metric extends BaseEntity {
   @PrimaryKey()
-  metricId!: number;
+  id!: number;
 
   @Property({ columnType: 'real' })
   value!: number;

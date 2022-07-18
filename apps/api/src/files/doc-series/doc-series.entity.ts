@@ -13,7 +13,7 @@ import type { Tag } from '../../tags/tag.entity';
 @Entity()
 export class DocSeries extends BaseEntity {
   @PrimaryKey()
-  docSeriesId: string = nanoid(32);
+  id: string = nanoid(32);
 
   @Property({ type: 'text' })
   name!: string;

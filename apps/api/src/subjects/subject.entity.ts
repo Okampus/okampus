@@ -10,7 +10,7 @@ import { SchoolYear } from '../shared/lib/types/enums/school-year.enum';
 @Entity()
 export class Subject extends BaseEntity {
   @PrimaryKey()
-  subjectId!: string;
+  id!: string;
 
   @Property({ type: 'text' })
   name!: string;
@@ -25,14 +25,14 @@ export class Subject extends BaseEntity {
   schoolYear!: SchoolYear;
 
   constructor(options: {
-    subjectId: string;
+    id: string;
     name: string;
     englishName: string;
     schoolYear: SchoolYear;
     description?: string;
   }) {
     super();
-    this.subjectId = options.subjectId;
+    this.id = options.id;
     this.name = options.name;
     this.englishName = options.englishName;
     this.schoolYear = options.schoolYear;

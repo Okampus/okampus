@@ -29,12 +29,12 @@ export class TeamMembershipRequestsService {
 
   public async create(
     requester: User,
-    teamId: number,
+    id: number,
     createTeamMembershipRequestDto: CreateTeamMembershipRequestDto,
   ): Promise<TeamMembershipRequest> {
     // 1. Check that the given team exist, and fetch it.
     const team = await this.teamRepository.findOneOrFail(
-      { teamId },
+      { id },
       { populate: ['members'] },
     );
 
@@ -61,7 +61,7 @@ export class TeamMembershipRequestsService {
     // 4. Check that the form is valid
     const formFields = await this.getAndValidateFormSubmission(
       team.membershipRequestForm,
-      createTeamMembershipRequestDto.originalFormId,
+      createTeamMembershipRequestDto.id,
       createTeamMembershipRequestDto.formSubmission,
       false,
     );
@@ -82,7 +82,7 @@ export class TeamMembershipRequestsService {
   }
 
   public async findAll(
-    teamId: number,
+    id: number,
     options?: MembershipRequestsListOptions & Required<PaginateDto>,
   ): Promise<PaginatedResult<TeamMembershipRequest>> {
     let query: FilterQuery<TeamMembershipRequest> = {};
@@ -96,18 +96,18 @@ export class TeamMembershipRequestsService {
 
     return await this.teamMembershipRequestRepository.findWithPagination(
       options,
-      { team: { teamId }, ...query },
+      { team: { id }, ...query },
       { orderBy: { createdAt: 'DESC' }, populate: ['team', 'user', 'issuedBy', 'handledBy'] },
     );
   }
 
   public async update(
     user: User,
-    requestId: number,
+    id: number,
     updateTeamMembershipRequestDto: UpdateTeamMembershipRequestDto,
   ): Promise<TeamMembershipRequest> {
     const request = await this.teamMembershipRequestRepository.findOneOrFail(
-      { teamMembershipRequestId: requestId },
+      { id },
       { populate: ['team', 'team.members', 'user'] },
     );
 
@@ -122,7 +122,7 @@ export class TeamMembershipRequestsService {
     // 3. Check that the form is valid
     const formFields = await this.getAndValidateFormSubmission(
       request.team.membershipRequestForm,
-      updateTeamMembershipRequestDto.originalFormId,
+      updateTeamMembershipRequestDto.id,
       updateTeamMembershipRequestDto.formSubmission,
       true,
     );
@@ -135,11 +135,11 @@ export class TeamMembershipRequestsService {
 
   public async handleRequest(
     user: User,
-    requestId: number,
+    id: number,
     updateTeamMembershipRequestDto: PutTeamMembershipRequestDto,
   ): Promise<TeamMembershipRequest> {
     const request = await this.teamMembershipRequestRepository.findOneOrFail(
-      { teamMembershipRequestId: requestId },
+      { id },
       { populate: ['team', 'team.members', 'user', 'issuedBy', 'handledBy'] },
     );
 
@@ -186,10 +186,10 @@ export class TeamMembershipRequestsService {
     // Step 2 — update the form submission / original form only if they are both defined,
     // and there is an actual form required
     if (teamForm && askedFormId && formSubmission) {
-      if (askedFormId !== teamForm.teamFormId)
+      if (askedFormId !== teamForm.id)
         throw new BadRequestException('Wrong form');
 
-      const form = await this.teamFormRepository.findOneOrFail({ teamFormId: askedFormId });
+      const form = await this.teamFormRepository.findOneOrFail({ id: askedFormId });
       if (form.isTemplate)
         throw new BadRequestException('Form is a template');
 

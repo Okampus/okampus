@@ -17,7 +17,7 @@ import { Content } from './content.entity';
 export class ContentEdit extends BaseEntity {
   @Field(() => Int)
   @PrimaryKey()
-  contentEditId!: number;
+  id!: number;
 
   @Field()
   @Property({ type: 'text' })
@@ -34,7 +34,7 @@ export class ContentEdit extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })
-  @Transform(({ obj }: { obj: ContentEdit }) => obj.editedBy.userId)
+  @Transform(({ obj }: { obj: ContentEdit }) => obj.editedBy.id)
   editedBy!: User;
 
   constructor(options: {

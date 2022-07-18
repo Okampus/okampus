@@ -32,7 +32,7 @@ import type { Vote } from '../votes/vote.entity';
 export class User extends BaseEntity {
   @Field()
   @PrimaryKey()
-  userId: string;
+  id: string;
 
   @Field()
   @Property({ type: 'text' })
@@ -116,7 +116,7 @@ export class User extends BaseEntity {
 
   constructor(options: Omit<UserCreationOptions, 'avatar' | 'banner' | 'password'>) {
     super();
-    this.userId = options.userId;
+    this.id = options.id;
     this.email = options.email;
     this.firstname = options.firstname;
     this.lastname = options.lastname;

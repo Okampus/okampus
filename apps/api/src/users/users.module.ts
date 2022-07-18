@@ -40,10 +40,10 @@ export class UsersModule implements OnModuleInit {
   public async onModuleInit(): Promise<void> {
     await this.userSearchService.init();
 
-    const admin = await this.userRepository.count({ userId: config.get('adminAccount.username') });
+    const admin = await this.userRepository.count({ id: config.get('adminAccount.username') });
     if (admin === 0) {
       const user = new User({
-        userId: config.get('adminAccount.username'),
+        id: config.get('adminAccount.username'),
         firstname: config.get('adminAccount.firstName'),
         lastname: config.get('adminAccount.lastName'),
         email: config.get('adminAccount.username'),

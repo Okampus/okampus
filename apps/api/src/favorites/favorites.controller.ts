@@ -24,12 +24,12 @@ export class FavoritesController {
     private readonly favoritesService: FavoritesService,
   ) {}
 
-  @Post(':contentId')
+  @Post(':id')
   public async add(
-    @Param('contentId', ParseIntPipe) contentId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
   ): Promise<Favorite> {
-    return await this.favoritesService.create(contentId, user);
+    return await this.favoritesService.create(id, user);
   }
 
   @Get()
@@ -40,22 +40,22 @@ export class FavoritesController {
     return await this.favoritesService.findAll(user, normalizePagination(query));
   }
 
-  @Get(':contentId')
+  @Get(':id')
   public async findOne(
-    @Param('contentId', ParseIntPipe) contentId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
     @Res({ passthrough: true }) res: Response,
   ): Promise<Favorite | null> {
-    const favorite = await this.favoritesService.findOne(contentId, user);
+    const favorite = await this.favoritesService.findOne(id, user);
     res.status(favorite ? 200 : 204);
     return favorite;
   }
 
-  @Delete(':contentId')
+  @Delete(':id')
   public async remove(
-    @Param('contentId', ParseIntPipe) contentId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
   ): Promise<void> {
-    await this.favoritesService.remove(contentId, user);
+    await this.favoritesService.remove(id, user);
   }
 }

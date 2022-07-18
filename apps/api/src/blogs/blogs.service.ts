@@ -61,9 +61,9 @@ export class BlogsService {
     );
   }
 
-  public async findOne(user: User, contentMasterId: number): Promise<Blog> {
+  public async findOne(user: User, id: number): Promise<Blog> {
     const blog: Blog & { contents?: Content[] } = await this.blogRepository.findOneOrFail(
-      { contentMasterId },
+      { id },
       { populate: ['tags', 'participants'] },
     );
 
@@ -79,8 +79,8 @@ export class BlogsService {
     return blog;
   }
 
-  public async update(user: User, contentMasterId: number, updateBlogDto: UpdateBlogDto): Promise<Blog> {
-    const blog = await this.blogRepository.findOneOrFail({ contentMasterId }, { populate: ['post', 'tags'] });
+  public async update(user: User, id: number, updateBlogDto: UpdateBlogDto): Promise<Blog> {
+    const blog = await this.blogRepository.findOneOrFail({ id }, { populate: ['post', 'tags'] });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, blog, Object.keys(updateBlogDto));
@@ -109,13 +109,13 @@ export class BlogsService {
     return blog;
   }
 
-  public async remove(user: User, contentMasterId: number): Promise<void> {
-    const blog = await this.blogRepository.findOneOrFail({ contentMasterId });
+  public async remove(user: User, id: number): Promise<void> {
+    const blog = await this.blogRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, blog);
 
     await this.blogRepository.removeAndFlush(blog);
-    await this.blogSearchService.remove(blog.contentMasterId.toString());
+    await this.blogSearchService.remove(blog.id.toString());
   }
 }

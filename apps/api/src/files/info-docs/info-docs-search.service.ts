@@ -57,8 +57,8 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
   }
 
   @RequireTypesense()
-  public async remove(infoDocId: string): Promise<void> {
-    await this.documents.delete(infoDocId).catch(authorizeNotFound);
+  public async remove(id: string): Promise<void> {
+    await this.documents.delete(id).catch(authorizeNotFound);
   }
 
   @RequireTypesense()
@@ -71,12 +71,12 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
-      const infoDocIds = results.hits.map(hit => hit.document.id);
-      const infoDocs = await this.infoDocRepository.find({ infoDocId: { $in: infoDocIds } });
+      const ids = results.hits.map(hit => hit.document.id);
+      const infoDocs = await this.infoDocRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
         // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedInfoDoc.id and
-        // InfoDoc.infoDocId. I know.
-        hit.document = infoDocs.find(infoDoc => infoDoc.infoDocId.toString() === hit.document.id)!;
+        // InfoDoc.id. I know.
+        hit.document = infoDocs.find(infoDoc => infoDoc.id.toString() === hit.document.id)!;
     }
     // @ts-expect-error: Ditto.
     return results;
@@ -84,12 +84,12 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
 
   public toIndexedEntity(infoDoc: InfoDoc): IndexedInfoDoc {
     return {
-      user: infoDoc.file.user.userId,
+      user: infoDoc.file.user.id,
       name: infoDoc.file.name,
       year: infoDoc.year,
       schoolYear: infoDoc.schoolYear ? SchoolYear[infoDoc.schoolYear] : undefined,
       description: infoDoc.description,
-      id: infoDoc.infoDocId,
+      id: infoDoc.id,
       createdAt: infoDoc.createdAt.toString(),
     };
   }

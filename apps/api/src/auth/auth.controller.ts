@@ -52,10 +52,10 @@ export class AuthController {
   public async register(@Body() dto: RegisterDto): Promise<User> {
     try {
       const user = await this.usersService.create(dto);
-      return await this.usersService.findOneById(user.userId);
+      return await this.usersService.findOneById(user.id);
     } catch (error) {
       if (error.code === '23505')
-        throw new BadRequestException('UserID already taken');
+        throw new BadRequestException('id already taken');
 
       throw error;
     }

@@ -58,41 +58,41 @@ export class ReportsController {
     return await this.reportSearchService.search(query);
   }
 
-  @Post(':userId')
+  @Post(':id')
   @CheckPolicies(ability => ability.can(Action.Report, Content))
   public async createReport(
     @CurrentUser() user: User,
-    @Param('userId') userId: string,
+    @Param('id') id: string,
     @Body() createReportDto: CreateReportDto,
   ): Promise<Report> {
-    return await this.reportsService.create(userId, user, createReportDto);
+    return await this.reportsService.create(id, user, createReportDto);
   }
 
-  @Get(':reportId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Report))
   public async findOne(
     @CurrentUser() user: User,
-    @Param('reportId', ParseIntPipe) reportId: number,
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<Report> {
-    return await this.reportsService.findOne(user, reportId);
+    return await this.reportsService.findOne(user, id);
   }
 
-  @Patch(':reportId')
+  @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Report))
   public async update(
     @CurrentUser() user: User,
-    @Param('reportId', ParseIntPipe) reportId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateReportDto: UpdateReportDto,
   ): Promise<Report> {
-    return await this.reportsService.update(user, reportId, updateReportDto);
+    return await this.reportsService.update(user, id, updateReportDto);
   }
 
-  @Delete(':reportId')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, Report))
   public async remove(
     @CurrentUser() user: User,
-    @Param('reportId', ParseIntPipe) reportId: number,
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<void> {
-    await this.reportsService.remove(user, reportId);
+    await this.reportsService.remove(user, id);
   }
 }

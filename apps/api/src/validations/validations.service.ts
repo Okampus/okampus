@@ -17,8 +17,8 @@ export class ValidationsService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async create(contentId: number, user: User): Promise<Validation> {
-    const content = await this.contentRepository.findOneOrFail({ contentId }, { populate: ['parent'] });
+  public async create(id: number, user: User): Promise<Validation> {
+    const content = await this.contentRepository.findOneOrFail({ id }, { populate: ['parent'] });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, content);
@@ -34,8 +34,8 @@ export class ValidationsService {
     return validation;
   }
 
-  public async findOne(user: User, contentId: number): Promise<Validation> {
-    const content = await this.contentRepository.findOneOrFail({ contentId });
+  public async findOne(user: User, id: number): Promise<Validation> {
+    const content = await this.contentRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, content);
@@ -43,8 +43,8 @@ export class ValidationsService {
     return this.validationRepository.findOneOrFail({ content, user });
   }
 
-  // Public async update(user: User, contentId: number, active: boolean): Promise<Validation> {
-  //   const content = await this.contentRepository.findOneOrFail({ contentId });
+  // Public async update(user: User, id: number, active: boolean): Promise<Validation> {
+  //   const content = await this.contentRepository.findOneOrFail({ id });
 
   //   const ability = this.caslAbilityFactory.createForUser(user);
   //   assertPermissions(ability, Action.Interact, content);
@@ -58,8 +58,8 @@ export class ValidationsService {
   //   return validation;
   // }
 
-  public async remove(contentId: number, user: User): Promise<void> {
-    const validation = await this.validationRepository.findOneOrFail({ content: { contentId }, user });
+  public async remove(id: number, user: User): Promise<void> {
+    const validation = await this.validationRepository.findOneOrFail({ content: { id }, user });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, validation.content);

@@ -32,43 +32,43 @@ export class TeamMembershipRequestsController {
     private readonly requestsService: TeamMembershipRequestsService,
   ) {}
 
-  @Post(':teamId')
+  @Post(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   public async create(
     @CurrentUser() user: User,
-    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() createTeamMembershipRequestDto: CreateTeamMembershipRequestDto,
   ): Promise<TeamMembershipRequest> {
-    return await this.requestsService.create(user, teamId, createTeamMembershipRequestDto);
+    return await this.requestsService.create(user, id, createTeamMembershipRequestDto);
   }
 
-  @Get(':teamId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   public async findAll(
-    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Query() query: MembershipRequestsListOptions,
   ): Promise<PaginatedResult<TeamMembershipRequest>> {
-    return await this.requestsService.findAll(teamId, normalizePagination(query));
+    return await this.requestsService.findAll(id, normalizePagination(query));
   }
 
-  @Patch(':requestId')
+  @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   public async update(
     @CurrentUser() user: User,
-    @Param('requestId', ParseIntPipe) requestId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateTeamMembershipRequestDto: UpdateTeamMembershipRequestDto,
   ): Promise<TeamMembershipRequest> {
-    return await this.requestsService.update(user, requestId, updateTeamMembershipRequestDto);
+    return await this.requestsService.update(user, id, updateTeamMembershipRequestDto);
   }
 
-  @Put(':requestId')
+  @Put(':id')
   // Give read permission only, because standard users use the same endpoint to accept/reject invitations.
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   public async handleRequest(
     @CurrentUser() user: User,
-    @Param('requestId', ParseIntPipe) requestId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateTeamMembershipRequestDto: PutTeamMembershipRequestDto,
   ): Promise<TeamMembershipRequest> {
-    return await this.requestsService.handleRequest(user, requestId, updateTeamMembershipRequestDto);
+    return await this.requestsService.handleRequest(user, id, updateTeamMembershipRequestDto);
   }
 }

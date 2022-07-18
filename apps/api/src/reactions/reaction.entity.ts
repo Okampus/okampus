@@ -15,7 +15,7 @@ import type { User } from '../users/user.entity';
 export class Reaction extends BaseContentInteraction {
   @Field(() => Int)
   @PrimaryKey()
-  reactionId!: number;
+  id!: number;
 
   @Field(() => AllReaction)
   @Enum(() => AllReaction)

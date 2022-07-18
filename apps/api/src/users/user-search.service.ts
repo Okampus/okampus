@@ -10,10 +10,9 @@ import { authorizeNotFound, SearchService } from '../shared/modules/search/searc
 import { User } from './user.entity';
 
 export interface IndexedUser {
-  userId: string;
+  id: string;
   fullname: string;
   roles: string[];
-  id: string;
   createdAt: string;
 }
 
@@ -22,7 +21,7 @@ export class UserSearchService extends SearchService<User, IndexedUser> {
   private static readonly schema: CollectionCreateSchema = {
     name: 'users',
     fields: [
-      { name: 'userId', type: 'string' },
+      { name: 'id', type: 'string' },
       { name: 'fullname', type: 'string' },
       { name: 'roles', type: 'string[]' },
       { name: 'createdAt', type: 'string' },
@@ -52,8 +51,8 @@ export class UserSearchService extends SearchService<User, IndexedUser> {
   }
 
   @RequireTypesense()
-  public async remove(userId: string): Promise<void> {
-    await this.documents.delete(userId).catch(authorizeNotFound);
+  public async remove(id: string): Promise<void> {
+    await this.documents.delete(id).catch(authorizeNotFound);
   }
 
   @RequireTypesense()
@@ -66,12 +65,12 @@ export class UserSearchService extends SearchService<User, IndexedUser> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
-      const userIds = results.hits.map(hit => hit.document.id);
-      const users = await this.userRepository.find({ userId: { $in: userIds } });
+      const ids = results.hits.map(hit => hit.document.id);
+      const users = await this.userRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
         // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedUser.id and
-        // User.userId. I know.
-        hit.document = users.find(user => user.userId === hit.document.id)!;
+        // User.id. I know.
+        hit.document = users.find(user => user.id === hit.document.id)!;
     }
     // @ts-expect-error: Ditto.
     return results;
@@ -79,10 +78,9 @@ export class UserSearchService extends SearchService<User, IndexedUser> {
 
   public toIndexedEntity(user: User): IndexedUser {
     return {
-      userId: user.userId,
+      id: user.id,
       fullname: user.getFullName(),
       roles: user.roles,
-      id: user.userId,
       createdAt: user.createdAt.toString(),
     };
   }

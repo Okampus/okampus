@@ -15,7 +15,7 @@ import { User } from '../users/user.entity';
 export class Report extends BaseContentInteraction {
   @Field(() => Int)
   @PrimaryKey()
-  reportId!: number;
+  id!: number;
 
   @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })
