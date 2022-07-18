@@ -10,6 +10,10 @@ import { plugin, defaultConfig } from '@formkit/vue'
 import { generateClasses } from '@formkit/themes'
 import formkitTheme from '@/formkit.theme'
 
+import { ApolloClient, InMemoryCache } from '@apollo/client/core'
+import { createApolloProvider } from '@vue/apollo-option'
+import { DefaultApolloClient } from '@vue/apollo-composable'
+
 import { fr } from '@formkit/i18n'
 
 import { emitter } from '@/shared/modules/emitter'
@@ -54,8 +58,20 @@ app.config.errorHandler = (error, vm, info) => {
     console.error(error, info)
 }
 
+const cache = new InMemoryCache()
+const apolloClient = new ApolloClient({
+    cache,
+    uri: `${import.meta.env.VITE_API_URL}/graphql`,
+    credentials: 'include',
+})
+
+const apolloProvider = createApolloProvider({
+    defaultClient: apolloClient,
+})
+
 // TODO: remove injection of modules in favor of composition API
 app.use(createPinia())
+    .use(apolloProvider)
     .use(router)
     .use(i18n)
     .use(InstantSearch)
@@ -71,4 +87,5 @@ app.use(createPinia())
         }),
     )
 
+app.provide(DefaultApolloClient, apolloClient)
 app.mount('#app')
