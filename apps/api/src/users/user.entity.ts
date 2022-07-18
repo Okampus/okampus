@@ -15,12 +15,17 @@ import * as bcrypt from 'bcrypt';
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 // eslint-disable-next-line import/no-cycle
 import { Settings } from '../settings/settings.entity';
+import type { Favorite } from '../favorites/favorite.entity';
+import type { Reaction } from '../reactions/reaction.entity';
+import type { Report } from '../reports/report.entity';
+import { TransformCollection } from '../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
 import { Role } from '../shared/modules/authorization/types/role.enum';
 import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
 // eslint-disable-next-line import/no-cycle
 import { Statistics } from '../statistics/statistics.entity';
+import type { Vote } from '../votes/vote.entity';
 
 @ObjectType()
 @Entity()
@@ -38,7 +43,6 @@ export class User extends BaseEntity {
   lastname!: string;
 
   @Property({ type: 'text', hidden: true })
-  // @Exclude()
   password?: string;
 
   @Field()
@@ -48,7 +52,6 @@ export class User extends BaseEntity {
 
   @Field(() => [BadgeUnlock], { nullable: true })
   @OneToMany('BadgeUnlock', 'user')
-  // @Exclude()
   badges = new Collection<BadgeUnlock>(this);
 
   // TODO: Add full 'reputation' support
@@ -84,13 +87,28 @@ export class User extends BaseEntity {
   @Property({ type: 'text' })
   shortDescription?: string;
 
-  // @Expose({ groups: [STATISTICS_INCLUDED] })
   @OneToOne('Statistics', 'user', { cascade: [Cascade.ALL] })
   statistics: Statistics;
 
   @Field(() => Settings)
   @OneToOne('Settings', 'user', { cascade: [Cascade.ALL] })
   settings: Settings;
+
+  @OneToMany('Reaction', 'user', { cascade: [Cascade.ALL] })
+  @TransformCollection()
+  reactions = new Collection<Reaction>(this);
+
+  @OneToMany('Report', 'user', { cascade: [Cascade.ALL] })
+  @TransformCollection()
+  reports = new Collection<Report>(this);
+
+  @OneToMany('Vote', 'user', { cascade: [Cascade.ALL] })
+  @TransformCollection()
+  votes = new Collection<Vote>(this);
+
+  @OneToMany('Favorite', 'user', { cascade: [Cascade.ALL] })
+  @TransformCollection()
+  favorites = new Collection<Favorite>(this);
 
   @Field(() => Int)
   @Property()
