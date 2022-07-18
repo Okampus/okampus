@@ -11,6 +11,7 @@ import { Validation } from '../validations/entities/validation.entity';
 import { Vote } from '../votes/vote.entity';
 import { VotesModule } from '../votes/votes.module';
 import { ContentsController } from './contents.controller';
+import { ContentResolver } from './contents.resolver';
 import { ContentsService } from './contents.service';
 import { ContentEdit } from './entities/content-edit.entity';
 import { Content } from './entities/content.entity';
@@ -32,7 +33,7 @@ import { Content } from './entities/content.entity';
     VotesModule,
   ],
   controllers: [ContentsController],
-  providers: [CaslAbilityFactory, ContentsService],
+  providers: [CaslAbilityFactory, ContentsService, ContentResolver],
   exports: [ContentsService],
 })
 export class ContentsModule {}
