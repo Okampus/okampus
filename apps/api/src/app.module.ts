@@ -51,6 +51,7 @@ import { TeamsModule } from './teams/teams.module';
 import { ThreadsModule } from './threads/threads.module';
 import { ThreadResolver } from './threads/threads.resolver';
 import { UsersModule } from './users/users.module';
+import { ValidationsModule } from './validations/validations.module';
 import { VotesModule } from './votes/votes.module';
 import { WikisModule } from './wiki/wikis.module';
 
@@ -90,6 +91,7 @@ import { WikisModule } from './wiki/wikis.module';
     UsersModule,
     VotesModule,
     WikisModule,
+    ValidationsModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
