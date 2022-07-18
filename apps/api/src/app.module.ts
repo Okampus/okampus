@@ -49,7 +49,6 @@ import { SubjectsModule } from './subjects/subjects.module';
 import { TagsModule } from './tags/tags.module';
 import { TeamsModule } from './teams/teams.module';
 import { ThreadsModule } from './threads/threads.module';
-import { ThreadResolver } from './threads/threads.resolver';
 import { UsersModule } from './users/users.module';
 import { ValidationsModule } from './validations/validations.module';
 import { VotesModule } from './votes/votes.module';
@@ -99,7 +98,6 @@ import { WikisModule } from './wiki/wikis.module';
     { provide: APP_FILTER, useClass: ExceptionsFilter },
     { provide: APP_FILTER, useClass: TypesenseFilter },
     { provide: APP_INTERCEPTOR, useFactory: (): SentryInterceptor => new SentryInterceptor(sentryInterceptorConfig) },
-    ThreadResolver,
   ],
   controllers: [AppController],
   exports: [],
