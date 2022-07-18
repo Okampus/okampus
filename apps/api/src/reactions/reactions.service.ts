@@ -2,7 +2,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Content } from '../contents/entities/content.entity';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
-import type { AllReactionValue } from '../shared/lib/types/enums/reaction.enum';
+import type { AllReaction } from '../shared/lib/types/enums/reaction.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
@@ -17,7 +17,7 @@ export class ReactionsService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async add(user: User, contentId: number, value: AllReactionValue): Promise<Reaction> {
+  public async add(user: User, contentId: number, value: AllReaction): Promise<Reaction> {
     const content = await this.contentRepository.findOneOrFail({ contentId });
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -42,7 +42,7 @@ export class ReactionsService {
     return await this.reactionRepository.find({ content }, { populate: ['user', 'content'] });
   }
 
-  public async remove(user: User, contentId: number, value: AllReactionValue): Promise<void> {
+  public async remove(user: User, contentId: number, value: AllReaction): Promise<void> {
     const content = await this.contentRepository.findOneOrFail({ contentId });
 
     const ability = this.caslAbilityFactory.createForUser(user);
