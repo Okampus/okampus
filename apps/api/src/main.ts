@@ -46,7 +46,8 @@ function setupSwagger(app: NestExpressApplication): void {
 }
 
 async function bootstrap(): Promise<void> {
-  await attemptTypesenseConnection();
+  if (config.get('typesense.enabled'))
+    await attemptTypesenseConnection();
 
   if (config.get('sentry.enabled'))
     SentryTracing.addExtensionMethods();
