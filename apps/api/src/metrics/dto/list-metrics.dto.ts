@@ -1,14 +1,20 @@
+import { Transform } from 'class-transformer';
 import {
+  ArrayUnique,
+  IsArray,
   IsDate,
   IsEnum,
-  IsInt,
   IsOptional,
 } from 'class-validator';
 import { MetricName } from '../../shared/lib/types/enums/metric-name.enum';
+import { IsIso8601Duration } from '../../shared/lib/validators/iso-8601-duration.validator';
 
 export class ListMetricsDto {
-  @IsEnum(MetricName)
-  name!: MetricName;
+  @Transform(({ value }) => value.split(','))
+  @IsArray()
+  @ArrayUnique()
+  @IsEnum(MetricName, { each: true })
+  names!: MetricName[];
 
   @IsOptional()
   @IsDate()
@@ -19,6 +25,6 @@ export class ListMetricsDto {
   after?: Date;
 
   @IsOptional()
-  @IsInt()
-  interval?: number;
+  @IsIso8601Duration()
+  interval?: string;
 }

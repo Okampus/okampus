@@ -10,6 +10,7 @@ import { TeamMember } from '../teams/members/team-member.entity';
 import { Team } from '../teams/teams/team.entity';
 import { User } from '../users/user.entity';
 import type { ListMetricsDto } from './dto/list-metrics.dto';
+import type { MetricSlim } from './metric.entity';
 import { Metric } from './metric.entity';
 
 @Injectable()
@@ -71,46 +72,23 @@ export class MetricsService {
     await this.metricRepository.persistAndFlush(metrics.map(opts => new Metric(opts)));
   }
 
-  public async findAll(query: ListMetricsDto): Promise<Metric[]> {
-    let filters = {};
+  public async findAll(query: ListMetricsDto): Promise<MetricSlim[]> {
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setHours(0, 0, 0, 0);
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
 
-    if (query.before)
-      filters = { ...filters, $lt: query.before };
-    if (query.after) {
-      filters = { ...filters, $gt: query.after };
-    } else {
-      const oneMonthAgo = new Date();
-      oneMonthAgo.setHours(0, 0, 0, 0);
-      oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-      filters = { ...filters, $gt: oneMonthAgo };
-    }
+    const dateLowerBound = (query.after ?? oneMonthAgo).toISOString();
+    const dateUpperBound = (query.before ?? new Date()).toISOString();
+    const interval = `${query.interval ?? 'PT15M'}`;
 
-    const metrics = await this.metricRepository.find(
-      { createdAt: filters, name: query.name },
-      { orderBy: { createdAt: 'ASC' } },
-    );
+    const knex = this.metricRepository.getKnex();
 
-    if (!query.interval)
-      return metrics;
-
-    if (metrics.length === 0)
-      return [];
-
-    const start = query.after ?? metrics[0].createdAt;
-    const end = metrics[metrics.length - 1].createdAt;
-    start.setSeconds(0, 0);
-    end.setSeconds(0, 0);
-
-    const result = [];
-    for (let cursor = start.getTime(); cursor < end.getTime(); cursor += query.interval * 1000) {
-      const item = metrics.find((metric) => {
-        const roundedDate = new Date(metric.createdAt);
-        roundedDate.setSeconds(0, 0);
-        return roundedDate.getTime() === cursor;
-      });
-      if (item)
-        result.push(item);
-    }
-    return result;
+    return await knex
+      .select('metric.created_at', 'metric.value', 'metric.name')
+      .from(knex.raw(
+        `generate_series(timestamptz '${dateLowerBound}', timestamptz '${dateUpperBound}', '${interval}'::interval) pool (interval)`,
+      ))
+      .innerJoin('metric', 'metric.created_at', 'pool.interval')
+      .whereIn('metric.name', query.names) as MetricSlim[];
   }
 }

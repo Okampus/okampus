@@ -27,3 +27,9 @@ export class Metric extends BaseEntity {
     this.name = options.name;
   }
 }
+
+export interface MetricSlim {
+  createdAt: Date;
+  name: string;
+  value: number;
+}
