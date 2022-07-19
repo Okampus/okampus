@@ -28,7 +28,7 @@ export class MetricsService {
     const fifteenMinutesAgo = new Date();
     fifteenMinutesAgo.setMinutes(fifteenMinutesAgo.getMinutes() - 15);
 
-    const metrics: Array<ConstructorParameters<typeof Metric>[0]> = [];
+    const metrics: Array<Omit<ConstructorParameters<typeof Metric>[0], 'createdAt'>> = [];
 
     // ClubCount
     const clubCount = await this.teamRepository.count({ kind: TeamKind.Club });
@@ -69,7 +69,12 @@ export class MetricsService {
     const userCount = await this.userRepository.count();
     metrics.push({ name: MetricName.UserCount, value: userCount });
 
-    await this.metricRepository.persistAndFlush(metrics.map(opts => new Metric(opts)));
+    const roundedDate = new Date();
+    roundedDate.setSeconds(0, 0);
+
+    await this.metricRepository.persistAndFlush(
+      metrics.map(opts => new Metric({ ...opts, createdAt: roundedDate })),
+    );
   }
 
   public async findAll(query: ListMetricsDto): Promise<MetricSlim[]> {

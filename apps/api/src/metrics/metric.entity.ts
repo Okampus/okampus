@@ -21,8 +21,10 @@ export class Metric extends BaseEntity {
   constructor(options: {
     value: number;
     name: MetricName;
+    createdAt: Date;
   }) {
     super();
+    this.createdAt = options.createdAt;
     this.value = options.value;
     this.name = options.name;
   }
