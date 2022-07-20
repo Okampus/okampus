@@ -17,6 +17,7 @@ import { Report } from '../../../reports/report.entity';
 import { DailyInfo } from '../../../restaurant/daily-info/daily-info.entity';
 import { DailyMenu } from '../../../restaurant/daily-menus/daily-menu.entity';
 import { Food } from '../../../restaurant/food/food.entity';
+import { Settings } from '../../../settings/settings.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
 import { TeamEvent } from '../../../teams/events/team-event.entity';
@@ -46,6 +47,7 @@ export type Subjects = InferSubjects<
   | typeof Metric
   | typeof ProfileImage
   | typeof Report
+  | typeof Settings
   | typeof StudyDoc
   | typeof Subject
   | typeof Tag
@@ -79,6 +81,7 @@ export class CaslAbilityFactory {
     const isAuthor = { 'author.userId': user.userId } as const;
     const isFileUploader = { 'file.user.userId': user.userId } as const;
     const isClub = { kind: TeamKind.Club } as const;
+    const isMe = { 'user.userId': user.userId } as const;
 
     if (user.roles.includes(Role.Admin)) {
       allow(Action.Manage, 'all');
@@ -87,7 +90,7 @@ export class CaslAbilityFactory {
       forbid(Action.Read, [Report, Announcement, Metric]);
 
       // @ts-expect-error
-      allow([Action.Read, Action.Update], Report, { 'user.userId': user.userId });
+      allow([Action.Read, Action.Update], Report, isMe);
 
       allow(Action.Read, Announcement, {
         state: AnnouncementState.Committed,
@@ -179,6 +182,10 @@ export class CaslAbilityFactory {
 
     forbid(Action.Delete, Content, { kind: ContentKind.Post })
       .because('Cannot delete posts, only threads');
+
+    forbid(Action.Manage, Settings);
+    // @ts-expect-error
+    allow([Action.Read, Action.Update], Settings, isMe);
     /* eslint-enable @typescript-eslint/naming-convention */
 
     ForbiddenError.setDefaultMessage(error => `Cannot perform ${error.action.toLowerCase()} on a ${error.subjectType.toLowerCase()}`);

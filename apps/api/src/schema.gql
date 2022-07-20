@@ -115,9 +115,11 @@ scalar DateTime
 
 type Mutation {
   addThread(thread: CreateThreadDto!): Thread!
+  updateSettings(settings: UpdateSettingsDto!): Settings!
 }
 
 type Query {
+  settings: Settings!
   thread(id: Int): [Thread!]!
 }
 
@@ -133,6 +135,44 @@ enum SchoolRole {
   Admin
   Student
   Teacher
+}
+
+type Settings {
+  createdAt: DateTime!
+  gdprEndOfLifeAnonymize: Boolean!
+  gdprEndOfLifeExport: Boolean!
+  notificationAdminReportCreated: Int!
+  notificationAdminRoleUpdated: Int!
+  notificationAdminTeamContactUpdated: Int!
+  notificationAdminTeamEventValidationApproved: Int!
+  notificationAdminTeamEventValidationRejected: Int!
+  notificationAdminTeamEventValidationStarted: Int!
+  notificationAdminTeamEventValidationStep: Int!
+  notificationAdminTeamLegalFileUpdated: Int!
+  notificationAdminThreadAssigned: Int!
+  notificationAdminThreadAssignedStale: Int!
+  notificationAdminThreadAssignedStaleThreshold: Int!
+  notificationAdminThreadStale: Int!
+  notificationAdminThreadStaleThreshold: Int!
+  notificationBadgeUnlocked: Int!
+  notificationBlogSubscribedUpdated: Int!
+  notificationContentRemoved: Int!
+  notificationMentionned: Int!
+  notificationRoleUpdated: Int!
+  notificationTeamEventCreated: Int!
+  notificationTeamEventManagedApproved: Int!
+  notificationTeamEventManagedRegistrationCreated: Int!
+  notificationTeamEventManagedRejected: Int!
+  notificationTeamEventSubscribedUpdated: Int!
+  notificationTeamManagedEventUpdated: Int!
+  notificationTeamManagedFormUpdated: Int!
+  notificationTeamManagedMemberRoleUpdated: Int!
+  notificationTeamManagedMembershipRequestUpdated: Int!
+  notificationTeamSubscribedEventCreated: Int!
+  notificationThreadSubscribedAnswered: Int!
+  notificationThreadSubscribedUpdated: Int!
+  updatedAt: DateTime!
+  user: User!
 }
 
 type Subscription {
@@ -170,6 +210,41 @@ enum ThreadType {
   Suggestion
 }
 
+input UpdateSettingsDto {
+  gdprEndOfLifeAnonymize: Boolean
+  gdprEndOfLifeExport: Boolean
+  notificationAdminReportCreated: Int
+  notificationAdminRoleUpdated: Int
+  notificationAdminTeamContactUpdated: Int
+  notificationAdminTeamEventValidationApproved: Int
+  notificationAdminTeamEventValidationRejected: Int
+  notificationAdminTeamEventValidationStarted: Int
+  notificationAdminTeamEventValidationStep: Int
+  notificationAdminTeamLegalFileUpdated: Int
+  notificationAdminThreadAssigned: Int
+  notificationAdminThreadAssignedStale: Int
+  notificationAdminThreadAssignedStaleThreshold: Int
+  notificationAdminThreadStale: Int
+  notificationAdminThreadStaleThreshold: Int
+  notificationBadgeUnlocked: Int
+  notificationBlogSubscribedUpdated: Int
+  notificationContentRemoved: Int
+  notificationMentionned: Int
+  notificationRoleUpdated: Int
+  notificationTeamEventCreated: Int
+  notificationTeamEventManagedApproved: Int
+  notificationTeamEventManagedRegistrationCreated: Int
+  notificationTeamEventManagedRejected: Int
+  notificationTeamEventSubscribedUpdated: Int
+  notificationTeamManagedEventUpdated: Int
+  notificationTeamManagedFormUpdated: Int
+  notificationTeamManagedMemberRoleUpdated: Int
+  notificationTeamManagedMembershipRequestUpdated: Int
+  notificationTeamSubscribedEventCreated: Int
+  notificationThreadSubscribedAnswered: Int
+  notificationThreadSubscribedUpdated: Int
+}
+
 type User {
   avatar: String
   badges: [BadgeUnlock!]
@@ -183,6 +258,7 @@ type User {
   reputation: Int!
   roles: [Role!]
   schoolRole: SchoolRole!
+  settings: Settings!
   shortDescription: String!
   signature: String!
   updatedAt: DateTime!

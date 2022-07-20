@@ -29,6 +29,7 @@ import { MetricsModule } from './metrics/metrics.module';
 import { ReactionsModule } from './reactions/reactions.module';
 import { ReportsModule } from './reports/reports.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import { SettingsModule } from './settings/settings.module';
 
 import cacheConfig from './shared/configs/cache.config';
 import { config } from './shared/configs/config';
@@ -79,6 +80,7 @@ import { WikisModule } from './wiki/wikis.module';
     ReactionsModule,
     ReportsModule,
     RestaurantModule,
+    SettingsModule,
     StatisticsModule,
     SubjectsModule,
     TagsModule,

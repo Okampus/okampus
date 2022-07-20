@@ -11,10 +11,10 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcrypt';
-// Import { Expose } from 'class-transformer';
 // eslint-disable-next-line import/no-cycle
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
-// Import { STATISTICS_INCLUDED } from '../shared/lib/constants';
+// eslint-disable-next-line import/no-cycle
+import { Settings } from '../settings/settings.entity';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
 import { Role } from '../shared/modules/authorization/types/role.enum';
@@ -86,7 +86,11 @@ export class User extends BaseEntity {
 
   // @Expose({ groups: [STATISTICS_INCLUDED] })
   @OneToOne('Statistics', 'user', { cascade: [Cascade.ALL] })
-  statistics?: Statistics;
+  statistics: Statistics;
+
+  @Field(() => Settings)
+  @OneToOne('Settings', 'user', { cascade: [Cascade.ALL] })
+  settings: Settings;
 
   @Field(() => Int)
   @Property()
