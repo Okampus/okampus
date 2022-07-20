@@ -40,6 +40,8 @@ import storageConfig from './shared/configs/storage.config';
 
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
 import { TypesenseFilter } from './shared/lib/filters/typesense.filter';
+import { GraphqlLoggerMiddleware } from './shared/lib/middlewares/graphql-logger.middleware';
+import { RestLoggerMiddleware } from './shared/lib/middlewares/rest-logger.middleware';
 import { TraceMiddleware } from './shared/lib/middlewares/trace.middleware';
 import { PoliciesGuard } from './shared/modules/authorization';
 import { CaslModule } from './shared/modules/casl/casl.module';
@@ -128,5 +130,14 @@ export class AppModule {
         passport.session(),
       )
       .forRoutes('*');
+
+    // Setup Logger
+    consumer
+      .apply(RestLoggerMiddleware)
+      .exclude('/graphql')
+      .forRoutes('*');
+    consumer
+      .apply(GraphqlLoggerMiddleware)
+      .forRoutes('/graphql');
   }
 }

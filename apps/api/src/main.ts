@@ -1,6 +1,7 @@
 // Hack to get Multer to register its typings into the global scope, because why not
 // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47780#issuecomment-790684085
 import 'multer';
+import './shared/lib/morgan.register';
 
 import path from 'node:path';
 import { Logger, ValidationPipe } from '@nestjs/common';
@@ -9,12 +10,10 @@ import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as SentryTracing from '@sentry/tracing';
 import cookieParser from 'cookie-parser';
-import express from 'express';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { computedConfig, config } from './shared/configs/config';
 import { client } from './shared/configs/typesense.config';
-import { logger as loggerMiddleware } from './shared/lib/middlewares/logger.middleware';
 
 const logger = new Logger('Bootstrap');
 
@@ -53,7 +52,6 @@ async function bootstrap(): Promise<void> {
     SentryTracing.addExtensionMethods();
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.use(express.json());
 
   if (config.get('nodeEnv') === 'production') {
     app.use(helmet());
@@ -64,7 +62,6 @@ async function bootstrap(): Promise<void> {
       crossOriginEmbedderPolicy: false,
     }));
   }
-  app.use(loggerMiddleware);
   app.use(cookieParser(config.get('cookies.signature')));
 
   app.enableCors({ origin: computedConfig.frontendUrl, credentials: true });
