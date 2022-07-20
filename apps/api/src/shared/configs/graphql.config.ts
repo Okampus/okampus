@@ -1,6 +1,7 @@
 import { join } from 'node:path';
 import type { ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloDriver } from '@nestjs/apollo';
+import type { GqlModuleAsyncOptions } from '@nestjs/graphql';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthenticationError, SyntaxError } from 'apollo-server-express';
 import { AuthModule } from '../../auth/auth.module';
@@ -22,8 +23,7 @@ export default {
   imports: [JwtModule, UsersModule, AuthModule],
   inject: [JwtService, UsersService, AuthService],
   driver: ApolloDriver,
-  // eslint-disable-next-line @typescript-eslint/require-await
-  useFactory: async (jwtService: JwtService, usersService: UsersService, authService: AuthService) => ({
+  useFactory: (jwtService: JwtService, usersService: UsersService, authService: AuthService) => ({
     bodyParserConfig: false,
     autoSchemaFile: join(process.cwd(), 'src', 'schema.gql'),
     sortSchema: true,
@@ -41,26 +41,26 @@ export default {
           const wsToken: string = ('authorization' in connectionParamsLowerKeys)
             && connectionParamsLowerKeys.authorization.split(' ')[1];
 
-            if (wsToken) {
-              const decoded = jwtService.decode(wsToken) as Token;
-              if (!decoded)
-                throw new SyntaxError('Failed to decode JWT');
-
-              if (decoded.aud !== 'ws')
-                throw new AuthenticationError('Invalid token');
-
-              try {
-                await jwtService.verifyAsync<Token>(wsToken, authService.getTokenOptions('ws'));
-              } catch {
-                throw new AuthenticationError('Falsified token');
-              }
-
-              const user = await usersService.findOneById(decoded.sub);
-              return { context: { user, headers: connectionParamsLowerKeys } };
-            }
+          if (!wsToken)
             throw new AuthenticationError('Token not provided');
+
+          const decoded = jwtService.decode(wsToken) as Token;
+          if (!decoded)
+            throw new SyntaxError('Failed to decode JWT');
+
+          if (decoded.aud !== 'ws')
+            throw new AuthenticationError('Invalid token');
+
+          try {
+            await jwtService.verifyAsync<Token>(wsToken, authService.getTokenOptions('ws'));
+          } catch {
+            throw new AuthenticationError('Falsified token');
+          }
+
+          const user = await usersService.findOneById(decoded.sub);
+          return { context: { user, headers: connectionParamsLowerKeys } };
         },
       },
     },
   }),
-} as ApolloDriverConfig;
+} as GqlModuleAsyncOptions<ApolloDriverConfig>;
