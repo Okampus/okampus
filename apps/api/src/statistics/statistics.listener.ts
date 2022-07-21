@@ -1,5 +1,5 @@
-import { MikroORM } from '@mikro-orm/core';
-import { InjectRepository, UseRequestContext } from '@mikro-orm/nestjs';
+import { MikroORM, UseRequestContext } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';

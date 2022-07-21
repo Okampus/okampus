@@ -1,3 +1,4 @@
+import { MikroORM, UseRequestContext } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
@@ -15,15 +16,19 @@ import { Metric } from './metric.entity';
 
 @Injectable()
 export class MetricsService {
+  // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(Metric) private readonly metricRepository: BaseRepository<Metric>,
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamEvent) private readonly teamEventRepository: BaseRepository<TeamEvent>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+
+    private readonly orm: MikroORM,
   ) {}
 
   @Cron(config.get('settings.metricsCron'))
+  @UseRequestContext()
   public async updateMetrics(): Promise<void> {
     const fifteenMinutesAgo = new Date();
     fifteenMinutesAgo.setMinutes(fifteenMinutesAgo.getMinutes() - 15);

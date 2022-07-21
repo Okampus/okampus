@@ -1,3 +1,4 @@
+import { MikroORM, UseRequestContext } from '@mikro-orm/core';
 import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
@@ -35,8 +36,10 @@ export class UsersModule implements OnModuleInit {
   constructor(
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     private readonly userSearchService: UserSearchService,
+    private readonly orm: MikroORM,
   ) {}
 
+  @UseRequestContext()
   public async onModuleInit(): Promise<void> {
     await this.userSearchService.init();
 

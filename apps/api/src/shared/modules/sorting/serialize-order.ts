@@ -1,7 +1,7 @@
 import type { QueryOrderMap } from '@mikro-orm/core';
 import { ContentSortOrder, SortOrder } from './sort-order.enum';
 
-export function serializeOrder(order?: ContentSortOrder | SortOrder, dateField = 'createdAt'): QueryOrderMap {
+export function serializeOrder(order?: ContentSortOrder | SortOrder, dateField = 'createdAt'): QueryOrderMap<unknown> {
   if (!order)
     return {};
 
