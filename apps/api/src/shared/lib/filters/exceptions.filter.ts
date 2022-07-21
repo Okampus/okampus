@@ -22,20 +22,20 @@ export class ExceptionsFilter implements ExceptionFilter {
       message: exception.message,
     };
 
-    if (host.getType() !== 'http') {
-      switch (statusCode) {
-        case 400: throw new UserInputError(exception.message);
-        case 401: throw new AuthenticationError(exception.message);
-        case 403: throw new ForbiddenError(exception.message);
-        case 404: throw new NotFoundError(exception.message);
-        default: throw new ApolloError(exception.message);
-      }
-    }
-
     if (typeof error === 'string')
       response.message = error;
     else
       Object.assign(response, error);
+
+    if (host.getType() !== 'http') {
+      switch (statusCode) {
+        case 400: throw new UserInputError(response.message);
+        case 401: throw new AuthenticationError(response.message);
+        case 403: throw new ForbiddenError(response.message);
+        case 404: throw new NotFoundError(response.message);
+        default: throw new ApolloError(response.message);
+      }
+    }
 
     host.switchToHttp()
         .getResponse()

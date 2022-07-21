@@ -55,7 +55,7 @@ export class AuthController {
       return await this.usersService.findOneById(user.id);
     } catch (error) {
       if (error.code === '23505')
-        throw new BadRequestException('id already taken');
+        throw new BadRequestException('User id already taken');
 
       throw error;
     }
