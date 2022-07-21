@@ -7,6 +7,7 @@ import { User } from '../users/user.entity';
 import { ReportSearchService } from './report-search.service';
 import { Report } from './report.entity';
 import { ReportsController } from './reports.controller';
+import { ReportsResolver } from './reports.resolver';
 import { ReportsService } from './reports.service';
 
 @Module({
@@ -14,7 +15,7 @@ import { ReportsService } from './reports.service';
     MikroOrmModule.forFeature([Report, Content, User]),
   ],
   controllers: [ReportsController],
-  providers: [CaslAbilityFactory, ReportsService, ReportSearchService],
+  providers: [CaslAbilityFactory, ReportsService, ReportSearchService, ReportsResolver],
   exports: [ReportsService],
 })
 export class ReportsModule implements OnModuleInit {

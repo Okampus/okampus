@@ -54,15 +54,15 @@ export class ReportsService {
 
   public async findAll(
     user: User,
-    filters: GetReportsDto,
+    filters?: GetReportsDto,
     paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<Report>> {
     let options: FilterQuery<Report> = {};
-    if (filters.byid)
+    if (filters?.byid)
       options = { ...options, user: { id: filters.byid } };
-    if (filters.forid)
+    if (filters?.forid)
       options = { ...options, target: { id: filters.forid } };
-    if (filters.throughid) {
+    if (filters?.throughid) {
       const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
       const visibilityQuery = canSeeHiddenContent ? {} : { isVisible: true };
       options = { ...options, content: { id: filters.throughid, ...visibilityQuery } };
@@ -71,7 +71,7 @@ export class ReportsService {
     return await this.reportRepository.findWithPagination(
       paginationOptions,
       options,
-      { populate: ['content', 'target'], orderBy: { createdAt: 'DESC' } },
+      { populate: ['content', 'content.lastEdit', 'target'], orderBy: { createdAt: 'DESC' } },
     );
   }
 
