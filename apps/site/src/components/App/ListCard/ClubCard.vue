@@ -111,7 +111,7 @@
                                         </div>
                                     </template>
                                     <template v-else>
-                                        <router-link class="p-1" :to="`/user/${specialMember.member.userId}`">
+                                        <router-link class="p-1" :to="`/user/${specialMember.member.id}`">
                                             <ProfileAvatar
                                                 class="relative rounded-full !shadow-none cursor-pointer hovered bg-2"
                                                 :size="2.5"

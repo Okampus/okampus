@@ -2,7 +2,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Content } from '../contents/entities/content.entity';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
-import type { AllReactionValue } from '../shared/lib/types/enums/reaction.enum';
+import type { AllReaction } from '../shared/lib/types/enums/reaction.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
@@ -17,8 +17,8 @@ export class ReactionsService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async add(user: User, contentId: number, value: AllReactionValue): Promise<Reaction> {
-    const content = await this.contentRepository.findOneOrFail({ contentId });
+  public async add(user: User, id: number, value: AllReaction): Promise<Reaction> {
+    const content = await this.contentRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, content);
@@ -33,8 +33,8 @@ export class ReactionsService {
     return newReaction;
   }
 
-  public async findAll(user: User, contentId: number): Promise<Reaction[]> {
-    const content = await this.contentRepository.findOneOrFail({ contentId });
+  public async findAll(user: User, id: number): Promise<Reaction[]> {
+    const content = await this.contentRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, content);
@@ -42,8 +42,8 @@ export class ReactionsService {
     return await this.reactionRepository.find({ content }, { populate: ['user', 'content'] });
   }
 
-  public async remove(user: User, contentId: number, value: AllReactionValue): Promise<void> {
-    const content = await this.contentRepository.findOneOrFail({ contentId });
+  public async remove(user: User, id: number, value: AllReaction): Promise<void> {
+    const content = await this.contentRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, content);

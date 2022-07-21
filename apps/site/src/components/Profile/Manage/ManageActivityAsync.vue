@@ -170,7 +170,6 @@
                 events.value = teamEvents
             })
             .catch((err) => {
-                console.log(err)
                 emitter.emit('show-toast', {
                     message: `Erreur lors du chargement des événements: ${err.message}`,
                     type: 'error',

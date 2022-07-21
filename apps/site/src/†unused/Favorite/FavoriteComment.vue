@@ -100,7 +100,7 @@
         methods: {
             timeAgo,
             deleteFavorite() {
-                this.$store.dispatch('user/deleteFavorite', this.comment.contentId)
+                this.$store.dispatch('user/deleteFavorite', this.comment.id)
             },
         },
     }

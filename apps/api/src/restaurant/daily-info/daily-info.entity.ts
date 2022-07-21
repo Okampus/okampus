@@ -4,7 +4,7 @@ import { BaseEntity } from '../../shared/lib/entities/base.entity';
 @Entity()
 export class DailyInfo extends BaseEntity {
   @PrimaryKey()
-  date!: Date;
+  id!: Date;
 
   @Property({ type: 'text' })
   content!: string;
@@ -15,6 +15,6 @@ export class DailyInfo extends BaseEntity {
   }) {
     super();
     this.content = options.content;
-    this.date = options.date;
+    this.id = options.date;
   }
 }

@@ -15,7 +15,7 @@
 
             <div class="flex gap-4 items-center">
                 <button
-                    v-if="auth.user.userId === membership.user.userId"
+                    v-if="auth.user.id === membership.user.id"
                     class="py-1 font-semibold rounded-full button-red"
                     @click="transferRole(membership)"
                 >
@@ -33,7 +33,7 @@
 
                 <router-link
                     v-if="!memberRole"
-                    :to="`/user/${membership.user.userId}`"
+                    :to="`/user/${membership.user.id}`"
                     class="py-1 font-semibold rounded-full button-blue"
                 >
                     Profil
@@ -117,14 +117,14 @@
         showTransferModal.value = false
         const role = currentMembership.value.role
         clubs
-            .patchMembership(currentMembership.value.team.teamId, currentMembership.value.user.userId, {
+            .patchMembership(currentMembership.value.team.teamId, currentMembership.value.user.id, {
                 role: 'member',
             })
             .then(() => {
                 loadMemberships()
             })
         clubs
-            .patchMembership(member.team.teamId, member.user.userId, {
+            .patchMembership(member.team.teamId, member.user.id, {
                 role: role,
             })
             .then(() => {
@@ -134,11 +134,11 @@
 
     const patchRole = async (membership) => {
         await clubs
-            .patchMembership(membership.team.teamId, membership.user.userId, { role: membership.role })
+            .patchMembership(membership.team.teamId, membership.user.id, { role: membership.role })
             .then(async () => {
                 await loadMemberships()
             })
-            .catch((err) => console.log(err))
+        // .catch((err) => console.log(err))
     }
 
     const clubId = ref(parseInt(props.club.teamId))

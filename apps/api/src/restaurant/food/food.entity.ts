@@ -10,7 +10,7 @@ import { FoodType } from '../../shared/lib/types/enums/food-type.enum';
 @Entity()
 export class Food extends BaseEntity {
   @PrimaryKey()
-  foodId!: number;
+  id!: number;
 
   @Property({ type: 'text' })
   name!: string;

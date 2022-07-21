@@ -9,7 +9,7 @@ import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 export class CreateSubjectDto {
   @Length(1, 10)
   @IsString()
-  subjectId: string;
+  id: string;
 
   @Length(1, 100)
   @IsString()

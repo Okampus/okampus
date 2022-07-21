@@ -1,14 +1,25 @@
 export const errorCodes = {
+    SERVER_ERROR: '500',
     NOT_FOUND: '404',
-    BAD_REQUEST: '400',
-    UNAUTHORIZED: '401',
     FORBIDDEN: '403',
+    UNAUTHORIZED: '401',
+    BAD_REQUEST: '400',
     NETWORK_ERROR: '0',
     OFFLINE: 'OFFLINE',
     UNKNOWN: 'UNKNOWN',
 }
 
 export const messages = {
+    [errorCodes.SERVER_ERROR]: {
+        fr: {
+            error: '500 Erreur Serveur',
+            description: 'Une erreur est survenue sur le serveur lors de la requête.',
+        },
+        en: {
+            error: '500 Server Error',
+            description: 'An error occurred on the server while processing the request.',
+        },
+    },
     [errorCodes.NOT_FOUND]: {
         fr: {
             error: '404 Non trouvé',
@@ -19,14 +30,14 @@ export const messages = {
             description: "This resource doesn't exist.",
         },
     },
-    [errorCodes.BAD_REQUEST]: {
+    [errorCodes.FORBIDDEN]: {
         fr: {
-            error: '400 Mauvaise requête',
-            description: 'La requête est mal formée.',
+            error: '403 Interdit',
+            description: 'Seuls les utilisateurs autorisés peuvent accéder à cette page.',
         },
         en: {
-            error: '400 Bad request',
-            description: 'The request is malformed.',
+            error: '403 Forbidden',
+            description: 'Only authorized users can access this page.',
         },
     },
     [errorCodes.UNAUTHORIZED]: {
@@ -39,14 +50,14 @@ export const messages = {
             description: 'Only connected users can access this page.',
         },
     },
-    [errorCodes.FORBIDDEN]: {
+    [errorCodes.BAD_REQUEST]: {
         fr: {
-            error: '403 Interdit',
-            description: 'Seuls les utilisateurs autorisés peuvent accéder à cette page.',
+            error: '400 Mauvaise requête',
+            description: 'La requête est mal formée.',
         },
         en: {
-            error: '403 Forbidden',
-            description: 'Only authorized users can access this page.',
+            error: '400 Bad request',
+            description: 'The request is malformed.',
         },
     },
     [errorCodes.NETWORK_ERROR]: {

@@ -39,7 +39,6 @@ export class JwtAuthGuard implements CanActivate {
     if (isPublic)
       return true;
 
-
     if (ctx.getType() === 'http') {
       const request = ctx.switchToHttp().getRequest<CookiesAuthRequest>();
       request.user = await this.handleRequest(request);

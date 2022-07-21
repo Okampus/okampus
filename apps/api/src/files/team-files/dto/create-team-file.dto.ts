@@ -10,7 +10,7 @@ import { CreateFileUploadDto } from '../../file-uploads/dto/create-file-upload.d
 
 export class CreateTeamFileDto extends CreateFileUploadDto {
   @IsInt()
-  teamId: number;
+  id: number;
 
   @IsEnum(TeamFileType)
   type: TeamFileType;

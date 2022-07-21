@@ -1,5 +1,6 @@
 import {
   BeforeUpdate,
+  Cascade,
   Collection,
   Entity,
   Enum,
@@ -13,14 +14,16 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
-// Import { CONTENT_AUTHOR_EXCLUDED } from '../../shared/lib/constants';
+import type { Favorite } from '../../favorites/favorite.entity';
+import type { Reaction } from '../../reactions/reaction.entity';
+import type { Report } from '../../reports/report.entity';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 // eslint-disable-next-line import/no-cycle
 import { ContentMaster } from '../../shared/lib/entities/content-master.entity';
 import { ContentKind } from '../../shared/lib/types/enums/content-kind.enum';
-import { ContentMasterType } from '../../shared/lib/types/enums/content-master-type.enum';
 import { User } from '../../users/user.entity';
+import type { Vote } from '../../votes/vote.entity';
 // eslint-disable-next-line import/no-cycle
 import { ContentEdit } from './content-edit.entity';
 
@@ -29,7 +32,7 @@ import { ContentEdit } from './content-edit.entity';
 export class Content extends BaseEntity {
   @Field(() => Int)
   @PrimaryKey()
-  contentId!: number;
+  id!: number;
 
   @Field()
   @Property({ type: 'text' })
@@ -37,21 +40,49 @@ export class Content extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })
-  @Transform(({ obj }: { obj: Content }) => obj.author.userId)
+  @Transform(({ obj }: { obj: Content }) => obj.author.id)
   author!: User;
 
   @Field(() => Int)
   @Property()
-  upvotes = 0;
+  upvoteCount = 0;
 
   @Field(() => Int)
   @Property()
-  @Transform(({ obj }: { obj: Content }) => (obj.kind === ContentKind.Comment ? undefined : obj.downvotes))
-  downvotes = 0;
+  @Transform(({ obj }: { obj: Content }) => (obj.kind === ContentKind.Comment ? undefined : obj.downvoteCount))
+  downvoteCount = 0;
 
   @Field(() => Int)
   @Property()
-  votes = 0;
+  totalVoteCount = 0;
+
+  @Field(() => Int)
+  @Property()
+  reportCount = 0;
+
+  @Field(() => Int)
+  @Property()
+  favoriteCount = 0;
+
+  @Field(() => Int)
+  @Property()
+  replyCount = 0;
+
+  @OneToMany('Reaction', 'content', { cascade: [Cascade.REMOVE] })
+  @TransformCollection()
+  reactions = new Collection<Reaction>(this);
+
+  @OneToMany('Report', 'content', { cascade: [Cascade.REMOVE] })
+  @TransformCollection()
+  reports = new Collection<Report>(this);
+
+  @OneToMany('Vote', 'content', { cascade: [Cascade.REMOVE] })
+  @TransformCollection()
+  votes = new Collection<Vote>(this);
+
+  @OneToMany('Favorite', 'content', { cascade: [Cascade.REMOVE] })
+  @TransformCollection()
+  favorites = new Collection<Favorite>(this);
 
   @Field(() => ContentKind)
   @Enum(() => ContentKind)
@@ -60,27 +91,17 @@ export class Content extends BaseEntity {
 
   @Field(() => Content)
   @ManyToOne({ onDelete: 'CASCADE' })
-  @Transform(({ obj }: { obj: Content }) => ({ contentId: obj.parent?.contentId, kind: obj.parent?.kind }))
+  @Transform(({ obj }: { obj: Content }) => ({ id: obj.parent?.id, kind: obj.parent?.kind }))
   parent?: Content;
 
   @Field(() => [ContentEdit], { nullable: true })
   @OneToMany('ContentEdit', 'parent')
   @TransformCollection()
-  // @Exclude()
   edits = new Collection<ContentEdit>(this);
-
-  @Field(() => Int)
-  @Enum(() => ContentMasterType)
-  contentMasterType!: ContentMasterType;
 
   @Field(() => ContentMaster)
   @ManyToOne({ onDelete: 'CASCADE' })
-  // @Exclude()
-  contentMaster!: ContentMaster;
-
-  @Field(() => Int)
-  @Property({ persist: false })
-  contentMasterId!: number;
+  contentMaster?: ContentMaster;
 
   @Field(() => Boolean)
   @Property()
@@ -90,10 +111,6 @@ export class Content extends BaseEntity {
   @Property()
   isVisible = true;
 
-  @Field(() => Int)
-  @Property()
-  reportCount = 0;
-
   @Field(() => ContentEdit)
   @OneToOne()
   lastEdit?: ContentEdit;
@@ -102,17 +119,15 @@ export class Content extends BaseEntity {
     body: string;
     author: User;
     kind: ContentKind;
-    contentMaster: ContentMaster;
-    contentMasterType: ContentMasterType;
+    contentMaster?: ContentMaster;
     parent?: Content;
   }) {
     super();
     this.body = options.body;
     this.author = options.author;
     this.kind = options.kind;
-    this.contentMaster = options.contentMaster;
-    this.contentMasterType = options.contentMasterType;
-    this.contentMasterId = this.contentMaster.contentMasterId;
+    if (options.contentMaster)
+      this.contentMaster = options.contentMaster;
     if (options.parent)
       this.parent = options.parent;
   }
@@ -120,7 +135,14 @@ export class Content extends BaseEntity {
   @BeforeUpdate()
   public beforeUpdate(event: EventArgs<this>): void {
     const payload = event.changeSet?.payload;
-    if (payload && ('upvotes' in payload || 'downvotes' in payload))
-      this.votes = this.upvotes - this.downvotes;
+    if (payload && ('upvoteCount' in payload || 'downvoteCount' in payload))
+      this.totalVoteCount = this.upvoteCount - this.downvoteCount;
   }
 }
+
+export const DEFAULT_INTERACTIONS = {
+  reactions: [] as Reaction[],
+  userFavorited: false,
+  userVoted: 0,
+  userReported: null,
+};

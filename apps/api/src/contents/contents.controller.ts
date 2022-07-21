@@ -11,15 +11,13 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-import { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
 import type { PaginatedResult } from '../shared/modules/pagination';
-import { normalizeSort } from '../shared/modules/sorting';
 import { User } from '../users/user.entity';
+import type { ContentInteractions } from './content-interactions.model';
 import { ContentsService } from './contents.service';
 import { CreateContentDto } from './dto/create-content.dto';
-import { ParentDto } from './dto/parent.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
 import type { ContentEdit } from './entities/content-edit.entity';
 import { Content } from './entities/content.entity';
@@ -49,34 +47,6 @@ export class ContentsController {
     return await this.contentsService.createComment(user, createContentDto);
   }
 
-  @Get('replies')
-  @CheckPolicies(ability => ability.can(Action.Read, Content))
-  public async findAllReplies(
-    @CurrentUser() user: User,
-    @Query() query: ContentListOptionsDto,
-    @Body() parentDto: ParentDto,
-  ): Promise<PaginatedResult<Content>> {
-    return await this.contentsService.findAllReplies(
-      user,
-      parentDto.parentId,
-      { ...normalizePagination(query), ...normalizeSort(query) },
-    );
-  }
-
-  @Get('comments')
-  @CheckPolicies(ability => ability.can(Action.Read, Content))
-  public async findAllComments(
-    @CurrentUser() user: User,
-    @Query() query: ContentListOptionsDto,
-    @Body() parentDto: ParentDto,
-  ): Promise<PaginatedResult<Content>> {
-    return await this.contentsService.findAllComments(
-      user,
-      parentDto.parentId,
-      { ...normalizePagination(query), ...normalizeSort(query) },
-    );
-  }
-
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Content))
   public async findOne(
@@ -84,6 +54,15 @@ export class ContentsController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Content> {
     return await this.contentsService.findOne(user, id);
+  }
+
+  @Get(':id/interactions')
+  @CheckPolicies(ability => ability.can(Action.Read, Content))
+  public async findInteractions(
+    @CurrentUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ContentInteractions> {
+    return await this.contentsService.findInteractions(user, id);
   }
 
   @Get(':id/edits')

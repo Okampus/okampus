@@ -15,7 +15,9 @@ export class RestaurantController {
 
   @Get('/date')
   @CheckPolicies(ability => ability.can(Action.Read, DailyInfo))
-  public async getDate(@Query('date', ParseDatePipe) date: string): Promise<{ menu: DailyMenu | null; info: DailyInfo | null }> {
+  public async getDate(
+    @Query('date', ParseDatePipe) date: string,
+  ): Promise<{ menu: DailyMenu | null; info: DailyInfo | null }> {
     const wantedDate = date === 'today' ? new Date() : new Date(date);
     return {
       menu: await this.restaurantService.findOneDateMenu(wantedDate),

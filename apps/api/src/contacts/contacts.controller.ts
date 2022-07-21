@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-// Import { SerializerIncludeTeamContacts } from '../shared/lib/decorators/serializers.decorator';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { Team } from '../teams/teams/team.entity';
 import { User } from '../users/user.entity';
@@ -25,7 +24,6 @@ import type { UserContactAccount } from './entities/user-contact-account.entity'
 
 @ApiTags('Contacts')
 @Controller({ path: 'contacts' })
-// @SerializerIncludeTeamContacts()
 export class ContactsController {
   constructor(
     private readonly contactsService: ContactsService,
@@ -43,25 +41,25 @@ export class ContactsController {
     return await this.contactsService.findAll();
   }
 
-  @Get(':contactId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Contact))
-  public async findOne(@Param('contactId', ParseIntPipe) contactId: number): Promise<Contact | null> {
-    return await this.contactsService.findOne(contactId);
+  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Contact | null> {
+    return await this.contactsService.findOne(id);
   }
 
-  @Patch(':contactId')
+  @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Contact))
   public async update(
-    @Param('contactId', ParseIntPipe) contactId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateContactDto: UpdateContactDto,
   ): Promise<Contact> {
-    return await this.contactsService.update(contactId, updateContactDto);
+    return await this.contactsService.update(id, updateContactDto);
   }
 
-  @Delete(':contactId')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, Contact))
-  public async remove(@Param('contactId', ParseIntPipe) contactId: number): Promise<void> {
-    await this.contactsService.remove(contactId);
+  public async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    await this.contactsService.remove(id);
   }
 
   @Post('/users')
@@ -73,61 +71,61 @@ export class ContactsController {
     return await this.contactsService.addUserContactAccount(user, createContactAccountDto);
   }
 
-  @Get('/users/:userId')
+  @Get('/users/:id')
   @CheckPolicies(ability => ability.can(Action.Read, User))
-  public async findAllUserContactAccounts(@Param('userId') userId: string): Promise<UserContactAccount[]> {
-    return await this.contactsService.findAllUserContactAccounts(userId);
+  public async findAllUserContactAccounts(@Param('id') id: string): Promise<UserContactAccount[]> {
+    return await this.contactsService.findAllUserContactAccounts(id);
   }
 
-  @Patch('/users/account/:contactAccountId')
+  @Patch('/users/account/:id')
   @CheckPolicies(ability => ability.can(Action.Update, User))
   public async updateUserContactAccount(
-    @Param('contactAccountId', ParseIntPipe) contactAccountId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateContactAccountDto: UpdateContactAccountDto,
     @CurrentUser() user: User,
   ): Promise<UserContactAccount> {
-    return await this.contactsService.updateUserContactAccount(user, contactAccountId, updateContactAccountDto);
+    return await this.contactsService.updateUserContactAccount(user, id, updateContactAccountDto);
   }
 
-  @Delete('/users/account/:contactAccountId')
+  @Delete('/users/account/:id')
   @CheckPolicies(ability => ability.can(Action.Update, User))
   public async deleteUserContactAccount(
-    @Param('contactAccountId', ParseIntPipe) contactAccountId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
   ): Promise<void> {
-    await this.contactsService.deleteUserContactAccount(user, contactAccountId);
+    await this.contactsService.deleteUserContactAccount(user, id);
   }
 
-  @Post('/teams/:teamId')
+  @Post('/teams/:id')
   @CheckPolicies(ability => ability.can(Action.Update, Team))
   public async addTeamContact(
-    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() createContactAccountDto: CreateContactAccountDto,
     @CurrentUser() user: User,
   ): Promise<TeamContactAccount> {
-    return await this.contactsService.addTeamContactAccount(user, teamId, createContactAccountDto);
+    return await this.contactsService.addTeamContactAccount(user, id, createContactAccountDto);
   }
 
-  @Get('/teams/:teamId')
+  @Get('/teams/:id')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
-  public async findAllTeamContactAccounts(@Param('teamId', ParseIntPipe) teamId: number): Promise<TeamContactAccount[]> {
-    return await this.contactsService.findAllTeamContactAccounts(teamId);
+  public async findAllTeamContactAccounts(@Param('id', ParseIntPipe) id: number): Promise<TeamContactAccount[]> {
+    return await this.contactsService.findAllTeamContactAccounts(id);
   }
 
-  @Patch('/teams/account/:contactAccountId')
+  @Patch('/teams/account/:id')
   public async updateTeamContactAccount(
-    @Param('contactAccountId', ParseIntPipe) contactAccountId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateContactAccountDto: UpdateContactAccountDto,
     @CurrentUser() user: User,
   ): Promise<TeamContactAccount> {
-    return await this.contactsService.updateTeamContactAccount(user, contactAccountId, updateContactAccountDto);
+    return await this.contactsService.updateTeamContactAccount(user, id, updateContactAccountDto);
   }
 
-  @Delete('/teams/account/:contactAccountId')
+  @Delete('/teams/account/:id')
   public async deleteTeamContactAccount(
-    @Param('contactAccountId', ParseIntPipe) contactAccountId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
   ): Promise<void> {
-    await this.contactsService.deleteTeamContactAccount(user, contactAccountId);
+    await this.contactsService.deleteTeamContactAccount(user, id);
   }
 }

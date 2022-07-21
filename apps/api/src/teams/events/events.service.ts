@@ -32,8 +32,8 @@ export class TeamEventsService {
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
   ) {}
 
-  public async create(user: User, teamId: number, createTeamEventDto: CreateTeamEventDto): Promise<TeamEvent> {
-    const team = await this.teamRepository.findOneOrFail({ teamId }, { populate: ['members'] });
+  public async create(user: User, id: number, createTeamEventDto: CreateTeamEventDto): Promise<TeamEvent> {
+    const team = await this.teamRepository.findOneOrFail({ id }, { populate: ['members'] });
 
     if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
@@ -41,12 +41,12 @@ export class TeamEventsService {
     // Check that the provided supervisor id is valid
     let supervisor: User | undefined;
     if (createTeamEventDto.supervisorId)
-      supervisor = await this.userRepository.findOneOrFail({ userId: createTeamEventDto.supervisorId });
+      supervisor = await this.userRepository.findOneOrFail({ id: createTeamEventDto.supervisorId });
 
     // Check that the provided form id is valid, is a template, and is not already used
     let form: TeamForm | undefined;
-    if (createTeamEventDto.formId) {
-      form = await this.teamFormRepository.findOneOrFail({ teamFormId: createTeamEventDto.formId, team });
+    if (createTeamEventDto.id) {
+      form = await this.teamFormRepository.findOneOrFail({ id: createTeamEventDto.id, team });
       if (form.isTemplate)
         throw new BadRequestException('Form is a template');
 
@@ -58,7 +58,7 @@ export class TeamEventsService {
     // Check that the provided event template id is valid and is a template
     let usedTemplate: TeamEvent | undefined;
     if (createTeamEventDto.templateId && createTeamEventDto.state !== TeamEventState.Template) {
-      usedTemplate = await this.teamEventRepository.findOneOrFail({ teamEventId: createTeamEventDto.templateId, team });
+      usedTemplate = await this.teamEventRepository.findOneOrFail({ id: createTeamEventDto.templateId, team });
       if (usedTemplate.state !== TeamEventState.Template)
         throw new BadRequestException('Template is not a template');
     }
@@ -82,22 +82,22 @@ export class TeamEventsService {
     options?: Required<ListOptionsDto>,
   ): Promise<PaginatedResult<TeamEvent>> {
     const memberships = await this.teamMemberRepository.find({ user });
-    const teamIds = memberships.map(m => m.team.teamId);
+    const ids = memberships.map(m => m.team.id);
 
     let filter: FilterQuery<TeamEvent> = {};
-    if (query.teamId && !teamIds.includes(query.teamId)) {
+    if (query.id && !ids.includes(query.id)) {
       // We asked for the events of a team that the user is not a member of
       // so we only search for public & published events
       filter = {
-        team: { teamId: query.teamId },
+        team: { id: query.id },
         private: false,
         state: stateVisible,
       };
-    } else if (query.teamId) {
+    } else if (query.id) {
       // We asked for the events of a team that the user is a member of
       // so we search for all events, private or not.
       filter = {
-        team: { teamId: query.teamId },
+        team: { id: query.id },
         state: query.state ?? stateVisible,
       };
     } else {
@@ -106,8 +106,8 @@ export class TeamEventsService {
       // and the public & published events of the teams the user is not a member of
       filter = {
         $or: [
-          { team: { $in: teamIds }, state: query.state ?? stateVisible },
-          { team: { $nin: teamIds }, private: false, state: stateVisible },
+          { team: { $in: ids }, state: query.state ?? stateVisible },
+          { team: { $nin: ids }, private: false, state: stateVisible },
         ],
       };
     }
@@ -130,22 +130,22 @@ export class TeamEventsService {
     events.items = events.items.map((event) => {
       // TODO: Maybe find a better way to add these properties? Something virtual? computed on-the-fly? added elsewhere?
       // @ts-expect-error: We add a new property to the object, but it's fine.
-      event.isRegistered = allRegistrations.some(r => r.event.teamEventId === event.teamEventId);
+      event.isRegistered = allRegistrations.some(r => r.event.id === event.id);
       return event;
     });
 
     return events;
   }
 
-  public async findOne(user: User, teamEventId: number): Promise<TeamEvent> {
+  public async findOne(user: User, id: number): Promise<TeamEvent> {
     const memberships = await this.teamMemberRepository.find({ user });
-    const teamIds = memberships.map(m => m.team.teamId);
+    const ids = memberships.map(m => m.team.id);
 
     const event = await this.teamEventRepository.findOneOrFail(
       {
-        teamEventId,
+        id,
         $or: [
-          { team: { $in: teamIds } },
+          { team: { $in: ids } },
           { private: false, state: stateVisible },
         ],
       },
@@ -159,10 +159,10 @@ export class TeamEventsService {
 
   public async update(
     user: User,
-    teamEventId: number,
+    id: number,
     updateTeamEventDto: UpdateTeamEventDto,
   ): Promise<TeamEvent> {
-    const event = await this.teamEventRepository.findOneOrFail({ teamEventId }, { populate: ['team', 'team.members'] });
+    const event = await this.teamEventRepository.findOneOrFail({ id }, { populate: ['team', 'team.members'] });
 
     if (!event.canEdit(user))
       throw new ForbiddenException('Not a team admin');
@@ -174,14 +174,14 @@ export class TeamEventsService {
 
     // Check that the provided supervisor id is valid
     if (typeof supervisorId !== 'undefined') {
-      const supervisorUser = await this.userRepository.findOneOrFail({ userId: supervisorId });
+      const supervisorUser = await this.userRepository.findOneOrFail({ id: supervisorId });
       event.supervisor = supervisorUser;
     }
 
     // Check that the provided form id is valid, is a template, and is not already used
     let form: TeamForm | undefined;
-    if (updateTeamEventDto.formId) {
-      form = await this.teamFormRepository.findOneOrFail({ teamFormId: updateTeamEventDto.formId, team: event.team });
+    if (updateTeamEventDto.id) {
+      form = await this.teamFormRepository.findOneOrFail({ id: updateTeamEventDto.id, team: event.team });
       if (form.isTemplate)
         throw new BadRequestException('Form is a template');
 
@@ -195,8 +195,8 @@ export class TeamEventsService {
     return event;
   }
 
-  public async remove(user: User, teamEventId: number): Promise<void> {
-    const event = await this.teamEventRepository.findOneOrFail({ teamEventId }, { populate: ['team', 'team.members'] });
+  public async remove(user: User, id: number): Promise<void> {
+    const event = await this.teamEventRepository.findOneOrFail({ id }, { populate: ['team', 'team.members'] });
     if (!event.canEdit(user))
       throw new ForbiddenException('Not a team admin');
 

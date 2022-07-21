@@ -44,11 +44,15 @@ export class AnnouncementsService {
         : { state: AnnouncementState.Committed, displayFrom: { $lte: now }, displayUntil: { $gte: now } };
     }
 
-    return await this.announcementRepository.findWithPagination(paginationOptions, filter, { orderBy: { priority: 'DESC' } });
+    return await this.announcementRepository.findWithPagination(
+      paginationOptions,
+      filter,
+      { orderBy: { priority: 'DESC' } },
+    );
   }
 
-  public async findOne(user: User, announcementId: number): Promise<Announcement> {
-    const announcement = await this.announcementRepository.findOneOrFail({ announcementId });
+  public async findOne(user: User, id: number): Promise<Announcement> {
+    const announcement = await this.announcementRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, announcement);
@@ -56,16 +60,16 @@ export class AnnouncementsService {
     return announcement;
   }
 
-  public async update(announcementId: number, updateAnnouncementDto: UpdateAnnouncementDto): Promise<Announcement> {
-    const announcement = await this.announcementRepository.findOneOrFail({ announcementId });
+  public async update(id: number, updateAnnouncementDto: UpdateAnnouncementDto): Promise<Announcement> {
+    const announcement = await this.announcementRepository.findOneOrFail({ id });
 
     wrap(announcement).assign(updateAnnouncementDto);
     await this.announcementRepository.flush();
     return announcement;
   }
 
-  public async remove(announcementId: number): Promise<void> {
-    const announcement = await this.announcementRepository.findOneOrFail({ announcementId });
+  public async remove(id: number): Promise<void> {
+    const announcement = await this.announcementRepository.findOneOrFail({ id });
     await this.announcementRepository.removeAndFlush(announcement);
   }
 }

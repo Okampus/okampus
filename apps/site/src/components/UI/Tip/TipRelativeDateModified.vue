@@ -1,7 +1,7 @@
 <template>
     <span class="inline-flex gap-1">
         <TipRelativeDate :date="createdAt" />
-        <span v-if="modifiedAt != createdAt" class="flex gap-1">
+        <span v-if="modifiedAt && modifiedAt != createdAt" class="flex gap-1">
             <Popper :hover="true" placement="top" :arrow="true" offset-distance="3">
                 <span class="text-xs cursor-default select-none text-3">(modifié)</span>
                 <template #content>

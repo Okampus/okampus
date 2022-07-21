@@ -30,7 +30,7 @@ export class InfoDocsService {
   ) {}
 
   public async create(createInfoDocDto: CreateInfoDocDto, file: FileUpload): Promise<InfoDoc> {
-    const docSeries = await this.docSeriesRepository.findOne({ docSeriesId: createInfoDocDto.docSeries });
+    const docSeries = await this.docSeriesRepository.findOne({ id: createInfoDocDto.docSeries });
     const infoDoc = new InfoDoc({
       ...createInfoDocDto,
       file,
@@ -75,25 +75,25 @@ export class InfoDocsService {
     return result;
   }
 
-  public async findOne(infoDocId: string): Promise<InfoDoc> {
+  public async findOne(id: string): Promise<InfoDoc> {
     // TODO: Maybe the user won't have access to this doc. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
     return await this.infoDocRepository.findOneOrFail(
-      { infoDocId },
+      { id },
       { populate: ['file', 'file.user', 'docSeries'] },
     );
   }
 
-  public async update(user: User, infoDocId: string, updateCourseDto: UpdateInfoDocDto): Promise<InfoDoc> {
+  public async update(user: User, id: string, updateCourseDto: UpdateInfoDocDto): Promise<InfoDoc> {
     const infoDoc = await this.infoDocRepository.findOneOrFail(
-      { infoDocId },
+      { id },
       { populate: ['file', 'file.user', 'docSeries'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, infoDoc);
 
-    const docSeries = await this.docSeriesRepository.findOneOrFail({ docSeriesId: updateCourseDto.docSeries });
+    const docSeries = await this.docSeriesRepository.findOneOrFail({ id: updateCourseDto.docSeries });
 
     wrap(infoDoc).assign({ ...updateCourseDto, docSeries });
     await this.infoDocRepository.flush();
@@ -101,13 +101,13 @@ export class InfoDocsService {
     return infoDoc;
   }
 
-  public async remove(user: User, infoDocId: string): Promise<void> {
-    const infoDoc = await this.infoDocRepository.findOneOrFail({ infoDocId }, { populate: ['file'] });
+  public async remove(user: User, id: string): Promise<void> {
+    const infoDoc = await this.infoDocRepository.findOneOrFail({ id }, { populate: ['file'] });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, infoDoc);
 
     await this.infoDocRepository.removeAndFlush(infoDoc);
-    await this.infoDocSearchService.remove(infoDoc.infoDocId);
+    await this.infoDocSearchService.remove(infoDoc.id);
   }
 }

@@ -1,8 +1,10 @@
-import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { Field, InputType, PartialType } from '@nestjs/graphql';
 import { IsBoolean, IsOptional } from 'class-validator';
-import { CreateContentDto } from './create-content.dto';
+import { CreateOrphanContentDto } from './create-orphan-content.dto';
 
-export class UpdateContentDto extends PartialType(OmitType(CreateContentDto, ['contentMasterType', 'parentId'])) {
+@InputType()
+export class UpdateContentDto extends PartialType(CreateOrphanContentDto) {
+  @Field(() => Boolean, { nullable: true })
   @IsBoolean()
   @IsOptional()
   hidden: boolean;

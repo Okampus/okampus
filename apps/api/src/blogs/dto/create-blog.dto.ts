@@ -1,4 +1,4 @@
-import { IntersectionType, PickType } from '@nestjs/mapped-types';
+import { IntersectionType } from '@nestjs/mapped-types';
 import {
   IsArray,
   IsBoolean,
@@ -10,7 +10,7 @@ import {
 import { CreateOrphanContentDto } from '../../contents/dto/create-orphan-content.dto';
 import { TagsDto } from '../../threads/dto/tags.dto';
 
-export class CreateBlogDto extends IntersectionType(TagsDto, PickType(CreateOrphanContentDto, ['body'])) {
+export class CreateBlogDto extends IntersectionType(TagsDto, CreateOrphanContentDto) {
   @Length(15, 100)
   @IsString()
   title: string;

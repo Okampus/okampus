@@ -5,8 +5,6 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-// Import { SerializerIncludeTeamForm, SerializerTeamMemberIncludeTeam }
-// from '../../shared/lib/decorators/serializers.decorator';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
@@ -18,27 +16,25 @@ import { TeamMembershipsService } from './memberships.service';
 
 @ApiTags('Team Memberships')
 @Controller()
-// @SerializerIncludeTeamForm()
 export class TeamMembershipsController {
   constructor(
     private readonly membershipsService: TeamMembershipsService,
 ) {}
 
-  @Get(':userId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, User))
-  // @SerializerTeamMemberIncludeTeam()
   public async findOne(
-    @Param('userId') userId: string,
+    @Param('id') id: string,
   ): Promise<PaginatedResult<TeamMember>> {
-    return await this.membershipsService.findOne(userId);
+    return await this.membershipsService.findOne(id);
   }
 
-  @Get(':userId/requests')
+  @Get(':id/requests')
   @CheckPolicies(ability => ability.can(Action.Read, User))
   public async findAll(
-    @Param('userId') userId: string,
+    @Param('id') id: string,
     @Query() query: MembershipRequestsListOptions,
   ): Promise<PaginatedResult<TeamMembershipRequest>> {
-    return await this.membershipsService.findAll(userId, normalizePagination(query));
+    return await this.membershipsService.findAll(id, normalizePagination(query));
   }
 }

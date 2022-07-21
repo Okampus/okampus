@@ -12,7 +12,7 @@ import { User } from '../users/user.entity';
 @Entity()
 export class Announcement extends BaseEntity {
   @PrimaryKey()
-  announcementId!: number;
+  id!: number;
 
   @Property()
   title!: string;

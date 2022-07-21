@@ -23,32 +23,32 @@ export class ReactionsController {
     private readonly reactionsService: ReactionsService,
   ) {}
 
-  @Post(':contentId')
+  @Post(':id')
   @CheckPolicies(ability => ability.can(Action.Interact, Content))
   public async add(
     @CurrentUser() user: User,
-    @Param('contentId', ParseIntPipe) contentId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() reactContentDto: ReactContentDto,
   ): Promise<Reaction> {
-    return await this.reactionsService.add(user, contentId, reactContentDto.reaction);
+    return await this.reactionsService.add(user, id, reactContentDto.reaction);
   }
 
-  @Get(':contentId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Content))
   public async findAll(
     @CurrentUser() user: User,
-    @Param('contentId', ParseIntPipe) contentId: number,
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<Reaction[]> {
-    return await this.reactionsService.findAll(user, contentId);
+    return await this.reactionsService.findAll(user, id);
   }
 
-  @Delete(':contentId')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Interact, Content))
   public async remove(
     @CurrentUser() user: User,
-    @Param('contentId', ParseIntPipe) contentId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() reactContentDto: ReactContentDto,
   ): Promise<void> {
-    await this.reactionsService.remove(user, contentId, reactContentDto.reaction);
+    await this.reactionsService.remove(user, id, reactContentDto.reaction);
   }
 }

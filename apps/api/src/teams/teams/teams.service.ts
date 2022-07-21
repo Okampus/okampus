@@ -64,7 +64,7 @@ export class TeamsService {
 
     const memberCountResult: Array<{ team: number; count: string }> = await this.teamMemberRepository
       .createQueryBuilder()
-      .count('teamMemberId')
+      .count('id')
       .select(['team', 'count'])
       .groupBy('team')
       .execute();
@@ -90,10 +90,10 @@ export class TeamsService {
         treasurer: null as (User | null),
         secretary: null as (User | null),
       };
-      teamInfo.memberCount = Number(allMemberCounts.get(team.teamId) ?? 0);
+      teamInfo.memberCount = Number(allMemberCounts.get(team.id) ?? 0);
 
       const predicate = (role: TeamRole) =>
-        (member: TeamMember) => member.team.teamId === team.teamId && member.role === role;
+        (member: TeamMember) => member.team.id === team.id && member.role === role;
 
       teamInfo.owner = teamBoardMembers.find(predicate(TeamRole.Owner))?.user ?? null;
       teamInfo.treasurer = teamBoardMembers.find(predicate(TeamRole.Treasurer))?.user ?? null;
@@ -104,23 +104,23 @@ export class TeamsService {
     return allTeams;
   }
 
-  public async findOne(teamId: number): Promise<Team> {
+  public async findOne(id: number): Promise<Team> {
     return await this.teamRepository.findOneOrFail(
-      { teamId },
+      { id },
       { populate: ['members', 'members.user', 'membershipRequestForm', 'membershipRequestForm.createdBy'] },
     );
   }
 
-  public async findNames(): Promise<Array<Pick<Team, 'avatar' | 'name' | 'teamId'>>> {
+  public async findNames(): Promise<Array<Pick<Team, 'avatar' | 'id' | 'name'>>> {
     // TODO: Add possibility to filter by kind
-    const teams = await this.teamRepository.findAll({ fields: ['name', 'avatar', 'teamId'] });
+    const teams = await this.teamRepository.findAll({ fields: ['name', 'avatar', 'id'] });
     // Remove null values for M:N relations that are automatically filled
     return teams.map(({ members, ...keep }) => keep);
   }
 
-  public async update(user: User, teamId: number, updateTeamDto: UpdateTeamDto): Promise<Team> {
+  public async update(user: User, id: number, updateTeamDto: UpdateTeamDto): Promise<Team> {
     const team = await this.teamRepository.findOneOrFail(
-      { teamId },
+      { id },
       { populate: ['members'] },
     );
 
@@ -131,7 +131,7 @@ export class TeamsService {
     const {
       avatar,
       banner,
-      membershipRequestFormId: teamFormId,
+      membershipRequestFormId,
       ...dto
     } = updateTeamDto;
 
@@ -150,9 +150,9 @@ export class TeamsService {
     }
 
     // Check that the provided form id is valid, is a template, and is not already used
-    if (typeof teamFormId !== 'undefined') {
-      if (teamFormId) {
-        const form = await this.teamFormRepository.findOneOrFail({ teamFormId, team });
+    if (typeof membershipRequestFormId !== 'undefined') {
+      if (membershipRequestFormId) {
+        const form = await this.teamFormRepository.findOneOrFail({ id, team });
         if (form.isTemplate)
           throw new BadRequestException('Form is a template');
         team.membershipRequestForm = form;
@@ -167,15 +167,20 @@ export class TeamsService {
     return team;
   }
 
-  public async remove(teamId: number): Promise<void> {
-    const team = await this.teamRepository.findOneOrFail({ teamId });
+  public async remove(id: number): Promise<void> {
+    const team = await this.teamRepository.findOneOrFail({ id });
     await this.teamRepository.removeAndFlush(team);
-    await this.teamSearchService.remove(team.teamId.toString());
+    await this.teamSearchService.remove(team.id.toString());
   }
 
-  public async updateProfileImage(user: User, teamId: number, type: 'avatar' | 'banner', profileImage: ProfileImage): Promise<Team> {
+  public async updateProfileImage(
+    user: User,
+    id: number,
+    type: 'avatar' | 'banner',
+    profileImage: ProfileImage,
+  ): Promise<Team> {
     const team = await this.teamRepository.findOneOrFail(
-      { teamId },
+      { id },
       { populate: ['members'] },
     );
 
@@ -192,12 +197,12 @@ export class TeamsService {
 
   private async setAvatar(profileImage: ProfileImage | string, type: 'avatar' | 'banner', team: Team): Promise<void> {
     // Get the avatar image and validate it
-    const profileImageId = typeof profileImage === 'string' ? profileImage : profileImage.profileImageId;
+    const id = typeof profileImage === 'string' ? profileImage : profileImage.id;
     const avatarImage = profileImage instanceof ProfileImage && profileImage.file instanceof FileUpload
       ? profileImage
-      : await this.profileImageRepository.findOne({ profileImageId }, { populate: ['file'] });
+      : await this.profileImageRepository.findOne({ id }, { populate: ['file'] });
 
-    if (!avatarImage || !avatarImage.isAvailableFor('team', team.teamId))
+    if (!avatarImage || !avatarImage.isAvailableFor('team', team.id))
       throw new BadRequestException(`Invalid ${type} image`);
 
     // Update the team's image

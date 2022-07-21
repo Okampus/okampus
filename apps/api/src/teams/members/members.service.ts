@@ -39,10 +39,10 @@ export class TeamMembersService {
   ): Promise<TeamMembershipRequest> {
     // 1. Check that the given team and user exist, and fetch them.
     const team = await this.teamRepository.findOneOrFail(
-      { teamId },
+      { id: teamId },
       { populate: ['members'] },
     );
-    const invitedUser = await this.userRepository.findOneOrFail({ userId: invitedUserId });
+    const invitedUser = await this.userRepository.findOneOrFail({ id: invitedUserId });
 
     // 2. Check that the user is not already in the team.
     const existingMember = await this.teamMemberRepository.count({ team, user: invitedUser });
@@ -70,7 +70,7 @@ export class TeamMembersService {
       }
       await this.teamMembershipRequestsService.handleRequest(
         requester,
-        forcedRequest.teamMembershipRequestId,
+        forcedRequest.id,
         { state: MembershipRequestState.Approved },
       );
       return forcedRequest;
@@ -102,12 +102,12 @@ export class TeamMembersService {
   }
 
   public async findAllMembers(
-    teamId: number,
+    id: number,
     paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<TeamMember>> {
     return await this.teamMemberRepository.findWithPagination(
       paginationOptions,
-      { team: { teamId } },
+      { team: { id } },
       { populate: ['user', 'team'], orderBy: { user: { lastname: 'ASC' } } },
     );
   }
@@ -115,11 +115,11 @@ export class TeamMembersService {
   public async updateMember(
     requester: User,
     teamId: number,
-    userId: string,
+    invitedUserId: string,
     updateTeamMemberDto: UpdateTeamMemberDto,
   ): Promise<TeamMember> {
     const team = await this.teamRepository.findOneOrFail(
-      { teamId },
+      { id: teamId },
       { populate: ['members'] },
     );
 
@@ -133,22 +133,22 @@ export class TeamMembersService {
       throw new ForbiddenException('Role too high');
 
     const targetTeamMember = await this.teamMemberRepository.findOneOrFail(
-      { team: { teamId }, user: { userId } },
+      { team: { id: teamId }, user: { id: invitedUserId } },
       { populate: ['user', 'team'] },
     );
 
     if (transferTo) {
-      if (requester.userId !== targetTeamMember.user.userId)
+      if (requester.id !== targetTeamMember.user.id)
         throw new BadRequestException('Transfering only allowed when updating self');
 
       if (targetTeamMember.role !== TeamRole.Owner)
         throw new BadRequestException('Only owners can transfer their role');
 
-      if (transferTo === requester.userId)
+      if (transferTo === requester.id)
         throw new BadRequestException('Cannot transfer to self');
 
       const transferMemberTarget = await this.teamMemberRepository.findOneOrFail(
-        { team: { teamId }, user: { userId: transferTo } },
+        { team: { id: teamId }, user: { id: transferTo } },
       );
       transferMemberTarget.role = TeamRole.Owner;
       targetTeamMember.role = TeamRole.Coowner;
@@ -160,15 +160,15 @@ export class TeamMembersService {
   }
 
   public async removeMember(requester: User, teamId: number, userId: string): Promise<void> {
-    const team = await this.teamRepository.findOneOrFail({ teamId }, { populate: ['members'] });
+    const team = await this.teamRepository.findOneOrFail({ id: teamId }, { populate: ['members'] });
 
-    const isSelf = requester.userId === userId;
+    const isSelf = requester.id === userId;
 
     // TODO: Move this to CASL
     if (!isSelf && !team.canAdminister(requester))
       throw new ForbiddenException('Not a team admin');
 
-    const teamMember = await this.teamMemberRepository.findOneOrFail({ team, user: { userId } });
+    const teamMember = await this.teamMemberRepository.findOneOrFail({ team, user: { id: userId } });
 
     if (teamMember.role === TeamRole.Owner)
       throw new ForbiddenException('Cannot remove owner');

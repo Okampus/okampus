@@ -5,13 +5,13 @@ import type { PaginatedResult } from '../../modules/pagination';
 import type { BaseEntity } from '../entities/base.entity';
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
-  public async findWithPagination(
+  public async findWithPagination<P extends string = never>(
     paginationOptions?: { page: number; itemsPerPage: number } | null,
-    query?: FilterQuery<T>,
-    baseOptions?: Omit<FindOptions<T>, 'limit' | 'offset'>,
+    where?: FilterQuery<T>,
+    baseOptions?: Omit<FindOptions<T, P>, 'limit' | 'offset'>,
   ): Promise<PaginatedResult<T>> {
     if (!paginationOptions) {
-      const [items, total] = await this.findAndCount(query ?? ({} as FilterQuery<never>), baseOptions);
+      const [items, total] = await this.findAndCount(where ?? ({} as FilterQuery<T>), baseOptions);
       return labelize(items, { offset: 0, itemsPerPage: items.length, total });
     }
 
@@ -20,7 +20,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     const offset = (paginationOptions.page - 1) * limit;
 
     const [items, total] = await this.findAndCount(
-      query ?? ({} as FilterQuery<never>),
+      where ?? ({} as FilterQuery<T>),
       { limit, offset, ...baseOptions },
     );
 

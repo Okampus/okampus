@@ -62,30 +62,30 @@ export class TeamFilesController {
     return await this.teamFilesService.findAll(normalizePagination(options));
   }
 
-  @Get(':imageId')
+  @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, TeamFile))
   public async findOne(
-    @Param('imageId') imageId: string,
+    @Param('id') id: string,
   ): Promise<TeamFile> {
-    return await this.teamFilesService.findOne(imageId);
+    return await this.teamFilesService.findOne(id);
   }
 
-  @Patch(':imageId')
+  @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, TeamFile))
   public async update(
-    @Param('imageId') imageId: string,
+    @Param('id') id: string,
     @Body() updateGalleryImageDto: UpdateTeamFileDto,
     @CurrentUser() user: User,
   ): Promise<TeamFile> {
-    return await this.teamFilesService.update(user, imageId, updateGalleryImageDto);
+    return await this.teamFilesService.update(user, id, updateGalleryImageDto);
   }
 
-  @Delete(':imageId')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, TeamFile))
   public async remove(
-    @Param('imageId') imageId: string,
+    @Param('id') id: string,
     @CurrentUser() user: User,
   ): Promise<void> {
-    await this.teamFilesService.remove(user, imageId);
+    await this.teamFilesService.remove(user, id);
   }
 }

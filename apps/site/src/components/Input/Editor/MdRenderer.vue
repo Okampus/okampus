@@ -1,5 +1,5 @@
 <template>
-    <div ref="renderer" v-html="output" />
+    <div ref="renderer" class="markdown-body" v-html="output" />
 </template>
 
 <script setup>
@@ -38,5 +38,13 @@
         max-width: 90%;
         max-height: 600px;
         margin: auto;
+    }
+
+    .markdown-body a {
+        @apply text-blue-400 hover:text-blue-600 hover:underline;
+    }
+
+    .markdown-body p + p {
+        @apply mt-3;
     }
 </style>

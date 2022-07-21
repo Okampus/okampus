@@ -1,33 +1,32 @@
 import {
   Entity,
-  Index,
-  ManyToOne,
-  OneToOne,
   PrimaryKey,
+  Property,
 } from '@mikro-orm/core';
-import { Content } from '../contents/entities/content.entity';
-import { BaseEntity } from '../shared/lib/entities/base.entity';
-import { User } from '../users/user.entity';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import type { Content } from '../contents/entities/content.entity';
+import { BaseContentInteraction } from '../shared/lib/entities/base-content-interaction.entity';
+import type { User } from '../users/user.entity';
 
+@ObjectType()
 @Entity()
-export class Favorite extends BaseEntity {
+export class Favorite extends BaseContentInteraction {
+  @Field(() => Int)
   @PrimaryKey()
-  favoriteId!: number;
+  id!: number;
 
-  @ManyToOne({ onDelete: 'CASCADE' })
-  @Index()
-  user!: User;
-
-  @OneToOne({ onDelete: 'CASCADE' })
-  @Index()
-  content!: Content;
+  @Field(() => Boolean)
+  @Property()
+  active = true;
 
   constructor(options: {
     user: User;
     content: Content;
   }) {
     super();
-    this.user = options.user;
     this.content = options.content;
+    if (options.content.contentMaster)
+      this.contentMaster = options.content.contentMaster;
+    this.user = options.user;
   }
 }

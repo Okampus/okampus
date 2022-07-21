@@ -10,7 +10,7 @@ import type { Token } from '../../auth/jwt-auth.guard';
 import type { User } from '../../users/user.entity';
 import { UsersModule } from '../../users/users.module';
 import { UsersService } from '../../users/users.service';
-import { config } from './config';
+import { computedConfig, config } from './config';
 
 export interface GqlWebsocketContext {
   context: {
@@ -25,10 +25,14 @@ export default {
   driver: ApolloDriver,
   useFactory: (jwtService: JwtService, usersService: UsersService, authService: AuthService) => ({
     bodyParserConfig: false,
-    autoSchemaFile: join(process.cwd(), 'src', 'schema.gql'),
+    autoSchemaFile: join(process.cwd(), 'src', 'shared', 'lib', 'schema.gql'),
     sortSchema: true,
     debug: config.get('nodeEnv') === 'development',
     playground: config.get('nodeEnv') === 'development',
+    cors: {
+      origin: computedConfig.frontendUrl,
+      credentials: true,
+    },
     installSubscriptionHandlers: true,
     subscriptions: {
       // eslint-disable-next-line @typescript-eslint/naming-convention

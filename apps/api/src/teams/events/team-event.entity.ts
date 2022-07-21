@@ -17,7 +17,7 @@ import { Team } from '../teams/team.entity';
 @Entity()
 export class TeamEvent extends BaseEntity {
   @PrimaryKey()
-  teamEventId!: number;
+  id!: number;
 
   @Property()
   start!: Date;
@@ -105,8 +105,8 @@ export class TeamEvent extends BaseEntity {
   }
 
   public canEdit(user: User): boolean {
-    return this.createdBy.userId === user.userId
-      || this.supervisor?.userId === user.userId
+    return this.createdBy.id === user.id
+      || this.supervisor?.id === user.id
       || this.team.canAdminister(user);
   }
 }

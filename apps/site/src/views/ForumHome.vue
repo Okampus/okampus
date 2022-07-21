@@ -46,27 +46,42 @@
             <div class="flex flex-col gap-6 px-4 lg:hidden">
                 <AppTitle title="Membres du staff" icon="fas fa-people-group" />
                 <div class="flex gap-5 items-start mx-5">
-                    <SwiperButton class="mt-2" type="prev" :swiper="swiper" :small="true" />
+                    <SwiperButton class="mt-2" type="prev" :swiper="swiperStaff" :small="true" />
                     <Swiper
                         :slides-per-view="1"
                         :slides-centered="true"
                         :loop="true"
                         class="items-start"
-                        @swiper="(s) => (swiper = s)"
+                        @swiper="(swiper) => (swiperStaff = swiper)"
                     >
                         <SwiperSlide v-for="(staff, i) in staffMembers" :key="i">
                             <UserActivity :user="staff" :custom-string="staff.title" />
                         </SwiperSlide>
                     </Swiper>
-                    <SwiperButton class="mt-2" type="next" :swiper="swiper" :small="true" />
+                    <SwiperButton class="mt-2" type="next" :swiper="swiperStaff" :small="true" />
                 </div>
             </div>
 
             <div class="flex flex-col gap-6 px-4 lg:hidden">
                 <AppTitle title="Tags récents" icon="fas fa-tags" />
-                <AppSuspense>
-                    <RecentTagListAsync :swipe="true" />
-                </AppSuspense>
+                <GraphQLQuery :query="getTags" :update="(data) => data?.tags" :loader-size="1">
+                    <template #default="{ data: tags }">
+                        <div class="flex items-center mx-5">
+                            <SwiperButton type="prev" :swiper="swiperTags" :small="true" />
+                            <Swiper
+                                slides-per-view="auto"
+                                :space-between="10"
+                                class="items-start"
+                                @swiper="(swiper) => (swiperTags = swiper)"
+                            >
+                                <SwiperSlide v-for="(tag, i) in tags" :key="i" class="max-w-fit">
+                                    <LabelTag :key="i" class="inline text-xs" :tag-name="tag.name" />
+                                </SwiperSlide>
+                            </Swiper>
+                            <SwiperButton type="next" :swiper="swiperTags" :small="true" />
+                        </div>
+                    </template>
+                </GraphQLQuery>
             </div>
 
             <div class="flex flex-col gap-6">
@@ -97,9 +112,7 @@
 
                 <div class="flex flex-col gap-6">
                     <AppTitle title="Posts récents" icon="fas fa-signs-post" class="pl-4" />
-                    <AppSuspense>
-                        <RecentThreadListAsync />
-                    </AppSuspense>
+                    <ThreadList :container="false" />
                 </div>
             </div>
         </div>
@@ -119,9 +132,18 @@
 
             <div class="hidden flex-col gap-6 lg:flex">
                 <AppTitle title="Tags récents" icon="fas fa-tags" class="pl-4" />
-                <AppSuspense>
-                    <RecentTagListAsync />
-                </AppSuspense>
+                <GraphQLQuery :query="getTags" :update="(data) => data?.tags" :loader-size="1">
+                    <template #default="{ data: tags }">
+                        <div class="flex flex-wrap gap-3">
+                            <LabelTag
+                                v-for="(tag, i) in tags"
+                                :key="i"
+                                class="inline text-xs"
+                                :tag-name="tag.name"
+                            />
+                        </div>
+                    </template>
+                </GraphQLQuery>
             </div>
         </div>
     </div>
@@ -129,21 +151,23 @@
 
 <script setup>
     import ChatBubble from '@/assets/img/3dicons/chat-bubble.png'
+
+    import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
     import AppTitle from '@/components/App/AppTitle.vue'
+    import LabelTag from '@/components/UI/Label/LabelTag.vue'
     import UserActivity from '@/components/App/General/UserActivity.vue'
     import SwiperButton from '@/components/App/Swiper/SwiperButton.vue'
+    import ThreadList from '@/views/List/ThreadList.vue'
 
-    import RecentThreadListAsync from '@/components/List/RecentThreadListAsync.vue'
-    import RecentTagListAsync from '@/components/List/RecentTagListAsync.vue'
-
-    import AppSuspense from '@/views/App/AppSuspense.vue'
+    import { Swiper, SwiperSlide } from 'swiper/vue'
 
     import anne from '@/assets/img/staff/anne.jpeg'
     import christophe from '@/assets/img/staff/christophe.jpeg'
     import rene from '@/assets/img/staff/rene.jpeg'
 
-    import { Swiper, SwiperSlide } from 'swiper/vue'
     import { ref } from 'vue'
+
+    import { getTags } from '@/graphql/queries/getTags'
 
     const forumTabs = [
         {
@@ -171,31 +195,32 @@
         {
             firstname: 'Anne',
             lastname: 'EDVIRE',
-            schoolRole: 'admin',
+            schoolRole: 'Admin',
             avatar: anne,
             title: "Directrice de l'expérience étudiante",
         },
         {
             firstname: 'Christophe',
             lastname: 'MAIRET',
-            schoolRole: 'admin',
+            schoolRole: 'Admin',
             avatar: christophe,
             title: 'Directeur des opérations',
         },
         {
             firstname: 'René',
             lastname: 'BANCAREL',
-            schoolRole: 'admin',
+            schoolRole: 'Admin',
             avatar: rene,
             title: 'Directeur des études du cycle M',
         },
         {
             firstname: 'Okampus',
             lastname: 'Admin',
-            schoolRole: 'admin',
+            schoolRole: 'Admin',
             title: "Responsable d'Okampus",
         },
     ]
 
-    const swiper = ref(null)
+    const swiperTags = ref(null)
+    const swiperStaff = ref(null)
 </script>

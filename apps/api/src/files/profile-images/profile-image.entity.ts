@@ -13,7 +13,7 @@ import { FileUpload } from '../file-uploads/file-upload.entity';
 @Entity()
 export class ProfileImage extends BaseEntity {
   @PrimaryKey()
-  profileImageId: string = nanoid(32);
+  id: string = nanoid(32);
 
   @OneToOne({ onDelete: 'CASCADE' })
   file!: FileUpload;
@@ -36,10 +36,10 @@ export class ProfileImage extends BaseEntity {
   public isAvailableFor(type: 'team' | 'user', id?: number | string): boolean {
     const isAvailable = !this.team && !this.user;
     if (type === 'team' && id)
-      return isAvailable || this.team?.teamId === id;
+      return isAvailable || this.team?.id === id;
 
     if (type === 'user' && id)
-      return isAvailable || this.user?.userId === id;
+      return isAvailable || this.user?.id === id;
 
     return isAvailable;
   }

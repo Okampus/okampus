@@ -58,8 +58,8 @@ export class StudyDocSearchService extends SearchService<StudyDoc, IndexedStudyD
   }
 
   @RequireTypesense()
-  public async remove(studyDocId: string): Promise<void> {
-    await this.documents.delete(studyDocId).catch(authorizeNotFound);
+  public async remove(id: string): Promise<void> {
+    await this.documents.delete(id).catch(authorizeNotFound);
   }
 
   @RequireTypesense()
@@ -72,12 +72,12 @@ export class StudyDocSearchService extends SearchService<StudyDoc, IndexedStudyD
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
-      const studyDocIds = results.hits.map(hit => hit.document.id);
-      const studyDocs = await this.studyDocRepository.find({ studyDocId: { $in: studyDocIds } });
+      const ids = results.hits.map(hit => hit.document.id);
+      const studyDocs = await this.studyDocRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
         // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedStudyDoc.id and
-        // StudyDoc.studyDocId. I know.
-        hit.document = studyDocs.find(studyDoc => studyDoc.studyDocId.toString() === hit.document.id)!;
+        // StudyDoc.id. I know.
+        hit.document = studyDocs.find(studyDoc => studyDoc.id.toString() === hit.document.id)!;
     }
     // @ts-expect-error: Ditto.
     return results;
@@ -85,13 +85,13 @@ export class StudyDocSearchService extends SearchService<StudyDoc, IndexedStudyD
 
   public toIndexedEntity(studyDoc: StudyDoc): IndexedStudyDoc {
     return {
-      user: studyDoc.file.user.userId,
+      user: studyDoc.file.user.id,
       name: studyDoc.file.name,
       subjectName: studyDoc.subject.name,
       subjectEnglishName: studyDoc.subject.englishName,
       year: studyDoc.year,
       description: studyDoc.description,
-      id: studyDoc.studyDocId,
+      id: studyDoc.id,
       createdAt: studyDoc.createdAt.toString(),
     };
   }

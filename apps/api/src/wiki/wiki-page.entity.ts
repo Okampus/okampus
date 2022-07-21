@@ -4,7 +4,7 @@ import { BaseEntity } from '../shared/lib/entities/base.entity';
 @Entity()
 export class WikiPage extends BaseEntity {
   @PrimaryKey()
-  wikiPageId!: number;
+  id!: number;
 
   @Property({ type: 'text' })
   title!: string;

@@ -1,0 +1,9 @@
+export const graphQLtoHttpError = {
+    'INTERNAL_SERVER_ERROR': '500',
+    'GRAPHQL_PARSE_FAILED': '500',
+    'GRAPHQL_VALIDATION_FAILED': '400',
+    'NOT_FOUND_ERROR': '404',
+    'FORBIDDEN_ERROR': '403',
+    'AUTHENTIFICATION_ERROR': '401',
+    'USER_INPUT_ERROR': '400',
+}

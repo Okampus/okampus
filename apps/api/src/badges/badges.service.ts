@@ -27,37 +27,37 @@ export class BadgesService {
     return await this.badgeRepository.findWithPagination(paginationOptions, {}, { orderBy: { createdAt: 'DESC' } });
   }
 
-  public async findOne(badgeId: number): Promise<Badge> {
-    return await this.badgeRepository.findOneOrFail({ badgeId });
+  public async findOne(id: number): Promise<Badge> {
+    return await this.badgeRepository.findOneOrFail({ id });
   }
 
-  public async update(badgeId: number, updateBadgeDto: UpdateBadgeDto): Promise<Badge> {
-    const badge = await this.badgeRepository.findOneOrFail({ badgeId });
+  public async update(id: number, updateBadgeDto: UpdateBadgeDto): Promise<Badge> {
+    const badge = await this.badgeRepository.findOneOrFail({ id });
 
     wrap(badge).assign(updateBadgeDto);
     await this.badgeRepository.flush();
     return badge;
   }
 
-  public async remove(badgeId: number): Promise<void> {
-    const badge = await this.badgeRepository.findOneOrFail({ badgeId });
+  public async remove(id: number): Promise<void> {
+    const badge = await this.badgeRepository.findOneOrFail({ id });
     await this.badgeRepository.removeAndFlush(badge);
   }
 
-  public async unlockForUser(badgeId: number, user: User): Promise<BadgeUnlock> {
-    const badge = await this.badgeRepository.findOneOrFail({ badgeId });
+  public async unlockForUser(id: number, user: User): Promise<BadgeUnlock> {
+    const badge = await this.badgeRepository.findOneOrFail({ id });
     const badgeUnlock = new BadgeUnlock({ badge, user });
     await this.badgeUnlockRepository.persistAndFlush(badgeUnlock);
     return badgeUnlock;
   }
 
   public async findAllForUser(
-    userId: string,
+    id: string,
     paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<BadgeUnlock>> {
     return await this.badgeUnlockRepository.findWithPagination(
       paginationOptions,
-      { user: { userId } },
+      { user: { id } },
       { populate: ['badge', 'user'], orderBy: { createdAt: 'DESC' } },
     );
   }

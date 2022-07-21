@@ -17,7 +17,7 @@ import { FileUpload } from '../file-uploads/file-upload.entity';
 @Entity()
 export class StudyDoc extends BaseEntity {
   @PrimaryKey()
-  studyDocId: string = nanoid(32);
+  id: string = nanoid(32);
 
   @OneToOne({ onDelete: 'CASCADE' })
   file!: FileUpload;

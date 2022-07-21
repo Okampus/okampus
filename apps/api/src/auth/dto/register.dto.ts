@@ -10,7 +10,7 @@ import { SchoolRole } from '../../shared/modules/authorization/types/school-role
 
 export class RegisterDto {
   @IsString()
-  userId: string;
+  id: string;
 
   @IsString()
   firstname: string;

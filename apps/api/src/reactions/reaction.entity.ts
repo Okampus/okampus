@@ -2,39 +2,35 @@ import {
   Entity,
   Enum,
   Index,
-  ManyToOne,
   PrimaryKey,
 } from '@mikro-orm/core';
-import { Content } from '../contents/entities/content.entity';
-import { BaseEntity } from '../shared/lib/entities/base.entity';
-import { AllReaction, AllReactionValue } from '../shared/lib/types/enums/reaction.enum';
-import { User } from '../users/user.entity';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import type { Content } from '../contents/entities/content.entity';
+import { BaseContentInteraction } from '../shared/lib/entities/base-content-interaction.entity';
+import { AllReaction } from '../shared/lib/types/enums/reaction.enum';
+import type { User } from '../users/user.entity';
 
+@ObjectType()
 @Entity()
-export class Reaction extends BaseEntity {
+export class Reaction extends BaseContentInteraction {
+  @Field(() => Int)
   @PrimaryKey()
-  reactionId!: number;
+  id!: number;
 
-  @ManyToOne({ onDelete: 'CASCADE' })
-  @Index()
-  user!: User;
-
-  @ManyToOne({ onDelete: 'CASCADE' })
-  @Index()
-  content!: Content;
-
+  @Field(() => AllReaction)
   @Enum(() => AllReaction)
   @Index()
-  value!: AllReactionValue;
+  value!: AllReaction;
 
   constructor(options: {
     user: User;
     content: Content;
-    value: AllReactionValue;
+    value: AllReaction;
   }) {
     super();
-    this.user = options.user;
     this.content = options.content;
+    this.contentMaster = options.content.contentMaster;
+    this.user = options.user;
     this.value = options.value;
   }
 }

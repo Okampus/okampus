@@ -76,7 +76,6 @@
         watch(
             () => doc.model,
             async (model) => {
-                console.log(model)
                 if (model.length > 0) {
                     await clubsStore.postClubFile(props.club.teamId, 'document', model[0], doc.description)
                     doc.model = []

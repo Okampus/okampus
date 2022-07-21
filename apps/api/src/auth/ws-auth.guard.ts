@@ -49,7 +49,6 @@ export class WsAuthGuard implements CanActivate {
     if (decoded.aud !== 'ws')
       throw new UnauthorizedException('Invalid token');
 
-
     try {
       await this.jwtService.verifyAsync<Token>(token, this.authService.getTokenOptions('ws'));
     } catch {

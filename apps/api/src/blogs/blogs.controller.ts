@@ -13,7 +13,6 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
-// Import { SerializerExcludeContentAuthor } from '../shared/lib/decorators/serializers.decorator';
 import { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { TypesenseEnabledGuard } from '../shared/lib/guards/typesense-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
@@ -38,7 +37,6 @@ export class BlogsController {
   ) {}
 
   @Post()
-  // @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Create, Blog))
   public async create(@CurrentUser() user: User, @Body() createBlogDto: CreateBlogDto): Promise<Blog> {
     return await this.blogsService.create(user, createBlogDto);
@@ -66,7 +64,6 @@ export class BlogsController {
   }
 
   @Get(':id')
-  // @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Read, Blog))
   public async findOne(
     @CurrentUser() user: User,
@@ -76,7 +73,6 @@ export class BlogsController {
   }
 
   @Patch(':id')
-  // @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Update, Blog))
   public async update(
     @CurrentUser() user: User,

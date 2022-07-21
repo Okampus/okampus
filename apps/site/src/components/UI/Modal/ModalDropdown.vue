@@ -11,9 +11,9 @@
                     :class="button.class"
                     @click="button.action()"
                 >
-                    <i class="fas" :class="`fa-${button.icon ?? 'square'}`" />
+                    <i class="w-[1.2rem] fas" :class="`fa-${button.icon ?? 'square'}`" />
                     <div>
-                        {{ button.name }}
+                        {{ button.name?.value ?? button.name }}
                     </div>
                 </div>
             </div>

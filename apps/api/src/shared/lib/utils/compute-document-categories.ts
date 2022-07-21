@@ -26,8 +26,6 @@ type PossibleFilters<Document extends InfoDoc | StudyDoc> = Document extends Inf
   ? InfoDocFilter
   : StudyDocFilter;
 
-const getId = (doc: InfoDoc | StudyDoc): string => ('infoDocId' in doc ? doc.infoDocId : doc.studyDocId);
-
 export function computeDocumentCategories<Document extends InfoDoc | StudyDoc>(
   allDocuments: Document[],
   groupFilters: GroupFilters<Document>,
@@ -93,7 +91,7 @@ export function computeDocumentCategories<Document extends InfoDoc | StudyDoc>(
           group,
           name: metadata,
           context: currentFilter,
-          files: leftOvers.map(getId),
+          files: leftOvers.map(doc => doc.id),
           children: computeChildren(usable, nextFilters),
         };
       });
@@ -117,7 +115,7 @@ export function computeDocumentCategories<Document extends InfoDoc | StudyDoc>(
     group: '__root__',
     name: '/',
     context: '__root__',
-    files: leftOvers.map(getId),
+    files: leftOvers.map(doc => doc.id),
     children: computeChildren(usable, baseFilters),
   };
 }

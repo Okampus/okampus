@@ -19,9 +19,9 @@ export class DailyMenusService {
 
   public async create(createDailyMenuDto: NormalizedDate<CreateDailyMenuDto>): Promise<DailyMenu> {
     const menu = new DailyMenu(createDailyMenuDto);
-    const starters = await this.foodRepository.find({ foodId: { $in: createDailyMenuDto.starters } });
-    const dishes = await this.foodRepository.find({ foodId: { $in: createDailyMenuDto.dishes } });
-    const desserts = await this.foodRepository.find({ foodId: { $in: createDailyMenuDto.desserts } });
+    const starters = await this.foodRepository.find({ id: { $in: createDailyMenuDto.starters } });
+    const dishes = await this.foodRepository.find({ id: { $in: createDailyMenuDto.dishes } });
+    const desserts = await this.foodRepository.find({ id: { $in: createDailyMenuDto.desserts } });
 
     menu.starters.set(starters);
     menu.dishes.set(dishes);
@@ -43,7 +43,7 @@ export class DailyMenusService {
       {},
       {
         populate: ['starters', 'dishes', 'desserts'],
-        orderBy: { date: 'DESC' },
+        orderBy: { id: 'DESC' },
       },
       );
   }
@@ -66,13 +66,13 @@ export class DailyMenusService {
 
     // TODO: Making you puke is the only thing this code is efficient about.
     const starters = wantedStarters
-      ? await this.foodRepository.find({ foodId: { $in: wantedStarters } })
+      ? await this.foodRepository.find({ id: { $in: wantedStarters } })
       : [];
     const dishes = wantedDishes
-      ? await this.foodRepository.find({ foodId: { $in: wantedDishes } })
+      ? await this.foodRepository.find({ id: { $in: wantedDishes } })
       : [];
     const desserts = wantedDesserts
-      ? await this.foodRepository.find({ foodId: { $in: wantedDesserts } })
+      ? await this.foodRepository.find({ id: { $in: wantedDesserts } })
       : [];
 
     menu.starters.set(starters);

@@ -33,9 +33,9 @@ export class StudyDocsService {
   ) {}
 
   public async create(createStudyDocDto: CreateStudyDocDto, file: FileUpload): Promise<StudyDoc> {
-    const subject = await this.subjectRepository.findOneOrFail({ subjectId: createStudyDocDto.subject });
+    const subject = await this.subjectRepository.findOneOrFail({ id: createStudyDocDto.subject });
 
-    const docSeries = await this.docSeriesRepository.findOne({ docSeriesId: createStudyDocDto.docSeries });
+    const docSeries = await this.docSeriesRepository.findOne({ id: createStudyDocDto.docSeries });
     const studyDoc = new StudyDoc({
       ...createStudyDocDto,
       subject,
@@ -60,7 +60,7 @@ export class StudyDocsService {
       options = { ...options, year: filters.year };
     if (typeof filters.subject !== 'undefined')
       // @ts-expect-error: ts(2339)
-      options = { ...options, subject: { ...options.subject, subjectId: filters.subject } };
+      options = { ...options, subject: { ...options.subject, id: filters.subject } };
     if (typeof filters.type !== 'undefined')
       options = { ...options, type: filters.type };
     if (typeof filters.cursus !== 'undefined')
@@ -78,7 +78,7 @@ export class StudyDocsService {
 
     const groupFilters: GroupFilters<StudyDoc> = {
       schoolYear: elt => ({ key: elt.subject.schoolYear.toString(), metadata: SchoolYear[elt.subject.schoolYear] }),
-      subject: elt => ({ key: elt.subject.subjectId.toString(), metadata: elt.subject.name }),
+      subject: elt => ({ key: elt.subject.id.toString(), metadata: elt.subject.name }),
       type: elt => ({ key: elt.type.toString(), metadata: null }),
       year: elt => ({ key: elt.year.toString(), metadata: null }),
     } as const;
@@ -86,26 +86,26 @@ export class StudyDocsService {
     return computeDocumentCategories(allDocuments, groupFilters, baseFilters);
   }
 
-  public async findOne(studyDocId: string): Promise<StudyDoc> {
+  public async findOne(id: string): Promise<StudyDoc> {
     // TODO: Maybe the user won't have access to this doc. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
     return await this.studyDocRepository.findOneOrFail(
-      { studyDocId },
+      { id },
       { populate: ['file', 'file.user', 'subject', 'docSeries'] },
     );
   }
 
-  public async update(user: User, studyDocId: string, updateCourseDto: UpdateStudyDocDto): Promise<StudyDoc> {
+  public async update(user: User, id: string, updateCourseDto: UpdateStudyDocDto): Promise<StudyDoc> {
     const studyDoc = await this.studyDocRepository.findOneOrFail(
-      { studyDocId },
+      { id },
       { populate: ['file', 'file.user', 'subject', 'docSeries'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, studyDoc);
 
-    const subject = await this.subjectRepository.findOneOrFail({ subjectId: updateCourseDto.subject });
-    const docSeries = await this.docSeriesRepository.findOneOrFail({ docSeriesId: updateCourseDto.docSeries });
+    const subject = await this.subjectRepository.findOneOrFail({ id: updateCourseDto.subject });
+    const docSeries = await this.docSeriesRepository.findOneOrFail({ id: updateCourseDto.docSeries });
 
     wrap(studyDoc).assign({ ...updateCourseDto, subject, docSeries });
     await this.studyDocRepository.flush();
@@ -113,13 +113,13 @@ export class StudyDocsService {
     return studyDoc;
   }
 
-  public async remove(user: User, studyDocId: string): Promise<void> {
-    const studyDoc = await this.studyDocRepository.findOneOrFail({ studyDocId }, { populate: ['file', 'file.user'] });
+  public async remove(user: User, id: string): Promise<void> {
+    const studyDoc = await this.studyDocRepository.findOneOrFail({ id }, { populate: ['file', 'file.user'] });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, studyDoc);
 
     await this.studyDocRepository.removeAndFlush(studyDoc);
-    await this.studyDocSearchService.remove(studyDoc.studyDocId);
+    await this.studyDocSearchService.remove(studyDoc.id);
   }
 }

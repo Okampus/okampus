@@ -37,20 +37,20 @@ export class ContactsService {
     return await this.contactsRepository.findAll();
   }
 
-  public async findOne(contactId: number): Promise<Contact> {
-    return await this.contactsRepository.findOneOrFail({ contactId });
+  public async findOne(id: number): Promise<Contact> {
+    return await this.contactsRepository.findOneOrFail({ id });
   }
 
-  public async update(contactId: number, updateContactDto: UpdateContactDto): Promise<Contact> {
-    const contact = await this.contactsRepository.findOneOrFail({ contactId });
+  public async update(id: number, updateContactDto: UpdateContactDto): Promise<Contact> {
+    const contact = await this.contactsRepository.findOneOrFail({ id });
 
     wrap(contact).assign(updateContactDto);
     await this.contactsRepository.flush();
     return contact;
   }
 
-  public async remove(contactId: number): Promise<void> {
-    const contact = await this.contactsRepository.findOneOrFail({ contactId });
+  public async remove(id: number): Promise<void> {
+    const contact = await this.contactsRepository.findOneOrFail({ id });
     await this.contactsRepository.removeAndFlush(contact);
   }
 
@@ -58,23 +58,23 @@ export class ContactsService {
     user: User,
     createContactAccountDto: CreateContactAccountDto,
   ): Promise<UserContactAccount> {
-    const contact = await this.contactsRepository.findOneOrFail({ contactId: createContactAccountDto.contactId });
+    const contact = await this.contactsRepository.findOneOrFail({ id: createContactAccountDto.id });
     const contactAccount = new UserContactAccount({ ...createContactAccountDto, user, contact });
     await this.userContactsAccountRepository.persistAndFlush(contactAccount);
     return contactAccount;
   }
 
-  public async findAllUserContactAccounts(userId: string): Promise<UserContactAccount[]> {
-    return await this.userContactsAccountRepository.find({ user: { userId } }, { populate: ['contact', 'user'] });
+  public async findAllUserContactAccounts(id: string): Promise<UserContactAccount[]> {
+    return await this.userContactsAccountRepository.find({ user: { id } }, { populate: ['contact', 'user'] });
   }
 
   public async updateUserContactAccount(
     user: User,
-    contactAccountId: number,
+    id: number,
     updateContactDto: UpdateContactAccountDto,
   ): Promise<UserContactAccount> {
     const userContact = await this.userContactsAccountRepository.findOneOrFail(
-      { contactAccountId },
+      { id },
       { populate: ['contact', 'user'] },
     );
 
@@ -86,9 +86,9 @@ export class ContactsService {
     return userContact;
   }
 
-  public async deleteUserContactAccount(user: User, contactAccountId: number): Promise<void> {
+  public async deleteUserContactAccount(user: User, id: number): Promise<void> {
     const userContact = await this.userContactsAccountRepository.findOneOrFail(
-      { contactAccountId },
+      { id },
       { populate: ['user'] },
     );
 
@@ -100,34 +100,34 @@ export class ContactsService {
 
   public async addTeamContactAccount(
     requester: User,
-    teamId: number,
+    id: number,
     createContactAccountDto: CreateContactAccountDto,
   ): Promise<TeamContactAccount> {
-    const team = await this.teamsRepository.findOneOrFail({ teamId }, { populate: ['members'] });
+    const team = await this.teamsRepository.findOneOrFail({ id }, { populate: ['members'] });
     // TODO: Move this to CASL
     if (!team.canAdminister(requester))
       throw new ForbiddenException('Not a team admin');
 
-    const contact = await this.contactsRepository.findOneOrFail({ contactId: createContactAccountDto.contactId });
+    const contact = await this.contactsRepository.findOneOrFail({ id: createContactAccountDto.id });
     const contactAccount = new TeamContactAccount({ team, ...createContactAccountDto, contact });
     await this.teamContactsAccountRepository.persistAndFlush(contactAccount);
     return contactAccount;
   }
 
-  public async findAllTeamContactAccounts(teamId: number): Promise<TeamContactAccount[]> {
+  public async findAllTeamContactAccounts(id: number): Promise<TeamContactAccount[]> {
     return await this.teamContactsAccountRepository.find(
-      { team: { teamId } },
+      { team: { id } },
       { populate: ['contact', 'team'] },
     );
   }
 
   public async updateTeamContactAccount(
     requester: User,
-    contactAccountId: number,
+    id: number,
     updateContactDto: UpdateContactAccountDto,
   ): Promise<TeamContactAccount> {
     const teamContact = await this.teamContactsAccountRepository.findOneOrFail(
-      { contactAccountId },
+      { id },
       { populate: ['contact', 'team', 'team.members'] },
     );
     // TODO: Move this to CASL
@@ -139,9 +139,9 @@ export class ContactsService {
     return teamContact;
   }
 
-  public async deleteTeamContactAccount(requester: User, contactAccountId: number): Promise<void> {
+  public async deleteTeamContactAccount(requester: User, id: number): Promise<void> {
     const teamContact = await this.teamContactsAccountRepository.findOneOrFail(
-      { contactAccountId },
+      { id },
       { populate: ['team', 'team.members'] },
     );
     // TODO: Move this to CASL

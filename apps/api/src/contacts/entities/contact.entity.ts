@@ -4,7 +4,7 @@ import { BaseEntity } from '../../shared/lib/entities/base.entity';
 @Entity()
 export class Contact extends BaseEntity {
   @PrimaryKey()
-  contactId: number;
+  id: number;
 
   @Property()
   name!: string;

@@ -24,7 +24,7 @@
                     </div>
                 </div>
 
-                <router-link class="mt-1 text-blue-500 hover:underline" :to="`/user/${user.userId}`">
+                <router-link class="mt-1 text-blue-500 hover:underline" :to="`/user/${user.id}`">
                     <div class="flex gap-2 text-lg">
                         <i class="pt-1 fas fa-external-link-alt" />
                         <div>Voir le profil</div>

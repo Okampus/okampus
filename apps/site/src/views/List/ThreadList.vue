@@ -1,27 +1,27 @@
 <template>
-    <ListPage :route-base="routeBase" :route-name="routeName" :callback="threads.getThreads" :type="THREAD">
-        <template #default="{ items }">
-            <div v-if="items.length" class="flex flex-col gap-3 centered-container">
-                <ThreadCard v-for="thread in items" :key="thread.contentMasterId" :thread="thread" />
-            </div>
+    <GraphQLQuery
+        :query="getThreads"
+        :update="(data) => data?.threads"
+        resource-type="thread"
+        route-base="/forum/posts"
+        class="flex flex-col gap-4"
+        :class="container ? 'centered-container-padded' : ''"
+    >
+        <template #default="{ data: threads }">
+            <ThreadCard v-for="thread in threads" :key="thread.id" :thread="thread" />
         </template>
-    </ListPage>
+    </GraphQLQuery>
 </template>
 
 <script setup>
     import ThreadCard from '@/components/App/ListCard/ThreadCard.vue'
-    import ListPage from '@/views/App/ListPage.vue'
-    import { THREAD } from '@/shared/types/resource-names.enum'
-    import { useThreadsStore } from '@/store/threads.store'
-    const threads = useThreadsStore()
+    import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
+    import { getThreads } from '@/graphql/queries/getThreads'
+
     defineProps({
-        routeBase: {
-            type: String,
-            default: '/forum/posts',
-        },
-        routeName: {
-            type: String,
-            default: 'posts',
+        container: {
+            type: Boolean,
+            default: true,
         },
     })
 </script>

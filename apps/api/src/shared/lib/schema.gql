@@ -1,0 +1,362 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+enum AllReactionValue {
+  Bump
+  Interesting
+  Laugh
+  Like
+  NotAnIssue
+  Partial
+  Perfect
+  Unsure
+  What
+}
+
+type Badge {
+  createdAt: DateTime!
+  description: String!
+  icon: String!
+  id: Int!
+  level: BadgeLevel!
+  name: String!
+  pointPrize: Int!
+  series: String!
+  updatedAt: DateTime!
+}
+
+enum BadgeLevel {
+  Bronze
+  Gold
+  Silver
+}
+
+type BadgeUnlock {
+  badge: Badge!
+  createdAt: DateTime!
+  id: Int!
+  unlockDate: DateTime!
+  updatedAt: DateTime!
+  user: User!
+}
+
+enum Colors {
+  Amber
+  Blue
+  Cyan
+  Emerald
+  Fuchsia
+  Gray
+  Green
+  Indigo
+  Lime
+  Neutral
+  Orange
+  Pink
+  Purple
+  Red
+  Rose
+  Sky
+  Slate
+  Stone
+  Teal
+  Violet
+  Yellow
+  Zinc
+}
+
+type Content {
+  author: User!
+  body: String!
+  children: [Content!]!
+  contentMaster: ContentMaster!
+  createdAt: DateTime!
+  downvoteCount: Int!
+  edits: [ContentEdit!]
+  favoriteCount: Int!
+  hidden: Boolean!
+  id: Int!
+  interactions: ContentInteractions!
+  isVisible: Boolean!
+  kind: ContentKind!
+  lastEdit: ContentEdit!
+  parent: Content!
+  replyCount: Int!
+  reportCount: Int!
+  totalVoteCount: Int!
+  updatedAt: DateTime!
+  upvoteCount: Int!
+}
+
+type ContentEdit {
+  body: String!
+  createdAt: DateTime!
+  editOrder: Int!
+  editedBy: User!
+  id: Int!
+  parent: Content!
+  updatedAt: DateTime!
+}
+
+type ContentInteractions {
+  reactions: [Reaction!]!
+  userFavorited: Boolean!
+  userReported: Report
+  userVoted: Int
+}
+
+enum ContentKind {
+  Comment
+  Post
+  Reply
+}
+
+type ContentMaster {
+  createdAt: DateTime!
+  id: Int!
+  post: Content!
+  tags: [Tag!]!
+  title: String!
+  updatedAt: DateTime!
+}
+
+input CreateContentWithKindDto {
+  body: String!
+  contentKind: ContentKind!
+  parentId: Int!
+}
+
+input CreateReportDto {
+  reason: String!
+}
+
+input CreateThreadDto {
+  assignees: [String!]
+  body: String!
+  tags: [String!]
+  title: String!
+  type: ThreadType!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  addContent(child: CreateContentWithKindDto!): Content!
+  addThread(thread: CreateThreadDto!): Thread!
+  favoriteContent(favorite: Boolean!, id: Int!): Content!
+  reportContent(id: Int!, report: CreateReportDto!): Content!
+  updateContent(content: UpdateContentDto!, id: Int!): Content!
+  updateSettings(settings: UpdateSettingsDto!): Settings!
+  updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
+  voteContent(id: Int!, value: Int!): Content!
+}
+
+type Query {
+  contentById(id: Int!): Content
+  reportById(id: Int!): Report!
+  reports: [Report!]!
+  settings: Settings!
+  tagById(id: String!): Tag!
+  tags: [Tag!]!
+  threadById(id: Int!): Thread
+  threads: [Thread!]!
+  validationById(id: Int!): Validation!
+}
+
+type Reaction {
+  content: Content!
+  contentMaster: ContentMaster!
+  createdAt: DateTime!
+  id: Int!
+  updatedAt: DateTime!
+  user: User!
+  value: AllReactionValue!
+}
+
+type Report {
+  content: Content!
+  contentMaster: ContentMaster!
+  createdAt: DateTime!
+  id: Int!
+  reason: String
+  target: User!
+  updatedAt: DateTime!
+  user: User!
+}
+
+enum Role {
+  Admin
+  ClubManager
+  Moderator
+  RestaurantManager
+  User
+}
+
+enum SchoolRole {
+  Admin
+  Student
+  Teacher
+}
+
+type Settings {
+  createdAt: DateTime!
+  gdprEndOfLifeAnonymize: Boolean!
+  gdprEndOfLifeExport: Boolean!
+  notificationAdminReportCreated: Int!
+  notificationAdminRoleUpdated: Int!
+  notificationAdminTeamContactUpdated: Int!
+  notificationAdminTeamEventValidationApproved: Int!
+  notificationAdminTeamEventValidationRejected: Int!
+  notificationAdminTeamEventValidationStarted: Int!
+  notificationAdminTeamEventValidationStep: Int!
+  notificationAdminTeamLegalFileUpdated: Int!
+  notificationAdminThreadAssigned: Int!
+  notificationAdminThreadAssignedStale: Int!
+  notificationAdminThreadAssignedStaleThreshold: Int!
+  notificationAdminThreadStale: Int!
+  notificationAdminThreadStaleThreshold: Int!
+  notificationBadgeUnlocked: Int!
+  notificationBlogSubscribedUpdated: Int!
+  notificationContentRemoved: Int!
+  notificationMentionned: Int!
+  notificationRoleUpdated: Int!
+  notificationTeamEventCreated: Int!
+  notificationTeamEventManagedApproved: Int!
+  notificationTeamEventManagedRegistrationCreated: Int!
+  notificationTeamEventManagedRejected: Int!
+  notificationTeamEventSubscribedUpdated: Int!
+  notificationTeamManagedEventUpdated: Int!
+  notificationTeamManagedFormUpdated: Int!
+  notificationTeamManagedMemberRoleUpdated: Int!
+  notificationTeamManagedMembershipRequestUpdated: Int!
+  notificationTeamSubscribedEventCreated: Int!
+  notificationThreadSubscribedAnswered: Int!
+  notificationThreadSubscribedUpdated: Int!
+  updatedAt: DateTime!
+  user: User!
+}
+
+type Subscription {
+  threadAdded: Thread!
+  updatedThread: Thread!
+}
+
+type Tag {
+  color: Colors!
+  createdAt: DateTime!
+  description: String!
+  name: String!
+  updatedAt: DateTime!
+}
+
+type Thread {
+  adminValidations: [Validation!]!
+  assignees: [User!]!
+  createdAt: DateTime!
+  id: Int!
+  locked: Boolean!
+  opValidation: Validation
+  post: Content!
+  tags: [Tag!]!
+  title: String!
+  type: ThreadType!
+  updatedAt: DateTime!
+}
+
+enum ThreadType {
+  Discussion
+  Other
+  Problem
+  Question
+  Suggestion
+}
+
+input UpdateContentDto {
+  body: String
+  hidden: Boolean
+}
+
+input UpdateSettingsDto {
+  gdprEndOfLifeAnonymize: Boolean
+  gdprEndOfLifeExport: Boolean
+  notificationAdminReportCreated: Int
+  notificationAdminRoleUpdated: Int
+  notificationAdminTeamContactUpdated: Int
+  notificationAdminTeamEventValidationApproved: Int
+  notificationAdminTeamEventValidationRejected: Int
+  notificationAdminTeamEventValidationStarted: Int
+  notificationAdminTeamEventValidationStep: Int
+  notificationAdminTeamLegalFileUpdated: Int
+  notificationAdminThreadAssigned: Int
+  notificationAdminThreadAssignedStale: Int
+  notificationAdminThreadAssignedStaleThreshold: Int
+  notificationAdminThreadStale: Int
+  notificationAdminThreadStaleThreshold: Int
+  notificationBadgeUnlocked: Int
+  notificationBlogSubscribedUpdated: Int
+  notificationContentRemoved: Int
+  notificationMentionned: Int
+  notificationRoleUpdated: Int
+  notificationTeamEventCreated: Int
+  notificationTeamEventManagedApproved: Int
+  notificationTeamEventManagedRegistrationCreated: Int
+  notificationTeamEventManagedRejected: Int
+  notificationTeamEventSubscribedUpdated: Int
+  notificationTeamManagedEventUpdated: Int
+  notificationTeamManagedFormUpdated: Int
+  notificationTeamManagedMemberRoleUpdated: Int
+  notificationTeamManagedMembershipRequestUpdated: Int
+  notificationTeamSubscribedEventCreated: Int
+  notificationThreadSubscribedAnswered: Int
+  notificationThreadSubscribedUpdated: Int
+}
+
+input UpdateThreadDto {
+  assignees: [String!]
+  body: String
+  locked: Boolean
+  tags: [String!]
+  title: String
+  type: ThreadType
+  validatedWithContent: Int
+}
+
+type User {
+  avatar: String
+  badges: [BadgeUnlock!]
+  banner: String
+  color: String!
+  createdAt: DateTime!
+  email: String!
+  firstname: String!
+  id: String!
+  lastname: String!
+  points: Int!
+  reputation: Int!
+  roles: [Role!]
+  schoolRole: SchoolRole!
+  settings: Settings!
+  shortDescription: String!
+  signature: String!
+  updatedAt: DateTime!
+}
+
+type Validation {
+  active: Boolean!
+  content: Content!
+  contentMaster: ContentMaster!
+  createdAt: DateTime!
+  id: Int!
+  type: ValidationType!
+  updatedAt: DateTime!
+  user: User!
+}
+
+enum ValidationType {
+  Admin
+  Op
+}

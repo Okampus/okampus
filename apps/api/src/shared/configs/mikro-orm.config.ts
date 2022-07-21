@@ -1,9 +1,9 @@
+import util from 'node:util';
 import type { Options } from '@mikro-orm/core';
 import { MemoryCacheAdapter } from '@mikro-orm/core';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import { Logger, NotFoundException } from '@nestjs/common';
-import { BaseNamingStrategy } from '../lib/orm/base.naming-strategy';
 import { BaseRepository } from '../lib/orm/base.repository';
 import { config } from './config';
 
@@ -16,7 +16,6 @@ export default {
   debug: config.get('nodeEnv') === 'development',
   highlighter: new SqlHighlighter(),
   entityRepository: BaseRepository,
-  namingStrategy: BaseNamingStrategy,
   resultCache: {
     // TODO: Use redis cache?
     adapter: MemoryCacheAdapter,
@@ -24,5 +23,5 @@ export default {
   },
   logger: ormLogger.log.bind(ormLogger),
   metadataProvider: TsMorphMetadataProvider,
-  findOneOrFailHandler: entityName => new NotFoundException(`${entityName} not found`),
+  findOneOrFailHandler: (entityName, where) => new NotFoundException(`${entityName} not found at ${util.inspect(where)}`),
 } as Options;

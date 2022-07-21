@@ -12,6 +12,6 @@ import { VotesService } from './votes.service';
   ],
   controllers: [VotesController],
   providers: [CaslAbilityFactory, VotesService],
-  exports: [],
+  exports: [VotesService],
 })
 export class VotesModule {}

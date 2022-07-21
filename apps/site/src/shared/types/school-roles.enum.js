@@ -1,27 +1,27 @@
 export const ROLES = [
     {
-        key: 'student',
+        key: 'Student',
         fr: 'Étudiant',
         en: 'Student',
         icon: 'graduation-cap',
         color: 'neutral',
     },
     {
-        key: 'teacher',
+        key: 'Teacher',
         fr: 'Prof.',
         en: 'Teacher',
         icon: 'school',
         color: 'blue',
     },
     {
-        key: 'admin',
+        key: 'Admin',
         fr: 'Admin.',
         en: 'Admin.',
         icon: 'shield-alt',
         color: 'red',
     },
     {
-        key: 'no-role',
+        key: 'NoRole',
         fr: 'N/A',
         en: 'N/A',
         icon: 'ghost',
@@ -29,5 +29,5 @@ export const ROLES = [
     },
 ]
 
-export const DEFAULT_ROLE_NAME = 'no-role'
+export const DEFAULT_ROLE_NAME = 'NoRole'
 export const DEFAULT_ROLE = ROLES.find((role) => role.key === DEFAULT_ROLE_NAME)

@@ -3,16 +3,16 @@ import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
 import { ContentsModule } from '../contents/contents.module';
 import { Content } from '../contents/entities/content.entity';
-import { Favorite } from '../favorites/favorite.entity';
-import { Reaction } from '../reactions/reaction.entity';
-import { Report } from '../reports/report.entity';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
+import { PubSubModule } from '../shared/modules/pub-sub/pub-sub.module';
 import { Tag } from '../tags/tag.entity';
 import { User } from '../users/user.entity';
-import { Vote } from '../votes/vote.entity';
+import { Validation } from '../validations/validation.entity';
+import { ValidationsModule } from '../validations/validations.module';
 import { ThreadSearchService } from './thread-search.service';
 import { Thread } from './thread.entity';
 import { ThreadsController } from './threads.controller';
+import { ThreadResolver } from './threads.resolver';
 import { ThreadsService } from './threads.service';
 
 @Module({
@@ -22,15 +22,14 @@ import { ThreadsService } from './threads.service';
       Tag,
       User,
       Content,
-      Favorite,
-      Reaction,
-      Vote,
-      Report,
+      Validation,
     ]),
     ContentsModule,
+    ValidationsModule,
+    PubSubModule,
   ],
   controllers: [ThreadsController],
-  providers: [CaslAbilityFactory, ThreadsService, ThreadSearchService],
+  providers: [CaslAbilityFactory, ThreadsService, ThreadSearchService, ThreadResolver],
   exports: [ThreadsService],
 })
 export class ThreadsModule implements OnModuleInit {

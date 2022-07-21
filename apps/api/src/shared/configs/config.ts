@@ -4,7 +4,7 @@ import type { CookieOptions } from 'express';
 
 interface Config {
   port: number;
-  frontendUrl: string;
+  frontendOriginUrl: string;
   baseDomain: string;
   nodeEnv: 'development' | 'production' | 'test';
   release: string;
@@ -83,7 +83,7 @@ export const config = createProfiguration<Config>({
     format: Number,
     env: 'PORT',
   },
-  frontendUrl: {
+  frontendOriginUrl: {
     default: 'localhost',
     format: String,
     env: 'FRONTEND_URL',
@@ -351,7 +351,7 @@ export const computedConfig = {
     : `https://api.${config.get('baseDomain')}`,
   frontendUrl: config.get('nodeEnv') === 'development'
     ? 'http://localhost:3000'
-    : `https://${config.get('frontendUrl')}`,
+    : `https://${config.get('frontendOriginUrl')}`,
 } as const;
 
 config.set('cookies.options', {

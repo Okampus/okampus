@@ -19,10 +19,14 @@
         "serve": "vite preview"
     },
     "dependencies": {
+        "@apollo/client": "^3.6.9",
         "@chenfengyuan/vue-countdown": "^2.0.0",
         "@formkit/i18n": "^1.0.0-beta.8",
         "@formkit/themes": "^1.0.0-beta.8",
         "@formkit/vue": "^1.0.0-beta.8",
+        "@vue/apollo-components": "^4.0.0-alpha.18",
+        "@vue/apollo-composable": "^4.0.0-alpha.19",
+        "@vue/apollo-option": "^4.0.0-alpha.18",
         "@vuelidate/core": "2.0.0-alpha.41",
         "@vuelidate/validators": "2.0.0-alpha.29",
         "@vueuse/core": "8.4.2",
@@ -32,6 +36,8 @@
         "date-fns": "^2.28.0",
         "dayjs": "^1.11.3",
         "easymde": "2.16.1",
+        "graphql": "^16.5.0",
+        "graphql-tag": "^2.12.6",
         "highlight.js": "11.5.1",
         "lodash": "4.17.21",
         "marked": "4.0.15",

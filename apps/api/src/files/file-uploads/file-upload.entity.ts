@@ -15,7 +15,7 @@ import { User } from '../../users/user.entity';
 @Entity()
 export class FileUpload extends BaseEntity {
   @PrimaryKey()
-  fileUploadId: string = nanoid(64);
+  id: string = nanoid(64);
 
   @ManyToOne()
   user!: User;
@@ -67,7 +67,7 @@ export class FileUpload extends BaseEntity {
     return path.join(
       config.get('upload.path'),
       this.fileKind,
-      `${this.fileUploadId.toString()}${path.extname(this.name)}`,
+      `${this.id.toString()}${path.extname(this.name)}`,
     );
   }
 }

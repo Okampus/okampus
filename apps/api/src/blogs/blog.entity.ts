@@ -28,10 +28,10 @@ export class Blog extends ContentMaster {
 
   constructor(options: {
     title: string;
+    post: Content;
     slug: string;
     category: string;
     isDraft: boolean;
-    post?: Content;
     location?: [lat: number, lon: number];
     locationName?: string;
   }) {

@@ -24,23 +24,23 @@ export class TeamEventRegistrationsService {
 
   public async create(
     user: User,
-    teamEventId: number,
+    id: number,
     createTeamEventRegistrationDto: CreateTeamEventRegistrationDto,
   ): Promise<TeamEventRegistration> {
     const event = await this.teamEventRepository.findOneOrFail(
-      { teamEventId },
+      { id },
       { populate: ['createdBy', 'team'] },
     );
 
     // Check that the user is a member of the team if the event is private
     if (event.private) {
-      const membership = await this.teamMemberRepository.findOne({ user, team: { teamId: event.team.teamId } });
+      const membership = await this.teamMemberRepository.findOne({ user, team: { id: event.team.id } });
       if (!membership)
         throw new ForbiddenException('Not a team member');
     }
 
     // Check that the user is not already registered for the event
-    const existing = await this.teamEventRegistrationRepository.count({ user, event: { teamEventId } });
+    const existing = await this.teamEventRegistrationRepository.count({ user, event: { id } });
     if (existing)
       throw new BadRequestException('Already registered');
 
@@ -85,13 +85,13 @@ export class TeamEventRegistrationsService {
     if (query.eventId) {
       // TODO: fix permissions here
       // const event = await this.teamEventRepository.findOneOrFail(
-      //   { teamEventId: query.eventId },
+      //   { id: query.id },
       //   { populate: ['team', 'team.members'] });
       // if (!event.canEdit(user))
       //   throw new ForbiddenException('Cannot view registrations');
-      filter = { ...filter, event: { teamEventId: query.eventId } };
+      filter = { ...filter, event: { id: query.eventId } };
     } else if (query.userId && (user.roles.includes(Role.ClubManager) || user.roles.includes(Role.Admin))) {
-      filter = { ...filter, user: { userId: query.userId } };
+      filter = { ...filter, user: { id: query.userId } };
     } else {
       filter = { ...filter, user };
     }
@@ -103,13 +103,16 @@ export class TeamEventRegistrationsService {
     );
   }
 
-  public async findOne(user: User, teamEventRegistrationId: number): Promise<TeamEventRegistration> {
-    const registration = await this.teamEventRegistrationRepository.findOneOrFail({ teamEventRegistrationId }, { populate: ['user', 'event', 'event.team'] });
+  public async findOne(user: User, id: number): Promise<TeamEventRegistration> {
+    const registration = await this.teamEventRegistrationRepository.findOneOrFail(
+      { id },
+      { populate: ['user', 'event', 'event.team'] },
+    );
 
     if (registration.event.private) {
       const membership = await this.teamMemberRepository.findOne({
         user,
-        team: { teamId: registration.event.team.teamId },
+        team: { id: registration.event.team.id },
       });
       if (!membership)
         throw new ForbiddenException('Not a team member');
@@ -118,14 +121,17 @@ export class TeamEventRegistrationsService {
     return registration;
   }
 
-  public async remove(user: User, teamEventRegistrationId: number): Promise<void> {
-    const registration = await this.teamEventRegistrationRepository.findOneOrFail({ teamEventRegistrationId });
-    const event = await this.teamEventRepository.findOneOrFail({ teamEventId: registration.event.teamEventId }, { populate: ['team', 'team.members'] });
+  public async remove(user: User, id: number): Promise<void> {
+    const registration = await this.teamEventRegistrationRepository.findOneOrFail({ id });
+    const event = await this.teamEventRepository.findOneOrFail(
+      { id: registration.event.id },
+      { populate: ['team', 'team.members'] },
+    );
 
     if (
       !event.team.canAdminister(user)
-      && event.createdBy.userId !== user.userId
-      && registration.user.userId !== user.userId
+      && event.createdBy.id !== user.id
+      && registration.user.id !== user.id
     )
       throw new ForbiddenException('Cannot unregister');
 
@@ -138,10 +144,10 @@ export class TeamEventRegistrationsService {
     formSubmission?: object | null,
   ): Promise<{ formSubmission?: object | null; originalForm?: TeamForm | null }> {
     if (teamForm && askedFormId && formSubmission) {
-      if (askedFormId !== teamForm.teamFormId)
+      if (askedFormId !== teamForm.id)
         throw new BadRequestException('Wrong form');
 
-      const form = await this.teamFormRepository.findOneOrFail({ teamFormId: askedFormId });
+      const form = await this.teamFormRepository.findOneOrFail({ id: askedFormId });
       if (form.isTemplate)
         throw new BadRequestException('Form is a template');
 

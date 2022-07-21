@@ -1,44 +1,29 @@
-import {
-  Entity,
-  Enum,
-  Index,
-  ManyToOne,
-  PrimaryKey,
-} from '@mikro-orm/core';
-import { Content } from '../contents/entities/content.entity';
-import { BaseEntity } from '../shared/lib/entities/base.entity';
-import { User } from '../users/user.entity';
+import { Entity, Enum, PrimaryKey } from '@mikro-orm/core';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import type { Content } from '../contents/entities/content.entity';
+import { BaseContentInteraction } from '../shared/lib/entities/base-content-interaction.entity';
+import type { User } from '../users/user.entity';
 
+@ObjectType()
 @Entity()
-export class Vote extends BaseEntity {
+export class Vote extends BaseContentInteraction {
+  @Field(() => Int)
   @PrimaryKey()
-  voteId!: number;
+  id!: number;
 
+  @Field(() => Int)
   @Enum()
-  value!: -1 | 1;
-
-  @ManyToOne({ onDelete: 'CASCADE' })
-  @Index()
-  user!: User;
-
-  @ManyToOne({ onDelete: 'CASCADE' })
-  @Index()
-  content: Content;
+  value!: -1 | 0 | 1;
 
   constructor(options: {
     user: User;
     content: Content;
-    value: -1 | 1;
+    value: -1 | 0 | 1;
   }) {
     super();
-    this.user = options.user;
     this.content = options.content;
+    this.contentMaster = options.content.contentMaster;
+    this.user = options.user;
     this.value = options.value;
   }
-}
-
-export interface NoVote {
-  value: 0;
-  user: User;
-  content: Content;
 }

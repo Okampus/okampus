@@ -5,8 +5,6 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-// Import { Expose } from 'class-transformer';
-// import { TEAMFORM_TEAM_INCLUDED } from '../../shared/lib/constants';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { User } from '../../users/user.entity';
 import { Team } from '../teams/team.entity';
@@ -14,7 +12,7 @@ import { Team } from '../teams/team.entity';
 @Entity()
 export class TeamForm extends BaseEntity {
   @PrimaryKey()
-  teamFormId!: number;
+  id!: number;
 
   @Property()
   name!: string;
@@ -30,7 +28,6 @@ export class TeamForm extends BaseEntity {
 
   @ManyToOne({ onDelete: 'CASCADE' })
   @Index()
-  // @Expose({ groups: [TEAMFORM_TEAM_INCLUDED] })
   team!: Team;
 
   @Property()

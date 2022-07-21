@@ -26,21 +26,21 @@ export class FoodService {
     return await this.foodRepository.findWithPagination(paginationOptions, {}, { orderBy: { name: 'ASC' } });
   }
 
-  public async findOne(foodId: number): Promise<Food> {
-    return await this.foodRepository.findOneOrFail({ foodId });
+  public async findOne(id: number): Promise<Food> {
+    return await this.foodRepository.findOneOrFail({ id });
   }
 
-  public async update(foodId: number, updateFoodDto: UpdateFoodDto): Promise<Food> {
-    const food = await this.foodRepository.findOneOrFail({ foodId });
+  public async update(id: number, updateFoodDto: UpdateFoodDto): Promise<Food> {
+    const food = await this.foodRepository.findOneOrFail({ id });
     wrap(food).assign(updateFoodDto);
     await this.foodRepository.flush();
     await this.foodSearchService.update(food);
     return food;
   }
 
-  public async remove(foodId: number): Promise<void> {
-    const food = await this.foodRepository.findOneOrFail({ foodId });
+  public async remove(id: number): Promise<void> {
+    const food = await this.foodRepository.findOneOrFail({ id });
     await this.foodRepository.removeAndFlush(food);
-    await this.foodSearchService.remove(foodId.toString());
+    await this.foodSearchService.remove(id.toString());
   }
 }

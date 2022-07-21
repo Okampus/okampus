@@ -1,6 +1,5 @@
-import { UniqueConstraintViolationException } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Content } from '../contents/entities/content.entity';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
@@ -18,21 +17,31 @@ export class FavoritesService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async create(contentId: number, user: User): Promise<Favorite> {
-    const content = await this.contentRepository.findOneOrFail({ contentId }, { populate: ['parent'] });
+  public async update(user: User, id: number, active: boolean): Promise<Content> {
+    const content = await this.contentRepository.findOneOrFail({ id }, { populate: ['lastEdit', 'author'] });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, content);
 
-    const favorite = new Favorite({ content, user });
-    try {
-      await this.favoriteRepository.persistAndFlush(favorite);
-    } catch (error) {
-      if (error instanceof UniqueConstraintViolationException)
-        throw new BadRequestException('Content is already favorited');
-      throw error;
-    }
-    return favorite;
+    let favorite = await this.favoriteRepository.findOne({ content, user });
+    const previouslyActive = favorite?.active ?? null;
+    if (favorite && previouslyActive === active)
+      return content;
+
+    // Update pivot table
+    if (favorite)
+      favorite.active = active;
+    else if (active)
+      favorite = new Favorite({ content, user });
+    else
+      return content;
+
+    await this.favoriteRepository.persistAndFlush(favorite);
+
+    content.favoriteCount += active ? 1 : -1;
+
+    await this.contentRepository.flush();
+    return content;
   }
 
   public async findAll(user: User, paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Favorite>> {
@@ -52,9 +61,9 @@ export class FavoritesService {
     );
   }
 
-  public async findOne(contentId: number, user: User): Promise<Favorite | null> {
+  public async findOne(id: number, user: User): Promise<Favorite | null> {
     const favorite = await this.favoriteRepository.findOne(
-      { content: { contentId }, user },
+      { content: { id }, user },
       {
         populate: [
           'user',
@@ -70,14 +79,5 @@ export class FavoritesService {
     }
 
     return favorite;
-  }
-
-  public async remove(contentId: number, user: User): Promise<void> {
-    const favorite = await this.favoriteRepository.findOneOrFail({ content: { contentId }, user });
-
-    const ability = this.caslAbilityFactory.createForUser(user);
-    assertPermissions(ability, Action.Interact, favorite.content);
-
-    await this.favoriteRepository.removeAndFlush(favorite);
   }
 }

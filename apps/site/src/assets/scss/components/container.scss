@@ -1,7 +1,7 @@
 .centered-container {
-    @apply w-full max-w-[90rem] md:gap-8 md:mx-auto md:p-8 gap-4;
+    @apply w-full max-w-[90rem] md:gap-6 md:mx-auto md:p-8 gap-4;
 
     &-padded {
-        @apply p-4 w-full max-w-[90rem] md:gap-8 md:mx-auto gap-4 md:p-8;
+        @apply p-4 w-full max-w-[90rem] md:gap-6 md:mx-auto gap-4 md:p-8;
     }
 }

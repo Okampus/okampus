@@ -180,7 +180,6 @@
                 })
             })
             .catch((err) => {
-                console.log('Error', err)
                 emitter.emit('show-toast', {
                     message: `Erreur: ${JSON.stringify(err)}`,
                     type: 'error',

@@ -8,8 +8,6 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-// Import { Expose } from 'class-transformer';
-// import { TEAM_FORM_INCLUDED, TEAM_MEMBERS_INCLUDED } from '../../shared/lib/constants';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
@@ -25,7 +23,7 @@ const ADMIN_ROLES = new Set([TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasure
 @Entity()
 export class Team extends BaseEntity {
   @PrimaryKey()
-  teamId!: number;
+  id!: number;
 
   @Enum(() => TeamKind)
   @Index()
@@ -54,7 +52,6 @@ export class Team extends BaseEntity {
 
   @OneToMany('TeamMember', 'team')
   @TransformCollection()
-  // @Expose({ groups: [TEAM_MEMBERS_INCLUDED] })
   members = new Collection<TeamMember>(this);
 
   @Property({ type: 'text' })
@@ -64,7 +61,6 @@ export class Team extends BaseEntity {
   membershipRequestMessage?: string;
 
   @OneToOne('TeamForm')
-  // @Expose({ groups: [TEAM_FORM_INCLUDED] })
   membershipRequestForm?: TeamForm | null;
 
   constructor(options: {
@@ -123,7 +119,7 @@ export class Team extends BaseEntity {
   private getMemberRoles(user: User): TeamRole[] {
     return this.members
       .getItems()
-      .filter(member => member.user.userId === user.userId)
+      .filter(member => member.user.id === user.id)
       .map(member => member.role);
   }
 

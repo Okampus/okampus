@@ -5,7 +5,6 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-// Import { Exclude } from 'class-transformer';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { Contact } from './contact.entity';
 
@@ -15,10 +14,9 @@ import { Contact } from './contact.entity';
 })
 export abstract class ContactAccount extends BaseEntity {
   @PrimaryKey()
-  contactAccountId!: number;
+  id!: number;
 
   @Enum()
-  // @Exclude()
   kind!: 'team' | 'user';
 
   @ManyToOne({ onDelete: 'CASCADE' })

@@ -20,10 +20,10 @@ export class TeamFormsService {
 
   public async create(
     user: User,
-    teamId: number,
+    id: number,
     createFormDto: CreateTeamFormDto,
   ): Promise<TeamForm> {
-    const team = await this.teamRepository.findOneOrFail({ teamId }, { populate: ['members'] });
+    const team = await this.teamRepository.findOneOrFail({ id }, { populate: ['members'] });
 
     if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
@@ -44,25 +44,25 @@ export class TeamFormsService {
   ): Promise<PaginatedResult<TeamForm>> {
     return await this.teamFormRepository.findWithPagination(
       options,
-      { team: { teamId: query.teamId }, isTemplate: query.isTemplate },
+      { team: { id: query.id }, isTemplate: query.isTemplate },
       { populate: ['createdBy', 'team'] },
     );
   }
 
-  public async findOne(teamFormId: number): Promise<TeamForm> {
+  public async findOne(id: number): Promise<TeamForm> {
     return await this.teamFormRepository.findOneOrFail(
-      { teamFormId },
+      { id },
       { populate: ['createdBy', 'team'] },
     );
   }
 
   public async update(
     user: User,
-    teamFormId: number,
+    id: number,
     updateTeamFormDto: UpdateTeamFormDto,
   ): Promise<TeamForm> {
     const form = await this.teamFormRepository.findOneOrFail(
-      { teamFormId },
+      { id },
       { populate: ['createdBy', 'team', 'team.members'] },
     );
 
@@ -74,9 +74,9 @@ export class TeamFormsService {
     return form;
   }
 
-  public async remove(user: User, teamFormId: number): Promise<void> {
+  public async remove(user: User, id: number): Promise<void> {
     const form = await this.teamFormRepository.findOneOrFail(
-      { teamFormId },
+      { id },
       { populate: ['createdBy', 'team', 'team.members'] },
     );
 

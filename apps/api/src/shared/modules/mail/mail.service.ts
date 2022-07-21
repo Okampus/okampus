@@ -3,7 +3,7 @@ import type { TriggerRecipientsType } from '@novu/node';
 import { Novu } from '@novu/node';
 import type { Content } from '../../../contents/entities/content.entity';
 import type { User } from '../../../users/user.entity';
-import { config } from '../../configs/config';
+import { computedConfig, config } from '../../configs/config';
 
 @Injectable()
 export class MailService {
@@ -16,6 +16,9 @@ export class MailService {
 
   public async newThreadContent(content: Content): Promise<void> {
     if (!config.get('novu.enabled'))
+      return;
+
+    if (!content.contentMaster)
       return;
 
     const participants = content.contentMaster.participants.isInitialized()
@@ -33,7 +36,7 @@ export class MailService {
           author: content.author.getFullName(),
           threadTitle: content.contentMaster.title,
           message: content.body,
-          threadUrl: `${config.get('frontendUrl')}/forum/post/${content.contentMasterId}`,
+          threadUrl: `${computedConfig.frontendUrl}/forum/post/${content.contentMaster.id}`,
         },
         to: this.toRecipient(participant),
       });
@@ -42,7 +45,7 @@ export class MailService {
 
   private toRecipient(user: User): TriggerRecipientsType {
     return {
-      subscriberId: user.userId,
+      subscriberId: user.id,
       firstName: user.firstname,
       lastName: user.lastname,
       email: user.email,

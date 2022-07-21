@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
+import type { Content } from '../contents/entities/content.entity';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
 import type { PaginatedResult } from '../shared/modules/pagination';
@@ -24,12 +25,12 @@ export class FavoritesController {
     private readonly favoritesService: FavoritesService,
   ) {}
 
-  @Post(':contentId')
+  @Post(':id')
   public async add(
-    @Param('contentId', ParseIntPipe) contentId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
-  ): Promise<Favorite> {
-    return await this.favoritesService.create(contentId, user);
+  ): Promise<Content> {
+    return await this.favoritesService.update(user, id, true);
   }
 
   @Get()
@@ -40,22 +41,22 @@ export class FavoritesController {
     return await this.favoritesService.findAll(user, normalizePagination(query));
   }
 
-  @Get(':contentId')
+  @Get(':id')
   public async findOne(
-    @Param('contentId', ParseIntPipe) contentId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
     @Res({ passthrough: true }) res: Response,
   ): Promise<Favorite | null> {
-    const favorite = await this.favoritesService.findOne(contentId, user);
+    const favorite = await this.favoritesService.findOne(id, user);
     res.status(favorite ? 200 : 204);
     return favorite;
   }
 
-  @Delete(':contentId')
+  @Delete(':id')
   public async remove(
-    @Param('contentId', ParseIntPipe) contentId: number,
+    @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
-  ): Promise<void> {
-    await this.favoritesService.remove(contentId, user);
+  ): Promise<Content> {
+    return await this.favoritesService.update(user, id, false);
   }
 }

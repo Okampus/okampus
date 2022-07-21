@@ -12,6 +12,6 @@ import { FavoritesService } from './favorites.service';
   ],
   controllers: [FavoritesController],
   providers: [CaslAbilityFactory, FavoritesService],
-  exports: [],
+  exports: [FavoritesService],
 })
 export class FavoritesModule {}
