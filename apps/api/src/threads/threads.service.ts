@@ -9,6 +9,7 @@ import type { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { Colors } from '../shared/lib/types/enums/colors.enum';
 import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
+import { ValidationType } from '../shared/lib/types/enums/validation-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
@@ -116,7 +117,7 @@ export class ThreadsService {
   public async update(user: User, id: number, updateThreadDto: UpdateThreadDto): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
       { id },
-      { populate: ['post', 'post.lastEdit', 'tags', 'assignees', 'opValidation', 'adminValidations'] },
+      { populate: ['post', 'post.lastEdit', 'tags', 'assignees', 'opValidation', 'opValidation.content', 'adminValidations'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -158,14 +159,18 @@ export class ThreadsService {
         contentMaster: { id },
       });
 
-      if (content.author.id === user.id) {
+      if (this.caslAbilityFactory.isModOrAdmin(user)) {
+        thread.adminValidations.add(await this.validationsService.create(validatedWithContent, user,
+                  ValidationType.AdminValidated));
+      } else if (content.author.id === user.id) {
         if (thread.opValidation)
+          // Remove previous opValidaiton
           await this.validationsService.remove(thread.opValidation?.content.id, user);
 
-        thread.opValidation = await this.validationsService.create(validatedWithContent, user);
-      } else {
-        thread.adminValidations.add(await this.validationsService.create(validatedWithContent, user));
+        thread.opValidation = await this.validationsService.create(validatedWithContent, user,
+          ValidationType.OpValidated);
       }
+
       await this.validationRepository.flush();
     }
 

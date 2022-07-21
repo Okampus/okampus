@@ -27,10 +27,12 @@ export class Validation extends BaseContentInteraction {
   constructor(options: {
     user: User;
     content: Content;
+    type: ValidationType;
   }) {
     super();
     this.content = options.content;
     this.contentMaster = options.content.contentMaster;
     this.user = options.user;
+    this.type = options.type;
   }
 }

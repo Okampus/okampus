@@ -16,6 +16,7 @@ import { APP_PUB_SUB } from '../shared/lib/constants';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { User } from '../users/user.entity';
 import { CreateThreadDto } from './dto/create-thread.dto';
+import { UpdateThreadDto } from './dto/update-thread.dto';
 import { Thread } from './thread.entity';
 import { ThreadsService } from './threads.service';
 
@@ -59,8 +60,20 @@ export class ThreadResolver {
     return createdThread;
   }
 
+  @Mutation(() => Thread)
+  public async updateThread(@CurrentUser() user: User, @Args('id', { type: () => Int }) id: number, @Args('thread') thread: UpdateThreadDto): Promise<Thread> {
+    const updatedThread = await this.threadsService.update(user, id, thread);
+    await this.pubSub.publish('threadUpdated', { threadUpdated: updatedThread });
+    return updatedThread;
+  }
+
   @Subscription(() => Thread)
   public threadAdded(): AsyncIterator<Thread> {
     return this.pubSub.asyncIterator('threadAdded');
+  }
+
+  @Subscription(() => Thread)
+  public updatedThread(): AsyncIterator<Thread> {
+    return this.pubSub.asyncIterator('updatedThread');
   }
 }

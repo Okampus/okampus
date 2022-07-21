@@ -13,11 +13,12 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcrypt';
 // eslint-disable-next-line import/no-cycle
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
-// eslint-disable-next-line import/no-cycle
-import { Settings } from '../settings/settings.entity';
+
 import type { Favorite } from '../favorites/favorite.entity';
 import type { Reaction } from '../reactions/reaction.entity';
 import type { Report } from '../reports/report.entity';
+// eslint-disable-next-line import/no-cycle
+import { Settings } from '../settings/settings.entity';
 import { TransformCollection } from '../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';

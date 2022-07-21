@@ -127,6 +127,10 @@ input CreateContentWithKindDto {
     parentId: Int!
 }
 
+input CreateReportDto {
+    reason: String!
+}
+
 input CreateThreadDto {
     assignees: [String!]
     body: String!
@@ -143,6 +147,11 @@ scalar DateTime
 type Mutation {
     addContent(child: CreateContentWithKindDto!): Content!
     addThread(thread: CreateThreadDto!): Thread!
+    favoriteContent(favorite: Boolean!, id: Int!): Content!
+    reportContent(id: Int!, report: CreateReportDto!): Content!
+    updateContent(content: UpdateContentDto!, id: Int!): Content!
+    updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
+    voteContent(id: Int!, value: Int!): Content!
     updateSettings(settings: UpdateSettingsDto!): Settings!
 }
 
@@ -234,7 +243,8 @@ type Settings {
 }
 
 type Subscription {
-    threadAdded: Validation!
+    threadAdded: Thread!
+    updatedThread: Thread!
 }
 
 type Tag {
@@ -300,6 +310,21 @@ input UpdateSettingsDto {
     notificationTeamSubscribedEventCreated: Int
     notificationThreadSubscribedAnswered: Int
     notificationThreadSubscribedUpdated: Int
+}
+
+input UpdateContentDto {
+    body: String
+    hidden: Boolean
+}
+
+input UpdateThreadDto {
+    assignees: [String!]
+    body: String
+    locked: Boolean
+    tags: [String!]
+    title: String
+    type: ThreadType
+    validatedWithContent: Int
 }
 
 type User {

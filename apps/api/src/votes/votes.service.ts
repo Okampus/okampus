@@ -26,7 +26,7 @@ export class VotesService {
   }
 
   public async update(user: User, id: number, value: -1 | 0 | 1): Promise<Content> {
-    const content = await this.contentRepository.findOneOrFail({ id });
+    const content = await this.contentRepository.findOneOrFail({ id }, ['lastEdit', 'author']);
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, content);
