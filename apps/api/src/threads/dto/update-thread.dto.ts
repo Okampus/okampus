@@ -1,8 +1,8 @@
 import {
- Field,
- InputType,
- Int,
- PartialType,
+  Field,
+  InputType,
+  Int,
+  PartialType,
 } from '@nestjs/graphql';
 import { IsBoolean, IsInt, IsOptional } from 'class-validator';
 import { CreateThreadDto } from './create-thread.dto';

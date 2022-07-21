@@ -1,9 +1,9 @@
 
 import {
- Args,
- Int,
- Query,
- Resolver,
+  Args,
+  Int,
+  Query,
+  Resolver,
 } from '@nestjs/graphql';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { User } from '../users/user.entity';

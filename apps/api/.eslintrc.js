@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 const namingConventionForbidLeadingUnderscore = {
   selector: 'memberLike',
   modifiers: ['private'],
@@ -21,9 +22,6 @@ module.exports = {
     jest: true,
   },
   rules: {
-    'class-methods-use-this': 'off',
-    'import/prefer-default-export': 'off',
-
     'import/no-extraneous-dependencies': 'off',
     'node/no-extraneous-import': ['error', { allowModules: ['express'] }],
 
