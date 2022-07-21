@@ -21,6 +21,7 @@ import { Settings } from '../../../settings/settings.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
 import { TeamEvent } from '../../../teams/events/team-event.entity';
+import { TeamFinance } from '../../../teams/finances/team-finance.entity';
 import { TeamForm } from '../../../teams/forms/team-form.entity';
 import { Team } from '../../../teams/teams/team.entity';
 import { Thread } from '../../../threads/thread.entity';
@@ -54,6 +55,7 @@ export type Subjects = InferSubjects<
   | typeof Team
   | typeof TeamEvent
   | typeof TeamFile
+  | typeof TeamFinance
   | typeof TeamForm
   | typeof Thread
   | typeof User
@@ -108,6 +110,7 @@ export class CaslAbilityFactory {
       allow(Action.Manage, Team);
       allow(Action.Manage, TeamEvent);
       allow(Action.Manage, TeamFile);
+      allow(Action.Manage, TeamFinance);
       allow(Action.Manage, TeamForm);
 
       forbid(Action.Update, User)

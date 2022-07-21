@@ -144,6 +144,18 @@ input CreateTeamDto {
   tags: [String!]
 }
 
+input CreateTeamFinanceDto {
+  amount: Float!
+  category: TeamFinanceCategory!
+  description: String
+  dueTo: String
+  event: Int
+  mean: TeamFinanceMean!
+  receipt: String
+  title: String!
+  type: TeamFinanceType!
+}
+
 input CreateThreadDto {
   assignees: [String!]
   body: String!
@@ -188,12 +200,14 @@ scalar JSONObject @specifiedBy(url: "http://www.ecma-international.org/publicati
 type Mutation {
   addContent(child: CreateContentWithKindDto!): Content!
   addTeam(team: CreateTeamDto!): Team!
+  addTeamFinance(finance: CreateTeamFinanceDto!, id: Int!): TeamFinance!
   addThread(thread: CreateThreadDto!): Thread!
   favoriteContent(favorite: Boolean!, id: Int!): Content!
   reportContent(id: Int!, report: CreateReportDto!): Content!
   updateContent(content: UpdateContentDto!, id: Int!): Content!
   updateSettings(settings: UpdateSettingsDto!): Settings!
   updateTeam(id: Int!, team: UpdateTeamDto!): Team!
+  updateTeamFinance(finance: UpdateTeamFinanceDto!, id: Int!): TeamFinance!
   updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
   voteContent(id: Int!, value: Int!): Content!
 }
@@ -206,6 +220,8 @@ type Query {
   tagById(id: String!): Tag!
   tags: [Tag!]!
   teamById(id: Int!): Team
+  teamFinanceById(id: Int!): TeamFinance
+  teamFinances(filters: TeamFinancesFilterDto!): [TeamFinance!]!
   teams(filters: TeamsFilterDto!): [Team!]!
   threadById(id: Int!): Thread
   threads: [Thread!]!
@@ -287,6 +303,8 @@ type Settings {
 
 type Subscription {
   teamAdded: Team!
+  teamFinanceAdded: TeamFinance!
+  teamFinanceUpdated: TeamFinance!
   teamUpdated: Team!
   threadAdded: Thread!
   updatedThread: Thread!
@@ -360,6 +378,58 @@ enum TeamFileType {
   Document
   Gallery
   Receipt
+}
+
+type TeamFinance {
+  amount: Float!
+  category: TeamFinanceCategory!
+  createdAt: DateTime!
+  createdBy: User!
+  description: String
+  dueTo: User
+  event: TeamEvent
+  id: Int!
+  mean: TeamFinanceMean!
+  receipt: TeamFile
+  team: Team!
+  title: String!
+  type: TeamFinanceType!
+  updatedAt: DateTime!
+}
+
+enum TeamFinanceCategory {
+  Entertainment
+  Equipement
+  Errands
+  Fees
+  Insurance
+  Logistics
+  Marketing
+  Other
+  Provider
+  Subscriptions
+  Transportation
+}
+
+enum TeamFinanceMean {
+  Card
+  Cash
+  Check
+  Other
+  Transfer
+}
+
+enum TeamFinanceType {
+  Expense
+  Income
+}
+
+input TeamFinancesFilterDto {
+  category: TeamFinanceCategory
+  dueTo: String
+  event: Int
+  id: Int!
+  type: TeamFinanceType
 }
 
 type TeamForm {
@@ -472,6 +542,18 @@ input UpdateSettingsDto {
 
 input UpdateTeamDto {
   membershipRequestFormId: Int!
+}
+
+input UpdateTeamFinanceDto {
+  amount: Float
+  category: TeamFinanceCategory
+  description: String
+  dueTo: String
+  event: Int
+  mean: TeamFinanceMean
+  receipt: String
+  title: String
+  type: TeamFinanceType
 }
 
 input UpdateThreadDto {

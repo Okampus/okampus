@@ -2716,6 +2716,130 @@
           "nullable": false,
           "mappedType": "string"
         },
+        "team_id": {
+          "name": "team_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "document",
+            "gallery",
+            "receipt"
+          ],
+          "mappedType": "enum"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        }
+      },
+      "name": "team_file",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "file_id"
+          ],
+          "composite": false,
+          "keyName": "team_file_file_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "team_file_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "team_file_file_id_foreign": {
+          "constraintName": "team_file_file_id_foreign",
+          "columnNames": [
+            "file_id"
+          ],
+          "localTableName": "public.team_file",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "team_file_team_id_foreign": {
+          "constraintName": "team_file_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.team_file",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "file_id": {
+          "name": "file_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "user_id": {
           "name": "user_id",
           "type": "varchar(255)",
@@ -2796,129 +2920,6 @@
           ],
           "referencedTableName": "public.team",
           "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "file_id": {
-          "name": "file_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "team_id": {
-          "name": "team_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "gallery",
-            "document"
-          ],
-          "mappedType": "enum"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        }
-      },
-      "name": "team_file",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "file_id"
-          ],
-          "composite": false,
-          "keyName": "team_file_file_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "team_file_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "team_file_file_id_foreign": {
-          "constraintName": "team_file_file_id_foreign",
-          "columnNames": [
-            "file_id"
-          ],
-          "localTableName": "public.team_file",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.file_upload",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "team_file_team_id_foreign": {
-          "constraintName": "team_file_team_id_foreign",
-          "columnNames": [
-            "team_id"
-          ],
-          "localTableName": "public.team_file",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team",
           "updateRule": "cascade"
         }
       }
@@ -3469,6 +3470,247 @@
             "id"
           ],
           "referencedTableName": "public.team_form",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "due_to_id": {
+          "name": "due_to_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "amount": {
+          "name": "amount",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "mean": {
+          "name": "mean",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "cash",
+            "card",
+            "transfer",
+            "check",
+            "other"
+          ],
+          "mappedType": "enum"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "expense",
+            "income"
+          ],
+          "mappedType": "enum"
+        },
+        "category": {
+          "name": "category",
+          "type": "smallint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "enum"
+        },
+        "event_id": {
+          "name": "event_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "receipt_id": {
+          "name": "receipt_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        }
+      },
+      "name": "team_finance",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "team_id"
+          ],
+          "composite": false,
+          "keyName": "team_finance_team_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "receipt_id"
+          ],
+          "composite": false,
+          "keyName": "team_finance_receipt_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "team_finance_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "team_finance_created_by_id_foreign": {
+          "constraintName": "team_finance_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.team_finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "team_finance_team_id_foreign": {
+          "constraintName": "team_finance_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.team_finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "team_finance_due_to_id_foreign": {
+          "constraintName": "team_finance_due_to_id_foreign",
+          "columnNames": [
+            "due_to_id"
+          ],
+          "localTableName": "public.team_finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_finance_event_id_foreign": {
+          "constraintName": "team_finance_event_id_foreign",
+          "columnNames": [
+            "event_id"
+          ],
+          "localTableName": "public.team_finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team_event",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_finance_receipt_id_foreign": {
+          "constraintName": "team_finance_receipt_id_foreign",
+          "columnNames": [
+            "receipt_id"
+          ],
+          "localTableName": "public.team_finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team_file",
           "deleteRule": "set null",
           "updateRule": "cascade"
         }
