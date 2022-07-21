@@ -10,6 +10,7 @@ import { TeamMember } from '../members/team-member.entity';
 import { TeamSearchService } from './team-search.service';
 import { Team } from './team.entity';
 import { TeamsController } from './teams.controller';
+import { TeamsResolver } from './teams.resolver';
 import { TeamsService } from './teams.service';
 
 @Module({
@@ -19,7 +20,7 @@ import { TeamsService } from './teams.service';
     ProfileImagesModule,
   ],
   controllers: [TeamsController],
-  providers: [CaslAbilityFactory, TeamsService, TeamSearchService],
+  providers: [CaslAbilityFactory, TeamsService, TeamSearchService, TeamsResolver],
   exports: [TeamsService],
 })
 export class CoreTeamsModule implements OnModuleInit {

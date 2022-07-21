@@ -1,3 +1,5 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum TeamEventState {
   Template = 'template',
   Draft = 'draft',
@@ -5,3 +7,5 @@ export enum TeamEventState {
   Approved = 'approved',
   Rejected = 'rejected',
 }
+
+registerEnumType(TeamEventState, { name: 'TeamEventState' });

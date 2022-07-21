@@ -1,3 +1,5 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum TeamRole {
   Owner = 'owner',
   Coowner = 'coowner',
@@ -6,3 +8,5 @@ export enum TeamRole {
   Manager = 'manager',
   Member = 'member',
 }
+
+registerEnumType(TeamRole, { name: 'TeamRole' });

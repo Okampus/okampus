@@ -50,7 +50,7 @@ export class CreateTeamEventDto {
 
   @IsOptional()
   @IsInt()
-  id?: number;
+  formId?: number;
 
   @IsOptional()
   @IsInt()

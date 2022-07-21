@@ -1,3 +1,5 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum FileKind {
   ProfileImage = 'profile-image',
   InfoDoc = 'info-doc',
@@ -5,3 +7,5 @@ export enum FileKind {
   StudyDoc = 'study-doc',
   TeamFile = 'team-file',
 }
+
+registerEnumType(FileKind, { name: 'FileKind' });

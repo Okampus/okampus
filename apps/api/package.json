@@ -58,6 +58,7 @@
     "express": "4.18.1",
     "express-session": "1.17.3",
     "graphql": "^16.5.0",
+    "graphql-scalars": "^1.17.0",
     "graphql-subscriptions": "^2.0.0",
     "helmet": "5.1.0",
     "ioredis": "5.2.0",

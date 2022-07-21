@@ -4,6 +4,7 @@ import { ApolloDriver } from '@nestjs/apollo';
 import type { GqlModuleAsyncOptions } from '@nestjs/graphql';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthenticationError, SyntaxError } from 'apollo-server-express';
+import { JSONObjectResolver, URLResolver } from 'graphql-scalars';
 import { AuthModule } from '../../auth/auth.module';
 import { AuthService } from '../../auth/auth.service';
 import type { Token } from '../../auth/jwt-auth.guard';
@@ -32,6 +33,12 @@ export default {
     cors: {
       origin: computedConfig.frontendUrl,
       credentials: true,
+    },
+    resolvers: {
+      /* eslint-disable @typescript-eslint/naming-convention */
+      JSONObject: JSONObjectResolver,
+      URL: URLResolver,
+      /* eslint-enable @typescript-eslint/naming-convention */
     },
     installSubscriptionHandlers: true,
     subscriptions: {

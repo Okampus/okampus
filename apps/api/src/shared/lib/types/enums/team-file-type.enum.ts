@@ -1,4 +1,9 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum TeamFileType {
-  Gallery = 'gallery',
   Document = 'document',
+  Gallery = 'gallery',
+  Receipt = 'receipt',
 }
+
+registerEnumType(TeamFileType, { name: 'TeamFileType' });

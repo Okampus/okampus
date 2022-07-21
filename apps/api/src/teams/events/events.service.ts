@@ -45,8 +45,8 @@ export class TeamEventsService {
 
     // Check that the provided form id is valid, is a template, and is not already used
     let form: TeamForm | undefined;
-    if (createTeamEventDto.id) {
-      form = await this.teamFormRepository.findOneOrFail({ id: createTeamEventDto.id, team });
+    if (createTeamEventDto.formId) {
+      form = await this.teamFormRepository.findOneOrFail({ id: createTeamEventDto.formId, team });
       if (form.isTemplate)
         throw new BadRequestException('Form is a template');
 
@@ -180,8 +180,8 @@ export class TeamEventsService {
 
     // Check that the provided form id is valid, is a template, and is not already used
     let form: TeamForm | undefined;
-    if (updateTeamEventDto.id) {
-      form = await this.teamFormRepository.findOneOrFail({ id: updateTeamEventDto.id, team: event.team });
+    if (updateTeamEventDto.formId) {
+      form = await this.teamFormRepository.findOneOrFail({ id: updateTeamEventDto.formId, team: event.team });
       if (form.isTemplate)
         throw new BadRequestException('Form is a template');
 

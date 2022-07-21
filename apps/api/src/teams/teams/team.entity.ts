@@ -8,6 +8,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
@@ -15,51 +16,67 @@ import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import { Role } from '../../shared/modules/authorization/types/role.enum';
 import type { User } from '../../users/user.entity';
 
-import type { TeamForm } from '../forms/team-form.entity';
-import type { TeamMember } from '../members/team-member.entity';
+// eslint-disable-next-line import/no-cycle
+import { TeamForm } from '../forms/team-form.entity';
+// eslint-disable-next-line import/no-cycle
+import { TeamMember } from '../members/team-member.entity';
 
 const ADMIN_ROLES = new Set([TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasurer, TeamRole.Secretary]);
 
+@ObjectType()
 @Entity()
 export class Team extends BaseEntity {
+  @Field(() => Int)
   @PrimaryKey()
   id!: number;
 
+  @Field(() => TeamKind)
   @Enum(() => TeamKind)
   @Index()
   kind!: TeamKind;
 
+  @Field()
   @Property({ type: 'text' })
   name!: string;
 
+  @Field()
   @Property({ type: 'text' })
   shortDescription?: string;
 
+  @Field()
   @Property({ type: 'text' })
   longDescription?: string;
 
+  @Field()
   @Property({ type: 'text' })
   category: string;
 
+  @Field(() => [String])
   @Property()
   tags: string[] = [];
 
+  @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
   avatar?: string | null;
 
+  @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
   banner?: string | null;
 
+  @Field(() => [TeamMember])
   @OneToMany('TeamMember', 'team')
   @TransformCollection()
   members = new Collection<TeamMember>(this);
 
+  @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
   membershipRequestLink?: string;
 
+  @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
   membershipRequestMessage?: string;
 
+  @Field(() => TeamForm, { nullable: true })
   @OneToOne('TeamForm')
   membershipRequestForm?: TeamForm | null;
 
@@ -88,6 +105,7 @@ export class Team extends BaseEntity {
       this.avatar = options.avatar;
     if (options.banner)
       this.banner = options.banner;
+    console.log('DEBUG ~ file: team.entity.ts ~ line 109 ~ options.tags', options.tags);
     if (options.tags)
       this.tags = options.tags;
     if (options.membershipRequestLink)
