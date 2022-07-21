@@ -1,11 +1,5 @@
 <template>
     <div>
-        <AlertToast
-            v-model:active="success"
-            message="Création réussie ! Tu vas être redirigé sur ton post."
-            type="success"
-            @close="router.push(`/forum/post/${newThreadId}`)"
-        />
         <CardPage>
             <div class="flex flex-col space-y-5">
                 <div>
@@ -104,17 +98,6 @@
                 </div>
                 <div class="flex gap-4 items-center h-12">
                     <button class="shrink-0 button-green" @click="submit">Valider mon post</button>
-                    <AlertInline
-                        v-if="error !== null"
-                        type="error"
-                        :dismissable="true"
-                        @dismiss="error = null"
-                    >
-                        <template #message>
-                            <span class="font-bold">Échec de création du post !</span>
-                            ({{ error || 'Erreur inconnue' }})
-                        </template>
-                    </AlertInline>
                 </div>
                 <!-- TODO: add second panel (dos and don'ts of a good post) -->
             </div>
@@ -124,8 +107,6 @@
 
 <script setup>
     import CardPage from '@/views/App/CardPage.vue'
-    import AlertToast from '@/components/UI/Alert/AlertToast.vue'
-    import AlertInline from '@/components/UI/Alert/AlertInline.vue'
 
     import SelectInput from '@/components/Input/SelectInput.vue'
     import MdEditor from '@/components/Input/Editor/MdEditor.vue'
@@ -142,8 +123,12 @@
     import threadTypes from '@/shared/types/thread-types.enum'
     import tagErrorEnum from '@/shared/errors/tags-error.enum'
 
-    import { useThreadsStore } from '@/store/threads.store'
+    import { addThread } from '@/graphql/queries/addThread'
+
     import { i18n } from '@/shared/modules/i18n'
+    import { useMutation } from '@vue/apollo-composable'
+    import { getThreads } from '@/graphql/queries/getThreads'
+    import { emitter } from '@/shared/modules/emitter'
 
     const titleCharLimit = [10, 100]
     const editorCharLimit = [10, 10000]
@@ -188,13 +173,48 @@
     )
 
     const tagsError = ref(null)
-
-    const error = ref(null)
     const success = ref(false)
-    const newThreadId = ref(null)
+
+    const {
+        mutate: createThread,
+        onDone,
+        onError,
+    } = useMutation(addThread, {
+        update: (cache, { data: { addThread } }) => {
+            const data = cache.readQuery({ query: getThreads })?.threads
+
+            if (data) {
+                cache.writeQuery({
+                    query: getThreads,
+                    data: {
+                        threads: {
+                            addThread,
+                            ...data,
+                        },
+                    },
+                })
+            }
+        },
+    })
+    onDone((result) => {
+        success.value = true
+        emitter.emit('show-toast', {
+            message: 'Création réussie ! Tu vas être redirigé sur ton post.',
+            type: 'success',
+            onClose: () => {
+                router.push(`/forum/post/${result.data.addThread.id}`)
+            },
+        })
+    })
+    onError((err) => {
+        emitter.emit('show-toast', {
+            message: err.message,
+            type: 'error',
+        })
+    })
 
     onBeforeRouteLeave((to, from, next) => {
-        if (!newThreadId.value && formIsDirty.value) {
+        if (!success.value && formIsDirty.value) {
             // TODO: custom modal
             if (window.confirm('Ês-tu sûr ? Toutes tes modifications non enregistrées seront perdues.')) {
                 next()
@@ -223,21 +243,12 @@
         window.removeEventListener('beforeunload', beforeWindowUnload)
     })
 
-    const threads = useThreadsStore()
     const submit = () => {
         if (v$.$invalid) {
             v$.$touch()
             return
         }
 
-        threads
-            .addThread(formState)
-            .then((thread) => {
-                success.value = true
-                newThreadId.value = thread.contentMasterId
-            })
-            .catch((err) => {
-                error.value = err.toString()
-            })
+        createThread({ thread: { ...formState, type: threadTypes[formState.type].key, assignees: [] } })
     }
 </script>

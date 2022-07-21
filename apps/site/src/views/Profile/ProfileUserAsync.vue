@@ -15,7 +15,7 @@
                         <p class="text-lg text-2">{{ user.shortDescription }}</p>
                     </div>
                     <router-link
-                        v-if="auth.user.userId === userId"
+                        v-if="auth.user.id === id"
                         to="/me"
                         role="button"
                         class="flex gap-2 items-center mt-20 font-semibold rounded-full md:mt-16 button-green"
@@ -109,14 +109,14 @@
     const clubs = useClubsStore()
 
     const user = ref(null)
-    const userId = ref(route.params.userId)
+    const id = ref(route.params.id)
 
     const memberships = ref(null)
     const events = ref([])
 
     const loadUser = async () => {
         await users
-            .getUser(userId.value)
+            .getUser(id.value)
             .then((userData) => {
                 user.value = userData
             })
@@ -131,7 +131,7 @@
             .then((teamEvents) => {
                 teamEvents.forEach(async (event) => {
                     await clubs.getEventGuests(event.teamEventId).then((guests) => {
-                        if (guests.items.find((guest) => guest.user.userId === userId.value)) {
+                        if (guests.items.find((guest) => guest.user.id === id.value)) {
                             events.value.push(event)
                         }
                     })
@@ -144,7 +144,7 @@
 
     const loadMemberships = async () => {
         await clubs
-            .getMembershipsOf({ userId: userId.value })
+            .getMembershipsOf({ id: id.value })
             .then((userMemberships) => {
                 memberships.value = userMemberships
             })
@@ -156,7 +156,7 @@
     const loadProfile = async () => {
         if (route.name === 'user') {
             events.value = []
-            userId.value = route.params.userId
+            id.value = route.params.id
 
             await loadUser()
             await loadMemberships()
@@ -167,7 +167,7 @@
     await loadProfile()
 
     watch(
-        () => route.params.userId,
+        () => route.params.id,
         async () => {
             await loadProfile()
         },

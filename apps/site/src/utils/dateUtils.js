@@ -20,7 +20,6 @@ export function getDateRangeString(startDate, endDate) {
 
 export function getCountdown(startDate, endDate) {
     const hours = Math.abs(endDate - startDate) / 3600000
-    console.log(hours, endDate - startDate)
     if (hours < 72) {
         return `H-${parseInt(hours)}`
     } else {

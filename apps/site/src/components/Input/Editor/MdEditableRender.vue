@@ -1,4 +1,5 @@
 <template>
+    <!-- TODO: add caching to editor -->
     <MdEditor
         v-if="edit"
         v-model="editedBody"

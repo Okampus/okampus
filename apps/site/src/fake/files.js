@@ -6,7 +6,7 @@ export const files = [
             'fileUploadId': '196cfd58-ea2e-497b-b64e-58b15a404f36',
             'createdAt': '2021-03-05T12:51:25.000Z',
             'user': {
-                'userId': '7FKgUff22P',
+                'id': '7FKgUff22P',
                 'createdAt': '2022-01-05T09:10:06.000Z',
                 'username': 'johndoe',
                 'reputation': 0,
@@ -48,7 +48,7 @@ export const files = [
             'fileUploadId': '196cfd58-ea2e-497b-b64e-58b15a404f36',
             'createdAt': '2022-01-05T12:51:25.000Z',
             'user': {
-                'userId': '7FKgUff22P',
+                'id': '7FKgUff22P',
                 'createdAt': '2022-01-05T09:10:06.000Z',
                 'username': 'johndoe',
                 'reputation': 0,

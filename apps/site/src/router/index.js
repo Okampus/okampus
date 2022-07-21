@@ -157,7 +157,7 @@ const routes = [
 
     {
         name: 'user',
-        path: '/user/:userId',
+        path: '/user/:id',
         component: () => import('@/views/Profile/ProfileUserAsync.vue'),
         meta: {
             requiresAuth: true,
@@ -274,6 +274,10 @@ router.afterEach((to) => {
 
     if (to.meta?.hasPermission && !auth.hasPermission()) {
         emitter.emit('error-route', { code: errorCodes.FORBIDDEN, path: to.path })
+    }
+
+    if (to.hash) {
+        emitter.emit('scroll-to-anchor', to.hash)
     }
 })
 

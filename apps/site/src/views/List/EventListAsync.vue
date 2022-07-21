@@ -73,7 +73,6 @@
             .getEvents({ itemsPerPage: 100 })
             .then((teamEvents) => {
                 events.value = teamEvents
-                console.log('events', events.value, teamEvents)
             })
             .catch((err) => console.error(err))
     }

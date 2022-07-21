@@ -312,7 +312,7 @@
 
     const leaveClub = async (membership) => {
         clubs
-            .removeMembership(membership.team.teamId, membership.user.userId)
+            .removeMembership(membership.team.teamId, membership.user.id)
             .then(() => clubs.getMembershipsOf(auth.user))
             .catch((err) => {
                 console.error(err)
@@ -331,7 +331,7 @@
         showTransferModal.value = false
         const role = currentMembership.value.role
         clubs
-            .patchMembership(currentMembership.value.team.teamId, currentMembership.value.user.userId, {
+            .patchMembership(currentMembership.value.team.teamId, currentMembership.value.user.id, {
                 role: 'member',
             })
             .then(() => {
@@ -340,7 +340,7 @@
                 })
             })
         clubs
-            .patchMembership(member.team.teamId, member.user.userId, {
+            .patchMembership(member.team.teamId, member.user.id, {
                 role: role,
             })
             .then(() => {

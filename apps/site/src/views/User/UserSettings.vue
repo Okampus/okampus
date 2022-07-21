@@ -33,7 +33,7 @@
                     </div>
                     <div class="flex flex-col">
                         <div class="text-lg font-semibold md:text-xl text-0">{{ fullname(me) }}</div>
-                        <div class="text-3">{{ me.userId }}</div>
+                        <div class="text-3">{{ me.id }}</div>
                     </div>
                 </div>
                 <div class="flex flex-col md:w-48 lg:w-56 md-max:w-full">
@@ -168,7 +168,7 @@
 
     const submitStatus = () => {
         users
-            .updateUser(me.value.userId, { shortDescription: document.querySelector('textarea').value })
+            .updateUser(me.value.id, { shortDescription: document.querySelector('textarea').value })
             .then((data) => {
                 status.value = data.shortDescription
                 me.value.shortDescription = status

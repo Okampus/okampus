@@ -41,9 +41,10 @@
     import useVuelidate from '@vuelidate/core'
     import { reactive } from 'vue'
 
-    import { useReportsStore } from '@/store/reports.store'
+    import { useMutation } from '@vue/apollo-composable'
 
     import { maxLength, minLength, required } from '@vuelidate/validators'
+    import { report } from '@/graphql/queries/interactions/reportContent'
 
     const props = defineProps({
         showReport: {
@@ -55,8 +56,6 @@
             default: NOOP,
         },
     })
-
-    const reports = useReportsStore()
 
     const reportCharLimit = [20, 1000]
 
@@ -70,12 +69,10 @@
     }
     const v$ = useVuelidate(rules, state)
 
+    const { mutate: createReport } = useMutation(report)
     const submit = () => {
         if (!v$.$invalid) {
-            reports.addReport(props.content.author, {
-                reason: state.reason,
-                contentId: props.content.contentId,
-            })
+            createReport({ id: props.content.id, report: { reason: state.reason } })
         }
     }
 </script>

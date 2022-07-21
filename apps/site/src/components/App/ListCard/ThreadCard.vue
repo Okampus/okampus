@@ -1,11 +1,9 @@
 <template>
     <div v-if="thread" class="flex flex-row gap-6 py-3 pr-7 pl-5 w-full card-2 text-2 card-hover">
-        <VoteInput
-            :downvotes="post.downvotes"
-            :upvotes="post.upvotes"
-            :vote="thread.vote"
-            :vote-action="(vote) => threads.voteContent(post.contentId, vote)"
-        />
+        <div class="flex flex-col gap-4">
+            <VoteInputContent :content="thread.post" />
+            <FavoriteInput :content="thread.post" />
+        </div>
         <!-- <div class="flex flex-col">
             <TipPopper :tip="`${threadTypes[thread.type]?.[$i18n.locale]}`">
                 <div
@@ -36,9 +34,17 @@
             </TipPopper>
         </div> -->
         <div class="flex flex-col gap-2.5 w-full">
+            <div v-if="!thread.post.isVisible" class="flex gap-1 items-center text-yellow-500">
+                <i class="fas fa-eye-slash" />
+                <div>
+                    {{ capitalize(getContentDemonstrative(POST)) }}
+                    est masqué{{ isContentFeminine(POST) ? 'e' : '' }}
+                </div>
+            </div>
+
             <div class="flex flex-wrap gap-2">
                 <router-link
-                    :to="`/forum/post/${thread.contentMasterId}`"
+                    :to="`/forum/post/${thread.id}`"
                     class="pr-2 font-semibold hover:underline text-0"
                     :class="small ? 'text-base' : 'text-xl'"
                 >
@@ -51,28 +57,13 @@
                     :class="small ? 'text-xs' : 'text-sm'"
                     :tag-name="tag.name"
                 />
-
-                <div v-if="thread.hidden" class="flex gap-1 items-center ml-4 text-yellow-500">
-                    <i class="fas fa-eye-slash" />
-                    <div>
-                        {{ capitalize(getContentDemonstrative(content.kind)) }}
-                        est masqué{{ isContentFeminine(content.kind) ? 'e' : '' }}
-                    </div>
-                </div>
             </div>
 
             <div class="flex">
-                <UserActivity
-                    :user="thread._post?._author ?? thread.post.author"
-                    action-text="Publié"
-                    :action-at="thread.createdAt"
-                />
+                <UserActivity :user="thread.post.author" action-text="Publié" :action-at="thread.createdAt" />
             </div>
 
-            <router-link
-                :to="`/forum/post/${thread.contentMasterId}`"
-                class="text-sm text-justify line-clamp-2 text-1"
-            >
+            <router-link :to="`/forum/post/${thread.id}`" class="text-sm text-justify line-clamp-2 text-1">
                 {{ thread.post.body }}
             </router-link>
 
@@ -101,25 +92,7 @@
                     <i class="text-base fa fa-clock-rotate-left icon-color" />
                     <TipRelativeDate class="ml-2" :date="thread.createdAt" />
                 </div> -->
-                <!-- <Carousel class="mx-6 w-[calc(100%-4rem)]" :settings="settings" :breakpoints="breakpoints">
-                    <Slide v-for="tag in thread.tags" :key="tag">
-                        <LabelTag :tag-name="tag.name" />
-                    </Slide>
-
-                    <template #addons>
-                        <Navigation />
-                    </template>
-                </Carousel> -->
             </div>
-            <!-- <Carousel class="mx-6 w-[calc(100%-4rem)]" :settings="settings" :breakpoints="breakpoints">
-                <Slide v-for="tag in thread.tags" :key="tag">
-                    <LabelTag :tag-name="tag.name" />
-                </Slide>
-
-                <template #addons>
-                    <Navigation />
-                </template>
-            </Carousel> -->
         </div>
     </div>
     <div v-else class="flex py-3 px-5 space-x-2 font-semibold rounded-lg">
@@ -139,36 +112,17 @@
 </template>
 
 <script setup>
-    // Import Swiper Vue.js components
-    // import { Swiper, SwiperSlide } from 'swiper/vue'
-
-    // Import Swiper styles
-    import 'swiper/css'
-
-    import VoteInput from '@/components/Input/VoteInput.vue'
+    import VoteInputContent from '@/components/Input/VoteInputContent.vue'
     import UserActivity from '@/components/App/General/UserActivity.vue'
-    // import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import LabelTag from '@/components/UI/Label/LabelTag.vue'
-    // import TipPopper from '@/components/UI/Tip/TipPopper.vue'
-    // import IconUpvote from '@/icons/IconUpvote.vue'
-    // import IconDownvote from '@/icons/IconDownvote.vue'
-    // import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
 
-    // import { fullname, getRole } from '@/utils/users'
-    // import TagList from '@/components/List/TagList.vue'
-    // import UserPreview from '@/components/App/Preview/UserPreview.vue'
-
-    // import Popper from 'vue3-popper'
-    import { useThreadsStore } from '@/store/threads.store'
-    import { computed } from 'vue'
     import { POST } from '@/shared/types/content-kinds.enum'
 
-    // import threadTypes from '@/shared/types/thread-types.enum'
+    import { getContentDemonstrative, isContentFeminine } from '@/shared/types/content-kinds.enum'
+    import { capitalize } from 'lodash'
+    import FavoriteInput from '@/components/Input/FavoriteInput.vue'
 
-    // import { timeAgo } from '@/utils/timeAgo'
-    // import { abbrNumbers } from '@/utils/abbrNumbers'
-
-    const props = defineProps({
+    defineProps({
         thread: {
             type: Object,
             required: true,
@@ -178,9 +132,6 @@
             default: false,
         },
     })
-
-    const threads = useThreadsStore()
-    const post = computed(() => props.thread.contents.find((c) => c.kind === POST))
 </script>
 
 <style>

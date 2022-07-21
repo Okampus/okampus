@@ -78,13 +78,13 @@ export const useClubsStore = defineStore('clubs', {
 
         async getMembershipsOf(user) {
             return await $axios
-                .get(`teams/memberships/${user.userId}`, { params: { itemsPerPage: 100 } })
+                .get(`teams/memberships/${user.id}`, { params: { itemsPerPage: 100 } })
                 .then(onItems(this.replaceUserMemberships))
         },
 
         async getMembershipRequestsOf(user) {
             return await $axios
-                .get(`teams/memberships/${user.userId}/requests`, { params: { itemsPerPage: 100 } })
+                .get(`teams/memberships/${user.id}/requests`, { params: { itemsPerPage: 100 } })
                 .then(onItems(this.replaceUserMembershipRequests))
         },
 
@@ -112,12 +112,12 @@ export const useClubsStore = defineStore('clubs', {
             return await $axios.post(`teams/requests/${clubId}`, data).then((res) => res.data)
         },
 
-        async patchMembership(teamId, userId, props) {
-            return await $axios.patch(`teams/members/${teamId}/${userId}`, props).then((res) => res.data)
+        async patchMembership(teamId, id, props) {
+            return await $axios.patch(`teams/members/${teamId}/${id}`, props).then((res) => res.data)
         },
 
-        async removeMembership(teamId, userId) {
-            return await $axios.delete(`teams/members/${teamId}/${userId}`).then((res) => res.data)
+        async removeMembership(teamId, id) {
+            return await $axios.delete(`teams/members/${teamId}/${id}`).then((res) => res.data)
         },
 
         async getMembersOfClub(clubId) {

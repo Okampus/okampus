@@ -112,7 +112,7 @@
         methods: {
             timeAgo,
             deleteFavorite() {
-                this.$store.dispatch('user/deleteFavorite', this.post.contentId)
+                this.$store.dispatch('user/deleteFavorite', this.post.id)
             },
         },
     }

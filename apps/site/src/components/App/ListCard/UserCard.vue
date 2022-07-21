@@ -14,11 +14,9 @@
         </div>
         <div class="flex flex-col gap-3">
             <div class="inline-flex flex-wrap gap-x-6 text-lg text-0 align-items">
-                <router-link
-                    :to="`/user/${user.userId}`"
-                    class="inline my-auto font-semibold hover:underline"
-                    >{{ fullname(user) }}</router-link
-                >
+                <router-link :to="`/user/${user.id}`" class="inline my-auto font-semibold hover:underline">{{
+                    fullname(user)
+                }}</router-link>
 
                 <LabelTag
                     class="inline text-sm"
@@ -48,11 +46,7 @@
                     </router-link>
                 </template>
 
-                <router-link
-                    v-if="user.clubs?.length > 4"
-                    :to="`/user/${user.userId}`"
-                    class="ml-2 link-blue"
-                >
+                <router-link v-if="user.clubs?.length > 4" :to="`/user/${user.id}`" class="ml-2 link-blue">
                     + {{ user.clubs.length - 4 }} assos
                     <!-- <i
                         v-if="user.clubs?.length > 4"

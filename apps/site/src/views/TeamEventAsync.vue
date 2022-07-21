@@ -229,7 +229,7 @@
             <div class="text-2xl font-semibold">Inscrits</div>
             <div v-if="guests.totalItemCount > 0" class="flex items-center">
                 <div v-for="guest in guests.items" :key="guest" class="-mr-3">
-                    <router-link :to="`/user/${guest.user.userId}`">
+                    <router-link :to="`/user/${guest.user.id}`">
                         <ProfileAvatar :avatar="guest.user.avatar" :name="fullname(guest.user)" />
                     </router-link>
                 </div>
@@ -242,7 +242,7 @@
 
         <div class="flex flex-wrap gap-2 justify-center md-max:mb-6">
             <button
-                v-if="guests.items.find((g) => g.user.userId === auth.user.userId) === undefined"
+                v-if="guests.items.find((g) => g.user.id === auth.user.id) === undefined"
                 class="py-1 px-4 text-lg font-semibold rounded-full button-green"
                 @click="showJoinForm = true"
             >
@@ -254,8 +254,7 @@
                 @click="
                     () =>
                         unregister(
-                            guests.items.find((g) => g.user.userId === auth.user.userId)
-                                .teamEventRegistrationId,
+                            guests.items.find((g) => g.user.id === auth.user.id).teamEventRegistrationId,
                         )
                 "
             >
@@ -404,7 +403,6 @@
 
     const loadClubs = async () => {
         await clubs.getMembershipsOf(auth.user).then((res) => {
-            console.log({ res })
             res.filter((m) => m.team.teamId === event.value.team.teamId).forEach((m) => {
                 if (specialRoles.includes(m.role)) {
                     isAdmin.value = true

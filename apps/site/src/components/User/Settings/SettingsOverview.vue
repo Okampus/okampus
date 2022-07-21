@@ -29,7 +29,7 @@
             .then((teamEvents) => {
                 teamEvents.forEach(async (event) => {
                     await clubs.getEventGuests(event.teamEventId).then((guests) => {
-                        if (guests.items.find((guest) => guest.user.userId === auth.user.userId)) {
+                        if (guests.items.find((guest) => guest.user.id === auth.user.id)) {
                             events.value.push(event)
                         }
                     })

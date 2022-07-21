@@ -16,7 +16,7 @@ export const useUsersStore = defineStore('users', {
             return { items: users, pageInfo }
         },
         replaceUser(user) {
-            const index = this.users.findIndex((u) => u.userId === user.userId)
+            const index = this.users.findIndex((u) => u.id === user.id)
             if (index !== -1) {
                 this.users[index] = user
             } else {
@@ -35,7 +35,7 @@ export const useUsersStore = defineStore('users', {
         },
         async getUserClub(user) {
             return await $axios
-                .get(`teams/memberships/${user.userId}`)
+                .get(`teams/memberships/${user.id}`)
                 .then((res) => ({ ...user, clubs: res.data.items }))
         },
         async changeImage(formData, uploadType, config = {}) {

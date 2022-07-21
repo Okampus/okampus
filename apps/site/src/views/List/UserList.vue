@@ -2,7 +2,7 @@
     <ListPage :route-base="routeBase" :route-name="routeName" :callback="users.getUsers" :type="USER">
         <template #default="{ items }">
             <div class="flex flex-col flex-wrap gap-4 xs:flex-row centered-container">
-                <UserCard v-for="user in items" :key="user.userId" :user="user" />
+                <UserCard v-for="user in items" :key="user.id" :user="user" />
             </div>
         </template>
     </ListPage>

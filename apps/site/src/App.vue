@@ -5,6 +5,7 @@
             :message="toast.message"
             :type="toast.type"
             v-bind="!isNil(toast.duration) ? { duration: toast.duration } : {}"
+            @close="toast.onClose"
         />
         <FormLogin v-model:show-login="showLogin" />
 
@@ -30,27 +31,20 @@
                     <AppException v-if="error.code" :code="error.code" />
                     <RouterView v-else v-slot="{ Component }">
                         <template v-if="Component">
+                            <!--
+                            TODO: Transition f*** everything up - check out an alternative compatible with Apollo Vue(?)
                             <Transition mode="out-in" name="switch-fade">
-                                <KeepAlive>
-                                    <Suspense timeout="0">
-                                        <component :is="Component" />
-                                        <template #fallback>
-                                            <AppLoader />
-                                        </template>
-                                    </Suspense>
-                                </KeepAlive>
-                            </Transition>
+                            <KeepAlive> -->
+                            <Suspense timeout="0">
+                                <component :is="Component" />
+                                <template #fallback>
+                                    <AppLoader />
+                                </template>
+                            </Suspense>
+                            <!-- </KeepAlive> -->
+                            <!-- </Transition> -->
                         </template>
                     </RouterView>
-                    <!-- Experimenting with frontend caching / TODO: check for performance & memory leak issues -->
-                    <!-- <router-view v-else v-slot="{ Component, route }">
-                        <keep-alive>
-                            <component
-                                :is="Component"
-                                :key="route.meta.usePathKey ? route.path : undefined"
-                            />
-                        </keep-alive>
-                    </router-view> -->
                 </div>
             </div>
 
@@ -205,11 +199,12 @@
         scrollHighlight(id)
     })
 
-    emitter.on('show-toast', ({ message, type, duration }) => {
+    emitter.on('show-toast', ({ message, type, duration, onClose }) => {
         toast.show = true
         toast.type = type
         toast.message = message
         toast.duration = duration
+        toast.onClose = onClose ?? (() => {})
     })
 
     emitter.on('error-route', ({ code, path }) => {
@@ -231,6 +226,7 @@
             toast.type = 'info'
             toast.message = ''
             toast.duration = null
+            toast.onClose = () => {}
         }
     })
 

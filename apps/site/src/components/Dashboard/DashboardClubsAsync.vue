@@ -75,7 +75,7 @@
                     </router-link> -->
                 </template>
                 <template #owner="{ owner }">
-                    <router-link :to="`/user/${owner.userId}`" class="flex gap-1 items-center cursor-pointer">
+                    <router-link :to="`/user/${owner.id}`" class="flex gap-1 items-center cursor-pointer">
                         <ProfileAvatar :name="fullname(owner)" :avatar="owner.avatar" :size="2.5" />
                         <div>{{ fullname(owner) }}</div>
                     </router-link>
@@ -83,7 +83,7 @@
                 <template #secretary="{ secretary }">
                     <router-link
                         v-if="secretary"
-                        :to="`/user/${secretary.userId}`"
+                        :to="`/user/${secretary.id}`"
                         class="flex gap-1 items-center cursor-pointer"
                     >
                         <ProfileAvatar :name="fullname(secretary)" :avatar="secretary.avatar"></ProfileAvatar>
@@ -93,7 +93,7 @@
                 <template #treasurer="{ treasurer }">
                     <router-link
                         v-if="treasurer"
-                        :to="`/user/${treasurer.userId}`"
+                        :to="`/user/${treasurer.id}`"
                         class="flex gap-1 items-center cursor-pointer"
                     >
                         <ProfileAvatar :name="fullname(treasurer)" :avatar="treasurer.avatar"></ProfileAvatar>

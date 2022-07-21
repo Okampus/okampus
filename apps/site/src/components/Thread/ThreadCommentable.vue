@@ -1,185 +1,246 @@
 <template>
     <div
-        class="flex gap-5 items-stretch p-4 rounded-none shadow-md md:rounded-lg bg-card-within-1 content-parent"
+        :id="`content-${props.content.id}`"
+        class="flex gap-6 items-stretch p-4 rounded-none shadow-md md:rounded-lg bg-card-within-1 content-parent"
         :class="
-            thread.adminValidatedWith?.contentId === content.contentId
-                ? 'border-2 border-orange-600'
-                : thread.opValidatedWith?.contentId === content.contentId
-                ? 'border-2 border-green-600'
-                : ''
+            adminValidated ? 'border-2 border-orange-600' : opValidated ? 'border-2 border-green-600' : ''
         "
     >
-        <div class="flex flex-col gap-1 items-center">
-            <VoteInput
-                :downvotes="content.downvotes"
-                :upvotes="content.upvotes"
-                :vote="content.interactions.voted"
-                :vote-action="(vote) => threads.voteContent(content.contentId, vote)"
-            />
+        <div class="flex flex-col gap-4">
+            <VoteInputContent :content="content" />
+            <FavoriteInput :content="content" />
         </div>
 
         <div class="flex flex-col gap-4 w-full">
+            <div v-if="!content.isVisible" class="flex gap-1 items-center ml-4 text-yellow-500">
+                <i class="fas fa-eye-slash" />
+                <div>
+                    {{ capitalize(getContentDemonstrative(content.kind)) }}
+                    est masqué{{ isContentFeminine(content.kind) ? 'e' : '' }}
+                </div>
+            </div>
+
             <div class="flex flex-row justify-between items-center">
                 <div class="flex gap-3 items-center">
                     <UserActivity
-                        :user="content._author"
+                        :label-name="authorIsOp"
+                        :user="content.author"
                         :action-at="content.createdAt"
+                        :action-at-modified="content.updatedAt"
                         action-text="Publié"
                     />
 
-                    <div v-if="content.hidden" class="flex gap-1 items-center ml-4 text-yellow-500">
-                        <i class="fas fa-eye-slash" />
-                        <div>
-                            {{ capitalize(getContentDemonstrative(POST)) }}
-                            est masqué{{ isContentFeminine(POST) ? 'e' : '' }}
-                        </div>
-                    </div>
-                    <!-- <ProfileAvatar
-                        :avatar="content._author.avatar"
-                        :size="2.5"
-                        :name="fullname(content._author)"
-                    />
-                    <div>
-                        {{ fullname(content._author) }}
-                    </div>
-                    <TipRelativeDate class="text-sm text-2" :date="content.createdAt" /> -->
+                    <!-- TODO: Add validations -->
+                    <template v-if="content.kind !== POST">
+                        <i v-if="opValidated" class="text-base text-green-600 fa fa-check" />
+                        <LabelTag v-if="adminValidated" tag-name="Officiel" tag-color="orange" />
 
-                    <template v-if="thread.post.contentId !== content.contentId">
                         <i
-                            v-if="thread.opValidatedWith?.contentId === content.contentId"
-                            class="text-base text-green-600 fa fa-check"
-                        />
-                        <i
-                            v-else-if="thread.post.author === auth.user.userId"
-                            class="text-sm cursor-pointer fa fa-check text-5"
+                            v-else-if="auth.user.roles.includes('admin') || userIsOp"
+                            class="text-sm cursor-pointer fa text-5"
+                            :class="auth.user.roles.includes('admin') ? 'fa-check-double' : 'fa-check'"
                             @click="
-                                threads.validateThreadWithContent(content.contentMasterId, content.contentId)
-                            "
-                        />
-
-                        <LabelTag
-                            v-if="thread.adminValidatedWith?.contentId === content.contentId"
-                            tag-name="Officiel"
-                            tag-color="orange"
-                        />
-                        <i
-                            v-else-if="auth.user.roles.includes('admin')"
-                            class="text-sm cursor-pointer fa fa-check-double text-5"
-                            @click="
-                                threads.validateThreadWithContent(
-                                    content.contentMasterId,
-                                    content.contentId,
-                                    true,
-                                )
+                                validateContent({
+                                    id: thread.id,
+                                    thread: { validatedWithContent: content.id },
+                                })
                             "
                         />
                     </template>
                 </div>
-                <div class="flex gap-2 items-center text-3" :class="unfocusedContentClass">
+
+                <div class="flex gap-2 items-center opacity-50 text-3 content-show-focused">
                     <div
-                        v-for="(action, i) in actionsShown"
+                        v-for="(action, i) in topActionsShown"
                         :key="i"
-                        class="group flex gap-1 items-center px-1 rounded-lg transition cursor-pointer"
+                        class="group flex gap-1 items-center px-1 rounded-lg transition cursor-pointer text-4"
                         @click="action.action"
                     >
-                        <i class="fas" :class="[`fa-${action.icon}`, action.class]" />
-                        <p :class="action.class" class="text-sm">
-                            {{ action.name }}
+                        <i
+                            class="fas"
+                            :class="[
+                                `fa-${action.icon.value ?? action.icon}`,
+                                action.class.value ?? action.class,
+                            ]"
+                        />
+                        <p :class="action.class.value ?? action.class" class="text-sm">
+                            {{ action.name.value ?? action.name }}
                         </p>
                     </div>
                 </div>
             </div>
 
             <div class="rounded-lg text-0">
-                <slot name="content" />
-                <div class="flex" :class="unfocusedContentClass">
-                    <slot name="actions" />
+                <MdEditableRender
+                    v-model:edit="editing"
+                    v-model:content="body"
+                    :uid="`content-${content.id}`"
+                    @send="updateContent({ id: content.id, content: { body } })"
+                />
+            </div>
+
+            <div class="flex gap-2 opacity-70 content-show-focused">
+                <div
+                    v-for="(action, i) in bottomActionsShown"
+                    :key="i"
+                    class="group flex gap-1.5 items-center px-1 rounded-lg transition cursor-pointer text-3"
+                    @click="action.action"
+                >
+                    <i :class="[action.icon, action.class]" />
+                    <p class="text-sm" :class="action.class">
+                        {{ action.name }}
+                    </p>
                 </div>
             </div>
 
             <ThreadCommentList
-                :thread-id="content.contentMasterId"
-                :parent-id="content.contentId"
-                :parent-visible="content.isVisible"
-                :comments="content.comments"
-                :action-class="unfocusedContentClass"
+                :thread="thread"
+                :parent="content"
+                :comments="contentComments"
+                action-class="opacity-70 content-show-focused"
             />
         </div>
-
-        <!-- <div
-            :id="`content-${content.contentId}`"
-            class="flex flex-col gap-3 p-4 w-[calc(100%-12rem)] rounded-none md:rounded-lg md:rounded-l-none bg-card-within-1"
-        >
-            <div class="flex justify-between items-center" :class="unfocusedContentClass">
-                <div class="flex gap-1 items-center text-sm text-4">
-                    Posté
-                    <TipRelativeDateModified
-                        :created-at="content.createdAt"
-                        :modified-at="content.lastEdit.createdAt"
-                    />
-                    <div v-if="content.hidden" class="flex gap-1 items-center ml-4 text-yellow-500">
-                        <i class="fas fa-eye-slash" />
-                        <div>
-                            {{ capitalize(getContentDemonstrative(content.kind)) }}
-                            est masqué{{ isContentFeminine(content.kind) ? 'e' : '' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="rounded-lg text-0">
-                <slot name="content" />
-                <div class="flex" :class="unfocusedContentClass">
-                    <slot name="actions" />
-                </div>
-            </div>
-
-            <ThreadCommentList
-                :thread-id="content.contentMasterId"
-                :parent-id="content.contentId"
-                :parent-visible="content.isVisible"
-                :comments="content.comments"
-                :action-class="unfocusedContentClass"
-            />
-        </div> -->
     </div>
 </template>
 
 <script setup>
-    // import TipRelativeDateModified from '@/components/UI/Tip/TipRelativeDateModified.vue'
-    // import UserPreview from '../App/Preview/UserPreview.vue'
-    import ThreadCommentList from './ThreadCommentList.vue'
+    import ThreadCommentList from '@/components/Thread/ThreadCommentList.vue'
+    import MdEditableRender from '@/components/Input/Editor/MdEditableRender.vue'
     import LabelTag from '@/components/UI/Label/LabelTag.vue'
-    import VoteInput from '@/components/Input/VoteInput.vue'
-    import UserActivity from '../App/General/UserActivity.vue'
+    import VoteInputContent from '@/components/Input/VoteInputContent.vue'
+    import UserActivity from '@/components/App/General/UserActivity.vue'
+    import FavoriteInput from '@/components/Input/FavoriteInput.vue'
 
-    import { POST } from '@/shared/types/content-kinds.enum'
+    import { computed, nextTick, ref } from 'vue'
 
-    import { computed } from 'vue'
-
-    import { getLinkContent, report } from '@/shared/actions/thread.actions'
-
-    import { useThreadsStore } from '@/store/threads.store'
     import { useAuthStore } from '@/store/auth.store'
+    import { useRoute } from 'vue-router'
 
-    // import { getContentDemonstrative, isContentFeminine } from '@/shared/types/content-kinds.enum'
-    // import { capitalize } from 'lodash'
+    import { COMMENT, POST } from '@/shared/types/content-kinds.enum'
 
-    const threads = useThreadsStore()
+    import { useMutation } from '@vue/apollo-composable'
+    import { editContent } from '@/graphql/queries/editContent'
+
+    import {
+        getContentDemonstrative,
+        getContentName,
+        isContentFeminine,
+    } from '@/shared/types/content-kinds.enum'
+
+    import { capitalize } from 'lodash'
+    import { emitter } from '@/shared/modules/emitter'
+    import { getURL } from '@/utils/routeUtils'
+    import urlJoin from 'url-join'
+    import router from '@/router'
+    import { editThread } from '@/graphql/queries/editThread'
+
     const auth = useAuthStore()
+    const route = useRoute()
 
     const props = defineProps({
         content: {
             type: Object,
             required: true,
         },
+        thread: {
+            type: Object,
+            required: true,
+        },
     })
 
-    const thread = threads.threads.find((thread) => thread.contentMasterId === props.content.contentMasterId)
-    const unfocusedContentClass = ['opacity-60', 'content-show-focused']
+    nextTick(() => {
+        if (route.hash === `#content-${props.content.id}`)
+            emitter.emit('scroll-to-anchor', `#content-${props.content.id}`)
+    })
 
-    const actions = [report, getLinkContent]
-    const actionsShown = computed(() =>
-        actions.map((action) => action(props.content)).filter((action) => action.condition),
+    const editing = ref(false)
+    const body = ref(props.content.body)
+
+    const { mutate: updateContent, onError } = useMutation(editContent)
+    onError(() => (body.value = props.content.body))
+
+    const { mutate: validateContent } = useMutation(editThread)
+
+    const contentComments = computed(() =>
+        props.content.children.filter((childContent) => childContent.kind === COMMENT),
+    )
+
+    const authorIsOp = computed(() => props.thread.post.author.id === props.content.author.id)
+    const userIsOp = computed(() => props.thread.post.author.id === auth.user.id)
+    const userIsAuthor = computed(() => props.content.author.id === auth.user.id)
+    const userIsAdmin = computed(() => auth.user?.roles?.includes('admin'))
+
+    const bottomActions = [
+        {
+            name: 'Éditer',
+            condition: () => (userIsAuthor.value && props.content.isVisible) || userIsAdmin.value,
+            icon: 'fas fa-pen',
+            class: 'group-hover:text-green-600',
+            action: () => (editing.value = true),
+        },
+        {
+            name: 'Supprimer',
+            condition: () => (userIsAuthor.value || userIsAdmin.value) && props.content.isVisible,
+            icon: 'fas fa-trash-alt',
+            class: 'group-hover:text-red-600',
+            action: () => {
+                updateContent({ id: props.content.id, content: { hidden: true } })
+            },
+        },
+    ]
+    const bottomActionsShown = computed(() => bottomActions.filter((action) => action.condition()))
+
+    const topActions = [
+        {
+            name: computed(() => (props.content.interactions.userReported ? 'Signalé' : 'Signaler')),
+            condition: () => props.content.isVisible,
+            icon: computed(() => (props.content.interactions.userReported ? 'fas fa-flag' : 'far fa-flag')),
+            class: computed(() =>
+                props.content.interactions.userReported
+                    ? 'text-red-500 group-hover:text-red-600'
+                    : 'group-hover:text-red-600',
+            ),
+            action: () => {
+                props.content.interactions.userReported
+                    ? emitter.emit('show-toast', {
+                          message: `${capitalize(getContentName(props.content.kind))} déjà signalé.`,
+                          type: 'warning',
+                      })
+                    : emitter.emit('report', props.content)
+            },
+        },
+        {
+            name: 'Lien',
+            condition: () => true,
+            icon: 'fas fa-link',
+            class: 'group-hover:text-blue-600',
+            action: () => {
+                try {
+                    navigator.clipboard.writeText(
+                        getURL(urlJoin(router.currentRoute.value.path, `#content-${props.content.id}`)),
+                    )
+                    emitter.emit('show-toast', {
+                        message: `Lien de ${getContentDemonstrative(props.content.kind)} copié.`,
+                        type: 'info',
+                    })
+                } catch (err) {
+                    emitter.emit('show-toast', {
+                        message: `Une erreur est survenue lors de la copie du lien de ${getContentDemonstrative(
+                            props.content.kind,
+                        )}.`,
+                        type: 'error',
+                    })
+                }
+            },
+        },
+    ]
+    const topActionsShown = computed(() => topActions.filter((action) => action.condition()))
+
+    const opValidated = computed(() => props.thread.opValidation?.content?.id === props.content.id)
+    const adminValidated = computed(
+        () =>
+            props.thread.adminValidations?.some((validation) => validation.content.id === props.content.id) ??
+            false,
     )
 </script>
 
@@ -190,13 +251,5 @@
         .content-parent:hover & {
             opacity: 1;
         }
-    }
-
-    .content-parent a {
-        @apply text-blue-400 hover:text-blue-600 hover:underline;
-    }
-
-    .content-parent p + p {
-        @apply mt-3;
     }
 </style>
