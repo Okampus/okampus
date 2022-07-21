@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
-import { RedisHealthIndicator } from '@liaoliaots/nestjs-redis/health';
+import { RedisHealthIndicator } from '@liaoliaots/nestjs-redis-health';
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { HealthCheckResult, HealthIndicatorResult } from '@nestjs/terminus';
