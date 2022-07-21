@@ -4,6 +4,7 @@
     "eamodio.gitlens",
     "naumovs.color-highlight",
     "gruntfuggly.todo-tree",
+    "GraphQL.vscode-graphql",
     "ms-vsliveshare.vsliveshare",
     "adam-bender.commit-message-editor",
   ]
