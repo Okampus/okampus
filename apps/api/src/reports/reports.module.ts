@@ -15,7 +15,7 @@ import { ReportsService } from './reports.service';
   ],
   controllers: [ReportsController],
   providers: [CaslAbilityFactory, ReportsService, ReportSearchService],
-  exports: [],
+  exports: [ReportsService],
 })
 export class ReportsModule implements OnModuleInit {
   constructor(

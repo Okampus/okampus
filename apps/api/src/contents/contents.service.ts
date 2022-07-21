@@ -88,7 +88,7 @@ export class ContentsService {
   public async createReply(user: User, createContentDto: CreateContentDto): Promise<Content> {
     const parent = await this.contentRepository.findOneOrFail(
       { id: createContentDto.parentId, kind: ContentKind.Post },
-      { populate: ['author'] },
+      { populate: ['author', 'lastEdit'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -105,13 +105,13 @@ export class ContentsService {
 
     void this.mailService.newThreadContent(content);
 
-    return content;
+    return parent;
   }
 
   public async createComment(user: User, createContentDto: CreateContentDto): Promise<Content> {
     const parent = await this.contentRepository.findOneOrFail(
       { id: createContentDto.parentId, kind: { $in: [ContentKind.Post, ContentKind.Reply] } },
-      { populate: ['author'] },
+      { populate: ['author', 'lastEdit'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -128,7 +128,7 @@ export class ContentsService {
 
     void this.mailService.newThreadContent(content);
 
-    return content;
+    return parent;
   }
 
   public async findAllChildren(
@@ -141,7 +141,6 @@ export class ContentsService {
     return await this.contentRepository.findWithPagination(
       options,
       {
-        kind: ContentKind.Reply,
         ...visibilityQuery,
         parent: { id: parentId },
       },
@@ -214,7 +213,7 @@ export class ContentsService {
     const userInteractionByContent = {} as Record<number, ContentInteractions>;
     const getOrCreate = (id: number): ContentInteractions => {
       if (!userInteractionByContent[id])
-        userInteractionByContent[id] = DEFAULT_INTERACTIONS;
+        userInteractionByContent[id] = { ...DEFAULT_INTERACTIONS };
       return userInteractionByContent[id];
     };
 
@@ -228,10 +227,10 @@ export class ContentsService {
 
   public async getContentsByMaster(id: number): Promise<Record<number, Content[]>> {
     const contentsByParent = {} as Record<number, Content[]>;
-    const getOrCreate = (id: number): Content[] => {
-      if (!contentsByParent[id])
-        contentsByParent[id] = [];
-      return contentsByParent[id];
+    const getOrCreate = (contentId: number): Content[] => {
+      if (!contentsByParent[contentId])
+        contentsByParent[contentId] = [];
+      return contentsByParent[contentId];
     };
 
     const contents = await this.contentRepository.find(
@@ -259,7 +258,7 @@ export class ContentsService {
 
     return {
       reactions,
-      userFavorited: Boolean(userFavorited),
+      userFavorited: userFavorited?.active ?? false,
       userVoted: userVoted?.value ?? 0,
       userReported,
     };

@@ -25,9 +25,9 @@ export class ReportsService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async create(targetid: string, user: User, createReportDto: CreateReportDto): Promise<Report> {
-    const target = await this.userRepository.findOneOrFail({ id: targetid });
-    const content = await this.contentRepository.findOneOrFail({ id: createReportDto.id });
+  public async create(user: User, contentId: number, createReportDto: CreateReportDto): Promise<Content> {
+    const content = await this.contentRepository.findOneOrFail({ id: contentId }, ['lastEdit', 'author']);
+    const target = content.author;
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Report, content);
@@ -46,12 +46,10 @@ export class ReportsService {
     await this.reportRepository.persistAndFlush(report);
     await this.reportSearchService.add(report);
 
-    if (content) {
-      content.reportCount++;
-      await this.contentRepository.flush();
-    }
+    content.reportCount++;
+    await this.contentRepository.flush();
 
-    return report;
+    return content;
   }
 
   public async findAll(

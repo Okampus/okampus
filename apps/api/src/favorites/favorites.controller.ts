@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
+import type { Content } from '../contents/entities/content.entity';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
 import type { PaginatedResult } from '../shared/modules/pagination';
@@ -28,8 +29,8 @@ export class FavoritesController {
   public async add(
     @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
-  ): Promise<Favorite> {
-    return await this.favoritesService.create(id, user);
+  ): Promise<Content> {
+    return await this.favoritesService.update(user, id, true);
   }
 
   @Get()
@@ -55,7 +56,7 @@ export class FavoritesController {
   public async remove(
     @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
-  ): Promise<void> {
-    await this.favoritesService.remove(id, user);
+  ): Promise<Content> {
+    return await this.favoritesService.update(user, id, false);
   }
 }

@@ -1,13 +1,16 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { Favorite } from '../favorites/favorite.entity';
+import { FavoritesModule } from '../favorites/favorites.module';
 import { PubSubModule } from '../pub-sub.module';
 import { Reaction } from '../reactions/reaction.entity';
 import { Report } from '../reports/report.entity';
+import { ReportsModule } from '../reports/reports.module';
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { MailModule } from '../shared/modules/mail/mail.module';
 import { Validation } from '../validations/entities/validation.entity';
+import { ValidationsModule } from '../validations/validations.module';
 import { Vote } from '../votes/vote.entity';
 import { VotesModule } from '../votes/votes.module';
 import { ContentsController } from './contents.controller';
@@ -31,6 +34,9 @@ import { Content } from './entities/content.entity';
     MailModule,
     PubSubModule,
     VotesModule,
+    FavoritesModule,
+    ReportsModule,
+    ValidationsModule,
   ],
   controllers: [ContentsController],
   providers: [CaslAbilityFactory, ContentsService, ContentResolver],

@@ -62,10 +62,10 @@ export class ReportsController {
   @CheckPolicies(ability => ability.can(Action.Report, Content))
   public async createReport(
     @CurrentUser() user: User,
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() createReportDto: CreateReportDto,
-  ): Promise<Report> {
-    return await this.reportsService.create(id, user, createReportDto);
+  ): Promise<Content> {
+    return await this.reportsService.create(user, id, createReportDto);
   }
 
   @Get(':id')

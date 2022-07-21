@@ -1,14 +1,14 @@
+import { Field, InputType } from '@nestjs/graphql';
 import {
-  IsInt,
   IsOptional,
   IsString,
   Length,
 } from 'class-validator';
 
-export class CreateReportDto {
-  @IsInt()
-  id: number;
 
+@InputType()
+export class CreateReportDto {
+  @Field()
   @Length(10, 2000)
   @IsString()
   @IsOptional()
