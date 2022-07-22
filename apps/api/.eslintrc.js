@@ -25,7 +25,6 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'node/no-extraneous-import': ['error', { allowModules: ['express'] }],
 
-    'no-undefined': 'off',
     'unicorn/filename-case': ['error', { case: 'kebabCase' }],
 
     // Forbid leading underscore for private properties (in nest almost all if not all class properties are private,

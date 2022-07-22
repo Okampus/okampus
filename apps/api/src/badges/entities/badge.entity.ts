@@ -64,13 +64,6 @@ export class Badge extends BaseEntity {
     statisticThreshold: number;
   }) {
     super();
-    this.name = options.name;
-    this.description = options.description;
-    this.pointPrize = options.pointPrize;
-    this.level = options.level;
-    this.icon = options.icon;
-    this.series = options.series;
-    this.statistic = options.statistic;
-    this.statisticThreshold = options.statisticThreshold;
+    this.assign(options);
   }
 }

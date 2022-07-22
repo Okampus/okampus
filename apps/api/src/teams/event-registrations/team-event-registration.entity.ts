@@ -6,7 +6,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
-import { RegisterStatus } from '../../shared/lib/types/enums/register-status.enum';
+import { TeamEventRegisterStatus } from '../../shared/lib/types/enums/team-event-register-status.enum';
 import { User } from '../../users/user.entity';
 import { TeamEvent } from '../events/team-event.entity';
 import type { TeamForm } from '../forms/team-form.entity';
@@ -22,30 +22,23 @@ export class TeamEventRegistration extends BaseEntity {
   @ManyToOne({ onDelete: 'CASCADE' })
   user!: User;
 
-  @Enum(() => RegisterStatus)
-  status!: RegisterStatus;
+  @Enum(() => TeamEventRegisterStatus)
+  status!: TeamEventRegisterStatus;
 
   @ManyToOne()
-  originalForm?: TeamForm | null;
+  originalForm: TeamForm | null = null;
 
   @Property({ type: 'json' })
-  formSubmission?: object | null;
+  formSubmission: object | null = null;
 
   constructor(options: {
     event: TeamEvent;
     user: User;
-    status: RegisterStatus;
+    status: TeamEventRegisterStatus;
     originalForm?: TeamForm | null;
     formSubmission?: object | null;
   }) {
     super();
-    this.event = options.event;
-    this.user = options.user;
-    this.status = options.status;
-
-    if (options.originalForm)
-      this.originalForm = options.originalForm;
-    if (options.formSubmission)
-      this.formSubmission = options.formSubmission;
+    this.assign(options);
   }
 }

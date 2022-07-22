@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20220721155752 extends Migration {
+export class Migration20220722103841 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table "food" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" text not null, "nutritionals" text null, "allergens" text null, "type" smallint not null);');
@@ -18,15 +18,16 @@ export class Migration20220721155752 extends Migration {
     this.addSql('create table "daily_menu_desserts" ("daily_menu_id" int not null, "food_id" int not null);');
     this.addSql('alter table "daily_menu_desserts" add constraint "daily_menu_desserts_pkey" primary key ("daily_menu_id", "food_id");');
 
-    this.addSql('create table "daily_info" ("id" timestamptz(0) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "content" text not null);');
-    this.addSql('alter table "daily_info" add constraint "daily_info_pkey" primary key ("id");');
+    this.addSql('create table "daily_info" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "date" timestamptz(0) not null, "content" text not null);');
+    this.addSql('create index "daily_info_date_index" on "daily_info" ("date");');
+    this.addSql('alter table "daily_info" add constraint "daily_info_date_unique" unique ("date");');
 
-    this.addSql('create table "doc_series" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" text not null, "english_name" text null, "description" text null, "is_obsolete" boolean null);');
+    this.addSql('create table "doc_series" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" text not null, "english_name" text null, "description" text null, "is_obsolete" boolean not null);');
     this.addSql('alter table "doc_series" add constraint "doc_series_pkey" primary key ("id");');
 
-    this.addSql('create table "contact" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" varchar(255) not null, "icon" text not null);');
-
     this.addSql('create table "badge" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" text not null, "description" text not null, "point_prize" int not null, "level" smallint not null, "icon" text not null, "series" text not null, "statistic" text check ("statistic" in (\'comment\', \'post\', \'reply\', \'upload\')) not null, "statistic_threshold" int not null);');
+
+    this.addSql('create table "contact" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" varchar(255) not null, "icon" text not null);');
 
     this.addSql('create table "wiki_page" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "title" text not null, "body" text not null, "category" text not null, "hidden" boolean not null);');
 
@@ -34,12 +35,23 @@ export class Migration20220721155752 extends Migration {
     this.addSql('create index "user_email_index" on "user" ("email");');
     this.addSql('alter table "user" add constraint "user_pkey" primary key ("id");');
 
-    this.addSql('create table "badge_unlock" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "user_id" varchar(255) not null, "badge_id" int not null, "unlock_date" timestamptz(0) not null);');
+    this.addSql('create table "badge_unlock" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "user_id" varchar(255) not null, "badge_id" int not null);');
     this.addSql('create index "badge_unlock_user_id_index" on "badge_unlock" ("user_id");');
+
+    this.addSql('create table "file_upload" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "user_id" varchar(255) not null, "name" text not null, "file_size" int not null, "mime_type" text not null, "file_last_modified_at" timestamptz(0) not null, "validated" boolean not null, "url" text not null, "visible" boolean not null, "file_kind" text check ("file_kind" in (\'profile-image\', \'info-doc\', \'attachment\', \'study-doc\', \'team-file\')) not null);');
+    this.addSql('alter table "file_upload" add constraint "file_upload_pkey" primary key ("id");');
+
+    this.addSql('create table "info_doc" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "file_id" varchar(255) not null, "doc_series_id" varchar(255) null, "year" int not null, "school_year" smallint null, "description" text null, "is_obsolete" boolean not null);');
+    this.addSql('alter table "info_doc" add constraint "info_doc_file_id_unique" unique ("file_id");');
+    this.addSql('alter table "info_doc" add constraint "info_doc_pkey" primary key ("id");');
 
     this.addSql('create table "content" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "body" text not null, "author_id" varchar(255) not null, "upvote_count" int not null, "downvote_count" int not null, "total_vote_count" int not null, "report_count" int not null, "favorite_count" int not null, "reply_count" int not null, "kind" smallint not null, "parent_id" int null, "content_master_id" int null, "hidden" boolean not null, "is_visible" boolean not null, "last_edit_id" int null);');
     this.addSql('create index "content_kind_index" on "content" ("kind");');
     this.addSql('alter table "content" add constraint "content_last_edit_id_unique" unique ("last_edit_id");');
+
+    this.addSql('create table "attachment" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "file_id" varchar(255) not null, "content_id" int null);');
+    this.addSql('alter table "attachment" add constraint "attachment_file_id_unique" unique ("file_id");');
+    this.addSql('alter table "attachment" add constraint "attachment_pkey" primary key ("id");');
 
     this.addSql('create table "content_edit" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "body" text not null, "edit_order" int not null, "parent_id" int not null, "edited_by_id" varchar(255) not null);');
 
@@ -56,17 +68,6 @@ export class Migration20220721155752 extends Migration {
     this.addSql('create index "vote_user_id_index" on "vote" ("user_id");');
     this.addSql('create index "vote_content_id_index" on "vote" ("content_id");');
 
-    this.addSql('create table "file_upload" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "user_id" varchar(255) not null, "name" text not null, "file_size" int not null, "mime_type" text not null, "file_last_modified_at" timestamptz(0) not null, "validated" boolean not null, "url" text not null, "visible" boolean not null, "file_kind" text check ("file_kind" in (\'profile-image\', \'info-doc\', \'attachment\', \'study-doc\', \'team-file\')) not null);');
-    this.addSql('alter table "file_upload" add constraint "file_upload_pkey" primary key ("id");');
-
-    this.addSql('create table "attachment" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "file_id" varchar(255) not null, "content_id" int null);');
-    this.addSql('alter table "attachment" add constraint "attachment_file_id_unique" unique ("file_id");');
-    this.addSql('alter table "attachment" add constraint "attachment_pkey" primary key ("id");');
-
-    this.addSql('create table "info_doc" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "file_id" varchar(255) not null, "doc_series_id" varchar(255) null, "year" int not null, "school_year" smallint null, "description" text null, "is_obsolete" boolean not null);');
-    this.addSql('alter table "info_doc" add constraint "info_doc_file_id_unique" unique ("file_id");');
-    this.addSql('alter table "info_doc" add constraint "info_doc_pkey" primary key ("id");');
-
     this.addSql('create table "team" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "kind" text check ("kind" in (\'team\', \'club\')) not null, "name" text not null, "short_description" text null, "long_description" text null, "category" text not null, "tags" varchar(255) not null, "avatar" text null, "banner" text null, "membership_request_link" text null, "membership_request_message" text null, "membership_request_form_id" int null);');
     this.addSql('create index "team_kind_index" on "team" ("kind");');
     this.addSql('alter table "team" add constraint "team_membership_request_form_id_unique" unique ("membership_request_form_id");');
@@ -80,7 +81,7 @@ export class Migration20220721155752 extends Migration {
     this.addSql('alter table "profile_image" add constraint "profile_image_file_id_unique" unique ("file_id");');
     this.addSql('alter table "profile_image" add constraint "profile_image_pkey" primary key ("id");');
 
-    this.addSql('create table "team_file" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "file_id" varchar(255) not null, "team_id" int not null, "type" text check ("type" in (\'gallery\', \'document\')) not null, "description" text null);');
+    this.addSql('create table "team_file" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "file_id" varchar(255) not null, "team_id" int not null, "type" text check ("type" in (\'document\', \'gallery\', \'receipt\')) not null, "description" text null);');
     this.addSql('alter table "team_file" add constraint "team_file_file_id_unique" unique ("file_id");');
     this.addSql('alter table "team_file" add constraint "team_file_pkey" primary key ("id");');
 
@@ -93,6 +94,10 @@ export class Migration20220721155752 extends Migration {
     this.addSql('alter table "team_event" add constraint "team_event_form_id_unique" unique ("form_id");');
 
     this.addSql('create table "team_event_registration" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "event_id" int not null, "user_id" varchar(255) not null, "status" text check ("status" in (\'sure\', \'maybe\', \'notsure\')) not null, "original_form_id" int null, "form_submission" jsonb null);');
+
+    this.addSql('create table "team_finance" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "title" varchar(255) not null, "description" text null, "created_by_id" varchar(255) not null, "team_id" int not null, "due_to_id" varchar(255) null, "amount" int not null, "mean" text check ("mean" in (\'cash\', \'card\', \'transfer\', \'check\', \'other\')) not null, "type" text check ("type" in (\'expense\', \'income\')) not null, "category" smallint not null, "event_id" int null, "receipt_id" varchar(255) null);');
+    this.addSql('create index "team_finance_team_id_index" on "team_finance" ("team_id");');
+    this.addSql('alter table "team_finance" add constraint "team_finance_receipt_id_unique" unique ("receipt_id");');
 
     this.addSql('create table "team_member" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "user_id" varchar(255) not null, "team_id" int not null, "role" text check ("role" in (\'owner\', \'coowner\', \'treasurer\', \'secretary\', \'manager\', \'member\')) not null, "role_label" varchar(255) null, "join_date" timestamptz(0) not null);');
     this.addSql('create index "team_member_user_id_index" on "team_member" ("user_id");');
@@ -109,19 +114,19 @@ export class Migration20220721155752 extends Migration {
     this.addSql('create table "content_master_assignees" ("content_master_id" int not null, "user_id" varchar(255) not null);');
     this.addSql('alter table "content_master_assignees" add constraint "content_master_assignees_pkey" primary key ("content_master_id", "user_id");');
 
-    this.addSql('create table "tag" ("name" text not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "color" text check ("color" in (\'amber\', \'blue\', \'cyan\', \'emerald\', \'fuchsia\', \'gray\', \'green\', \'indigo\', \'lime\', \'neutral\', \'orange\', \'pink\', \'purple\', \'red\', \'rose\', \'sky\', \'slate\', \'stone\', \'teal\', \'violet\', \'yellow\', \'zinc\')) not null, "description" text null);');
-    this.addSql('alter table "tag" add constraint "tag_pkey" primary key ("name");');
+    this.addSql('create table "tag" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" varchar(255) not null, "color" text check ("color" in (\'amber\', \'blue\', \'cyan\', \'emerald\', \'fuchsia\', \'gray\', \'green\', \'indigo\', \'lime\', \'neutral\', \'orange\', \'pink\', \'purple\', \'red\', \'rose\', \'sky\', \'slate\', \'stone\', \'teal\', \'violet\', \'yellow\', \'zinc\')) not null, "description" text null);');
 
-    this.addSql('create table "content_master_tags" ("content_master_id" int not null, "tag_name" text not null);');
-    this.addSql('alter table "content_master_tags" add constraint "content_master_tags_pkey" primary key ("content_master_id", "tag_name");');
+    this.addSql('create table "content_master_tags" ("content_master_id" int not null, "tag_id" int not null);');
+    this.addSql('alter table "content_master_tags" add constraint "content_master_tags_pkey" primary key ("content_master_id", "tag_id");');
 
-    this.addSql('create table "doc_series_tags" ("doc_series_id" varchar(255) not null, "tag_name" text not null);');
-    this.addSql('alter table "doc_series_tags" add constraint "doc_series_tags_pkey" primary key ("doc_series_id", "tag_name");');
+    this.addSql('create table "doc_series_tags" ("doc_series_id" varchar(255) not null, "tag_id" int not null);');
+    this.addSql('alter table "doc_series_tags" add constraint "doc_series_tags_pkey" primary key ("doc_series_id", "tag_id");');
 
-    this.addSql('create table "subject" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" text not null, "english_name" text not null, "description" text null, "school_year" smallint not null);');
-    this.addSql('alter table "subject" add constraint "subject_pkey" primary key ("id");');
+    this.addSql('create table "subject" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "code" varchar(255) not null, "name" text not null, "english_name" text not null, "description" text null, "school_year" smallint not null);');
+    this.addSql('create index "subject_code_index" on "subject" ("code");');
+    this.addSql('alter table "subject" add constraint "subject_code_unique" unique ("code");');
 
-    this.addSql('create table "study_doc" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "file_id" varchar(255) not null, "subject_id" varchar(255) not null, "doc_series_id" varchar(255) null, "year" int not null, "description" text null, "cursus" text check ("cursus" in (\'all\', \'classic\', \'int\', \'pex\', \'renforced\')) not null, "type" text check ("type" in (\'examDE\', \'examCE\', \'examCC\', \'examDM\', \'examTAI\', \'course\', \'sheet\', \'projects\', \'efreiClass\', \'eprofClass\', \'classNote\', \'other\')) not null, "flags" smallint not null);');
+    this.addSql('create table "study_doc" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "file_id" varchar(255) not null, "subject_id" int not null, "doc_series_id" varchar(255) null, "year" int not null, "description" text null, "cursus" text check ("cursus" in (\'all\', \'classic\', \'int\', \'pex\', \'renforced\')) not null, "type" text check ("type" in (\'examDE\', \'examCE\', \'examCC\', \'examDM\', \'examTAI\', \'course\', \'sheet\', \'projects\', \'efreiClass\', \'eprofClass\', \'classNote\', \'other\')) not null, "flags" smallint not null);');
     this.addSql('alter table "study_doc" add constraint "study_doc_file_id_unique" unique ("file_id");');
     this.addSql('alter table "study_doc" add constraint "study_doc_pkey" primary key ("id");');
 
@@ -161,10 +166,18 @@ export class Migration20220721155752 extends Migration {
     this.addSql('alter table "badge_unlock" add constraint "badge_unlock_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade on delete CASCADE;');
     this.addSql('alter table "badge_unlock" add constraint "badge_unlock_badge_id_foreign" foreign key ("badge_id") references "badge" ("id") on update cascade on delete CASCADE;');
 
+    this.addSql('alter table "file_upload" add constraint "file_upload_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade;');
+
+    this.addSql('alter table "info_doc" add constraint "info_doc_file_id_foreign" foreign key ("file_id") references "file_upload" ("id") on update cascade on delete CASCADE;');
+    this.addSql('alter table "info_doc" add constraint "info_doc_doc_series_id_foreign" foreign key ("doc_series_id") references "doc_series" ("id") on update cascade on delete CASCADE;');
+
     this.addSql('alter table "content" add constraint "content_author_id_foreign" foreign key ("author_id") references "user" ("id") on update cascade on delete CASCADE;');
     this.addSql('alter table "content" add constraint "content_parent_id_foreign" foreign key ("parent_id") references "content" ("id") on update cascade on delete CASCADE;');
     this.addSql('alter table "content" add constraint "content_content_master_id_foreign" foreign key ("content_master_id") references "content_master" ("id") on update cascade on delete CASCADE;');
     this.addSql('alter table "content" add constraint "content_last_edit_id_foreign" foreign key ("last_edit_id") references "content_edit" ("id") on update cascade on delete set null;');
+
+    this.addSql('alter table "attachment" add constraint "attachment_file_id_foreign" foreign key ("file_id") references "file_upload" ("id") on update cascade on delete CASCADE;');
+    this.addSql('alter table "attachment" add constraint "attachment_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete set null;');
 
     this.addSql('alter table "content_edit" add constraint "content_edit_parent_id_foreign" foreign key ("parent_id") references "content" ("id") on update cascade on delete CASCADE;');
     this.addSql('alter table "content_edit" add constraint "content_edit_edited_by_id_foreign" foreign key ("edited_by_id") references "user" ("id") on update cascade on delete CASCADE;');
@@ -179,14 +192,6 @@ export class Migration20220721155752 extends Migration {
     this.addSql('alter table "vote" add constraint "vote_content_master_id_foreign" foreign key ("content_master_id") references "content_master" ("id") on update cascade on delete CASCADE;');
     this.addSql('alter table "vote" add constraint "vote_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade on delete CASCADE;');
     this.addSql('alter table "vote" add constraint "vote_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete CASCADE;');
-
-    this.addSql('alter table "file_upload" add constraint "file_upload_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade;');
-
-    this.addSql('alter table "attachment" add constraint "attachment_file_id_foreign" foreign key ("file_id") references "file_upload" ("id") on update cascade on delete CASCADE;');
-    this.addSql('alter table "attachment" add constraint "attachment_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete set null;');
-
-    this.addSql('alter table "info_doc" add constraint "info_doc_file_id_foreign" foreign key ("file_id") references "file_upload" ("id") on update cascade on delete CASCADE;');
-    this.addSql('alter table "info_doc" add constraint "info_doc_doc_series_id_foreign" foreign key ("doc_series_id") references "doc_series" ("id") on update cascade on delete CASCADE;');
 
     this.addSql('alter table "team" add constraint "team_membership_request_form_id_foreign" foreign key ("membership_request_form_id") references "team_form" ("id") on update cascade on delete set null;');
 
@@ -214,6 +219,12 @@ export class Migration20220721155752 extends Migration {
     this.addSql('alter table "team_event_registration" add constraint "team_event_registration_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade on delete CASCADE;');
     this.addSql('alter table "team_event_registration" add constraint "team_event_registration_original_form_id_foreign" foreign key ("original_form_id") references "team_form" ("id") on update cascade on delete set null;');
 
+    this.addSql('alter table "team_finance" add constraint "team_finance_created_by_id_foreign" foreign key ("created_by_id") references "user" ("id") on update cascade;');
+    this.addSql('alter table "team_finance" add constraint "team_finance_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade on delete CASCADE;');
+    this.addSql('alter table "team_finance" add constraint "team_finance_due_to_id_foreign" foreign key ("due_to_id") references "user" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "team_finance" add constraint "team_finance_event_id_foreign" foreign key ("event_id") references "team_event" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "team_finance" add constraint "team_finance_receipt_id_foreign" foreign key ("receipt_id") references "team_file" ("id") on update cascade on delete set null;');
+
     this.addSql('alter table "team_member" add constraint "team_member_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade on delete CASCADE;');
     this.addSql('alter table "team_member" add constraint "team_member_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade on delete CASCADE;');
 
@@ -230,10 +241,10 @@ export class Migration20220721155752 extends Migration {
     this.addSql('alter table "content_master_assignees" add constraint "content_master_assignees_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade on delete cascade;');
 
     this.addSql('alter table "content_master_tags" add constraint "content_master_tags_content_master_id_foreign" foreign key ("content_master_id") references "content_master" ("id") on update cascade on delete cascade;');
-    this.addSql('alter table "content_master_tags" add constraint "content_master_tags_tag_name_foreign" foreign key ("tag_name") references "tag" ("name") on update cascade on delete cascade;');
+    this.addSql('alter table "content_master_tags" add constraint "content_master_tags_tag_id_foreign" foreign key ("tag_id") references "tag" ("id") on update cascade on delete cascade;');
 
     this.addSql('alter table "doc_series_tags" add constraint "doc_series_tags_doc_series_id_foreign" foreign key ("doc_series_id") references "doc_series" ("id") on update cascade on delete cascade;');
-    this.addSql('alter table "doc_series_tags" add constraint "doc_series_tags_tag_name_foreign" foreign key ("tag_name") references "tag" ("name") on update cascade on delete cascade;');
+    this.addSql('alter table "doc_series_tags" add constraint "doc_series_tags_tag_id_foreign" foreign key ("tag_id") references "tag" ("id") on update cascade on delete cascade;');
 
     this.addSql('alter table "study_doc" add constraint "study_doc_file_id_foreign" foreign key ("file_id") references "file_upload" ("id") on update cascade on delete CASCADE;');
     this.addSql('alter table "study_doc" add constraint "study_doc_subject_id_foreign" foreign key ("subject_id") references "subject" ("id") on update cascade;');

@@ -25,10 +25,7 @@ export class Validation extends BaseContentInteraction {
     content: Content;
     type: ValidationType;
   }) {
-    super();
-    this.content = options.content;
-    this.contentMaster = options.content.contentMaster;
-    this.user = options.user;
-    this.type = options.type;
+    super(options);
+    this.assign(options);
   }
 }

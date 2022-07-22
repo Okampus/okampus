@@ -33,8 +33,10 @@ export class DailyMenu extends BaseEntity {
   @TransformCollection()
   desserts = new Collection<Food>(this);
 
-  constructor(options: { date: Date }) {
+  constructor(options: {
+    date: Date;
+  }) {
     super();
-    this.date = options.date;
+    this.assign(options);
   }
 }

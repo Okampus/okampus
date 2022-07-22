@@ -33,7 +33,10 @@ export class AuthService {
       ],
     });
     if (user) {
-      const userPassword = await this.userRepository.createQueryBuilder().select('password').where({ id: user.id });
+      const [userPassword] = await this.userRepository.createQueryBuilder()
+        .select(['id', 'password'])
+        .where({ id: user.id })
+        .limit(1);
       if (!userPassword)
         throw new BadRequestException('Password is not set');
       if (!(await user.validatePassword(password)))

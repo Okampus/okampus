@@ -19,7 +19,7 @@ export class RestaurantService {
   }
 
   public async findAllDateInfo(date: Date): Promise<DailyInfo | null> {
-    return await this.dailyInfoRepository.findOne({ id: this.getDayQuery(date) });
+    return await this.dailyInfoRepository.findOne({ date: this.getDayQuery(date) });
   }
 
   private getDayQuery(date: Date): { $gte: Date; $lt: Date } {

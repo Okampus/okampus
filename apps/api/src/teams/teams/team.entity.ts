@@ -39,17 +39,17 @@ export class Team extends BaseEntity {
   @Property({ type: 'text' })
   name!: string;
 
-  @Field()
+  @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  shortDescription?: string;
+  shortDescription: string | null = null;
+
+  @Field(() => String, { nullable: true })
+  @Property({ type: 'text' })
+  longDescription: string | null = null;
 
   @Field()
   @Property({ type: 'text' })
-  longDescription?: string;
-
-  @Field()
-  @Property({ type: 'text' })
-  category: string;
+  category!: string;
 
   @Field(() => [String])
   @Property()
@@ -57,11 +57,11 @@ export class Team extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  avatar?: string | null;
+  avatar: string | null = null;
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  banner?: string | null;
+  banner: string | null = null;
 
   @Field(() => [TeamMember])
   @OneToMany('TeamMember', 'team')
@@ -70,50 +70,31 @@ export class Team extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  membershipRequestLink?: string;
+  membershipRequestLink: string | null = null;
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  membershipRequestMessage?: string;
+  membershipRequestMessage: string | null = null;
 
   @Field(() => TeamForm, { nullable: true })
   @OneToOne('TeamForm')
-  membershipRequestForm?: TeamForm | null;
+  membershipRequestForm: TeamForm | null = null;
 
   constructor(options: {
     name: string;
     kind: TeamKind;
     category: string;
-    shortDescription?: string;
-    longDescription?: string;
-    avatar?: string;
-    banner?: string;
-    tags?: string[];
-    membershipRequestLink?: string;
-    membershipRequestMessage?: string;
-    membershipRequestForm?: TeamForm;
+    shortDescription?: string | null;
+    longDescription?: string | null;
+    avatar?: string | null;
+    banner?: string | null;
+    tags?: string[] | null;
+    membershipRequestLink?: string | null;
+    membershipRequestMessage?: string | null;
+    membershipRequestForm?: TeamForm | null;
   }) {
     super();
-    this.name = options.name;
-    this.kind = options.kind;
-    this.category = options.category;
-    if (options.shortDescription)
-      this.shortDescription = options.shortDescription;
-    if (options.longDescription)
-      this.longDescription = options.longDescription;
-    if (options.avatar)
-      this.avatar = options.avatar;
-    if (options.banner)
-      this.banner = options.banner;
-    console.log('DEBUG ~ file: team.entity.ts ~ line 109 ~ options.tags', options.tags);
-    if (options.tags)
-      this.tags = options.tags;
-    if (options.membershipRequestLink)
-      this.membershipRequestLink = options.membershipRequestLink;
-    if (options.membershipRequestMessage)
-      this.membershipRequestMessage = options.membershipRequestMessage;
-    if (options.membershipRequestForm)
-      this.membershipRequestForm = options.membershipRequestForm;
+    this.assign(options);
   }
 
   public canAdminister(user: User): boolean {

@@ -45,14 +45,14 @@ export abstract class ContentMaster extends BaseEntity {
 
   @Field(() => Content)
   @OneToOne()
-  post: Content;
+  post!: Content;
 
   @ManyToMany()
   @TransformCollection()
   participants = new Collection<User>(this);
 
   @Enum(() => ContentMasterType)
-  kind: ContentMasterType;
+  kind!: ContentMasterType;
 
   @OneToMany('Validation', 'contentMaster', { cascade: [Cascade.REMOVE] })
   @TransformCollection()
@@ -79,7 +79,6 @@ export abstract class ContentMaster extends BaseEntity {
     post: Content;
   }) {
     super();
-    this.title = options.title;
-    this.post = options.post;
+    this.assign(options);
   }
 }

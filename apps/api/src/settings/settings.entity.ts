@@ -227,8 +227,10 @@ export class Settings extends BaseEntity {
 
   [PrimaryKeyType]: number;
 
-  constructor(options: { user: User }) {
+  constructor(options: {
+    user: User;
+  }) {
     super();
-    this.user = options.user;
+    this.assign(options);
   }
 }

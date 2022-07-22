@@ -11,7 +11,7 @@ import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { Cursus } from '../../shared/lib/types/enums/cursus.enum';
 import { StudyDocType } from '../../shared/lib/types/enums/study-doc-type.enum';
 import { Subject } from '../../subjects/subject.entity';
-import { DocSeries } from '../doc-series/doc-series.entity';
+import type { DocSeries } from '../doc-series/doc-series.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 
 @Entity()
@@ -26,13 +26,13 @@ export class StudyDoc extends BaseEntity {
   subject!: Subject;
 
   @ManyToOne({ onDelete: 'CASCADE' })
-  docSeries?: DocSeries;
+  docSeries: DocSeries | null = null;
 
   @Property()
   year!: number;
 
   @Property({ type: 'text' })
-  description?: string;
+  description: string | null = null;
 
   @Enum(() => Cursus)
   cursus!: Cursus;
@@ -49,21 +49,11 @@ export class StudyDoc extends BaseEntity {
     cursus: Cursus;
     type: StudyDocType;
     year: number;
-    flags?: number;
+    flags?: number | null;
     docSeries?: DocSeries | null;
-    description?: string;
+    description?: string | null;
   }) {
     super();
-    this.file = options.file;
-    this.subject = options.subject;
-    this.cursus = options.cursus;
-    this.type = options.type;
-    this.year = options.year;
-    if (options.flags)
-      this.flags = options.flags;
-    if (options.docSeries)
-      this.docSeries = options.docSeries;
-    if (options.description)
-      this.description = options.description;
+    this.assign(options);
   }
 }

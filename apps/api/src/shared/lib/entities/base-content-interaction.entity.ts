@@ -7,9 +7,9 @@ import { ContentMaster } from './content-master.entity';
 
 @ObjectType()
 export abstract class BaseContentInteraction extends BaseEntity {
-  @Field(() => ContentMaster)
+  @Field(() => ContentMaster, { nullable: true })
   @ManyToOne({ onDelete: 'CASCADE' })
-  contentMaster?: ContentMaster;
+  contentMaster: ContentMaster | null = null;
 
   @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })
@@ -20,4 +20,14 @@ export abstract class BaseContentInteraction extends BaseEntity {
   @ManyToOne({ onDelete: 'CASCADE' })
   @Index()
   content!: Content;
+
+  constructor(options: {
+    user: User;
+    content: Content;
+  }) {
+    super();
+    this.assign(options);
+    if (options.content.contentMaster)
+      this.contentMaster = options.content.contentMaster;
+  }
 }

@@ -11,7 +11,7 @@ import { Team } from './team.entity';
 
 export interface IndexedTeam {
   name: string;
-  shortDescription?: string;
+  shortDescription: string | null;
   kind: string;
   id: string;
 }

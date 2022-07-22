@@ -1,8 +1,4 @@
-import {
-  Entity,
-  PrimaryKey,
-  Property,
-} from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import type { Content } from '../contents/entities/content.entity';
 import { BaseContentInteraction } from '../shared/lib/entities/base-content-interaction.entity';
@@ -22,11 +18,9 @@ export class Favorite extends BaseContentInteraction {
   constructor(options: {
     user: User;
     content: Content;
+    active?: boolean | null;
   }) {
-    super();
-    this.content = options.content;
-    if (options.content.contentMaster)
-      this.contentMaster = options.content.contentMaster;
-    this.user = options.user;
+    super(options);
+    this.assign(options);
   }
 }

@@ -4,29 +4,35 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { Colors } from '../shared/lib/types/enums/colors.enum';
 
 @ObjectType()
 @Entity()
 export class Tag extends BaseEntity {
+  @Field(() => Int)
+  @PrimaryKey()
+  id!: number;
+
   @Field()
-  @PrimaryKey({ type: 'text' })
+  @Property()
   name!: string;
 
   @Field(() => Colors)
   @Enum(() => Colors)
   color!: Colors;
 
-  @Field()
+  @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  description?: string;
+  description: string | null = null;
 
-  constructor(options: { name: string; color: Colors; description?: string }) {
+  constructor(options: {
+    name: string;
+    color: Colors;
+    description?: string | null;
+  }) {
     super();
-    this.name = options.name;
-    this.color = options.color;
-    this.description = options.description;
+    this.assign(options);
   }
 }

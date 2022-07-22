@@ -89,7 +89,7 @@ export class UsersService {
     await this.userRepository.removeAndFlush(user);
   }
 
-  public async getUserStats(id: string): Promise<Statistics> {
+  public async getUserStats(id: string): Promise<Omit<Statistics, 'assign'>> {
     const stats = await this.statisticsRepository.findOneOrFail({ user: { id } });
     const streaks = await this.statisticsService.getAllStreaks(stats);
     return { ...stats, ...streaks };

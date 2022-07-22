@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -28,10 +29,7 @@ export class DailyMenusController {
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, DailyMenu))
   public async create(@Body() createDailyMenuDto: CreateDailyMenuDto): Promise<DailyMenu> {
-    return await this.dailyMenuService.create({
-      ...createDailyMenuDto,
-      date: new Date(createDailyMenuDto.date),
-    });
+    return await this.dailyMenuService.create(createDailyMenuDto);
   }
 
   @Get()
@@ -48,18 +46,18 @@ export class DailyMenusController {
     return await this.dailyMenuService.findOne(date);
   }
 
-  @Patch(':date')
+  @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, DailyMenu))
   public async update(
-    @Param('date', ParseDatePipe) date: Date,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateDailyMenuDto: UpdateDailyMenuDto,
   ): Promise<DailyMenu> {
-    return await this.dailyMenuService.update(date, updateDailyMenuDto);
+    return await this.dailyMenuService.update(id, updateDailyMenuDto);
   }
 
-  @Delete(':date')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, DailyMenu))
-  public async remove(@Param('date', ParseDatePipe) date: Date): Promise<void> {
-    await this.dailyMenuService.remove(date);
+  public async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    await this.dailyMenuService.remove(id);
   }
 }

@@ -4,11 +4,11 @@ import {
   IsObject,
   IsOptional,
 } from 'class-validator';
-import { RegisterStatus } from '../../../shared/lib/types/enums/register-status.enum';
+import { TeamEventRegisterStatus } from '../../../shared/lib/types/enums/team-event-register-status.enum';
 
 export class CreateTeamEventRegistrationDto {
-  @IsEnum(RegisterStatus)
-  status!: RegisterStatus;
+  @IsEnum(TeamEventRegisterStatus)
+  status!: TeamEventRegisterStatus;
 
   @IsOptional()
   @IsInt()

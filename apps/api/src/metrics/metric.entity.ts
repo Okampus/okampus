@@ -24,9 +24,7 @@ export class Metric extends BaseEntity {
     createdAt: Date;
   }) {
     super();
-    this.createdAt = options.createdAt;
-    this.value = options.value;
-    this.name = options.name;
+    this.assign(options);
   }
 }
 

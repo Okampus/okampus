@@ -358,5 +358,6 @@ config.set('cookies.options', {
   signed: true,
   secure: config.get('nodeEnv') === 'production',
   httpOnly: true,
+  // eslint-disable-next-line no-undefined
   domain: config.get('nodeEnv') === 'production' ? `.${config.get('baseDomain')}` : undefined,
 });

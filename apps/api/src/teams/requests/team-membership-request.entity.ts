@@ -28,7 +28,7 @@ export class TeamMembershipRequest extends BaseEntity {
   user!: User;
 
   @Property({ type: 'json', nullable: true })
-  meta?: object;
+  meta: object | null = null;
 
   @Enum(() => MembershipRequestIssuer)
   issuer!: MembershipRequestIssuer;
@@ -41,22 +41,22 @@ export class TeamMembershipRequest extends BaseEntity {
   role = TeamRole.Member;
 
   @ManyToOne({ onDelete: 'CASCADE' })
-  handledBy?: User;
+  handledBy: User | null = null;
 
   @Property()
-  handledAt?: Date;
+  handledAt: Date | null = null;
 
   @Property({ type: 'text' })
-  handledMessage?: string;
+  handledMessage: string | null = null;
 
   @ManyToOne({ onDelete: 'CASCADE' })
   issuedBy!: User;
 
   @ManyToOne()
-  originalForm?: TeamForm | null;
+  originalForm: TeamForm | null = null;
 
   @Property({ type: 'json' })
-  formSubmission?: object | null;
+  formSubmission: object | null = null;
 
   constructor(options: {
     team: Team;
@@ -65,25 +65,11 @@ export class TeamMembershipRequest extends BaseEntity {
     issuedBy: User;
     originalForm?: TeamForm | null;
     formSubmission?: object | null;
-    meta?: object;
-    handledMessage?: string;
-    role?: TeamRole;
+    meta?: object | null;
+    handledMessage?: string | null;
+    role?: TeamRole | null;
   }) {
     super();
-    this.team = options.team;
-    this.user = options.user;
-    this.issuer = options.issuer;
-    this.issuedBy = options.issuedBy;
-
-    if (options.originalForm)
-      this.originalForm = options.originalForm;
-    if (options.formSubmission)
-      this.formSubmission = options.formSubmission;
-    if (options.meta)
-      this.meta = options.meta;
-    if (options.handledMessage)
-      this.handledMessage = options.handledMessage;
-    if (options.role)
-      this.role = options.role;
+    this.assign(options);
   }
 }

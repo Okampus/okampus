@@ -15,8 +15,8 @@ export class CreateStudyDocDto extends CreateFileUploadDto {
   @IsInt()
   year: number;
 
-  @IsString()
-  subject: string;
+  @IsInt()
+  subjectId: number;
 
   @IsEnum(Cursus)
   cursus: Cursus;

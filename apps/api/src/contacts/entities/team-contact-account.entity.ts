@@ -11,11 +11,11 @@ export class TeamContactAccount extends ContactAccount {
 
   constructor(options: {
     contact: Contact;
-    link?: string;
     pseudo: string;
     team: Team;
+    link?: string | null;
   }) {
     super(options);
-    this.team = options.team;
+    this.assign(options);
   }
 }

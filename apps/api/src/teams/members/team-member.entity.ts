@@ -39,9 +39,9 @@ export class TeamMember extends BaseEntity {
   @Enum(() => TeamRole)
   role!: TeamRole;
 
-  @Field()
+  @Field(() => String, { nullable: true })
   @Property()
-  roleLabel?: string;
+  roleLabel: string | null = null;
 
   @Field(() => GraphQLISODateTime)
   @Property()
@@ -51,12 +51,9 @@ export class TeamMember extends BaseEntity {
     user: User;
     team: Team;
     role: TeamRole;
-    roleLabel?: string;
+    roleLabel?: string | null;
   }) {
     super();
-    this.user = options.user;
-    this.team = options.team;
-    this.role = options.role;
-    this.roleLabel = options.roleLabel;
+    this.assign(options);
   }
 }

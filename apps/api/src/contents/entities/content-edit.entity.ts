@@ -42,9 +42,6 @@ export class ContentEdit extends BaseEntity {
     editOrder: number;
   }) {
     super();
-    this.body = options.body;
-    this.parent = options.parent;
-    this.editedBy = options.editedBy;
-    this.editOrder = options.editOrder;
+    this.assign(options);
   }
 }

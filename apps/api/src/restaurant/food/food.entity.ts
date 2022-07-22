@@ -16,24 +16,21 @@ export class Food extends BaseEntity {
   name!: string;
 
   @Property({ type: 'text' })
-  nutritionals?: string;
+  nutritionals: string | null = null;
 
   @Property({ type: 'text' })
-  allergens?: string;
+  allergens: string | null = null;
 
   @Enum(() => FoodType)
   type!: FoodType;
 
   constructor(options: {
     name: string;
-    nutritionals?: string;
-    allergens?: string;
     type: FoodType;
+    nutritionals?: string | null;
+    allergens?: string | null;
   }) {
     super();
-    this.name = options.name;
-    this.nutritionals = options.nutritionals;
-    this.allergens = options.allergens;
-    this.type = options.type;
+    this.assign(options);
   }
 }

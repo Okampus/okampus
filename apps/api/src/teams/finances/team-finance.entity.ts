@@ -30,7 +30,7 @@ export class TeamFinance extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  description?: string;
+  description: string | null = null;
 
   @Field(() => User)
   @ManyToOne()
@@ -43,7 +43,7 @@ export class TeamFinance extends BaseEntity {
 
   @Field(() => User, { nullable: true })
   @ManyToOne()
-  dueTo?: User | null;
+  dueTo: User | null = null;
 
   @Field(() => Number)
   @Property()
@@ -51,7 +51,7 @@ export class TeamFinance extends BaseEntity {
 
   @Field(() => TeamFinanceMean)
   @Enum(() => TeamFinanceMean)
-  mean: TeamFinanceMean;
+  mean!: TeamFinanceMean;
 
   @Field(() => TeamFinanceType)
   @Enum(() => TeamFinanceType)
@@ -63,11 +63,11 @@ export class TeamFinance extends BaseEntity {
 
   @Field(() => TeamEvent, { nullable: true })
   @ManyToOne()
-  event?: TeamEvent | null;
+  event: TeamEvent | null = null;
 
   @Field(() => TeamFile, { nullable: true })
   @OneToOne('TeamFile')
-  receipt?: TeamFile | null;
+  receipt: TeamFile | null = null;
 
   constructor(options: {
     title: string;
@@ -77,27 +77,12 @@ export class TeamFinance extends BaseEntity {
     mean: TeamFinanceMean;
     type: TeamFinanceType;
     category: TeamFinanceCategory;
-    description?: string;
-    dueTo?: User;
-    event?: TeamEvent;
-    receipt?: TeamFile;
+    description?: string | null;
+    dueTo?: User | null;
+    event?: TeamEvent | null;
+    receipt?: TeamFile | null;
   }) {
     super();
-    this.title = options.title;
-    this.createdBy = options.createdBy;
-    this.team = options.team;
-    this.amount = options.amount;
-    this.mean = options.mean;
-    this.type = options.type;
-    this.category = options.category;
-
-    if (options.description)
-      this.description = options.description;
-    if (options.dueTo)
-      this.dueTo = options.dueTo;
-    if (options.event)
-      this.event = options.event;
-    if (options.receipt)
-      this.receipt = options.receipt;
+    this.assign(options);
   }
 }

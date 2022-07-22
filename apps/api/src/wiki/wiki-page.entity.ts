@@ -22,13 +22,9 @@ export class WikiPage extends BaseEntity {
     title: string;
     body: string;
     category: string;
-    hidden?: boolean;
+    hidden?: boolean | null;
   }) {
     super();
-    this.title = options.title;
-    this.body = options.body;
-    this.category = options.category;
-    if (options.hidden)
-      this.hidden = options.hidden;
+    this.assign(options);
   }
 }

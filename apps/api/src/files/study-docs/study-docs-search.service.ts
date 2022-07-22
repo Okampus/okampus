@@ -15,7 +15,7 @@ export interface IndexedStudyDoc {
   subjectName: string;
   subjectEnglishName: string;
   year: number;
-  description?: string;
+  description: string | null;
   id: string;
   createdAt: string;
 }

@@ -13,16 +13,15 @@ export class Blog extends ContentMaster {
   category!: string;
 
   @Property({ type: 'text' })
-  locationName?: string;
+  locationName: string | null = null;
 
   @Property({ type: 'text' })
   @Transform(({ obj }: { obj: Blog }) => obj.location?.split(','))
-  location?: string;
+  location: string | null = null;
 
   @Property()
   locked = false;
 
-  // TODO: Add full 'draft' support
   @Property()
   isDraft = false;
 
@@ -32,16 +31,12 @@ export class Blog extends ContentMaster {
     slug: string;
     category: string;
     isDraft: boolean;
-    location?: [lat: number, lon: number];
-    locationName?: string;
+    location?: [lat: number, lon: number] | null;
+    locationName?: string | null;
   }) {
     super(options);
-    this.slug = options.slug;
-    this.category = options.category;
-    this.isDraft = options.isDraft;
+    this.assign(options);
     if (options.location)
       this.location = options.location.join(',');
-    if (options.locationName)
-      this.locationName = options.locationName;
   }
 }

@@ -19,34 +19,26 @@ export class DocSeries extends BaseEntity {
   name!: string;
 
   @Property({ type: 'text' })
-  englishName?: string;
+  englishName: string | null = null;
 
   @Property({ type: 'text' })
-  description?: string;
+  description: string | null = null;
 
   @ManyToMany()
   @TransformCollection()
   tags = new Collection<Tag>(this);
 
   // Whether all the docs within the docs series are obsolete
-  // TODO: Changing the isObsolete property of any document should require a validation/signature
   @Property()
-  isObsolete?: boolean;
+  isObsolete = false;
 
   constructor(options: {
     name: string;
-    englishName?: string;
-    description?: string;
-    isObsolete?: boolean;
+    englishName?: string | null;
+    description?: string | null;
+    isObsolete?: boolean | null;
   }) {
     super();
-    this.name = options.name;
-
-    if (options.englishName)
-      this.englishName = options.englishName;
-    if (options.description)
-      this.description = options.description;
-    if (options.isObsolete)
-      this.isObsolete = options.isObsolete;
+    this.assign(options);
   }
 }

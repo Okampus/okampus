@@ -20,10 +20,7 @@ export class Vote extends BaseContentInteraction {
     content: Content;
     value: -1 | 0 | 1;
   }) {
-    super();
-    this.content = options.content;
-    this.contentMaster = options.content.contentMaster;
-    this.user = options.user;
-    this.value = options.value;
+    super(options);
+    this.assign(options);
   }
 }

@@ -29,7 +29,7 @@ export class Thread extends ContentMaster {
 
   @Field(() => Validation, { nullable: true })
   @OneToOne()
-  opValidation?: Validation | null = null;
+  opValidation: Validation | null = null;
 
   @Field(() => [Validation])
   @OneToMany('Validation', 'contentMaster')
@@ -47,7 +47,6 @@ export class Thread extends ContentMaster {
     type: ThreadType;
   }) {
     super(options);
-    this.title = options.title;
-    this.type = options.type;
+    this.assign(options);
   }
 }

@@ -17,7 +17,7 @@ export class Statistics extends BaseEntity {
   postCount = 0;
 
   @Property()
-  lastPost?: Date;
+  lastPost: Date | null = null;
 
   @Property()
   postStreak = 0;
@@ -26,7 +26,7 @@ export class Statistics extends BaseEntity {
   replyCount = 0;
 
   @Property()
-  lastReply?: Date;
+  lastReply: Date | null = null;
 
   @Property()
   replyStreak = 0;
@@ -35,7 +35,7 @@ export class Statistics extends BaseEntity {
   commentCount = 0;
 
   @Property()
-  lastComment?: Date;
+  lastComment: Date | null = null;
 
   @Property()
   commentStreak = 0;
@@ -44,15 +44,17 @@ export class Statistics extends BaseEntity {
   uploadCount = 0;
 
   @Property()
-  lastAction?: Date;
+  lastAction: Date | null = null;
 
   @Property()
   actionStreak = 0;
 
   [PrimaryKeyType]: number;
 
-  constructor(options: { user: User }) {
+  constructor(options: {
+    user: User;
+  }) {
     super();
-    this.user = options.user;
+    this.assign(options);
   }
 }

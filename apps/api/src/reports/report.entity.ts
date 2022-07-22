@@ -24,7 +24,7 @@ export class Report extends BaseContentInteraction {
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  reason?: string;
+  reason: string | null = null;
 
   constructor(options: {
     user: User;
@@ -32,12 +32,7 @@ export class Report extends BaseContentInteraction {
     content: Content;
     reason?: string | null;
   }) {
-    super();
-    this.content = options.content;
-    this.contentMaster = options.content.contentMaster;
-    this.user = options.user;
-    this.target = options.target;
-    if (options.reason)
-      this.reason = options.reason;
+    super(options);
+    this.assign(options);
   }
 }

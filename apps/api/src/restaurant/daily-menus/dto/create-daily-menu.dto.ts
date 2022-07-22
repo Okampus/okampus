@@ -1,19 +1,10 @@
-import { IsArray, IsInt, Matches } from 'class-validator';
-import { iso8601Regex } from '../../../shared/lib/utils/iso-8601-date';
+import { IsArray, IsDate, IsInt } from 'class-validator';
 
 export class CreateDailyMenuDto {
-  @Matches(iso8601Regex, { message: 'date must be in format YYYY-MM-DD' })
-  date: string;
+  @IsDate()
+  date: Date;
 
   @IsArray()
   @IsInt({ each: true })
-  starters: number[];
-
-  @IsArray()
-  @IsInt({ each: true })
-  dishes: number[];
-
-  @IsArray()
-  @IsInt({ each: true })
-  desserts: number[];
+  food: number[];
 }

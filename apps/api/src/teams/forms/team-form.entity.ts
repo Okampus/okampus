@@ -23,9 +23,9 @@ export class TeamForm extends BaseEntity {
   @Property()
   name!: string;
 
-  @Field()
+  @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  description?: string;
+  description: string | null = null;
 
   @Field(() => JSONObjectResolver)
   @Property({ type: 'json' })
@@ -42,7 +42,7 @@ export class TeamForm extends BaseEntity {
 
   @Field()
   @Property()
-  isTemplate: boolean;
+  isTemplate!: boolean;
 
   constructor(options: {
     name: string;
@@ -50,16 +50,9 @@ export class TeamForm extends BaseEntity {
     isTemplate: boolean;
     createdBy: User;
     team: Team;
-    description?: string;
+    description?: string | null;
   }) {
     super();
-    this.name = options.name;
-    this.form = options.form;
-    this.createdBy = options.createdBy;
-    this.team = options.team;
-    this.isTemplate = options.isTemplate;
-
-    if (options.description)
-      this.description = options.description;
+    this.assign(options);
   }
 }

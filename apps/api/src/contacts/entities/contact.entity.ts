@@ -4,7 +4,7 @@ import { BaseEntity } from '../../shared/lib/entities/base.entity';
 @Entity()
 export class Contact extends BaseEntity {
   @PrimaryKey()
-  id: number;
+  id!: number;
 
   @Property()
   name!: string;
@@ -17,7 +17,6 @@ export class Contact extends BaseEntity {
     icon: string;
   }) {
     super();
-    this.name = options.name;
-    this.icon = options.icon;
+    this.assign(options);
   }
 }

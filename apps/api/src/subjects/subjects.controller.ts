@@ -57,19 +57,19 @@ export class SubjectsController {
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Subject))
-  public async findOne(@Param('id') id: string): Promise<Subject> {
+  public async findOne(@Param('id') id: number): Promise<Subject> {
     return await this.subjectsService.findOne(id);
   }
 
   @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Subject))
-  public async update(@Param('id') id: string, @Body() updateSubjectDto: UpdateSubjectDto): Promise<Subject> {
+  public async update(@Param('id') id: number, @Body() updateSubjectDto: UpdateSubjectDto): Promise<Subject> {
     return await this.subjectsService.update(id, updateSubjectDto);
   }
 
   @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, Subject))
-  public async remove(@Param('id') id: string): Promise<void> {
+  public async remove(@Param('id') id: number): Promise<void> {
     await this.subjectsService.remove(id);
   }
 }

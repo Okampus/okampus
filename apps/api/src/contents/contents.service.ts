@@ -307,7 +307,7 @@ export class ContentsService {
       ...createContentDto,
       kind,
       contentMaster: parent instanceof Content ? parent.contentMaster : parent,
-      parent: parent instanceof Content ? parent : undefined,
+      parent: parent instanceof Content ? parent : null,
       author: user,
     });
 

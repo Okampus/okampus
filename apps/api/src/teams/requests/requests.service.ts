@@ -157,7 +157,7 @@ export class TeamMembershipRequestsService {
 
     request.handledBy = user;
     request.handledAt = new Date();
-    request.handledMessage = updateTeamMembershipRequestDto.handledMessage;
+    request.handledMessage = updateTeamMembershipRequestDto.handledMessage ?? null;
     request.state = updateTeamMembershipRequestDto.state;
     await this.teamMembershipRequestRepository.flush();
 

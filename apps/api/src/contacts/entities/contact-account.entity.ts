@@ -8,6 +8,7 @@ import {
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { Contact } from './contact.entity';
 
+
 @Entity({
   discriminatorColumn: 'kind',
   abstract: true,
@@ -23,19 +24,17 @@ export abstract class ContactAccount extends BaseEntity {
   contact!: Contact;
 
   @Property({ type: 'text' })
-  link?: string;
+  link: string | null = null;
 
   @Property({ type: 'text' })
   pseudo!: string;
 
   constructor(options: {
     contact: Contact;
-    link?: string;
     pseudo: string;
+    link?: string | null;
   }) {
     super();
-    this.contact = options.contact;
-    this.link = options.link;
-    this.pseudo = options.pseudo;
+    this.assign(options);
   }
 }

@@ -14,8 +14,8 @@ export interface IndexedInfoDoc {
   user: string;
   name: string;
   year: number;
-  schoolYear?: string;
-  description?: string;
+  schoolYear: string | null;
+  description: string | null;
   id: string;
   createdAt: string;
 }
@@ -87,7 +87,7 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
       user: infoDoc.file.user.id,
       name: infoDoc.file.name,
       year: infoDoc.year,
-      schoolYear: infoDoc.schoolYear ? SchoolYear[infoDoc.schoolYear] : undefined,
+      schoolYear: infoDoc.schoolYear ? SchoolYear[infoDoc.schoolYear] : null,
       description: infoDoc.description,
       id: infoDoc.id,
       createdAt: infoDoc.createdAt.toString(),

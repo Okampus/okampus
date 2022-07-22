@@ -9,7 +9,7 @@ import {
 import { nanoid } from 'nanoid';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
-import { DocSeries } from '../doc-series/doc-series.entity';
+import type { DocSeries } from '../doc-series/doc-series.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 
 @Entity()
@@ -21,16 +21,16 @@ export class InfoDoc extends BaseEntity {
   file!: FileUpload;
 
   @ManyToOne({ onDelete: 'CASCADE' })
-  docSeries?: DocSeries;
+  docSeries: DocSeries | null = null;
 
   @Property()
-  year: number;
+  year!: number;
 
   @Enum(() => SchoolYear)
-  schoolYear?: SchoolYear;
+  schoolYear: SchoolYear | null = null;
 
   @Property({ type: 'text' })
-  description?: string;
+  description: string | null = null;
 
   // Whether the info of an infoDoc is now invalid (the document now acts as an archive or latest known infoDoc)
   // TODO: Changing the isObsolete property of any document should require a validation/signature
@@ -39,22 +39,13 @@ export class InfoDoc extends BaseEntity {
 
   constructor(options: {
     file: FileUpload;
-    docSeries?: DocSeries | null;
-    schoolYear?: number;
     year: number;
-    description?: string;
-    isObsolete?: boolean;
+    docSeries?: DocSeries | null;
+    schoolYear?: number | null;
+    description?: string | null;
+    isObsolete?: boolean | null;
   }) {
     super();
-    this.file = options.file;
-    this.year = options.year;
-    if (options.docSeries)
-      this.docSeries = options.docSeries;
-    if (options.schoolYear)
-      this.schoolYear = options.schoolYear;
-    if (options.description)
-      this.description = options.description;
-    if (options.isObsolete)
-      this.isObsolete = options.isObsolete;
+    this.assign(options);
   }
 }

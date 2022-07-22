@@ -5,7 +5,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { RegisterStatus } from '../../../shared/lib/types/enums/register-status.enum';
+import { TeamEventRegisterStatus } from '../../../shared/lib/types/enums/team-event-register-status.enum';
 import { PaginateDto } from '../../../shared/modules/pagination';
 
 export class ListRegisteredEventsDto extends PartialType(PaginateDto) {
@@ -18,6 +18,6 @@ export class ListRegisteredEventsDto extends PartialType(PaginateDto) {
   userId?: string;
 
   @IsOptional()
-  @IsEnum(RegisterStatus)
-  status?: RegisterStatus;
+  @IsEnum(TeamEventRegisterStatus)
+  status?: TeamEventRegisterStatus;
 }

@@ -16,7 +16,7 @@ export class VotesService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async findOne(user: User, id: number): Promise<Vote> {
+  public async findOne(user: User, id: number): Promise<Omit<Vote, 'assign'>> {
     const content = await this.contentRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -29,6 +29,7 @@ export class VotesService {
       value: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
+      contentMaster: null,
     };
   }
 

@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -28,10 +29,7 @@ export class DailyInfoController {
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, DailyInfo))
   public async create(@Body() createDailyInfoDto: CreateDailyInfoDto): Promise<DailyInfo> {
-    return await this.dailyInfoService.create({
-      ...createDailyInfoDto,
-      date: new Date(createDailyInfoDto.date),
-    });
+    return await this.dailyInfoService.create(createDailyInfoDto);
   }
 
   @Get()
@@ -46,18 +44,18 @@ export class DailyInfoController {
     return await this.dailyInfoService.findOne(date);
   }
 
-  @Patch(':date')
+  @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, DailyInfo))
   public async update(
-    @Param('date', ParseDatePipe) date: Date,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateDailyInfoDto: UpdateDailyInfoDto,
   ): Promise<DailyInfo> {
-    return await this.dailyInfoService.update(date, updateDailyInfoDto);
+    return await this.dailyInfoService.update(id, updateDailyInfoDto);
   }
 
-  @Delete(':date')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, DailyInfo))
-  public async remove(@Param('date', ParseDatePipe) date: Date): Promise<void> {
-    await this.dailyInfoService.remove(date);
+  public async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    await this.dailyInfoService.remove(id);
   }
 }

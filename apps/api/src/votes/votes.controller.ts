@@ -37,7 +37,7 @@ export class VotesController {
   public async findAll(
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<Vote> {
+  ): Promise<Omit<Vote, 'assign'>> {
     return await this.votesService.findOne(user, id);
   }
 }

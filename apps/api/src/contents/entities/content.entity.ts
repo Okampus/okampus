@@ -49,7 +49,7 @@ export class Content extends BaseEntity {
 
   @Field(() => Int)
   @Property()
-  @Transform(({ obj }: { obj: Content }) => (obj.kind === ContentKind.Comment ? undefined : obj.downvoteCount))
+  @Transform(({ obj }: { obj: Content }) => (obj.kind === ContentKind.Comment ? null : obj.downvoteCount))
   downvoteCount = 0;
 
   @Field(() => Int)
@@ -89,19 +89,19 @@ export class Content extends BaseEntity {
   @Index()
   kind!: ContentKind;
 
-  @Field(() => Content)
+  @Field(() => Content, { nullable: true })
   @ManyToOne({ onDelete: 'CASCADE' })
   @Transform(({ obj }: { obj: Content }) => ({ id: obj.parent?.id, kind: obj.parent?.kind }))
-  parent?: Content;
+  parent: Content | null = null;
 
   @Field(() => [ContentEdit], { nullable: true })
   @OneToMany('ContentEdit', 'parent')
   @TransformCollection()
   edits = new Collection<ContentEdit>(this);
 
-  @Field(() => ContentMaster)
+  @Field(() => ContentMaster, { nullable: true })
   @ManyToOne({ onDelete: 'CASCADE' })
-  contentMaster?: ContentMaster;
+  contentMaster: ContentMaster | null = null;
 
   @Field(() => Boolean)
   @Property()
@@ -111,25 +111,19 @@ export class Content extends BaseEntity {
   @Property()
   isVisible = true;
 
-  @Field(() => ContentEdit)
+  @Field(() => ContentEdit, { nullable: true })
   @OneToOne()
-  lastEdit?: ContentEdit;
+  lastEdit: ContentEdit | null = null;
 
   constructor(options: {
     body: string;
     author: User;
     kind: ContentKind;
-    contentMaster?: ContentMaster;
-    parent?: Content;
+    contentMaster?: ContentMaster | null;
+    parent?: Content | null;
   }) {
     super();
-    this.body = options.body;
-    this.author = options.author;
-    this.kind = options.kind;
-    if (options.contentMaster)
-      this.contentMaster = options.contentMaster;
-    if (options.parent)
-      this.parent = options.parent;
+    this.assign(options);
   }
 
   @BeforeUpdate()

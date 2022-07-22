@@ -1,4 +1,4 @@
-export enum RegisterStatus {
+export enum TeamEventRegisterStatus {
   Sure = 'sure',
   Maybe = 'maybe',
   NotSure = 'notsure',

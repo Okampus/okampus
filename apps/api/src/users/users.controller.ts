@@ -84,7 +84,7 @@ export class UsersController {
   }
 
   @Get('/:id/statistics')
-  public async getUserStats(@Param('id') id: string): Promise<Statistics | null> {
+  public async getUserStats(@Param('id') id: string): Promise<Omit<Statistics, 'assign'> | null> {
     return await this.usersService.getUserStats(id);
   }
 

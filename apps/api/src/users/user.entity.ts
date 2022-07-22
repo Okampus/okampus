@@ -33,7 +33,7 @@ import type { Vote } from '../votes/vote.entity';
 export class User extends BaseEntity {
   @Field()
   @PrimaryKey()
-  id: string;
+  id!: string;
 
   @Field()
   @Property({ type: 'text' })
@@ -44,7 +44,7 @@ export class User extends BaseEntity {
   lastname!: string;
 
   @Property({ type: 'text', hidden: true })
-  password?: string;
+  password: string | null = null;
 
   @Field()
   @Property({ type: 'text' })
@@ -62,7 +62,7 @@ export class User extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  avatar?: string | null;
+  avatar: string | null = null;
 
   @Field(() => [Role], { nullable: true })
   @Enum({ items: () => Role, array: true, default: [Role.User] })
@@ -72,28 +72,28 @@ export class User extends BaseEntity {
   @Enum(() => SchoolRole)
   schoolRole!: SchoolRole;
 
-  @Field()
+  @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  color?: string;
-
-  @Field()
-  @Property({ type: 'text' })
-  signature?: string;
+  color: string | null = null;
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  banner?: string | null;
+  signature: string | null = null;
 
-  @Field()
+  @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  shortDescription?: string;
+  banner: string | null = null;
+
+  @Field(() => String, { nullable: true })
+  @Property({ type: 'text' })
+  shortDescription: string | null = null;
 
   @OneToOne('Statistics', 'user', { cascade: [Cascade.ALL] })
-  statistics: Statistics;
+  statistics!: Statistics;
 
   @Field(() => Settings)
   @OneToOne('Settings', 'user', { cascade: [Cascade.ALL] })
-  settings: Settings;
+  settings!: Settings;
 
   @OneToMany('Reaction', 'user', { cascade: [Cascade.ALL] })
   @TransformCollection()
@@ -117,19 +117,7 @@ export class User extends BaseEntity {
 
   constructor(options: Omit<UserCreationOptions, 'avatar' | 'banner' | 'password'>) {
     super();
-    this.id = options.id;
-    this.email = options.email;
-    this.firstname = options.firstname;
-    this.lastname = options.lastname;
-    this.schoolRole = options.schoolRole;
-    if (options.roles)
-      this.roles = options.roles;
-    if (options.color)
-      this.color = options.color;
-    if (options.signature)
-      this.signature = options.signature;
-    if (options.shortDescription)
-      this.shortDescription = options.shortDescription;
+    this.assign(options);
   }
 
   public async setPassword(password: string): Promise<void> {

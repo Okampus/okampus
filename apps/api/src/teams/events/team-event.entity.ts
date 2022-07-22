@@ -63,7 +63,7 @@ export class TeamEvent extends BaseEntity {
 
   @Field(() => User, { nullable: true })
   @ManyToOne()
-  supervisor?: User;
+  supervisor: User | null = null;
 
   @Field(() => Boolean)
   @Property()
@@ -76,11 +76,11 @@ export class TeamEvent extends BaseEntity {
 
   @Field(() => TeamForm, { nullable: true })
   @OneToOne({ cascade: [Cascade.ALL] })
-  form?: TeamForm | null = null;
+  form: TeamForm | null = null;
 
   @Field(() => TeamEvent, { nullable: true })
   @ManyToOne()
-  usedTemplate?: TeamEvent | null = null;
+  usedTemplate: TeamEvent | null = null;
 
   @Field(() => JSONObjectResolver)
   @Property({ type: 'json' })
@@ -94,37 +94,16 @@ export class TeamEvent extends BaseEntity {
     createdBy: User;
     team: Team;
     place: string;
-    usedTemplate?: TeamEvent;
-    meta?: object;
-    form?: TeamForm;
-    state?: TeamEventState;
-    price?: number;
-    supervisor?: User;
-    private?: boolean;
+    usedTemplate?: TeamEvent | null;
+    meta?: object | null;
+    form?: TeamForm | null;
+    state?: TeamEventState | null;
+    price?: number | null;
+    supervisor?: User | null;
+    private?: boolean | null;
   }) {
     super();
-    this.start = options.start;
-    this.end = options.end;
-    this.name = options.name;
-    this.description = options.description;
-    this.createdBy = options.createdBy;
-    this.team = options.team;
-    this.place = options.place;
-
-    if (options.usedTemplate)
-      this.usedTemplate = options.usedTemplate;
-    if (options.meta)
-      this.meta = options.meta;
-    if (options.form)
-      this.form = options.form;
-    if (options.state)
-      this.state = options.state;
-    if (typeof options.price !== 'undefined')
-      this.price = options.price;
-    if (options.supervisor)
-      this.supervisor = options.supervisor;
-    if (typeof options.private !== 'undefined')
-      this.private = options.private;
+    this.assign(options);
   }
 
   public canEdit(user: User): boolean {

@@ -1,8 +1,10 @@
 import {
   Entity,
   Enum,
+  Index,
   PrimaryKey,
   Property,
+  Unique,
 } from '@mikro-orm/core';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { SchoolYear } from '../shared/lib/types/enums/school-year.enum';
@@ -10,7 +12,12 @@ import { SchoolYear } from '../shared/lib/types/enums/school-year.enum';
 @Entity()
 export class Subject extends BaseEntity {
   @PrimaryKey()
-  id!: string;
+  id!: number;
+
+  @Property()
+  @Index()
+  @Unique()
+  code!: string;
 
   @Property({ type: 'text' })
   name!: string;
@@ -19,24 +26,18 @@ export class Subject extends BaseEntity {
   englishName!: string;
 
   @Property({ type: 'text' })
-  description?: string;
+  description: string | null = null;
 
   @Enum(() => SchoolYear)
   schoolYear!: SchoolYear;
 
   constructor(options: {
-    id: string;
     name: string;
     englishName: string;
     schoolYear: SchoolYear;
-    description?: string;
+    description?: string | null;
   }) {
     super();
-    this.id = options.id;
-    this.name = options.name;
-    this.englishName = options.englishName;
-    this.schoolYear = options.schoolYear;
-    if (options.description)
-      this.description = options.description;
+    this.assign(options);
   }
 }

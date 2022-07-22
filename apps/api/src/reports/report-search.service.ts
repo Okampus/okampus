@@ -13,8 +13,8 @@ import { Report } from './report.entity';
 export interface IndexedReport {
   user: string;
   target: string;
-  reason?: string;
-  body?: string;
+  reason: string | null;
+  body: string | null;
   id: string;
   createdAt: string;
 }
@@ -85,7 +85,7 @@ export class ReportSearchService extends SearchService<Report, IndexedReport> {
       user: report.user.id,
       target: report.target.id,
       reason: report.reason,
-      body: report.content ? removeMarkdown(report.content.body) : undefined,
+      body: report.content ? removeMarkdown(report.content.body) : null,
       id: report.id.toString(),
       createdAt: report.createdAt.toString(),
     };

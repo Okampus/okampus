@@ -46,7 +46,7 @@ export class FileUpload extends BaseEntity {
 
   @Field(() => String)
   @Property({ type: 'text' })
-  url: string;
+  url!: string;
 
   @Field(() => Boolean)
   @Property()
@@ -66,13 +66,7 @@ export class FileUpload extends BaseEntity {
     url: string;
   }) {
     super();
-    this.user = options.user;
-    this.name = options.name;
-    this.fileSize = options.fileSize;
-    this.mimeType = options.mimeType;
-    this.url = options.url;
-    this.fileLastModifiedAt = options.fileLastModifiedAt;
-    this.fileKind = options.fileKind;
+    this.assign(options);
   }
 
   public getPath(): string {

@@ -15,8 +15,8 @@ export interface IndexedSubject {
   name: string;
   englishName: string;
   schoolYear: string;
-  description?: string;
-  id: string;
+  description: string | null;
+  id: number;
 }
 
 @Injectable()
@@ -69,7 +69,7 @@ export class SubjectSearchService extends SearchService<Subject, IndexedSubject>
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
-      const ids = results.hits.map(hit => hit.document.id);
+      const ids = results.hits.map(hit => Number(hit.document.id));
       const subjects = await this.subjectRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
         // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedSubject.id and
@@ -82,7 +82,7 @@ export class SubjectSearchService extends SearchService<Subject, IndexedSubject>
 
   public toIndexedEntity(subject: Subject): IndexedSubject {
     return {
-      code: subject.id,
+      code: subject.code,
       name: subject.name,
       englishName: subject.englishName,
       schoolYear: SchoolYear[subject.schoolYear],

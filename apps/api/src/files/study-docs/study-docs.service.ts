@@ -33,7 +33,7 @@ export class StudyDocsService {
   ) {}
 
   public async create(createStudyDocDto: CreateStudyDocDto, file: FileUpload): Promise<StudyDoc> {
-    const subject = await this.subjectRepository.findOneOrFail({ id: createStudyDocDto.subject });
+    const subject = await this.subjectRepository.findOneOrFail({ id: createStudyDocDto.subjectId });
 
     const docSeries = await this.docSeriesRepository.findOne({ id: createStudyDocDto.docSeries });
     const studyDoc = new StudyDoc({
@@ -104,7 +104,7 @@ export class StudyDocsService {
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, studyDoc);
 
-    const subject = await this.subjectRepository.findOneOrFail({ id: updateCourseDto.subject });
+    const subject = await this.subjectRepository.findOneOrFail({ id: updateCourseDto.subjectId });
     const docSeries = await this.docSeriesRepository.findOneOrFail({ id: updateCourseDto.docSeries });
 
     wrap(studyDoc).assign({ ...updateCourseDto, subject, docSeries });

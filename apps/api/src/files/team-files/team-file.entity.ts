@@ -34,19 +34,15 @@ export class TeamFile extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  description?: string;
+  description: string | null = null;
 
   constructor(options: {
     team: Team;
     file: FileUpload;
     type: TeamFileType;
-    description?: string;
+    description?: string | null;
   }) {
     super();
-    this.file = options.file;
-    this.team = options.team;
-    this.type = options.type;
-    if (options.description)
-      this.description = options.description;
+    this.assign(options);
   }
 }

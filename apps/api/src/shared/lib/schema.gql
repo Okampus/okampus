@@ -36,7 +36,6 @@ type BadgeUnlock {
   badge: Badge!
   createdAt: DateTime!
   id: Int!
-  unlockDate: DateTime!
   updatedAt: DateTime!
   user: User!
 }
@@ -70,7 +69,7 @@ type Content {
   author: User!
   body: String!
   children: [Content!]!
-  contentMaster: ContentMaster!
+  contentMaster: ContentMaster
   createdAt: DateTime!
   downvoteCount: Int!
   edits: [ContentEdit!]
@@ -80,8 +79,8 @@ type Content {
   interactions: ContentInteractions!
   isVisible: Boolean!
   kind: ContentKind!
-  lastEdit: ContentEdit!
-  parent: Content!
+  lastEdit: ContentEdit
+  parent: Content
   replyCount: Int!
   reportCount: Int!
   totalVoteCount: Int!
@@ -230,7 +229,7 @@ type Query {
 
 type Reaction {
   content: Content!
-  contentMaster: ContentMaster!
+  contentMaster: ContentMaster
   createdAt: DateTime!
   id: Int!
   updatedAt: DateTime!
@@ -240,7 +239,7 @@ type Reaction {
 
 type Report {
   content: Content!
-  contentMaster: ContentMaster!
+  contentMaster: ContentMaster
   createdAt: DateTime!
   id: Int!
   reason: String
@@ -313,7 +312,8 @@ type Subscription {
 type Tag {
   color: Colors!
   createdAt: DateTime!
-  description: String!
+  description: String
+  id: Int!
   name: String!
   updatedAt: DateTime!
 }
@@ -325,13 +325,13 @@ type Team {
   createdAt: DateTime!
   id: Int!
   kind: TeamKind!
-  longDescription: String!
+  longDescription: String
   members: [TeamMember!]!
   membershipRequestForm: TeamForm
   membershipRequestLink: String
   membershipRequestMessage: String
   name: String!
-  shortDescription: String!
+  shortDescription: String
   tags: [String!]!
   updatedAt: DateTime!
 }
@@ -435,7 +435,7 @@ input TeamFinancesFilterDto {
 type TeamForm {
   createdAt: DateTime!
   createdBy: User!
-  description: String!
+  description: String
   form: JSONObject!
   id: Int!
   isTemplate: Boolean!
@@ -454,7 +454,7 @@ type TeamMember {
   id: Int!
   joinDate: DateTime!
   role: TeamRole!
-  roleLabel: String!
+  roleLabel: String
   team: Team!
   updatedAt: DateTime!
   user: User!
@@ -570,7 +570,7 @@ type User {
   avatar: String
   badges: [BadgeUnlock!]
   banner: String
-  color: String!
+  color: String
   createdAt: DateTime!
   email: String!
   firstname: String!
@@ -581,15 +581,15 @@ type User {
   roles: [Role!]
   schoolRole: SchoolRole!
   settings: Settings!
-  shortDescription: String!
-  signature: String!
+  shortDescription: String
+  signature: String
   updatedAt: DateTime!
 }
 
 type Validation {
   active: Boolean!
   content: Content!
-  contentMaster: ContentMaster!
+  contentMaster: ContentMaster
   createdAt: DateTime!
   id: Int!
   type: ValidationType!

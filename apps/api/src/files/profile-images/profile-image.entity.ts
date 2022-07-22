@@ -19,18 +19,18 @@ export class ProfileImage extends BaseEntity {
   file!: FileUpload;
 
   @ManyToOne({ onDelete: 'CASCADE' })
-  user?: User | null;
+  user: User | null = null;
 
   @ManyToOne({ onDelete: 'CASCADE' })
-  team?: Team | null;
+  team: Team | null = null;
 
-  constructor(options: { file: FileUpload; user?: User; team?: Team }) {
+  constructor(options: {
+    file: FileUpload;
+    user?: User | null;
+    team?: Team | null;
+  }) {
     super();
-    this.file = options.file;
-    if (options.user)
-      this.user = options.user;
-    if (options.team)
-      this.team = options.team;
+    this.assign(options);
   }
 
   public isAvailableFor(type: 'team' | 'user', id?: number | string): boolean {

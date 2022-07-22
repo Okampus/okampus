@@ -21,16 +21,16 @@ export class Announcement extends BaseEntity {
   shortDescription!: string;
 
   @Property({ type: 'text' })
-  longDescription?: string;
+  longDescription: string | null = null;
 
   @Enum(() => AnnouncementState)
   state: AnnouncementState = AnnouncementState.Draft;
 
   @Property()
-  displayFrom: Date;
+  displayFrom!: Date;
 
   @Property()
-  displayUntil: Date;
+  displayUntil!: Date;
 
   @Property({ type: 'smallint' })
   priority!: number;
@@ -45,20 +45,10 @@ export class Announcement extends BaseEntity {
     priority: number;
     displayFrom: Date;
     displayUntil: Date;
-    state?: AnnouncementState;
-    longDescription?: string;
+    state?: AnnouncementState | null;
+    longDescription?: string | null;
   }) {
     super();
-    this.title = options.title;
-    this.shortDescription = options.shortDescription;
-    this.createdBy = options.createdBy;
-    this.priority = options.priority;
-    this.displayFrom = options.displayFrom;
-    this.displayUntil = options.displayUntil;
-
-    if (options.state)
-      this.state = options.state;
-    if (options.longDescription)
-      this.longDescription = options.longDescription;
+    this.assign(options);
   }
 }

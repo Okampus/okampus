@@ -3,14 +3,8 @@ import {
   Index,
   ManyToOne,
   PrimaryKey,
-  Property,
 } from '@mikro-orm/core';
-import {
-  Field,
-  GraphQLISODateTime,
-  Int,
-  ObjectType,
-} from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 // eslint-disable-next-line import/no-cycle
 import { User } from '../../users/user.entity';
@@ -32,16 +26,11 @@ export class BadgeUnlock extends BaseEntity {
   @ManyToOne({ onDelete: 'CASCADE' })
   badge!: Badge;
 
-  @Field(() => GraphQLISODateTime)
-  @Property()
-  unlockDate = new Date();
-
   constructor(options: {
     user: User;
     badge: Badge;
   }) {
     super();
-    this.user = options.user;
-    this.badge = options.badge;
+    this.assign(options);
   }
 }
