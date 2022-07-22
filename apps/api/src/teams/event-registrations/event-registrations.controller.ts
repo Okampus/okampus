@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
@@ -18,6 +19,7 @@ import { User } from '../../users/user.entity';
 import { TeamEvent } from '../events/team-event.entity';
 import { CreateTeamEventRegistrationDto } from './dto/create-team-event-registration.dto';
 import { ListRegisteredEventsDto } from './dto/list-registered-events.dto';
+import { UpdateTeamEventRegistrationDto } from './dto/update-team-event-registration.dto';
 import { TeamEventRegistrationsService } from './event-registrations.service';
 import type { TeamEventRegistration } from './team-event-registration.entity';
 
@@ -57,6 +59,16 @@ export class TeamEventRegistrationsController {
     @CurrentUser() user: User,
   ): Promise<TeamEventRegistration> {
     return await this.eventRegistrationsService.findOne(user, id);
+  }
+
+  @Patch(':id')
+  @CheckPolicies(ability => ability.can(Action.Read, TeamEvent))
+  public async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateTeamEventRegistrationDto: UpdateTeamEventRegistrationDto,
+    @CurrentUser() user: User,
+  ): Promise<TeamEventRegistration> {
+    return await this.eventRegistrationsService.update(user, id, updateTeamEventRegistrationDto);
   }
 
   @Delete(':id')

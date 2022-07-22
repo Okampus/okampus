@@ -1,4 +1,5 @@
 import type { FilterQuery } from '@mikro-orm/core';
+import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
@@ -10,6 +11,7 @@ import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
 import type { CreateTeamEventRegistrationDto } from './dto/create-team-event-registration.dto';
 import type { ListRegisteredEventsDto } from './dto/list-registered-events.dto';
+import type { UpdateTeamEventRegistrationDto } from './dto/update-team-event-registration.dto';
 import { TeamEventRegistration } from './team-event-registration.entity';
 
 @Injectable()
@@ -121,18 +123,35 @@ export class TeamEventRegistrationsService {
     return registration;
   }
 
-  public async remove(user: User, id: number): Promise<void> {
-    const registration = await this.teamEventRegistrationRepository.findOneOrFail({ id });
-    const event = await this.teamEventRepository.findOneOrFail(
-      { id: registration.event.id },
-      { populate: ['team', 'team.members'] },
+  public async update(
+    user: User,
+    id: number,
+    updateTeamEventRegistrationDto: UpdateTeamEventRegistrationDto,
+  ): Promise<TeamEventRegistration> {
+    const registration = await this.teamEventRegistrationRepository.findOneOrFail(
+      { id },
+      { populate: ['user', 'event', 'event.team', 'event.team.members'] },
     );
 
-    if (
-      !event.team.canAdminister(user)
-      && event.createdBy.id !== user.id
-      && registration.user.id !== user.id
-    )
+    if ('present' in updateTeamEventRegistrationDto || 'participationScore' in updateTeamEventRegistrationDto) {
+      if (!registration.event.canEdit(user))
+        throw new ForbiddenException('Not a team admin');
+      if (registration.event.start.getTime() > Date.now())
+        throw new BadRequestException('Event not started');
+    }
+
+    wrap(registration).assign(updateTeamEventRegistrationDto);
+
+    return registration;
+  }
+
+  public async remove(user: User, id: number): Promise<void> {
+    const registration = await this.teamEventRegistrationRepository.findOneOrFail(
+      { id },
+      { populate: ['event.team', 'event.team.members'] },
+    );
+
+    if (!registration.event.canEdit(user) && registration.user.id !== user.id)
       throw new ForbiddenException('Cannot unregister');
 
     await this.teamEventRegistrationRepository.removeAndFlush(registration);
@@ -154,12 +173,11 @@ export class TeamEventRegistrationsService {
       return { formSubmission, originalForm: form };
     }
 
-    // Step 3 + Step 4 + Step 5 — We cannot update the form submission / original form individually,
-    // and even less if there is a required form
+    // We cannot update the form submission / original form individually and even less if there is a required form
     if (teamForm || askedFormId || formSubmission)
       throw new BadRequestException('Invalid form entries');
 
-    // Step 6 — Either one of form submission / original form are all null, so we set them all to null
+    // Either one of form submission / original form are all null, so we set them all to null
     return { formSubmission: null, originalForm: null };
   }
 }

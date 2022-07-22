@@ -25,6 +25,12 @@ export class TeamEventRegistration extends BaseEntity {
   @Enum(() => TeamEventRegisterStatus)
   status!: TeamEventRegisterStatus;
 
+  @Property()
+  present = false;
+
+  @Property()
+  participationScore = 0;
+
   @ManyToOne()
   originalForm: TeamForm | null = null;
 
