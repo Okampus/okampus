@@ -92,11 +92,14 @@ export class TeamEventRegistrationsService {
       // if (!event.canEdit(user))
       //   throw new ForbiddenException('Cannot view registrations');
       filter = { ...filter, event: { id: query.eventId } };
-    } else if (query.userId && (user.roles.includes(Role.ClubManager) || user.roles.includes(Role.Admin))) {
+    } else if (query.userId && [Role.Moderator, Role.ClubManager, Role.Admin].some(role => user.roles.includes(role))) {
       filter = { ...filter, user: { id: query.userId } };
     } else {
       filter = { ...filter, user };
     }
+
+    if (typeof query.present === 'boolean')
+      filter = { ...filter, present: query.present };
 
     return await this.teamEventRegistrationRepository.findWithPagination(
       options,

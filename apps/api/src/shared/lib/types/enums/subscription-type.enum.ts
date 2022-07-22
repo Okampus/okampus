@@ -7,6 +7,8 @@ export enum SubscriptionType {
   TeamUpdated = 'teamUpdated',
   TeamFinanceAdded = 'teamFinanceAdded',
   TeamFinanceUpdated = 'teamFinanceUpdated',
+  TeamEventRegistrationAdded = 'teamEventRegistrationAdded',
+  TeamEventRegistrationUpdated = 'teamEventRegistrationUpdated',
   ThreadAdded = 'threadAdded',
   ThreadUpdated = 'threadUpdated',
   VoteUpdated = 'voteUpdated',

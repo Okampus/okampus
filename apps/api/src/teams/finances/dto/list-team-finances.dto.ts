@@ -1,11 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import {
-  Field,
-  InputType,
-  Int,
-  IntersectionType,
-  PartialType,
-} from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
+import { IntersectionType, PartialType } from '@nestjs/mapped-types';
 import {
   IsEnum,
   IsInt,
