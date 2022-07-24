@@ -24,4 +24,6 @@ export default {
   logger: ormLogger.log.bind(ormLogger),
   metadataProvider: TsMorphMetadataProvider,
   findOneOrFailHandler: (entityName, where) => new NotFoundException(`${entityName} not found at ${util.inspect(where)}`),
+
+  allowGlobalContext: true,
 } as Options;

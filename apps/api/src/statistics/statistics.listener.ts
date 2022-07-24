@@ -1,4 +1,3 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
@@ -22,12 +21,9 @@ export class StatisticsListener {
     @InjectRepository(Badge) private readonly badgeRepository: BaseRepository<Badge>,
     @InjectRepository(BadgeUnlock) private readonly badgeUnlockRepository: BaseRepository<BadgeUnlock>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
-
-    private readonly orm: MikroORM,
   ) {}
 
   @OnEvent('content.created')
-  @UseRequestContext()
   public async onContentCreated(content: Content): Promise<void> {
     const stats = await this.statisticsRepository.findOne({ user: content.author }, { populate: ['user'] });
     if (stats) {
@@ -64,7 +60,6 @@ export class StatisticsListener {
   }
 
   @OnEvent('document.created')
-  @UseRequestContext()
   public async onDocumentCreated(document: InfoDoc | StudyDoc): Promise<void> {
     const stats = await this.statisticsRepository.findOne({ user: document.file.user }, { populate: ['user'] });
     if (stats) {
