@@ -372,7 +372,7 @@ export const computedConfig = {
     ? `http://localhost:${config.get('port')}`
     : `https://api.${config.get('baseDomain')}`,
   frontendUrl: config.get('nodeEnv') === 'development'
-    ? 'http://localhost:3000'
+    ? 'http://localhost:5173'
     : `https://${config.get('frontendOriginUrl')}`,
 } as const;
 
