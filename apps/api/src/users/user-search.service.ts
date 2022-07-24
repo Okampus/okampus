@@ -68,11 +68,10 @@ export class UserSearchService extends SearchService<User, IndexedUser> {
       const ids = results.hits.map(hit => hit.document.id);
       const users = await this.userRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
-        // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedUser.id and
-        // User.id. I know.
+        // @ts-expect-error: hit.document is an IndexedUser but we are overwriting it with a User
         hit.document = users.find(user => user.id === hit.document.id)!;
     }
-    // @ts-expect-error: Ditto.
+    // @ts-expect-error: this is now a SearchResponse<User>
     return results;
   }
 

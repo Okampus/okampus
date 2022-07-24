@@ -14,6 +14,7 @@ export interface IndexedTeam {
   shortDescription: string | null;
   kind: string;
   id: string;
+  avatar: string | null;
 }
 
 @Injectable()
@@ -24,6 +25,7 @@ export class TeamSearchService extends SearchService<Team, IndexedTeam> {
       { name: 'name', type: 'string' },
       { name: 'kind', type: 'string' },
       { name: 'shortDescription', type: 'string', optional: true },
+      { name: 'avatar', type: 'string', optional: true },
     ],
   };
 
@@ -64,14 +66,13 @@ export class TeamSearchService extends SearchService<Team, IndexedTeam> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
-      const ids = results.hits.map(hit => hit.document.id).map(Number);
+      const ids = results.hits.map(hit => Number(hit.document.id));
       const teams = await this.teamRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
-        // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedTeam.id and
-        // Team.id. I know.
-        hit.document = teams.find(team => team.id === hit.document.id)!;
+        // @ts-expect-error: hit.document is an IndexedTeam but we are overwriting it with a Team
+        hit.document = teams.find(team => team.id.toString() === hit.document.id)!;
     }
-    // @ts-expect-error: Ditto.
+    // @ts-expect-error: this is now a SearchResponse<Team>
     return results;
   }
 
@@ -80,6 +81,7 @@ export class TeamSearchService extends SearchService<Team, IndexedTeam> {
       name: team.name,
       shortDescription: team.shortDescription,
       kind: team.kind,
+      avatar: team.avatar,
       id: team.id.toString(),
     };
   }

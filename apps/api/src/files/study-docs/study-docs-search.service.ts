@@ -75,11 +75,10 @@ export class StudyDocSearchService extends SearchService<StudyDoc, IndexedStudyD
       const ids = results.hits.map(hit => hit.document.id);
       const studyDocs = await this.studyDocRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
-        // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedStudyDoc.id and
-        // StudyDoc.id. I know.
-        hit.document = studyDocs.find(studyDoc => studyDoc.id.toString() === hit.document.id)!;
+        // @ts-expect-error: hit.document is an IndexedStudyDoc but we are overwriting it with a StudyDoc
+        hit.document = studyDocs.find(studyDoc => studyDoc.id === hit.document.id)!;
     }
-    // @ts-expect-error: Ditto.
+    // @ts-expect-error: this is now a SearchResponse<StudyDoc>
     return results;
   }
 

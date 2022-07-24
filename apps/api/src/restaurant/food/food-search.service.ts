@@ -60,14 +60,13 @@ export class FoodSearchService extends SearchService<Food, IndexedFood> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
-      const ids = results.hits.map(hit => hit.document.id).map(Number);
+      const ids = results.hits.map(hit => Number(hit.document.id));
       const foods = await this.foodRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
-        // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedFood.id and
-        // Food.id. I know.
-        hit.document = foods.find(food => food.id === hit.document.id)!;
+        // @ts-expect-error: hit.document is an IndexedFood but we are overwriting it with a Food
+        hit.document = foods.find(food => food.id.toString() === hit.document.id)!;
     }
-    // @ts-expect-error: Ditto.
+    // @ts-expect-error: this is now a SearchResponse<Food>
     return results;
   }
 

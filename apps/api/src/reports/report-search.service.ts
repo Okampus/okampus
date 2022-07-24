@@ -69,14 +69,13 @@ export class ReportSearchService extends SearchService<Report, IndexedReport> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
-      const ids = results.hits.map(hit => hit.document.id).map(Number);
+      const ids = results.hits.map(hit => Number(hit.document.id));
       const reports = await this.reportRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
-        // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedReport.id and
-        // Report.id. I know.
+        // @ts-expect-error: hit.document is an IndexedReport but we are overwriting it with a Report
         hit.document = reports.find(report => report.id.toString() === hit.document.id)!;
     }
-    // @ts-expect-error: Ditto.
+    // @ts-expect-error: this is now a SearchResponse<Report>
     return results;
   }
 

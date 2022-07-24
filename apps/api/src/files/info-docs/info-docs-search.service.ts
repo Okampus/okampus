@@ -74,11 +74,10 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
       const ids = results.hits.map(hit => hit.document.id);
       const infoDocs = await this.infoDocRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
-        // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedInfoDoc.id and
-        // InfoDoc.id. I know.
-        hit.document = infoDocs.find(infoDoc => infoDoc.id.toString() === hit.document.id)!;
+        // @ts-expect-error: hit.document is an IndexedInfoDoc but we are overwriting it with an InfoDoc
+        hit.document = infoDocs.find(infoDoc => infoDoc.id === hit.document.id)!;
     }
-    // @ts-expect-error: Ditto.
+    // @ts-expect-error: this is now a SearchResponse<InfoDoc>
     return results;
   }
 

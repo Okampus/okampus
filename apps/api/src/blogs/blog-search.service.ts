@@ -69,14 +69,13 @@ export class BlogSearchService extends SearchService<Blog, IndexedBlog> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
-      const ids = results.hits.map(hit => hit.document.id).map(Number);
+      const ids = results.hits.map(hit => Number(hit.document.id));
       const blogs = await this.blogRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
-        // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedBlog.id and
-        // Blog.id. I know.
-        hit.document = blogs.find(blog => blog.id === hit.document.id)!;
+        // @ts-expect-error: hit.document is an IndexedBlog but we are overwriting it with a Blog
+        hit.document = blogs.find(blog => blog.id.toString() === hit.document.id)!;
     }
-    // @ts-expect-error: Ditto.
+    // @ts-expect-error: this is now a SearchResponse<Blog>
     return results;
   }
 

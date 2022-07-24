@@ -67,14 +67,13 @@ export class ThreadSearchService extends SearchService<Thread, IndexedThread> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {
-      const threadIds = results.hits.map(hit => hit.document.id).map(Number);
+      const threadIds = results.hits.map(hit => Number(hit.document.id));
       const threads = await this.threadRepository.find({ id: { $in: threadIds } });
       for (const hit of results.hits)
-        // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedThread.id and
-        // Thread.threadId. I know.
-        hit.document = threads.find(thread => thread.id === hit.document.id)!;
+        // @ts-expect-error: hit.document is an IndexedThread but we are overwriting it with a Thread
+        hit.document = threads.find(thread => thread.id.toString() === hit.document.id)!;
     }
-    // @ts-expect-error: Ditto.
+    // @ts-expect-error: this is now a SearchResponse<Thread>
     return results;
   }
 

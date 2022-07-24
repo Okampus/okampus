@@ -16,7 +16,7 @@ export interface IndexedSubject {
   englishName: string;
   schoolYear: string;
   description: string | null;
-  id: number;
+  id: string;
 }
 
 @Injectable()
@@ -72,11 +72,10 @@ export class SubjectSearchService extends SearchService<Subject, IndexedSubject>
       const ids = results.hits.map(hit => Number(hit.document.id));
       const subjects = await this.subjectRepository.find({ id: { $in: ids } });
       for (const hit of results.hits)
-        // @ts-expect-error: This works, TypeScript... I know there is a mismatch between IndexedSubject.id and
-        // Subject.id. I know.
-        hit.document = subjects.find(subject => subject.id === hit.document.id)!;
+        // @ts-expect-error: hit.document is an IndexedSubject but we are overwriting it with a Subject
+        hit.document = subjects.find(subject => subject.id.toString() === hit.document.id)!;
     }
-    // @ts-expect-error: Ditto.
+    // @ts-expect-error: this is now a SearchResponse<Subject>
     return results;
   }
 
@@ -87,7 +86,7 @@ export class SubjectSearchService extends SearchService<Subject, IndexedSubject>
       englishName: subject.englishName,
       schoolYear: SchoolYear[subject.schoolYear],
       description: subject.description,
-      id: subject.id,
+      id: subject.id.toString(),
     };
   }
 }
