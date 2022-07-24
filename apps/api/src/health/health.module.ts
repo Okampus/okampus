@@ -2,7 +2,6 @@ import { RedisHealthModule } from '@liaoliaots/nestjs-redis-health';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
-import { MikroOrmHealthIndicator } from '../shared/modules/health/mikro-orm.health';
 import { StorageHealthIndicator } from '../shared/modules/health/storage.health';
 import { TypesenseHealthIndicator } from '../shared/modules/health/typesense.health';
 import { HealthController } from './health.controller';
@@ -15,7 +14,6 @@ import { HealthController } from './health.controller';
   ],
   controllers: [HealthController],
   providers: [
-    MikroOrmHealthIndicator,
     TypesenseHealthIndicator,
     StorageHealthIndicator,
   ],
