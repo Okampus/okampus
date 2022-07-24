@@ -4,7 +4,6 @@ import { HealthIndicator } from '@nestjs/terminus';
 import type { AWSError } from 'aws-sdk';
 import { S3 } from 'aws-sdk';
 import { InjectS3 } from 'nestjs-s3';
-import type { UploadBucket } from '../../lib/types/enums/upload-bucket.enum';
 
 @Injectable()
 export class StorageHealthIndicator extends HealthIndicator {
@@ -12,7 +11,7 @@ export class StorageHealthIndicator extends HealthIndicator {
     @InjectS3() private readonly s3: S3,
   ) { super(); }
 
-  public async pingCheck(key: string, bucket: UploadBucket): Promise<HealthIndicatorResult> {
+  public async pingCheck(key: string, bucket: string): Promise<HealthIndicatorResult> {
     try {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       await this.s3.headBucket({ Bucket: bucket }).promise();

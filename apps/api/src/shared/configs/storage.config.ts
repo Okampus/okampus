@@ -8,10 +8,10 @@ const awsLogRegex = /\[AWS (?<service>\w+) (?<statusCode>\d+) (?<time>[\d.]+)s (
 
 export default {
   config: {
-    accessKeyId: config.get('storage.accessKeyId'),
-    secretAccessKey: config.get('storage.secretAccessKey'),
-    endpoint: config.get('storage.endpoint'),
-    region: config.get('storage.region'),
+    accessKeyId: config.get('s3.accessKeyId'),
+    secretAccessKey: config.get('s3.secretAccessKey'),
+    endpoint: config.get('s3.endpoint'),
+    region: config.get('s3.region'),
     signatureVersion: 'v4',
     logger: {
       log: (message: string) => {

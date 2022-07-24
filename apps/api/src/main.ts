@@ -73,7 +73,7 @@ async function bootstrap(): Promise<void> {
     whitelist: true,
   }));
 
-  if (!config.get('storage.enabled')) {
+  if (!config.get('s3.enabled')) {
     app.useStaticAssets(
       path.join(path.resolve('./'), config.get('upload.path')),
       { prefix: '/uploads' },

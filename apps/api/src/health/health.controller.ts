@@ -15,7 +15,6 @@ import {
 import Redis from 'ioredis';
 import { computedConfig, config } from '../shared/configs/config';
 import { Public } from '../shared/lib/decorators/public.decorator';
-import { UploadBucket } from '../shared/lib/types/enums/upload-bucket.enum';
 import { StorageHealthIndicator } from '../shared/modules/health/storage.health';
 import { TypesenseHealthIndicator } from '../shared/modules/health/typesense.health';
 
@@ -56,11 +55,11 @@ export class HealthController {
       () => this.database.pingCheck('database'),
       () => this.typesense.pingCheck('search'),
       () => this.memory.checkHeap('memory', MAX_HEAP_SIZE),
-      ...(config.get('storage.enabled') ? [
-        () => this.storage.pingCheck('storage', UploadBucket.Attachments),
-        () => this.storage.pingCheck('storage', UploadBucket.Documents),
-        () => this.storage.pingCheck('storage', UploadBucket.ProfileImages),
-        () => this.storage.pingCheck('storage', UploadBucket.TeamFiles),
+      ...(config.get('s3.enabled') ? [
+        () => this.storage.pingCheck('storage', config.get('s3.buckets.attachments')),
+        () => this.storage.pingCheck('storage', config.get('s3.buckets.documents')),
+        () => this.storage.pingCheck('storage', config.get('s3.buckets.profileImages')),
+        () => this.storage.pingCheck('storage', config.get('s3.buckets.teamFiles')),
       ] : [
         () => this.disk.checkStorage('disk', LOCAL_STORAGE_OPTIONS),
       ]),

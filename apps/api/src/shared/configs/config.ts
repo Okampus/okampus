@@ -8,7 +8,6 @@ interface Config {
   baseDomain: string;
   nodeEnv: 'development' | 'production' | 'test';
   release: string;
-  enableHelmet: boolean;
   upload: {
     maxSize: number;
     path: string;
@@ -20,12 +19,18 @@ interface Config {
     port: number;
     scheme: string;
   };
-  storage: {
+  s3: {
     enabled: boolean;
     accessKeyId: string;
     secretAccessKey: string;
     endpoint: string;
     region: string;
+    buckets: {
+      profileImages: string;
+      documents: string;
+      attachments: string;
+      teamFiles: string;
+    };
   };
   redis: {
     host: string;
@@ -103,11 +108,6 @@ export const config = createProfiguration<Config>({
     format: String,
     env: 'RELEASE',
   },
-  enableHelmet: {
-    default: true,
-    format: Boolean,
-    env: 'ENABLE_HELMET',
-  },
   upload: {
     maxSize: {
       default: 10_485_760,
@@ -147,31 +147,53 @@ export const config = createProfiguration<Config>({
       env: 'TYPESENSE_SCHEME',
     },
   },
-  storage: {
+  s3: {
     enabled: {
       default: false,
       format: Boolean,
-      env: 'DISTANT_STORAGE_ENABLED',
+      env: 'S3_ENABLED',
     },
     accessKeyId: {
       default: 'access-key-id',
       format: String,
-      env: 'STORAGE_ACCESS_KEY_ID',
+      env: 'S3_ACCESS_KEY_ID',
     },
     secretAccessKey: {
       default: 'secret-access-key',
       format: String,
-      env: 'STORAGE_SECRET_ACCESS_KEY',
+      env: 'S3_SECRET_ACCESS_KEY',
     },
     endpoint: {
       default: 'endpoint',
       format: String,
-      env: 'STORAGE_ENDPOINT',
+      env: 'S3_ENDPOINT',
     },
     region: {
       default: 'region',
       format: String,
-      env: 'STORAGE_REGION',
+      env: 'S3_REGION',
+    },
+    buckets: {
+      profileImages: {
+        default: 'profile-images',
+        format: String,
+        env: 'S3_BUCKET_NAME_PROFILE_IMAGES',
+      },
+      documents: {
+        default: 'documents',
+        format: String,
+        env: 'S3_BUCKET_NAME_DOCUMENTS',
+      },
+      attachments: {
+        default: 'attachments',
+        format: String,
+        env: 'S3_BUCKET_NAME_ATTACHMENTS',
+      },
+      teamFiles: {
+        default: 'team-files',
+        format: String,
+        env: 'S3_BUCKET_NAME_TEAM_FILES',
+      },
     },
   },
   redis: {

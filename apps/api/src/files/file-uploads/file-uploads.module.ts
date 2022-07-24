@@ -23,8 +23,8 @@ export class FileUploadsModule implements OnModuleInit {
   public async onModuleInit(): Promise<void> {
     const logger = new Logger('Files');
 
-    if (config.get('storage.enabled')) {
-      logger.log(`Distant storage is enabled, uploading to ${config.get('storage.endpoint')}`);
+    if (config.get('s3.enabled')) {
+      logger.log(`Distant storage is enabled, uploading to ${config.get('s3.endpoint')}`);
       return;
     }
 
