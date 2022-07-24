@@ -26,7 +26,15 @@
                             :size="12"
                         />
                         <ProfileAvatar class="md:hidden" :avatar="me.avatar" :name="fullname(me)" :size="6" />
+                        <div v-if="me.avatar" class="absolute right-0 bottom-0">
+                            <ModalDropdown :buttons="avatarButtons">
+                                <button
+                                    class="flex justify-center items-center w-12 h-12 text-lg rounded-full border-4 border-2-light dark:border-2-dark !shadow-none cursor-pointer md:text-xl button-grey fa fa-camera"
+                                />
+                            </ModalDropdown>
+                        </div>
                         <button
+                            v-else
                             class="flex absolute right-0 bottom-0 justify-center items-center w-12 h-12 text-lg rounded-full border-4 border-2-light dark:border-2-dark !shadow-none cursor-pointer md:text-xl button-grey fa fa-camera"
                             @click="editingAvatar = true"
                         />
@@ -104,6 +112,7 @@
 
     import SettingsOverview from '@/components/User/Settings/SettingsOverview.vue'
     import SettingsClubs from '@/components/User/Settings/SettingsClubs.vue'
+    import ModalDropdown from '@/components/UI/Modal/ModalDropdown.vue'
     // import SettingsSocials from '@/components/User/Settings/SettingsSocials.vue'
     import WIP from '@/views/App/WIP.vue'
 
@@ -185,6 +194,27 @@
                 })
             })
     }
+
+    const avatarButtons = [
+        {
+            name: 'Changer de photo',
+            icon: 'fas fa-camera',
+            // class: 'hover:bg-blue-300 dark:hover:bg-blue-500',
+            action: () => {
+                editingAvatar.value = true
+            },
+        },
+        {
+            name: 'Supprimer ma photo',
+            icon: 'fas fa-xmark',
+            class: 'hover:bg-red-300 dark:hover:bg-red-500',
+            action: () => {
+                users.updateUser(me.value.id, { avatar: null })
+                auth.updateUser({ ...me.value, avatar: null })
+                me.value = { ...me.value, avatar: null }
+            },
+        },
+    ]
 
     const onAvatarUploadFailure = (err) => {
         if (!err?.context?.response) {
