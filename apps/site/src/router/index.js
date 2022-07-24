@@ -243,7 +243,7 @@ if (import.meta.env.DEV) {
         path: '/test',
         component: () => import('@/views/App/TestPage.vue'),
         meta: {
-            requiresAuth: true,
+            requiresAuth: false,
         },
     })
 }
