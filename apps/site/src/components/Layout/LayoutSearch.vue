@@ -1,138 +1,129 @@
 <template>
-    <div>
-        <teleport to="#app" :disabled="windowWidth > 767">
-            <ais-instant-search
-                :index-name="TEAMS"
-                :search-client="searchClient"
-                :class="[
-                    showSearchbar && windowWidth <= 767
-                        ? 'w-screen h-screen top-0 left-0 z-[60] absolute flex justify-center'
-                        : 'hidden',
-                ]"
-                class="grow gap-2 justify-center mx-auto md:flex"
+    <ais-instant-search
+        :index-name="TEAMS"
+        :search-client="searchClient"
+        class="grow gap-2 justify-center items-center mx-auto md:flex"
+    >
+        <div class="flex justify-center w-full">
+            <div
+                v-if="showSearchbar"
+                class="fixed top-0 left-0 z-[10] w-screen h-screen"
+                @click="showSearchbar = false"
+            />
+            <div
+                class="flex relative flex-col items-center w-full bg-[#374058] cursor-text md:max-w-4xl md:shadow-xl"
+                @click="() => ((showSearchbar = true), searchInput.focus())"
             >
                 <div
-                    ref="searchBar"
-                    class="flex relative gap-4 justify-center items-center p-2 w-full h-16 text-white bg-slate-700 dark:bg-slate-800 rounded-t-md outline-none cursor-text select-none md:max-w-2xl md:h-min"
-                    :class="{ 'rounded-b-md': !showSearchbar }"
-                    @click="input.focus(), (showSearchbar = true)"
+                    class="flex absolute inset-x-0 -top-5 flex-col bg-inherit md:rounded-[1.2rem]"
+                    :class="
+                        showSearchbar
+                            ? 'md-max:top-0 md-max:left-0 md-max:fixed md-max:w-screen md-max:h-screen md:max-h-[50vh] z-[20] md-max:text-xl'
+                            : 'h-10 rounded-[1.2rem]'
+                    "
                 >
-                    <div class="flex grow items-center ml-2 h-full">
-                        <i
-                            class="w-full transition-all duration-300 fas fa-lg"
-                            :class="[
-                                !showSearchbar ? 'fa-search' : 'fa-arrow-left cursor-pointer',
-                                { 'translate-x-[95%]': !showSearchbar && searchInput.length === 0 },
-                            ]"
-                            @click.stop="showSearchbar = false"
-                        />
-                    </div>
-                    <div :class="{ 'hidden': showSearchbar || searchInput.length !== 0 }">
-                        <span> Rechercher sur Okampus...</span>
-                    </div>
-
-                    <ais-search-box
-                        class="grow h-full"
-                        :class="{ 'opacity-0': !showSearchbar && !searchInput.length }"
-                    >
+                    <ais-search-box @keydown.stop="closeOnKeydown">
                         <template #default="{ refine }">
-                            <input
-                                ref="input"
-                                type="text"
-                                class="absolute top-0 left-10 w-[90%] h-full bg-inherit outline-none"
-                                placeholder="Rechercher sur Okampus..."
-                                :value="searchInput"
-                                @input="
-                                    refine($event.currentTarget.value),
-                                        (searchInput = $event.currentTarget.value)
-                                "
-                                @keypress.enter="
-                                    router.push('/search/', { searchInput }), (showSearchbar = false)
-                                "
-                            />
+                            <div
+                                class="flex gap-2 items-center py-2 px-3 pl-6 w-full h-10"
+                                :class="{ 'md-max:mt-1 md-max:py-0 md-max:h-16': showSearchbar }"
+                            >
+                                <button
+                                    v-if="showSearchbar"
+                                    class="py-3 pl-2 text-2xl cursor-pointer md:hidden fa fa-arrow-left"
+                                    @click.stop="() => (showSearchbar = false)"
+                                />
+                                <input
+                                    ref="searchInput"
+                                    v-model="searchText"
+                                    type="text"
+                                    class="grow bg-inherit outline-none"
+                                    :class="{ 'md-max:ml-4': showSearchbar }"
+                                    @input="refine($event.currentTarget.value)"
+                                    @keypress.enter="
+                                        router.push('/search/', { searchInput }), (showSearchbar = false)
+                                    "
+                                />
+                                <div class="flex shrink-0 gap-2 items-center h-10">
+                                    <button
+                                        v-if="searchText"
+                                        class="flex justify-center w-8 text-2xl text-gray-400 fa fa-xmark"
+                                        @click.stop="() => (searchText = '')"
+                                    />
+                                    <button
+                                        class="flex justify-center w-8 text-xl text-indigo-400 fa fa-search"
+                                        :class="showSearchbar ? 'md-max:hidden' : ''"
+                                        @click.stop="
+                                            router.push('/search/', { searchInput }), (showSearchbar = false)
+                                        "
+                                    />
+                                </div>
+                            </div>
                         </template>
                     </ais-search-box>
-                    <div
-                        class="flex z-50 items-center p-1 text-white cursor-pointer"
-                        :class="{ 'opacity-0': !showSearchbar && searchInput.length === 0 }"
-                        @click.stop="searchInput = ''"
-                    >
-                        <i class="text-lg leading-none fa-solid fa-xmark"></i>
-                    </div>
-                </div>
-
-                <ais-hits
-                    v-if="!recentSearch.length || searchInput.length"
-                    class="absolute z-40 w-full h-max md:top-full md:max-w-2xl after-topbar"
-                >
-                    <template #default="{ items }">
-                        <div
-                            class="flex flex-col h-screen text-white bg-slate-700 dark:bg-slate-800 rounded-b-md md:h-min"
-                            :class="{ 'absolute hidden': !showSearchbar }"
-                        >
+                    <ais-hits :class="{ hidden: !searchText.length || !showSearchbar }" class="mb-4">
+                        <template #default="{ items }">
+                            <hr v-if="items.length" class="search-separator" />
                             <div
                                 v-for="(item, i) in items"
                                 :key="i"
-                                class="flex gap-4 items-center p-2 m-1 hover:bg-slate-800 focus:bg-slate-800 dark:hover:bg-slate-900 dark:focus:bg-slate-900 rounded-md outline-none cursor-pointer"
                                 tabindex="0"
-                                @click="resultClick(item)"
+                                class="search-item"
+                                @click.stop="resultClick(item)"
                                 @keypress.enter="resultClick(item)"
                             >
                                 <i class="p-3 bg-green-400 rounded-md fa-solid fa-people-group"></i>
-                                <ais-highlight
-                                    attribute="name"
-                                    :hit="item"
-                                    :class-names="{
-                                        'ais-Highlight-highlighted': 'font-bold underline',
-                                    }"
-                                    highlighted-tag-name="span"
-                                />
-                                <ais-highlight
-                                    attribute="shortDescription"
-                                    class="text-xs text-gray-400"
-                                    :hit="item"
-                                    :class-names="{
-                                        'ais-Highlight-highlighted': 'font-bold underline',
-                                    }"
-                                    highlighted-tag-name="span"
-                                />
+                                <div class="flex flex-col">
+                                    <ais-highlight
+                                        attribute="name"
+                                        :hit="item"
+                                        :class-names="{
+                                            'ais-Highlight-highlighted': 'font-bold underline',
+                                        }"
+                                        highlighted-tag-name="span"
+                                    />
+                                    <ais-highlight
+                                        attribute="shortDescription"
+                                        class="text-xs text-gray-300"
+                                        :hit="item"
+                                        :class-names="{
+                                            'ais-Highlight-highlighted': 'font-bold underline',
+                                        }"
+                                        highlighted-tag-name="span"
+                                    />
+                                </div>
                             </div>
-                        </div>
-                    </template>
-                </ais-hits>
+                        </template>
+                    </ais-hits>
 
-                <div
-                    v-else
-                    class="flex absolute z-40 flex-col gap-2 p-2 w-full h-screen text-white bg-slate-700 dark:bg-slate-800 rounded-b-md md:top-full md:max-w-2xl md:h-min after-topbar"
-                    :class="{ 'absolute hidden': !showSearchbar || !recentSearch }"
-                >
                     <div
-                        v-for="item in recentSearch"
-                        :key="item.text_match"
-                        class="flex justify-between items-center py-2 px-3 hover:bg-slate-800 focus:bg-slate-800 dark:hover:bg-slate-900 dark:focus:bg-slate-900 rounded-md outline-none cursor-pointer"
-                        tabindex="0"
-                        @click.self="resultClick(item)"
-                        @keypress.enter="resultClick(item)"
+                        v-if="recentSearch.length"
+                        :class="{ hidden: searchText.length || !showSearchbar }"
+                        class="mb-4"
                     >
-                        <div class="flex gap-4 items-center">
-                            <i
-                                class="p-3 bg-gray-400 dark:bg-gray-500 rounded-md fa-solid fa-clock-rotate-left"
-                            ></i>
-                            <div>{{ item.name }}</div>
+                        <hr class="search-separator" />
+                        <div
+                            v-for="item in recentSearch"
+                            :key="item.text_match"
+                            tabindex="0"
+                            class="group flex justify-between items-center w-full search-item"
+                            @click.stop="resultClick(item)"
+                            @keypress.enter="resultClick(item)"
+                        >
+                            <div class="flex gap-3 items-center">
+                                <i class="p-3 bg-gray-500 rounded-md fa-solid fa-clock-rotate-left" />
+                                <div>{{ item.name }}</div>
+                            </div>
+                            <button
+                                class="justify-self-end mr-4 text-3xl text-gray-400 fa-solid fa-xmark"
+                                @click.stop="deleteSearch(item)"
+                            />
                         </div>
-                        <i
-                            class="text-gray-400 hover:text-gray-300 dark:text-gray-500 dark:hover:text-gray-400 fa-solid fa-xmark"
-                            @click.prevent="deleteSearch(item)"
-                        ></i>
                     </div>
                 </div>
-            </ais-instant-search>
-        </teleport>
-        <i
-            class="block float-right text-2xl text-white cursor-pointer md:hidden fas fa-search"
-            @click="showSearchbar = true"
-        />
-    </div>
+            </div>
+        </div>
+    </ais-instant-search>
 </template>
 
 <script setup>
@@ -140,10 +131,12 @@
     import typesenseConfig from '@/shared/config/typesense.config'
     import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
     import { ref } from 'vue'
-    import { onClickOutside } from '@vueuse/core'
+
     import { useRouter } from 'vue-router'
     import { useLocalStorage } from '@vueuse/core'
     import _ from 'lodash'
+
+    const router = useRouter()
 
     const typesenseAdapter = new TypesenseInstantSearchAdapter({
         ...typesenseConfig,
@@ -156,25 +149,24 @@
     })
 
     const searchClient = typesenseAdapter.searchClient
-    const input = ref(null)
-    const showSearchbar = ref(false)
-    const searchInput = ref('')
-    const searchBar = ref(null)
-    const router = useRouter()
-    const recentSearch = useLocalStorage('recentSearch', [])
 
-    const windowWidth = ref(window.innerWidth)
-    window.onresize = () => {
-        windowWidth.value = window.innerWidth
+    const showSearchbar = ref(false)
+
+    const closeOnKeydown = (e) => {
+        if (e.key === 'Escape') {
+            showSearchbar.value = false
+        }
     }
 
-    onClickOutside(searchBar, () => {
-        showSearchbar.value = false
-    })
+    const searchInput = ref(null)
+    const searchText = ref('')
+
+    const recentSearch = useLocalStorage('recentSearch', [])
 
     const resultClick = (item) => {
         showSearchbar.value = false
-        searchInput.value = ''
+        searchText.value = ''
+
         recentSearch.value = _.unionBy(recentSearch.value, [item], (el) => el.id).slice(-5)
         router.push(`/club/${item.id}`)
     }
@@ -183,3 +175,13 @@
         recentSearch.value = _.remove(recentSearch.value, (el) => el.id !== item.id)
     }
 </script>
+
+<style lang="scss">
+    .search-separator {
+        @apply mx-4 border-gray-400 mb-2;
+    }
+
+    .search-item {
+        @apply flex gap-3 items-center px-3 cursor-pointer hover:bg-[#5a6279] py-2;
+    }
+</style>
