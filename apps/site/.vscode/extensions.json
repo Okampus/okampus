@@ -1,17 +1,14 @@
 {
     "recommendations": [
         "rohit-gohri.format-code-action",
-
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
         "stylelint.vscode-stylelint",
         "bradlc.vscode-tailwindcss",
-
-        "johnsoncodehk.volar",
+        "Vue.volar",
         "ishiyama.vue-autoimport",
         "hollowtree.vue-snippets",
         "naumovs.color-highlight",
-
         "gruntfuggly.todo-tree",
         "ms-vsliveshare.vsliveshare",
         "adam-bender.commit-message-editor",
