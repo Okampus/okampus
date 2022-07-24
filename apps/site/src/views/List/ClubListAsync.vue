@@ -19,7 +19,7 @@
                     <router-link to="/clubs" class="link-blue">liste de toutes les associations</router-link>.
                 </div>
             </div>
-            <div v-else class="flex flex-wrap gap-4 w-fit h-fit">
+            <div v-else class="flex flex-wrap gap-4 w-full h-fit">
                 <ClubJoinForm
                     v-model:show="showJoinForm"
                     :club="joiningClub"
