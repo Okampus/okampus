@@ -9,9 +9,6 @@
     </div>
 </template>
 
-<script lang="js">
-    export default {
-        components: {},
-        props: {},
-    }
+<script setup>
+    defineProps({})
 </script>

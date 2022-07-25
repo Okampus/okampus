@@ -12,16 +12,13 @@
     </div>
 </template>
 
-<script>
+<script setup>
     import LabelTag from '@/components/UI/Label/LabelTag.vue'
 
-    export default {
-        components: { LabelTag },
-        props: {
-            thread: {
-                type: Object,
-                default: () => {},
-            },
+    defineProps({
+        thread: {
+            type: Object,
+            default: () => {},
         },
-    }
+    })
 </script>

@@ -2,7 +2,7 @@
     <div>
         <div
             class="flex items-center gap-2 rounded p-1 hover:bg-2-light hover:dark:bg-2-dark"
-            @click="emitPath(), toggleChildren()"
+            @click="openFolder"
         >
             <i
                 class="fas text-1"
@@ -31,53 +31,49 @@
     </div>
 </template>
 
-<script>
-    export default {
-        props: {
-            title: {
-                type: String,
-                required: true,
-            },
-            context: {
-                type: String,
-                required: true,
-            },
-            children: {
-                type: Array,
-                default() {
-                    return []
-                },
+<script setup>
+    import { ref } from 'vue'
+
+    defineProps({
+        title: {
+            type: String,
+            required: true,
+        },
+        context: {
+            type: String,
+            required: true,
+        },
+        children: {
+            type: Array,
+            default() {
+                return []
             },
         },
-        emits: ['path'],
-        data() {
-            return {
-                showChildren: false,
-                contextList: {
-                    schoolYear: (val) => ['L1', 'L2', 'L3', 'M1', 'M2'][val],
-                    subject: (val) => val,
-                    type: (val) => val,
-                    year: (val) => val,
-                    query: (val) => val,
-                },
-            }
-        },
-        methods: {
-            toggleChildren() {
-                if (this.children.length > 0) {
-                    this.showChildren = !this.showChildren
-                }
-            },
-            sendObject(data) {
-                data.filters[this.context] = this.title
-                return data
-            },
-            emitPath() {
-                this.$emit('path', {
-                    filters: { [this.context]: this.title },
-                    children: this.children,
-                })
-            },
-        },
+    })
+
+    const emit = defineEmits(['path'])
+
+    const showChildren = ref(false)
+    const openFolder = () => {
+        emit('path', {
+            filters: { [this.context]: this.title },
+            children: this.children,
+        })
+        if (this.children.length > 0) {
+            showChildren.value = !showChildren.value
+        }
+    }
+
+    const contextList = {
+        schoolYear: (val) => ['L1', 'L2', 'L3', 'M1', 'M2'][val],
+        subject: (val) => val,
+        type: (val) => val,
+        year: (val) => val,
+        query: (val) => val,
+    }
+
+    const sendObject = (data) => {
+        data.filters[this.context] = this.title
+        return data
     }
 </script>

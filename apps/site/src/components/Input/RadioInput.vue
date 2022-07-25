@@ -17,18 +17,17 @@
     </div>
 </template>
 
-<script>
-    export default {
-        props: {
-            choices: {
-                type: Array,
-                required: true,
-            },
-            modelValue: {
-                type: null,
-                required: true,
-            },
+<script setup>
+    defineProps({
+        choices: {
+            type: Array,
+            required: true,
         },
-        emits: ['update:modelValue'],
-    }
+        modelValue: {
+            type: null,
+            required: true,
+        },
+    })
+
+    defineEmits(['update:modelValue'])
 </script>

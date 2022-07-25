@@ -35,45 +35,41 @@
     </div>
 </template>
 
-<script>
-    export default {
-        props: {
-            dismissable: {
-                type: Boolean,
-                default: false,
-            },
-            fitContent: {
-                type: Boolean,
-                default: false,
-            },
-            background: {
-                type: Boolean,
-                default: true,
-            },
-            icon: {
-                type: Boolean,
-                default: true,
-            },
-            type: {
-                type: String,
-                required: true,
-                default: 'info',
-            },
+<script setup>
+    defineProps({
+        dismissable: {
+            type: Boolean,
+            default: false,
         },
-        emits: ['dismiss'],
-        data() {
-            return {
-                dismissIcon: 'times',
-                defaultIconList: {
-                    info: 'info-circle',
-                    warning: 'exclamation-triangle',
-                    error: 'exclamation',
-                    bug: 'bug',
-                    success: 'check',
-                    failure: 'times',
-                },
-            }
+        fitContent: {
+            type: Boolean,
+            default: false,
         },
+        background: {
+            type: Boolean,
+            default: true,
+        },
+        icon: {
+            type: Boolean,
+            default: true,
+        },
+        type: {
+            type: String,
+            required: true,
+            default: 'info',
+        },
+    })
+
+    defineEmits(['dismiss'])
+
+    const dismissIcon = 'times'
+    const defaultIconList = {
+        info: 'info-circle',
+        warning: 'exclamation-triangle',
+        error: 'exclamation',
+        bug: 'bug',
+        success: 'check',
+        failure: 'times',
     }
 </script>
 

@@ -44,77 +44,65 @@
             <button
                 class="text-blue-500"
                 :class="[currentStep != 0 ? 'visible' : 'invisible']"
-                @click.prevent="emitPreviousStep"
+                @click.prevent="$emit('previous-step')"
             >
                 Revenir
             </button>
             <button
                 v-if="currentStep != steps.length - 1"
                 class="button-blue w-1/3"
-                @click.prevent="emitNextStep"
+                @click.prevent="$emit('next-step')"
             >
                 <p>Suivant</p>
             </button>
-            <button v-if="currentStep === steps.length - 1" class="button-green w-1/3" @click="emitFinish">
+            <button
+                v-if="currentStep === steps.length - 1"
+                class="button-green w-1/3"
+                @click="$emit('finish')"
+            >
                 <p>Envoyer</p>
             </button>
         </div>
     </div>
 </template>
-<script>
-    export default {
-        props: {
-            steps: {
-                type: Array,
-                default: () => [],
-            },
-            modelValue: {
-                type: Object,
-                required: true,
-            },
+
+<script setup>
+    import { computed, watchEffect } from 'vue'
+
+    defineProps({
+        steps: {
+            type: Array,
+            default: () => [],
         },
-        emits: ['update:modelValue', 'previous-step', 'next-step', 'finish'],
-        computed: {
-            currentStep() {
-                return this.modelValue.currentStep
-            },
-            nextStep() {
-                return this.modelValue.nextStep
-            },
-            previousStep() {
-                return this.modelValue.previousStep
-            },
+        modelValue: {
+            type: Object,
+            required: true,
         },
-        watch: {
-            previousStep(newValue, oldValue) {
-                if (newValue && !oldValue) {
-                    this.$emit('update:modelValue', {
-                        currentStep: this.currentStep - 1,
-                        previousStep: false,
-                        nextStep: this.nextStep,
-                    })
-                }
-            },
-            nextStep(newValue, oldValue) {
-                if (newValue && !oldValue) {
-                    this.$emit('update:modelValue', {
-                        currentStep: this.currentStep + 1,
-                        previousStep: false,
-                        nextStep: this.nextStep,
-                    })
-                }
-            },
-        },
-        methods: {
-            emitNextStep() {
-                this.$emit('next-step')
-            },
-            emitPreviousStep() {
-                this.$emit('previous-step')
-            },
-            emitFinish() {
-                this.$emit('finish')
-            },
-        },
-    }
+    })
+
+    const emit = defineEmits(['update:modelValue', 'previous-step', 'next-step', 'finish'])
+
+    const currentStep = computed(() => this.modelValue.currentStep)
+    const nextStep = computed(() => this.modelValue.nextStep)
+    const previousStep = computed(() => this.modelValue.previousStep)
+
+    watchEffect(() => {
+        if (previousStep.value) {
+            emit('update:modelValue', {
+                currentStep: currentStep.value - 1,
+                previousStep: false,
+                nextStep: nextStep.value,
+            })
+        }
+    })
+
+    watchEffect(() => {
+        if (nextStep.value) {
+            emit('update:modelValue', {
+                currentStep: currentStep.value + 1,
+                previousStep: previousStep.value,
+                nextStep: false,
+            })
+        }
+    })
 </script>

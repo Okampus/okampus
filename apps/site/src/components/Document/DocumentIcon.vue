@@ -18,7 +18,7 @@
         <foreignObject x="0" y="45" width="47.5" height="15.991">
             <div
                 class="flex h-full w-full items-center justify-center rounded-b uppercase text-white"
-                :class="colors(mime)"
+                :class="color"
             >
                 {{ fileName.split('.').pop() }}
             </div>
@@ -26,53 +26,27 @@
     </svg>
 </template>
 
-<script>
-    export default {
-        props: {
-            mime: {
-                type: String,
-                default() {
-                    return ''
-                },
-            },
-            fileName: {
-                type: String,
-                default() {
-                    return ''
-                },
-            },
+<script setup>
+    import docTypes, { DEFAULT_TYPE } from '@/shared/types/doc-types.enum'
+    import { computed } from 'vue'
+
+    const props = defineProps({
+        mime: {
+            type: String,
+            default: '',
         },
-        methods: {
-            colors(mime) {
-                const dic = [
-                    {
-                        cond: new RegExp('^image/(.)+'),
-                        color: 'bg-orange-500',
-                    },
-                    {
-                        cond: new RegExp('^audio/(.)+'),
-                        color: 'bg-sky-500',
-                    },
-                    {
-                        cond: new RegExp('^text/(.)+'),
-                        color: 'bg-blue-500',
-                    },
-                    {
-                        cond: new RegExp('^video/(.)+'),
-                        color: 'bg-green-500',
-                    },
-                    {
-                        cond: new RegExp('^application/(.)+'),
-                        color: 'bg-pink-500',
-                    },
-                ]
-                for (const el of dic) {
-                    if (el.cond.test(mime)) {
-                        return el.color
-                    }
-                }
-                return 'bg-gray-500'
-            },
+        fileName: {
+            type: String,
+            default: '',
         },
-    }
+    })
+
+    const color = computed(() => {
+        for (const type of docTypes) {
+            if (type.condition.test(props.mime)) {
+                return type.color
+            }
+        }
+        return DEFAULT_TYPE
+    })
 </script>

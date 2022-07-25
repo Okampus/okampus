@@ -3,7 +3,7 @@
         <div
             class="fixed z-50"
             :class="{ 'w-content after-sidebar after-topbar': banner }"
-            :style="[style, showing ? offsetY : {}]"
+            :style="[{ ...transform, ...offsetX }, showing ? offsetY : {}]"
         >
             <Transition name="toast" :style="{ '--toast-enter-duration': enterDuration }">
                 <AlertInline
@@ -41,113 +41,119 @@
     </Teleport>
 </template>
 
-<script>
+<script setup>
     import AlertInline from '@/components/UI/Alert/AlertInline.vue'
     import { readingTime } from '@/utils/readingTime'
+    import { computed, ref, watchEffect } from 'vue'
 
-    export default {
-        components: { AlertInline },
-        props: {
-            message: {
-                type: String,
-                default: '',
-            },
-            banner: {
-                type: Boolean,
-                default: false,
-            },
-            offset: {
-                type: Array,
-                default: () => [0, 10],
-            },
-            position: {
-                type: String,
-                default: 'bottom',
-            },
-            icon: {
-                type: Boolean,
-                default: true,
-            },
-            type: {
-                type: String,
-                default: 'info',
-            },
-            duration: {
-                type: Number,
-                default: (props) => (props.message ? readingTime(props.message, 'slow') * 1000 : 2000),
-            },
-            dismissable: {
-                type: Boolean,
-                default: true,
-            },
-            active: {
-                type: Boolean,
-                required: true,
-            },
-            autoToggle: {
-                type: Boolean,
-                default: true,
-            },
+    const props = defineProps({
+        message: {
+            type: String,
+            default: '',
         },
-        emits: ['update:active', 'close'],
-        data() {
-            const position = this.position.toLowerCase()
-            const transformY = !position.includes('top') && !position.includes('bottom')
-            const transformX = !position.includes('left') && !position.includes('right')
-            const transform =
-                transformX || transformY
-                    ? {
-                          transform: `translate(${
-                              transformX ? 'calc(50vw - 50%)' + (transformY ? ', ' : '') : ''
-                          }${transformY ? 'calc(50vh - 50%)' : ''})`,
-                      }
-                    : {}
-
-            const offsetY = this.banner
-                ? {}
-                : position.includes('top')
-                ? { top: `${this.offset[1]}px` }
-                : position.includes('bottom')
-                ? { bottom: `${this.offset[1]}px` }
-                : {}
-
-            const offsetX = this.banner
-                ? {}
-                : position.includes('left')
-                ? { left: `${this.offset[0]}px` }
-                : position.includes('right')
-                ? { right: `${this.offset[0]}px` }
-                : {}
-
-            const style = {
-                ...transform,
-                ...offsetX,
-            }
-
-            return { style, offsetY, enterDuration: 300, showing: true }
+        banner: {
+            type: Boolean,
+            default: false,
         },
-        watch: {
-            active(trigger) {
-                if (trigger && this.autoToggle) {
-                    this.toggleTimeOut()
-                }
-            },
+        offset: {
+            type: Array,
+            default: () => [0, 10],
         },
-        methods: {
-            dismissToast() {
-                this.$emit('update:active', false)
-                this.$emit('close')
-                // TODO: remove setTimeout on dismiss to avoid dismiss bugs
-            },
-            toggleTimeOut() {
-                if (this.duration > 0) {
-                    window.setTimeout(() => {
-                        this.dismissToast()
-                    }, this.duration)
-                }
-            },
+        position: {
+            type: String,
+            default: 'bottom',
         },
+        icon: {
+            type: Boolean,
+            default: true,
+        },
+        type: {
+            type: String,
+            default: 'info',
+        },
+        duration: {
+            type: Number,
+            default: (props) => (props.message ? readingTime(props.message, 'slow') * 1000 : 2000),
+        },
+        dismissable: {
+            type: Boolean,
+            default: true,
+        },
+        active: {
+            type: Boolean,
+            required: true,
+        },
+        autoToggle: {
+            type: Boolean,
+            default: true,
+        },
+    })
+
+    const emit = defineEmits(['update:active', 'close'])
+
+    const position = computed(() => props.position.toLowerCase())
+
+    const transform = computed(() =>
+        (!position.value.includes('left') && !position.value.includes('right')) ||
+        (!position.value.includes('top') && !position.value.includes('bottom'))
+            ? {
+                  transform: `translate(${
+                      !position.value.includes('left') && !position.value.includes('right')
+                          ? 'calc(50vw - 50%)' +
+                            (!position.value.includes('top') && !position.value.includes('bottom')
+                                ? ', '
+                                : '')
+                          : ''
+                  }${
+                      !position.value.includes('top') && !position.value.includes('bottom')
+                          ? 'calc(50vh - 50%)'
+                          : ''
+                  })`,
+              }
+            : {},
+    )
+
+    const offsetY = computed(() =>
+        this.banner
+            ? {}
+            : position.value.includes('top')
+            ? { top: `${this.offset[1]}px` }
+            : position.value.includes('bottom')
+            ? { bottom: `${this.offset[1]}px` }
+            : {},
+    )
+
+    const offsetX = computed(() =>
+        this.banner
+            ? {}
+            : position.value.includes('left')
+            ? { left: `${this.offset[0]}px` }
+            : position.value.includes('right')
+            ? { right: `${this.offset[0]}px` }
+            : {},
+    )
+
+    const showing = ref(true)
+    const enterDuration = 300
+
+    const dismissToast = () => {
+        emit('update:active', false)
+        emit('close')
     }
+
+    const toggleTimeOut = () => {
+        if (props.duration) {
+            setTimeout(() => {
+                showing.value = false
+            }, props.duration)
+        }
+    }
+
+    watchEffect(() => {
+        if (props.active && props.autoToggle) {
+            toggleTimeOut()
+        }
+    })
 </script>
 
 <style>
