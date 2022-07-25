@@ -1,5 +1,5 @@
 <template>
-    <div class="flex gap-4 items-center ml-2">
+    <div class="ml-2 flex items-center gap-4">
         <div class="flex" :class="{ 'gap-1': !compact }">
             <div v-for="(_, i) in Array(numberShown)" :key="i" :class="{ '-ml-2': compact }">
                 <ProfileAvatar :avatar="users[i].avatar" :name="fullname(users[i])" :size="iconSize" />

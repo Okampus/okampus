@@ -1,7 +1,7 @@
 <template>
     <div>
         <transition name="fade" mode="out-in">
-            <table v-if="previewByTable" class="w-full text-center table-auto">
+            <table v-if="previewByTable" class="w-full table-auto text-center">
                 <thead>
                     <tr>
                         <th />
@@ -15,7 +15,7 @@
                     <tr
                         v-for="(folder, i) in folderList.children"
                         :key="i"
-                        class="hover:bg-2-light hover:dark:bg-2-dark cursor-pointer"
+                        class="cursor-pointer hover:bg-2-light hover:dark:bg-2-dark"
                         @click="
                             $emit('update:folderList', {
                                 children: folder.children,
@@ -23,27 +23,27 @@
                             })
                         "
                     >
-                        <td class="p-2 pl-4 rounded-l-xl">
-                            <i class="text-2xl fas fa-folder" />
+                        <td class="rounded-l-xl p-2 pl-4">
+                            <i class="fas fa-folder text-2xl" />
                         </td>
                         <td class="p-2">
                             {{ contextList[folder.context](folder.title) }}
                         </td>
                         <td></td>
                         <td></td>
-                        <td class="pr-4 rounded-r-xl"></td>
+                        <td class="rounded-r-xl pr-4"></td>
                     </tr>
 
                     <tr
                         v-for="(file, i) in fileList"
                         :key="i"
-                        class="group hover:bg-2-light hover:dark:bg-2-dark cursor-pointer"
+                        class="group cursor-pointer hover:bg-2-light hover:dark:bg-2-dark"
                         :class="[file == filePreview ? 'bg-2' : '']"
                         @click="$emit('update:filePreview', file)"
                     >
-                        <td class="p-2 pl-4 rounded-l-xl">
-                            <div class="flex gap-2 justify-center items-center">
-                                <div class="flex justify-center items-center">
+                        <td class="rounded-l-xl p-2 pl-4">
+                            <div class="flex items-center justify-center gap-2">
+                                <div class="flex items-center justify-center">
                                     <input
                                         :class="[
                                             downloadFileGroup.length == 0
@@ -57,9 +57,9 @@
                                     />
                                 </div>
 
-                                <div class="flex relative justify-center items-center">
+                                <div class="relative flex items-center justify-center">
                                     <DocumentIcon
-                                        class="w-8 h-8"
+                                        class="h-8 w-8"
                                         :mime="file.file.mimeType"
                                         :file-name="file.file.name"
                                     />
@@ -68,10 +68,10 @@
                                         class="absolute -top-3 right-0"
                                     >
                                         <Popper :hover="true" :arrow="true">
-                                            <i class="text-xs text-blue-500 cursor-auto fas fa-certificate" />
+                                            <i class="fas fa-certificate cursor-auto text-xs text-blue-500" />
                                             <template #content>
                                                 <div
-                                                    class="p-2 px-3 whitespace-nowrap rounded shadow-md bg-1"
+                                                    class="bg-1 whitespace-nowrap rounded p-2 px-3 shadow-md"
                                                 >
                                                     Partagé par un prof
                                                 </div>
@@ -82,23 +82,23 @@
                             </div>
                         </td>
                         <td class="p-2">
-                            <div class="flex justify-center items-center truncate">
+                            <div class="flex items-center justify-center truncate">
                                 {{ file.file.name }}
                             </div>
                         </td>
                         <td class="p-2">
-                            <div class="flex justify-center items-center">
+                            <div class="flex items-center justify-center">
                                 {{ new Date(file.createdAt).toLocaleDateString() }}
                             </div>
                         </td>
                         <td class="p-2">
-                            <div class="flex justify-center items-center">
+                            <div class="flex items-center justify-center">
                                 {{ formatBytes(file.file.fileSize) }}
                             </div>
                         </td>
-                        <td class="pr-4 rounded-r-xl">
+                        <td class="rounded-r-xl pr-4">
                             <div
-                                class="flex invisible group-hover:visible justify-center items-center hover:cursor-pointer"
+                                class="invisible flex items-center justify-center hover:cursor-pointer group-hover:visible"
                             >
                                 <ModalDropdown :buttons="dropDownButtons(file)">
                                     <i class="fas fa-ellipsis-h" />
@@ -112,7 +112,7 @@
                 <div
                     v-for="(folder, i) in folderList.children"
                     :key="i"
-                    class="group flex relative flex-col gap-1 justify-center items-center w-1/5 rounded cursor-pointer"
+                    class="group relative flex w-1/5 cursor-pointer flex-col items-center justify-center gap-1 rounded"
                     @click="
                         $emit('update:folderList', {
                             children: folder.children,
@@ -120,9 +120,9 @@
                         })
                     "
                 >
-                    <div class="flex flex-col gap-1 justify-center items-center">
-                        <i class="text-3xl fas fa-certificate" />
-                        <div class="w-full text-sm text-center truncate">
+                    <div class="flex flex-col items-center justify-center gap-1">
+                        <i class="fas fa-certificate text-3xl" />
+                        <div class="w-full truncate text-center text-sm">
                             {{ contextList[folder.context](folder.title) }}
                         </div>
                     </div>
@@ -130,36 +130,36 @@
                 <div
                     v-for="(file, i) in fileList"
                     :key="i"
-                    class="group flex relative flex-col gap-1 justify-center items-center w-1/5 hover:bg-2-light hover:dark:bg-2-dark rounded"
+                    class="group relative flex w-1/5 flex-col items-center justify-center gap-1 rounded hover:bg-2-light hover:dark:bg-2-dark"
                 >
                     <input
                         type="checkbox"
-                        class="hidden absolute top-0 left-0 md:block"
+                        class="absolute top-0 left-0 hidden md:block"
                         :class="[downloadFileGroup.length == 0 ? 'invisible group-hover:visible' : '']"
                         :checked="downloadFileGroup.includes(file)"
                         @click="updateFileGroup(file)"
                     />
                     <Popper offset-distance="0" :interactive="false" class="w-full">
                         <div
-                            class="flex flex-col gap-1 justify-center items-center w-full"
+                            class="flex w-full flex-col items-center justify-center gap-1"
                             @click="$emit('update:filePreview', file)"
                         >
                             <DocumentIcon
-                                class="w-12 h-12"
+                                class="h-12 w-12"
                                 :mime="file.file.mimeType"
                                 :file-name="file.file.name"
                             />
-                            <div class="w-full text-sm text-center truncate">
+                            <div class="w-full truncate text-center text-sm">
                                 {{ file.file.name }}
                             </div>
                         </div>
 
                         <template #content>
-                            <div class="flex flex-col p-2 card">
+                            <div class="card flex flex-col p-2">
                                 <div
                                     v-for="(button, _, j) in dropDownButtons(file)"
                                     :key="j"
-                                    class="flex gap-2 justify-center items-center py-2 px-4 hover:text-white rounded-xl"
+                                    class="flex items-center justify-center gap-2 rounded-xl py-2 px-4 hover:text-white"
                                     :class="button.class"
                                     @click="button.action()"
                                 >

@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="grid grid-cols-2 gap-4 w-full text-center md:grid-cols-4">
+        <div class="grid w-full grid-cols-2 gap-4 text-center md:grid-cols-4">
             <div
                 v-for="(el, i) in [
                     {
@@ -41,19 +41,19 @@
                     },
                 ]"
                 :key="i"
-                class="flex justify-around items-center card"
+                class="card flex items-center justify-around"
             >
                 <div
-                    class="flex grow-0 shrink-0 p-3 rounded-full"
+                    class="flex shrink-0 grow-0 rounded-full p-3"
                     :class="`bg-${el.color}-300 text-${el.color}-600`"
                 >
                     <i class="fa-solid" :class="el.icon"></i>
                 </div>
                 <div class="flex flex-col justify-center">
-                    <div class="flex relative gap-2 justify-center items-center">
+                    <div class="relative flex items-center justify-center gap-2">
                         <div class="text-2xl">{{ el.val }}</div>
                         <div
-                            class="p-0.5 text-xs rounded-full"
+                            class="rounded-full p-0.5 text-xs"
                             :class="{
                                 'text-green-400 bg-green-200': (el.val - el.change) / el.val > 0,
                                 'text-red-400 bg-red-200': (el.val - el.change) / el.val < 0,
@@ -66,32 +66,32 @@
                             {{ el.val !== 0 ? ((el.val - el.change) / el.val).toFixed(1) : 0 }} %
                         </div>
                     </div>
-                    <div class="text-xs text-gray-400 uppercase">{{ el.text }}</div>
+                    <div class="text-xs uppercase text-gray-400">{{ el.text }}</div>
                 </div>
             </div>
         </div>
-        <div class="grid grid-cols-1 auto-rows-fr gap-4 w-full md:grid-cols-2">
+        <div class="grid w-full auto-rows-fr grid-cols-1 gap-4 md:grid-cols-2">
             <div
                 v-if="clubStore.events.filter((el) => el.state === 'published').length"
-                class="flex flex-col card"
+                class="card flex flex-col"
             >
-                <div class="pb-2 mb-2 text-xl border-b">Evénements en attente</div>
-                <div class="flex overflow-y-scroll flex-col gap-4 h-full scrollbar-none">
+                <div class="mb-2 border-b pb-2 text-xl">Evénements en attente</div>
+                <div class="scrollbar-none flex h-full flex-col gap-4 overflow-y-scroll">
                     <div
                         v-for="(event, i) in clubStore.events.filter((el) => el.state === 'published')"
                         :key="i"
-                        class="flex gap-2 justify-between"
+                        class="flex justify-between gap-2"
                     >
                         <TeamActivity :team="event.team" :custom-string="event.name" />
-                        <div class="flex gap-2 items-center">
+                        <div class="flex items-center gap-2">
                             <div
-                                class="flex justify-center items-center p-2 w-8 h-8 text-green-400 hover:text-green-500 bg-green-200 hover:bg-green-300 rounded-full cursor-pointer"
+                                class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-green-200 p-2 text-green-400 hover:bg-green-300 hover:text-green-500"
                                 @click="clubStore.patchEvents(event.teamEventId, { state: 'approved' })"
                             >
                                 <i class="fa-solid fa-check"></i>
                             </div>
                             <div
-                                class="flex justify-center items-center p-2 w-8 h-8 text-red-400 hover:text-red-500 bg-red-200 hover:bg-red-300 rounded-full cursor-pointer"
+                                class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-red-200 p-2 text-red-400 hover:bg-red-300 hover:text-red-500"
                                 @click="clubStore.patchEvents(event.teamEventId, { state: 'rejected' })"
                             >
                                 <i class="fa-solid fa-xmark"></i>
@@ -100,8 +100,8 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col card">
-                <div class="flex justify-between items-center pb-2 border-b">
+            <div class="card flex flex-col">
+                <div class="flex items-center justify-between border-b pb-2">
                     <div class="text-xl">Evenements</div>
                     <SelectInput
                         v-model="eventChartRange"
@@ -125,8 +125,8 @@
                     :options="chartOptions"
                 ></LineChart>
             </div>
-            <div class="flex flex-col card">
-                <div class="flex justify-between items-center pb-2 border-b">
+            <div class="card flex flex-col">
+                <div class="flex items-center justify-between border-b pb-2">
                     <div class="text-xl">Activité sur la platforme</div>
                     <SelectInput
                         v-model="activityChartRange"
@@ -141,28 +141,28 @@
                     :options="chartOptions"
                 ></LineChart>
             </div>
-            <div class="flex flex-col gap-2 card">
-                <div class="pb-2 text-xl border-b">Alertes</div>
-                <div class="flex gap-2 items-center w-full">
-                    <i class="text-amber-400 fa-lg fa-solid fa-triangle-exclamation"></i>
+            <div class="card flex flex-col gap-2">
+                <div class="border-b pb-2 text-xl">Alertes</div>
+                <div class="flex w-full items-center gap-2">
+                    <i class="fa-lg fa-solid fa-triangle-exclamation text-amber-400"></i>
 
                     <div class="text-gray-400">Association 1</div>
                     <div class="">Passation pas encore faite</div>
                 </div>
-                <div class="flex gap-2 items-center w-full">
-                    <i class="text-amber-400 fa-lg fa-solid fa-triangle-exclamation"></i>
+                <div class="flex w-full items-center gap-2">
+                    <i class="fa-lg fa-solid fa-triangle-exclamation text-amber-400"></i>
 
                     <div class="text-gray-400">Association 2</div>
                     <div class="">Passation pas encore faite</div>
                 </div>
-                <div class="flex gap-2 items-center w-full">
-                    <i class="text-red-400 fa-lg fa-solid fa-circle-exclamation"></i>
+                <div class="flex w-full items-center gap-2">
+                    <i class="fa-lg fa-solid fa-circle-exclamation text-red-400"></i>
 
                     <div class="text-gray-400">Association 3</div>
                     <div class="">Budjet depassé</div>
                 </div>
-                <div class="flex gap-2 items-center w-full">
-                    <i class="text-amber-400 fa-lg fa-solid fa-triangle-exclamation"></i>
+                <div class="flex w-full items-center gap-2">
+                    <i class="fa-lg fa-solid fa-triangle-exclamation text-amber-400"></i>
 
                     <div class="text-gray-400">Association 4</div>
                     <div class="">Passation pas encore faite</div>

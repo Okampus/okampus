@@ -1,10 +1,10 @@
 <template>
     <div>
         <textarea ref="editor" />
-        <div class="flex flex-row gap-4 items-center">
+        <div class="flex flex-row items-center gap-4">
             <p
                 v-if="cancellable"
-                class="mt-2 text-base tracking-wide text-red-500 uppercase cursor-pointer"
+                class="mt-2 cursor-pointer text-base uppercase tracking-wide text-red-500"
                 @click="emit('cancel')"
             >
                 Annuler
@@ -15,12 +15,12 @@
                         v-if="charCount < minCharCount"
                         :tip="`Tu dois au moins écrire ${minCharCount} caractères.`"
                     >
-                        <p class="text-gray-500 cursor-not-allowed">Envoyer</p>
+                        <p class="cursor-not-allowed text-gray-500">Envoyer</p>
                     </TipPopper>
 
                     <p
                         v-else
-                        class="tracking-wide text-blue-500 uppercase cursor-pointer"
+                        class="cursor-pointer uppercase tracking-wide text-blue-500"
                         @click="emit('send')"
                     >
                         Envoyer

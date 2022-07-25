@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col pb-1 pl-1 w-auto p-1/2">
+    <div class="p-1/2 flex w-auto flex-col pb-1 pl-1">
         <hr class="mb-2" />
         <div class="w-5/6">
             <div class="text-base font-bold">

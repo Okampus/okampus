@@ -2,11 +2,11 @@
     <div>
         <ModalPopup :show="showCreateForm" @close="showCreateForm = false">
             <template #default="{ close }">
-                <div class="flex flex-col gap-4 justify-center items-center py-8 px-10 h-[80vh] card">
+                <div class="card flex h-[80vh] flex-col items-center justify-center gap-4 py-8 px-10">
                     <div class="overflow-y-scroll">
                         <div class="w-full">
                             <div class="text-2xl font-semibold">Créer un événement</div>
-                            <div class="text-sm text-2">
+                            <div class="text-2 text-sm">
                                 Mais d'abord, donnez du contexte sur votre demande de participation.
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                                 />
                             </div>
                             <div class="w-full">
-                                <div class="flex gap-2 w-full">
+                                <div class="flex w-full gap-2">
                                     <FormKit
                                         name="eventDateStart"
                                         outer-class="w-full"
@@ -58,7 +58,7 @@
                                         label="Heure de début"
                                     />
                                 </div>
-                                <div class="flex gap-2 w-full">
+                                <div class="flex w-full gap-2">
                                     <FormKit
                                         name="eventDateEnd"
                                         outer-class="w-full"
@@ -103,7 +103,7 @@
                                 @submit="(formId) => (form = formId)"
                             ></FormList>
                         </div>
-                        <div class="flex gap-4 self-end mt-6">
+                        <div class="mt-6 flex gap-4 self-end">
                             <button class="button-red" @click="close">Annuler</button>
                             <button class="button-blue" @click="createForm.node.submit()">
                                 Créer l'événement
@@ -114,22 +114,22 @@
             </template>
         </ModalPopup>
 
-        <div class="flex flex-col gap-8 items-center">
+        <div class="flex flex-col items-center gap-8">
             <div
                 v-if="events.length > 0"
-                class="flex flex-row flex-wrap gap-4 justify-center items-center mt-8"
+                class="mt-8 flex flex-row flex-wrap items-center justify-center gap-4"
             >
                 <ClubEventCard v-for="event in events" :key="event" :event="event" />
             </div>
-            <div v-else class="flex flex-col gap-6 items-center text-0">
-                <img class="w-48 h-48" :src="Calendar" />
+            <div v-else class="text-0 flex flex-col items-center gap-6">
+                <img class="h-48 w-48" :src="Calendar" />
 
                 <div class="text-center">
                     <h1 class="text-3xl font-semibold">{{ club.name }} n'a pas encore d'événéments !</h1>
                 </div>
             </div>
             <button
-                class="py-3 px-4 text-xl font-semibold rounded-full button-green"
+                class="button-green rounded-full py-3 px-4 text-xl font-semibold"
                 @click="showCreateForm = true"
             >
                 Créer un nouvel événement

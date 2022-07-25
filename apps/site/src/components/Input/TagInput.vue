@@ -1,7 +1,7 @@
 <template>
     <div
         ref="tagsContainer"
-        class="flex overflow-auto flex-wrap gap-2 items-center w-full h-max cursor-text input"
+        class="input flex h-max w-full cursor-text flex-wrap items-center gap-2 overflow-auto"
         tabindex="0"
         v-bind="focused ? { 'focused': 'true' } : {}"
         @focus="tagsInput.focus()"
@@ -14,12 +14,12 @@
             class="mb-1"
             @close="removeTag(idx)"
         />
-        <div class="basis-0 grow">
+        <div class="grow basis-0">
             <input
                 ref="tagsInput"
                 v-model="newTag"
                 :placeholder="placeholder"
-                class="w-full min-w-[1em] h-8 bg-transparent outline-none placeholder"
+                class="placeholder h-8 w-full min-w-[1em] bg-transparent outline-none"
                 @blur="focused = false"
                 @focus="focused = true"
                 @keydown="keypress"

@@ -1,12 +1,12 @@
 <template>
-    <div class="rounded-lg bg-1 text-1">
+    <div class="bg-1 text-1 rounded-lg">
         <AppLoader v-if="name === undefined || name === null" :size="2" />
-        <div v-else class="flex justify-between items-center w-full" :class="[mini ? 'py-2 px-3' : 'p-5']">
+        <div v-else class="flex w-full items-center justify-between" :class="[mini ? 'py-2 px-3' : 'p-5']">
             <div class="flex">
                 <a :href="inviteUrl" target="_blank"
                     ><img :src="iconUrl" :class="[mini ? 'w-10 h-10 rounded-2xl' : 'w-16 h-16 rounded-3xl']"
                 /></a>
-                <div class="flex flex-col mx-4">
+                <div class="mx-4 flex flex-col">
                     <a
                         :href="inviteUrl"
                         class="font-bold hover:underline"
@@ -18,12 +18,12 @@
                         <div v-if="description !== ''" :class="[mini ? 'text-xs tracking-tight' : 'text-sm']">
                             {{ description }}
                         </div>
-                        <div class="flex gap-1 items-center" :class="[mini ? 'text-xs' : 'mt-1.5 text-sm']">
-                            <span class="flex relative w-2 h-2">
+                        <div class="flex items-center gap-1" :class="[mini ? 'text-xs' : 'mt-1.5 text-sm']">
+                            <span class="relative flex h-2 w-2">
                                 <span
-                                    class="inline-flex absolute w-full h-full bg-green-400 rounded-full opacity-75 animate-ping"
+                                    class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"
                                 ></span>
-                                <span class="inline-flex relative w-2 h-2 bg-green-500 rounded-full"></span>
+                                <span class="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
                             </span>
                             <div class="flex">
                                 <div v-if="mini">{{ presence }}</div>
@@ -38,7 +38,7 @@
                     :href="inviteUrl"
                     target="_blank"
                     :class="[mini ? 'py-1 px-2 rounded text-xs' : 'py-3 px-4 rounded-md text-sm']"
-                    class="flex text-white bg-green-600"
+                    class="flex bg-green-600 text-white"
                 >
                     <i v-if="mini" class="fas fa-plus" />
                     <p v-else>Rejoindre</p>

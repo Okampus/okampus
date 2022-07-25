@@ -1,10 +1,10 @@
 <template>
-    <div class="flex gap-3 items-start">
+    <div class="flex items-start gap-3">
         <router-link :to="user.id ? `/user/${user.id}` : 'users'" class="shrink-0">
             <ProfileAvatar :size="3" :avatar="user.avatar" :name="fullname(user)" />
         </router-link>
         <div class="flex flex-col">
-            <div class="flex gap-1 items-center text-1">
+            <div class="text-1 flex items-center gap-1">
                 <router-link
                     :to="user.id ? `/user/${user.id}` : 'users'"
                     class="text-sm font-semibold"
@@ -20,7 +20,7 @@
                 </TipPopper>
             </div>
 
-            <div class="text-sm text-4">
+            <div class="text-4 text-sm">
                 <div v-if="customString">
                     {{ customString }}
                 </div>

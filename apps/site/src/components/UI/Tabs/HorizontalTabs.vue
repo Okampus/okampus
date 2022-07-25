@@ -2,7 +2,7 @@
     <Swiper slides-per-view="auto" :space-between="20" class="w-full" @swiper="(s) => (swiper = s)">
         <SwiperSlide v-for="(tab, i) in computedTabs" :key="i" class="!w-fit">
             <div
-                class="flex gap-3 justify-center items-center py-2 px-4 my-2 tab"
+                class="tab my-2 flex items-center justify-center gap-3 py-2 px-4"
                 :class="tab.id === modelValue ? 'active' : 'text-1'"
                 @click="setTab(tab, true)"
             >

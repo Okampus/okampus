@@ -1,11 +1,11 @@
 <template>
     <div
-        class="flex gap-3 items-center min-h-fit text-sm"
+        class="flex min-h-fit items-center gap-3 text-sm"
         :class="[mode === 'vertical' ? 'flex-col gap-1' : 'gap-3']"
     >
         <ProfileAvatar :size="imgSize" :avatar="user.avatar" :name="fullname(user)" />
         <div class="flex flex-col gap-1" :class="[mode === 'vertical' ? 'justify-center items-center' : '']">
-            <div class="text-sm text-1">
+            <div class="text-1 text-sm">
                 {{ fullname(user) }}
             </div>
             <div

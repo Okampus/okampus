@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-col items-center mt-8 w-full">
-        <div class="flex flex-col gap-4 p-8 card-2 centered-container">
+    <div class="mt-8 flex w-full flex-col items-center">
+        <div class="card-2 centered-container flex flex-col gap-4 p-8">
             <h1 class="text-3xl font-bold">Créer votre formulaire</h1>
             <div class="w-96">
                 <FormKit v-model="formTitle" type="text" label="Titre du Formulaire"></FormKit>
@@ -8,9 +8,9 @@
             <FormKit v-model="formDescription" type="textarea" label="Description du Formulaire"></FormKit>
             <draggable v-model="schema" group="inputs" item-key="id" @start="drag = true" @end="drag = false">
                 <template #item="{ element, index }">
-                    <div class="p-4 mt-8 rounded-md bg-1">
+                    <div class="bg-1 mt-8 rounded-md p-4">
                         <div v-if="element.$formkit">
-                            <div class="flex gap-4 items-center">
+                            <div class="flex items-center gap-4">
                                 <FormKit
                                     v-model="element.label"
                                     type="text"
@@ -39,7 +39,7 @@
                                 </button>
                             </div>
                             <div v-if="element.options">
-                                <div class="flex flex-wrap gap-4 items-center">
+                                <div class="flex flex-wrap items-center gap-4">
                                     <div v-for="(option, idx) in element.options" :key="idx">
                                         <FormKit
                                             v-model="element.options[idx]"
@@ -49,14 +49,14 @@
                                     </div>
                                 </div>
                                 <button
-                                    class="py-1 px-4 mt-4 w-fit text-white bg-blue-500 rounded-md"
+                                    class="mt-4 w-fit rounded-md bg-blue-500 py-1 px-4 text-white"
                                     @click="() => addOption(index)"
                                 >
                                     Ajouter une option
                                 </button>
                             </div>
                             <div v-if="element.min != undefined">
-                                <div class="flex flex-wrap gap-4 items-center">
+                                <div class="flex flex-wrap items-center gap-4">
                                     <FormKit v-model="element.min" type="number" label="Minimum"></FormKit>
                                     <FormKit v-model="element.max" type="number" label="Maximum"></FormKit>
                                 </div>
@@ -78,16 +78,16 @@
                 </template>
             </draggable>
             <div class="flex gap-4">
-                <button class="py-1 px-4 w-fit text-white bg-blue-500 rounded-md" @click="addOne">
+                <button class="w-fit rounded-md bg-blue-500 py-1 px-4 text-white" @click="addOne">
                     Ajouter un champ
                 </button>
-                <button class="py-1 px-4 w-fit text-white bg-blue-500 rounded-md" @click="addText">
+                <button class="w-fit rounded-md bg-blue-500 py-1 px-4 text-white" @click="addText">
                     Ajouter un texte
                 </button>
             </div>
-            <div class="flex mt-8 w-full">
+            <div class="mt-8 flex w-full">
                 <button
-                    class="py-1 px-4 w-fit text-lg font-bold text-white bg-blue-500 rounded-md"
+                    class="w-fit rounded-md bg-blue-500 py-1 px-4 text-lg font-bold text-white"
                     @click="submit"
                 >
                     Enregistrer

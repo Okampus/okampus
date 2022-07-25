@@ -8,15 +8,15 @@
                     :to="`/${indexType.routerBase}/${result.id}`"
                     @click="$emit('closeModal')"
                 >
-                    <div class="flex flex-col gap-1 p-2 rounded-lg">
-                        <div class="flex gap-2 items-center">
+                    <div class="flex flex-col gap-1 rounded-lg p-2">
+                        <div class="flex items-center gap-2">
                             <i class="fas" :class="`fa-${indexType.resultIcon(result)}`" />
 
                             <div class="flex flex-col">
                                 <div class="line-clamp-1">
                                     {{ indexType.resultTitle(result) }}
                                 </div>
-                                <div class="text-sm line-clamp-1 text-2">
+                                <div class="text-2 text-sm line-clamp-1">
                                     {{ indexType.resultBody(result) }}
                                 </div>
                             </div>

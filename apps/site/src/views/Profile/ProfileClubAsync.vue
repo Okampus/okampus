@@ -5,20 +5,20 @@
             :name="club.name"
             :banner="club.banner"
             :data="club.category"
-            class="p-0 h-40"
+            class="h-40 p-0"
             :rounded-top="false"
         />
-        <div class="flex flex-col gap-6 pt-4 text-0 bg-2">
-            <div class="flex gap-4 justify-between items-start py-0 mb-0 centered-container-padded">
-                <div class="flex gap-4 -mt-[5rem]">
+        <div class="text-0 bg-2 flex flex-col gap-6 pt-4">
+            <div class="centered-container-padded mb-0 flex items-start justify-between gap-4 py-0">
+                <div class="-mt-[5rem] flex gap-4">
                     <ProfileAvatar
                         :avatar="club.avatar"
                         :size="9"
                         :name="club.name"
                         inner-class="border-4 border-white dark:border-black !sahdow-none"
                     />
-                    <div class="flex flex-col mt-[5.1rem]">
-                        <div class="flex gap-3 items-center">
+                    <div class="mt-[5.1rem] flex flex-col">
+                        <div class="flex items-center gap-3">
                             <p class="text-3xl font-semibold">{{ club.name }}</p>
 
                             <router-link :to="`/clubs/${clubTypes[club.category].link}`">
@@ -27,13 +27,13 @@
                                 }}</LabelSimple>
                             </router-link>
                         </div>
-                        <p class="text-lg text-2">{{ club.shortDescription }}</p>
+                        <p class="text-2 text-lg">{{ club.shortDescription }}</p>
                     </div>
                 </div>
 
                 <button
                     v-if="!memberRole"
-                    class="py-1 text-lg font-semibold rounded-full button-blue"
+                    class="button-blue rounded-full py-1 text-lg font-semibold"
                     @click="showJoinForm = true"
                 >
                     Rejoindre
@@ -42,7 +42,7 @@
                 <template v-else-if="memberRole === IS_WAITING">
                     <router-link
                         :to="`/me/clubs/requests`"
-                        class="flex gap-2 items-center py-1 text-lg font-semibold rounded-full button-grey"
+                        class="button-grey flex items-center gap-2 rounded-full py-1 text-lg font-semibold"
                     >
                         <i class="fa fa-envelope" />
                         <div>En attente</div>
@@ -52,7 +52,7 @@
                 <template v-else-if="memberRole === IS_SPECIAL_ROLE">
                     <router-link
                         :to="`/club/${club.teamId}/manage`"
-                        class="flex gap-2 items-center py-1 text-lg font-semibold rounded-full button-green"
+                        class="button-green flex items-center gap-2 rounded-full py-1 text-lg font-semibold"
                     >
                         <i class="fa fa-gear" />
                         <div>Gérer</div>
@@ -60,12 +60,12 @@
                 </template>
             </div>
 
-            <div class="py-0 centered-container-padded">
+            <div class="centered-container-padded py-0">
                 <HorizontalTabs v-model="currentTab" :tabs="tabs" :route-base="clubRoute" route-name="club" />
             </div>
         </div>
 
-        <div class="py-4 centered-container">
+        <div class="centered-container py-4">
             <Transition mode="out-in" name="switch-fade">
                 <KeepAlive>
                     <Suspense timeout="0">

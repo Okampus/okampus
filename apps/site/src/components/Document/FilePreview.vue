@@ -1,21 +1,21 @@
 <template>
-    <div class="flex justify-around p-2 w-full rounded shadow-md text-1 bg-1">
-        <div class="flex gap-2 items-center w-3/4">
-            <DocumentIcon :file-name="file.name" :mime="file.mimeType" class="w-16 h-16" />
+    <div class="text-1 bg-1 flex w-full justify-around rounded p-2 shadow-md">
+        <div class="flex w-3/4 items-center gap-2">
+            <DocumentIcon :file-name="file.name" :mime="file.mimeType" class="h-16 w-16" />
             <div class="truncate">
                 {{ file.name }}
             </div>
         </div>
-        <div class="flex gap-2 justify-center items-center">
+        <div class="flex items-center justify-center gap-2">
             <button
                 v-if="canDelete"
                 title="Enlever le fichier"
                 @click.prevent="$emit('delete', file.fileUploadId)"
             >
-                <i class="text-red-500 fas fa-times" />
+                <i class="fas fa-times text-red-500" />
             </button>
             <button v-if="canDownload" title="Télécharger le fichier" @click.prevent="downloadFile(file)">
-                <i class="text-blue-500 fa-solid fa-cloud-arrow-down"></i>
+                <i class="fa-solid fa-cloud-arrow-down text-blue-500"></i>
             </button>
         </div>
     </div>

@@ -9,9 +9,9 @@
                 input-placeholder="Filtrer les colonnes..."
             />
         </div>
-        <table class="overflow-x-scroll w-full rounded-table">
+        <table class="rounded-table w-full overflow-x-scroll">
             <thead>
-                <tr class="text-xs font-semibold tracking-wide text-left uppercase text-3 bg-3">
+                <tr class="text-3 bg-3 text-left text-xs font-semibold uppercase tracking-wide">
                     <th
                         v-for="(col, colName) in columns"
                         :key="colName"
@@ -24,11 +24,11 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="bg-white dark:bg-gray-800 divide-y dark:divide-gray-700">
+            <tbody class="divide-y bg-white dark:divide-gray-700 dark:bg-gray-800">
                 <tr
                     v-for="(item, i) in itemsSorted"
                     :key="i"
-                    class="text-gray-700 dark:text-gray-400 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
+                    class="bg-gray-50 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-900"
                 >
                     <td
                         v-for="(col, colName) in columns"

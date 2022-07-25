@@ -1,6 +1,6 @@
 <template>
     <button
-        class="flex z-50 shrink-0 justify-center items-center rounded-full button-blue"
+        class="button-blue z-50 flex shrink-0 items-center justify-center rounded-full"
         :class="small ? 'w-6 h-6 text-lg' : 'w-10 h-10 text-2xl'"
         @click="slideFunc"
     >

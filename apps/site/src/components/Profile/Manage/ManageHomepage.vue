@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex flex-col pb-4 rounded-xl shadow-md text-2 bg-2">
+        <div class="text-2 bg-2 flex flex-col rounded-xl pb-4 shadow-md">
             <div class="relative">
                 <AvatarCropper
                     v-model="editingBanner"
@@ -13,30 +13,30 @@
                     @completed="(res) => onUploadSuccess(res, 'banner')"
                 />
                 <ProfileBanner
-                    class="w-full h-36 rounded-t-lg"
+                    class="h-36 w-full rounded-t-lg"
                     :banner="club.banner"
                     :name="club.name"
                     :data="club.category"
                 />
                 <div
                     v-if="!club.banner"
-                    class="flex absolute inset-0 flex-col justify-center items-center m-auto text-center text-white"
+                    class="absolute inset-0 m-auto flex flex-col items-center justify-center text-center text-white"
                 >
                     <div class="text-2xl font-semibold">{{ club.name }} n'a pas de bannière !</div>
                     <div>Ajoutez une bannière pour présenter {{ club.name }}.</div>
                 </div>
                 <div
-                    class="flex absolute top-5 right-5 justify-center items-center w-10 h-10 bg-white rounded-full cursor-pointer"
+                    class="absolute top-5 right-5 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white"
                 >
                     <i
-                        class="text-xl text-blue-500 fa"
+                        class="fa text-xl text-blue-500"
                         :class="club.banner ? 'fa-pen' : 'fa-plus'"
                         @click="editingBanner = true"
                     />
                 </div>
             </div>
             <div class="flex">
-                <div class="z-10 p-1 -mt-[3.5rem] ml-4 w-fit rounded-2xl bg-2">
+                <div class="bg-2 z-10 -mt-[3.5rem] ml-4 w-fit rounded-2xl p-1">
                     <AvatarCropper
                         v-model="editingAvatar"
                         :upload-url="uploadTypeUrl('avatar')"
@@ -49,14 +49,14 @@
                     />
                     <ProfileAvatar :rounded-full="false" :avatar="club.avatar" :size="6" :name="club.name" />
                 </div>
-                <div class="flex justify-between items-start w-full">
+                <div class="flex w-full items-start justify-between">
                     <button
-                        class="flex justify-center items-center mt-2 ml-2 w-8 h-8 text-lg rounded-full button-grey fa fa-camera"
+                        class="button-grey fa fa-camera mt-2 ml-2 flex h-8 w-8 items-center justify-center rounded-full text-lg"
                         @click="editingAvatar = true"
                     />
                     <ModalPopup :show="editingPage" @close="editingPage = false">
                         <template #default="{ close }">
-                            <div class="flex flex-col justify-center items-center py-8 px-10 card">
+                            <div class="card flex flex-col items-center justify-center py-8 px-10">
                                 <div class="text-2xl">Modification des informations de l'association</div>
                                 <FormKit
                                     id="update-club-data"
@@ -81,7 +81,7 @@
                                         help="Description longue de l'association"
                                     />
                                 </FormKit>
-                                <div class="flex gap-4 self-end mt-6">
+                                <div class="mt-6 flex gap-4 self-end">
                                     <button class="button-grey" @click="close">Annuler</button>
                                     <button
                                         class="button-blue"
@@ -98,17 +98,17 @@
                             </div>
                         </template>
                     </ModalPopup>
-                    <div class="mt-2 mr-4 text-base button-grey" @click="editingPage = true">Modifier</div>
+                    <div class="button-grey mt-2 mr-4 text-base" @click="editingPage = true">Modifier</div>
                 </div>
             </div>
-            <div class="flex flex-col grow ml-4">
+            <div class="ml-4 flex grow flex-col">
                 <div class="flex justify-between">
-                    <div class="mt-1 text-2xl font-semibold text-0">{{ club.name }}</div>
+                    <div class="text-0 mt-1 text-2xl font-semibold">{{ club.name }}</div>
                 </div>
-                <div class="mt-1 text-2">{{ club.shortDescription }}</div>
+                <div class="text-2 mt-1">{{ club.shortDescription }}</div>
             </div>
         </div>
-        <div class="flex flex-col gap-5 p-4 mt-4 rounded-xl shadow-md text-2 bg-2">
+        <div class="text-2 bg-2 mt-4 flex flex-col gap-5 rounded-xl p-4 shadow-md">
             <div>
                 <div class="mb-2 text-lg font-semibold">Catégorie de l'association</div>
                 <router-link :to="`/clubs/${clubTypes[club.category].link}`">
@@ -122,7 +122,7 @@
                 <div class="text-2">{{ club.longDescription }}</div>
             </div>
         </div>
-        <div class="flex flex-col gap-5 p-4 mt-4 rounded-xl shadow-xl text-2 bg-2">
+        <div class="text-2 bg-2 mt-4 flex flex-col gap-5 rounded-xl p-4 shadow-xl">
             <div>
                 <div class="text-lg font-semibold">Formulaire d'inscription</div>
                 <p>

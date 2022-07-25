@@ -1,13 +1,13 @@
 <template>
-    <div class="flex flex-col gap-8 card-2">
+    <div class="card-2 flex flex-col gap-8">
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div v-for="(doc, i) in documentList" :key="i" class="flex flex-col gap-2 w-full">
-                <div class="text-lg truncate">{{ doc.name }}</div>
+            <div v-for="(doc, i) in documentList" :key="i" class="flex w-full flex-col gap-2">
+                <div class="truncate text-lg">{{ doc.name }}</div>
                 <FileInput
                     v-if="!doc.file.length"
                     v-model="doc.model"
                     :message="doc.message"
-                    class="w-full h-36"
+                    class="h-36 w-full"
                     :file-limit="1"
                     :size-limit="2000000"
                 />
@@ -20,7 +20,7 @@
                 />
             </div>
         </div>
-        <div class="flex gap-2 justify-center items-center text-red-500">
+        <div class="flex items-center justify-center gap-2 text-red-500">
             <i class="fa-solid fa-xl fa-triangle-exclamation"></i>
             <div>
                 Mettre à jour vos documents légaux est obligatoire pour pouvoir prétendre à des subventions

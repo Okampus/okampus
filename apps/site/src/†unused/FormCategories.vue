@@ -29,7 +29,7 @@
                         >Montant<span class="text-red-500">*</span>
                         <input
                             v-model="model[0].montant"
-                            class="w-full input"
+                            class="input w-full"
                             :class="{ 'ring-2 ring-red-500': v$.model[0].montant.$error }"
                             type="number"
                             placeholder="Nom du document"
@@ -69,7 +69,7 @@
                     >Date<span class="text-red-500">*</span>
                     <input
                         v-model="model[0].date"
-                        class="w-full input"
+                        class="input w-full"
                         :class="{ 'ring-2 ring-red-500': v$.model[0].date.$error }"
                         type="date"
                     />
@@ -92,7 +92,7 @@
                     <textarea
                         v-model="model[0].description"
                         placeholder="Description du document"
-                        class="w-full leading-tight focus:outline-none input focus:shadow-outline"
+                        class="input focus:shadow-outline w-full leading-tight focus:outline-none"
                         type="text"
                         rows="5"
                     />
@@ -104,7 +104,7 @@
                     v-model="model[0].files"
                     :img-preview="true"
                     :file-limit="-1"
-                    class="mt-4 w-full h-52 rounded"
+                    class="mt-4 h-52 w-full rounded"
                     :class="{ 'ring-2 ring-red-500': v$.model[0].files.$error }"
                     :size-limit="2097152"
                     :regex-mimes="[
@@ -137,10 +137,10 @@
                 </div>
             </div>
             <div class="flex">
-                <button class="shrink-0 mx-2 button-green" @click="submitForm">
+                <button class="button-green mx-2 shrink-0" @click="submitForm">
                     <p><i class="fas fa-check"></i> Confirmer</p>
                 </button>
-                <button class="shrink-0 mx-2 button-red" @click="freeForm">
+                <button class="button-red mx-2 shrink-0" @click="freeForm">
                     <p><i class="fas fa-trash"></i> Annuler</p>
                 </button>
             </div>

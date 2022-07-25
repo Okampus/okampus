@@ -2,18 +2,18 @@
     <ais-instant-search
         :search-client="typesenseInstantsearchAdapter?.searchClient ?? (() => {})"
         :index-name="indexName"
-        class="relative w-full h-full"
+        class="relative h-full w-full"
         @keydown.arrow-up.exact="indexSelected == null && focusInput ? (indexSelected = -1) : indexSelected--"
         @keydown.arrow-down.exact="
             indexSelected == null && focusInput ? (indexSelected = 0) : indexSelected++
         "
     >
-        <div class="flex flex-col w-full h-full">
+        <div class="flex h-full w-full flex-col">
             <Popper class="search-input-global" offset-distance="0" :show="focusInput">
-                <ais-search-box class="w-full h-full">
+                <ais-search-box class="h-full w-full">
                     <template #default="{ isSearchStalled, refine }">
                         <div
-                            class="flex items-center w-full h-full cursor-pointer input"
+                            class="input flex h-full w-full cursor-pointer items-center"
                             @click.prevent="focusSearchbar"
                         >
                             <slot
@@ -26,7 +26,7 @@
                             <input
                                 v-if="modelValue.length != itemLimit"
                                 ref="input"
-                                class="grow h-full bg-transparent outline-none"
+                                class="h-full grow bg-transparent outline-none"
                                 :placeholder="
                                     modelValue.length == 0 ? 'Rechercher une ressource sur Okampus...' : ''
                                 "
@@ -41,9 +41,9 @@
                 </ais-search-box>
 
                 <template #content="{ close }">
-                    <div class="overflow-y-scroll p-2 rounded-b-lg border border-t-0 shadow-md bg-1">
+                    <div class="bg-1 overflow-y-scroll rounded-b-lg border border-t-0 p-2 shadow-md">
                         <ais-index :index-name="indexName">
-                            <ais-hits class="flex flex-col gap-2 w-full">
+                            <ais-hits class="flex w-full flex-col gap-2">
                                 <template #default="{ items }">
                                     <div v-if="items.length != 0">
                                         <slot
@@ -54,7 +54,7 @@
                                             @click="close"
                                         />
                                     </div>
-                                    <div v-else class="flex flex-col gap-2 justify-center items-center h-24">
+                                    <div v-else class="flex h-24 flex-col items-center justify-center gap-2">
                                         <EmojiSad />
                                         <div class="">Pas de résultat ...</div>
                                     </div>

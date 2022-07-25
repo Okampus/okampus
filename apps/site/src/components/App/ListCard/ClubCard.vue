@@ -1,17 +1,17 @@
 <template>
     <div
-        class="flex relative flex-col pb-4 w-full min-w-[12rem] max-w-[30rem] rounded-lg shadow-md xs:w-[calc(50%-0.7rem)] xl:w-[calc(33%-0.7rem)] card-hover bg-2"
+        class="card-hover bg-2 relative flex w-full min-w-[12rem] max-w-[30rem] flex-col rounded-lg pb-4 shadow-md xs:w-[calc(50%-0.7rem)] xl:w-[calc(33%-0.7rem)]"
     >
         <ProfileBanner
-            class="w-full h-20 rounded-t-lg"
+            class="h-20 w-full rounded-t-lg"
             :banner="club.banner"
             :name="club.name"
             :data="club.category"
         />
-        <div class="flex flex-col items-center mx-3 h-full md:mx-5">
-            <div class="flex justify-between w-full">
-                <div class="flex gap-3 items-start pt-2">
-                    <div class="z-10 p-1 -mt-10 rounded-2xl bg-2">
+        <div class="mx-3 flex h-full flex-col items-center md:mx-5">
+            <div class="flex w-full justify-between">
+                <div class="flex items-start gap-3 pt-2">
+                    <div class="bg-2 z-10 -mt-10 rounded-2xl p-1">
                         <ProfileAvatar
                             :rounded-full="false"
                             :avatar="club.avatar"
@@ -20,32 +20,32 @@
                         />
                     </div>
                     <router-link class="mt-2" :to="`/clubs/${clubTypes[club.category].link}`">
-                        <LabelSimple class="text-xs bg-slate-600/40 hover:bg-slate-400/40">{{
+                        <LabelSimple class="bg-slate-600/40 text-xs hover:bg-slate-400/40">{{
                             club.category
                         }}</LabelSimple>
                     </router-link>
                 </div>
                 <ModalDropdown :buttons="buttons">
                     <i
-                        class="self-center px-3 pt-2 pb-1 text-xl cursor-pointer md:-mr-1 fa fa-ellipsis text-2"
+                        class="fa fa-ellipsis text-2 cursor-pointer self-center px-3 pt-2 pb-1 text-xl md:-mr-1"
                     />
                 </ModalDropdown>
             </div>
 
-            <div class="flex flex-col justify-between w-full h-full">
+            <div class="flex h-full w-full flex-col justify-between">
                 <router-link class="mt-2" :to="`/club/${club.teamId}`">
-                    <h3 class="text-xl font-bold hover:underline line-clamp-1 text-1">
+                    <h3 class="text-1 text-xl font-bold line-clamp-1 hover:underline">
                         {{ club.name }}
                     </h3>
-                    <div class="mt-1 text-sm text-2">
+                    <div class="text-2 mt-1 text-sm">
                         {{ club.shortDescription }}
                     </div>
                 </router-link>
 
-                <div class="flex flex-row justify-between items-center mt-3 w-full h-12">
+                <div class="mt-3 flex h-12 w-full flex-row items-center justify-between">
                     <button
                         v-if="!club.membership"
-                        class="py-1 -ml-1 font-semibold text-center rounded-full button-blue"
+                        class="button-blue -ml-1 rounded-full py-1 text-center font-semibold"
                         @click="emit('request', club.teamId)"
                     >
                         Rejoindre
@@ -53,7 +53,7 @@
                     <template v-else-if="club.membership === IS_WAITING">
                         <router-link
                             :to="`/me/clubs/requests`"
-                            class="flex gap-2 items-center py-1 -ml-1 font-semibold rounded-full button-grey"
+                            class="button-grey -ml-1 flex items-center gap-2 rounded-full py-1 font-semibold"
                         >
                             <i class="fa fa-envelope" />
                             <div>En attente</div>
@@ -62,7 +62,7 @@
                     <template v-else-if="club.membership === IS_MEMBER">
                         <router-link
                             :to="`/club/${club.teamId}`"
-                            class="flex gap-2 items-center py-1 -ml-1 font-semibold rounded-full button-indigo"
+                            class="button-indigo -ml-1 flex items-center gap-2 rounded-full py-1 font-semibold"
                         >
                             <i class="fa fa-users" />
                             <div>Profil</div>
@@ -71,15 +71,15 @@
                     <template v-else-if="club.membership === IS_SPECIAL_ROLE">
                         <router-link
                             :to="`/club/${club.teamId}/manage`"
-                            class="flex gap-2 items-center py-1 -ml-1 font-semibold rounded-full button-green"
+                            class="button-green -ml-1 flex items-center gap-2 rounded-full py-1 font-semibold"
                         >
                             <i class="fa fa-gear" />
                             <div>Gérer</div>
                         </router-link>
                     </template>
 
-                    <div class="flex flex-row-reverse gap-1 ml-4 text-0">
-                        <span v-if="props.club.memberCount > specialMembers.length" class="my-auto text-0"
+                    <div class="text-0 ml-4 flex flex-row-reverse gap-1">
+                        <span v-if="props.club.memberCount > specialMembers.length" class="text-0 my-auto"
                             >+ {{ abbrNumbers(props.club.memberCount - specialMembers.length) }}</span
                         >
                         <div v-for="(specialMember, i) in specialMembers" :key="i" class="-ml-3">
@@ -98,11 +98,11 @@
                                         }`"
                                     />
                                 </template>
-                                <div class="h-12 rounded-full avatar-hover">
+                                <div class="avatar-hover h-12 rounded-full">
                                     <template v-if="isMobile">
                                         <div class="p-1">
                                             <ProfileAvatar
-                                                class="relative p-1 rounded-full !shadow-none bg-2"
+                                                class="bg-2 relative rounded-full p-1 !shadow-none"
                                                 :class="specialMembersActive[i] ? 'hovered' : ''"
                                                 :size="2.5"
                                                 :avatar="specialMember.member.avatar"
@@ -113,7 +113,7 @@
                                     <template v-else>
                                         <router-link class="p-1" :to="`/user/${specialMember.member.id}`">
                                             <ProfileAvatar
-                                                class="relative rounded-full !shadow-none cursor-pointer hovered bg-2"
+                                                class="hovered bg-2 relative cursor-pointer rounded-full !shadow-none"
                                                 :size="2.5"
                                                 :avatar="specialMember.member.avatar"
                                                 :name="fullname(specialMember.member)"

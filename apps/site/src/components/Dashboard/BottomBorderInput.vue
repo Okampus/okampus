@@ -15,7 +15,7 @@
             @focus="focused = true"
             @input="$emit('update:modelValue', $event.target.value)"
         />
-        <span class="flex absolute inset-y-0 right-0 items-center pr-2">
+        <span class="absolute inset-y-0 right-0 flex items-center pr-2">
             <slot />
         </span>
     </div>

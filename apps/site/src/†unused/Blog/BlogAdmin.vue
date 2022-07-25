@@ -5,7 +5,7 @@
             <div
                 v-for="(card, i) in cards"
                 :key="i"
-                class="group flex justify-between items-center p-3 font-medium text-white rounded-md border-b-4 shadow-md md:flex-col"
+                class="group flex items-center justify-between rounded-md border-b-4 p-3 font-medium text-white shadow-md md:flex-col"
                 :class="card.class"
             >
                 <div class="flex space-x-4 text-center md:flex-col md:space-x-0">
@@ -16,8 +16,8 @@
                         {{ card.title }}
                     </div>
                 </div>
-                <div class="flex justify-between items-center">
-                    <a :href="card.link" class="px-2 font-bold hover:bg-white rounded text-5 bg-2"
+                <div class="flex items-center justify-between">
+                    <a :href="card.link" class="text-5 bg-2 rounded px-2 font-bold hover:bg-white"
                         >View all</a
                     >
                 </div>
@@ -27,7 +27,7 @@
         <div class="mt-2 mb-10 h-full">
             <div>
                 <select
-                    class="w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200/50 shadow-sm text-3 bg-2"
+                    class="text-3 bg-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200/50"
                 >
                     <option>Dernière semaine</option>
                     <option>Dernier mois</option>
@@ -39,7 +39,7 @@
                 <div
                     v-for="(statistic, j) in statistics"
                     :key="j"
-                    class="group flex justify-between items-center p-3 font-medium text-white bg-blue-500 dark:bg-gray-800 rounded-md border-b-4 border-blue-600 dark:border-gray-600 shadow-md"
+                    class="group flex items-center justify-between rounded-md border-b-4 border-blue-600 bg-blue-500 p-3 font-medium text-white shadow-md dark:border-gray-600 dark:bg-gray-800"
                 >
                     <div class="text-left">
                         <p class="text-2xl">
@@ -53,18 +53,18 @@
             <div class="grid grid-cols-1 gap-5 p-4 lg:grid-cols-2">
                 <!-- Recent Activities -->
                 <div
-                    class="flex relative flex-col w-full min-w-0 break-words bg-gray-50 dark:bg-gray-800 rounded"
+                    class="relative flex w-full min-w-0 flex-col break-words rounded bg-gray-50 dark:bg-gray-800"
                 >
-                    <div class="px-0 mb-0 rounded-t border-0">
+                    <div class="mb-0 rounded-t border-0 px-0">
                         <div class="flex flex-wrap items-center py-2 px-4">
-                            <div class="relative flex-1 grow w-full max-w-full">
+                            <div class="relative w-full max-w-full flex-1 grow">
                                 <h3 class="text-base font-semibold text-gray-900 dark:text-gray-50">
                                     Recent Activities
                                 </h3>
                             </div>
-                            <div class="relative flex-1 grow w-full max-w-full text-right">
+                            <div class="relative w-full max-w-full flex-1 grow text-right">
                                 <button
-                                    class="py-1 px-3 mr-1 mb-1 text-xs font-bold text-white dark:text-gray-800 dark:active:text-gray-700 uppercase bg-blue-500 active:bg-blue-600 dark:bg-gray-100 rounded outline-none focus:outline-none transition-all duration-150 ease-linear"
+                                    class="mr-1 mb-1 rounded bg-blue-500 py-1 px-3 text-xs font-bold uppercase text-white outline-none transition-all duration-150 ease-linear focus:outline-none active:bg-blue-600 dark:bg-gray-100 dark:text-gray-800 dark:active:text-gray-700"
                                     type="button"
                                 >
                                     See all
@@ -73,23 +73,23 @@
                         </div>
                         <div class="block w-full">
                             <div
-                                class="py-3 px-4 text-xs font-semibold text-left text-gray-500 dark:text-gray-100 uppercase align-middle whitespace-nowrap bg-gray-100 dark:bg-gray-600 border border-x-0 border-gray-200 dark:border-gray-500 border-solid"
+                                class="whitespace-nowrap border border-x-0 border-solid border-gray-200 bg-gray-100 py-3 px-4 text-left align-middle text-xs font-semibold uppercase text-gray-500 dark:border-gray-500 dark:bg-gray-600 dark:text-gray-100"
                             >
                                 Today
                             </div>
                             <ul class="my-1">
                                 <li class="flex px-4">
-                                    <div class="shrink-0 my-2 mr-3 w-9 h-9 bg-indigo-500 rounded-full bg-6">
-                                        <svg class="w-9 h-9 text-indigo-50 fill-current" viewBox="0 0 36 36">
+                                    <div class="bg-6 my-2 mr-3 h-9 w-9 shrink-0 rounded-full bg-indigo-500">
+                                        <svg class="h-9 w-9 fill-current text-indigo-50" viewBox="0 0 36 36">
                                             <path
                                                 d="M18 10c-4.4 0-8 3.1-8 7s3.6 7 8 7h.6l5.4 2v-4.4c1.2-1.2 2-2.8 2-4.6 0-3.9-3.6-7-8-7zm4 10.8v2.3L18.9 22H18c-3.3 0-6-2.2-6-5s2.7-5 6-5 6 2.2 6 5c0 2.2-2 3.8-2 3.8z"
                                             />
                                         </svg>
                                     </div>
                                     <div
-                                        class="flex grow items-center py-2 text-sm text-gray-600 dark:text-gray-100 border-b border-gray-100 dark:border-gray-400"
+                                        class="flex grow items-center border-b border-gray-100 py-2 text-sm text-gray-600 dark:border-gray-400 dark:text-gray-100"
                                     >
-                                        <div class="flex grow justify-between items-center">
+                                        <div class="flex grow items-center justify-between">
                                             <div class="self-center">
                                                 <a
                                                     class="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-50 dark:hover:text-gray-100"
@@ -106,7 +106,7 @@
                                                 >
                                                 in a new post
                                             </div>
-                                            <div class="shrink-0 ml-2">
+                                            <div class="ml-2 shrink-0">
                                                 <a
                                                     class="flex items-center font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
                                                     href="#0"
@@ -132,17 +132,17 @@
                                     </div>
                                 </li>
                                 <li class="flex px-4">
-                                    <div class="shrink-0 my-2 mr-3 w-9 h-9 bg-red-500 rounded-full bg-6">
-                                        <svg class="w-9 h-9 text-red-50 fill-current" viewBox="0 0 36 36">
+                                    <div class="bg-6 my-2 mr-3 h-9 w-9 shrink-0 rounded-full bg-red-500">
+                                        <svg class="h-9 w-9 fill-current text-red-50" viewBox="0 0 36 36">
                                             <path
                                                 d="M25 24H11a1 1 0 01-1-1v-5h2v4h12v-4h2v5a1 1 0 01-1 1zM14 13h8v2h-8z"
                                             />
                                         </svg>
                                     </div>
                                     <div
-                                        class="flex grow items-center py-2 text-sm text-gray-600 dark:text-gray-50 border-gray-100"
+                                        class="flex grow items-center border-gray-100 py-2 text-sm text-gray-600 dark:text-gray-50"
                                     >
-                                        <div class="flex grow justify-between items-center">
+                                        <div class="flex grow items-center justify-between">
                                             <div class="self-center">
                                                 The post
                                                 <a
@@ -159,7 +159,7 @@
                                                     >Nick Mark</a
                                                 >
                                             </div>
-                                            <div class="shrink-0 ml-2">
+                                            <div class="ml-2 shrink-0">
                                                 <a
                                                     class="flex items-center font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
                                                     href="#0"
@@ -186,15 +186,15 @@
                                 </li>
                             </ul>
                             <div
-                                class="py-3 px-4 text-xs font-semibold text-left text-gray-500 dark:text-gray-100 uppercase align-middle whitespace-nowrap bg-gray-100 dark:bg-gray-600 border border-x-0 border-gray-200 dark:border-gray-500 border-solid"
+                                class="whitespace-nowrap border border-x-0 border-solid border-gray-200 bg-gray-100 py-3 px-4 text-left align-middle text-xs font-semibold uppercase text-gray-500 dark:border-gray-500 dark:bg-gray-600 dark:text-gray-100"
                             >
                                 Yesterday
                             </div>
                             <ul class="my-1">
                                 <li class="flex px-4">
-                                    <div class="shrink-0 my-2 mr-3 w-9 h-9 bg-green-500 rounded-full bg-6">
+                                    <div class="bg-6 my-2 mr-3 h-9 w-9 shrink-0 rounded-full bg-green-500">
                                         <svg
-                                            class="w-9 h-9 fill-current text-light-blue-50"
+                                            class="text-light-blue-50 h-9 w-9 fill-current"
                                             viewBox="0 0 36 36"
                                         >
                                             <path
@@ -203,9 +203,9 @@
                                         </svg>
                                     </div>
                                     <div
-                                        class="flex grow items-center py-2 text-sm text-gray-600 dark:text-gray-50 border-gray-100"
+                                        class="flex grow items-center border-gray-100 py-2 text-sm text-gray-600 dark:text-gray-50"
                                     >
-                                        <div class="flex grow justify-between items-center">
+                                        <div class="flex grow items-center justify-between">
                                             <div class="self-center">
                                                 <a
                                                     class="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-50 dark:hover:text-gray-100"
@@ -221,7 +221,7 @@
                                                     >Newsletter #1</a
                                                 >
                                             </div>
-                                            <div class="shrink-0 ml-2">
+                                            <div class="ml-2 shrink-0">
                                                 <a
                                                     class="flex items-center font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
                                                     href="#0"
@@ -249,17 +249,17 @@
                             </ul>
                             <ul class="my-1">
                                 <li class="flex px-4">
-                                    <div class="shrink-0 my-2 mr-3 w-9 h-9 bg-red-500 rounded-full bg-6">
-                                        <svg class="w-9 h-9 text-red-50 fill-current" viewBox="0 0 36 36">
+                                    <div class="bg-6 my-2 mr-3 h-9 w-9 shrink-0 rounded-full bg-red-500">
+                                        <svg class="h-9 w-9 fill-current text-red-50" viewBox="0 0 36 36">
                                             <path
                                                 d="M25 24H11a1 1 0 01-1-1v-5h2v4h12v-4h2v5a1 1 0 01-1 1zM14 13h8v2h-8z"
                                             />
                                         </svg>
                                     </div>
                                     <div
-                                        class="flex grow items-center py-2 text-sm text-gray-600 dark:text-gray-50 border-gray-100"
+                                        class="flex grow items-center border-gray-100 py-2 text-sm text-gray-600 dark:text-gray-50"
                                     >
-                                        <div class="flex grow justify-between items-center">
+                                        <div class="flex grow items-center justify-between">
                                             <div class="self-center">
                                                 <a
                                                     class="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-50 dark:hover:text-gray-100"
@@ -275,7 +275,7 @@
                                                     >1 post</a
                                                 >
                                             </div>
-                                            <div class="shrink-0 ml-2">
+                                            <div class="ml-2 shrink-0">
                                                 <a
                                                     class="flex items-center font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
                                                     href="#0"
@@ -303,17 +303,17 @@
                             </ul>
                             <ul class="my-1">
                                 <li class="flex px-4">
-                                    <div class="shrink-0 my-2 mr-3 w-9 h-9 bg-indigo-500 rounded-full bg-6">
-                                        <svg class="w-9 h-9 text-indigo-50 fill-current" viewBox="0 0 36 36">
+                                    <div class="bg-6 my-2 mr-3 h-9 w-9 shrink-0 rounded-full bg-indigo-500">
+                                        <svg class="h-9 w-9 fill-current text-indigo-50" viewBox="0 0 36 36">
                                             <path
                                                 d="M18 10c-4.4 0-8 3.1-8 7s3.6 7 8 7h.6l5.4 2v-4.4c1.2-1.2 2-2.8 2-4.6 0-3.9-3.6-7-8-7zm4 10.8v2.3L18.9 22H18c-3.3 0-6-2.2-6-5s2.7-5 6-5 6 2.2 6 5c0 2.2-2 3.8-2 3.8z"
                                             />
                                         </svg>
                                     </div>
                                     <div
-                                        class="flex grow items-center py-2 text-sm text-gray-600 dark:text-gray-50 border-gray-100"
+                                        class="flex grow items-center border-gray-100 py-2 text-sm text-gray-600 dark:text-gray-50"
                                     >
-                                        <div class="flex grow justify-between items-center">
+                                        <div class="flex grow items-center justify-between">
                                             <div class="self-center">
                                                 <a
                                                     class="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-50 dark:hover:text-gray-100"
@@ -329,7 +329,7 @@
                                                     >Efrei PARIS account</a
                                                 >
                                             </div>
-                                            <div class="shrink-0 ml-2">
+                                            <div class="ml-2 shrink-0">
                                                 <a
                                                     class="flex items-center font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
                                                     href="#0"
@@ -367,11 +367,11 @@
                         <h3 class="text-lg font-semibold">Task summaries of the team</h3>
                     </div>
                     <div class="md:col-span-2 xl:col-span-1">
-                        <div class="p-3 bg-gray-200 dark:bg-gray-800 rounded">
+                        <div class="rounded bg-gray-200 p-3 dark:bg-gray-800">
                             <div class="flex justify-between py-1 text-black dark:text-white">
                                 <h3 class="text-sm font-semibold">Tasks in TO DO</h3>
                                 <svg
-                                    class="h-4 text-gray-600 dark:text-gray-500 cursor-pointer fill-current"
+                                    class="h-4 cursor-pointer fill-current text-gray-600 dark:text-gray-500"
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24"
                                 >
@@ -382,21 +382,21 @@
                             </div>
                             <div class="mt-2 text-sm text-black dark:text-gray-50">
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Delete all references from the wiki
                                 </div>
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Remove analytics code
                                 </div>
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Do a mobile first layout
                                     <div
-                                        class="flex justify-between items-start mt-2 ml-2 text-gray-500 dark:text-gray-200"
+                                        class="mt-2 ml-2 flex items-start justify-between text-gray-500 dark:text-gray-200"
                                     >
                                         <span class="flex items-center text-xs">
                                             <svg
@@ -414,16 +414,16 @@
                                     </div>
                                 </div>
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Check the meta tags
                                 </div>
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Think more tasks for this example
                                     <div
-                                        class="flex justify-between items-start mt-2 ml-2 text-gray-500 dark:text-gray-200"
+                                        class="mt-2 ml-2 flex items-start justify-between text-gray-500 dark:text-gray-200"
                                     >
                                         <span class="flex items-center text-xs">
                                             <svg
@@ -444,11 +444,11 @@
                         </div>
                     </div>
                     <div>
-                        <div class="p-3 bg-gray-200 dark:bg-gray-800 rounded">
+                        <div class="rounded bg-gray-200 p-3 dark:bg-gray-800">
                             <div class="flex justify-between py-1 text-black dark:text-white">
                                 <h3 class="text-sm font-semibold">Tasks in DEVELOPMENT</h3>
                                 <svg
-                                    class="h-4 text-gray-600 dark:text-gray-500 cursor-pointer fill-current"
+                                    class="h-4 cursor-pointer fill-current text-gray-600 dark:text-gray-500"
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24"
                                 >
@@ -459,23 +459,23 @@
                             </div>
                             <div class="mt-2 text-sm text-black dark:text-gray-50">
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Delete all references from the wiki
                                 </div>
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Remove analytics code
                                 </div>
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Do a mobile first layout
                                     <div
-                                        class="flex justify-between items-start mt-2 ml-2 text-xs text-white"
+                                        class="mt-2 ml-2 flex items-start justify-between text-xs text-white"
                                     >
-                                        <span class="flex items-center p-1 text-xs bg-pink-600 rounded">
+                                        <span class="flex items-center rounded bg-pink-600 p-1 text-xs">
                                             <svg
                                                 class="h-4 fill-current"
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -490,15 +490,15 @@
                                     </div>
                                 </div>
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Check the meta tags
                                 </div>
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Think more tasks for this example
-                                    <div class="flex justify-between items-start mt-2 ml-2 text-gray-500">
+                                    <div class="mt-2 ml-2 flex items-start justify-between text-gray-500">
                                         <span class="flex items-center text-xs">
                                             <svg
                                                 class="mr-1 h-4 fill-current"
@@ -518,11 +518,11 @@
                         </div>
                     </div>
                     <div>
-                        <div class="p-3 bg-gray-200 dark:bg-gray-800 rounded">
+                        <div class="rounded bg-gray-200 p-3 dark:bg-gray-800">
                             <div class="flex justify-between py-1 text-black dark:text-white">
                                 <h3 class="text-sm font-semibold">Tasks in QA</h3>
                                 <svg
-                                    class="h-4 text-gray-600 dark:text-gray-500 cursor-pointer fill-current"
+                                    class="h-4 cursor-pointer fill-current text-gray-600 dark:text-gray-500"
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24"
                                 >
@@ -533,31 +533,31 @@
                             </div>
                             <div class="mt-2 text-sm text-black dark:text-gray-50">
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Delete all references from the wiki
                                 </div>
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Remove analytics code
                                 </div>
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Do a mobile first layout
                                 </div>
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Check the meta tags
                                 </div>
                                 <div
-                                    class="p-2 mt-1 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-700 rounded border-b border-gray-100 dark:border-gray-900 cursor-pointer"
+                                    class="mt-1 cursor-pointer rounded border-b border-gray-100 bg-white p-2 hover:bg-gray-50 dark:border-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700"
                                 >
                                     Think more tasks for this example
                                     <div
-                                        class="flex justify-between items-start mt-2 ml-2 text-gray-500 dark:text-gray-200"
+                                        class="mt-2 ml-2 flex items-start justify-between text-gray-500 dark:text-gray-200"
                                     >
                                         <span class="flex items-center text-xs">
                                             <svg
@@ -582,12 +582,12 @@
             </div>
             <!-- Client Table -->
             <div class="mx-4 mt-4">
-                <div class="overflow-hidden w-full rounded-lg shadow-xs">
-                    <div class="overflow-x-auto w-full">
+                <div class="shadow-xs w-full overflow-hidden rounded-lg">
+                    <div class="w-full overflow-x-auto">
                         <table class="w-full">
                             <thead>
                                 <tr
-                                    class="text-xs font-semibold tracking-wide text-left text-gray-500 dark:text-gray-400 uppercase bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700"
+                                    class="border-b bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
                                 >
                                     <th class="py-3 px-4">
                                         <span class="flex items-center text-xs">
@@ -609,18 +609,18 @@
                                     <th class="py-3 px-4">Status</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y dark:divide-gray-700">
+                            <tbody class="divide-y bg-white dark:divide-gray-700 dark:bg-gray-800">
                                 <tr
-                                    class="text-gray-700 dark:text-gray-400 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
+                                    class="bg-gray-50 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-900"
                                 >
                                     <td class="py-3 px-4 text-sm">Untitled</td>
                                     <td class="py-3 px-4 text-sm">Layout > Copy</td>
                                     <td class="py-3 px-4 text-sm">Aug 21, 2018</td>
                                     <td class="py-3 px-4">
                                         <div class="flex items-center text-sm">
-                                            <div class="hidden relative mr-3 w-8 h-8 rounded-full md:block">
+                                            <div class="relative mr-3 hidden h-8 w-8 rounded-full md:block">
                                                 <img
-                                                    class="object-cover w-full h-full rounded-full"
+                                                    class="h-full w-full rounded-full object-cover"
                                                     src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=200&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
                                                     alt=""
                                                     loading="lazy"
@@ -638,10 +638,10 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="py-3 px-4 text-sm font-bold text-yellow-500 text-4">DRAFT</td>
+                                    <td class="text-4 py-3 px-4 text-sm font-bold text-yellow-500">DRAFT</td>
                                 </tr>
                                 <tr
-                                    class="text-gray-700 dark:text-gray-400 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
+                                    class="bg-gray-50 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-900"
                                 >
                                     <td class="py-3 px-4 text-sm">
                                         <span class="flex items-center">
@@ -661,9 +661,9 @@
                                     <td class="py-3 px-4 text-sm">Aug 21, 2018</td>
                                     <td class="py-3 px-4">
                                         <div class="flex items-center text-sm">
-                                            <div class="hidden relative mr-3 w-8 h-8 rounded-full md:block">
+                                            <div class="relative mr-3 hidden h-8 w-8 rounded-full md:block">
                                                 <img
-                                                    class="object-cover w-full h-full rounded-full"
+                                                    class="h-full w-full rounded-full object-cover"
                                                     src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=200&amp;facepad=3&amp;fit=facearea&amp;s=707b9c33066bf8808c934c8ab394dff6"
                                                     alt=""
                                                     loading="lazy"
@@ -681,12 +681,12 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="py-3 px-4 text-sm font-bold text-green-600 text-1">
+                                    <td class="text-1 py-3 px-4 text-sm font-bold text-green-600">
                                         PUBLISHED
                                     </td>
                                 </tr>
                                 <tr
-                                    class="text-gray-700 dark:text-gray-400 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
+                                    class="bg-gray-50 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-900"
                                 >
                                     <td class="py-3 px-4 text-sm">
                                         <span class="flex items-center">
@@ -706,9 +706,9 @@
                                     <td class="py-3 px-4 text-sm">Aug 21, 2018</td>
                                     <td class="py-3 px-4">
                                         <div class="flex items-center text-sm">
-                                            <div class="hidden relative mr-3 w-8 h-8 rounded-full md:block">
+                                            <div class="relative mr-3 hidden h-8 w-8 rounded-full md:block">
                                                 <img
-                                                    class="object-cover w-full h-full rounded-full"
+                                                    class="h-full w-full rounded-full object-cover"
                                                     src="https://images.unsplash.com/photo-1502720705749-871143f0e671?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=200&amp;fit=max&amp;s=b8377ca9f985d80264279f277f3a67f5"
                                                     alt=""
                                                     loading="lazy"
@@ -726,12 +726,12 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="py-3 px-4 text-sm font-bold text-green-600 text-1">
+                                    <td class="text-1 py-3 px-4 text-sm font-bold text-green-600">
                                         PUBLISHED
                                     </td>
                                 </tr>
                                 <tr
-                                    class="text-gray-700 dark:text-gray-400 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
+                                    class="bg-gray-50 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-900"
                                 >
                                     <td class="py-3 px-4 text-sm">
                                         <span class="flex items-center">
@@ -751,9 +751,9 @@
                                     <td class="py-3 px-4 text-sm">Aug 21, 2018</td>
                                     <td class="py-3 px-4">
                                         <div class="flex items-center text-sm">
-                                            <div class="hidden relative mr-3 w-8 h-8 rounded-full md:block">
+                                            <div class="relative mr-3 hidden h-8 w-8 rounded-full md:block">
                                                 <img
-                                                    class="object-cover w-full h-full rounded-full"
+                                                    class="h-full w-full rounded-full object-cover"
                                                     src="https://images.unsplash.com/photo-1551006917-3b4c078c47c9?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=200&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
                                                     alt=""
                                                     loading="lazy"
@@ -771,12 +771,12 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="py-3 px-4 text-sm font-bold text-green-600 text-1">
+                                    <td class="text-1 py-3 px-4 text-sm font-bold text-green-600">
                                         PUBLISHED
                                     </td>
                                 </tr>
                                 <tr
-                                    class="text-gray-700 dark:text-gray-400 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
+                                    class="bg-gray-50 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-900"
                                 >
                                     <td class="py-3 px-4 text-sm">
                                         <span class="flex items-center">
@@ -796,9 +796,9 @@
                                     <td class="py-3 px-4 text-sm">Aug 21, 2018</td>
                                     <td class="py-3 px-4">
                                         <div class="flex items-center text-sm">
-                                            <div class="hidden relative mr-3 w-8 h-8 rounded-full md:block">
+                                            <div class="relative mr-3 hidden h-8 w-8 rounded-full md:block">
                                                 <img
-                                                    class="object-cover w-full h-full rounded-full"
+                                                    class="h-full w-full rounded-full object-cover"
                                                     src="https://images.unsplash.com/photo-1566411520896-01e7ca4726af?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=200&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
                                                     alt=""
                                                     loading="lazy"
@@ -814,7 +814,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="py-3 px-4 text-sm font-bold text-red-500 text-4">
+                                    <td class="text-4 py-3 px-4 text-sm font-bold text-red-500">
                                         WRONG FORMAT
                                     </td>
                                 </tr>
@@ -822,22 +822,22 @@
                         </table>
                     </div>
                     <div
-                        class="grid py-3 px-4 text-xs font-semibold tracking-wide text-gray-500 dark:text-gray-400 uppercase bg-gray-50 dark:bg-gray-800 border-t dark:border-gray-700 sm:grid-cols-9"
+                        class="grid border-t bg-gray-50 py-3 px-4 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 sm:grid-cols-9"
                     >
-                        <span class="flex col-span-3 items-center"> Showing 21-30 of 100 </span>
+                        <span class="col-span-3 flex items-center"> Showing 21-30 of 100 </span>
                         <span class="col-span-2" />
                         <!-- Pagination -->
-                        <span class="flex col-span-4 mt-2 sm:justify-end sm:mt-auto">
+                        <span class="col-span-4 mt-2 flex sm:mt-auto sm:justify-end">
                             <nav aria-label="Table navigation">
                                 <ul class="inline-flex items-center">
                                     <li>
                                         <button
-                                            class="py-1 px-3 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
+                                            class="focus:shadow-outline-purple rounded-md rounded-l-lg py-1 px-3 focus:outline-none"
                                             aria-label="Previous"
                                         >
                                             <svg
                                                 aria-hidden="true"
-                                                class="w-4 h-4 fill-current"
+                                                class="h-4 w-4 fill-current"
                                                 viewBox="0 0 20 20"
                                             >
                                                 <path
@@ -850,28 +850,28 @@
                                     </li>
                                     <li>
                                         <button
-                                            class="py-1 px-3 rounded-md focus:outline-none focus:shadow-outline-purple"
+                                            class="focus:shadow-outline-purple rounded-md py-1 px-3 focus:outline-none"
                                         >
                                             1
                                         </button>
                                     </li>
                                     <li>
                                         <button
-                                            class="py-1 px-3 rounded-md focus:outline-none focus:shadow-outline-purple"
+                                            class="focus:shadow-outline-purple rounded-md py-1 px-3 focus:outline-none"
                                         >
                                             2
                                         </button>
                                     </li>
                                     <li>
                                         <button
-                                            class="py-1 px-3 text-white dark:text-gray-800 bg-blue-600 dark:bg-gray-100 rounded-md border border-r-0 border-blue-600 dark:border-gray-100 focus:outline-none transition-colors duration-150 focus:shadow-outline-purple"
+                                            class="focus:shadow-outline-purple rounded-md border border-r-0 border-blue-600 bg-blue-600 py-1 px-3 text-white transition-colors duration-150 focus:outline-none dark:border-gray-100 dark:bg-gray-100 dark:text-gray-800"
                                         >
                                             3
                                         </button>
                                     </li>
                                     <li>
                                         <button
-                                            class="py-1 px-3 rounded-md focus:outline-none focus:shadow-outline-purple"
+                                            class="focus:shadow-outline-purple rounded-md py-1 px-3 focus:outline-none"
                                         >
                                             4
                                         </button>
@@ -881,25 +881,25 @@
                                     </li>
                                     <li>
                                         <button
-                                            class="py-1 px-3 rounded-md focus:outline-none focus:shadow-outline-purple"
+                                            class="focus:shadow-outline-purple rounded-md py-1 px-3 focus:outline-none"
                                         >
                                             8
                                         </button>
                                     </li>
                                     <li>
                                         <button
-                                            class="py-1 px-3 rounded-md focus:outline-none focus:shadow-outline-purple"
+                                            class="focus:shadow-outline-purple rounded-md py-1 px-3 focus:outline-none"
                                         >
                                             9
                                         </button>
                                     </li>
                                     <li>
                                         <button
-                                            class="py-1 px-3 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
+                                            class="focus:shadow-outline-purple rounded-md rounded-r-lg py-1 px-3 focus:outline-none"
                                             aria-label="Next"
                                         >
                                             <svg
-                                                class="w-4 h-4 fill-current"
+                                                class="h-4 w-4 fill-current"
                                                 aria-hidden="true"
                                                 viewBox="0 0 20 20"
                                             >

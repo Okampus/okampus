@@ -1,7 +1,7 @@
 <template>
     <ListPage :route-base="routeBase" :route-name="routeName" :callback="users.getUsers" :type="USER">
         <template #default="{ items }">
-            <div class="flex flex-col flex-wrap gap-4 xs:flex-row centered-container">
+            <div class="centered-container flex flex-col flex-wrap gap-4 xs:flex-row">
                 <UserCard v-for="user in items" :key="user.id" :user="user" />
             </div>
         </template>

@@ -13,7 +13,7 @@
 
         <div
             v-if="comments.length > maxCommentsShow"
-            class="mb-3 ml-1 text-sm text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer"
+            class="mb-3 ml-1 cursor-pointer text-sm text-blue-500 hover:text-blue-700 dark:hover:text-blue-300"
             @click="toggleComments"
         >
             <div v-if="showAll" class="text-xs">
@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <div v-if="commenting" class="flex mt-2">
+        <div v-if="commenting" class="mt-2 flex">
             <MdEditor
                 v-model="body"
                 :uid="`new-comment-${thread.id}-${parent.id}`"
@@ -40,12 +40,12 @@
         </div>
         <div
             v-else-if="parent.isVisible"
-            class="group flex gap-2 items-center px-1 w-fit cursor-pointer"
+            class="group flex w-fit cursor-pointer items-center gap-2 px-1"
             :class="actionClass"
             @click="commenting = true"
         >
-            <i class="group-hover:text-gray-700 dark:group-hover:text-gray-300 far fa-comment-alt text-2" />
-            <p class="text-sm group-hover:text-gray-700 dark:group-hover:text-gray-300 text-2">Commenter</p>
+            <i class="far fa-comment-alt text-2 group-hover:text-gray-700 dark:group-hover:text-gray-300" />
+            <p class="text-2 text-sm group-hover:text-gray-700 dark:group-hover:text-gray-300">Commenter</p>
         </div>
     </div>
 </template>

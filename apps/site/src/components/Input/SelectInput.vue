@@ -1,29 +1,29 @@
 <template>
     <Popper placement="bottom-start" offset-distance="0">
-        <button class="flex gap-3 items-center py-2 px-3 raised select">
+        <button class="raised select flex items-center gap-3 py-2 px-3">
             <div
                 ref="select"
-                class="overflow-hidden min-w-fit whitespace-nowrap"
+                class="min-w-fit overflow-hidden whitespace-nowrap"
                 :class="currentChoice === -1 ? 'text-placeholder' : 'text-1'"
                 :style="maxContentWidth ? `width: ${max}px` : ''"
             >
                 {{ currentChoice !== -1 ? choices[currentChoice] : buttonName }}
             </div>
             <div class="flex flex-col">
-                <i class="text-[0.7rem] fas fa-chevron-up" />
-                <i class="text-[0.7rem] fas fa-chevron-down" />
+                <i class="fas fa-chevron-up text-[0.7rem]" />
+                <i class="fas fa-chevron-down text-[0.7rem]" />
             </div>
         </button>
 
         <template #content="{ close }">
-            <div class="overflow-hidden z-10 p-0 py-2 mt-2 max-w-md card-0">
-                <div class="overflow-y-auto max-h-56 app-scrollbar">
-                    <div class="py-1 pl-6 text-lg text-placeholder">
+            <div class="card-0 z-10 mt-2 max-w-md overflow-hidden p-0 py-2">
+                <div class="app-scrollbar max-h-56 overflow-y-auto">
+                    <div class="text-placeholder py-1 pl-6 text-lg">
                         {{ buttonName }}
                     </div>
                     <template v-for="(choice, i) in choices" :key="i">
                         <div
-                            class="flex gap-2 items-center px-3 pr-16 text-lg rounded cursor-pointer"
+                            class="flex cursor-pointer items-center gap-2 rounded px-3 pr-16 text-lg"
                             :class="
                                 i === currentChoice
                                     ? 'bg-blue-200 dark:bg-blue-800 font-bold text-1'
@@ -31,7 +31,7 @@
                             "
                             @click="emit('update:modelValue', values[i]), close()"
                         >
-                            <i v-if="i === currentChoice" class="shrink-0 w-6 h-6 font-bold fas fa-check" />
+                            <i v-if="i === currentChoice" class="fas fa-check h-6 w-6 shrink-0 font-bold" />
                             <div>
                                 <i :class="'shrink-0 w-6 h-6 font-bold fas fa-' + ico" />
                                 {{ choice }}

@@ -2,20 +2,20 @@
     <ais-instant-search
         :index-name="TEAMS"
         :search-client="searchClient"
-        class="grow gap-2 justify-center items-center mx-auto md:flex"
+        class="mx-auto grow items-center justify-center gap-2 md:flex"
     >
-        <div class="flex justify-center w-full">
+        <div class="flex w-full justify-center">
             <div
                 v-if="showSearchbar"
-                class="fixed top-0 left-0 z-[10] w-screen h-screen"
+                class="fixed top-0 left-0 z-[10] h-screen w-screen"
                 @click="showSearchbar = false"
             />
             <div
-                class="flex relative flex-col items-center w-full bg-[#374058] cursor-text md:max-w-4xl md:shadow-xl"
+                class="relative flex w-full cursor-text flex-col items-center bg-[#374058] md:max-w-4xl md:shadow-xl"
                 @click="() => ((showSearchbar = true), searchInput.focus())"
             >
                 <div
-                    class="flex absolute inset-x-0 -top-5 flex-col bg-inherit md:rounded-[1.2rem]"
+                    class="absolute inset-x-0 -top-5 flex flex-col bg-inherit md:rounded-[1.2rem]"
                     :class="
                         showSearchbar
                             ? 'md-max:top-0 md-max:left-0 md-max:fixed md-max:w-screen md-max:h-screen md:max-h-[50vh] z-[20] md-max:text-xl'
@@ -25,12 +25,12 @@
                     <ais-search-box @keydown.stop="closeOnKeydown">
                         <template #default="{ refine }">
                             <div
-                                class="flex gap-2 items-center py-2 px-3 pl-6 w-full h-10"
+                                class="flex h-10 w-full items-center gap-2 py-2 px-3 pl-6"
                                 :class="{ 'md-max:mt-1 md-max:py-0 md-max:h-16': showSearchbar }"
                             >
                                 <button
                                     v-if="showSearchbar"
-                                    class="py-3 pl-2 text-2xl cursor-pointer md:hidden fa fa-arrow-left"
+                                    class="fa fa-arrow-left cursor-pointer py-3 pl-2 text-2xl md:hidden"
                                     @click.stop="() => (showSearchbar = false)"
                                 />
                                 <input
@@ -44,14 +44,14 @@
                                         router.push('/search/', { searchInput }), (showSearchbar = false)
                                     "
                                 />
-                                <div class="flex shrink-0 gap-2 items-center h-10">
+                                <div class="flex h-10 shrink-0 items-center gap-2">
                                     <button
                                         v-if="searchText"
-                                        class="flex justify-center w-8 text-2xl text-gray-400 fa fa-xmark"
+                                        class="fa fa-xmark flex w-8 justify-center text-2xl text-gray-400"
                                         @click.stop="() => (searchText = '')"
                                     />
                                     <button
-                                        class="flex justify-center w-8 text-xl text-indigo-400 fa fa-search"
+                                        class="fa fa-search flex w-8 justify-center text-xl text-indigo-400"
                                         :class="showSearchbar ? 'md-max:hidden' : ''"
                                         @click.stop="
                                             router.push('/search/', { searchInput }), (showSearchbar = false)
@@ -72,7 +72,7 @@
                                 @click.stop="resultClick(item)"
                                 @keypress.enter="resultClick(item)"
                             >
-                                <i class="p-3 bg-green-400 rounded-md fa-solid fa-people-group"></i>
+                                <i class="fa-solid fa-people-group rounded-md bg-green-400 p-3"></i>
                                 <div class="flex flex-col">
                                     <ais-highlight
                                         attribute="name"
@@ -106,16 +106,16 @@
                             v-for="item in recentSearch"
                             :key="item.text_match"
                             tabindex="0"
-                            class="group flex justify-between items-center w-full search-item"
+                            class="group search-item flex w-full items-center justify-between"
                             @click.stop="resultClick(item)"
                             @keypress.enter="resultClick(item)"
                         >
-                            <div class="flex gap-3 items-center">
-                                <i class="p-3 bg-gray-500 rounded-md fa-solid fa-clock-rotate-left" />
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-clock-rotate-left rounded-md bg-gray-500 p-3" />
                                 <div>{{ item.name }}</div>
                             </div>
                             <button
-                                class="justify-self-end mr-4 text-3xl text-gray-400 fa-solid fa-xmark"
+                                class="fa-solid fa-xmark mr-4 justify-self-end text-3xl text-gray-400"
                                 @click.stop="deleteSearch(item)"
                             />
                         </div>

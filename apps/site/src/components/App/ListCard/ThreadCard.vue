@@ -1,5 +1,5 @@
 <template>
-    <div v-if="thread" class="flex flex-row gap-6 py-3 pr-7 pl-5 w-full card-2 text-2 card-hover">
+    <div v-if="thread" class="card-2 text-2 card-hover flex w-full flex-row gap-6 py-3 pr-7 pl-5">
         <div class="flex flex-col gap-4">
             <VoteInputContent :content="thread.post" />
             <FavoriteInput :content="thread.post" />
@@ -33,8 +33,8 @@
                 </div>
             </TipPopper>
         </div> -->
-        <div class="flex flex-col gap-2.5 w-full">
-            <div v-if="!thread.post.isVisible" class="flex gap-1 items-center text-yellow-500">
+        <div class="flex w-full flex-col gap-2.5">
+            <div v-if="!thread.post.isVisible" class="flex items-center gap-1 text-yellow-500">
                 <i class="fas fa-eye-slash" />
                 <div>
                     {{ capitalize(getContentDemonstrative(POST)) }}
@@ -45,7 +45,7 @@
             <div class="flex flex-wrap gap-2">
                 <router-link
                     :to="`/forum/post/${thread.id}`"
-                    class="pr-2 font-semibold hover:underline text-0"
+                    class="text-0 pr-2 font-semibold hover:underline"
                     :class="small ? 'text-base' : 'text-xl'"
                 >
                     {{ thread.title }}
@@ -63,11 +63,11 @@
                 <UserActivity :user="thread.post.author" action-text="Publié" :action-at="thread.createdAt" />
             </div>
 
-            <router-link :to="`/forum/post/${thread.id}`" class="text-sm text-justify line-clamp-2 text-1">
+            <router-link :to="`/forum/post/${thread.id}`" class="text-1 text-justify text-sm line-clamp-2">
                 {{ thread.post.body }}
             </router-link>
 
-            <div class="flex gap-6 items-center mt-1 w-full text-xs">
+            <div class="mt-1 flex w-full items-center gap-6 text-xs">
                 <!-- <div class="flex gap-2 items-center">
                     <ProfileAvatar
                         :avatar="thread.post.author.avatar"
@@ -95,11 +95,11 @@
             </div>
         </div>
     </div>
-    <div v-else class="flex py-3 px-5 space-x-2 font-semibold rounded-lg">
-        <p class="text-lg text-0">Erreur: Ce post est vide.</p>
+    <div v-else class="flex space-x-2 rounded-lg py-3 px-5 font-semibold">
+        <p class="text-0 text-lg">Erreur: Ce post est vide.</p>
 
         <!-- TODO: Bug report pages -->
-        <router-link :to="`/report-bug/threads`" class="text-lg font-semibold line-clamp-1 link-blue">
+        <router-link :to="`/report-bug/threads`" class="link-blue text-lg font-semibold line-clamp-1">
             Signalez ce bug !
         </router-link>
     </div>

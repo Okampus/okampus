@@ -7,22 +7,22 @@
         </button>
 
         <template #content>
-            <div class="overflow-hidden z-10 p-4 mt-2 max-w-md max-h-md card-0">
+            <div class="max-h-md card-0 z-10 mt-2 max-w-md overflow-hidden p-4">
                 <div class="mb-2">
                     <BottomBorderInput v-model="search" :input-placeholder="inputPlaceholder">
                         <i class="fas fa-search" />
                     </BottomBorderInput>
                 </div>
-                <div class="flex overflow-scroll flex-col space-y-1">
-                    <div class="flex items-center px-1 space-x-1.5 rounded">
+                <div class="flex flex-col space-y-1 overflow-scroll">
+                    <div class="flex items-center space-x-1.5 rounded px-1">
                         <input :id="`${uuid}`" v-model="allSelected" type="checkbox" />
-                        <label :for="`${uuid}`" class="w-full text-lg font-semibold cursor-pointer">
+                        <label :for="`${uuid}`" class="w-full cursor-pointer text-lg font-semibold">
                             {{ allSelected ? 'Tout décocher' : 'Tout cocher' }}
                         </label>
                     </div>
                     <template v-for="(filter, i) in filteredList" :key="i">
                         <div
-                            class="flex items-center px-1 space-x-2 rounded"
+                            class="flex items-center space-x-2 rounded px-1"
                             :class="{ 'bg-blue-200 dark:bg-blue-800': checkedFilters.includes(filter) }"
                         >
                             <input

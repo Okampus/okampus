@@ -17,7 +17,7 @@
         </g>
         <foreignObject x="0" y="45" width="47.5" height="15.991">
             <div
-                class="flex justify-center items-center w-full h-full text-white uppercase rounded-b"
+                class="flex h-full w-full items-center justify-center rounded-b uppercase text-white"
                 :class="colors(mime)"
             >
                 {{ fileName.split('.').pop() }}

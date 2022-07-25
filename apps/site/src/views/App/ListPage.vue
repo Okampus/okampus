@@ -5,7 +5,7 @@
                 <ListPageAsync :route-base="routeBase" :route-name="routeName" :callback="callback">
                     <template #default="{ items }">
                         <slot v-if="items.length" :items="items" />
-                        <div v-else class="text-center text-0">
+                        <div v-else class="text-0 text-center">
                             <EmojiSad class="my-3 text-3xl" />
                             <div class="text-2xl font-bold">
                                 Aucun{{ resource.frFeminine ? 'e' : '' }} {{ resource.name.fr }} ne correspond

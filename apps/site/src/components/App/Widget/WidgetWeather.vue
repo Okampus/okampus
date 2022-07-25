@@ -1,13 +1,13 @@
 <template>
     <div>
         <div
-            class="flex flex-col justify-center items-center py-6 px-4 mx-auto max-w-sm text-center rounded-lg shadow-md card-2"
+            class="card-2 mx-auto flex max-w-sm flex-col items-center justify-center rounded-lg py-6 px-4 text-center shadow-md"
         >
-            <div class="flex flex-col font-bold text-gray-900 text-md">
-                <span class="uppercase text-1">Aujourd'hui</span>
-                <span class="text-sm font-normal text-4">29 Juillet 2021</span>
+            <div class="text-md flex flex-col font-bold text-gray-900">
+                <span class="text-1 uppercase">Aujourd'hui</span>
+                <span class="text-4 text-sm font-normal">29 Juillet 2021</span>
             </div>
-            <div class="flex justify-center items-center w-32 h-32">
+            <div class="flex h-32 w-32 items-center justify-center">
                 <svg
                     class="h-20"
                     viewBox="0 0 81 73"
@@ -25,14 +25,14 @@
                     />
                 </svg>
             </div>
-            <p class="mb-2 text-3">Partiellement nuageux</p>
-            <div class="mb-6 text-3xl font-bold text-1">
-                32º<span class="mx-1 font-normal text-1">/</span>20º
+            <p class="text-3 mb-2">Partiellement nuageux</p>
+            <div class="text-1 mb-6 text-3xl font-bold">
+                32º<span class="text-1 mx-1 font-normal">/</span>20º
             </div>
             <div
-                class="flex flex-col items-center space-y-2 w-full xl:flex-row xl:justify-around xl:space-y-0"
+                class="flex w-full flex-col items-center space-y-2 xl:flex-row xl:justify-around xl:space-y-0"
             >
-                <div class="flex items-center h-6 text-3">
+                <div class="text-3 flex h-6 items-center">
                     <svg
                         class="mr-2 h-4"
                         viewBox="0 0 11 18"
@@ -47,8 +47,8 @@
                     </svg>
                     <p>100 L/m²</p>
                 </div>
-                <div class="flex items-center h-6 text-3">
-                    <i class="mr-2 text-sky-400 fas fa-wind" />
+                <div class="text-3 flex h-6 items-center">
+                    <i class="fas fa-wind mr-2 text-sky-400" />
                     <p>20 km/h</p>
                 </div>
             </div>

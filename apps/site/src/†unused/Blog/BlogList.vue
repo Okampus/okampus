@@ -1,8 +1,8 @@
 <template>
-    <div class="flex justify-between py-6 my-8 mx-6 card-0">
+    <div class="card-0 my-8 mx-6 flex justify-between py-6">
         <div class="w-full lg:w-8/12">
-            <div class="flex justify-between items-center">
-                <h1 class="text-xl font-bold md:text-2xl text-0">Articles</h1>
+            <div class="flex items-center justify-between">
+                <h1 class="text-0 text-xl font-bold md:text-2xl">Articles</h1>
                 <SelectInput
                     v-model="rangeFilter"
                     button-name="Filtrer les Articles"
@@ -12,61 +12,61 @@
             <div
                 v-for="(article, i) in articles"
                 :key="i"
-                class="py-6 px-10 mx-auto mt-6 rounded-lg shadow-md card-2"
+                class="card-2 mx-auto mt-6 rounded-lg py-6 px-10 shadow-md"
             >
-                <div class="flex justify-between items-center">
-                    <span class="font-light text-3">
+                <div class="flex items-center justify-between">
+                    <span class="text-3 font-light">
                         {{ timeAgo(article.date, 'long').replace(/./, (c) => c.toUpperCase()) }}
                     </span>
-                    <a :href="article.category.link" class="py-1 px-2 font-bold rounded text-0 bg-4">
+                    <a :href="article.category.link" class="text-0 bg-4 rounded py-1 px-2 font-bold">
                         {{ article.category.name }}
                     </a>
                 </div>
                 <div class="mt-2">
-                    <a :href="article.link" class="text-2xl font-bold hover:underline text-0">
+                    <a :href="article.link" class="text-0 text-2xl font-bold hover:underline">
                         {{ article.title }}
                     </a>
-                    <p class="mt-2 text-3">
+                    <p class="text-3 mt-2">
                         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempora expedita dicta totam
                         aspernatur doloremque. Excepturi iste iusto eos enim reprehenderit nisi, accusamus
                         delectus nihil quis facere in modi ratione libero!
                     </p>
                 </div>
-                <div class="flex justify-between items-center mt-4">
+                <div class="mt-4 flex items-center justify-between">
                     <a :href="article.link" class="text-blue-500 hover:underline">Lire l'article...</a>
                     <div>
                         <a :href="article.author.link" class="flex items-center">
                             <img
                                 :src="article.author.avatar"
                                 alt="avatar"
-                                class="hidden object-cover mx-4 w-10 h-10 rounded-full sm:block"
+                                class="mx-4 hidden h-10 w-10 rounded-full object-cover sm:block"
                             />
-                            <h1 class="font-bold hover:underline text-1">{{ article.author.fullname }}</h1>
+                            <h1 class="text-1 font-bold hover:underline">{{ article.author.fullname }}</h1>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="hidden -mx-8 w-4/12 lg:block">
+        <div class="-mx-8 hidden w-4/12 lg:block">
             <div class="px-8">
-                <h1 class="mb-4 text-xl font-bold text-0">Auteurs</h1>
-                <div class="py-4 px-6 mx-auto max-w-sm rounded-lg shadow-md card-2">
+                <h1 class="text-0 mb-4 text-xl font-bold">Auteurs</h1>
+                <div class="card-2 mx-auto max-w-sm rounded-lg py-4 px-6 shadow-md">
                     <ul class="-ml-5">
                         <li v-for="(user, i) in users" :key="i" class="flex items-center">
                             <img
                                 :src="user.avatar"
                                 :alt="user.fullname"
-                                class="object-cover mx-4 w-12 h-12 text-xl rounded-full"
+                                class="mx-4 h-12 w-12 rounded-full object-cover text-xl"
                             />
-                            <div class="flex flex-col w-full 2xl:flex-row 2xl:justify-between">
-                                <a :href="user.link" class="font-bold hover:underline text-0">{{
+                            <div class="flex w-full flex-col 2xl:flex-row 2xl:justify-between">
+                                <a :href="user.link" class="text-0 font-bold hover:underline">{{
                                     user.fullname
                                 }}</a>
-                                <div class="flex flex-col -mt-1 xl:flex-row xl:items-center">
-                                    <span class="hidden mr-2 text-sm font-light xl:block text-3">a créé</span>
+                                <div class="-mt-1 flex flex-col xl:flex-row xl:items-center">
+                                    <span class="text-3 mr-2 hidden text-sm font-light xl:block">a créé</span>
                                     <a
                                         :href="user.link"
-                                        class="-mt-1 text-sm hover:underline xl:mt-0 xl:text-base text-0"
+                                        class="text-0 -mt-1 text-sm hover:underline xl:mt-0 xl:text-base"
                                         >{{ user.nPosts }} Articles</a
                                     >
                                 </div>
@@ -75,22 +75,22 @@
                     </ul>
                 </div>
             </div>
-            <div class="px-8 mt-10">
-                <h1 class="mb-4 text-xl font-bold text-0">Categories</h1>
-                <div class="flex flex-col py-6 px-4 mx-auto max-w-sm rounded-lg shadow-md card-2">
+            <div class="mt-10 px-8">
+                <h1 class="text-0 mb-4 text-xl font-bold">Categories</h1>
+                <div class="card-2 mx-auto flex max-w-sm flex-col rounded-lg py-6 px-4 shadow-md">
                     <ul>
                         <li v-for="(category, i) in categories" :key="i">
                             <a
                                 :href="category.link"
-                                class="mx-1 font-bold hover:underline text-0 hover:text-3"
+                                class="text-0 hover:text-3 mx-1 font-bold hover:underline"
                                 >- {{ category.name }}</a
                             >
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="px-8 mt-10">
-                <h1 class="mb-4 text-xl font-bold text-1">Climat</h1>
+            <div class="mt-10 px-8">
+                <h1 class="text-1 mb-4 text-xl font-bold">Climat</h1>
                 <WeatherWidget />
             </div>
         </div>

@@ -1,24 +1,24 @@
 <template>
-    <nav class="flex fixed top-0 left-0 z-50 justify-between items-center w-full topbar h-topbar text-1">
-        <div class="flex items-center w-sidebar-lg">
-            <div class="flex shrink-0 justify-center w-sidebar-sm">
+    <nav class="topbar h-topbar text-1 fixed top-0 left-0 z-50 flex w-full items-center justify-between">
+        <div class="w-sidebar-lg flex items-center">
+            <div class="w-sidebar-sm flex shrink-0 justify-center">
                 <button aria-label="Open Menu" @click="$emit('toggle-side-bar')">
-                    <i class="text-2xl text-white fas fa-bars" />
+                    <i class="fas fa-bars text-2xl text-white" />
                 </button>
             </div>
             <AppLogo only="dark" />
         </div>
 
-        <div class="relative grow mx-6 bg-transparent">
+        <div class="relative mx-6 grow bg-transparent">
             <LayoutSearch />
         </div>
 
         <template v-if="!isHome || auth.loggedIn">
-            <div v-if="!auth.loggedIn" class="flex shrink-0 justify-center items-center mr-4">
+            <div v-if="!auth.loggedIn" class="mr-4 flex shrink-0 items-center justify-center">
                 <ButtonLogin />
             </div>
 
-            <div v-else class="flex justify-between items-center mr-4 h-full bg-transparent">
+            <div v-else class="mr-4 flex h-full items-center justify-between bg-transparent">
                 <!-- TODO: on small screen, use full screen modal -->
                 <Popper offset-distance="6" offset-skid="-85">
                     <ProfileAvatar
@@ -28,19 +28,19 @@
                     />
                     <template #content="{ close }">
                         <div
-                            class="flex flex-col gap-2 pb-2 w-64 bg-white dark:bg-gray-800 rounded-b-lg shadow-md opacity-[0.96] text-1"
+                            class="text-1 flex w-64 flex-col gap-2 rounded-b-lg bg-white pb-2 opacity-[0.96] shadow-md dark:bg-gray-800"
                         >
                             <div class="flex gap-3 px-4 pt-4">
                                 <ProfileAvatar :avatar="auth.user.avatar" :name="fullname(auth.user)" />
                                 <div class="w-[calc(100%-5rem)]">
-                                    <div class="overflow-hidden font-bold text-ellipsis">
+                                    <div class="overflow-hidden text-ellipsis font-bold">
                                         {{ fullname(auth.user) }}
                                     </div>
                                     <div class="overflow-hidden text-ellipsis">{{ auth.user.email }}</div>
                                 </div>
                             </div>
 
-                            <hr class="self-center mt-2 w-11/12 h-[1px] bg-gray-500/20 border-none" />
+                            <hr class="mt-2 h-[1px] w-11/12 self-center border-none bg-gray-500/20" />
                             <router-link
                                 class="topbar-popup-item"
                                 :to="`/user/${auth.user.id}`"

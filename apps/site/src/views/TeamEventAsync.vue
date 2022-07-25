@@ -1,7 +1,7 @@
 <template>
-    <div class="flex flex-col gap-10 md:my-8 md-max:p-0 text-0 centered-container-padded card-2">
+    <div class="text-0 centered-container-padded card-2 flex flex-col gap-10 md:my-8 md-max:p-0">
         <div class="flex flex-col gap-10 md:flex-row">
-            <div class="relative w-full h-56 md:max-w-[40rem] md:h-72">
+            <div class="relative h-56 w-full md:h-72 md:max-w-[40rem]">
                 <ProfileBanner
                     class="h-full"
                     :name="event.shortDescription"
@@ -10,33 +10,33 @@
                 />
 
                 <div
-                    class="flex absolute inset-0 flex-col gap-4 justify-center items-center m-auto h-60 text-center text-white"
+                    class="absolute inset-0 m-auto flex h-60 flex-col items-center justify-center gap-4 text-center text-white"
                 >
                     <div v-if="timeUntil > 0">
                         <vue-countdown v-slot="{ days, hours, minutes, seconds }" tag="div" :time="timeUntil">
-                            <div class="flex gap-2 items-center">
-                                <div v-if="days" class="flex flex-col w-14">
+                            <div class="flex items-center gap-2">
+                                <div v-if="days" class="flex w-14 flex-col">
                                     <div>Jour{{ days ? 's' : '' }}</div>
                                     <div class="text-2xl">
                                         {{ days.toString().padStart(2, '0') }}
                                     </div>
                                 </div>
                                 <div v-if="days" class="mt-4 text-xl font-semibold">:</div>
-                                <div v-if="hours" class="flex flex-col w-20">
+                                <div v-if="hours" class="flex w-20 flex-col">
                                     <div>Heures</div>
                                     <div class="text-2xl">
                                         {{ hours.toString().padStart(2, '0') }}
                                     </div>
                                 </div>
                                 <div v-if="hours" class="mt-4 text-xl font-semibold">:</div>
-                                <div v-if="minutes" class="flex flex-col w-20">
+                                <div v-if="minutes" class="flex w-20 flex-col">
                                     <div>Minutes</div>
                                     <div class="text-2xl">
                                         {{ minutes.toString().padStart(2, '0') }}
                                     </div>
                                 </div>
                                 <div v-if="minutes" class="mt-4 text-xl font-semibold">:</div>
-                                <div class="flex flex-col w-20">
+                                <div class="flex w-20 flex-col">
                                     <div class="tracking-tighter">Secondes</div>
                                     <div class="text-2xl">
                                         {{ seconds.toString().padStart(2, '0') }}
@@ -52,7 +52,7 @@
                 </div>
             </div>
 
-            <div class="flex flex-col gap-6 w-full md-max:px-8">
+            <div class="flex w-full flex-col gap-6 md-max:px-8">
                 <div class="flex flex-col gap-2">
                     <div class="text-3xl font-bold">{{ event.name }}</div>
                     <TeamActivity :team="event.team" action-text="Créé" :action-at="event.createdAt" />
@@ -83,14 +83,14 @@
                         </div>
                     </div> -->
                 <div class="flex justify-between">
-                    <div class="flex flex-col gap-1 ml-1">
-                        <div class="flex gap-4 items-center">
+                    <div class="ml-1 flex flex-col gap-1">
+                        <div class="flex items-center gap-4">
                             <div class="w-6">💶</div>
                             <div class="font-semibold">
                                 {{ event.price === 0 ? 'Gratuit' : `Prix : ${event.price}€` }}
                             </div>
                         </div>
-                        <div class="flex gap-4 items-start">
+                        <div class="flex items-start gap-4">
                             <div class="w-6">📅</div>
                             <div class="flex flex-col gap-1 tracking-tight">
                                 <div>{{ dateRangeString }}</div>
@@ -104,7 +104,7 @@
                                 </div> -->
                             </div>
                         </div>
-                        <div class="flex gap-4 items-center">
+                        <div class="flex items-center gap-4">
                             <div class="w-6">📍</div>
                             <div>{{ event.place }}</div>
                         </div>
@@ -112,7 +112,7 @@
                 </div>
                 <button
                     v-if="isAdmin"
-                    class="py-1 px-4 w-[15rem] text-lg font-semibold rounded-full button-blue"
+                    class="button-blue w-[15rem] rounded-full py-1 px-4 text-lg font-semibold"
                     @click="showAdmin = true"
                 >
                     Gérer l'événement
@@ -121,11 +121,11 @@
 
             <ModalPopup :show="showJoinForm" @close="showJoinForm = false">
                 <template #default="{ close }">
-                    <div class="flex flex-col justify-center items-center py-8 px-10 card">
+                    <div class="card flex flex-col items-center justify-center py-8 px-10">
                         <div class="text-2xl font-semibold">
                             Vous vous apprêtez à vous inscrire à {{ event.shortDescription }}
                         </div>
-                        <div class="text-sm text-2">
+                        <div class="text-2 text-sm">
                             Mais d'abord, donnez du contexte sur votre demande de participation.
                         </div>
                         <FormKit
@@ -143,7 +143,7 @@
                             />
                         </FormKit>
                         <FormKitRenderer :schema="event.form?.form ?? []"></FormKitRenderer>
-                        <div class="flex gap-4 self-end mt-6">
+                        <div class="mt-6 flex gap-4 self-end">
                             <button class="button-grey" @click="close">Annuler</button>
                             <button class="button-blue" @click="joinEvent">Valider</button>
                         </div>
@@ -153,16 +153,16 @@
 
             <ModalPopup :show="showAdmin" @close="showAdmin = false">
                 <template #default="{ close }">
-                    <div class="flex flex-col justify-center items-center py-8 px-10 w-[48rem] card">
+                    <div class="card flex w-[48rem] flex-col items-center justify-center py-8 px-10">
                         <div class="text-2xl font-semibold">
                             Voici l'onglet de gestion de
                             <span class="font-bold">{{ event.shortDescription }}</span>
                         </div>
-                        <div class="text-sm text-2">
+                        <div class="text-2 text-sm">
                             Gérer la présence des membres, les diverses infos de l'évenement ...
                         </div>
-                        <table v-if="guests.items.length > 0" class="flex flex-col gap-2 mt-8">
-                            <thead class="flex gap-2 items-center">
+                        <table v-if="guests.items.length > 0" class="mt-8 flex flex-col gap-2">
+                            <thead class="flex items-center gap-2">
                                 <tr class="w-56">
                                     Invité
                                 </tr>
@@ -174,9 +174,9 @@
                                 <tr
                                     v-for="guest in guests.items"
                                     :key="guest.teamEventRegistrationId"
-                                    class="flex gap-2 items-center h-8 even:border-y-2 border-grey-600"
+                                    class="border-grey-600 flex h-8 items-center gap-2 even:border-y-2"
                                 >
-                                    <td class="flex gap-2 items-center w-56 truncate">
+                                    <td class="flex w-56 items-center gap-2 truncate">
                                         <ProfileAvatar
                                             :avatar="guest.user.avatar"
                                             :name="fullname(guest.user)"
@@ -189,7 +189,7 @@
                                     </td>
                                     <td>
                                         <button
-                                            class="py-1 px-2 button-red"
+                                            class="button-red py-1 px-2"
                                             @click="() => unregister(guest.teamEventRegistrationId)"
                                         >
                                             Désinscrire
@@ -199,7 +199,7 @@
                             </tbody>
                         </table>
                         <p v-else class="mt-4">Personne n'est encore inscrit à l'évenement</p>
-                        <div class="flex gap-4 self-end mt-6">
+                        <div class="mt-6 flex gap-4 self-end">
                             <div class="button-cancel" @click="close">Fermer</div>
                         </div>
                     </div>
@@ -237,20 +237,20 @@
                     + {{ guests.totalItemCount - guests.itemsPerPage }}
                 </div>
             </div>
-            <div v-else class="italic text-">Il n'y a personne d'inscrit pour l'instant.</div>
+            <div v-else class="text- italic">Il n'y a personne d'inscrit pour l'instant.</div>
         </div>
 
-        <div class="flex flex-wrap gap-2 justify-center md-max:mb-6">
+        <div class="flex flex-wrap justify-center gap-2 md-max:mb-6">
             <button
                 v-if="guests.items.find((g) => g.user.id === auth.user.id) === undefined"
-                class="py-1 px-4 text-lg font-semibold rounded-full button-green"
+                class="button-green rounded-full py-1 px-4 text-lg font-semibold"
                 @click="showJoinForm = true"
             >
                 🔔 S'inscrire à l'événement
             </button>
             <button
                 v-else
-                class="py-1 px-4 text-lg font-semibold rounded-full button-red"
+                class="button-red rounded-full py-1 px-4 text-lg font-semibold"
                 @click="
                     () =>
                         unregister(

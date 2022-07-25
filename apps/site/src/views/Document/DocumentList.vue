@@ -1,10 +1,10 @@
 <template>
-    <div class="flex gap-4 py-6 mx-auto w-23/24 h-full">
+    <div class="mx-auto flex h-full w-23/24 gap-4 py-6">
         <ModalPopup :show="filePreview != null" @close="filePreview = null">
-            <div class="flex gap-2 card">
-                <div class="flex justify-center items-center">
+            <div class="card flex gap-2">
+                <div class="flex items-center justify-center">
                     <DocumentIcon
-                        class="w-32 h-32"
+                        class="h-32 w-32"
                         :mime="filePreview.file.mimeType"
                         :file-name="filePreview.file.name"
                     />
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </ModalPopup>
-        <div class="hidden md:block min-w-1/5 card">
+        <div class="min-w-1/5 card hidden md:block">
             <FileFolder
                 v-if="studyDocFileTree.length > 0"
                 title="StudyDocs"
@@ -38,26 +38,26 @@
                 @path="folder = $event"
             />
         </div>
-        <div class="flex flex-col grow gap-4 h-full card">
+        <div class="card flex h-full grow flex-col gap-4">
             <div class="flex justify-between">
                 <div>
                     <Popper placement="left">
                         <i class="fas fa-sliders-h" />
                         <template #content>
-                            <div class="flex flex-col gap-2 card">
+                            <div class="card flex flex-col gap-2">
                                 <div>Ordre des dossiers</div>
-                                <div class="flex gap-1 items-center">
+                                <div class="flex items-center gap-1">
                                     <div
                                         v-for="(filter, i) in filterList"
                                         :key="i"
-                                        class="flex gap-1 items-center"
+                                        class="flex items-center gap-1"
                                     >
                                         <div>
                                             {{ filter }}
                                         </div>
                                         <i
                                             v-if="i != filterList.length - 1"
-                                            class="text-xs fas fa-chevron-right"
+                                            class="fas fa-chevron-right text-xs"
                                         />
                                     </div>
                                 </div>
@@ -69,10 +69,10 @@
                     <i class="fas fa-info" />
                 </div>
             </div>
-            <div class="flex gap-4 justify-center">
+            <div class="flex justify-center gap-4">
                 <div class="flex cursor-pointer">
                     <div
-                        class="flex justify-center items-center pr-3 pl-4 rounded-l-full transition raised"
+                        class="raised flex items-center justify-center rounded-l-full pr-3 pl-4 transition"
                         :class="[docStyleList ? 'bg-2' : '']"
                         @click="docStyleList = true"
                     >
@@ -80,7 +80,7 @@
                     </div>
 
                     <div
-                        class="flex justify-center items-center pr-4 pl-3 rounded-r-full transition raised"
+                        class="raised flex items-center justify-center rounded-r-full pr-4 pl-3 transition"
                         :class="{ 'bg-2': !docStyleList }"
                         @click="docStyleList = false"
                     >
@@ -88,11 +88,11 @@
                     </div>
                 </div>
                 <input
-                    class="grow py-2 px-4 rounded-full bg-2"
+                    class="bg-2 grow rounded-full py-2 px-4"
                     type="text"
                     placeholder="Rechercher un fichier"
                 />
-                <div class="flex gap-2 items-center">
+                <div class="flex items-center gap-2">
                     <i
                         class="fas fa-download"
                         :class="[filePreview ? 'text-blue-500 cursor-pointer' : '']"
@@ -117,21 +117,21 @@
         </div>
         <div
             v-if="(filePreview && showFilePreview) || fileGroup.length != 0"
-            class="hidden relative w-1/5 md:block"
+            class="relative hidden w-1/5 md:block"
         >
             <div class="sticky top-4">
                 <div class="flex flex-col gap-2">
-                    <div v-if="filePreview && showFilePreview" class="hidden md:block card">
+                    <div v-if="filePreview && showFilePreview" class="card hidden md:block">
                         <div class="flex flex-col gap-2 divide-y">
-                            <div class="flex justify-center items-center">
+                            <div class="flex items-center justify-center">
                                 <DocumentIcon
-                                    class="w-24 h-24"
+                                    class="h-24 w-24"
                                     :mime="filePreview.file.mimeType"
                                     :file-name="filePreview.file.name"
                                 />
                             </div>
                             <div class="text-center">
-                                <div class="text-lg font-bold truncate">
+                                <div class="truncate text-lg font-bold">
                                     {{ filePreview.file.name }}
                                 </div>
                                 <div class="text-sm">
@@ -153,12 +153,12 @@
                                     {{ file.file.name }}
                                 </div>
                                 <div class="cursor-pointer" @click.prevent="updateFileGroup(file)">
-                                    <i class="text-red-500 fas fa-times" />
+                                    <i class="fas fa-times text-red-500" />
                                 </div>
                             </div>
-                            <div class="flex gap-2 justify-center items-center mt-2 w-full">
+                            <div class="mt-2 flex w-full items-center justify-center gap-2">
                                 <button
-                                    class="flex gap-2 justify-center items-center text-center button-blue"
+                                    class="button-blue flex items-center justify-center gap-2 text-center"
                                     @click="downloadFileGroup"
                                 >
                                     <i class="fas fa-arrow-down" />

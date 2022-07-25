@@ -10,7 +10,7 @@
                     :key="i"
                     :class="[header.class, { 'sticky left-0': i === 0 && firstColumnFixed }]"
                 >
-                    <div class="flex gap-2 items-center cursor-pointer" @click="sortAction(header.name)">
+                    <div class="flex cursor-pointer items-center gap-2" @click="sortAction(header.name)">
                         <div>{{ header.text }}</div>
                         <i
                             v-if="header.sortable"

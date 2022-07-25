@@ -1,7 +1,7 @@
 <template>
-    <button class="flex gap-3 items-center button-blue" @click="emitter.emit('login')">
-        <p v-if="!onlyIcon" class="font-medium uppercase text-md">Se connecter</p>
-        <i class="text-lg fas fa-sign-in-alt" />
+    <button class="button-blue flex items-center gap-3" @click="emitter.emit('login')">
+        <p v-if="!onlyIcon" class="text-md font-medium uppercase">Se connecter</p>
+        <i class="fas fa-sign-in-alt text-lg" />
     </button>
 </template>
 

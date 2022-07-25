@@ -7,15 +7,15 @@
         route-base="/forum/posts"
     >
         <template #default="{ data: thread }">
-            <div class="flex flex-col centered-container-padded text-0">
-                <div class="flex gap-5 items-center">
+            <div class="centered-container-padded text-0 flex flex-col">
+                <div class="flex items-center gap-5">
                     <LabelTag
                         class="!py-2"
                         :icon="threadType(thread.type).icon"
                         :tag-color="threadType(thread.type).color"
                         :tag-name="threadType(thread.type)[$i18n.locale]"
                     />
-                    <p class="text-2xl font-bold break-all text-0">{{ thread.title }}</p>
+                    <p class="text-0 break-all text-2xl font-bold">{{ thread.title }}</p>
                 </div>
                 <div class="flex">
                     <div class="w-full">
@@ -41,10 +41,10 @@
                             <ThreadNewReply :post="thread.post" />
                         </div>
                     </div>
-                    <div class="hidden sticky top-4 self-start ml-4 space-y-2 w-3/12 lg:block text-1">
-                        <div class="p-4 rounded-lg bg-card-within-1">
-                            <div class="flex items-center mb-2 space-x-2 text-xl">
-                                <div class="mr-4 font-bold text-md">Tags</div>
+                    <div class="text-1 sticky top-4 ml-4 hidden w-3/12 space-y-2 self-start lg:block">
+                        <div class="bg-card-within-1 rounded-lg p-4">
+                            <div class="mb-2 flex items-center space-x-2 text-xl">
+                                <div class="text-md mr-4 font-bold">Tags</div>
                             </div>
                             <div v-if="thread.tags?.length" class="flex flex-wrap">
                                 <LabelTag
@@ -57,9 +57,9 @@
                             </div>
                             <div v-else class="italic">Aucun tag</div>
                         </div>
-                        <div class="p-4 rounded-lg bg-card-within-1">
-                            <div class="flex items-center mb-2 space-x-2 text-xl">
-                                <div class="mr-4 font-bold text-md">Assigné</div>
+                        <div class="bg-card-within-1 rounded-lg p-4">
+                            <div class="mb-2 flex items-center space-x-2 text-xl">
+                                <div class="text-md mr-4 font-bold">Assigné</div>
                                 <!-- TODO: Actions : Settings, Add -->
                             </div>
                             <div v-if="thread.assignees?.length" class="flex flex-col">
@@ -72,9 +72,9 @@
                             </div>
                             <div v-else class="italic">Personne n'est assigné</div>
                         </div>
-                        <div class="p-4 rounded-lg bg-card-within-1">
-                            <div class="flex items-center mb-2 space-x-2 text-xl">
-                                <div class="mr-4 font-bold text-md">Participants</div>
+                        <div class="bg-card-within-1 rounded-lg p-4">
+                            <div class="mb-2 flex items-center space-x-2 text-xl">
+                                <div class="text-md mr-4 font-bold">Participants</div>
                                 <!-- TODO: Actions : Settings, Add -->
                             </div>
                             <div class="flex flex-col gap-4">
@@ -82,7 +82,7 @@
                                 <div
                                     v-for="(participant, i) in thread.participants"
                                     :key="i"
-                                    class="flex gap-2 items-center"
+                                    class="flex items-center gap-2"
                                 >
                                     <ProfileAvatar
                                         :size="2"

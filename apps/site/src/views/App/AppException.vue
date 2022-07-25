@@ -1,10 +1,10 @@
 <template>
-    <div class="flex flex-col items-center m-20 text-0">
+    <div class="text-0 m-20 flex flex-col items-center">
         <router-link to="/" class="mb-10 w-fit">
-            <div class="w-[16.5rem] h-[5.5rem] w- logo" allow-dark="" />
+            <div class="w- logo h-[5.5rem] w-[16.5rem]" allow-dark="" />
         </router-link>
 
-        <div class="text-xl text-blue-700 uppercase">
+        <div class="text-xl uppercase text-blue-700">
             <template v-if="!online">
                 {{ offline.error }}
             </template>
@@ -13,7 +13,7 @@
             </template>
         </div>
 
-        <div class="mb-20 text-4xl text-center">
+        <div class="mb-20 text-center text-4xl">
             <template v-if="!online">
                 {{ offline.description }}
             </template>

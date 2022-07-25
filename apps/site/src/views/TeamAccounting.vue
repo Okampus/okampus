@@ -2,9 +2,9 @@
     <div>
         <!-- TODO: add filtering, tab, info panel -->
         <div class="flex">
-            <h3 class="pl-10 mb-8 text-3xl font-bold text-0">Trésorerie</h3>
-            <div class="grow h-14 ..."></div>
-            <button class="shrink-0 button-green" @click="handleModal">
+            <h3 class="text-0 mb-8 pl-10 text-3xl font-bold">Trésorerie</h3>
+            <div class="... h-14 grow"></div>
+            <button class="button-green shrink-0" @click="handleModal">
                 <p><i class="fas fa-plus"></i> Ajouter</p>
             </button>
         </div>
@@ -13,7 +13,7 @@
                     <p>zj</p>
                 </Transition>
             </ModalPopup> -->
-        <div class="grid grid-cols-3 gap-4 my-2">
+        <div class="my-2 grid grid-cols-3 gap-4">
             <AccountingCard
                 v-for="el in data"
                 :key="el"

@@ -8,11 +8,11 @@
                 ? 'hidden-sidebar-lg'
                 : '',
         ]"
-        class="flex z-[60] flex-col shrink-0 w-sidebar-sm sidebar"
+        class="w-sidebar-sm sidebar z-[60] flex shrink-0 flex-col"
     >
-        <div v-if="smallScreen && showUncollapsed" class="flex shrink-0 items-center h-topbar">
+        <div v-if="smallScreen && showUncollapsed" class="h-topbar flex shrink-0 items-center">
             <button aria-label="Close Menu" class="w-sidebar-sm" @click="emit('toggle-side-bar')">
-                <i class="text-2xl fas fa-times" />
+                <i class="fas fa-times text-2xl" />
             </button>
             <AppLogo only="dark" />
         </div>
@@ -27,7 +27,7 @@
             <ul v-for="(section, i) in sections" :key="i">
                 <p
                     v-if="showUncollapsed"
-                    class="mb-2.5 ml-6 text-[0.8rem] font-semibold text-gray-200 uppercase title-font"
+                    class="title-font mb-2.5 ml-6 text-[0.8rem] font-semibold uppercase text-gray-200"
                 >
                     {{ section.name }}
                 </p>
@@ -35,7 +35,7 @@
                     <li>
                         <router-link
                             :to="link.to"
-                            class="flex items-center my-1 text-gray-200 sidebar-tab reveal"
+                            class="sidebar-tab reveal my-1 flex items-center text-gray-200"
                             :class="[
                                 { active: link.regActive.test($route.path) },
                                 showUncollapsed ? 'mx-2 h-9' : 'mx-1.5 py-1',
@@ -49,16 +49,16 @@
                             "
                         >
                             <div
-                                class="flex items-center w-full"
+                                class="flex w-full items-center"
                                 :class="[showUncollapsed ? 'flex-row ml-3 gap-4' : 'flex-col mb-1']"
                             >
-                                <div class="flex justify-center items-center w-4">
+                                <div class="flex w-4 items-center justify-center">
                                     <i :class="`fas fa-${link.icon}`" class="shrink-0 text-base" />
                                 </div>
 
                                 <template v-if="showUncollapsed">
-                                    <span class="text-base title-font">{{ link.textLarge }}</span>
-                                    <div class="mr-3 ml-auto opacity-0 revealed">
+                                    <span class="title-font text-base">{{ link.textLarge }}</span>
+                                    <div class="revealed mr-3 ml-auto opacity-0">
                                         <TipPopper v-if="link.button" :tip="link.button.text">
                                             <router-link :to="link.button.to">
                                                 <i class="text-lg" :class="`fa fa-${link.button.icon}`" />
@@ -66,7 +66,7 @@
                                         </TipPopper>
                                     </div>
                                 </template>
-                                <span v-else class="text-xs tracking-tight title-font">{{
+                                <span v-else class="title-font text-xs tracking-tight">{{
                                     link.textSmall
                                 }}</span>
                             </div>
@@ -75,8 +75,8 @@
                 </template>
             </ul>
 
-            <div class="flex gap-4 justify-center items-center p-4">
-                <p class="text-sm text-bold" :class="{ 'hidden': !showUncollapsed }">Mode Sombre</p>
+            <div class="flex items-center justify-center gap-4 p-4">
+                <p class="text-bold text-sm" :class="{ 'hidden': !showUncollapsed }">Mode Sombre</p>
                 <SwitchInput :model-value="config.darkMode" @update:model-value="config.switchDarkMode()" />
             </div>
         </div>

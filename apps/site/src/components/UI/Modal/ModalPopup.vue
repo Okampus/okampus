@@ -1,17 +1,17 @@
 <template>
     <Teleport to="body">
         <Transition name="modal" @after-leave="emit('closed')">
-            <div v-show="show" class="absolute top-0 left-0 z-40 w-screen h-screen">
+            <div v-show="show" class="absolute top-0 left-0 z-40 h-screen w-screen">
                 <div
                     class="fixed top-0 left-0 z-50 rounded-lg"
                     :style="{ 'transform': 'translate(calc(50vw - 50%), calc(50vh - 50%))' }"
                 >
-                    <div class="rounded-lg modal-content">
+                    <div class="modal-content rounded-lg">
                         <slot :close="() => emit('close')" />
                     </div>
                 </div>
 
-                <div class="absolute w-full h-full bg-gray-800 opacity-50" @click.prevent="emit('close')" />
+                <div class="absolute h-full w-full bg-gray-800 opacity-50" @click.prevent="emit('close')" />
             </div>
         </Transition>
     </Teleport>

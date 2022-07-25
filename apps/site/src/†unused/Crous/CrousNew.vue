@@ -1,21 +1,21 @@
 <template>
     <CardPage>
         <div class="flex flex-col gap-6">
-            <div class="flex justify-between items-center">
-                <div class="flex gap-4 items-center">
-                    <img class="w-16 h-16" :src="crousLogo" />
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <img class="h-16 w-16" :src="crousLogo" />
                     <h3 class="ml-4 text-xl font-bold">Gestion du Crous</h3>
                 </div>
                 <div>
                     <input v-model="date" class="input" type="date" />
                 </div>
             </div>
-            <div class="flex gap-6 items-center">
+            <div class="flex items-center gap-6">
                 <div>Informations</div>
                 <input
                     v-model="daily.info"
                     type="text"
-                    class="w-full input"
+                    class="input w-full"
                     placeholder="Informations du jour..."
                 />
             </div>
@@ -27,7 +27,7 @@
                 </div>
                 <template v-for="(dishType, _, i) in FOOD_TYPES" v-else :key="i">
                     <div class="flex flex-col gap-2">
-                        <div class="flex gap-2 items-center">
+                        <div class="flex items-center gap-2">
                             <span>{{ dishType[i18n.global.locale] + 's' }}</span>
                             <button
                                 class="text-sm text-blue-500"

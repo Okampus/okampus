@@ -1,12 +1,12 @@
 <template>
-    <div class="flex m-4 rounded-md bg-1 min-h-32">
+    <div class="bg-1 min-h-32 m-4 flex rounded-md">
         <div
-            class="flex object-cover flex-col justify-center px-8 ml-4 border-l-2 border-dashed border-color-2-alt"
+            class="border-color-2-alt ml-4 flex flex-col justify-center border-l-2 border-dashed object-cover px-8"
         >
-            <font-awesome-icon icon="comment" class="hidden text-4xl text-center md:block" />
+            <font-awesome-icon icon="comment" class="hidden text-center text-4xl md:block" />
         </div>
         <div class="flex w-full">
-            <div class="flex flex-col justify-between my-2">
+            <div class="my-2 flex flex-col justify-between">
                 <div>
                     <p class="text-5">
                         Publié par {{ reply.author.fullname }} {{ timeAgo(new Date(reply.createdAt)) }}
@@ -16,26 +16,26 @@
                     {{ reply.body }}
                     <!-- </router-link> -->
                 </div>
-                <div class="flex gap-2 items-center">
+                <div class="flex items-center gap-2">
                     <div class="flex gap-2">
                         <div
-                            class="flex items-center py-1.5 hover:bg-3-light hover:dark:bg-3-dark rounded cursor-pointer text-5"
+                            class="text-5 flex cursor-pointer items-center rounded py-1.5 hover:bg-3-light hover:dark:bg-3-dark"
                         >
                             <font-awesome-icon
-                                class="block pl-1 tracking-tighter cursor-pointer"
+                                class="block cursor-pointer pl-1 tracking-tighter"
                                 :class="{ 'text-green-600': reply.userVote === 1 }"
                             />
-                            <p class="block pl-1 ml-1 text-sm tracking-tighter text-2">
+                            <p class="text-2 ml-1 block pl-1 text-sm tracking-tighter">
                                 {{ reply.upvotes }}
                             </p>
                         </div>
-                        <div class="flex items-center py-1.5 hover:bg-3-light hover:dark:bg-3-dark rounded">
+                        <div class="flex items-center rounded py-1.5 hover:bg-3-light hover:dark:bg-3-dark">
                             <font-awesome-icon
-                                class="pl-1 tracking-tighter cursor-pointer"
+                                class="cursor-pointer pl-1 tracking-tighter"
                                 :icon="reply.userVote === -1 ? 'thumbs-down' : ['far', 'thumbs-down']"
                                 @click="reply.userVote === -1 ? sendVote(0) : sendVote(-1)"
                             />
-                            <p class="pl-1 ml-1 text-sm tracking-tighter">
+                            <p class="ml-1 pl-1 text-sm tracking-tighter">
                                 {{ reply.downvotes }}
                             </p>
                         </div>
@@ -43,7 +43,7 @@
                     <div
                         v-for="(action, i) in actions"
                         :key="i"
-                        class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded"
+                        class="flex items-center rounded py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark"
                         @click="actionsMap[action].action"
                     >
                         <font-awesome-icon

@@ -1,20 +1,20 @@
 <template>
-    <div v-if="totalItemCount > 0" class="flex gap-3 justify-center items-center py-3 px-6">
+    <div v-if="totalItemCount > 0" class="flex items-center justify-center gap-3 py-3 px-6">
         <i
-            class="p-3 hover:bg-4-light hover:dark:bg-4-dark rounded-md cursor-pointer fa fa-chevron-left text-0"
+            class="fa fa-chevron-left text-0 cursor-pointer rounded-md p-3 hover:bg-4-light hover:dark:bg-4-dark"
             @click="currentPage > 1 && router.push(`${routeBase}?page=${currentPage - 1}`)"
         />
         <template v-for="(page, i) in pages" :key="i">
             <div
                 v-if="page === '...'"
-                class="flex justify-center items-center h-10 text-center text-0"
+                class="text-0 flex h-10 items-center justify-center text-center"
                 @click="appearInput(i)"
             >
                 <input
                     v-if="currentInput === i"
                     ref="inputRef"
                     v-model="pageInput"
-                    class="w-10 input"
+                    class="input w-10"
                     @blur="
                         () => {
                             currentInput = null
@@ -40,7 +40,7 @@
             <router-link
                 v-else
                 :to="`${routeBase}?page=${page}`"
-                class="py-2 w-10 h-10 text-lg leading-tight text-center rounded-md text-0"
+                class="text-0 h-10 w-10 rounded-md py-2 text-center text-lg leading-tight"
                 :class="[
                     page === currentPage
                         ? 'bg-blue-500 !text-white'
@@ -50,7 +50,7 @@
             >
         </template>
         <i
-            class="p-3 hover:bg-4-light hover:dark:bg-4-dark rounded-md cursor-pointer fa fa-chevron-right text-0"
+            class="fa fa-chevron-right text-0 cursor-pointer rounded-md p-3 hover:bg-4-light hover:dark:bg-4-dark"
             @click="currentPage < totalPages && router.push(`${routeBase}?page=${currentPage + 1}`)"
         />
     </div>

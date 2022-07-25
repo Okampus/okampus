@@ -1,13 +1,13 @@
 <template>
-    <footer class="flex flex-col gap-6 mt-8 mb-6 xs:mx-20 sm:mx-auto xs-max:mx-10">
+    <footer class="mt-8 mb-6 flex flex-col gap-6 xs:mx-20 sm:mx-auto xs-max:mx-10">
         <!-- Copyright -->
-        <div class="flex justify-center items-center text-0">
-            <div class="flex flex-col gap-2 items-center xs:flex-row">
+        <div class="text-0 flex items-center justify-center">
+            <div class="flex flex-col items-center gap-2 xs:flex-row">
                 <p>Made with</p>
-                <i class="hover:text-red-500 transition-transform hover:scale-125 fas fa-heart" />
+                <i class="fas fa-heart transition-transform hover:scale-125 hover:text-red-500" />
                 <p>by Okampus</p>
-                <div class="flex gap-1 items-center">
-                    <i class="text-sm far fa-copyright" />
+                <div class="flex items-center gap-1">
+                    <i class="far fa-copyright text-sm" />
                     <p>{{ new Date().getFullYear() }}</p>
                 </div>
             </div>

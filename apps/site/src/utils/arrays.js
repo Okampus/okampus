@@ -1,4 +1,4 @@
-import { NOOP } from '@vue/shared'
+import { NOOP } from 'vue'
 
 export function upsert(
     arr,

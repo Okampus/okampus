@@ -3,9 +3,9 @@
         <TipRelativeDate :date="createdAt" />
         <span v-if="modifiedAt && modifiedAt != createdAt" class="flex gap-1">
             <Popper :hover="true" placement="top" :arrow="true" offset-distance="3">
-                <span class="text-xs cursor-default select-none text-3">(modifié)</span>
+                <span class="text-3 cursor-default select-none text-xs">(modifié)</span>
                 <template #content>
-                    <div class="p-2.5 text-base text-gray-100 bg-gray-900/90 dark:bg-black/90 rounded-md">
+                    <div class="rounded-md bg-gray-900/90 p-2.5 text-base text-gray-100 dark:bg-black/90">
                         {{ modifiedAtDateString }}
                     </div>
                 </template>

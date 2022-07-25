@@ -1,7 +1,7 @@
 <template>
     <div>
         <div
-            class="flex gap-2 items-center p-1 hover:bg-2-light hover:dark:bg-2-dark rounded"
+            class="flex items-center gap-2 rounded p-1 hover:bg-2-light hover:dark:bg-2-dark"
             @click="emitPath(), toggleChildren()"
         >
             <i
@@ -17,7 +17,7 @@
             </div>
         </div>
         <transition name="file-tree">
-            <div v-if="showChildren" class="flex flex-col p-1 ml-2 border-l">
+            <div v-if="showChildren" class="ml-2 flex flex-col border-l p-1">
                 <FileFolder
                     v-for="(child, i) in children"
                     :key="i"

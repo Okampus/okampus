@@ -1,7 +1,7 @@
 <template>
     <ModalPopup :show="showReport">
         <template #default="{ close }">
-            <div class="flex flex-col gap-2 card">
+            <div class="card flex flex-col gap-2">
                 <div class="text-xl">Signaler ce contenu</div>
                 <div class="label-title">Raison</div>
 
@@ -15,7 +15,7 @@
                 </div>
 
                 <button
-                    class="font-semibold button-blue"
+                    class="button-blue font-semibold"
                     @click="
                         () => {
                             if (v$.$invalid) {
@@ -37,9 +37,8 @@
 <script setup>
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
 
-    import { NOOP } from '@vue/shared'
     import useVuelidate from '@vuelidate/core'
-    import { reactive } from 'vue'
+    import { reactive, NOOP } from 'vue'
 
     import { useMutation } from '@vue/apollo-composable'
 

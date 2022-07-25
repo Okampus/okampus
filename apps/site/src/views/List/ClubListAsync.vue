@@ -1,17 +1,17 @@
 <template>
     <div>
-        <div class="sticky top-0 z-50 px-2 md:hidden bg-1">
+        <div class="bg-1 sticky top-0 z-50 px-2 md:hidden">
             <HorizontalTabs v-model="currentTab" :tabs="tabs" route-base="/clubs" route-name="clubs" />
         </div>
-        <div class="flex flex-col gap-4 md:flex-row centered-container-padded">
+        <div class="centered-container-padded flex flex-col gap-4 md:flex-row">
             <VerticalTabs
                 v-model="currentTab"
                 :tabs="tabs"
                 route-base="/clubs"
                 route-name="clubs"
-                class="hidden sticky top-8 md:block"
+                class="sticky top-8 hidden md:block"
             />
-            <div v-if="currentClubs.length === 0" class="w-full text-center text-0">
+            <div v-if="currentClubs.length === 0" class="text-0 w-full text-center">
                 <EmojiSad class="mb-3 text-3xl" />
                 <div class="text-2xl font-bold">Aucune association ne correspond à ces critères.</div>
                 <div class="text-lg">
@@ -19,7 +19,7 @@
                     <router-link to="/clubs" class="link-blue">liste de toutes les associations</router-link>.
                 </div>
             </div>
-            <div v-else class="flex flex-wrap gap-4 w-full h-fit">
+            <div v-else class="flex h-fit w-full flex-wrap gap-4">
                 <ClubJoinForm
                     v-model:show="showJoinForm"
                     :club="joiningClub"

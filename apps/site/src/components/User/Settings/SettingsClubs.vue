@@ -8,13 +8,13 @@
             :tabs="tabs"
             class="ml-4"
         />
-        <div class="divide-y divide-gray-500/40 text-0">
+        <div class="text-0 divide-y divide-gray-500/40">
             <template v-if="currentTab === MEMBER">
                 <template v-if="clubs.userMemberships.length">
                     <div
                         v-for="membership in clubs.userMemberships"
                         :key="membership.team.teamId"
-                        class="flex justify-between items-center py-2"
+                        class="flex items-center justify-between py-2"
                     >
                         <div class="flex gap-3">
                             <router-link :to="`/club/${membership.team.teamId}`">
@@ -26,7 +26,7 @@
                                 />
                             </router-link>
                             <div class="flex flex-col">
-                                <div class="flex gap-1.5 font-semibold text-1">
+                                <div class="text-1 flex gap-1.5 font-semibold">
                                     <router-link
                                         :to="`/club/${membership.team.teamId}`"
                                         class="hover:underline"
@@ -44,14 +44,14 @@
                         <div class="flex gap-2">
                             <button
                                 v-if="specialRoles.includes(membership.role)"
-                                class="text-xs lg:text-lg button-red"
+                                class="button-red text-xs lg:text-lg"
                                 @click="() => transferRole(membership)"
                             >
                                 Transmettre le rôle
                             </button>
                             <button
                                 v-else
-                                class="text-xs lg:text-lg button-red"
+                                class="button-red text-xs lg:text-lg"
                                 @click="() => leaveClub(membership)"
                             >
                                 Quitter
@@ -59,24 +59,24 @@
                             <router-link
                                 v-if="specialRoles.includes(membership.role)"
                                 :to="`/club/${membership.team.teamId}/manage`"
-                                class="text-xs lg:text-lg button-blue"
+                                class="button-blue text-xs lg:text-lg"
                                 >Gérer</router-link
                             >
                             <router-link
                                 v-else
                                 :to="`/club/${membership.team.teamId}`"
-                                class="text-xs md:text-lg button-blue"
+                                class="button-blue text-xs md:text-lg"
                                 >Voir le profil</router-link
                             >
                         </div>
                     </div>
                 </template>
-                <div v-else class="flex flex-col gap-4 items-center my-6">
-                    <img class="w-48 h-48" :src="Puzzle" />
-                    <div class="text-lg text-2">Vous n'êtes actuellement membre d'aucune association.</div>
+                <div v-else class="my-6 flex flex-col items-center gap-4">
+                    <img class="h-48 w-48" :src="Puzzle" />
+                    <div class="text-2 text-lg">Vous n'êtes actuellement membre d'aucune association.</div>
 
-                    <router-link class="mt-4 text-xl button-blue" to="/clubs"
-                        >Découvrir les associations<i class="ml-2 fa fa-arrow-right"
+                    <router-link class="button-blue mt-4 text-xl" to="/clubs"
+                        >Découvrir les associations<i class="fa fa-arrow-right ml-2"
                     /></router-link>
                 </div>
             </template>
@@ -85,7 +85,7 @@
                     <div
                         v-for="request in clubs.userMembershipRequests"
                         :key="request.teamMembershipRequestId"
-                        class="flex justify-between items-center py-2"
+                        class="flex items-center justify-between py-2"
                     >
                         <div class="flex gap-3">
                             <router-link :to="`/club/${request.team.teamId}`">
@@ -97,7 +97,7 @@
                                 />
                             </router-link>
                             <div class="flex flex-col">
-                                <div class="flex gap-1.5 text-1">
+                                <div class="text-1 flex gap-1.5">
                                     <router-link :to="`/club/${request.team.teamId}`" class="hover:underline">
                                         <div class="font-semibold">{{ request.team.name }}</div>
                                     </router-link>
@@ -138,14 +138,14 @@
                             @closed="shownRequest = null"
                         >
                             <template #default="{ close }">
-                                <div class="flex flex-col card">
+                                <div class="card flex flex-col">
                                     <div class="mb-6 text-2xl">
                                         Formulaire d'adhésion à {{ shownRequest?.team?.name ?? '' }}
                                     </div>
                                     <div class="flex flex-col gap-4">
                                         <div>
                                             <div class="text-base text-gray-400/80">Rôle souhaité</div>
-                                            <div class="text-xl text-0">
+                                            <div class="text-0 text-xl">
                                                 {{
                                                     clubRoleNames[shownRequest?.role ?? '']?.[$i18n.locale] ??
                                                     ''
@@ -159,13 +159,13 @@
                                             <div class="text-base text-gray-400/80">
                                                 {{ capitalize(field) }}
                                             </div>
-                                            <div class="text-xl text-0">{{ value }}</div>
+                                            <div class="text-0 text-xl">{{ value }}</div>
                                         </div>
                                         <div>
                                             <div class="text-base text-gray-400/80">
                                                 <div>Statut</div>
                                                 <div
-                                                    class="text-xl text-0"
+                                                    class="text-0 text-xl"
                                                     :class="{
                                                         '!text-green-500': shownRequest?.state === APPROVED,
                                                         '!text-red-500': shownRequest?.state === REJECTED,
@@ -183,20 +183,20 @@
                                         <div v-if="shownRequest?.state === REJECTED" class="flex flex-col">
                                             <div class="text-lg text-gray-400/80">Raison du refus</div>
                                             <div
-                                                class="text-2xl text-0"
+                                                class="text-0 text-2xl"
                                                 :class="!shownRequest.handledMessage ? 'italic' : ''"
                                             >
                                                 {{ shownRequest.handledMessage || 'Pas de raison donnée.' }}
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="self-center mt-10 button-cancel" @click="close">Fermer</div>
+                                    <div class="button-cancel mt-10 self-center" @click="close">Fermer</div>
                                 </div>
                             </template>
                         </ModalPopup>
 
                         <div
-                            class="flex gap-2 justify-center items-center py-1 px-3 w-36 text-white rounded-xl cursor-pointer"
+                            class="flex w-36 cursor-pointer items-center justify-center gap-2 rounded-xl py-1 px-3 text-white"
                             :class="{
                                 'bg-green-500 hover:bg-green-600': request.state === APPROVED,
                                 'bg-red-500 hover:bg-red-600': request.state === REJECTED,
@@ -224,12 +224,12 @@
                         </div>
                     </div>
                 </template>
-                <div v-else class="flex flex-col gap-4 items-center my-6">
-                    <img class="w-48 h-48" :src="Puzzle" />
-                    <div class="text-lg text-2">Vous n'avez pas de demandes d'adhésion en cours.</div>
+                <div v-else class="my-6 flex flex-col items-center gap-4">
+                    <img class="h-48 w-48" :src="Puzzle" />
+                    <div class="text-2 text-lg">Vous n'avez pas de demandes d'adhésion en cours.</div>
 
-                    <router-link class="mt-4 text-xl button-blue" to="/clubs"
-                        >Découvrir les associations<i class="ml-2 fa fa-arrow-right" />
+                    <router-link class="button-blue mt-4 text-xl" to="/clubs"
+                        >Découvrir les associations<i class="fa fa-arrow-right ml-2" />
                     </router-link>
                 </div>
             </template>
@@ -238,21 +238,21 @@
             <template #default="{ close }">
                 <div
                     v-if="currentMembership"
-                    class="flex flex-col justify-center items-center py-8 px-10 card"
+                    class="card flex flex-col items-center justify-center py-8 px-10"
                 >
                     <div class="text-2xl font-semibold">
                         Vous vous apprêtez à transmettre votre rôle de
                         {{ clubRoleNames[currentMembership.role][$i18n.locale] }}
                     </div>
-                    <div class="text-sm text-2">En transmettant votre rôle, vous le perdrez vous même.</div>
+                    <div class="text-2 text-sm">En transmettant votre rôle, vous le perdrez vous même.</div>
                     <div
                         v-if="members.filter((memb) => !specialRoles.includes(memb.role)).length > 0"
-                        class="flex flex-col gap-4 mt-4"
+                        class="mt-4 flex flex-col gap-4"
                     >
                         <div
                             v-for="member of members.filter((memb) => !specialRoles.includes(memb.role))"
                             :key="member"
-                            class="flex gap-2 items-center"
+                            class="flex items-center gap-2"
                         >
                             <ProfileAvatar
                                 :avatar="member.user.avatar"
@@ -266,7 +266,7 @@
                         </div>
                     </div>
                     <div v-else>Il n'existe pas de membre auquel vous pouvez transmettre votre rôle</div>
-                    <div class="flex gap-4 self-end mt-6">
+                    <div class="mt-6 flex gap-4 self-end">
                         <div class="button-cancel" @click="close">Annuler</div>
                     </div>
                 </div>

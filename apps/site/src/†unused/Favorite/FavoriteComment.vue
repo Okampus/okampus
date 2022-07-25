@@ -1,13 +1,13 @@
 <template>
-    <div class="flex m-4 rounded-md bg-1">
-        <div class="ml-2 border-l-2 border-dashed border-color-2-alt" />
+    <div class="bg-1 m-4 flex rounded-md">
+        <div class="border-color-2-alt ml-2 border-l-2 border-dashed" />
         <div
-            class="flex object-cover flex-col justify-center px-8 ml-2 border-l-2 border-dashed border-color-2-alt"
+            class="border-color-2-alt ml-2 flex flex-col justify-center border-l-2 border-dashed object-cover px-8"
         >
-            <font-awesome-icon icon="comment" class="hidden text-xl text-center md:block text-2" />
+            <font-awesome-icon icon="comment" class="text-2 hidden text-center text-xl md:block" />
         </div>
         <div class="flex w-full">
-            <div class="flex flex-col justify-between my-2">
+            <div class="my-2 flex flex-col justify-between">
                 <div>
                     <p class="text-5">
                         Publié par {{ comment.author.fullname }} {{ timeAgo(new Date(comment.createdAt)) }}
@@ -20,17 +20,17 @@
                     {{ comment.body }}
                     <!-- </router-link> -->
                 </div>
-                <div class="flex gap-6 items-center">
+                <div class="flex items-center gap-6">
                     <div class="flex gap-2">
                         <div
-                            class="flex items-center py-1.5 hover:bg-3-light hover:dark:bg-3-dark rounded text-5"
+                            class="text-5 flex items-center rounded py-1.5 hover:bg-3-light hover:dark:bg-3-dark"
                         >
                             <font-awesome-icon
-                                class="block pl-1 tracking-tighter cursor-pointer"
+                                class="block cursor-pointer pl-1 tracking-tighter"
                                 :class="{ 'text-green-600': comment.userVote === 1 }"
                                 :icon="comment.userVote === 1 ? 'thumbs-up' : ['far', 'thumbs-up']"
                             />
-                            <p class="pl-1 ml-1 text-sm tracking-tighter">
+                            <p class="ml-1 pl-1 text-sm tracking-tighter">
                                 {{ comment.upvotes }}
                             </p>
                         </div>
@@ -39,7 +39,7 @@
                     <div
                         v-for="(action, i) in actions"
                         :key="i"
-                        class="flex items-center py-1.5 hover:bg-3-light hover:dark:bg-3-dark rounded cursor-pointer text-5"
+                        class="text-5 flex cursor-pointer items-center rounded py-1.5 hover:bg-3-light hover:dark:bg-3-dark"
                         @click="actionsMap[action].action"
                     >
                         <font-awesome-icon
@@ -47,7 +47,7 @@
                             :class="actionsMap[action].class"
                         />
                         <p
-                            class="hidden pl-1 text-sm tracking-tighter md:block text-2"
+                            class="text-2 hidden pl-1 text-sm tracking-tighter md:block"
                             :class="actionsMap[action].class"
                         >
                             {{ actionsMap[action].name() }}

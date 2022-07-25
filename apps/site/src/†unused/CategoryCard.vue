@@ -1,42 +1,42 @@
 <template>
     <div>
         <ModalPopup @close="handle = null">
-            <div class="gap-2 card">
-                <div class="text-2xl font-bold text-center">Nom actuel</div>
-                <div class="flex justify-center items-center">{{ handleCategorie }}</div>
+            <div class="card gap-2">
+                <div class="text-center text-2xl font-bold">Nom actuel</div>
+                <div class="flex items-center justify-center">{{ handleCategorie }}</div>
                 <br />
                 <hr />
                 <br />
                 <form action="" method="post" novalidate>
                     <input
                         type="text"
-                        class="mt-1 w-full h-10 lg:m-0 input"
+                        class="input mt-1 h-10 w-full lg:m-0"
                         value=""
                         placeholder="Nouvelle catégorie"
                         required
                     />
-                    <button class="shrink-0 my-5 w-full button-green" @click="handleSelected">
+                    <button class="button-green my-5 w-full shrink-0" @click="handleSelected">
                         <i class="fas fa-pen" />
                         Modifier le nom
                     </button>
                 </form>
             </div>
         </ModalPopup>
-        <div v-if="categorie" class="flex flex-row w-full xs:rounded-xl bg-content">
-            <div class="relative py-2 px-4 w-full md:py-3 md:px-5">
+        <div v-if="categorie" class="bg-content flex w-full flex-row xs:rounded-xl">
+            <div class="relative w-full py-2 px-4 md:py-3 md:px-5">
                 <span
-                    class="flex overflow-hidden flex-wrap gap-5 items-center h-8 font-light whitespace-nowrap text-3"
+                    class="text-3 flex h-8 flex-wrap items-center gap-5 overflow-hidden whitespace-nowrap font-light"
                 >
                     {{ categorieName }}
                     <button class="absolute inset-y-0 right-0 mr-8 w-16">
-                        <i class="mx-3 fas fa-pencil" @click="handleCategorie(categorieName)" />
-                        <i class="mx-3 fas fa-trash" @click="deleteCategorie" />
+                        <i class="fas fa-pencil mx-3" @click="handleCategorie(categorieName)" />
+                        <i class="fas fa-trash mx-3" @click="deleteCategorie" />
                     </button>
                 </span>
             </div>
         </div>
-        <div v-else class="flex py-3 px-5 space-x-2 font-semibold rounded-lg">
-            <p class="text-lg text-0">Erreur: Ce post est vide.</p>
+        <div v-else class="flex space-x-2 rounded-lg py-3 px-5 font-semibold">
+            <p class="text-0 text-lg">Erreur: Ce post est vide.</p>
         </div>
     </div>
 </template>

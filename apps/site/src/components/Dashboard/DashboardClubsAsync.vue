@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="overflow-x-scroll snap-x snap-proximity">
+        <div class="snap-x snap-proximity overflow-x-scroll">
             <AppTable
-                class="w-max text-1"
+                class="text-1 w-max"
                 :items="clubStore.clubs"
                 table-layout="auto"
                 :headers="[
@@ -64,7 +64,7 @@
             >
                 <template #name="{ avatar, name, category, teamId }">
                     <TeamActivity
-                        class="z-50 h-full bg-1"
+                        class="bg-1 z-50 h-full"
                         :team="{ avatar, name, category, teamId }"
                         :custom-string="category"
                     />
@@ -75,7 +75,7 @@
                     </router-link> -->
                 </template>
                 <template #owner="{ owner }">
-                    <router-link :to="`/user/${owner.id}`" class="flex gap-1 items-center cursor-pointer">
+                    <router-link :to="`/user/${owner.id}`" class="flex cursor-pointer items-center gap-1">
                         <ProfileAvatar :name="fullname(owner)" :avatar="owner.avatar" :size="2.5" />
                         <div>{{ fullname(owner) }}</div>
                     </router-link>
@@ -84,7 +84,7 @@
                     <router-link
                         v-if="secretary"
                         :to="`/user/${secretary.id}`"
-                        class="flex gap-1 items-center cursor-pointer"
+                        class="flex cursor-pointer items-center gap-1"
                     >
                         <ProfileAvatar :name="fullname(secretary)" :avatar="secretary.avatar"></ProfileAvatar>
                         <div>{{ fullname(secretary) }}</div>
@@ -94,7 +94,7 @@
                     <router-link
                         v-if="treasurer"
                         :to="`/user/${treasurer.id}`"
-                        class="flex gap-1 items-center cursor-pointer"
+                        class="flex cursor-pointer items-center gap-1"
                     >
                         <ProfileAvatar :name="fullname(treasurer)" :avatar="treasurer.avatar"></ProfileAvatar>
                         <div>{{ fullname(treasurer) }}</div>
@@ -103,11 +103,11 @@
                 <template #handover="{ files }">
                     <div
                         v-if="files?.filter((file) => file?.description === 'handover')[0]"
-                        class="flex justify-center items-center"
+                        class="flex items-center justify-center"
                     >
                         <a :href="files.filter((file) => file?.description === 'handover')[0]?.file?.url">
                             <DocumentIcon
-                                class="w-8 h-8"
+                                class="h-8 w-8"
                                 :file-name="
                                     files.filter((file) => file?.description === 'handover')[0]?.file?.name
                                 "
@@ -122,11 +122,11 @@
                 <template #statute="{ files }">
                     <div
                         v-if="files?.filter((file) => file?.description === 'statute')[0]"
-                        class="flex justify-center items-center"
+                        class="flex items-center justify-center"
                     >
                         <a :href="files.filter((file) => file?.description === 'statute')[0]?.file?.url">
                             <DocumentIcon
-                                class="w-8 h-8"
+                                class="h-8 w-8"
                                 :file-name="
                                     files.filter((file) => file?.description === 'statute')[0]?.file?.name
                                 "
@@ -140,11 +140,11 @@
                 <template #internal="{ files }">
                     <div
                         v-if="files?.filter((file) => file?.description === 'internal')[0]"
-                        class="flex justify-center items-center"
+                        class="flex items-center justify-center"
                     >
                         <a :href="files.filter((file) => file?.description === 'internal')[0]?.file?.url">
                             <DocumentIcon
-                                class="w-8 h-8"
+                                class="h-8 w-8"
                                 :file-name="
                                     files.filter((file) => file?.description === 'internal')[0]?.file?.name
                                 "

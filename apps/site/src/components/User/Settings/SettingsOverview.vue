@@ -1,8 +1,8 @@
 <template>
-    <div class="flex flex-col gap-6 card">
-        <div class="text-lg font-semibold text-0">Mes inscriptions</div>
+    <div class="card flex flex-col gap-6">
+        <div class="text-0 text-lg font-semibold">Mes inscriptions</div>
 
-        <div class="flex flex-wrap gap-6 w-full text-2">
+        <div class="text-2 flex w-full flex-wrap gap-6">
             <div v-if="events.length === 0">Vous n'êtes inscrit à aucun événement.</div>
             <template v-else>
                 <ClubEventCard v-for="event in events" :key="event.eventId" :event="event" />

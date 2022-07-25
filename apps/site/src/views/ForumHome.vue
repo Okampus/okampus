@@ -1,43 +1,43 @@
 <template>
-    <div class="flex flex-col gap-12 lg:flex-row centered-container">
+    <div class="centered-container flex flex-col gap-12 lg:flex-row">
         <div class="flex flex-col gap-6">
-            <div class="flex flex-col p-10 sm:gap-6 card-2">
+            <div class="card-2 flex flex-col p-10 sm:gap-6">
                 <div class="flex gap-4 md:gap-10">
                     <div class="flex flex-col gap-6 md:gap-8">
-                        <div class="text-2xl font-bold md:text-3xl title-font">
+                        <div class="title-font text-2xl font-bold md:text-3xl">
                             Demandez, signalez, partagez vos idées&nbsp;!
                         </div>
-                        <div class="hidden text-sm text-justify sm:block md:text-base text-2">
+                        <div class="text-2 hidden text-justify text-sm sm:block md:text-base">
                             Posez vos questions, répondez à celles des autres, signalez des problèmes et
                             demandez à ce que les votres soient résolus... et proposer des idées pour l'école,
                             la vie associative ou Okampus !
                         </div>
                     </div>
-                    <img class="-mt-2 w-24 h-24 sm:w-48 sm:h-48" :src="ChatBubble" />
+                    <img class="-mt-2 h-24 w-24 sm:h-48 sm:w-48" :src="ChatBubble" />
                 </div>
                 <div class="flex gap-4">
                     <router-link
                         to="/forum/post/new"
                         role="button"
-                        class="flex gap-3 items-center sm-max:py-1 button-blue"
+                        class="button-blue flex items-center gap-3 sm-max:py-1"
                     >
-                        <i class="text-base sm:text-lg fas fa-plus" />
+                        <i class="fas fa-plus text-base sm:text-lg" />
                         <div class="text-lg sm:text-base">Question</div>
                     </router-link>
                     <router-link
                         to="/forum/post/new"
                         role="button"
-                        class="flex gap-3 items-center sm-max:py-1 button-green"
+                        class="button-green flex items-center gap-3 sm-max:py-1"
                     >
-                        <i class="text-base sm:text-lg fas fa-plus" />
+                        <i class="fas fa-plus text-base sm:text-lg" />
                         <div class="text-lg sm:text-base">Problème</div>
                     </router-link>
                     <router-link
                         to="/forum/post/new"
                         role="button"
-                        class="flex gap-3 items-center sm-max:py-1 button-yellow"
+                        class="button-yellow flex items-center gap-3 sm-max:py-1"
                     >
-                        <i class="text-base sm:text-lg fas fa-plus" />
+                        <i class="fas fa-plus text-base sm:text-lg" />
                         <div class="text-lg sm:text-base">Idée</div>
                     </router-link>
                 </div>
@@ -45,7 +45,7 @@
 
             <div class="flex flex-col gap-6 px-4 lg:hidden">
                 <AppTitle title="Membres du staff" icon="fas fa-people-group" />
-                <div class="flex gap-5 items-start mx-5">
+                <div class="mx-5 flex items-start gap-5">
                     <SwiperButton class="mt-2" type="prev" :swiper="swiperStaff" :small="true" />
                     <Swiper
                         :slides-per-view="1"
@@ -66,7 +66,7 @@
                 <AppTitle title="Tags récents" icon="fas fa-tags" />
                 <GraphQLQuery :query="getTags" :update="(data) => data?.tags" :loader-size="1">
                     <template #default="{ data: tags }">
-                        <div class="flex items-center mx-5">
+                        <div class="mx-5 flex items-center">
                             <SwiperButton type="prev" :swiper="swiperTags" :small="true" />
                             <Swiper
                                 slides-per-view="auto"
@@ -85,7 +85,7 @@
             </div>
 
             <div class="flex flex-col gap-6">
-                <AppTitle title="Espaces du forum" icon="fas fa-comments" class="px-4 mt-2" />
+                <AppTitle title="Espaces du forum" icon="fas fa-comments" class="mt-2 px-4" />
                 <div class="flex flex-col gap-4">
                     <router-link
                         v-for="(tab, i) in forumTabs"
@@ -93,9 +93,9 @@
                         to="/forum/posts"
                         class="card-2 card-hover"
                     >
-                        <div class="flex gap-4 items-center">
+                        <div class="flex items-center gap-4">
                             <div
-                                class="flex shrink-0 justify-center items-center w-[3.3rem] h-[3.3rem] rounded-lg cursor-pointer"
+                                class="flex h-[3.3rem] w-[3.3rem] shrink-0 cursor-pointer items-center justify-center rounded-lg"
                                 :class="tab.color"
                             >
                                 <i :class="tab.icon" class="text-xl text-white" />
@@ -104,7 +104,7 @@
                                 <div class="text-lg font-semibold">
                                     {{ tab.title }}
                                 </div>
-                                <div class="text-sm text-2">{{ tab.description }}</div>
+                                <div class="text-2 text-sm">{{ tab.description }}</div>
                             </div>
                         </div>
                     </router-link>
@@ -117,7 +117,7 @@
             </div>
         </div>
 
-        <div class="flex flex-col shrink-0 gap-6 lg:w-[24rem]">
+        <div class="flex shrink-0 flex-col gap-6 lg:w-[24rem]">
             <div class="hidden flex-col gap-6 lg:flex">
                 <AppTitle title="Membres du staff" icon="fas fa-people-group" class="pl-4" />
                 <div class="flex flex-col gap-4">

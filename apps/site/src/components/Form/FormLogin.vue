@@ -3,7 +3,7 @@
     <ModalPopup :show="showLogin" @close="emit('update:show-login', false)">
         <Transition name="fade">
             <AppLogin @logged-in="emit('update:show-login', false)">
-                <h2 class="text-3xl font-semibold text-center text-1">Connexion</h2>
+                <h2 class="text-1 text-center text-3xl font-semibold">Connexion</h2>
             </AppLogin>
         </Transition>
     </ModalPopup>

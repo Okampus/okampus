@@ -1,9 +1,9 @@
 <template>
-    <div class="flex relative flex-col">
+    <div class="relative flex flex-col">
         <div class="bg-2 text-0">
-            <div class="flex sticky top-0 z-30 flex-col pb-0 centered-container-padded">
-                <div class="flex gap-4 justify-between items-center pt-4">
-                    <div class="flex gap-4 items-center">
+            <div class="centered-container-padded sticky top-0 z-30 flex flex-col pb-0">
+                <div class="flex items-center justify-between gap-4 pt-4">
+                    <div class="flex items-center gap-4">
                         <ProfileAvatar
                             :avatar="club.avatar"
                             :name="club.name"
@@ -11,7 +11,7 @@
                             :rounded-full="false"
                         />
                         <div class="text-2xl">{{ club.name }}</div>
-                        <LabelSimple class="bg-slate-600/40 hover:bg-slate-600/40 cursor-default">
+                        <LabelSimple class="cursor-default bg-slate-600/40 hover:bg-slate-600/40">
                             Vue administrateur
                         </LabelSimple>
                     </div>
@@ -30,7 +30,7 @@
                 />
             </div>
         </div>
-        <div class="flex flex-col centered-container-padded">
+        <div class="centered-container-padded flex flex-col">
             <Transition mode="out-in" name="switch-fade">
                 <KeepAlive>
                     <Suspense timeout="0">

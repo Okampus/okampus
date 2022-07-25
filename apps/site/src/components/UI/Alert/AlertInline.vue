@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex overflow-hidden relative py-3 px-4 rounded-lg"
+        class="relative flex overflow-hidden rounded-lg py-3 px-4"
         :class="[
             background ? 'alert-card' : 'alert',
             fitContent ? 'w-fit' : 'w-full',
@@ -10,7 +10,7 @@
     >
         <slot name="default" />
 
-        <div v-if="$slots.icon || icon || $slots.title" class="flex gap-3 items-center text-lg title">
+        <div v-if="$slots.icon || icon || $slots.title" class="title flex items-center gap-3 text-lg">
             <slot v-if="$slots.icon" name="icon" />
             <i v-else-if="icon" class="fas" :class="`fa-${defaultIconList?.[type]}`" />
             <slot name="title" />
@@ -26,7 +26,7 @@
             <!-- TODO: add option for simple "dismiss" button instead of times icon -->
             <button
                 v-if="dismissable"
-                class="flex justify-center items-center p-1.5 w-8 h-8 text-xl rounded-lg focus:ring-1 cursor-pointer dismiss"
+                class="dismiss flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg p-1.5 text-xl focus:ring-1"
                 @click="$emit('dismiss')"
             >
                 <i class="fas" :class="`fa-${dismissIcon}`" />

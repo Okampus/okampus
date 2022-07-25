@@ -7,7 +7,7 @@
     >
         <template #default="{ data: reports }">
             <AppTable
-                class="w-full text-0"
+                class="text-0 w-full"
                 :items="reports"
                 table-layout="fixed"
                 :headers="[
@@ -38,12 +38,12 @@
                         :to="`/forum/post/${content.contentMaster.id}#${contentTypeNames[content.kind].key}-${
                             content.id
                         }`"
-                        class="text-sm hover:underline break-words"
+                        class="break-words text-sm hover:underline"
                         >{{ content.body }}</router-link
                     >
                 </template>
                 <template #author="{ target }">
-                    <router-link :to="`/user/${target.id}`" class="flex gap-1 items-center cursor-pointer">
+                    <router-link :to="`/user/${target.id}`" class="flex cursor-pointer items-center gap-1">
                         <ProfileAvatar :name="fullname(target)" :avatar="target.avatar" :size="2.5">
                         </ProfileAvatar>
                         <div>
@@ -52,14 +52,14 @@
                     </router-link>
                 </template>
                 <template #reporter="{ user }">
-                    <router-link :to="`/user/${user.id}`" class="flex gap-1 items-center cursor-pointer">
+                    <router-link :to="`/user/${user.id}`" class="flex cursor-pointer items-center gap-1">
                         <ProfileAvatar :name="fullname(user)" :avatar="user.avatar" :size="2.5">
                         </ProfileAvatar>
                         <div>{{ fullname(user) }}</div>
                     </router-link>
                 </template>
                 <template #reason="{ reason }">
-                    <div class="text-sm break-words">{{ reason }}</div>
+                    <div class="break-words text-sm">{{ reason }}</div>
                 </template>
             </AppTable>
         </template>

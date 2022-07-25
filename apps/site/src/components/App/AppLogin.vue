@@ -1,21 +1,21 @@
 <template>
-    <div class="min-w-[30vw] card">
+    <div class="card min-w-[30vw]">
         <div class="flex flex-col items-center">
             <slot />
 
-            <a v-if="show === 'sso'" role="button" class="my-8 text-2xl button-blue" :href="myEfreiAuthUrl"
-                >Connexion myEfrei<i class="ml-2 fa fa-sign-in"
+            <a v-if="show === 'sso'" role="button" class="button-blue my-8 text-2xl" :href="myEfreiAuthUrl"
+                >Connexion myEfrei<i class="fa fa-sign-in ml-2"
             /></a>
 
             <form
                 v-if="show === 'login'"
                 action="javascript:void(0);"
-                class="flex flex-col gap-3 items-center px-10 mt-6 w-full"
+                class="mt-6 flex w-full flex-col items-center gap-3 px-10"
             >
                 <div class="w-full">
                     <label
                         for="username"
-                        class="block text-sm font-semibold tracking-wider text-gray-600 uppercase"
+                        class="block text-sm font-semibold uppercase tracking-wider text-gray-600"
                         >Identifiant</label
                     >
                     <InputWithIcon
@@ -25,13 +25,13 @@
                         :input-required="true"
                         input-placeholder="Identifiant Okampus"
                     >
-                        <i class="ml-0.5 fas fa-user-shield" />
+                        <i class="fas fa-user-shield ml-0.5" />
                     </InputWithIcon>
                 </div>
                 <div class="w-full">
                     <label
                         for="password"
-                        class="block mt-2 text-sm font-semibold tracking-wider text-gray-600 uppercase"
+                        class="mt-2 block text-sm font-semibold uppercase tracking-wider text-gray-600"
                         >Mot de passe</label
                     >
                     <InputWithIcon
@@ -42,23 +42,23 @@
                         :input-required="true"
                         input-placeholder="Mot de passe"
                     >
-                        <i class="ml-0.5 fas fa-key" />
+                        <i class="fas fa-key ml-0.5" />
                     </InputWithIcon>
                 </div>
 
                 <!-- TODO: Error message when login fails -->
-                <button class="mt-4 w-full button-green" @click="login">Connexion Okampus</button>
+                <button class="button-green mt-4 w-full" @click="login">Connexion Okampus</button>
 
-                <div class="flex my-4 text-slate-500">
+                <div class="my-4 flex text-slate-500">
                     <div>ou</div>
-                    <div class="ml-2 hover:text-slate-400 underline cursor-pointer" @click="show = 'sso'">
+                    <div class="ml-2 cursor-pointer underline hover:text-slate-400" @click="show = 'sso'">
                         Connexion myEfrei
                     </div>
                 </div>
             </form>
-            <div v-else class="flex mb-4 text-slate-500">
+            <div v-else class="mb-4 flex text-slate-500">
                 <div>ou</div>
-                <div class="ml-2 hover:text-slate-400 underline cursor-pointer" @click="show = 'login'">
+                <div class="ml-2 cursor-pointer underline hover:text-slate-400" @click="show = 'login'">
                     Connexion Okampus
                 </div>
             </div>

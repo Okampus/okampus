@@ -1,23 +1,23 @@
 <template>
-    <div class="flex flex-col mx-6 mt-8 mb-12 space-y-2">
+    <div class="mx-6 mt-8 mb-12 flex flex-col space-y-2">
         <div class="card">
             <div class="flex flex-col lg:flex-row lg:items-center lg:space-x-2">
                 <strong class="mr-2">Nouvel Article</strong>
                 <input
                     id="title"
                     type="text"
-                    class="mt-1 w-full h-10 lg:m-0 input"
+                    class="input mt-1 h-10 w-full lg:m-0"
                     name="title"
                     value=""
                     placeholder="Titre de l'article"
                     required
                 />
-                <div class="flex mt-3 min-w-fit lg:m-0">
-                    <div class="flex pr-4 min-w-fit lg:ml-3">
+                <div class="mt-3 flex min-w-fit lg:m-0">
+                    <div class="flex min-w-fit pr-4 lg:ml-3">
                         <ProfileAvatar :avatar="user.avatar" :name="user.fullname" />
-                        <div class="flex flex-col ml-3 text-sm text-0">
+                        <div class="text-0 ml-3 flex flex-col text-sm">
                             <p class="whitespace-nowrap">Poster en tant que</p>
-                            <strong class="text-base whitespace-nowrap">{{ user.fullname }}</strong>
+                            <strong class="whitespace-nowrap text-base">{{ user.fullname }}</strong>
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
@@ -39,17 +39,17 @@
         </div>
 
         <div class="flex flex-col-reverse lg:flex-row lg:space-y-0 lg:space-x-2">
-            <div class="lg:w-2/3 card blog-editor">
+            <div class="card blog-editor lg:w-2/3">
                 <strong> Éditeur d'article </strong>
                 <MdEditor uid="new-blog" :char-count="10000" />
             </div>
             <!-- Sidebar -->
-            <div class="mb-2 space-y-2 lg:w-1/3 card">
+            <div class="card mb-2 space-y-2 lg:w-1/3">
                 <div>
                     <strong> Miniature </strong>
                     <div class="flex">
                         <!-- TODO: File input -->
-                        <label class="py-2 px-4 rounded-md bg-primary-3 text-0">
+                        <label class="bg-primary-3 text-0 rounded-md py-2 px-4">
                             <span class="block">Changer l'image</span>
                             <input type="file" class="hidden" />
                         </label>
@@ -58,20 +58,20 @@
 
                 <div>
                     <strong>Table des matières</strong>
-                    <textarea name="table-of-contents" class="w-full input" placeholder="(Optionnel)" />
+                    <textarea name="table-of-contents" class="input w-full" placeholder="(Optionnel)" />
                 </div>
 
                 <div>
                     <strong> Paramètres de l'article </strong>
-                    <div class="m-2 text-gray-600 text">Description</div>
-                    <textarea name="description" class="w-full input" placeholder="(Optionnel)" />
+                    <div class="text m-2 text-gray-600">Description</div>
+                    <textarea name="description" class="input w-full" placeholder="(Optionnel)" />
                     <!-- <input
                         id="description"
                         type="text"
                         name="description"
                         placeholder="(Optionnel)"
                     > -->
-                    <div class="m-2 text-gray-600 text">Tags</div>
+                    <div class="text m-2 text-gray-600">Tags</div>
 
                     <TagInput />
                     <!-- <div class="text-md text-gray-600 mb-2 text-c2 mt-6">

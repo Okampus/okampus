@@ -1,8 +1,8 @@
 <template>
-    <div class="flex flex-col gap-6 justify-center items-center mt-10 w-full h-[90%] text-6xl text-0">
+    <div class="text-0 mt-10 flex h-[90%] w-full flex-col items-center justify-center gap-6 text-6xl">
         <AppLogo :scale="2" />
         <svg
-            class="text-white animate-spin"
+            class="animate-spin text-white"
             :style="{ width: `${size}rem`, height: `${size}rem` }"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

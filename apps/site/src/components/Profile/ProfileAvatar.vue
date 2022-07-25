@@ -14,7 +14,7 @@
         />
         <div
             v-if="avatar && !loaded"
-            class="absolute top-0 left-0 bg-slate-300 dark:bg-slate-600 animate-pulse"
+            class="absolute top-0 left-0 animate-pulse bg-slate-300 dark:bg-slate-600"
             :class="[innerClass, roundedClass]"
             :style="avatarSizeStyle"
         />
@@ -27,7 +27,7 @@
             class="profile-avatar"
             :class="[innerClass, roundedClass]"
         >
-            <div class="m-auto w-fit h-fit text-white" :style="{ fontSize: `${size / 2.3}rem` }">
+            <div class="m-auto h-fit w-fit text-white" :style="{ fontSize: `${size / 2.3}rem` }">
                 {{ getInitialsFromName(name) }}
             </div>
         </div>

@@ -1,9 +1,9 @@
 <template>
-    <div class="flex flex-col gap-2 items-center w-6">
+    <div class="flex w-6 flex-col items-center gap-2">
         <IconUpvote
             :full="displayedVote === 1"
             :width="width"
-            class="hover:text-blue-500 cursor-pointer"
+            class="cursor-pointer hover:text-blue-500"
             :class="[displayedVote === 1 ? 'text-green-600' : 'text-5']"
             @click="() => (displayedVote === 1 ? unvote(1) : upvote())"
         />
@@ -13,7 +13,7 @@
         <IconDownvote
             :full="displayedVote === -1"
             :width="width"
-            class="hover:text-blue-500 cursor-pointer"
+            class="cursor-pointer hover:text-blue-500"
             :class="[displayedVote === -1 ? 'text-red-600' : 'text-5']"
             @click="() => (displayedVote === -1 ? unvote(-1) : downvote())"
         />

@@ -27,13 +27,13 @@
             </div>
         </template>
         <template #event="{ event, view }">
-            <div v-if="view" class="p-4 m-0 w-full">
+            <div v-if="view" class="m-0 w-full p-4">
                 <Popper :prevent-overflow="false" :interactive="true">
                     <div
-                        class="absolute inset-0 self-stretch p-1 m-0 mr-3 h-full text-sm leading-tight text-white rounded-r-md rounded-l-sm border-l-4 border-yellow-400 hover:shadow-xl focus:shadow-xl hover:scale-[1.01] focus:scale-[1.01]"
+                        class="absolute inset-0 m-0 mr-3 h-full self-stretch rounded-r-md rounded-l-sm border-l-4 border-yellow-400 p-1 text-sm leading-tight text-white hover:scale-[1.01] hover:shadow-xl focus:scale-[1.01] focus:shadow-xl"
                         :style="{ 'background-color': getColorFromData(event.event.team.category) }"
                     >
-                        <div class="flex gap-2 items-center">
+                        <div class="flex items-center gap-2">
                             <ProfileAvatar
                                 :size="2"
                                 :avatar="event.event.team.avatar"
@@ -43,10 +43,10 @@
                         </div>
                     </div>
                     <template #content>
-                        <div class="flex z-50 flex-col gap-4 p-6 w-96 rounded-md bg-2">
+                        <div class="bg-2 z-50 flex w-96 flex-col gap-4 rounded-md p-6">
                             <div class="flex items-center">
                                 <i
-                                    class="mr-4 w-4 h-4 fas fa-circle"
+                                    class="fas fa-circle mr-4 h-4 w-4"
                                     :style="{
                                         color: getColorFromData(event.event.team.category),
                                     }"
@@ -63,11 +63,11 @@
                                 </div>
                             </div>
                             <div class="flex items-center">
-                                <i class="mr-4 w-4 h-4 text-gray-500 fas fa-location-dot"> </i>
+                                <i class="fas fa-location-dot mr-4 h-4 w-4 text-gray-500"> </i>
                                 <p class="">{{ event.event.place }}</p>
                             </div>
                             <div class="flex items-center">
-                                <i class="mr-4 w-4 h-4 text-gray-500 fas fa-euro-sign"> </i>
+                                <i class="fas fa-euro-sign mr-4 h-4 w-4 text-gray-500"> </i>
                                 <p class="">
                                     {{ event.event.price > 0 ? event.event.price : 'Gratuit' }}
                                 </p>
@@ -75,7 +75,7 @@
                             <p>
                                 <a
                                     :href="`#/events/${event.event.teamEventId}`"
-                                    class="py-1 px-4 w-fit text-sm font-bold text-center text-white bg-green-500 rounded-full"
+                                    class="w-fit rounded-full bg-green-500 py-1 px-4 text-center text-sm font-bold text-white"
                                     >En savoir plus</a
                                 >
                             </p>

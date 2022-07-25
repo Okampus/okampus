@@ -1,9 +1,9 @@
 <template>
-    <div v-if="tags.length != 0" ref="parent" class="flex relative items-center">
+    <div v-if="tags.length != 0" ref="parent" class="relative flex items-center">
         <Transition name="fade">
-            <div v-if="leftGradient" class="flex absolute justify-center items-center h-full">
+            <div v-if="leftGradient" class="absolute flex h-full items-center justify-center">
                 <div
-                    class="flex justify-center items-center h-full cursor-pointer bg-1"
+                    class="bg-1 flex h-full cursor-pointer items-center justify-center"
                     @click="
                         $refs.scroll.scrollTo({
                             left:
@@ -16,13 +16,13 @@
                     <i class="fas fa-chevron-left text-0" />
                 </div>
 
-                <div class="w-10 h-full bg-gradient-to-r from-1" />
+                <div class="from-1 h-full w-10 bg-gradient-to-r" />
             </div>
         </Transition>
 
         <div
             ref="scroll"
-            class="block overflow-x-scroll overflow-y-hidden basis-full gap-2 justify-center items-center space-x-2 w-0 whitespace-nowrap scrollbar-none"
+            class="scrollbar-none block w-0 basis-full items-center justify-center gap-2 space-x-2 overflow-y-hidden overflow-x-scroll whitespace-nowrap"
             @scroll.passive="getScroll"
         >
             <div v-for="(el, index) in tags" :key="index" class="inline-block">
@@ -31,17 +31,17 @@
         </div>
 
         <Transition name="fade">
-            <div v-if="rightGradient" class="flex absolute right-0 justify-center items-center h-full">
-                <div class="w-10 h-full bg-gradient-to-r from-transparent to-1" />
+            <div v-if="rightGradient" class="absolute right-0 flex h-full items-center justify-center">
+                <div class="to-1 h-full w-10 bg-gradient-to-r from-transparent" />
 
-                <div class="flex justify-center items-center h-full cursor-pointer bg-1" @click="scrollTo()">
+                <div class="bg-1 flex h-full cursor-pointer items-center justify-center" @click="scrollTo()">
                     <i class="fas fa-chevron-right text-0" />
                 </div>
             </div>
         </Transition>
     </div>
     <div v-else>
-        <p class="italic text-0">Aucun tag</p>
+        <p class="text-0 italic">Aucun tag</p>
     </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <router-link to="/" class="flex items-center cursor-pointer select-none">
+    <router-link to="/" class="flex cursor-pointer select-none items-center">
         <div
             class="logo"
             :style="{
@@ -8,7 +8,7 @@
             }"
             :="only === 'none' ? { 'allow-dark': '' } : only === 'dark' ? { 'dark': '' } : {}"
         />
-        <div class="px-[0.1rem] ml-[0.3rem] text-[8px] font-bold text-2-light bg-0-light rounded">BETA</div>
+        <div class="ml-[0.3rem] rounded bg-0-light px-[0.1rem] text-[8px] font-bold text-2-light">BETA</div>
         <!-- <img
             src="@/assets/img/logos/brand.png"
             alt=""

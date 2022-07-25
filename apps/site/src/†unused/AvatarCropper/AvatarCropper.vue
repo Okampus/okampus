@@ -1,6 +1,6 @@
 <template>
     <div v-if="modelValue" class="vue-image-crop-upload">
-        <div class="rounded-lg vicp-wrap bg-2">
+        <div class="vicp-wrap bg-2 rounded-lg">
             <div class="vicp-close" @click="close">
                 <i class="vicp-icon4" />
             </div>
@@ -14,7 +14,7 @@
                     @click="clickOnDropArea"
                     @drop="fileInputChange"
                 >
-                    <i v-show="loading !== LOADING_UPLOADING" class="text-2xl fa fa-file-arrow-up" />
+                    <i v-show="loading !== LOADING_UPLOADING" class="fa fa-file-arrow-up text-2xl" />
 
                     <span v-show="loading !== LOADING_UPLOADING" class="vicp-hint">{{ lang.hint }}</span>
 
@@ -30,7 +30,7 @@
                     />
                 </div>
                 <div v-show="hasError" class="vicp-error"><i class="vicp-icon2" /> {{ errorMsg }}</div>
-                <div class="text-blue-500 vicp-operate">
+                <div class="vicp-operate text-blue-500">
                     <a @click="close">{{ lang.btn.off }}</a>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-blue-500 vicp-operate">
+                <div class="vicp-operate text-blue-500">
                     <a @click="step = STEP_UPLOAD">{{ lang.btn.back }}</a>
                     <a class="vicp-operate-btn" @click="upload">{{ lang.btn.save }}</a>
                 </div>
@@ -129,15 +129,15 @@
                             :style="{ width: `${progress}%` }"
                         />
                     </div>
-                    <div v-show="hasError" class="text-red-500 vicp-error">
+                    <div v-show="hasError" class="vicp-error text-red-500">
                         <i class="vicp-icon2" /> {{ errorMsg }}
                     </div>
-                    <div v-show="loading === LOADING_SUCCESS" class="flex text-blue-500 vicp-success">
-                        <i class="mr-2 fa fa-check" />
+                    <div v-show="loading === LOADING_SUCCESS" class="vicp-success flex text-blue-500">
+                        <i class="fa fa-check mr-2" />
                         {{ lang.success }}
                     </div>
                 </div>
-                <div class="text-blue-500 vicp-operate">
+                <div class="vicp-operate text-blue-500">
                     <a @click="step = STEP_CROP">{{ lang.btn.back }}</a>
                     <a @click="close">{{ lang.btn.close }}</a>
                 </div>

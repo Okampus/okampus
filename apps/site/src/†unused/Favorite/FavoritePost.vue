@@ -1,10 +1,10 @@
 <template>
-    <div v-if="post != undefined" class="flex m-4 h-32 rounded-md bg-1">
-        <div class="flex flex-col justify-center w-14 text-white bg-gray-600 rounded-l-md">
+    <div v-if="post != undefined" class="bg-1 m-4 flex h-32 rounded-md">
+        <div class="flex w-14 flex-col justify-center rounded-l-md bg-gray-600 text-white">
             <button>
                 <font-awesome-icon
                     icon="chevron-up"
-                    class="hover:text-blue-500 cursor-pointer"
+                    class="cursor-pointer hover:text-blue-500"
                     :class="[post.userVote === 1 ? 'text-orange-500' : '']"
                 />
             </button>
@@ -14,17 +14,17 @@
             <button>
                 <font-awesome-icon
                     icon="chevron-down"
-                    class="hover:text-blue-500 cursor-pointer"
+                    class="cursor-pointer hover:text-blue-500"
                     :class="[post.userVote === -1 ? 'text-orange-500' : '']"
                 />
             </button>
         </div>
-        <div class="hidden my-auto mx-2 md:block">
-            <div class="flex object-cover flex-col justify-center items-center w-24 h-24 rounded bg-2">
-                <font-awesome-icon icon="bookmark" class="text-2xl text-center text-2" />
+        <div class="my-auto mx-2 hidden md:block">
+            <div class="bg-2 flex h-24 w-24 flex-col items-center justify-center rounded object-cover">
+                <font-awesome-icon icon="bookmark" class="text-2 text-center text-2xl" />
             </div>
         </div>
-        <div class="flex flex-col justify-between my-2 ml-4 w-full md:ml-0">
+        <div class="my-2 ml-4 flex w-full flex-col justify-between md:ml-0">
             <div>
                 <!-- TODO: Retrieve thread data -->
                 <!-- <div class="flex">
@@ -41,17 +41,17 @@
                     mise à jour {{ timeAgo(new Date(post.contentLastUpdatedAt)) }}
                 </p>
             </div>
-            <div class="flex gap-2 items-center">
+            <div class="flex items-center gap-2">
                 <div
                     v-for="(action, i) in actions"
                     :key="i"
-                    class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded cursor-pointer text-5"
+                    class="text-5 flex cursor-pointer items-center rounded py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark"
                     @click="actionsMap[action].action"
                 >
                     <font-awesome-icon :icon="actionsMap[action].icon" :class="actionsMap[action].class" />
 
                     <p
-                        class="hidden pl-1 text-sm tracking-tighter md:block text-2"
+                        class="text-2 hidden pl-1 text-sm tracking-tighter md:block"
                         :class="actionsMap[action].class"
                     >
                         {{ actionsMap[action].name() }}

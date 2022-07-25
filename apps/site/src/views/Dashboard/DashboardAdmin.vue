@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-4 my-4 mx-auto w-23/24">
+    <div class="my-4 mx-auto flex w-23/24 flex-col gap-4">
         <HorizontalTabs
             v-model="currentTab"
             class="border-b"

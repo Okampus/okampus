@@ -1,7 +1,7 @@
 <template>
     <Transition mode="out-in" name="switch-fade">
-        <div class="flex flex-col gap-10 md:flex-row centered-container-padded">
-            <div class="flex flex-col gap-4 w-full md:w-auto">
+        <div class="centered-container-padded flex flex-col gap-10 md:flex-row">
+            <div class="flex w-full flex-col gap-4 md:w-auto">
                 <div class="flex gap-5 md:flex-col">
                     <div class="relative">
                         <AvatarCropper
@@ -29,48 +29,48 @@
                         <div v-if="me.avatar" class="absolute right-0 bottom-0">
                             <ModalDropdown :buttons="avatarButtons">
                                 <button
-                                    class="flex justify-center items-center w-12 h-12 text-lg rounded-full border-4 border-2-light dark:border-2-dark !shadow-none cursor-pointer md:text-xl button-grey fa fa-camera"
+                                    class="button-grey fa fa-camera flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-4 border-2-light text-lg !shadow-none dark:border-2-dark md:text-xl"
                                 />
                             </ModalDropdown>
                         </div>
                         <button
                             v-else
-                            class="flex absolute right-0 bottom-0 justify-center items-center w-12 h-12 text-lg rounded-full border-4 border-2-light dark:border-2-dark !shadow-none cursor-pointer md:text-xl button-grey fa fa-camera"
+                            class="button-grey fa fa-camera absolute right-0 bottom-0 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-4 border-2-light text-lg !shadow-none dark:border-2-dark md:text-xl"
                             @click="editingAvatar = true"
                         />
                     </div>
                     <div class="flex flex-col">
-                        <div class="text-lg font-semibold md:text-xl text-0">{{ fullname(me) }}</div>
+                        <div class="text-0 text-lg font-semibold md:text-xl">{{ fullname(me) }}</div>
                         <div class="text-3">{{ me.id }}</div>
                     </div>
                 </div>
                 <div class="flex flex-col md:w-48 lg:w-56 md-max:w-full">
-                    <div v-if="editingStatus" class="flex flex-col gap-2 items-end mt-2">
-                        <textarea :value="status" rows="4" class="w-full resize-none input" />
+                    <div v-if="editingStatus" class="mt-2 flex flex-col items-end gap-2">
+                        <textarea :value="status" rows="4" class="input w-full resize-none" />
                         <div class="flex gap-2">
                             <button
-                                class="flex gap-2 items-center py-1 text-sm button-green"
+                                class="button-green flex items-center gap-2 py-1 text-sm"
                                 @click="submitStatus"
                             >
                                 Enregistrer
                             </button>
                             <button
-                                class="flex gap-2 items-center py-1 text-sm button-grey"
+                                class="button-grey flex items-center gap-2 py-1 text-sm"
                                 @click="editingStatus = false"
                             >
                                 Annuler
                             </button>
                         </div>
                     </div>
-                    <div v-else-if="me.shortDescription" class="break-words text-0">
+                    <div v-else-if="me.shortDescription" class="text-0 break-words">
                         <p class="inline">
                             {{ me.shortDescription }}
                         </p>
                         <button
-                            class="inline-flex justify-center items-center p-2 ml-2 w-6 h-6 rounded-full button-blue"
+                            class="button-blue ml-2 inline-flex h-6 w-6 items-center justify-center rounded-full p-2"
                             @click="editingStatus = true"
                         >
-                            <i class="text-xs fa fa-pen" />
+                            <i class="fa fa-pen text-xs" />
                         </button>
                         <!-- <div class="inline whitespace-nowrap break-words">
                             {{ me.shortDescription }}
@@ -84,17 +84,17 @@
                     </div>
                     <button
                         v-else
-                        class="flex gap-4 justify-center items-center py-1 cursor-pointer button-grey"
+                        class="button-grey flex cursor-pointer items-center justify-center gap-4 py-1"
                         @click="editingStatus = true"
                     >
-                        <i class="text-base md:text-lg fa fa-icons" />Définir un statut
+                        <i class="fa fa-icons text-base md:text-lg" />Définir un statut
                     </button>
                 </div>
             </div>
 
-            <div class="flex flex-col w-full">
+            <div class="flex w-full flex-col">
                 <HorizontalTabs v-model="currentTab" :tabs="tabs" route-base="/me" route-name="me" />
-                <div class="flex flex-col w-full">
+                <div class="flex w-full flex-col">
                     <component :is="currentComponent" />
                 </div>
             </div>

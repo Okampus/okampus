@@ -1,36 +1,36 @@
 <template>
     <div>
-        <ProfileBanner :name="fullname(user)" :banner="user.banner" class="p-0 h-40" :rounded-top="false" />
+        <ProfileBanner :name="fullname(user)" :banner="user.banner" class="h-40 p-0" :rounded-top="false" />
         <div class="centered-container-padded text-0">
-            <div class="flex gap-4 -mt-[5rem]">
+            <div class="-mt-[5rem] flex gap-4">
                 <ProfileAvatar
                     :avatar="user.avatar"
                     :size="9"
                     :name="fullname(user)"
                     inner-class="border-4 border-white dark:border-black !sahdow-none"
                 />
-                <div class="flex gap-10 justify-between items-start w-full">
-                    <div class="flex flex-col mt-20 md:mt-16">
+                <div class="flex w-full items-start justify-between gap-10">
+                    <div class="mt-20 flex flex-col md:mt-16">
                         <p class="text-3xl font-semibold">{{ fullname(user) }}</p>
-                        <p class="text-lg text-2">{{ user.shortDescription }}</p>
+                        <p class="text-2 text-lg">{{ user.shortDescription }}</p>
                     </div>
                     <router-link
                         v-if="auth.user.id === id"
                         to="/me"
                         role="button"
-                        class="flex gap-2 items-center mt-20 font-semibold rounded-full md:mt-16 button-green"
+                        class="button-green mt-20 flex items-center gap-2 rounded-full font-semibold md:mt-16"
                     >
                         <i class="fas fa-gear" />
                         Paramètres
                     </router-link>
                 </div>
             </div>
-            <div class="flex flex-col gap-10 justify-between md:flex-row">
+            <div class="flex flex-col justify-between gap-10 md:flex-row">
                 <div class="flex flex-col gap-4">
                     <h2 class="my-4 text-2xl font-semibold">Associations</h2>
                     <div
                         v-if="memberships.length > 0"
-                        class="flex flex-wrap gap-x-4 gap-y-2 items-center mt-4 w-full"
+                        class="mt-4 flex w-full flex-wrap items-center gap-x-4 gap-y-2"
                     >
                         <TeamActivity
                             v-for="membership in memberships"
@@ -63,9 +63,9 @@
                         {{ user.firstname.split(' ')[0] }} ne fait pas partie d'associations.
                     </p>
                 </div>
-                <div class="flex flex-col shrink-0 gap-4 w-[20rem]">
+                <div class="flex w-[20rem] shrink-0 flex-col gap-4">
                     <h2 class="my-4 text-2xl font-semibold">Activité</h2>
-                    <div v-if="events.length > 0" class="flex flex-col gap-4 w-fit">
+                    <div v-if="events.length > 0" class="flex w-fit flex-col gap-4">
                         <ClubEventCard
                             v-for="event in events"
                             :key="event.eventId"
@@ -73,7 +73,7 @@
                             class="!w-full"
                         ></ClubEventCard>
                     </div>
-                    <div v-else class="flex flex-col gap-4 w-fit">Aucune activité récente</div>
+                    <div v-else class="flex w-fit flex-col gap-4">Aucune activité récente</div>
                 </div>
             </div>
         </div>

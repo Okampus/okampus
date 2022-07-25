@@ -14,7 +14,7 @@
         <div
             v-if="banner && !loaded"
             :class="roundedTop ? 'rounded-t-lg' : ''"
-            class="absolute top-0 left-0 w-full h-full bg-slate-300 dark:bg-slate-600 animate-pulse"
+            class="absolute top-0 left-0 h-full w-full animate-pulse bg-slate-300 dark:bg-slate-600"
         />
         <div
             v-else-if="!banner"

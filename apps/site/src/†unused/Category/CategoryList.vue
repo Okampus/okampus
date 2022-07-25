@@ -1,6 +1,6 @@
 <template>
     <!-- TODO: add filtering, tab, info panel -->
-    <div class="flex flex-col gap-4 my-2 mx-4 text-0">
+    <div class="text-0 my-2 mx-4 flex flex-col gap-4">
         <template v-if="categories.length">
             <CategoryCard
                 v-for="(categorie, i) in categories"

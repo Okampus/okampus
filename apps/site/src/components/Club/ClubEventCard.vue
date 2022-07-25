@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-col w-full min-w-[13rem] max-w-[40rem] rounded-xl sm:w-[calc(50%-1rem)] xl:w-[calc(33%-1rem)] card-hover bg-2 text-0"
+        class="card-hover bg-2 text-0 flex w-full min-w-[13rem] max-w-[40rem] flex-col rounded-xl sm:w-[calc(50%-1rem)] xl:w-[calc(33%-1rem)]"
     >
         <!-- <div class="flex gap-4 p-4">
             <router-link :to="`/club/${event.team.teamId}`">
@@ -27,18 +27,18 @@
             <router-link :to="`/club/${event.team.teamId}`" class="absolute top-4 right-4">
                 <ProfileAvatar :name="event.team.name" :avatar="event.team.avatar" />
             </router-link>
-            <div class="absolute top-4 left-4 py-1 px-2 rounded-lg bg-1 text-0">
+            <div class="bg-1 text-0 absolute top-4 left-4 rounded-lg py-1 px-2">
                 {{ event.price === 0 ? 'Gratuit&nbsp; 🎉' : `Prix : ${event.price} €` }}
             </div>
         </div>
 
-        <div class="z-20 py-1.5 mx-4 -mt-[2rem] w-14 h-16 rounded-lg shadow-md bg-1">
-            <div class="text-xl font-bold text-center">{{ startDate.getDate() }}</div>
-            <div class="font-semibold text-center text-red-500/90 dark:text-red-400">{{ startMonth }}</div>
+        <div class="bg-1 z-20 mx-4 -mt-[2rem] h-16 w-14 rounded-lg py-1.5 shadow-md">
+            <div class="text-center text-xl font-bold">{{ startDate.getDate() }}</div>
+            <div class="text-center font-semibold text-red-500/90 dark:text-red-400">{{ startMonth }}</div>
         </div>
 
-        <div class="flex flex-col justify-between mx-5 h-full">
-            <div class="flex flex-col gap-3.5 self-start mt-4">
+        <div class="mx-5 flex h-full flex-col justify-between">
+            <div class="mt-4 flex flex-col gap-3.5 self-start">
                 <div class="flex flex-col">
                     <router-link
                         :to="`/events/${event.teamEventId}`"
@@ -46,24 +46,24 @@
                         >{{ event.name }}</router-link
                     >
 
-                    <div class="flex gap-2 items-center text-lg">
+                    <div class="flex items-center gap-2 text-lg">
                         <TipRelativeDate
                             :date="event.start"
                             :limit="false"
                             text-class="font-semibold uppercase text-base"
                         />
-                        <div v-if="startDate > now" class="italic font-semibold text-blue-500">
+                        <div v-if="startDate > now" class="font-semibold italic text-blue-500">
                             {{ countdown }}
                         </div>
-                        <LabelSimple v-else class="!bg-gray-500 !hover:bg-gray-500">Passé</LabelSimple>
+                        <LabelSimple v-else class="!hover:bg-gray-500 !bg-gray-500">Passé</LabelSimple>
                     </div>
                 </div>
                 <div class="flex flex-col gap-2">
-                    <div class="flex gap-2 items-center">
+                    <div class="flex items-center gap-2">
                         <div class="w-6">📍</div>
                         <div class="text-sm tracking-tight">{{ event.place }}</div>
                     </div>
-                    <div class="flex gap-2 items-start">
+                    <div class="flex items-start gap-2">
                         <div class="w-6">📅</div>
                         <div class="flex flex-col gap-1 text-sm tracking-tight">
                             <div>{{ dateRangeString }}</div>
@@ -72,16 +72,16 @@
                 </div>
             </div>
 
-            <div class="self-center my-6">
+            <div class="my-6 self-center">
                 <router-link
                     :to="`/events/${event.teamEventId}`"
-                    class="hidden font-semibold rounded-full md:block button-blue"
+                    class="button-blue hidden rounded-full font-semibold md:block"
                 >
                     Rejoindre l'événement
                 </router-link>
                 <router-link
                     :to="`/events/${event.teamEventId}`"
-                    class="block font-semibold rounded-full md:hidden button-blue"
+                    class="button-blue block rounded-full font-semibold md:hidden"
                 >
                     Rejoindre
                 </router-link>

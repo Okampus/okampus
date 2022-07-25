@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div v-if="events.length > 0" class="flex flex-row flex-wrap gap-4 justify-center items-center">
+        <div v-if="events.length > 0" class="flex flex-row flex-wrap items-center justify-center gap-4">
             <ClubEventCard v-for="event in events" :key="event" :event="event" />
         </div>
-        <div v-else class="flex flex-col gap-6 items-center pt-8 text-0">
-            <img class="w-48 h-48" :src="Calendar" />
+        <div v-else class="text-0 flex flex-col items-center gap-6 pt-8">
+            <img class="h-48 w-48" :src="Calendar" />
             <div class="text-center">
                 <h1 class="text-4xl font-bold">Aucun événement</h1>
                 <p class="text-lg">{{ club.name }} n'a pas encore prévu d'événéments.</p>

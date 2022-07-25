@@ -1,5 +1,5 @@
 <template>
-    <div class="flex gap-4 my-6 mx-4 max-w-6xl md:gap-8 xl:mx-auto">
+    <div class="my-6 mx-4 flex max-w-6xl gap-4 md:gap-8 xl:mx-auto">
         <VerticalTabs
             v-model="currentTab"
             :tabs="tabs"
@@ -7,7 +7,7 @@
             :route-name="ROUTE_NAME"
             class="sticky top-6"
         />
-        <div class="justify-center w-full">
+        <div class="w-full justify-center">
             <keep-alive>
                 <component
                     :is="currentComponent"

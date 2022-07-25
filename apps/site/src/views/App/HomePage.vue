@@ -1,23 +1,23 @@
 <template>
     <div>
-        <div class="relative h-content">
+        <div class="h-content relative">
             <Transition name="switch">
                 <div
                     v-if="!auth.agreedToTerms"
-                    class="flex absolute top-0 left-0 z-10 justify-center items-center w-full h-full"
+                    class="absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center"
                 >
                     <div
-                        class="flex flex-col gap-6 p-6 m-6 max-w-3xl max-h-[calc(100%-3rem)] rounded-xl bg-0 text-1"
+                        class="bg-0 text-1 m-6 flex max-h-[calc(100%-3rem)] max-w-3xl flex-col gap-6 rounded-xl p-6"
                     >
                         <div class="mb-4">
-                            <div class="text-3xl font-semibold text-center text-0">
+                            <div class="text-0 text-center text-3xl font-semibold">
                                 Bienvenue sur la bêta de Okampus !
                             </div>
                         </div>
                         <div class="text-xl">
                             Rejoignez le
                             <a
-                                class="mx-1 font-semibold underline link-blue"
+                                class="link-blue mx-1 font-semibold underline"
                                 href="https://discord.gg/RSgTfjGQpU"
                                 >Discord Okampus</a
                             >
@@ -39,7 +39,7 @@
                             la gestion des permissions sur la plateforme.
                         </div>
                         <div
-                            class="mt-4 min-w-[3rem] text-lg text-center select-none button-blue"
+                            class="button-blue mt-4 min-w-[3rem] select-none text-center text-lg"
                             :class="counting ? 'opacity-50' : ''"
                             :disabled="counting"
                             @click="agreeToTerms"
@@ -57,24 +57,24 @@
                 </div>
                 <div
                     v-else-if="!auth.loggedIn"
-                    class="flex absolute top-0 left-0 z-10 justify-center items-center w-full h-full"
+                    class="absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center"
                 >
                     <AppLogin class="absolute z-10 w-[80vw] opacity-90 md:w-[60vw] lg:w-[40vw]">
-                        <div class="flex flex-col items-center -mt-12 w-full">
+                        <div class="-mt-12 flex w-full flex-col items-center">
                             <div
-                                class="flex justify-center py-3 w-10/12 bg-indigo-700 rounded-xl opacity-100"
+                                class="flex w-10/12 justify-center rounded-xl bg-indigo-700 py-3 opacity-100"
                             >
                                 <AppLogo :scale="1.6" only="dark" />
                             </div>
-                            <div class="mt-8 text-2xl text-center">
+                            <div class="mt-8 text-center text-2xl">
                                 Connectez-vous pour accéder aux espaces 🔒
                             </div>
                         </div>
                     </AppLogin>
                 </div>
-                <div v-else class="flex absolute top-0 left-0 z-10 justify-center items-center w-full h-full">
+                <div v-else class="absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center">
                     <div
-                        class="flex z-10 flex-col gap-4 p-4 min-w-[20rem] rounded-xl text-0 bg-opacity/80 bg-2"
+                        class="text-0 bg-opacity/80 bg-2 z-10 flex min-w-[20rem] flex-col gap-4 rounded-xl p-4"
                     >
                         <div class="text-3xl">
                             {{
@@ -85,9 +85,9 @@
                             {{ auth.user.firstname.split(' ')[0] }} !
                         </div>
                         <router-link
-                            class="text-2xl text-blue-600 dark:text-blue-400 hover-arrow-right"
+                            class="hover-arrow-right text-2xl text-blue-600 dark:text-blue-400"
                             to="/clubs"
-                            >Voir les associations<i class="ml-2 fa fa-arrow-right"
+                            >Voir les associations<i class="fa fa-arrow-right ml-2"
                         /></router-link>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
         </div>
         <Particles
             id="tsparticles"
-            class="absolute top-0 w-full h-content"
+            class="h-content absolute top-0 w-full"
             :options="{
                 background: {
                     color: '#013',

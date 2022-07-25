@@ -14,7 +14,7 @@
                     @dismiss="dismissToast"
                 >
                     <div
-                        class="absolute top-0 left-0 w-full h-1"
+                        class="absolute top-0 left-0 h-1 w-full"
                         :class="[duration > 0 ? 'progress-bar' : '']"
                         :style="{ '--progress-bar-duration': duration }"
                     />

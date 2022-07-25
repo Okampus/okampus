@@ -3,15 +3,15 @@
         <slot />
 
         <template #content="{ close }">
-            <div class="flex flex-col p-2 card" @mouseleave="close">
+            <div class="card flex flex-col p-2" @mouseleave="close">
                 <div
                     v-for="(button, _, i) in buttons"
                     :key="i"
-                    class="group flex gap-2 items-center py-2 px-4 text-center rounded-xl cursor-pointer select-none"
+                    class="group flex cursor-pointer select-none items-center gap-2 rounded-xl py-2 px-4 text-center"
                     :class="button.class"
                     @click="button.action()"
                 >
-                    <i class="w-[1.2rem] fas" :class="`fa-${button.icon ?? 'square'}`" />
+                    <i class="fas w-[1.2rem]" :class="`fa-${button.icon ?? 'square'}`" />
                     <div>
                         {{ button.name?.value ?? button.name }}
                     </div>

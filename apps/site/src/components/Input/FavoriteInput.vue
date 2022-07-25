@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-col gap-1 items-center text-lg cursor-pointer"
+        class="flex cursor-pointer flex-col items-center gap-1 text-lg"
         @click="favoriteContent({ id: content.id, favorite: !content.interactions.userFavorited })"
     >
         <i
@@ -8,7 +8,7 @@
                 content?.interactions?.userFavorited ? 'text-yellow-400 fas' : 'text-4 far'
             } fa-star hover:text-yellow-600`"
         />
-        <div v-if="showNumber" class="text-xs text-3">{{ content.favoriteCount }}</div>
+        <div v-if="showNumber" class="text-3 text-xs">{{ content.favoriteCount }}</div>
     </div>
 </template>
 

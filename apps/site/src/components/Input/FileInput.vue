@@ -1,22 +1,22 @@
 <template>
     <div>
         <div
-            class="relative p-2 w-full h-full input"
+            class="input relative h-full w-full p-2"
             @drop.prevent="addFileByDrop"
             @dragover.prevent="dragover = true"
             @dragleave.prevent="dragover = false"
         >
-            <div class="w-full h-full">
+            <div class="h-full w-full">
                 <div
                     v-if="modelValue.length == 0"
                     :class="{ 'outline-2': dragover }"
-                    class="flex flex-col justify-center items-center h-full rounded hover:outline-2 outline-blue-500 dark:outline-blue-700 hover:outline-dashed cursor-pointer"
+                    class="flex h-full cursor-pointer flex-col items-center justify-center rounded outline-blue-500 hover:outline-dashed hover:outline-2 dark:outline-blue-700"
                     tabindex="0"
                     @keydown.enter="$refs.inputFile.click()"
                     @click="$refs.inputFile.click()"
                 >
                     <i
-                        class="text-xl fas"
+                        class="fas text-xl"
                         :class="dragover ? 'fa-cloud-download-alt' : 'fa-cloud-upload-alt'"
                     />
                     <div v-if="!message.length" class="text-center">
@@ -27,16 +27,16 @@
                 </div>
                 <div
                     v-else
-                    class="grid overflow-y-scroll auto-rows-[100%] gap-2 w-full h-full"
+                    class="grid h-full w-full auto-rows-[100%] gap-2 overflow-y-scroll"
                     :class="[fileLimit != 1 ? 'grid-cols-2 md:grid-cols-4 lg:grid-cols-6' : 'grid-cols-1']"
                 >
                     <div
                         v-for="(file, index) in modelValue"
                         :key="index"
-                        class="w-full rounded shadow-md text-1 bg-1"
+                        class="text-1 bg-1 w-full rounded shadow-md"
                     >
                         <div
-                            class="flex flex-col gap-2 justify-center items-center p-2 w-full h-19/24 border-b border-color-0"
+                            class="border-color-0 flex h-19/24 w-full flex-col items-center justify-center gap-2 border-b p-2"
                         >
                             <img
                                 v-if="imgPreview && RegExp('^image/(.)+').test(file.type)"
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex justify-between items-center p-2 w-full h-5/24">
+                        <div class="flex h-5/24 w-full items-center justify-between p-2">
                             {{ formatBytes(file.size, 0) }}
                             <div class="flex gap-2">
                                 <button
@@ -58,21 +58,21 @@
                                     title="Télécharger le fichier"
                                     @click.prevent="downloadFile(file)"
                                 >
-                                    <i class="text-blue-500 fa-solid fa-download"></i>
+                                    <i class="fa-solid fa-download text-blue-500"></i>
                                 </button>
                                 <button
                                     v-if="canDelete === true"
                                     title="Enlever le fichier"
                                     @click.prevent="removeFile(file)"
                                 >
-                                    <i class="text-red-500 fas fa-times" />
+                                    <i class="fas fa-times text-red-500" />
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div
                         v-if="modelValue.length != fileLimit"
-                        class="flex flex-col justify-center items-center p-4 w-full h-full text-center text-gray-500 rounded border-2 border-gray-300 dark:border-gray-500 border-dashed cursor-pointer text-2"
+                        class="text-2 flex h-full w-full cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-gray-300 p-4 text-center text-gray-500 dark:border-gray-500"
                         tabindex="0"
                         @click="$refs.inputFile.click()"
                         @keydown.enter="$refs.inputFile.click()"

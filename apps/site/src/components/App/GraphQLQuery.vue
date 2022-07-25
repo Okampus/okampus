@@ -7,7 +7,7 @@
 
             <slot v-else-if="data && (!Array.isArray(data) || data?.length > 0)" :data="data" />
 
-            <div v-else-if="resource" class="text-center text-0">
+            <div v-else-if="resource" class="text-0 text-center">
                 <EmojiSad class="my-3 text-3xl" />
                 <div class="text-2xl font-bold">
                     Aucun{{ resource.frFeminine ? 'e' : '' }} {{ resource.name.fr }} ne correspond à ces

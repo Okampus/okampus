@@ -10,9 +10,9 @@
         "
     >
         <template #default="{ close }">
-            <div class="flex flex-col justify-center items-center py-8 px-10 card">
+            <div class="card flex flex-col items-center justify-center py-8 px-10">
                 <div class="text-2xl font-semibold">Vous vous apprêtez à rejoindre {{ club.name }} !</div>
-                <div class="text-sm text-2">Formulaire d'adhésion de {{ club.name }}.</div>
+                <div class="text-2 text-sm">Formulaire d'adhésion de {{ club.name }}.</div>
                 <FormKit
                     id="join-club"
                     ref="joinForm"
@@ -58,10 +58,10 @@
 
                 <FormKitRenderer :schema="club?.membershipRequestForm?.form ?? []" />
 
-                <div class="flex gap-4 self-end mt-6">
+                <div class="mt-6 flex gap-4 self-end">
                     <button class="button-red" @click="close">Annuler</button>
-                    <button class="flex gap-2 items-center button-blue" @click="joinForm.node.submit()">
-                        <i class="text-lg fa fa-envelope" />
+                    <button class="button-blue flex items-center gap-2" @click="joinForm.node.submit()">
+                        <i class="fa fa-envelope text-lg" />
                         <div>Envoyer ma demande</div>
                     </button>
                 </div>

@@ -1,14 +1,14 @@
 <template>
     <div class="mt-16">
-        <div class="py-2 mx-auto card">
+        <div class="card mx-auto py-2">
             <div class="flex justify-between">
                 <div class="flex gap-2">
                     <img
                         src="https://cdn.discordapp.com/attachments/849667496184381480/933296458487173190/logo_crous.png"
                         alt="logo Crous"
-                        class="my-auto w-12 h-12"
+                        class="my-auto h-12 w-12"
                     />
-                    <div class="my-auto text-lg font-bold whitespace-nowrap">Aujourd'hui :</div>
+                    <div class="my-auto whitespace-nowrap text-lg font-bold">Aujourd'hui :</div>
                     <div class="my-auto">
                         {{ joinedPlats() }}
                     </div>

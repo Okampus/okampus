@@ -1,7 +1,7 @@
 <template>
-    <div class="flex relative items-center">
+    <div class="relative flex items-center">
         <input
-            class="peer pl-[3rem] w-full h-[3rem] focus:text-0-light dark:focus:text-0-dark input text-3"
+            class="peer input text-3 h-[3rem] w-full pl-[3rem] focus:text-0-light dark:focus:text-0-dark"
             :name="inputName"
             :required="inputRequired"
             :type="inputType"
@@ -9,14 +9,14 @@
             :value="modelValue"
             @input="emit('update:modelValue', $event.target.value)"
         />
-        <i class="flex absolute left-0 justify-center items-center w-[3rem] h-[3rem] text-2">
+        <i class="text-2 absolute left-0 flex h-[3rem] w-[3rem] items-center justify-center">
             <slot />
         </i>
     </div>
 </template>
 
 <script setup>
-    import { NOOP } from '@vue/shared'
+    import { NOOP } from 'vue'
 
     defineProps({
         inputName: {

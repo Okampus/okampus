@@ -44,7 +44,6 @@ const mobileCheck = function () {
 
 app.config.globalProperties.isMobile = mobileCheck()
 app.provide('isMobile', mobileCheck)
-app.config.globalProperties.noop = () => {}
 app.config.globalProperties.emptyObj = () => ({})
 app.config.globalProperties.emptyList = () => []
 

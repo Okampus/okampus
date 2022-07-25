@@ -1,12 +1,12 @@
 <template>
     <div
         :id="`comment-${comment.id}`"
-        class="flex items-center py-1.5 px-2.5 w-full text-sm rounded text-1 bg-1"
+        class="text-1 bg-1 flex w-full items-center rounded py-1.5 px-2.5 text-sm"
         :class="{ 'highlight-active': active }"
         @animationend="emit('update:active', false)"
     >
         <div
-            class="flex shrink-0 gap-1 items-center cursor-pointer text-5"
+            class="text-5 flex shrink-0 cursor-pointer items-center gap-1"
             @click="voteContent({ id: comment.id, value: comment.interactions.userVoted === 1 ? 0 : 1 })"
         >
             <IconUpvote
@@ -14,11 +14,11 @@
                 :width="0.8"
                 :class="comment.interactions.userVoted === 1 ? 'fill-green-500' : 'fill-gray-500'"
             />
-            <div class="w-[1rem] text-xs text-center text-3">{{ comment.upvoteCount }}</div>
+            <div class="text-3 w-[1rem] text-center text-xs">{{ comment.upvoteCount }}</div>
         </div>
 
         <div
-            class="flex shrink-0 gap-1 items-center ml-2 w-[3rem] cursor-pointer text-5"
+            class="text-5 ml-2 flex w-[3rem] shrink-0 cursor-pointer items-center gap-1"
             @click="favoriteContent({ id: comment.id, favorite: !comment.interactions.userFavorited })"
         >
             <i
@@ -26,22 +26,22 @@
                     comment.interactions?.userFavorited ? 'text-yellow-400 fas' : 'text-4 far'
                 } fa-star hover:text-yellow-600`"
             />
-            <div class="w-[1rem] text-xs text-center text-3">{{ comment.favoriteCount }}</div>
+            <div class="text-3 w-[1rem] text-center text-xs">{{ comment.favoriteCount }}</div>
         </div>
 
         <div class="w-[calc(100%-2.5rem)]">
-            <span class="flex flex-wrap items-center w-full">
+            <span class="flex w-full flex-wrap items-center">
                 <MdEditableRender
                     v-model:edit="editing"
                     :content="comment.body"
-                    class="p-0 mr-1.5"
+                    class="mr-1.5 p-0"
                     :class="[!editing ? 'render-inline' : 'w-full']"
                     v-bind="editorConfig"
                     :uid="`comment-${thread.id}-${comment.id}`"
                     @send="updateContent({ id: comment.id, content: { body } })"
                 />
-                <span v-if="!editing" class="inline-flex gap-2 items-center ml-3 tracking-tight">
-                    <router-link :to="`/user/${comment.author.id}`" class="flex gap-1.5 items-center">
+                <span v-if="!editing" class="ml-3 inline-flex items-center gap-2 tracking-tight">
+                    <router-link :to="`/user/${comment.author.id}`" class="flex items-center gap-1.5">
                         <ProfileAvatar
                             :size="1.5"
                             :avatar="comment.author.avatar"
@@ -62,12 +62,12 @@
                         :modified-at="comment.lastEdit.createdAt"
                         class="text-4"
                     />
-                    <span class="inline-flex gap-10 items-center">
+                    <span class="inline-flex items-center gap-10">
                         <div class="flex items-center">
                             <div
                                 v-for="(action, i) in actionsShown"
                                 :key="i"
-                                class="group py-1 px-2 text-sm rounded-lg cursor-pointer text-5"
+                                class="group text-5 cursor-pointer rounded-lg py-1 px-2 text-sm"
                                 @click="action.action"
                             >
                                 <Popper :hover="true" placement="top" :arrow="true" offset-distance="3">
@@ -77,16 +77,16 @@
                                     </template>
                                 </Popper>
                             </div>
-                            <div class="text-sm rounded-lg cursor-pointer comment-ellipsis-dropdown text-5">
+                            <div class="comment-ellipsis-dropdown text-5 cursor-pointer rounded-lg text-sm">
                                 <ModalDropdown :buttons="hiddenActionsShown">
-                                    <i class="py-1 px-2 fas fa-ellipsis-h comment-ellipsis-dropdown-icon" />
+                                    <i class="fas fa-ellipsis-h comment-ellipsis-dropdown-icon py-1 px-2" />
                                 </ModalDropdown>
                             </div>
                         </div>
                     </span>
                 </span>
 
-                <div v-if="!comment.isVisible" class="flex gap-1 items-center ml-2 text-yellow-500">
+                <div v-if="!comment.isVisible" class="ml-2 flex items-center gap-1 text-yellow-500">
                     <i class="fas fa-eye-slash" />
                     <div>
                         {{ capitalize(getContentName(comment.kind)) }}

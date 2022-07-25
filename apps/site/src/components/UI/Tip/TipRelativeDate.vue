@@ -1,6 +1,6 @@
 <template>
     <TipPopper :tip="dateString">
-        <span class="flex items-center cursor-default" :class="textClass">
+        <span class="flex cursor-default items-center" :class="textClass">
             {{ timeAgo(date, 'long', limit) }}
         </span>
     </TipPopper>

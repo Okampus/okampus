@@ -1,21 +1,21 @@
 <template>
     <div
-        class="flex flex-col shrink-0 p-2 h-fit rounded shadow-md bg-2 text-2"
+        class="bg-2 text-2 flex h-fit shrink-0 flex-col rounded p-2 shadow-md"
         :class="isMultiTab ? 'py-4' : 'gap-2'"
     >
         <template v-for="(tabParent, i) in tabs" :key="i">
-            <div v-if="isMultiTab" class="flex flex-col grow-0">
-                <div class="mb-2 ml-3 text-xs font-bold uppercase text-5 title-font">
+            <div v-if="isMultiTab" class="flex grow-0 flex-col">
+                <div class="text-5 title-font mb-2 ml-3 text-xs font-bold uppercase">
                     {{ tabParent.title }}
                 </div>
                 <div
                     v-for="(tab, j) in tabParent.tabs"
                     :key="j"
-                    class="flex justify-between items-center px-2 mt-0.5 h-10 select-none tab"
+                    class="tab mt-0.5 flex h-10 select-none items-center justify-between px-2"
                     :class="tab.id === modelValue ? 'active' : 'text-1'"
                     @click="setTab(tab, true)"
                 >
-                    <div class="whitespace-nowrap title-font">{{ tab.name }}</div>
+                    <div class="title-font whitespace-nowrap">{{ tab.name }}</div>
                     <LabelSimple
                         v-if="tab.amount || tab.amount === 0"
                         class="ml-6 bg-gray-500/50 hover:bg-gray-500/50"
@@ -24,12 +24,12 @@
                 </div>
                 <hr
                     v-if="i !== tabs.length - 1"
-                    class="self-center mt-2 mb-4 w-11/12 h-[1px] bg-gray-500/20 border-none"
+                    class="mt-2 mb-4 h-[1px] w-11/12 self-center border-none bg-gray-500/20"
                 />
             </div>
             <div
                 v-else
-                class="flex justify-between items-center px-2 h-10 select-none tab"
+                class="tab flex h-10 select-none items-center justify-between px-2"
                 :class="tabParent.id === modelValue ? 'active' : ''"
                 @click="setTab(tabParent, true)"
             >

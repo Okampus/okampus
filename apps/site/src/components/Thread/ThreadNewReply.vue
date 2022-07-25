@@ -3,7 +3,7 @@
         <AlertInline
             v-if="post.children.length === 0"
             type="info"
-            class="mt-2 dark:!bg-blue-900 rounded-b-none"
+            class="mt-2 rounded-b-none dark:!bg-blue-900"
         >
             <!-- TODO: bonus for a first answer -->
             <template #title> Sois le premier à répondre à ce post ! </template>
@@ -13,10 +13,10 @@
                 </div>
             </template>
         </AlertInline>
-        <p v-else class="mt-2 ml-6 label-title">Répondre à ce post</p>
+        <p v-else class="label-title mt-2 ml-6">Répondre à ce post</p>
         <div
             id="new-reply"
-            class="flex flex-row p-4 text-lg bg-card-meta"
+            class="bg-card-meta flex flex-row p-4 text-lg"
             :class="
                 post.children.length === 0
                     ? 'border-2 border-blue-100 dark:border-blue-900 rounded-b-lg'
@@ -24,7 +24,7 @@
             "
         >
             <ProfileAvatar :avatar="auth.user?.avatar" :name="fullname(auth.user)" />
-            <div class="mt-2 ml-3 arrow-left bg-1" />
+            <div class="arrow-left bg-1 mt-2 ml-3" />
             <div class="block w-[calc(100%-6rem)]">
                 <MdEditor
                     ref="editor"

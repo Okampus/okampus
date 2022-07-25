@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-4 rounded md:rounded-lg card bg-content">
+    <div class="card bg-content flex flex-col gap-4 rounded md:rounded-lg">
         <slot />
     </div>
 </template>

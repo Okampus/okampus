@@ -9,7 +9,7 @@
         />
         <FormLogin v-model:show-login="showLogin" />
 
-        <div class="flex flex-row w-screen h-screen z-1">
+        <div class="z-1 flex h-screen w-screen flex-row">
             <LayoutSidebar
                 ref="sidebar"
                 :uncollapsed="collapsed"
@@ -21,11 +21,11 @@
             <div
                 ref="content"
                 :class="{ 'brightness-50': hiding && collapsing != collapsed }"
-                class="flex overflow-auto relative flex-col w-full bg-1 h-content after-topbar app-scrollbar"
+                class="bg-1 h-content after-topbar app-scrollbar relative flex w-full flex-col overflow-auto"
                 @mousedown="hiding && collapsed !== collapsing && toggleSidebar()"
             >
                 <div
-                    class="flex-auto shrink-0 grow-1"
+                    class="grow-1 flex-auto shrink-0"
                     :class="{ 'pointer-events-none': hiding && collapsing != collapsed }"
                 >
                     <AppException v-if="error.code" :code="error.code" />

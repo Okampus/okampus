@@ -21,7 +21,7 @@
                             >Nom du document<span class="text-red-500">*</span>
                             <input
                                 v-model="stepsModel[0].docName"
-                                class="w-full input"
+                                class="input w-full"
                                 :class="{ 'ring-2 ring-red-500': v$.stepsModel[0].docName.$error }"
                                 type="text"
                                 placeholder="Nom du document"
@@ -48,7 +48,7 @@
                             <textarea
                                 v-model="stepsModel[0].docDescription"
                                 placeholder="Description du document"
-                                class="w-full leading-tight focus:outline-none input focus:shadow-outline"
+                                class="input focus:shadow-outline w-full leading-tight focus:outline-none"
                                 type="text"
                                 rows="5"
                             />
@@ -60,7 +60,7 @@
                             v-model="stepsModel[0].files"
                             :img-preview="true"
                             :file-limit="-1"
-                            class="mt-4 w-full h-52 rounded"
+                            class="mt-4 h-52 w-full rounded"
                             :class="{ 'ring-2 ring-red-500': v$.stepsModel[0].files.$error }"
                             :size-limit="2097152"
                             :regex-mimes="[
@@ -111,7 +111,7 @@
                                 :class="{ 'ring-2 ring-red-500': v$.stepsModel[1].docYear.$error }"
                                 type="number"
                                 placeholder="2025"
-                                class="w-full input"
+                                class="input w-full"
                             />
                         </label>
                         <div v-if="v$.stepsModel[1].docYear.$error" class="flex flex-col">
@@ -146,35 +146,35 @@
                                 >
                                     <template #inputComponent="slotValue">
                                         <div
-                                            class="flex grow gap-2 justify-between items-center p-2 rounded-lg"
+                                            class="flex grow items-center justify-between gap-2 rounded-lg p-2"
                                         >
-                                            <div class="flex gap-2 items-center text-1">
+                                            <div class="text-1 flex items-center gap-2">
                                                 <i
-                                                    class="text-lg fas"
+                                                    class="fas text-lg"
                                                     :class="`fa-${iconList(slotValue.item.code)}`"
                                                 />
                                                 <div>
                                                     {{ subjectYear[slotValue.item.schoolYear] }}
                                                     {{ slotValue.item.name }}
                                                 </div>
-                                                <div class="text-xs text-2">
+                                                <div class="text-2 text-xs">
                                                     {{ slotValue.item.code }}
                                                 </div>
                                             </div>
                                             <i
-                                                class="text-red-500 cursor-pointer fas fa-times"
+                                                class="fas fa-times cursor-pointer text-red-500"
                                                 @click="slotValue.deleteItem(slotValue.item)"
                                             />
                                         </div>
                                     </template>
                                     <template #default="slotValue">
                                         <div
-                                            class="flex overflow-y-scroll flex-col w-full max-h-24 app-scrollbar"
+                                            class="app-scrollbar flex max-h-24 w-full flex-col overflow-y-scroll"
                                         >
                                             <div
                                                 v-for="(item, i) in slotValue.items"
                                                 :key="i"
-                                                class="flex gap-2 items-center p-1 focus:bg-blue-100 focus:dark:bg-blue-500 rounded"
+                                                class="flex items-center gap-2 rounded p-1 focus:bg-blue-100 focus:dark:bg-blue-500"
                                                 tabindex="0"
                                                 @click="
                                                     slotValue.addItem({
@@ -184,12 +184,12 @@
                                                     })
                                                 "
                                             >
-                                                <i class="text-lg fas" :class="`fa-${iconList(item.code)}`" />
+                                                <i class="fas text-lg" :class="`fa-${iconList(item.code)}`" />
                                                 <div>
                                                     {{ subjectYear[item.schoolYear] }}
                                                     {{ item.name }}
                                                 </div>
-                                                <div class="text-xs text-2">
+                                                <div class="text-2 text-xs">
                                                     {{ item.code }}
                                                 </div>
                                             </div>
@@ -322,7 +322,7 @@
                 <section class="flex flex-col gap-4">
                     <div>
                         <p>Disclaimer:</p>
-                        <ul class="list-disc list-inside">
+                        <ul class="list-inside list-disc">
                             <li>Si vous uploadez un fichier, il sera public et accessible par tous</li>
                             <li>
                                 Si vous souhaitez que des informations soient floutées, corrigées ou
@@ -332,7 +332,7 @@
                             </li>
                         </ul>
                     </div>
-                    <label class="flex gap-2 items-center">
+                    <label class="flex items-center gap-2">
                         <input
                             v-model="stepsModel[2].acceptCondition"
                             name="radioFile"

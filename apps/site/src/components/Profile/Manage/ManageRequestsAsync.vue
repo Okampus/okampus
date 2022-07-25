@@ -1,5 +1,5 @@
 <template>
-    <div class="divide-y divide-gray-500/40 card-2 text-0">
+    <div class="card-2 text-0 divide-y divide-gray-500/40">
         <ModalPopup
             :show="showRequestForm"
             @close="showRequestForm = false"
@@ -11,7 +11,7 @@
             "
         >
             <template #default="{ close }">
-                <div class="flex flex-col card">
+                <div class="card flex flex-col">
                     <template v-if="!refusing">
                         <div class="mb-6 text-2xl">
                             Formulaire d'adhésion de {{ fullname(shownRequest?.user) }}
@@ -19,7 +19,7 @@
                         <div class="flex flex-col gap-4">
                             <div>
                                 <div class="text-base text-gray-400/80">Rôle souhaité</div>
-                                <div class="text-xl text-0">
+                                <div class="text-0 text-xl">
                                     {{ clubRoleNames[shownRequest?.role ?? '']?.[$i18n.locale] ?? '' }}
                                 </div>
                             </div>
@@ -28,13 +28,13 @@
                                 :key="field"
                             >
                                 <div class="text-base text-gray-400/80">{{ capitalize(field) }}</div>
-                                <div class="text-xl text-0">{{ value }}</div>
+                                <div class="text-0 text-xl">{{ value }}</div>
                             </div>
                             <div>
                                 <div class="text-base text-gray-400/80">
                                     <div>Statut</div>
                                     <div
-                                        class="text-xl text-0"
+                                        class="text-0 text-xl"
                                         :class="{
                                             '!text-green-500': shownRequest?.state === APPROVED,
                                             '!text-red-500': shownRequest?.state === REJECTED,
@@ -48,20 +48,20 @@
                             <div v-if="shownRequest?.state === REJECTED" class="flex flex-col">
                                 <div class="text-lg text-gray-400/80">Raison du refus</div>
                                 <div
-                                    class="text-2xl text-0"
+                                    class="text-0 text-2xl"
                                     :class="!shownRequest.handledMessage ? 'italic' : ''"
                                 >
                                     {{ shownRequest.handledMessage || 'Pas de raison donnée.' }}
                                 </div>
                             </div>
                         </div>
-                        <div v-if="shownRequest?.state === PENDING" class="flex gap-4 self-end mt-6">
-                            <div class="flex gap-2 items-center button-red" @click="refusing = true">
+                        <div v-if="shownRequest?.state === PENDING" class="mt-6 flex gap-4 self-end">
+                            <div class="button-red flex items-center gap-2" @click="refusing = true">
                                 <i class="fa fa-xmark" />
                                 <div>Refuser</div>
                             </div>
                             <div
-                                class="flex gap-2 items-center button-blue"
+                                class="button-blue flex items-center gap-2"
                                 @click="
                                     () => {
                                         approve()
@@ -73,7 +73,7 @@
                                 <div>Accepter</div>
                             </div>
                         </div>
-                        <div v-else class="self-center mt-10 button-blue" @click="close">Fermer</div>
+                        <div v-else class="button-blue mt-10 self-center" @click="close">Fermer</div>
                     </template>
                     <template v-else>
                         <div class="mb-6 text-2xl">
@@ -82,7 +82,7 @@
                         <div class="flex flex-col gap-4">
                             <div class="flex flex-col">
                                 <div class="text-base text-gray-400/80">Rôle souhaité</div>
-                                <div class="text-xl text-0">
+                                <div class="text-0 text-xl">
                                     {{ clubRoleNames[shownRequest?.role ?? '']?.[$i18n.locale] ?? '' }}
                                 </div>
                             </div>
@@ -92,7 +92,7 @@
                                 class="flex flex-col"
                             >
                                 <div class="text-base text-gray-400/80">{{ capitalize(field) }}</div>
-                                <div class="text-xl text-0">{{ value }}</div>
+                                <div class="text-0 text-xl">{{ value }}</div>
                             </div>
                         </div>
                         <div class="mt-4">
@@ -104,7 +104,7 @@
                                 label="Raison du refus"
                             />
                         </div>
-                        <div class="flex gap-4 self-end mt-8">
+                        <div class="mt-8 flex gap-4 self-end">
                             <div class="button-grey" @click="refusing = false">Annuler</div>
                             <div
                                 class="button-red"
@@ -126,9 +126,9 @@
             <div
                 v-for="request in requests"
                 :key="request.teamMembershipRequestId"
-                class="flex justify-between items-center py-2"
+                class="flex items-center justify-between py-2"
             >
-                <div class="flex gap-4 items-center">
+                <div class="flex items-center gap-4">
                     <ProfileAvatar :avatar="request.user.avatar" :name="fullname(request.user)" :size="3.5" />
                     <div class="flex flex-col">
                         <div class="flex gap-1.5">
@@ -165,7 +165,7 @@
                 </div>
 
                 <div
-                    class="flex gap-2 justify-center items-center py-1 px-3 w-36 text-white rounded-xl cursor-pointer"
+                    class="flex w-36 cursor-pointer items-center justify-center gap-2 rounded-xl py-1 px-3 text-white"
                     :class="{
                         'bg-green-500 hover:bg-green-600': request.state === APPROVED,
                         'bg-red-500 hover:bg-red-600': request.state === REJECTED,
@@ -194,12 +194,12 @@
             </div>
         </template>
 
-        <div v-else class="flex flex-col gap-6 items-center pb-4 text-0">
-            <img class="w-40 h-40" :src="Megaphone" />
+        <div v-else class="text-0 flex flex-col items-center gap-6 pb-4">
+            <img class="h-40 w-40" :src="Megaphone" />
 
             <div class="text-center">
                 <div class="text-3xl font-semibold">Aucune demande d'adhésion pour le moment</div>
-                <div class="text-xl text-2">
+                <div class="text-2 text-xl">
                     Invitez des amis à rejoindre {{ club.name }} depuis votre page !
                 </div>
             </div>

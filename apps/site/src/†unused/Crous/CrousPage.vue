@@ -1,9 +1,9 @@
 <template>
-    <div class="flex gap-4 mx-auto">
+    <div class="mx-auto flex gap-4">
         <div class="flex flex-col gap-4">
-            <div class="flex flex-col gap-4 card">
-                <div class="flex items-center w-full">
-                    <img class="w-16 h-16" :src="crousLogo" />
+            <div class="card flex flex-col gap-4">
+                <div class="flex w-full items-center">
+                    <img class="h-16 w-16" :src="crousLogo" />
                     <h3 class="ml-4 text-xl font-bold">Menu du Crous</h3>
                 </div>
                 <template v-if="!isEmpty(dishes)">
@@ -19,16 +19,16 @@
                 </template>
             </div>
 
-            <div class="flex flex-col gap-4 card">
-                <div class="flex items-center w-full">
-                    <img class="w-16 h-16" :src="crousLogo" />
+            <div class="card flex flex-col gap-4">
+                <div class="flex w-full items-center">
+                    <img class="h-16 w-16" :src="crousLogo" />
                     <h3 class="ml-4 text-xl font-bold">Formules et Tarifs</h3>
                 </div>
                 <img class="w-full" :src="crousMenu" />
             </div>
         </div>
 
-        <div class="flex flex-col gap-4 card">
+        <div class="card flex flex-col gap-4">
             <div class="">
                 <h3 class="text-xl font-bold">Horaires</h3>
                 <div>Du Lundi au Vendredi :</div>
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <div class="flex flex-col gap-4 card">
+        <div class="card flex flex-col gap-4">
             <h3 class="text-xl font-bold">Dernières informations</h3>
             <div v-if="dayCrous.info?.content">{{ dayCrous.info?.content }}</div>
             <div v-else>Pas d'informations pour ce jour !</div>

@@ -6,7 +6,7 @@
                     <div class="label-title">Titre</div>
                     <input
                         v-model="formState.title"
-                        class="w-full input"
+                        class="input w-full"
                         type="text"
                         name="title"
                         placeholder="Titre clair, descriptif et complet"
@@ -22,9 +22,9 @@
                     <div class="label-title">
                         Type de post
                         <Popper :hover="true" placement="right">
-                            <i class="ml-1 text-sm text-slate-400 fas fa-info-circle" />
+                            <i class="fas fa-info-circle ml-1 text-sm text-slate-400" />
                             <template #content>
-                                <div class="font-normal popover">
+                                <div class="popover font-normal">
                                     <ul>
                                         Types possibles:
                                         <li v-for="(type, i) in threadTypes" :key="i" class="text-blue-700">
@@ -71,9 +71,9 @@
                     <div class="label-title">
                         Tags
                         <Popper :hover="true">
-                            <i class="ml-1 text-sm text-slate-400 fas fa-info-circle" />
+                            <i class="fas fa-info-circle ml-1 text-sm text-slate-400" />
                             <template #content>
-                                <div class="max-w-sm font-normal popover">
+                                <div class="popover max-w-sm font-normal">
                                     Ajoute des tags décrivant le sujet de ton post <br />
                                     <div class="mt-1.5 text-sm">
                                         <span class="font-bold">NOTE :</span> pour des tags de plusieurs mots,
@@ -96,8 +96,8 @@
                         {{ tagsError || `Un post doit avoir au moins ${minTags} tags.` }}
                     </div>
                 </div>
-                <div class="flex gap-4 items-center h-12">
-                    <button class="shrink-0 button-green" @click="submit">Valider mon post</button>
+                <div class="flex h-12 items-center gap-4">
+                    <button class="button-green shrink-0" @click="submit">Valider mon post</button>
                 </div>
                 <!-- TODO: add second panel (dos and don'ts of a good post) -->
             </div>

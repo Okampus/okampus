@@ -1,7 +1,7 @@
 <template>
     <div
         :id="`content-${props.content.id}`"
-        class="flex gap-6 items-stretch p-4 rounded-none shadow-md md:rounded-lg bg-card-within-1 content-parent"
+        class="bg-card-within-1 content-parent flex items-stretch gap-6 rounded-none p-4 shadow-md md:rounded-lg"
         :class="
             adminValidated ? 'border-2 border-orange-600' : opValidated ? 'border-2 border-green-600' : ''
         "
@@ -11,8 +11,8 @@
             <FavoriteInput :content="content" />
         </div>
 
-        <div class="flex flex-col gap-4 w-full">
-            <div v-if="!content.isVisible" class="flex gap-1 items-center ml-4 text-yellow-500">
+        <div class="flex w-full flex-col gap-4">
+            <div v-if="!content.isVisible" class="ml-4 flex items-center gap-1 text-yellow-500">
                 <i class="fas fa-eye-slash" />
                 <div>
                     {{ capitalize(getContentDemonstrative(content.kind)) }}
@@ -20,8 +20,8 @@
                 </div>
             </div>
 
-            <div class="flex flex-row justify-between items-center">
-                <div class="flex gap-3 items-center">
+            <div class="flex flex-row items-center justify-between">
+                <div class="flex items-center gap-3">
                     <UserActivity
                         :label-name="authorIsOp"
                         :user="content.author"
@@ -32,12 +32,12 @@
 
                     <!-- TODO: Add validations -->
                     <template v-if="content.kind !== POST">
-                        <i v-if="opValidated" class="text-base text-green-600 fa fa-check" />
+                        <i v-if="opValidated" class="fa fa-check text-base text-green-600" />
                         <LabelTag v-if="adminValidated" tag-name="Officiel" tag-color="orange" />
 
                         <i
                             v-else-if="auth.user.roles.includes('admin') || userIsOp"
-                            class="text-sm cursor-pointer fa text-5"
+                            class="fa text-5 cursor-pointer text-sm"
                             :class="auth.user.roles.includes('admin') ? 'fa-check-double' : 'fa-check'"
                             @click="
                                 validateContent({
@@ -49,11 +49,11 @@
                     </template>
                 </div>
 
-                <div class="flex gap-2 items-center opacity-50 text-3 content-show-focused">
+                <div class="text-3 content-show-focused flex items-center gap-2 opacity-50">
                     <div
                         v-for="(action, i) in topActionsShown"
                         :key="i"
-                        class="group flex gap-1 items-center px-1 rounded-lg transition cursor-pointer text-4"
+                        class="group text-4 flex cursor-pointer items-center gap-1 rounded-lg px-1 transition"
                         @click="action.action"
                     >
                         <i
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="rounded-lg text-0">
+            <div class="text-0 rounded-lg">
                 <MdEditableRender
                     v-model:edit="editing"
                     v-model:content="body"
@@ -79,11 +79,11 @@
                 />
             </div>
 
-            <div class="flex gap-2 opacity-70 content-show-focused">
+            <div class="content-show-focused flex gap-2 opacity-70">
                 <div
                     v-for="(action, i) in bottomActionsShown"
                     :key="i"
-                    class="group flex gap-1.5 items-center px-1 rounded-lg transition cursor-pointer text-3"
+                    class="group text-3 flex cursor-pointer items-center gap-1.5 rounded-lg px-1 transition"
                     @click="action.action"
                 >
                     <i :class="[action.icon, action.class]" />

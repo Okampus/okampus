@@ -1,35 +1,35 @@
 <template>
-    <div v-if="article === null" class="my-5 mx-auto w-full max-w-screen-md card">
+    <div v-if="article === null" class="card my-5 mx-auto w-full max-w-screen-md">
         Cet article n'existe pas !
     </div>
-    <div v-else class="flex flex-col gap-6 my-5 mx-auto w-full max-w-screen-md">
+    <div v-else class="my-5 mx-auto flex w-full max-w-screen-md flex-col gap-6">
         <!-- ARTICLE -->
-        <div class="flex flex-col gap-8 pb-8 card">
+        <div class="card flex flex-col gap-8 pb-8">
             <!-- HEADER -->
             <div class="flex flex-col gap-4">
                 <!-- THUMBNAIL -->
-                <img :src="thumbnail" class="object-cover z-0 rounded-lg" />
-                <div class="flex flex-col gap-1 mx-4">
+                <img :src="thumbnail" class="z-0 rounded-lg object-cover" />
+                <div class="mx-4 flex flex-col gap-1">
                     <!-- TITLE -->
-                    <div class="text-4xl font-bold text-justify text-0">
+                    <div class="text-0 text-justify text-4xl font-bold">
                         {{ article.title }}
                     </div>
 
-                    <span class="flex items-center text-base text-0">
-                        <div class="flex gap-2 items-end">
-                            <div class="text-base text-2">par</div>
-                            <a class="mr-12 text-xl link" href="#author">{{ article.author.fullname }}</a>
+                    <span class="text-0 flex items-center text-base">
+                        <div class="flex items-end gap-2">
+                            <div class="text-2 text-base">par</div>
+                            <a class="link mr-12 text-xl" href="#author">{{ article.author.fullname }}</a>
                         </div>
-                        <div class="flex gap-4 items-center">
-                            <div class="flex gap-2 items-center text-1">
+                        <div class="flex items-center gap-4">
+                            <div class="text-1 flex items-center gap-2">
                                 <i class="fas fa-comment" />
                                 <a class="hover:underline" href="#comments"> 3 comments</a>
                             </div>
-                            <div class="flex gap-2 items-center text-base text-1">
+                            <div class="text-1 flex items-center gap-2 text-base">
                                 <i class="fas fa-hourglass" />
                                 <TipRelativeDate :date="article.date" />
                             </div>
-                            <div class="flex gap-2 items-center text-2">
+                            <div class="text-2 flex items-center gap-2">
                                 <i class="fas fa-stopwatch" />
                                 <p>Lecture en {{ readingTime }} min</p>
                             </div>
@@ -39,13 +39,13 @@
 
                 <!-- TAGS -->
                 <div v-if="article.tags.length > 0" class="flex items-center text-base">
-                    <div class="flex gap-2 items-center mr-4 text-lg text-0">
+                    <div class="text-0 mr-4 flex items-center gap-2 text-lg">
                         <i class="fas fa-tags" />
                         <p class="text-base">{{ article.tags.length }} Tags</p>
                     </div>
 
                     <div class="flex gap-1">
-                        <span v-for="tag in article.tags" :key="tag.id" class="text-base text-2">
+                        <span v-for="tag in article.tags" :key="tag.id" class="text-2 text-base">
                             <LabelTag :tag-name="tag" />
                         </span>
                     </div>
@@ -53,22 +53,22 @@
             </div>
 
             <!-- SHARE -->
-            <div class="flex gap-3 items-center mx-auto text-0">
+            <div class="text-0 mx-auto flex items-center gap-3">
                 <p class="text-xl underline">Partage cet article</p>
-                <a class="flex gap-2 items-center py-1 px-3 text-white bg-orange-600 rounded-md raised">
+                <a class="raised flex items-center gap-2 rounded-md bg-orange-600 py-1 px-3 text-white">
                     <i class="fab fa-reddit" />
                     <p>Reddit</p>
                 </a>
-                <a class="flex gap-2 items-center py-1 px-3 text-white bg-slate-800 rounded-md raised">
+                <a class="raised flex items-center gap-2 rounded-md bg-slate-800 py-1 px-3 text-white">
                     <i class="fab fa-discord" />
                     <p>Discord</p>
                 </a>
-                <a class="flex gap-2 items-center py-1 px-3 text-white bg-blue-900 rounded-md raised">
+                <a class="raised flex items-center gap-2 rounded-md bg-blue-900 py-1 px-3 text-white">
                     <i class="fab fa-facebook" />
                     <p>Facebook</p>
                 </a>
                 <a
-                    class="flex gap-2 items-center py-1 px-3 text-white rounded-md bg-2 raised"
+                    class="bg-2 raised flex items-center gap-2 rounded-md py-1 px-3 text-white"
                     style="background-color: #0e76a8"
                 >
                     <i class="fab fa-linkedin" />
@@ -77,16 +77,16 @@
             </div>
 
             <!-- TABLE OF CONTENTS -->
-            <div class="py-4 px-8 mx-8 rounded text-5 bg-3">
-                <div class="text-2xl font-bold text-3">Table des Matières</div>
+            <div class="text-5 bg-3 mx-8 rounded py-4 px-8">
+                <div class="text-3 text-2xl font-bold">Table des Matières</div>
                 <ul
                     v-for="(title, i) in article.toc"
                     :key="i"
-                    class="ml-3 text-3xl list-[square] list-inside"
+                    class="ml-3 list-inside list-[square] text-3xl"
                 >
-                    <li class="mt-1 text-lg font-bold text-1">
+                    <li class="text-1 mt-1 text-lg font-bold">
                         <a :href="`#${title.href}`">{{ title.title }}</a>
-                        <ul v-if="title.subtitles?.length" class="font-normal list-disc list-inside">
+                        <ul v-if="title.subtitles?.length" class="list-inside list-disc font-normal">
                             <li v-for="(subtitle, j) in title.subtitles" :key="j" class="ml-10 text-base">
                                 <a :href="`#${subtitle.href}`" class="link text-2">{{ subtitle.title }}</a>
                             </li>
@@ -96,7 +96,7 @@
             </div>
 
             <!-- CONTENT -->
-            <div class="flex flex-col gap-6 mx-3 text-justify">
+            <div class="mx-3 flex flex-col gap-6 text-justify">
                 <MdRenderer ref="renderer" :content="article.body" />
                 <!-- <p>
                     In many situations, you’ll need to find the number of items stored in a data structure.
@@ -141,12 +141,12 @@
         </div>
 
         <!-- AUTHOR ABSTRACT -->
-        <div class="pt-2 card">
-            <span class="flex gap-10 items-center p-2 space-x-3 border-b-1">
+        <div class="card pt-2">
+            <span class="border-b-1 flex items-center gap-10 space-x-3 p-2">
                 <div class="-mt-8">
-                    <img class="object-cover w-20 h-20 rounded-full border-2" :src="article.author.avatar" />
+                    <img class="h-20 w-20 rounded-full border-2 object-cover" :src="article.author.avatar" />
                 </div>
-                <div class="text-2xl text-1">
+                <div class="text-1 text-2xl">
                     <p class="">
                         À propos de
                         <a href="#" class="font-bold hover:underline">
@@ -156,11 +156,11 @@
                 </div>
             </span>
             <div>
-                <p class="mt-2 text-5">
+                <p class="text-5 mt-2">
                     {{ profile.about }}
                 </p>
-                <div class="flex justify-end mt-4">
-                    <a :href="article.author.link" class="text-sm font-bold hover:underline text-0"
+                <div class="mt-4 flex justify-end">
+                    <a :href="article.author.link" class="text-0 text-sm font-bold hover:underline"
                         >Voir le profil de {{ article.author.fullname }}</a
                     >
                 </div>
@@ -170,22 +170,22 @@
         <!-- COMMENT SECTION -->
         <div class="card">
             <div>
-                <h1 class="mb-4 text-lg font-semibold text-gray-900 uppercase text-1">
+                <h1 class="text-1 mb-4 text-lg font-semibold uppercase text-gray-900">
                     {{ article.comments.length }} Commentaires
                 </h1>
 
-                <div v-for="(comment, i) in article.comments" :key="i" class="flex gap-2 mt-4">
-                    <img class="object-cover w-10 h-10 rounded-full border-2" :src="comment.author.avatar" />
-                    <div class="flex flex-col px-2 w-full rounded-lg">
-                        <div class="flex gap-3 items-center">
-                            <p class="font-semibold text-1">
+                <div v-for="(comment, i) in article.comments" :key="i" class="mt-4 flex gap-2">
+                    <img class="h-10 w-10 rounded-full border-2 object-cover" :src="comment.author.avatar" />
+                    <div class="flex w-full flex-col rounded-lg px-2">
+                        <div class="flex items-center gap-3">
+                            <p class="text-1 font-semibold">
                                 {{ comment.author.fullname }}
                             </p>
-                            <span class="text-xs text-4">
+                            <span class="text-4 text-xs">
                                 {{ timeAgo(comment.date) }}
                             </span>
                         </div>
-                        <p class="text-sm text-2">
+                        <p class="text-2 text-sm">
                             {{ comment.content }}
                         </p>
                         <div v-if="comment.replies.length > 0">
@@ -198,22 +198,22 @@
                                         <i class="fas" :class="open ? 'fa-chevron-up' : 'fa-chevron-down'" />
                                     </div> -->
 
-                            <div class="flex flex-col gap-2 mt-2">
+                            <div class="mt-2 flex flex-col gap-2">
                                 <div v-for="(reply, j) in comment.replies" :key="j" class="flex gap-2">
                                     <img
-                                        class="object-cover w-10 h-10 rounded-full border-2"
+                                        class="h-10 w-10 rounded-full border-2 object-cover"
                                         :src="reply.author.avatar"
                                     />
-                                    <div class="py-1 px-3 w-full rounded bg-2">
-                                        <div class="flex gap-3 items-center">
-                                            <p class="font-semibold text-1">
+                                    <div class="bg-2 w-full rounded py-1 px-3">
+                                        <div class="flex items-center gap-3">
+                                            <p class="text-1 font-semibold">
                                                 {{ reply.author.fullname }}
                                             </p>
-                                            <span class="text-xs text-4">
+                                            <span class="text-4 text-xs">
                                                 {{ timeAgo(reply.date) }}
                                             </span>
                                         </div>
-                                        <p class="text-sm text-1">
+                                        <p class="text-1 text-sm">
                                             {{ reply.content }}
                                         </p>
                                     </div>
