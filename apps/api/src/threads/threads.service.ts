@@ -43,20 +43,22 @@ export class ThreadsService {
 
   public async create(user: User, createThreadDto: CreateThreadDto): Promise<Thread> {
     const post = await this.contentsService.createPost(user, createThreadDto);
-    const thread = new Thread({ ...createThreadDto, post });
+    const { tags, ...createThread } = createThreadDto;
+
+    const thread = new Thread({ ...createThread, post });
     post.contentMaster = thread;
 
     // TODO: Keep the original order
-    const tags = await this.tagRepository.find({ name: { $in: createThreadDto.tags } });
+    const existingTags = await this.tagRepository.find({ name: { $in: createThreadDto.tags } });
     const newTags: Tag[] = createThreadDto.tags
-      .filter(tag => !tags.some(t => t.name === tag))
+      .filter(tag => !existingTags.some(t => t.name === tag))
       .map(name => new Tag({ name, color: Colors.Blue }));
 
     if (newTags.length > 0) {
       await this.tagRepository.persistAndFlush(newTags);
       thread.tags.add(...newTags);
     }
-    thread.tags.add(...tags);
+    thread.tags.add(...existingTags);
 
     const assignees = await this.userRepository.find({ id: { $in: createThreadDto.assignees } });
     thread.assignees.add(...assignees);
