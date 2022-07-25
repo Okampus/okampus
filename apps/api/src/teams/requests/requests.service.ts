@@ -3,10 +3,12 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
+import { MembershipRequestDirection } from '../../shared/lib/types/enums/membership-request-direction.enum';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
-import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
+import type { PaginatedResult } from '../../shared/modules/pagination';
+import { normalizePagination } from '../../shared/modules/pagination';
 import type { User } from '../../users/user.entity';
-import type { MembershipRequestsListOptions } from '../dto/membership-requests-list-options.dto';
+import type { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
 import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
 import { Team } from '../teams/team.entity';
@@ -83,19 +85,19 @@ export class TeamMembershipRequestsService {
 
   public async findAll(
     id: number,
-    options?: MembershipRequestsListOptions & Required<PaginateDto>,
+    options?: ListMembershipRequestsDto,
   ): Promise<PaginatedResult<TeamMembershipRequest>> {
     let query: FilterQuery<TeamMembershipRequest> = {};
 
     if (options?.state)
       query = { ...query, state: options.state };
-    if (options?.type === 'in')
-      query = { ...query, issuer: MembershipRequestIssuer.User };
-    else if (options?.type === 'out')
+    if (options?.type === MembershipRequestDirection.Incoming)
       query = { ...query, issuer: MembershipRequestIssuer.Team };
+    else if (options?.type === MembershipRequestDirection.Outgoing)
+      query = { ...query, issuer: MembershipRequestIssuer.User };
 
     return await this.teamMembershipRequestRepository.findWithPagination(
-      options,
+      normalizePagination(options ?? {}),
       { team: { id }, ...query },
       { orderBy: { createdAt: 'DESC' }, populate: ['team', 'user', 'issuedBy', 'handledBy'] },
     );
@@ -148,12 +150,18 @@ export class TeamMembershipRequestsService {
 
     // If it was requested by a user, then we have to check that the persone handling it in the team
     // has the permission to do so.
-    if (request.issuer === MembershipRequestIssuer.User && !request.team.canAdminister(user))
-      throw new BadRequestException('Not a team admin');
+    if (request.issuer === MembershipRequestIssuer.User) {
+      if (!request.team.canAdminister(user))
+        throw new BadRequestException('Not a team admin');
 
-    const handlerMember = await this.teamMemberRepository.findOneOrFail({ user });
-    if (request.role === TeamRole.Owner && handlerMember.role !== TeamRole.Owner)
-      throw new BadRequestException('Not the owner');
+      if (request.role === TeamRole.Owner) {
+        const handlerMember = await this.teamMemberRepository.findOneOrFail({ user });
+        if (handlerMember.role !== TeamRole.Owner)
+          throw new BadRequestException('Not the owner');
+        else if (updateTeamMembershipRequestDto.state === MembershipRequestState.Approved)
+          handlerMember.role = TeamRole.Coowner;
+      }
+    }
 
     request.handledBy = user;
     request.handledAt = new Date();
@@ -162,9 +170,6 @@ export class TeamMembershipRequestsService {
     await this.teamMembershipRequestRepository.flush();
 
     if (updateTeamMembershipRequestDto.state === MembershipRequestState.Approved) {
-      if (request.role === TeamRole.Owner)
-        handlerMember.role = TeamRole.Coowner;
-
       const teamMember = new TeamMember({ team: request.team, user: request.user, role: request.role });
       this.teamMemberRepository.persist(teamMember);
       await this.teamMemberRepository.flush();

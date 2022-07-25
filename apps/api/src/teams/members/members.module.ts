@@ -6,6 +6,7 @@ import { TeamMembershipRequestsModule } from '../requests/requests.module';
 import { TeamMembershipRequest } from '../requests/team-membership-request.entity';
 import { Team } from '../teams/team.entity';
 import { TeamMembersController } from './members.controller';
+import { TeamMembersResolver } from './members.resolver';
 import { TeamMembersService } from './members.service';
 import { TeamMember } from './team-member.entity';
 
@@ -15,7 +16,7 @@ import { TeamMember } from './team-member.entity';
     MikroOrmModule.forFeature([Team, TeamMember, TeamMembershipRequest, User]),
   ],
   controllers: [TeamMembersController],
-  providers: [CaslAbilityFactory, TeamMembersService],
+  providers: [CaslAbilityFactory, TeamMembersService, TeamMembersResolver],
   exports: [TeamMembersService],
 })
 export class TeamMembersModule {}

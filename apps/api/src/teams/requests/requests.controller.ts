@@ -15,7 +15,7 @@ import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { User } from '../../users/user.entity';
-import { MembershipRequestsListOptions } from '../dto/membership-requests-list-options.dto';
+import { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
 import { Team } from '../teams/team.entity';
 import { CreateTeamMembershipRequestDto } from './dto/create-membership-request.dto';
 import { PutTeamMembershipRequestDto } from './dto/put-membership-request.dto';
@@ -44,7 +44,7 @@ export class TeamMembershipRequestsController {
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   public async findAll(
     @Param('id', ParseIntPipe) id: number,
-    @Query() query: MembershipRequestsListOptions,
+    @Query() query: ListMembershipRequestsDto,
   ): Promise<PaginatedResult<TeamMembershipRequest>> {
     return await this.requestsService.findAll(id, normalizePagination(query));
   }

@@ -115,7 +115,7 @@ export class TeamMembersService {
   public async updateMember(
     requester: User,
     teamId: number,
-    invitedUserId: string,
+    userId: string,
     updateTeamMemberDto: UpdateTeamMemberDto,
   ): Promise<TeamMember> {
     const team = await this.teamRepository.findOneOrFail(
@@ -133,7 +133,7 @@ export class TeamMembersService {
       throw new ForbiddenException('Role too high');
 
     const targetTeamMember = await this.teamMemberRepository.findOneOrFail(
-      { team: { id: teamId }, user: { id: invitedUserId } },
+      { team: { id: teamId }, user: { id: userId } },
       { populate: ['user', 'team'] },
     );
 

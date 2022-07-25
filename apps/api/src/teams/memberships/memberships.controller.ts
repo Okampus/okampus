@@ -9,7 +9,7 @@ import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { User } from '../../users/user.entity';
-import { MembershipRequestsListOptions } from '../dto/membership-requests-list-options.dto';
+import { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
 import type { TeamMember } from '../members/team-member.entity';
 import type { TeamMembershipRequest } from '../requests/team-membership-request.entity';
 import { TeamMembershipsService } from './memberships.service';
@@ -33,7 +33,7 @@ export class TeamMembershipsController {
   @CheckPolicies(ability => ability.can(Action.Read, User))
   public async findAll(
     @Param('id') id: string,
-    @Query() query: MembershipRequestsListOptions,
+    @Query() query: ListMembershipRequestsDto,
   ): Promise<PaginatedResult<TeamMembershipRequest>> {
     return await this.membershipsService.findAll(id, normalizePagination(query));
   }

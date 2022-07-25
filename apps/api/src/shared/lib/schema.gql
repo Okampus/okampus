@@ -161,6 +161,13 @@ input CreateTeamFinanceDto {
   type: TeamFinanceType!
 }
 
+input CreateTeamMembershipRequestDto {
+  formSubmission: JSONObject
+  meta: JSONObject
+  originalFormId: Int
+  role: TeamRole
+}
+
 input CreateThreadDto {
   assignees: [String!]
   body: String!
@@ -197,6 +204,11 @@ type FileUpload {
   visible: Boolean!
 }
 
+input FilterMembershipRequestsDto {
+  state: MembershipRequestState
+  type: MembershipRequestDirection
+}
+
 input FilterRegisteredEventsDto {
   eventId: Int
   present: Boolean
@@ -204,10 +216,31 @@ input FilterRegisteredEventsDto {
   userId: String
 }
 
+input InviteMemberDto {
+  force: Boolean
+}
+
 """
 The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSONObject @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+enum MembershipRequestDirection {
+  All
+  Incoming
+  Outgoing
+}
+
+enum MembershipRequestIssuer {
+  Team
+  User
+}
+
+enum MembershipRequestState {
+  Approved
+  Pending
+  Rejected
+}
 
 type Mutation {
   addContent(child: CreateContentWithKindDto!): Content!
@@ -215,19 +248,32 @@ type Mutation {
   addTeamEventRegistration(id: Float!, registration: CreateTeamEventRegistrationDto!): TeamEventRegistration!
   addTeamFinance(finance: CreateTeamFinanceDto!, id: Int!): TeamFinance!
   addThread(thread: CreateThreadDto!): Thread!
+  addUserToTeam(invite: InviteMemberDto!, teamId: Float!, userId: String!): TeamMember!
   favoriteContent(favorite: Boolean!, id: Int!): Content!
+  handleTeamMembershipRequest(payload: PutTeamMembershipRequestDto!, requestId: Float!): TeamMembershipRequest!
+  joinTeam(id: Float!, request: CreateTeamMembershipRequestDto!): TeamMembershipRequest!
+  removeTeamMember(teamId: Float!, userId: String!): TeamMember
   reportContent(id: Int!, report: CreateReportDto!): Content!
   updateContent(content: UpdateContentDto!, id: Int!): Content!
   updateSettings(settings: UpdateSettingsDto!): Settings!
   updateTeam(id: Int!, team: UpdateTeamDto!): Team!
   updateTeamEventRegistration(id: Int!, registration: UpdateTeamEventRegistrationDto!): TeamEventRegistration!
   updateTeamFinance(finance: UpdateTeamFinanceDto!, id: Int!): TeamFinance!
+  updateTeamMember(teamId: Float!, update: UpdateTeamMemberDto!, userId: String!): TeamMember!
+  updateTeamMembershipRequest(requestId: Float!, update: UpdateTeamMembershipRequestDto!): TeamMembershipRequest!
   updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
   voteContent(id: Int!, value: Int!): Content!
 }
 
+input PutTeamMembershipRequestDto {
+  handledMessage: String
+  state: MembershipRequestState!
+}
+
 type Query {
   contentById(id: Int!): Content
+  getTeamMembers(id: Float!): [TeamMember!]
+  getTeamMembershipRequests(filter: FilterMembershipRequestsDto, id: Float!): [TeamMembershipRequest!]
   reportById(id: Int!): Report!
   reports: [Report!]!
   settings: Settings!
@@ -238,6 +284,8 @@ type Query {
   teamEventRegistrations(filters: FilterRegisteredEventsDto!): [TeamEventRegistration!]!
   teamFinanceById(id: Int!): TeamFinance
   teamFinances(filters: TeamFinancesFilterDto!): [TeamFinance!]!
+  teamMembershipRequestsByUserId(filters: FilterMembershipRequestsDto, id: String!): [TeamMembershipRequest!]!
+  teamMembershipsByUserId(id: String!): [TeamMember!]
   teams(filters: TeamsFilterDto!): [Team!]!
   threadById(id: Int!): Thread
   threads: [Thread!]!
@@ -323,6 +371,10 @@ type Subscription {
   teamEventRegistrationUpdated: TeamEventRegistration!
   teamFinanceAdded: TeamFinance!
   teamFinanceUpdated: TeamFinance!
+  teamMemberInvited: TeamMember!
+  teamMemberUpdated: TeamMember!
+  teamMembershipRequestAdded: TeamMembershipRequest!
+  teamMembershipRequestUpdated: TeamMembershipRequest!
   teamUpdated: Team!
   threadAdded: Thread!
   updatedThread: Thread!
@@ -498,6 +550,24 @@ type TeamMember {
   user: User!
 }
 
+type TeamMembershipRequest {
+  createdAt: DateTime!
+  formSubmission: JSONObject
+  handledAt: DateTime
+  handledBy: User
+  handledMessage: String
+  id: Int!
+  issuedBy: User!
+  issuer: MembershipRequestIssuer!
+  meta: JSONObject
+  originalForm: TeamForm
+  role: TeamRole!
+  state: MembershipRequestState!
+  team: Team!
+  updatedAt: DateTime!
+  user: User!
+}
+
 enum TeamRole {
   Coowner
   Manager
@@ -598,6 +668,19 @@ input UpdateTeamFinanceDto {
   receipt: String
   title: String
   type: TeamFinanceType
+}
+
+input UpdateTeamMemberDto {
+  role: TeamRole
+  roleLabel: String
+  transferTo: String
+}
+
+input UpdateTeamMembershipRequestDto {
+  formSubmission: JSONObject
+  meta: JSONObject
+  originalFormId: Int
+  role: TeamRole
 }
 
 input UpdateThreadDto {
