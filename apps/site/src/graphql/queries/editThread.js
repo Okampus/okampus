@@ -1,4 +1,4 @@
-import { threadFragment } from '../fragments/threadFragment'
+import { threadFragment } from '@/graphql/fragments/threadFragment'
 import gql from 'graphql-tag'
 
 // TODO: optimize this query

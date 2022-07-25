@@ -1,4 +1,4 @@
-import { contentFragment } from '../fragments/contentFragment'
+import { contentFragment } from '@/graphql/fragments/contentFragment'
 import gql from 'graphql-tag'
 
 // TODO: optimize this query

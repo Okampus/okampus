@@ -58,7 +58,7 @@
 </template>
 
 <script setup>
-    import CardPage from '../App/CardPage.vue'
+    import CardPage from '@/views/App/CardPage.vue'
     import crousLogo from '@/assets/img/crous/crous_logo.png'
 
     import { useRestaurantStore } from '@/store/restaurant.store'

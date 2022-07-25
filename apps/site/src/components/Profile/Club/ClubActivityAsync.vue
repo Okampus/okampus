@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-    import ClubEventCard from '../../Club/ClubEventCard.vue'
+    import ClubEventCard from '@/components/Club/ClubEventCard.vue'
     import EventsCalendar from '@/components/Events/EventsCalendar.vue'
     import Calendar from '@/assets/img/3dicons/calendar.png'
 

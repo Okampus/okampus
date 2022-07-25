@@ -10,7 +10,7 @@
 
 <script setup>
     import UserCard from '@/components/App/ListCard/UserCard.vue'
-    import ListPage from '../App/ListPage.vue'
+    import ListPage from '@/views/App/ListPage.vue'
 
     import { useUsersStore } from '@/store/users.store'
     import { USER } from '@/shared/types/resource-names.enum'

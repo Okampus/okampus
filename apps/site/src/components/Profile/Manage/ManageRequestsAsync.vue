@@ -209,7 +209,7 @@
 
 <script setup>
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
-    import ProfileAvatar from '../ProfileAvatar.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
 
     import Megaphone from '@/assets/img/3dicons/megaphone.png'

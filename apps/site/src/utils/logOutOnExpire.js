@@ -1,6 +1,6 @@
 import { emitter } from '@/shared/modules/emitter'
 import { isEmpty } from 'lodash'
-import setToHappen from './setToHappen'
+import setToHappen from '@/utils/logOutOnExpire'
 
 import { useCookies } from 'vue3-cookies'
 const { cookies } = useCookies()

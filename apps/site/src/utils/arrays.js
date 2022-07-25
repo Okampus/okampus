@@ -1,15 +1,15 @@
-import { NOOP } from 'vue'
+import { noop } from 'lodash'
 
 export function upsert(
     arr,
     el,
     cond,
     {
-        beforeInsert = NOOP,
-        onInsert = NOOP,
-        beforeUpdate = NOOP,
-        onUpdate = NOOP,
-        onAfter = NOOP,
+        beforeInsert = noop,
+        onInsert = noop,
+        beforeUpdate = noop,
+        onUpdate = noop,
+        onAfter = noop,
         addOnlyNewKeys = true,
     },
 ) {

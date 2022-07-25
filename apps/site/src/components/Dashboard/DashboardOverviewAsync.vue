@@ -174,7 +174,7 @@
 
 <script setup>
     import SelectInput from '@/components/Input/SelectInput.vue'
-    import TeamActivity from '../App/General/TeamActivity.vue'
+    import TeamActivity from '@/components/App/General/TeamActivity.vue'
 
     import { LineChart } from 'vue-chart-3'
     import { Chart, registerables } from 'chart.js'

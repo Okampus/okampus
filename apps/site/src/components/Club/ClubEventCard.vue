@@ -97,7 +97,7 @@
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
-    import LabelSimple from '../UI/Label/LabelSimple.vue'
+    import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
 
     const props = defineProps({
         event: {

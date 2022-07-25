@@ -11,7 +11,7 @@
 
 <script setup>
     import ThreadFormReport from '@/components/Thread/ThreadFormReport.vue'
-    import ThreadCompact from './ThreadCompact.vue'
+    import ThreadCompact from '@/views/Thread/ThreadCompact.vue'
 
     import { emitter } from '@/shared/modules/emitter'
     import { reactive } from 'vue'

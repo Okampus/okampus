@@ -1,6 +1,6 @@
 import { onData, onItems } from '@/utils/store'
 import { defineStore } from 'pinia'
-import $axios from '../shared/config/axios.config'
+import $axios from '@/shared/config/axios.config'
 
 export const useClubsStore = defineStore('clubs', {
     state: () => ({

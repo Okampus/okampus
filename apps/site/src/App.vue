@@ -64,7 +64,7 @@
     import FormLogin from '@/components/Form/FormLogin.vue'
     import AlertToast from '@/components/UI/Alert/AlertToast.vue'
     import AppException from '@/views/App/AppException.vue'
-    import AppLoader from './components/App/AppLoader.vue'
+    import AppLoader from '@/components/App/AppLoader.vue'
 
     import { useBreakpoints } from '@vueuse/core'
 
@@ -75,7 +75,7 @@
     // import { computed } from 'vue'
 
     import { isNil } from 'lodash'
-    import { errorCodes } from './shared/errors/app-exceptions.enum'
+    import { errorCodes } from '@/shared/errors/app-exceptions.enum'
 
     import { useRoute } from 'vue-router'
     import { useAuthStore } from '@/store/auth.store'

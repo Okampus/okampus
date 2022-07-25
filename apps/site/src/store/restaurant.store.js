@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import $axios from '../shared/config/axios.config'
+import $axios from '@/shared/config/axios.config'
 
 import { onData, onItems, sameByIdFunc } from '@/utils/store'
 import { isNil } from 'lodash'

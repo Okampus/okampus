@@ -11,7 +11,7 @@
 
 <script setup>
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
-    import AppLogin from '../App/AppLogin.vue'
+    import AppLogin from '@/components/App/AppLogin.vue'
 
     defineProps({
         showLogin: {

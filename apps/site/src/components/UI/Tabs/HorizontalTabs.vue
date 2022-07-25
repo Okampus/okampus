@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-    import LabelSimple from '../Label/LabelSimple.vue'
+    import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
     import { Swiper, SwiperSlide } from 'swiper/vue'
 
     import { abbrNumbers } from '@/utils/abbrNumbers'

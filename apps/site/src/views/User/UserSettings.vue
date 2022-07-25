@@ -106,7 +106,7 @@
     import AvatarCropper from 'vue-avatar-cropper'
 
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
-    import AppSuspense from '../App/AppSuspense.vue'
+    import AppSuspense from '@/views/App/AppSuspense.vue'
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 

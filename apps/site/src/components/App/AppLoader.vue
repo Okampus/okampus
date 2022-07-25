@@ -19,7 +19,8 @@
 </template>
 
 <script setup>
-    import AppLogo from './AppLogo.vue'
+    import AppLogo from '@/components/App/AppLogo.vue'
+
     defineProps({
         size: {
             type: Number,

@@ -368,7 +368,7 @@
     import RadioInput from '@/components/Input/RadioInput.vue'
     import SearchInput from '@/components/Input/SearchInput.vue'
     import SelectInput from '@/components/Input/SelectInput.vue'
-    import CardPage from '../App/CardPage.vue'
+    import CardPage from '@/views/App/CardPage.vue'
 
     import useVuelidate from '@vuelidate/core'
     import { integer, maxLength, required, requiredIf, sameAs } from '@vuelidate/validators'

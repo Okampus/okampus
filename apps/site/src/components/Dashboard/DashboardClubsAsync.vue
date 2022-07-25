@@ -170,7 +170,7 @@
     import AppTable from '@/components/App/AppTable.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import DocumentIcon from '@/components/Document/DocumentIcon.vue'
-    import TeamActivity from '../App/General/TeamActivity.vue'
+    import TeamActivity from '@/components/App/General/TeamActivity.vue'
 
     import { useClubsStore } from '@/store/clubs.store'
     import { fullname } from '@/utils/users'

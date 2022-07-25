@@ -55,8 +55,8 @@
 <script setup>
     import { useClubsStore } from '@/store/clubs.store'
     import { ref, watch } from 'vue'
-    import FormKitBuilder from './FormKitBuilder.vue'
-    import ModalPopup from '../UI/Modal/ModalPopup.vue'
+    import FormKitBuilder from '@/components/FormKit/FormKitBuilder.vue'
+    import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
 
     const clubs = useClubsStore()
 

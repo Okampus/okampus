@@ -137,8 +137,8 @@
 
 <script setup>
     import AvatarCropper from 'vue-avatar-cropper'
-    import ProfileBanner from '../ProfileBanner.vue'
-    import ProfileAvatar from '../ProfileAvatar.vue'
+    import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
     import FormList from '@/components/FormKit/FormList.vue'

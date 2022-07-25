@@ -83,7 +83,7 @@
 </template>
 
 <script setup>
-    import ProfileAvatar from '../ProfileAvatar.vue'
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import SelectInput from '@/components/Input/SelectInput.vue'
 
     import { fullname } from '@/utils/users'

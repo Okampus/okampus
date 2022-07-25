@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-    import AppLoader from '../AppLoader.vue'
+    import AppLoader from '@/components/App/AppLoader.vue'
 
     defineProps({
         name: {

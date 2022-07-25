@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { userFragment } from './userFragment'
+import { userFragment } from '@/graphql/fragments/userFragment'
 
 export const threadFragment = gql`
     fragment ThreadInfo on Thread {

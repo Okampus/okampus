@@ -38,7 +38,8 @@
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
 
     import useVuelidate from '@vuelidate/core'
-    import { reactive, NOOP } from 'vue'
+    import { reactive } from 'vue'
+    import { noop } from 'lodash'
 
     import { useMutation } from '@vue/apollo-composable'
 
@@ -52,7 +53,7 @@
         },
         content: {
             type: Object,
-            default: NOOP,
+            default: noop,
         },
     })
 

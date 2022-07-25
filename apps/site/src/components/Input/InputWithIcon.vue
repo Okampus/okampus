@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-    import { NOOP } from 'vue'
+    import { noop } from 'lodash'
 
     defineProps({
         inputName: {
@@ -41,7 +41,7 @@
         },
         attributes: {
             type: Object,
-            default: NOOP,
+            default: noop,
         },
     })
 
