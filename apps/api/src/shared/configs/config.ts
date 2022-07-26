@@ -7,6 +7,7 @@ interface Config {
   frontendOriginUrl: string;
   baseDomain: string;
   nodeEnv: 'development' | 'production' | 'test';
+  productName: string;
   release: string;
   upload: {
     maxSize: number;
@@ -102,6 +103,11 @@ export const config = createProfiguration<Config>({
     default: 'development',
     format: ['development', 'production', 'test'],
     env: 'NODE_ENV',
+  },
+  productName: {
+    default: 'demo-tenant',
+    format: String,
+    env: 'PRODUCT_NAME',
   },
   release: {
     default: '0.1.0-alpha.0',

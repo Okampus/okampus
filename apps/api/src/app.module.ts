@@ -1,6 +1,6 @@
 import { InjectRedis, RedisModule } from '@liaoliaots/nestjs-redis';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import type { MiddlewareConsumer } from '@nestjs/common';
+import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { CacheModule, Module, RequestMethod } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
@@ -19,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { BadgesModule } from './badges/badges.module';
 import { BlogsModule } from './blogs/blogs.module';
+import { ConfigurationsModule } from './configurations/configurations.module';
 import { ContactsModule } from './contacts/contacts.module';
 import { ContentsModule } from './contents/contents.module';
 import { FavoritesModule } from './favorites/favorites.module';
@@ -72,6 +73,7 @@ import { WikisModule } from './wiki/wikis.module';
     AuthModule,
     BadgesModule,
     BlogsModule,
+    ConfigurationsModule,
     ContactsModule,
     ContentsModule,
     FavoritesModule,
@@ -102,8 +104,10 @@ import { WikisModule } from './wiki/wikis.module';
   controllers: [AppController],
   exports: [],
 })
-export class AppModule {
-  constructor(@InjectRedis() private readonly redis: Redis) {}
+export class AppModule implements NestModule {
+  constructor(
+    @InjectRedis() private readonly redis: Redis,
+  ) {}
 
   public configure(consumer: MiddlewareConsumer): void {
     // Setup sentry

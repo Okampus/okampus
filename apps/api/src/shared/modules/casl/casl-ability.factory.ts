@@ -4,6 +4,8 @@ import { Injectable } from '@nestjs/common';
 import { Announcement } from '../../../announcements/announcement.entity';
 import { Badge } from '../../../badges/entities/badge.entity';
 import { Blog } from '../../../blogs/blog.entity';
+import { Configuration } from '../../../configurations/configurations/configurations.entity';
+import { ValidationStep } from '../../../configurations/validation-steps/validation-step.entity';
 import type { Contact } from '../../../contacts/entities/contact.entity';
 import { Content } from '../../../contents/entities/content.entity';
 import { Favorite } from '../../../favorites/favorite.entity';
@@ -38,6 +40,7 @@ export type Subjects = InferSubjects<
   | typeof Attachment
   | typeof Badge
   | typeof Blog
+  | typeof Configuration
   | typeof Contact
   | typeof Content
   | typeof DailyInfo
@@ -59,6 +62,7 @@ export type Subjects = InferSubjects<
   | typeof TeamForm
   | typeof Thread
   | typeof User
+  | typeof ValidationStep
   | typeof WikiPage>
   | 'all';
 
@@ -90,6 +94,7 @@ export class CaslAbilityFactory {
     } else {
       allow(Action.Read, 'all');
       forbid(Action.Read, [Report, Announcement, Metric]);
+      forbid(Action.Manage, [Configuration, ValidationStep]);
 
       // @ts-expect-error
       allow([Action.Read, Action.Update], Report, isMe);
@@ -122,6 +127,7 @@ export class CaslAbilityFactory {
         allow(Action.Read, 'all');
         allow(Action.Update, 'all');
         forbid(Action.Update, Badge);
+        forbid(Action.Manage, [Configuration, ValidationStep]);
         allow(
           Action.Manage,
           [Announcement, Blog, Content, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag, Thread, WikiPage],
@@ -179,7 +185,7 @@ export class CaslAbilityFactory {
         allow(Action.Manage, Team, isClub);
         // @ts-expect-error
         allow(Action.Manage, [TeamEvent, TeamFile], { 'team.kind': TeamKind.Club });
-        allow(Action.Manage, Metric);
+        allow(Action.Manage, [Metric, Configuration, ValidationStep]);
       }
     }
 
