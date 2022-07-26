@@ -49,11 +49,10 @@ export class HealthController {
 
     /* eslint-disable @typescript-eslint/explicit-function-return-type, @typescript-eslint/promise-function-async */
     return await this.health.check([
-      () => this.http.pingCheck('api', computedConfig.apiUrl, HTTP_TIMEOUT),
       () => this.http.pingCheck('site', computedConfig.frontendUrl, HTTP_TIMEOUT),
-      () => this.redis.checkHealth('cache', REDIS_OPTIONS),
       () => this.database.pingCheck('database'),
       () => this.typesense.pingCheck('search'),
+      () => this.redis.checkHealth('cache', REDIS_OPTIONS),
       () => this.memory.checkHeap('memory', MAX_HEAP_SIZE),
       ...(config.get('s3.enabled') ? [
         () => this.storage.pingCheck('storage', config.get('s3.buckets.attachments')),
