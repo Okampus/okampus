@@ -13,7 +13,6 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcrypt';
 // eslint-disable-next-line import/no-cycle
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
-
 import type { Favorite } from '../favorites/favorite.entity';
 import type { Reaction } from '../reactions/reaction.entity';
 import type { Report } from '../reports/report.entity';
@@ -65,8 +64,8 @@ export class User extends BaseEntity {
   avatar: string | null = null;
 
   @Field(() => [Role], { nullable: true })
-  @Enum({ items: () => Role, array: true, default: [Role.User] })
-  roles: Role[] = [Role.User];
+  @Enum({ default: [Role.User] })
+  roles = [Role.User];
 
   @Field(() => SchoolRole)
   @Enum(() => SchoolRole)

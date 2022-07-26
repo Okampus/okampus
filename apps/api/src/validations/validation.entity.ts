@@ -13,8 +13,8 @@ export class Validation extends BaseContentInteraction {
   id!: number;
 
   @Field(() => Boolean)
-  @Property({ default: true })
-  active!: boolean;
+  @Property()
+  active = true;
 
   @Field(() => ValidationType)
   @Property()
