@@ -1,7 +1,7 @@
 import {
   IsBoolean,
   IsDate,
-  IsEnum,
+  IsIn,
   IsInt,
   IsNumber,
   IsObject,
@@ -45,7 +45,7 @@ export class CreateTeamEventDto {
   private?: boolean;
 
   @IsOptional()
-  @IsEnum(TeamEventState)
+  @IsIn([TeamEventState.Draft, TeamEventState.Template, TeamEventState.Submitted])
   state?: TeamEventState;
 
   @IsOptional()

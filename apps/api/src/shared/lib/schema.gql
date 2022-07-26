@@ -425,6 +425,7 @@ type TeamEvent {
   team: Team!
   updatedAt: DateTime!
   usedTemplate: TeamEvent
+  validationStep: Int!
 }
 
 enum TeamEventRegisterStatus {
@@ -447,10 +448,10 @@ type TeamEventRegistration {
 }
 
 enum TeamEventState {
-  Approved
   Draft
   Published
   Rejected
+  Submitted
   Template
 }
 

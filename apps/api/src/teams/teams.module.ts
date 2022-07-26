@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
 import { TeamEventRegistrationsModule } from './event-registrations/event-registrations.module';
+import { TeamEventValidationsModule } from './event-validations/event-validations.module';
 import { TeamEventsModule } from './events/events.module';
 import { TeamFinancesModule } from './finances/finances.module';
 import { TeamFormsModule } from './forms/forms.module';
@@ -22,6 +23,8 @@ import { CoreTeamsModule } from './teams/teams.module';
         { path: 'events', module: TeamEventsModule },
         // Endpoints to manage the team event registrations
         { path: 'event-registrations', module: TeamEventRegistrationsModule },
+        // Endpoints to manage the team event registrations
+        { path: 'event-validations', module: TeamEventValidationsModule },
         // Endpoints to manage forms
         { path: 'forms', module: TeamFormsModule },
         // Endpoints to manage finances
@@ -34,6 +37,7 @@ import { CoreTeamsModule } from './teams/teams.module';
     }]),
     CoreTeamsModule,
     TeamEventRegistrationsModule,
+    TeamEventValidationsModule,
     TeamEventsModule,
     TeamFinancesModule,
     TeamFormsModule,

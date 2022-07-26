@@ -22,6 +22,7 @@ import { Food } from '../../../restaurant/food/food.entity';
 import { Settings } from '../../../settings/settings.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
+import { TeamEventValidation } from '../../../teams/event-validations/team-event-validation.entity';
 import { TeamEvent } from '../../../teams/events/team-event.entity';
 import { TeamFinance } from '../../../teams/finances/team-finance.entity';
 import { TeamForm } from '../../../teams/forms/team-form.entity';
@@ -57,6 +58,7 @@ export type Subjects = InferSubjects<
   | typeof Tag
   | typeof Team
   | typeof TeamEvent
+  | typeof TeamEventValidation
   | typeof TeamFile
   | typeof TeamFinance
   | typeof TeamForm
@@ -94,7 +96,7 @@ export class CaslAbilityFactory {
     } else {
       allow(Action.Read, 'all');
       forbid(Action.Read, [Report, Announcement, Metric]);
-      forbid(Action.Manage, [Configuration, ValidationStep]);
+      forbid(Action.Manage, [Configuration, ValidationStep, TeamEventValidation]);
 
       // @ts-expect-error
       allow([Action.Read, Action.Update], Report, isMe);
@@ -112,11 +114,7 @@ export class CaslAbilityFactory {
       allow(Action.Interact, Content);
 
       // This is all managed by-hand inside the services.
-      allow(Action.Manage, Team);
-      allow(Action.Manage, TeamEvent);
-      allow(Action.Manage, TeamFile);
-      allow(Action.Manage, TeamFinance);
-      allow(Action.Manage, TeamForm);
+      allow(Action.Manage, [Team, TeamEvent, TeamFile, TeamFinance, TeamForm]);
 
       forbid(Action.Update, User)
         .because('Not the user');
@@ -126,7 +124,7 @@ export class CaslAbilityFactory {
       if (user.roles.includes(Role.Moderator)) {
         allow(Action.Read, 'all');
         allow(Action.Update, 'all');
-        forbid(Action.Update, Badge);
+        forbid(Action.Update, [Badge, TeamEventValidation]);
         forbid(Action.Manage, [Configuration, ValidationStep]);
         allow(
           Action.Manage,
@@ -185,7 +183,7 @@ export class CaslAbilityFactory {
         allow(Action.Manage, Team, isClub);
         // @ts-expect-error
         allow(Action.Manage, [TeamEvent, TeamFile], { 'team.kind': TeamKind.Club });
-        allow(Action.Manage, [Metric, Configuration, ValidationStep]);
+        allow(Action.Manage, [Metric, Configuration, ValidationStep, TeamEventValidation]);
       }
     }
 

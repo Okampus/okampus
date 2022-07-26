@@ -71,8 +71,12 @@ export class TeamEvent extends BaseEntity {
   private = false;
 
   @Field(() => TeamEventState)
-  @Enum({ items: () => TeamEventState, default: TeamEventState.Published })
-  state = TeamEventState.Published;
+  @Enum({ items: () => TeamEventState })
+  state = TeamEventState.Submitted;
+
+  @Field(() => Int)
+  @Property()
+  validationStep = 0;
 
   @Field(() => TeamForm, { nullable: true })
   @OneToOne({ cascade: [Cascade.ALL] })
@@ -104,6 +108,8 @@ export class TeamEvent extends BaseEntity {
   }) {
     super();
     this.assign(options);
+
+    this.validationStep = this.state === TeamEventState.Submitted ? 1 : 0;
   }
 
   public canEdit(user: User): boolean {

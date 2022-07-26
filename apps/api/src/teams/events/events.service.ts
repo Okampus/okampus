@@ -2,9 +2,14 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { ValidationStep } from '../../configurations/validation-steps/validation-step.entity';
+import { config } from '../../shared/configs/config';
 import type { ListOptionsDto } from '../../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.enum';
+import { ValidationStepType } from '../../shared/lib/types/enums/validation-step-type.enum';
+import { Role } from '../../shared/modules/authorization/types/role.enum';
+import { SchoolRole } from '../../shared/modules/authorization/types/school-role.enum';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { serializeOrder } from '../../shared/modules/sorting';
 import { User } from '../../users/user.entity';
@@ -17,8 +22,6 @@ import type { ListTeamEventsDto } from './dto/list-team-events.dto';
 import type { UpdateTeamEventDto } from './dto/update-team-event.dto';
 import { TeamEvent } from './team-event.entity';
 
-const stateVisible = { $in: [TeamEventState.Published, TeamEventState.Approved] };
-
 @Injectable()
 export class TeamEventsService {
   // eslint-disable-next-line max-params
@@ -30,6 +33,7 @@ export class TeamEventsService {
     private readonly teamEventRegistrationRepository: BaseRepository<TeamEventRegistration>,
     @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(ValidationStep) private readonly validationStepRepository: BaseRepository<ValidationStep>,
   ) {}
 
   public async create(user: User, id: number, createTeamEventDto: CreateTeamEventDto): Promise<TeamEvent> {
@@ -63,6 +67,15 @@ export class TeamEventsService {
         throw new BadRequestException('Template is not a template');
     }
 
+    if (createTeamEventDto.state === TeamEventState.Submitted) {
+      const steps = await this.validationStepRepository.count({
+        configuration: config.get('productName'),
+        type: ValidationStepType.TeamEvent,
+      });
+      if (steps === 0)
+        createTeamEventDto.state = TeamEventState.Published;
+    }
+
     const event = new TeamEvent({
       ...createTeamEventDto,
       supervisor,
@@ -91,23 +104,25 @@ export class TeamEventsService {
       filter = {
         team: { id: query.id },
         private: false,
-        state: stateVisible,
+        state: TeamEventState.Published,
       };
     } else if (query.id) {
       // We asked for the events of a team that the user is a member of
       // so we search for all events, private or not.
       filter = {
         team: { id: query.id },
-        state: query.state ?? stateVisible,
+        state: query.state ?? TeamEventState.Published,
       };
+    } else if (user.schoolRole === SchoolRole.Admin || user.roles.includes(Role.Admin)) {
+      filter = { state: query.state ?? TeamEventState.Published };
     } else {
       // We asked for all the events of all teams
       // so we search for the public & private events of the teams the user is a member of
       // and the public & published events of the teams the user is not a member of
       filter = {
         $or: [
-          { team: { $in: ids }, state: query.state ?? stateVisible },
-          { team: { $nin: ids }, private: false, state: stateVisible },
+          { team: { $in: ids }, state: query.state ?? TeamEventState.Published },
+          { team: { $nin: ids }, private: false, state: TeamEventState.Published },
         ],
       };
     }
@@ -146,7 +161,7 @@ export class TeamEventsService {
         id,
         $or: [
           { team: { $in: ids } },
-          { private: false, state: stateVisible },
+          { private: false, state: TeamEventState.Published },
         ],
       },
       { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'form', 'usedTemplate'] },
@@ -188,6 +203,15 @@ export class TeamEventsService {
       const isAlreadyUsed = await this.teamEventRepository.findOne({ form });
       if (isAlreadyUsed)
         throw new BadRequestException('Form is already used');
+    }
+
+    if (dto.state === TeamEventState.Submitted) {
+      const steps = await this.validationStepRepository.count({
+        configuration: config.get('productName'),
+        type: ValidationStepType.TeamEvent,
+      });
+      if (steps === 0)
+        dto.state = TeamEventState.Published;
     }
 
     wrap(event).assign({ ...dto, form });
