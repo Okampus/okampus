@@ -3,6 +3,8 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import type { ListOptionsDto } from '../../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
+import { TeamManagedFormUpdatedNotification } from '../../shared/modules/notifications/notifications';
+import { NotificationsService } from '../../shared/modules/notifications/notifications.service';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import type { User } from '../../users/user.entity';
 import { Team } from '../teams/team.entity';
@@ -16,6 +18,7 @@ export class TeamFormsService {
   constructor(
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
+    private readonly notificationService: NotificationsService,
   ) {}
 
   public async create(
@@ -35,6 +38,9 @@ export class TeamFormsService {
     });
 
     await this.teamFormRepository.persistAndFlush(form);
+
+    void this.notificationService.trigger(new TeamManagedFormUpdatedNotification(form));
+
     return form;
   }
 
@@ -71,6 +77,9 @@ export class TeamFormsService {
 
     wrap(form).assign(updateTeamFormDto);
     await this.teamFormRepository.flush();
+
+    void this.notificationService.trigger(new TeamManagedFormUpdatedNotification(form));
+
     return form;
   }
 

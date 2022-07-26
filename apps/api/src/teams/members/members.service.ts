@@ -8,6 +8,8 @@ import {
 } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
+import { TeamManagedMemberRoleUpdatedNotification, TeamManagedMembershipRequestUpdatedNotification } from '../../shared/modules/notifications/notifications';
+import { NotificationsService } from '../../shared/modules/notifications/notifications.service';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
 import { User } from '../../users/user.entity';
 import { TeamMembershipRequestsService } from '../requests/requests.service';
@@ -21,6 +23,7 @@ import { TeamMember } from './team-member.entity';
 
 @Injectable()
 export class TeamMembersService {
+  // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
@@ -29,6 +32,7 @@ export class TeamMembersService {
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
 
     private readonly teamMembershipRequestsService: TeamMembershipRequestsService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   public async inviteUser(
@@ -98,6 +102,9 @@ export class TeamMembersService {
     });
     await this.teamMembershipRequestRepository.persistAndFlush(teamMembershipRequest);
 
+    // 6. Send a notification to the team.
+    void this.notificationsService.trigger(new TeamManagedMembershipRequestUpdatedNotification(teamMembershipRequest));
+
     return teamMembershipRequest;
   }
 
@@ -136,6 +143,7 @@ export class TeamMembersService {
       { team: { id: teamId }, user: { id: userId } },
       { populate: ['user', 'team'] },
     );
+    const previous = { previousRole: targetTeamMember.role, previousLabel: targetTeamMember.roleLabel };
 
     if (transferTo) {
       if (requester.id !== targetTeamMember.user.id)
@@ -156,6 +164,13 @@ export class TeamMembersService {
 
     wrap(targetTeamMember).assign(updatedPros);
     await this.teamMemberRepository.flush();
+
+    if (Object.keys(updateTeamMemberDto).some(k => ['role', 'roleLabel', 'transferTo'].includes(k))) {
+      await this.notificationsService.trigger(
+        new TeamManagedMemberRoleUpdatedNotification(targetTeamMember, { ...previous, executor: requester }),
+      );
+    }
+
     return targetTeamMember;
   }
 

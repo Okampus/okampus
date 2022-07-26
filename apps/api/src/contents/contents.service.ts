@@ -8,10 +8,16 @@ import type { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
+import { ContentMasterType } from '../shared/lib/types/enums/content-master-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import { MailService } from '../shared/modules/mail/mail.service';
+import {
+  BlogSubscribedUpdatedNotification,
+  ContentRemovedNotification,
+  ThreadSubscribedUpdatedNotification,
+} from '../shared/modules/notifications/notifications';
+import { NotificationsService } from '../shared/modules/notifications/notifications.service';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import { serializeOrder } from '../shared/modules/sorting';
 import type { User } from '../users/user.entity';
@@ -34,7 +40,7 @@ export class ContentsService {
     @InjectRepository(Reaction) private readonly reactionRepository: BaseRepository<Reaction>,
     @InjectRepository(Report) private readonly reportRepository: BaseRepository<Report>,
     @InjectRepository(Vote) private readonly voteRepository: BaseRepository<Vote>,
-    private readonly mailService: MailService,
+    private readonly notificationsService: NotificationsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -60,7 +66,7 @@ export class ContentsService {
   public async createReply(user: User, createContentDto: CreateContentDto): Promise<Content> {
     const parent = await this.contentRepository.findOneOrFail(
       { id: createContentDto.parentId, kind: ContentKind.Post },
-      { populate: ['author', 'lastEdit'] },
+      { populate: ['author', 'lastEdit', 'contentMaster'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -72,10 +78,13 @@ export class ContentsService {
     await this.contentEditRepository.flush();
     await this.contentRepository.flush();
 
-    if (content.contentMaster)
-      await this.updateParticipants('add', user, content.contentMaster.id);
+    await this.updateParticipants('add', user, content.contentMaster!.id);
 
-    void this.mailService.newThreadContent(content);
+    // TODO: Add user mention notifications
+    if (content.contentMaster!.kind === ContentMasterType.Thread)
+      void this.notificationsService.trigger(new ThreadSubscribedUpdatedNotification(content));
+    else if (content.contentMaster!.kind === ContentMasterType.Blog)
+      void this.notificationsService.trigger(new BlogSubscribedUpdatedNotification(content));
 
     return parent;
   }
@@ -83,7 +92,7 @@ export class ContentsService {
   public async createComment(user: User, createContentDto: CreateContentDto): Promise<Content> {
     const parent = await this.contentRepository.findOneOrFail(
       { id: createContentDto.parentId, kind: { $in: [ContentKind.Post, ContentKind.Reply] } },
-      { populate: ['author', 'lastEdit'] },
+      { populate: ['author', 'lastEdit', 'contentMaster'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -98,7 +107,8 @@ export class ContentsService {
     if (content.contentMaster)
       await this.updateParticipants('add', user, content.contentMaster.id);
 
-    void this.mailService.newThreadContent(content);
+    // TODO: Add user mentions
+    void this.notificationsService.trigger(new ThreadSubscribedUpdatedNotification(content));
 
     return parent;
   }
@@ -293,6 +303,8 @@ export class ContentsService {
       if (nContentsOnMaster === 1)
         await this.updateParticipants('remove', user, content.contentMaster.id);
     }
+
+    void this.notificationsService.trigger(new ContentRemovedNotification(content));
 
     await this.contentRepository.removeAndFlush(content);
   }

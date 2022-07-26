@@ -5,6 +5,13 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 import type { ListOptionsDto } from '../../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.enum';
+import {
+  Notification,
+  TeamEventCreatedNotification,
+  TeamManagedEventUpdatedNotification,
+  TeamSubscribedEventCreatedNotification,
+} from '../../shared/modules/notifications/notifications';
+import { NotificationsService } from '../../shared/modules/notifications/notifications.service';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { serializeOrder } from '../../shared/modules/sorting';
 import { User } from '../../users/user.entity';
@@ -30,6 +37,8 @@ export class TeamEventsService {
     private readonly teamEventRegistrationRepository: BaseRepository<TeamEventRegistration>,
     @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   public async create(user: User, id: number, createTeamEventDto: CreateTeamEventDto): Promise<TeamEvent> {
@@ -73,6 +82,9 @@ export class TeamEventsService {
     });
 
     await this.teamEventRepository.persistAndFlush(event);
+
+    void this.notificationsService.trigger(new TeamManagedEventUpdatedNotification(event));
+
     return event;
   }
 
@@ -190,6 +202,16 @@ export class TeamEventsService {
         throw new BadRequestException('Form is already used');
     }
 
+    if (event.state !== TeamEventState.Published && updateTeamEventDto.state === TeamEventState.Published) {
+      void this.notificationsService.trigger(
+        Notification.firstSubscribed(
+          new TeamManagedEventUpdatedNotification(event),
+          new TeamSubscribedEventCreatedNotification(event),
+          new TeamEventCreatedNotification(event),
+        ),
+      );
+    }
+
     wrap(event).assign({ ...dto, form });
     await this.teamEventRepository.flush();
     return event;
@@ -199,6 +221,8 @@ export class TeamEventsService {
     const event = await this.teamEventRepository.findOneOrFail({ id }, { populate: ['team', 'team.members'] });
     if (!event.canEdit(user))
       throw new ForbiddenException('Not a team admin');
+
+    void this.notificationsService.trigger(new TeamManagedEventUpdatedNotification(event));
 
     await this.teamEventRepository.removeAndFlush(event);
   }

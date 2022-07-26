@@ -7,7 +7,7 @@ import { Report } from '../reports/report.entity';
 import { ReportsModule } from '../reports/reports.module';
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import { MailModule } from '../shared/modules/mail/mail.module';
+import { NotificationsModule } from '../shared/modules/notifications/notifications.module';
 import { PubSubModule } from '../shared/modules/pub-sub/pub-sub.module';
 import { ValidationsModule } from '../validations/validations.module';
 import { Vote } from '../votes/vote.entity';
@@ -29,7 +29,7 @@ import { Content } from './entities/content.entity';
       Report,
       Vote,
     ]),
-    MailModule,
+    NotificationsModule,
     PubSubModule,
     VotesModule,
     FavoritesModule,

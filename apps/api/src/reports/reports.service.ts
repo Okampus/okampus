@@ -7,6 +7,8 @@ import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
+import { AdminReportCreatedNotification } from '../shared/modules/notifications/notifications';
+import { NotificationsService } from '../shared/modules/notifications/notifications.service';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import type { User } from '../users/user.entity';
 import type { CreateReportDto } from './dto/create-report.dto';
@@ -22,6 +24,7 @@ export class ReportsService {
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
     private readonly reportSearchService: ReportSearchService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   public async create(user: User, contentId: number, createReportDto: CreateReportDto): Promise<Content> {
@@ -50,6 +53,8 @@ export class ReportsService {
 
     content.reportCount++;
     await this.contentRepository.flush();
+
+    void this.notificationsService.trigger(new AdminReportCreatedNotification(report));
 
     return content;
   }

@@ -1,6 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
+import { NotificationsModule } from '../../shared/modules/notifications/notifications.module';
 import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
 import { Team } from '../teams/team.entity';
@@ -12,6 +13,7 @@ import { TeamMembershipRequest } from './team-membership-request.entity';
 @Module({
   imports: [
     MikroOrmModule.forFeature([Team, TeamMember, TeamForm, TeamMembershipRequest]),
+    NotificationsModule,
   ],
   controllers: [TeamMembershipRequestsController],
   providers: [CaslAbilityFactory, TeamMembershipRequestsService, TeamMembershipRequestsResolver],
