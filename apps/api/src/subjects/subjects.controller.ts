@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -57,19 +58,19 @@ export class SubjectsController {
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Subject))
-  public async findOne(@Param('id') id: number): Promise<Subject> {
+  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Subject> {
     return await this.subjectsService.findOne(id);
   }
 
   @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Subject))
-  public async update(@Param('id') id: number, @Body() updateSubjectDto: UpdateSubjectDto): Promise<Subject> {
+  public async update(@Param('id', ParseIntPipe) id: number, @Body() updateSubjectDto: UpdateSubjectDto): Promise<Subject> {
     return await this.subjectsService.update(id, updateSubjectDto);
   }
 
   @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, Subject))
-  public async remove(@Param('id') id: number): Promise<void> {
+  public async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.subjectsService.remove(id);
   }
 }

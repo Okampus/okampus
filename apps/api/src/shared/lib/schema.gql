@@ -536,7 +536,7 @@ type TeamForm {
 
 enum TeamKind {
   Club
-  Team
+  Department
 }
 
 type TeamMember {
