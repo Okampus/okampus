@@ -13,6 +13,12 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+
+    "db:create": "mikro-orm migration:create",
+    "db:up": "mikro-orm migration:up",
+    "db:down": "mikro-orm migration:down",
+    "db:fresh": "mikro-orm migration:fresh",
+
     "lint": "eslint \"src/**/*.ts\"",
     "lint:fix": "eslint \"src/**/*.ts\" --fix"
   },
