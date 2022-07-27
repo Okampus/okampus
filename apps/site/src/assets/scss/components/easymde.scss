@@ -532,6 +532,12 @@ span.CodeMirror-selectedtext {
     opacity: 0.5;
 }
 
+.EasyMDEContainer .CodeMirror-focused {
+    @apply ring-2 ring-blue-500 z-[100] relative dark:ring-2;
+
+    border-radius: 0.2rem !important;
+}
+
 .EasyMDEContainer .CodeMirror-focused .CodeMirror-selected {
     @apply bg-2-light dark:bg-2-dark;
 
@@ -540,6 +546,10 @@ span.CodeMirror-selectedtext {
 
 .editor-toolbar {
     @apply relative p-2 select-none rounded-t-md bg-0-light dark:bg-0-dark;
+
+    .dark & {
+        box-shadow: inset 0 1px 0 hsl(0deg 0% 100% / 30%), 0 2px 2px hsl(0deg 0% 0% / 30%);
+    }
 
     // position: relative;
     // padding: 9px 10px;

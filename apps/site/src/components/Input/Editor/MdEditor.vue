@@ -91,6 +91,7 @@
             element: editor.value,
             initialValue: props.modelValue,
             maxHeight: '15rem',
+            placeholder: props.placeholder,
         })
 
         mde.value.codemirror.on('change', () => {
@@ -98,10 +99,4 @@
             charCount.value = mde.value.value().trim().length
         })
     })
-
-    // watchEffect(() => {
-    //     if (props.modelValue === '' && mde.value) {
-    //         mde.value.value('')
-    //     }
-    // })
 </script>

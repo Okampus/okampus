@@ -6,7 +6,12 @@ import { createPinia } from 'pinia'
 import InstantSearch from 'vue-instantsearch/vue3/es'
 import Particles from 'particles.vue3'
 
-import { plugin, defaultConfig } from '@formkit/vue'
+import FormKitRadioInput from '@/components/Input/FormKit/FormKitRadioInput.vue'
+import FormKitMdEditor from '@/components/Input/FormKit/FormKitMdEditor.vue'
+import FormKitTagInput from '@/components/Input/FormKit/FormKitTagInput.vue'
+import FormKitFloatingLabelText from '@/components/Input/FormKit/FormKitFloatingLabelText.vue'
+
+import { plugin, defaultConfig, createInput } from '@formkit/vue'
 import { generateClasses } from '@formkit/themes'
 import formkitTheme from '@/formkit.theme'
 
@@ -78,6 +83,20 @@ app.use(createPinia())
     .use(
         plugin,
         defaultConfig({
+            inputs: {
+                tabs: createInput(FormKitRadioInput, {
+                    props: ['choices', 'choice'],
+                }),
+                editor: createInput(FormKitMdEditor, {
+                    props: ['uid', 'charCount', 'minCharCount', 'placeholder'],
+                }),
+                tags: createInput(FormKitTagInput, {
+                    props: ['placeholder'],
+                }),
+                floating: createInput(FormKitFloatingLabelText, {
+                    props: ['placeholder', 'floatingLabel', 'inputClass'],
+                }),
+            },
             locales: { fr },
             locale: 'fr',
             config: {

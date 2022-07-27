@@ -1,29 +1,39 @@
 <template>
-    <div
-        ref="tagsContainer"
-        class="input flex h-max w-full cursor-text flex-wrap items-center gap-2 overflow-auto"
-        tabindex="0"
-        v-bind="focused ? { 'focused': 'true' } : {}"
-        @focus="tagsInput.focus()"
-    >
-        <LabelTag
-            v-for="(tag, idx) in tags"
-            :key="idx"
-            :tag-name="tag"
-            :closable="true"
-            class="mb-1"
-            @close="removeTag(idx)"
-        />
-        <div class="grow basis-0">
-            <input
-                ref="tagsInput"
-                v-model="newTag"
-                :placeholder="placeholder"
-                class="placeholder h-8 w-full min-w-[1em] bg-transparent outline-none"
-                @blur="focused = false"
-                @focus="focused = true"
-                @keydown="keypress"
+    <div class="relative">
+        <div
+            ref="tagsContainer"
+            class="input flex h-max w-full cursor-text flex-wrap items-center gap-2 overflow-auto"
+            tabindex="0"
+            v-bind="focused ? { 'focused': 'true' } : {}"
+            @focus="tagsInput.focus(), (focused = true)"
+        >
+            <LabelTag
+                v-for="(tag, idx) in tags"
+                :key="idx"
+                :tag-name="tag"
+                :closable="true"
+                @close="removeTag(idx)"
             />
+            <div class="grow basis-0">
+                <input
+                    ref="tagsInput"
+                    v-model="newTag"
+                    :placeholder="
+                        focused || tags.length || newTag ? placeholder : floatingLabel ? '' : placeholder
+                    "
+                    class="placeholder h-8 w-full min-w-[1em] bg-transparent outline-none"
+                    @blur="focused = false"
+                    @focus="focused = true"
+                    @keydown="keypress"
+                />
+            </div>
+        </div>
+        <div
+            v-if="floatingLabel"
+            :class="{ 'floating': focused || tags.length || newTag }"
+            class="floating-label bg-2 rounded-t-md px-1"
+        >
+            {{ floatingLabel }}
         </div>
     </div>
 </template>
@@ -37,6 +47,10 @@
         placeholder: {
             type: String,
             default: 'Entrez des tags...',
+        },
+        floatingLabel: {
+            type: String,
+            default: 'Tags',
         },
         modelValue: {
             type: Array,

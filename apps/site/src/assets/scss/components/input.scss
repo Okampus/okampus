@@ -65,3 +65,19 @@ input[type='checkbox'] {
         background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 16 16' fill='%23fff' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");
     }
 }
+
+.floating-label {
+    position: absolute;
+    bottom: 50%;
+    left: 0.7em;
+    box-sizing: border-box;
+    color: grey;
+    transition: bottom 0.25s, font-size 0.25s, left 0.25s;
+    transform: translateY(50%);
+
+    &.floating {
+        bottom: 100%;
+        z-index: 50;
+        font-size: 0.7em;
+    }
+}
