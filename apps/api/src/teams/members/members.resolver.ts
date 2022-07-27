@@ -26,7 +26,7 @@ export class TeamMembersResolver {
 
   // TODO: Add permission checks
   @Query(() => [TeamMember], { nullable: true })
-  public async getTeamMembers(
+  public async teamMembers(
     @Args('id') id: number,
   ): Promise<TeamMember[]> {
     const memberships = await this.teamMembersService.findAllMembers(id);

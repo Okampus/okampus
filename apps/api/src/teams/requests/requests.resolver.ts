@@ -27,7 +27,7 @@ export class TeamMembershipRequestsResolver {
 
   // TODO: Add permission checks
   @Query(() => [TeamMembershipRequest], { nullable: true })
-  public async getTeamMembershipRequests(
+  public async teamMembershipRequests(
     @Args('id') id: number,
     @Args('filter', { nullable: true }) filter?: FilterMembershipRequestsDto,
   ): Promise<TeamMembershipRequest[]> {

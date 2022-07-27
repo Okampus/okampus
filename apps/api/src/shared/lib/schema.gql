@@ -275,8 +275,6 @@ input PutTeamMembershipRequestDto {
 
 type Query {
   contentById(id: Int!): Content
-  getTeamMembers(id: Float!): [TeamMember!]
-  getTeamMembershipRequests(filter: FilterMembershipRequestsDto, id: Float!): [TeamMembershipRequest!]
   reportById(id: Int!): Report!
   reports: [Report!]!
   schoolYearById(id: Int!): SchoolYear!
@@ -288,6 +286,8 @@ type Query {
   teamEventRegistrations(filters: FilterRegisteredEventsDto!): [TeamEventRegistration!]!
   teamFinanceById(id: Int!): TeamFinance
   teamFinances(filters: TeamFinancesFilterDto!): [TeamFinance!]!
+  teamMembers(id: Float!): [TeamMember!]
+  teamMembershipRequests(filter: FilterMembershipRequestsDto, id: Float!): [TeamMembershipRequest!]
   teamMembershipRequestsByUserId(filters: FilterMembershipRequestsDto, id: String!): [TeamMembershipRequest!]!
   teamMembershipsByUserId(id: String!): [TeamMember!]
   teams(filters: TeamsFilterDto!): [Team!]!
