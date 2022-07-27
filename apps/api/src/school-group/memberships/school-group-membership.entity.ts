@@ -6,16 +6,11 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import {
-  Field,
-  Int,
-  ObjectType,
-} from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { SchoolGroupRole } from '../../shared/lib/types/enums/school-group-role.enum';
 // eslint-disable-next-line import/no-cycle
 import { User } from '../../users/user.entity';
-
 // eslint-disable-next-line import/no-cycle
 import { SchoolGroup } from '../school-group.entity';
 import { SchoolYear } from '../school-year/school-year.entity';

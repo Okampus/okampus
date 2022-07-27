@@ -20,7 +20,7 @@ export class SchoolGroupsService {
 
     const schoolGroup = new SchoolGroup({
       ...createSchoolGroupDto,
-      ...(parent ? { parent } : {}),
+      parent,
     });
 
     try {
@@ -47,9 +47,8 @@ export class SchoolGroupsService {
       : null;
 
     const schoolGroup = await this.schoolGroupRepository.findOneOrFail({ id });
-    const { id: _, ...previousSchoolGroup } = schoolGroup;
 
-    wrap(schoolGroup).assign({ ...previousSchoolGroup, ...updateSchoolGroupDto, ...(parent ? { parent } : {}) });
+    wrap(schoolGroup).assign({ ...updateSchoolGroupDto, ...(parent ? { parent } : {}) });
     await this.schoolGroupRepository.flush();
     return schoolGroup;
   }
