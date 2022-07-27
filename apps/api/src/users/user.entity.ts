@@ -58,6 +58,10 @@ export class User extends BaseEntity {
   @OneToMany('BadgeUnlock', 'user')
   badges = new Collection<BadgeUnlock>(this);
 
+  @Field(() => Boolean)
+  @Property()
+  bot = false;
+
   // TODO: Add full 'reputation' support
   @Field(() => Int)
   @Property()

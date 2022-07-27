@@ -1,3 +1,4 @@
+import { UniqueConstraintViolationException } from '@mikro-orm/core';
 import {
   BadRequestException,
   Body,
@@ -49,12 +50,11 @@ export class AuthController {
   // very few rare cases where we want to manually create an account, and it has to be done by an admin.
   @CheckPolicies(ability => ability.can(Action.Create, User))
   @Post('register')
-  public async register(@Body() dto: RegisterDto): Promise<User> {
+  public async register(@Body() dto: RegisterDto): Promise<{ user: User; token: string | null }> {
     try {
-      const user = await this.usersService.create(dto);
-      return await this.usersService.findOneById(user.id);
+      return await this.usersService.create(dto);
     } catch (error) {
-      if (error.code === '23505')
+      if (error.code instanceof UniqueConstraintViolationException)
         throw new BadRequestException('User id already taken');
 
       throw error;

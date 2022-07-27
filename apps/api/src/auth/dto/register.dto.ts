@@ -1,5 +1,6 @@
 import {
   IsArray,
+  IsBoolean,
   IsEmail,
   IsEnum,
   IsOptional,
@@ -51,4 +52,8 @@ export class RegisterDto {
   @IsOptional()
   @IsString()
   shortDescription?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  bot?: boolean;
 }

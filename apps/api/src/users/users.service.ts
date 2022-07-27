@@ -1,8 +1,11 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import type { Token } from '../auth/jwt-auth.guard';
 import { FileUpload } from '../files/file-uploads/file-upload.entity';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
+import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
@@ -25,16 +28,24 @@ export class UsersService {
     private readonly userSearchService: UserSearchService,
     private readonly statisticsService: StatisticsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
+    private readonly jwtService: JwtService,
   ) {}
 
   public async findOneById(id: string): Promise<User> {
     return await this.userRepository.findOneOrFail({ id }, { refresh: true });
   }
 
-  public async create(options: UserCreationOptions): Promise<User> {
+  public async create(options: UserCreationOptions): Promise<{ user: User; token: string | null }> {
     const user = new User(options);
-    if (options?.password)
+    let token: string | null = null;
+    if (options.bot) {
+      token = await this.jwtService.signAsync({ sub: user.id, typ: 'bot', aud: 'http' } as Token, {
+        secret: config.get('tokens.botTokenSecret'),
+      });
+      await user.setPassword(token);
+    } else if (options.password) {
       await user.setPassword(options.password);
+    }
 
     if (options.avatar)
       await this.setAvatar(options.avatar, 'avatar', user);
@@ -48,7 +59,8 @@ export class UsersService {
 
     await this.userRepository.persistAndFlush(user);
     await this.userSearchService.add(user);
-    return user;
+
+    return { user, token };
   }
 
   public async update(requester: User, id: string, updateUserDto: UpdateUserDto): Promise<User> {

@@ -48,7 +48,7 @@ export class AuthService {
   }
 
   public async login(user: User): Promise<TokenResponse> {
-    const payload: Token = { sub: user.id, aud: 'http' };
+    const payload: Token = { sub: user.id, typ: 'usr', aud: 'http' };
 
     return {
       accessToken: await this.jwtService.signAsync(payload, this.getTokenOptions('access')),
@@ -99,22 +99,26 @@ export class AuthService {
     return this.getWsToken(decoded.sub);
   }
 
-  public getTokenOptions(type: 'access' | 'refresh' | 'ws'): JwtSignOptions {
+  public getTokenOptions(type: 'access' | 'bot' | 'refresh' | 'ws'): JwtSignOptions {
     const options: JwtSignOptions = {
       secret: config.get(`tokens.${type}TokenSecret`),
     };
 
-    const expiration = config.get(`tokens.${type}TokenExpirationSeconds`);
-    if (expiration)
-      options.expiresIn = `${expiration}s`;
+    if (type !== 'bot') {
+      const expiration = config.get(`tokens.${type}TokenExpirationSeconds`);
+      if (expiration)
+        options.expiresIn = `${expiration}s`;
+    }
 
     return options;
   }
 
   public async createOrUpdate(userInfo: MyEfreiDto): Promise<User> {
     const user = await this.userRepository.findOne({ id: userInfo.id });
-    if (!user)
-      return await this.usersService.create(userInfo);
+    if (!user) {
+      const { user: newUser } = await this.usersService.create(userInfo);
+      return newUser;
+    }
 
     if (!user.hasChanged(userInfo))
       return user;

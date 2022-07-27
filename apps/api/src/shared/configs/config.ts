@@ -54,6 +54,7 @@ interface Config {
     refreshTokenExpirationSeconds: number;
     wsTokenSecret: string;
     wsTokenExpirationSeconds: number;
+    botTokenSecret: string;
   };
   cookies: {
     signature: string;
@@ -278,6 +279,11 @@ export const config = createProfiguration<Config>({
       default: 30,
       format: Number,
       env: 'WS_TOKEN_EXPIRATION_SECONDS',
+    },
+    botTokenSecret: {
+      default: 'secret',
+      format: String,
+      env: 'BOT_TOKEN_SECRET',
     },
   },
   cookies: {

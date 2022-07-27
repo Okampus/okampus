@@ -740,6 +740,7 @@ type User {
   avatar: String
   badges: [BadgeUnlock!]
   banner: String
+  bot: Boolean!
   color: String
   createdAt: DateTime!
   email: String!

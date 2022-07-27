@@ -1,6 +1,7 @@
 import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { FileUploadsModule } from '../files/file-uploads/file-uploads.module';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
@@ -28,7 +29,7 @@ import './user.subscriber';
     GdprModule,
   ],
   controllers: [UsersController],
-  providers: [CaslAbilityFactory, UsersService, UserSearchService],
+  providers: [CaslAbilityFactory, UsersService, UserSearchService, JwtService],
   exports: [UsersService],
 })
 export class UsersModule implements OnModuleInit {

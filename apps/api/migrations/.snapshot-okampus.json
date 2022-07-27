@@ -598,6 +598,72 @@
       "columns": {
         "id": {
           "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "icon": {
+          "name": "icon",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "contact",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "contact_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -741,72 +807,6 @@
           "updateRule": "cascade"
         }
       }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "icon": {
-          "name": "icon",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        }
-      },
-      "name": "contact",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "contact_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
     },
     {
       "columns": {
@@ -1084,6 +1084,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "bot": {
+          "name": "bot",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
         },
         "reputation": {
           "name": "reputation",
@@ -3056,6 +3065,153 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "owner",
+            "coowner",
+            "treasurer",
+            "secretary",
+            "manager",
+            "member"
+          ],
+          "mappedType": "enum"
+        },
+        "role_label": {
+          "name": "role_label",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "join_date": {
+          "name": "join_date",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "team_member",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "user_id"
+          ],
+          "composite": false,
+          "keyName": "team_member_user_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "team_id"
+          ],
+          "composite": false,
+          "keyName": "team_member_team_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "team_member_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "team_member_user_id_foreign": {
+          "constraintName": "team_member_user_id_foreign",
+          "columnNames": [
+            "user_id"
+          ],
+          "localTableName": "public.team_member",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "team_member_team_id_foreign": {
+          "constraintName": "team_member_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.team_member",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -3969,153 +4125,6 @@
           ],
           "referencedTableName": "public.team_file",
           "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "team_id": {
-          "name": "team_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "role": {
-          "name": "role",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "owner",
-            "coowner",
-            "treasurer",
-            "secretary",
-            "manager",
-            "member"
-          ],
-          "mappedType": "enum"
-        },
-        "role_label": {
-          "name": "role_label",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "join_date": {
-          "name": "join_date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "team_member",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "user_id"
-          ],
-          "composite": false,
-          "keyName": "team_member_user_id_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "team_id"
-          ],
-          "composite": false,
-          "keyName": "team_member_team_id_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "team_member_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "team_member_user_id_foreign": {
-          "constraintName": "team_member_user_id_foreign",
-          "columnNames": [
-            "user_id"
-          ],
-          "localTableName": "public.team_member",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "team_member_team_id_foreign": {
-          "constraintName": "team_member_team_id_foreign",
-          "columnNames": [
-            "team_id"
-          ],
-          "localTableName": "public.team_member",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team",
-          "deleteRule": "CASCADE",
           "updateRule": "cascade"
         }
       }
