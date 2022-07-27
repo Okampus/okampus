@@ -3,9 +3,7 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
-import { Cursus } from '../../shared/lib/types/enums/cursus.enum';
 import type { StudyDocFilter } from '../../shared/lib/types/enums/docs-filters.enum';
-import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 import { assertPermissions } from '../../shared/lib/utils/assert-permission';
 import type { Categories, GroupFilters } from '../../shared/lib/utils/compute-document-categories';
 import { computeDocumentCategories } from '../../shared/lib/utils/compute-document-categories';
@@ -34,7 +32,6 @@ export class StudyDocsService {
 
   public async create(createStudyDocDto: CreateStudyDocDto, file: FileUpload): Promise<StudyDoc> {
     const subject = await this.subjectRepository.findOneOrFail({ id: createStudyDocDto.subjectId });
-
     const docSeries = await this.docSeriesRepository.findOne({ id: createStudyDocDto.docSeries });
     const studyDoc = new StudyDoc({
       ...createStudyDocDto,
@@ -42,6 +39,7 @@ export class StudyDocsService {
       file,
       docSeries,
     });
+
     await this.studyDocRepository.persistAndFlush(studyDoc);
     await this.studyDocSearchService.add(studyDoc);
     return studyDoc;
@@ -54,8 +52,6 @@ export class StudyDocsService {
     // TODO: Maybe the user won't have access to all docs. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
     let options: FilterQuery<StudyDoc> = {};
-    if (typeof filters.schoolYear !== 'undefined')
-      options = { subject: { schoolYear: filters.schoolYear } };
     if (typeof filters.year !== 'undefined')
       options = { ...options, year: filters.year };
     if (typeof filters.subject !== 'undefined')
@@ -63,8 +59,6 @@ export class StudyDocsService {
       options = { ...options, subject: { ...options.subject, id: filters.subject } };
     if (typeof filters.type !== 'undefined')
       options = { ...options, type: filters.type };
-    if (typeof filters.cursus !== 'undefined')
-      options = { ...options, cursus: { $in: [filters.cursus, Cursus.All] } };
 
     return await this.studyDocRepository.findWithPagination(
       paginationOptions,
@@ -77,7 +71,6 @@ export class StudyDocsService {
     const allDocuments: StudyDoc[] = await this.studyDocRepository.findAll({ populate: ['subject'] });
 
     const groupFilters: GroupFilters<StudyDoc> = {
-      schoolYear: elt => ({ key: elt.subject.schoolYear.toString(), metadata: SchoolYear[elt.subject.schoolYear] }),
       subject: elt => ({ key: elt.subject.id.toString(), metadata: elt.subject.name }),
       type: elt => ({ key: elt.type.toString(), metadata: null }),
       year: elt => ({ key: elt.year.toString(), metadata: null }),
@@ -95,7 +88,7 @@ export class StudyDocsService {
     );
   }
 
-  public async update(user: User, id: string, updateCourseDto: UpdateStudyDocDto): Promise<StudyDoc> {
+  public async update(user: User, id: string, updateStudyDocDto: UpdateStudyDocDto): Promise<StudyDoc> {
     const studyDoc = await this.studyDocRepository.findOneOrFail(
       { id },
       { populate: ['file', 'file.user', 'subject', 'docSeries'] },
@@ -104,10 +97,10 @@ export class StudyDocsService {
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, studyDoc);
 
-    const subject = await this.subjectRepository.findOneOrFail({ id: updateCourseDto.subjectId });
-    const docSeries = await this.docSeriesRepository.findOneOrFail({ id: updateCourseDto.docSeries });
+    const subject = await this.subjectRepository.findOneOrFail({ id: updateStudyDocDto.subjectId });
+    const docSeries = await this.docSeriesRepository.findOneOrFail({ id: updateStudyDocDto.docSeries });
 
-    wrap(studyDoc).assign({ ...updateCourseDto, subject, docSeries });
+    wrap(studyDoc).assign({ ...updateStudyDocDto, subject, docSeries });
     await this.studyDocRepository.flush();
     await this.studyDocSearchService.update(studyDoc);
     return studyDoc;

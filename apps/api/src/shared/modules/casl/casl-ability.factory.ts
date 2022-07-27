@@ -19,6 +19,8 @@ import { Report } from '../../../reports/report.entity';
 import { DailyInfo } from '../../../restaurant/daily-info/daily-info.entity';
 import { DailyMenu } from '../../../restaurant/daily-menus/daily-menu.entity';
 import { Food } from '../../../restaurant/food/food.entity';
+import type { SchoolGroup } from '../../../school-group/school-group.entity';
+import type { SchoolYear } from '../../../school-group/school-year/school-year.entity';
 import { Settings } from '../../../settings/settings.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
@@ -52,6 +54,8 @@ export type Subjects = InferSubjects<
   | typeof Metric
   | typeof ProfileImage
   | typeof Report
+  | typeof SchoolGroup
+  | typeof SchoolYear
   | typeof Settings
   | typeof StudyDoc
   | typeof Subject

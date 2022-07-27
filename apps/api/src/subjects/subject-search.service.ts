@@ -6,15 +6,14 @@ import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { client } from '../shared/configs/typesense.config';
 import RequireTypesense from '../shared/lib/decorators/require-typesense.decorator';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
-import { SchoolYear } from '../shared/lib/types/enums/school-year.enum';
 import { authorizeNotFound, SearchService } from '../shared/modules/search/search.service';
 import { Subject } from './subject.entity';
 
+// TODO: deal with subject's schoolGroup
 export interface IndexedSubject {
   code: string;
   name: string;
   englishName: string;
-  schoolYear: string;
   description: string | null;
   id: string;
 }
@@ -27,7 +26,6 @@ export class SubjectSearchService extends SearchService<Subject, IndexedSubject>
       { name: 'code', type: 'string' },
       { name: 'name', type: 'string' },
       { name: 'englishName', type: 'string' },
-      { name: 'schoolYear', type: 'string' },
       { name: 'description', type: 'string', optional: true },
     ],
   };
@@ -84,7 +82,6 @@ export class SubjectSearchService extends SearchService<Subject, IndexedSubject>
       code: subject.code,
       name: subject.name,
       englishName: subject.englishName,
-      schoolYear: SchoolYear[subject.schoolYear],
       description: subject.description,
       id: subject.id.toString(),
     };

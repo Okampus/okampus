@@ -6,15 +6,14 @@ import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { client } from '../../shared/configs/typesense.config';
 import RequireTypesense from '../../shared/lib/decorators/require-typesense.decorator';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
-import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 import { authorizeNotFound, SearchService } from '../../shared/modules/search/search.service';
 import { InfoDoc } from './info-doc.entity';
 
+// TODO: deal with infoDoc's schoolGroup
 export interface IndexedInfoDoc {
   user: string;
   name: string;
   year: number;
-  schoolYear: string | null;
   description: string | null;
   id: string;
   createdAt: string;
@@ -86,7 +85,6 @@ export class InfoDocSearchService extends SearchService<InfoDoc, IndexedInfoDoc>
       user: infoDoc.file.user.id,
       name: infoDoc.file.name,
       year: infoDoc.year,
-      schoolYear: infoDoc.schoolYear ? SchoolYear[infoDoc.schoolYear] : null,
       description: infoDoc.description,
       id: infoDoc.id,
       createdAt: infoDoc.createdAt.toString(),

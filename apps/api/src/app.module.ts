@@ -29,6 +29,9 @@ import { MetricsModule } from './metrics/metrics.module';
 import { ReactionsModule } from './reactions/reactions.module';
 import { ReportsModule } from './reports/reports.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import { SchoolGroupMembershipsModule } from './school-group/memberships/memberships.module';
+import { SchoolGroupsModule } from './school-group/school-groups.module';
+import { SchoolYearsModule } from './school-group/school-year/school-years.module';
 import { SettingsModule } from './settings/settings.module';
 
 import cacheConfig from './shared/configs/cache.config';
@@ -47,6 +50,7 @@ import { PoliciesGuard } from './shared/modules/authorization';
 import { CaslModule } from './shared/modules/casl/casl.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { SubjectsModule } from './subjects/subjects.module';
+
 import { TagsModule } from './tags/tags.module';
 import { TeamsModule } from './teams/teams.module';
 import { ThreadsModule } from './threads/threads.module';
@@ -88,6 +92,9 @@ import { WikisModule } from './wiki/wikis.module';
     SubjectsModule,
     TagsModule,
     TeamsModule,
+    SchoolGroupsModule,
+    SchoolGroupMembershipsModule,
+    SchoolYearsModule,
     ThreadsModule,
     UsersModule,
     VotesModule,

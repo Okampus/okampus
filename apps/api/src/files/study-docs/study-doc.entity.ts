@@ -7,8 +7,8 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
+import type { SchoolGroup } from '../../school-group/school-group.entity';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
-import { Cursus } from '../../shared/lib/types/enums/cursus.enum';
 import { StudyDocType } from '../../shared/lib/types/enums/study-doc-type.enum';
 import { Subject } from '../../subjects/subject.entity';
 import type { DocSeries } from '../doc-series/doc-series.entity';
@@ -34,9 +34,6 @@ export class StudyDoc extends BaseEntity {
   @Property({ type: 'text' })
   description: string | null = null;
 
-  @Enum(() => Cursus)
-  cursus!: Cursus;
-
   @Enum(() => StudyDocType)
   type!: StudyDocType;
 
@@ -46,9 +43,9 @@ export class StudyDoc extends BaseEntity {
   constructor(options: {
     file: FileUpload;
     subject: Subject;
-    cursus: Cursus;
     type: StudyDocType;
     year: number;
+    schoolGroup?: SchoolGroup | null;
     flags?: number | null;
     docSeries?: DocSeries | null;
     description?: string | null;

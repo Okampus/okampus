@@ -77,10 +77,7 @@ export class InfoDocsController {
   public async findCategories(
     @Query() categoriesTypesDto: CategoryTypesDto,
   ): Promise<Categories<InfoDoc>> {
-    const defaultSort = [
-      InfoDocFilter.SchoolYear,
-      InfoDocFilter.Year,
-    ];
+    const defaultSort = [InfoDocFilter.Year];
     return await this.infoDocsService.findCategories(categoriesTypesDto?.categories ?? defaultSort);
   }
 

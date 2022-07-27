@@ -1,14 +1,13 @@
 import {
   Entity,
-  Enum,
   ManyToOne,
   OneToOne,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
+import { SchoolGroup } from '../../school-group/school-group.entity';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
-import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 import type { DocSeries } from '../doc-series/doc-series.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 
@@ -26,8 +25,8 @@ export class InfoDoc extends BaseEntity {
   @Property()
   year!: number;
 
-  @Enum(() => SchoolYear)
-  schoolYear: SchoolYear | null = null;
+  @ManyToOne(() => SchoolGroup)
+  schoolGroup: SchoolGroup | null = null;
 
   @Property({ type: 'text' })
   description: string | null = null;
@@ -40,8 +39,8 @@ export class InfoDoc extends BaseEntity {
   constructor(options: {
     file: FileUpload;
     year: number;
+    schoolGroup?: SchoolGroup | null;
     docSeries?: DocSeries | null;
-    schoolYear?: number | null;
     description?: string | null;
     isObsolete?: boolean | null;
   }) {

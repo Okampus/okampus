@@ -37,6 +37,72 @@
         },
         "name": {
           "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        }
+      },
+      "name": "school_year",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "school_year_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "name": {
+          "name": "name",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -1281,6 +1347,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "is_anonymous": {
+          "name": "is_anonymous",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        },
         "author_id": {
           "name": "author_id",
           "type": "varchar(255)",
@@ -2350,144 +2425,6 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "file_id": {
-          "name": "file_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "doc_series_id": {
-          "name": "doc_series_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "year": {
-          "name": "year",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "school_year": {
-          "name": "school_year",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "enum"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "is_obsolete": {
-          "name": "is_obsolete",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "boolean"
-        }
-      },
-      "name": "info_doc",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "file_id"
-          ],
-          "composite": false,
-          "keyName": "info_doc_file_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "info_doc_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "info_doc_file_id_foreign": {
-          "constraintName": "info_doc_file_id_foreign",
-          "columnNames": [
-            "file_id"
-          ],
-          "localTableName": "public.info_doc",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.file_upload",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "info_doc_doc_series_id_foreign": {
-          "constraintName": "info_doc_doc_series_id_foreign",
-          "columnNames": [
-            "doc_series_id"
-          ],
-          "localTableName": "public.info_doc",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.doc_series",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
           "type": "serial",
           "unsigned": true,
           "autoincrement": true,
@@ -2523,7 +2460,7 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "team",
+            "department",
             "club"
           ],
           "mappedType": "enum"
@@ -4876,306 +4813,6 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "code": {
-          "name": "code",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "english_name": {
-          "name": "english_name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "school_year": {
-          "name": "school_year",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        }
-      },
-      "name": "subject",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "code"
-          ],
-          "composite": false,
-          "keyName": "subject_code_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "code"
-          ],
-          "composite": false,
-          "keyName": "subject_code_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "subject_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "file_id": {
-          "name": "file_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "subject_id": {
-          "name": "subject_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "doc_series_id": {
-          "name": "doc_series_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "year": {
-          "name": "year",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "cursus": {
-          "name": "cursus",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "all",
-            "classic",
-            "int",
-            "pex",
-            "renforced"
-          ],
-          "mappedType": "enum"
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "examDE",
-            "examCE",
-            "examCC",
-            "examDM",
-            "examTAI",
-            "course",
-            "sheet",
-            "projects",
-            "efreiClass",
-            "eprofClass",
-            "classNote",
-            "other"
-          ],
-          "mappedType": "enum"
-        },
-        "flags": {
-          "name": "flags",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "smallint"
-        }
-      },
-      "name": "study_doc",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "file_id"
-          ],
-          "composite": false,
-          "keyName": "study_doc_file_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "study_doc_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "study_doc_file_id_foreign": {
-          "constraintName": "study_doc_file_id_foreign",
-          "columnNames": [
-            "file_id"
-          ],
-          "localTableName": "public.study_doc",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.file_upload",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "study_doc_subject_id_foreign": {
-          "constraintName": "study_doc_subject_id_foreign",
-          "columnNames": [
-            "subject_id"
-          ],
-          "localTableName": "public.study_doc",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.subject",
-          "updateRule": "cascade"
-        },
-        "study_doc_doc_series_id_foreign": {
-          "constraintName": "study_doc_doc_series_id_foreign",
-          "columnNames": [
-            "doc_series_id"
-          ],
-          "localTableName": "public.study_doc",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.doc_series",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
         "user_id": {
           "name": "user_id",
           "type": "varchar(255)",
@@ -5694,6 +5331,772 @@
           ],
           "referencedTableName": "public.user",
           "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "english_name": {
+          "name": "english_name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        }
+      },
+      "name": "school_group",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "code"
+          ],
+          "composite": false,
+          "keyName": "school_group_code_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "code"
+          ],
+          "composite": false,
+          "keyName": "school_group_code_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "columnNames": [
+            "parent_id"
+          ],
+          "composite": false,
+          "keyName": "school_group_parent_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "school_group_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "school_group_parent_id_foreign": {
+          "constraintName": "school_group_parent_id_foreign",
+          "columnNames": [
+            "parent_id"
+          ],
+          "localTableName": "public.school_group",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.school_group",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "english_name": {
+          "name": "english_name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "school_group_id": {
+          "name": "school_group_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        }
+      },
+      "name": "subject",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "code"
+          ],
+          "composite": false,
+          "keyName": "subject_code_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "code"
+          ],
+          "composite": false,
+          "keyName": "subject_code_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "subject_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "subject_school_group_id_foreign": {
+          "constraintName": "subject_school_group_id_foreign",
+          "columnNames": [
+            "school_group_id"
+          ],
+          "localTableName": "public.subject",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.school_group",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "file_id": {
+          "name": "file_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "subject_id": {
+          "name": "subject_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "doc_series_id": {
+          "name": "doc_series_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "year": {
+          "name": "year",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "examDE",
+            "examCE",
+            "examCC",
+            "examDM",
+            "examTAI",
+            "course",
+            "sheet",
+            "projects",
+            "efreiClass",
+            "eprofClass",
+            "classNote",
+            "other"
+          ],
+          "mappedType": "enum"
+        },
+        "flags": {
+          "name": "flags",
+          "type": "smallint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "smallint"
+        }
+      },
+      "name": "study_doc",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "file_id"
+          ],
+          "composite": false,
+          "keyName": "study_doc_file_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "study_doc_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "study_doc_file_id_foreign": {
+          "constraintName": "study_doc_file_id_foreign",
+          "columnNames": [
+            "file_id"
+          ],
+          "localTableName": "public.study_doc",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "study_doc_subject_id_foreign": {
+          "constraintName": "study_doc_subject_id_foreign",
+          "columnNames": [
+            "subject_id"
+          ],
+          "localTableName": "public.study_doc",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.subject",
+          "updateRule": "cascade"
+        },
+        "study_doc_doc_series_id_foreign": {
+          "constraintName": "study_doc_doc_series_id_foreign",
+          "columnNames": [
+            "doc_series_id"
+          ],
+          "localTableName": "public.study_doc",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.doc_series",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "file_id": {
+          "name": "file_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "doc_series_id": {
+          "name": "doc_series_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "year": {
+          "name": "year",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "school_group_id": {
+          "name": "school_group_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "is_obsolete": {
+          "name": "is_obsolete",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        }
+      },
+      "name": "info_doc",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "file_id"
+          ],
+          "composite": false,
+          "keyName": "info_doc_file_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "info_doc_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "info_doc_file_id_foreign": {
+          "constraintName": "info_doc_file_id_foreign",
+          "columnNames": [
+            "file_id"
+          ],
+          "localTableName": "public.info_doc",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "info_doc_doc_series_id_foreign": {
+          "constraintName": "info_doc_doc_series_id_foreign",
+          "columnNames": [
+            "doc_series_id"
+          ],
+          "localTableName": "public.info_doc",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.doc_series",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "info_doc_school_group_id_foreign": {
+          "constraintName": "info_doc_school_group_id_foreign",
+          "columnNames": [
+            "school_group_id"
+          ],
+          "localTableName": "public.info_doc",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.school_group",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        },
+        "school_year_id": {
+          "name": "school_year_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "school_group_id": {
+          "name": "school_group_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "representative",
+            "substitute",
+            "student"
+          ],
+          "mappedType": "enum"
+        }
+      },
+      "name": "school_group_membership",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "active"
+          ],
+          "composite": false,
+          "keyName": "school_group_membership_active_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "school_year_id"
+          ],
+          "composite": false,
+          "keyName": "school_group_membership_school_year_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "school_group_id"
+          ],
+          "composite": false,
+          "keyName": "school_group_membership_school_group_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "school_group_membership_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "school_group_membership_school_year_id_foreign": {
+          "constraintName": "school_group_membership_school_year_id_foreign",
+          "columnNames": [
+            "school_year_id"
+          ],
+          "localTableName": "public.school_group_membership",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.school_year",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "school_group_membership_school_group_id_foreign": {
+          "constraintName": "school_group_membership_school_group_id_foreign",
+          "columnNames": [
+            "school_group_id"
+          ],
+          "localTableName": "public.school_group_membership",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.school_group",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "school_group_membership_user_id_foreign": {
+          "constraintName": "school_group_membership_user_id_foreign",
+          "columnNames": [
+            "user_id"
+          ],
+          "localTableName": "public.school_group_membership",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "CASCADE",
           "updateRule": "cascade"
         }
       }

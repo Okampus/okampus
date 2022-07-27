@@ -82,7 +82,6 @@ export class StudyDocsController {
     @Query() categoriesTypesDto: CategoryTypesDto,
   ): Promise<Categories<StudyDoc>> {
     const defaultSort = [
-      StudyDocFilter.SchoolYear,
       StudyDocFilter.Subject,
       StudyDocFilter.Type,
       StudyDocFilter.Year,

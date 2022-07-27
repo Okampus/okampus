@@ -77,6 +77,7 @@ type Content {
   hidden: Boolean!
   id: Int!
   interactions: ContentInteractions!
+  isAnonymous: Boolean!
   isVisible: Boolean!
   kind: ContentKind!
   lastEdit: ContentEdit
@@ -123,6 +124,7 @@ type ContentMaster {
 input CreateContentWithKindDto {
   body: String!
   contentKind: ContentKind!
+  isAnonymous: Boolean!
   parentId: Int!
 }
 
@@ -171,6 +173,7 @@ input CreateTeamMembershipRequestDto {
 input CreateThreadDto {
   assignees: [String!]
   body: String!
+  isAnonymous: Boolean!
   tags: [String!]
   title: String!
   type: ThreadType!
@@ -276,6 +279,7 @@ type Query {
   getTeamMembershipRequests(filter: FilterMembershipRequestsDto, id: Float!): [TeamMembershipRequest!]
   reportById(id: Int!): Report!
   reports: [Report!]!
+  schoolYearById(id: Int!): SchoolYear!
   settings: Settings!
   tagById(id: String!): Tag!
   tags: [Tag!]!
@@ -321,10 +325,46 @@ enum Role {
   User
 }
 
+type SchoolGroup {
+  active: Boolean!
+  createdAt: DateTime!
+  description: String
+  englishName: String
+  id: Int!
+  memberships: [SchoolGroupMembership!]!
+  name: String!
+  parent: SchoolGroup
+  updatedAt: DateTime!
+}
+
+type SchoolGroupMembership {
+  createdAt: DateTime!
+  id: Int!
+  role: SchoolGroupRole!
+  schoolGroup: SchoolGroup!
+  schoolYear: SchoolYear!
+  updatedAt: DateTime!
+  user: User!
+}
+
+enum SchoolGroupRole {
+  Representative
+  Student
+  Substitute
+}
+
 enum SchoolRole {
   Admin
   Student
   Teacher
+}
+
+type SchoolYear {
+  active: Boolean!
+  createdAt: DateTime!
+  id: Int!
+  name: String!
+  updatedAt: DateTime!
 }
 
 type Settings {
@@ -612,6 +652,7 @@ scalar URL
 input UpdateContentDto {
   body: String
   hidden: Boolean
+  isAnonymous: Boolean
 }
 
 input UpdateSettingsDto {
@@ -687,6 +728,7 @@ input UpdateTeamMembershipRequestDto {
 input UpdateThreadDto {
   assignees: [String!]
   body: String
+  isAnonymous: Boolean
   locked: Boolean
   tags: [String!]
   title: String
@@ -707,6 +749,7 @@ type User {
   points: Int!
   reputation: Int!
   roles: [Role!]
+  schoolGroupMemberships: [SchoolGroupMembership!]
   schoolRole: SchoolRole!
   settings: Settings!
   shortDescription: String

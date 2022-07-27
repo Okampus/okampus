@@ -2,9 +2,9 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import { SchoolGroup } from '../../school-group/school-group.entity';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import type { InfoDocFilter } from '../../shared/lib/types/enums/docs-filters.enum';
-import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 import { assertPermissions } from '../../shared/lib/utils/assert-permission';
 import type { Categories, GroupFilters } from '../../shared/lib/utils/compute-document-categories';
 import { computeDocumentCategories } from '../../shared/lib/utils/compute-document-categories';
@@ -25,14 +25,20 @@ export class InfoDocsService {
   constructor(
     @InjectRepository(InfoDoc) private readonly infoDocRepository: BaseRepository<InfoDoc>,
     @InjectRepository(DocSeries) private readonly docSeriesRepository: BaseRepository<DocSeries>,
+    @InjectRepository(SchoolGroup) private readonly schoolGroupRepository: BaseRepository<SchoolGroup>,
     private readonly infoDocSearchService: InfoDocSearchService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   public async create(createInfoDocDto: CreateInfoDocDto, file: FileUpload): Promise<InfoDoc> {
     const docSeries = await this.docSeriesRepository.findOne({ id: createInfoDocDto.docSeries });
+    const schoolGroup = (typeof createInfoDocDto.schoolGroupId === 'number')
+      ? await this.schoolGroupRepository.findOneOrFail({ id: createInfoDocDto.schoolGroupId })
+      : null;
+
     const infoDoc = new InfoDoc({
       ...createInfoDocDto,
+      ...(schoolGroup ? { schoolGroup } : {}),
       file,
       docSeries,
     });
@@ -48,8 +54,6 @@ export class InfoDocsService {
     // TODO: Maybe the user won't have access to all docs. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
     let options: FilterQuery<InfoDoc> = {};
-    if (typeof filters.schoolYear !== 'undefined')
-      options = { ...options, schoolYear: filters.schoolYear };
     if (typeof filters.year !== 'undefined')
       options = { ...options, year: filters.year };
 
@@ -64,10 +68,6 @@ export class InfoDocsService {
     const allDocuments: InfoDoc[] = await this.infoDocRepository.findAll();
 
     const groupFilters: GroupFilters<InfoDoc> = {
-      schoolYear: elt => ({
-        key: elt.schoolYear?.toString(),
-        metadata: elt.schoolYear ? SchoolYear[elt.schoolYear] : null,
-      }),
       year: elt => ({ key: elt.year.toString(), metadata: null }),
     } as const;
 
@@ -90,12 +90,21 @@ export class InfoDocsService {
       { populate: ['file', 'file.user', 'docSeries'] },
     );
 
+    const schoolGroup = (typeof updateCourseDto.schoolGroupId === 'number')
+      ? await this.schoolGroupRepository.findOneOrFail({ id: updateCourseDto.schoolGroupId })
+      : infoDoc.schoolGroup;
+
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, infoDoc);
 
     const docSeries = await this.docSeriesRepository.findOneOrFail({ id: updateCourseDto.docSeries });
 
-    wrap(infoDoc).assign({ ...updateCourseDto, docSeries });
+    wrap(infoDoc).assign({
+      ...updateCourseDto,
+      ...(schoolGroup ? { schoolGroup } : {}),
+      docSeries,
+    });
+
     await this.infoDocRepository.flush();
     await this.infoDocSearchService.update(infoDoc);
     return infoDoc;

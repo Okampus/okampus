@@ -1,6 +1,7 @@
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { SchoolGroup } from '../school-group/school-group.entity';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import type { CreateSubjectDto } from './dto/create-subject.dto';
@@ -12,11 +13,18 @@ import { Subject } from './subject.entity';
 export class SubjectsService {
   constructor(
     @InjectRepository(Subject) private readonly subjectRepository: BaseRepository<Subject>,
+    @InjectRepository(SchoolGroup) private readonly schoolGroupRepository: BaseRepository<SchoolGroup>,
     private readonly subjectSearchService: SubjectSearchService,
   ) {}
 
   public async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
-    const subject = new Subject(createSubjectDto);
+    const { schoolGroupId, ...createSubject } = createSubjectDto;
+
+    const schoolGroup = (typeof schoolGroupId === 'number')
+      ? await this.schoolGroupRepository.findOneOrFail({ id: schoolGroupId })
+      : null;
+
+    const subject = new Subject({ ...createSubject, schoolGroup });
     try {
       await this.subjectRepository.persistAndFlush(subject);
     } catch (error: unknown) {
@@ -39,7 +47,13 @@ export class SubjectsService {
   public async update(id: number, updateSubjectDto: UpdateSubjectDto): Promise<Subject> {
     const subject = await this.subjectRepository.findOneOrFail({ id });
 
-    wrap(subject).assign(updateSubjectDto);
+    const { schoolGroupId, ...updateSubject } = updateSubjectDto;
+
+    const schoolGroup = (typeof schoolGroupId === 'number')
+      ? await this.schoolGroupRepository.findOneOrFail({ id: schoolGroupId })
+      : subject.schoolGroup;
+
+    wrap(subject).assign({ ...updateSubject, schoolGroup });
     await this.subjectRepository.flush();
     await this.subjectSearchService.update(subject);
     return subject;

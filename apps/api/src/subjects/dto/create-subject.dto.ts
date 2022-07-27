@@ -1,10 +1,9 @@
 import {
-  IsEnum,
+  IsInt,
   IsOptional,
   IsString,
   Length,
 } from 'class-validator';
-import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 
 export class CreateSubjectDto {
   @Length(1, 10)
@@ -19,8 +18,8 @@ export class CreateSubjectDto {
   @IsString()
   englishName: string;
 
-  @IsEnum(SchoolYear)
-  schoolYear: SchoolYear;
+  @IsInt()
+  schoolGroupId: number | null;
 
   @IsOptional()
   @IsString()

@@ -16,6 +16,9 @@ import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import type { Favorite } from '../favorites/favorite.entity';
 import type { Reaction } from '../reactions/reaction.entity';
 import type { Report } from '../reports/report.entity';
+
+// eslint-disable-next-line import/no-cycle
+import { SchoolGroupMembership } from '../school-group/memberships/school-group-membership.entity';
 // eslint-disable-next-line import/no-cycle
 import { Settings } from '../settings/settings.entity';
 import { TransformCollection } from '../shared/lib/decorators/transform-collection.decorator';
@@ -26,6 +29,7 @@ import { SchoolRole } from '../shared/modules/authorization/types/school-role.en
 // eslint-disable-next-line import/no-cycle
 import { Statistics } from '../statistics/statistics.entity';
 import type { Vote } from '../votes/vote.entity';
+
 
 @ObjectType()
 @Entity()
@@ -70,6 +74,11 @@ export class User extends BaseEntity {
   @Field(() => SchoolRole)
   @Enum(() => SchoolRole)
   schoolRole!: SchoolRole;
+
+  @Field(() => [SchoolGroupMembership], { nullable: true })
+  @OneToMany('SchoolGroupMembership', 'user')
+  @TransformCollection()
+  schoolGroupMemberships = new Collection<SchoolGroupMembership>(this);
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })

@@ -1,13 +1,13 @@
 import {
   Entity,
-  Enum,
   Index,
+  ManyToOne,
   PrimaryKey,
   Property,
   Unique,
 } from '@mikro-orm/core';
+import { SchoolGroup } from '../school-group/school-group.entity';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
-import { SchoolYear } from '../shared/lib/types/enums/school-year.enum';
 
 @Entity()
 export class Subject extends BaseEntity {
@@ -28,13 +28,16 @@ export class Subject extends BaseEntity {
   @Property({ type: 'text' })
   description: string | null = null;
 
-  @Enum(() => SchoolYear)
-  schoolYear!: SchoolYear;
+  @ManyToOne(() => SchoolGroup)
+  schoolGroup: SchoolGroup | null = null;
+
+  @Property()
+  active = true;
 
   constructor(options: {
     name: string;
     englishName: string;
-    schoolYear: SchoolYear;
+    schoolGroup: SchoolGroup | null;
     description?: string | null;
   }) {
     super();

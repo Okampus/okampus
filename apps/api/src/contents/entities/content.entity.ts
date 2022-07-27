@@ -38,9 +38,13 @@ export class Content extends BaseEntity {
   @Property({ type: 'text' })
   body!: string;
 
+  @Field(() => Boolean)
+  @Property()
+  isAnonymous!: boolean;
+
   @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })
-  @Transform(({ obj }: { obj: Content }) => obj.author.id)
+  @Transform(({ obj }: { obj: Content }) => (obj.isAnonymous ? 'anon' : obj.author.id))
   author!: User;
 
   @Field(() => Int)
@@ -117,6 +121,7 @@ export class Content extends BaseEntity {
 
   constructor(options: {
     body: string;
+    isAnonymous: boolean;
     author: User;
     kind: ContentKind;
     contentMaster?: ContentMaster | null;

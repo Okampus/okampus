@@ -71,7 +71,7 @@ export class TeamEvent extends BaseEntity {
   private = false;
 
   @Field(() => TeamEventState)
-  @Enum({ items: () => TeamEventState })
+  @Enum(() => TeamEventState)
   state = TeamEventState.Submitted;
 
   @Field(() => Int)
