@@ -34,7 +34,7 @@
 <script setup>
     import { ref } from 'vue'
 
-    defineProps({
+    const props = defineProps({
         title: {
             type: String,
             required: true,
@@ -56,10 +56,10 @@
     const showChildren = ref(false)
     const openFolder = () => {
         emit('path', {
-            filters: { [this.context]: this.title },
-            children: this.children,
+            filters: { [props.context]: props.title },
+            children: props.children,
         })
-        if (this.children.length > 0) {
+        if (props.children.length > 0) {
             showChildren.value = !showChildren.value
         }
     }
@@ -73,7 +73,7 @@
     }
 
     const sendObject = (data) => {
-        data.filters[this.context] = this.title
+        data.filters[props.context] = props.title
         return data
     }
 </script>

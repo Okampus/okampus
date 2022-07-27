@@ -69,7 +69,7 @@
 <script setup>
     import { computed, watchEffect } from 'vue'
 
-    defineProps({
+    const props = defineProps({
         steps: {
             type: Array,
             default: () => [],
@@ -82,9 +82,9 @@
 
     const emit = defineEmits(['update:modelValue', 'previous-step', 'next-step', 'finish'])
 
-    const currentStep = computed(() => this.modelValue.currentStep)
-    const nextStep = computed(() => this.modelValue.nextStep)
-    const previousStep = computed(() => this.modelValue.previousStep)
+    const currentStep = computed(() => props.modelValue.currentStep)
+    const nextStep = computed(() => props.modelValue.nextStep)
+    const previousStep = computed(() => props.modelValue.previousStep)
 
     watchEffect(() => {
         if (previousStep.value) {

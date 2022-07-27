@@ -114,22 +114,22 @@
     )
 
     const offsetY = computed(() =>
-        this.banner
+        props.banner
             ? {}
             : position.value.includes('top')
-            ? { top: `${this.offset[1]}px` }
+            ? { top: `${props.offset[1]}px` }
             : position.value.includes('bottom')
-            ? { bottom: `${this.offset[1]}px` }
+            ? { bottom: `${props.offset[1]}px` }
             : {},
     )
 
     const offsetX = computed(() =>
-        this.banner
+        props.banner
             ? {}
             : position.value.includes('left')
-            ? { left: `${this.offset[0]}px` }
+            ? { left: `${props.offset[0]}px` }
             : position.value.includes('right')
-            ? { right: `${this.offset[0]}px` }
+            ? { right: `${props.offset[0]}px` }
             : {},
     )
 

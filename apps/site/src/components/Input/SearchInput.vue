@@ -112,7 +112,7 @@
     )
 
     const focusSearchbar = () => {
-        if (props.modelValue.length !== props.itemLimit) this.input.value.focus()
+        if (props.modelValue.length !== props.itemLimit) input.value.focus()
     }
 
     const addItem = (item) => {
@@ -122,8 +122,8 @@
                 : [...props.modelValue, item]),
             item,
         ])
-        this.input.value.focus()
-        this.input.value.value = ''
+        input.value.focus()
+        input.value.value = ''
     }
 
     const deleteItem = (item) => {
