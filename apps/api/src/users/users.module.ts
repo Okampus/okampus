@@ -47,7 +47,7 @@ export class UsersModule implements OnModuleInit {
         id: config.get('adminAccount.username'),
         firstname: config.get('adminAccount.firstName'),
         lastname: config.get('adminAccount.lastName'),
-        email: config.get('adminAccount.username'),
+        email: config.get('adminAccount.email'),
         schoolRole: SchoolRole.Admin,
       });
       await user.setPassword(config.get('adminAccount.password'));

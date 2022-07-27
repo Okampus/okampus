@@ -73,6 +73,7 @@ interface Config {
   };
   adminAccount: {
     username: string;
+    email: string;
     firstName: string;
     lastName: string;
     password: string;
@@ -346,6 +347,11 @@ export const config = createProfiguration<Config>({
       default: 'okampus-admin',
       format: String,
       env: 'ADMIN_ACCOUNT_USERNAME',
+    },
+    email: {
+      default: 'admin@okampus.fr',
+      format: String,
+      env: 'ADMIN_ACCOUNT_EMAIL',
     },
     firstName: {
       default: 'Okampus',
