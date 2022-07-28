@@ -5,6 +5,8 @@ import { BadRequestException, ConflictException, Injectable } from '@nestjs/comm
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { MembershipRequestDirection } from '../../shared/lib/types/enums/membership-request-direction.enum';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
+import { TeamManagedMembershipRequestUpdatedNotification } from '../../shared/modules/notifications/notifications';
+import { NotificationsService } from '../../shared/modules/notifications/notifications.service';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { normalizePagination } from '../../shared/modules/pagination';
 import type { User } from '../../users/user.entity';
@@ -27,6 +29,7 @@ export class TeamMembershipRequestsService {
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamMembershipRequest)
     private readonly teamMembershipRequestRepository: BaseRepository<TeamMembershipRequest>,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   public async create(
@@ -79,6 +82,9 @@ export class TeamMembershipRequestsService {
       meta: createTeamMembershipRequestDto.meta,
     });
     await this.teamMembershipRequestRepository.persistAndFlush(teamMembershipRequest);
+
+    // 6. Send a notification to the team.
+    void this.notificationsService.trigger(new TeamManagedMembershipRequestUpdatedNotification(teamMembershipRequest));
 
     return teamMembershipRequest;
   }
@@ -174,6 +180,8 @@ export class TeamMembershipRequestsService {
       this.teamMemberRepository.persist(teamMember);
       await this.teamMemberRepository.flush();
     }
+
+    void this.notificationsService.trigger(new TeamManagedMembershipRequestUpdatedNotification(request));
 
     return request;
   }

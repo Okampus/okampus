@@ -2,6 +2,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { Badge } from '../badges/entities/badge.entity';
+import { NotificationsModule } from '../shared/modules/notifications/notifications.module';
 import { User } from '../users/user.entity';
 import { Statistics } from './statistics.entity';
 import { StatisticsListener } from './statistics.listener';
@@ -12,6 +13,7 @@ import { DocumentSubscriber } from './subscribers/document.subscriber';
 @Module({
   imports: [
     MikroOrmModule.forFeature([Statistics, User, Badge, BadgeUnlock]),
+    NotificationsModule,
   ],
   controllers: [],
   providers: [

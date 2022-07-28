@@ -10,6 +10,14 @@ import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.en
 import { ValidationStepType } from '../../shared/lib/types/enums/validation-step-type.enum';
 import { Role } from '../../shared/modules/authorization/types/role.enum';
 import { SchoolRole } from '../../shared/modules/authorization/types/school-role.enum';
+import {
+  AdminTeamEventValidationStartedNotification,
+  TeamEventCreatedNotification,
+  TeamEventSubscribedUpdatedNotification,
+  TeamManagedEventUpdatedNotification,
+  TeamSubscribedEventCreatedNotification,
+} from '../../shared/modules/notifications/notifications';
+import { NotificationsService } from '../../shared/modules/notifications/notifications.service';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { serializeOrder } from '../../shared/modules/sorting';
 import { User } from '../../users/user.entity';
@@ -34,6 +42,8 @@ export class TeamEventsService {
     @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(ValidationStep) private readonly validationStepRepository: BaseRepository<ValidationStep>,
+
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   public async create(user: User, id: number, createTeamEventDto: CreateTeamEventDto): Promise<TeamEvent> {
@@ -67,12 +77,13 @@ export class TeamEventsService {
         throw new BadRequestException('Template is not a template');
     }
 
+    let validationStepCount = 0;
     if (createTeamEventDto.state === TeamEventState.Submitted) {
-      const steps = await this.validationStepRepository.count({
+      validationStepCount = await this.validationStepRepository.count({
         configuration: config.get('productName'),
         type: ValidationStepType.TeamEvent,
       });
-      if (steps === 0)
+      if (validationStepCount === 0)
         createTeamEventDto.state = TeamEventState.Published;
     }
 
@@ -86,6 +97,14 @@ export class TeamEventsService {
     });
 
     await this.teamEventRepository.persistAndFlush(event);
+
+    if (createTeamEventDto.state === TeamEventState.Submitted && validationStepCount > 0) {
+      void this.notificationsService.trigger(
+        new AdminTeamEventValidationStartedNotification(event, { executor: user }),
+      );
+    }
+    void this.notificationsService.trigger(new TeamManagedEventUpdatedNotification(event, { executor: user }));
+
     return event;
   }
 
@@ -195,8 +214,8 @@ export class TeamEventsService {
 
     // Check that the provided form id is valid, is a template, and is not already used
     let form: TeamForm | undefined;
-    if (updateTeamEventDto.formId) {
-      form = await this.teamFormRepository.findOneOrFail({ id: updateTeamEventDto.formId, team: event.team });
+    if (dto.formId) {
+      form = await this.teamFormRepository.findOneOrFail({ id: dto.formId, team: event.team });
       if (form.isTemplate)
         throw new BadRequestException('Form is a template');
 
@@ -205,17 +224,38 @@ export class TeamEventsService {
         throw new BadRequestException('Form is already used');
     }
 
+    let validationStepCount = 0;
     if (dto.state === TeamEventState.Submitted) {
-      const steps = await this.validationStepRepository.count({
+      validationStepCount = await this.validationStepRepository.count({
         configuration: config.get('productName'),
         type: ValidationStepType.TeamEvent,
       });
-      if (steps === 0)
+      if (validationStepCount === 0)
         dto.state = TeamEventState.Published;
+    }
+
+    if (event.state !== TeamEventState.Submitted && dto.state === TeamEventState.Submitted && validationStepCount > 0) {
+      void this.notificationsService.trigger(
+        new AdminTeamEventValidationStartedNotification(event, { executor: user }),
+      );
+    } else if (event.state !== TeamEventState.Published && dto.state === TeamEventState.Published) {
+      void this.notificationsService.triggerFirst(
+        new TeamManagedEventUpdatedNotification(event, { executor: user }),
+        new TeamSubscribedEventCreatedNotification(event, { executor: user }),
+        new TeamEventCreatedNotification(event, { executor: user }),
+      );
+    } else if (event.state === TeamEventState.Published) {
+      void this.notificationsService.triggerFirst(
+        new TeamManagedEventUpdatedNotification(event, { executor: user }),
+        new TeamEventSubscribedUpdatedNotification(event, { executor: user }),
+      );
+    } else {
+      void this.notificationsService.trigger(new TeamManagedEventUpdatedNotification(event, { executor: user }));
     }
 
     wrap(event).assign({ ...dto, form });
     await this.teamEventRepository.flush();
+
     return event;
   }
 
@@ -223,6 +263,11 @@ export class TeamEventsService {
     const event = await this.teamEventRepository.findOneOrFail({ id }, { populate: ['team', 'team.members'] });
     if (!event.canEdit(user))
       throw new ForbiddenException('Not a team admin');
+
+    void this.notificationsService.triggerFirst(
+      new TeamManagedEventUpdatedNotification(event, { executor: user }),
+      new TeamEventSubscribedUpdatedNotification(event, { executor: user }),
+    );
 
     await this.teamEventRepository.removeAndFlush(event);
   }

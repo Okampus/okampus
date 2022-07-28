@@ -6,6 +6,8 @@ import { ValidationType } from '../shared/lib/types/enums/validation-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
+import { ThreadSubscribedAnsweredNotification } from '../shared/modules/notifications/notifications';
+import { NotificationsService } from '../shared/modules/notifications/notifications.service';
 import type { User } from '../users/user.entity';
 import { Validation } from './validation.entity';
 
@@ -14,6 +16,7 @@ export class ValidationsService {
   constructor(
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
     @InjectRepository(Validation) private readonly validationRepository: BaseRepository<Validation>,
+    private readonly notificationsService: NotificationsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -30,6 +33,8 @@ export class ValidationsService {
 
     const validation = new Validation({ content, user, type });
     await this.validationRepository.persistAndFlush(validation);
+
+    void this.notificationsService.trigger(new ThreadSubscribedAnsweredNotification(content, { executor: user }));
 
     return validation;
   }

@@ -5,6 +5,8 @@ import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
+import { AdminTeamContactUpdatedNotification } from '../shared/modules/notifications/notifications';
+import { NotificationsService } from '../shared/modules/notifications/notifications.service';
 import { Team } from '../teams/teams/team.entity';
 import type { User } from '../users/user.entity';
 import type { CreateContactAccountDto } from './dto/create-contact-account.dto';
@@ -17,6 +19,7 @@ import { UserContactAccount } from './entities/user-contact-account.entity';
 
 @Injectable()
 export class ContactsService {
+  // eslint-disable-next-line max-params
   constructor(
     /* eslint-disable max-len */
     @InjectRepository(Contact) private readonly contactsRepository: BaseRepository<Contact>,
@@ -24,6 +27,7 @@ export class ContactsService {
     @InjectRepository(UserContactAccount) private readonly userContactsAccountRepository: BaseRepository<UserContactAccount>,
     @InjectRepository(TeamContactAccount) private readonly teamContactsAccountRepository: BaseRepository<TeamContactAccount>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
+    private readonly notificationsService: NotificationsService,
     /* eslint-enable max-len */
   ) {}
 
@@ -111,6 +115,11 @@ export class ContactsService {
     const contact = await this.contactsRepository.findOneOrFail({ id: createContactAccountDto.id });
     const contactAccount = new TeamContactAccount({ team, ...createContactAccountDto, contact });
     await this.teamContactsAccountRepository.persistAndFlush(contactAccount);
+
+    void this.notificationsService.trigger(
+      new AdminTeamContactUpdatedNotification(contactAccount, { executor: requester }),
+    );
+
     return contactAccount;
   }
 
@@ -134,8 +143,15 @@ export class ContactsService {
     if (!teamContact.team.canAdminister(requester))
       throw new ForbiddenException('Not a team admin');
 
+    const previous = { previousLink: teamContact.link, previousPseudo: teamContact.pseudo };
+
     wrap(teamContact).assign(updateContactDto);
     await this.teamContactsAccountRepository.flush();
+
+    void this.notificationsService.trigger(
+      new AdminTeamContactUpdatedNotification(teamContact, { ...previous, executor: requester }),
+    );
+
     return teamContact;
   }
 
@@ -148,6 +164,12 @@ export class ContactsService {
     if (!teamContact.team.canAdminister(requester))
       throw new ForbiddenException('Not a team admin');
 
+    const previous = { previousLink: teamContact.link, previousPseudo: teamContact.pseudo };
+
     await this.teamContactsAccountRepository.removeAndFlush(teamContact);
+
+    void this.notificationsService.trigger(
+      new AdminTeamContactUpdatedNotification(teamContact, { ...previous, executor: requester }),
+    );
   }
 }

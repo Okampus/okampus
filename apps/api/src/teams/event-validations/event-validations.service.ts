@@ -6,6 +6,14 @@ import { config } from '../../shared/configs/config';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.enum';
 import { ValidationStepType } from '../../shared/lib/types/enums/validation-step-type.enum';
+import {
+  AdminTeamEventValidationApprovedNotification,
+  AdminTeamEventValidationRejectedNotification,
+  AdminTeamEventValidationStepNotification,
+  TeamEventManagedApprovedNotification,
+  TeamEventManagedRejectedNotification,
+} from '../../shared/modules/notifications/notifications';
+import { NotificationsService } from '../../shared/modules/notifications/notifications.service';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
 import type { User } from '../../users/user.entity';
 import { TeamEvent } from '../events/team-event.entity';
@@ -20,6 +28,8 @@ export class TeamEventValidationsService {
     @InjectRepository(TeamEvent) private readonly teamEventRepository: BaseRepository<TeamEvent>,
     @InjectRepository(TeamEventValidation)
     private readonly teamEventValidationRepository: BaseRepository<TeamEventValidation>,
+
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   public async create(
@@ -58,9 +68,16 @@ export class TeamEventValidationsService {
 
     // 5. If we are rejecting the event, we need to update the event state
     if (!createTeamEventValidationDto.approved) {
+      // => Rejected !
       event.state = TeamEventState.Rejected;
       event.validationStep = 0;
       await this.teamEventRepository.flush();
+
+      void this.notificationsService.triggerFirst(
+        new AdminTeamEventValidationRejectedNotification(validation),
+        new TeamEventManagedRejectedNotification(event, { message: createTeamEventValidationDto.message }),
+      );
+
       return validation;
     }
 
@@ -68,22 +85,31 @@ export class TeamEventValidationsService {
     const alreadyValidated = await this.teamEventValidationRepository.count({ event, step: event.validationStep });
     if (alreadyValidated === step.users.length) {
       // 7. If we are at the last step, publish the event
-      const hasNextStep = await this.validationStepRepository.count({
+      const nextStep = await this.validationStepRepository.findOne({
         type: ValidationStepType.TeamEvent,
         configuration: config.get('productName'),
         step: event.validationStep + 1,
       });
 
-      if (!hasNextStep) {
+      if (!nextStep) {
+        // => Approved !
         event.state = TeamEventState.Published;
         event.validationStep = 0;
         await this.teamEventRepository.flush();
+
+        void this.notificationsService.triggerFirst(
+          new TeamEventManagedApprovedNotification(event),
+          new AdminTeamEventValidationApprovedNotification(event),
+        );
+
         return validation;
       }
 
       // 6.b. Advance to the next step
       event.validationStep++;
       await this.teamEventRepository.flush();
+
+      void this.notificationsService.trigger(new AdminTeamEventValidationStepNotification(event, nextStep));
     }
 
     return validation;

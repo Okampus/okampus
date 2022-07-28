@@ -2,6 +2,8 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
+import { AdminTeamLegalFileUpdatedNotification } from '../../shared/modules/notifications/notifications';
+import { NotificationsService } from '../../shared/modules/notifications/notifications.service';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { Team } from '../../teams/teams/team.entity';
 import type { User } from '../../users/user.entity';
@@ -16,6 +18,8 @@ export class TeamFilesService {
   constructor(
     @InjectRepository(TeamFile) private readonly teamFileRepository: BaseRepository<TeamFile>,
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
+
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   public async create(
@@ -33,6 +37,11 @@ export class TeamFilesService {
 
     const teamFile = new TeamFile({ ...createGalleryImageDto, team, file });
     await this.teamFileRepository.persistAndFlush(teamFile);
+
+    void this.notificationsService.trigger(
+      new AdminTeamLegalFileUpdatedNotification(teamFile, { executor: user }),
+    );
+
     return teamFile;
   }
 
@@ -62,28 +71,37 @@ export class TeamFilesService {
     id: string,
     updateGalleryImageDto: UpdateTeamFileDto,
   ): Promise<TeamFile> {
-    const image = await this.teamFileRepository.findOneOrFail(
+    const teamFile = await this.teamFileRepository.findOneOrFail(
       { id },
       { populate: ['file', 'file.user', 'team', 'team.members'] },
     );
 
-    if (!image.team.canAdminister(user))
+    if (!teamFile.team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
-    wrap(image).assign(updateGalleryImageDto);
-    await this.teamFileRepository.persistAndFlush(image);
-    return image;
+    wrap(teamFile).assign(updateGalleryImageDto);
+    await this.teamFileRepository.persistAndFlush(teamFile);
+
+    void this.notificationsService.trigger(
+      new AdminTeamLegalFileUpdatedNotification(teamFile, { executor: user }),
+    );
+
+    return teamFile;
   }
 
   public async remove(user: User, id: string): Promise<void> {
-    const image = await this.teamFileRepository.findOneOrFail(
+    const teamFile = await this.teamFileRepository.findOneOrFail(
       { id },
       { populate: ['file', 'file.user', 'team', 'team.members'] },
     );
 
-    if (!image.team.canAdminister(user))
+    if (!teamFile.team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
-    await this.teamFileRepository.removeAndFlush(image);
+    await this.teamFileRepository.removeAndFlush(teamFile);
+
+    void this.notificationsService.trigger(
+      new AdminTeamLegalFileUpdatedNotification(teamFile, { executor: user }),
+    );
   }
 }

@@ -43,7 +43,7 @@ export class ThreadsService {
 
   public async create(user: User, createThreadDto: CreateThreadDto): Promise<Thread> {
     const post = await this.contentsService.createPost(user, createThreadDto);
-    const { tags, ...createThread } = createThreadDto;
+    const { tags, assignees, ...createThread } = createThreadDto;
 
     const thread = new Thread({ ...createThread, post });
     post.contentMaster = thread;
@@ -60,8 +60,8 @@ export class ThreadsService {
     }
     thread.tags.add(...existingTags);
 
-    const assignees = await this.userRepository.find({ id: { $in: createThreadDto.assignees } });
-    thread.assignees.add(...assignees);
+    const foundAssignees = await this.userRepository.find({ id: { $in: assignees } });
+    thread.assignees.add(...foundAssignees);
     thread.participants.add(user);
 
     await this.contentRepository.flush();

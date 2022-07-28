@@ -11,6 +11,8 @@ import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
 import { Statistic } from '../shared/lib/types/enums/statistic.enum';
 import { isYesterday } from '../shared/lib/utils/date-utils';
+import { BadgeUnlockedNotification } from '../shared/modules/notifications/notifications';
+import { NotificationsService } from '../shared/modules/notifications/notifications.service';
 import { User } from '../users/user.entity';
 import { Statistics } from './statistics.entity';
 
@@ -21,6 +23,7 @@ export class StatisticsListener {
     @InjectRepository(Badge) private readonly badgeRepository: BaseRepository<Badge>,
     @InjectRepository(BadgeUnlock) private readonly badgeUnlockRepository: BaseRepository<BadgeUnlock>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   @OnEvent('content.created')
@@ -88,8 +91,11 @@ export class StatisticsListener {
       toBeUnlocked.push(new BadgeUnlock({ user: stats.user, badge }));
     }
 
-    if (toBeUnlocked.length > 0)
+    if (toBeUnlocked.length > 0) {
       await this.badgeUnlockRepository.persistAndFlush(toBeUnlocked);
+      for (const badge of toBeUnlocked)
+        void this.notificationsService.trigger(new BadgeUnlockedNotification(badge));
+    }
 
     await this.statisticsRepository.flush();
     await this.userRepository.flush();
