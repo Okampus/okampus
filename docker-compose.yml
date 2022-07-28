@@ -62,3 +62,11 @@ services:
       MIKRO_ORM_HOST: ${MIKRO_ORM_HOST}
       TYPESENSE_HOST: ${TYPESENSE_HOST}
       TYPESENSE_PORT: ${TYPESENSE_PORT}
+
+  strapi:
+    image: strapi/strapi
+    restart: always
+    depends_on:
+      - database
+    volumes:
+      - ./apps/strapi:/app

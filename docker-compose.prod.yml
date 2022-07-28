@@ -12,6 +12,7 @@ services:
       - 80:80
       - 443:443
       - 8080:8080
+      - 1337:1337
     environment:
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN}
 
@@ -37,3 +38,11 @@ services:
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls.certresolver=le"
       - "traefik.http.services.api.loadbalancer.server.port=8081"
+
+  strapi:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.meta.rule=Host(`meta.okampus.fr`)"
+      - "traefik.http.routers.meta.entrypoints=websecure"
+      - "traefik.http.routers.meta.tls.certresolver=le"
+      - "traefik.http.services.meta.loadbalancer.server.port=1337"

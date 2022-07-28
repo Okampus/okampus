@@ -24,3 +24,7 @@ services:
   api:
     ports:
       - 443:8081
+
+  strapi:
+    ports:
+      - 1337:1337
