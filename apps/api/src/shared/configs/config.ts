@@ -377,7 +377,6 @@ export const config = createProfiguration<Config>({
     },
   },
 }, {
-  strict: true,
   verbose: true,
   logger: (message: string) => {
     logger.log(message.replace(/^@golevelup\/profiguration: /g, ''));
