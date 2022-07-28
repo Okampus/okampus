@@ -55,6 +55,7 @@ services:
       - redis
       - database
       - typesense
+    env_file: ./apps/api/.env
     volumes:
       - ./apps/api/uploads:/app/uploads
     environment:
@@ -62,6 +63,8 @@ services:
       MIKRO_ORM_HOST: ${MIKRO_ORM_HOST}
       TYPESENSE_HOST: ${TYPESENSE_HOST}
       TYPESENSE_PORT: ${TYPESENSE_PORT}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
 
   strapi:
     image: strapi/strapi

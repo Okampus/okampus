@@ -1,21 +1,24 @@
 FROM node:16.13.1-alpine3.12
 
 WORKDIR /app
-RUN adduser -HD --uid 1111 api
-
-ADD .env ./
-ADD package*.json ./
-ADD . ./
-RUN chmod -R +x ./scripts
-RUN chmod 777 ./
-RUN npm install --force
-RUN npm run build
+RUN adduser -D --uid 1111 api
 
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
 RUN chmod +x /wait
-RUN chown api:api /app/src/schema.gql
 
-EXPOSE 8081
+ADD ./scripts /scripts
+RUN chmod -R +x /scripts
+
+RUN chown api:api ./
 USER api
 
-CMD /wait && ./scripts/launch.sh
+ADD --chown=api:api package*.json ./
+RUN npm install --force
+
+ADD --chown=api:api . ./
+
+RUN npm run build
+
+EXPOSE 8081
+
+CMD /wait && /scripts/launch.sh
