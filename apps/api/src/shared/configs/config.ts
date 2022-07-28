@@ -78,6 +78,13 @@ interface Config {
     lastName: string;
     password: string;
   };
+  anonAccount: {
+    username: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+  };
   settings: {
     metricsCron: string;
   };
@@ -367,6 +374,33 @@ export const config = createProfiguration<Config>({
       default: 'root',
       format: String,
       env: 'ADMIN_ACCOUNT_PASSWORD',
+    },
+  },
+  anonAccount: {
+    username: {
+      default: 'anon',
+      format: String,
+      env: 'ANON_ACCOUNT_USERNAME',
+    },
+    email: {
+      default: 'anon@okampus.fr',
+      format: String,
+      env: 'ANON_ACCOUNT_EMAIL',
+    },
+    firstName: {
+      default: 'Anonyme',
+      format: String,
+      env: 'ANON_ACCOUNT_FIRST_NAME',
+    },
+    lastName: {
+      default: '',
+      format: String,
+      env: 'ANON_ACCOUNT_LAST_NAME',
+    },
+    password: {
+      default: 'root',
+      format: String,
+      env: 'ANON_ACCOUNT_PASSWORD',
     },
   },
   settings: {

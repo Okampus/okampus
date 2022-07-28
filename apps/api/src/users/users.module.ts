@@ -55,5 +55,20 @@ export class UsersModule implements OnModuleInit {
       await this.userRepository.persistAndFlush(user);
       await this.userSearchService.add(user);
     }
+
+    const anon = await this.userRepository.count({ id: config.get('anonAccount.username') });
+    if (anon === 0) {
+      const user = new User({
+        id: config.get('anonAccount.username'),
+        firstname: config.get('anonAccount.firstName'),
+        lastname: config.get('anonAccount.lastName'),
+        email: config.get('anonAccount.email'),
+        schoolRole: SchoolRole.Admin,
+      });
+      await user.setPassword(config.get('anonAccount.password'));
+      user.roles.push(Role.User);
+      await this.userRepository.persistAndFlush(user);
+      await this.userSearchService.add(user);
+    }
   }
 }
