@@ -32,7 +32,7 @@ export class InfoDocsService {
 
   public async create(createInfoDocDto: CreateInfoDocDto, file: FileUpload): Promise<InfoDoc> {
     const docSeries = await this.docSeriesRepository.findOne({ id: createInfoDocDto.docSeries });
-    const schoolGroup = (typeof createInfoDocDto.schoolGroupId === 'number')
+    const schoolGroup = (typeof createInfoDocDto.schoolGroupId === 'string')
       ? await this.schoolGroupRepository.findOneOrFail({ id: createInfoDocDto.schoolGroupId })
       : null;
 
@@ -90,7 +90,7 @@ export class InfoDocsService {
       { populate: ['file', 'file.user', 'docSeries'] },
     );
 
-    const schoolGroup = (typeof updateCourseDto.schoolGroupId === 'number')
+    const schoolGroup = (typeof updateCourseDto.schoolGroupId === 'string')
       ? await this.schoolGroupRepository.findOneOrFail({ id: updateCourseDto.schoolGroupId })
       : infoDoc.schoolGroup;
 

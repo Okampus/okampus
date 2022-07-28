@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -37,7 +36,7 @@ export class SchoolGroupMembershipsController {
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, SchoolGroup))
   public async findMembers(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Query() query: PaginateDto,
   ): Promise<PaginatedResult<SchoolGroupMembership>> {
     return await this.schoolGroupMembershipsService.findMembers(id, normalizePagination(query));
@@ -46,7 +45,7 @@ export class SchoolGroupMembershipsController {
   @Post(':schoolGroupId/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, SchoolGroup))
   public async addMember(
-    @Param('schoolGroupId', ParseIntPipe) schoolGroupId: number,
+    @Param('schoolGroupId') schoolGroupId: string,
     @Param('userId') userId: string,
     @Body() createSchoolGroupMembershipDto: CreateSchoolGroupMembershipDto,
     @CurrentUser() requester: User,
@@ -58,7 +57,7 @@ export class SchoolGroupMembershipsController {
   @Patch(':schoolGroupId/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, SchoolGroup))
   public async updateMember(
-    @Param('schoolGroupId', ParseIntPipe) schoolGroupId: number,
+    @Param('schoolGroupId') schoolGroupId: string,
     @Param('userId') userId: string,
     @Body() updateSchoolGroupMembershipDto: UpdateSchoolGroupMembershipDto,
     @CurrentUser() requester: User,
@@ -70,7 +69,7 @@ export class SchoolGroupMembershipsController {
   @Delete(':schoolGroupId/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, SchoolGroup))
   public async removeMember(
-    @Param('schoolGroupId', ParseIntPipe) schoolGroupId: number,
+    @Param('schoolGroupId') schoolGroupId: string,
     @Param('userId') userId: string,
     @CurrentUser() requester: User,
   ): Promise<SchoolGroupMembership> {

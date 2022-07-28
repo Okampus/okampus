@@ -11,11 +11,11 @@ import { Subject } from './subject.entity';
 
 // TODO: deal with subject's schoolGroup
 export interface IndexedSubject {
-  code: string;
+  id: string;
   name: string;
   englishName: string;
   description: string | null;
-  id: string;
+  code: string;
 }
 
 @Injectable()
@@ -79,11 +79,11 @@ export class SubjectSearchService extends SearchService<Subject, IndexedSubject>
 
   public toIndexedEntity(subject: Subject): IndexedSubject {
     return {
-      code: subject.code,
+      id: subject.id.toString(),
       name: subject.name,
       englishName: subject.englishName,
       description: subject.description,
-      id: subject.id.toString(),
+      code: subject.code,
     };
   }
 }

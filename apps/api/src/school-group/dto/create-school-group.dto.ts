@@ -6,7 +6,7 @@ export class CreateSchoolGroupDto {
   @Field()
   @Length(1, 100)
   @IsString()
-  code: string;
+  id: string;
 
   @Field()
   @Length(1, 100)
@@ -23,7 +23,7 @@ export class CreateSchoolGroupDto {
   @Length(1, 100)
   @IsOptional()
   @IsString()
-  parentCode?: string | null;
+  parentId?: string | null;
 
   @Field(() => String, { nullable: true })
   @IsOptional()

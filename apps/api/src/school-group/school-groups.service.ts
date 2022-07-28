@@ -14,8 +14,8 @@ export class SchoolGroupsService {
   ) {}
 
   public async create(createSchoolGroupDto: CreateSchoolGroupDto): Promise<SchoolGroup> {
-    const parent = createSchoolGroupDto.parentCode
-      ? await this.schoolGroupRepository.findOneOrFail({ code: createSchoolGroupDto.parentCode })
+    const parent = createSchoolGroupDto.parentId
+      ? await this.schoolGroupRepository.findOneOrFail({ id: createSchoolGroupDto.parentId })
       : null;
 
     const schoolGroup = new SchoolGroup({
@@ -37,13 +37,13 @@ export class SchoolGroupsService {
     return await this.schoolGroupRepository.findWithPagination(paginationOptions);
   }
 
-  public async findOne(id: number): Promise<SchoolGroup> {
+  public async findOne(id: string): Promise<SchoolGroup> {
     return await this.schoolGroupRepository.findOneOrFail({ id });
   }
 
-  public async update(id: number, updateSchoolGroupDto: UpdateSchoolGroupDto): Promise<SchoolGroup> {
-    const parent = updateSchoolGroupDto.parentCode
-      ? await this.schoolGroupRepository.findOneOrFail({ code: updateSchoolGroupDto.parentCode })
+  public async update(id: string, updateSchoolGroupDto: UpdateSchoolGroupDto): Promise<SchoolGroup> {
+    const parent = updateSchoolGroupDto.parentId
+      ? await this.schoolGroupRepository.findOneOrFail({ id: updateSchoolGroupDto.parentId })
       : null;
 
     const schoolGroup = await this.schoolGroupRepository.findOneOrFail({ id });
@@ -54,7 +54,7 @@ export class SchoolGroupsService {
   }
 
   // TODO: differentiate soft from hard delete
-  public async remove(id: number): Promise<void> {
+  public async remove(id: string): Promise<void> {
     const schoolGroup = await this.schoolGroupRepository.findOneOrFail({ id });
     await this.schoolGroupRepository.removeAndFlush(schoolGroup);
   }

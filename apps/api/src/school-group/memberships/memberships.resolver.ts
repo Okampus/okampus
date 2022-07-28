@@ -16,7 +16,7 @@ export class SchoolYearsResolver {
   // TODO: Add permission checks
   @Query(() => SchoolGroupMembership)
   public async schoolGroupMembershipsById(
-    @Args('id', { type: () => Int }) id: number,
+    @Args('id') id: string,
   ): Promise<SchoolGroupMembership[]> {
     const paginatedMemberships = await this.schoolGroupMembershipsService.findMembers(id);
     return paginatedMemberships.items;

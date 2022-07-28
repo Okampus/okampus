@@ -1,6 +1,5 @@
 import {
   Args,
-  Int,
   Query,
   Resolver,
 } from '@nestjs/graphql';
@@ -15,7 +14,7 @@ export class SchoolGroupsResolver {
 
   // TODO: Add permission checks
   @Query(() => SchoolGroup)
-  public async schoolGroupById(@Args('id', { type: () => Int }) id: number): Promise<SchoolGroup> {
+  public async schoolGroupById(@Args('id') id: string): Promise<SchoolGroup> {
     return await this.schoolGroupsService.findOne(id);
   }
 }

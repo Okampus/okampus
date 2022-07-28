@@ -1,5 +1,4 @@
 import {
-  IsInt,
   IsOptional,
   IsString,
   Length,
@@ -18,8 +17,9 @@ export class CreateSubjectDto {
   @IsString()
   englishName: string;
 
-  @IsInt()
-  schoolGroupId: number | null;
+  @IsOptional()
+  @IsString()
+  schoolGroupId?: string;
 
   @IsOptional()
   @IsString()

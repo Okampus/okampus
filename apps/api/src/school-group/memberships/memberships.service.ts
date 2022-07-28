@@ -30,7 +30,7 @@ export class SchoolGroupMembershipsService {
   }
 
   public async findMembers(
-    id: number,
+    id: string,
     paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<SchoolGroupMembership>> {
     return await this.schoolGroupMembershipsRepository.findWithPagination(
@@ -40,8 +40,8 @@ export class SchoolGroupMembershipsService {
     );
   }
 
-  public async findActiveMembership(id: string, inSchoolGroup: number | 'any' = 'any'): Promise<SchoolGroupMembership> {
-    if (inSchoolGroup === 'any') {
+  public async findActiveMembership(id: string, inSchoolGroup: string | null = null): Promise<SchoolGroupMembership> {
+    if (inSchoolGroup === null) {
       return await this.schoolGroupMembershipsRepository.findOneOrFail({
         user: { id },
         active: true,
@@ -57,7 +57,7 @@ export class SchoolGroupMembershipsService {
 
   public async giveMembership(
     requester: User,
-    schoolGroupId: number,
+    schoolGroupId: string,
     userId: string,
     createSchoolGroupMembershipDto: CreateSchoolGroupMembershipDto,
   ): Promise<SchoolGroupMembership> {
@@ -99,7 +99,7 @@ export class SchoolGroupMembershipsService {
 
   public async removeMembership(
     requester: User,
-    schoolGroupId: number,
+    schoolGroupId: string,
     userId: string,
   ): Promise<SchoolGroupMembership> {
     // 1. Check that the given schoolGroup and user membership exist, and fetch them.
@@ -123,7 +123,7 @@ export class SchoolGroupMembershipsService {
 
   public async updateMembership(
     requester: User,
-    schoolGroupId: number,
+    schoolGroupId: string,
     userId: string,
     updateSchoolGroupMembershipDto: UpdateSchoolGroupMembershipDto,
   ): Promise<SchoolGroupMembership> {

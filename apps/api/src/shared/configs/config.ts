@@ -85,6 +85,11 @@ interface Config {
     lastName: string;
     password: string;
   };
+  everyoneGroup: {
+    id: string;
+    name: string;
+    description: string;
+  };
   settings: {
     metricsCron: string;
   };
@@ -401,6 +406,23 @@ export const config = createProfiguration<Config>({
       default: 'root',
       format: String,
       env: 'ANON_ACCOUNT_PASSWORD',
+    },
+  },
+  everyoneGroup: {
+    id: {
+      default: 'everyone',
+      format: String,
+      env: 'EVERYONE_GROUP_CODE',
+    },
+    name: {
+      default: 'Tout le monde',
+      format: String,
+      env: 'EVERYONE_GROUP_NAME',
+    },
+    description: {
+      default: 'Groupe commun à tous les étudiants 🚀',
+      format: String,
+      env: 'ANON_ACCOUNT_FIRST_NAME',
     },
   },
   settings: {

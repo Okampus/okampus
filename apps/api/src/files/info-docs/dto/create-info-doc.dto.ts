@@ -11,8 +11,8 @@ export class CreateInfoDocDto extends CreateFileUploadDto {
   year!: number;
 
   @IsOptional()
-  @IsInt()
-  schoolGroupId?: number;
+  @IsString()
+  schoolGroupId?: string;
 
   @IsOptional()
   @IsString()

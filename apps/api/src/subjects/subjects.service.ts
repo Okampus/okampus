@@ -20,7 +20,7 @@ export class SubjectsService {
   public async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
     const { schoolGroupId, ...createSubject } = createSubjectDto;
 
-    const schoolGroup = (typeof schoolGroupId === 'number')
+    const schoolGroup = (typeof schoolGroupId === 'string')
       ? await this.schoolGroupRepository.findOneOrFail({ id: schoolGroupId })
       : null;
 
@@ -49,7 +49,7 @@ export class SubjectsService {
 
     const { schoolGroupId, ...updateSubject } = updateSubjectDto;
 
-    const schoolGroup = (typeof schoolGroupId === 'number')
+    const schoolGroup = (typeof schoolGroupId === 'string')
       ? await this.schoolGroupRepository.findOneOrFail({ id: schoolGroupId })
       : subject.schoolGroup;
 

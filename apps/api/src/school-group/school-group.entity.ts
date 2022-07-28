@@ -6,9 +6,8 @@ import {
   OneToMany,
   PrimaryKey,
   Property,
-  Unique,
 } from '@mikro-orm/core';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { TransformCollection } from '../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { SchoolGroupRole } from '../shared/lib/types/enums/school-group-role.enum';
@@ -22,14 +21,9 @@ const ADMIN_ROLES = new Set([SchoolGroupRole.Representative, SchoolGroupRole.Sub
 @ObjectType()
 @Entity()
 export class SchoolGroup extends BaseEntity {
-  @Field(() => Int)
+  @Field()
   @PrimaryKey()
-  id!: number;
-
-  @Property()
-  @Index()
-  @Unique()
-  code!: string;
+  id!: string;
 
   @Field()
   @Property()
@@ -59,7 +53,7 @@ export class SchoolGroup extends BaseEntity {
 
   constructor(options: {
     name: string;
-    code: string;
+    id: string;
     englishName?: string | null;
     parent?: SchoolGroup | null;
     description?: string | null;
