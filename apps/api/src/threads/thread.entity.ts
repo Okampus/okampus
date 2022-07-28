@@ -13,6 +13,7 @@ import { TransformCollection } from '../shared/lib/decorators/transform-collecti
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { ContentMasterType } from '../shared/lib/types/enums/content-master-type.enum';
 import { ThreadType } from '../shared/lib/types/enums/thread-type.enum';
+import { Team } from '../teams/teams/team.entity';
 import { User } from '../users/user.entity';
 import { Validation } from '../validations/validation.entity';
 
@@ -36,10 +37,15 @@ export class Thread extends ContentMaster {
   @TransformCollection()
   adminValidations = new Collection<Validation>(this);
 
+  @Field(() => [Team])
+  @ManyToMany()
+  @TransformCollection()
+  assignedTeams = new Collection<Team>(this);
+
   @Field(() => [User])
   @ManyToMany()
   @TransformCollection()
-  assignees = new Collection<User>(this);
+  assignedUsers = new Collection<User>(this);
 
   constructor(options: {
     title: string;

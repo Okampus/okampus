@@ -40,6 +40,21 @@ export class SchoolGroupMembershipsService {
     );
   }
 
+  public async findActiveMembership(id: string, inSchoolGroup: number | 'any' = 'any'): Promise<SchoolGroupMembership> {
+    if (inSchoolGroup === 'any') {
+      return await this.schoolGroupMembershipsRepository.findOneOrFail({
+        user: { id },
+        active: true,
+      });
+    }
+
+    return await this.schoolGroupMembershipsRepository.findOneOrFail({
+      user: { id },
+      schoolGroup: { id: inSchoolGroup },
+      active: true,
+    });
+  }
+
   public async giveMembership(
     requester: User,
     schoolGroupId: number,
@@ -58,10 +73,9 @@ export class SchoolGroupMembershipsService {
     const newMember = await this.userRepository.findOneOrFail({ id: userId });
 
     // 2. Check that the user has no active membership in the schoolGroup.
-    const activeMemberships = await this.schoolGroupMembershipsRepository
-      .find({ user: userId, active: true });
+    const activeMembership = await this.findActiveMembership(userId);
 
-    if (activeMemberships.some(membership => membership.schoolGroup.id === schoolGroupId))
+    if (activeMembership.schoolGroup.id === schoolGroupId)
       throw new BadRequestException('User already in schoolGroup');
 
     // 3. Check if the requester can give membership to the user (giving membership to oneself is allowed for now)
@@ -69,8 +83,7 @@ export class SchoolGroupMembershipsService {
       throw new ForbiddenException('Not allowed to give membership to user');
 
     // 4. Make previous active membership inactive; for now a user can only have one membership at a time
-    for (const membership of activeMemberships)
-      membership.active = false;
+    activeMembership.active = false;
 
     // 5. Create new active membership
     const newMembership = new SchoolGroupMembership({
@@ -120,8 +133,7 @@ export class SchoolGroupMembershipsService {
       { populate: ['memberships'] },
     );
 
-    const activeMembership = await this.schoolGroupMembershipsRepository
-      .findOneOrFail({ user: userId, schoolGroup, active: true });
+    const activeMembership = await this.findActiveMembership(userId, schoolGroupId);
 
     const { id, ...previousMembership } = activeMembership;
     // 2. Check that the given schoolYear exists

@@ -112,21 +112,39 @@ export class ThreadsController {
     await this.threadsService.removeTags(id, tagsDto.tags);
   }
 
-  @Post(':id/assignees')
+  @Post(':id/assignees/users')
   @CheckPolicies(ability => ability.can(Action.Interact, Thread))
-  public async addAssignees(
+  public async addUserAssignees(
     @Param('id', ParseIntPipe) id: number,
     @Body() assigneesDto: AssigneesDto,
   ): Promise<Thread> {
-    return await this.threadsService.addAssignees(id, assigneesDto.assignees);
+    return await this.threadsService.addUserAssignees(id, assigneesDto.assignedUsers);
   }
 
-  @Delete(':id/assignees')
+  @Post(':id/assignees/teams')
   @CheckPolicies(ability => ability.can(Action.Interact, Thread))
-  public async removeAssignees(
+  public async addTeamAssignees(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() assigneesDto: AssigneesDto,
+  ): Promise<Thread> {
+    return await this.threadsService.addTeamAssignees(id, assigneesDto.assignedTeams);
+  }
+
+  @Delete(':id/assignees/users')
+  @CheckPolicies(ability => ability.can(Action.Interact, Thread))
+  public async removeUserAssignees(
     @Param('id', ParseIntPipe) id: number,
     @Body() assigneesDto: AssigneesDto,
   ): Promise<void> {
-    await this.threadsService.removeAssignees(id, assigneesDto.assignees);
+    await this.threadsService.removeUserAssignees(id, assigneesDto.assignedUsers);
+  }
+
+  @Delete(':id/assignees/teams')
+  @CheckPolicies(ability => ability.can(Action.Interact, Thread))
+  public async removeTeamAssignees(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() assigneesDto: AssigneesDto,
+  ): Promise<void> {
+    await this.threadsService.removeTeamAssignees(id, assigneesDto.assignedTeams);
   }
 }

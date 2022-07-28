@@ -26,7 +26,7 @@ export class AdminThreadAssignedNotification extends Notification {
   public async ensurePayload(): Promise<void> {
     await this.entityManager.getRepository(Thread).populate(
       this.contentMaster,
-      ['post', 'post.author', 'adminValidations', 'assignees', 'tags'],
+      ['post', 'post.author', 'adminValidations', 'assignedUsers', 'tags'],
     );
   }
 
@@ -43,7 +43,7 @@ export class AdminThreadAssignedNotification extends Notification {
         type: this.contentMaster.type,
         tags: this.contentMaster.tags.getItems().map(tag => tag.name),
         locked: this.contentMaster.locked,
-        assignees: this.contentMaster.assignees.getItems().map(this.userToPayload),
+        assignees: this.contentMaster.assignedUsers.getItems().map(this.userToPayload),
         url: `${computedConfig.frontendUrl}/forum/post/${this.contentMaster.id}`,
       },
     };
