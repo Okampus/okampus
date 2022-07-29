@@ -63,10 +63,9 @@ export class UsersModule implements OnModuleInit {
         firstname: config.get('anonAccount.firstName'),
         lastname: config.get('anonAccount.lastName'),
         email: config.get('anonAccount.email'),
-        schoolRole: SchoolRole.Admin,
+        schoolRole: SchoolRole.Student,
       });
       await user.setPassword(config.get('anonAccount.password'));
-      user.roles.push(Role.User);
       await this.userRepository.persistAndFlush(user);
       await this.userSearchService.add(user);
     }
