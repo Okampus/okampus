@@ -5,6 +5,7 @@ import { TeamEventValidationsModule } from './event-validations/event-validation
 import { TeamEventsModule } from './events/events.module';
 import { TeamFinancesModule } from './finances/finances.module';
 import { TeamFormsModule } from './forms/forms.module';
+import { TeamICalModule } from './ical/ical.module';
 import { TeamMembersModule } from './members/members.module';
 import { TeamMembershipsModule } from './memberships/memberships.module';
 import { TeamMembershipRequestsModule } from './requests/requests.module';
@@ -29,6 +30,8 @@ import { CoreTeamsModule } from './teams/teams.module';
         { path: 'forms', module: TeamFormsModule },
         // Endpoints to manage finances
         { path: 'finances', module: TeamFinancesModule },
+        // Endpoints to manage iCalendars
+        { path: 'ical', module: TeamICalModule },
         // Endpoint to fetch data on a user's team memberships
         { path: 'memberships', module: TeamMembershipsModule },
         // Endpoint to manage team membership requests
@@ -41,6 +44,7 @@ import { CoreTeamsModule } from './teams/teams.module';
     TeamEventsModule,
     TeamFinancesModule,
     TeamFormsModule,
+    TeamICalModule,
     TeamMembershipRequestsModule,
     TeamMembershipsModule,
     TeamMembersModule,

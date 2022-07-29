@@ -770,6 +770,7 @@ type User {
   settings: Settings!
   shortDescription: String
   signature: String
+  teamEventIcal: String!
   updatedAt: DateTime!
 }
 

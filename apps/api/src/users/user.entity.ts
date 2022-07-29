@@ -8,15 +8,16 @@ import {
   OneToOne,
   PrimaryKey,
   Property,
+  Unique,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcrypt';
+import { nanoid } from 'nanoid';
 // eslint-disable-next-line import/no-cycle
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import type { Favorite } from '../favorites/favorite.entity';
 import type { Reaction } from '../reactions/reaction.entity';
 import type { Report } from '../reports/report.entity';
-
 // eslint-disable-next-line import/no-cycle
 import { SchoolGroupMembership } from '../school-group/memberships/school-group-membership.entity';
 // eslint-disable-next-line import/no-cycle
@@ -126,6 +127,12 @@ export class User extends BaseEntity {
   @Field(() => Int)
   @Property()
   points = 0;
+
+  @Field(() => String)
+  @Property()
+  @Index()
+  @Unique()
+  teamEventIcal = nanoid(64);
 
   constructor(options: Omit<UserCreationOptions, 'avatar' | 'banner' | 'password'>) {
     super();

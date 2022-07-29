@@ -194,6 +194,91 @@
           "nullable": false,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "daily_info",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "date"
+          ],
+          "composite": false,
+          "keyName": "daily_info_date_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "date"
+          ],
+          "composite": false,
+          "keyName": "daily_info_date_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "daily_info_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "date": {
+          "name": "date",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "daily_menu",
@@ -424,91 +509,6 @@
           "updateRule": "cascade"
         }
       }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "date": {
-          "name": "date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "content": {
-          "name": "content",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        }
-      },
-      "name": "daily_info",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "date"
-          ],
-          "composite": false,
-          "keyName": "daily_info_date_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "date"
-          ],
-          "composite": false,
-          "keyName": "daily_info_date_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "daily_info_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
     },
     {
       "columns": {
@@ -1187,6 +1187,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "team_event_ical": {
+          "name": "team_event_ical",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         }
       },
       "name": "user",
@@ -1200,6 +1209,24 @@
           "keyName": "user_email_index",
           "primary": false,
           "unique": false
+        },
+        {
+          "columnNames": [
+            "team_event_ical"
+          ],
+          "composite": false,
+          "keyName": "user_team_event_ical_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "team_event_ical"
+          ],
+          "composite": false,
+          "keyName": "user_team_event_ical_unique",
+          "primary": false,
+          "unique": true
         },
         {
           "keyName": "user_pkey",
