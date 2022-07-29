@@ -3,12 +3,14 @@ import {
   Entity,
   Enum,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   OneToOne,
   Property,
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 import type { Content } from '../contents/entities/content.entity';
+import { SchoolGroup } from '../school-group/school-group.entity';
 import { TransformCollection } from '../shared/lib/decorators/transform-collection.decorator';
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { ContentMasterType } from '../shared/lib/types/enums/content-master-type.enum';
@@ -23,6 +25,10 @@ export class Thread extends ContentMaster {
   @Field(() => ThreadType)
   @Enum(() => ThreadType)
   type!: ThreadType;
+
+  @Field(() => SchoolGroup, { nullable: true })
+  @ManyToOne(() => SchoolGroup)
+  scope: SchoolGroup | null = null;
 
   @Field(() => Boolean)
   @Property()

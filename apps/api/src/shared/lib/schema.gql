@@ -115,16 +115,23 @@ enum ContentKind {
 type ContentMaster {
   createdAt: DateTime!
   id: Int!
+  kind: ContentMasterType!
+  participants: [User!]!
   post: Content!
   tags: [Tag!]!
   title: String!
   updatedAt: DateTime!
 }
 
+enum ContentMasterType {
+  Blog
+  Thread
+}
+
 input CreateContentWithKindDto {
   body: String!
   contentKind: ContentKind!
-  isAnonymous: Boolean!
+  isAnonymous: Boolean = false
   parentId: Int!
 }
 
@@ -171,9 +178,11 @@ input CreateTeamMembershipRequestDto {
 }
 
 input CreateThreadDto {
-  assignees: [String!]
+  assignedTeams: [Int!]
+  assignedUsers: [String!]
   body: String!
-  isAnonymous: Boolean!
+  isAnonymous: Boolean = false
+  scope: String!
   tags: [String!]
   title: String!
   type: ThreadType!
@@ -330,7 +339,7 @@ type SchoolGroup {
   createdAt: DateTime!
   description: String
   englishName: String
-  id: Int!
+  id: String!
   memberships: [SchoolGroupMembership!]!
   name: String!
   parent: SchoolGroup
@@ -624,12 +633,16 @@ input TeamsFilterDto {
 
 type Thread {
   adminValidations: [Validation!]!
-  assignees: [User!]!
+  assignedTeams: [Team!]!
+  assignedUsers: [User!]!
   createdAt: DateTime!
   id: Int!
+  kind: ContentMasterType!
   locked: Boolean!
   opValidation: Validation
+  participants: [User!]!
   post: Content!
+  scope: SchoolGroup
   tags: [Tag!]!
   title: String!
   type: ThreadType!
@@ -652,7 +665,7 @@ scalar URL
 input UpdateContentDto {
   body: String
   hidden: Boolean
-  isAnonymous: Boolean
+  isAnonymous: Boolean = false
 }
 
 input UpdateSettingsDto {
@@ -726,10 +739,12 @@ input UpdateTeamMembershipRequestDto {
 }
 
 input UpdateThreadDto {
-  assignees: [String!]
+  assignedTeams: [Int!]
+  assignedUsers: [String!]
   body: String
-  isAnonymous: Boolean
+  isAnonymous: Boolean = false
   locked: Boolean
+  scope: String
   tags: [String!]
   title: String
   type: ThreadType

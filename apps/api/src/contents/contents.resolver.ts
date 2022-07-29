@@ -114,8 +114,8 @@ export class ContentResolver {
       throw new BadRequestException('Child content cannot be post');
 
     const parentContent = child.contentKind === ContentKind.Comment
-      ? await this.contentsService.createComment(user, child)
-      : await this.contentsService.createReply(user, child);
+      ? await this.contentsService.createComment(user, { ...child, isAnonymous: false })
+      : await this.contentsService.createReply(user, { ...child, isAnonymous: false });
 
     await this.pubSub.publish(SubscriptionType.ContentAdded, { contentAdded: parentContent });
     return parentContent;

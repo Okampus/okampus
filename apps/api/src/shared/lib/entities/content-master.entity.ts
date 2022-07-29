@@ -16,7 +16,7 @@ import type { Favorite } from '../../../favorites/favorite.entity';
 import type { Reaction } from '../../../reactions/reaction.entity';
 import type { Report } from '../../../reports/report.entity';
 import { Tag } from '../../../tags/tag.entity';
-import type { User } from '../../../users/user.entity';
+import { User } from '../../../users/user.entity';
 import type { Validation } from '../../../validations/validation.entity';
 import type { Vote } from '../../../votes/vote.entity';
 
@@ -47,10 +47,12 @@ export abstract class ContentMaster extends BaseEntity {
   @OneToOne()
   post!: Content;
 
+  @Field(() => [User])
   @ManyToMany()
   @TransformCollection()
   participants = new Collection<User>(this);
 
+  @Field(() => ContentMasterType)
   @Enum(() => ContentMasterType)
   kind!: ContentMasterType;
 

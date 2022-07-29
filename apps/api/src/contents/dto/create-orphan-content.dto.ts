@@ -10,5 +10,5 @@ export class CreateOrphanContentDto {
 
   @Field(() => Boolean)
   @IsBoolean()
-  isAnonymous: boolean;
+  isAnonymous = false;
 }

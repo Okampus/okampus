@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { ContentsService } from '../contents/contents.service';
 
 import { Content } from '../contents/entities/content.entity';
+import { SchoolGroup } from '../school-group/school-group.entity';
 import type { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { Colors } from '../shared/lib/types/enums/colors.enum';
@@ -34,6 +35,7 @@ export class ThreadsService {
     @InjectRepository(Thread) private readonly threadRepository: BaseRepository<Thread>,
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(SchoolGroup) private readonly schoolGroupRepository: BaseRepository<SchoolGroup>,
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
     @InjectRepository(Validation) private readonly validationRepository: BaseRepository<Validation>,
@@ -46,11 +48,14 @@ export class ThreadsService {
   public async create(user: User, createThreadDto: CreateThreadDto): Promise<Thread> {
     const post = await this.contentsService.createPost(user, createThreadDto);
     const {
- tags, assignedTeams, assignedUsers, ...createThread
-} = createThreadDto;
+      tags, assignedTeams, assignedUsers, ...createThread
+    } = createThreadDto;
 
     const thread = new Thread({ ...createThread, post });
     post.contentMaster = thread;
+
+    const targetSchoolGroup = await this.schoolGroupRepository.findOneOrFail({ id: createThread.scope });
+    thread.scope = targetSchoolGroup;
 
     // TODO: Keep the original order
     const existingTags = await this.tagRepository.find({ name: { $in: createThreadDto.tags } });
@@ -133,8 +138,14 @@ export class ThreadsService {
       assignedTeams: wantedTeamAssignees,
       assignedUsers: wantedUserAssignees,
       validatedWithContent,
+      scope,
       ...updatedProps
     } = updateThreadDto;
+
+    if (scope) {
+        const targetSchoolGroup = await this.schoolGroupRepository.findOneOrFail({ id: scope });
+        thread.scope = targetSchoolGroup;
+    }
 
     if (wantedTags) {
       if (wantedTags.length === 0) {

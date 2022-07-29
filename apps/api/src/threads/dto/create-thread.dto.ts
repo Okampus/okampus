@@ -18,4 +18,8 @@ export class CreateThreadDto extends IntersectionType(
   @Field(() => ThreadType)
   @IsEnum(ThreadType)
   type: ThreadType;
+
+  @Field(() => String)
+  @IsString()
+  scope: string;
 }
