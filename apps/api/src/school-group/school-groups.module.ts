@@ -1,7 +1,7 @@
 import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
-import { config } from '../shared/configs/config';
+import { schoolGroups } from '../shared/configs/strings';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { SchoolGroup } from './school-group.entity';
@@ -23,12 +23,12 @@ export class SchoolGroupsModule implements OnModuleInit {
   ) {}
 
   public async onModuleInit(): Promise<void> {
-    const everyone = await this.schoolGroupRepository.count({ id: config.get('everyoneGroup.id') });
+    const everyone = await this.schoolGroupRepository.count({ id: 'everyone' });
     if (everyone === 0) {
       const group = new SchoolGroup({
-        id: config.get('everyoneGroup.id'),
-        name: config.get('everyoneGroup.name'),
-        description: config.get('everyoneGroup.description'),
+        id: 'everyone',
+        name: schoolGroups.everyoneName,
+        description: schoolGroups.everyoneDescription,
       });
       await this.schoolGroupRepository.persistAndFlush(group);
     }
