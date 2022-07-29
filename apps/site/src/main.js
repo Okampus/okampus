@@ -3,6 +3,9 @@ import App from '@/App.vue'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
+import * as Sentry from '@sentry/vue'
+import { BrowserTracing } from '@sentry/tracing'
+
 import InstantSearch from 'vue-instantsearch/vue3/es'
 import Particles from 'particles.vue3'
 
@@ -30,6 +33,22 @@ import '@/assets/css/tailwind.css'
 import 'swiper/css/bundle'
 
 const app = createApp(App)
+
+if (import.meta.env.VITE_SENTRY_ENABLED === 'true')
+    Sentry.init({
+        app,
+        dsn: import.meta.env.VITE_SENTRY_DSN,
+        integrations: [
+            new BrowserTracing({
+                routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+                tracingOrigins: ['localhost', 'efrei.okampus.fr', /.*/, '*', /^\//],
+            }),
+        ],
+        // Set tracesSampleRate to 1.0 to capture 100%
+        // of transactions for performance monitoring.
+        // We recommend adjusting this value in production
+        tracesSampleRate: 1.0,
+    })
 
 const mobileCheck = function () {
     let check = false
