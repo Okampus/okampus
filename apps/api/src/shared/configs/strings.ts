@@ -1,3 +1,5 @@
+import { SchoolGroupType } from '../lib/types/enums/school-group-type.enum';
+
 export const schoolGroups = [
   {
     id: 'everyone',
@@ -39,4 +41,17 @@ export const schoolGroups = [
 export const iCals = {
   globalName: 'Tous les événements publics',
   personnalName: 'Évènements associatifs pour {0}',
+};
+
+export const scopeString = '@';
+
+export const clubString = 'vie-asso';
+
+export const groupTypeIcons = {
+  clubs: '🎉',
+  [SchoolGroupType.Everyone]: '🏫',
+  [SchoolGroupType.Program]: '💻',
+  [SchoolGroupType.Year]: '🎓',
+  [SchoolGroupType.Sector]: '📚',
+  [SchoolGroupType.Class]: '📒',
 };

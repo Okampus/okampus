@@ -6,10 +6,14 @@ import { ContentsService } from '../contents/contents.service';
 
 import { Content } from '../contents/entities/content.entity';
 import { SchoolGroup } from '../school-group/school-group.entity';
+import {
+ clubString, groupTypeIcons, schoolGroups, scopeString,
+} from '../shared/configs/strings';
 import type { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { Colors } from '../shared/lib/types/enums/colors.enum';
 import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
+import { SchoolGroupType } from '../shared/lib/types/enums/school-group-type.enum';
 import { ValidationType } from '../shared/lib/types/enums/validation-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
@@ -54,12 +58,20 @@ export class ThreadsService {
     const thread = new Thread({ ...createThread, post });
     post.contentMaster = thread;
 
-    const targetSchoolGroup = await this.schoolGroupRepository.findOneOrFail({ id: createThread.scope });
-    thread.scope = targetSchoolGroup;
+    if (createThread.scope === 'clubs') {
+      thread.scope = null;
+      tags.unshift(`${scopeString}${schoolGroups[SchoolGroupType.Everyone].name}${groupTypeIcons[SchoolGroupType.Everyone]}`);
+      tags.unshift(`${groupTypeIcons.clubs}${clubString}`);
+    } else {
+      const targetSchoolGroup = await this.schoolGroupRepository.findOneOrFail({ id: createThread.scope });
+      thread.scope = targetSchoolGroup;
+      tags.unshift(`${scopeString}${targetSchoolGroup.name}${groupTypeIcons[targetSchoolGroup.type]}`);
+    }
+
 
     // TODO: Keep the original order
-    const existingTags = await this.tagRepository.find({ name: { $in: createThreadDto.tags } });
-    const newTags: Tag[] = createThreadDto.tags
+    const existingTags = await this.tagRepository.find({ name: { $in: tags } });
+    const newTags: Tag[] = tags
       .filter(tag => !existingTags.some(t => t.name === tag))
       .map(name => new Tag({ name, color: Colors.Blue }));
 
