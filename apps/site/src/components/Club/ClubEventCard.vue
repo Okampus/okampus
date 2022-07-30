@@ -41,7 +41,7 @@
             <div class="mt-4 flex flex-col gap-3.5 self-start">
                 <div class="flex flex-col">
                     <router-link
-                        :to="`/events/${event.teamEventId}`"
+                        :to="`/events/${event.id}`"
                         class="text-lg font-bold hover:underline"
                         >{{ event.name }}</router-link
                     >
@@ -74,13 +74,13 @@
 
             <div class="my-6 self-center">
                 <router-link
-                    :to="`/events/${event.teamEventId}`"
+                    :to="`/events/${event.id}`"
                     class="button-blue hidden rounded-full font-semibold md:block"
                 >
                     Rejoindre l'événement
                 </router-link>
                 <router-link
-                    :to="`/events/${event.teamEventId}`"
+                    :to="`/events/${event.id}`"
                     class="button-blue block rounded-full font-semibold md:hidden"
                 >
                     Rejoindre

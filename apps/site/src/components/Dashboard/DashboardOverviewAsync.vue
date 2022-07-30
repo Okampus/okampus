@@ -86,13 +86,13 @@
                         <div class="flex items-center gap-2">
                             <div
                                 class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-green-200 p-2 text-green-400 hover:bg-green-300 hover:text-green-500"
-                                @click="clubStore.patchEvents(event.teamEventId, { state: 'approved' })"
+                                @click="clubStore.patchEvents(event.id, { state: 'approved' })"
                             >
                                 <i class="fa-solid fa-check"></i>
                             </div>
                             <div
                                 class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-red-200 p-2 text-red-400 hover:bg-red-300 hover:text-red-500"
-                                @click="clubStore.patchEvents(event.teamEventId, { state: 'rejected' })"
+                                @click="clubStore.patchEvents(event.id, { state: 'rejected' })"
                             >
                                 <i class="fa-solid fa-xmark"></i>
                             </div>

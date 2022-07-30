@@ -67,7 +67,7 @@ export const useClubsStore = defineStore('clubs', {
         },
 
         modifyEvents({ eventId, data }) {
-            this.events[this.events.findIndex((event) => event.teamEventId === eventId)] = data
+            this.events[this.events.findIndex((event) => event.id === eventId)] = data
         },
 
         async getClubs() {
