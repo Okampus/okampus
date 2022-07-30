@@ -286,6 +286,7 @@ input PutTeamMembershipRequestDto {
 
 type Query {
   contentById(id: Int!): Content
+  me: User!
   reportById(id: Int!): Report!
   reports: [Report!]!
   schoolGroupById(id: String!): SchoolGroup!

@@ -2,9 +2,11 @@ import {
   Args,
   Context,
   Mutation,
+  Query,
   Resolver,
 } from '@nestjs/graphql';
 import type { Response } from 'express';
+import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Public } from '../shared/lib/decorators/public.decorator';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
@@ -28,5 +30,10 @@ export class AuthResolver {
   @Mutation(() => User)
   public async login(@Args('username') username: string, @Args('password') password: string, @Context() ctx: GraphQLResponse): Promise<User> {
     return await this.authController.login({ username, password }, ctx.req.res);
+  }
+
+  @Query(() => User)
+  public async me(@CurrentUser() user: User): Promise<User> {
+    return await this.usersService.findOneById(user.id);
   }
 }
