@@ -3,7 +3,7 @@
         <div
             class="fixed z-50"
             :class="{ 'w-content after-sidebar after-topbar': banner }"
-            :style="[{ ...transform, ...offsetX }, showing ? offsetY : {}]"
+            :style="[{ ...transform, ...offsetX, ...offsetY }]"
         >
             <Transition name="toast" :style="{ '--toast-enter-duration': enterDuration }">
                 <AlertInline
@@ -44,7 +44,7 @@
 <script setup>
     import AlertInline from '@/components/UI/Alert/AlertInline.vue'
     import { readingTime } from '@/utils/readingTime'
-    import { computed, ref, watchEffect } from 'vue'
+    import { computed, watchEffect } from 'vue'
 
     const props = defineProps({
         message: {
@@ -133,21 +133,10 @@
             : {},
     )
 
-    const showing = ref(true)
     const enterDuration = 300
 
-    const dismissToast = () => {
-        emit('update:active', false)
-        emit('close')
-    }
-
-    const toggleTimeOut = () => {
-        if (props.duration) {
-            setTimeout(() => {
-                showing.value = false
-            }, props.duration)
-        }
-    }
+    const dismissToast = () => (emit('update:active', false), emit('close'))
+    const toggleTimeOut = () => (props.duration ? setTimeout(dismissToast, props.duration) : () => {})
 
     watchEffect(() => {
         if (props.active && props.autoToggle) {
