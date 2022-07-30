@@ -21,6 +21,7 @@ import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import type { TokenResponse } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { PreRegisterSsoDto } from './dto/pre-register.dto';
 import { RegisterDto } from './dto/register.dto';
 import { MyEfreiAuthGuard } from './myefrei-auth.guard';
 
@@ -51,6 +52,19 @@ export class AuthController {
   @CheckPolicies(ability => ability.can(Action.Create, User))
   @Post('register')
   public async register(@Body() dto: RegisterDto): Promise<{ user: User; token: string | null }> {
+    try {
+      return await this.usersService.create(dto);
+    } catch (error) {
+      if (error.code instanceof UniqueConstraintViolationException)
+        throw new BadRequestException('User id already taken');
+
+      throw error;
+    }
+  }
+
+  @CheckPolicies(ability => ability.can(Action.Create, User))
+  @Post('pre-register-sso')
+  public async preRegisterSso(@Body() dto: PreRegisterSsoDto): Promise<{ user: User; token: string | null }> {
     try {
       return await this.usersService.create(dto);
     } catch (error) {
