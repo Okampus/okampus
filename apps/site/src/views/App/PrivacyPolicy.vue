@@ -15,26 +15,56 @@
                     <div class="text-lg"><b>2 cookies techniques</b> nécessaires sont utilisés :</div>
                     <ul class="flex list-outside list-disc flex-col gap-8 pl-10">
                         <li>
-                            <pre class="highlighted-field italic lg:text-lg">accessToken</pre>
+                            <code class="highlighted-field italic lg:text-lg">accessToken</code>
                             +
-                            <pre class="highlighted-field italic lg:text-lg">accessTokenExpiresAt</pre>
+                            <code class="highlighted-field italic lg:text-lg">accessTokenExpiresAt</code>
                             <div class="mt-6 mb-4">
                                 <u class="lg:text-lg">Finalité</u> : authentifier un utilisateur (nécessaire
-                                pour réaliser des actions sur la plateforme) / connaître la date d'expiration
+                                pour réaliser des actions sur la plateforme) + connaître la date d'expiration
                                 du token
                             </div>
                             <div><u class="lg:text-lg">Rétention</u> : 8 heures (durée d'une session)</div>
                         </li>
                         <li>
-                            <pre class="highlighted-field italic lg:text-lg">refreshToken</pre>
+                            <code class="highlighted-field italic lg:text-lg">refreshToken</code>
                             +
-                            <pre class="highlighted-field italic lg:text-lg">refreshTokenExpiresAt</pre>
+                            <code class="highlighted-field italic lg:text-lg">refreshTokenExpiresAt</code>
                             <div class="flex-inline mt-6 mb-4 items-center gap-2">
                                 <u class="lg:text-lg">Finalité</u> : renouveler son
-                                <pre class="highlighted-field">accessToken</pre>
-                                / connaître la date d'expiration du token
+                                <code class="highlighted-field">accessToken</code>
+                                + connaître la date d'expiration du token
                             </div>
                             <div><u class="lg:text-lg">Rétention</u> : 7 jours</div>
+                        </li>
+                    </ul>
+                    <ul class="flex list-outside list-disc flex-col gap-4">
+                        <li>
+                            Les cookies sont des <a href="https://jwt.io/" class="link-blue">JWT</a> signés
+                            avec une clé secrète et sécurisés en
+                            <a
+                                href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies"
+                                class="link-blue"
+                                >HttpOnly</a
+                            >
+                            : ils ne peuvent pas être lus par des scripts injectés dans le navigateur.
+                        </li>
+                        <li>
+                            Les cookies ne sont
+                            <a
+                                href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#restrict_access_to_cookies"
+                                class="link-blue"
+                                >valides qu'en HTTPS</a
+                            >, emêchant les attaques man-in-the-middle du protocole HTTP.
+                        </li>
+                        <li>
+                            Les requêtes pouvant transmettre ces cookies sont limités au domaine 'okampus.fr'
+                            et ne sont pas accessibles par d'autres applications (pas de tracking d'autres
+                            sites ou
+                            <a
+                                href="https://en.wikipedia.org/wiki/Cross-site_request_forgery#SameSite_cookie_attribute"
+                                class="link-blue"
+                                >d'attaque CSRF</a
+                            >).
                         </li>
                     </ul>
                 </div>
@@ -45,22 +75,17 @@
                     <div class="text-lg"><b>2 types de données personnelles</b> sont collectées :</div>
                     <ul class="flex list-outside list-disc flex-col gap-8 pl-10">
                         <li>
-                            <div class="flex-inline mb-6 gap-2 italic lg:text-lg">
-                                Données nécessaires à l'authentification (
-                                <pre class="highlighted-field">prénom</pre>
-                                ,
-                                <pre class="highlighted-field">nom</pre>
-                                ,
-                                <pre class="highlighted-field">ID d'école</pre>
-                                ,
-                                <pre class="highlighted-field">email</pre>
-                                ,
-                                <pre class="highlighted-field">rôle dans l'école</pre>
-                                )
+                            <div class="mb-6 italic lg:text-lg">
+                                Données nécessaires à l'authentification (<code class="highlighted-field"
+                                    >prénom</code
+                                >, <code class="highlighted-field">nom</code>,
+                                <code class="highlighted-field">ID d'école</code>,
+                                <code class="highlighted-field">email</code>,
+                                <code class="highlighted-field">rôle dans l'école</code>...)
                             </div>
                             <div class="mb-4">
                                 <u class="lg:text-lg">Finalité</u> : identifier un utilisateur sur la
-                                plateforme (éviter de potentiels abus avec un anonymat complet, comprendre le
+                                plateforme (éviter de potentiels abus avec un anonymat complet, comcodendre le
                                 rôle d'un utilisateur au sein de l'école ...)
                             </div>
                             <div>
@@ -69,18 +94,14 @@
                             </div>
                         </li>
                         <li>
-                            <div class="flex-inline mb-6 gap-2 italic lg:text-lg">
-                                Données créées ou partagées par les utilisateurs (
-                                <pre class="highlighted-field">contenus</pre>
-                                ,
-                                <pre class="highlighted-field">événements</pre>
-                                ,
-                                <pre class="highlighted-field">équipes</pre>
-                                ,
-                                <pre class="highlighted-field">fichiers</pre>
-                                ,
-                                <pre class="highlighted-field">rôle dans l'école</pre>
-                                )
+                            <div class="mb-6 italic lg:text-lg">
+                                Données créées ou partagées par les utilisateurs (<code
+                                    class="highlighted-field"
+                                    >contenus</code
+                                >, <code class="highlighted-field">événements</code>,
+                                <code class="highlighted-field">équipes</code>,
+                                <code class="highlighted-field">fichiers</code>,
+                                <code class="highlighted-field">rôle dans l'école</code>)
                             </div>
                             <div class="mb-4 flex items-center gap-2">
                                 <u class="lg:text-lg">Finalité</u> : permettre l'activité des différents
@@ -98,31 +119,33 @@
             </div>
         </div>
 
-        <div class="flex flex-col gap-10">
-            <AppTitle title="Préférences" icon="fas fa-gears" class="text-2xl" />
-            <div class="text-1 flex flex-col gap-6 md:flex-row md:gap-14 lg:gap-24">
-                <div class="flex shrink-0 grow flex-col md:max-w-[45%]">
-                    <div class="flex justify-between gap-8">
-                        <div><b>Anonymiser mes données</b> à la désactivation de mon compte</div>
-                        <SwitchInput v-model="state.autoAnonymise" />
-                    </div>
-                </div>
-                <div class="flex flex-col">
-                    <div class="flex justify-between gap-8">
-                        <div>
-                            Me transmettre <b>un export de mes données</b> à la désactivation de mon compte
+        <div v-if="auth.loggedIn">
+            <div class="flex flex-col gap-10">
+                <AppTitle title="Préférences" icon="fas fa-gears" class="text-2xl" />
+                <div class="text-1 flex flex-col gap-6 md:flex-row md:gap-14 lg:gap-24">
+                    <div class="flex shrink-0 grow flex-col md:max-w-[45%]">
+                        <div class="flex justify-between gap-8">
+                            <div><b>Anonymiser mes données</b> à la désactivation de mon compte</div>
+                            <SwitchInput v-model="state.autoAnonymise" />
                         </div>
-                        <SwitchInput v-model="state.sendDump" />
+                    </div>
+                    <div class="flex flex-col">
+                        <div class="flex justify-between gap-8">
+                            <div>
+                                Me transmettre <b>un export de mes données</b> à la désactivation de mon
+                                compte
+                            </div>
+                            <SwitchInput v-model="state.sendDump" />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="flex flex-col gap-2 md:flex-row md:gap-6">
-            <div class="button-blue flex w-fit items-center gap-2">
-                <i class="fas fa-download"></i>Exportez mes données
+            <div class="flex flex-col gap-2 md:flex-row md:gap-6">
+                <div class="button-blue flex w-fit items-center gap-2">
+                    <i class="fas fa-download"></i>Exportez mes données
+                </div>
+                <div class="button-grey w-fit">Demande relative à mes données</div>
             </div>
-            <div class="button-grey w-fit">Demande relative à mes données</div>
         </div>
     </div>
 </template>
@@ -131,8 +154,10 @@
     import AppTitle from '@/components/App/AppTitle.vue'
     import Locker from '@/assets/img/3dicons/locker.png'
     import SwitchInput from '@/components/Input/SwitchInput.vue'
+    import { useAuthStore } from '@/store/auth.store'
     import { useLocalStorage } from '@vueuse/core'
 
+    const auth = useAuthStore()
     const state = useLocalStorage('RGPD', { autoAnonymise: true, sendDump: false })
 </script>
 
