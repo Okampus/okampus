@@ -6,6 +6,7 @@ import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { SchoolGroup } from './school-group.entity';
 import { SchoolGroupsController } from './school-groups.controller';
+import { SchoolGroupsResolver } from './school-groups.resolver';
 import { SchoolGroupsService } from './school-groups.service';
 
 @Module({
@@ -13,7 +14,7 @@ import { SchoolGroupsService } from './school-groups.service';
     MikroOrmModule.forFeature([SchoolGroup]),
   ],
   controllers: [SchoolGroupsController],
-  providers: [CaslAbilityFactory, SchoolGroupsService],
+  providers: [CaslAbilityFactory, SchoolGroupsService, SchoolGroupsResolver],
   exports: [SchoolGroupsService],
 })
 
@@ -23,14 +24,18 @@ export class SchoolGroupsModule implements OnModuleInit {
   ) {}
 
   public async onModuleInit(): Promise<void> {
-    const everyone = await this.schoolGroupRepository.count({ id: 'everyone' });
-    if (everyone === 0) {
-      const group = new SchoolGroup({
-        id: 'everyone',
-        name: schoolGroups.everyoneName,
-        description: schoolGroups.everyoneDescription,
-      });
-      await this.schoolGroupRepository.persistAndFlush(group);
+    // TODO: Remove or hide in production
+    for (const schoolGroup of schoolGroups) {
+      // eslint-disable-next-line no-await-in-loop
+      const schoolGroupEntity = await this.schoolGroupRepository.count({ id: schoolGroup.id });
+      if (schoolGroupEntity === 0) {
+        // eslint-disable-next-line no-await-in-loop
+        const parent = await this.schoolGroupRepository.findOne({ id: schoolGroup.parentId });
+        const newSchoolGroup = new SchoolGroup({ ...schoolGroup, parent });
+        this.schoolGroupRepository.persist(newSchoolGroup);
+      }
     }
+
+    await this.schoolGroupRepository.flush();
   }
 }

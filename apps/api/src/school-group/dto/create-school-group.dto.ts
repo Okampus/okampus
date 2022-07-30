@@ -1,5 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsOptional, IsString, Length } from 'class-validator';
+import {
+ IsEnum, IsOptional, IsString, Length,
+} from 'class-validator';
+import { SchoolGroupType } from '../../shared/lib/types/enums/school-group-type.enum';
 
 @InputType()
 export class CreateSchoolGroupDto {
@@ -12,6 +15,11 @@ export class CreateSchoolGroupDto {
   @Length(1, 100)
   @IsString()
   name: string;
+
+  @Field(() => SchoolGroupType, { nullable: true })
+  @IsOptional()
+  @IsEnum(SchoolGroupType)
+  type?: SchoolGroupType;
 
   @Field(() => String, { nullable: true })
   @Length(1, 100)

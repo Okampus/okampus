@@ -13,6 +13,12 @@ export class SchoolGroupsResolver {
   ) {}
 
   // TODO: Add permission checks
+  @Query(() => [SchoolGroup])
+  public async schoolGroups(): Promise<SchoolGroup[]> {
+    const paginatedSchoolGroups = await this.schoolGroupsService.findAll();
+    return paginatedSchoolGroups.items;
+  }
+
   @Query(() => SchoolGroup)
   public async schoolGroupById(@Args('id') id: string): Promise<SchoolGroup> {
     return await this.schoolGroupsService.findOne(id);

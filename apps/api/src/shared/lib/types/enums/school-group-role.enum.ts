@@ -1,9 +1,9 @@
 import { registerEnumType } from '@nestjs/graphql';
 
 export enum SchoolGroupRole {
-  Representative = 'representative',
-  Substitute = 'substitute',
-  Student = 'student',
+  Representative,
+  Substitute,
+  Student,
 }
 
 registerEnumType(SchoolGroupRole, { name: 'SchoolGroupRole' });

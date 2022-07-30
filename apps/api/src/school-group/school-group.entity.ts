@@ -1,6 +1,7 @@
 import {
   Collection,
   Entity,
+  Enum,
   Index,
   ManyToOne,
   OneToMany,
@@ -11,6 +12,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { TransformCollection } from '../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { SchoolGroupRole } from '../shared/lib/types/enums/school-group-role.enum';
+import { SchoolGroupType } from '../shared/lib/types/enums/school-group-type.enum';
 import { Role } from '../shared/modules/authorization/types/role.enum';
 import type { User } from '../users/user.entity';
 // eslint-disable-next-line import/no-cycle
@@ -33,6 +35,10 @@ export class SchoolGroup extends BaseEntity {
   @Property({ type: 'text' })
   englishName: string | null = null;
 
+  @Field(() => SchoolGroupType)
+  @Enum(() => SchoolGroupType)
+  type = SchoolGroupType.Everyone;
+
   @Field(() => SchoolGroup, { nullable: true })
   @ManyToOne({ onDelete: 'CASCADE' })
   @Index()
@@ -52,8 +58,9 @@ export class SchoolGroup extends BaseEntity {
   active = true;
 
   constructor(options: {
-    name: string;
     id: string;
+    name: string;
+    type?: SchoolGroupType | null;
     englishName?: string | null;
     parent?: SchoolGroup | null;
     description?: string | null;
