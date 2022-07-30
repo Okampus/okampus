@@ -27,6 +27,12 @@ export const threadFragment = gql`
                 id
             }
         }
+        assignedUsers {
+            ...UserInfo
+        }
+        participants {
+            ...UserInfo
+        }
         createdAt
         updatedAt
     }
