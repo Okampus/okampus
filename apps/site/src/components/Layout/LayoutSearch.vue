@@ -36,6 +36,7 @@
                                 <input
                                     ref="searchInput"
                                     v-model="searchText"
+                                    placeholder="Rechercher sur Okampus 🚀"
                                     type="text"
                                     class="grow bg-inherit outline-none"
                                     :class="{ 'md-max:ml-4': showSearchbar }"
@@ -51,7 +52,7 @@
                                         @click.stop="() => (searchText = '')"
                                     />
                                     <button
-                                        class="fa fa-search flex w-8 justify-center text-xl text-indigo-400"
+                                        class="fa fa-search flex w-8 justify-center text-xl text-gray-200"
                                         :class="showSearchbar ? 'md-max:hidden' : ''"
                                         @click.stop="
                                             router.push('/search/', { searchInput }), (showSearchbar = false)
@@ -115,7 +116,7 @@
                                 <div>{{ item.name }}</div>
                             </div>
                             <button
-                                class="fa-solid fa-xmark mr-4 justify-self-end text-3xl text-gray-400"
+                                class="fa-solid fa-xmark mr-4 justify-self-end text-xl text-gray-200 md-max:text-3xl"
                                 @click.stop="deleteSearch(item)"
                             />
                         </div>
