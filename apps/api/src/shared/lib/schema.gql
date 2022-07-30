@@ -264,6 +264,7 @@ type Mutation {
   favoriteContent(favorite: Boolean!, id: Int!): Content!
   handleTeamMembershipRequest(payload: PutTeamMembershipRequestDto!, requestId: Float!): TeamMembershipRequest!
   joinTeam(id: Float!, request: CreateTeamMembershipRequestDto!): TeamMembershipRequest!
+  login(password: String!, username: String!): User!
   removeTeamMember(teamId: Float!, userId: String!): TeamMember
   reportContent(id: Int!, report: CreateReportDto!): Content!
   updateContent(content: UpdateContentDto!, id: Int!): Content!
@@ -274,6 +275,7 @@ type Mutation {
   updateTeamMember(teamId: Float!, update: UpdateTeamMemberDto!, userId: String!): TeamMember!
   updateTeamMembershipRequest(requestId: Float!, update: UpdateTeamMembershipRequestDto!): TeamMembershipRequest!
   updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
+  updateUser(id: String!, user: UpdateUserDto!): User!
   voteContent(id: Int!, value: Int!): Content!
 }
 
@@ -286,7 +288,10 @@ type Query {
   contentById(id: Int!): Content
   reportById(id: Int!): Report!
   reports: [Report!]!
-  schoolYearById(id: Int!): SchoolYear!
+  schoolGroupById(id: String!): SchoolGroup!
+  schoolGroupMembershipsById(id: String!): SchoolGroupMembership!
+  schoolGroups: [SchoolGroup!]!
+  schoolYearById(id: String!): SchoolYear!
   settings: Settings!
   tagById(id: String!): Tag!
   tags: [Tag!]!
@@ -299,9 +304,11 @@ type Query {
   teamMembershipRequests(filter: FilterMembershipRequestsDto, id: Float!): [TeamMembershipRequest!]
   teamMembershipRequestsByUserId(filters: FilterMembershipRequestsDto, id: String!): [TeamMembershipRequest!]!
   teamMembershipsByUserId(id: String!): [TeamMember!]
-  teams(filters: TeamsFilterDto!): [Team!]!
+  teams(filters: TeamsFilterDto): [Team!]!
   threadById(id: Int!): Thread
   threads: [Thread!]!
+  userById(id: String!): User!
+  users: [User!]!
   validationById(id: Int!): Validation!
 }
 
@@ -343,11 +350,13 @@ type SchoolGroup {
   memberships: [SchoolGroupMembership!]!
   name: String!
   parent: SchoolGroup
+  type: SchoolGroupType!
   updatedAt: DateTime!
 }
 
 type SchoolGroupMembership {
   createdAt: DateTime!
+  getParents: [SchoolGroup!]!
   id: Int!
   role: SchoolGroupRole!
   schoolGroup: SchoolGroup!
@@ -362,6 +371,14 @@ enum SchoolGroupRole {
   Substitute
 }
 
+enum SchoolGroupType {
+  Class
+  Everyone
+  Program
+  Sector
+  Year
+}
+
 enum SchoolRole {
   Admin
   Student
@@ -371,7 +388,7 @@ enum SchoolRole {
 type SchoolYear {
   active: Boolean!
   createdAt: DateTime!
-  id: Int!
+  id: String!
   name: String!
   updatedAt: DateTime!
 }
@@ -749,6 +766,15 @@ input UpdateThreadDto {
   title: String
   type: ThreadType
   validatedWithContent: Int
+}
+
+input UpdateUserDto {
+  avatar: String!
+  banner: String!
+  color: String!
+  email: String!
+  shortDescription: String!
+  signature: String!
 }
 
 type User {
