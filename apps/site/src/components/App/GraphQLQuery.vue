@@ -3,7 +3,7 @@
         <template #default="{ result: { error, data }, isLoading }">
             <AppLoader v-if="isLoading" :size="loaderSize" />
 
-            <AppException v-else-if="error" :code="getErrorCode(error)" />
+            <AppException v-else-if="error" :code="getGraphQLErrorCode(error)" />
 
             <slot v-else-if="data && (!Array.isArray(data) || data?.length > 0)" :data="data" />
 
@@ -27,23 +27,12 @@
 
 <script setup>
     import { ApolloQuery } from '@vue/apollo-components'
-    import { errorCodes } from '@/shared/errors/app-exceptions.enum'
+    import { getGraphQLErrorCode } from '@/utils/errors'
 
     import AppException from '@/views/App/AppException.vue'
     import AppLoader from '@/components/App/AppLoader.vue'
     import EmojiSad from '@/icons/Emoji/EmojiSad.vue'
     import { DEFAULT, RESOURCE_NAMES } from '@/shared/types/resource-names.enum'
-
-    import { graphQLtoHttpError } from '@/shared/errors/graphql-exceptions.enum'
-
-    const getErrorCode = (apolloErrors) => {
-        const errors = [
-            ...(apolloErrors?.graphQLErrors ?? []),
-            ...(apolloErrors?.clientErrors ?? []),
-            ...(apolloErrors?.networkError?.result?.errors ?? []),
-        ]
-        return graphQLtoHttpError[errors[0]?.extensions?.code] ?? errorCodes.NETWORK_ERROR
-    }
 
     const props = defineProps({
         query: {
