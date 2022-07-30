@@ -62,7 +62,7 @@
     const emit = defineEmits(['update:modelValue'])
 
     const route = useRoute()
-    const getTabRoute = (tab) => tab.route?.value ?? tab.route ?? `${props.routeBase}/${tab.id}`
+    const getTabRoute = (tab) => `${props.routeBase}/${tab.id}`
 
     const setTab = (tab, force = false) => {
         emit('update:modelValue', tab.id)
@@ -77,7 +77,10 @@
                 tab.id ===
                     getCurrentPath()
                         .split(props.routeBase + '/')?.[1]
-                        ?.split('/')?.[0] || getTabRoute(tab) === getCurrentPath(),
+                        ?.split('/')?.[0] ||
+                tab.route?.value === getCurrentPath() ||
+                tab.route === getCurrentPath() ||
+                getTabRoute(tab) === getCurrentPath(),
         )
 
         if (tab) {
