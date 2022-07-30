@@ -38,19 +38,19 @@ export class SchoolYearsController {
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, SchoolYear))
-  public async findOne(@Param('id') id: number): Promise<SchoolYear> {
+  public async findOne(@Param('id') id: string): Promise<SchoolYear> {
     return await this.schoolYearsService.findOne(id);
   }
 
   @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, SchoolYear))
-  public async update(@Param('id') id: number, @Body() updateSchoolYearDto: UpdateSchoolYearDto): Promise<SchoolYear> {
+  public async update(@Param('id') id: string, @Body() updateSchoolYearDto: UpdateSchoolYearDto): Promise<SchoolYear> {
     return await this.schoolYearsService.update(id, updateSchoolYearDto);
   }
 
   @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, SchoolYear))
-  public async remove(@Param('id') id: number): Promise<void> {
+  public async remove(@Param('id') id: string): Promise<void> {
     await this.schoolYearsService.remove(id);
   }
 }

@@ -23,11 +23,11 @@ export class SchoolYearsService {
     return await this.schoolYearRepository.findWithPagination(paginationOptions);
   }
 
-  public async findOne(id: number): Promise<SchoolYear> {
+  public async findOne(id: string): Promise<SchoolYear> {
     return this.schoolYearRepository.findOneOrFail({ id });
   }
 
-  public async update(id: number, updateSchoolYearDto: UpdateSchoolYearDto): Promise<SchoolYear> {
+  public async update(id: string, updateSchoolYearDto: UpdateSchoolYearDto): Promise<SchoolYear> {
     const schoolYear = await this.schoolYearRepository.findOneOrFail({ id });
     wrap(schoolYear).assign(updateSchoolYearDto);
     await this.schoolYearRepository.flush();
@@ -35,7 +35,7 @@ export class SchoolYearsService {
   }
 
   // TODO: differentiate soft from hard delete
-  public async remove(id: number): Promise<void> {
+  public async remove(id: string): Promise<void> {
     const schoolYear = await this.schoolYearRepository.findOneOrFail({ id });
     await this.schoolYearRepository.removeAndFlush(schoolYear);
   }

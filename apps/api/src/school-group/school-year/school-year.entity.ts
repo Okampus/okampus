@@ -1,13 +1,13 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 
 @ObjectType()
 @Entity()
 export class SchoolYear extends BaseEntity {
-  @Field(() => Int)
+  @Field()
   @PrimaryKey()
-  id!: number;
+  id!: string;
 
   @Field()
   @Property()
@@ -18,6 +18,7 @@ export class SchoolYear extends BaseEntity {
   active = true;
 
   constructor(options: {
+    id: string;
     name: string;
   }) {
     super();
