@@ -21,12 +21,12 @@ export class TeamFinancesFilterDto {
 
   @Field(() => TeamFinanceType, { nullable: true })
   @IsOptional()
-  @IsEnum(() => TeamFinanceType)
+  @IsEnum(TeamFinanceType)
   type?: TeamFinanceType;
 
   @Field(() => TeamFinanceCategory, { nullable: true })
   @IsOptional()
-  @IsEnum(() => TeamFinanceCategory)
+  @IsEnum(TeamFinanceCategory)
   category?: TeamFinanceCategory;
 
   @Field(() => String, { nullable: true })
