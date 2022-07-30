@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import type { Role } from '../../shared/modules/authorization/types/role.enum';
+import { Role } from '../../shared/modules/authorization/types/role.enum';
 import { SchoolRole } from '../../shared/modules/authorization/types/school-role.enum';
 
 export class RegisterDto {
@@ -30,7 +30,7 @@ export class RegisterDto {
 
   @IsOptional()
   @IsArray()
-  @IsEnum({ each: true })
+  @IsEnum(Role, { each: true })
   roles?: Role[];
 
   @IsOptional()
