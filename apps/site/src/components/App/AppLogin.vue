@@ -47,7 +47,7 @@
                 </div>
 
                 <!-- TODO: Error message when login fails -->
-                <button class="button-green mt-4 w-full" @click="login">Connexion Okampus</button>
+                <button class="button-green mt-4 w-full" @click="loginUser(user)">Connexion Okampus</button>
 
                 <div class="my-4 flex text-slate-500">
                     <div>ou</div>
@@ -69,15 +69,16 @@
 <script setup>
     import InputWithIcon from '@/components/Input/InputWithIcon.vue'
     import { useAuthStore } from '@/store/auth.store'
-    import { emitter } from '@/shared/modules/emitter'
-    import { reactive, ref } from 'vue'
+    import { ref } from 'vue'
 
-    import { TOAST_ERRORS } from '@/utils/errors'
-    import { errorCodes } from '@/shared/errors/app-exceptions.enum'
+    import { useMutation } from '@vue/apollo-composable'
+    import { login } from '@/graphql/queries/auth/loginUser'
+
+    import { showToastGraphQLError } from '@/utils/errors'
+    import { emitter } from '@/shared/modules/emitter'
 
     const myEfreiAuthUrl = `${import.meta.env.VITE_API_URL}/auth/myefrei`
 
-    const auth = useAuthStore()
     const show = ref('sso')
 
     defineProps({
@@ -87,35 +88,20 @@
         },
     })
 
-    const user = reactive({
-        username: '',
-        password: '',
-    })
+    const user = ref({ username: '', password: '' })
 
     const emit = defineEmits(['logged-in'])
+    const { mutate: loginUser, onDone, onError } = useMutation(login)
 
-    const login = () => {
-        if (!user.username || !user.password) {
-            return
-        }
+    const auth = useAuthStore()
+    onDone(({ data }) => {
+        auth.user = data.login
+        emit('logged-in')
+        emitter.emit('show-toast', {
+            message: 'Connexion réussie !',
+            type: 'success',
+        })
+    })
 
-        auth.logIn(user)
-            .then(() => {
-                emit('logged-in', false)
-                emitter.emit('show-toast', {
-                    message: 'Connexion réussie !',
-                    type: 'success',
-                })
-            })
-            .catch((err) => {
-                if (err.response?.status === 0) {
-                    emitter.emit('show-toast', TOAST_ERRORS[errorCodes.NETWORK_ERROR])
-                } else {
-                    emitter.emit('show-toast', {
-                        message: 'Identifiants incorrects.',
-                        type: 'error',
-                    })
-                }
-            })
-    }
+    onError(showToastGraphQLError)
 </script>
