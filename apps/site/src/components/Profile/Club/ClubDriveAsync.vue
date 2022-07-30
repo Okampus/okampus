@@ -27,7 +27,7 @@
     })
 
     const clubsStore = useClubsStore()
-    await clubsStore.getClubFiles(props.club.teamId, 'document')
+    await clubsStore.getClubFiles(props.club.id, 'document')
 
     const documentList = ref([
         {
@@ -45,9 +45,9 @@
     ])
 
     watch(
-        () => props.club.teamId,
+        () => props.club.id,
         async () => {
-            await clubsStore.getClubFiles(props.club.teamId, 'document')
+            await clubsStore.getClubFiles(props.club.id, 'document')
         },
     )
 </script>

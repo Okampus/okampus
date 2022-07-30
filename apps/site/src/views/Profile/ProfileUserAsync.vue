@@ -39,7 +39,7 @@
                             :custom-string="clubRoleNames[membership.role].fr"
                             class="w-40"
                         />
-                        <!-- <router-link :to="`/club/${membership.team.teamId}`">
+                        <!-- <router-link :to="`/club/${membership.team.id}`">
                                 <ProfileAvatar
                                     :avatar="membership.team.avatar"
                                     :size="2"
@@ -52,7 +52,7 @@
                                 />
                             </router-link>
                             <div class="flex flex-col justify-center">
-                                <router-link :to="`/club/${membership.team.teamId}`" class="hover:underline">
+                                <router-link :to="`/club/${membership.team.id}`" class="hover:underline">
                                     <p class="w-32 font-semibold truncate">{{ membership.team.name }}</p>
                                 </router-link>
                                 <p class="-mt-2 w-32 truncate">{{ clubRoleNames[membership.role].fr }}</p>

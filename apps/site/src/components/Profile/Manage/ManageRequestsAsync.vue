@@ -307,12 +307,12 @@
             })
     }
 
-    await clubs.getRequestsOfClub(props.club.teamId).then((membershipRequests) => {
+    await clubs.getRequestsOfClub(props.club.id).then((membershipRequests) => {
         requests.value = membershipRequests
     })
 
     watchEffect(async () => {
-        await clubs.getRequestsOfClub(props.club.teamId).then((membershipRequests) => {
+        await clubs.getRequestsOfClub(props.club.id).then((membershipRequests) => {
             requests.value = membershipRequests
         })
     })

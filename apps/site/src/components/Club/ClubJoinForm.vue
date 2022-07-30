@@ -108,10 +108,10 @@
         const { role, ...meta } = data
 
         await clubs
-            .postMembershipRequest(props.club.teamId, { role, meta })
+            .postMembershipRequest(props.club.id, { role, meta })
             .then(() => {
                 emit('submitted')
-                // clubList.value.find((club) => club.teamId === props.club.value).membership = IS_WAITING
+                // clubList.value.find((club) => club.id === props.club.value).membership = IS_WAITING
                 emitter.emit('show-toast', {
                     message: "Votre demande d'adhésion a bien été envoyée !",
                     type: 'success',

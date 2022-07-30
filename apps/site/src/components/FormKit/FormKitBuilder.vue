@@ -180,7 +180,7 @@
 
     const createNew = async () => {
         await clubs
-            .postForm(clubs.club.teamId, {
+            .postForm(clubs.club.id, {
                 name: formTitle.value,
                 description: formDescription.value,
                 form: schema.value,

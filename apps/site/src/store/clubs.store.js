@@ -162,7 +162,7 @@ export const useClubsStore = defineStore('clubs', {
         },
 
         replaceClubsFiles({ teamId, items }) {
-            this.clubs.find((club) => club.teamId === teamId).files = items
+            this.clubs.find((club) => club.id === teamId).files = items
         },
 
         addClubFile(file) {
@@ -176,7 +176,7 @@ export const useClubsStore = defineStore('clubs', {
         },
 
         async getClubsFiles(type) {
-            for (const teamId of this.clubs.map((club) => club.teamId)) {
+            for (const teamId of this.clubs.map((club) => club.id)) {
                 await $axios
                     .get('/files/team-files', { params: { teamId, type, itemsPerPage: 100 } })
                     .then(onItems(this.replaceClubsFiles, { teamId }))

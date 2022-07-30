@@ -43,7 +43,7 @@
     })
 
     const clubsStore = useClubsStore()
-    await clubsStore.getClubFiles(props.club.teamId, 'document')
+    await clubsStore.getClubFiles(props.club.id, 'document')
 
     const documentList = ref([
         {
@@ -77,7 +77,7 @@
             () => doc.model,
             async (model) => {
                 if (model.length > 0) {
-                    await clubsStore.postClubFile(props.club.teamId, 'document', model[0], doc.description)
+                    await clubsStore.postClubFile(props.club.id, 'document', model[0], doc.description)
                     doc.model = []
                 }
             },
@@ -86,9 +86,9 @@
     }
 
     watch(
-        () => props.club.teamId,
+        () => props.club.id,
         async () => {
-            await clubsStore.getClubFiles(props.club.teamId, 'document')
+            await clubsStore.getClubFiles(props.club.id, 'document')
         },
     )
 </script>

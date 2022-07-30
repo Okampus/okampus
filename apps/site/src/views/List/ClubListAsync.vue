@@ -26,7 +26,7 @@
                     @closed="joiningClubId = null"
                     @submitted="
                         () =>
-                            (clubList.value.find((club) => club.teamId === joiningClubId.value).membership =
+                            (clubList.value.find((club) => club.id === joiningClubId.value).membership =
                                 IS_WAITING)
                     "
                 />
@@ -109,11 +109,11 @@
                 </ModalPopup> -->
                 <ClubCard
                     v-for="club in currentClubs"
-                    :key="club.teamId"
+                    :key="club.id"
                     :club="club"
                     @request="
                         (clubId) => {
-                            // loadSchema(club.teamId)
+                            // loadSchema(club.id)
                             showJoinForm = true
                             joiningClubId = clubId
                         }
@@ -189,7 +189,7 @@
     // const joinFormData = ref({})
     const joiningClubId = ref(null)
     const joiningClub = computed(
-        () => clubList.value.find((club) => club.teamId === joiningClubId.value) ?? { name: '' },
+        () => clubList.value.find((club) => club.id === joiningClubId.value) ?? { name: '' },
     )
 
     const currentClubs = computed(() =>
@@ -228,7 +228,7 @@
             .getMembershipsOf(auth.user)
             .then((memberships) => {
                 memberships.forEach((membership) => {
-                    clubList.value.find((club) => club.teamId === membership.team.teamId).membership =
+                    clubList.value.find((club) => club.id === membership.team.id).membership =
                         specialRoles.includes(membership.role) ? IS_SPECIAL_ROLE : IS_MEMBER
                 })
                 tabs[ALL].tabs[MY_CLUBS].amount = clubList.value.filter(
@@ -248,8 +248,7 @@
                 requests
                     .filter((request) => request.state === PENDING_STATE)
                     .forEach((request) => {
-                        clubList.value.find((club) => club.teamId === request.team.teamId).membership =
-                            IS_WAITING
+                        clubList.value.find((club) => club.id === request.team.id).membership = IS_WAITING
                     })
             })
             .catch((err) => {

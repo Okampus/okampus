@@ -37,7 +37,7 @@
 
     const loadEvents = async () => {
         await clubs
-            .getTeamEvents(props.club.teamId)
+            .getTeamEvents(props.club.id)
             .then((teamEvents) => {
                 events.value = teamEvents
             })
@@ -51,5 +51,5 @@
     }
 
     await loadEvents()
-    watch(() => props.club.teamId, loadEvents)
+    watch(() => props.club.id, loadEvents)
 </script>

@@ -51,7 +51,7 @@
 
                 <template v-else-if="memberRole === IS_SPECIAL_ROLE">
                     <router-link
-                        :to="`/club/${club.teamId}/manage`"
+                        :to="`/club/${club.id}/manage`"
                         class="button-green flex items-center gap-2 rounded-full py-1 text-lg font-semibold"
                     >
                         <i class="fa fa-gear" />
@@ -290,9 +290,9 @@
 
     const memberRole = computed(
         () =>
-            getRoleType(userMemberships.value.find((member) => member.team.teamId === clubId.value)?.role) ??
+            getRoleType(userMemberships.value.find((member) => member.team.id === clubId.value)?.role) ??
             (userRequests.value.find(
-                (request) => request.team.teamId === clubId.value && request.state === PENDING,
+                (request) => request.team.id === clubId.value && request.state === PENDING,
             )
                 ? IS_WAITING
                 : null),
@@ -318,7 +318,7 @@
     await loadClub()
 
     const setRequestWaiting = () => {
-        const request = userRequests.value.find((request) => request.team.teamId === clubId.value)
+        const request = userRequests.value.find((request) => request.team.id === clubId.value)
         if (request) {
             request.state = PENDING
         } else {

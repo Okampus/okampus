@@ -32,7 +32,7 @@
 
             <div class="flex flex-wrap items-center gap-1">
                 <template v-for="club in user.clubs?.slice(0, 4)" :key="club">
-                    <router-link :to="`/club/${club.team.teamId}`">
+                    <router-link :to="`/club/${club.team.id}`">
                         <ProfileAvatar
                             :avatar="club.team.avatar"
                             :name="club.team.name"

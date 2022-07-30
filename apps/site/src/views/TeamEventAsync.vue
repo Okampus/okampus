@@ -57,12 +57,12 @@
                     <div class="text-3xl font-bold">{{ event.name }}</div>
                     <TeamActivity :team="event.team" action-text="Créé" :action-at="event.createdAt" />
 
-                    <!-- <router-link :to="`/club/${event.team.teamId}`">
+                    <!-- <router-link :to="`/club/${event.team.id}`">
                                 <ProfileAvatar :name="event.team.name" :avatar="event.team.avatar" :size="2" />
                             </router-link>
                             <div class="text-sm">Organisé par</div>
                             <router-link
-                                :to="`/club/${event.team.teamId}`"
+                                :to="`/club/${event.team.id}`"
                                 class="text-lg font-semibold hover:underline text-0"
                                 >{{ event.team.name }}</router-link
                             > -->
@@ -403,7 +403,7 @@
 
     const loadClubs = async () => {
         await clubs.getMembershipsOf(auth.user).then((res) => {
-            res.filter((m) => m.team.teamId === event.value.team.teamId).forEach((m) => {
+            res.filter((m) => m.team.id === event.value.team.id).forEach((m) => {
                 if (specialRoles.includes(m.role)) {
                     isAdmin.value = true
                 }

@@ -130,7 +130,7 @@
                     association
                 </p>
             </div>
-            <FormList :club-id="club.teamId" @submit="(formId) => changeForm(formId)"></FormList>
+            <FormList :club-id="club.id" @submit="(formId) => changeForm(formId)"></FormList>
         </div>
     </div>
 </template>
@@ -164,14 +164,14 @@
     })
 
     const changeForm = async (formId) => {
-        await clubs.patchClub(props.club.teamId, { membershipRequestFormId: formId })
+        await clubs.patchClub(props.club.id, { membershipRequestFormId: formId })
     }
 
     const updateClubForm = ref(null)
 
     const updateClubData = async (data) => {
         await clubs
-            .patchClub(props.club.teamId, data)
+            .patchClub(props.club.id, data)
             .then((newClub) => {
                 emit('update:club', newClub)
                 emitter.emit('show-toast', {
@@ -187,7 +187,7 @@
             })
     }
 
-    const uploadTypeUrl = (type) => `${import.meta.env.VITE_API_URL}/teams/teams/${props.club.teamId}/${type}`
+    const uploadTypeUrl = (type) => `${import.meta.env.VITE_API_URL}/teams/teams/${props.club.id}/${type}`
 
     const editingPage = ref(false)
     const editingAvatar = ref(false)

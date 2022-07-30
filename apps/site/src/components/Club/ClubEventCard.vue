@@ -3,14 +3,14 @@
         class="card-hover bg-2 text-0 flex w-full min-w-[13rem] max-w-[40rem] flex-col rounded-xl sm:w-[calc(50%-1rem)] xl:w-[calc(33%-1rem)]"
     >
         <!-- <div class="flex gap-4 p-4">
-            <router-link :to="`/club/${event.team.teamId}`">
+            <router-link :to="`/club/${event.team.id}`">
                 <ProfileAvatar :name="event.team.name" :avatar="event.team.avatar" />
             </router-link>
             <div class="flex flex-col">
                 <div class="flex gap-1 items-center">
                     <div class="text-sm">Organisé par</div>
                     <router-link
-                        :to="`/club/${event.team.teamId}`"
+                        :to="`/club/${event.team.id}`"
                         class="text-lg font-semibold hover:underline text-0"
                         >{{ event.team.name }}</router-link
                     >
@@ -24,7 +24,7 @@
 
         <div class="relative">
             <ProfileBanner class="h-24" :name="event.shortDescription" :data="event.team.category" />
-            <router-link :to="`/club/${event.team.teamId}`" class="absolute top-4 right-4">
+            <router-link :to="`/club/${event.team.id}`" class="absolute top-4 right-4">
                 <ProfileAvatar :name="event.team.name" :avatar="event.team.avatar" />
             </router-link>
             <div class="bg-1 text-0 absolute top-4 left-4 rounded-lg py-1 px-2">

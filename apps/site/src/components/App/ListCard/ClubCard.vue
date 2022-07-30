@@ -33,7 +33,7 @@
             </div>
 
             <div class="flex h-full w-full flex-col justify-between">
-                <router-link class="mt-2" :to="`/club/${club.teamId}`">
+                <router-link class="mt-2" :to="`/club/${club.id}`">
                     <h3 class="text-1 text-xl font-bold line-clamp-1 hover:underline">
                         {{ club.name }}
                     </h3>
@@ -46,7 +46,7 @@
                     <button
                         v-if="!club.membership"
                         class="button-blue -ml-1 rounded-full py-1 text-center font-semibold"
-                        @click="emit('request', club.teamId)"
+                        @click="emit('request', club.id)"
                     >
                         Rejoindre
                     </button>
@@ -61,7 +61,7 @@
                     </template>
                     <template v-else-if="club.membership === IS_MEMBER">
                         <router-link
-                            :to="`/club/${club.teamId}`"
+                            :to="`/club/${club.id}`"
                             class="button-indigo -ml-1 flex items-center gap-2 rounded-full py-1 font-semibold"
                         >
                             <i class="fa fa-users" />
@@ -70,7 +70,7 @@
                     </template>
                     <template v-else-if="club.membership === IS_SPECIAL_ROLE">
                         <router-link
-                            :to="`/club/${club.teamId}/manage`"
+                            :to="`/club/${club.id}/manage`"
                             class="button-green -ml-1 flex items-center gap-2 rounded-full py-1 font-semibold"
                         >
                             <i class="fa fa-gear" />
@@ -174,7 +174,7 @@
             class: 'hover:bg-blue-300 dark:hover:bg-blue-500',
             action: async () => {
                 try {
-                    await navigator.clipboard.writeText(getURL(`/club/${props.club.teamId}`))
+                    await navigator.clipboard.writeText(getURL(`/club/${props.club.id}`))
                     emitter.emit('show-toast', {
                         message: `Lien de ${props.club.name} copié.`,
                         type: 'info',
@@ -192,7 +192,7 @@
             icon: 'fas fa-address-book',
             class: 'hover:bg-gray-300 dark:hover:bg-gray-500',
             action: () => {
-                router.push(`/club/${props.club.teamId}`)
+                router.push(`/club/${props.club.id}`)
             },
         },
     ]

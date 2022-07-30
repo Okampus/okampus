@@ -117,14 +117,14 @@
         showTransferModal.value = false
         const role = currentMembership.value.role
         clubs
-            .patchMembership(currentMembership.value.team.teamId, currentMembership.value.user.id, {
+            .patchMembership(currentMembership.value.team.id, currentMembership.value.user.id, {
                 role: 'member',
             })
             .then(() => {
                 loadMemberships()
             })
         clubs
-            .patchMembership(member.team.teamId, member.user.id, {
+            .patchMembership(member.team.id, member.user.id, {
                 role: role,
             })
             .then(() => {
@@ -134,14 +134,14 @@
 
     const patchRole = async (membership) => {
         await clubs
-            .patchMembership(membership.team.teamId, membership.user.id, { role: membership.role })
+            .patchMembership(membership.team.id, membership.user.id, { role: membership.role })
             .then(async () => {
                 await loadMemberships()
             })
         // .catch((err) => console.log(err))
     }
 
-    const clubId = ref(parseInt(props.club.teamId))
+    const clubId = ref(parseInt(props.club.id))
     const memberships = ref([])
 
     const loadMemberships = async () => {
@@ -153,9 +153,9 @@
     await loadMemberships()
 
     watch(
-        () => props.club.teamId,
+        () => props.club.id,
         async () => {
-            clubId.value = props.club.teamId
+            clubId.value = props.club.id
             await loadMemberships()
         },
     )

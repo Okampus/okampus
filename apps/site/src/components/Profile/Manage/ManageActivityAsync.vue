@@ -99,7 +99,7 @@
                                 rejoindre votre évenement.
                             </p>
                             <FormList
-                                :club-id="props.club.teamId"
+                                :club-id="props.club.id"
                                 @submit="(formId) => (form = formId)"
                             ></FormList>
                         </div>
@@ -165,7 +165,7 @@
 
     const loadEvents = async () => {
         await clubs
-            .getTeamEvents(props.club.teamId)
+            .getTeamEvents(props.club.id)
             .then((teamEvents) => {
                 events.value = teamEvents
             })
@@ -187,7 +187,7 @@
         end.setMinutes(event.eventTimeEnd.split(':')[1])
 
         await clubs
-            .createEvent(props.club.teamId, {
+            .createEvent(props.club.id, {
                 name: event.eventTitle,
                 description: event.eventDescription,
                 start: start,

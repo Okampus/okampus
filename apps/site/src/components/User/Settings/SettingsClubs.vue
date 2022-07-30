@@ -13,11 +13,11 @@
                 <template v-if="clubs.userMemberships.length">
                     <div
                         v-for="membership in clubs.userMemberships"
-                        :key="membership.team.teamId"
+                        :key="membership.team.id"
                         class="flex items-center justify-between py-2"
                     >
                         <div class="flex gap-3">
-                            <router-link :to="`/club/${membership.team.teamId}`">
+                            <router-link :to="`/club/${membership.team.id}`">
                                 <ProfileAvatar
                                     :avatar="membership.team.avatar"
                                     :name="membership.team.name"
@@ -28,7 +28,7 @@
                             <div class="flex flex-col">
                                 <div class="text-1 flex gap-1.5 font-semibold">
                                     <router-link
-                                        :to="`/club/${membership.team.teamId}`"
+                                        :to="`/club/${membership.team.id}`"
                                         class="hover:underline"
                                     >
                                         <div class="font-semibold">{{ membership.team.name }}</div>
@@ -58,13 +58,13 @@
                             </button>
                             <router-link
                                 v-if="specialRoles.includes(membership.role)"
-                                :to="`/club/${membership.team.teamId}/manage`"
+                                :to="`/club/${membership.team.id}/manage`"
                                 class="button-blue text-xs lg:text-lg"
                                 >Gérer</router-link
                             >
                             <router-link
                                 v-else
-                                :to="`/club/${membership.team.teamId}`"
+                                :to="`/club/${membership.team.id}`"
                                 class="button-blue text-xs md:text-lg"
                                 >Voir le profil</router-link
                             >
@@ -88,7 +88,7 @@
                         class="flex items-center justify-between py-2"
                     >
                         <div class="flex gap-3">
-                            <router-link :to="`/club/${request.team.teamId}`">
+                            <router-link :to="`/club/${request.team.id}`">
                                 <ProfileAvatar
                                     :avatar="request.team.avatar"
                                     :name="request.team.name"
@@ -98,7 +98,7 @@
                             </router-link>
                             <div class="flex flex-col">
                                 <div class="text-1 flex gap-1.5">
-                                    <router-link :to="`/club/${request.team.teamId}`" class="hover:underline">
+                                    <router-link :to="`/club/${request.team.id}`" class="hover:underline">
                                         <div class="font-semibold">{{ request.team.name }}</div>
                                     </router-link>
                                     <div class="text-sm">
@@ -312,7 +312,7 @@
 
     const leaveClub = async (membership) => {
         clubs
-            .removeMembership(membership.team.teamId, membership.user.id)
+            .removeMembership(membership.team.id, membership.user.id)
             .then(() => clubs.getMembershipsOf(auth.user))
             .catch((err) => {
                 console.error(err)
@@ -321,7 +321,7 @@
 
     const transferRole = async (membership) => {
         currentMembership.value = membership
-        clubs.getMembershipsOfClub(membership.team.teamId).then((memberships) => {
+        clubs.getMembershipsOfClub(membership.team.id).then((memberships) => {
             members.value = memberships
             showTransferModal.value = true
         })
@@ -331,7 +331,7 @@
         showTransferModal.value = false
         const role = currentMembership.value.role
         clubs
-            .patchMembership(currentMembership.value.team.teamId, currentMembership.value.user.id, {
+            .patchMembership(currentMembership.value.team.id, currentMembership.value.user.id, {
                 role: 'member',
             })
             .then(() => {
@@ -340,7 +340,7 @@
                 })
             })
         clubs
-            .patchMembership(member.team.teamId, member.user.id, {
+            .patchMembership(member.team.id, member.user.id, {
                 role: role,
             })
             .then(() => {
