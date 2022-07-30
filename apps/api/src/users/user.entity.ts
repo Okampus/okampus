@@ -155,6 +155,6 @@ export class User extends BaseEntity {
   }
 
   public getFullName(): string {
-    return `${this.firstname} ${this.lastname}`;
+    return `${this.firstname.split(' ')[0]} ${this.lastname}`;
   }
 }
