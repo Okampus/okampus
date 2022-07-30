@@ -8,12 +8,12 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
           "nullable": false,
-          "mappedType": "integer"
+          "mappedType": "string"
         },
         "created_at": {
           "name": "created_at",
@@ -143,91 +143,6 @@
       "indexes": [
         {
           "keyName": "food_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "date": {
-          "name": "date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "content": {
-          "name": "content",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        }
-      },
-      "name": "daily_info",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "date"
-          ],
-          "composite": false,
-          "keyName": "daily_info_date_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "date"
-          ],
-          "composite": false,
-          "keyName": "daily_info_date_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "daily_info_pkey",
           "columnNames": [
             "id"
           ],
@@ -509,6 +424,91 @@
           "updateRule": "cascade"
         }
       }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "date": {
+          "name": "date",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "daily_info",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "date"
+          ],
+          "composite": false,
+          "keyName": "daily_info_date_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "date"
+          ],
+          "composite": false,
+          "keyName": "daily_info_date_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "daily_info_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
     },
     {
       "columns": {
@@ -4261,6 +4261,15 @@
           "nullable": true,
           "mappedType": "text"
         },
+        "type": {
+          "name": "type",
+          "type": "smallint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "enum"
+        },
         "parent_id": {
           "name": "parent_id",
           "type": "varchar(255)",
@@ -4817,23 +4826,23 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "active": {
-          "name": "active",
-          "type": "boolean",
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "boolean"
+          "mappedType": "string"
         },
         "school_year_id": {
           "name": "school_year_id",
-          "type": "int",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "integer"
+          "mappedType": "string"
         },
         "school_group_id": {
           "name": "school_group_id",
@@ -4844,42 +4853,28 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "user_id": {
-          "name": "user_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
         "role": {
           "name": "role",
-          "type": "text",
+          "type": "smallint",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "representative",
-            "substitute",
-            "student"
-          ],
           "mappedType": "enum"
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
         }
       },
       "name": "school_group_membership",
       "schema": "public",
       "indexes": [
-        {
-          "columnNames": [
-            "active"
-          ],
-          "composite": false,
-          "keyName": "school_group_membership_active_index",
-          "primary": false,
-          "unique": false
-        },
         {
           "columnNames": [
             "school_year_id"
@@ -4899,6 +4894,15 @@
           "unique": false
         },
         {
+          "columnNames": [
+            "active"
+          ],
+          "composite": false,
+          "keyName": "school_group_membership_active_index",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "school_group_membership_pkey",
           "columnNames": [
             "id"
@@ -4910,6 +4914,19 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "school_group_membership_user_id_foreign": {
+          "constraintName": "school_group_membership_user_id_foreign",
+          "columnNames": [
+            "user_id"
+          ],
+          "localTableName": "public.school_group_membership",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
         "school_group_membership_school_year_id_foreign": {
           "constraintName": "school_group_membership_school_year_id_foreign",
           "columnNames": [
@@ -4933,19 +4950,6 @@
             "id"
           ],
           "referencedTableName": "public.school_group",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "school_group_membership_user_id_foreign": {
-          "constraintName": "school_group_membership_user_id_foreign",
-          "columnNames": [
-            "user_id"
-          ],
-          "localTableName": "public.school_group_membership",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
           "deleteRule": "CASCADE",
           "updateRule": "cascade"
         }
