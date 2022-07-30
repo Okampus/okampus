@@ -722,5 +722,5 @@
 </script>
 
 <style>
-    @import url('upload.css');
+    @import 'upload.css';
 </style>
