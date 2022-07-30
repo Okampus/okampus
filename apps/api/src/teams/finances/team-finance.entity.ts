@@ -11,7 +11,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { TeamFile } from '../../files/team-files/team-file.entity';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamFinanceCategory } from '../../shared/lib/types/enums/team-finance-category.enum';
-import { TeamFinanceMean } from '../../shared/lib/types/enums/team-finance-mean.enum';
+import { TeamFinanceMeans } from '../../shared/lib/types/enums/team-finance-means.enum';
 import { TeamFinanceType } from '../../shared/lib/types/enums/team-finance-type.enum';
 import { User } from '../../users/user.entity';
 import { TeamEvent } from '../events/team-event.entity';
@@ -49,9 +49,9 @@ export class TeamFinance extends BaseEntity {
   @Property()
   amount!: number;
 
-  @Field(() => TeamFinanceMean)
-  @Enum(() => TeamFinanceMean)
-  mean!: TeamFinanceMean;
+  @Field(() => TeamFinanceMeans)
+  @Enum(() => TeamFinanceMeans)
+  means!: TeamFinanceMeans;
 
   @Field(() => TeamFinanceType)
   @Enum(() => TeamFinanceType)
@@ -74,7 +74,7 @@ export class TeamFinance extends BaseEntity {
     createdBy: User;
     team: Team;
     amount: number;
-    mean: TeamFinanceMean;
+    means: TeamFinanceMeans;
     type: TeamFinanceType;
     category: TeamFinanceCategory;
     description?: string | null;

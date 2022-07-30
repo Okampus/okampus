@@ -1,6 +1,6 @@
 import { registerEnumType } from '@nestjs/graphql';
 
-export enum TeamFinanceMean {
+export enum TeamFinanceMeans {
   Cash = 'cash',
   Card = 'card',
   Transfer = 'transfer',
@@ -8,4 +8,4 @@ export enum TeamFinanceMean {
   Other = 'other',
 }
 
-registerEnumType(TeamFinanceMean, { name: 'TeamFinanceMean' });
+registerEnumType(TeamFinanceMeans, { name: 'TeamFinanceMeans' });

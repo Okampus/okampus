@@ -21,7 +21,7 @@ import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import type { TokenResponse } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import { PreRegisterSsoDto } from './dto/pre-register.dto';
+import { PreRegisterSsoDto } from './dto/pre-register-sso.dto';
 import { RegisterDto } from './dto/register.dto';
 import { MyEfreiAuthGuard } from './myefrei-auth.guard';
 

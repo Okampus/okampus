@@ -164,7 +164,7 @@ input CreateTeamFinanceDto {
   description: String
   dueTo: String
   event: Int
-  mean: TeamFinanceMean!
+  means: TeamFinanceMeans!
   receipt: String
   title: String!
   type: TeamFinanceType!
@@ -546,7 +546,7 @@ type TeamFinance {
   dueTo: User
   event: TeamEvent
   id: Int!
-  mean: TeamFinanceMean!
+  means: TeamFinanceMeans!
   receipt: TeamFile
   team: Team!
   title: String!
@@ -568,7 +568,7 @@ enum TeamFinanceCategory {
   Transportation
 }
 
-enum TeamFinanceMean {
+enum TeamFinanceMeans {
   Card
   Cash
   Check
@@ -736,7 +736,7 @@ input UpdateTeamFinanceDto {
   description: String
   dueTo: String
   event: Int
-  mean: TeamFinanceMean
+  means: TeamFinanceMeans
   receipt: String
   title: String
   type: TeamFinanceType

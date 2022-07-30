@@ -2889,8 +2889,8 @@
           "nullable": false,
           "mappedType": "integer"
         },
-        "mean": {
-          "name": "mean",
+        "means": {
+          "name": "means",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,

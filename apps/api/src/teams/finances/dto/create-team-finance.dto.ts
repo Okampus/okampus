@@ -9,7 +9,7 @@ import {
   Min,
 } from 'class-validator';
 import { TeamFinanceCategory } from '../../../shared/lib/types/enums/team-finance-category.enum';
-import { TeamFinanceMean } from '../../../shared/lib/types/enums/team-finance-mean.enum';
+import { TeamFinanceMeans } from '../../../shared/lib/types/enums/team-finance-means.enum';
 import { TeamFinanceType } from '../../../shared/lib/types/enums/team-finance-type.enum';
 
 @InputType()
@@ -24,9 +24,9 @@ export class CreateTeamFinanceDto {
   @Min(0)
   amount: number;
 
-  @Field(() => TeamFinanceMean)
-  @IsEnum(TeamFinanceMean)
-  mean: TeamFinanceMean;
+  @Field(() => TeamFinanceMeans)
+  @IsEnum(TeamFinanceMeans)
+  means: TeamFinanceMeans;
 
   @Field(() => TeamFinanceType)
   @IsEnum(TeamFinanceType)
