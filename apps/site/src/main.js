@@ -13,6 +13,7 @@ import FormKitRadioInput from '@/components/Input/FormKit/FormKitRadioInput.vue'
 import FormKitMdEditor from '@/components/Input/FormKit/FormKitMdEditor.vue'
 import FormKitTagInput from '@/components/Input/FormKit/FormKitTagInput.vue'
 import FormKitFloatingLabelText from '@/components/Input/FormKit/FormKitFloatingLabelText.vue'
+import FormKitMultiselectInput from '@/components/Input/FormKit/FormKitMultiselectInput.vue'
 
 import { plugin, defaultConfig, createInput } from '@formkit/vue'
 import { generateClasses } from '@formkit/themes'
@@ -114,6 +115,21 @@ app.use(createPinia())
                 }),
                 floating: createInput(FormKitFloatingLabelText, {
                     props: ['placeholder', 'floatingLabel', 'inputClass'],
+                }),
+                multiselect: createInput(FormKitMultiselectInput, {
+                    props: [
+                        'options',
+                        'disabled',
+                        'placeholder',
+                        'singleSelectPrefix',
+                        'groupLabel',
+                        'groupValues',
+                        'multiple',
+                        'showMultipleBelow',
+                        'limit',
+                        'searchable',
+                        'allowEmpty',
+                    ],
                 }),
             },
             locales: { fr },

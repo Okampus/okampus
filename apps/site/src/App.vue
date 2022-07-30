@@ -252,6 +252,7 @@
     @import '@/assets/scss/components/card';
     @import '@/assets/scss/components/container';
     @import '@/assets/scss/components/easymde';
+    @import '@/assets/scss/components/multiselect';
     @import '@/assets/scss/components/avatar-cropper';
     @import '@/assets/scss/components/input';
     @import '@/assets/scss/components/link';
