@@ -35,9 +35,9 @@ export class TeamsResolver {
 
   @Query(() => [Team])
   public async teams(
-    @Args('filters') filters: TeamsFilterDto,
+    @Args('filters', { nullable: true }) filters?: TeamsFilterDto,
   ): Promise<Team[]> {
-    const paginatedTeams = await this.teamsService.findAll(filters);
+    const paginatedTeams = await this.teamsService.findAll(filters ?? {});
     return paginatedTeams.items;
   }
 
