@@ -3,20 +3,20 @@
         <router-link :to="user.id ? `/user/${user.id}` : 'users'" class="shrink-0">
             <ProfileAvatar :size="3" :avatar="user.avatar" :name="fullname(user)" />
         </router-link>
-        <div class="flex flex-col">
-            <div class="text-1 flex items-center gap-1">
+        <div class="flex flex-col" :class="{ 'gap-1': labelName }">
+            <div class="text-1 inline">
                 <router-link
                     :to="user.id ? `/user/${user.id}` : 'users'"
                     class="text-sm font-semibold"
                     :class="
                         labelName
-                            ? 'px-1.5 bg-gray-500 hover:bg-gray-600 dark:hover:bg-gray-400 rounded-full'
+                            ? 'px-2 py-px text-white bg-gray-500 hover:bg-gray-600 dark:hover:bg-gray-400 rounded-full'
                             : 'hover:underline'
                     "
                     >{{ fullname(user) }}</router-link
                 >
                 <TipPopper :tip="getRole(user)[$i18n.locale]">
-                    <i class="ml-1" :class="`fa fa-${getRole(user).icon}`" />
+                    <i class="ml-2" :class="`fa fa-${getRole(user).icon}`" />
                 </TipPopper>
             </div>
 
