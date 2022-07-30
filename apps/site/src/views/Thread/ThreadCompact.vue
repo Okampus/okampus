@@ -42,11 +42,12 @@
                         </div>
                     </div>
                     <div class="text-1 sticky top-4 ml-4 hidden w-3/12 space-y-2 self-start lg:block">
-                        <div class="bg-card-within-1 rounded-lg p-4">
-                            <div class="mb-2 flex items-center space-x-2 text-xl">
-                                <div class="text-md mr-4 font-bold">Tags</div>
-                            </div>
-                            <div v-if="thread.tags?.length" class="flex flex-wrap">
+                        <div
+                            v-if="thread.tags?.length"
+                            class="bg-card-within-1 flex flex-col gap-4 rounded-lg p-4"
+                        >
+                            <AppTitle icon="fas fa-tags" :title="`Tag${thread.tags?.length ? 's' : ''}`" />
+                            <div class="flex flex-wrap">
                                 <LabelTag
                                     v-for="tag in thread.tags"
                                     :key="tag"
@@ -55,49 +56,39 @@
                                     :tag-color="tag.color"
                                 />
                             </div>
-                            <div v-else class="italic">Aucun tag</div>
                         </div>
-                        <div class="bg-card-within-1 rounded-lg p-4">
-                            <div class="mb-2 flex items-center space-x-2 text-xl">
-                                <div class="text-md mr-4 font-bold">Assigné</div>
-                                <!-- TODO: Actions : Settings, Add -->
-                            </div>
-                            <div v-if="thread.assignees?.length" class="flex flex-col">
-                                <UserPreview
-                                    v-for="(assigned, i) in thread.assignees"
+                        <div class="bg-card-within-1 flex flex-col gap-4 rounded-lg p-4">
+                            <AppTitle
+                                icon="fas fa-list-check"
+                                :title="`Assigné${thread.assignedUsers?.length ? 's' : ''}`"
+                            />
+                            <!-- TODO: Actions : Settings, Add -->
+                            <div v-if="thread.assignedUsers?.length" class="flex flex-col">
+                                <UserActivity
+                                    v-for="(user, i) in thread.assignedUsers"
                                     :key="i"
-                                    :user="assigned"
-                                    mode="horizontal"
+                                    :custom-string="getRole(user)[$i18n.locale]"
+                                    :user="user"
                                 />
                             </div>
                             <div v-else class="italic">Personne n'est assigné</div>
                         </div>
-                        <div class="bg-card-within-1 rounded-lg p-4">
-                            <div class="mb-2 flex items-center space-x-2 text-xl">
-                                <div class="text-md mr-4 font-bold">Participants</div>
-                                <!-- TODO: Actions : Settings, Add -->
-                            </div>
+                        <div class="bg-card-within-1 flex flex-col gap-4 rounded-lg p-4">
+                            <AppTitle
+                                icon="fas fa-user-group"
+                                :title="`Participant${thread.participants?.length ? 's' : ''}`"
+                            />
                             <div class="flex flex-col gap-4">
                                 <!-- TODO: Improve with UserActivity, last activity on thread -->
-                                <div
-                                    v-for="(participant, i) in thread.participants"
+                                <UserActivity
+                                    v-for="(user, i) in thread.participants"
                                     :key="i"
-                                    class="flex items-center gap-2"
-                                >
-                                    <ProfileAvatar
-                                        :size="2"
-                                        :avatar="participant.avatar"
-                                        :name="fullname(participant)"
-                                    />
-                                    <div class="inline">
-                                        {{ fullname(participant) }}
-                                        <TipPopper :tip="getRole(participant)[$i18n.locale]">
-                                            <i class="ml-1" :class="`fa fa-${getRole(participant).icon}`" />
-                                        </TipPopper>
-                                    </div>
-                                </div>
+                                    :custom-string="getRole(user)[$i18n.locale]"
+                                    :user="user"
+                                />
                             </div>
                         </div>
+                        <!-- TODO: Actions : Settings, Add -->
                         <!-- <div class="card">
                             <div class="flex items-center mb-3 space-x-2 text-xl">
                                 <div class="mr-4 font-bold text-md">Sujets semblables</div>
@@ -121,19 +112,19 @@
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
     import LabelTag from '@/components/UI/Label/LabelTag.vue'
 
-    import UserPreview from '@/components/App/Preview/UserPreview.vue'
-    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    import ThreadCommentable from '@/components/Thread/ThreadCommentable.vue'
+    import UserActivity from '@/components/App/General/UserActivity.vue'
     import ThreadNewReply from '@/components/Thread/ThreadNewReply.vue'
 
-    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
+    import AppTitle from '@/components/App/AppTitle.vue'
 
     import { computed } from 'vue'
     import { useRoute } from 'vue-router'
 
-    import { fullname, getRole } from '@/utils/users'
-    import threadTypes from '@/shared/types/thread-types.enum'
     import { getThreadById } from '@/graphql/queries/getThreadById'
-    import ThreadCommentable from '@/components/Thread/ThreadCommentable.vue'
+
+    import { getRole } from '@/utils/users'
+    import threadTypes from '@/shared/types/thread-types.enum'
 
     const route = useRoute()
 

@@ -13,7 +13,7 @@
                 </div>
             </template>
         </AlertInline>
-        <p v-else class="label-title mt-2 ml-6">Répondre à ce post</p>
+        <AppTitle v-else icon="fa-chat" title="Répondre à ce post" />
         <div
             id="new-reply"
             class="bg-card-meta flex flex-row p-4 text-lg"
@@ -41,6 +41,7 @@
 <script setup>
     import { useMutation } from '@vue/apollo-composable'
     import AlertInline from '@/components/UI/Alert/AlertInline.vue'
+    import AppTitle from '@/components/App/AppTitle.vue'
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import MdEditor from '@/components/Input/Editor/MdEditor.vue'

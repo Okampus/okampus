@@ -267,7 +267,6 @@
     @import '@/assets/scss/components/link';
     @import '@/assets/scss/components/select';
     @import '@/assets/scss/sections/hero';
-    @import '@/assets/scss/sections/label';
     @import '@/assets/scss/sections/transition';
     @import '@/assets/scss/core/scrollbar';
     @import '@/assets/scss/core/spacing';

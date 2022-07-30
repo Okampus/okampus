@@ -3,7 +3,7 @@
         <template #default="{ close }">
             <div class="card flex flex-col gap-2">
                 <div class="text-xl">Signaler ce contenu</div>
-                <div class="label-title">Raison</div>
+                <AppTitle icon="fa fa-bullhorn" title="Raison" />
 
                 <!-- TODO: Change editor to basic textarea ? -->
                 <textarea v-model="state.reason" class="input" rows="6" cols="30" @input="v$.reason.$touch" />
@@ -36,6 +36,7 @@
 
 <script setup>
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
+    import AppTitle from '@/components/App/AppTitle.vue'
 
     import useVuelidate from '@vuelidate/core'
     import { reactive } from 'vue'
