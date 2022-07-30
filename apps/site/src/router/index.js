@@ -65,7 +65,8 @@ const routes = [
     },
 
     {
-        path: '/forum/post/new',
+        name: 'forum-new',
+        path: '/forum/new/:tab*',
         component: () => import('@/views/Thread/ThreadNew.vue'),
         meta: {
             requiresAuth: true,

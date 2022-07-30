@@ -150,7 +150,7 @@ export const sections = computed(() => {
                               icon: 'comments',
                               button: {
                                   text: 'Créer un post',
-                                  to: '/forum/post/new',
+                                  to: '/forum/new',
                                   icon: 'circle-plus',
                               },
                           },
