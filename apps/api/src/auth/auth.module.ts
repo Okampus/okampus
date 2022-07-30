@@ -5,6 +5,7 @@ import { config } from '../shared/configs/config';
 import { User } from '../users/user.entity';
 import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
+import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { MyEfreiAuthGuard } from './myefrei-auth.guard';
@@ -34,6 +35,8 @@ const myefreiStrategy = config.get('myefreiOidc.enabled')
     AuthService,
     JwtAuthGuard,
     MyEfreiAuthGuard,
+    AuthResolver,
+    AuthController,
     ...myefreiStrategy,
   ],
   exports: [JwtAuthGuard, AuthService, JwtModule],

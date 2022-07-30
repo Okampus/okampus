@@ -31,7 +31,8 @@ export class AuthService {
         { id: { $ilike: userQuery } },
         { email: userQuery.toLowerCase() },
       ],
-    });
+    }, { populate: ['schoolGroupMemberships', 'schoolGroupMemberships.schoolYear', 'schoolGroupMemberships.schoolGroup'] });
+
     if (user) {
       const [userPassword] = await this.userRepository.createQueryBuilder()
         .select(['id', 'password'])

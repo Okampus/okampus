@@ -6,6 +6,9 @@ import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { FileUploadsModule } from '../files/file-uploads/file-uploads.module';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
 import { ProfileImagesModule } from '../files/profile-images/profile-images.module';
+import { SchoolGroupMembershipsModule } from '../school-group/memberships/memberships.module';
+import { SchoolGroup } from '../school-group/school-group.entity';
+import { SchoolYear } from '../school-group/school-year/school-year.entity';
 import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { Role } from '../shared/modules/authorization/types/role.enum';
@@ -16,20 +19,23 @@ import { StatisticsModule } from '../statistics/statistics.module';
 import { GdprModule } from './gdpr/gdpr.module';
 import { UserSearchService } from './user-search.service';
 import { User } from './user.entity';
+
 import { UsersController } from './users.controller';
+import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
 import './user.subscriber';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([ProfileImage, User, Statistics, BadgeUnlock]),
+    MikroOrmModule.forFeature([ProfileImage, User, Statistics, BadgeUnlock, SchoolGroup, SchoolYear]),
     StatisticsModule,
     ProfileImagesModule,
     FileUploadsModule,
     GdprModule,
+    SchoolGroupMembershipsModule,
   ],
   controllers: [UsersController],
-  providers: [CaslAbilityFactory, UsersService, UserSearchService, JwtService],
+  providers: [CaslAbilityFactory, UsersService, UserSearchService, JwtService, UsersResolver],
   exports: [UsersService],
 })
 export class UsersModule implements OnModuleInit {

@@ -5,11 +5,15 @@ import { JwtService } from '@nestjs/jwt';
 import type { Token } from '../auth/jwt-auth.guard';
 import { FileUpload } from '../files/file-uploads/file-upload.entity';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
+import { SchoolGroupMembership } from '../school-group/memberships/school-group-membership.entity';
+import { SchoolGroup } from '../school-group/school-group.entity';
+import { SchoolYear } from '../school-group/school-year/school-year.entity';
 import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
+import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import { Statistics } from '../statistics/statistics.entity';
@@ -25,6 +29,10 @@ export class UsersService {
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(Statistics) private readonly statisticsRepository: BaseRepository<Statistics>,
     @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
+    @InjectRepository(SchoolGroup)
+      private readonly schoolGroupRepository: BaseRepository<SchoolGroup>,
+    @InjectRepository(SchoolYear)
+      private readonly schoolYearRepository: BaseRepository<SchoolYear>,
     private readonly userSearchService: UserSearchService,
     private readonly statisticsService: StatisticsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
@@ -58,6 +66,18 @@ export class UsersService {
       user.banner = null;
 
     await this.userRepository.persistAndFlush(user);
+
+    if (user.schoolRole === SchoolRole.Student) {
+      const schoolYear = await this.schoolYearRepository.findOneOrFail({ id: 'school-year-test' });
+      const schoolGroup = await this.schoolGroupRepository.findOneOrFail({ id: 'group-test' });
+      const schoolGroupMembership = new SchoolGroupMembership({
+        user,
+        schoolGroup,
+        schoolYear,
+      });
+      await this.schoolGroupRepository.persistAndFlush(schoolGroupMembership);
+    }
+
     await this.userSearchService.add(user);
 
     return { user, token };
@@ -92,7 +112,7 @@ export class UsersService {
   }
 
   public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<User>> {
-    return await this.userRepository.findWithPagination(paginationOptions, {}, { orderBy: { lastname: 'ASC' } });
+    return await this.userRepository.findWithPagination(paginationOptions, {}, { orderBy: { lastname: 'ASC' }, populate: ['schoolGroupMemberships', 'schoolGroupMemberships.schoolYear', 'schoolGroupMemberships.schoolGroup'] });
   }
 
   public async delete(id: string): Promise<void> {
