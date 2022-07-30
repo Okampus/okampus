@@ -22,9 +22,9 @@ export class SchoolGroupMembership extends BaseEntity {
   @PrimaryKey()
   id!: number;
 
-  @Property()
-  @Index()
-  active = true;
+  @Field(() => User)
+  @ManyToOne({ onDelete: 'CASCADE' })
+  user!: User;
 
   @Field(() => SchoolYear)
   @ManyToOne({ onDelete: 'CASCADE' })
@@ -36,19 +36,19 @@ export class SchoolGroupMembership extends BaseEntity {
   @Index()
   schoolGroup!: SchoolGroup;
 
-  @Field(() => User)
-  @ManyToOne({ onDelete: 'CASCADE' })
-  user!: User;
-
   @Field(() => SchoolGroupRole)
   @Enum(() => SchoolGroupRole)
   role = SchoolGroupRole.Student;
+
+  @Property()
+  @Index()
+  active = true;
 
   constructor(options: {
     user: User;
     schoolYear: SchoolYear;
     schoolGroup: SchoolGroup;
-    role: SchoolGroupRole;
+    role?: SchoolGroupRole | null;
   }) {
     super();
     this.assign(options);

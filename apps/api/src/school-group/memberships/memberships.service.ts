@@ -137,7 +137,7 @@ export class SchoolGroupMembershipsService {
 
     const { id, ...previousMembership } = activeMembership;
     // 2. Check that the given schoolYear exists
-    const schoolYear = typeof updateSchoolGroupMembershipDto.schoolYearId === 'number'
+    const schoolYear = typeof updateSchoolGroupMembershipDto.schoolYearId === 'string'
       ? await this.schoolYearRepository.findOneOrFail({ id: updateSchoolGroupMembershipDto.schoolYearId })
       : null;
 
