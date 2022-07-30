@@ -73,7 +73,7 @@
             } else {
                 tags.value.push(tag)
                 newTag.value = ''
-                emit('update:modelValue', tags)
+                emit('update:modelValue', tags.value)
             }
             if (tagsInput.value.placeholder) {
                 tagsInput.value.placeholder = ''

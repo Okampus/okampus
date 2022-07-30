@@ -1,5 +1,9 @@
 <template>
-    <TagInput :placeholder="placeholder" :model-value="context._value" @update:model-value="handleInput" />
+    <TagInput
+        :placeholder="placeholder"
+        :model-value="context._value?.value ?? context._value"
+        @update:model-value="handleInput"
+    />
 </template>
 
 <script setup>
@@ -18,6 +22,4 @@
     const handleInput = (value) => {
         props.context.node.input(value)
     }
-
-    handleInput([])
 </script>
