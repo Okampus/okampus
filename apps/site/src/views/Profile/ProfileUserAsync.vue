@@ -1,7 +1,7 @@
 <template>
     <div>
         <ProfileBanner :name="fullname(user)" :banner="user.banner" class="h-40 p-0" :rounded-top="false" />
-        <div class="centered-container-padded text-0">
+        <div class="centered-container-padded text-0 flex flex-col">
             <div class="-mt-[5rem] flex gap-4">
                 <ProfileAvatar
                     :avatar="user.avatar"
