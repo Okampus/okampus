@@ -8,15 +8,15 @@ export const ROLES = [
     },
     {
         key: 'Teacher',
-        fr: 'Prof.',
+        fr: 'Professeur',
         en: 'Teacher',
         icon: 'school',
         color: 'blue',
     },
     {
         key: 'Admin',
-        fr: 'Admin.',
-        en: 'Admin.',
+        fr: 'Administrateur',
+        en: 'Admin',
         icon: 'shield-alt',
         color: 'red',
     },
