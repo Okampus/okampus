@@ -7,7 +7,14 @@
             v-bind="!isNil(toast.duration) ? { duration: toast.duration } : {}"
             @close="toast.onClose"
         />
-        <FormLogin v-model:show-login="showLogin" />
+
+        <ModalPopup :show="showLogin" @close="showLogin = false">
+            <Transition name="fade">
+                <AppLogin @logged-in="showLogin = false">
+                    <h2 class="text-1 text-center font-semibold">Connexion</h2>
+                </AppLogin>
+            </Transition>
+        </ModalPopup>
 
         <div class="z-1 flex h-screen w-screen flex-row">
             <LayoutSidebar
@@ -61,10 +68,14 @@
 <script setup>
     import LayoutSidebar from '@/components/Layout/LayoutSidebar.vue'
     import LayoutTopbar from '@/components/Layout/LayoutTopbar.vue'
-    import FormLogin from '@/components/Form/FormLogin.vue'
+    import AppLogin from './components/App/AppLogin.vue'
     import AlertToast from '@/components/UI/Alert/AlertToast.vue'
     import AppException from '@/views/App/AppException.vue'
     import AppLoader from '@/components/App/AppLoader.vue'
+
+    import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
+
+    import SwiperCore, { EffectCoverflow } from 'swiper'
 
     import { useBreakpoints } from '@vueuse/core'
 
@@ -80,8 +91,6 @@
     import { useRoute } from 'vue-router'
     import { useAuthStore } from '@/store/auth.store'
     import { useUserConfigStore } from '@/store/user-config.store'
-
-    import SwiperCore, { EffectCoverflow } from 'swiper'
 
     import 'swiper/css'
     import 'swiper/css/effect-coverflow'
