@@ -72,7 +72,7 @@ export const useClubsStore = defineStore('clubs', {
 
         async getClubs() {
             return await $axios
-                .get('teams/teams', { params: { itemsPerPage: 100 } })
+                .get('teams/teams', { params: { itemsPerPage: 100, kind: 'club' } })
                 .then(onItems(this.replaceClubs))
         },
 
