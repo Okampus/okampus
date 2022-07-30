@@ -11,6 +11,9 @@ const schoolGroupFragment = gql`
 export const userFragment = gql`
     fragment UserInfo on User {
         id
+        shortDescription
+        email
+        points
         firstname
         lastname
         avatar
