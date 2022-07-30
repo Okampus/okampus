@@ -1,4 +1,5 @@
 @import '@/assets/scss/abstracts/mixins/get-color';
+@import '@/assets/scss/components/input';
 
 select:invalid {
     @extend %text-placeholder;

@@ -72,6 +72,7 @@ input[type='checkbox'] {
     left: 0.7em;
     box-sizing: border-box;
     color: grey;
+    pointer-events: none;
     transition: bottom 0.25s, font-size 0.25s, left 0.25s;
     transform: translateY(50%);
 

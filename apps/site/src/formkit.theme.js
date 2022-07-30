@@ -2,6 +2,7 @@
 // many input types are identical in how
 // we want to style them.
 const textClassification = {
+    label: 'ml-1 block mb-2 font-semibold text-base formkit-invalid:text-red-500',
     inner: `
       border
       border-transparent
@@ -14,7 +15,7 @@ const boxClassification = {
     legend: 'font-bold text-sm',
     wrapper: 'flex items-center mb-1 cursor-pointer',
     input: 'form-check-input appearance-none h-4 w-4 mr-2 border border-gray-400 rounded-sm bg-white checked:bg-blue-600 focus:outline-none focus:ring-0 transition duration-200 cursor-pointer',
-    label: 'text-sm text-1',
+    label: 'text-base text-1',
     options: 'flex flex-wrap gap-3 pt-2',
     inner: 'flex items-center justify-center',
 }
@@ -29,8 +30,7 @@ const buttonClassification = {
 export default {
     // the global key will apply to all inputs
     global: {
-        label: 'ml-1 block mb-2 font-semibold text-base formkit-invalid:text-red-500',
-        outer: 'mt-6 formkit-disabled:opacity-50',
+        outer: 'mb-3 formkit-disabled:opacity-50',
         help: 'text-xs text-gray-500 mb-2 mt-1',
         messages: 'list-none p-0 mt-1 mb-0',
         message: 'text-red-500 mb-3 text-xs',
