@@ -145,8 +145,6 @@ input CreateTeamDto {
   category: String!
   kind: TeamKind!
   longDescription: String
-  membershipRequestLink: URL
-  membershipRequestMessage: String
   name: String!
   shortDescription: String
   tags: [String!]

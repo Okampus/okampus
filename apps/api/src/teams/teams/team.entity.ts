@@ -68,14 +68,6 @@ export class Team extends BaseEntity {
   @TransformCollection()
   members = new Collection<TeamMember>(this);
 
-  @Field(() => String, { nullable: true })
-  @Property({ type: 'text' })
-  membershipRequestLink: string | null = null;
-
-  @Field(() => String, { nullable: true })
-  @Property({ type: 'text' })
-  membershipRequestMessage: string | null = null;
-
   @Field(() => TeamForm, { nullable: true })
   @OneToOne('TeamForm')
   membershipRequestForm: TeamForm | null = null;
@@ -89,8 +81,6 @@ export class Team extends BaseEntity {
     avatar?: string | null;
     banner?: string | null;
     tags?: string[] | null;
-    membershipRequestLink?: string | null;
-    membershipRequestMessage?: string | null;
     membershipRequestForm?: TeamForm | null;
   }) {
     super();
