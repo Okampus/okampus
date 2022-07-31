@@ -3223,15 +3223,6 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "meta": {
-          "name": "meta",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        },
         "issuer": {
           "name": "issuer",
           "type": "text",

@@ -170,7 +170,6 @@ input CreateTeamFinanceDto {
 
 input CreateTeamMembershipRequestDto {
   formSubmission: JSON
-  meta: JSON
   originalFormId: Int
   role: TeamRole
 }
@@ -625,7 +624,6 @@ type TeamMembershipRequest {
   id: Int!
   issuedBy: User!
   issuer: MembershipRequestIssuer!
-  meta: JSON
   originalForm: TeamForm
   role: TeamRole!
   state: MembershipRequestState!
@@ -749,7 +747,6 @@ input UpdateTeamMemberDto {
 
 input UpdateTeamMembershipRequestDto {
   formSubmission: JSON
-  meta: JSON
   originalFormId: Int
   role: TeamRole
 }

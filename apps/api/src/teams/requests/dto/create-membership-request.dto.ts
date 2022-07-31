@@ -15,11 +15,6 @@ export class CreateTeamMembershipRequestDto {
   @IsOptional()
   role?: TeamRole;
 
-  @Field(() => GraphQLJSON, { nullable: true })
-  @IsOptional()
-  @IsObject()
-  meta?: object[] | object;
-
   @Field(() => Int, { nullable: true })
   @IsOptional()
   @IsInt()

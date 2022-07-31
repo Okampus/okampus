@@ -41,10 +41,6 @@ export class TeamMembershipRequest extends BaseEntity {
   @Index()
   user!: User;
 
-  @Field(() => GraphQLJSON, { nullable: true })
-  @Property({ type: 'json', nullable: true })
-  meta: object[] | object | null = null;
-
   @Field(() => MembershipRequestIssuer)
   @Enum(() => MembershipRequestIssuer)
   issuer!: MembershipRequestIssuer;
@@ -89,7 +85,6 @@ export class TeamMembershipRequest extends BaseEntity {
     issuedBy: User;
     originalForm?: TeamForm | null;
     formSubmission?: object[] | object | null;
-    meta?: object[] | object | null;
     handledMessage?: string | null;
     role?: TeamRole | null;
   }) {

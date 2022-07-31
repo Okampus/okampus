@@ -37,7 +37,6 @@ export class TeamManagedMembershipRequestUpdatedNotification extends Notificatio
       request: {
         user: this.userToPayload(this.teamMembershipRequest.user),
         id: this.teamMembershipRequest.id,
-        meta: this.teamMembershipRequest.meta,
         issuer: this.teamMembershipRequest.issuer,
         state: this.teamMembershipRequest.state,
         issuedBy: this.userToPayload(this.teamMembershipRequest.issuedBy),
