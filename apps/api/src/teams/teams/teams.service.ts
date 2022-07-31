@@ -13,15 +13,10 @@ import { TeamMember } from '../members/team-member.entity';
 import type { CreateTeamDto } from './dto/create-team.dto';
 import type { TeamsFilterDto } from './dto/teams-filter.dto';
 import type { UpdateTeamDto } from './dto/update-team.dto';
+import type { TeamInfo } from './team-info.model';
 import { TeamSearchService } from './team-search.service';
 import { Team } from './team.entity';
 
-export interface TeamInfo extends Team {
-  memberCount?: number;
-  owner?: User | null;
-  secretary?: User | null;
-  treasurer?: User | null;
-}
 
 @Injectable()
 export class TeamsService {
@@ -79,7 +74,7 @@ export class TeamsService {
     const allTeams = await this.teamRepository.findWithPagination(
       paginationOptions,
       options,
-      { orderBy: { name: 'ASC' } },
+      { orderBy: { name: 'ASC' }, populate: ['membershipRequestForm'] },
     );
 
     allTeams.items = allTeams.items.map((team) => {
@@ -101,7 +96,9 @@ export class TeamsService {
 
       return teamInfo;
     }) as TeamInfo[];
-    return allTeams;
+
+
+    return allTeams as PaginatedResult<TeamInfo>;
   }
 
   public async findOne(id: number): Promise<Team> {
@@ -152,7 +149,7 @@ export class TeamsService {
     // Check that the provided form id is valid, is a template, and is not already used
     if (typeof membershipRequestFormId !== 'undefined') {
       if (membershipRequestFormId) {
-        const form = await this.teamFormRepository.findOneOrFail({ id, team });
+        const form = await this.teamFormRepository.findOneOrFail({ id: membershipRequestFormId, team });
         if (form.isTemplate)
           throw new BadRequestException('Form is a template');
         team.membershipRequestForm = form;

@@ -32,10 +32,10 @@ import { User } from '../../users/user.entity';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { TeamListOptions } from './dto/team-list-options.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
+import type { TeamInfo } from './team-info.model';
 import type { IndexedTeam } from './team-search.service';
 import { TeamSearchService } from './team-search.service';
 import { Team } from './team.entity';
-import type { TeamInfo } from './teams.service';
 import { TeamsService } from './teams.service';
 
 @ApiTags('Teams')
