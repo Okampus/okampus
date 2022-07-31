@@ -260,7 +260,7 @@ type Mutation {
   addUserToTeam(invite: InviteMemberDto!, teamId: Float!, userId: String!): TeamMember!
   favoriteContent(favorite: Boolean!, id: Int!): Content!
   handleTeamMembershipRequest(payload: PutTeamMembershipRequestDto!, requestId: Float!): TeamMembershipRequest!
-  joinTeam(id: Float!, request: CreateTeamMembershipRequestDto!): TeamMembershipRequest!
+  joinTeam(id: Float!, request: CreateTeamMembershipRequestDto!): TeamInfo!
   login(password: String!, username: String!): User!
   removeTeamMember(teamId: Float!, userId: String!): TeamMember
   reportContent(id: Int!, report: CreateReportDto!): Content!
@@ -455,8 +455,10 @@ type Tag {
 }
 
 type Team {
+  activeMemberCount: Int!
   avatar: String
   banner: String
+  boardMembers: [TeamMember!]!
   category: String!
   createdAt: DateTime!
   id: Int!
@@ -599,6 +601,28 @@ type TeamForm {
   updatedAt: DateTime!
 }
 
+type TeamInfo {
+  activeMemberCount: Int!
+  avatar: String
+  banner: String
+  boardMembers: [TeamMember!]!
+  category: String!
+  createdAt: DateTime!
+  id: Int!
+  kind: TeamKind!
+  longDescription: String
+  members: [TeamMember!]!
+  membershipRequestForm: TeamForm
+  name: String!
+  owner: User
+  secretary: User
+  shortDescription: String
+  tags: [String!]!
+  treasurer: User
+  updatedAt: DateTime!
+  userMembership: TeamMembershipStatus
+}
+
 enum TeamKind {
   Club
   Department
@@ -636,7 +660,7 @@ type TeamMembershipRequest {
 
 type TeamMembershipStatus {
   membership: TeamMember
-  requestStatus: MembershipRequestState
+  pendingRequest: Boolean!
 }
 
 enum TeamRole {
