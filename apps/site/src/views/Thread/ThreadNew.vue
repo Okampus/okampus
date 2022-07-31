@@ -150,7 +150,7 @@
 
     import { useAuthStore } from '@/store/auth.store'
     import { useMutation } from '@vue/apollo-composable'
-    import { getTeams } from '@/graphql/queries/getTeams'
+    import { getTeams } from '@/graphql/queries/teams/getTeams'
 
     import { addThread } from '@/graphql/queries/addThread'
 

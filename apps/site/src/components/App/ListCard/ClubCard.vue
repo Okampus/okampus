@@ -43,32 +43,12 @@
                 </router-link>
 
                 <div class="mt-3 flex h-12 w-full flex-row items-center justify-between">
-                    <button
-                        v-if="!club.membership"
-                        class="button-blue -ml-1 rounded-full py-1 text-center font-semibold"
-                        @click="emit('request', club.id)"
+                    <template
+                        v-if="
+                            club.userMembership.membership?.role &&
+                            specialRoles.includes(club.userMembership.membership?.role)
+                        "
                     >
-                        Rejoindre
-                    </button>
-                    <template v-else-if="club.membership === IS_WAITING">
-                        <router-link
-                            :to="`/me/clubs/requests`"
-                            class="button-grey -ml-1 flex items-center gap-2 rounded-full py-1 font-semibold"
-                        >
-                            <i class="fa fa-envelope" />
-                            <div>En attente</div>
-                        </router-link>
-                    </template>
-                    <template v-else-if="club.membership === IS_MEMBER">
-                        <router-link
-                            :to="`/club/${club.id}`"
-                            class="button-indigo -ml-1 flex items-center gap-2 rounded-full py-1 font-semibold"
-                        >
-                            <i class="fa fa-users" />
-                            <div>Profil</div>
-                        </router-link>
-                    </template>
-                    <template v-else-if="club.membership === IS_SPECIAL_ROLE">
                         <router-link
                             :to="`/club/${club.id}/manage`"
                             class="button-green -ml-1 flex items-center gap-2 rounded-full py-1 font-semibold"
@@ -77,22 +57,47 @@
                             <div>Gérer</div>
                         </router-link>
                     </template>
+                    <template v-else-if="club.userMembership.membership?.role">
+                        <router-link
+                            :to="`/club/${club.id}`"
+                            class="button-indigo -ml-1 flex items-center gap-2 rounded-full py-1 font-semibold"
+                        >
+                            <i class="fa fa-users" />
+                            <div>Profil</div>
+                        </router-link>
+                    </template>
+                    <template v-else-if="club.pendingRequest">
+                        <router-link
+                            :to="`/me/clubs/requests`"
+                            class="button-grey -ml-1 flex items-center gap-2 rounded-full py-1 font-semibold"
+                        >
+                            <i class="fa fa-envelope" />
+                            <div>En attente</div>
+                        </router-link>
+                    </template>
+                    <button
+                        v-else
+                        class="button-blue -ml-1 rounded-full py-1 text-center font-semibold"
+                        @click="emit('join')"
+                    >
+                        Rejoindre
+                    </button>
 
                     <div class="text-0 ml-4 flex flex-row-reverse gap-1">
-                        <span v-if="props.club.memberCount > specialMembers.length" class="text-0 my-auto"
-                            >+ {{ abbrNumbers(props.club.memberCount - specialMembers.length) }}</span
+                        <span v-if="club.memberCount > club.boardMembers.length" class="text-0 my-auto"
+                            >+ {{ abbrNumbers(club.memberCount - club.boardMembers.length) }}</span
                         >
-                        <div v-for="(specialMember, i) in specialMembers" :key="i" class="-ml-3">
+                        <div v-for="(specialMember, i) in sortedBoardMembers" :key="i" class="-ml-3">
                             <TipPopper
                                 placement="top"
                                 offset="12"
                                 :delay="200"
-                                @open="specialMembersActive[i] = true"
-                                @close="specialMembersActive[i] = false"
+                                @open="hovering = i"
+                                @close="hovering = null"
                             >
                                 <template #content>
                                     <UserAboutCard
-                                        :user="specialMember.member"
+                                        :user="specialMember.user"
                                         :title="`${clubRoleNames[specialMember.role][$i18n.locale]} de ${
                                             club.name
                                         }`"
@@ -103,20 +108,20 @@
                                         <div class="p-1">
                                             <ProfileAvatar
                                                 class="bg-2 relative rounded-full p-1 !shadow-none"
-                                                :class="specialMembersActive[i] ? 'hovered' : ''"
+                                                :class="{ 'hoverred': hovering === i }"
                                                 :size="2.5"
-                                                :avatar="specialMember.member.avatar"
-                                                :name="fullname(specialMember.member)"
+                                                :avatar="specialMember.user.avatar"
+                                                :name="fullname(specialMember.user)"
                                             />
                                         </div>
                                     </template>
                                     <template v-else>
-                                        <router-link class="p-1" :to="`/user/${specialMember.member.id}`">
+                                        <router-link class="p-1" :to="`/user/${specialMember.user.id}`">
                                             <ProfileAvatar
                                                 class="hovered bg-2 relative cursor-pointer rounded-full !shadow-none"
                                                 :size="2.5"
-                                                :avatar="specialMember.member.avatar"
-                                                :name="fullname(specialMember.member)"
+                                                :avatar="specialMember.user.avatar"
+                                                :name="fullname(specialMember.user)"
                                             />
                                         </router-link>
                                     </template>
@@ -131,13 +136,6 @@
 </template>
 
 <script setup>
-    import { fullname } from '@/utils/users'
-    import { abbrNumbers } from '@/utils/abbrNumbers'
-    import { clubRoleNames, IS_MEMBER, IS_SPECIAL_ROLE, IS_WAITING } from '@/shared/types/club-roles.enum'
-    import { clubTypes } from '@/shared/types/club-types.enum'
-    import { ref } from 'vue'
-    import { getURL } from '@/utils/routeUtils'
-
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
     import TipPopper from '@/components/UI/Tip/TipPopper.vue'
@@ -145,6 +143,14 @@
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import UserAboutCard from '@/components/User/UserAboutCard.vue'
     import ModalDropdown from '@/components/UI/Modal/ModalDropdown.vue'
+
+    import { fullname } from '@/utils/users'
+    import { abbrNumbers } from '@/utils/abbrNumbers'
+    import { clubRoleNames, specialRoles } from '@/shared/types/club-roles.enum'
+    import { clubTypes } from '@/shared/types/club-types.enum'
+
+    import { getURL } from '@/utils/routeUtils'
+    import { computed, ref } from 'vue'
 
     import { emitter } from '@/shared/modules/emitter'
     import { useRouter } from 'vue-router'
@@ -156,15 +162,15 @@
         },
     })
 
-    const emit = defineEmits(['request'])
+    const emit = defineEmits(['join'])
 
-    const specialMembers = [
-        { role: 'treasurer', member: props.club.treasurer },
-        { role: 'secretary', member: props.club.secretary },
-        { role: 'owner', member: props.club.owner },
-    ].filter((specialMember) => !!specialMember.member)
+    const sortedBoardMembers = computed(() =>
+        [...(props.club.boardMembers ?? [])].sort(
+            (member1, member2) => specialRoles.indexOf(member1.role) - specialRoles.indexOf(member2.role),
+        ),
+    )
 
-    const specialMembersActive = ref(specialMembers.map(() => false))
+    const hovering = ref(null)
 
     const router = useRouter()
     const buttons = [

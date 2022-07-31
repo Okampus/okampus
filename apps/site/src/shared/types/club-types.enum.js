@@ -40,14 +40,3 @@ export const clubTypes = {
         'link': 'pro',
     },
 }
-
-export const linkToClubType = {
-    'human': 'Humanitaire',
-    'tech': 'Technologie',
-    'sports': 'Sport',
-    'leisure': 'Culture et loisirs',
-    'international': 'International',
-    'arts': 'Arts',
-    'events': 'Evénementiel',
-    'pro': 'Professionnel',
-}
