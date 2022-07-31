@@ -1,8 +1,12 @@
 %button {
     transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
-    @apply text-white cursor-pointer rounded-lg px-3 py-2;
+    @apply text-white cursor-pointer rounded-lg px-3 py-1;
 
-    &:hover {
+    &:disabled {
+        opacity: 0.5;
+    }
+
+    &:hover:enabled {
         filter: brightness(1.3);
     }
 }
@@ -12,7 +16,7 @@
 
     background-color: #1b73d5;
 
-    &:hover {
+    &:hover:enabled {
         box-shadow: 0 0 8px #50a7ff;
     }
 }
@@ -22,7 +26,7 @@
 
     background-color: #6366f1;
 
-    &:hover {
+    &:hover:enabled {
         box-shadow: 0 0 8px #8894ff;
     }
 }
@@ -32,7 +36,7 @@
 
     background-color: #0ca74c;
 
-    &:hover {
+    &:hover:enabled {
         box-shadow: 0 0 8px #2b9c0f;
     }
 }
@@ -42,7 +46,7 @@
 
     background-color: #d6a726;
 
-    &:hover {
+    &:hover:enabled {
         box-shadow: 0 0 8px #daa924;
     }
 }
@@ -52,7 +56,7 @@
 
     @apply bg-gray-500;
 
-    &:hover {
+    &:hover:enabled {
         box-shadow: 0 0 8px 0 rgb(255 255 255 / 50%);
     }
 }
@@ -62,7 +66,7 @@
 
     background: #f72d13;
 
-    &:hover {
+    &:hover:enabled {
         box-shadow: 0 0 8px #e45d4b;
     }
 }

@@ -12,7 +12,7 @@ const textClassification = {
 }
 const boxClassification = {
     fieldset: 'rounded-md px-3 pb-2 bg-3 shadow mb-2',
-    legend: 'font-bold text-sm',
+    legend: 'font-bold text-base text-1',
     wrapper: 'flex items-center mb-1 cursor-pointer',
     input: 'form-check-input appearance-none h-4 w-4 mr-2 border border-gray-400 rounded-sm bg-white checked:bg-blue-600 focus:outline-none focus:ring-0 transition duration-200 cursor-pointer',
     label: 'text-base text-1',
@@ -30,7 +30,7 @@ const buttonClassification = {
 export default {
     // the global key will apply to all inputs
     global: {
-        outer: 'mb-3 formkit-disabled:opacity-50',
+        outer: 'mb-3 md:mb-6 formkit-disabled:opacity-50',
         help: 'text-xs text-gray-500 mb-2 mt-1',
         messages: 'list-none p-0 mt-1 mb-0',
         message: 'text-red-500 mb-3 text-xs',
