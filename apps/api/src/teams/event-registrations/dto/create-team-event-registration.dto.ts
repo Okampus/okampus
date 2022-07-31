@@ -5,7 +5,7 @@ import {
   IsObject,
   IsOptional,
 } from 'class-validator';
-import { GraphQLJSONObject } from 'graphql-scalars';
+import { GraphQLJSON } from 'graphql-scalars';
 import { TeamEventRegisterStatus } from '../../../shared/lib/types/enums/team-event-register-status.enum';
 
 @InputType()
@@ -19,8 +19,8 @@ export class CreateTeamEventRegistrationDto {
   @IsInt()
   originalFormId?: number;
 
-  @Field(() => GraphQLJSONObject, { nullable: true })
+  @Field(() => GraphQLJSON, { nullable: true })
   @IsOptional()
   @IsObject()
-  formSubmission?: object;
+  formSubmission?: object[] | object;
 }

@@ -12,11 +12,14 @@ import {
   Int,
   ObjectType,
 } from '@nestjs/graphql';
-import { GraphQLJSONObject } from 'graphql-scalars';
+import { GraphQLJSON } from 'graphql-scalars';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
+// eslint-disable-next-line import/no-cycle
 import { User } from '../../users/user.entity';
+// eslint-disable-next-line import/no-cycle
 import { TeamForm } from '../forms/team-form.entity';
+// eslint-disable-next-line import/no-cycle
 import { Team } from '../teams/team.entity';
 import { MembershipRequestIssuer } from '../types/membership-request-issuer.enum';
 import { MembershipRequestState } from '../types/membership-request-state.enum';
@@ -38,9 +41,9 @@ export class TeamMembershipRequest extends BaseEntity {
   @Index()
   user!: User;
 
-  @Field(() => GraphQLJSONObject, { nullable: true })
+  @Field(() => GraphQLJSON, { nullable: true })
   @Property({ type: 'json', nullable: true })
-  meta: object | null = null;
+  meta: object[] | object | null = null;
 
   @Field(() => MembershipRequestIssuer)
   @Enum(() => MembershipRequestIssuer)
@@ -75,9 +78,9 @@ export class TeamMembershipRequest extends BaseEntity {
   @ManyToOne()
   originalForm: TeamForm | null = null;
 
-  @Field(() => GraphQLJSONObject, { nullable: true })
+  @Field(() => GraphQLJSON, { nullable: true })
   @Property({ type: 'json' })
-  formSubmission: object | null = null;
+  formSubmission: object[] | object | null = null;
 
   constructor(options: {
     team: Team;
@@ -85,8 +88,8 @@ export class TeamMembershipRequest extends BaseEntity {
     issuer: MembershipRequestIssuer;
     issuedBy: User;
     originalForm?: TeamForm | null;
-    formSubmission?: object | null;
-    meta?: object | null;
+    formSubmission?: object[] | object | null;
+    meta?: object[] | object | null;
     handledMessage?: string | null;
     role?: TeamRole | null;
   }) {

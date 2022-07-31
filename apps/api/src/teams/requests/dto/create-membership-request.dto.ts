@@ -5,7 +5,7 @@ import {
   IsObject,
   IsOptional,
 } from 'class-validator';
-import { GraphQLJSONObject } from 'graphql-scalars';
+import { GraphQLJSON } from 'graphql-scalars';
 import { TeamRole } from '../../../shared/lib/types/enums/team-role.enum';
 
 @InputType()
@@ -15,18 +15,18 @@ export class CreateTeamMembershipRequestDto {
   @IsOptional()
   role?: TeamRole;
 
-  @Field(() => GraphQLJSONObject, { nullable: true })
+  @Field(() => GraphQLJSON, { nullable: true })
   @IsOptional()
   @IsObject()
-  meta?: object;
+  meta?: object[] | object;
 
   @Field(() => Int, { nullable: true })
   @IsOptional()
   @IsInt()
   originalFormId?: number;
 
-  @Field(() => GraphQLJSONObject, { nullable: true })
+  @Field(() => GraphQLJSON, { nullable: true })
   @IsOptional()
   @IsObject()
-  formSubmission?: object;
+  formSubmission?: object[] | object;
 }

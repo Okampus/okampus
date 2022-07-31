@@ -163,8 +163,8 @@ export class TeamEventRegistrationsService {
   private async getAndValidateFormSubmission(
     teamForm?: TeamForm | null,
     askedFormId?: number | null,
-    formSubmission?: object | null,
-  ): Promise<{ formSubmission?: object | null; originalForm?: TeamForm | null }> {
+    formSubmission?: object[] | object | null,
+  ): Promise<{ formSubmission?: object[] | object | null; originalForm?: TeamForm | null }> {
     if (teamForm && askedFormId && formSubmission) {
       if (askedFormId !== teamForm.id)
         throw new BadRequestException('Wrong form');

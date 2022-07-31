@@ -6,7 +6,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { GraphQLJSONObject } from 'graphql-scalars';
+import { GraphQLJSON } from 'graphql-scalars';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamEventRegisterStatus } from '../../shared/lib/types/enums/team-event-register-status.enum';
 import { User } from '../../users/user.entity';
@@ -44,16 +44,16 @@ export class TeamEventRegistration extends BaseEntity {
   @ManyToOne()
   originalForm: TeamForm | null = null;
 
-  @Field(() => GraphQLJSONObject, { nullable: true })
+  @Field(() => GraphQLJSON, { nullable: true })
   @Property({ type: 'json' })
-  formSubmission: object | null = null;
+  formSubmission: object[] | object | null = null;
 
   constructor(options: {
     event: TeamEvent;
     user: User;
     status: TeamEventRegisterStatus;
     originalForm?: TeamForm | null;
-    formSubmission?: object | null;
+    formSubmission?: object[] | object | null;
   }) {
     super();
     this.assign(options);

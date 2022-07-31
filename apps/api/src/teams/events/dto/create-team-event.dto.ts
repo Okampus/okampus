@@ -3,8 +3,8 @@ import {
   IsDate,
   IsIn,
   IsInt,
+  IsJSON,
   IsNumber,
-  IsObject,
   IsOptional,
   IsString,
   Length,
@@ -56,6 +56,6 @@ export class CreateTeamEventDto {
   @IsInt()
   templateId?: number;
 
-  @IsObject()
-  meta?: object;
+  @IsJSON()
+  meta?: object[] | object;
 }

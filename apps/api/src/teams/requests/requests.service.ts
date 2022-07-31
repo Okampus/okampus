@@ -189,9 +189,9 @@ export class TeamMembershipRequestsService {
   private async getAndValidateFormSubmission(
     teamForm?: TeamForm | null,
     askedFormId?: number | null,
-    formSubmission?: object | null,
+    formSubmission?: object[] | object | null,
     canOmitFields = false,
-  ): Promise<{ formSubmission?: object | null; originalForm?: TeamForm | null }> {
+  ): Promise<{ formSubmission?: object[] | object | null; originalForm?: TeamForm | null }> {
     // Step 1 — don't change anything as nothing was asked
     if (canOmitFields && typeof askedFormId === 'undefined' && typeof formSubmission === 'undefined')
       return {};

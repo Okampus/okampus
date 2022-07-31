@@ -14,5 +14,5 @@ export class CreateTeamFormDto {
   isTemplate: boolean;
 
   @IsFormKitSchema()
-  form: object;
+  form: object[] | object;
 }

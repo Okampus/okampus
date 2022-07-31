@@ -6,7 +6,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { JSONObjectResolver } from 'graphql-scalars';
+import { GraphQLJSON } from 'graphql-scalars';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 // eslint-disable-next-line import/no-cycle
 import { User } from '../../users/user.entity';
@@ -28,9 +28,9 @@ export class TeamForm extends BaseEntity {
   @Property({ type: 'text' })
   description: string | null = null;
 
-  @Field(() => JSONObjectResolver)
+  @Field(() => GraphQLJSON)
   @Property({ type: 'json' })
-  form!: object;
+  form!: object[] | object;
 
   @Field(() => User)
   @ManyToOne()
@@ -47,7 +47,7 @@ export class TeamForm extends BaseEntity {
 
   constructor(options: {
     name: string;
-    form: object;
+    form: object[] | object;
     isTemplate: boolean;
     createdBy: User;
     team: Team;

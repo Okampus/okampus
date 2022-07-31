@@ -14,7 +14,7 @@ import {
   Int,
   ObjectType,
 } from '@nestjs/graphql';
-import { JSONObjectResolver } from 'graphql-scalars';
+import { GraphQLJSON } from 'graphql-scalars';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.enum';
 import { User } from '../../users/user.entity';
@@ -86,9 +86,9 @@ export class TeamEvent extends BaseEntity {
   @ManyToOne()
   usedTemplate: TeamEvent | null = null;
 
-  @Field(() => JSONObjectResolver)
+  @Field(() => GraphQLJSON)
   @Property({ type: 'json' })
-  meta: object = {};
+  meta: object[] | object = {};
 
   constructor(options: {
     start: Date;
@@ -99,7 +99,7 @@ export class TeamEvent extends BaseEntity {
     team: Team;
     place: string;
     usedTemplate?: TeamEvent | null;
-    meta?: object | null;
+    meta?: object[] | object | null;
     form?: TeamForm | null;
     state?: TeamEventState | null;
     price?: number | null;
