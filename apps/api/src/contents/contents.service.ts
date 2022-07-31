@@ -1,6 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import groupBy from 'lodash.groupby';
 import { Favorite } from '../favorites/favorite.entity';
 import { Reaction } from '../reactions/reaction.entity';
 import { Report } from '../reports/report.entity';
@@ -176,23 +177,10 @@ export class ContentsService {
   }
 
   public async getContentsByMaster(id: number): Promise<Record<number, Content[]>> {
-    const contentsByParent = {} as Record<number, Content[]>;
-    const getOrCreate = (contentId: number): Content[] => {
-      if (!contentsByParent[contentId])
-        contentsByParent[contentId] = [];
-      return contentsByParent[contentId];
-    };
-
-    const contents = await this.contentRepository.find(
+    return groupBy(await this.contentRepository.find(
       { contentMaster: { id }, parent: { $ne: null } },
       { populate: ['author', 'lastEdit', 'edits'] },
-    );
-    for (const content of contents) {
-      if (content.parent!.id)
-        getOrCreate(content.parent!.id).push(content);
-    }
-
-    return contentsByParent;
+    ), 'parent.id');
   }
 
   // Highly unoptimised query - use only when querying one or few contents

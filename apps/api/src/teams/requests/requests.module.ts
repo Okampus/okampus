@@ -5,6 +5,7 @@ import { NotificationsModule } from '../../shared/modules/notifications/notifica
 import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
 import { Team } from '../teams/team.entity';
+import { CoreTeamsModule } from '../teams/teams.module';
 import { TeamMembershipRequestsController } from './requests.controller';
 import { TeamMembershipRequestsResolver } from './requests.resolver';
 import { TeamMembershipRequestsService } from './requests.service';
@@ -14,6 +15,7 @@ import { TeamMembershipRequest } from './team-membership-request.entity';
   imports: [
     MikroOrmModule.forFeature([Team, TeamMember, TeamForm, TeamMembershipRequest]),
     NotificationsModule,
+    CoreTeamsModule,
   ],
   controllers: [TeamMembershipRequestsController],
   providers: [CaslAbilityFactory, TeamMembershipRequestsService, TeamMembershipRequestsResolver],

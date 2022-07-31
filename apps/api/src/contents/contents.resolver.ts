@@ -17,7 +17,7 @@ import { APP_PUB_SUB } from '../shared/lib/constants';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
 import { SubscriptionType } from '../shared/lib/types/enums/subscription-type.enum';
-import { ContextBatch } from '../threads/threads.resolver';
+import { ContextBatchContents } from '../threads/threads.resolver';
 import { User } from '../users/user.entity';
 import { VotesService } from '../votes/votes.service';
 import { ContentInteractions } from './content-interactions.model';
@@ -49,10 +49,10 @@ export class ContentResolver {
   public async children(
     @CurrentUser() user: User,
     @Parent() content: Content,
-    @Context() batchContext: ContextBatch,
+    @Context() batchContext: ContextBatchContents,
   ): Promise<Content[]> {
-    if (batchContext.batchContents?.[content.id])
-      return batchContext.batchContents[content.id];
+    if (batchContext.batchContents)
+      return batchContext.batchContents?.[content.id] ?? [];
 
     const paginatedThreads = await this.contentsService.findAllChildren(user, content.id);
     return paginatedThreads.items;
@@ -62,7 +62,7 @@ export class ContentResolver {
   public async interactions(
     @CurrentUser() user: User,
     @Parent() content: Content,
-    @Context() batchContext: ContextBatch,
+    @Context() batchContext: ContextBatchContents,
   ): Promise<ContentInteractions> {
     if (batchContext.batchInteractions)
       return batchContext.batchInteractions[content.id] ?? DEFAULT_INTERACTIONS;

@@ -12,6 +12,8 @@ import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator'
 import { SubscriptionType } from '../../shared/lib/types/enums/subscription-type.enum';
 import { User } from '../../users/user.entity';
 import { FilterMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
+import { TeamInfo } from '../teams/team-info.model';
+import { TeamsService } from '../teams/teams.service';
 import { CreateTeamMembershipRequestDto } from './dto/create-membership-request.dto';
 import { PutTeamMembershipRequestDto } from './dto/put-membership-request.dto';
 import { UpdateTeamMembershipRequestDto } from './dto/update-membership-request.dto';
@@ -23,6 +25,7 @@ export class TeamMembershipRequestsResolver {
   constructor(
     @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,
     private readonly teamMembershipRequestsService: TeamMembershipRequestsService,
+    private readonly teamsService: TeamsService,
   ) {}
 
   // TODO: Add permission checks
@@ -35,15 +38,15 @@ export class TeamMembershipRequestsResolver {
     return requests.items;
   }
 
-  @Mutation(() => TeamMembershipRequest)
+  @Mutation(() => TeamInfo)
   public async joinTeam(
     @CurrentUser() user: User,
     @Args('id') id: number,
     @Args('request') request: CreateTeamMembershipRequestDto,
-  ): Promise<TeamMembershipRequest> {
+  ): Promise<TeamInfo> {
     const createdRequest = this.teamMembershipRequestsService.create(user, id, request);
     await this.pubSub.publish(SubscriptionType.TeamMembershipRequestAdded, { teamMemberAdded: createdRequest });
-    return createdRequest;
+    return await this.teamsService.findOne(id);
   }
 
   @Mutation(() => TeamMembershipRequest)

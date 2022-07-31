@@ -12,12 +12,16 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
+import groupBy from 'lodash.groupby';
+import mapValues from 'lodash.mapvalues';
 import { APP_PUB_SUB } from '../../shared/lib/constants';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { SubscriptionType } from '../../shared/lib/types/enums/subscription-type.enum';
 import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
+import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import { User } from '../../users/user.entity';
+import { TeamMember } from '../members/team-member.entity';
 import { MembershipRequestState } from '../types/membership-request-state.enum';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { TeamsFilterDto } from './dto/teams-filter.dto';
@@ -26,14 +30,19 @@ import { TeamMembershipStatus } from './team-membership-status.model';
 import { Team } from './team.entity';
 import { TeamsService } from './teams.service';
 
-export interface ContextMemberships {
-  membershipStates: Record<number, TeamMembershipStatus>;
+export interface ContextBatchTeams {
+  memberships: Record<number, TeamMember | null>;
+  pendingRequests: Record<number, boolean>;
+  boardMembers: Record<number, TeamMember[]>;
+  isBatched: boolean;
 }
+
 @Resolver(() => Team)
 export class TeamsResolver {
   constructor(
     @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     private readonly teamsService: TeamsService,
   ) {}
 
@@ -54,61 +63,64 @@ export class TeamsResolver {
   }
 
   @Query(() => [Team])
-  public async clubs(@CurrentUser() user: User, @Context() membershipContext: ContextMemberships): Promise<Team[]> {
+  public async clubs(@CurrentUser() user: User, @Context() teamContext: ContextBatchTeams): Promise<Team[]> {
     await this.userRepository.populate(user, ['teamMembershipRequests', 'teamMemberships']);
 
-    const DEFAULT_MEMBERSHIP = { membership: null, requestStatus: null };
+    teamContext.boardMembers = groupBy(await this.teamMemberRepository.find(
+      { role: { $in: [TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasurer, TeamRole.Secretary, TeamRole.Manager] } },
+      { populate: ['team', 'user'] },
+    ), 'team.id');
 
-    membershipContext.membershipStates = {} as Record<number, TeamMembershipStatus>;
+    const memberships = await user.teamMemberships.loadItems();
+    teamContext.memberships = Object.fromEntries(memberships.map(membership => [membership.team.id, membership]));
+    teamContext.pendingRequests = mapValues(
+      groupBy(await user.teamMembershipRequests.loadItems(), 'team.id'),
+      requests => requests.some(r => r.state === MembershipRequestState.Pending),
+    );
 
-    const getOrCreate = (id: number): TeamMembershipStatus => {
-      if (!membershipContext.membershipStates[id])
-        membershipContext.membershipStates[id] = { ...DEFAULT_MEMBERSHIP };
-
-      return membershipContext.membershipStates[id];
-    };
-
-    for (const membership of await user.teamMemberships.loadItems())
-      getOrCreate(membership.team.id).membership = membership;
-
-
-    for (const request of await user.teamMembershipRequests.loadItems()) {
-        const teamMembershipStatus = getOrCreate(request.team.id);
-        if (teamMembershipStatus.requestStatus !== MembershipRequestState.Approved)
-          teamMembershipStatus.requestStatus = request.state === MembershipRequestState.Rejected ? null : request.state;
-    }
+    teamContext.isBatched = true;
 
     const paginatedTeams = await this.teamsService.findAll({ kind: TeamKind.Club });
-    for (const club of paginatedTeams.items) {
-        if (!(club.id in membershipContext.membershipStates))
-          membershipContext.membershipStates[club.id] = DEFAULT_MEMBERSHIP;
-    }
-
     return paginatedTeams.items;
+  }
+
+  @ResolveField(() => [TeamMember])
+  public async boardMembers(
+    @Parent() team: Team,
+    @Context() membershipContext: ContextBatchTeams,
+  ): Promise<TeamMember[]> {
+    if (membershipContext?.isBatched)
+      return membershipContext?.boardMembers?.[team.id] ?? [];
+
+    const boardRoles = [TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasurer, TeamRole.Secretary, TeamRole.Manager];
+    const teamBoardMembers = await this.teamMemberRepository.find(
+      { role: { $in: boardRoles }, team },
+      { populate: ['user'] },
+    );
+
+    return teamBoardMembers;
   }
 
   @ResolveField(() => TeamMembershipStatus, { nullable: true })
   public async userMembership(
     @CurrentUser() user: User,
     @Parent() team: Team,
-    @Context() membershipContext: ContextMemberships,
+    @Context() membershipContext: ContextBatchTeams,
   ): Promise<TeamMembershipStatus> {
-    if (membershipContext.membershipStates)
-      return membershipContext.membershipStates[team.id];
+    if (membershipContext?.isBatched) {
+      return {
+        membership: membershipContext?.memberships?.[team.id] ?? null,
+        pendingRequest: membershipContext?.pendingRequests?.[team.id] ?? false,
+      };
+    }
 
     await this.userRepository.populate(user, ['teamMembershipRequests', 'teamMemberships']);
     const memberships = await user.teamMemberships.loadItems();
     const requests = await user.teamMembershipRequests.loadItems();
 
-    let requestStatus = null;
-    if (requests.some(request => request.state === MembershipRequestState.Approved))
-      requestStatus = MembershipRequestState.Approved;
-    else if (requests.some(request => request.state === MembershipRequestState.Pending))
-      requestStatus = MembershipRequestState.Pending;
-
     return {
-      membership: memberships.find(membership => membership.team.id === team.id) ?? null,
-      requestStatus,
+      membership: memberships.find(m => m.team.id === team.id) ?? null,
+      pendingRequest: requests.some(r => r.state === MembershipRequestState.Pending && r.team.id === team.id),
     };
   }
 

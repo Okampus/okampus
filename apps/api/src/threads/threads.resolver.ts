@@ -21,7 +21,7 @@ import { UpdateThreadDto } from './dto/update-thread.dto';
 import { Thread } from './thread.entity';
 import { ThreadsService } from './threads.service';
 
-export interface ContextBatch {
+export interface ContextBatchContents {
   batchInteractions: Record<number, ContentInteractions>;
   batchContents: Record<number, Content[]>;
 }
@@ -39,7 +39,7 @@ export class ThreadResolver {
   public async threadById(
     @CurrentUser() user: User,
     @Args('id', { type: () => Int }) id: number,
-    @Context() batchContext: ContextBatch,
+    @Context() batchContext: ContextBatchContents,
   ): Promise<Thread | null> {
     const thread = await this.threadsService.findOne(user, id);
     batchContext.batchInteractions = await this.contentsService.getInteractionsByMaster(user.id, id);
