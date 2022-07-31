@@ -29,6 +29,10 @@ import { Role } from '../shared/modules/authorization/types/role.enum';
 import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
 // eslint-disable-next-line import/no-cycle
 import { Statistics } from '../statistics/statistics.entity';
+// eslint-disable-next-line import/no-cycle
+import { TeamMember } from '../teams/members/team-member.entity';
+// eslint-disable-next-line import/no-cycle
+import { TeamMembershipRequest } from '../teams/requests/team-membership-request.entity';
 import type { Vote } from '../votes/vote.entity';
 
 
@@ -84,6 +88,14 @@ export class User extends BaseEntity {
   @OneToMany('SchoolGroupMembership', 'user')
   @TransformCollection()
   schoolGroupMemberships = new Collection<SchoolGroupMembership>(this);
+
+  @Field(() => [TeamMembershipRequest], { nullable: true })
+  @OneToMany('TeamMembershipRequest', 'user')
+  teamMembershipRequests = new Collection<TeamMembershipRequest>(this);
+
+  @Field(() => [TeamMember], { nullable: true })
+  @OneToMany('TeamMember', 'user')
+  teamMemberships = new Collection<TeamMember>(this);
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })

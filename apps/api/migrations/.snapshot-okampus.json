@@ -1600,24 +1600,6 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "membership_request_link": {
-          "name": "membership_request_link",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "membership_request_message": {
-          "name": "membership_request_message",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
         "membership_request_form_id": {
           "name": "membership_request_form_id",
           "type": "int",

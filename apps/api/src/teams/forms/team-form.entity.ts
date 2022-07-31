@@ -8,6 +8,7 @@ import {
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { JSONObjectResolver } from 'graphql-scalars';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
+// eslint-disable-next-line import/no-cycle
 import { User } from '../../users/user.entity';
 // eslint-disable-next-line import/no-cycle
 import { Team } from '../teams/team.entity';
@@ -31,7 +32,7 @@ export class TeamForm extends BaseEntity {
   @Property({ type: 'json' })
   form!: object;
 
-  @Field()
+  @Field(() => User)
   @ManyToOne()
   createdBy!: User;
 

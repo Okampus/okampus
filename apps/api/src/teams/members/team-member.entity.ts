@@ -14,6 +14,7 @@ import {
 } from '@nestjs/graphql';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
+// eslint-disable-next-line import/no-cycle
 import { User } from '../../users/user.entity';
 // eslint-disable-next-line import/no-cycle
 import { Team } from '../teams/team.entity';
@@ -25,7 +26,7 @@ export class TeamMember extends BaseEntity {
   @PrimaryKey()
   id!: number;
 
-  @Field()
+  @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })
   @Index()
   user!: User;
