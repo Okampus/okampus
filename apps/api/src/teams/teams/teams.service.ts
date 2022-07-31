@@ -101,11 +101,28 @@ export class TeamsService {
     return allTeams as PaginatedResult<TeamInfo>;
   }
 
-  public async findOne(id: number): Promise<Team> {
-    return await this.teamRepository.findOneOrFail(
+  public async findOne(id: number): Promise<TeamInfo> {
+    const memberCount = await this.teamMemberRepository.count({ team: id });
+    const boardRoles = [TeamRole.Owner, TeamRole.Treasurer, TeamRole.Secretary];
+    const teamBoardMembers = await this.teamMemberRepository.find(
+      { team: id, role: { $in: boardRoles } },
+      { populate: ['team', 'user'] },
+    );
+
+    const team = await this.teamRepository.findOneOrFail(
       { id },
       { populate: ['members', 'members.user', 'membershipRequestForm', 'membershipRequestForm.createdBy'] },
     );
+
+    const teamInfo = {
+      ...team,
+      memberCount,
+      owner: teamBoardMembers.find(member => member.role === TeamRole.Owner)?.user ?? null,
+      treasurer: teamBoardMembers.find(member => member.role === TeamRole.Treasurer)?.user ?? null,
+      secretary: teamBoardMembers.find(member => member.role === TeamRole.Secretary)?.user ?? null,
+    } as unknown as TeamInfo;
+
+    return teamInfo;
   }
 
   public async findNames(): Promise<Array<Pick<Team, 'avatar' | 'id' | 'name'>>> {
