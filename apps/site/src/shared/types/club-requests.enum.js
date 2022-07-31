@@ -1,6 +1,6 @@
-export const APPROVED = 'approved'
-export const REJECTED = 'rejected'
-export const PENDING = 'pending'
+export const APPROVED = 'Approved'
+export const REJECTED = 'Rejected'
+export const PENDING = 'Pending'
 
 export const statusNames = {
     [APPROVED]: {

@@ -1,32 +1,35 @@
+export const OWNER = 'Owner'
+export const COOWNER = 'Coowner'
+export const TREASURER = 'Treasurer'
+export const SECRETARY = 'Secretary'
+export const MANAGER = 'Manager'
+export const MEMBER = 'Member'
+
 export const clubRoleNames = {
-    'owner': {
+    [OWNER]: {
         'fr': 'Président',
         'en': 'President',
     },
-    'coowner': {
+    [COOWNER]: {
         'fr': 'Vice-Président',
         'en': 'Vice-President',
     },
-    'treasurer': {
+    [TREASURER]: {
         'fr': 'Trésorier',
         'en': 'Treasurer',
     },
-    'secretary': {
+    [SECRETARY]: {
         'fr': 'Secrétaire',
         'en': 'Secretary',
     },
-    'manager': {
+    [MANAGER]: {
         'fr': 'Membre du Bureau',
         'en': 'Manager',
     },
-    'member': {
+    [MEMBER]: {
         'fr': 'Membre',
         'en': 'Member',
     },
 }
 
-export const specialRoles = ['owner', 'coowner', 'treasurer', 'secretary', 'manager']
-
-export const IS_WAITING = 1
-export const IS_MEMBER = 2
-export const IS_SPECIAL_ROLE = 3
+export const specialRoles = [OWNER, TREASURER, SECRETARY, COOWNER, MANAGER]
