@@ -178,6 +178,9 @@ export class TeamMembershipRequestsService {
       const teamMember = new TeamMember({ team: request.team, user: request.user, role: request.role });
       this.teamMemberRepository.persist(teamMember);
       await this.teamMemberRepository.flush();
+
+      request.team.activeMemberCount++;
+      await this.teamRepository.persistAndFlush(request.team);
     }
 
     void this.notificationsService.trigger(new TeamManagedMembershipRequestUpdatedNotification(request));

@@ -189,5 +189,8 @@ export class TeamMembersService {
       throw new ForbiddenException('Cannot remove owner');
 
     await this.teamMemberRepository.removeAndFlush(teamMember);
+
+    team.activeMemberCount--;
+    await this.teamRepository.persistAndFlush(team);
   }
 }

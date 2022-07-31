@@ -68,6 +68,10 @@ export class Team extends BaseEntity {
   @TransformCollection()
   members = new Collection<TeamMember>(this);
 
+  @Field(() => Int)
+  @Property()
+  activeMemberCount = 1; // The member count is always at least one (when created - the first user is the owner)
+
   @Field(() => TeamForm, { nullable: true })
   @OneToOne('TeamForm')
   membershipRequestForm: TeamForm | null = null;
