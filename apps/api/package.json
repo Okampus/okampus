@@ -15,6 +15,7 @@
     "start:prod": "node dist/main",
     "db:create": "mikro-orm migration:create",
     "db:up": "mikro-orm migration:up",
+    "db:new": "mikro-orm migration:create && mikro-orm migration:up",
     "db:down": "mikro-orm migration:down",
     "db:fresh": "mikro-orm migration:fresh",
     "lint": "eslint \"src/**/*.ts\"",
