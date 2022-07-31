@@ -156,7 +156,7 @@ export class ContentsService {
     const userInteractionByContent = {} as Record<number, ContentInteractions>;
     const getOrCreate = (id: number): ContentInteractions => {
       if (!userInteractionByContent[id])
-        userInteractionByContent[id] = DEFAULT_INTERACTIONS;
+        userInteractionByContent[id] = { ...DEFAULT_INTERACTIONS };
       return userInteractionByContent[id];
     };
 
