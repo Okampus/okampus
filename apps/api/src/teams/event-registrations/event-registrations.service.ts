@@ -143,7 +143,18 @@ export class TeamEventRegistrationsService {
         throw new BadRequestException('Event not started');
     }
 
+    const member = await this.teamMemberRepository.findOneOrFail({ user: registration.user.id });
+    if (!registration.present && updateTeamEventRegistrationDto.present)
+      member.participations += 1;
+    else if (registration.present && updateTeamEventRegistrationDto.present === false)
+      member.participations -= 1;
+
+    if (updateTeamEventRegistrationDto.participationScore)
+      member.participationScore += updateTeamEventRegistrationDto.participationScore - registration.participationScore;
+
     wrap(registration).assign(updateTeamEventRegistrationDto);
+    await this.teamEventRegistrationRepository.flush();
+    await this.teamMemberRepository.persistAndFlush(member);
 
     return registration;
   }
@@ -157,7 +168,13 @@ export class TeamEventRegistrationsService {
     if (!registration.event.canEdit(user) && registration.user.id !== user.id)
       throw new ForbiddenException('Cannot unregister');
 
+    const member = await this.teamMemberRepository.findOneOrFail({ user: registration.user.id });
+    if (registration.present)
+      member.participations -= 1;
+    member.participationScore -= registration.participationScore;
+
     await this.teamEventRegistrationRepository.removeAndFlush(registration);
+    await this.teamMemberRepository.flush();
   }
 
   private async getAndValidateFormSubmission(

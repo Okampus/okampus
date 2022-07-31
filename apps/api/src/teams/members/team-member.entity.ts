@@ -48,6 +48,14 @@ export class TeamMember extends BaseEntity {
   @Property()
   joinDate = new Date();
 
+  @Field(() => Int)
+  @Property()
+  participations = 0;
+
+  @Field(() => Int)
+  @Property()
+  participationScore = 0;
+
   constructor(options: {
     user: User;
     team: Team;

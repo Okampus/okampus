@@ -608,6 +608,8 @@ type TeamMember {
   createdAt: DateTime!
   id: Int!
   joinDate: DateTime!
+  participationScore: Int!
+  participations: Int!
   role: TeamRole!
   roleLabel: String
   team: Team!
