@@ -1,8 +1,8 @@
 <template>
-    <div class="flex w-6 flex-col items-center gap-2">
+    <div class="flex w-6 flex-col items-center gap-1.5">
         <IconUpvote
             :full="displayedVote === 1"
-            :width="width"
+            :height="height"
             class="cursor-pointer hover:text-blue-500"
             :class="[displayedVote === 1 ? 'text-green-600' : 'text-5']"
             @click="() => (displayedVote === 1 ? unvote(1) : upvote())"
@@ -12,7 +12,7 @@
         </div>
         <IconDownvote
             :full="displayedVote === -1"
-            :width="width"
+            :height="height"
             class="cursor-pointer hover:text-blue-500"
             :class="[displayedVote === -1 ? 'text-red-600' : 'text-5']"
             @click="() => (displayedVote === -1 ? unvote(-1) : downvote())"
@@ -42,9 +42,9 @@
             type: Number,
             required: true,
         },
-        width: {
+        height: {
             type: Number,
-            default: 1,
+            default: 1.3,
         },
         numberTextClass: {
             type: String,
