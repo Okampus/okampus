@@ -57,14 +57,6 @@ export class TeamsService {
     if (filters.kind)
       options = { kind: filters.kind };
 
-    const memberCountResult: Array<{ team: number; count: string }> = await this.teamMemberRepository
-      .createQueryBuilder()
-      .count('id')
-      .select(['team', 'count'])
-      .groupBy('team')
-      .execute();
-    const allMemberCounts = new Map(memberCountResult.map(entry => [entry.team, entry.count]));
-
     const boardRoles = [TeamRole.Owner, TeamRole.Treasurer, TeamRole.Secretary];
     const teamBoardMembers = await this.teamMemberRepository.find(
       { role: { $in: boardRoles } },
@@ -80,12 +72,10 @@ export class TeamsService {
     allTeams.items = allTeams.items.map((team) => {
       const teamInfo = {
         ...team,
-        memberCount: 0,
         owner: null as (User | null),
         treasurer: null as (User | null),
         secretary: null as (User | null),
       };
-      teamInfo.memberCount = Number(allMemberCounts.get(team.id) ?? 0);
 
       const predicate = (role: TeamRole) =>
         (member: TeamMember) => member.team.id === team.id && member.role === role;
@@ -102,7 +92,6 @@ export class TeamsService {
   }
 
   public async findOne(id: number): Promise<TeamInfo> {
-    const memberCount = await this.teamMemberRepository.count({ team: id });
     const boardRoles = [TeamRole.Owner, TeamRole.Treasurer, TeamRole.Secretary];
     const teamBoardMembers = await this.teamMemberRepository.find(
       { team: id, role: { $in: boardRoles } },
@@ -116,7 +105,6 @@ export class TeamsService {
 
     const teamInfo = {
       ...team,
-      memberCount,
       owner: teamBoardMembers.find(member => member.role === TeamRole.Owner)?.user ?? null,
       treasurer: teamBoardMembers.find(member => member.role === TeamRole.Treasurer)?.user ?? null,
       secretary: teamBoardMembers.find(member => member.role === TeamRole.Secretary)?.user ?? null,
