@@ -142,7 +142,7 @@
                                 help="Décrivez en quelques mots la raison de votre participation."
                             />
                         </FormKit>
-                        <FormKitRenderer :schema="event.form?.form ?? []"></FormKitRenderer>
+                        <FormKitSchema :schema="event.form?.form ?? []" />
                         <div class="mt-6 flex gap-4 self-end">
                             <button class="button-grey" @click="close">Annuler</button>
                             <button class="button-blue" @click="joinEvent">Valider</button>
@@ -289,7 +289,7 @@
 
     import { fullname } from '@/utils/users'
 
-    import FormKitRenderer from '@/components/FormKit/FormKitRenderer.vue'
+    import { FormKitSchema } from '@formkit/vue'
     import TeamActivity from '@/components/App/General/TeamActivity.vue'
     import { getDateRangeString } from '@/utils/dateUtils'
     // import { getCountdown, getDateRangeString } from '@/utils/dateUtils'

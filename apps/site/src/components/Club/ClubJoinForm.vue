@@ -56,7 +56,7 @@
                     />
                 </FormKit>
 
-                <FormKitRenderer :schema="club?.membershipRequestForm?.form ?? []" />
+                <FormKitSchema :schema="club?.membershipRequestForm?.form ?? []" />
 
                 <div class="mt-6 flex gap-4 self-end">
                     <button class="button-red" @click="close">Annuler</button>
@@ -72,8 +72,7 @@
 
 <script setup>
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
-    import FormKitRenderer from '@/components/FormKit/FormKitRenderer.vue'
-    import { FormKit } from '@formkit/vue'
+    import { FormKit, FormKitSchema } from '@formkit/vue'
 
     import { ref } from 'vue'
 
