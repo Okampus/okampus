@@ -182,6 +182,12 @@ export class TeamEventRegistrationsService {
     askedFormId?: number | null,
     formSubmission?: object[] | object | null,
   ): Promise<{ formSubmission?: object[] | object | null; originalForm?: TeamForm | null }> {
+    // If the default form was used, we don't need to validate it
+    // TODO: formalize default forms (shared in monorepo) for validation
+    if (formSubmission && !teamForm && !askedFormId)
+      return { formSubmission, originalForm: null };
+
+
     if (teamForm && askedFormId && formSubmission) {
       if (askedFormId !== teamForm.id)
         throw new BadRequestException('Wrong form');

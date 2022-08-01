@@ -198,6 +198,11 @@ export class TeamMembershipRequestsService {
     if (canOmitFields && typeof askedFormId === 'undefined' && typeof formSubmission === 'undefined')
       return {};
 
+    // If the default form was used, we don't need to validate it
+    // TODO: formalize default forms (shared in monorepo) for validation
+    if (formSubmission && !teamForm && !askedFormId)
+      return { formSubmission, originalForm: null };
+
     // Step 2 — update the form submission / original form only if they are both defined,
     // and there is an actual form required
     if (teamForm && askedFormId && formSubmission) {
