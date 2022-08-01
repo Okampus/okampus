@@ -15,8 +15,8 @@ export const ROLES = [
     },
     {
         key: 'Admin',
-        fr: 'Administrateur',
-        en: 'Admin',
+        fr: 'Staff',
+        en: 'Staff',
         icon: 'shield-alt',
         color: 'red',
     },
