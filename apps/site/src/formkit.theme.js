@@ -16,8 +16,7 @@ const boxClassification = {
     wrapper: 'flex items-center mb-1 cursor-pointer',
     input: 'form-check-input appearance-none h-4 w-4 mr-2 border border-gray-400 rounded-sm bg-white checked:bg-blue-600 focus:outline-none focus:ring-0 transition duration-200 cursor-pointer',
     label: 'text-base text-1',
-    options: 'flex flex-wrap gap-3 pt-2',
-    inner: 'flex items-center justify-center',
+    options: 'pt-4',
 }
 const buttonClassification = {
     wrapper: 'mb-1',
