@@ -63,16 +63,11 @@
                 :first-column-fixed="true"
             >
                 <template #name="{ avatar, name, category, teamId }">
-                    <TeamActivity
-                        class="bg-1 z-50 h-full"
-                        :team="{ avatar, name, category, teamId }"
-                        :custom-string="category"
-                    />
-                    <!-- <router-link :to="`/club/${teamId}`" class="flex gap-1 items-center max-w-xs h-full bg-1">
-                        <img :src="avatar" :alt="name" />
-                        <div>{{ name }}</div>
-                        <div class="text-xs text-gray-400">{{ category }}</div>
-                    </router-link> -->
+                    <TeamActivity class="bg-1 z-50 h-full" :team="{ avatar, name, category, teamId }">
+                        <template #subtitle>
+                            {{ category }}
+                        </template>
+                    </TeamActivity>
                 </template>
                 <template #owner="{ owner }">
                     <router-link :to="`/user/${owner.id}`" class="flex cursor-pointer items-center gap-1">

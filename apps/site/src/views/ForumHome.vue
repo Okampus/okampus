@@ -55,7 +55,11 @@
                         @swiper="(swiper) => (swiperStaff = swiper)"
                     >
                         <SwiperSlide v-for="(staff, i) in staffMembers" :key="i">
-                            <UserActivity :user="staff" :custom-string="staff.title" />
+                            <UserActivity :user="staff">
+                                <template #subtitle>
+                                    {{ staff.title }}
+                                </template>
+                            </UserActivity>
                         </SwiperSlide>
                     </Swiper>
                     <SwiperButton class="mt-2" type="next" :swiper="swiperStaff" :small="true" />
@@ -121,12 +125,11 @@
             <div class="hidden flex-col gap-6 lg:flex">
                 <AppTitle title="Membres du staff" icon="fas fa-people-group" class="pl-4" />
                 <div class="flex flex-col gap-4">
-                    <UserActivity
-                        v-for="(staff, i) in staffMembers"
-                        :key="i"
-                        :user="staff"
-                        :custom-string="staff.title"
-                    />
+                    <UserActivity v-for="(staff, i) in staffMembers" :key="i" :user="staff">
+                        <template #subtitle>
+                            {{ staff.title }}
+                        </template>
+                    </UserActivity>
                 </div>
             </div>
 

@@ -22,13 +22,23 @@
 
             <div class="flex flex-row items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <UserActivity
-                        :label-name="authorIsOp"
-                        :user="content.author"
-                        :action-at="content.createdAt"
-                        :action-at-modified="content.updatedAt"
-                        action-text="Publié"
-                    />
+                    <UserActivity :user="content.author">
+                        <template v-if="authorIsOp" #title>
+                            <router-link
+                                :to="`/user/${content.author.id}`"
+                                class="w-fit rounded-full bg-gray-500 px-2 py-px text-sm text-white hover:bg-gray-600 dark:hover:bg-gray-400"
+                            >
+                                {{ fullname(content.author) }}
+                            </router-link>
+                        </template>
+                        <template #subtitle>
+                            Publié
+                            <TipRelativeDateModified
+                                :created-at="content.createdAt"
+                                :modified-at="content.updatedAt"
+                            />
+                        </template>
+                    </UserActivity>
 
                     <!-- TODO: Add validations -->
                     <template v-if="content.kind !== POST">
@@ -111,6 +121,8 @@
     import UserActivity from '@/components/App/General/UserActivity.vue'
     import FavoriteInput from '@/components/Input/FavoriteInput.vue'
 
+    import TipRelativeDateModified from '@/components/UI/Tip/TipRelativeDateModified.vue'
+
     import { computed, nextTick, ref } from 'vue'
 
     import { useAuthStore } from '@/store/auth.store'
@@ -130,6 +142,8 @@
     import { capitalize } from 'lodash'
     import { emitter } from '@/shared/modules/emitter'
     import { getURL } from '@/utils/routeUtils'
+    import { fullname } from '@/utils/users'
+
     import urlJoin from 'url-join'
     import router from '@/router'
     import { editThread } from '@/graphql/queries/editThread'

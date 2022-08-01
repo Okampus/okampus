@@ -64,12 +64,11 @@
                             />
                             <!-- TODO: Actions : Settings, Add -->
                             <div v-if="thread.assignedUsers?.length" class="flex flex-col">
-                                <UserActivity
-                                    v-for="(user, i) in thread.assignedUsers"
-                                    :key="i"
-                                    :custom-string="getRole(user)[$i18n.locale]"
-                                    :user="user"
-                                />
+                                <UserActivity v-for="(user, i) in thread.assignedUsers" :key="i" :user="user">
+                                    <template #subtitle>
+                                        {{ getRole(user)[$i18n.locale] }}
+                                    </template>
+                                </UserActivity>
                             </div>
                             <div v-else class="italic">Personne n'est assigné</div>
                         </div>
@@ -80,12 +79,11 @@
                             />
                             <div class="flex flex-col gap-4">
                                 <!-- TODO: Improve with UserActivity, last activity on thread -->
-                                <UserActivity
-                                    v-for="(user, i) in thread.participants"
-                                    :key="i"
-                                    :custom-string="getRole(user)[$i18n.locale]"
-                                    :user="user"
-                                />
+                                <UserActivity v-for="(user, i) in thread.participants" :key="i" :user="user">
+                                    <template #subtitle>
+                                        {{ getRole(user)[$i18n.locale] }}
+                                    </template>
+                                </UserActivity>
                             </div>
                         </div>
                         <!-- TODO: Actions : Settings, Add -->

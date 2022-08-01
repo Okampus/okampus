@@ -42,12 +42,15 @@
                             class="mt-4 flex w-full flex-wrap items-center gap-x-4 gap-y-2"
                         >
                             <TeamActivity
-                                v-for="membership in user.teamMemberships"
-                                :key="membership"
+                                v-for="(membership, i) in user.teamMemberships"
+                                :key="i"
                                 :team="membership.team"
-                                :custom-string="clubRoleNames[membership.role][$i18n.locale]"
                                 class="w-40"
-                            />
+                            >
+                                <template #subtitle>
+                                    {{ clubRoleNames[membership.role][$i18n.locale] }}
+                                </template>
+                            </TeamActivity>
                         </div>
                         <p v-else class="text-lg italic">
                             {{ user.firstname.split(' ')[0] }} ne fait pas partie d'associations.

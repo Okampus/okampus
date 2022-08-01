@@ -82,7 +82,11 @@
                         :key="i"
                         class="flex justify-between gap-2"
                     >
-                        <TeamActivity :team="event.team" :custom-string="event.name" />
+                        <TeamActivity :team="event.team">
+                            <template #subtitle>
+                                {{ event.name }}
+                            </template>
+                        </TeamActivity>
                         <div class="flex items-center gap-2">
                             <div
                                 class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-green-200 p-2 text-green-400 hover:bg-green-300 hover:text-green-500"

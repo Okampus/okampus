@@ -60,7 +60,17 @@
             </div>
 
             <div class="flex">
-                <UserActivity :user="thread.post.author" action-text="Publié" :action-at="thread.createdAt" />
+                <UserActivity :user="thread.post.author">
+                    <template #subtitle>
+                        <div class="text-4 text-sm">
+                            Publié
+                            <TipRelativeDateModified
+                                :created-at="thread.createdAt"
+                                :modified-at="thread.updatedAt"
+                            />
+                        </div>
+                    </template>
+                </UserActivity>
             </div>
 
             <router-link :to="`/forum/post/${thread.id}`" class="text-1 text-justify text-sm line-clamp-2">
@@ -121,6 +131,7 @@
     import { getContentDemonstrative, isContentFeminine } from '@/shared/types/content-kinds.enum'
     import { capitalize } from 'lodash'
     import FavoriteInput from '@/components/Input/FavoriteInput.vue'
+    import TipRelativeDateModified from '@/components/UI/Tip/TipRelativeDateModified.vue'
 
     defineProps({
         thread: {
