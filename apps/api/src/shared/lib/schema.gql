@@ -282,6 +282,7 @@ input PutTeamMembershipRequestDto {
 }
 
 type Query {
+  clubById(id: Int!): Team
   clubs: [Team!]!
   contentById(id: Int!): Content
   me: User!

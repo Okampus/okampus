@@ -54,6 +54,13 @@ export class TeamsResolver {
     return await this.teamsService.findOne(id);
   }
 
+  @Query(() => Team, { nullable: true })
+  public async clubById(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<Team> {
+    return await this.teamsService.findOne(id, { kind: TeamKind.Club });
+  }
+
   @Query(() => [Team])
   public async teams(
     @Args('filters', { nullable: true }) filters?: TeamsFilterDto,
@@ -94,7 +101,7 @@ export class TeamsResolver {
 
     const boardRoles = [TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasurer, TeamRole.Secretary, TeamRole.Manager];
     const teamBoardMembers = await this.teamMemberRepository.find(
-      { role: { $in: boardRoles }, team },
+      { role: { $in: boardRoles }, team: { id: team.id } },
       { populate: ['user'] },
     );
 

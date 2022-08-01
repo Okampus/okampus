@@ -50,11 +50,11 @@ export class TeamsService {
   }
 
   public async findAll(
-    filters: TeamsFilterDto,
+    filters?: TeamsFilterDto,
     paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<TeamInfo>> {
     let options: FilterQuery<Team> = {};
-    if (filters.kind)
+    if (filters?.kind)
       options = { kind: filters.kind };
 
     const boardRoles = [TeamRole.Owner, TeamRole.Treasurer, TeamRole.Secretary];
@@ -91,15 +91,19 @@ export class TeamsService {
     return allTeams as PaginatedResult<TeamInfo>;
   }
 
-  public async findOne(id: number): Promise<TeamInfo> {
+  public async findOne(id: number, filters?: TeamsFilterDto): Promise<TeamInfo> {
+    let options: FilterQuery<Team> = {};
+    if (filters?.kind)
+      options = { kind: filters.kind };
+
     const boardRoles = [TeamRole.Owner, TeamRole.Treasurer, TeamRole.Secretary];
     const teamBoardMembers = await this.teamMemberRepository.find(
-      { team: id, role: { $in: boardRoles } },
+      { team: { id, ...options }, role: { $in: boardRoles } },
       { populate: ['team', 'user'] },
     );
 
     const team = await this.teamRepository.findOneOrFail(
-      { id },
+      { id, ...options },
       { populate: ['members', 'members.user', 'membershipRequestForm', 'membershipRequestForm.createdBy'] },
     );
 
