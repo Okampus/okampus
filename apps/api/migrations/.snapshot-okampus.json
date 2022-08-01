@@ -2321,8 +2321,8 @@
           "nullable": false,
           "mappedType": "integer"
         },
-        "place": {
-          "name": "place",
+        "location": {
+          "name": "location",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -2568,7 +2568,7 @@
           "enumItems": [
             "sure",
             "maybe",
-            "notsure"
+            "absent"
           ],
           "mappedType": "enum"
         },
