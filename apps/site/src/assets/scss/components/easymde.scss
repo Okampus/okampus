@@ -495,8 +495,8 @@ span.CodeMirror-selectedtext {
 .EasyMDEContainer .CodeMirror {
     @apply rounded-b-md z-0 h-auto p-2 break-words input;
 
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 
     // z-index: 0;
     // box-sizing: border-box;
@@ -514,7 +514,10 @@ span.CodeMirror-selectedtext {
 }
 
 .EasyMDEContainer .CodeMirror-fullscreen {
-    @apply fixed top-12 left-0 right-0 bottom-0 bg-0-light dark:bg-0-dark z-[100] border-0;
+    @apply top-12 left-0 right-0 bottom-0 bg-0-light dark:bg-0-dark z-[100] border-0;
+
+    position: fixed !important;
+    box-shadow: none !important;
 }
 
 .EasyMDEContainer .CodeMirror-sided {
@@ -535,7 +538,7 @@ span.CodeMirror-selectedtext {
 .EasyMDEContainer .CodeMirror-focused {
     @apply ring-2 ring-blue-500 z-[100] relative dark:ring-2;
 
-    border-radius: 0.2rem !important;
+    border-radius: 0.2rem;
 }
 
 .EasyMDEContainer .CodeMirror-focused .CodeMirror-selected {
