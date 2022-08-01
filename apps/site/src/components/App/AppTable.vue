@@ -1,13 +1,11 @@
 <template>
-    <table
-        class="border-separate border-spacing-2"
-        :class="[tableLayout === 'auto' ? 'table-auto' : 'table-fixed']"
-    >
-        <thead>
-            <tr>
+    <table class="text-0 relative block table-auto flex-nowrap overflow-scroll">
+        <thead class="rounded-t-lg">
+            <tr class="rounded-t-lg">
                 <th
                     v-for="(header, i) in headers"
                     :key="i"
+                    class="bg-0 whitespace-nowrap p-2"
                     :class="[header.class, { 'sticky left-0': i === 0 && firstColumnFixed }]"
                 >
                     <div class="flex cursor-pointer items-center gap-2" @click="sortAction(header.name)">
@@ -31,7 +29,7 @@
                     v-for="(header, k) in headers"
                     :key="k"
                     :class="{ 'sticky left-0': k === 0 && firstColumnFixed }"
-                    class="h-1 snap-start"
+                    class="h-1 snap-start whitespace-nowrap p-2"
                 >
                     <slot v-if="slots[header.name]" :name="header.name" :="item"></slot>
                     <div v-else class="p-2">{{ item[header.name] }}</div>
@@ -45,11 +43,22 @@
     import { ref, computed, useSlots } from 'vue'
 
     const props = defineProps({
-        items: { type: Array, default: () => [] },
-        headers: { type: Array, required: true },
-        firstColumnFixed: { type: Boolean, default: false },
-        modelValue: { type: Array, default: null },
-        tableLayout: { type: String, default: 'auto' },
+        items: {
+            type: Array,
+            default: () => [],
+        },
+        headers: {
+            type: Array,
+            required: true,
+        },
+        firstColumnFixed: {
+            type: Boolean,
+            default: false,
+        },
+        modelValue: {
+            type: Array,
+            default: null,
+        },
     })
 
     defineEmits(['update:modelValue'])
