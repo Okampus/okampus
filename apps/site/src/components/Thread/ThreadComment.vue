@@ -124,6 +124,7 @@
     import { fullname } from '@/utils/users'
     import { favorite } from '@/graphql/queries/interactions/favoriteContent'
     import { useRoute } from 'vue-router'
+    import { showErrorToast, showInfoToast, showWarningToast } from '@/utils/toast.js'
 
     const auth = useAuthStore()
     const route = useRoute()
@@ -185,10 +186,7 @@
             ],
             action: () => {
                 props.comment.interactions.userReported
-                    ? emitter.emit('show-toast', {
-                          message: `${capitalize(getContentName(props.comment.kind))} déjà signalé.`,
-                          type: 'warning',
-                      })
+                    ? showWarningToast(`${capitalize(getContentName(props.comment.kind))} déjà signalé.`)
                     : emitter.emit('report', props.comment)
             },
         },
@@ -202,17 +200,13 @@
                     navigator.clipboard.writeText(
                         getURL(urlJoin(router.currentRoute.value.path, `#comment-${props.comment.id}`)),
                     )
-                    emitter.emit('show-toast', {
-                        message: `Lien de ${getContentDemonstrative(props.comment.kind)} copié.`,
-                        type: 'info',
-                    })
+                    showInfoToast('Lien copié dans le presse-papier.')
                 } catch (err) {
-                    emitter.emit('show-toast', {
-                        message: `Une erreur est survenue lors de la copie du lien de ${getContentDemonstrative(
+                    showErrorToast(
+                        `[Erreur] Le lien de ${getContentDemonstrative(
                             props.comment.kind,
-                        )}.`,
-                        type: 'error',
-                    })
+                        )} n'a pas pu être copié.`,
+                    )
                 }
             },
         },

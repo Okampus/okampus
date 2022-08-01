@@ -3,16 +3,14 @@ import { isEmpty } from 'lodash'
 import setToHappen from '@/utils/logOutOnExpire'
 
 import { useCookies } from 'vue3-cookies'
+import { showWarningToast } from './toast'
 const { cookies } = useCookies()
 
 const parseIntCookie = (cookie) => parseInt(cookie.split(':')[1].split('.')[0])
 
 const logOutExpired = () => {
     emitter.emit('logout')
-    emitter.emit('show-toast', {
-        message: 'Votre session a expiré.',
-        type: 'warning',
-    })
+    showWarningToast('Votre session a expiré, veuillez vous reconnecter 🔐', { duration: -1 })
 }
 
 export default function logOutOnExpire(user) {

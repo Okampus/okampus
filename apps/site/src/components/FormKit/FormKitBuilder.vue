@@ -102,7 +102,7 @@
     import draggable from 'vuedraggable'
     import { ref, watch } from 'vue'
     import { useClubsStore } from '@/store/clubs.store'
-    import { emitter } from '@/shared/modules/emitter'
+    import { showErrorToast, showInfoToast, showSuccessToast } from '@/utils/toast.js'
 
     const clubs = useClubsStore()
 
@@ -186,18 +186,8 @@
                 form: schema.value,
                 isTemplate: false,
             })
-            .then(() => {
-                emitter.emit('show-toast', {
-                    message: 'Formulaire crée avec succès',
-                    type: 'success',
-                })
-            })
-            .catch((err) => {
-                emitter.emit('show-toast', {
-                    message: err,
-                    type: 'error',
-                })
-            })
+            .then(() => showSuccessToast('Le formulaire a bien été créé 📝'))
+            .catch((err) => showErrorToast(err.message))
     }
 
     const update = async () => {
@@ -207,18 +197,8 @@
                 name: formTitle.value,
                 description: formDescription.value,
             })
-            .then(() => {
-                emitter.emit('show-toast', {
-                    message: 'Formulaire mis à jour',
-                    type: 'success',
-                })
-            })
-            .catch((err) => {
-                emitter.emit('show-toast', {
-                    message: err,
-                    type: 'error',
-                })
-            })
+            .then(() => showInfoToast('Formulaire mis à jour 📝'))
+            .catch((err) => showErrorToast(err.message))
     }
 
     const submit = async () => {

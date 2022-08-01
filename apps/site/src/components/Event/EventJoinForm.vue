@@ -50,7 +50,6 @@
 
     import { ref } from 'vue'
 
-    import { emitter } from '@/shared/modules/emitter'
     import { registerEvent } from '@/graphql/queries/events/registerEvent'
 
     import {
@@ -58,7 +57,7 @@
         EVENT_REGISTRATION_STATUS_FORM_SCHEMA,
     } from '@/shared/assets/default-schemas'
 
-    import { showToastGraphQLError } from '@/utils/errors.js'
+    import { showSuccessToast, showToastGraphQLError } from '@/utils/toast'
 
     defineProps({
         show: {
@@ -77,10 +76,7 @@
     const { mutate: register, onDone, onError } = useMutation(registerEvent)
 
     onDone(() => {
-        emitter.emit('show-toast', {
-            message: "Votre vous êtres bien inscrit à l'évenement !",
-            type: 'success',
-        })
+        showSuccessToast("Vous vous êtes bien inscrit à l'événement 🎉")
         emit('update:show', false)
     })
 

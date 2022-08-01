@@ -24,14 +24,13 @@ import { createApolloProvider } from '@vue/apollo-option'
 import { DefaultApolloClient } from '@vue/apollo-composable'
 
 import { fr } from '@formkit/i18n'
-
-import { emitter } from '@/shared/modules/emitter'
 import { i18n } from '@/shared/modules/i18n'
 
 import router from '@/router/index'
 
 import '@/assets/css/tailwind.css'
 import 'swiper/css/bundle'
+import { showErrorToast } from './utils/toast'
 
 const app = createApp(App)
 
@@ -74,11 +73,7 @@ app.config.globalProperties.emptyList = () => []
 
 app.config.errorHandler = (error, vm, info) => {
     console.log('Vue Error', error, vm, info)
-    emitter.emit('show-toast', {
-        message: `[BUG À SIGNALER] ${error}`,
-        type: 'bug',
-        duration: -1,
-    })
+    showErrorToast(`[BUG À SIGNALER] ${error}`, { duration: -1 })
     console.error(error, info)
 }
 

@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 
 import $axios from '@/shared/config/axios.config'
-import { emitter } from '@/shared/modules/emitter'
 
 import { onData } from '@/utils/store'
 import { isEmpty } from 'lodash'
@@ -9,6 +8,7 @@ import { isEmpty } from 'lodash'
 import { useLocalStorage } from '@vueuse/core'
 
 import logOutOnExpire from '@/utils/logOutOnExpire'
+import { showSuccessToast } from '@/utils/toast'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -19,10 +19,7 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         agreeToTerms() {
             this.agreedToTerms = true
-            emitter.emit('show-toast', {
-                message: "Vous avez accepté les conditions d'utilisation de la bêta d'Okampus !",
-                type: 'success',
-            })
+            showSuccessToast("Bienvenue sur la bêta d'Okampus 🎉 !")
         },
         updateUser(user) {
             this.user = { ...this.user, ...user }

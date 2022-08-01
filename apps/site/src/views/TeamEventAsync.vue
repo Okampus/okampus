@@ -266,18 +266,13 @@
 
     import { getEvent } from '@/graphql/queries/events/getEvent.js'
     import { unregisterEvent } from '@/graphql/queries/events/unregisterEvent.js'
-    import { emitter } from '@/shared/modules/emitter.js'
+
     import { useMutation } from '@vue/apollo-composable'
-    import { showToastGraphQLError } from '@/utils/errors.js'
+    import { showInfoToast, showToastGraphQLError } from '@/utils/toast'
 
     const { mutate: unregister, onDone, onError } = useMutation(unregisterEvent)
-    onDone(() => {
-        emitter.emit('show-toast', {
-            message: "Votre vous êtres bien désinscrit de l'évenement !",
-            type: 'success',
-        })
-    })
 
+    onDone(() => showInfoToast("Vous vous êtes désinscrit de l'événement"))
     onError(showToastGraphQLError)
 
     const route = useRoute()

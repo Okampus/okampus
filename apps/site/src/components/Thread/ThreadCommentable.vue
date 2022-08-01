@@ -155,6 +155,7 @@
     import router from '@/router'
     import { editThread } from '@/graphql/queries/editThread'
     import TipPopper from '../UI/Tip/TipPopper.vue'
+    import { showErrorToast, showInfoToast, showWarningToast } from '@/utils/toast'
 
     const auth = useAuthStore()
     const route = useRoute()
@@ -224,10 +225,7 @@
             ),
             action: () => {
                 props.content.interactions.userReported
-                    ? emitter.emit('show-toast', {
-                          message: `${capitalize(getContentName(props.content.kind))} déjà signalé.`,
-                          type: 'warning',
-                      })
+                    ? showWarningToast(`${capitalize(getContentName(props.content.kind))} déjà signalé.`)
                     : emitter.emit('report', props.content)
             },
         },
@@ -241,17 +239,13 @@
                     navigator.clipboard.writeText(
                         getURL(urlJoin(router.currentRoute.value.path, `#content-${props.content.id}`)),
                     )
-                    emitter.emit('show-toast', {
-                        message: `Lien de ${getContentDemonstrative(props.content.kind)} copié.`,
-                        type: 'info',
-                    })
+                    showInfoToast('Lien copié dans le presse-papier.')
                 } catch (err) {
-                    emitter.emit('show-toast', {
-                        message: `Une erreur est survenue lors de la copie du lien de ${getContentDemonstrative(
+                    showErrorToast(
+                        `[Erreur] Le lien de ${getContentDemonstrative(
                             props.content.kind,
-                        )}.`,
-                        type: 'error',
-                    })
+                        )} n'a pas pu être copié.`,
+                    )
                 }
             },
         },

@@ -74,8 +74,7 @@
     import { useMutation } from '@vue/apollo-composable'
     import { login } from '@/graphql/queries/auth/loginUser'
 
-    import { showToastGraphQLError } from '@/utils/errors'
-    import { emitter } from '@/shared/modules/emitter'
+    import { showSuccessToast, showToastGraphQLError } from '@/utils/toast'
 
     const myEfreiAuthUrl = `${import.meta.env.VITE_API_URL}/auth/myefrei`
 
@@ -97,10 +96,7 @@
     onDone(({ data }) => {
         auth.user = data.login
         emit('logged-in')
-        emitter.emit('show-toast', {
-            message: 'Connexion réussie !',
-            type: 'success',
-        })
+        showSuccessToast('Connexion réussie !')
     })
 
     onError(showToastGraphQLError)

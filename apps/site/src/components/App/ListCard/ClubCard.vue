@@ -147,8 +147,8 @@
     import { getURL } from '@/utils/routeUtils'
     import { computed, ref } from 'vue'
 
-    import { emitter } from '@/shared/modules/emitter'
     import { useRouter } from 'vue-router'
+    import { showErrorToast, showInfoToast } from '@/utils/toast.js'
 
     const router = useRouter()
 
@@ -177,15 +177,9 @@
             action: async () => {
                 try {
                     await navigator.clipboard.writeText(getURL(`/club/${props.club.id}`))
-                    emitter.emit('show-toast', {
-                        message: `Lien de ${props.club.name} copié.`,
-                        type: 'info',
-                    })
+                    showInfoToast(`Lien de ${props.club.name} copié.`)
                 } catch (err) {
-                    emitter.emit('show-toast', {
-                        message: `Une erreur est survenue lors de la copie du lien de ${props.club.name}.`,
-                        type: 'error',
-                    })
+                    showErrorToast(`[Erreur] Le lien de ${props.club.name} n'a pas pu être copié.`)
                 }
             },
         },

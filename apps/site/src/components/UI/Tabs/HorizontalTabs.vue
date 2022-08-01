@@ -23,11 +23,11 @@
     import { Swiper, SwiperSlide } from 'swiper/vue'
 
     import { abbrNumbers } from '@/utils/abbrNumbers'
-    import { emitter } from '@/shared/modules/emitter'
 
     import { computed, watch } from 'vue'
     import { useRoute } from 'vue-router'
     import { getCurrentPath } from '@/utils/routeUtils'
+    import { showInfoToast } from '@/utils/toast.js'
 
     const props = defineProps({
         tabs: {
@@ -86,11 +86,10 @@
         if (tab) {
             setTab(tab)
         } else {
-            emitter.emit('show-toast', {
-                message: `L'onglet '${getCurrentPath()}' n'existe pas. Redirection sur l'onglet par défaut ↪️`,
-                type: 'warning',
-                duration: 5000,
-            })
+            showInfoToast(
+                `L'onglet '${getCurrentPath()}' n'existe pas. Redirection sur l'onglet par défaut ↪️`,
+                { duration: 5000 },
+            )
 
             const defaultTab = computedTabs.value.find((tab) => tab.id === props.defaultTabId)
 

@@ -154,21 +154,18 @@
 
     import { addThread } from '@/graphql/queries/addThread'
 
-    import { emitter } from '@/shared/modules/emitter'
     import { useRouter } from 'vue-router'
+    import { showErrorToast, showSuccessToast } from '@/utils/toast.js'
 
     const router = useRouter()
 
     const { mutate: createThread, onDone } = useMutation(addThread)
-    onDone(({ data }) => {
-        emitter.emit('show-toast', {
-            message: 'Création réussie ! Tu vas être redirigé sur ton post.',
-            type: 'success',
-            onClose: () => {
-                router.push(`/forum/post/${data.addThread.id}`)
-            },
-        })
-    })
+
+    onDone(({ data }) =>
+        showSuccessToast('Création réussie ! Tu vas être redirigé sur ton post.', {
+            onClose: () => router.push(`/forum/post/${data.addThread.id}`),
+        }),
+    )
 
     const auth = useAuthStore()
 
@@ -240,10 +237,7 @@
 
             return options
         } catch (err) {
-            emitter.emit('show-toast', {
-                type: 'error',
-                message: `[Erreur] ${err.message}`,
-            })
+            showErrorToast(`[Erreur] ${err.message}`)
             return []
         }
     }
@@ -281,10 +275,7 @@
                 scope.value?.value === CLUBS_VALUE ? [clubs, departments] : [departments, clubs],
             )
         } catch (err) {
-            emitter.emit('show-toast', {
-                type: 'error',
-                message: `[Erreur] ${err.message}`,
-            })
+            showErrorToast(`[Erreur] ${err.message}`)
             return []
         }
     }

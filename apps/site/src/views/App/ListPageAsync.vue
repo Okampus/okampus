@@ -24,6 +24,7 @@
 
     import { isNil } from 'lodash'
     import { getStatusAxiosError } from '@/utils/errors'
+    import { showWarningToast } from '@/utils/toast.js'
 
     const query = reactive({
         page: 1,
@@ -64,9 +65,7 @@
             const queryPage = isNil(route.query?.page) ? '1' : route.query?.page
 
             if (!isPositiveInteger(queryPage)) {
-                emitter.emit('show-toast', {
-                    message: `La page '${queryPage}' n'existe pas. Redirection sur la page 1 ↪️`,
-                    type: 'warning',
+                showWarningToast(`La page '${queryPage}' n'existe pas. Redirection sur la page 1 ↪️`, {
                     duration: 5000,
                 })
                 router.push(props.routeBase)
@@ -79,9 +78,7 @@
                 .callback(query)
                 .then(({ items, pageInfo }) => {
                     if (!items.length && query.page > 1) {
-                        emitter.emit('show-toast', {
-                            message: `La page ${props.page} est vide. Redirection sur la page 1 ↪️`,
-                            type: 'info',
+                        showWarningToast(`La page '${queryPage}' est vide. Redirection sur la page 1 ↪️`, {
                             duration: 5000,
                         })
                         router.push(props.routeBase)

@@ -1,7 +1,5 @@
 import { errorCodes } from '@/shared/errors/app-exceptions.enum'
 import { graphQLtoHttpError } from '@/shared/errors/graphql-exceptions.enum'
-import { emitter } from '@/shared/modules/emitter'
-import { i18n } from '@/shared/modules/i18n'
 
 export const getStatusAxiosError = (err) => err.response?.status?.toString() ?? errorCodes.UNKNOWN
 
@@ -13,12 +11,6 @@ export const getGraphQLErrorCode = (apolloErrors) => {
     ]
 
     return graphQLtoHttpError[errors[0]?.extensions?.code] ?? errorCodes.NETWORK_ERROR
-}
-
-export const showToastGraphQLError = (apolloErrors) => {
-    const toast = { ...(TOAST_ERRORS[getGraphQLErrorCode(apolloErrors)] ?? TOAST_ERRORS[errorCodes.UNKNOWN]) }
-    toast.message = toast.message[i18n.global.locale]
-    emitter.emit('show-toast', toast)
 }
 
 export const TOAST_ERRORS = {

@@ -21,13 +21,12 @@
 </template>
 
 <script setup>
-    import { emitter } from '@/shared/modules/emitter'
-
     import IconUpvote from '@/icons/IconUpvote.vue'
     import IconDownvote from '@/icons/IconDownvote.vue'
 
     import { abbrNumbers } from '@/utils/abbrNumbers'
     import { ref, watchEffect } from 'vue'
+    import { showErrorToast } from '@/utils/toast.js'
 
     const props = defineProps({
         downvotes: {
@@ -61,10 +60,7 @@
             displayedUpvotes.value = props.upvotes
             displayedDownvotes.value = props.downvotes
             displayedVote.value = props.vote
-            emitter.emit('show-toast', {
-                message: `Échec du vote ! Erreur : ${err.message}`,
-                type: 'error',
-            })
+            showErrorToast(`[Erreur] Échec du vote ! (${err.message})`)
         })
     }
 

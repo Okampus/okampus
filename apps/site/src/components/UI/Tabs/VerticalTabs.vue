@@ -45,12 +45,12 @@
 <script setup>
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
 
-    import { emitter } from '@/shared/modules/emitter'
     import { watch } from 'vue'
     import { useRoute } from 'vue-router'
 
     import { abbrNumbers } from '@/utils/abbrNumbers'
     import { getCurrentPath } from '@/utils/routeUtils'
+    import { showInfoToast } from '@/utils/toast.js'
 
     const props = defineProps({
         tabs: {
@@ -115,13 +115,10 @@
         if (tab) {
             setTab(tab)
         } else {
-            emitter.emit('show-toast', {
-                message: `L'onglet '${getCurrentPath()
-                    .split(props.routeBase)[1]
-                    .slice(1)}' n'existe pas. Redirection sur l'onglet par défaut ↪️`,
-                type: 'warning',
-                duration: 5000,
-            })
+            showInfoToast(
+                `L'onglet '${getCurrentPath()}' n'existe pas. Redirection sur l'onglet par défaut ↪️`,
+                { duration: 5000 },
+            )
 
             const defaultTab = isMultiTab
                 ? props.tabs
