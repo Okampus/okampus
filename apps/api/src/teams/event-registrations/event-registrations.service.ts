@@ -3,6 +3,7 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
+import { TeamEventRegisterStatus } from '../../shared/lib/types/enums/team-event-register-status.enum';
 import { Role } from '../../shared/modules/authorization/types/role.enum';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
 import type { User } from '../../users/user.entity';
@@ -42,9 +43,14 @@ export class TeamEventRegistrationsService {
     }
 
     // Check that the user is not already registered for the event
-    const existing = await this.teamEventRegistrationRepository.count({ user, event: { id } });
-    if (existing)
+    const existing = await this.teamEventRegistrationRepository.findOne({ user, event: { id } });
+    if (existing && existing.status === TeamEventRegisterStatus.Absent) {
+      existing.status = createTeamEventRegistrationDto.status;
+      await this.teamEventRegistrationRepository.flush();
+      return existing;
+    } else if (existing) {
       throw new BadRequestException('Already registered');
+    }
 
     // 4. Check that the form is valid
     const formFields = await this.getAndValidateFormSubmission(
