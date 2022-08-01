@@ -191,6 +191,6 @@ export class TeamMembersService {
     await this.teamMemberRepository.removeAndFlush(teamMember);
 
     team.activeMemberCount--;
-    await this.teamRepository.persistAndFlush(team);
+    await this.teamRepository.flush();
   }
 }

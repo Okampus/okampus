@@ -180,7 +180,7 @@ export class TeamMembershipRequestsService {
       await this.teamMemberRepository.flush();
 
       request.team.activeMemberCount++;
-      await this.teamRepository.persistAndFlush(request.team);
+      await this.teamRepository.flush();
     }
 
     void this.notificationsService.trigger(new TeamManagedMembershipRequestUpdatedNotification(request));
