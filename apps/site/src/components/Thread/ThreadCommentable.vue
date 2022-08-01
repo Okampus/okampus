@@ -24,12 +24,19 @@
                 <div class="flex items-center gap-3">
                     <UserActivity :user="content.author">
                         <template v-if="authorIsOp" #title>
-                            <router-link
-                                :to="`/user/${content.author.id}`"
-                                class="w-fit rounded-full bg-gray-500 px-2 py-px text-sm text-white hover:bg-gray-600 dark:hover:bg-gray-400"
-                            >
-                                {{ fullname(content.author) }}
-                            </router-link>
+                            <div class="inline">
+                                <TipPopper tip="Original Poster (OP)">
+                                    <router-link
+                                        :to="`/user/${content.author.id}`"
+                                        class="w-fit rounded-full bg-[#888] px-2 py-px text-[0.8rem] font-semibold text-white hover:bg-gray-600 dark:hover:bg-gray-400"
+                                    >
+                                        {{ fullname(content.author) }}
+                                    </router-link>
+                                </TipPopper>
+                                <TipPopper :tip="getRole(content.author)[$i18n.locale]">
+                                    <i class="ml-2" :class="`fa fa-${getRole(content.author).icon}`" />
+                                </TipPopper>
+                            </div>
                         </template>
                         <template #subtitle>
                             Publié
@@ -142,11 +149,12 @@
     import { capitalize } from 'lodash'
     import { emitter } from '@/shared/modules/emitter'
     import { getURL } from '@/utils/routeUtils'
-    import { fullname } from '@/utils/users'
+    import { fullname, getRole } from '@/utils/users'
 
     import urlJoin from 'url-join'
     import router from '@/router'
     import { editThread } from '@/graphql/queries/editThread'
+    import TipPopper from '../UI/Tip/TipPopper.vue'
 
     const auth = useAuthStore()
     const route = useRoute()

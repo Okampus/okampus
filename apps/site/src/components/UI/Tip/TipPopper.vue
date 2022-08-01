@@ -15,7 +15,10 @@
             <template v-if="$slots.content">
                 <slot name="content" />
             </template>
-            <div v-else class="rounded-md bg-gray-900/90 p-2.5 text-base text-gray-100 dark:bg-black/90">
+            <div
+                v-else
+                class="rounded-md bg-gray-900/90 px-2.5 py-1.5 text-[0.92rem] text-gray-100 dark:bg-black/90"
+            >
                 <template v-if="$slots.tip">
                     <slot name="tip" />
                 </template>
