@@ -27,3 +27,14 @@
         @apply text-sm;
     }
 }
+
+@layer utilities {
+    .always-break-words {
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+    }
+}
