@@ -19,6 +19,7 @@
             </div>
 
             <div v-else class="mr-4 flex h-full items-center justify-between bg-transparent">
+                <div id="notification-bell" class="fa fa-bell mr-6 cursor-pointer text-xl text-gray-200" />
                 <!-- TODO: on small screen, use full screen modal -->
                 <Popper offset-distance="6" offset-skid="-85">
                     <ProfileAvatar
@@ -41,18 +42,9 @@
                             </div>
 
                             <hr class="mt-2 h-[1px] w-11/12 self-center border-none bg-gray-500/20" />
-                            <router-link
-                                class="topbar-popup-item"
-                                :to="`/user/${auth.user.id}`"
-                                @click="close"
-                            >
+                            <router-link class="topbar-popup-item" :to="`/me`" @click="close">
                                 <i class="fas fa-user" />
                                 <div>Mon profil</div>
-                            </router-link>
-
-                            <router-link class="topbar-popup-item" to="/me" @click="close">
-                                <i class="fas fa-gear" />
-                                <div>Paramètres</div>
                             </router-link>
 
                             <router-link class="topbar-popup-item" to="/rgpd" @click="close">
@@ -91,6 +83,32 @@
     const route = useRoute()
 
     const isHome = computed(() => route.name === 'home' || getCurrentPath() === '/')
+
+    ;(function (n, o, t, i, f) {
+        n[i] = {}
+        var m = ['init']
+        n[i]._c = []
+        m.forEach(
+            (me) =>
+                (n[i][me] = function () {
+                    n[i]._c.push([me, arguments])
+                }),
+        )
+        var elt = o.createElement(f)
+        elt.type = 'text/javascript'
+        elt.async = true
+        elt.src = t
+        var before = o.getElementsByTagName(f)[0]
+        before.parentNode.insertBefore(elt, before)
+    })(window, document, 'https://embed.novu.co/embed.umd.min.js', 'novu', 'script')
+
+    // eslint-disable-next-line no-undef
+    novu.init('0Ww3rjlTtbJr', '#notification-bell', {
+        subscriberId: auth.user.id,
+        email: auth.user.email,
+        firstName: auth.user.firstname,
+        lastName: auth.user.lastname,
+    })
 
     defineEmits(['toggle-side-bar'])
 </script>
