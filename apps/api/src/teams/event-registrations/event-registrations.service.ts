@@ -48,7 +48,7 @@ export class TeamEventRegistrationsService {
 
     // 4. Check that the form is valid
     const formFields = await this.getAndValidateFormSubmission(
-      event.form,
+      event.registrationForm,
       createTeamEventRegistrationDto.originalFormId,
       createTeamEventRegistrationDto.formSubmission,
     );

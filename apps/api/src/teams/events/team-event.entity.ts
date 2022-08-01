@@ -88,7 +88,7 @@ export class TeamEvent extends BaseEntity {
 
   @Field(() => TeamForm, { nullable: true })
   @OneToOne({ cascade: [Cascade.ALL] })
-  form: TeamForm | null = null;
+  registrationForm: TeamForm | null = null;
 
   @Field(() => TeamEvent, { nullable: true })
   @ManyToOne()
@@ -108,7 +108,7 @@ export class TeamEvent extends BaseEntity {
     location: string;
     usedTemplate?: TeamEvent | null;
     meta?: object[] | object | null;
-    form?: TeamForm | null;
+    registrationForm?: TeamForm | null;
     state?: TeamEventState | null;
     price?: number | null;
     supervisor?: User | null;

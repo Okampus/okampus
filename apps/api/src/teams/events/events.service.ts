@@ -58,13 +58,13 @@ export class TeamEventsService {
       supervisor = await this.userRepository.findOneOrFail({ id: createTeamEventDto.supervisorId });
 
     // Check that the provided form id is valid, is a template, and is not already used
-    let form: TeamForm | undefined;
+    let registrationForm: TeamForm | undefined;
     if (createTeamEventDto.formId) {
-      form = await this.teamFormRepository.findOneOrFail({ id: createTeamEventDto.formId, team });
-      if (form.isTemplate)
+      registrationForm = await this.teamFormRepository.findOneOrFail({ id: createTeamEventDto.formId, team });
+      if (registrationForm.isTemplate)
         throw new BadRequestException('Form is a template');
 
-      const isAlreadyUsed = await this.teamEventRepository.findOne({ form });
+      const isAlreadyUsed = await this.teamEventRepository.findOne({ registrationForm });
       if (isAlreadyUsed)
         throw new BadRequestException('Form is already used');
     }
@@ -92,7 +92,7 @@ export class TeamEventsService {
       supervisor,
       usedTemplate,
       team,
-      form,
+      registrationForm,
       createdBy: user,
     });
 
@@ -183,7 +183,7 @@ export class TeamEventsService {
           { private: false, state: TeamEventState.Published },
         ],
       },
-      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'registrations', 'form', 'usedTemplate'] },
+      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'registrations', 'registrationForm', 'usedTemplate'] },
     );
     if (event.state === TeamEventState.Draft && !event.canEdit(user))
       throw new ForbiddenException('Event not published');
@@ -213,13 +213,13 @@ export class TeamEventsService {
     }
 
     // Check that the provided form id is valid, is a template, and is not already used
-    let form: TeamForm | undefined;
+    let registrationForm: TeamForm | undefined;
     if (dto.formId) {
-      form = await this.teamFormRepository.findOneOrFail({ id: dto.formId, team: event.team });
-      if (form.isTemplate)
+      registrationForm = await this.teamFormRepository.findOneOrFail({ id: dto.formId, team: event.team });
+      if (registrationForm.isTemplate)
         throw new BadRequestException('Form is a template');
 
-      const isAlreadyUsed = await this.teamEventRepository.findOne({ form });
+      const isAlreadyUsed = await this.teamEventRepository.findOne({ registrationForm });
       if (isAlreadyUsed)
         throw new BadRequestException('Form is already used');
     }
@@ -253,7 +253,7 @@ export class TeamEventsService {
       void this.notificationsService.trigger(new TeamManagedEventUpdatedNotification(event, { executor: user }));
     }
 
-    wrap(event).assign({ ...dto, form });
+    wrap(event).assign({ ...dto, registrationForm });
     await this.teamEventRepository.flush();
 
     return event;

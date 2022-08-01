@@ -481,13 +481,13 @@ type TeamEvent {
   createdBy: User!
   description: String!
   end: DateTime!
-  form: TeamForm
   id: Int!
   location: String!
   meta: JSON!
   name: String!
   price: Float!
   private: Boolean!
+  registrationForm: TeamForm
   registrations: [TeamEventRegistration!]!
   start: DateTime!
   state: TeamEventState!
