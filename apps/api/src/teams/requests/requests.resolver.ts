@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import {
   Args,
+  Int,
   Mutation,
   Query,
   Resolver,
@@ -31,7 +32,7 @@ export class TeamMembershipRequestsResolver {
   // TODO: Add permission checks
   @Query(() => [TeamMembershipRequest], { nullable: true })
   public async teamMembershipRequests(
-    @Args('id') id: number,
+    @Args('id', { type: () => Int }) id: number,
     @Args('filter', { nullable: true }) filter?: FilterMembershipRequestsDto,
   ): Promise<TeamMembershipRequest[]> {
     const requests = await this.teamMembershipRequestsService.findAll(id, filter);
@@ -41,7 +42,7 @@ export class TeamMembershipRequestsResolver {
   @Mutation(() => TeamInfo)
   public async joinTeam(
     @CurrentUser() user: User,
-    @Args('id') id: number,
+    @Args('id', { type: () => Int }) id: number,
     @Args('request') request: CreateTeamMembershipRequestDto,
   ): Promise<TeamInfo> {
     const createdRequest = this.teamMembershipRequestsService.create(user, id, request);
@@ -52,7 +53,7 @@ export class TeamMembershipRequestsResolver {
   @Mutation(() => TeamMembershipRequest)
   public async updateTeamMembershipRequest(
     @CurrentUser() user: User,
-    @Args('requestId') requestId: number,
+    @Args('requestId', { type: () => Int }) requestId: number,
     @Args('update') update: UpdateTeamMembershipRequestDto,
   ): Promise<TeamMembershipRequest> {
     const request = await this.teamMembershipRequestsService.update(user, requestId, update);
@@ -63,7 +64,7 @@ export class TeamMembershipRequestsResolver {
   @Mutation(() => TeamMembershipRequest)
   public async handleTeamMembershipRequest(
     @CurrentUser() user: User,
-    @Args('requestId') requestId: number,
+    @Args('requestId', { type: () => Int }) requestId: number,
     @Args('payload') payload: PutTeamMembershipRequestDto,
   ): Promise<TeamMembershipRequest> {
     const request = await this.teamMembershipRequestsService.handleRequest(user, requestId, payload);

@@ -49,7 +49,7 @@ export class TeamEventRegistrationsResolver {
   @Mutation(() => TeamEvent)
   public async addTeamEventRegistration(
     @CurrentUser() user: User,
-    @Args('id') id: number,
+    @Args('id', { type: () => Int }) id: number,
     @Args('registration') registration: CreateTeamEventRegistrationDto,
   ): Promise<TeamEvent> {
     const createdRegistration = await this.teamEventRegistrationsService.create(user, id, registration);

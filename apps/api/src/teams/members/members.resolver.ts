@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import {
   Args,
+  Int,
   Mutation,
   Query,
   Resolver,
@@ -27,7 +28,7 @@ export class TeamMembersResolver {
   // TODO: Add permission checks
   @Query(() => [TeamMember], { nullable: true })
   public async teamMembers(
-    @Args('id') id: number,
+    @Args('id', { type: () => Int }) id: number,
   ): Promise<TeamMember[]> {
     const memberships = await this.teamMembersService.findAllMembers(id);
     return memberships.items;
@@ -36,8 +37,8 @@ export class TeamMembersResolver {
   @Mutation(() => TeamMember)
   public async addUserToTeam(
     @CurrentUser() user: User,
-    @Args('teamId') teamId: number,
-    @Args('userId') userId: string,
+    @Args('teamId', { type: () => Int }) teamId: number,
+    @Args('userId', { type: () => Int }) userId: string,
     @Args('invite') invite: InviteMemberDto,
   ): Promise<TeamMembershipRequest> {
     const createdRequest = await this.teamMembersService.inviteUser(user, teamId, userId, invite);
@@ -48,8 +49,8 @@ export class TeamMembersResolver {
   @Mutation(() => TeamMember)
   public async updateTeamMember(
     @CurrentUser() user: User,
-    @Args('teamId') teamId: number,
-    @Args('userId') userId: string,
+    @Args('teamId', { type: () => Int }) teamId: number,
+    @Args('userId', { type: () => Int }) userId: string,
     @Args('update') update: UpdateTeamMemberDto,
   ): Promise<TeamMember> {
     const updatedMember = await this.teamMembersService.updateMember(user, teamId, userId, update);
@@ -60,8 +61,8 @@ export class TeamMembersResolver {
   @Mutation(() => TeamMember, { nullable: true })
   public async removeTeamMember(
     @CurrentUser() user: User,
-    @Args('teamId') teamId: number,
-    @Args('userId') userId: string,
+    @Args('teamId', { type: () => Int }) teamId: number,
+    @Args('userId', { type: () => Int }) userId: string,
   ): Promise<void> {
     await this.teamMembersService.removeMember(user, teamId, userId);
     await this.pubSub.publish(SubscriptionType.TeamMemberUpdated, { teamMemberRemoved: user });

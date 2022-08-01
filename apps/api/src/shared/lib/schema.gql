@@ -254,23 +254,23 @@ enum MembershipRequestState {
 type Mutation {
   addContent(child: CreateContentWithKindDto!): Content!
   addTeam(team: CreateTeamDto!): Team!
-  addTeamEventRegistration(id: Float!, registration: CreateTeamEventRegistrationDto!): TeamEvent!
+  addTeamEventRegistration(id: Int!, registration: CreateTeamEventRegistrationDto!): TeamEvent!
   addTeamFinance(finance: CreateTeamFinanceDto!, id: Int!): TeamFinance!
   addThread(thread: CreateThreadDto!): Thread!
-  addUserToTeam(invite: InviteMemberDto!, teamId: Float!, userId: String!): TeamMember!
+  addUserToTeam(invite: InviteMemberDto!, teamId: Int!, userId: Int!): TeamMember!
   favoriteContent(favorite: Boolean!, id: Int!): Content!
-  handleTeamMembershipRequest(payload: PutTeamMembershipRequestDto!, requestId: Float!): TeamMembershipRequest!
-  joinTeam(id: Float!, request: CreateTeamMembershipRequestDto!): TeamInfo!
+  handleTeamMembershipRequest(payload: PutTeamMembershipRequestDto!, requestId: Int!): TeamMembershipRequest!
+  joinTeam(id: Int!, request: CreateTeamMembershipRequestDto!): TeamInfo!
   login(password: String!, username: String!): User!
-  removeTeamMember(teamId: Float!, userId: String!): TeamMember
+  removeTeamMember(teamId: Int!, userId: Int!): TeamMember
   reportContent(id: Int!, report: CreateReportDto!): Content!
   updateContent(content: UpdateContentDto!, id: Int!): Content!
   updateSettings(settings: UpdateSettingsDto!): Settings!
   updateTeam(id: Int!, team: UpdateTeamDto!): Team!
   updateTeamEventRegistration(id: Int!, registration: UpdateTeamEventRegistrationDto!): TeamEventRegistration!
   updateTeamFinance(finance: UpdateTeamFinanceDto!, id: Int!): TeamFinance!
-  updateTeamMember(teamId: Float!, update: UpdateTeamMemberDto!, userId: String!): TeamMember!
-  updateTeamMembershipRequest(requestId: Float!, update: UpdateTeamMembershipRequestDto!): TeamMembershipRequest!
+  updateTeamMember(teamId: Int!, update: UpdateTeamMemberDto!, userId: Int!): TeamMember!
+  updateTeamMembershipRequest(requestId: Int!, update: UpdateTeamMembershipRequestDto!): TeamMembershipRequest!
   updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
   updateUser(id: String!, user: UpdateUserDto!): User!
   voteContent(id: Int!, value: Int!): Content!
@@ -302,8 +302,8 @@ type Query {
   teamEventRegistrations(filters: FilterRegisteredEventsDto!): [TeamEventRegistration!]!
   teamFinanceById(id: Int!): TeamFinance
   teamFinances(filters: TeamFinancesFilterDto!): [TeamFinance!]!
-  teamMembers(id: Float!): [TeamMember!]
-  teamMembershipRequests(filter: FilterMembershipRequestsDto, id: Float!): [TeamMembershipRequest!]
+  teamMembers(id: Int!): [TeamMember!]
+  teamMembershipRequests(filter: FilterMembershipRequestsDto, id: Int!): [TeamMembershipRequest!]
   teamMembershipRequestsByUserId(filters: FilterMembershipRequestsDto, id: String!): [TeamMembershipRequest!]!
   teamMembershipsByUserId(id: String!): [TeamMember!]
   teams(filters: TeamsFilterDto): [Team!]!
