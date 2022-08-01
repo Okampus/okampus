@@ -54,7 +54,7 @@ export class TeamICalService {
       end: event.end,
       created: event.createdAt,
       description: event.description,
-      location: event.place,
+      location: event.location,
       organizer: {
         name: event.createdBy.getFullName(),
         email: event.createdBy.email,

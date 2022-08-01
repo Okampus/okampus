@@ -29,7 +29,7 @@ export class CreateTeamEventDto {
 
   @IsString()
   @Length(5, 500)
-  place: string;
+  location: string;
 
   @IsOptional()
   @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 2 })

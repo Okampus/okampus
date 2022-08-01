@@ -481,6 +481,7 @@ type TeamEvent {
   end: DateTime!
   form: TeamForm
   id: Int!
+  location: String!
   meta: JSON!
   name: String!
   place: String!

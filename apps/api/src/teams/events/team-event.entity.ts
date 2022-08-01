@@ -59,7 +59,7 @@ export class TeamEvent extends BaseEntity {
 
   @Field()
   @Property({ type: 'text' })
-  place!: string;
+  location!: string;
 
   @Field(() => User, { nullable: true })
   @ManyToOne()
@@ -97,7 +97,7 @@ export class TeamEvent extends BaseEntity {
     description: string;
     createdBy: User;
     team: Team;
-    place: string;
+    location: string;
     usedTemplate?: TeamEvent | null;
     meta?: object[] | object | null;
     form?: TeamForm | null;

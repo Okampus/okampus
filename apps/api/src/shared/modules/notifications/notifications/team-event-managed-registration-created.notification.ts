@@ -49,7 +49,7 @@ export class TeamEventManagedRegistrationCreatedNotification extends Notificatio
           name: this.teamEventRegistration.event.name,
           description: this.teamEventRegistration.event.description,
           price: this.teamEventRegistration.event.price,
-          place: this.teamEventRegistration.event.place,
+          location: this.teamEventRegistration.event.location,
           supervisor: this.teamEventRegistration.event.supervisor
             ? this.userToPayload(this.teamEventRegistration.event.supervisor)
             : null,

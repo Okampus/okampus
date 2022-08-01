@@ -49,7 +49,7 @@ export class TeamSubscribedEventCreatedNotification extends Notification {
         name: this.teamEvent.name,
         description: this.teamEvent.description,
         price: this.teamEvent.price,
-        place: this.teamEvent.place,
+        location: this.teamEvent.location,
         supervisor: this.teamEvent.supervisor ? this.userToPayload(this.teamEvent.supervisor) : null,
         private: this.teamEvent.private,
         meta: this.teamEvent.meta,

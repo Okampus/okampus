@@ -42,7 +42,7 @@ export class AdminTeamEventValidationRejectedNotification extends Notification {
           name: this.teamEventValidation.event.name,
           description: this.teamEventValidation.event.description,
           price: this.teamEventValidation.event.price,
-          place: this.teamEventValidation.event.place,
+          location: this.teamEventValidation.event.location,
           supervisor: this.teamEventValidation.event.supervisor
             ? this.userToPayload(this.teamEventValidation.event.supervisor)
             : null,
