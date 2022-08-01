@@ -9,6 +9,7 @@ import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
 import { Team } from '../teams/team.entity';
 import { TeamEventsController } from './events.controller';
+import { TeamEventsResolver } from './events.resolver';
 import { TeamEventsService } from './events.service';
 import { TeamEvent } from './team-event.entity';
 
@@ -26,7 +27,7 @@ import { TeamEvent } from './team-event.entity';
     NotificationsModule,
   ],
   controllers: [TeamEventsController],
-  providers: [CaslAbilityFactory, TeamEventsService],
+  providers: [CaslAbilityFactory, TeamEventsService, TeamEventsResolver],
   exports: [TeamEventsService],
 })
 export class TeamEventsModule {}

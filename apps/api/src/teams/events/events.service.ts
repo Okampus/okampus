@@ -183,7 +183,7 @@ export class TeamEventsService {
           { private: false, state: TeamEventState.Published },
         ],
       },
-      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'form', 'usedTemplate'] },
+      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'registrations', 'form', 'usedTemplate'] },
     );
     if (event.state === TeamEventState.Draft && !event.canEdit(user))
       throw new ForbiddenException('Event not published');

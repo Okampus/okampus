@@ -76,7 +76,7 @@ export class User extends BaseEntity {
   @Property({ type: 'text' })
   avatar: string | null = null;
 
-  @Field(() => [Role], { nullable: true })
+  @Field(() => [Role])
   @Enum({ default: [Role.User] })
   roles = [Role.User];
 
@@ -84,16 +84,15 @@ export class User extends BaseEntity {
   @Enum(() => SchoolRole)
   schoolRole!: SchoolRole;
 
-  @Field(() => [SchoolGroupMembership], { nullable: true })
+  @Field(() => [SchoolGroupMembership])
   @OneToMany('SchoolGroupMembership', 'user')
-  @TransformCollection()
   schoolGroupMemberships = new Collection<SchoolGroupMembership>(this);
 
-  @Field(() => [TeamMembershipRequest], { nullable: true })
+  @Field(() => [TeamMembershipRequest])
   @OneToMany('TeamMembershipRequest', 'user')
   teamMembershipRequests = new Collection<TeamMembershipRequest>(this);
 
-  @Field(() => [TeamMember], { nullable: true })
+  @Field(() => [TeamMember])
   @OneToMany('TeamMember', 'user')
   teamMemberships = new Collection<TeamMember>(this);
 

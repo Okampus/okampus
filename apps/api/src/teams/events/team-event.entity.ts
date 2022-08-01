@@ -1,9 +1,11 @@
 import {
   Cascade,
+  Collection,
   Entity,
   Enum,
   Index,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryKey,
   Property,
@@ -18,6 +20,8 @@ import { GraphQLJSON } from 'graphql-scalars';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.enum';
 import { User } from '../../users/user.entity';
+// eslint-disable-next-line import/no-cycle
+import { TeamEventRegistration } from '../event-registrations/team-event-registration.entity';
 import { TeamForm } from '../forms/team-form.entity';
 import { Team } from '../teams/team.entity';
 
@@ -56,6 +60,10 @@ export class TeamEvent extends BaseEntity {
   @ManyToOne({ onDelete: 'CASCADE' })
   @Index()
   team!: Team;
+
+  @Field(() => [TeamEventRegistration])
+  @OneToMany('TeamEventRegistration', 'event')
+  registrations = new Collection<TeamEventRegistration>(this);
 
   @Field()
   @Property({ type: 'text' })

@@ -10,6 +10,7 @@ import { GraphQLJSON } from 'graphql-scalars';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamEventRegisterStatus } from '../../shared/lib/types/enums/team-event-register-status.enum';
 import { User } from '../../users/user.entity';
+// eslint-disable-next-line import/no-cycle
 import { TeamEvent } from '../events/team-event.entity';
 import { TeamForm } from '../forms/team-form.entity';
 

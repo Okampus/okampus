@@ -254,7 +254,7 @@ enum MembershipRequestState {
 type Mutation {
   addContent(child: CreateContentWithKindDto!): Content!
   addTeam(team: CreateTeamDto!): Team!
-  addTeamEventRegistration(id: Float!, registration: CreateTeamEventRegistrationDto!): TeamEventRegistration!
+  addTeamEventRegistration(id: Float!, registration: CreateTeamEventRegistrationDto!): TeamEvent!
   addTeamFinance(finance: CreateTeamFinanceDto!, id: Int!): TeamFinance!
   addThread(thread: CreateThreadDto!): Thread!
   addUserToTeam(invite: InviteMemberDto!, teamId: Float!, userId: String!): TeamMember!
@@ -285,6 +285,8 @@ type Query {
   clubById(id: Int!): Team
   clubs: [Team!]!
   contentById(id: Int!): Content
+  eventById(id: Int!): TeamEvent!
+  events: [TeamEvent!]!
   me: User!
   reportById(id: Int!): Report!
   reports: [Report!]!
@@ -484,21 +486,22 @@ type TeamEvent {
   location: String!
   meta: JSON!
   name: String!
-  place: String!
   price: Float!
   private: Boolean!
+  registrations: [TeamEventRegistration!]!
   start: DateTime!
   state: TeamEventState!
   supervisor: User
   team: Team!
   updatedAt: DateTime!
   usedTemplate: TeamEvent
+  userRegistration: TeamEventRegistration
   validationStep: Int!
 }
 
 enum TeamEventRegisterStatus {
+  Absent
   Maybe
-  NotSure
   Sure
 }
 
@@ -814,15 +817,15 @@ type User {
   lastname: String!
   points: Int!
   reputation: Int!
-  roles: [Role!]
-  schoolGroupMemberships: [SchoolGroupMembership!]
+  roles: [Role!]!
+  schoolGroupMemberships: [SchoolGroupMembership!]!
   schoolRole: SchoolRole!
   settings: Settings!
   shortDescription: String
   signature: String
   teamEventIcal: String!
-  teamMembershipRequests: [TeamMembershipRequest!]
-  teamMemberships: [TeamMember!]
+  teamMembershipRequests: [TeamMembershipRequest!]!
+  teamMemberships: [TeamMember!]!
   updatedAt: DateTime!
 }
 

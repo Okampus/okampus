@@ -12,6 +12,8 @@ import { APP_PUB_SUB } from '../../shared/lib/constants';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { SubscriptionType } from '../../shared/lib/types/enums/subscription-type.enum';
 import { User } from '../../users/user.entity';
+import { TeamEventsService } from '../events/events.service';
+import { TeamEvent } from '../events/team-event.entity';
 import { CreateTeamEventRegistrationDto } from './dto/create-team-event-registration.dto';
 import { FilterRegisteredEventsDto } from './dto/list-registered-events.dto';
 import { UpdateTeamEventRegistrationDto } from './dto/update-team-event-registration.dto';
@@ -22,6 +24,7 @@ import { TeamEventRegistration } from './team-event-registration.entity';
 export class TeamEventRegistrationsResolver {
   constructor(
     @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,
+    private readonly teamEventsService: TeamEventsService,
     private readonly teamEventRegistrationsService: TeamEventRegistrationsService,
   ) {}
 
@@ -43,17 +46,17 @@ export class TeamEventRegistrationsResolver {
     return paginatedTeams.items;
   }
 
-  @Mutation(() => TeamEventRegistration)
+  @Mutation(() => TeamEvent)
   public async addTeamEventRegistration(
     @CurrentUser() user: User,
     @Args('id') id: number,
     @Args('registration') registration: CreateTeamEventRegistrationDto,
-  ): Promise<TeamEventRegistration> {
+  ): Promise<TeamEvent> {
     const createdRegistration = await this.teamEventRegistrationsService.create(user, id, registration);
     await this.pubSub.publish(SubscriptionType.TeamEventRegistrationAdded, {
       teamEventRegistrationAdded: createdRegistration,
     });
-    return createdRegistration;
+    return await this.teamEventsService.findOne(user, id);
   }
 
   @Mutation(() => TeamEventRegistration)

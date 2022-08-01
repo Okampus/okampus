@@ -2,6 +2,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
 import { NotificationsModule } from '../../shared/modules/notifications/notifications.module';
+import { TeamEventsModule } from '../events/events.module';
 import { TeamEvent } from '../events/team-event.entity';
 import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
@@ -14,6 +15,7 @@ import { TeamEventRegistration } from './team-event-registration.entity';
   imports: [
     MikroOrmModule.forFeature([TeamMember, TeamEvent, TeamForm, TeamEventRegistration]),
     NotificationsModule,
+    TeamEventsModule,
   ],
   controllers: [TeamEventRegistrationsController],
   providers: [CaslAbilityFactory, TeamEventRegistrationsService, TeamEventRegistrationsResolver],
