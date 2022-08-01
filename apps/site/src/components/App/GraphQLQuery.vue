@@ -61,5 +61,7 @@
         },
     })
 
+    if (import.meta.env.DEV) console.log('[GraphQL Query]', props.query, ' ~ variables', props.variables)
+
     const resource = RESOURCE_NAMES?.[props.resourceType] ?? RESOURCE_NAMES[DEFAULT]
 </script>
