@@ -12,8 +12,11 @@ export const fullTeamFragment = gql`
         boardMembers {
             role
             user {
-                lastname
+                id
                 firstname
+                lastname
+                avatar
+                schoolRole
             }
         }
         membershipRequestForm {

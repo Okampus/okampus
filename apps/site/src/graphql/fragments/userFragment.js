@@ -17,6 +17,7 @@ export const userFragment = gql`
         firstname
         lastname
         avatar
+        banner
         roles
         schoolRole
         schoolGroupMemberships {

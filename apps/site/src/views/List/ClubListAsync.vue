@@ -28,11 +28,7 @@
                     </div>
                 </div>
                 <div v-else class="flex h-fit w-full flex-wrap gap-4">
-                    <ClubJoinForm
-                        v-model:show="showJoinForm"
-                        :club="joiningClub"
-                        @closed="joiningClubId = null"
-                    />
+                    <ClubJoinForm v-model:show="showJoinForm" :club="joiningClub" />
                     <ClubCard
                         v-for="club in currentClubs(clubs).value"
                         :key="club.id"
@@ -66,24 +62,9 @@
     import { i18n } from '@/shared/modules/i18n'
     import { groupBy } from 'lodash'
 
-    // import { emitter } from '@/shared/modules/emitter'
-
-    // import { getStatusAxiosError } from '@/utils/errors'
-
-    // import { useAuthStore } from '@/store/auth.store'
-    // import { useClubsStore } from '@/store/clubs.store'
-    // import { groupBy } from 'lodash'
-    // import { specialRoles, IS_WAITING, IS_MEMBER, IS_SPECIAL_ROLE } from '@/shared/types/club-roles.enum'
-
-    // const auth = useAuthStore()
-    // const clubs = useClubsStore()
-    // getClubs
-
     const currentTab = ref(null)
 
-    // const ALL = 0
     const ALL_LABEL = 'all'
-    // const MY_CLUBS = 1
     const MY_CLUBS_LABEL = 'my-clubs'
 
     const getTabsFromClubs = (clubs) => {
@@ -124,22 +105,8 @@
         ])
     }
 
-    // const CATEGORIES = 1
-
-    // const clubList = ref([])
-    // const clubListByCategory = ref({})
-    // const categories = ref([])
-    // // const schema = ref([])
-
     const showJoinForm = ref(false)
     const joiningClub = ref(null)
-
-    // const joinForm = ref(null)
-    // const joinFormData = ref({})
-    // const joiningClubId = ref(null)
-    // const joiningClub = computed(
-    //     () => clubList.value.find((club) => club.id === joiningClubId.value) ?? { name: '' },
-    // )
 
     const currentClubs = (clubs) =>
         computed(() => {
@@ -154,77 +121,4 @@
                 ? clubs.filter((club) => club.category === clubTypeFromTab[currentTab.value])
                 : clubs.filter((club) => club.category === currentTab.value)
         })
-
-    // const currentClubs = computed(() =>
-    //     currentTab.value === ALL_LABEL
-    //         ? clubList.value
-    //         : currentTab.value === MY_CLUBS_LABEL
-    //         ? clubList.value.filter((club) => !!club.membership && club.membership !== IS_WAITING)
-    //         : categories.value.includes(linkToClubType[currentTab.value])
-    //         ? clubListByCategory.value[linkToClubType[currentTab.value]]
-    //         : [],
-    // )
-
-    // const loadClubList = async () => {
-    //     await clubs
-    //         .getClubs()
-    //         .then((res) => {
-    //             clubList.value = res
-    //             clubListByCategory.value = groupBy(res, 'category')
-
-    //             tabs[ALL].tabs[ALL].amount = res.length
-
-    //             categories.value = Object.keys(clubListByCategory.value)
-    //             tabs[CATEGORIES].tabs = Object.entries(clubListByCategory.value).map((category) => ({
-    //                 id: clubTypes[category[0]].link,
-    //                 name: category[0],
-    //                 amount: category[1].length,
-    //             }))
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatusAxiosError(err) })
-    //         })
-    // }
-
-    // const getMemberships = async () => {
-    //     await clubs
-    //         .getMembershipsOf(auth.user)
-    //         .then((memberships) => {
-    //             memberships.forEach((membership) => {
-    //                 clubList.value.find((club) => club.id === membership.team.id).membership =
-    //                     specialRoles.includes(membership.role) ? IS_SPECIAL_ROLE : IS_MEMBER
-    //             })
-    //             tabs[ALL].tabs[MY_CLUBS].amount = clubList.value.filter(
-    //                 (club) => !!club.membership && club.membership !== IS_WAITING,
-    //             ).length
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatusAxiosError(err) })
-    //         })
-    // }
-
-    // const PENDING_STATE = 'pending'
-    // const getRequests = async () => {
-    //     await clubs
-    //         .getMembershipRequestsOf(auth.user)
-    //         .then((requests) => {
-    //             requests
-    //                 .filter((request) => request.state === PENDING_STATE)
-    //                 .forEach((request) => {
-    //                     clubList.value.find((club) => club.id === request.team.id).membership = IS_WAITING
-    //                 })
-    //         })
-    //         .catch((err) => {
-    //             emitter.emit('error-route', { code: getStatusAxiosError(err) })
-    //         })
-    // }
-
-    // // const loadSchema = async (clubId) => {
-    // //     clubs.getClub(clubId).then((club) => {
-    // //         schema.value = club?.membershipRequestForm.form ?? null
-    // //     })
-    // // }
-
-    // await loadClubList()
-    // await Promise.all([getMemberships(), getRequests()])
 </script>

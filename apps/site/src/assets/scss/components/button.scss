@@ -70,3 +70,7 @@
         box-shadow: 0 0 8px #e45d4b;
     }
 }
+
+.pill-button {
+    @apply flex items-center gap-2 rounded-full py-1 font-semibold;
+}

@@ -158,7 +158,7 @@ const routes = [
 
     {
         name: 'user',
-        path: '/user/:id',
+        path: '/user/:userId',
         component: () => import('@/views/Profile/ProfileUserAsync.vue'),
         meta: {
             requiresAuth: true,

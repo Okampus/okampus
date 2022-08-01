@@ -45,23 +45,12 @@
     import { ref } from 'vue'
 
     import { emitter } from '@/shared/modules/emitter'
-    import { DEFAULT_JOIN_FORM_SCHEMA } from '@/shared/assets/default-schemas'
     import { joinTeam } from '@/graphql/queries/teams/joinTeam'
 
     import { MEMBER } from '@/shared/types/club-roles.enum.js'
+    import { DEFAULT_JOIN_FORM_SCHEMA } from '@/shared/assets/default-schemas'
+
     import { showToastGraphQLError } from '@/utils/errors.js'
-
-    const { mutate: join, onDone, onError } = useMutation(joinTeam)
-
-    onDone(({ data }) => {
-        emitter.emit('show-toast', {
-            message: `Votre demande de rejoindre ${data.joinTeam.name} a bien été prise en compte !`,
-            type: 'success',
-        })
-        emit('update:show', false)
-    })
-
-    onError(showToastGraphQLError)
 
     defineProps({
         show: {
@@ -76,4 +65,16 @@
 
     const emit = defineEmits(['update:show', 'closed'])
     const joinForm = ref(null)
+
+    const { mutate: join, onDone, onError } = useMutation(joinTeam)
+
+    onDone(({ data }) => {
+        emitter.emit('show-toast', {
+            message: `Votre demande de rejoindre ${data.joinTeam.name} a bien été prise en compte !`,
+            type: 'success',
+        })
+        emit('update:show', false)
+    })
+
+    onError(showToastGraphQLError)
 </script>

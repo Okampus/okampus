@@ -43,38 +43,33 @@
                 </router-link>
 
                 <div class="mt-3 flex h-12 w-full flex-row items-center justify-between">
-                    <template
+                    <button
                         v-if="
                             club.userMembership.membership?.role &&
                             specialRoles.includes(club.userMembership.membership?.role)
                         "
+                        class="button-green pill-button -ml-1"
+                        @click="router.push(`/club/${club.id}/manage`)"
                     >
-                        <router-link
-                            :to="`/club/${club.id}/manage`"
-                            class="button-green -ml-1 flex items-center gap-2 rounded-full py-1 font-semibold"
-                        >
-                            <i class="fa fa-gear" />
-                            <div>Gérer</div>
-                        </router-link>
-                    </template>
-                    <template v-else-if="club.userMembership.membership?.role">
-                        <router-link
-                            :to="`/club/${club.id}`"
-                            class="button-indigo -ml-1 flex items-center gap-2 rounded-full py-1 font-semibold"
-                        >
-                            <i class="fa fa-users" />
-                            <div>Profil</div>
-                        </router-link>
-                    </template>
-                    <template v-else-if="club.pendingRequest">
-                        <router-link
-                            :to="`/me/clubs/requests`"
-                            class="button-grey -ml-1 flex items-center gap-2 rounded-full py-1 font-semibold"
-                        >
-                            <i class="fa fa-envelope" />
-                            <div>En attente</div>
-                        </router-link>
-                    </template>
+                        <i class="fa fa-gear" />
+                        <div>Gérer</div>
+                    </button>
+                    <button
+                        v-else-if="club.userMembership.membership?.role"
+                        class="button-indigo pill-button -ml-1"
+                        @click="router.push(`/club/${club.id}`)"
+                    >
+                        <i class="fa fa-users" />
+                        <div>Profil</div>
+                    </button>
+                    <button
+                        v-else-if="club.userMembership.pendingRequest"
+                        class="button-grey pill-button -ml-1"
+                        @click="router.push(`/me/clubs/requests`)"
+                    >
+                        <i class="fa fa-envelope" />
+                        <div>En attente</div>
+                    </button>
                     <button
                         v-else
                         class="button-blue -ml-1 rounded-full py-1 text-center font-semibold"
@@ -155,6 +150,8 @@
     import { emitter } from '@/shared/modules/emitter'
     import { useRouter } from 'vue-router'
 
+    const router = useRouter()
+
     const props = defineProps({
         club: {
             type: Object,
@@ -172,7 +169,6 @@
 
     const hovering = ref(null)
 
-    const router = useRouter()
     const buttons = [
         {
             name: 'Lien',
