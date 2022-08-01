@@ -1,5 +1,9 @@
 <template>
-    <div class="relative shrink-0">
+    <router-link
+        :to="link"
+        :class="{ 'pointer-events-none': !clickable || !link.length }"
+        class="relative shrink-0"
+    >
         <img
             v-if="avatar"
             :style="avatarSizeStyle"
@@ -31,16 +35,20 @@
                 {{ getInitialsFromName(name) }}
             </div>
         </div>
-    </div>
+    </router-link>
 </template>
 
 <script setup>
     import { getColorFromData } from '@/utils/colors'
-    import { ref } from 'vue'
+    import { computed, ref } from 'vue'
 
     const loaded = ref(false)
 
     const props = defineProps({
+        id: {
+            type: [String, Number],
+            default: null,
+        },
         avatar: {
             type: String,
             default: null,
@@ -48,10 +56,6 @@
         name: {
             type: String,
             default: 'Anonyme',
-        },
-        profileLink: {
-            type: String,
-            default: null,
         },
         size: {
             type: Number,
@@ -65,6 +69,14 @@
             type: [String, Array, Object],
             default: '',
         },
+        type: {
+            type: String,
+            default: 'user',
+        },
+        clickable: {
+            type: Boolean,
+            default: true,
+        },
     })
 
     const avatarSizeStyle = ref({
@@ -73,6 +85,14 @@
     })
 
     const roundedClass = [props.roundedFull ? 'rounded-full full' : 'rounded-xl']
+
+    const link = computed(() => {
+        if (!props.id) return ''
+        if (props.type === 'user') return `/user/${props.id}`
+        if (props.type === 'club') return `/club/${props.id}`
+        if (props.type === 'team') return `/team/${props.id}`
+        return ''
+    })
 
     const getInitialsFromName = (name) => {
         const nameArray = name.split(' ')
