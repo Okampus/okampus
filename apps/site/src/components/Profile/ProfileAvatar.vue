@@ -1,39 +1,41 @@
 <template>
     <router-link
-        :to="link"
-        :class="{ 'pointer-events-none': !clickable || !link.length }"
-        class="relative shrink-0"
+        :to="profileLink"
+        :="!clickable || !profileLink.length ? { custom: true } : { class: ['shrink-0', props.class] }"
     >
-        <img
-            v-if="avatar"
-            :style="avatarSizeStyle"
-            loading="lazy"
-            class="profile-avatar"
-            :src="avatar"
-            :alt="`${name}`"
-            :title="`Photo de profil de ${name}`"
-            :class="[innerClass, ...roundedClass, loaded ? 'text-black' : 'text-transparent']"
-            @load="loaded = true"
-            @error="loaded = true"
-        />
-        <div
-            v-if="avatar && !loaded"
-            class="absolute top-0 left-0 animate-pulse bg-slate-300 dark:bg-slate-600"
-            :class="[innerClass, roundedClass]"
-            :style="avatarSizeStyle"
-        />
-        <div
-            v-else-if="!avatar"
-            role="img"
-            :alt="`${name}`"
-            :title="`Photo de profil de ${name}`"
-            :style="{ ...avatarSizeStyle, backgroundColor: getColorFromData(name) }"
-            class="profile-avatar"
-            :class="[innerClass, roundedClass]"
-        >
-            <div class="m-auto h-fit w-fit text-white" :style="{ fontSize: `${size / 2.3}rem` }">
-                {{ getInitialsFromName(name) }}
+        <div class="relative shrink-0" :class="!clickable || !profileLink.length ? props.class : ''">
+            <img
+                v-if="avatar"
+                :style="avatarSizeStyle"
+                loading="lazy"
+                class="profile-avatar"
+                :src="avatar"
+                :alt="`${name}`"
+                :title="`Photo de profil de ${name}`"
+                :class="[innerClass, ...roundedClass, loaded ? 'text-black' : 'text-transparent']"
+                @load="loaded = true"
+                @error="loaded = true"
+            />
+            <div
+                v-if="avatar && !loaded"
+                class="absolute top-0 left-0 animate-pulse bg-slate-300 dark:bg-slate-600"
+                :class="[innerClass, roundedClass]"
+                :style="avatarSizeStyle"
+            />
+            <div
+                v-else-if="!avatar"
+                role="img"
+                :alt="`${name}`"
+                :title="`Photo de profil de ${name}`"
+                :style="{ ...avatarSizeStyle, backgroundColor: getColorFromData(name) }"
+                class="profile-avatar"
+                :class="[innerClass, roundedClass]"
+            >
+                <div class="m-auto h-fit w-fit text-white" :style="{ fontSize: `${size / 2.3}rem` }">
+                    {{ getInitialsFromName(name) }}
+                </div>
             </div>
+            <slot v-if="$slots.icon" name="icon" />
         </div>
     </router-link>
 </template>
@@ -52,6 +54,10 @@
         avatar: {
             type: String,
             default: null,
+        },
+        class: {
+            type: [String, Array, Object],
+            default: '',
         },
         name: {
             type: String,
@@ -90,7 +96,7 @@
 
     const roundedClass = [props.roundedFull ? 'rounded-full full' : 'rounded-xl']
 
-    const link = computed(() => {
+    const profileLink = computed(() => {
         if (props.link) return props.link
         if (!props.id) return ''
         if (props.type === 'user') return `/user/${props.id}`
