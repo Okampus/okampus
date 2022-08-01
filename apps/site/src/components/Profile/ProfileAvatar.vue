@@ -73,6 +73,10 @@
             type: String,
             default: 'user',
         },
+        link: {
+            type: String,
+            default: null,
+        },
         clickable: {
             type: Boolean,
             default: true,
@@ -87,6 +91,7 @@
     const roundedClass = [props.roundedFull ? 'rounded-full full' : 'rounded-xl']
 
     const link = computed(() => {
+        if (props.link) return props.link
         if (!props.id) return ''
         if (props.type === 'user') return `/user/${props.id}`
         if (props.type === 'club') return `/club/${props.id}`
