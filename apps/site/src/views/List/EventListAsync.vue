@@ -45,15 +45,15 @@
                 </div>
             </div>
         </div>
-        <div class="mx-16 mt-32">
-            <EventsCalendar :events="events"></EventsCalendar>
-        </div>
+        <!-- <div class="mx-16 mt-32">
+            <EventCalendar :events="events" />
+        </div> -->
     </div>
 </template>
 
 <script setup>
     import ClubEventCard from '@/components/Club/ClubEventCard.vue'
-    import EventsCalendar from '@/components/Events/EventsCalendar.vue'
+    // import EventCalendar from '@/components/Event/EventCalendar.vue'
     import SwiperButton from '@/components/App/Swiper/SwiperButton.vue'
 
     import Calendar from '@/assets/img/3dicons/calendar.png'

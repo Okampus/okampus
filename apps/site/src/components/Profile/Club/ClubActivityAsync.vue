@@ -10,15 +10,15 @@
                 <p class="text-lg">{{ club.name }} n'a pas encore prévu d'événéments.</p>
             </div>
         </div>
-        <div class="mt-8">
-            <EventsCalendar :events="events"></EventsCalendar>
-        </div>
+        <!-- <div class="mt-8">
+            <EventCalendar :events="events" />
+        </div> -->
     </div>
 </template>
 
 <script setup>
     import ClubEventCard from '@/components/Club/ClubEventCard.vue'
-    import EventsCalendar from '@/components/Events/EventsCalendar.vue'
+    // import EventCalendar from '@/components/Event/EventCalendar.vue'
     import Calendar from '@/assets/img/3dicons/calendar.png'
 
     import { ref, watch } from 'vue'

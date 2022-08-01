@@ -40,11 +40,9 @@
         <div class="mx-5 flex h-full flex-col justify-between">
             <div class="mt-4 flex flex-col gap-3.5 self-start">
                 <div class="flex flex-col">
-                    <router-link
-                        :to="`/events/${event.id}`"
-                        class="text-lg font-bold hover:underline"
-                        >{{ event.name }}</router-link
-                    >
+                    <router-link :to="`/event/${event.id}`" class="text-lg font-bold hover:underline">{{
+                        event.name
+                    }}</router-link>
 
                     <div class="flex items-center gap-2 text-lg">
                         <TipRelativeDate
@@ -61,7 +59,7 @@
                 <div class="flex flex-col gap-2">
                     <div class="flex items-center gap-2">
                         <div class="w-6">📍</div>
-                        <div class="text-sm tracking-tight">{{ event.place }}</div>
+                        <div class="text-sm tracking-tight">{{ event.location }}</div>
                     </div>
                     <div class="flex items-start gap-2">
                         <div class="w-6">📅</div>
@@ -74,13 +72,13 @@
 
             <div class="my-6 self-center">
                 <router-link
-                    :to="`/events/${event.id}`"
+                    :to="`/event/${event.id}`"
                     class="button-blue hidden rounded-full font-semibold md:block"
                 >
                     Rejoindre l'événement
                 </router-link>
                 <router-link
-                    :to="`/events/${event.id}`"
+                    :to="`/event/${event.id}`"
                     class="button-blue block rounded-full font-semibold md:hidden"
                 >
                     Rejoindre

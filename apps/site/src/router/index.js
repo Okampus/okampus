@@ -220,7 +220,7 @@ const routes = [
 
     {
         name: 'event',
-        path: '/events/:eventId',
+        path: '/event/:eventId',
         component: () => import('@/views/TeamEventAsync.vue'),
         meta: {
             requiresAuth: true,

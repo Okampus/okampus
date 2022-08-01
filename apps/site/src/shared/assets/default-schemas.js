@@ -35,3 +35,24 @@ export const DEFAULT_JOIN_FORM_SCHEMA = [
         help: 'Quelles compétences avez-vous pour ce rôle ?',
     },
 ]
+
+export const EVENT_REGISTRATION_STATUS_FORM_SCHEMA = [
+    {
+        $formkit: 'radio',
+        name: 'sure',
+        label: 'Êtes-vous sûr de venir ? 🤔',
+        options: [
+            {
+                value: 'Sure',
+                label: 'Oui, je suis sûr ! 🤗',
+            },
+            {
+                value: 'Maybe',
+                label: "Non, je suis susceptible d'être absent 😢",
+            },
+        ],
+        validation: 'required',
+    },
+]
+
+export const DEFAULT_EVENT_REGISTRATION_FORM_SCHEMA = [...EVENT_REGISTRATION_STATUS_FORM_SCHEMA]

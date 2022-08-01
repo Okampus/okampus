@@ -15,7 +15,7 @@ export function getDateRangeString(startDate, endDate) {
         minute: 'numeric',
     })
 
-    return fullDateFormat.formatRange(startDate, endDate)
+    return fullDateFormat.formatRange(new Date(startDate), new Date(endDate))
 }
 
 export function getCountdown(startDate, endDate) {

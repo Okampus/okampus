@@ -73,10 +73,10 @@
                                 </p>
                             </div>
                             <p>
-                                <a
-                                    :href="`#/events/${event.event.id}`"
+                                <router-link
+                                    :to="`/event/${event.event.id}`"
                                     class="w-fit rounded-full bg-green-500 py-1 px-4 text-center text-sm font-bold text-white"
-                                    >En savoir plus</a
+                                    >En savoir plus</router-link
                                 >
                             </p>
                         </div>

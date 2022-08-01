@@ -3,7 +3,7 @@
         <template #default="{ close }">
             <div class="card flex flex-col items-center justify-center gap-6 py-8 px-10">
                 <h1 class="mb-12 text-center font-semibold">
-                    Vous vous apprêtez à rejoindre {{ club?.name }} 🎉 !
+                    Vous vous apprêtez à vous inscrire à l'événement {{ event?.name }} 🎉 !
                 </h1>
 
                 <FormKit
@@ -11,24 +11,30 @@
                     type="form"
                     :actions="false"
                     @submit="
-                        join({
-                            id: club?.id,
-                            request: {
-                                role: $event.role ?? MEMBER,
-                                originalFormId: club?.membershipRequestForm?.id,
+                        register({
+                            id: event?.id,
+                            registration: {
+                                status: $event.sure ?? 'Sure',
+                                originalFormId: event?.registrationForm?.id,
                                 formSubmission: $event,
                             },
                         })
                     "
                 >
-                    <FormKitSchema :schema="club?.membershipRequestForm?.form ?? DEFAULT_JOIN_FORM_SCHEMA" />
+                    <FormKitSchema
+                        :schema="
+                            event?.userRegistration?.status === 'Absent'
+                                ? EVENT_REGISTRATION_STATUS_FORM_SCHEMA
+                                : event?.registrationForm?.form ?? DEFAULT_EVENT_REGISTRATION_FORM_SCHEMA
+                        "
+                    />
                 </FormKit>
 
                 <div class="flex gap-4 self-end">
                     <button class="button-grey" @click="close">Annuler</button>
-                    <button class="button-blue flex items-center gap-2" @click="joinForm.node.submit()">
-                        <i class="fa fa-envelope text-lg" />
-                        <div>Envoyer ma demande</div>
+                    <button class="button-green flex items-center gap-2" @click="joinForm.node.submit()">
+                        <!-- <i class="fa fa-envelope text-lg" /> -->
+                        <div>Je m'inscris !</div>
                     </button>
                 </div>
             </div>
@@ -45,10 +51,12 @@
     import { ref } from 'vue'
 
     import { emitter } from '@/shared/modules/emitter'
-    import { joinTeam } from '@/graphql/queries/teams/joinTeam'
+    import { registerEvent } from '@/graphql/queries/events/registerEvent'
 
-    import { MEMBER } from '@/shared/types/club-roles.enum.js'
-    import { DEFAULT_JOIN_FORM_SCHEMA } from '@/shared/assets/default-schemas'
+    import {
+        DEFAULT_EVENT_REGISTRATION_FORM_SCHEMA,
+        EVENT_REGISTRATION_STATUS_FORM_SCHEMA,
+    } from '@/shared/assets/default-schemas'
 
     import { showToastGraphQLError } from '@/utils/errors.js'
 
@@ -57,7 +65,7 @@
             type: Boolean,
             required: true,
         },
-        club: {
+        event: {
             type: Object,
             default: null,
         },
@@ -66,11 +74,11 @@
     const emit = defineEmits(['update:show', 'closed'])
     const joinForm = ref(null)
 
-    const { mutate: join, onDone, onError } = useMutation(joinTeam)
+    const { mutate: register, onDone, onError } = useMutation(registerEvent)
 
-    onDone(({ data }) => {
+    onDone(() => {
         emitter.emit('show-toast', {
-            message: `Votre demande de rejoindre ${data.joinTeam.name} a bien été prise en compte !`,
+            message: "Votre vous êtres bien inscrit à l'évenement !",
             type: 'success',
         })
         emit('update:show', false)
