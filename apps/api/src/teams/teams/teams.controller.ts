@@ -32,7 +32,6 @@ import { User } from '../../users/user.entity';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { TeamListOptions } from './dto/team-list-options.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
-import type { TeamInfo } from './team-info.model';
 import type { IndexedTeam } from './team-search.service';
 import { TeamSearchService } from './team-search.service';
 import { Team } from './team.entity';
@@ -62,7 +61,7 @@ export class TeamsController {
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   public async findAll(
     @Query() options: TeamListOptions,
-    ): Promise<PaginatedResult<TeamInfo>> {
+    ): Promise<PaginatedResult<Team>> {
     const teams = await this.teamsService.findAll(options, normalizePagination(options));
     return teams;
   }

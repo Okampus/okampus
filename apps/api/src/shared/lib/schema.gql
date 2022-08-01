@@ -260,7 +260,7 @@ type Mutation {
   addUserToTeam(invite: InviteMemberDto!, teamId: Int!, userId: Int!): TeamMember!
   favoriteContent(favorite: Boolean!, id: Int!): Content!
   handleTeamMembershipRequest(payload: PutTeamMembershipRequestDto!, requestId: Int!): TeamMembershipRequest!
-  joinTeam(id: Int!, request: CreateTeamMembershipRequestDto!): TeamInfo!
+  joinTeam(id: Int!, request: CreateTeamMembershipRequestDto!): Team!
   login(password: String!, username: String!): User!
   removeTeamMember(teamId: Int!, userId: Int!): TeamMember
   reportContent(id: Int!, report: CreateReportDto!): Content!
@@ -604,28 +604,6 @@ type TeamForm {
   name: String!
   team: Team!
   updatedAt: DateTime!
-}
-
-type TeamInfo {
-  activeMemberCount: Int!
-  avatar: String
-  banner: String
-  boardMembers: [TeamMember!]!
-  category: String!
-  createdAt: DateTime!
-  id: Int!
-  kind: TeamKind!
-  longDescription: String
-  members: [TeamMember!]!
-  membershipRequestForm: TeamForm
-  name: String!
-  owner: User
-  secretary: User
-  shortDescription: String
-  tags: [String!]!
-  treasurer: User
-  updatedAt: DateTime!
-  userMembership: TeamMembershipStatus
 }
 
 enum TeamKind {

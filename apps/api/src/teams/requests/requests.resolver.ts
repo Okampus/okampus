@@ -13,7 +13,7 @@ import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator'
 import { SubscriptionType } from '../../shared/lib/types/enums/subscription-type.enum';
 import { User } from '../../users/user.entity';
 import { FilterMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
-import { TeamInfo } from '../teams/team-info.model';
+import { Team } from '../teams/team.entity';
 import { TeamsService } from '../teams/teams.service';
 import { CreateTeamMembershipRequestDto } from './dto/create-membership-request.dto';
 import { PutTeamMembershipRequestDto } from './dto/put-membership-request.dto';
@@ -39,12 +39,12 @@ export class TeamMembershipRequestsResolver {
     return requests.items;
   }
 
-  @Mutation(() => TeamInfo)
+  @Mutation(() => Team)
   public async joinTeam(
     @CurrentUser() user: User,
     @Args('id', { type: () => Int }) id: number,
     @Args('request') request: CreateTeamMembershipRequestDto,
-  ): Promise<TeamInfo> {
+  ): Promise<Team> {
     const createdRequest = this.teamMembershipRequestsService.create(user, id, request);
     await this.pubSub.publish(SubscriptionType.TeamMembershipRequestAdded, { teamMemberAdded: createdRequest });
     return await this.teamsService.findOne(id);

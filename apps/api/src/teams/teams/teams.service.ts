@@ -13,7 +13,6 @@ import { TeamMember } from '../members/team-member.entity';
 import type { CreateTeamDto } from './dto/create-team.dto';
 import type { TeamsFilterDto } from './dto/teams-filter.dto';
 import type { UpdateTeamDto } from './dto/update-team.dto';
-import type { TeamInfo } from './team-info.model';
 import { TeamSearchService } from './team-search.service';
 import { Team } from './team.entity';
 
@@ -52,16 +51,10 @@ export class TeamsService {
   public async findAll(
     filters?: TeamsFilterDto,
     paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<TeamInfo>> {
+  ): Promise<PaginatedResult<Team>> {
     let options: FilterQuery<Team> = {};
     if (filters?.kind)
       options = { kind: filters.kind };
-
-    const boardRoles = [TeamRole.Owner, TeamRole.Treasurer, TeamRole.Secretary];
-    const teamBoardMembers = await this.teamMemberRepository.find(
-      { role: { $in: boardRoles } },
-      { populate: ['team', 'user'] },
-    );
 
     const allTeams = await this.teamRepository.findWithPagination(
       paginationOptions,
@@ -69,52 +62,21 @@ export class TeamsService {
       { orderBy: { name: 'ASC' }, populate: ['membershipRequestForm'] },
     );
 
-    allTeams.items = allTeams.items.map((team) => {
-      const teamInfo = {
-        ...team,
-        owner: null as (User | null),
-        treasurer: null as (User | null),
-        secretary: null as (User | null),
-      };
 
-      const predicate = (role: TeamRole) =>
-        (member: TeamMember) => member.team.id === team.id && member.role === role;
-
-      teamInfo.owner = teamBoardMembers.find(predicate(TeamRole.Owner))?.user ?? null;
-      teamInfo.treasurer = teamBoardMembers.find(predicate(TeamRole.Treasurer))?.user ?? null;
-      teamInfo.secretary = teamBoardMembers.find(predicate(TeamRole.Secretary))?.user ?? null;
-
-      return teamInfo;
-    }) as TeamInfo[];
-
-
-    return allTeams as PaginatedResult<TeamInfo>;
+    return allTeams;
   }
 
-  public async findOne(id: number, filters?: TeamsFilterDto): Promise<TeamInfo> {
+  public async findOne(id: number, filters?: TeamsFilterDto): Promise<Team> {
     let options: FilterQuery<Team> = {};
     if (filters?.kind)
       options = { kind: filters.kind };
-
-    const boardRoles = [TeamRole.Owner, TeamRole.Treasurer, TeamRole.Secretary];
-    const teamBoardMembers = await this.teamMemberRepository.find(
-      { team: { id, ...options }, role: { $in: boardRoles } },
-      { populate: ['team', 'user'] },
-    );
 
     const team = await this.teamRepository.findOneOrFail(
       { id, ...options },
       { populate: ['members', 'members.user', 'membershipRequestForm', 'membershipRequestForm.createdBy'] },
     );
 
-    const teamInfo = {
-      ...team,
-      owner: teamBoardMembers.find(member => member.role === TeamRole.Owner)?.user ?? null,
-      treasurer: teamBoardMembers.find(member => member.role === TeamRole.Treasurer)?.user ?? null,
-      secretary: teamBoardMembers.find(member => member.role === TeamRole.Secretary)?.user ?? null,
-    } as unknown as TeamInfo;
-
-    return teamInfo;
+    return team;
   }
 
   public async findNames(): Promise<Array<Pick<Team, 'avatar' | 'id' | 'name'>>> {
