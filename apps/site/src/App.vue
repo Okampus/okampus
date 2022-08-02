@@ -2,6 +2,7 @@
     <div>
         <AlertToast
             v-model:active="toast.show"
+            :title="toast.title"
             :message="toast.message"
             :type="toast.type"
             v-bind="!isNil(toast.duration) ? { duration: toast.duration } : {}"
@@ -83,7 +84,6 @@
     import logOutOnExpire from '@/utils/logOutOnExpire'
 
     import { inject, nextTick, reactive, ref, watch, watchEffect } from 'vue'
-    // import { computed } from 'vue'
 
     import { isNil } from 'lodash'
     import { errorCodes } from '@/shared/errors/app-exceptions.enum'
@@ -148,9 +148,11 @@
 
     const toast = reactive({
         show: false,
+        title: '',
         message: '',
         type: '',
         duration: null,
+        position: 'bottom',
     })
 
     const error = reactive({
@@ -208,12 +210,16 @@
         scrollHighlight(id)
     })
 
-    emitter.on('show-toast', ({ message, type, duration, onClose }) => {
+    emitter.on('show-toast', ({ type, title, message, duration, onClose, position }) => {
         toast.show = true
+
         toast.type = type
+        toast.title = title
         toast.message = message
+
         toast.duration = duration
         toast.onClose = onClose ?? (() => {})
+        toast.position = position ?? 'bottom'
     })
 
     emitter.on('error-route', ({ code, path }) => {

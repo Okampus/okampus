@@ -2,7 +2,11 @@
     <Teleport to="body">
         <div
             class="fixed z-50"
-            :class="{ 'w-content after-sidebar after-topbar': banner }"
+            :class="
+                banner
+                    ? 'w-content after-sidebar after-topbar'
+                    : 'md:max-w-[50rem] lg:max-w-[55rem] xl:max-w-[70rem]'
+            "
             :style="[{ ...transform, ...offsetX, ...offsetY }]"
         >
             <Transition name="toast" :style="{ '--toast-enter-duration': enterDuration }">
@@ -19,8 +23,9 @@
                         :style="{ '--progress-bar-duration': duration }"
                     />
 
-                    <template v-if="$slots.title" #title>
-                        <slot name="title" />
+                    <template v-if="$slots.title || title" #title>
+                        <p v-if="title.length" class="font-semibold">{{ title }}</p>
+                        <slot v-else name="title" />
                     </template>
 
                     <template v-if="$slots.icon" #icon>
@@ -48,6 +53,10 @@
 
     const props = defineProps({
         message: {
+            type: String,
+            default: '',
+        },
+        title: {
             type: String,
             default: '',
         },
@@ -136,7 +145,7 @@
     const enterDuration = 300
 
     const dismissToast = () => (emit('update:active', false), emit('close'))
-    const toggleTimeOut = () => (props.duration ? setTimeout(dismissToast, props.duration) : () => {})
+    const toggleTimeOut = () => (props.duration > 0 ? setTimeout(dismissToast, props.duration) : () => {})
 
     watchEffect(() => {
         if (props.active && props.autoToggle) {

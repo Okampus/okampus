@@ -1,23 +1,20 @@
 <template>
     <div
-        class="relative flex overflow-hidden rounded-lg py-3 px-4"
-        :class="[
-            background ? 'alert-card' : 'alert',
-            fitContent ? 'w-fit' : 'w-full',
-            $slots.title ? 'flex-col gap-4 ' : 'gap-3 items-center',
-        ]"
+        class="relative flex gap-4 overflow-hidden rounded-lg py-3 px-4"
+        :class="[background ? 'alert-card' : 'alert', fitContent ? 'w-fit' : 'w-full']"
         :alert-type="type"
     >
         <slot name="default" />
 
-        <div v-if="$slots.icon || icon || $slots.title" class="title flex items-center gap-3 text-lg">
-            <slot v-if="$slots.icon" name="icon" />
-            <i v-else-if="icon" class="fas" :class="`fa-${defaultIconList?.[type]}`" />
-            <slot name="title" />
-        </div>
-
-        <div class="subtitle">
-            <slot name="message" />
+        <div :class="$slots.title ? 'flex flex-col gap-4 ' : 'flex gap-3 items-center'">
+            <div v-if="$slots.icon || icon || $slots.title" class="title flex items-center gap-3 text-lg">
+                <slot v-if="$slots.icon" name="icon" />
+                <i v-else-if="icon" class="fas" :class="`fa-${defaultIconList?.[type]}`" />
+                <slot name="title" />
+            </div>
+            <div class="subtitle">
+                <slot name="message" />
+            </div>
         </div>
 
         <div v-if="$slots.actions || dismissable" class="flex gap-3" :class="{ 'ml-auto': !$slots.title }">
@@ -26,7 +23,8 @@
             <!-- TODO: add option for simple "dismiss" button instead of times icon -->
             <button
                 v-if="dismissable"
-                class="dismiss flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg p-1.5 text-xl focus:ring-1"
+                class="dismiss flex cursor-pointer items-center justify-center rounded-lg p-1.5 text-xl focus:ring-1"
+                :class="$slots.title ? 'text-[1.6rem] h-10 w-10' : 'text-base h-8 w-8'"
                 @click="$emit('dismiss')"
             >
                 <i class="fas" :class="`fa-${dismissIcon}`" />
