@@ -123,7 +123,7 @@
 
     const showLogin = ref(false)
 
-    document.documentElement.style.setProperty('--font-size-base', inject('isMobile')() ? '12px' : '13px')
+    document.documentElement.style.setProperty('--font-size-base', inject('isMobile')() ? '13px' : '14px')
 
     const switchCollapsed = (event) => {
         if (event.propertyName !== 'margin-left') return
