@@ -40,6 +40,9 @@ export class UsersService {
   ) {}
 
   public async findOneById(id: string): Promise<User> {
+    if (id === config.get('anonAccount.username'))
+        throw new BadRequestException('Anonymous account cannot be accessed');
+
     return await this.userRepository.findOneOrFail({ id }, {
       refresh: true,
       populate: [
@@ -123,7 +126,20 @@ export class UsersService {
   }
 
   public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<User>> {
-    return await this.userRepository.findWithPagination(paginationOptions, {}, { orderBy: { lastname: 'ASC' }, populate: ['schoolGroupMemberships', 'schoolGroupMemberships.schoolYear', 'schoolGroupMemberships.schoolGroup'] });
+    return await this.userRepository.findWithPagination(
+      paginationOptions,
+      { id: { $ne: config.get('anonAccount.username') } },
+      {
+        orderBy: { lastname: 'ASC' },
+        populate: [
+          'schoolGroupMemberships',
+          'schoolGroupMemberships.schoolYear',
+          'schoolGroupMemberships.schoolGroup',
+          'teamMemberships',
+          'teamMemberships.team',
+        ],
+      },
+    );
   }
 
   public async delete(id: string): Promise<void> {
