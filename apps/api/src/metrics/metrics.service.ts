@@ -5,12 +5,12 @@ import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { MetricName } from '../shared/lib/types/enums/metric-name.enum';
 import { TeamKind } from '../shared/lib/types/enums/team-kind.enum';
+import { oneMonthAgo, roundToInterval } from '../shared/lib/utils/date-utils';
 import { TeamEvent } from '../teams/events/team-event.entity';
 import { TeamMember } from '../teams/members/team-member.entity';
 import { Team } from '../teams/teams/team.entity';
 import { User } from '../users/user.entity';
 import type { ListMetricsDto } from './dto/list-metrics.dto';
-import type { MetricSlim } from './metric.entity';
 import { Metric } from './metric.entity';
 
 @Injectable()
@@ -77,23 +77,19 @@ export class MetricsService {
     );
   }
 
-  public async findAll(query: ListMetricsDto): Promise<MetricSlim[]> {
-    const oneMonthAgo = new Date();
-    oneMonthAgo.setHours(0, 0, 0, 0);
-    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-
-    const dateLowerBound = (query.after ?? oneMonthAgo).toISOString();
-    const dateUpperBound = (query.before ?? new Date()).toISOString();
+  public async findAll(query: ListMetricsDto): Promise<Metric[]> {
     const interval = `${query.interval ?? 'PT15M'}`;
+    const dateLowerBound = (roundToInterval(query.after ?? oneMonthAgo(new Date()), interval)).toISOString();
+    const dateUpperBound = (query.before ?? new Date()).toISOString();
 
     const knex = this.metricRepository.getKnex();
 
     return await knex
-      .select('metric.created_at', 'metric.value', 'metric.name')
+      .select('metric.created_at as createdAt', 'metric.value', 'metric.name')
       .from(knex.raw(
         `generate_series(timestamptz '${dateLowerBound}', timestamptz '${dateUpperBound}', '${interval}'::interval) pool (interval)`,
       ))
       .innerJoin('metric', 'metric.created_at', 'pool.interval')
-      .whereIn('metric.name', query.names) as MetricSlim[];
+      .whereIn('metric.name', query.names) as Metric[];
   }
 }

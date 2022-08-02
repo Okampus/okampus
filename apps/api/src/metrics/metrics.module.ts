@@ -6,6 +6,7 @@ import { Team } from '../teams/teams/team.entity';
 import { User } from '../users/user.entity';
 import { Metric } from './metric.entity';
 import { MetricsController } from './metrics.controller';
+import { MetricsResolver } from './metrics.resolver';
 import { MetricsService } from './metrics.service';
 
 @Module({
@@ -13,7 +14,7 @@ import { MetricsService } from './metrics.service';
     MikroOrmModule.forFeature([Team, Metric, TeamMember, TeamEvent, User]),
   ],
   controllers: [MetricsController],
-  providers: [MetricsService],
+  providers: [MetricsService, MetricsResolver],
   exports: [MetricsService],
 })
 export class MetricsModule {}

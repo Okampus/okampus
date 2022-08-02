@@ -1,9 +1,13 @@
-export enum MetricName {
-  ClubCount = 'clubCount',
-  ClubMembershipCount = 'clubMembershipCount',
-  ClubUniqueMembershipCount = 'clubUniqueMembershipCount',
-  ClubEventCount = 'clubEventCount',
-  ClubCreatedEventCount = 'clubCreatedEventCount',
+import { registerEnumType } from '@nestjs/graphql';
 
-  UserCount = 'userCount',
+export enum MetricName {
+  ClubCount = 'ClubCount',
+  ClubMembershipCount = 'ClubMembershipCount',
+  ClubUniqueMembershipCount = 'ClubUniqueMembershipCount',
+  ClubEventCount = 'ClubEventCount',
+  ClubCreatedEventCount = 'ClubCreatedEventCount',
+
+  UserCount = 'UserCount',
 }
+
+registerEnumType(MetricName, { name: 'MetricName' });

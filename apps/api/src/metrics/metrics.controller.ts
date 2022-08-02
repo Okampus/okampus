@@ -2,7 +2,6 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { ListMetricsDto } from './dto/list-metrics.dto';
-import type { MetricSlim } from './metric.entity';
 import { Metric } from './metric.entity';
 import { MetricsService } from './metrics.service';
 
@@ -17,7 +16,7 @@ export class MetricsController {
   @CheckPolicies(ability => ability.can(Action.Read, Metric))
   public async findAll(
     @Query() query: ListMetricsDto,
-  ): Promise<MetricSlim[]> {
+  ): Promise<Metric[]> {
     return await this.metricsService.findAll(query);
   }
 }

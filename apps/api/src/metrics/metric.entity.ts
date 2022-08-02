@@ -4,17 +4,22 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { MetricName } from '../shared/lib/types/enums/metric-name.enum';
 
+@ObjectType()
 @Entity()
 export class Metric extends BaseEntity {
+  @Field(() => Int)
   @PrimaryKey()
   id!: number;
 
+  @Field()
   @Property({ columnType: 'real' })
   value!: number;
 
+  @Field(() => MetricName)
   @Enum(() => MetricName)
   name!: MetricName;
 
@@ -26,10 +31,4 @@ export class Metric extends BaseEntity {
     super();
     this.assign(options);
   }
-}
-
-export interface MetricSlim {
-  createdAt: Date;
-  name: string;
-  value: number;
 }
