@@ -1,23 +1,9 @@
 <template>
-    <div class="my-4 mx-auto flex w-23/24 flex-col gap-4">
-        <HorizontalTabs
-            v-model="currentTab"
-            class="border-b"
-            :tabs="tabs"
-            route-base="/admin"
-            route-name="admin"
-        >
-        </HorizontalTabs>
+    <div class="centered-container flex-col gap-4">
+        <HorizontalTabs v-model="currentTab" :tabs="tabs" route-base="/admin" route-name="admin" />
 
         <Transition mode="out-in" name="switch-fade">
-            <KeepAlive>
-                <Suspense timeout="0">
-                    <component :is="components[currentTab]" />
-                    <template #fallback>
-                        <AppLoader />
-                    </template>
-                </Suspense>
-            </KeepAlive>
+            <component :is="components[currentTab]" />
         </Transition>
     </div>
 </template>
@@ -25,10 +11,10 @@
 <script setup>
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
     import DashboardOverviewAsync from '@/components/Dashboard/DashboardOverviewAsync.vue'
-    import DashboardClubsAsync from '@/components/Dashboard/DashboardClubsAsync.vue'
-    import DashboardReportAsync from '@/components/Dashboard/DashboardReportAsync.vue'
+    import DashboardClubs from '@/components/Dashboard/DashboardClubs.vue'
+    import DashboardReports from '@/components/Dashboard/DashboardReports.vue'
 
-    import AppLoader from '@/components/App/AppLoader.vue'
+    // import AppLoader from '@/components/App/AppLoader.vue'
 
     import { ref } from 'vue'
 
@@ -59,7 +45,7 @@
     const currentTab = ref(OVERVIEW)
     const components = {
         [OVERVIEW]: DashboardOverviewAsync,
-        [CLUBS]: DashboardClubsAsync,
-        [REPORTS]: DashboardReportAsync,
+        [CLUBS]: DashboardClubs,
+        [REPORTS]: DashboardReports,
     }
 </script>

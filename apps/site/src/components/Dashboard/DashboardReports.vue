@@ -6,30 +6,26 @@
         route-base="/admin/reports"
     >
         <template #default="{ data: reports }">
-            <AppTable
+            <ScrollableTable
                 class="text-0 w-full"
                 :items="reports"
                 table-layout="fixed"
                 :headers="[
                     {
-                        name: 'content',
-                        text: 'Contenu',
-                        class: 'p-2  border-b border-gray-300',
+                        id: 'content',
+                        title: 'Contenu',
                     },
                     {
-                        name: 'author',
-                        text: 'Auteur originel',
-                        class: 'p-2 border-b border-gray-300',
+                        id: 'author',
+                        title: 'Auteur originel',
                     },
                     {
-                        name: 'reporter',
-                        text: 'Signalé par',
-                        class: 'p-2 border-b border-gray-300',
+                        id: 'reporter',
+                        title: 'Signalé par',
                     },
                     {
-                        name: 'reason',
-                        text: 'Raison',
-                        class: 'p-2 border-b border-gray-300',
+                        id: 'reason',
+                        title: 'Raison',
                     },
                 ]"
             >
@@ -61,13 +57,13 @@
                 <template #reason="{ reason }">
                     <div class="break-words text-sm">{{ reason }}</div>
                 </template>
-            </AppTable>
+            </ScrollableTable>
         </template>
     </GraphQLQuery>
 </template>
 
 <script setup>
-    import AppTable from '@/components/App/AppTable.vue'
+    import ScrollableTable from '@/components/App/ScrollableTable.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
 
