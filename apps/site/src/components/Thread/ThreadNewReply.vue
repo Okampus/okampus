@@ -13,7 +13,7 @@
                 </div>
             </template>
         </AlertInline>
-        <AppTitle v-else icon="fa-chat" title="Répondre à ce post" />
+        <AppTitle v-else icon="fa fa-chat" title="Répondre à ce post" />
         <div
             id="new-reply"
             class="bg-card-meta flex flex-row p-4 text-lg"
