@@ -89,13 +89,16 @@
 </template>
 
 <script setup>
-    import { i18n } from '@/shared/modules/i18n'
     import { getDateRangeString, getCountdown } from '@/utils/dateUtils'
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
+
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     const props = defineProps({
         event: {
@@ -104,7 +107,7 @@
         },
     })
 
-    const getMonth = new Intl.DateTimeFormat(i18n.global.locale, {
+    const getMonth = new Intl.DateTimeFormat(locale.value, {
         month: 'short',
     })
     const startDate = new Date(props.event.start)

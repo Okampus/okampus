@@ -33,7 +33,7 @@
                                         {{ fullname(content.author) }}
                                     </router-link>
                                 </TipPopper>
-                                <TipPopper :tip="getRole(content.author)[$i18n.locale]">
+                                <TipPopper :tip="getRole(content.author)[locale]">
                                     <i class="ml-2" :class="`fa fa-${getRole(content.author).icon}`" />
                                 </TipPopper>
                             </div>
@@ -156,6 +156,10 @@
     import { editThread } from '@/graphql/queries/editThread'
     import TipPopper from '../UI/Tip/TipPopper.vue'
     import { showErrorToast, showInfoToast, showWarningToast } from '@/utils/toast'
+
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     const auth = useAuthStore()
     const route = useRoute()

@@ -5,7 +5,7 @@
             <FavoriteInput :content="thread.post" />
         </div>
         <!-- <div class="flex flex-col">
-            <TipPopper :tip="`${threadTypes[thread.type]?.[$i18n.locale]}`">
+            <TipPopper :tip="`${threadTypes[thread.type]?.[locale]}`">
                 <div
                     class="flex justify-center items-center w-[3.3rem] h-[3.3rem] rounded-lg cursor-pointer"
                     :class="`bg-${threadTypes[thread.type]?.color}-100 dark:bg-${
@@ -86,7 +86,7 @@
                     />
                     <div class="text-xs">
                         {{ fullname(thread.post.author) }}
-                        <TipPopper :tip="getRole(thread.post.author)[$i18n.locale]">
+                        <TipPopper :tip="getRole(thread.post.author)[locale]">
                             <i class="ml-1" :class="`fa fa-${getRole(thread.post.author).icon}`" />
                         </TipPopper>
                     </div>
@@ -132,6 +132,10 @@
     import { capitalize } from 'lodash'
     import FavoriteInput from '@/components/Input/FavoriteInput.vue'
     import TipRelativeDateModified from '@/components/UI/Tip/TipRelativeDateModified.vue'
+
+    // import { useI18n } from 'vue-i18n'
+
+    // const { locale } = useI18n({ useScope: 'global' })
 
     defineProps({
         thread: {

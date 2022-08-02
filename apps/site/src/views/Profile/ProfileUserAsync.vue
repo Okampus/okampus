@@ -48,7 +48,7 @@
                                 class="w-40"
                             >
                                 <template #subtitle>
-                                    {{ clubRoleNames[membership.role][$i18n.locale] }}
+                                    {{ clubRoleNames[membership.role][locale] }}
                                 </template>
                             </TeamActivity>
                         </div>
@@ -90,6 +90,10 @@
 
     import { clubRoleNames } from '@/shared/types/club-roles.enum'
     import { getUser } from '@/graphql/queries/users/getUserById.js'
+
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     const route = useRoute()
     const router = useRouter()

@@ -24,7 +24,7 @@
                             >
                                 <TeamActivity :team="membership.team">
                                     <template #subtitle>
-                                        Votre rôle : <b>{{ clubRoleNames[membership.role][$i18n.locale] }}</b>
+                                        Votre rôle : <b>{{ clubRoleNames[membership.role][locale] }}</b>
                                     </template>
                                 </TeamActivity>
 
@@ -74,7 +74,7 @@
                                     <template #title>
                                         <div class="inline">
                                             {{ request.team.name }} • Rôle demandé :
-                                            <b>{{ clubRoleNames[request.role][$i18n.locale] }}</b>
+                                            <b>{{ clubRoleNames[request.role][locale] }}</b>
                                         </div>
                                     </template>
                                     <template #subtitle>
@@ -87,7 +87,7 @@
                                                 <div>•</div>
                                                 <div class="inline">
                                                     <div class="text-2">
-                                                        {{ statusNames[request.state][$i18n.locale] }}
+                                                        {{ statusNames[request.state][locale] }}
                                                     </div>
                                                     <TipRelativeDate :date="request.handledAt" />
                                                     par {{ fullname(request.handledBy) }}
@@ -117,7 +117,7 @@
                                     "
                                 >
                                     <i class="fa" :class="statusNames[request.state].icon" />
-                                    <div>{{ statusNames[request.state][$i18n.locale] }}</div>
+                                    <div>{{ statusNames[request.state][locale] }}</div>
                                 </div>
                             </div>
                         </template>
@@ -141,7 +141,7 @@
                         >
                             <div class="text-2xl font-semibold">
                                 Vous vous apprêtez à transmettre votre rôle de
-                                {{ clubRoleNames[currentMembership.role][$i18n.locale] }}
+                                {{ clubRoleNames[currentMembership.role][locale] }}
                             </div>
                             <div class="text-2 text-sm">
                                 En transmettant votre rôle, vous le perdrez vous même.
@@ -203,6 +203,10 @@
     import { ref } from 'vue'
 
     import { WIP } from '@/utils/toast'
+
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     const auth = useAuthStore()
     const WIPText =

@@ -108,7 +108,7 @@
                     label="Type de post"
                     name="type"
                     placeholder="Nature de votre post..."
-                    :options="threadTypes.map((type) => type[$i18n.locale])"
+                    :options="threadTypes.map((type) => type[locale])"
                 />
                 <FormKit
                     type="textarea"

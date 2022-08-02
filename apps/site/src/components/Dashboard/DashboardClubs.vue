@@ -72,9 +72,7 @@
                                     <template #content>
                                         <UserAboutCard
                                             :user="specialMember.user"
-                                            :title="`${
-                                                clubRoleNames[specialMember.role][$i18n.locale]
-                                            } de ${name}`"
+                                            :title="`${clubRoleNames[specialMember.role][locale]} de ${name}`"
                                         />
                                     </template>
                                     <div class="avatar-hover rounded-full">
@@ -183,6 +181,9 @@
     import { abbrNumbers } from '@/utils/abbrNumbers'
     import { clubRoleNames } from '@/shared/types/club-roles.enum'
 
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
     // const clubStore = useClubsStore()
     // await clubStore.getClubs()
     // await clubStore.getClubsFiles('document')

@@ -12,7 +12,7 @@
                 class="flex flex-col gap-2"
                 :class="[mode === 'vertical' ? 'justify-center' : 'items-center']"
             >
-                <LabelTag :tag-name="role[$i18n.locale]" :tag-color="role.color" :icon="role.icon" />
+                <LabelTag :tag-name="role[locale]" :tag-color="role.color" :icon="role.icon" />
                 <!-- <div v-if="user.schoolRole === 'student'" class="flex gap-1 items-center text-2">
                     <i class="fas fa-trophy" />
                     <p>{{ abbrNumbers(user.reputation) }}</p>
@@ -28,6 +28,10 @@
 
     import { fullname, getRole } from '@/utils/users'
     // import { abbrNumbers } from '@/utils/abbrNumbers'
+
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     const props = defineProps({
         user: {

@@ -8,9 +8,7 @@
             <div class="flex gap-3">
                 <ProfileAvatar :avatar="membership.user.avatar" :name="fullname(membership.user)" />
                 <div>{{ fullname(membership.user) }}</div>
-                <div>
-                    ({{ membership.roleLabel ?? clubRoleNames[membership.role]?.[$i18n.locale] ?? '' }})
-                </div>
+                <div>({{ membership.roleLabel ?? clubRoleNames[membership.role]?.[locale] ?? '' }})</div>
             </div>
 
             <div class="flex items-center gap-4">
@@ -49,7 +47,7 @@
                 >
                     <div class="text-2xl font-semibold">
                         Vous vous apprêtez à transmettre votre rôle de
-                        {{ clubRoleNames[currentMembership.role][$i18n.locale] }}
+                        {{ clubRoleNames[currentMembership.role][locale] }}
                     </div>
                     <div class="text-2 text-sm">En transmettant votre rôle, vous le perdrez vous même.</div>
                     <div
@@ -94,6 +92,10 @@
     import { ref, watch } from 'vue'
     import { useAuthStore } from '@/store/auth.store'
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
+
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     const clubs = useClubsStore()
     const auth = useAuthStore()

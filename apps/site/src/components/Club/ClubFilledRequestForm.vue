@@ -7,7 +7,7 @@
                     <div>
                         <div class="text-base text-gray-400/80">Rôle souhaité</div>
                         <div class="text-0 text-xl">
-                            {{ clubRoleNames?.[request?.role]?.[$i18n.locale] }}
+                            {{ clubRoleNames?.[request?.role]?.[locale] }}
                         </div>
                     </div>
 
@@ -29,7 +29,7 @@
                                     '!text-gray-500/90': request?.state === PENDING,
                                 }"
                             >
-                                {{ statusNames?.[request?.state]?.[$i18n.locale] }}
+                                {{ statusNames?.[request?.state]?.[locale] }}
                             </div>
                         </div>
                     </div>
@@ -55,6 +55,10 @@
 
     import { clubRoleNames } from '@/shared/types/club-roles.enum'
     import { APPROVED, REJECTED, PENDING, statusNames } from '@/shared/types/club-requests.enum'
+
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     defineProps({
         show: {

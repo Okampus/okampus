@@ -9,7 +9,7 @@
                     class="text-sm font-semibold hover:underline"
                     >{{ fullname(user) }}</router-link
                 >
-                <TipPopper :tip="getRole(user)[$i18n.locale]">
+                <TipPopper :tip="getRole(user)[locale]">
                     <i class="ml-2" :class="`fa fa-${getRole(user).icon}`" />
                 </TipPopper>
             </div>
@@ -27,6 +27,9 @@
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
     import { fullname, getRole } from '@/utils/users'
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     defineProps({
         user: {

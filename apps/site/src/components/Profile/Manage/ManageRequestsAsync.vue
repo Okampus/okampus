@@ -20,7 +20,7 @@
                             <div>
                                 <div class="text-base text-gray-400/80">Rôle souhaité</div>
                                 <div class="text-0 text-xl">
-                                    {{ clubRoleNames[shownRequest?.role ?? '']?.[$i18n.locale] ?? '' }}
+                                    {{ clubRoleNames[shownRequest?.role ?? '']?.[locale] ?? '' }}
                                 </div>
                             </div>
                             <div
@@ -41,7 +41,7 @@
                                             '!text-gray-500/90': shownRequest?.state === PENDING,
                                         }"
                                     >
-                                        {{ statusNames[shownRequest?.state ?? '']?.[$i18n.locale] ?? '' }}
+                                        {{ statusNames[shownRequest?.state ?? '']?.[locale] ?? '' }}
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                             <div class="flex flex-col">
                                 <div class="text-base text-gray-400/80">Rôle souhaité</div>
                                 <div class="text-0 text-xl">
-                                    {{ clubRoleNames[shownRequest?.role ?? '']?.[$i18n.locale] ?? '' }}
+                                    {{ clubRoleNames[shownRequest?.role ?? '']?.[locale] ?? '' }}
                                 </div>
                             </div>
                             <div
@@ -136,7 +136,7 @@
                                 {{ fullname(request.user) }}
                             </div>
                             <div class="text-1">
-                                (pour le rôle de {{ clubRoleNames[request.role][$i18n.locale] }})
+                                (pour le rôle de {{ clubRoleNames[request.role][locale] }})
                             </div>
                         </div>
                         <div class="flex gap-1.5 text-sm">
@@ -147,7 +147,7 @@
                             <template v-if="request.state === APPROVED">
                                 <div>•</div>
                                 <div class="flex gap-1">
-                                    <div class="text-2">{{ statusNames[APPROVED][$i18n.locale] }}</div>
+                                    <div class="text-2">{{ statusNames[APPROVED][locale] }}</div>
                                     <TipRelativeDate :date="request.handledAt" />
                                     <div>par {{ request.handledBy.firstname.split(' ')[0] }}</div>
                                 </div>
@@ -155,7 +155,7 @@
                             <template v-else-if="request.state === REJECTED">
                                 <div>•</div>
                                 <div class="flex gap-1">
-                                    <div class="text-2">{{ statusNames[REJECTED][$i18n.locale] }}</div>
+                                    <div class="text-2">{{ statusNames[REJECTED][locale] }}</div>
                                     <TipRelativeDate :date="request.handledAt" />
                                     <div>par {{ request.handledBy.firstname.split(' ')[0] }}</div>
                                 </div>
@@ -180,15 +180,15 @@
                 >
                     <template v-if="request.state === APPROVED">
                         <i class="fa fa-check" />
-                        <div>{{ statusNames[APPROVED][$i18n.locale] }}</div>
+                        <div>{{ statusNames[APPROVED][locale] }}</div>
                     </template>
                     <template v-else-if="request.state === REJECTED">
                         <i class="fa fa-xmark" />
-                        <div>{{ statusNames[REJECTED][$i18n.locale] }}</div>
+                        <div>{{ statusNames[REJECTED][locale] }}</div>
                     </template>
                     <template v-else-if="request.state === PENDING">
                         <i class="fa fa-envelope" />
-                        <div>{{ statusNames[PENDING][$i18n.locale] }}</div>
+                        <div>{{ statusNames[PENDING][locale] }}</div>
                     </template>
                 </div>
             </div>
@@ -224,6 +224,10 @@
     import { PENDING, APPROVED, REJECTED, statusNames } from '@/shared/types/club-requests.enum'
     import { clubRoleNames } from '@/shared/types/club-roles.enum'
     import { fullname } from '@/utils/users'
+
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     const props = defineProps({
         club: {

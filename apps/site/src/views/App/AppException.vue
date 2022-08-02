@@ -30,12 +30,15 @@
 </template>
 
 <script setup>
-    import { onMounted, onUnmounted, ref, watch } from 'vue'
-    import { i18n } from '@/shared/modules/i18n'
-    import { errorCodes, messages } from '@/shared/errors/app-exceptions.enum.js'
-
     import ButtonHome from '@/components/UI/Button/ButtonHome.vue'
     import ButtonLogin from '@/components/UI/Button/ButtonLogin.vue'
+
+    import { onMounted, onUnmounted, ref, watch } from 'vue'
+    import { errorCodes, messages } from '@/shared/errors/app-exceptions.enum.js'
+
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     const props = defineProps({
         code: {
@@ -44,11 +47,11 @@
         },
     })
 
-    const offline = messages[errorCodes.OFFLINE][i18n.global.locale]
+    const offline = messages[errorCodes.OFFLINE][locale.value]
 
     const message = Object.values(errorCodes).includes(props.code)
-        ? messages[props.code][i18n.global.locale]
-        : messages[errorCodes.UNKNOWN][i18n.global.locale]
+        ? messages[props.code][locale.value]
+        : messages[errorCodes.UNKNOWN][locale.value]
 
     const online = ref(navigator.onLine)
 

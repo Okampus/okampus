@@ -93,7 +93,7 @@
                                 <template #content>
                                     <UserAboutCard
                                         :user="specialMember.user"
-                                        :title="`${clubRoleNames[specialMember.role][$i18n.locale]} de ${
+                                        :title="`${clubRoleNames[specialMember.role][locale]} de ${
                                             club.name
                                         }`"
                                     />
@@ -149,6 +149,10 @@
 
     import { useRouter } from 'vue-router'
     import { showErrorToast, showInfoToast } from '@/utils/toast.js'
+
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     const router = useRouter()
 

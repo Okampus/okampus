@@ -13,7 +13,7 @@
                         class="!py-2"
                         :icon="threadType(thread.type).icon"
                         :tag-color="threadType(thread.type).color"
-                        :tag-name="threadType(thread.type)[$i18n.locale]"
+                        :tag-name="threadType(thread.type)[locale]"
                     />
                     <p class="text-0 break-all text-2xl font-bold">{{ thread.title }}</p>
                 </div>
@@ -66,7 +66,7 @@
                             <div v-if="thread.assignedUsers?.length" class="flex flex-col">
                                 <UserActivity v-for="(user, i) in thread.assignedUsers" :key="i" :user="user">
                                     <template #subtitle>
-                                        {{ getRole(user)[$i18n.locale] }}
+                                        {{ getRole(user)[locale] }}
                                     </template>
                                 </UserActivity>
                             </div>
@@ -81,7 +81,7 @@
                                 <!-- TODO: Improve with UserActivity, last activity on thread -->
                                 <UserActivity v-for="(user, i) in thread.participants" :key="i" :user="user">
                                     <template #subtitle>
-                                        {{ getRole(user)[$i18n.locale] }}
+                                        {{ getRole(user)[locale] }}
                                     </template>
                                 </UserActivity>
                             </div>
@@ -123,6 +123,10 @@
 
     import { getRole } from '@/utils/users'
     import threadTypes from '@/shared/types/thread-types.enum'
+
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     const route = useRoute()
 

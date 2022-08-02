@@ -59,8 +59,11 @@
     import { computed, ref } from 'vue'
 
     import { clubTypes } from '@/shared/types/club-types.enum'
-    import { i18n } from '@/shared/modules/i18n'
     import { groupBy } from 'lodash'
+
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     const currentTab = ref(null)
 
@@ -111,7 +114,7 @@
     const currentClubs = (clubs) =>
         computed(() => {
             const clubTypeFromTab = Object.fromEntries(
-                Object.values(clubTypes).map((type) => [type.link, type[i18n.global.locale]]),
+                Object.values(clubTypes).map((type) => [type.link, type[locale.value]]),
             )
             return !currentTab.value || currentTab.value === ALL_LABEL
                 ? clubs

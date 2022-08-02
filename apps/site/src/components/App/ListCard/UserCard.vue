@@ -20,7 +20,7 @@
 
                 <LabelTag
                     class="inline text-sm"
-                    :tag-name="role[$i18n.locale]"
+                    :tag-name="role[locale]"
                     :tag-color="role.color"
                     :icon="role.icon"
                 />
@@ -66,6 +66,10 @@
 
     import { fullname, getRole } from '@/utils/users'
     import { specialRoles } from '@/shared/types/club-roles.enum'
+
+    import { useI18n } from 'vue-i18n'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     const props = defineProps({
         user: {
