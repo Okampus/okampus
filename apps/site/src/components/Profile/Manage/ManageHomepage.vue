@@ -98,7 +98,9 @@
                             </div>
                         </template>
                     </ModalPopup>
-                    <div class="button-grey mt-2 mr-4 text-base" @click="editingPage = true">Modifier</div>
+                    <button class="button-grey mt-2 mr-4 text-base" @click="editingPage = true">
+                        Modifier
+                    </button>
                 </div>
             </div>
             <div class="ml-4 flex grow flex-col">

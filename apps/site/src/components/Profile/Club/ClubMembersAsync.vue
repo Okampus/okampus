@@ -72,7 +72,7 @@
                     </div>
                     <div v-else>Il n'existe pas de membre auquel vous pouvez transmettre votre rôle</div>
                     <div class="mt-6 flex self-end">
-                        <div class="button-grey" @click="close">Annuler</div>
+                        <button class="button-grey" @click="close">Annuler</button>
                     </div>
                 </div>
             </template>

@@ -34,11 +34,9 @@
                                             Passation de rôle
                                         </button>
 
-                                        <router-link
-                                            :to="`/club/${membership.team.id}/manage`"
-                                            class="button-blue"
-                                            >Gérer</router-link
-                                        >
+                                        <router-link :to="`/club/${membership.team.id}/manage`">
+                                            <button class="button-blue">Gérer</button>
+                                        </router-link>
                                     </template>
                                     <template v-else>
                                         <button class="button-red" @click="WIP(WIPText)">Quitter</button>
@@ -172,7 +170,7 @@
                                 Il n'existe pas de membre auquel vous pouvez transmettre votre rôle
                             </div>
                             <div class="mt-6 flex gap-4 self-end">
-                                <div class="button-cancel" @click="close">Annuler</div>
+                                <button class="button-grey" @click="close">Annuler</button>
                             </div>
                         </div>
                     </template>

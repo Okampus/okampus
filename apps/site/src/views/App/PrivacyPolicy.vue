@@ -141,10 +141,10 @@
                 </div>
             </div>
             <div class="mt-4 flex flex-col gap-2 md:flex-row md:gap-6">
-                <div class="button-blue flex w-fit items-center gap-2">
+                <button class="button-blue flex w-fit items-center gap-2">
                     <i class="fas fa-download"></i>Exportez mes données
-                </div>
-                <div class="button-grey w-fit">Demande relative à mes données</div>
+                </button>
+                <button class="button-grey w-fit">Demande relative à mes données</button>
             </div>
         </div>
     </div>

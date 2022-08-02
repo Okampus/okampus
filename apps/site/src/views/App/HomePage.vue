@@ -38,7 +38,7 @@
                             Les cookies utilisés par Okampus sont des tokens d'authentification nécessaires à
                             la gestion des permissions sur la plateforme.
                         </div>
-                        <div
+                        <button
                             class="button-blue mt-4 min-w-[3rem] select-none text-center text-lg"
                             :class="counting ? 'opacity-50' : ''"
                             :disabled="counting"
@@ -52,7 +52,7 @@
                                 >{{ totalSeconds }}</vue-countdown
                             >
                             <div v-else>J'ai pris connaissance de ces informations et souhaite continuer</div>
-                        </div>
+                        </button>
                     </div>
                 </div>
                 <div

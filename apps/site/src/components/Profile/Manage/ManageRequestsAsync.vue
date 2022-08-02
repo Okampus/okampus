@@ -56,11 +56,11 @@
                             </div>
                         </div>
                         <div v-if="shownRequest?.state === PENDING" class="mt-6 flex gap-4 self-end">
-                            <div class="button-red flex items-center gap-2" @click="refusing = true">
+                            <button class="button-red flex items-center gap-2" @click="refusing = true">
                                 <i class="fa fa-xmark" />
                                 <div>Refuser</div>
-                            </div>
-                            <div
+                            </button>
+                            <button
                                 class="button-blue flex items-center gap-2"
                                 @click="
                                     () => {
@@ -71,9 +71,9 @@
                             >
                                 <i class="fa fa-check" />
                                 <div>Accepter</div>
-                            </div>
+                            </button>
                         </div>
-                        <div v-else class="button-blue mt-10 self-center" @click="close">Fermer</div>
+                        <button v-else class="button-grey mt-10 self-center" @click="close">Fermer</button>
                     </template>
                     <template v-else>
                         <div class="mb-6 text-2xl">
@@ -105,8 +105,8 @@
                             />
                         </div>
                         <div class="mt-8 flex gap-4 self-end">
-                            <div class="button-grey" @click="refusing = false">Annuler</div>
-                            <div
+                            <button class="button-grey" @click="refusing = false">Annuler</button>
+                            <button
                                 class="button-red"
                                 @click="
                                     () => {
@@ -116,7 +116,7 @@
                                 "
                             >
                                 Confirmer le refus
-                            </div>
+                            </button>
                         </div>
                     </template>
                 </div>

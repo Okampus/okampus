@@ -191,7 +191,7 @@
                                 </table>
                                 <p v-else class="mt-4">Personne n'est encore inscrit à l'évenement</p>
                                 <div class="mt-6 flex gap-4 self-end">
-                                    <div class="button-cancel" @click="close">Fermer</div>
+                                    <button class="button-red" @click="close">Fermer</button>
                                 </div>
                             </div>
                         </template>
