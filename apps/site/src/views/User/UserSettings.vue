@@ -3,42 +3,20 @@
         <div class="centered-container-padded flex flex-col gap-10 md:flex-row">
             <div class="flex w-full flex-col gap-4 md:w-auto">
                 <div class="flex gap-5 md:flex-col">
-                    <div class="relative">
-                        <AvatarCropper
-                            v-model="editingAvatar"
-                            :upload-url="uploadAvatarUrl"
-                            :request-options="{ method: 'PUT', credentials: 'include' }"
-                            :labels="{ submit: 'Valider', cancel: 'Annuler' }"
-                            :cropper-options="{ aspectRatio: 1, zoomable: true, movable: true }"
-                            @error="onAvatarUploadFailure"
-                            @completed="onAvatarUploadSuccess"
-                        />
-                        <ProfileAvatar
-                            class="hidden lg:block"
-                            :avatar="me.avatar"
-                            :name="fullname(me)"
-                            :size="14"
-                        />
-                        <ProfileAvatar
-                            class="lg:hidden md-max:hidden"
-                            :avatar="me.avatar"
-                            :name="fullname(me)"
-                            :size="12"
-                        />
-                        <ProfileAvatar class="md:hidden" :avatar="me.avatar" :name="fullname(me)" :size="6" />
-                        <div v-if="me.avatar" class="absolute right-0 bottom-0">
-                            <ModalDropdown :buttons="avatarButtons">
-                                <button
-                                    class="button-grey fa fa-camera flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-4 border-2-light text-lg !shadow-none dark:border-2-dark md:text-xl"
-                                />
-                            </ModalDropdown>
-                        </div>
-                        <button
-                            v-else
-                            class="button-grey fa fa-camera absolute right-0 bottom-0 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-4 border-2-light text-lg !shadow-none dark:border-2-dark md:text-xl"
-                            @click="editingAvatar = true"
-                        />
-                    </div>
+                    <ProfileAvatar :avatar="me.avatar" :name="fullname(me)" :size="md ? (lg ? 14 : 12) : 6">
+                        <template #icon>
+                            <div v-if="me.avatar" class="absolute right-0 bottom-0">
+                                <ModalDropdown :buttons="avatarButtons">
+                                    <button class="button-circle fa fa-camera" />
+                                </ModalDropdown>
+                            </div>
+                            <button
+                                v-else
+                                class="button-circle fa fa-camera absolute right-0 bottom-0"
+                                @click="editingAvatar = true"
+                            />
+                        </template>
+                    </ProfileAvatar>
                     <div class="flex flex-col">
                         <div class="text-0 text-lg font-semibold md:text-xl">{{ fullname(me) }}</div>
                         <div class="text-3">{{ me.id }}</div>
@@ -98,6 +76,15 @@
                     <component :is="currentComponent" />
                 </div>
             </div>
+            <AvatarCropper
+                v-model="editingAvatar"
+                :upload-url="uploadAvatarUrl"
+                :request-options="{ method: 'PUT', credentials: 'include' }"
+                :labels="{ submit: 'Valider', cancel: 'Annuler' }"
+                :cropper-options="{ aspectRatio: 1, zoomable: true, movable: true }"
+                @error="onAvatarUploadFailure"
+                @completed="onAvatarUploadSuccess"
+            />
         </div>
     </Transition>
 </template>
@@ -123,6 +110,12 @@
     import { useAuthStore } from '@/store/auth.store'
     import { useUsersStore } from '@/store/users.store'
     import { emitter } from '@/shared/modules/emitter'
+    import { useBreakpoints } from '@vueuse/core'
+    import twBreakpoints from '@/breakpoints'
+
+    const breakpoints = useBreakpoints(twBreakpoints)
+    const md = breakpoints.greater('md')
+    const lg = breakpoints.greater('lg')
 
     const users = useUsersStore()
     const auth = useAuthStore()
