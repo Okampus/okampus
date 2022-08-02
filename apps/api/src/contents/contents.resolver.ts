@@ -65,7 +65,7 @@ export class ContentResolver {
     @Context() batchContext: ContextBatchContents,
   ): Promise<ContentInteractions> {
     if (batchContext.batchInteractions)
-      return batchContext.batchInteractions[content.id] ?? DEFAULT_INTERACTIONS;
+      return batchContext.batchInteractions[content.id] ?? { ...DEFAULT_INTERACTIONS };
     return await this.contentsService.findInteractions(user, content.id);
   }
 
