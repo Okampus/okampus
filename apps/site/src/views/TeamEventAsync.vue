@@ -26,7 +26,7 @@
                                     :time="timeUntil(event.start)"
                                 >
                                     <div class="flex flex-col gap-4">
-                                        <div class="flex items-center gap-2">
+                                        <div class="flex items-center justify-center gap-2">
                                             <div v-if="days" class="flex w-14 flex-col">
                                                 <div>Jour{{ days ? 's' : '' }}</div>
                                                 <div class="text-2xl">
@@ -117,6 +117,9 @@
                                     :avatar="registration.user.avatar"
                                     :name="fullname(registration.user)"
                                 >
+                                    <template #icon>
+                                        <PresenceIndicator :presence="registration.status" />
+                                    </template>
                                 </ProfileAvatar>
                             </div>
 
@@ -246,6 +249,7 @@
     import VueCountdown from '@chenfengyuan/vue-countdown'
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    import PresenceIndicator from '@/components/Profile/PresenceIndicator.vue'
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
 
     import TeamActivity from '@/components/App/General/TeamActivity.vue'

@@ -23,6 +23,7 @@ export const getEvent = gql`
             }
             registrations {
                 id
+                status
                 user {
                     ...UserInfo
                 }
