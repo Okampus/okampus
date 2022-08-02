@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/store/auth.store'
 import { computed } from 'vue'
+import { ADMIN } from '../types/school-roles.enum'
 
 export const sections = computed(() => {
     const auth = useAuthStore()
@@ -21,7 +22,7 @@ export const sections = computed(() => {
               ]
             : []),
 
-        ...(auth.loggedIn && auth.user.roles.includes('admin')
+        ...(auth.loggedIn && auth.user.roles.includes(ADMIN)
             ? [
                   {
                       name: 'Admin',

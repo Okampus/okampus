@@ -171,6 +171,7 @@
     import { ref } from 'vue'
 
     import { getTags } from '@/graphql/queries/getTags'
+    import { ADMIN } from '@/shared/types/school-roles.enum.js'
 
     const forumTabs = [
         {
@@ -198,28 +199,28 @@
         {
             firstname: 'Anne',
             lastname: 'EDVIRE',
-            schoolRole: 'Admin',
+            schoolRole: ADMIN,
             avatar: anne,
             title: "Directrice de l'expérience étudiante",
         },
         {
             firstname: 'Christophe',
             lastname: 'MAIRET',
-            schoolRole: 'Admin',
+            schoolRole: ADMIN,
             avatar: christophe,
             title: 'Directeur des opérations',
         },
         {
             firstname: 'René',
             lastname: 'BANCAREL',
-            schoolRole: 'Admin',
+            schoolRole: ADMIN,
             avatar: rene,
             title: 'Directeur des études du cycle M',
         },
         {
             firstname: 'Okampus',
             lastname: 'Admin',
-            schoolRole: 'Admin',
+            schoolRole: ADMIN,
             title: "Responsable d'Okampus",
         },
     ]
