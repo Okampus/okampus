@@ -2,28 +2,36 @@
     <ModalPopup :show="showReport">
         <template #default="{ close }">
             <div class="card flex flex-col gap-2">
-                <div class="text-xl">Signaler ce contenu</div>
+                <h1 class="mb-4 text-center font-bold">Signaler ce contenu</h1>
                 <AppTitle icon="fa fa-bullhorn" title="Raison" />
 
                 <!-- TODO: Change editor to basic textarea ? -->
-                <textarea v-model="state.reason" class="input" rows="6" cols="30" @input="v$.reason.$touch" />
-
-                <div v-if="v$.reason.$error" class="text-red-500">
-                    {{
-                        `La raison de ton signalement doit faire entre ${reportCharLimit[0]} et ${reportCharLimit[1]} caractères.`
-                    }}
-                </div>
+                <FormKit
+                    ref="reportForm"
+                    type="form"
+                    :actions="false"
+                    @submit="(state) => createReport({ id: content.id, report: { reason: state.report } })"
+                >
+                    <FormKit
+                        type="textarea"
+                        name="report"
+                        :validation="`required|length:${reportCharLimit.join(',')}`"
+                        rows="6"
+                        outer-class="!mb-0"
+                        validation-visibility="dirty"
+                        :validation-messages="{
+                            required: 'Vous devez expliquer la raison de votre signalement.',
+                            length: `Votre signalement doit faire entre ${reportCharLimit[0]} et ${reportCharLimit[1]} caractères.`,
+                        }"
+                    />
+                </FormKit>
 
                 <button
                     class="button-blue font-semibold"
                     @click="
                         () => {
-                            if (v$.$invalid) {
-                                v$.$touch()
-                                return
-                            }
-                            submit()
-                            close()
+                            trigger = close
+                            reportForm.node.submit()
                         }
                     "
                 >
@@ -38,16 +46,16 @@
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
     import AppTitle from '@/components/App/AppTitle.vue'
 
-    import useVuelidate from '@vuelidate/core'
-    import { reactive } from 'vue'
+    import { FormKit } from '@formkit/vue'
     import { noop } from 'lodash'
 
     import { useMutation } from '@vue/apollo-composable'
 
-    import { maxLength, minLength, required } from '@vuelidate/validators'
     import { report } from '@/graphql/queries/interactions/reportContent'
+    import { showSuccessToast, showToastGraphQLError } from '@/utils/toast.js'
+    import { ref } from 'vue'
 
-    const props = defineProps({
+    defineProps({
         showReport: {
             type: Boolean,
             default: false,
@@ -58,22 +66,15 @@
         },
     })
 
+    const reportForm = ref(null)
+    const trigger = ref(() => {})
     const reportCharLimit = [20, 1000]
 
-    const state = reactive({ reason: '' })
-    const rules = {
-        reason: {
-            required,
-            minLength: minLength(reportCharLimit[0]),
-            maxLength: maxLength(reportCharLimit[1]),
-        },
-    }
-    const v$ = useVuelidate(rules, state)
+    const { mutate: createReport, onDone, onError } = useMutation(report)
 
-    const { mutate: createReport } = useMutation(report)
-    const submit = () => {
-        if (!v$.$invalid) {
-            createReport({ id: props.content.id, report: { reason: state.reason } })
-        }
-    }
+    onDone(() => {
+        showSuccessToast('Votre signalement a bien été pris en compte.')
+        trigger.value()
+    })
+    onError(showToastGraphQLError)
 </script>
