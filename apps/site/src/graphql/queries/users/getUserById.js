@@ -17,3 +17,42 @@ export const getUser = gql`
     ${userFragment}
     ${partialTeamFragment}
 `
+
+export const getUserRequests = gql`
+    query userById($id: String!) {
+        userById(id: $id) {
+            ...UserInfo
+            teamMembershipRequests {
+                createdAt
+                role
+                state
+                issuer
+                role
+                handledBy {
+                    ...UserInfo
+                }
+                issuedBy {
+                    ...UserInfo
+                }
+                handledAt
+                handledMessage
+                formSubmission
+                originalForm {
+                    form
+                }
+                team {
+                    ...PartialTeamInfo
+                }
+            }
+            teamMemberships {
+                createdAt
+                role
+                team {
+                    ...PartialTeamInfo
+                }
+            }
+        }
+    }
+    ${userFragment}
+    ${partialTeamFragment}
+`

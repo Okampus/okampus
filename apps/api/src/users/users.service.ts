@@ -40,7 +40,18 @@ export class UsersService {
   ) {}
 
   public async findOneById(id: string): Promise<User> {
-    return await this.userRepository.findOneOrFail({ id }, { refresh: true, populate: ['schoolGroupMemberships', 'schoolGroupMemberships.schoolYear', 'schoolGroupMemberships.schoolGroup', 'teamMemberships', 'teamMemberships.team'] });
+    return await this.userRepository.findOneOrFail({ id }, {
+      refresh: true,
+      populate: [
+        'schoolGroupMemberships',
+        'schoolGroupMemberships.schoolYear',
+        'schoolGroupMemberships.schoolGroup',
+        'teamMemberships',
+        'teamMemberships.team',
+        'teamMembershipRequests',
+        'teamMembershipRequests.team',
+      ],
+    });
   }
 
   public async create(options: UserCreationOptions): Promise<{ user: User; token: string | null }> {

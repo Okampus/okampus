@@ -69,7 +69,7 @@
 
     onDone(() => {
         emit('update:show', false)
-        showSuccessToast('Votre demande a bien été envoyé ✉️')
+        showSuccessToast('Votre demande a bien été envoyée ✉️')
     })
 
     onError(showToastGraphQLError)
