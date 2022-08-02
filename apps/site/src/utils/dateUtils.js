@@ -6,6 +6,16 @@ export function getTodayDate() {
     return getDateFromDatetime(new Date())
 }
 
+export function formatDateShort(dateString) {
+    const date = new Date(dateString)
+    return new Intl.DateTimeFormat(i18n.global.locale, {
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+    }).format(date)
+}
+
 export function formatDateLong(dateString) {
     const date = new Date(dateString)
     return `${new Intl.DateTimeFormat(i18n.global.locale, {
@@ -16,6 +26,15 @@ export function formatDateLong(dateString) {
     })
         .format(date)
         .slice(11)}`
+}
+
+export function getDateRangeStringShort(startDate, endDate) {
+    const fullDateFormat = new Intl.DateTimeFormat(i18n.global.locale, {
+        month: 'short',
+        day: 'numeric',
+    })
+
+    return fullDateFormat.formatRange(new Date(startDate), new Date(endDate))
 }
 
 export function getDateRangeString(startDate, endDate) {

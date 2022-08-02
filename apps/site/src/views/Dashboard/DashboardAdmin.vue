@@ -10,7 +10,7 @@
 
 <script setup>
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
-    import DashboardOverviewAsync from '@/components/Dashboard/DashboardOverviewAsync.vue'
+    import DashboardOverview from '@/components/Dashboard/DashboardOverview.vue'
     import DashboardClubs from '@/components/Dashboard/DashboardClubs.vue'
     import DashboardReports from '@/components/Dashboard/DashboardReports.vue'
 
@@ -44,7 +44,7 @@
 
     const currentTab = ref(OVERVIEW)
     const components = {
-        [OVERVIEW]: DashboardOverviewAsync,
+        [OVERVIEW]: DashboardOverview,
         [CLUBS]: DashboardClubs,
         [REPORTS]: DashboardReports,
     }

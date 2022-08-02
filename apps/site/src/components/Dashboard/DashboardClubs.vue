@@ -2,7 +2,7 @@
     <GraphQLQuery :query="getClubs" :update="(data) => data?.clubs">
         <template #default="{ data: clubs }">
             <ScrollableTable
-                class="h-[50vh]"
+                class="h-[70vh]"
                 :items="clubs"
                 :columns="[
                     {
