@@ -9,6 +9,7 @@
 <script setup>
     import { timeAgo } from '@/utils/timeAgo'
     import TipPopper from '@/components/UI/Tip/TipPopper.vue'
+    import { formatDateLong } from '@/utils/dateUtils.js'
 
     const props = defineProps({
         date: {
@@ -25,7 +26,5 @@
         },
     })
 
-    const dateString = new Intl.DateTimeFormat('fr', { dateStyle: 'full', timeStyle: 'long' }).format(
-        new Date(props.date),
-    )
+    const dateString = formatDateLong(props.date)
 </script>

@@ -12,6 +12,7 @@
 <script setup>
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
     import TipPopper from '@/components/UI/Tip/TipPopper.vue'
+    import { formatDateLong } from '@/utils/dateUtils.js'
 
     const props = defineProps({
         createdAt: {
@@ -24,8 +25,5 @@
         },
     })
 
-    const modifiedAtDateString = new Intl.DateTimeFormat('fr', {
-        dateStyle: 'full',
-        timeStyle: 'long',
-    }).format(new Date(props.modifiedAt))
+    const modifiedAtDateString = formatDateLong(props.modifiedAt)
 </script>
