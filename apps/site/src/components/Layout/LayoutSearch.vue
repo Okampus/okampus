@@ -11,15 +11,19 @@
                 @click="showSearchbar = false"
             />
             <div
-                class="relative flex w-full cursor-text flex-col items-center bg-[#374058] md:max-w-4xl md:shadow-xl"
+                class="relative flex w-full cursor-pointer flex-col items-center md:max-w-4xl md:cursor-text md:bg-[#374058] md:shadow-xl"
+                :class="showSearchbar ? 'bg-[#374058]' : 'md:bg-[#374058]'"
                 @click="() => ((showSearchbar = true), searchInput.focus())"
             >
                 <div
-                    class="absolute inset-x-0 -top-5 flex flex-col bg-inherit md:rounded-[1.2rem]"
+                    class="fa fa-search absolute -top-5 right-0 flex h-10 items-center justify-center text-xl text-gray-200 md:hidden"
+                />
+                <div
+                    class="absolute inset-x-0 -top-5 flex h-10 flex-col bg-inherit md:rounded-[1.2rem]"
                     :class="
                         showSearchbar
                             ? 'md-max:top-0 md-max:left-0 md-max:fixed md-max:w-screen md-max:h-screen md:max-h-[50vh] z-[20] md-max:text-xl'
-                            : 'h-10 rounded-[1.2rem]'
+                            : 'md-max:hidden'
                     "
                 >
                     <ais-search-box @keydown.stop="closeOnKeydown">
