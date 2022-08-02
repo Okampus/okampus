@@ -79,8 +79,8 @@
                     </button>
 
                     <div class="text-0 ml-4 flex flex-row-reverse gap-1">
-                        <span v-if="club.memberCount > club.boardMembers.length" class="text-0 my-auto"
-                            >+ {{ abbrNumbers(club.memberCount - club.boardMembers.length) }}</span
+                        <span v-if="club.activeMemberCount > club.boardMembers.length" class="text-0 my-auto"
+                            >+ {{ abbrNumbers(club.activeMemberCount - club.boardMembers.length) }}</span
                         >
                         <div v-for="(specialMember, i) in sortedBoardMembers" :key="i" class="-ml-3">
                             <TipPopper
