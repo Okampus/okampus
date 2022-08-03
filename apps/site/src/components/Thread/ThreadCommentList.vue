@@ -56,14 +56,17 @@
 
     import { COMMENT } from '@/shared/types/content-kinds.enum'
 
-    import { useAuthStore } from '@/store/auth.store'
-
     import { fullname } from '@/utils/users'
     import { addContent } from '@/graphql/queries/addContent'
     import { useMutation } from '@vue/apollo-composable'
 
     import { computed, ref, watch } from 'vue'
 
+    import { useAuthStore } from '@/store/auth.store'
+    import { useRoute } from 'vue-router'
+    import { highlightElement } from '@/utils/domUtils.js'
+
+    const route = useRoute()
     const auth = useAuthStore()
 
     const props = defineProps({
@@ -130,6 +133,17 @@
     const shownComments = computed(() =>
         showAll.value ? props.comments : props.comments.slice(0, maxCommentsShow),
     )
+
+    // Handle highlight scroll on hidden comments
+    if (route.hash) {
+        const commentId = parseInt(route.hash.slice(9))
+        const commentIndex = props.comments.findIndex((comment) => comment.id === commentId)
+        if (commentIndex >= maxCommentsShow) {
+            showAll.value = true
+            const el = document.querySelector(route.hash)
+            if (el) highlightElement(el)
+        }
+    }
 </script>
 
 <style lang="scss">

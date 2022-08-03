@@ -81,6 +81,7 @@
     import { useBreakpoints } from '@vueuse/core'
 
     import { emitter } from '@/shared/modules/emitter'
+    import { highlightElement } from '@/utils/domUtils'
     import logOutOnExpire from '@/utils/logOutOnExpire'
 
     import { inject, nextTick, reactive, ref, watch, watchEffect } from 'vue'
@@ -162,34 +163,17 @@
 
     const scrollHighlight = (id) => {
         const el = document.querySelector(id.startsWith('#') ? id : `#${id}`)
-        if (el) {
-            el.classList.add('highlight-active')
-            el.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-            })
-            el.addEventListener(
-                'animationend',
-                () => {
-                    el.classList.remove('highlight-active')
-                },
-                { once: true },
-            )
-        }
+        if (el) highlightElement(el)
     }
 
     if (config.darkMode) {
         document.documentElement.classList.add('dark')
     }
-    watch(
-        () => config.darkMode,
-        (enabled) => {
-            if (enabled) {
-                document.documentElement.classList.add('dark')
-            } else {
-                document.documentElement.classList.remove('dark')
-            }
-        },
+
+    watchEffect(() =>
+        config.darkMode
+            ? document.documentElement.classList.add('dark')
+            : document.documentElement.classList.remove('dark'),
     )
 
     watch(hiding, () => {
