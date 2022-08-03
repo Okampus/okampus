@@ -1,5 +1,4 @@
 <template>
-    <!-- <div class="text-0">{{ parseInt(route.params.eventId) }}</div> -->
     <GraphQLQuery
         :query="getEvent"
         :variables="{ id: parseInt(route.params.eventId) }"
@@ -70,17 +69,19 @@
                         <div class="text-3xl font-bold">{{ event.name }}</div>
                         <TeamActivity :team="event.team" action-text="Créé" :action-at="event.createdAt">
                             <template #subtitle>
-                                Publié
-                                <TipRelativeDate :date="event.createdAt" />
-                                •
-                                <template v-if="timeUntil(event.start) > 0">
-                                    Commence
-                                    <TipRelativeDate :date="event.start" :limit="false" />
-                                </template>
-                                <template v-else>
-                                    A eu lieu
-                                    <TipRelativeDate :date="event.start" :limit="false" />
-                                </template>
+                                <div class="flex gap-1">
+                                    Publié
+                                    <TipRelativeDate :date="event.createdAt" />
+                                    •
+                                    <template v-if="timeUntil(event.start) > 0">
+                                        Commence
+                                        <TipRelativeDate :date="event.start" :limit="false" />
+                                    </template>
+                                    <template v-else>
+                                        A eu lieu
+                                        <TipRelativeDate :date="event.start" :limit="false" />
+                                    </template>
+                                </div>
                             </template>
                         </TeamActivity>
                         <div class="flex justify-between">
@@ -103,32 +104,22 @@
                                 </div>
                             </div>
                         </div>
-                        <div
-                            v-if="event.registrations.length > 0"
-                            class="always-break-words mt-2 flex items-center"
-                        >
-                            <div
-                                v-for="registration in event.registrations.slice(0, registrationShowLimit)"
-                                :key="registration.id"
-                                class="-mr-3"
-                            >
-                                <ProfileAvatar
-                                    :id="registration.user.id"
-                                    :avatar="registration.user.avatar"
-                                    :name="fullname(registration.user)"
-                                >
-                                    <template #icon>
-                                        <PresenceIndicator :presence="registration.status" />
-                                    </template>
-                                </ProfileAvatar>
-                            </div>
 
-                            <div
-                                v-if="event.registrations.length > registrationShowLimit"
-                                class="ml-7 text-lg"
-                            >
-                                + {{ event.registrations.length - registrationShowLimit }}
-                            </div>
+                        <div v-if="event.registrations.length > 0" class="flex items-center">
+                            <AvatarGroup
+                                spacing-class="-space-x-2"
+                                :users="
+                                    event.registrations.map((registration) => ({
+                                        id: registration.user.id,
+                                        firstname: registration.user.firstname,
+                                        lastname: registration.user.lastname,
+                                        avatar: registration.user.avatar,
+                                        status: registration.status,
+                                    }))
+                                "
+                                :number-shown="registrationShowLimit"
+                                :show-presence="true"
+                            />
                         </div>
                         <div v-else class="text- italic">Il n'y a personne d'inscrit pour l'instant.</div>
                         <button
@@ -249,7 +240,8 @@
     import VueCountdown from '@chenfengyuan/vue-countdown'
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    import PresenceIndicator from '@/components/Profile/PresenceIndicator.vue'
+    import AvatarGroup from '@/components/List/AvatarGroup.vue'
+
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
 
     import TeamActivity from '@/components/App/General/TeamActivity.vue'
@@ -285,5 +277,5 @@
     const showRegistrationForm = ref(false)
     const showAdmin = ref(false)
 
-    const registrationShowLimit = 12
+    const registrationShowLimit = 20
 </script>

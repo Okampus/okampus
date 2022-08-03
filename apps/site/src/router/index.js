@@ -212,7 +212,7 @@ const routes = [
     {
         name: 'events',
         path: '/events',
-        component: () => import('@/views/List/EventListAsync.vue'),
+        component: () => import('@/views/List/EventList.vue'),
         meta: {
             requiresAuth: true,
         },
@@ -221,7 +221,7 @@ const routes = [
     {
         name: 'event',
         path: '/event/:eventId',
-        component: () => import('@/views/TeamEventAsync.vue'),
+        component: () => import('@/views/TeamEvent.vue'),
         meta: {
             requiresAuth: true,
         },

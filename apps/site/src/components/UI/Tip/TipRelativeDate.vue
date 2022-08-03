@@ -1,5 +1,5 @@
 <template>
-    <span v-tooltip="dateString" class="flex cursor-default items-center" :class="textClass">
+    <span v-tooltip="dateString" class="cursor-default" :class="textClass">
         {{ action }} {{ timeAgo(date, 'long', limit) }}
     </span>
 </template>

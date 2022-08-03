@@ -4,15 +4,15 @@
             presence === SURE
                 ? 'Sera présent ✅'
                 : presence === MAYBE
-                ? 'Peut-être présent 🕑'
+                ? 'Intéressé 🤔'
                 : 'Ne pourra pas être présent ❌'
         "
-        class="absolute bottom-0 right-0 h-[1.1rem] w-4"
+        class="absolute bottom-0 right-0 h-5 w-5 rounded-full bg-white"
     >
         <svg
             v-if="presence === SURE"
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 text-green-400"
+            class="h-5 w-5 text-green-400"
             viewBox="0 0 20 20"
             fill="currentColor"
         >
@@ -26,7 +26,7 @@
             v-else-if="presence === MAYBE"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
-            class="h-5 text-yellow-400"
+            class="h-5 w-5 text-yellow-400"
             fill="currentColor"
         >
             <path
@@ -36,9 +36,10 @@
             />
         </svg>
         <svg
+            v-else
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
-            class="h-5 text-red-400"
+            class="h-5 w-5 text-red-400"
             fill="currentColor"
         >
             <path

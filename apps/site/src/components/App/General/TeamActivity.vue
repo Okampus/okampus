@@ -1,6 +1,6 @@
 <template>
     <div class="flex items-start gap-3">
-        <ProfileAvatar :id="team.id" :size="3" :avatar="team.avatar" :name="team.name" />
+        <ProfileAvatar :id="team.id" type="team" :size="3" :avatar="team.avatar" :name="team.name" />
         <div class="flex flex-col">
             <slot v-if="$slots.title" name="title" />
             <router-link

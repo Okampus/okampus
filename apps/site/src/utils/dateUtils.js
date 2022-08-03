@@ -6,9 +6,10 @@ export function getTodayDate() {
     return getDateFromDatetime(new Date())
 }
 
-export function formatDateShort(dateString) {
+export function formatDateShort(dateString, weekday = false) {
     const date = new Date(dateString)
     return new Intl.DateTimeFormat(i18n.global.locale, {
+        ...(weekday ? { weekday: 'short' } : {}),
         month: 'short',
         day: 'numeric',
         hour: 'numeric',
@@ -28,18 +29,24 @@ export function formatDateLong(dateString) {
         .slice(11)}`
 }
 
-export function getDateRangeStringShort(startDate, endDate) {
+export function getDateRangeStringShort(startDate, endDate, timeStyle = false) {
     const fullDateFormat = new Intl.DateTimeFormat(i18n.global.locale, {
         month: 'short',
         day: 'numeric',
+        ...(timeStyle
+            ? {
+                  hour: 'numeric',
+                  minute: 'numeric',
+              }
+            : {}),
     })
 
     return fullDateFormat.formatRange(new Date(startDate), new Date(endDate))
 }
 
-export function getDateRangeString(startDate, endDate) {
+export function getDateRangeString(startDate, endDate, weekday = true) {
     const fullDateFormat = new Intl.DateTimeFormat(i18n.global.locale, {
-        weekday: 'short',
+        ...(weekday ? { weekday: 'short' } : {}),
         month: 'short',
         day: 'numeric',
         hour: 'numeric',
@@ -52,8 +59,8 @@ export function getDateRangeString(startDate, endDate) {
 export function getCountdown(startDate, endDate) {
     const hours = Math.abs(endDate - startDate) / 3600000
     if (hours < 72) {
-        return `H-${parseInt(hours)}`
+        return { type: 'hours', value: hours }
     } else {
-        return `J-${parseInt(hours / 24)}`
+        return { type: 'days', value: Math.floor(hours / 24) }
     }
 }
