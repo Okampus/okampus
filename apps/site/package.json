@@ -30,6 +30,7 @@
         "@vue/apollo-composable": "^4.0.0-alpha.19",
         "@vue/apollo-option": "4.0.0-alpha.20",
         "@vueuse/core": "8.9.4",
+        "approximate-number": "^2.1.0",
         "axios": "0.27.2",
         "chart.js": "^3.9.0",
         "chartjs-adapter-date-fns": "^2.0.0",

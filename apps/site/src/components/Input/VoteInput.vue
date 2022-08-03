@@ -24,7 +24,8 @@
     import IconUpvote from '@/icons/IconUpvote.vue'
     import IconDownvote from '@/icons/IconDownvote.vue'
 
-    import { abbrNumbers } from '@/utils/abbrNumbers'
+    import abbrNumbers from 'approximate-number'
+
     import { ref, watchEffect } from 'vue'
     import { showErrorToast } from '@/utils/toast.js'
 

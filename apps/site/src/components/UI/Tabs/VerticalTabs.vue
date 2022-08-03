@@ -45,10 +45,11 @@
 <script setup>
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
 
+    import abbrNumbers from 'approximate-number'
+
     import { watch } from 'vue'
     import { useRoute } from 'vue-router'
 
-    import { abbrNumbers } from '@/utils/abbrNumbers'
     import { getCurrentPath } from '@/utils/routeUtils'
     import { showInfoToast } from '@/utils/toast.js'
 

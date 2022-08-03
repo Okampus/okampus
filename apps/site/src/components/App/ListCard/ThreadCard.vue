@@ -22,7 +22,7 @@
                         thread.opValidatedWith || thread.adminValidatedWith ? 'bg-green-500 text-white' : ''
                     "
                 >
-                    <p>{{ abbrNumbers(thread.replyCount) }}</p>
+                    <p>{{ (thread.replyCount) }}</p>
                     <i
                         v-if="thread.adminValidatedWith && thread.opValidatedWith"
                         class="fa fa-check-double"

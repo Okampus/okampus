@@ -22,7 +22,7 @@
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
     import { Swiper, SwiperSlide } from 'swiper/vue'
 
-    import { abbrNumbers } from '@/utils/abbrNumbers'
+    import abbrNumbers from 'approximate-number'
 
     import { computed, watch } from 'vue'
     import { useRoute } from 'vue-router'

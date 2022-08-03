@@ -42,7 +42,8 @@
 
     import { useRouter } from 'vue-router'
     import { fullname } from '@/utils/users'
-    import { abbrNumbers } from '@/utils/abbrNumbers'
+
+    import abbrNumbers from 'approximate-number'
 
     const router = useRouter()
 
