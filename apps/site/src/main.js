@@ -59,22 +59,6 @@ const apolloProvider = createApolloProvider({
     defaultClient: apolloClient,
 })
 
-if (import.meta.env.VITE_SENTRY_ENABLED === 'true')
-    Sentry.init({
-        app,
-        dsn: import.meta.env.VITE_SENTRY_DSN,
-        integrations: [
-            new BrowserTracing({
-                routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-                tracingOrigins: ['localhost', 'efrei.okampus.fr', /.*/, '*', /^\//],
-            }),
-        ],
-        // Set tracesSampleRate to 1.0 to capture 100%
-        // of transactions for performance monitoring.
-        // We recommend adjusting this value in production
-        tracesSampleRate: 1.0,
-    })
-
 const mobileCheck = function () {
     let check = false
     ;(function (a) {
@@ -92,6 +76,22 @@ const mobileCheck = function () {
 }
 
 const app = createApp(App)
+
+if (import.meta.env.VITE_SENTRY_ENABLED === 'true')
+    Sentry.init({
+        app,
+        dsn: import.meta.env.VITE_SENTRY_DSN,
+        integrations: [
+            new BrowserTracing({
+                routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+                tracingOrigins: ['localhost', 'efrei.okampus.fr', /.*/, '*', /^\//],
+            }),
+        ],
+        // Set tracesSampleRate to 1.0 to capture 100%
+        // of transactions for performance monitoring.
+        // We recommend adjusting this value in production
+        tracesSampleRate: 1.0,
+    })
 
 app.directive('tooltip', VTooltip)
 app.directive('close-popper', VClosePopper)
