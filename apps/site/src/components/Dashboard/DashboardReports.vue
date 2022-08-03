@@ -29,7 +29,7 @@
                     },
                 ]"
             >
-                <template #content="{ content }">
+                <template #content="{ data: { content } }">
                     <router-link
                         :to="`/forum/post/${content.contentMaster.id}#${contentTypeNames[content.kind].key}-${
                             content.id
@@ -38,7 +38,7 @@
                         >{{ content.body }}</router-link
                     >
                 </template>
-                <template #author="{ target }">
+                <template #author="{ data: { target } }">
                     <router-link :to="`/user/${target.id}`" class="flex cursor-pointer items-center gap-1">
                         <ProfileAvatar :name="fullname(target)" :avatar="target.avatar" :size="2.5">
                         </ProfileAvatar>
@@ -54,7 +54,7 @@
                         <div>{{ fullname(user) }}</div>
                     </router-link>
                 </template>
-                <template #reason="{ reason }">
+                <template #reason="{ data: { reason } }">
                     <div class="break-words text-sm">{{ reason }}</div>
                 </template>
             </ScrollableTable>

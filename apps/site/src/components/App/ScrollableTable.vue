@@ -37,7 +37,7 @@
                         :class="[{ 'first-cell-sticky': firstColumnFixed }, i % 2 ? 'bg-0' : 'bg-2']"
                     >
                         <div class="px-6 py-2">
-                            <slot v-if="$slots[col.id]" :name="col.id" :="item"></slot>
+                            <slot v-if="$slots[col.id]" :name="col.id" :data="item" :row="i"></slot>
                             <div v-else>{{ item[col.id] }}</div>
                         </div>
                     </td>

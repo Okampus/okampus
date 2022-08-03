@@ -43,21 +43,22 @@
                 ]"
                 :first-column-fixed="true"
             >
-                <template #name="{ avatar, name, category, teamId }">
+                <template #name="{ data: { avatar, name, category, teamId } }">
                     <TeamActivity :team="{ avatar, name, category, teamId }">
                         <template #subtitle>
                             {{ category }}
                         </template>
                     </TeamActivity>
                 </template>
-                <template #shortDescription="{ shortDescription }">
+                <template #shortDescription="{ data: { shortDescription } }">
                     <div class="text-sm">
                         {{ shortDescription }}
                     </div>
                 </template>
-                <template #members="{ activeMemberCount, boardMembers, name }">
+                <template #members="{ data: { activeMemberCount, boardMembers, name }, row }">
                     <div class="flex justify-center">
                         <AvatarGroup
+                            :bg-class="row % 2 ? 'bg-0' : 'bg-2'"
                             :total-user-count="activeMemberCount"
                             :users="
                                 boardMembers.map((membership) => ({

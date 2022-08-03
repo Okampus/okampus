@@ -1,5 +1,5 @@
 <template>
-    <div class="text-0 ml-4 flex flex-row -space-x-4">
+    <div class="text-0 ml-4 flex flex-row items-center -space-x-4">
         <div v-for="(user, i) in users" :key="i">
             <Dropdown theme="popper" :triggers="isMobile ? ['click'] : ['hover']">
                 <div
