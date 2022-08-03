@@ -78,7 +78,7 @@ export class ReportsService {
     return await this.reportRepository.findWithPagination(
       paginationOptions,
       options,
-      { populate: ['content', 'content.lastEdit', 'target'], orderBy: { createdAt: 'DESC' } },
+      { populate: ['content', 'content.lastEdit', 'target', 'user'], orderBy: { createdAt: 'DESC' } },
     );
   }
 
