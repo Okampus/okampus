@@ -33,14 +33,16 @@
             </div>
 
             <div class="flex h-full w-full flex-col justify-between">
-                <router-link class="mt-2" :to="`/club/${club.id}`">
-                    <h3 class="text-1 text-xl font-bold line-clamp-1 hover:underline">
-                        {{ club.name }}
-                    </h3>
-                    <div class="text-2 mt-1 text-sm">
-                        {{ club.shortDescription }}
-                    </div>
+                <router-link
+                    class="text-1 card-link mt-2 text-xl font-bold line-clamp-1"
+                    :to="`/club/${club.id}`"
+                >
+                    {{ club.name }}
                 </router-link>
+
+                <div class="text-2 mt-1 text-sm">
+                    {{ club.shortDescription }}
+                </div>
 
                 <div class="mt-3 flex h-12 w-full flex-row items-center justify-between">
                     <button

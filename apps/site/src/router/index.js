@@ -185,7 +185,7 @@ const routes = [
     {
         name: 'clubs',
         path: '/clubs/:tab*',
-        component: () => import('@/views/List/ClubListAsync.vue'),
+        component: () => import('@/views/List/ClubList.vue'),
         meta: {
             requiresAuth: true,
         },
