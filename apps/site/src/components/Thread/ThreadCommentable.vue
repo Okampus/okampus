@@ -25,17 +25,18 @@
                     <UserActivity :user="content.author">
                         <template v-if="authorIsOp" #title>
                             <div class="inline">
-                                <TipPopper tip="Original Poster (OP)">
-                                    <router-link
-                                        :to="`/user/${content.author.id}`"
-                                        class="w-fit rounded-full bg-[#888] px-2 py-px text-[0.8rem] font-semibold text-white hover:bg-gray-600 dark:hover:bg-gray-400"
-                                    >
-                                        {{ fullname(content.author) }}
-                                    </router-link>
-                                </TipPopper>
-                                <TipPopper :tip="getRole(content.author)[locale]">
-                                    <i class="ml-2" :class="`fa fa-${getRole(content.author).icon}`" />
-                                </TipPopper>
+                                <router-link
+                                    v-tooltip="'OP'"
+                                    :to="`/user/${content.author.id}`"
+                                    class="w-fit rounded-full bg-[#888] px-2 py-0.5 text-[0.8rem] font-semibold text-white hover:bg-gray-600 dark:hover:bg-gray-400"
+                                >
+                                    {{ fullname(content.author) }}
+                                </router-link>
+                                <i
+                                    v-tooltip="getRole(content.author)[locale]"
+                                    class="ml-2"
+                                    :class="`fa fa-${getRole(content.author).icon}`"
+                                />
                             </div>
                         </template>
                         <template #subtitle>
@@ -153,8 +154,8 @@
 
     import urlJoin from 'url-join'
     import router from '@/router'
+
     import { editThread } from '@/graphql/queries/editThread'
-    import TipPopper from '../UI/Tip/TipPopper.vue'
     import { showErrorToast, showInfoToast, showWarningToast } from '@/utils/toast'
 
     import { useI18n } from 'vue-i18n'

@@ -264,6 +264,7 @@
     @import '@/assets/scss/fonts';
     @import '@/assets/scss/animations/bg-anims';
     @import '@/assets/scss/components/button';
+    @import '@/assets/scss/components/popper';
     @import '@/assets/scss/components/card';
     @import '@/assets/scss/components/container';
     @import '@/assets/scss/components/easymde';

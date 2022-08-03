@@ -28,11 +28,36 @@ import { i18n } from '@/shared/modules/i18n'
 
 import router from '@/router/index'
 
-import '@/assets/css/tailwind.css'
-import 'swiper/css/bundle'
 import { showErrorToast } from './utils/toast'
 
-const app = createApp(App)
+import { VTooltip, VClosePopper, options } from 'floating-vue'
+
+options.themes = {
+    ...options.themes,
+    'profile-dropdown': {
+        $extend: 'dropdown',
+        overflowPadding: 13,
+        distance: 8,
+    },
+    'popper': {
+        $extend: 'menu',
+        overflowPadding: 13,
+    },
+}
+
+import '@/assets/css/tailwind.css'
+import 'swiper/css/bundle'
+
+const cache = new InMemoryCache()
+const apolloClient = new ApolloClient({
+    cache,
+    uri: `${import.meta.env.VITE_API_URL}/graphql`,
+    credentials: 'include',
+})
+
+const apolloProvider = createApolloProvider({
+    defaultClient: apolloClient,
+})
 
 if (import.meta.env.VITE_SENTRY_ENABLED === 'true')
     Sentry.init({
@@ -66,8 +91,15 @@ const mobileCheck = function () {
     return check
 }
 
+const app = createApp(App)
+
+app.directive('tooltip', VTooltip)
+app.directive('close-popper', VClosePopper)
+
+// TODO: refactor mobileCheck
 app.config.globalProperties.isMobile = mobileCheck()
 app.provide('isMobile', mobileCheck)
+
 app.config.globalProperties.emptyObj = () => ({})
 app.config.globalProperties.emptyList = () => []
 
@@ -77,16 +109,7 @@ app.config.errorHandler = (error, vm, info) => {
     console.error(error, info)
 }
 
-const cache = new InMemoryCache()
-const apolloClient = new ApolloClient({
-    cache,
-    uri: `${import.meta.env.VITE_API_URL}/graphql`,
-    credentials: 'include',
-})
-
-const apolloProvider = createApolloProvider({
-    defaultClient: apolloClient,
-})
+app.provide(DefaultApolloClient, apolloClient)
 
 // TODO: remove injection of modules in favor of composition API
 app.use(createPinia())
@@ -135,5 +158,4 @@ app.use(createPinia())
         }),
     )
 
-app.provide(DefaultApolloClient, apolloClient)
 app.mount('#app')

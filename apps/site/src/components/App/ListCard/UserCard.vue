@@ -5,12 +5,13 @@
         <div class="flex shrink-0 flex-col items-center gap-3">
             <ProfileAvatar :size="4" class="min-w-fit" :avatar="user.avatar" :name="fullname(user)" />
 
-            <TipPopper :tip="`${user.points} points`">
-                <div class="text-5 align-items ml-1 inline-flex w-fit flex-nowrap gap-2">
-                    <div class="text-xl">🏆</div>
-                    <div class="text-1 font-semibold">{{ user.points }}</div>
-                </div>
-            </TipPopper>
+            <div
+                v-tooltip="`${user.points} points`"
+                class="text-5 align-items ml-1 inline-flex w-fit flex-nowrap gap-2"
+            >
+                <div class="text-xl">🏆</div>
+                <div class="text-1 font-semibold">{{ user.points }}</div>
+            </div>
         </div>
         <div class="flex flex-col gap-3">
             <div class="text-0 align-items inline-flex flex-wrap gap-x-6 text-lg">
@@ -60,7 +61,6 @@
 
 <script setup>
     import LabelTag from '@/components/UI/Label/LabelTag.vue'
-    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 

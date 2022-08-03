@@ -9,9 +9,7 @@
                     class="text-sm font-semibold hover:underline"
                     >{{ fullname(user) }}</router-link
                 >
-                <TipPopper :tip="getRole(user)[locale]">
-                    <i class="ml-2" :class="`fa fa-${getRole(user).icon}`" />
-                </TipPopper>
+                <i v-tooltip="getRole(user)[locale]" class="ml-2" :class="`fa fa-${getRole(user).icon}`" />
             </div>
 
             <div v-if="$slots.subtitle || subtitle" class="text-4 text-sm line-clamp-1">
@@ -23,7 +21,6 @@
 </template>
 
 <script setup>
-    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
     import { fullname, getRole } from '@/utils/users'

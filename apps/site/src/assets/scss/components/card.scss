@@ -20,10 +20,6 @@
     @apply shadow-md md:rounded-lg py-4 px-6;
 }
 
-.card-tip {
-    @apply flex gap-1 p-2 rounded-md bg-0;
-}
-
 .card-hover {
     transition: filter 0.2s ease-in-out, transform 0.2s ease-in-out;
 

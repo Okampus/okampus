@@ -59,11 +59,13 @@
                                 <template v-if="showUncollapsed">
                                     <span class="title-font text-base">{{ link.textLarge }}</span>
                                     <div class="revealed mr-3 ml-auto opacity-0">
-                                        <TipPopper v-if="link.button" :tip="link.button.text">
-                                            <router-link :to="link.button.to">
-                                                <i class="text-lg" :class="`fa fa-${link.button.icon}`" />
-                                            </router-link>
-                                        </TipPopper>
+                                        <router-link
+                                            v-if="link.button"
+                                            v-tooltip="link.button.text"
+                                            :to="link.button.to"
+                                        >
+                                            <i class="text-lg" :class="`fa fa-${link.button.icon}`" />
+                                        </router-link>
                                     </div>
                                 </template>
                                 <span v-else class="title-font text-xs tracking-tight">{{
@@ -86,7 +88,6 @@
 <script setup>
     import AppLogo from '@/components/App/AppLogo.vue'
     import SwitchInput from '@/components/Input/SwitchInput.vue'
-    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
 
     import { sections } from '@/shared/navigation/sidebar-sections.enum'
     import { computed } from 'vue'

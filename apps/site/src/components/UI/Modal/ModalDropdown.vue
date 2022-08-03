@@ -1,9 +1,9 @@
 <template>
-    <Popper offset-distance="0" :interactive="false">
+    <Dropdown>
         <slot />
 
-        <template #content="{ close }">
-            <div class="card flex flex-col p-2" @mouseleave="close">
+        <template #popper>
+            <div class="card flex flex-col p-2">
                 <div
                     v-for="(button, _, i) in buttons"
                     :key="i"
@@ -18,11 +18,12 @@
                 </div>
             </div>
         </template>
-    </Popper>
+    </Dropdown>
 </template>
 
 <script setup>
-    import Popper from 'vue3-popper'
+    import { Dropdown } from 'floating-vue'
+
     defineProps({
         buttons: {
             type: Object,

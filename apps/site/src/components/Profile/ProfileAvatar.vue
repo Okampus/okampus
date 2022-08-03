@@ -18,7 +18,7 @@
             />
             <div
                 v-if="avatar && !loaded"
-                class="absolute top-0 left-0 animate-pulse bg-slate-300 dark:bg-slate-600"
+                class="animate-pulse bg-slate-300 dark:bg-slate-600"
                 :class="[innerClass, roundedClass]"
                 :style="avatarSizeStyle"
             />

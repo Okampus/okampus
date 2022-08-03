@@ -5,7 +5,7 @@
             <FavoriteInput :content="thread.post" />
         </div>
         <!-- <div class="flex flex-col">
-            <TipPopper :tip="`${threadTypes[thread.type]?.[locale]}`">
+            < :tip="`${threadTypes[thread.type]?.[locale]}`">
                 <div
                     class="flex justify-center items-center w-[3.3rem] h-[3.3rem] rounded-lg cursor-pointer"
                     :class="`bg-${threadTypes[thread.type]?.color}-100 dark:bg-${
@@ -14,8 +14,8 @@
                 >
                     <i :class="`fas fa-${threadTypes[thread.type]?.icon}`" class="text-xl" />
                 </div>
-            </TipPopper>
-            <TipPopper :tip="`${thread.replyCount} réponse${thread.replyCount > 1 ? 's' : ''}`">
+            </>
+            < :tip="`${thread.replyCount} réponse${thread.replyCount > 1 ? 's' : ''}`">
                 <div
                     class="flex flex-row gap-2 justify-center items-center p-1 mt-3 rounded cursor-pointer select-none"
                     :class="
@@ -31,7 +31,7 @@
                     <i v-else-if="thread.adminValidatedWith" class="fa fa-shield" />
                     <i v-else class="text-sm fa fa-message" />
                 </div>
-            </TipPopper>
+            </>
         </div> -->
         <div class="flex w-full flex-col gap-2.5">
             <div v-if="!thread.post.isVisible" class="flex items-center gap-1 text-yellow-500">
@@ -63,8 +63,8 @@
                 <UserActivity :user="thread.post.author">
                     <template #subtitle>
                         <div class="text-4 text-sm">
-                            Publié
                             <TipRelativeDateModified
+                                action="Publié"
                                 :created-at="thread.createdAt"
                                 :modified-at="thread.updatedAt"
                             />
@@ -86,9 +86,9 @@
                     />
                     <div class="text-xs">
                         {{ fullname(thread.post.author) }}
-                        <TipPopper :tip="getRole(thread.post.author)[locale]">
+                        < :tip="getRole(thread.post.author)[locale]">
                             <i class="ml-1" :class="`fa fa-${getRole(thread.post.author).icon}`" />
-                        </TipPopper>
+                        </>
                     </div>
                 </div>
                 <div class="flex gap-2 items-center">

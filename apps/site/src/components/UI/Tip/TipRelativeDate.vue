@@ -1,17 +1,18 @@
 <template>
-    <TipPopper :tip="dateString">
-        <span class="flex cursor-default items-center" :class="textClass">
-            {{ timeAgo(date, 'long', limit) }}
-        </span>
-    </TipPopper>
+    <span v-tooltip="dateString" class="flex cursor-default items-center" :class="textClass">
+        {{ action }} {{ timeAgo(date, 'long', limit) }}
+    </span>
 </template>
 
 <script setup>
     import { timeAgo } from '@/utils/timeAgo'
-    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
     import { formatDateLong } from '@/utils/dateUtils.js'
 
     const props = defineProps({
+        action: {
+            type: String,
+            default: '',
+        },
         date: {
             type: [String, Date],
             required: true,

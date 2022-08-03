@@ -35,6 +35,7 @@
         "chartjs-adapter-date-fns": "^2.0.0",
         "date-fns": "^2.29.1",
         "easymde": "2.16.1",
+        "floating-vue": "^2.0.0-beta.19",
         "graphql": "^16.5.0",
         "graphql-tag": "^2.12.6",
         "highlight.js": "11.6.0",
@@ -60,7 +61,6 @@
         "vue-multiselect": "^3.0.0-alpha.2",
         "vue-router": "4.1.2",
         "vue3-cookies": "^1.0.6",
-        "vue3-popper": "1.5.0",
         "vuedraggable": "^2.24.3",
         "workbox-precaching": "^6.5.3"
     },

@@ -5,13 +5,18 @@
             <button v-if="cancellable" class="button-red" @click="emit('cancel')">Annuler</button>
             <template v-if="sendable">
                 <div class="text-base">
-                    <TipPopper
-                        v-if="charCount < minCharCount"
-                        :tip="`Tu dois au moins écrire ${minCharCount} caractères.`"
+                    <button
+                        v-tooltip="
+                            charCount < minCharCount
+                                ? `Vous devez au moins écrire ${minCharCount} caractères.`
+                                : ''
+                        "
+                        class="button-green"
+                        :disabled="charCount < minCharCount"
+                        @click="emit('send')"
                     >
-                        <button class="button-green" disabled>Envoyer</button>
-                    </TipPopper>
-                    <button v-else class="button-green" @click="emit('send')">Envoyer</button>
+                        Envoyer
+                    </button>
                 </div>
             </template>
             <slot name="error" class="mt-2" />
@@ -21,7 +26,6 @@
 
 <script setup>
     import EasyMDE from 'easymde'
-    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
     import { toRaw } from 'vue'
 
     import { onMounted, ref } from 'vue'

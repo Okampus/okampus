@@ -78,52 +78,16 @@
                         Rejoindre
                     </button>
 
-                    <div class="text-0 ml-4 flex flex-row-reverse gap-1">
-                        <span v-if="club.activeMemberCount > club.boardMembers.length" class="text-0 my-auto"
-                            >+ {{ abbrNumbers(club.activeMemberCount - club.boardMembers.length) }}</span
-                        >
-                        <div v-for="(specialMember, i) in sortedBoardMembers" :key="i" class="-ml-3">
-                            <TipPopper
-                                placement="top"
-                                offset="12"
-                                :delay="200"
-                                @open="hovering = i"
-                                @close="hovering = null"
-                            >
-                                <template #content>
-                                    <UserAboutCard
-                                        :user="specialMember.user"
-                                        :title="`${clubRoleNames[specialMember.role][locale]} de ${
-                                            club.name
-                                        }`"
-                                    />
-                                </template>
-                                <div class="avatar-hover h-12 rounded-full">
-                                    <template v-if="isMobile">
-                                        <div class="p-1">
-                                            <ProfileAvatar
-                                                class="bg-2 relative rounded-full p-1 !shadow-none"
-                                                :class="{ 'hoverred': hovering === i }"
-                                                :size="2.5"
-                                                :avatar="specialMember.user.avatar"
-                                                :name="fullname(specialMember.user)"
-                                            />
-                                        </div>
-                                    </template>
-                                    <template v-else>
-                                        <router-link class="p-1" :to="`/user/${specialMember.user.id}`">
-                                            <ProfileAvatar
-                                                class="hovered bg-2 relative cursor-pointer rounded-full !shadow-none"
-                                                :size="2.5"
-                                                :avatar="specialMember.user.avatar"
-                                                :name="fullname(specialMember.user)"
-                                            />
-                                        </router-link>
-                                    </template>
-                                </div>
-                            </TipPopper>
-                        </div>
-                    </div>
+                    <AvatarGroup
+                        :link="`/club/${club.id}`"
+                        :total-user-count="club.activeMemberCount"
+                        :users="
+                            club.boardMembers.map((membership) => ({
+                                ...membership.user,
+                                title: `${clubRoleNames[membership.role][locale]} de ${club.name}`,
+                            }))
+                        "
+                    />
                 </div>
             </div>
         </div>
@@ -133,19 +97,16 @@
 <script setup>
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
-    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    import UserAboutCard from '@/components/User/UserAboutCard.vue'
     import ModalDropdown from '@/components/UI/Modal/ModalDropdown.vue'
 
-    import { fullname } from '@/utils/users'
-    import { abbrNumbers } from '@/utils/abbrNumbers'
+    import AvatarGroup from '@/components/List/AvatarGroup.vue'
+
     import { clubRoleNames, specialRoles } from '@/shared/types/club-roles.enum'
     import { clubTypes } from '@/shared/types/club-types.enum'
 
     import { getURL } from '@/utils/routeUtils'
-    import { computed, ref } from 'vue'
 
     import { useRouter } from 'vue-router'
     import { showErrorToast, showInfoToast } from '@/utils/toast.js'
@@ -164,14 +125,6 @@
     })
 
     const emit = defineEmits(['join'])
-
-    const sortedBoardMembers = computed(() =>
-        [...(props.club.boardMembers ?? [])].sort(
-            (member1, member2) => specialRoles.indexOf(member1.role) - specialRoles.indexOf(member2.role),
-        ),
-    )
-
-    const hovering = ref(null)
 
     const buttons = [
         {

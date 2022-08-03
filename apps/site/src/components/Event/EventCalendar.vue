@@ -26,9 +26,9 @@
                 </div>
             </div>
         </template>
-        <template #event="{ event, view }">
+        <!-- <template #event="{ event, view }">
             <div v-if="view" class="m-0 w-full p-4">
-                <Popper :prevent-overflow="false" :interactive="true">
+                < :prevent-overflow="false" :interactive="true">
                     <div
                         class="absolute inset-0 m-0 mr-3 h-full self-stretch rounded-r-md rounded-l-sm border-l-4 border-yellow-400 p-1 text-sm leading-tight text-white hover:scale-[1.01] hover:shadow-xl focus:scale-[1.01] focus:shadow-xl"
                         :style="{ 'background-color': getColorFromData(event.event.team.category) }"
@@ -81,9 +81,9 @@
                             </p>
                         </div>
                     </template>
-                </Popper>
+                </>
             </div>
-        </template>
+        </template> -->
     </vue-cal>
 </template>
 
@@ -94,18 +94,18 @@
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
-    import { getColorFromData } from '@/utils/colors'
-    import Popper from 'vue3-popper'
+    // import { getColorFromData } from '@/utils/colors'
+    // import Popper from 'vue3-popper'
 
-    const formatHour = (time) => {
-        const date = new Date(time)
-        return (
-            (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) +
-            (date.getMinutes() > 0
-                ? ':' + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
-                : 'h')
-        )
-    }
+    // const formatHour = (time) => {
+    //     const date = new Date(time)
+    //     return (
+    //         (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) +
+    //         (date.getMinutes() > 0
+    //             ? ':' + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
+    //             : 'h')
+    //     )
+    // }
 
     const props = defineProps({
         events: {

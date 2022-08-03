@@ -21,13 +21,13 @@
             <div v-else class="mr-4 flex h-full items-center justify-between bg-transparent">
                 <div id="notification-bell" class="fa fa-bell mr-6 cursor-pointer text-xl text-gray-200" />
                 <!-- TODO: on small screen, use full screen modal -->
-                <Popper offset-distance="6" offset-skid="-85">
+                <Dropdown theme="profile-dropdown">
                     <ProfileAvatar
                         class="cursor-pointer"
                         :avatar="auth.user.avatar"
                         :name="fullname(auth.user)"
                     />
-                    <template #content="{ close }">
+                    <template #popper="{ hide }">
                         <div
                             class="text-1 flex w-64 flex-col gap-2 rounded-b-lg bg-white pb-2 opacity-[0.96] shadow-md dark:bg-gray-800"
                         >
@@ -37,19 +37,21 @@
                                     <div class="overflow-hidden text-ellipsis font-bold">
                                         {{ fullname(auth.user) }}
                                     </div>
-                                    <div class="overflow-hidden text-ellipsis">{{ auth.user.email }}</div>
+                                    <router-link :to="`/user/${auth.user.id}`" class="link-blue"
+                                        >Profil public</router-link
+                                    >
                                 </div>
                             </div>
 
                             <hr class="mt-2 h-[1px] w-11/12 self-center border-none bg-gray-500/20" />
-                            <router-link class="topbar-popup-item" :to="`/me`" @click="close">
-                                <i class="fas fa-user" />
-                                <div>Mon profil</div>
+                            <router-link class="topbar-popup-item" :to="`/me`" @click="hide">
+                                <i class="fas fa-gear" />
+                                <div>Gérer mon profil</div>
                             </router-link>
 
-                            <router-link class="topbar-popup-item" to="/rgpd" @click="close">
+                            <router-link class="topbar-popup-item" to="/rgpd" @click="hide">
                                 <i class="fas fa-database" />
-                                <div>Mes données (RGPD)</div>
+                                <div>Gérer mes données</div>
                             </router-link>
 
                             <div class="topbar-popup-item" @click="emitter.emit('logout')">
@@ -58,14 +60,15 @@
                             </div>
                         </div>
                     </template>
-                </Popper>
+                </Dropdown>
             </div>
         </template>
     </nav>
 </template>
 
 <script setup>
-    import Popper from 'vue3-popper'
+    import { Dropdown } from 'floating-vue'
+
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import ButtonLogin from '@/components/UI/Button/ButtonLogin.vue'
     import LayoutSearch from '@/components/Layout/LayoutSearch.vue'

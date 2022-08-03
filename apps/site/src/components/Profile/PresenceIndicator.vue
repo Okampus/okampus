@@ -1,69 +1,56 @@
 <template>
-    <div class="absolute bottom-0 right-0 h-[1.1rem] w-4">
-        <TipPopper
-            offset="0"
-            :tip="
-                presence === SURE
-                    ? 'Sera présent ✅'
-                    : presence === MAYBE
-                    ? 'Peut-être présent 🕑'
-                    : 'Ne pourra pas être présent ❌'
-            "
+    <div
+        v-tooltip="
+            presence === SURE
+                ? 'Sera présent ✅'
+                : presence === MAYBE
+                ? 'Peut-être présent 🕑'
+                : 'Ne pourra pas être présent ❌'
+        "
+        class="absolute bottom-0 right-0 h-[1.1rem] w-4"
+    >
+        <svg
+            v-if="presence === SURE"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 text-green-400"
+            viewBox="0 0 20 20"
+            fill="currentColor"
         >
-            <!-- <div
-                :class="{
-                    'bg-green-500': presence === SURE,
-                    'bg-red-500': presence === ABSENT,
-                    'bg-yellow-500': presence === MAYBE,
-                }"
-                class="h-4 w-4 rounded-full text-white"
-            > -->
-            <svg
-                v-if="presence === SURE"
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 text-green-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-            >
-                <path
-                    fill-rule="evenodd"
-                    d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm3.707-9.293a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z"
-                    clip-rule="evenodd"
-                />
-            </svg>
-            <svg
-                v-else-if="presence === MAYBE"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                class="h-5 text-yellow-400"
-                fill="currentColor"
-            >
-                <path
-                    fill-rule="evenodd"
-                    d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.106-7.553c-.31-.62-.586-1.014-.813-1.24C12.116 9.03 12.02 9.004 12 9c-.02.004-.116.03-.293.207-.226.226-.503.62-.812 1.24-.357.714-.747 1.32-1.188 1.76C9.265 12.65 8.692 13 8 13c-.692 0-1.265-.35-1.707-.793-.44-.44-.83-1.046-1.187-1.76a1 1 0 1 1 1.789-.894c.31.62.586 1.013.812 1.24.177.177.273.204.293.207.02-.004.116-.03.293-.207.226-.226.503-.62.813-1.24.357-.714.747-1.32 1.187-1.76C10.735 7.35 11.308 7 12 7c.692 0 1.265.35 1.707.793.44.44.83 1.046 1.188 1.76a1 1 0 1 1-1.79.894ZM11.996 9H12h-.002Zm.005 0h.003-.003Zm-3.997 2h-.003.003ZM8 11h-.003H8Z"
-                    clip-rule="evenodd"
-                />
-            </svg>
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                class="h-5 text-red-400"
-                fill="currentColor"
-            >
-                <path
-                    fill-rule="evenodd"
-                    d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM8.707 7.293a1 1 0 0 0-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 1 0 1.414 1.414L10 11.414l1.293 1.293a1 1 0 0 0 1.414-1.414L11.414 10l1.293-1.293a1 1 0 0 0-1.414-1.414L10 8.586 8.707 7.293z"
-                    clip-rule="evenodd"
-                />
-            </svg>
-            <!-- </div> -->
-        </TipPopper>
+            <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm3.707-9.293a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z"
+                clip-rule="evenodd"
+            />
+        </svg>
+        <svg
+            v-else-if="presence === MAYBE"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            class="h-5 text-yellow-400"
+            fill="currentColor"
+        >
+            <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.106-7.553c-.31-.62-.586-1.014-.813-1.24C12.116 9.03 12.02 9.004 12 9c-.02.004-.116.03-.293.207-.226.226-.503.62-.812 1.24-.357.714-.747 1.32-1.188 1.76C9.265 12.65 8.692 13 8 13c-.692 0-1.265-.35-1.707-.793-.44-.44-.83-1.046-1.187-1.76a1 1 0 1 1 1.789-.894c.31.62.586 1.013.812 1.24.177.177.273.204.293.207.02-.004.116-.03.293-.207.226-.226.503-.62.813-1.24.357-.714.747-1.32 1.187-1.76C10.735 7.35 11.308 7 12 7c.692 0 1.265.35 1.707.793.44.44.83 1.046 1.188 1.76a1 1 0 1 1-1.79.894ZM11.996 9H12h-.002Zm.005 0h.003-.003Zm-3.997 2h-.003.003ZM8 11h-.003H8Z"
+                clip-rule="evenodd"
+            />
+        </svg>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            class="h-5 text-red-400"
+            fill="currentColor"
+        >
+            <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM8.707 7.293a1 1 0 0 0-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 1 0 1.414 1.414L10 11.414l1.293 1.293a1 1 0 0 0 1.414-1.414L11.414 10l1.293-1.293a1 1 0 0 0-1.414-1.414L10 8.586 8.707 7.293z"
+                clip-rule="evenodd"
+            />
+        </svg>
     </div>
 </template>
 
 <script setup>
-    import TipPopper from '@/components/UI/Tip/TipPopper.vue'
-
     const SURE = 'Sure'
     const MAYBE = 'Maybe'
 

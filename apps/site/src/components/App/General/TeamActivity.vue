@@ -21,7 +21,6 @@
 
 <script setup>
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    // import TipPopper from '@/components/UI/Tip/TipPopper.vue'
 
     defineProps({
         team: {

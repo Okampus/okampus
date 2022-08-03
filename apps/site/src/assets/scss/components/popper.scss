@@ -1,0 +1,256 @@
+/* stylelint-disable selector-class-pattern */
+.resize-observer[data-v-b329ee4c] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    background-color: transparent;
+    border: none;
+    opacity: 0;
+}
+
+.resize-observer[data-v-b329ee4c] object {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.v-popper__popper {
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    outline: none !important;
+}
+
+.v-popper__popper.v-popper__popper--hidden {
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.15s, visibility 0.15s;
+}
+
+.v-popper__popper.v-popper__popper--shown {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.15s;
+}
+
+.v-popper__popper.v-popper__popper--skip-transition,
+.v-popper__popper.v-popper__popper--skip-transition > .v-popper__wrapper {
+    transition: none !important;
+}
+
+.v-popper__backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.v-popper__inner {
+    position: relative;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.v-popper__inner > div {
+    position: relative;
+    z-index: 1;
+    max-width: inherit;
+    max-height: inherit;
+}
+
+.v-popper__arrow-container {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+}
+
+.v-popper__popper--arrow-overflow .v-popper__arrow-container,
+.v-popper__popper--no-positioning .v-popper__arrow-container {
+    display: none;
+}
+
+.v-popper__arrow-inner,
+.v-popper__arrow-outer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.v-popper__arrow-inner {
+    visibility: hidden;
+    border-width: 7px;
+}
+
+.v-popper__arrow-outer {
+    border-width: 6px;
+}
+
+.v-popper--theme-tooltip .v-popper__arrow-outer {
+    border-color: #000;
+
+    .dark {
+        border-color: #fff;
+    }
+}
+
+.v-popper--theme-profile-dropdown {
+    & .v-popper__inner {
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+    }
+
+    & .v-popper__arrow-container {
+        display: none !important;
+    }
+}
+
+.v-popper--theme-dropdown .v-popper__arrow-inner {
+    visibility: visible;
+    border-color: #fff;
+
+    .dark & {
+        border-color: #000;
+    }
+}
+
+.v-popper--theme-dropdown .v-popper__arrow-outer {
+    border-color: #fff;
+
+    .dark & {
+        border-color: #000;
+    }
+}
+
+.v-popper--theme-popper {
+    & .v-popper__arrow-container {
+        display: none !important;
+    }
+
+    & .v-popper__inner {
+        padding: 0 !important;
+        background: transparent !important;
+        @apply shadow-lg;
+    }
+}
+
+.v-popper--theme-tooltip .v-popper__inner {
+    padding: 7px 12px 6px;
+    color: #fff;
+    background: #000;
+    border-radius: 6px;
+    @apply shadow-lg;
+}
+
+.v-popper--theme-dropdown .v-popper__inner {
+    color: #000;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 6px 30px #0000001a;
+
+    .dark & {
+        color: #fff;
+        background: #000;
+    }
+}
+
+.v-popper__popper[data-popper-placement^='top'] .v-popper__arrow-inner,
+.v-popper__popper[data-popper-placement^='bottom'] .v-popper__arrow-inner {
+    left: -2px;
+}
+
+.v-popper__popper[data-popper-placement^='top'] .v-popper__arrow-outer,
+.v-popper__popper[data-popper-placement^='bottom'] .v-popper__arrow-outer {
+    left: -1px;
+}
+
+.v-popper__popper[data-popper-placement^='top'] .v-popper__arrow-inner,
+.v-popper__popper[data-popper-placement^='top'] .v-popper__arrow-outer {
+    border-right-color: transparent !important;
+    border-bottom-color: transparent !important;
+    border-bottom-width: 0;
+    border-left-color: transparent !important;
+}
+
+.v-popper__popper[data-popper-placement^='top'] .v-popper__arrow-inner {
+    top: -2px;
+}
+
+.v-popper__popper[data-popper-placement^='bottom'] .v-popper__arrow-container {
+    top: 0;
+}
+
+.v-popper__popper[data-popper-placement^='bottom'] .v-popper__arrow-inner,
+.v-popper__popper[data-popper-placement^='bottom'] .v-popper__arrow-outer {
+    border-top-color: transparent !important;
+    border-top-width: 0;
+    border-right-color: transparent !important;
+    border-left-color: transparent !important;
+}
+
+.v-popper__popper[data-popper-placement^='bottom'] .v-popper__arrow-inner {
+    top: -4px;
+}
+
+.v-popper__popper[data-popper-placement^='bottom'] .v-popper__arrow-outer {
+    top: -6px;
+}
+
+.v-popper__popper[data-popper-placement^='left'] .v-popper__arrow-inner,
+.v-popper__popper[data-popper-placement^='right'] .v-popper__arrow-inner {
+    top: -2px;
+}
+
+.v-popper__popper[data-popper-placement^='left'] .v-popper__arrow-outer,
+.v-popper__popper[data-popper-placement^='right'] .v-popper__arrow-outer {
+    top: -1px;
+}
+
+.v-popper__popper[data-popper-placement^='right'] .v-popper__arrow-inner,
+.v-popper__popper[data-popper-placement^='right'] .v-popper__arrow-outer {
+    border-top-color: transparent !important;
+    border-bottom-color: transparent !important;
+    border-left-color: transparent !important;
+    border-left-width: 0;
+}
+
+.v-popper__popper[data-popper-placement^='right'] .v-popper__arrow-inner {
+    left: -4px;
+}
+
+.v-popper__popper[data-popper-placement^='right'] .v-popper__arrow-outer {
+    left: -6px;
+}
+
+.v-popper__popper[data-popper-placement^='left'] .v-popper__arrow-container {
+    right: -10px;
+}
+
+.v-popper__popper[data-popper-placement^='left'] .v-popper__arrow-inner,
+.v-popper__popper[data-popper-placement^='left'] .v-popper__arrow-outer {
+    border-top-color: transparent !important;
+    border-right-color: transparent !important;
+    border-right-width: 0;
+    border-bottom-color: transparent !important;
+}
+
+.v-popper__popper[data-popper-placement^='left'] .v-popper__arrow-inner {
+    left: -2px;
+}

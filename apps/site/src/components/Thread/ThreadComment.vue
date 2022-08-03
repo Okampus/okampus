@@ -43,19 +43,22 @@
                 <span v-if="!editing" class="ml-3 inline-flex items-center gap-2 tracking-tight">
                     <router-link :to="`/user/${comment.author.id}`" class="flex items-center gap-1.5">
                         <ProfileAvatar
-                            :size="1.5"
+                            :size="1.7"
                             :avatar="comment.author.avatar"
                             :name="fullname(comment.author)"
                         />
-                        <div
+
+                        <router-link
+                            v-tooltip="authorIsOp ? 'OP' : ''"
+                            :to="`/user/${comment.author.id}`"
                             :class="
                                 authorIsOp
-                                    ? 'cursor-pointer h-fit px-1.5 bg-gray-500 hover:bg-gray-600 dark:hover:bg-gray-400 rounded-full'
+                                    ? 'w-fit rounded-full bg-[#888] px-2 py-0.5 text-[0.8rem] font-semibold text-white hover:bg-gray-600 dark:hover:bg-gray-400'
                                     : 'link-blue'
                             "
                         >
                             {{ fullname(comment.author) }}
-                        </div>
+                        </router-link>
                     </router-link>
                     <TipRelativeDateModified
                         :created-at="comment.createdAt"
@@ -70,12 +73,7 @@
                                 class="group text-5 cursor-pointer rounded-lg py-1 px-2 text-sm"
                                 @click="action.action"
                             >
-                                <Popper :hover="true" placement="top" :arrow="true" offset-distance="3">
-                                    <i :class="[action.icon, action.class]" />
-                                    <template #content>
-                                        <div class="card-tip">{{ action.name }}</div>
-                                    </template>
-                                </Popper>
+                                <i v-tooltip="action.name" :class="[action.icon, action.class]" />
                             </div>
                             <div class="comment-ellipsis-dropdown text-5 cursor-pointer rounded-lg text-sm">
                                 <ModalDropdown :buttons="hiddenActionsShown">
@@ -104,8 +102,6 @@
     import MdEditableRender from '@/components/Input/Editor/MdEditableRender.vue'
     import TipRelativeDateModified from '@/components/UI/Tip/TipRelativeDateModified.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-
-    import Popper from 'vue3-popper'
 
     import { capitalize, computed, nextTick, ref } from 'vue'
     import { useAuthStore } from '@/store/auth.store'
