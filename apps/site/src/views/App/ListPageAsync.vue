@@ -1,6 +1,5 @@
 <template>
     <div class="flex flex-col">
-        <SelectInput v-if="sortTypes.length" />
         <slot :items="results.items" />
         <PageFooter
             :route-base="routeBase"
@@ -13,7 +12,6 @@
 </template>
 
 <script setup>
-    import SelectInput from '@/components/Input/SelectInput.vue'
     import PageFooter from '@/components/Pagination/PageFooter.vue'
 
     import { useRoute, useRouter } from 'vue-router'

@@ -20,14 +20,14 @@
                     Transmettre le rôle de {{ clubRoleNames[membership.role].fr }}
                 </button>
 
-                <SelectInput
+                <!-- SELECT
                     v-else
                     v-model="membership.role"
                     :max-content-width="1"
                     :choices="Object.keys(clubRoleNames).map((role) => clubRoleNames[role].fr)"
                     :values="Object.keys(clubRoleNames)"
                     @update:model-value="() => patchRole(membership)"
-                />
+                -->
 
                 <router-link
                     v-if="!memberRole"
@@ -82,7 +82,6 @@
 
 <script setup>
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    import SelectInput from '@/components/Input/SelectInput.vue'
 
     import { fullname } from '@/utils/users'
     import { clubRoleNames } from '@/shared/types/club-roles.enum'
@@ -134,14 +133,14 @@
             })
     }
 
-    const patchRole = async (membership) => {
-        await clubs
-            .patchMembership(membership.team.id, membership.user.id, { role: membership.role })
-            .then(async () => {
-                await loadMemberships()
-            })
-        // .catch((err) => console.log(err))
-    }
+    // const patchRole = async (membership) => {
+    //     await clubs
+    //         .patchMembership(membership.team.id, membership.user.id, { role: membership.role })
+    //         .then(async () => {
+    //             await loadMemberships()
+    //         })
+    //     // .catch((err) => console.log(err))
+    // }
 
     const clubId = ref(parseInt(props.club.id))
     const memberships = ref([])

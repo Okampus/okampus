@@ -175,9 +175,9 @@
                                                 />
                                                 <p>{{ fullname(registration.user) }}</p>
                                             </td>
-                                            <td class="w-30">
-                                                <SelectInput :choices="['Présent', 'Absent']"></SelectInput>
-                                            </td>
+                                            <!-- <td class="w-30">
+                                                 :choices="['Présent', 'Absent']"
+                                            </td> -->
                                             <td>
                                                 <button
                                                     class="button-red py-1 px-2"
@@ -254,8 +254,6 @@
 
     import TeamActivity from '@/components/App/General/TeamActivity.vue'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
-
-    import SelectInput from '@/components/Input/SelectInput.vue'
 
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
