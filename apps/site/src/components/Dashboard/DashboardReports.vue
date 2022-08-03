@@ -10,7 +10,7 @@
                 class="text-0 w-full"
                 :items="reports"
                 table-layout="fixed"
-                :headers="[
+                :columns="[
                     {
                         id: 'content',
                         title: 'Contenu',
@@ -47,7 +47,7 @@
                         </div>
                     </router-link>
                 </template>
-                <template #reporter="{ user }">
+                <template #reporter="{ data: { user } }">
                     <router-link :to="`/user/${user.id}`" class="flex cursor-pointer items-center gap-1">
                         <ProfileAvatar :name="fullname(user)" :avatar="user.avatar" :size="2.5">
                         </ProfileAvatar>
