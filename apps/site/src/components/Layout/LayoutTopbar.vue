@@ -37,7 +37,7 @@
                                     <div class="overflow-hidden text-ellipsis font-bold">
                                         {{ fullname(auth.user) }}
                                     </div>
-                                    <router-link :to="`/user/${auth.user.id}`" class="link-blue"
+                                    <router-link :to="`/user/${auth.user.id}`" class="link-blue" @click="hide"
                                         >Profil public</router-link
                                     >
                                 </div>

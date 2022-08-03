@@ -37,7 +37,7 @@ options.themes = {
     'profile-dropdown': {
         $extend: 'dropdown',
         overflowPadding: 13,
-        distance: 8,
+        distance: 7,
     },
     'popper': {
         $extend: 'menu',
