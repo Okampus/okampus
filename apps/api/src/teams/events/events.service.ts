@@ -156,7 +156,7 @@ export class TeamEventsService {
     const events = await this.teamEventRepository.findWithPagination(
       options,
       filter,
-      { orderBy: serializeOrder(options?.sortBy, 'start'), populate: ['supervisor', 'createdBy', 'team'] },
+      { orderBy: serializeOrder(options?.sortBy, 'start'), populate: ['supervisor', 'registrations', 'registrations.user', 'createdBy', 'team'] },
     );
 
     const allRegistrations = await this.teamEventRegistrationRepository.find({ user });
@@ -183,7 +183,7 @@ export class TeamEventsService {
           { private: false, state: TeamEventState.Published },
         ],
       },
-      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'registrations', 'registrationForm', 'usedTemplate'] },
+      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'registrations', 'registrations.user', 'registrationForm', 'usedTemplate'] },
     );
     if (event.state === TeamEventState.Draft && !event.canEdit(user))
       throw new ForbiddenException('Event not published');
