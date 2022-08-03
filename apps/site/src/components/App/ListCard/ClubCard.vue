@@ -79,7 +79,7 @@
                     </button>
 
                     <AvatarGroup
-                        :link="`/club/${club.id}`"
+                        :link="`/club/${club.id}/members`"
                         :total-user-count="club.activeMemberCount"
                         :users="
                             club.boardMembers.map((membership) => ({

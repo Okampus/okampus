@@ -55,9 +55,10 @@
                         {{ shortDescription }}
                     </div>
                 </template>
-                <template #members="{ data: { activeMemberCount, boardMembers, name }, row }">
+                <template #members="{ data: { activeMemberCount, boardMembers, name, id }, row }">
                     <div class="flex justify-center">
                         <AvatarGroup
+                            :link="`/club/${id}/members`"
                             :bg-class="row % 2 ? 'bg-0' : 'bg-2'"
                             :total-user-count="activeMemberCount"
                             :users="
