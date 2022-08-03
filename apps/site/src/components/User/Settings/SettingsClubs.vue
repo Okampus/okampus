@@ -55,9 +55,11 @@
                                 Vous n'êtes actuellement membre d'aucune association.
                             </div>
 
-                            <router-link class="button-blue mt-4 text-xl" to="/clubs"
-                                >Découvrir les associations<i class="fa fa-arrow-right ml-2"
-                            /></router-link>
+                            <router-link to="/clubs">
+                                <button class="button-blue mt-4 text-xl">
+                                    Découvrir les associations<i class="fa fa-arrow-right ml-2" />
+                                </button>
+                            </router-link>
                         </div>
                     </template>
 
@@ -124,8 +126,10 @@
                             <img class="h-48 w-48" :src="Puzzle" />
                             <div class="text-2 text-lg">Vous n'avez pas de demandes d'adhésion en cours.</div>
 
-                            <router-link class="button-blue mt-4 text-xl" to="/clubs"
-                                >Découvrir les associations<i class="fa fa-arrow-right ml-2" />
+                            <router-link to="/clubs">
+                                <button class="button-blue mt-4 text-xl">
+                                    Découvrir les associations<i class="fa fa-arrow-right ml-2" />
+                                </button>
                             </router-link>
                         </div>
                     </template>

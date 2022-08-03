@@ -30,7 +30,7 @@
                             @click="router.push(`/me`)"
                         >
                             <i class="fas fa-gear" />
-                            Mes paramètres
+                            Gérer mon profil
                         </button>
                     </div>
                 </div>

@@ -3,9 +3,11 @@
         <div class="flex flex-col items-center">
             <slot />
 
-            <a v-if="show === 'sso'" role="button" class="button-blue my-8 text-2xl" :href="myEfreiAuthUrl"
-                >Connexion myEfrei<i class="fa fa-sign-in ml-2"
-            /></a>
+            <a v-if="show === 'sso'" :href="myEfreiAuthUrl">
+                <button role="button" class="button-blue my-8 text-2xl">
+                    Connexion myEfrei <i class="fa fa-sign-in ml-2" />
+                </button>
+            </a>
 
             <form
                 v-if="show === 'login'"
