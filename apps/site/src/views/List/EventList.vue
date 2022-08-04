@@ -1,12 +1,16 @@
 <template>
-    <GraphQLQuery :query="getEvents" :update="(date) => date?.events">
+    <GraphQLQuery
+        :query="getEvents"
+        :variables="{ filter: { state: 'Published' } }"
+        :update="(date) => date?.events"
+    >
         <template #default="{ data: events }">
             <div v-if="events.length" class="centered-container text-0 mt-10 flex flex-col gap-4">
                 <div class="mx-5 flex items-center -space-x-4">
                     <SwiperButton type="prev" :swiper="swiper" />
                     <Swiper
                         :space-between="sm ? 12 : 0"
-                        :slides-per-view="sm ? (xl ? 3 : 2) : 1"
+                        :slides-per-view="xl ? 3 : sm ? 2 : 1"
                         :loop="true"
                         @swiper="(s) => (swiper = s)"
                     >

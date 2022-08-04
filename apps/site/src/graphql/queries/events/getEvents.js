@@ -3,8 +3,8 @@ import { partialTeamFragment } from '@/graphql/fragments/partialTeamFragment'
 import { userFragment } from '@/graphql/fragments/userFragment'
 
 export const getEvents = gql`
-    query events {
-        events {
+    query events($filter: ListTeamEventsDto!) {
+        events(filter: $filter) {
             id
             createdAt
             description
@@ -13,6 +13,7 @@ export const getEvents = gql`
             name
             start
             end
+            state
             team {
                 ...PartialTeamInfo
             }

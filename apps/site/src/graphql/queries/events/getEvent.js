@@ -13,6 +13,7 @@ export const getEvent = gql`
             name
             start
             end
+            state
             team {
                 id
                 ...PartialTeamInfo
