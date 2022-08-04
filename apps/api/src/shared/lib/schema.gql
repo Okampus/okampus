@@ -241,6 +241,14 @@ input ListMetricsDto {
   names: String!
 }
 
+input ListTeamEventsDto {
+  after: DateTime
+  before: DateTime
+  id: Int
+  priceBelow: Float
+  state: TeamEventState
+}
+
 enum MembershipRequestDirection {
   All
   Incoming
@@ -310,7 +318,7 @@ type Query {
   clubs: [Team!]!
   contentById(id: Int!): Content
   eventById(id: Int!): TeamEvent!
-  events: [TeamEvent!]!
+  events(filter: ListTeamEventsDto!): [TeamEvent!]!
   me: User!
   metrics(metrics: ListMetricsDto!): [Metric!]!
   reportById(id: Int!): Report!

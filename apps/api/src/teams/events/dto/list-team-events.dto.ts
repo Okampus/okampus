@@ -1,3 +1,6 @@
+import {
+ Field, Float, GraphQLISODateTime, InputType, Int,
+} from '@nestjs/graphql';
 import { PartialType } from '@nestjs/mapped-types';
 import {
   IsDate,
@@ -10,24 +13,30 @@ import {
 import { ListOptionsDto } from '../../../shared/lib/dto/list-options.dto';
 import { TeamEventState } from '../../../shared/lib/types/enums/team-event-state.enum';
 
+@InputType()
 export class ListTeamEventsDto extends PartialType(ListOptionsDto) {
+  @Field(() => Int, { nullable: true })
   @IsOptional()
   @IsInt()
   id?: number;
 
+  @Field(() => GraphQLISODateTime, { nullable: true })
   @IsOptional()
   @IsDate()
   before?: Date;
 
+  @Field(() => GraphQLISODateTime, { nullable: true })
   @IsOptional()
   @IsDate()
   after?: Date;
 
+  @Field(() => Float, { nullable: true })
   @IsOptional()
   @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 2 })
   @Min(0)
   priceBelow?: number;
 
+  @Field(() => TeamEventState, { nullable: true })
   @IsOptional()
   @IsEnum(TeamEventState)
   state?: TeamEventState;

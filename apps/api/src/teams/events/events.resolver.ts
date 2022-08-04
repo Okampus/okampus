@@ -11,6 +11,7 @@ import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator'
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { User } from '../../users/user.entity';
 import { TeamEventRegistration } from '../event-registrations/team-event-registration.entity';
+import { ListTeamEventsDto } from './dto/list-team-events.dto';
 import { TeamEventsService } from './events.service';
 import { TeamEvent } from './team-event.entity';
 
@@ -30,8 +31,8 @@ export class TeamEventsResolver {
   }
 
   @Query(() => [TeamEvent])
-  public async events(@CurrentUser() user: User): Promise<TeamEvent[]> {
-    const paginatedEvents = await this.teamEventsService.findAll(user, {});
+  public async events(@CurrentUser() user: User, @Args('filter') filter: ListTeamEventsDto): Promise<TeamEvent[]> {
+    const paginatedEvents = await this.teamEventsService.findAll(user, filter);
     return paginatedEvents.items;
   }
 

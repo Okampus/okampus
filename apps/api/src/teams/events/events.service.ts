@@ -83,6 +83,7 @@ export class TeamEventsService {
         configuration: config.get('productName'),
         type: ValidationStepType.TeamEvent,
       });
+
       if (validationStepCount === 0)
         createTeamEventDto.state = TeamEventState.Published;
     }
