@@ -19,7 +19,12 @@
                             :name="club.name"
                         />
                     </div>
-                    <router-link class="mt-2" :to="`/clubs/${clubTypes[club.category].link}`">
+                    <router-link
+                        class="z-10 mt-2"
+                        :to="`/clubs/${clubTypes[club.category].link}`"
+                        @mouseover="showLink = false"
+                        @mouseleave="showLink = true"
+                    >
                         <LabelSimple class="bg-slate-600/40 text-xs hover:bg-slate-400/40">{{
                             club.category
                         }}</LabelSimple>
@@ -28,13 +33,16 @@
                 <ModalDropdown :buttons="buttons">
                     <i
                         class="fa fa-ellipsis text-2 cursor-pointer self-center px-3 pt-2 pb-1 text-xl md:-mr-1"
+                        @mouseover="showLink = false"
+                        @mouseleave="showLink = true"
                     />
                 </ModalDropdown>
             </div>
 
             <div class="flex h-full w-full flex-col justify-between">
                 <router-link
-                    class="text-1 card-link mt-2 text-xl font-bold line-clamp-1"
+                    class="text-1 mt-2 text-xl font-bold line-clamp-1"
+                    :class="{ 'card-link': showLink }"
                     :to="`/club/${club.id}`"
                 >
                     {{ club.name }}
@@ -51,6 +59,8 @@
                             specialRoles.includes(club.userMembership.membership?.role)
                         "
                         class="button-green pill-button -ml-1"
+                        @mouseover="showLink = false"
+                        @mouseleave="showLink = true"
                         @click="router.push(`/club/${club.id}/manage`)"
                     >
                         <i class="fa fa-gear" />
@@ -59,6 +69,8 @@
                     <button
                         v-else-if="club.userMembership.membership?.role"
                         class="button-indigo pill-button -ml-1"
+                        @mouseover="showLink = false"
+                        @mouseleave="showLink = true"
                         @click="router.push(`/club/${club.id}`)"
                     >
                         <i class="fa fa-users" />
@@ -67,6 +79,8 @@
                     <button
                         v-else-if="club.userMembership.pendingRequest"
                         class="button-grey pill-button -ml-1"
+                        @mouseover="showLink = false"
+                        @mouseleave="showLink = true"
                         @click="router.push(`/me/clubs/requests`)"
                     >
                         <i class="fa fa-envelope" />
@@ -75,6 +89,8 @@
                     <button
                         v-else
                         class="button-blue -ml-1 rounded-full py-1 text-center font-semibold"
+                        @mouseover="showLink = false"
+                        @mouseleave="showLink = true"
                         @click="emit('join')"
                     >
                         Rejoindre
@@ -89,6 +105,8 @@
                                 title: `${clubRoleNames[membership.role][locale]} de ${club.name}`,
                             }))
                         "
+                        @mouseover="showLink = false"
+                        @mouseleave="showLink = true"
                     />
                 </div>
             </div>
@@ -114,6 +132,7 @@
     import { showErrorToast, showInfoToast } from '@/utils/toast.js'
 
     import { useI18n } from 'vue-i18n'
+    import { ref } from 'vue'
 
     const { locale } = useI18n({ useScope: 'global' })
 
@@ -128,6 +147,7 @@
 
     const emit = defineEmits(['join'])
 
+    const showLink = ref(true)
     const buttons = [
         {
             name: 'Lien',
