@@ -1,5 +1,5 @@
 <template>
-    <Dropdown>
+    <Dropdown class="z-10">
         <slot />
 
         <template #popper>

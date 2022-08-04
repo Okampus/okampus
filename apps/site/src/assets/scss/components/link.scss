@@ -9,7 +9,7 @@
 }
 
 .card-link {
-    @apply after:absolute after:inset-0 after:w-full;
+    @apply z-0 after:absolute after:inset-0 after:w-full;
 
     &:hover {
         @apply underline text-blue-400 dark:text-blue-700;
