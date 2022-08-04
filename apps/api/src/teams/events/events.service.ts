@@ -134,7 +134,7 @@ export class TeamEventsService {
         state: query.state ?? TeamEventState.Published,
       };
     } else if (user.schoolRole === SchoolRole.Admin || user.roles.includes(Role.Admin)) {
-      filter = { state: query.state ?? TeamEventState.Published };
+      filter = query.state ? { state: query.state } : {};
     } else {
       // We asked for all the events of all teams
       // so we search for the public & private events of the teams the user is a member of
