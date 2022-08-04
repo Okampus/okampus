@@ -3,7 +3,7 @@ import { clubRoleNames } from '../types/club-roles.enum'
 
 const roles = Object.entries(clubRoleNames).map(([value, name]) => ({
     value,
-    label: name[i18n.global.locale],
+    label: name[i18n.global.locale.value],
 }))
 
 export const DEFAULT_JOIN_FORM_SCHEMA = [

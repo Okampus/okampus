@@ -8,7 +8,7 @@ export function getTodayDate() {
 
 export function formatDateShort(dateString, weekday = false) {
     const date = new Date(dateString)
-    return new Intl.DateTimeFormat(i18n.global.locale, {
+    return new Intl.DateTimeFormat(i18n.global.locale.value, {
         ...(weekday ? { weekday: 'short' } : {}),
         month: 'short',
         day: 'numeric',
@@ -19,10 +19,10 @@ export function formatDateShort(dateString, weekday = false) {
 
 export function formatDateLong(dateString) {
     const date = new Date(dateString)
-    return `${new Intl.DateTimeFormat(i18n.global.locale, {
+    return `${new Intl.DateTimeFormat(i18n.global.locale.value, {
         dateStyle: 'full',
         timeStyle: 'short',
-    }).format(date)} ${new Intl.DateTimeFormat(i18n.global.locale, {
+    }).format(date)} ${new Intl.DateTimeFormat(i18n.global.locale.value, {
         timeZoneName: 'short',
     })
         .format(date)
@@ -30,7 +30,7 @@ export function formatDateLong(dateString) {
 }
 
 export function getDateRangeStringShort(startDate, endDate, timeStyle = false) {
-    const fullDateFormat = new Intl.DateTimeFormat(i18n.global.locale, {
+    const fullDateFormat = new Intl.DateTimeFormat(i18n.global.locale.value, {
         month: 'short',
         day: 'numeric',
         ...(timeStyle
@@ -45,7 +45,7 @@ export function getDateRangeStringShort(startDate, endDate, timeStyle = false) {
 }
 
 export function getDateRangeString(startDate, endDate, weekday = true) {
-    const fullDateFormat = new Intl.DateTimeFormat(i18n.global.locale, {
+    const fullDateFormat = new Intl.DateTimeFormat(i18n.global.locale.value, {
         ...(weekday ? { weekday: 'short' } : {}),
         month: 'short',
         day: 'numeric',

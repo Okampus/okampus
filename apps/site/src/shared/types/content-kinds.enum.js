@@ -40,6 +40,8 @@ export const contentTypeNames = {
     },
 }
 
-export const getContentName = (kind) => contentTypeNames[kind].name[i18n.global.locale]
-export const getContentDemonstrative = (kind) => contentTypeNames[kind].demonstrative[i18n.global.locale]
-export const isContentFeminine = (kind) => i18n.global.locale == 'fr' && contentTypeNames[kind].frFeminine
+export const getContentName = (kind) => contentTypeNames[kind].name[i18n.global.locale.value]
+export const getContentDemonstrative = (kind) =>
+    contentTypeNames[kind].demonstrative[i18n.global.locale.value]
+export const isContentFeminine = (kind) =>
+    i18n.global.locale.value == 'fr' && contentTypeNames[kind].frFeminine

@@ -21,7 +21,7 @@ export const showErrorToast = (message, ...props) => {
 
 export const showToastGraphQLError = (apolloErrors) => {
     const toast = { ...(TOAST_ERRORS[getGraphQLErrorCode(apolloErrors)] ?? TOAST_ERRORS[errorCodes.UNKNOWN]) }
-    toast.message = toast.message[i18n.global.locale]
+    toast.message = toast.message[i18n.global.locale.value]
     emitter.emit('show-toast', toast)
 }
 
