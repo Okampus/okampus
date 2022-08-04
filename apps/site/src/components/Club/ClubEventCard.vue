@@ -4,11 +4,20 @@
     >
         <div class="relative">
             <ProfileBanner class="h-40" :name="event.shortDescription" :data="event.team.category" />
-            <router-link :to="`/club/${event.team.id}`" class="absolute bottom-[2.5rem] right-4">
-                <ProfileAvatar :size="3.5" :name="event.team.name" :avatar="event.team.avatar" />
+            <router-link :to="`/club/${event.team.id}`" class="absolute bottom-[2.3rem] right-4">
+                <ProfileAvatar
+                    :size="3.5"
+                    :name="event.team.name"
+                    :avatar="event.team.avatar"
+                    :rounded-full="false"
+                />
             </router-link>
 
-            <div class="absolute top-4 left-4 z-20 flex flex-col items-center gap-4">
+            <div
+                class="absolute top-4 left-4 z-20 flex flex-col items-center gap-4"
+                @mouseover="showLink = false"
+                @mouseleave="showLink = true"
+            >
                 <div class="bg-1 h-[4.3rem] w-[3.8rem] rounded-lg py-1.5 shadow-md">
                     <div class="text-center text-3xl font-semibold">{{ startDate.getDate() }}</div>
                     <div class="text-2 text-center text-sm font-semibold uppercase">
@@ -38,9 +47,12 @@
 
         <div class="mx-6 flex h-full flex-col justify-between">
             <div class="mt-4 flex flex-col gap-3.5">
-                <router-link :to="`/event/${event.id}`" class="card-link text-2xl font-semibold">{{
-                    event.name
-                }}</router-link>
+                <router-link
+                    :to="`/event/${event.id}`"
+                    class="text-2xl font-semibold"
+                    :class="{ 'card-link': showLink }"
+                    >{{ event.name }}</router-link
+                >
                 <div class="flex flex-col">
                     <div class="flex items-center gap-2 text-lg">
                         <div class="w-7">📍</div>
@@ -65,6 +77,8 @@
                     }))
                 "
                 :show-presence="true"
+                @mouseover="showLink = false"
+                @mouseleave="showLink = true"
             />
             <div v-if="$slots.buttons" class="mb-2 mt-6 self-center">
                 <slot name="buttons" />
@@ -79,6 +93,7 @@
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
 
     import { getDateRangeStringShort, getCountdown } from '@/utils/dateUtils'
+    import { ref } from 'vue'
 
     import { useI18n } from 'vue-i18n'
 
@@ -91,7 +106,7 @@
         },
     })
 
-    console.log('EVENT', props.event)
+    const showLink = ref(true)
 
     const getMonth = new Intl.DateTimeFormat(locale.value, {
         month: 'short',
