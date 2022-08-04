@@ -7,8 +7,8 @@
 
             <slot v-else-if="data && (!Array.isArray(data) || data?.length > 0)" :data="data" />
 
-            <div v-else-if="resource" class="text-0 text-center">
-                <EmojiSad class="my-3 text-3xl" />
+            <div v-else-if="resource" class="text-0 mt-12 flex flex-col items-center gap-2">
+                <img :src="Zoom" class="h-40 w-40" />
                 <div class="text-2xl font-bold">
                     Aucun{{ resource.frFeminine ? 'e' : '' }} {{ resource.name.fr }} ne correspond à ces
                     critères.
@@ -27,11 +27,12 @@
 
 <script setup>
     import { ApolloQuery } from '@vue/apollo-components'
-    import { getGraphQLErrorCode } from '@/utils/errors'
+    import Zoom from '@/assets/img/3dicons/zoom.png'
 
     import AppException from '@/views/App/AppException.vue'
     import AppLoader from '@/components/App/AppLoader.vue'
-    import EmojiSad from '@/icons/Emoji/EmojiSad.vue'
+
+    import { getGraphQLErrorCode } from '@/utils/errors'
     import { DEFAULT, RESOURCE_NAMES } from '@/shared/types/resource-names.enum'
 
     const props = defineProps({
