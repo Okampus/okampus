@@ -1,12 +1,19 @@
 <template>
     <router-link
         :to="profileLink"
-        :="!clickable || !profileLink.length ? { custom: true } : { class: ['shrink-0', props.class] }"
+        :="
+            !clickable || !profileLink.length
+                ? { custom: true }
+                : { class: ['shrink-0', props.class], style: avatarSizeStyle }
+        "
     >
-        <div class="relative shrink-0" :class="!clickable || !profileLink.length ? props.class : ''">
+        <div
+            class="relative shrink-0"
+            :class="!clickable || !profileLink.length ? props.class : ''"
+            :style="avatarSizeStyle"
+        >
             <img
                 v-if="avatar"
-                :style="avatarSizeStyle"
                 loading="lazy"
                 class="profile-avatar"
                 :src="avatar"
@@ -18,16 +25,15 @@
             />
             <div
                 v-if="avatar && !loaded"
-                class="animate-pulse bg-slate-300 dark:bg-slate-600"
+                class="absolute inset-0 animate-pulse bg-slate-300 dark:bg-slate-600"
                 :class="[innerClass, roundedClass]"
-                :style="avatarSizeStyle"
             />
             <div
                 v-else-if="!avatar"
                 role="img"
                 :alt="`${name}`"
                 :title="`Photo de profil de ${name}`"
-                :style="{ ...avatarSizeStyle, backgroundColor: getColorFromData(name) }"
+                :style="{ backgroundColor: getColorFromData(name) }"
                 class="profile-avatar"
                 :class="[innerClass, roundedClass]"
             >
@@ -115,10 +121,10 @@
 
 <style lang="scss">
     .profile-avatar {
-        @apply flex shrink-0 justify-center items-center select-none text-center bg-white;
+        @apply absolute inset-0 h-full w-full flex shrink-0 justify-center items-center select-none text-center bg-white overflow-hidden;
 
         &::before {
-            @apply text-xs h-full w-full block overflow-hidden text-ellipsis rounded-xl pt-2;
+            @apply text-xs block overflow-hidden text-ellipsis px-2;
         }
 
         &.full::before {
