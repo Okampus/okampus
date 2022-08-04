@@ -1,5 +1,5 @@
 <template>
-    <div class="box-container overflow-scroll">
+    <div class="box-container app-scrollbar-on-hover overflow-scroll">
         <table ref="table" class="h-full w-full table-auto">
             <thead class="sticky top-0 z-20 w-full">
                 <tr>
@@ -90,7 +90,7 @@
 
 <style lang="scss">
     .first-cell-sticky {
-        @apply first:left-0 first:sticky first:bg-3-light first:dark:bg-3-dark;
+        @apply first:z-20 first:left-0 first:sticky first:bg-3-light first:dark:bg-3-dark;
 
         &:first-child {
             box-shadow: 2px 0 5px -5px rgb(115 115 115 / 75%);
