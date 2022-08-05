@@ -9,6 +9,7 @@ import { useLocalStorage } from '@vueuse/core'
 
 import logOutOnExpire from '@/utils/logOutOnExpire'
 import { showSuccessToast } from '@/utils/toast'
+import { apolloClient } from '@/shared/modules/apollo.client'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -37,8 +38,10 @@ export const useAuthStore = defineStore('auth', {
             )
         },
         async logOut() {
-            this.user = {}
-            return await $axios.get('auth/logout')
+            await $axios.get('auth/logout').then(() => {
+                this.user = {}
+            })
+            apolloClient.cache.reset()
         },
     },
 

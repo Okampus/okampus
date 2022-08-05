@@ -19,12 +19,13 @@ import { plugin, defaultConfig, createInput } from '@formkit/vue'
 import { generateClasses } from '@formkit/themes'
 import formkitTheme from '@/formkit.theme'
 
-import { ApolloClient, InMemoryCache } from '@apollo/client/core'
 import { createApolloProvider } from '@vue/apollo-option'
 import { DefaultApolloClient } from '@vue/apollo-composable'
 
 import { fr } from '@formkit/i18n'
+
 import { i18n } from '@/shared/modules/i18n'
+import { apolloClient } from '@/shared/modules/apollo.client'
 
 import router from '@/router/index'
 
@@ -47,13 +48,6 @@ options.themes = {
 
 import '@/assets/css/tailwind.css'
 import 'swiper/css/bundle'
-
-const cache = new InMemoryCache()
-const apolloClient = new ApolloClient({
-    cache,
-    uri: `${import.meta.env.VITE_API_URL}/graphql`,
-    credentials: 'include',
-})
 
 const apolloProvider = createApolloProvider({
     defaultClient: apolloClient,
