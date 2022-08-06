@@ -43,7 +43,7 @@ export abstract class Notification {
           [this.settingName]: { $gte: 0 },
         },
       },
-    });
+    }, { populate: ['user'] });
 
     return members.map(member => member.user);
   }
