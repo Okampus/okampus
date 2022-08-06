@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20220730135823 extends Migration {
+export class Migration20220806162346 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table "school_year" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" varchar(255) not null, "active" boolean not null, constraint "school_year_pkey" primary key ("id"));');
@@ -43,7 +43,7 @@ export class Migration20220730135823 extends Migration {
 
     this.addSql('create table "file_upload" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "user_id" varchar(255) not null, "name" text not null, "file_size" int not null, "mime_type" text not null, "file_last_modified_at" timestamptz(0) not null, "validated" boolean not null, "url" text not null, "visible" boolean not null, "file_kind" text check ("file_kind" in (\'profile-image\', \'info-doc\', \'attachment\', \'study-doc\', \'team-file\')) not null, constraint "file_upload_pkey" primary key ("id"));');
 
-    this.addSql('create table "team" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "kind" text check ("kind" in (\'department\', \'club\')) not null, "name" text not null, "short_description" text null, "long_description" text null, "category" text not null, "tags" varchar(255) not null, "avatar" text null, "banner" text null, "membership_request_link" text null, "membership_request_message" text null, "membership_request_form_id" int null);');
+    this.addSql('create table "team" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "kind" text check ("kind" in (\'department\', \'club\')) not null, "name" text not null, "short_description" text null, "long_description" text null, "category" text not null, "tags" varchar(255) not null, "avatar" text null, "banner" text null, "active_member_count" int not null, "membership_request_form_id" int null);');
     this.addSql('create index "team_kind_index" on "team" ("kind");');
     this.addSql('alter table "team" add constraint "team_membership_request_form_id_unique" unique ("membership_request_form_id");');
 
@@ -61,24 +61,24 @@ export class Migration20220730135823 extends Migration {
     this.addSql('create table "team_form" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" varchar(255) not null, "description" text null, "form" jsonb not null, "created_by_id" varchar(255) not null, "team_id" int not null, "is_template" boolean not null);');
     this.addSql('create index "team_form_team_id_index" on "team_form" ("team_id");');
 
-    this.addSql('create table "team_event" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "start" timestamptz(0) not null, "end" timestamptz(0) not null, "name" varchar(255) not null, "description" text not null, "price" int not null, "created_by_id" varchar(255) not null, "team_id" int not null, "place" text not null, "supervisor_id" varchar(255) null, "private" boolean not null, "state" text check ("state" in (\'template\', \'draft\', \'submitted\', \'rejected\', \'published\')) not null, "validation_step" int not null, "form_id" int null, "used_template_id" int null, "meta" jsonb not null);');
-    this.addSql('create index "team_event_team_id_index" on "team_event" ("team_id");');
-    this.addSql('create index "team_event_private_index" on "team_event" ("private");');
-    this.addSql('alter table "team_event" add constraint "team_event_form_id_unique" unique ("form_id");');
-
-    this.addSql('create table "team_event_registration" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "event_id" int not null, "user_id" varchar(255) not null, "status" text check ("status" in (\'sure\', \'maybe\', \'notsure\')) not null, "present" boolean not null, "participation_score" int not null, "original_form_id" int null, "form_submission" jsonb null);');
-
-    this.addSql('create table "team_event_validation" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "event_id" int not null, "user_id" varchar(255) not null, "message" text null, "approved" boolean not null, "step_id" int not null);');
-
-    this.addSql('create table "team_finance" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "title" varchar(255) not null, "description" text null, "created_by_id" varchar(255) not null, "team_id" int not null, "due_to_id" varchar(255) null, "amount" int not null, "mean" text check ("mean" in (\'cash\', \'card\', \'transfer\', \'check\', \'other\')) not null, "type" text check ("type" in (\'expense\', \'income\')) not null, "category" smallint not null, "event_id" int null, "receipt_id" varchar(255) null);');
-    this.addSql('create index "team_finance_team_id_index" on "team_finance" ("team_id");');
-    this.addSql('alter table "team_finance" add constraint "team_finance_receipt_id_unique" unique ("receipt_id");');
-
-    this.addSql('create table "team_member" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "user_id" varchar(255) not null, "team_id" int not null, "role" text check ("role" in (\'owner\', \'coowner\', \'treasurer\', \'secretary\', \'manager\', \'member\')) not null, "role_label" varchar(255) null, "join_date" timestamptz(0) not null);');
+    this.addSql('create table "team_member" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "user_id" varchar(255) not null, "team_id" int not null, "role" text check ("role" in (\'owner\', \'coowner\', \'treasurer\', \'secretary\', \'manager\', \'member\')) not null, "role_label" varchar(255) null, "join_date" timestamptz(0) not null, "participations" int not null, "participation_score" int not null, "active" boolean not null);');
     this.addSql('create index "team_member_user_id_index" on "team_member" ("user_id");');
     this.addSql('create index "team_member_team_id_index" on "team_member" ("team_id");');
 
-    this.addSql('create table "team_membership_request" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "team_id" int not null, "user_id" varchar(255) not null, "meta" jsonb null, "issuer" text check ("issuer" in (\'team\', \'user\')) not null, "state" text check ("state" in (\'pending\', \'approved\', \'rejected\')) not null, "role" text check ("role" in (\'owner\', \'coowner\', \'treasurer\', \'secretary\', \'manager\', \'member\')) not null, "handled_by_id" varchar(255) null, "handled_at" timestamptz(0) null, "handled_message" text null, "issued_by_id" varchar(255) not null, "original_form_id" int null, "form_submission" jsonb null);');
+    this.addSql('create table "team_event" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "start" timestamptz(0) not null, "end" timestamptz(0) not null, "name" varchar(255) not null, "description" text not null, "price" int not null, "created_by_id" varchar(255) not null, "team_id" int not null, "location" text not null, "supervisor_id" int null, "private" boolean not null, "state" text check ("state" in (\'template\', \'draft\', \'submitted\', \'rejected\', \'published\')) not null, "validation_step" int not null, "registration_form_id" int null, "used_template_id" int null, "meta" jsonb not null);');
+    this.addSql('create index "team_event_team_id_index" on "team_event" ("team_id");');
+    this.addSql('create index "team_event_private_index" on "team_event" ("private");');
+    this.addSql('alter table "team_event" add constraint "team_event_registration_form_id_unique" unique ("registration_form_id");');
+
+    this.addSql('create table "team_event_registration" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "event_id" int not null, "user_id" varchar(255) not null, "status" text check ("status" in (\'sure\', \'maybe\', \'absent\')) not null, "present" boolean not null, "participation_score" int not null, "original_form_id" int null, "form_submission" jsonb null);');
+
+    this.addSql('create table "team_event_validation" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "event_id" int not null, "user_id" varchar(255) not null, "message" text null, "approved" boolean not null, "step_id" int not null);');
+
+    this.addSql('create table "team_finance" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "title" varchar(255) not null, "description" text null, "created_by_id" varchar(255) not null, "team_id" int not null, "due_to_id" varchar(255) null, "amount" int not null, "means" text check ("means" in (\'cash\', \'card\', \'transfer\', \'check\', \'other\')) not null, "type" text check ("type" in (\'expense\', \'income\')) not null, "category" smallint not null, "event_id" int null, "receipt_id" varchar(255) null);');
+    this.addSql('create index "team_finance_team_id_index" on "team_finance" ("team_id");');
+    this.addSql('alter table "team_finance" add constraint "team_finance_receipt_id_unique" unique ("receipt_id");');
+
+    this.addSql('create table "team_membership_request" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "team_id" int not null, "user_id" varchar(255) not null, "issuer" text check ("issuer" in (\'team\', \'user\')) not null, "state" text check ("state" in (\'pending\', \'approved\', \'rejected\')) not null, "role" text check ("role" in (\'owner\', \'coowner\', \'treasurer\', \'secretary\', \'manager\', \'member\')) not null, "handled_by_id" varchar(255) null, "handled_at" timestamptz(0) null, "handled_message" text null, "issued_by_id" varchar(255) not null, "original_form_id" int null, "form_submission" jsonb null);');
     this.addSql('create index "team_membership_request_team_id_index" on "team_membership_request" ("team_id");');
     this.addSql('create index "team_membership_request_user_id_index" on "team_membership_request" ("user_id");');
     this.addSql('create index "team_membership_request_state_index" on "team_membership_request" ("state");');
@@ -191,10 +191,13 @@ export class Migration20220730135823 extends Migration {
     this.addSql('alter table "team_form" add constraint "team_form_created_by_id_foreign" foreign key ("created_by_id") references "user" ("id") on update cascade;');
     this.addSql('alter table "team_form" add constraint "team_form_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade on delete CASCADE;');
 
+    this.addSql('alter table "team_member" add constraint "team_member_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade on delete CASCADE;');
+    this.addSql('alter table "team_member" add constraint "team_member_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade on delete CASCADE;');
+
     this.addSql('alter table "team_event" add constraint "team_event_created_by_id_foreign" foreign key ("created_by_id") references "user" ("id") on update cascade;');
     this.addSql('alter table "team_event" add constraint "team_event_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade on delete CASCADE;');
-    this.addSql('alter table "team_event" add constraint "team_event_supervisor_id_foreign" foreign key ("supervisor_id") references "user" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "team_event" add constraint "team_event_form_id_foreign" foreign key ("form_id") references "team_form" ("id") on update cascade on delete cascade;');
+    this.addSql('alter table "team_event" add constraint "team_event_supervisor_id_foreign" foreign key ("supervisor_id") references "team_member" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "team_event" add constraint "team_event_registration_form_id_foreign" foreign key ("registration_form_id") references "team_form" ("id") on update cascade on delete cascade;');
     this.addSql('alter table "team_event" add constraint "team_event_used_template_id_foreign" foreign key ("used_template_id") references "team_event" ("id") on update cascade on delete set null;');
 
     this.addSql('alter table "team_event_registration" add constraint "team_event_registration_event_id_foreign" foreign key ("event_id") references "team_event" ("id") on update cascade on delete CASCADE;');
@@ -210,9 +213,6 @@ export class Migration20220730135823 extends Migration {
     this.addSql('alter table "team_finance" add constraint "team_finance_due_to_id_foreign" foreign key ("due_to_id") references "user" ("id") on update cascade on delete set null;');
     this.addSql('alter table "team_finance" add constraint "team_finance_event_id_foreign" foreign key ("event_id") references "team_event" ("id") on update cascade on delete set null;');
     this.addSql('alter table "team_finance" add constraint "team_finance_receipt_id_foreign" foreign key ("receipt_id") references "team_file" ("id") on update cascade on delete set null;');
-
-    this.addSql('alter table "team_member" add constraint "team_member_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade on delete CASCADE;');
-    this.addSql('alter table "team_member" add constraint "team_member_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade on delete CASCADE;');
 
     this.addSql('alter table "team_membership_request" add constraint "team_membership_request_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade on delete CASCADE;');
     this.addSql('alter table "team_membership_request" add constraint "team_membership_request_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade on delete CASCADE;');
@@ -338,9 +338,9 @@ export class Migration20220730135823 extends Migration {
 
     this.addSql('alter table "team_form" drop constraint "team_form_created_by_id_foreign";');
 
-    this.addSql('alter table "team_event" drop constraint "team_event_created_by_id_foreign";');
+    this.addSql('alter table "team_member" drop constraint "team_member_user_id_foreign";');
 
-    this.addSql('alter table "team_event" drop constraint "team_event_supervisor_id_foreign";');
+    this.addSql('alter table "team_event" drop constraint "team_event_created_by_id_foreign";');
 
     this.addSql('alter table "team_event_registration" drop constraint "team_event_registration_user_id_foreign";');
 
@@ -349,8 +349,6 @@ export class Migration20220730135823 extends Migration {
     this.addSql('alter table "team_finance" drop constraint "team_finance_created_by_id_foreign";');
 
     this.addSql('alter table "team_finance" drop constraint "team_finance_due_to_id_foreign";');
-
-    this.addSql('alter table "team_member" drop constraint "team_member_user_id_foreign";');
 
     this.addSql('alter table "team_membership_request" drop constraint "team_membership_request_user_id_foreign";');
 
@@ -406,11 +404,11 @@ export class Migration20220730135823 extends Migration {
 
     this.addSql('alter table "team_form" drop constraint "team_form_team_id_foreign";');
 
+    this.addSql('alter table "team_member" drop constraint "team_member_team_id_foreign";');
+
     this.addSql('alter table "team_event" drop constraint "team_event_team_id_foreign";');
 
     this.addSql('alter table "team_finance" drop constraint "team_finance_team_id_foreign";');
-
-    this.addSql('alter table "team_member" drop constraint "team_member_team_id_foreign";');
 
     this.addSql('alter table "team_membership_request" drop constraint "team_membership_request_team_id_foreign";');
 
@@ -420,11 +418,13 @@ export class Migration20220730135823 extends Migration {
 
     this.addSql('alter table "team" drop constraint "team_membership_request_form_id_foreign";');
 
-    this.addSql('alter table "team_event" drop constraint "team_event_form_id_foreign";');
+    this.addSql('alter table "team_event" drop constraint "team_event_registration_form_id_foreign";');
 
     this.addSql('alter table "team_event_registration" drop constraint "team_event_registration_original_form_id_foreign";');
 
     this.addSql('alter table "team_membership_request" drop constraint "team_membership_request_original_form_id_foreign";');
+
+    this.addSql('alter table "team_event" drop constraint "team_event_supervisor_id_foreign";');
 
     this.addSql('alter table "team_event" drop constraint "team_event_used_template_id_foreign";');
 
@@ -534,6 +534,8 @@ export class Migration20220730135823 extends Migration {
 
     this.addSql('drop table if exists "team_form" cascade;');
 
+    this.addSql('drop table if exists "team_member" cascade;');
+
     this.addSql('drop table if exists "team_event" cascade;');
 
     this.addSql('drop table if exists "team_event_registration" cascade;');
@@ -541,8 +543,6 @@ export class Migration20220730135823 extends Migration {
     this.addSql('drop table if exists "team_event_validation" cascade;');
 
     this.addSql('drop table if exists "team_finance" cascade;');
-
-    this.addSql('drop table if exists "team_member" cascade;');
 
     this.addSql('drop table if exists "team_membership_request" cascade;');
 
