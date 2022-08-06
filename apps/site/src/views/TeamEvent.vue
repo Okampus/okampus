@@ -131,7 +131,26 @@
                         </button>
                     </div>
 
-                    <EventJoinForm v-model:show="showRegistrationForm" :event="event" />
+                    <FormPopUp
+                        v-model:show="showRegistrationForm"
+                        :submit="
+                            (data) =>
+                                register({
+                                    id: event?.id,
+                                    registration: {
+                                        status: data.sure ?? 'Sure',
+                                        originalFormId: event?.registrationForm?.id,
+                                        formSubmission: data,
+                                    },
+                                })
+                        "
+                        :form-schema="
+                            event?.userRegistration?.status === 'Absent'
+                                ? EVENT_REGISTRATION_STATUS_FORM_SCHEMA
+                                : event?.registrationForm?.form ?? DEFAULT_EVENT_REGISTRATION_FORM_SCHEMA
+                        "
+                        :form-data="{ event }"
+                    />
 
                     <ModalPopup :show="showAdmin" @close="showAdmin = false">
                         <template #default="{ close }">
@@ -237,6 +256,8 @@
 </template>
 
 <script setup>
+    import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
+
     import VueCountdown from '@chenfengyuan/vue-countdown'
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
@@ -248,33 +269,47 @@
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
 
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
-    import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
-    import EventJoinForm from '@/components/Event/EventJoinForm.vue'
+    import FormPopUp from '@/components/Form/FormPopUp.vue'
 
     import { ref } from 'vue'
     import { useRoute } from 'vue-router'
 
     import { fullname } from '@/utils/users'
-
     import { getDateRangeString } from '@/utils/dateUtils'
 
-    import { getEvent } from '@/graphql/queries/events/getEvent.js'
-    import { unregisterEvent } from '@/graphql/queries/events/unregisterEvent.js'
+    import { getEvent } from '@/graphql/queries/events/getEvent'
+    import { registerEvent } from '@/graphql/queries/events/registerEvent'
+    import { unregisterEvent } from '@/graphql/queries/events/unregisterEvent'
 
     import { useMutation } from '@vue/apollo-composable'
-    import { showInfoToast, showToastGraphQLError } from '@/utils/toast'
+    import { showInfoToast, showSuccessToast, showToastGraphQLError } from '@/utils/toast'
 
-    const { mutate: unregister, onDone, onError } = useMutation(unregisterEvent)
+    import {
+        DEFAULT_EVENT_REGISTRATION_FORM_SCHEMA,
+        EVENT_REGISTRATION_STATUS_FORM_SCHEMA,
+    } from '@/shared/assets/default-schemas'
 
-    onDone(() => showInfoToast("Vous vous êtes désinscrit de l'événement"))
-    onError(showToastGraphQLError)
+    const showRegistrationForm = ref(false)
+
+    const { mutate: register, onDone: onDoneRegister, onError: onErrorRegister } = useMutation(registerEvent)
+    onDoneRegister(() => {
+        showSuccessToast("Vous vous êtes bien inscrit à l'événement 🎉")
+        showRegistrationForm.value = false
+    })
+    onErrorRegister(showToastGraphQLError)
+
+    const {
+        mutate: unregister,
+        onDone: onDoneUnregister,
+        onError: onErrorUnregister,
+    } = useMutation(unregisterEvent)
+    onDoneUnregister(() => showInfoToast("Vous vous êtes désinscrit de l'événement"))
+    onErrorUnregister(showToastGraphQLError)
 
     const route = useRoute()
     const isAdmin = ref(false)
 
     const timeUntil = (dateString) => new Date(dateString).getTime() - Date.now()
-
-    const showRegistrationForm = ref(false)
     const showAdmin = ref(false)
 
     const registrationShowLimit = 20

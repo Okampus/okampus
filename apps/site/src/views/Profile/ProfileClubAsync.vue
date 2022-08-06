@@ -5,7 +5,26 @@
         :update="(data) => data?.clubById"
     >
         <template #default="{ data: club }">
-            <ClubJoinForm v-model:show="showJoinForm" :club="club" />
+            <FormPopUp
+                v-model:show="showJoinForm"
+                :submit="
+                    (form) =>
+                        join({
+                            id: club?.id,
+                            request: {
+                                role: form.role ?? MEMBER,
+                                originalFormId: club?.membershipRequestForm?.id,
+                                formSubmission: form,
+                            },
+                        })
+                "
+                :submit-button="{
+                    icon: 'envelope',
+                    label: 'Rejoindre',
+                }"
+                :form-schema="joiningClub?.formSchema ?? DEFAULT_JOIN_FORM_SCHEMA"
+                :form-data="{ club }"
+            />
             <ProfileBanner
                 :name="club.name"
                 :banner="club.banner"
@@ -99,6 +118,8 @@
 </template>
 
 <script setup>
+    import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
+
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
@@ -109,7 +130,7 @@
     import ClubMembersAsync from '@/components/Profile/Club/ClubMembersAsync.vue'
 
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
-    import ClubJoinForm from '@/components/Club/ClubJoinForm.vue'
+    import FormPopUp from '@/components/Form/FormPopUp.vue'
 
     import AppLoader from '@/components/App/AppLoader.vue'
 
@@ -121,7 +142,21 @@
     import { clubTypes } from '@/shared/types/club-types.enum'
 
     import { getClub } from '@/graphql/queries/teams/getClub.js'
-    import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
+
+    import { joinTeam } from '@/graphql/queries/teams/joinTeam.js'
+    import { useMutation } from '@vue/apollo-composable'
+    import { showSuccessToast, showToastGraphQLError } from '@/utils/toast.js'
+
+    import { DEFAULT_JOIN_FORM_SCHEMA } from '@/shared/assets/default-schemas.js'
+
+    const { mutate: join, onDone, onError } = useMutation(joinTeam)
+
+    onDone(() => {
+        showJoinForm.value = false
+        showSuccessToast('Votre demande a bien été envoyée ✉️')
+    })
+
+    onError(showToastGraphQLError)
 
     const route = useRoute()
     const router = useRouter()

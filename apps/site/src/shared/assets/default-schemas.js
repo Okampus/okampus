@@ -8,6 +8,11 @@ const roles = Object.entries(clubRoleNames).map(([value, name]) => ({
 
 export const DEFAULT_JOIN_FORM_SCHEMA = [
     {
+        $el: 'h1',
+        attrs: { class: 'mb-8' },
+        children: ['Vous vous apprêtez à rejoindre ', { $el: 'u', children: ['$club.name'] }, ' 🎉'],
+    },
+    {
         $formkit: 'radio',
         label: 'Rôle souhaité 🎩',
         name: 'role',
@@ -37,6 +42,11 @@ export const DEFAULT_JOIN_FORM_SCHEMA = [
 ]
 
 export const EVENT_REGISTRATION_STATUS_FORM_SCHEMA = [
+    {
+        $el: 'h1',
+        attrs: { class: 'mb-8' },
+        children: ['$event.name'],
+    },
     {
         $formkit: 'radio',
         name: 'sure',

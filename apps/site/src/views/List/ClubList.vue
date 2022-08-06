@@ -28,7 +28,26 @@
                     </div>
                 </div>
                 <div v-else class="flex h-fit w-full flex-wrap gap-4">
-                    <ClubJoinForm v-model:show="showJoinForm" :club="joiningClub" />
+                    <FormPopUp
+                        v-model:show="showJoinForm"
+                        :submit="
+                            (form) =>
+                                join({
+                                    id: joiningClub?.id,
+                                    request: {
+                                        role: form.role ?? MEMBER,
+                                        originalFormId: joiningClub?.membershipRequestForm?.id,
+                                        formSubmission: form,
+                                    },
+                                })
+                        "
+                        :submit-button="{
+                            icon: 'envelope',
+                            label: 'Rejoindre',
+                        }"
+                        :form-schema="joiningClub?.formSchema ?? DEFAULT_JOIN_FORM_SCHEMA"
+                        :form-data="{ club: joiningClub }"
+                    />
                     <ClubCard
                         v-for="club in currentClubs(clubs).value"
                         :key="club.id"
@@ -49,9 +68,9 @@
 <script setup>
     import VerticalTabs from '@/components/UI/Tabs/VerticalTabs.vue'
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
+    import FormPopUp from '@/components/Form/FormPopUp.vue'
     import ClubCard from '@/components/App/ListCard/ClubCard.vue'
 
-    import ClubJoinForm from '@/components/Club/ClubJoinForm.vue'
     import EmojiSad from '@/icons/Emoji/EmojiSad.vue'
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
 
@@ -62,6 +81,11 @@
     import { groupBy } from 'lodash'
 
     import { useI18n } from 'vue-i18n'
+    import { joinTeam } from '@/graphql/queries/teams/joinTeam.js'
+    import { useMutation } from '@vue/apollo-composable'
+    import { showSuccessToast, showToastGraphQLError } from '@/utils/toast.js'
+
+    import { DEFAULT_JOIN_FORM_SCHEMA } from '@/shared/assets/default-schemas.js'
 
     const { locale } = useI18n({ useScope: 'global' })
 
@@ -109,7 +133,14 @@
     }
 
     const showJoinForm = ref(false)
-    const joiningClub = ref(null)
+    const joiningClub = ref({ name: '' })
+
+    const { mutate: join, onDone, onError } = useMutation(joinTeam)
+    onDone(() => {
+        showSuccessToast('Votre demande a bien été envoyée ✉️')
+        showJoinForm.value = false
+    })
+    onError(showToastGraphQLError)
 
     const currentClubs = (clubs) =>
         computed(() => {
