@@ -45,7 +45,7 @@ export class TeamMembershipRequestsResolver {
     @Args('id', { type: () => Int }) id: number,
     @Args('request') request: CreateTeamMembershipRequestDto,
   ): Promise<Team> {
-    const createdRequest = this.teamMembershipRequestsService.create(user, id, request);
+    const createdRequest = await this.teamMembershipRequestsService.create(user, id, request);
     await this.pubSub.publish(SubscriptionType.TeamMembershipRequestAdded, { teamMemberAdded: createdRequest });
     return await this.teamsService.findOne(id);
   }
