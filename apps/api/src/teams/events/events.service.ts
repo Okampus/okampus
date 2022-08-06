@@ -53,9 +53,15 @@ export class TeamEventsService {
       throw new ForbiddenException('Not a team admin');
 
     // Check that the provided supervisor id is valid
-    let supervisor: User | undefined;
-    if (createTeamEventDto.supervisorId)
-      supervisor = await this.userRepository.findOneOrFail({ id: createTeamEventDto.supervisorId });
+    let supervisor: TeamMember | undefined;
+    if (createTeamEventDto.supervisorId) {
+      supervisor = await this.teamMemberRepository.findOneOrFail(
+        {
+          user: { id: createTeamEventDto.supervisorId },
+          active: true,
+        },
+      );
+    }
 
     // Check that the provided form id is valid, is a template, and is not already used
     let registrationForm: TeamForm | undefined;
@@ -209,8 +215,13 @@ export class TeamEventsService {
 
     // Check that the provided supervisor id is valid
     if (typeof supervisorId !== 'undefined') {
-      const supervisorUser = await this.userRepository.findOneOrFail({ id: supervisorId });
-      event.supervisor = supervisorUser;
+      const supervisorMembership = await this.teamMemberRepository.findOneOrFail(
+        {
+          user: { id: supervisorId },
+          active: true,
+        },
+      );
+      event.supervisor = supervisorMembership;
     }
 
     // Check that the provided form id is valid, is a template, and is not already used

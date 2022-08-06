@@ -41,7 +41,7 @@ export class AdminTeamEventValidationStartedNotification extends Notification {
         description: this.teamEvent.description,
         price: this.teamEvent.price,
         location: this.teamEvent.location,
-        supervisor: this.teamEvent.supervisor ? this.userToPayload(this.teamEvent.supervisor) : null,
+        supervisor: this.teamEvent.supervisor ? this.userToPayload(this.teamEvent.supervisor.user) : null,
         private: this.teamEvent.private,
         meta: this.teamEvent.meta,
         team: {

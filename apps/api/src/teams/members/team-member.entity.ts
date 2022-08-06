@@ -56,6 +56,10 @@ export class TeamMember extends BaseEntity {
   @Property()
   participationScore = 0;
 
+  @Field(() => Boolean, { defaultValue: true })
+  @Property()
+  active = true;
+
   constructor(options: {
     user: User;
     team: Team;

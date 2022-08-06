@@ -25,7 +25,7 @@ export class TeamEventManagedRegistrationCreatedNotification extends Notificatio
     boardUsers.push(this.teamEventRegistration.event.createdBy);
 
     if (this.teamEventRegistration.event.supervisor)
-      boardUsers.push(this.teamEventRegistration.event.supervisor);
+      boardUsers.push(this.teamEventRegistration.event.supervisor.user);
 
     return this.filter(boardUsers);
   }
@@ -51,7 +51,7 @@ export class TeamEventManagedRegistrationCreatedNotification extends Notificatio
           price: this.teamEventRegistration.event.price,
           location: this.teamEventRegistration.event.location,
           supervisor: this.teamEventRegistration.event.supervisor
-            ? this.userToPayload(this.teamEventRegistration.event.supervisor)
+            ? this.userToPayload(this.teamEventRegistration.event.supervisor.user)
             : null,
           private: this.teamEventRegistration.event.private,
           meta: this.teamEventRegistration.event.meta,

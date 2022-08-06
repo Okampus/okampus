@@ -23,6 +23,7 @@ import { User } from '../../users/user.entity';
 // eslint-disable-next-line import/no-cycle
 import { TeamEventRegistration } from '../event-registrations/team-event-registration.entity';
 import { TeamForm } from '../forms/team-form.entity';
+import { TeamMember } from '../members/team-member.entity';
 import { Team } from '../teams/team.entity';
 
 @ObjectType()
@@ -69,9 +70,9 @@ export class TeamEvent extends BaseEntity {
   @Property({ type: 'text' })
   location!: string;
 
-  @Field(() => User, { nullable: true })
+  @Field(() => TeamMember, { nullable: true })
   @ManyToOne()
-  supervisor: User | null = null;
+  supervisor: TeamMember | null = null;
 
   @Field(() => Boolean)
   @Property()
@@ -111,18 +112,18 @@ export class TeamEvent extends BaseEntity {
     registrationForm?: TeamForm | null;
     state?: TeamEventState | null;
     price?: number | null;
-    supervisor?: User | null;
+    supervisor?: TeamMember | null;
     private?: boolean | null;
   }) {
     super();
     this.assign(options);
 
-    this.validationStep = this.state === TeamEventState.Submitted ? 1 : 0;
+    // This.validationStep = this.state === TeamEventState.Submitted ? 1 : 0;
   }
 
   public canEdit(user: User): boolean {
     return this.createdBy.id === user.id
-      || this.supervisor?.id === user.id
+      || this.supervisor?.user?.id === user.id
       || this.team.canAdminister(user);
   }
 }

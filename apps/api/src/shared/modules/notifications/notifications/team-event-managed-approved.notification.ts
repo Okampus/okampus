@@ -23,7 +23,7 @@ export class TeamEventManagedApprovedNotification extends Notification {
     boardUsers.push(this.teamEvent.createdBy);
 
     if (this.teamEvent.supervisor)
-      boardUsers.push(this.teamEvent.supervisor);
+      boardUsers.push(this.teamEvent.supervisor.user);
 
     return this.filter(boardUsers);
   }
@@ -44,7 +44,7 @@ export class TeamEventManagedApprovedNotification extends Notification {
         description: this.teamEvent.description,
         price: this.teamEvent.price,
         location: this.teamEvent.location,
-        supervisor: this.teamEvent.supervisor ? this.userToPayload(this.teamEvent.supervisor) : null,
+        supervisor: this.teamEvent.supervisor ? this.userToPayload(this.teamEvent.supervisor.user) : null,
         private: this.teamEvent.private,
         meta: this.teamEvent.meta,
         team: {
