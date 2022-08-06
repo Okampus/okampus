@@ -121,7 +121,6 @@ export class TeamsResolver {
       };
     }
 
-    await this.userRepository.populate(user, ['teamMembershipRequests', 'teamMemberships']);
     const memberships = await user.teamMemberships.loadItems();
     const requests = await user.teamMembershipRequests.loadItems();
 
