@@ -45,7 +45,7 @@ export const TOAST_ERRORS = {
     [errorCodes.UNAUTHORIZED]: {
         type: 'error',
         message: {
-            fr: '[Déconnecté] Vous devez être connecté pour accéder à cette ressource.',
+            fr: '[Non-connecté] Vous devez être connecté pour accéder à cette ressource.',
             en: '[Unauthorized] You must be connected to access this resource.',
         },
     },
