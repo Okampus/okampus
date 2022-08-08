@@ -2,8 +2,6 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import { ValidationStep } from '../../configurations/validation-steps/validation-step.entity';
-import { config } from '../../shared/configs/config';
 import type { ListOptionsDto } from '../../shared/lib/dto/list-options.dto';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.enum';
@@ -20,6 +18,8 @@ import {
 import { NotificationsService } from '../../shared/modules/notifications/notifications.service';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { serializeOrder } from '../../shared/modules/sorting';
+import type { Tenant } from '../../tenants/tenants/tenant.entity';
+import { ValidationStep } from '../../tenants/validation-steps/validation-step.entity';
 import { User } from '../../users/user.entity';
 import { TeamEventRegistration } from '../event-registrations/team-event-registration.entity';
 import { TeamForm } from '../forms/team-form.entity';
@@ -46,7 +46,12 @@ export class TeamEventsService {
     private readonly notificationsService: NotificationsService,
   ) {}
 
-  public async create(user: User, id: number, createTeamEventDto: CreateTeamEventDto): Promise<TeamEvent> {
+  public async create(
+    tenant: Tenant,
+    user: User,
+    id: number,
+    createTeamEventDto: CreateTeamEventDto,
+  ): Promise<TeamEvent> {
     const team = await this.teamRepository.findOneOrFail({ id }, { populate: ['members'] });
 
     if (!team.canAdminister(user))
@@ -60,6 +65,7 @@ export class TeamEventsService {
           user: { id: createTeamEventDto.supervisorId },
           active: true,
         },
+        { populate: ['user'] },
       );
     }
 
@@ -86,7 +92,7 @@ export class TeamEventsService {
     let validationStepCount = 0;
     if (createTeamEventDto.state === TeamEventState.Submitted) {
       validationStepCount = await this.validationStepRepository.count({
-        configuration: config.get('productName'),
+        tenant,
         type: ValidationStepType.TeamEvent,
       });
 
@@ -199,6 +205,7 @@ export class TeamEventsService {
   }
 
   public async update(
+    tenant: Tenant,
     user: User,
     id: number,
     updateTeamEventDto: UpdateTeamEventDto,
@@ -220,6 +227,7 @@ export class TeamEventsService {
           user: { id: supervisorId },
           active: true,
         },
+        { populate: ['user'] },
       );
       event.supervisor = supervisorMembership;
     }
@@ -239,7 +247,7 @@ export class TeamEventsService {
     let validationStepCount = 0;
     if (dto.state === TeamEventState.Submitted) {
       validationStepCount = await this.validationStepRepository.count({
-        configuration: config.get('productName'),
+        tenant,
         type: ValidationStepType.TeamEvent,
       });
       if (validationStepCount === 0)
