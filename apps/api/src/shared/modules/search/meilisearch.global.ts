@@ -8,9 +8,8 @@ import { Tenant } from '../../../tenants/tenants/tenant.entity';
 import { User } from '../../../users/user.entity';
 import { config } from '../../configs/config';
 import { meiliSearchClient } from '../../configs/meilisearch.config';
-import { MEILISEARCH_ID_SEPARATOR } from '../../lib/constants';
+import { MEILISEARCH_BATCH_SIZE, MEILISEARCH_ID_SEPARATOR } from '../../lib/constants';
 
-const BATCH_SIZE = 1000;
 
 export interface BaseIndex {
   [key: string]: unknown;
@@ -132,16 +131,16 @@ export class MeiliSearchGlobal {
     for (const [entity, name, count] of counts) {
       this.logger.log(`Reindexing ${name}`);
 
-      for (let offset = 0; offset < count; offset += BATCH_SIZE) {
+      for (let offset = 0; offset < count; offset += MEILISEARCH_BATCH_SIZE) {
         const entities = await getEntities(
           entity as AllIndexableEntityNames,
           { id: tenantId },
           this.em,
-          { offset, limit: BATCH_SIZE },
+          { offset, limit: MEILISEARCH_BATCH_SIZE },
         );
 
         await this.indexes[tenantId].addDocuments(MeiliSearchGlobal.entityToIndexedEntity(entities, name as string));
-        this.logger.log(`Indexing ${offset + BATCH_SIZE > count ? count : offset + BATCH_SIZE} / ${count as number}`);
+        this.logger.log(`Indexing ${offset + MEILISEARCH_BATCH_SIZE > count ? count : offset + MEILISEARCH_BATCH_SIZE} / ${count as number}`);
       }
     }
     this.logger.log('Reindexing finished!');
