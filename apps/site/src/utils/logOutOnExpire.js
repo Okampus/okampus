@@ -18,11 +18,15 @@ export default function logOutOnExpire(user) {
         const expiresAt = cookies.get('accessTokenExpiresAt')
         if (!expiresAt) logOutExpired()
 
-        const expirationDate = parseIntCookie(cookies.get('accessTokenExpiresAt'))
-        if (expirationDate - Date.now() < 0) {
+        try {
+            const expirationDate = parseIntCookie(cookies.get('accessTokenExpiresAt'))
+            if (expirationDate - Date.now() < 0) {
+                logOutExpired()
+            } else {
+                setToHappen(logOutExpired, expirationDate)
+            }
+        } catch {
             logOutExpired()
-        } else {
-            setToHappen(logOutExpired, expirationDate)
         }
     }
 }
