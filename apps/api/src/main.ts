@@ -59,6 +59,7 @@ async function bootstrap(): Promise<void> {
     // Disable those rules to make the GraphQL playground work
     app.use(helmet({
       contentSecurityPolicy: false,
+      crossOriginResourcePolicy: false,
       crossOriginEmbedderPolicy: false,
     }));
   }
