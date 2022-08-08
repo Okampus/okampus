@@ -47,7 +47,6 @@ const getEntities = async (
   options: FindOptions<AllIndexableEntities>,
 ): Promise<AllIndexableEntities[]> => {
   if (entity.name.toLowerCase() === 'user')
-
     return await em.find<User>(entity as typeof User, { tenant, id: { $ne: config.get('anonAccount.username') } }, options as FindOptions<User>);
 
   return await em.find<AllIndexableEntities>(entity, { tenant }, options);

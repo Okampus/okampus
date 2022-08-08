@@ -30,7 +30,7 @@ export class SearchSubscriber implements EventSubscriber<AllIndexableEntities> {
 
   public async afterCreate(args: EventArgs<AllIndexableEntities>): Promise<void> {
     if (!ignore(args)) {
-      await this.meiliSearchGlobal.indexes[args.entity.tenant.id].addDocuments(
+      await this.meiliSearchGlobal.client.index(args.entity.tenant.id).addDocuments(
         MeiliSearchGlobal.entityToIndexedEntity([args.entity], args?.changeSet?.name ?? 'unknown'),
       );
     }
@@ -38,7 +38,7 @@ export class SearchSubscriber implements EventSubscriber<AllIndexableEntities> {
 
   public async afterUpdate(args: EventArgs<AllIndexableEntities>): Promise<void> {
     if (!ignore(args)) {
-      await this.meiliSearchGlobal.indexes[args.entity.tenant.id].updateDocuments(
+      await this.meiliSearchGlobal.client.index(args.entity.tenant.id).updateDocuments(
         MeiliSearchGlobal.entityToIndexedEntity([args.entity], args?.changeSet?.name ?? 'unknown'),
       );
     }
@@ -46,7 +46,7 @@ export class SearchSubscriber implements EventSubscriber<AllIndexableEntities> {
 
   public async afterDelete(args: EventArgs<AllIndexableEntities>): Promise<void> {
     if (args.changeSet) {
-      await this.meiliSearchGlobal.indexes[args.entity.tenant.id].deleteDocument(
+      await this.meiliSearchGlobal.client.index(args.entity.tenant.id).deleteDocument(
         `${args.entity.tenant.id}${MEILISEARCH_ID_SEPARATOR}${args.changeSet.name}${MEILISEARCH_ID_SEPARATOR}${args.entity.id}`,
       );
     }
