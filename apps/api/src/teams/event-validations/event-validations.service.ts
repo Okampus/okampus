@@ -1,8 +1,6 @@
 import type { FilterQuery } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import { ValidationStep } from '../../configurations/validation-steps/validation-step.entity';
-import { config } from '../../shared/configs/config';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.enum';
 import { ValidationStepType } from '../../shared/lib/types/enums/validation-step-type.enum';
@@ -15,6 +13,8 @@ import {
 } from '../../shared/modules/notifications/notifications';
 import { NotificationsService } from '../../shared/modules/notifications/notifications.service';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
+import type { Tenant } from '../../tenants/tenants/tenant.entity';
+import { ValidationStep } from '../../tenants/validation-steps/validation-step.entity';
 import type { User } from '../../users/user.entity';
 import { TeamEvent } from '../events/team-event.entity';
 import type { CreateTeamEventValidationDto } from './dto/create-team-event-validation.dto';
@@ -33,6 +33,7 @@ export class TeamEventValidationsService {
   ) {}
 
   public async create(
+    tenant: Tenant,
     user: User,
     id: number,
     createTeamEventValidationDto: CreateTeamEventValidationDto,
@@ -42,11 +43,11 @@ export class TeamEventValidationsService {
     if (event.state !== TeamEventState.Submitted)
       throw new BadRequestException('Event not submitted');
 
-    // 2. Fetch the validation step the event is currently on
+    // 2. Fetch the next validation step required for the event
     const step = await this.validationStepRepository.findOneOrFail({
       type: ValidationStepType.TeamEvent,
-      configuration: config.get('productName'),
-      step: event.validationStep,
+      tenant,
+      step: event.validationStep + 1,
     }, { populate: ['users'] });
 
     // 3. Check that the person is allowed to submit a validation for this step
@@ -82,19 +83,19 @@ export class TeamEventValidationsService {
     }
 
     // 6. If we are the last person of the current step, advance to the next step
-    const alreadyValidated = await this.teamEventValidationRepository.count({ event, step: event.validationStep });
+    const alreadyValidated = await this.teamEventValidationRepository.count({ event, step: event.validationStep + 1 });
     if (alreadyValidated === step.users.length) {
       // 7. If we are at the last step, publish the event
       const nextStep = await this.validationStepRepository.findOne({
         type: ValidationStepType.TeamEvent,
-        configuration: config.get('productName'),
-        step: event.validationStep + 1,
+        tenant,
+        step: event.validationStep + 2,
       });
+      event.validationStep++;
 
       if (!nextStep) {
         // => Approved !
         event.state = TeamEventState.Published;
-        event.validationStep = 0;
         await this.teamEventRepository.flush();
 
         void this.notificationsService.triggerFirst(
@@ -106,7 +107,6 @@ export class TeamEventValidationsService {
       }
 
       // 6.b. Advance to the next step
-      event.validationStep++;
       await this.teamEventRepository.flush();
 
       void this.notificationsService.trigger(new AdminTeamEventValidationStepNotification(event, nextStep));
@@ -139,9 +139,13 @@ export class TeamEventValidationsService {
     return await this.teamEventValidationRepository.find({ event: { id } });
   }
 
-  public async findMyEvents(user: User, options?: Required<PaginateDto>): Promise<PaginatedResult<TeamEvent>> {
+  public async findMyEvents(
+    tenant: Tenant,
+    user: User,
+    options?: Required<PaginateDto>,
+  ): Promise<PaginatedResult<TeamEvent>> {
     const steps = await this.validationStepRepository.find({
-      configuration: config.get('productName'),
+      tenant,
       type: ValidationStepType.TeamEvent,
     }, { populate: ['users'] });
 
@@ -154,11 +158,11 @@ export class TeamEventValidationsService {
     );
   }
 
-  public async findValidationsLeftForEvent(id: number): Promise<Array<Omit<ValidationStep, 'users'> & { users: User[] }>> {
+  public async findValidationsLeftForEvent(tenant: Tenant, id: number): Promise<Array<Omit<ValidationStep, 'users'> & { users: User[] }>> {
     const event = await this.teamEventRepository.findOneOrFail({ id, state: TeamEventState.Submitted });
 
     const steps = await this.validationStepRepository.find({
-      configuration: config.get('productName'),
+      tenant,
       type: ValidationStepType.TeamEvent,
       step: { $gte: event.validationStep },
     }, { populate: ['users'] });

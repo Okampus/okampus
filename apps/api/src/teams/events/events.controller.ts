@@ -10,11 +10,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { normalizeSort } from '../../shared/modules/sorting';
+import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
 import { CreateTeamEventDto } from './dto/create-team-event.dto';
 import { ListTeamEventsDto } from './dto/list-team-events.dto';
@@ -32,11 +34,12 @@ export class TeamEventsController {
   @Post(':id')
   @CheckPolicies(ability => ability.can(Action.Create, TeamEvent))
   public async create(
+    @CurrentTenant() tenant: Tenant,
     @Param('id', ParseIntPipe) id: number,
     @Body() createTeamEventDto: CreateTeamEventDto,
     @CurrentUser() user: User,
   ): Promise<TeamEvent> {
-    return await this.eventsService.create(user, id, createTeamEventDto);
+    return await this.eventsService.create(tenant, user, id, createTeamEventDto);
   }
 
   @Get()
@@ -63,8 +66,9 @@ export class TeamEventsController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateTeamEventDto: UpdateTeamEventDto,
     @CurrentUser() user: User,
+    @CurrentTenant() tenant: Tenant,
   ): Promise<TeamEvent> {
-    return await this.eventsService.update(user, id, updateTeamEventDto);
+    return await this.eventsService.update(tenant, user, id, updateTeamEventDto);
   }
 
   @Delete(':id')

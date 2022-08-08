@@ -505,6 +505,7 @@ type Team {
   name: String!
   shortDescription: String
   tags: [String!]!
+  tenant: String!
   updatedAt: DateTime!
   userMembership: TeamMembershipStatus
 }
@@ -524,7 +525,7 @@ type TeamEvent {
   registrations: [TeamEventRegistration!]!
   start: DateTime!
   state: TeamEventState!
-  supervisor: User
+  supervisor: TeamMember
   team: Team!
   updatedAt: DateTime!
   usedTemplate: TeamEvent
@@ -645,6 +646,7 @@ enum TeamKind {
 }
 
 type TeamMember {
+  active: Boolean!
   createdAt: DateTime!
   id: Int!
   joinDate: DateTime!
@@ -837,6 +839,7 @@ type User {
   teamEventIcal: String!
   teamMembershipRequests: [TeamMembershipRequest!]!
   teamMemberships: [TeamMember!]!
+  tenant: String!
   updatedAt: DateTime!
 }
 

@@ -14,7 +14,6 @@ import type { User } from '../users/user.entity';
 import type { CreateReportDto } from './dto/create-report.dto';
 import type { GetReportsDto } from './dto/get-reports.dto';
 import type { UpdateReportDto } from './dto/update-report.dto';
-import { ReportSearchService } from './report-search.service';
 import { Report } from './report.entity';
 
 @Injectable()
@@ -22,7 +21,6 @@ export class ReportsService {
   constructor(
     @InjectRepository(Report) private readonly reportRepository: BaseRepository<Report>,
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
-    private readonly reportSearchService: ReportSearchService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
     private readonly notificationsService: NotificationsService,
   ) {}
@@ -49,7 +47,6 @@ export class ReportsService {
     });
 
     await this.reportRepository.persistAndFlush(report);
-    await this.reportSearchService.add(report);
 
     content.reportCount++;
     await this.contentRepository.flush();
@@ -102,7 +99,6 @@ export class ReportsService {
 
     wrap(report).assign(updateReportDto);
     await this.reportRepository.flush();
-    await this.reportSearchService.update(report);
     return report;
   }
 
@@ -113,7 +109,6 @@ export class ReportsService {
     assertPermissions(ability, Action.Delete, report);
 
     await this.reportRepository.removeAndFlush(report);
-    await this.reportSearchService.remove(report.id.toString());
 
     report.content.reportCount--;
     await this.contentRepository.flush();

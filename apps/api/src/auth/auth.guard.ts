@@ -10,8 +10,9 @@ import type { GqlContextType } from '@nestjs/graphql';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import type { GqlWebsocketContext } from '../shared/configs/graphql.config';
-import { IS_PUBLIC_KEY } from '../shared/lib/constants';
-import type { CookiesAuthRequest } from '../shared/lib/types/interfaces/auth-request.interface';
+import { IS_PUBLIC_KEY, TENANT_ID_HEADER_NAME } from '../shared/lib/constants';
+import type { AuthRequest } from '../shared/lib/types/interfaces/auth-request.interface';
+import { TenantsService } from '../tenants/tenants/tenants.service';
 import type { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
@@ -23,17 +24,18 @@ export interface Token {
 }
 
 export interface GqlContext extends GqlWebsocketContext {
-  req: CookiesAuthRequest;
+  req: AuthRequest;
 }
 
 @Injectable()
-export class JwtAuthGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
   reflector: Reflector;
 
   constructor(
     private readonly authService: AuthService,
     private readonly jwtService: JwtService,
     private readonly userService: UsersService,
+    private readonly tenantsService: TenantsService,
   ) {
     this.reflector = new Reflector();
   }
@@ -46,16 +48,16 @@ export class JwtAuthGuard implements CanActivate {
     if (isPublic)
       return true;
 
-    let request: CookiesAuthRequest;
+    let request: AuthRequest;
     switch (ctx.getType<GqlContextType>()) {
       case 'http':
-        request = ctx.switchToHttp().getRequest<CookiesAuthRequest>();
+        request = ctx.switchToHttp().getRequest<AuthRequest>();
         break;
 
       case 'graphql': {
         const gqlContext = GqlExecutionContext.create(ctx).getContext<GqlContext>();
         if (gqlContext.context?.headers)
-          return Boolean(gqlContext.context.user);
+          return Boolean(gqlContext.context.user) && Boolean(gqlContext.context.tenant);
 
         request = gqlContext.req;
         break;
@@ -64,11 +66,21 @@ export class JwtAuthGuard implements CanActivate {
       default: throw new InternalServerErrorException('Invalid context type');
     }
 
+    const tenantId = request.headers[TENANT_ID_HEADER_NAME.toLowerCase()];
+    if (!tenantId)
+      return false;
+
+    request.tenant = await this.tenantsService.findOne(
+      Array.isArray(tenantId)
+      ? tenantId[0]
+      : tenantId,
+    );
+
     request.user = await this.handleRequest(request);
     return Boolean(request.user);
   }
 
-  private async handleRequest(request: CookiesAuthRequest): Promise<User> {
+  private async handleRequest(request: AuthRequest): Promise<User> {
     let fromHeader = false;
 
     // Try first to resolve the token from the cookies

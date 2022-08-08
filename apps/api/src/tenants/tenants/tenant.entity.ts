@@ -9,11 +9,11 @@ import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import type { ValidationStep } from '../validation-steps/validation-step.entity';
 
 @Entity()
-export class Configuration extends BaseEntity {
+export class Tenant extends BaseEntity {
   @PrimaryKey()
   id!: string;
 
-  @OneToMany('ValidationStep', (step: ValidationStep) => step.configuration)
+  @OneToMany('ValidationStep', 'tenant')
   @TransformCollection()
   validationSteps = new Collection<ValidationStep>(this);
 

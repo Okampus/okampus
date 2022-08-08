@@ -15,11 +15,10 @@ import { S3Module } from 'nestjs-s3';
 import passport from 'passport';
 import { AnnouncementsModule } from './announcements/announcements.module';
 import { AppController } from './app.controller';
+import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { BadgesModule } from './badges/badges.module';
 import { BlogsModule } from './blogs/blogs.module';
-import { ConfigurationsModule } from './configurations/configurations.module';
 import { ContactsModule } from './contacts/contacts.module';
 import { ContentsModule } from './contents/contents.module';
 import { FavoritesModule } from './favorites/favorites.module';
@@ -42,17 +41,20 @@ import sentryConfig, { sentryInterceptorConfig } from './shared/configs/sentry.c
 import storageConfig from './shared/configs/storage.config';
 
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
-import { TypesenseFilter } from './shared/lib/filters/typesense.filter';
 import { GraphqlLoggerMiddleware } from './shared/lib/middlewares/graphql-logger.middleware';
 import { RestLoggerMiddleware } from './shared/lib/middlewares/rest-logger.middleware';
 import { TraceMiddleware } from './shared/lib/middlewares/trace.middleware';
 import { PoliciesGuard } from './shared/modules/authorization';
 import { CaslModule } from './shared/modules/casl/casl.module';
+import { MeiliSearchModule } from './shared/modules/search/meilisearch.module';
 import { StatisticsModule } from './statistics/statistics.module';
+import { SearchSubscriber } from './statistics/subscribers/search.subscriber';
 import { SubjectsModule } from './subjects/subjects.module';
 
 import { TagsModule } from './tags/tags.module';
 import { TeamsModule } from './teams/teams.module';
+import { TenantsModule } from './tenants/tenants.module';
+import { TenantsCoreModule } from './tenants/tenants/tenants.module';
 import { ThreadsModule } from './threads/threads.module';
 import { UsersModule } from './users/users.module';
 import { ValidationsModule } from './validations/validations.module';
@@ -62,6 +64,7 @@ import { WikisModule } from './wiki/wikis.module';
 @Module({
   imports: [
     // Configs
+    ...(config.get('meilisearch.enabled') ? [MeiliSearchModule] : []),
     CacheModule.register(cacheConfig),
     CaslModule,
     EventEmitterModule.forRoot(),
@@ -77,7 +80,6 @@ import { WikisModule } from './wiki/wikis.module';
     AuthModule,
     BadgesModule,
     BlogsModule,
-    ConfigurationsModule,
     ContactsModule,
     ContentsModule,
     FavoritesModule,
@@ -92,6 +94,8 @@ import { WikisModule } from './wiki/wikis.module';
     SubjectsModule,
     TagsModule,
     TeamsModule,
+    TenantsCoreModule,
+    TenantsModule,
     SchoolGroupsModule,
     SchoolGroupMembershipsModule,
     SchoolYearsModule,
@@ -102,11 +106,11 @@ import { WikisModule } from './wiki/wikis.module';
     ValidationsModule,
   ],
   providers: [
-    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: AuthGuard },
     { provide: APP_GUARD, useClass: PoliciesGuard },
     { provide: APP_FILTER, useClass: ExceptionsFilter },
-    { provide: APP_FILTER, useClass: TypesenseFilter },
     { provide: APP_INTERCEPTOR, useFactory: (): SentryInterceptor => new SentryInterceptor(sentryInterceptorConfig) },
+    ...(config.get('meilisearch.enabled') ? [SearchSubscriber] : []),
   ],
   controllers: [AppController],
   exports: [],

@@ -29,7 +29,6 @@ import { ValidationsService } from '../validations/validations.service';
 import type { CreateThreadDto } from './dto/create-thread.dto';
 import type { ThreadListOptionsDto } from './dto/thread-list-options.dto';
 import type { UpdateThreadDto } from './dto/update-thread.dto';
-import { ThreadSearchService } from './thread-search.service';
 import { Thread } from './thread.entity';
 
 @Injectable()
@@ -44,7 +43,6 @@ export class ThreadsService {
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
     @InjectRepository(Validation) private readonly validationRepository: BaseRepository<Validation>,
     private readonly contentsService: ContentsService,
-    private readonly threadSearchService: ThreadSearchService,
     private readonly validationsService: ValidationsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
@@ -90,7 +88,6 @@ export class ThreadsService {
 
     await this.contentRepository.flush();
     await this.threadRepository.persistAndFlush(thread);
-    await this.threadSearchService.add(thread);
 
     return thread;
   }
@@ -211,7 +208,6 @@ export class ThreadsService {
       wrap(thread).assign(updatedProps);
 
     await this.threadRepository.flush();
-    await this.threadSearchService.update(thread);
     return thread;
   }
 
@@ -222,7 +218,6 @@ export class ThreadsService {
     assertPermissions(ability, Action.Delete, thread);
 
     await this.threadRepository.removeAndFlush(thread);
-    await this.threadSearchService.remove(thread.id.toString());
   }
 
   public async addTags(id: number, newTags: string[]): Promise<Thread> {

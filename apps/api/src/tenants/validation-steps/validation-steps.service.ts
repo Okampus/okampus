@@ -1,11 +1,10 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { config } from '../../shared/configs/config';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import type { ValidationStepType } from '../../shared/lib/types/enums/validation-step-type.enum';
 import { User } from '../../users/user.entity';
-import { Configuration } from '../configurations/configurations.entity';
+import { Tenant } from '../tenants/tenant.entity';
 import type { CreateValidationStepDto } from './dto/create-validation-step.dto';
 import type { UpdateValidationStepDto } from './dto/update-validation-step.dto';
 import { ValidationStep } from './validation-step.entity';
@@ -13,23 +12,23 @@ import { ValidationStep } from './validation-step.entity';
 @Injectable()
 export class ValidationStepsService {
   constructor(
-    @InjectRepository(Configuration) private readonly configurationRepository: BaseRepository<Configuration>,
+    @InjectRepository(Tenant) private readonly tenantRepository: BaseRepository<Tenant>,
     @InjectRepository(ValidationStep) private readonly validationStepRepository: BaseRepository<ValidationStep>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
   ) {}
 
-  public async create(createValidationStepDto: CreateValidationStepDto): Promise<ValidationStep> {
-    const configuration = await this.configurationRepository.findOneOrFail(
-      { id: config.get('productName') },
-      { failHandler: () => { throw new InternalServerErrorException('Configuration not found'); } },
+  public async create(id: string, createValidationStepDto: CreateValidationStepDto): Promise<ValidationStep> {
+    const tenant = await this.tenantRepository.findOneOrFail(
+      { id },
+      { failHandler: () => { throw new InternalServerErrorException('Tenant not found'); } },
     );
 
-    const step = await this.validationStepRepository.count({ configuration, step: createValidationStepDto.step });
+    const step = await this.validationStepRepository.count({ tenant, step: createValidationStepDto.step });
     if (step > 0)
       throw new BadRequestException('Step already exists');
 
     const { users: wantedUsers, ...dto } = createValidationStepDto;
-    const validationStep = new ValidationStep({ ...dto, configuration });
+    const validationStep = new ValidationStep({ ...dto, tenant });
 
     const users = await this.userRepository.find({ id: { $in: wantedUsers } });
     validationStep.users.add(...users);
@@ -38,18 +37,15 @@ export class ValidationStepsService {
     return validationStep;
   }
 
-  public async findAll(type: ValidationStepType): Promise<ValidationStep[]> {
+  public async findAll(tenant: Tenant, type: ValidationStepType): Promise<ValidationStep[]> {
     return await this.validationStepRepository.find(
-      { configuration: { id: config.get('productName') }, type },
+      { tenant, type },
       { orderBy: { step: 'ASC' }, populate: ['users'] },
     );
   }
 
   public async update(id: number, updateValidationStepDto: UpdateValidationStepDto): Promise<ValidationStep> {
-    const validationStep = await this.validationStepRepository.findOneOrFail({
-      id,
-      configuration: { id: config.get('productName') },
-    });
+    const validationStep = await this.validationStepRepository.findOneOrFail({ id });
 
     wrap(validationStep).assign(updateValidationStepDto);
     await this.validationStepRepository.flush();
@@ -57,16 +53,13 @@ export class ValidationStepsService {
   }
 
   public async remove(id: number): Promise<void> {
-    const validationStep = await this.validationStepRepository.findOneOrFail({
-      id,
-      configuration: { id: config.get('productName') },
-    });
+    const validationStep = await this.validationStepRepository.findOneOrFail({ id });
     await this.validationStepRepository.removeAndFlush(validationStep);
   }
 
   public async addUser(id: number, userId: string): Promise<ValidationStep> {
     const validationStep = await this.validationStepRepository.findOneOrFail(
-      { id, configuration: { id: config.get('productName') } },
+      { id },
       { populate: ['users'] },
     );
 
@@ -80,9 +73,9 @@ export class ValidationStepsService {
     return validationStep;
   }
 
-  public async removeUser(id: number, userId: string): Promise<void> {
+  public async removeUser(tenant: Tenant, id: number, userId: string): Promise<void> {
     const validationStep = await this.validationStepRepository.findOneOrFail(
-      { id, configuration: { id: config.get('productName') } },
+      { id, tenant },
       { populate: ['users'] },
     );
 

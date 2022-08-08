@@ -11,6 +11,9 @@ import { SchoolRole } from '../../shared/modules/authorization/types/school-role
 
 export class RegisterDto {
   @IsString()
+  tenantId: string;
+
+  @IsString()
   id: string;
 
   @IsString()

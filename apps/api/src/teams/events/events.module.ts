@@ -1,10 +1,12 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { ValidationStep } from '../../configurations/validation-steps/validation-step.entity';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
 import { NotificationsModule } from '../../shared/modules/notifications/notifications.module';
+import { ValidationStep } from '../../tenants/validation-steps/validation-step.entity';
 import { User } from '../../users/user.entity';
 import { TeamEventRegistration } from '../event-registrations/team-event-registration.entity';
+import { TeamEventValidationsModule } from '../event-validations/event-validations.module';
+import { TeamEventValidation } from '../event-validations/team-event-validation.entity';
 import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
 import { Team } from '../teams/team.entity';
@@ -22,9 +24,11 @@ import { TeamEvent } from './team-event.entity';
       TeamForm,
       TeamMember,
       User,
+      TeamEventValidation,
       ValidationStep,
     ]),
     NotificationsModule,
+    TeamEventValidationsModule,
   ],
   controllers: [TeamEventsController],
   providers: [CaslAbilityFactory, TeamEventsService, TeamEventsResolver],

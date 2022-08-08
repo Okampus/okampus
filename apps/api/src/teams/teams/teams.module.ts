@@ -1,5 +1,4 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
 import { FileUploadsModule } from '../../files/file-uploads/file-uploads.module';
 import { ProfileImage } from '../../files/profile-images/profile-image.entity';
@@ -8,7 +7,6 @@ import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.facto
 import { User } from '../../users/user.entity';
 import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
-import { TeamSearchService } from './team-search.service';
 import { Team } from './team.entity';
 import { TeamsController } from './teams.controller';
 import { TeamsResolver } from './teams.resolver';
@@ -21,15 +19,8 @@ import { TeamsService } from './teams.service';
     ProfileImagesModule,
   ],
   controllers: [TeamsController],
-  providers: [CaslAbilityFactory, TeamsService, TeamSearchService, TeamsResolver],
+  providers: [CaslAbilityFactory, TeamsService,
+  TeamsResolver],
   exports: [TeamsService],
 })
-export class CoreTeamsModule implements OnModuleInit {
-  constructor(
-    private readonly teamSearchService: TeamSearchService,
-  ) {}
-
-  public async onModuleInit(): Promise<void> {
-    await this.teamSearchService.init();
-  }
-}
+export class CoreTeamsModule {}

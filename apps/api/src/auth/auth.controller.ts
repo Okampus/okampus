@@ -16,6 +16,9 @@ import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Public } from '../shared/lib/decorators/public.decorator';
 import { MyEfreiOidcEnabledGuard } from '../shared/lib/guards/myefrei-oidc-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
+import { MeiliSearchGlobal } from '../shared/modules/search/meilisearch.global';
+import type { Tenant } from '../tenants/tenants/tenant.entity';
+import { TenantsService } from '../tenants/tenants/tenants.service';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
@@ -34,15 +37,22 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly usersService: UsersService,
+    private readonly meiliSearchGlobal: MeiliSearchGlobal,
+    private readonly tenantsService: TenantsService,
   ) {}
 
   @Public()
   @Post('login')
-  public async login(@Body() body: LoginDto, @Response({ passthrough: true }) res: Res): Promise<User> {
+  public async login(
+    @Body() body: LoginDto,
+    @Response({ passthrough: true }) res: Res,
+  ): Promise<User> {
     const user = await this.authService.validatePassword(body.username, body.password);
     const login = await this.authService.login(user);
 
     this.addAuthCookies(res, login);
+    if (config.get('meilisearch.enabled'))
+      await this.addMeiliSearchCookie(res, user.tenant);
 
     return user;
   }
@@ -53,7 +63,8 @@ export class AuthController {
   @Post('register')
   public async register(@Body() dto: RegisterDto): Promise<{ user: User; token: string | null }> {
     try {
-      return await this.usersService.create(dto);
+      const tenant = await this.tenantsService.findOne(dto.tenantId);
+      return await this.usersService.create({ ...dto, tenantId: tenant.id });
     } catch (error) {
       if (error.code instanceof UniqueConstraintViolationException)
         throw new BadRequestException('User id already taken');
@@ -66,7 +77,8 @@ export class AuthController {
   @Post('pre-register-sso')
   public async preRegisterSso(@Body() dto: PreRegisterSsoDto): Promise<{ user: User; token: string | null }> {
     try {
-      return await this.usersService.create(dto);
+      const tenant = await this.tenantsService.findOne(dto.tenantId);
+      return await this.usersService.create({ ...dto, tenantId: tenant.id });
     } catch (error) {
       if (error.code instanceof UniqueConstraintViolationException)
         throw new BadRequestException('User id already taken');
@@ -88,6 +100,9 @@ export class AuthController {
   public async myefreiCallback(@CurrentUser() user: User, @Response() res: Res): Promise<void> {
     const login = await this.authService.login(user);
 
+    if (config.get('meilisearch.enabled'))
+      await this.addMeiliSearchCookie(res, user.tenant);
+
     this.addAuthCookies(res, login)
       .redirect(`${computedConfig.frontendUrl + (config.get('nodeEnv') === 'development' ? '/#' : '')}/auth`);
   }
@@ -98,16 +113,21 @@ export class AuthController {
     res.cookie('accessToken', '', { ...cookiePublicOptions, maxAge: 0 })
       .cookie('refreshToken', '', { ...cookiePublicOptions, maxAge: 0 })
       .cookie('accessTokenExpiresAt', '', { ...cookiePublicOptions, maxAge: 0 })
-      .cookie('refreshTokenExpiresAt', '', { ...cookiePublicOptions, maxAge: 0 });
+      .cookie('refreshTokenExpiresAt', '', { ...cookiePublicOptions, maxAge: 0 })
+      .cookie('meiliSearchKey', '', { ...cookiePublicOptions, maxAge: 0 });
   }
 
   @Post('refresh-token')
   public async refreshToken(@Request() req: Req, @Response() res: Res): Promise<void> {
-    const login = await this.authService.loginWithRefreshToken(req.signedCookies?.refreshToken as string);
-    if (login)
-      res.cookie('accessToken', login.accessToken, cookieOptions).send();
+    const user = await this.authService.loginWithRefreshToken(req.signedCookies?.refreshToken as string);
+    if (!user)
+      new BadRequestException('Missing refresh token');
 
-    new BadRequestException('Missing refresh token');
+    const login = await this.authService.login(user);
+    if (config.get('meilisearch.enabled'))
+      await this.addMeiliSearchCookie(res, user.tenant);
+
+    res.cookie('accessToken', login.accessToken, cookieOptions).send();
   }
 
   @Post('ws-token')
@@ -122,6 +142,25 @@ export class AuthController {
   @Get('me')
   public me(@CurrentUser() user: User): User {
     return user;
+  }
+
+  private async addMeiliSearchCookie(res: Res, tenant: Tenant): Promise<Res> {
+    // MeiliSearch API Key expires with the accessToken
+    // Must be passed as Authorization header in the frontend
+    const meiliSearchKey = await this.meiliSearchGlobal.client.createKey({
+      indexes: [tenant.id],
+      actions: ['search'],
+      expiresAt: new Date(Date.now() + config.get('tokens.accessTokenExpirationSeconds') * 1000).toISOString(),
+    });
+
+    return res.cookie(
+      'meiliSearchKey',
+      meiliSearchKey.key,
+      {
+        ...cookiePublicOptions,
+        maxAge: config.get('tokens.accessTokenExpirationSeconds') * 1000,
+      },
+    );
   }
 
   private addAuthCookies(res: Res, tokens: TokenResponse): Res {

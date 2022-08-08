@@ -7,18 +7,16 @@ interface Config {
   frontendOriginUrl: string;
   baseDomain: string;
   nodeEnv: 'development' | 'production' | 'test';
-  productName: string;
+  baseTenant: string;
   release: string;
   upload: {
     maxSize: number;
     path: string;
   };
-  typesense: {
+  meilisearch: {
     enabled: boolean;
     apiKey: string;
     host: string;
-    port: number;
-    scheme: string;
   };
   s3: {
     enabled: boolean;
@@ -113,10 +111,10 @@ export const config = createProfiguration<Config>({
     format: ['development', 'production', 'test'],
     env: 'NODE_ENV',
   },
-  productName: {
+  baseTenant: {
     default: 'demo-tenant',
     format: String,
-    env: 'PRODUCT_NAME',
+    env: 'BASE_TENANT',
   },
   release: {
     default: '0.1.0-alpha.0',
@@ -135,31 +133,21 @@ export const config = createProfiguration<Config>({
       env: 'UPLOAD_PATH',
     },
   },
-  typesense: {
+  meilisearch: {
     enabled: {
       default: true,
       format: Boolean,
-      env: 'TYPESENSE_ENABLED',
+      env: 'MEILISEARCH_ENABLED',
     },
     apiKey: {
       default: 'api-key',
       format: String,
-      env: 'TYPESENSE_API_KEY',
+      env: 'MEILISEARCH_API_KEY',
     },
     host: {
-      default: 'localhost',
+      default: 'localhost:7700',
       format: String,
-      env: 'TYPESENSE_HOST',
-    },
-    port: {
-      default: 8108,
-      format: Number,
-      env: 'TYPESENSE_PORT',
-    },
-    scheme: {
-      default: 'http',
-      format: ['http', 'https'],
-      env: 'TYPESENSE_SCHEME',
+      env: 'MEILISEARCH_HOST',
     },
   },
   s3: {

@@ -71,7 +71,7 @@ export class GdprService {
     const statistics          = await this.statisticsRepository.findOne({ user });
     const eventRegistrations  = await this.teamEventRegistrationRepository.find({ user });
     const createdEvents       = await this.teamEventRepository.find({ createdBy: user });
-    const supervisedEvents    = await this.teamEventRepository.find({ supervisor: user });
+    const supervisedEvents    = await this.teamEventRepository.find({ supervisor: { user } });
     const forms               = await this.teamFormRepository.find({ createdBy: user });
     const memberships         = await this.teamMemberRepository.find({ user });
     const membershipRequests  = await this.teamMembershipRequestRepository.find({ user });

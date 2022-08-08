@@ -2,8 +2,8 @@ import { RedisHealthModule } from '@liaoliaots/nestjs-redis-health';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
+import { MeiliSearchHealthIndicator } from '../shared/modules/health/meilisearch.health';
 import { StorageHealthIndicator } from '../shared/modules/health/storage.health';
-import { TypesenseHealthIndicator } from '../shared/modules/health/typesense.health';
 import { HealthController } from './health.controller';
 
 @Module({
@@ -14,7 +14,7 @@ import { HealthController } from './health.controller';
   ],
   controllers: [HealthController],
   providers: [
-    TypesenseHealthIndicator,
+    MeiliSearchHealthIndicator,
     StorageHealthIndicator,
   ],
   exports: [],

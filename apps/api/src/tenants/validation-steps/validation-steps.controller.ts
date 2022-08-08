@@ -10,7 +10,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
+import { Tenant } from '../tenants/tenant.entity';
 import { CreateValidationStepDto } from './dto/create-validation-step.dto';
 import { ListValidationStepsDto } from './dto/list-validation-steps.dto';
 import { UpdateValidationStepDto } from './dto/update-validation-step.dto';
@@ -24,16 +26,22 @@ export class ValidationStepsController {
     private readonly validationStepsService: ValidationStepsService,
   ) {}
 
-  @Post()
+  @Post(':id')
   @CheckPolicies(ability => ability.can(Action.Create, ValidationStep))
-  public async create(@Body() createValidationStepDto: CreateValidationStepDto): Promise<ValidationStep> {
-    return await this.validationStepsService.create(createValidationStepDto);
+  public async create(
+    @Param('id') id: string,
+    @Body() createValidationStepDto: CreateValidationStepDto,
+  ): Promise<ValidationStep> {
+    return await this.validationStepsService.create(id, createValidationStepDto);
   }
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, ValidationStep))
-  public async findAll(@Query() query: ListValidationStepsDto): Promise<ValidationStep[]> {
-    return await this.validationStepsService.findAll(query.type);
+  public async findAll(
+    @CurrentTenant() tenant: Tenant,
+    @Query() query: ListValidationStepsDto,
+  ): Promise<ValidationStep[]> {
+    return await this.validationStepsService.findAll(tenant, query.type);
   }
 
   @Patch(':id')
@@ -60,9 +68,10 @@ export class ValidationStepsController {
   @Delete(':id/users/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, ValidationStep))
   public async removeUser(
+    @CurrentTenant() tenant: Tenant,
     @Param('id', ParseIntPipe) id: number,
     @Param('userId') userId: string,
   ): Promise<void> {
-    await this.validationStepsService.removeUser(id, userId);
+    await this.validationStepsService.removeUser(tenant, id, userId);
   }
 }

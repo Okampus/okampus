@@ -2,21 +2,21 @@ import { Injectable } from '@nestjs/common';
 import type { HealthIndicatorResult } from '@nestjs/terminus';
 import { HealthCheckError, HealthIndicator, TimeoutError } from '@nestjs/terminus';
 import { promiseTimeout, TimeoutError as PromiseTimeoutError } from '@nestjs/terminus/dist/utils';
-import type { HealthResponse } from 'typesense/lib/Typesense/Health';
-import { client } from '../../configs/typesense.config';
+import { meiliSearchClient } from '../../configs/meilisearch.config';
 
-interface TypesenseHealthIndicatorOptions {
+interface MeiliSearchHealthIndicatorOptions {
   timeout?: number;
 }
 
 @Injectable()
-export class TypesenseHealthIndicator extends HealthIndicator {
-  public async pingCheck(key: string, options?: TypesenseHealthIndicatorOptions): Promise<HealthIndicatorResult> {
+export class MeiliSearchHealthIndicator extends HealthIndicator {
+  public async pingCheck(key: string, options?: MeiliSearchHealthIndicatorOptions): Promise<HealthIndicatorResult> {
     const timeout = options?.timeout ?? 1000;
 
     try {
-      await this.pingTypesense(timeout);
+      await this.pingMeilisearch(timeout);
     } catch (error) {
+      console.log('ERROR', error);
       if (error instanceof PromiseTimeoutError) {
         throw new TimeoutError(
           timeout,
@@ -35,8 +35,7 @@ export class TypesenseHealthIndicator extends HealthIndicator {
     return this.getStatus(key, true);
   }
 
-  private async pingTypesense(timeout: number): Promise<HealthResponse> {
-    const check = client.health.retrieve();
-    return await promiseTimeout(timeout, check);
+  private async pingMeilisearch(timeout: number): Promise<boolean> {
+    return await promiseTimeout(timeout, meiliSearchClient.isHealthy());
   }
 }

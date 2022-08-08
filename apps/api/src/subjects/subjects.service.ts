@@ -6,7 +6,6 @@ import { BaseRepository } from '../shared/lib/orm/base.repository';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import type { CreateSubjectDto } from './dto/create-subject.dto';
 import type { UpdateSubjectDto } from './dto/update-subject.dto';
-import { SubjectSearchService } from './subject-search.service';
 import { Subject } from './subject.entity';
 
 @Injectable()
@@ -14,7 +13,6 @@ export class SubjectsService {
   constructor(
     @InjectRepository(Subject) private readonly subjectRepository: BaseRepository<Subject>,
     @InjectRepository(SchoolGroup) private readonly schoolGroupRepository: BaseRepository<SchoolGroup>,
-    private readonly subjectSearchService: SubjectSearchService,
   ) {}
 
   public async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
@@ -32,7 +30,6 @@ export class SubjectsService {
         throw new BadRequestException('Subject code already exists');
       throw error;
     }
-    await this.subjectSearchService.add(subject);
     return subject;
   }
 
@@ -55,13 +52,11 @@ export class SubjectsService {
 
     wrap(subject).assign({ ...updateSubject, schoolGroup });
     await this.subjectRepository.flush();
-    await this.subjectSearchService.update(subject);
     return subject;
   }
 
   public async remove(id: number): Promise<void> {
     const subject = await this.subjectRepository.findOneOrFail({ id });
     await this.subjectRepository.removeAndFlush(subject);
-    await this.subjectSearchService.remove(subject.id.toString());
   }
 }

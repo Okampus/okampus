@@ -15,11 +15,13 @@ import { PubSubEngine } from 'graphql-subscriptions';
 import groupBy from 'lodash.groupby';
 import mapValues from 'lodash.mapvalues';
 import { APP_PUB_SUB } from '../../shared/lib/constants';
+import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { SubscriptionType } from '../../shared/lib/types/enums/subscription-type.enum';
 import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
+import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
 import { TeamMember } from '../members/team-member.entity';
 import { MembershipRequestState } from '../types/membership-request-state.enum';
@@ -133,9 +135,10 @@ export class TeamsResolver {
   @Mutation(() => Team)
   public async addTeam(
     @CurrentUser() user: User,
+    @CurrentTenant() tenant: Tenant,
     @Args('team') team: CreateTeamDto,
   ): Promise<Team> {
-    const createdTeam = await this.teamsService.create(user, team);
+    const createdTeam = await this.teamsService.create(tenant, user, team);
     await this.pubSub.publish(SubscriptionType.TeamAdded, { teamAdded: createdTeam });
     return createdTeam;
   }

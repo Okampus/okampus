@@ -18,7 +18,6 @@ import type { CreateStudyDocDto } from './dto/create-study-doc.dto';
 import type { DocsFilterDto } from './dto/docs-filter.dto';
 import type { UpdateStudyDocDto } from './dto/update-study-doc.dto';
 import { StudyDoc } from './study-doc.entity';
-import { StudyDocSearchService } from './study-docs-search.service';
 
 @Injectable()
 export class StudyDocsService {
@@ -26,7 +25,6 @@ export class StudyDocsService {
     @InjectRepository(StudyDoc) private readonly studyDocRepository: BaseRepository<StudyDoc>,
     @InjectRepository(Subject) private readonly subjectRepository: BaseRepository<Subject>,
     @InjectRepository(DocSeries) private readonly docSeriesRepository: BaseRepository<DocSeries>,
-    private readonly studyDocSearchService: StudyDocSearchService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -41,7 +39,6 @@ export class StudyDocsService {
     });
 
     await this.studyDocRepository.persistAndFlush(studyDoc);
-    await this.studyDocSearchService.add(studyDoc);
     return studyDoc;
   }
 
@@ -102,7 +99,6 @@ export class StudyDocsService {
 
     wrap(studyDoc).assign({ ...updateStudyDocDto, subject, docSeries });
     await this.studyDocRepository.flush();
-    await this.studyDocSearchService.update(studyDoc);
     return studyDoc;
   }
 
@@ -113,6 +109,5 @@ export class StudyDocsService {
     assertPermissions(ability, Action.Delete, studyDoc);
 
     await this.studyDocRepository.removeAndFlush(studyDoc);
-    await this.studyDocSearchService.remove(studyDoc.id);
   }
 }

@@ -13,24 +13,9 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { computedConfig, config } from './shared/configs/config';
-import { client } from './shared/configs/typesense.config';
+import { meiliSearchClient } from './shared/configs/meilisearch.config';
 
 const logger = new Logger('Bootstrap');
-
-async function attemptTypesenseConnection(): Promise<void> {
-  const typesenseLogger = new Logger('Typesense');
-  try {
-    await client.health.retrieve();
-    typesenseLogger.log('Connection established');
-  } catch (err) {
-    if (err?.code === 'ECONNREFUSED') {
-      config.set('typesense.enabled', false);
-      typesenseLogger.warn('Service not available, disabling');
-    } else {
-      throw err;
-    }
-  }
-}
 
 function setupSwagger(app: NestExpressApplication): void {
   const swaggerConfig = new DocumentBuilder()
@@ -45,8 +30,10 @@ function setupSwagger(app: NestExpressApplication): void {
 }
 
 async function bootstrap(): Promise<void> {
-  if (config.get('typesense.enabled'))
-    await attemptTypesenseConnection();
+  if (config.get('meilisearch.enabled') && !await meiliSearchClient.isHealthy()) {
+    logger.error('MeiliSearch is not healthy and has been disabled!');
+    config.set('meilisearch.enabled', false);
+  }
 
   if (config.get('sentry.enabled'))
     SentryTracing.addExtensionMethods();

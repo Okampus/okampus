@@ -5,10 +5,11 @@ import type { JwtSignOptions } from '@nestjs/jwt';
 import { JwtService } from '@nestjs/jwt';
 import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
+import { TenantsService } from '../tenants/tenants/tenants.service';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
+import type { Token } from './auth.guard';
 import type { MyEfreiDto } from './dto/myefrei.dto';
-import type { Token } from './jwt-auth.guard';
 
 export interface TokenResponse {
   accessToken: string;
@@ -22,6 +23,7 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     private readonly usersService: UsersService,
+    private readonly tenantsService: TenantsService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -65,7 +67,7 @@ export class AuthService {
     return await this.jwtService.signAsync({ sub: id, aud: 'ws' }, this.getTokenOptions('ws'));
   }
 
-  public async loginWithRefreshToken(refreshToken: string): Promise<TokenResponse> {
+  public async loginWithRefreshToken(refreshToken: string): Promise<User> {
     const decoded = this.jwtService.decode(refreshToken) as Token;
     if (!decoded)
       throw new BadRequestException('Failed to decode JWT');
@@ -79,8 +81,7 @@ export class AuthService {
       throw new UnauthorizedException('Falsified token');
     }
 
-    const user = await this.userRepository.findOneOrFail({ id: decoded.sub });
-    return this.login(user);
+    return await this.userRepository.findOneOrFail({ id: decoded.sub });
   }
 
   public async getWsTokenWithAccessToken(accessToken: string): Promise<string> {
@@ -114,14 +115,15 @@ export class AuthService {
     return options;
   }
 
-  public async createOrUpdate(userInfo: MyEfreiDto): Promise<User> {
+  public async createOrUpdate(tenantId: string, userInfo: MyEfreiDto): Promise<User> {
+    const tenant = await this.tenantsService.findOne(tenantId);
     const user = await this.userRepository.findOne({ id: userInfo.id });
     if (!user) {
-      const { user: newUser } = await this.usersService.create(userInfo);
+      const { user: newUser } = await this.usersService.create({ ...userInfo, tenantId: tenant.id });
       return newUser;
     }
 
-    if (!user.hasChanged(userInfo))
+    if (!user.hasChanged({ ...userInfo, tenantId: tenant.id }))
       return user;
 
     wrap(user).assign(userInfo);

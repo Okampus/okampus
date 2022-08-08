@@ -2,7 +2,7 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import type { Token } from '../auth/jwt-auth.guard';
+import type { Token } from '../auth/auth.guard';
 import { FileUpload } from '../files/file-uploads/file-upload.entity';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
 import { SchoolGroupMembership } from '../school-group/memberships/school-group-membership.entity';
@@ -18,8 +18,8 @@ import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory'
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import { Statistics } from '../statistics/statistics.entity';
 import { StatisticsService } from '../statistics/statistics.service';
+import { Tenant } from '../tenants/tenants/tenant.entity';
 import type { UpdateUserDto } from './dto/update-user.dto';
-import { UserSearchService } from './user-search.service';
 import { User } from './user.entity';
 
 @Injectable()
@@ -27,13 +27,13 @@ export class UsersService {
   // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(Tenant) private readonly tenantRepository: BaseRepository<Tenant>,
     @InjectRepository(Statistics) private readonly statisticsRepository: BaseRepository<Statistics>,
     @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
     @InjectRepository(SchoolGroup)
       private readonly schoolGroupRepository: BaseRepository<SchoolGroup>,
     @InjectRepository(SchoolYear)
       private readonly schoolYearRepository: BaseRepository<SchoolYear>,
-    private readonly userSearchService: UserSearchService,
     private readonly statisticsService: StatisticsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
     private readonly jwtService: JwtService,
@@ -58,7 +58,8 @@ export class UsersService {
   }
 
   public async create(options: UserCreationOptions): Promise<{ user: User; token: string | null }> {
-    const user = new User(options);
+    const tenant = await this.tenantRepository.findOneOrFail({ id: options.tenantId });
+    const user = new User({ ...options, tenant });
     let token: string | null = null;
     if (options.bot) {
       token = await this.jwtService.signAsync({ sub: user.id, typ: 'bot', aud: 'http' } as Token, {
@@ -91,8 +92,6 @@ export class UsersService {
       });
       await this.schoolGroupRepository.persistAndFlush(schoolGroupMembership);
     }
-
-    await this.userSearchService.add(user);
 
     return { user, token };
   }
@@ -144,7 +143,6 @@ export class UsersService {
 
   public async delete(id: string): Promise<void> {
     const user = await this.userRepository.findOneOrFail({ id });
-    await this.userSearchService.remove(id);
     await this.userRepository.removeAndFlush(user);
   }
 

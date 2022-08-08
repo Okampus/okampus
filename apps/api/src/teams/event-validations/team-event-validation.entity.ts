@@ -4,8 +4,8 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { ValidationStep } from '../../configurations/validation-steps/validation-step.entity';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { ValidationStep } from '../../tenants/validation-steps/validation-step.entity';
 import { User } from '../../users/user.entity';
 import { TeamEvent } from '../events/team-event.entity';
 

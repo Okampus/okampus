@@ -1,8 +1,10 @@
+import { getTenant } from '@/utils/getTenant'
 import axios from 'axios'
 
 const $axios = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     withCredentials: true,
+    headers: { 'X-Tenant-Id': getTenant() },
 })
 
 const DEV = import.meta.env.DEV

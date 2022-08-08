@@ -8,10 +8,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
+import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
 import type { TeamEvent } from '../events/team-event.entity';
 import { CreateTeamEventValidationDto } from './dto/create-team-event-validation.dto';
@@ -32,8 +34,9 @@ export class TeamEventValidationsController {
     @Param('id', ParseIntPipe) id: number,
     @Body() createTeamEventValidationDto: CreateTeamEventValidationDto,
     @CurrentUser() user: User,
+    @CurrentTenant() tenant: Tenant,
   ): Promise<TeamEventValidation> {
-    return await this.eventValidationsService.create(user, id, createTeamEventValidationDto);
+    return await this.eventValidationsService.create(tenant, user, id, createTeamEventValidationDto);
   }
 
   @Get()
@@ -56,15 +59,17 @@ export class TeamEventValidationsController {
   @CheckPolicies(ability => ability.can(Action.Read, TeamEventValidation))
   public async findMyEvents(
     @CurrentUser() user: User,
+    @CurrentTenant() tenant: Tenant,
   ): Promise<PaginatedResult<TeamEvent>> {
-    return await this.eventValidationsService.findMyEvents(user);
+    return await this.eventValidationsService.findMyEvents(tenant, user);
   }
 
   @Get('/remaining/for-event/:id')
   @CheckPolicies(ability => ability.can(Action.Read, TeamEventValidation))
   public async findValidationsLeftForEvent(
     @Param('id', ParseIntPipe) id: number,
+    @CurrentTenant() tenant: Tenant,
   ): ReturnType<TeamEventValidationsService['findValidationsLeftForEvent']> {
-    return await this.eventValidationsService.findValidationsLeftForEvent(id);
+    return await this.eventValidationsService.findValidationsLeftForEvent(tenant, id);
   }
 }

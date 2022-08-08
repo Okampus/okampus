@@ -11,15 +11,15 @@ import { TransformCollection } from '../../shared/lib/decorators/transform-colle
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { ValidationStepType } from '../../shared/lib/types/enums/validation-step-type.enum';
 import { User } from '../../users/user.entity';
-import { Configuration } from '../configurations/configurations.entity';
+import { Tenant } from '../tenants/tenant.entity';
 
 @Entity()
 export class ValidationStep extends BaseEntity {
   @PrimaryKey()
   id!: number;
 
-  @ManyToOne('Configuration')
-  configuration!: Configuration;
+  @ManyToOne('Tenant')
+  tenant!: Tenant;
 
   @Property()
   step!: number;
@@ -35,7 +35,7 @@ export class ValidationStep extends BaseEntity {
   users = new Collection<User>(this);
 
   constructor(options: {
-    configuration: Configuration;
+    tenant: Tenant;
     type: ValidationStepType;
     step: number;
     name: string;

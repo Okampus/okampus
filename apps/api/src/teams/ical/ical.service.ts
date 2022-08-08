@@ -43,7 +43,7 @@ export class TeamICalService {
     const calendar = new ICalCalendar({
       prodId: {
         company: 'Okampus',
-        product: config.get('productName'),
+        product: config.get('baseTenant'),
         language: 'fr',
       },
       method: ICalCalendarMethod.PUBLISH,

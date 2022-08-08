@@ -7,13 +7,13 @@ import { ProfileImage } from '../../files/profile-images/profile-image.entity';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
+import type { Tenant } from '../../tenants/tenants/tenant.entity';
 import type { User } from '../../users/user.entity';
 import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
 import type { CreateTeamDto } from './dto/create-team.dto';
 import type { TeamsFilterDto } from './dto/teams-filter.dto';
 import type { UpdateTeamDto } from './dto/update-team.dto';
-import { TeamSearchService } from './team-search.service';
 import { Team } from './team.entity';
 
 
@@ -24,14 +24,12 @@ export class TeamsService {
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
     @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
-
-    private readonly teamSearchService: TeamSearchService,
   ) {}
 
-  public async create(user: User, createTeamDto: CreateTeamDto): Promise<Team> {
+  public async create(tenant: Tenant, user: User, createTeamDto: CreateTeamDto): Promise<Team> {
     const { avatar, banner, ...dto } = createTeamDto;
 
-    const team = new Team(dto);
+    const team = new Team({ ...dto, tenant });
 
     if (avatar)
       await this.setAvatar(avatar, 'avatar', team);
@@ -40,7 +38,6 @@ export class TeamsService {
       await this.setAvatar(banner, 'banner', team);
 
     await this.teamRepository.persistAndFlush(team);
-    await this.teamSearchService.add(team);
 
     const member = new TeamMember({ user, team, role: TeamRole.Owner });
     await this.teamMemberRepository.persistAndFlush(member);
@@ -131,14 +128,12 @@ export class TeamsService {
 
     wrap(team).assign(dto);
     await this.teamRepository.flush();
-    await this.teamSearchService.update(team);
     return team;
   }
 
   public async remove(id: number): Promise<void> {
     const team = await this.teamRepository.findOneOrFail({ id });
     await this.teamRepository.removeAndFlush(team);
-    await this.teamSearchService.remove(team.id.toString());
   }
 
   public async updateProfileImage(

@@ -50,6 +50,6 @@ export class MyEfreiStrategy extends PassportStrategy(Strategy, 'myefrei') {
 
     const userInfo = new MyEfreiDto(data);
 
-    return await this.authService.createOrUpdate(userInfo);
+    return await this.authService.createOrUpdate(config.get('baseTenant'), userInfo);
   }
 }

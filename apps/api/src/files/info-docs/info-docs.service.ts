@@ -18,7 +18,6 @@ import type { CreateInfoDocDto } from './dto/create-info-doc.dto';
 import type { DocsFilterDto } from './dto/docs-filter.dto';
 import type { UpdateInfoDocDto } from './dto/update-info-doc.dto';
 import { InfoDoc } from './info-doc.entity';
-import { InfoDocSearchService } from './info-docs-search.service';
 
 @Injectable()
 export class InfoDocsService {
@@ -26,7 +25,6 @@ export class InfoDocsService {
     @InjectRepository(InfoDoc) private readonly infoDocRepository: BaseRepository<InfoDoc>,
     @InjectRepository(DocSeries) private readonly docSeriesRepository: BaseRepository<DocSeries>,
     @InjectRepository(SchoolGroup) private readonly schoolGroupRepository: BaseRepository<SchoolGroup>,
-    private readonly infoDocSearchService: InfoDocSearchService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -43,7 +41,6 @@ export class InfoDocsService {
       docSeries,
     });
     await this.infoDocRepository.persistAndFlush(infoDoc);
-    await this.infoDocSearchService.add(infoDoc);
     return infoDoc;
   }
 
@@ -106,7 +103,6 @@ export class InfoDocsService {
     });
 
     await this.infoDocRepository.flush();
-    await this.infoDocSearchService.update(infoDoc);
     return infoDoc;
   }
 
@@ -117,6 +113,5 @@ export class InfoDocsService {
     assertPermissions(ability, Action.Delete, infoDoc);
 
     await this.infoDocRepository.removeAndFlush(infoDoc);
-    await this.infoDocSearchService.remove(infoDoc.id);
   }
 }

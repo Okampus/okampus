@@ -10,10 +10,13 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { BaseTenantEntity } from '../../shared/lib/entities/tenant.entity';
 import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
+import type { BaseSearchableEntity } from '../../shared/lib/types/interfaces/base-searchable.interface';
 import { Role } from '../../shared/modules/authorization/types/role.enum';
+import type { BaseIndex } from '../../shared/modules/search/meilisearch.global';
+import type { Tenant } from '../../tenants/tenants/tenant.entity';
 import type { User } from '../../users/user.entity';
 
 // eslint-disable-next-line import/no-cycle
@@ -25,7 +28,7 @@ const ADMIN_ROLES = new Set([TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasure
 
 @ObjectType()
 @Entity()
-export class Team extends BaseEntity {
+export class Team extends BaseTenantEntity implements BaseSearchableEntity {
   @Field(() => Int)
   @PrimaryKey()
   id!: number;
@@ -76,9 +79,12 @@ export class Team extends BaseEntity {
   @OneToOne('TeamForm')
   membershipRequestForm: TeamForm | null = null;
 
+  isPublic = false;
+
   constructor(options: {
     name: string;
     kind: TeamKind;
+    tenant: Tenant;
     category: string;
     shortDescription?: string | null;
     longDescription?: string | null;
@@ -89,6 +95,20 @@ export class Team extends BaseEntity {
   }) {
     super();
     this.assign(options);
+  }
+
+  public toIndexed(): BaseIndex {
+    return {
+      title: this.name,
+      picture: this.avatar,
+      description: this.shortDescription,
+      category: this.kind,
+      createdDate: this.createdAt.getTime(),
+      updatedDate: this.updatedAt.getTime(),
+      score: null,
+      users: null,
+      tags: [this.category],
+    };
   }
 
   public canAdminister(user: User): boolean {

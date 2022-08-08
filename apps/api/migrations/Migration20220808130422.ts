@@ -1,8 +1,12 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20220806162346 extends Migration {
+export class Migration20220808130422 extends Migration {
 
   async up(): Promise<void> {
+    this.addSql('create table "tenant" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, constraint "tenant_pkey" primary key ("id"));');
+
+    this.addSql('create table "validation_step" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "tenant_id" varchar(255) not null, "step" int not null, "name" varchar(255) not null, "type" text check ("type" in (\'team-event\')) not null);');
+
     this.addSql('create table "school_year" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" varchar(255) not null, "active" boolean not null, constraint "school_year_pkey" primary key ("id"));');
 
     this.addSql('create table "food" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" text not null, "nutritionals" text null, "allergens" text null, "type" smallint not null);');
@@ -25,15 +29,11 @@ export class Migration20220806162346 extends Migration {
 
     this.addSql('create table "contact" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" varchar(255) not null, "icon" text not null);');
 
-    this.addSql('create table "configuration" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, constraint "configuration_pkey" primary key ("id"));');
-
-    this.addSql('create table "validation_step" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "configuration_id" varchar(255) not null, "step" int not null, "name" varchar(255) not null, "type" text check ("type" in (\'team-event\')) not null);');
-
     this.addSql('create table "badge" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "name" text not null, "description" text not null, "point_prize" int not null, "level" smallint not null, "icon" text not null, "series" text not null, "statistic" text check ("statistic" in (\'comment\', \'post\', \'reply\', \'upload\')) not null, "statistic_threshold" int not null);');
 
     this.addSql('create table "wiki_page" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "title" text not null, "body" text not null, "category" text not null, "hidden" boolean not null);');
 
-    this.addSql('create table "user" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "firstname" text not null, "lastname" text not null, "password" text null, "email" text not null, "bot" boolean not null, "reputation" int not null, "avatar" text null, "roles" text[] not null default \'{user}\', "school_role" text check ("school_role" in (\'student\', \'teacher\', \'admin\')) not null, "color" text null, "signature" text null, "banner" text null, "short_description" text null, "points" int not null, "team_event_ical" varchar(255) not null, constraint "user_pkey" primary key ("id"));');
+    this.addSql('create table "user" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "tenant_id" varchar(255) not null, "firstname" text not null, "lastname" text not null, "password" text null, "email" text not null, "bot" boolean not null, "reputation" int not null, "avatar" text null, "roles" text[] not null default \'{user}\', "school_role" text check ("school_role" in (\'student\', \'teacher\', \'admin\')) not null, "color" text null, "signature" text null, "banner" text null, "short_description" text null, "points" int not null, "team_event_ical" varchar(255) not null, constraint "user_pkey" primary key ("id"));');
     this.addSql('create index "user_email_index" on "user" ("email");');
     this.addSql('create index "user_team_event_ical_index" on "user" ("team_event_ical");');
     this.addSql('alter table "user" add constraint "user_team_event_ical_unique" unique ("team_event_ical");');
@@ -43,7 +43,7 @@ export class Migration20220806162346 extends Migration {
 
     this.addSql('create table "file_upload" ("id" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "user_id" varchar(255) not null, "name" text not null, "file_size" int not null, "mime_type" text not null, "file_last_modified_at" timestamptz(0) not null, "validated" boolean not null, "url" text not null, "visible" boolean not null, "file_kind" text check ("file_kind" in (\'profile-image\', \'info-doc\', \'attachment\', \'study-doc\', \'team-file\')) not null, constraint "file_upload_pkey" primary key ("id"));');
 
-    this.addSql('create table "team" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "kind" text check ("kind" in (\'department\', \'club\')) not null, "name" text not null, "short_description" text null, "long_description" text null, "category" text not null, "tags" varchar(255) not null, "avatar" text null, "banner" text null, "active_member_count" int not null, "membership_request_form_id" int null);');
+    this.addSql('create table "team" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "tenant_id" varchar(255) not null, "kind" text check ("kind" in (\'department\', \'club\')) not null, "name" text not null, "short_description" text null, "long_description" text null, "category" text not null, "tags" varchar(255) not null, "avatar" text null, "banner" text null, "active_member_count" int not null, "membership_request_form_id" int null);');
     this.addSql('create index "team_kind_index" on "team" ("kind");');
     this.addSql('alter table "team" add constraint "team_membership_request_form_id_unique" unique ("membership_request_form_id");');
 
@@ -159,6 +159,8 @@ export class Migration20220806162346 extends Migration {
 
     this.addSql('create table "announcement" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "title" varchar(255) not null, "short_description" text not null, "long_description" text null, "state" text check ("state" in (\'draft\', \'committed\', \'hidden\')) not null, "display_from" timestamptz(0) not null, "display_until" timestamptz(0) not null, "priority" smallint not null, "created_by_id" varchar(255) not null);');
 
+    this.addSql('alter table "validation_step" add constraint "validation_step_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
+
     this.addSql('alter table "daily_menu_starters" add constraint "daily_menu_starters_daily_menu_id_foreign" foreign key ("daily_menu_id") references "daily_menu" ("id") on update cascade on delete cascade;');
     this.addSql('alter table "daily_menu_starters" add constraint "daily_menu_starters_food_id_foreign" foreign key ("food_id") references "food" ("id") on update cascade on delete cascade;');
 
@@ -168,13 +170,14 @@ export class Migration20220806162346 extends Migration {
     this.addSql('alter table "daily_menu_desserts" add constraint "daily_menu_desserts_daily_menu_id_foreign" foreign key ("daily_menu_id") references "daily_menu" ("id") on update cascade on delete cascade;');
     this.addSql('alter table "daily_menu_desserts" add constraint "daily_menu_desserts_food_id_foreign" foreign key ("food_id") references "food" ("id") on update cascade on delete cascade;');
 
-    this.addSql('alter table "validation_step" add constraint "validation_step_configuration_id_foreign" foreign key ("configuration_id") references "configuration" ("id") on update cascade;');
+    this.addSql('alter table "user" add constraint "user_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
 
     this.addSql('alter table "badge_unlock" add constraint "badge_unlock_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade on delete CASCADE;');
     this.addSql('alter table "badge_unlock" add constraint "badge_unlock_badge_id_foreign" foreign key ("badge_id") references "badge" ("id") on update cascade on delete CASCADE;');
 
     this.addSql('alter table "file_upload" add constraint "file_upload_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade;');
 
+    this.addSql('alter table "team" add constraint "team_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
     this.addSql('alter table "team" add constraint "team_membership_request_form_id_foreign" foreign key ("membership_request_form_id") references "team_form" ("id") on update cascade on delete set null;');
 
     this.addSql('alter table "contact_account" add constraint "contact_account_contact_id_foreign" foreign key ("contact_id") references "contact" ("id") on update cascade on delete CASCADE;');
@@ -298,6 +301,16 @@ export class Migration20220806162346 extends Migration {
   }
 
   async down(): Promise<void> {
+    this.addSql('alter table "validation_step" drop constraint "validation_step_tenant_id_foreign";');
+
+    this.addSql('alter table "user" drop constraint "user_tenant_id_foreign";');
+
+    this.addSql('alter table "team" drop constraint "team_tenant_id_foreign";');
+
+    this.addSql('alter table "team_event_validation" drop constraint "team_event_validation_step_id_foreign";');
+
+    this.addSql('alter table "validation_step_users" drop constraint "validation_step_users_validation_step_id_foreign";');
+
     this.addSql('alter table "school_group_membership" drop constraint "school_group_membership_school_year_id_foreign";');
 
     this.addSql('alter table "daily_menu_starters" drop constraint "daily_menu_starters_food_id_foreign";');
@@ -319,12 +332,6 @@ export class Migration20220806162346 extends Migration {
     this.addSql('alter table "info_doc" drop constraint "info_doc_doc_series_id_foreign";');
 
     this.addSql('alter table "contact_account" drop constraint "contact_account_contact_id_foreign";');
-
-    this.addSql('alter table "validation_step" drop constraint "validation_step_configuration_id_foreign";');
-
-    this.addSql('alter table "team_event_validation" drop constraint "team_event_validation_step_id_foreign";');
-
-    this.addSql('alter table "validation_step_users" drop constraint "validation_step_users_validation_step_id_foreign";');
 
     this.addSql('alter table "badge_unlock" drop constraint "badge_unlock_badge_id_foreign";');
 
@@ -492,6 +499,10 @@ export class Migration20220806162346 extends Migration {
 
     this.addSql('alter table "content_master" drop constraint "content_master_op_validation_id_foreign";');
 
+    this.addSql('drop table if exists "tenant" cascade;');
+
+    this.addSql('drop table if exists "validation_step" cascade;');
+
     this.addSql('drop table if exists "school_year" cascade;');
 
     this.addSql('drop table if exists "food" cascade;');
@@ -509,10 +520,6 @@ export class Migration20220806162346 extends Migration {
     this.addSql('drop table if exists "doc_series" cascade;');
 
     this.addSql('drop table if exists "contact" cascade;');
-
-    this.addSql('drop table if exists "configuration" cascade;');
-
-    this.addSql('drop table if exists "validation_step" cascade;');
 
     this.addSql('drop table if exists "badge" cascade;');
 

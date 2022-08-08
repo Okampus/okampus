@@ -23,22 +23,24 @@ import { SchoolGroupMembership } from '../school-group/memberships/school-group-
 // eslint-disable-next-line import/no-cycle
 import { Settings } from '../settings/settings.entity';
 import { TransformCollection } from '../shared/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '../shared/lib/entities/base.entity';
+import { BaseTenantEntity } from '../shared/lib/entities/tenant.entity';
+import type { BaseSearchableEntity } from '../shared/lib/types/interfaces/base-searchable.interface';
 import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
 import { Role } from '../shared/modules/authorization/types/role.enum';
 import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
+import type { BaseIndex } from '../shared/modules/search/meilisearch.global';
 // eslint-disable-next-line import/no-cycle
 import { Statistics } from '../statistics/statistics.entity';
 // eslint-disable-next-line import/no-cycle
 import { TeamMember } from '../teams/members/team-member.entity';
 // eslint-disable-next-line import/no-cycle
 import { TeamMembershipRequest } from '../teams/requests/team-membership-request.entity';
+import type { Tenant } from '../tenants/tenants/tenant.entity';
 import type { Vote } from '../votes/vote.entity';
-
 
 @ObjectType()
 @Entity()
-export class User extends BaseEntity {
+export class User extends BaseTenantEntity implements BaseSearchableEntity {
   @Field()
   @PrimaryKey()
   id!: string;
@@ -145,9 +147,25 @@ export class User extends BaseEntity {
   @Unique()
   teamEventIcal = nanoid(64);
 
-  constructor(options: Omit<UserCreationOptions, 'avatar' | 'banner' | 'password'>) {
+  isPublic = false;
+
+  constructor(options: Omit<UserCreationOptions, 'avatar' | 'banner' | 'password' | 'tenantId'> & { tenant: Tenant }) {
     super();
     this.assign(options);
+  }
+
+  public toIndexed(): BaseIndex {
+    return {
+      title: `${this.firstname.split(' ')[0]} ${this.lastname}`,
+      picture: this.avatar,
+      description: this.shortDescription ?? this.schoolRole,
+      category: this.schoolRole,
+      createdDate: this.createdAt.getTime(),
+      updatedDate: this.updatedAt.getTime(),
+      score: this.points,
+      users: [`${this.firstname.split(' ')[0]} ${this.lastname}`],
+      tags: this.roles,
+    };
   }
 
   public async setPassword(password: string): Promise<void> {

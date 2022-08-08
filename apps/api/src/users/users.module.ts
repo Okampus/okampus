@@ -16,8 +16,8 @@ import { SchoolRole } from '../shared/modules/authorization/types/school-role.en
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { Statistics } from '../statistics/statistics.entity';
 import { StatisticsModule } from '../statistics/statistics.module';
+import { Tenant } from '../tenants/tenants/tenant.entity';
 import { GdprModule } from './gdpr/gdpr.module';
-import { UserSearchService } from './user-search.service';
 import { User } from './user.entity';
 
 import { UsersController } from './users.controller';
@@ -27,7 +27,7 @@ import './user.subscriber';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([ProfileImage, User, Statistics, BadgeUnlock, SchoolGroup, SchoolYear]),
+    MikroOrmModule.forFeature([ProfileImage, User, Statistics, BadgeUnlock, SchoolGroup, SchoolYear, Tenant]),
     StatisticsModule,
     ProfileImagesModule,
     FileUploadsModule,
@@ -35,21 +35,26 @@ import './user.subscriber';
     SchoolGroupMembershipsModule,
   ],
   controllers: [UsersController],
-  providers: [CaslAbilityFactory, UsersService, UserSearchService, JwtService, UsersResolver],
+  providers: [CaslAbilityFactory, UsersService, JwtService, UsersResolver],
   exports: [UsersService],
 })
 export class UsersModule implements OnModuleInit {
   constructor(
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
-    private readonly userSearchService: UserSearchService,
+    @InjectRepository(Tenant) private readonly tenantRepository: BaseRepository<Tenant>,
   ) {}
 
   public async onModuleInit(): Promise<void> {
-    await this.userSearchService.init();
+    let tenant = await this.tenantRepository.findOne({ id: config.get('baseTenant') });
+    if (!tenant) {
+      tenant = new Tenant({ id: config.get('baseTenant') });
+      await this.tenantRepository.persistAndFlush(tenant);
+    }
 
     const admin = await this.userRepository.count({ id: config.get('adminAccount.username') });
     if (admin === 0) {
       const user = new User({
+        tenant,
         id: config.get('adminAccount.username'),
         firstname: config.get('adminAccount.firstName'),
         lastname: config.get('adminAccount.lastName'),
@@ -59,12 +64,12 @@ export class UsersModule implements OnModuleInit {
       await user.setPassword(config.get('adminAccount.password'));
       user.roles.push(Role.Moderator, Role.Admin);
       await this.userRepository.persistAndFlush(user);
-      await this.userSearchService.add(user);
     }
 
     const anon = await this.userRepository.count({ id: config.get('anonAccount.username') });
     if (anon === 0) {
       const user = new User({
+        tenant,
         id: config.get('anonAccount.username'),
         firstname: config.get('anonAccount.firstName'),
         lastname: config.get('anonAccount.lastName'),
@@ -73,7 +78,6 @@ export class UsersModule implements OnModuleInit {
       });
       await user.setPassword(config.get('anonAccount.password'));
       await this.userRepository.persistAndFlush(user);
-      await this.userSearchService.add(user);
     }
   }
 }

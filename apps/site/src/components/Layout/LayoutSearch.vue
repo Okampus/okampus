@@ -1,6 +1,7 @@
 <template>
     <ais-instant-search
-        :index-name="TEAMS"
+        v-if="searchClient"
+        :index-name="tenant"
         :search-client="searchClient"
         class="mx-auto grow items-center justify-center gap-2 md:flex"
     >
@@ -19,11 +20,11 @@
                     class="fa fa-search absolute -top-5 right-0 flex h-10 items-center justify-center text-xl text-gray-200 md:hidden"
                 />
                 <div
-                    class="absolute inset-x-0 -top-5 flex h-10 flex-col bg-inherit md:rounded-[1.2rem]"
+                    class="absolute inset-x-0 -top-5 flex flex-col bg-inherit md:rounded-[1.2rem]"
                     :class="
                         showSearchbar
-                            ? 'md-max:top-0 md-max:left-0 md-max:fixed md-max:w-screen md-max:h-screen md:max-h-[50vh] z-[20] md-max:text-xl'
-                            : 'md-max:hidden'
+                            ? 'md-max:top-0 md-max:left-0 md-max:fixed md-max:w-screen md-max:h-screen md:max-h-[51.5vh] z-[20] md-max:text-xl'
+                            : 'md-max:hidden h-10'
                     "
                 >
                     <ais-search-box @keydown.stop="closeOnKeydown">
@@ -66,7 +67,10 @@
                             </div>
                         </template>
                     </ais-search-box>
-                    <ais-hits :class="{ hidden: !searchText.length || !showSearchbar }" class="mb-4">
+                    <ais-hits
+                        :class="{ hidden: !searchText.length || !showSearchbar }"
+                        class="mb-4 overflow-hidden"
+                    >
                         <template #default="{ items }">
                             <hr v-if="items.length" class="search-separator" />
                             <div
@@ -77,26 +81,33 @@
                                 @click.stop="resultClick(item)"
                                 @keypress.enter="resultClick(item)"
                             >
-                                <i class="fa-solid fa-people-group rounded-md bg-green-400 p-3"></i>
-                                <div class="flex flex-col">
-                                    <ais-highlight
-                                        attribute="name"
-                                        :hit="item"
-                                        :class-names="{
-                                            'ais-Highlight-highlighted': 'font-bold underline',
-                                        }"
-                                        highlighted-tag-name="span"
+                                <template v-if="item.metaType === 'user' || item.metaType === 'team'">
+                                    <ProfileAvatar
+                                        :rounded-full="false"
+                                        :clickable="false"
+                                        :avatar="item.picture"
+                                        :name="item.title"
                                     />
-                                    <ais-highlight
-                                        attribute="shortDescription"
-                                        class="text-xs text-gray-300"
-                                        :hit="item"
-                                        :class-names="{
-                                            'ais-Highlight-highlighted': 'font-bold underline',
-                                        }"
-                                        highlighted-tag-name="span"
-                                    />
-                                </div>
+                                    <div class="flex flex-col">
+                                        <ais-highlight
+                                            attribute="title"
+                                            :hit="item"
+                                            :class-names="{
+                                                'ais-Highlight-highlighted': 'font-bold underline',
+                                            }"
+                                            highlighted-tag-name="span"
+                                        />
+                                        <ais-highlight
+                                            attribute="description"
+                                            class="text-xs text-gray-300 line-clamp-1"
+                                            :hit="item"
+                                            :class-names="{
+                                                'ais-Highlight-highlighted': 'font-bold underline',
+                                            }"
+                                            highlighted-tag-name="span"
+                                        />
+                                    </div>
+                                </template>
                             </div>
                         </template>
                     </ais-hits>
@@ -116,8 +127,10 @@
                             @keypress.enter="resultClick(item)"
                         >
                             <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-clock-rotate-left rounded-md bg-gray-500 p-3" />
-                                <div>{{ item.name }}</div>
+                                <i
+                                    class="fa-solid fa-clock-rotate-left flex h-12 w-12 items-center justify-center rounded-md bg-gray-500 text-xl"
+                                />
+                                <div>{{ item.title }}</div>
                             </div>
                             <button
                                 class="fa-solid fa-xmark mr-4 justify-self-end text-xl text-gray-200 md-max:text-3xl"
@@ -132,29 +145,53 @@
 </template>
 
 <script setup>
-    import { TEAMS } from '@/shared/types/typesense-index-names.enum'
-    import typesenseConfig from '@/shared/config/typesense.config'
-    import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter'
+    import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
+
     import { ref } from 'vue'
 
     import { useRouter } from 'vue-router'
     import { useLocalStorage } from '@vueuse/core'
-    import _ from 'lodash'
+    import { useCookies } from 'vue3-cookies'
+
+    import { unionBy, remove } from 'lodash'
+
+    import { getTenant } from '@/utils/getTenant'
+    import ProfileAvatar from '../Profile/ProfileAvatar.vue'
+    import { emitter } from '@/shared/modules/emitter'
+
+    const itemToLink = (entity) => {
+        if (entity.metaType === 'team' && entity.category === 'club') {
+            return `/club/${entity.realId}`
+        }
+        if (entity.metaType === 'user') {
+            return `/user/${entity.realId}`
+        }
+        return ''
+    }
+
+    const tenant = getTenant()
+
+    const { cookies } = useCookies()
+    const parseApiKeyCookie = (cookie) => {
+        try {
+            return cookie.split(':')[1].split('.')[0]
+        } catch {
+            return null
+        }
+    }
+
+    const searchClient = ref(null)
+    const setSearchClient = (key) => {
+        const apiKey = key && parseApiKeyCookie(cookies.get('meiliSearchKey'))
+        searchClient.value = apiKey ? instantMeiliSearch(import.meta.env.VITE_MEILISEARCH_HOST, apiKey) : null
+    }
+
+    setSearchClient(cookies.get('meiliSearchKey'))
+
+    emitter.on('logout', () => setSearchClient(null))
+    emitter.on('login', () => setSearchClient(cookies.get('meiliSearchKey')))
 
     const router = useRouter()
-
-    const typesenseAdapter = new TypesenseInstantSearchAdapter({
-        ...typesenseConfig,
-        additionalSearchParameters: {
-            limit_hits: 5,
-            per_page: 5,
-            query_by: 'name, shortDescription',
-            query_by_weights: 'name:2, shortDescription:1',
-        },
-    })
-
-    const searchClient = typesenseAdapter.searchClient
-
     const showSearchbar = ref(false)
 
     const closeOnKeydown = (e) => {
@@ -172,12 +209,15 @@
         showSearchbar.value = false
         searchText.value = ''
 
-        recentSearch.value = _.unionBy(recentSearch.value, [item], (el) => el.id).slice(-5)
-        router.push(`/club/${item.id}`)
+        recentSearch.value = unionBy(recentSearch.value, [item], (el) => el.id).slice(-5)
+        const link = itemToLink(item)
+        if (link && router.currentRoute.path !== link) {
+            router.push(link)
+        }
     }
 
     const deleteSearch = (item) => {
-        recentSearch.value = _.remove(recentSearch.value, (el) => el.id !== item.id)
+        recentSearch.value = remove(recentSearch.value, (el) => el.id !== item.id)
     }
 </script>
 

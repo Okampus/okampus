@@ -4,5 +4,5 @@ import { RegisterDto } from './register.dto';
 
 export class PreRegisterSsoDto extends IntersectionType(
   MyEfreiDto,
-  PickType(RegisterDto, ['avatar', 'banner', 'color', 'signature', 'schoolRole', 'roles', 'shortDescription']),
+  PickType(RegisterDto, ['tenantId', 'avatar', 'banner', 'color', 'signature', 'schoolRole', 'roles', 'shortDescription']),
 ) {}

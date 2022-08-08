@@ -4,8 +4,6 @@ import { Injectable } from '@nestjs/common';
 import { Announcement } from '../../../announcements/announcement.entity';
 import { Badge } from '../../../badges/entities/badge.entity';
 import { Blog } from '../../../blogs/blog.entity';
-import { Configuration } from '../../../configurations/configurations/configurations.entity';
-import { ValidationStep } from '../../../configurations/validation-steps/validation-step.entity';
 import type { Contact } from '../../../contacts/entities/contact.entity';
 import { Content } from '../../../contents/entities/content.entity';
 import { Favorite } from '../../../favorites/favorite.entity';
@@ -29,6 +27,8 @@ import { TeamEvent } from '../../../teams/events/team-event.entity';
 import { TeamFinance } from '../../../teams/finances/team-finance.entity';
 import { TeamForm } from '../../../teams/forms/team-form.entity';
 import { Team } from '../../../teams/teams/team.entity';
+import { Tenant } from '../../../tenants/tenants/tenant.entity';
+import { ValidationStep } from '../../../tenants/validation-steps/validation-step.entity';
 import { Thread } from '../../../threads/thread.entity';
 import { User } from '../../../users/user.entity';
 import { WikiPage } from '../../../wiki/wiki-page.entity';
@@ -43,7 +43,6 @@ export type Subjects = InferSubjects<
   | typeof Attachment
   | typeof Badge
   | typeof Blog
-  | typeof Configuration
   | typeof Contact
   | typeof Content
   | typeof DailyInfo
@@ -66,6 +65,7 @@ export type Subjects = InferSubjects<
   | typeof TeamFile
   | typeof TeamFinance
   | typeof TeamForm
+  | typeof Tenant
   | typeof Thread
   | typeof User
   | typeof ValidationStep
@@ -99,8 +99,8 @@ export class CaslAbilityFactory {
       allow(Action.Manage, 'all');
     } else {
       allow(Action.Read, 'all');
-      forbid(Action.Read, [Report, Announcement, Metric]);
-      forbid(Action.Manage, [Configuration, ValidationStep, TeamEventValidation]);
+      forbid(Action.Read, [Tenant, Report, Announcement, Metric]);
+      forbid(Action.Manage, [ValidationStep, TeamEventValidation]);
 
       // @ts-expect-error
       allow([Action.Read, Action.Update], Report, isMe);
@@ -129,7 +129,7 @@ export class CaslAbilityFactory {
         allow(Action.Read, 'all');
         allow(Action.Update, 'all');
         forbid(Action.Update, [Badge, TeamEventValidation]);
-        forbid(Action.Manage, [Configuration, ValidationStep]);
+        forbid(Action.Manage, [Tenant, ValidationStep]);
         allow(
           Action.Manage,
           [Announcement, Blog, Content, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag, Thread, WikiPage],
@@ -187,7 +187,7 @@ export class CaslAbilityFactory {
         allow(Action.Manage, Team, isClub);
         // @ts-expect-error
         allow(Action.Manage, [TeamEvent, TeamFile], { 'team.kind': TeamKind.Club });
-        allow(Action.Manage, [Metric, Configuration, ValidationStep, TeamEventValidation]);
+        allow(Action.Manage, [Metric, Tenant, ValidationStep, TeamEventValidation]);
       }
     }
 
