@@ -186,7 +186,7 @@
         collapsed.value = uncollapsing.value
     })
 
-    emitter.on('login', () => {
+    emitter.on('show-login', () => {
         showLogin.value = true
     })
 

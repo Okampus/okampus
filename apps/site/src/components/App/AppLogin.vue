@@ -77,6 +77,7 @@
     import { login } from '@/graphql/queries/auth/loginUser'
 
     import { showSuccessToast, showToastGraphQLError } from '@/utils/toast'
+    import { emitter } from '@/shared/modules/emitter'
 
     const myEfreiAuthUrl = `${import.meta.env.VITE_API_URL}/auth/myefrei`
 
@@ -99,6 +100,7 @@
         auth.user = data.login
         emit('logged-in')
         showSuccessToast('Connexion réussie !')
+        emitter.emit('login')
     })
 
     onError(showToastGraphQLError)
