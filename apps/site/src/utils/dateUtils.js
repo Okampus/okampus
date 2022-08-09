@@ -59,7 +59,7 @@ export function getDateRangeString(startDate, endDate, weekday = true) {
 export function getCountdown(startDate, endDate) {
     const hours = Math.abs(endDate - startDate) / 3600000
     if (hours < 72) {
-        return { type: 'hours', value: hours }
+        return { type: 'hours', value: Math.floor(hours) }
     } else {
         return { type: 'days', value: Math.floor(hours / 24) }
     }
