@@ -3,6 +3,7 @@ export const graphQLtoHttpError = {
     'GRAPHQL_PARSE_FAILED': '500',
     'NOT_FOUND_ERROR': '404',
     'FORBIDDEN_ERROR': '403',
+    'FORBIDDEN': '403',
     'UNAUTHENTICATED': '401',
     'AUTHENTIFICATION_ERROR': '401',
     'GRAPHQL_VALIDATION_FAILED': '400',

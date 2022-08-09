@@ -1,45 +1,57 @@
 <template>
     <div class="text-0 flex flex-row items-center" :class="spacingClass">
-        <div v-for="(user, i) in users" :key="i">
+        <div v-for="(entity, i) in entities.slice(0, numberShown)" :key="i">
             <Dropdown theme="popper" :triggers="isMobile ? ['click'] : ['hover']">
                 <div
                     :class="!isMobile ? 'cursor-pointer' : ''"
-                    @click="!isMobile ? router.push(`/user/${user.id}`) : () => {}"
+                    @click="
+                        !isMobile
+                            ? entityType === 'user'
+                                ? router.push(`/user/${entity.id}`)
+                                : router.push(`/club/${entity.id}`)
+                            : () => {}
+                    "
                 >
                     <ProfileAvatar
-                        class="relative rounded-full p-1 !shadow-none transition-transform hover:z-20 hover:-translate-y-1"
+                        class="relative rounded-full border-4 p-1 !shadow-none transition-transform hover:z-20 hover:-translate-y-1"
                         :class="bgClass"
-                        :size="3"
-                        :avatar="user.avatar"
-                        :name="fullname(user)"
+                        :size="size"
+                        :avatar="entity.avatar"
+                        :name="entityType === 'user' ? fullname(entity) : entity.name"
                     >
                         <template v-if="showPresence" #icon>
-                            <PresenceIndicator :presence="user.status" />
+                            <PresenceIndicator :presence="entity.status" />
                         </template>
                     </ProfileAvatar>
                 </div>
                 <template #popper>
-                    <UserAboutCard :user="user" :title="user.title ? user.title : ''" />
+                    <AboutCard
+                        :entity-type="entityType"
+                        :entity="entity"
+                        :title="entity.title ? entity.title : ''"
+                    />
                 </template>
             </Dropdown>
         </div>
         <div
-            v-if="totalUserCount - numberShown > 0"
+            v-if="totalCount - numberShown > 0"
+            :style="avatarSizeStyleFull"
             :class="bgClass"
-            class="z-10 flex h-[3.5rem] w-[3.5rem] items-center justify-center rounded-full"
+            class="z-10 flex items-center justify-center rounded-full"
         >
             <button
-                class="z-10 flex h-[3.1rem] w-[3.1rem] items-center justify-center rounded-full bg-gray-700 p-1 text-sm font-semibold text-white hover:bg-gray-600"
+                :style="avatarSizeStyle"
+                class="z-10 flex items-center justify-center rounded-full bg-gray-700 p-1 font-semibold text-white hover:bg-gray-600"
                 @click="link ? router.push(link) : action ? action : () => {}"
             >
-                +{{ abbrNumbers(totalUserCount - numberShown) }}
+                +{{ abbrNumbers(totalCount - numberShown) }}
             </button>
         </div>
     </div>
 </template>
 
 <script setup>
-    import UserAboutCard from '@/components/User/UserAboutCard.vue'
+    import AboutCard from '@/components/Profile/AboutCard.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import PresenceIndicator from '@/components/Profile/PresenceIndicator.vue'
 
@@ -49,21 +61,29 @@
     import { fullname } from '@/utils/users'
 
     import abbrNumbers from 'approximate-number'
+    import { computed } from 'vue'
 
     const router = useRouter()
-
-    defineProps({
-        users: {
+    const props = defineProps({
+        entityType: {
+            type: String,
+            default: 'user',
+        },
+        size: {
+            type: Number,
+            default: 4,
+        },
+        entities: {
             type: Array,
             required: true,
         },
-        totalUserCount: {
+        totalCount: {
             type: Number,
-            default: (props) => props.users.length,
+            default: (props) => props.entities.length,
         },
         numberShown: {
             type: Number,
-            default: (props) => (props.users.length < 3 ? props.users.length : 3),
+            default: (props) => (props.entities.length < 3 ? props.entities.length : 3),
         },
         action: {
             type: Function,
@@ -83,7 +103,16 @@
         },
         bgClass: {
             type: String,
-            default: 'bg-2',
+            default: 'bg-2 border-2-light dark:border-2-dark',
         },
     })
+
+    const avatarSizeStyle = computed(() => ({
+        width: `${props.size}rem`,
+        height: `${props.size}rem`,
+    }))
+    const avatarSizeStyleFull = computed(() => ({
+        width: `calc(${props.size}rem + 6px)`,
+        height: `calc(${props.size}rem + 6px)`,
+    }))
 </script>

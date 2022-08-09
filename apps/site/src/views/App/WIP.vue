@@ -3,9 +3,12 @@
         class="text-0 flex h-full w-full flex-col items-center justify-center gap-4 self-center p-10 pb-[14%] text-2xl"
     >
         <img class="h-48 w-48" :src="Tools" />
-        <div class="title-font text-center text-4xl font-semibold xl:text-6xl">
+        <a
+            href="https://discord.gg/bEwwT9SNQX"
+            class="title-font link-blue text-center text-4xl font-semibold xl:text-6xl"
+        >
             Ça arrive prochainement ! ✨
-        </div>
+        </a>
         <div class="flex-inline flex-col items-center gap-1 text-center text-lg xl:text-xl">
             Restez au courant des prochaines mises à jour et donnez votre avis sur le
             <a

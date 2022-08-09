@@ -9,7 +9,7 @@
             <AppLogo only="dark" />
         </div>
 
-        <div class="relative mx-6 grow bg-transparent">
+        <div class="relative mr-6 grow bg-transparent">
             <LayoutSearch />
         </div>
 

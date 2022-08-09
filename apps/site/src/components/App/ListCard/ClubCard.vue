@@ -98,8 +98,8 @@
 
                     <AvatarGroup
                         :link="`/club/${club.id}/members`"
-                        :total-user-count="club.activeMemberCount"
-                        :users="
+                        :total-count="club.activeMemberCount"
+                        :entities="
                             club.boardMembers.map((membership) => ({
                                 ...membership.user,
                                 title: `${clubRoleNames[membership.role][locale]} de ${club.name}`,

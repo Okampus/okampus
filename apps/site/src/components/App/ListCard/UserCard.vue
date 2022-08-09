@@ -31,43 +31,35 @@
                 {{ user.shortDescription }}
             </div>
 
-            <div class="flex flex-wrap items-center gap-1">
-                <template v-for="club in user.clubs?.slice(0, 4)" :key="club">
-                    <router-link :to="`/club/${club.team.id}`">
-                        <ProfileAvatar
-                            :avatar="club.team.avatar"
-                            :name="club.team.name"
-                            :size="3"
-                            :class="
-                                specialRoles.find((role) => role === club.role)
-                                    ? 'border-2 border-yellow-300 rounded-full'
-                                    : ''
-                            "
-                        />
-                    </router-link>
-                </template>
-
-                <router-link v-if="user.clubs?.length > 4" :to="`/user/${user.id}`" class="link-blue ml-2">
-                    + {{ user.clubs.length - 4 }} assos
-                    <!-- <i
-                        v-if="user.clubs?.length > 4"
-                        class="flex justify-center items-center w-8 h-8 text-xl text-white rounded-full fas fa-plus button-blue"
-                    /> -->
-                </router-link>
-            </div>
+            <AvatarGroup
+                :entities="
+                    user?.clubs?.map((club) => ({
+                        ...club.team,
+                        title: club.role
+                            ? `${clubRoleNames[capitalize(club.role)][locale]} de ${club.team.name}`
+                            : '',
+                    })) ?? []
+                "
+                :number-shown="4"
+                :total-count="user?.clubs?.length ?? 0"
+                :link="`/user/${user.id}`"
+                entity-type="club"
+            />
         </div>
     </div>
 </template>
 
 <script setup>
+    import AvatarGroup from '@/components/List/AvatarGroup.vue'
     import LabelTag from '@/components/UI/Label/LabelTag.vue'
-
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
     import { fullname, getRole } from '@/utils/users'
-    import { specialRoles } from '@/shared/types/club-roles.enum'
 
     import { useI18n } from 'vue-i18n'
+    import { clubRoleNames } from '@/shared/types/club-roles.enum'
+
+    import { capitalize } from 'lodash'
 
     const { locale } = useI18n({ useScope: 'global' })
 

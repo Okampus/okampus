@@ -67,7 +67,7 @@
             <AvatarGroup
                 class="mt-4"
                 spacing-class="-space-x-2"
-                :users="
+                :entities="
                     event.registrations.map((registration) => ({
                         id: registration.user.id,
                         firstname: registration.user.firstname,
@@ -80,7 +80,12 @@
                 @mouseover="showLink = false"
                 @mouseleave="showLink = true"
             />
-            <div v-if="$slots.buttons" class="mb-2 mt-6 self-center">
+            <div
+                v-if="$slots.buttons"
+                class="mt-4 w-full"
+                @mouseover="showLink = false"
+                @mouseleave="showLink = true"
+            >
                 <slot name="buttons" />
             </div>
         </div>

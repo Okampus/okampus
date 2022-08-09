@@ -8,8 +8,8 @@
         "
     >
         <div
-            class="relative shrink-0"
-            :class="!clickable || !profileLink.length ? props.class : ''"
+            class="relative shrink-0 before:absolute before:inset-px before:bg-white"
+            :class="[!clickable || !profileLink.length ? props.class : '', ...roundedBeforeClass]"
             :style="avatarSizeStyle"
         >
             <img
@@ -34,10 +34,10 @@
                 :alt="`${name}`"
                 :title="`Photo de profil de ${name}`"
                 :style="{ backgroundColor: getColorFromData(name) }"
-                class="profile-avatar"
+                class="profile-avatar text-base"
                 :class="[innerClass, roundedClass]"
             >
-                <div class="m-auto h-fit w-fit text-white" :style="{ fontSize: `${size / 2.3}rem` }">
+                <div class="m-auto h-fit w-fit text-white" :style="{ fontSize: `${size / 2.5}rem` }">
                     {{ getInitialsFromName(name) }}
                 </div>
             </div>
@@ -100,7 +100,8 @@
         height: `${props.size}rem`,
     }))
 
-    const roundedClass = [props.roundedFull ? 'rounded-full full' : 'rounded-xl']
+    const roundedClass = [props.roundedFull ? 'rounded-full' : 'rounded-xl']
+    const roundedBeforeClass = [props.roundedFull ? 'before:rounded-full' : 'before:rounded-xl']
 
     const profileLink = computed(() => {
         if (props.link) return props.link
@@ -121,7 +122,7 @@
 
 <style lang="scss">
     .profile-avatar {
-        @apply absolute inset-0 h-full w-full flex shrink-0 justify-center items-center select-none text-center bg-white overflow-hidden;
+        @apply absolute inset-0 h-full w-full flex shrink-0 justify-center items-center select-none text-center overflow-hidden;
 
         &::before {
             @apply text-xs block overflow-hidden text-ellipsis px-2;

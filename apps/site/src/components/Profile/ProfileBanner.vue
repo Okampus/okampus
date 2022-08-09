@@ -23,7 +23,7 @@
             :class="roundedTop ? 'rounded-t-lg' : ''"
             :alt="`${name}`"
             :title="`Bannière de ${name}`"
-            :style="{ backgroundColor: getColorFromData(data ?? name) }"
+            :style="{ backgroundColor: getColorFromData(data) }"
         />
     </div>
 </template>
@@ -44,10 +44,10 @@
             type: String,
             default: 'Anonyme',
         },
-        // A string data field used to determine the banner color
         data: {
+            // A string data field used for getColorFromData
             type: String,
-            default: null,
+            default: (props) => props.name,
         },
         roundedTop: {
             type: Boolean,
