@@ -10,6 +10,6 @@ export const CurrentTenant = createParamDecorator(
       return ctx.switchToHttp().getRequest<AuthRequest>().tenant;
 
     const { req, context }: GqlContext = GqlExecutionContext.create(ctx).getContext();
-    return context?.headers ? context.tenant : req.tenant;
+    return context?.headers ? context.tenant : req?.tenant;
   },
 );

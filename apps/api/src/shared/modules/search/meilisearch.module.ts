@@ -1,5 +1,6 @@
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
+import { config } from '../../configs/config';
 import { MeiliSearchGlobal } from './meilisearch.global';
 
 @Module({
@@ -10,6 +11,7 @@ export class MeiliSearchModule implements OnModuleInit {
   constructor(private readonly meiliSearchGlobal: MeiliSearchGlobal) {}
 
   public async onModuleInit(): Promise<void> {
-    await this.meiliSearchGlobal.init();
+    if (config.get('meilisearch.enabled'))
+      await this.meiliSearchGlobal.init();
   }
 }

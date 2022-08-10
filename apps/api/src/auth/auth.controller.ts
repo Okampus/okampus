@@ -5,12 +5,12 @@ import {
   Controller,
   Get,
   Post,
-  Request,
-  Response,
+  Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Request as Req, Response as Res } from 'express';
+import { Request, Response } from 'express';
 import { computedConfig, config } from '../shared/configs/config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Public } from '../shared/lib/decorators/public.decorator';
@@ -45,7 +45,7 @@ export class AuthController {
   @Post('login')
   public async login(
     @Body() body: LoginDto,
-    @Response({ passthrough: true }) res: Res,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<User> {
     const user = await this.authService.validatePassword(body.username, body.password);
     const login = await this.authService.login(user);
@@ -97,7 +97,7 @@ export class AuthController {
   @Public()
   @UseGuards(MyEfreiOidcEnabledGuard, MyEfreiAuthGuard)
   @Get('myefrei/callback')
-  public async myefreiCallback(@CurrentUser() user: User, @Response() res: Res): Promise<void> {
+  public async myefreiCallback(@CurrentUser() user: User, @Res() res: Response): Promise<void> {
     const login = await this.authService.login(user);
 
     if (config.get('meilisearch.enabled'))
@@ -109,7 +109,7 @@ export class AuthController {
 
   @Public()
   @Get('logout')
-  public logout(@Response({ passthrough: true }) res: Res): void {
+  public logout(@Res({ passthrough: true }) res: Response): void {
     res.cookie('accessToken', '', { ...cookiePublicOptions, maxAge: 0 })
       .cookie('refreshToken', '', { ...cookiePublicOptions, maxAge: 0 })
       .cookie('accessTokenExpiresAt', '', { ...cookiePublicOptions, maxAge: 0 })
@@ -118,7 +118,7 @@ export class AuthController {
   }
 
   @Post('refresh-token')
-  public async refreshToken(@Request() req: Req, @Response() res: Res): Promise<void> {
+  public async refreshToken(@Req() req: Request, @Res() res: Response): Promise<void> {
     const user = await this.authService.loginWithRefreshToken(req.signedCookies?.refreshToken as string);
     if (!user)
       new BadRequestException('Missing refresh token');
@@ -131,11 +131,12 @@ export class AuthController {
   }
 
   @Post('ws-token')
-  public async wsToken(@Request() req: Req, @Response() res: Res): Promise<void> {
-    const wsToken = await this.authService.getWsTokenWithAccessToken(req.signedCookies?.accessToken as string);
-    if (wsToken)
-      res.cookie('wsToken', wsToken, { ...cookiePublicOptions, maxAge: config.get('tokens.wsTokenExpirationSeconds') * 1000 }).send();
-
+  public async wsToken(@CurrentUser() user: User, @Res() res: Response): Promise<void> {
+    const wsToken = await this.authService.getWsToken(user.id);
+    if (wsToken) {
+      res.cookie('wsToken', wsToken, { ...cookiePublicOptions, maxAge: config.get('tokens.wsTokenExpirationSeconds') * 1000 });
+      return;
+    }
     new BadRequestException('Missing access token');
   }
 
@@ -144,7 +145,7 @@ export class AuthController {
     return user;
   }
 
-  private async addMeiliSearchCookie(res: Res, tenant: Tenant): Promise<Res> {
+  private async addMeiliSearchCookie(res: Response, tenant: Tenant): Promise<Response> {
     // MeiliSearch API Key expires with the accessToken
     // Must be passed as Authorization header in the frontend
     const meiliSearchKey = await this.meiliSearchGlobal.client.createKey({
@@ -163,7 +164,7 @@ export class AuthController {
     );
   }
 
-  private addAuthCookies(res: Res, tokens: TokenResponse): Res {
+  private addAuthCookies(res: Response, tokens: TokenResponse): Response {
     const maxAgeAccess = config.get('tokens.accessTokenExpirationSeconds') * 1000;
     const maxAgeRefresh = config.get('tokens.refreshTokenExpirationSeconds') * 1000;
 

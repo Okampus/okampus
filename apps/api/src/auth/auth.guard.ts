@@ -9,6 +9,8 @@ import { Reflector } from '@nestjs/core';
 import type { GqlContextType } from '@nestjs/graphql';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
+import type { WebSocket } from 'graphql-ws';
+import mapKeys from 'lodash.mapkeys';
 import type { GqlWebsocketContext } from '../shared/configs/graphql.config';
 import { IS_PUBLIC_KEY, TENANT_ID_HEADER_NAME } from '../shared/lib/constants';
 import type { AuthRequest } from '../shared/lib/types/interfaces/auth-request.interface';
@@ -24,7 +26,10 @@ export interface Token {
 }
 
 export interface GqlContext extends GqlWebsocketContext {
-  req: AuthRequest;
+  req: AuthRequest | undefined;
+  request: AuthRequest | undefined;
+  socket: WebSocket | undefined;
+  connectionParams: Record<string, unknown>;
 }
 
 @Injectable()
@@ -56,6 +61,24 @@ export class AuthGuard implements CanActivate {
 
       case 'graphql': {
         const gqlContext = GqlExecutionContext.create(ctx).getContext<GqlContext>();
+        if (gqlContext.request && gqlContext.socket && gqlContext.connectionParams) {
+          const headers = mapKeys(
+            gqlContext.connectionParams, (_, k) => k.toLowerCase(),
+          );
+
+          request = gqlContext.request;
+          request.user = await this.handleWsRequest((headers.authorization as string).split(' ')[1]);
+          const tenantId = headers[TENANT_ID_HEADER_NAME.toLowerCase()] as string;
+          if (!tenantId)
+            throw new UnauthorizedException('Tenant not provided');
+
+          request.tenant = await this.tenantsService.findOne(tenantId);
+          return Boolean(request.user) && Boolean(request.tenant);
+        }
+
+        if (!gqlContext.req)
+          throw new UnauthorizedException('No request');
+
         if (gqlContext.context?.headers)
           return Boolean(gqlContext.context.user) && Boolean(gqlContext.context.tenant);
 
@@ -68,7 +91,7 @@ export class AuthGuard implements CanActivate {
 
     const tenantId = request.headers[TENANT_ID_HEADER_NAME.toLowerCase()];
     if (!tenantId)
-      return false;
+      throw new UnauthorizedException('Tenant not provided');
 
     request.tenant = await this.tenantsService.findOne(
       Array.isArray(tenantId)
@@ -77,7 +100,27 @@ export class AuthGuard implements CanActivate {
     );
 
     request.user = await this.handleRequest(request);
-    return Boolean(request.user);
+    return Boolean(request.user) && Boolean(request.tenant);
+  }
+
+  private async handleWsRequest(token: string): Promise<User> {
+    if (!token)
+      throw new UnauthorizedException('Token not provided');
+
+    const decoded = this.jwtService.decode(token) as Token;
+    if (!decoded)
+      throw new BadRequestException('Failed to decode JWT');
+
+    if (decoded.aud !== 'ws')
+      throw new UnauthorizedException('Invalid token');
+
+    try {
+      await this.jwtService.verifyAsync<Token>(token, this.authService.getTokenOptions('ws'));
+    } catch {
+      throw new UnauthorizedException('Falsified token');
+    }
+
+    return await this.userService.findOneById(decoded.sub);
   }
 
   private async handleRequest(request: AuthRequest): Promise<User> {

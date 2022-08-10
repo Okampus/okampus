@@ -64,11 +64,11 @@ import { WikisModule } from './wiki/wikis.module';
 @Module({
   imports: [
     // Configs
-    ...(config.get('meilisearch.enabled') ? [MeiliSearchModule] : []),
+    MeiliSearchModule,
     CacheModule.register(cacheConfig),
     CaslModule,
     EventEmitterModule.forRoot(),
-    GraphQLModule.forRootAsync(graphqlConfig),
+    GraphQLModule.forRoot(graphqlConfig),
     MikroOrmModule.forRoot(),
     RedisModule.forRoot(redisConfig),
     S3Module.forRoot(storageConfig),
@@ -110,7 +110,7 @@ import { WikisModule } from './wiki/wikis.module';
     { provide: APP_GUARD, useClass: PoliciesGuard },
     { provide: APP_FILTER, useClass: ExceptionsFilter },
     { provide: APP_INTERCEPTOR, useFactory: (): SentryInterceptor => new SentryInterceptor(sentryInterceptorConfig) },
-    ...(config.get('meilisearch.enabled') ? [SearchSubscriber] : []),
+    SearchSubscriber,
   ],
   controllers: [AppController],
   exports: [],

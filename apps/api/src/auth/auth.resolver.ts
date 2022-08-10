@@ -32,6 +32,12 @@ export class AuthResolver {
     return await this.authController.login({ username, password }, ctx.req.res);
   }
 
+  @Mutation(() => User)
+  public async wsToken(@CurrentUser() user: User, @Context() ctx: GraphQLResponse): Promise<User> {
+    await this.authController.wsToken(user, ctx.req.res);
+    return user;
+  }
+
   @Query(() => User)
   public async me(@CurrentUser() user: User): Promise<User> {
     return await this.usersService.findOneById(user.id);

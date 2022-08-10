@@ -84,23 +84,6 @@ export class AuthService {
     return await this.userRepository.findOneOrFail({ id: decoded.sub });
   }
 
-  public async getWsTokenWithAccessToken(accessToken: string): Promise<string> {
-    const decoded = this.jwtService.decode(accessToken) as Token;
-    if (!decoded)
-      throw new BadRequestException('Failed to decode JWT');
-
-    if (decoded.aud !== 'http')
-      throw new UnauthorizedException('Invalid token');
-
-    try {
-      await this.jwtService.verifyAsync<Token>(accessToken, this.getTokenOptions('access'));
-    } catch {
-      throw new UnauthorizedException('Falsified token');
-    }
-
-    return this.getWsToken(decoded.sub);
-  }
-
   public getTokenOptions(type: 'access' | 'bot' | 'refresh' | 'ws'): JwtSignOptions {
     const options: JwtSignOptions = {
       secret: config.get(`tokens.${type}TokenSecret`),

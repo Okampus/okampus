@@ -16,7 +16,6 @@ export class MeiliSearchHealthIndicator extends HealthIndicator {
     try {
       await this.pingMeilisearch(timeout);
     } catch (error) {
-      console.log('ERROR', error);
       if (error instanceof PromiseTimeoutError) {
         throw new TimeoutError(
           timeout,
