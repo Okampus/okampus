@@ -21,7 +21,7 @@
                     </div>
                     <router-link
                         class="z-10 mt-2"
-                        :to="`/clubs/${clubTypes[club.category].link}`"
+                        :to="`/clubs/${clubTypes?.[club.category]?.link ?? club.category}`"
                         @mouseover="showLink = false"
                         @mouseleave="showLink = true"
                     >
@@ -102,7 +102,7 @@
                         :entities="
                             club.boardMembers.map((membership) => ({
                                 ...membership.user,
-                                title: `${clubRoleNames[membership.role][locale]} de ${club.name}`,
+                                text: `${clubRoleNames[membership.role][locale]} de ${club.name}`,
                             }))
                         "
                         @mouseover="showLink = false"

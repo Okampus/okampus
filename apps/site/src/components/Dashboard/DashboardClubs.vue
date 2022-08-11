@@ -64,7 +64,7 @@
                             :entities="
                                 boardMembers.map((membership) => ({
                                     ...membership.user,
-                                    title: `${clubRoleNames[membership.role][locale]} de ${name}`,
+                                    text: `${clubRoleNames[membership.role][locale]} de ${name}`,
                                 }))
                             "
                         />

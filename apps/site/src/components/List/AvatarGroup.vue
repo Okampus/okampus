@@ -28,7 +28,7 @@
                     <AboutCard
                         :entity-type="entityType"
                         :entity="entity"
-                        :title="entity.title ? entity.title : ''"
+                        :text="entity.text ? entity.text : ''"
                     />
                 </template>
             </Dropdown>

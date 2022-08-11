@@ -34,8 +34,8 @@
                         entityType === 'user' ? entity.title ?? fullname(entity) : entity.name ?? entity.title
                     }}
                 </h3>
-                <h3 v-if="title" class="text-0 text-base line-clamp-1">
-                    {{ title }}
+                <h3 v-if="text || entity.subtitle" class="text-0 text-base line-clamp-1">
+                    {{ text ?? entity.subtitle }}
                 </h3>
             </div>
             <div v-if="entity.description">
@@ -58,7 +58,7 @@
     const bannerTypes = ['team', 'user']
 
     defineProps({
-        title: {
+        text: {
             type: String,
             default: null,
         },
