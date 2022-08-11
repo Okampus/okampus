@@ -1,6 +1,6 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import type { ValidationStepType } from '../../shared/lib/types/enums/validation-step-type.enum';
 import { User } from '../../users/user.entity';
@@ -17,12 +17,7 @@ export class ValidationStepsService {
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
   ) {}
 
-  public async create(id: string, createValidationStepDto: CreateValidationStepDto): Promise<ValidationStep> {
-    const tenant = await this.tenantRepository.findOneOrFail(
-      { id },
-      { failHandler: () => { throw new InternalServerErrorException('Tenant not found'); } },
-    );
-
+  public async create(tenant: Tenant, createValidationStepDto: CreateValidationStepDto): Promise<ValidationStep> {
     const step = await this.validationStepRepository.count({ tenant, step: createValidationStepDto.step });
     if (step > 0)
       throw new BadRequestException('Step already exists');
@@ -50,6 +45,22 @@ export class ValidationStepsService {
     wrap(validationStep).assign(updateValidationStepDto);
     await this.validationStepRepository.flush();
     return validationStep;
+  }
+
+  public async switchSteps(tenant: Tenant, step1: number, step2: number): Promise<Tenant> {
+    const stepCount = await this.validationStepRepository.count({ tenant });
+    if (step1 === step2 || step1 < 0 || step1 >= stepCount || step2 < 0 || step2 >= stepCount)
+      throw new BadRequestException('Invalid step numbers');
+
+    const validationStep1 = await this.validationStepRepository.findOneOrFail({ step: step1, tenant });
+    const validationStep2 = await this.validationStepRepository.findOneOrFail({ step: step2, tenant });
+
+    validationStep1.step = step2;
+    validationStep2.step = step1;
+
+    await this.validationStepRepository.flush();
+
+    return this.tenantRepository.findOneOrFail({ id: tenant.id }, { populate: ['validationSteps'] });
   }
 
   public async remove(id: number): Promise<void> {

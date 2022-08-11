@@ -29,10 +29,10 @@ export class ValidationStepsController {
   @Post(':id')
   @CheckPolicies(ability => ability.can(Action.Create, ValidationStep))
   public async create(
-    @Param('id') id: string,
+    @CurrentTenant() tenant: Tenant,
     @Body() createValidationStepDto: CreateValidationStepDto,
   ): Promise<ValidationStep> {
-    return await this.validationStepsService.create(id, createValidationStepDto);
+    return await this.validationStepsService.create(tenant, createValidationStepDto);
   }
 
   @Get()

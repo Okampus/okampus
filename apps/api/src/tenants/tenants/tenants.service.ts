@@ -22,7 +22,7 @@ export class TenantsService {
   }
 
   public async findOne(id: string): Promise<Tenant> {
-    return await this.tenantRepository.findOneOrFail({ id }, { populate: ['validationSteps', 'validationSteps.users'] });
+    return await this.tenantRepository.findOneOrFail({ id }, { populate: ['validationSteps', 'validationSteps.users', 'logo.user', 'logoDark.user'] });
   }
 
   public async setLogo(id: string, fileUpload: FileUpload): Promise<Tenant> {

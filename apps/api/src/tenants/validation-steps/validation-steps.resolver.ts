@@ -1,0 +1,31 @@
+import {
+  Args,
+  Mutation,
+  Resolver,
+} from '@nestjs/graphql';
+import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
+// Import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
+// import { User } from '../../users/user.entity';
+import { Tenant } from '../tenants/tenant.entity';
+import { TenantsService } from '../tenants/tenants.service';
+import { CreateValidationStepDto } from './dto/create-validation-step.dto';
+import { ValidationStep } from './validation-step.entity';
+import { ValidationStepsService } from './validation-steps.service';
+
+@Resolver(() => ValidationStep)
+export class ValidationStepsResolver {
+  constructor(
+    private readonly validationStepsService: ValidationStepsService,
+    private readonly tenantsService: TenantsService,
+  ) {}
+
+  // TODO: Add permission checks
+  @Mutation(() => Tenant)
+  public async addValidationStep(
+    @CurrentTenant() tenant: Tenant,
+    @Args('createStep') createStep: CreateValidationStepDto,
+  ): Promise<Tenant> {
+    await this.validationStepsService.create(tenant, createStep);
+    return await this.tenantsService.findOne(tenant.id);
+  }
+}
