@@ -1,7 +1,7 @@
 <template>
     <Teleport to="body">
         <div
-            class="fixed z-50"
+            class="fixed z-[60]"
             :class="
                 banner
                     ? 'w-content after-sidebar after-topbar'

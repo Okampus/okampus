@@ -17,7 +17,7 @@
             </Transition>
         </ModalPopup>
 
-        <div class="z-1 flex h-screen w-screen flex-row overflow-hidden">
+        <div class="flex h-screen w-screen flex-row overflow-hidden">
             <LayoutSidebar
                 ref="sidebar"
                 :uncollapsed="collapsed"
