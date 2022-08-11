@@ -10,7 +10,8 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
-import { BaseTenantEntity } from '../../shared/lib/entities/tenant.entity';
+// eslint-disable-next-line import/no-cycle
+import { BaseTenantEntity } from '../../shared/lib/entities/base-tenant-entity';
 import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import type { BaseSearchableEntity } from '../../shared/lib/types/interfaces/base-searchable.interface';

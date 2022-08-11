@@ -1,5 +1,6 @@
 import { ManyToOne } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
+// eslint-disable-next-line import/no-cycle
 import { Tenant } from '../../../tenants/tenants/tenant.entity';
 import { BaseEntity } from './base.entity';
 

@@ -11,6 +11,7 @@ import { nanoid } from 'nanoid';
 import { config } from '../../shared/configs/config';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
+// eslint-disable-next-line import/no-cycle
 import { User } from '../../users/user.entity';
 
 @ObjectType()
