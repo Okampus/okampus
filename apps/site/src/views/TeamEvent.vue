@@ -108,7 +108,7 @@
                         <div v-if="event.registrations.length > 0" class="flex items-center">
                             <AvatarGroup
                                 spacing-class="-space-x-2"
-                                :users="
+                                :entities="
                                     event.registrations.map((registration) => ({
                                         id: registration.user.id,
                                         firstname: registration.user.firstname,
@@ -117,7 +117,7 @@
                                         status: registration.status,
                                     }))
                                 "
-                                :number-shown="registrationShowLimit"
+                                :shown-count="registrationShowLimit"
                                 :show-presence="true"
                             />
                         </div>
@@ -287,7 +287,7 @@
     import {
         DEFAULT_EVENT_REGISTRATION_FORM_SCHEMA,
         EVENT_REGISTRATION_STATUS_FORM_SCHEMA,
-    } from '@/shared/assets/default-schemas'
+    } from '@/shared/assets/form-schemas/default-schemas'
 
     const showRegistrationForm = ref(false)
 

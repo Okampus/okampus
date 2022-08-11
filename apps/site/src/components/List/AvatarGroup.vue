@@ -1,7 +1,7 @@
 <template>
     <div class="text-0 flex flex-row items-center" :class="spacingClass">
-        <div v-for="(entity, i) in entities.slice(0, numberShown)" :key="i">
-            <Dropdown theme="popper" :triggers="isMobile ? ['click'] : ['hover']">
+        <div v-for="(entity, i) in entities.slice(0, shownCount)" :key="i">
+            <Dropdown theme="popper" :triggers="isMobile ? ['click'] : ['hover']" instant-move>
                 <div
                     :class="!isMobile ? 'cursor-pointer' : ''"
                     @click="
@@ -34,17 +34,16 @@
             </Dropdown>
         </div>
         <div
-            v-if="totalCount - numberShown > 0"
-            :style="avatarSizeStyleFull"
+            v-if="totalCount - shownCount > 0"
             :class="bgClass"
-            class="z-10 flex items-center justify-center rounded-full"
+            class="z-10 flex items-center justify-center rounded-full p-1"
         >
             <button
                 :style="avatarSizeStyle"
-                class="z-10 flex items-center justify-center rounded-full bg-gray-700 p-1 font-semibold text-white hover:bg-gray-600"
+                class="z-10 flex items-center justify-center rounded-full bg-gray-700 font-semibold text-white hover:bg-gray-600"
                 @click="link ? router.push(link) : action ? action : () => {}"
             >
-                +{{ abbrNumbers(totalCount - numberShown) }}
+                +{{ abbrNumbers(totalCount - shownCount) }}
             </button>
         </div>
     </div>
@@ -81,7 +80,7 @@
             type: Number,
             default: (props) => props.entities.length,
         },
-        numberShown: {
+        shownCount: {
             type: Number,
             default: (props) => (props.entities.length < 3 ? props.entities.length : 3),
         },
@@ -108,11 +107,7 @@
     })
 
     const avatarSizeStyle = computed(() => ({
-        width: `${props.size}rem`,
-        height: `${props.size}rem`,
-    }))
-    const avatarSizeStyleFull = computed(() => ({
-        width: `calc(${props.size}rem + 6px)`,
-        height: `calc(${props.size}rem + 6px)`,
+        width: `calc(${props.size}rem - 3px)`,
+        height: `calc(${props.size}rem - 3px)`,
     }))
 </script>

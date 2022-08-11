@@ -1,6 +1,6 @@
 <template>
     <div
-        class="card-2 card-hover flex w-full min-w-[12rem] max-w-[30rem] items-start gap-4 xs:w-[calc(50%-0.7rem)] xl:w-[calc(33%-0.7rem)]"
+        class="card-2 card-hover flex w-full min-w-[12rem] items-start gap-4 sm:w-[calc(50%-0.7rem)] xl:w-[calc(33%-0.7rem)]"
     >
         <div class="flex shrink-0 flex-col items-center gap-3">
             <ProfileAvatar :size="4" class="min-w-fit" :avatar="user.avatar" :name="fullname(user)" />
@@ -40,10 +40,10 @@
                             : '',
                     })) ?? []
                 "
-                :number-shown="4"
+                :shown-count="4"
                 :total-count="user?.clubs?.length ?? 0"
                 :link="`/user/${user.id}`"
-                entity-type="club"
+                entity-type="team"
             />
         </div>
     </div>

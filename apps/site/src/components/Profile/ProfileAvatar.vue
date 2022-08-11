@@ -8,7 +8,7 @@
         "
     >
         <div
-            class="relative shrink-0 before:absolute before:inset-px before:bg-white"
+            class="relative shrink-0 before:absolute before:bg-white"
             :class="[!clickable || !profileLink.length ? props.class : '', ...roundedBeforeClass]"
             :style="avatarSizeStyle"
         >
@@ -101,7 +101,9 @@
     }))
 
     const roundedClass = [props.roundedFull ? 'rounded-full' : 'rounded-xl']
-    const roundedBeforeClass = [props.roundedFull ? 'before:rounded-full' : 'before:rounded-xl']
+    const roundedBeforeClass = [
+        props.roundedFull ? 'before:rounded-full before:inset-[3.5%]' : 'before:rounded-xl before:inset-px',
+    ]
 
     const profileLink = computed(() => {
         if (props.link) return props.link
