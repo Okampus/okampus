@@ -1,2 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
-export class UpdateTenantDto {}
+import { InputType, PartialType } from '@nestjs/graphql';
+import { CreateTenantDto } from './create-tenant.dto';
+
+@InputType()
+export class UpdateTenantDto extends PartialType(CreateTenantDto) {}

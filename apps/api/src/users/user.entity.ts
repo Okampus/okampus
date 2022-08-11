@@ -23,6 +23,7 @@ import { SchoolGroupMembership } from '../school-group/memberships/school-group-
 // eslint-disable-next-line import/no-cycle
 import { Settings } from '../settings/settings.entity';
 import { TransformCollection } from '../shared/lib/decorators/transform-collection.decorator';
+// eslint-disable-next-line import/no-cycle
 import { BaseTenantEntity } from '../shared/lib/entities/tenant.entity';
 import type { BaseSearchableEntity } from '../shared/lib/types/interfaces/base-searchable.interface';
 import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';

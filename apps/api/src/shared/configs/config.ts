@@ -29,6 +29,7 @@ interface Config {
       documents: string;
       attachments: string;
       teamFiles: string;
+      tenants: string;
     };
   };
   redis: {
@@ -196,6 +197,11 @@ export const config = createProfiguration<Config>({
         default: 'team-files',
         format: String,
         env: 'S3_BUCKET_NAME_TEAM_FILES',
+      },
+      tenants: {
+        default: 'tenants',
+        format: String,
+        env: 'S3_BUCKET_NAME_TENANTS',
       },
     },
   },

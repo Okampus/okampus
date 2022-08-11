@@ -6,6 +6,7 @@ export enum FileKind {
   Attachment = 'attachment',
   StudyDoc = 'study-doc',
   TeamFile = 'team-file',
+  Tenant = 'tenant',
 }
 
 registerEnumType(FileKind, { name: 'FileKind' });

@@ -55,6 +55,7 @@ export class HealthController {
         () => this.storage.pingCheck('storage', config.get('s3.buckets.documents')),
         () => this.storage.pingCheck('storage', config.get('s3.buckets.profileImages')),
         () => this.storage.pingCheck('storage', config.get('s3.buckets.teamFiles')),
+        () => this.storage.pingCheck('storage', config.get('s3.buckets.tenants')),
       ] : [
         () => this.disk.checkStorage('disk', LOCAL_STORAGE_OPTIONS),
       ]),

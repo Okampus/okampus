@@ -14,6 +14,7 @@ export class FilePersistanceService {
     [FileKind.StudyDoc]: config.get('s3.buckets.documents'),
     [FileKind.ProfileImage]: config.get('s3.buckets.profileImages'),
     [FileKind.TeamFile]: config.get('s3.buckets.teamFiles'),
+    [FileKind.Tenant]: config.get('s3.buckets.tenants'),
   };
 
   constructor(
