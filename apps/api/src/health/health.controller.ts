@@ -8,6 +8,7 @@ import {
   DiskHealthIndicator,
   HealthCheck,
   HealthCheckService,
+  HttpHealthIndicator,
   MemoryHealthIndicator,
   MikroOrmHealthIndicator,
 } from '@nestjs/terminus';
@@ -15,7 +16,6 @@ import Redis from 'ioredis';
 import { config } from '../shared/configs/config';
 import { Public } from '../shared/lib/decorators/public.decorator';
 import { MeiliSearchHealthIndicator } from '../shared/modules/health/meilisearch.health';
-import { StorageHealthIndicator } from '../shared/modules/health/storage.health';
 
 @ApiTags('Health')
 @Controller({ path: 'health' })
@@ -23,10 +23,10 @@ export class HealthController {
   // eslint-disable-next-line max-params
   constructor(
     private readonly health: HealthCheckService,
+    private readonly http: HttpHealthIndicator,
     private readonly redis: RedisHealthIndicator,
     private readonly database: MikroOrmHealthIndicator,
     private readonly meilisearch: MeiliSearchHealthIndicator,
-    private readonly storage: StorageHealthIndicator,
     private readonly disk: DiskHealthIndicator,
     private readonly memory: MemoryHealthIndicator,
 
@@ -44,21 +44,20 @@ export class HealthController {
       thresholdPercent: 0.75,
     };
 
+    const BUCKETS = Object.values(config.get('s3.buckets'));
     /* eslint-disable @typescript-eslint/explicit-function-return-type, @typescript-eslint/promise-function-async */
     return await this.health.check([
       () => this.database.pingCheck('database'),
       () => this.meilisearch.pingCheck('meilisearch'),
       () => this.redis.checkHealth('cache', REDIS_OPTIONS),
       () => this.memory.checkHeap('memory', MAX_HEAP_SIZE),
-      ...(config.get('s3.enabled') ? [
-        () => this.storage.pingCheck('storage', config.get('s3.buckets.attachments')),
-        () => this.storage.pingCheck('storage', config.get('s3.buckets.documents')),
-        () => this.storage.pingCheck('storage', config.get('s3.buckets.profileImages')),
-        () => this.storage.pingCheck('storage', config.get('s3.buckets.teamFiles')),
-        () => this.storage.pingCheck('storage', config.get('s3.buckets.tenants')),
-      ] : [
-        () => this.disk.checkStorage('disk', LOCAL_STORAGE_OPTIONS),
-      ]),
+      ...(config.get('s3.enabled')
+      ? BUCKETS.map(bucket => () => this.http.pingCheck(
+        `storage-${bucket}`,
+        `https://${bucket}.${config.get('s3.endpoint')}`,
+        { method: 'HEAD', timeout: 1000 },
+      ))
+      : [() => this.disk.checkStorage('disk', LOCAL_STORAGE_OPTIONS)]),
     ]);
   }
 }

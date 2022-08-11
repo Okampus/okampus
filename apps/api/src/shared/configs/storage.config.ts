@@ -13,6 +13,7 @@ export default {
     endpoint: config.get('s3.endpoint'),
     region: config.get('s3.region'),
     signatureVersion: 'v4',
+    maxRetries: 3,
     logger: {
       log: (message: string) => {
         if (config.get('nodeEnv') === 'development') {

@@ -3,7 +3,6 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
 import { MeiliSearchHealthIndicator } from '../shared/modules/health/meilisearch.health';
-import { StorageHealthIndicator } from '../shared/modules/health/storage.health';
 import { HealthController } from './health.controller';
 
 @Module({
@@ -13,10 +12,7 @@ import { HealthController } from './health.controller';
     HttpModule,
   ],
   controllers: [HealthController],
-  providers: [
-    MeiliSearchHealthIndicator,
-    StorageHealthIndicator,
-  ],
+  providers: [MeiliSearchHealthIndicator],
   exports: [],
 })
 export class HealthModule {}
