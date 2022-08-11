@@ -23,43 +23,14 @@
                     </div>
                 </div>
                 <div class="flex flex-col md:w-48 lg:w-56 md-max:w-full">
-                    <div v-if="editingStatus" class="mt-2 flex flex-col items-end gap-2">
-                        <textarea :value="status" rows="4" class="input w-full resize-none" />
-                        <div class="flex gap-2">
-                            <button
-                                class="button-green flex items-center gap-2 py-1 text-sm"
-                                @click="submitStatus"
-                            >
-                                Enregistrer
-                            </button>
-                            <button
-                                class="button-grey flex items-center gap-2 py-1 text-sm"
-                                @click="editingStatus = false"
-                            >
-                                Annuler
-                            </button>
-                        </div>
-                    </div>
-                    <div v-else-if="me.shortDescription" class="text-0 break-words">
-                        <p class="inline">
-                            {{ me.shortDescription }}
-                        </p>
-                        <button
-                            class="button-blue ml-2 inline-flex h-6 w-6 items-center justify-center rounded-full p-2"
-                            @click="editingStatus = true"
-                        >
-                            <i class="fa fa-pen text-xs" />
-                        </button>
-                        <!-- <div class="inline whitespace-nowrap break-words">
-                            {{ me.shortDescription }}
-                        </div>
-                        <button
-                            class="inline-flex justify-center items-center p-2 w-6 h-6 rounded-full button-blue"
-                            @click="editingStatus = true"
-                        >
-                            <i class="text-xs fa fa-pen" />
-                        </button> -->
-                    </div>
+                    <EditableTextInput
+                        v-if="me.shortDescription || editingStatus"
+                        v-model:show-input="editingStatus"
+                        v-model="status"
+                        :max-char="128"
+                        placeholder="Votre statut"
+                        @validate="submitStatus"
+                    />
                     <button
                         v-else
                         class="button-grey flex cursor-pointer items-center justify-center gap-4 py-1"
@@ -96,6 +67,7 @@
     import AppSuspense from '@/views/App/AppSuspense.vue'
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    import EditableTextInput from '@/components/Input/EditableTextInput.vue'
 
     import SettingsOverview from '@/components/User/Settings/SettingsOverview.vue'
     import SettingsClubs from '@/components/User/Settings/SettingsClubs.vue'
