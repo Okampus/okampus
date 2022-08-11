@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-2">
+    <div class="mt-3 flex flex-col gap-2">
         <div v-if="show" class="flex flex-wrap gap-2">
             <div class="relative min-w-[10rem] grow">
                 <div
@@ -28,7 +28,7 @@
                 </button>
             </div>
         </div>
-        <div v-else-if="currentValue" class="text-1 break-words">
+        <div v-else-if="currentValue" class="text-1 always-break-words">
             {{ currentValue }}
             <button
                 class="button-blue ml-2 inline-flex h-6 w-6 items-center justify-center rounded-full p-2"
@@ -109,7 +109,6 @@
 
     const updateValue = (e) => {
         currentValue.value = e.target.value
-        emit('update:modelValue', currentValue.value)
         resize()
         checkErrors()
     }
