@@ -35,11 +35,11 @@
         },
         formData: {
             type: Object,
-            default: null,
+            default: () => ({}),
         },
         formSchema: {
             type: Object,
-            default: null,
+            default: () => ({}),
         },
         submit: {
             type: Function,

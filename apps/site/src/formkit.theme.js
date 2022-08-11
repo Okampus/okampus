@@ -2,7 +2,7 @@
 // many input types are identical in how
 // we want to style them.
 const textClassification = {
-    label: 'ml-1 block mb-2 font-semibold text-base formkit-invalid:text-red-500',
+    label: 'text-1 ml-1 block mb-1 font-semibold text-base formkit-invalid:text-red-500',
     inner: `
       border
       border-transparent
@@ -29,7 +29,7 @@ const buttonClassification = {
 export default {
     // the global key will apply to all inputs
     global: {
-        outer: 'mb-3 md:mb-6 formkit-disabled:opacity-50',
+        outer: 'mb-5 formkit-disabled:opacity-50',
         help: 'text-xs text-gray-500 mb-2 mt-1',
         messages: 'list-none p-0 mt-1 mb-0',
         message: 'text-red-500 mb-3 text-xs',

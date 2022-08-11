@@ -85,7 +85,7 @@
     import { useMutation } from '@vue/apollo-composable'
     import { showSuccessToast, showToastGraphQLError } from '@/utils/toast.js'
 
-    import { DEFAULT_JOIN_FORM_SCHEMA } from '@/shared/assets/default-schemas.js'
+    import { DEFAULT_JOIN_FORM_SCHEMA } from '@/shared/assets/form-schemas/default-schemas.js'
 
     const { locale } = useI18n({ useScope: 'global' })
 

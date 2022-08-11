@@ -13,6 +13,7 @@ import FormKitRadioInput from '@/components/Input/FormKit/FormKitRadioInput.vue'
 import FormKitMdEditor from '@/components/Input/FormKit/FormKitMdEditor.vue'
 import FormKitTagInput from '@/components/Input/FormKit/FormKitTagInput.vue'
 import FormKitFloatingLabelText from '@/components/Input/FormKit/FormKitFloatingLabelText.vue'
+import FormKitSearchInput from '@/components/Input/FormKit/FormKitSearchInput.vue'
 import FormKitMultiselectInput from '@/components/Input/FormKit/FormKitMultiselectInput.vue'
 
 import { plugin, defaultConfig, createInput } from '@formkit/vue'
@@ -43,6 +44,10 @@ options.themes = {
     'popper': {
         $extend: 'menu',
         overflowPadding: 13,
+    },
+    'no-arrow': {
+        $extend: 'dropdown',
+        overflowPadding: 20,
     },
 }
 
@@ -127,6 +132,9 @@ app.use(createPinia())
                 }),
                 floating: createInput(FormKitFloatingLabelText, {
                     props: ['placeholder', 'floatingLabel', 'inputClass'],
+                }),
+                multisearch: createInput(FormKitSearchInput, {
+                    props: ['placeholder', 'searchQuery', 'queryName'],
                 }),
                 multiselect: createInput(FormKitMultiselectInput, {
                     props: [
