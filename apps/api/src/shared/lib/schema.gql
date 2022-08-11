@@ -156,6 +156,11 @@ input CreateTeamEventRegistrationDto {
   status: TeamEventRegisterStatus!
 }
 
+input CreateTeamEventValidationDto {
+  approved: Boolean!
+  message: String
+}
+
 input CreateTeamFinanceDto {
   amount: Float!
   category: TeamFinanceCategory!
@@ -185,6 +190,13 @@ input CreateThreadDto {
   type: ThreadType!
 }
 
+input CreateValidationStepDto {
+  name: String!
+  step: Int!
+  type: ValidationStepType!
+  users: [String!]!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -196,6 +208,7 @@ enum FileKind {
   ProfileImage
   StudyDoc
   TeamFile
+  Tenant
 }
 
 type FileUpload {
@@ -223,6 +236,19 @@ input FilterRegisteredEventsDto {
   present: Boolean
   status: TeamEventRegisterStatus
   userId: String
+}
+
+type IndexedUser {
+  category: String!
+  createdDate: Int!
+  id: String!
+  metaType: String!
+  picture: String
+  realId: String!
+  score: Int!
+  tags: [String!]!
+  title: String!
+  updatedDate: Int!
 }
 
 input InviteMemberDto {
@@ -290,6 +316,7 @@ type Mutation {
   addTeamFinance(finance: CreateTeamFinanceDto!, id: Int!): TeamFinance!
   addThread(thread: CreateThreadDto!): Thread!
   addUserToTeam(invite: InviteMemberDto!, teamId: Int!, userId: Int!): TeamMember!
+  addValidationStep(createStep: CreateValidationStepDto!): Tenant!
   favoriteContent(favorite: Boolean!, id: Int!): Content!
   handleTeamMembershipRequest(payload: PutTeamMembershipRequestDto!, requestId: Int!): TeamMembershipRequest!
   joinTeam(id: Int!, request: CreateTeamMembershipRequestDto!): Team!
@@ -306,6 +333,12 @@ type Mutation {
   updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
   updateUser(id: String!, user: UpdateUserDto!): User!
   voteContent(id: Int!, value: Int!): Content!
+  wsToken: User!
+}
+
+input PaginateDto {
+  itemsPerPage: Int!
+  page: Int!
 }
 
 input PutTeamMembershipRequestDto {
@@ -327,6 +360,7 @@ type Query {
   schoolGroupMembershipsById(id: String!): SchoolGroupMembership!
   schoolGroups: [SchoolGroup!]!
   schoolYearById(id: String!): SchoolYear!
+  searchUsers(query: PaginateDto, search: String!): [IndexedUser!]!
   settings: Settings!
   tagById(id: String!): Tag!
   tags: [Tag!]!
@@ -340,6 +374,7 @@ type Query {
   teamMembershipRequestsByUserId(filters: FilterMembershipRequestsDto, id: String!): [TeamMembershipRequest!]!
   teamMembershipsByUserId(id: String!): [TeamMember!]
   teams(filters: TeamsFilterDto): [Team!]!
+  tenantById(id: String!): Tenant!
   threadById(id: Int!): Thread
   threads: [Thread!]!
   userById(id: String!): User!
@@ -694,6 +729,16 @@ input TeamsFilterDto {
   kind: TeamKind!
 }
 
+type Tenant {
+  createdAt: DateTime!
+  id: String!
+  logo: FileUpload
+  logoDark: FileUpload
+  updatedAt: DateTime!
+  userValidations: [ValidationStep!]!
+  validationSteps: [ValidationStep!]!
+}
+
 type Thread {
   adminValidations: [Validation!]!
   assignedTeams: [Team!]!
@@ -852,6 +897,21 @@ type Validation {
   type: ValidationType!
   updatedAt: DateTime!
   user: User!
+}
+
+type ValidationStep {
+  createdAt: DateTime!
+  id: Int!
+  name: String!
+  step: Int!
+  tenant: Tenant!
+  type: ValidationStepType!
+  updatedAt: DateTime!
+  users: [User!]!
+}
+
+enum ValidationStepType {
+  TeamEvent
 }
 
 enum ValidationType {
