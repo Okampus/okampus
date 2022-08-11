@@ -62,11 +62,11 @@ export class AuthController {
   @CheckPolicies(ability => ability.can(Action.Create, User))
   @Post('register')
   public async register(@Body() dto: RegisterDto): Promise<{ user: User; token: string | null }> {
+    const tenant = await this.tenantsService.findOne(dto.tenantId);
     try {
-      const tenant = await this.tenantsService.findOne(dto.tenantId);
       return await this.usersService.create({ ...dto, tenantId: tenant.id });
     } catch (error) {
-      if (error.code instanceof UniqueConstraintViolationException)
+      if (error instanceof UniqueConstraintViolationException)
         throw new BadRequestException('User id already taken');
 
       throw error;
@@ -76,11 +76,11 @@ export class AuthController {
   @CheckPolicies(ability => ability.can(Action.Create, User))
   @Post('pre-register-sso')
   public async preRegisterSso(@Body() dto: PreRegisterSsoDto): Promise<{ user: User; token: string | null }> {
+    const tenant = await this.tenantsService.findOne(dto.tenantId);
     try {
-      const tenant = await this.tenantsService.findOne(dto.tenantId);
       return await this.usersService.create({ ...dto, tenantId: tenant.id });
     } catch (error) {
-      if (error.code instanceof UniqueConstraintViolationException)
+      if (error instanceof UniqueConstraintViolationException)
         throw new BadRequestException('User id already taken');
 
       throw error;
