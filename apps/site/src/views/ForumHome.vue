@@ -68,7 +68,12 @@
 
             <div class="flex flex-col gap-6 px-4 lg:hidden">
                 <AppTitle title="Tags récents" icon="fas fa-tags" />
-                <GraphQLQuery :query="getTags" :update="(data) => data?.tags" :loader-size="1">
+                <GraphQLQuery
+                    :query="getTags"
+                    :update="(data) => data?.tags"
+                    :loader-size="1"
+                    :whole-page="false"
+                >
                     <template #default="{ data: tags }">
                         <div class="mx-5 flex items-center">
                             <SwiperButton type="prev" :swiper="swiperTags" :small="true" />
@@ -135,7 +140,12 @@
 
             <div class="hidden flex-col gap-6 lg:flex">
                 <AppTitle title="Tags récents" icon="fas fa-tags" class="pl-4" />
-                <GraphQLQuery :query="getTags" :update="(data) => data?.tags" :loader-size="1">
+                <GraphQLQuery
+                    :query="getTags"
+                    :update="(data) => data?.tags"
+                    :loader-size="1"
+                    :whole-page="false"
+                >
                     <template #default="{ data: tags }">
                         <div class="flex flex-wrap gap-3">
                             <LabelTag
