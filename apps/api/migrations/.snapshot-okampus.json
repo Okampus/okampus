@@ -1407,6 +1407,15 @@
           "primary": false,
           "nullable": true,
           "mappedType": "string"
+        },
+        "logo_dark_id": {
+          "name": "logo_dark_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
         }
       },
       "name": "tenant",
@@ -1418,6 +1427,15 @@
           ],
           "composite": false,
           "keyName": "tenant_logo_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "columnNames": [
+            "logo_dark_id"
+          ],
+          "composite": false,
+          "keyName": "tenant_logo_dark_id_unique",
           "primary": false,
           "unique": true
         },
@@ -1437,6 +1455,19 @@
           "constraintName": "tenant_logo_id_foreign",
           "columnNames": [
             "logo_id"
+          ],
+          "localTableName": "public.tenant",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "tenant_logo_dark_id_foreign": {
+          "constraintName": "tenant_logo_dark_id_foreign",
+          "columnNames": [
+            "logo_dark_id"
           ],
           "localTableName": "public.tenant",
           "referencedColumnNames": [

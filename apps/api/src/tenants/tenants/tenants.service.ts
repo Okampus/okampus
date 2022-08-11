@@ -14,11 +14,8 @@ export class TenantsService {
 
   ) {}
 
-  public async create(createTenantDto: CreateTenantDto, logo: FileUpload | null): Promise<Tenant> {
-    const tenant = new Tenant({
-      ...createTenantDto,
-      logo,
-    });
+  public async create(createTenantDto: CreateTenantDto): Promise<Tenant> {
+    const tenant = new Tenant({ ...createTenantDto });
 
     await this.tenantRepository.persistAndFlush(tenant);
     return tenant;
@@ -26,6 +23,22 @@ export class TenantsService {
 
   public async findOne(id: string): Promise<Tenant> {
     return await this.tenantRepository.findOneOrFail({ id }, { populate: ['validationSteps', 'validationSteps.users'] });
+  }
+
+  public async setLogo(id: string, fileUpload: FileUpload): Promise<Tenant> {
+    const tenant = await this.tenantRepository.findOneOrFail({ id });
+
+    tenant.logo = fileUpload;
+    await this.tenantRepository.flush();
+    return tenant;
+  }
+
+  public async setLogoDark(id: string, fileUpload: FileUpload): Promise<Tenant> {
+    const tenant = await this.tenantRepository.findOneOrFail({ id });
+
+    tenant.logoDark = fileUpload;
+    await this.tenantRepository.flush();
+    return tenant;
   }
 
   public async update(id: string, updateTenantDto: UpdateTenantDto): Promise<Tenant> {

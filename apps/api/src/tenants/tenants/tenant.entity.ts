@@ -29,9 +29,14 @@ export class Tenant extends BaseEntity {
   @OneToOne({ onDelete: 'CASCADE' })
   logo?: FileUpload | null = null;
 
+  @Field(() => FileUpload, { nullable: true })
+  @OneToOne({ onDelete: 'CASCADE' })
+  logoDark?: FileUpload | null = null;
+
   constructor(options: {
     id: string;
     logo?: FileUpload | null;
+    logoDark?: FileUpload | null;
   }) {
     super();
     this.assign(options);
