@@ -9,6 +9,7 @@ import { SchoolGroupMembership } from '../school-group/memberships/school-group-
 import { SchoolGroup } from '../school-group/school-group.entity';
 import { SchoolYear } from '../school-group/school-year/school-year.entity';
 import { config } from '../shared/configs/config';
+import { meiliSearchClient } from '../shared/configs/meilisearch.config';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
@@ -16,6 +17,7 @@ import { Action } from '../shared/modules/authorization';
 import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
+import type { IndexedEntity } from '../shared/modules/search/meilisearch.global';
 import { Statistics } from '../statistics/statistics.entity';
 import { StatisticsService } from '../statistics/statistics.service';
 import { Tenant } from '../tenants/tenants/tenant.entity';
@@ -139,6 +141,31 @@ export class UsersService {
         ],
       },
     );
+  }
+
+  public async search(
+    tenant: Tenant,
+    query: PaginateDto & { search: string },
+  ): Promise<PaginatedResult<IndexedEntity>> {
+    const result = await meiliSearchClient.index(tenant.id).search(
+      query.search,
+      {
+        filter: 'metaType = user',
+        limit: query?.itemsPerPage ?? 20,
+        offset: (query?.itemsPerPage ?? 20) * ((query?.page ?? 1) - 1),
+      },
+    );
+
+    const page = Math.floor(result.offset / result.limit);
+    return {
+      items: result.hits as IndexedEntity[],
+      itemsPerPage: result.limit,
+      itemCount: result.hits.length,
+      totalItemCount: result.estimatedTotalHits,
+      totalPages: Math.ceil(result.estimatedTotalHits / result.limit),
+      offset: result.offset - page * result.limit,
+      page,
+    };
   }
 
   public async delete(id: string): Promise<void> {

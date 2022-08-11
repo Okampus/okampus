@@ -8,9 +8,14 @@ import {
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
 import { APP_PUB_SUB } from '../shared/lib/constants';
+import { CurrentTenant } from '../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { SubscriptionType } from '../shared/lib/types/enums/subscription-type.enum';
+import { PaginateDto } from '../shared/modules/pagination';
+import type { IndexedEntity } from '../shared/modules/search/meilisearch.global';
+import { Tenant } from '../tenants/tenants/tenant.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { IndexedUser } from './user-indexed.model';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
 
@@ -30,6 +35,17 @@ export class UsersResolver {
   @Query(() => [User])
   public async users(): Promise<User[]> {
     const paginatedUsers = await this.usersService.findAll();
+    return paginatedUsers.items;
+  }
+
+  // TODO: Add permission checks
+  @Query(() => [IndexedUser])
+  public async searchUsers(
+    @CurrentTenant() tenant: Tenant,
+    @Args('search') search: string,
+    @Args('query', { nullable: true }) query: PaginateDto,
+  ): Promise<IndexedEntity[]> {
+    const paginatedUsers = await this.usersService.search(tenant, { ...query, search });
     return paginatedUsers.items;
   }
 

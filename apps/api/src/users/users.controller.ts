@@ -19,13 +19,16 @@ import { FileUploadsService } from '../files/file-uploads/file-uploads.service';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
 import { ProfileImagesService } from '../files/profile-images/profile-images.service';
 import { simpleImageMimeTypeRegex } from '../shared/configs/mime-type';
+import { CurrentTenant } from '../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../shared/lib/decorators/upload-interceptor.decorator';
 import { FileKind } from '../shared/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
 import type { PaginatedResult } from '../shared/modules/pagination';
+import type { IndexedEntity } from '../shared/modules/search/meilisearch.global';
 import type { Statistics } from '../statistics/statistics.entity';
+import { Tenant } from '../tenants/tenants/tenant.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { GdprService } from './gdpr/gdpr.service';
 import { User } from './user.entity';
@@ -58,7 +61,15 @@ export class UsersController {
     return await this.usersService.findAll(normalizePagination(query));
   }
 
-  @Delete(':id')
+  @Get('/all/search')
+  public async search(
+    @CurrentTenant() tenant: Tenant,
+    @Query() query: PaginateDto & { search: string },
+  ): Promise<PaginatedResult<IndexedEntity>> {
+    return await this.usersService.search(tenant, query);
+  }
+
+  @Delete('/:id')
   @CheckPolicies(ability => ability.can(Action.Delete, User))
   public async delete(@Param('id') id: string): Promise<void> {
     await this.usersService.delete(id);
