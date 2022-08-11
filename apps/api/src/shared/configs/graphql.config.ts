@@ -27,6 +27,7 @@ export default {
   autoSchemaFile: join(process.cwd(), 'src', 'shared', 'lib', 'schema.gql'),
   sortSchema: true,
   debug: config.get('nodeEnv') === 'development',
+  cache: 'bounded',
   playground: config.get('nodeEnv') === 'development',
   cors: {
     origin: computedConfig.frontendUrl,
