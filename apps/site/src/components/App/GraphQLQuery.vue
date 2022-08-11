@@ -1,12 +1,14 @@
 <template>
-    <ApolloQuery :query="query" :variables="variables" :update="update">
+    <ApolloQuery :debounce="debounce" :query="query" :variables="variables" :update="update">
         <template #default="{ result: { error, data }, isLoading }">
-            <AppLoader v-if="isLoading" :size="loaderSize" />
+            <AppLoader v-if="isLoading" :size="loaderSize" :whole-page="wholePage" />
 
-            <AppException v-else-if="error" :code="getGraphQLErrorCode(error)" />
+            <slot v-else-if="error && $slots.error" :code="getGraphQLErrorCode(error)" />
+            <AppException v-else-if="error" :code="getGraphQLErrorCode(error)" :whole-page="wholePage" />
 
             <slot v-else-if="data && (!Array.isArray(data) || data?.length > 0)" :data="data" />
 
+            <slot v-else-if="$slots.empty" name="empty" />
             <div v-else-if="resource" class="text-0 mt-12 flex flex-col items-center gap-2">
                 <img :src="Zoom" class="h-40 w-40" />
                 <div class="text-2xl font-bold">
@@ -40,6 +42,10 @@
             type: [Object, Function],
             required: true,
         },
+        debounce: {
+            type: Number,
+            default: 0,
+        },
         loaderSize: {
             type: Number,
             default: 3.5,
@@ -59,6 +65,10 @@
         routeBase: {
             type: String,
             default: '',
+        },
+        wholePage: {
+            type: Boolean,
+            default: true,
         },
     })
 

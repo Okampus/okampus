@@ -1,10 +1,10 @@
 <template>
-    <div class="text-0 m-20 flex flex-col items-center">
-        <router-link to="/" class="mb-10 w-fit">
+    <div class="text-0 flex flex-col items-center" :class="[wholePage ? 'm-20' : 'm-2']">
+        <router-link v-if="wholePage" to="/" class="mb-10 w-fit">
             <div class="w- logo h-[5.5rem] w-[16.5rem]" allow-dark="" />
         </router-link>
 
-        <div class="text-xl uppercase text-blue-700">
+        <div class="uppercase text-blue-700" :class="[wholePage ? 'text-xl' : 'text-lg']">
             <template v-if="!online">
                 {{ offline.error }}
             </template>
@@ -13,7 +13,7 @@
             </template>
         </div>
 
-        <div class="mb-20 text-center text-4xl">
+        <div class="text-center" :class="[wholePage ? 'text-4xl mb-20' : 'text-lg']">
             <template v-if="!online">
                 {{ offline.description }}
             </template>
@@ -22,7 +22,7 @@
             </template>
         </div>
 
-        <div class="flex flex-row gap-5">
+        <div v-if="wholePage" class="flex flex-row gap-5">
             <ButtonHome />
             <ButtonLogin v-if="props.code === errorCodes.UNAUTHORIZED" />
         </div>
@@ -44,6 +44,10 @@
         code: {
             type: String,
             required: true,
+        },
+        wholePage: {
+            type: Boolean,
+            default: true,
         },
     })
 
