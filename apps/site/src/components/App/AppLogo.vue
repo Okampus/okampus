@@ -1,7 +1,6 @@
 <template>
-    <router-link to="/" class="flex cursor-pointer select-none items-center">
+    <router-link v-if="result" to="/" class="flex cursor-pointer select-none items-center">
         <img
-            v-if="result"
             :src="currentLogo"
             :style="{
                 width: `${scale * 7.5}rem`,
@@ -22,7 +21,7 @@
     import { showErrorToast } from '@/utils/toast'
     import { useQuery } from '@vue/apollo-composable'
     import { useUserConfigStore } from '@/store/user-config.store'
-    import { computed, ref } from 'vue'
+    import { computed } from 'vue'
 
     const props = defineProps({
         scale: {
@@ -37,30 +36,26 @@
 
     const config = useUserConfigStore()
 
-    const logo = ref(null)
-    const logoDark = ref(null)
-
-    const { result, onResult, onError } = useQuery(getLogoUrls, { id: getTenant() })
+    const { result, onError } = useQuery(getLogoUrls, { id: getTenant() })
     onError(() => showErrorToast(`Les logos du tenant '${getTenant()}' n'ont pas pu être chargés !`))
-    onResult((param) => {
-        const {
-            data: {
-                getLogoUrls: { logoUrl, logoDarkUrl },
-            },
-        } = param
-        logo.value = logoUrl
-        logoDark.value = logoDarkUrl
-    })
 
-    const currentLogo = computed(() =>
-        (config.darkMode && props.only !== 'light') || props.only === 'dark'
-            ? logoDark.value
-                ? logoDark.value
-                : logo.value
-                ? logo.value
-                : logoDarkSrc
-            : logo.value
-            ? logo.value
-            : logoSrc,
-    )
+    const currentLogo = computed(() => {
+        if (result.value) {
+            const {
+                getLogoUrls: { logoUrl, logoDarkUrl },
+            } = result.value
+
+            return (config.darkMode && props.only !== 'light') || props.only === 'dark'
+                ? logoDarkUrl
+                    ? logoDarkUrl
+                    : logoUrl
+                    ? logoUrl
+                    : logoDarkSrc
+                : logoUrl
+                ? logoUrl
+                : logoSrc
+        }
+
+        return (config.darkMode && props.only !== 'light') || props.only === 'dark' ? logoDarkSrc : logoSrc
+    })
 </script>
