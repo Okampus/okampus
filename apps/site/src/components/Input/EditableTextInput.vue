@@ -141,7 +141,7 @@
         if (!checkErrors()) {
             emit('update:modelValue', currentValue.value)
             emit('update:showInput', false)
-            emit('validate')
+            emit('validate', currentValue.value)
             initial.value = currentValue.value
         }
     }

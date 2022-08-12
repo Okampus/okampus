@@ -333,6 +333,7 @@ type Mutation {
   updateTeamMembershipRequest(requestId: Int!, update: UpdateTeamMembershipRequestDto!): TeamMembershipRequest!
   updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
   updateUser(id: String!, user: UpdateUserDto!): User!
+  updateValidationStep(id: Int!, updateStep: UpdateValidationStepDto!): ValidationStep!
   validateEvent(id: Int!, validation: CreateTeamEventValidationDto!): TeamEvent!
   voteContent(id: Int!, value: Int!): Content!
   wsToken: User!
@@ -881,6 +882,13 @@ input UpdateUserDto {
   email: String!
   shortDescription: String!
   signature: String!
+}
+
+input UpdateValidationStepDto {
+  name: String
+  step: Int
+  type: ValidationStepType
+  users: [String!]
 }
 
 type User {
