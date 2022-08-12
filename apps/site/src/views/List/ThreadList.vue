@@ -17,7 +17,7 @@
 <script setup>
     import ThreadCard from '@/components/App/ListCard/ThreadCard.vue'
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
-    import { getThreads } from '@/graphql/queries/getThreads'
+    import { getThreads } from '@/graphql/queries/threads/getThreads'
 
     defineProps({
         container: {

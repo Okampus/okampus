@@ -50,7 +50,7 @@
 
     import { useAuthStore } from '@/store/auth.store'
     import { fullname } from '@/utils/users'
-    import { addContent } from '@/graphql/queries/addContent'
+    import { addContent } from '@/graphql/queries/threads/addContent'
 
     import { ref } from 'vue'
 

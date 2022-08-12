@@ -139,7 +139,7 @@
     import { COMMENT, POST } from '@/shared/types/content-kinds.enum'
 
     import { useMutation } from '@vue/apollo-composable'
-    import { editContent } from '@/graphql/queries/editContent'
+    import { editContent } from '@/graphql/queries/threads/editContent'
 
     import {
         getContentDemonstrative,
@@ -155,7 +155,7 @@
     import urlJoin from 'url-join'
     import router from '@/router'
 
-    import { editThread } from '@/graphql/queries/editThread'
+    import { editThread } from '@/graphql/queries/threads/editThread'
     import { showErrorToast, showInfoToast, showWarningToast } from '@/utils/toast'
 
     import { useI18n } from 'vue-i18n'

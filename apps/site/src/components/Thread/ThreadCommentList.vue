@@ -57,7 +57,7 @@
     import { COMMENT } from '@/shared/types/content-kinds.enum'
 
     import { fullname } from '@/utils/users'
-    import { addContent } from '@/graphql/queries/addContent'
+    import { addContent } from '@/graphql/queries/threads/addContent'
     import { useMutation } from '@vue/apollo-composable'
 
     import { computed, ref, watch } from 'vue'

@@ -180,7 +180,7 @@
 
     import { ref } from 'vue'
 
-    import { getTags } from '@/graphql/queries/getTags'
+    import { getTags } from '@/graphql/queries/threads/getTags'
     import { ADMIN } from '@/shared/types/school-roles.enum.js'
 
     const forumTabs = [

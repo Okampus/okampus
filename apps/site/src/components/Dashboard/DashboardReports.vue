@@ -67,7 +67,7 @@
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
 
-    import { getReports } from '@/graphql/queries/getReports'
+    import { getReports } from '@/graphql/queries/threads/getReports'
     import { fullname } from '@/utils/users'
     import { contentTypeNames } from '@/shared/types/content-kinds.enum'
 </script>

@@ -152,7 +152,7 @@
     import { useMutation } from '@vue/apollo-composable'
     import { getTeams } from '@/graphql/queries/teams/getTeams'
 
-    import { addThread } from '@/graphql/queries/addThread'
+    import { addThread } from '@/graphql/queries/threads/addThread'
 
     import { useRouter } from 'vue-router'
     import { showErrorToast, showSuccessToast } from '@/utils/toast.js'

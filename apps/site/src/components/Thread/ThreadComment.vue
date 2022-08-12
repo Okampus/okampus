@@ -115,7 +115,7 @@
     import { getURL } from '@/utils/routeUtils'
     import urlJoin from 'url-join'
     import { useMutation } from '@vue/apollo-composable'
-    import { editContent } from '@/graphql/queries/editContent'
+    import { editContent } from '@/graphql/queries/threads/editContent'
     import { vote } from '@/graphql/queries/interactions/voteContent'
     import { fullname } from '@/utils/users'
     import { favorite } from '@/graphql/queries/interactions/favoriteContent'

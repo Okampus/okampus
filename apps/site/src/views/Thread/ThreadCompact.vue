@@ -138,7 +138,7 @@
     import { computed, ref } from 'vue'
     import { useRoute } from 'vue-router'
 
-    import { getThreadById } from '@/graphql/queries/getThreadById'
+    import { getThreadById } from '@/graphql/queries/threads/getThreadById'
 
     import { getRole } from '@/utils/users'
     import threadTypes from '@/shared/types/thread-types.enum'
