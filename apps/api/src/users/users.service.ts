@@ -73,12 +73,12 @@ export class UsersService {
     }
 
     if (options.avatar)
-      await this.setAvatar(options.avatar, 'avatar', user);
+      await this.setImage(options.avatar, 'avatar', user);
     else
       user.avatar = null;
 
     if (options.banner)
-      await this.setAvatar(options.banner, 'banner', user);
+      await this.setImage(options.banner, 'banner', user);
     else
       user.banner = null;
 
@@ -108,14 +108,14 @@ export class UsersService {
 
     if (typeof avatar !== 'undefined') {
       if (avatar)
-        await this.setAvatar(avatar, 'avatar', user);
+        await this.setImage(avatar, 'avatar', user);
       else
         user.avatar = null;
     }
 
     if (typeof banner !== 'undefined') {
       if (banner)
-        await this.setAvatar(banner, 'banner', user);
+        await this.setImage(banner, 'banner', user);
       else
         user.banner = null;
     }
@@ -180,13 +180,13 @@ export class UsersService {
   }
 
   public async updateProfileImage(user: User, type: 'avatar' | 'banner', profileImage: ProfileImage): Promise<User> {
-    await this.setAvatar(profileImage, type, user);
+    await this.setImage(profileImage, type, user);
 
     await this.userRepository.flush();
     return user;
   }
 
-  private async setAvatar(profileImage: ProfileImage | string, type: 'avatar' | 'banner', user: User): Promise<void> {
+  private async setImage(profileImage: ProfileImage | string, type: 'avatar' | 'banner', user: User): Promise<void> {
     // Get the avatar image and validate it
     const id = typeof profileImage === 'string' ? profileImage : profileImage.id;
     const avatarImage = profileImage instanceof ProfileImage && profileImage.file instanceof FileUpload
@@ -196,13 +196,18 @@ export class UsersService {
     if (!avatarImage || !avatarImage.isAvailableFor('user', user.id))
       throw new BadRequestException(`Invalid ${type} image`);
 
+    // Get previous avatar image if it exists and set it to inactive
+    const previousAvatarImage = await this.profileImageRepository.findOne({ user, type, active: true });
+    if (previousAvatarImage)
+      previousAvatarImage.active = false;
+
     // Update the user's image
     user[type] = avatarImage.file.url;
 
     // Update the target type of the image
-    if (!avatarImage.user) {
-      avatarImage.user = user;
-      await this.profileImageRepository.flush();
-    }
+    avatarImage.user = user;
+    avatarImage.active = true;
+
+    await this.profileImageRepository.flush();
   }
 }

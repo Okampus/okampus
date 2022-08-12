@@ -46,7 +46,7 @@ export class ProfileImagesController {
       FileKind.ProfileImage,
       createProfileImageDto.fileLastModifiedAt,
     );
-    return await this.profileImagesService.create(fileUpload);
+    return await this.profileImagesService.create(fileUpload, createProfileImageDto.type);
   }
 
   @Get(':id')

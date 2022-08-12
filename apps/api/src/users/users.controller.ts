@@ -104,7 +104,7 @@ export class UsersController {
       throw new BadRequestException('No file provided');
 
     const fileUpload = await this.filesService.create(user, file, FileKind.ProfileImage);
-    const profileImage = await this.profileImagesService.create(fileUpload);
+    const profileImage = await this.profileImagesService.create(fileUpload, 'avatar');
 
     return await this.usersService.updateProfileImage(user, 'avatar', profileImage);
   }
@@ -123,7 +123,7 @@ export class UsersController {
       throw new BadRequestException('No file provided');
 
     const fileUpload = await this.filesService.create(user, banner, FileKind.ProfileImage);
-    const profileImage = await this.profileImagesService.create(fileUpload);
+    const profileImage = await this.profileImagesService.create(fileUpload, 'banner');
 
     return await this.usersService.updateProfileImage(user, 'banner', profileImage);
   }

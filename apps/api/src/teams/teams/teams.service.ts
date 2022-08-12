@@ -32,10 +32,10 @@ export class TeamsService {
     const team = new Team({ ...dto, tenant });
 
     if (avatar)
-      await this.setAvatar(avatar, 'avatar', team);
+      await this.setImage(avatar, 'avatar', team);
 
     if (banner)
-      await this.setAvatar(banner, 'banner', team);
+      await this.setImage(banner, 'banner', team);
 
     await this.teamRepository.persistAndFlush(team);
 
@@ -102,14 +102,14 @@ export class TeamsService {
 
     if (typeof avatar !== 'undefined') {
       if (avatar)
-        await this.setAvatar(avatar, 'avatar', team);
+        await this.setImage(avatar, 'avatar', team);
       else
         team.avatar = null;
     }
 
     if (typeof banner !== 'undefined') {
       if (banner)
-        await this.setAvatar(banner, 'banner', team);
+        await this.setImage(banner, 'banner', team);
       else
         team.banner = null;
     }
@@ -151,30 +151,35 @@ export class TeamsService {
     if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
-    await this.setAvatar(profileImage, type, team);
+    await this.setImage(profileImage, type, team);
 
     await this.profileImageRepository.flush();
     await this.teamRepository.flush();
     return team;
   }
 
-  private async setAvatar(profileImage: ProfileImage | string, type: 'avatar' | 'banner', team: Team): Promise<void> {
+  private async setImage(profileImage: ProfileImage | string, type: 'avatar' | 'banner', team: Team): Promise<void> {
     // Get the avatar image and validate it
     const id = typeof profileImage === 'string' ? profileImage : profileImage.id;
     const avatarImage = profileImage instanceof ProfileImage && profileImage.file instanceof FileUpload
       ? profileImage
-      : await this.profileImageRepository.findOne({ id }, { populate: ['file'] });
+      : await this.profileImageRepository.findOne({ id, type }, { populate: ['file'] });
 
     if (!avatarImage || !avatarImage.isAvailableFor('team', team.id))
       throw new BadRequestException(`Invalid ${type} image`);
+
+    // Get previous avatar image if it exists and set it to inactive
+    const previousAvatarImage = await this.profileImageRepository.findOne({ team, type, active: true });
+    if (previousAvatarImage)
+      previousAvatarImage.active = false;
 
     // Update the team's image
     team[type] = avatarImage.file.url;
 
     // Update the target type of the image
-    if (!avatarImage.team) {
-      avatarImage.team = team;
-      await this.profileImageRepository.flush();
-    }
+    avatarImage.team = team;
+    avatarImage.active = true;
+
+    await this.profileImageRepository.flush();
   }
 }

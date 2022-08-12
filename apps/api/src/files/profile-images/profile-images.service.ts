@@ -16,18 +16,18 @@ export class ProfileImagesService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async create(file: FileUpload): Promise<ProfileImage> {
-    const profileImage = new ProfileImage({ file });
+  public async create(file: FileUpload, type: string): Promise<ProfileImage> {
+    const profileImage = new ProfileImage({ file, type });
     await this.profileImageRepository.persistAndFlush(profileImage);
     return profileImage;
   }
 
   public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<ProfileImage>> {
-    return await this.profileImageRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'user'] });
+    return await this.profileImageRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'user', 'team', 'tenant'] });
   }
 
   public async findOne(id: string): Promise<ProfileImage> {
-    return await this.profileImageRepository.findOneOrFail({ id }, { populate: ['file', 'user'] });
+    return await this.profileImageRepository.findOneOrFail({ id }, { populate: ['file', 'user', 'team', 'tenant'] });
   }
 
   public async remove(user: User, id: string): Promise<void> {
