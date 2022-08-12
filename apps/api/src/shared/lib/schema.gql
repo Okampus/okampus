@@ -319,6 +319,7 @@ type Mutation {
   addValidationStep(createStep: CreateValidationStepDto!): Tenant!
   favoriteContent(favorite: Boolean!, id: Int!): Content!
   handleTeamMembershipRequest(payload: PutTeamMembershipRequestDto!, requestId: Int!): TeamMembershipRequest!
+  insertStep(atStep: Int!, step: Int!): Tenant!
   joinTeam(id: Int!, request: CreateTeamMembershipRequestDto!): Team!
   login(password: String!, username: String!): User!
   removeTeamMember(teamId: Int!, userId: Int!): TeamMember

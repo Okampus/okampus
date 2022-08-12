@@ -39,4 +39,13 @@ export class ValidationStepsResolver {
   ): Promise<ValidationStep> {
     return await this.validationStepsService.update(id, updateStep);
   }
+
+  @Mutation(() => Tenant)
+  public async insertStep(
+    @CurrentTenant() tenant: Tenant,
+    @Args('step', { type: () => Int }) step: number,
+    @Args('atStep', { type: () => Int }) atStep: number,
+  ): Promise<Tenant> {
+    return await this.validationStepsService.insertStep(tenant, step, atStep);
+  }
 }

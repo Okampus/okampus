@@ -6,6 +6,7 @@ import {
   ManyToOne,
   PrimaryKey,
   Property,
+  QueryOrder,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
@@ -40,7 +41,8 @@ export class ValidationStep extends BaseEntity {
   type!: ValidationStepType;
 
   @Field(() => [User])
-  @ManyToMany(() => User)
+  // eslint-disable-next-line no-undefined
+  @ManyToMany(() => User, undefined, { orderBy: { id: QueryOrder.ASC } })
   @TransformCollection()
   users = new Collection<User>(this);
 

@@ -40,27 +40,51 @@ export class ValidationStepsService {
   }
 
   public async update(id: number, updateValidationStepDto: UpdateValidationStepDto): Promise<ValidationStep> {
-    const validationStep = await this.validationStepRepository.findOneOrFail({ id });
+    const validationStep = await this.validationStepRepository.findOneOrFail({ id }, { populate: ['users'] });
 
-    wrap(validationStep).assign(updateValidationStepDto);
+    const { users, ...updateProps } = updateValidationStepDto;
+    if (users) {
+      if (users.length === 0) {
+        validationStep.users.removeAll();
+      } else {
+        const newUsers = await this.userRepository.find({ id: { $in: users } });
+        validationStep.users.set(newUsers);
+      }
+    }
+
+    wrap(validationStep).assign(updateProps);
     await this.validationStepRepository.flush();
     return validationStep;
   }
 
-  public async switchSteps(tenant: Tenant, step1: number, step2: number): Promise<Tenant> {
+  public async insertStep(tenant: Tenant, step: number, atStep: number): Promise<Tenant> {
     const stepCount = await this.validationStepRepository.count({ tenant });
-    if (step1 === step2 || step1 < 0 || step1 >= stepCount || step2 < 0 || step2 >= stepCount)
+    if (step === atStep || step < 1 || step > stepCount || step < 1 || atStep > stepCount)
       throw new BadRequestException('Invalid step numbers');
 
-    const validationStep1 = await this.validationStepRepository.findOneOrFail({ step: step1, tenant });
-    const validationStep2 = await this.validationStepRepository.findOneOrFail({ step: step2, tenant });
+    const validationStep = await this.validationStepRepository.findOneOrFail({ tenant, step });
+    if (step < atStep) {
+      const previousSteps = await this.validationStepRepository.find(
+        { tenant, step: { $gt: step, $lte: atStep } },
+      );
 
-    validationStep1.step = step2;
-    validationStep2.step = step1;
+      for (const previousStep of previousSteps)
+        previousStep.step -= 1;
+    } else {
+      const nextSteps = await this.validationStepRepository.find(
+        { tenant, step: { $gte: atStep, $lt: step } },
+      );
+
+      for (const nextStep of nextSteps)
+        nextStep.step += 1;
+    }
+
+    validationStep.step = atStep;
 
     await this.validationStepRepository.flush();
+    await this.tenantRepository.populate(tenant, ['validationSteps', 'validationSteps.users']);
 
-    return this.tenantRepository.findOneOrFail({ id: tenant.id }, { populate: ['validationSteps'] });
+    return tenant;
   }
 
   public async remove(id: number): Promise<void> {
