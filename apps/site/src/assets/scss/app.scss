@@ -41,42 +41,11 @@ $logo-dark-url: url('@/assets/img/logos/logo_dark.png');
 @include tailwind-color('from', '', 2);
 @include tailwind-color('to', '', 2);
 
-.logo {
-    background: $logo-light-url no-repeat 0 0;
-    background-size: 100%;
-
-    .dark &[allow-dark],
-    &[dark] {
-        background: $logo-dark-url no-repeat 0 0;
-        background-size: 100%;
-    }
-}
-
-.ratio-square {
-    position: relative;
-
-    & > div {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-    }
-
-    &.centered > div {
-        @apply text-center;
-
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-}
-
-.ratio-square::before {
-    display: block;
-    padding-top: 100%; /* initial ratio of 1:1 */
-    content: '';
+.absolute-centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .symmetry-x {
