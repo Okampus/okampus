@@ -50,7 +50,11 @@
             <AvatarCropper
                 v-model="editingAvatar"
                 :upload-url="uploadAvatarUrl"
-                :request-options="{ method: 'PUT', credentials: 'include' }"
+                :request-options="{
+                    method: 'PUT',
+                    credentials: 'include',
+                    headers: { 'X-Tenant-Id': getTenant() },
+                }"
                 :labels="{ submit: 'Valider', cancel: 'Annuler' }"
                 :cropper-options="{ aspectRatio: 1, zoomable: true, movable: true }"
                 @error="onAvatarUploadFailure"
@@ -76,6 +80,8 @@
     import WIP from '@/views/App/WIP.vue'
 
     import { computed, ref, h } from 'vue'
+
+    import { getTenant } from '@/utils/getTenant'
 
     import { fullname } from '@/utils/users'
 
@@ -198,7 +204,7 @@
             })
 
             emitter.emit('show-toast', {
-                message: 'Avatar mis à jour.',
+                message: 'Avatar mis à jour 🎉',
                 type: 'success',
             })
         } else {
