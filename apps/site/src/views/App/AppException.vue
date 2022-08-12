@@ -1,7 +1,7 @@
 <template>
     <div class="text-0 flex flex-col items-center" :class="[wholePage ? 'm-20' : 'm-2']">
         <router-link v-if="wholePage" to="/" class="mb-10 w-fit">
-            <div class="w- logo h-[5.5rem] w-[16.5rem]" allow-dark="" />
+            <AppLogo :scale="2" />
         </router-link>
 
         <div class="uppercase text-blue-700" :class="[wholePage ? 'text-xl' : 'text-lg']">
@@ -30,6 +30,7 @@
 </template>
 
 <script setup>
+    import AppLogo from '@/components/App/AppLogo.vue'
     import ButtonHome from '@/components/UI/Button/ButtonHome.vue'
     import ButtonLogin from '@/components/UI/Button/ButtonLogin.vue'
 
