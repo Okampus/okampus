@@ -19,7 +19,7 @@
         <div class="flex flex-col gap-14">
             <div class="flex flex-col gap-4">
                 <h1 class="text-0 inline font-semibold">Logos</h1>
-                <div class="grid gap-6 md:grid-cols-2 md-max:grid-rows-2">
+                <div class="md-max:grid-rows-2 grid gap-6 md:grid-cols-2">
                     <div class="flex flex-col">
                         <div class="text-2 mb-2 text-lg font-semibold">Logo thème clair</div>
                         <FileInput
@@ -132,7 +132,7 @@
                                             </button>
                                             <button
                                                 class="button-grey mt-1 flex items-center gap-2 py-1.5 text-base"
-                                                @click="step.editingUsers = false"
+                                                @click="cancelUsers(step)"
                                             >
                                                 Annuler
                                             </button>
@@ -152,84 +152,6 @@
                         </transition-group>
                     </VueDraggableNext>
                 </div>
-                <!-- <div v-else class="grid grid-cols-[repeat(auto-fit,minmax(23rem,1fr))] gap-6">
-                    <div v-for="step in steps" :key="step.id" class="group card bg-1 flex flex-col">
-                        <div
-                            class="-mt-2 mb-2 flex h-6 w-full cursor-move justify-center opacity-0 transition-opacity group-hover:opacity-100"
-                        >
-                            <i class="text-3 fa fa-grip" />
-                        </div>
-                        <div class="mb-6 flex justify-between gap-4">
-                            <EditableTextInput
-                                v-model:show-input="step.editingName"
-                                v-model="step.name"
-                                placeholder="Nom de l'étape"
-                                :min-char="10"
-                                text-class="text-lg"
-                                min-char-message="Le nom d'une étape de validation doit faire au moins 10 caractères"
-                                @validate="updateStep({ id: step.id, updateStep: { name: $event } })"
-                            />
-                            <div
-                                v-tooltip="`Étape ${step.step}`"
-                                class="text-1 cursor-default text-xl font-semibold"
-                            >
-                                #{{ step.step }}
-                            </div>
-                        </div>
-
-                        <div class="mb-4 flex flex-col">
-                            <div
-                                class="text-3 mb-1 flex cursor-pointer items-center justify-between hover:text-blue-400 dark:hover:text-blue-600"
-                                @click="step.editingUsers = !step.editingUsers"
-                            >
-                                <div class="text-sm font-semibold">Validateurs</div>
-                                <i
-                                    v-tooltip="'Modifier les validateurs'"
-                                    class="far fa-pen-to-square text-xl"
-                                />
-                            </div>
-
-                            <div v-if="step.editingUsers" class="mt-3">
-                                <FormKit
-                                    v-model="step.users"
-                                    type="multisearch"
-                                    :search-query="searchUsers"
-                                    query-name="searchUsers"
-                                    placeholder="Changez puis validez ☑️"
-                                />
-
-                                <div class="flex gap-2 self-start" :class="textClass">
-                                    <button
-                                        class="button-green mt-1 flex items-center gap-2 py-1.5 text-base"
-                                        @click="
-                                            updateStep({
-                                                id: step.id,
-                                                updateStep: { users: step.users.map((user) => user.realId) },
-                                            })
-                                        "
-                                    >
-                                        Valider
-                                    </button>
-                                    <button
-                                        class="button-grey mt-1 flex items-center gap-2 py-1.5 text-base"
-                                        @click="step.editingUsers = false"
-                                    >
-                                        Annuler
-                                    </button>
-                                </div>
-                            </div>
-                            <template v-else>
-                                <LabelIndexedEntity
-                                    v-for="user in step.users"
-                                    :key="user.id"
-                                    class="mb-1"
-                                    :entity="user"
-                                    :closable="false"
-                                />
-                            </template>
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </div>
     </div>
@@ -316,6 +238,19 @@
         },
     })
 
+    const cancelUsers = (step) => {
+        step.editingUsers = false
+        step.users =
+            props.config.validationSteps
+                .find((step) => step.id === step.id)
+                ?.users?.map?.((user) => ({
+                    realId: user.id,
+                    metaType: 'user',
+                    title: fullname(user),
+                    picture: user.avatar,
+                })) ?? []
+    }
+
     const steps = ref([])
     watchEffect(() => {
         steps.value = props.config.validationSteps.map((step) => ({
@@ -335,8 +270,4 @@
 
     const logoUploadUrl = `${import.meta.env.VITE_API_URL}/tenants/tenants/${props.config.id}/logo`
     const logoDarkUploadUrl = `${import.meta.env.VITE_API_URL}/tenants/tenants/${props.config.id}/logo-dark`
-
-    const test = (evt) => {
-        console.log('EVENT', evt)
-    }
 </script>
