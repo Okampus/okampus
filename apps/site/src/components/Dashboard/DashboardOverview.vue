@@ -8,7 +8,13 @@
             <!-- <div v-for="(name, metrics) in allMetrics" :key="name" class="text-0">
                 {{ name }} : {{ JSON.stringify(metrics) }}
             </div> -->
-            <div class="flex flex-col items-center gap-4">
+            <div v-if="isEmpty(allMetrics)">
+                <div class="text-0 flex flex-col items-center justify-center text-2xl">
+                    <img :src="Zoom" class="h-40 w-40" />
+                    <span class="font-semibold"> Aucune donnée disponible </span>
+                </div>
+            </div>
+            <div v-else class="flex flex-col items-center gap-4">
                 <h2 class="text-0 my-4 font-semibold">
                     Évolution sur la période {{ getDateRangeStringShort(nowMinusOneMonth, now) }}
                 </h2>
@@ -82,6 +88,7 @@
                         />
                     </div>
                 </div>
+                <!-- TODO: base of alert system -->
                 <!--
                 <div class="card flex flex-col gap-2">
                     <div class="border-b pb-2 text-xl">Alertes</div>
@@ -116,12 +123,16 @@
 </template>
 
 <script setup>
+    import Zoom from '@/assets/img/3dicons/zoom.png'
+
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
     import { Line } from 'vue-chartjs'
 
     import { getAllMetrics } from '@/graphql/queries/metrics/getMetrics.js'
     import { groupBy, last, mapValues } from 'lodash'
     import { getDateRangeStringShort } from '@/utils/dateUtils'
+
+    import { isEmpty } from 'lodash'
 
     import 'chartjs-adapter-date-fns'
     import { Chart, registerables } from 'chart.js'
@@ -157,7 +168,7 @@
             {
                 text: "% d'Insertion",
                 value: `${insertionRate.now} %`,
-                change: calculateChange(insertionRate),
+                change: calculateChange(insertionRate) || 0,
                 diff: `${absDiff(insertionRate)} %`,
             },
             {
