@@ -20,6 +20,18 @@
     @apply shadow-md md:rounded-lg py-4 px-6;
 }
 
+.card-content {
+    @include get-color('text', 0);
+
+    background-color: #fff;
+
+    .dark & {
+        background: linear-gradient(to right, #17191f, #1a2221);
+    }
+
+    @apply shadow-md md:rounded-lg py-4 px-6;
+}
+
 .card-hover {
     transition: filter 0.2s ease-in-out, transform 0.2s ease-in-out;
 

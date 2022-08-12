@@ -33,6 +33,16 @@
     outline: none !important;
 }
 
+.v-popper__popper.v-popper__popper--show-from .v-popper__wrapper {
+    transform: translate(0, -5px) scale(0.95);
+}
+
+.v-popper__popper.v-popper__popper--show-to .v-popper__wrapper {
+    transition: transform 0.15s;
+    transform: none;
+    transform-origin: top;
+}
+
 .v-popper__popper.v-popper__popper--hidden {
     pointer-events: none;
     visibility: hidden;
@@ -140,6 +150,18 @@
 }
 
 .v-popper--theme-popper {
+    & .v-popper__arrow-container {
+        display: none !important;
+    }
+
+    & .v-popper__inner {
+        padding: 0 !important;
+        background: transparent !important;
+        @apply shadow-lg;
+    }
+}
+
+.v-popper--theme-no-arrow {
     & .v-popper__arrow-container {
         display: none !important;
     }
