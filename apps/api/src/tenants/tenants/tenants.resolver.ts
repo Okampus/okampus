@@ -50,7 +50,7 @@ export class TenantsResolver {
   @Query(() => TenantLogoUrls)
   public async getLogoUrls(@Args('id') id: string): Promise<TenantLogoUrls> {
     const tenant = await this.tenantsService.findOne(id);
-    return { logoUrl: tenant.logo ?? null, logoDarkUrl: tenant.logoDark ?? null };
+    return { id: tenant.id, logoUrl: tenant.logo ?? null, logoDarkUrl: tenant.logoDark ?? null };
   }
 
   // TODO: Add permission checks

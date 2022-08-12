@@ -757,6 +757,7 @@ type Tenant {
 }
 
 type TenantLogoUrls {
+  id: String!
   logoDarkUrl: String
   logoUrl: String
 }
@@ -886,7 +887,6 @@ input UpdateUserDto {
 
 input UpdateValidationStepDto {
   name: String
-  step: Int
   type: ValidationStepType
   users: [String!]
 }
