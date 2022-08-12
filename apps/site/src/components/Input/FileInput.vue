@@ -1,181 +1,198 @@
 <template>
     <div>
+        <AvatarCropper
+            v-if="canCrop"
+            v-model="cropping"
+            :file="croppingFile"
+            :upload-url="imageParams.url"
+            :request-options="{
+                method: 'PUT',
+                credentials: 'include',
+                headers: { 'X-Tenant-Id': getTenant() },
+            }"
+            :labels="{ submit: 'Valider', cancel: 'Annuler' }"
+            :cropper-options="
+                imageParams?.ratio
+                    ? { aspectRatio: 1 / imageParams.ratio, zoomable: true, movable: true }
+                    : { scalable: true, zoomable: true, movable: true }
+            "
+            @error="
+                (error) =>
+                    imageParams?.onUploadFailure?.(error) ?? showErrorToast('Avec de l\'upload de l\'image !')
+            "
+            @completed="
+                (avatar) =>
+                    imageParams?.onUploadSuccess?.(avatar) ??
+                    showSuccessToast('Image uploadée avec succès 🎉')
+            "
+        />
         <div
-            class="input relative h-full w-full p-2"
+            class="input relative min-h-[12rem] w-full p-0 focus:outline-none"
+            :class="[hover ? 'bg-1-light !ring-2 ring-blue-500 dark:bg-1-dark' : '']"
+            :style="imageParams.ratio ? { 'padding-top': `calc(${100 * imageParams.ratio}% + 4rem)` } : {}"
+            tabindex="0"
+            @mouseenter="hover = true"
+            @mouseleave="hover = false"
+            @focus="hover = true"
+            @blur="hover = false"
+            @dragover.prevent="hover = true"
+            @dragleave.prevent="hover = false"
             @drop.prevent="addFileByDrop"
-            @dragover.prevent="dragover = true"
-            @dragleave.prevent="dragover = false"
+            @keydown.enter="input.click()"
         >
             <div
-                v-if="modelValue.length == 0"
-                :class="{ 'outline-2': dragover }"
-                class="flex h-full cursor-pointer flex-col items-center justify-center rounded outline-blue-500 hover:outline-dashed hover:outline-2 dark:outline-blue-700"
-                tabindex="0"
-                @keydown.enter="$refs.inputFile.click()"
-                @click="$refs.inputFile.click()"
+                class="text-2 absolute inset-0 flex h-full w-full cursor-pointer flex-col items-center justify-center p-4"
+                @click="input.click()"
             >
-                <i class="fas text-xl" :class="dragover ? 'fa-cloud-download-alt' : 'fa-cloud-upload-alt'" />
-                <div v-if="!message.length" class="text-center">
-                    <span class="text-blue-500 hover:underline"> Cliquez </span> ou glissez vos
-                    {{ fileLimit != -1 ? fileLimit : '' }} fichiers ici !
-                </div>
-                <div v-else class="text-center">{{ message }}</div>
-            </div>
-            <div
-                v-else
-                class="grid h-full w-full auto-rows-[100%] gap-2 overflow-y-scroll"
-                :class="[fileLimit != 1 ? 'grid-cols-2 md:grid-cols-4 lg:grid-cols-6' : 'grid-cols-1']"
-            >
-                <div
-                    v-for="(file, index) in modelValue"
-                    :key="index"
-                    class="text-1 bg-1 w-full rounded shadow-md"
-                >
+                <template v-if="modelValue !== null">
+                    <img
+                        v-if="modelValue.url || isImage(modelValue)"
+                        class="rounded-md"
+                        :src="modelValue.url ? modelValue.url : getImageSrc(modelValue)"
+                        :style="imageParams?.ratio ? { 'aspect-ratio': `1 / ${imageParams.ratio}` } : {}"
+                    />
+                    <DocumentIcon
+                        v-else
+                        class="my-4 h-[calc(100%-4rem)]"
+                        :file-name="modelValue.name"
+                        :mime="modelValue.type"
+                    />
                     <div
-                        class="border-color-0 flex h-19/24 w-full flex-col items-center justify-center gap-2 border-b p-2"
+                        class="bg-3 mt-[0.5rem] flex h-[3rem] w-full items-center justify-between rounded-md px-4 py-[0.5rem]"
                     >
-                        <img v-if="imgPreview && isImage(file)" class="h-18/24" :src="getImageSrc(file)" />
-                        <DocumentIcon v-else :file-name="file.name" :mime="file.type" />
-                        <div class="w-full text-center">
-                            <div class="truncate">
-                                {{ file.name }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex h-5/24 w-full items-center justify-between p-2">
-                        {{ formatBytes(file.size, 0) }}
-                        <div class="flex gap-2">
+                        <!-- TODO: add meta information regarding who uploaded, at what time, etc. -->
+                        <span>{{ bytes(modelValue.url ? modelValue.fileSize : modelValue.size) }}</span>
+                        <span>{{ modelValue.name }}</span>
+                        <div class="flex gap-4">
                             <button
-                                v-if="canDownload"
-                                title="Télécharger le fichier"
-                                @click.prevent="downloadFile(file)"
+                                title="Télécharger"
+                                @click.stop="downloadFile(modelValue, !modelValue.url)"
                             >
-                                <i class="fa-solid fa-download text-blue-500"></i>
+                                <i
+                                    class="fa-solid fa-download flex h-6 w-8 items-center justify-center rounded-md bg-blue-500 text-sm text-white hover:bg-blue-600"
+                                />
                             </button>
                             <button
-                                v-if="canDelete === true"
-                                title="Enlever le fichier"
-                                @click.prevent="removeFile(file)"
+                                title="Supprimer"
+                                @click.stop="
+                                    () => {
+                                        removeFile(modelValue)
+                                        removeCallback()
+                                    }
+                                "
                             >
-                                <i class="fas fa-times text-red-500" />
+                                <i
+                                    class="fas fa-times flex h-6 w-6 items-center justify-center rounded-md bg-red-500 text-lg text-white hover:bg-red-600"
+                                />
                             </button>
                         </div>
                     </div>
-                </div>
-                <div
-                    v-if="modelValue.length != fileLimit"
-                    class="text-2 flex h-full w-full cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-gray-300 p-4 text-center text-gray-500 dark:border-gray-500"
-                    tabindex="0"
-                    @click="$refs.inputFile.click()"
-                    @keydown.enter="$refs.inputFile.click()"
-                >
-                    Ajouter un fichier
-                    <div class="text-xl">+</div>
-                </div>
-            </div>
-        </div>
-        <div class="flex justify-between">
-            <div :class="[modelValue.length == 0 || fileLimit <= 1 ? 'invisible' : '']" class="text-2">
-                {{ modelValue.length }}/{{ fileLimit }}
-            </div>
-            <div :class="[totalFileSize <= sizeLimit * 0.5 ? 'invisible' : '']" class="text-2">
-                {{ formatBytes(totalFileSize) }}/{{ formatBytes(sizeLimit) }}
+                </template>
+                <template v-else>
+                    <i :class="hover ? 'fa fa-cloud-upload-alt' : type.icon" class="mb-2 text-4xl" />
+                    <div class="text-center text-lg">
+                        Faites glissez ou
+                        <span class="card-link text-blue-500 hover:underline">parcourez</span> vos fichiers
+                    </div>
+                    <div class="text-1">
+                        {{ type.mimeString }} {{ sizeLimit ? `(Taille Max. ${bytes(sizeLimit)})` : '' }}
+                    </div>
+                    <div v-if="imageParams.ratio && imageParams.minWidth" class="text-1 mt-1 text-sm">
+                        Dimensions recommandées :
+                        <span class="font-semibold">
+                            {{ imageParams.minWidth }}x{{ imageParams.minWidth * imageParams.ratio }}
+                        </span>
+                    </div>
+                </template>
             </div>
         </div>
 
-        <input
-            ref="inputFile"
-            :disabled="fileLimit == modelValue.length"
-            class="hidden"
-            type="file"
-            :multiple="fileLimit != 1"
-            @change="addFileByInput"
-        />
+        <input ref="input" class="hidden" type="file" @change="addFileByInput" />
     </div>
 </template>
 
 <script setup>
+    import AvatarCropper from 'vue-avatar-cropper'
     import DocumentIcon from '@/components/Document/DocumentIcon.vue'
-    import formatBytes from '@/utils/formatByteSize.js'
+
     import { computed, ref } from 'vue'
+
+    import { showSuccessToast, showErrorToast } from '@/utils/toast'
+
+    import { ANY, IMAGE, FILE_TYPES } from '@/shared/assets/file-types'
+    import { downloadFile } from '@/utils/downloadFile'
+
+    import { getTenant } from '@/utils/getTenant'
+
+    import bytes from 'bytes'
 
     const props = defineProps({
         modelValue: {
-            type: Array,
-            required: true,
+            type: Object,
+            default: null,
         },
-        imgPreview: {
-            type: Boolean,
-            default: false,
+        fileType: {
+            type: String,
+            default: ANY,
         },
-        fileLimit: {
-            type: Number,
-            default: -1,
+        imageParams: {
+            type: Object,
+            default: () => ({}),
         },
-        allowedMimes: {
-            type: Array,
-            default: () => ['.*'],
+        removeCallback: {
+            type: Function,
+            default: () => {},
         },
         sizeLimit: {
             type: Number,
-            required: true,
+            default: 1048576,
         },
         message: {
             type: String,
             default: '',
         },
-        canDelete: {
-            type: Boolean,
-            default: true,
-        },
-        canDownload: {
-            type: Boolean,
-            default: false,
-        },
     })
 
-    const emit = defineEmits(['update:modelValue'])
+    const type = computed(() => (props.fileType in FILE_TYPES ? FILE_TYPES[props.fileType] : FILE_TYPES[ANY]))
+    const canCrop = computed(() => props.fileType === IMAGE && props.imageParams.url)
 
-    const inputFile = ref(null)
+    const emit = defineEmits(['update:modelValue'])
+    const input = ref(null)
+
+    const cropping = ref(false)
+    const croppingFile = ref(null)
 
     const getImageSrc = (img) => URL.createObjectURL(img)
     const isImage = (file) => RegExp('^image/(.)+').test(file.type)
 
-    const totalFileSize = computed(() => props.modelValue.reduce((acc, file) => acc + file.size, 0))
+    const isAllowedMime = (fileMime) => type.value.mimes.some((mime) => RegExp(mime).test(fileMime))
+    const addFile = (file) => {
+        if (file.size <= props.sizeLimit && isAllowedMime(file.type)) emit('update:modelValue', file)
+    }
 
-    const dragover = ref(false)
-
-    const isAllowedMime = (fileMime) => {
-        for (const mime of props.allowedMimes) {
-            if (RegExp(mime).test(fileMime)) {
-                return true
+    const addFileByInput = () => {
+        if (input.value.files.length) {
+            if (canCrop.value) {
+                croppingFile.value = input.value.files[input.value.files.length - 1]
+                cropping.value = true
+            } else {
+                addFile(input.value.files[input.value.files.length - 1])
             }
         }
     }
 
-    const addFile = (file) => {
-        if (isAllowedMime(file.type) && totalFileSize.value + file.size <= props.sizeLimit) {
-            emit('update:modelValue', [file, ...props.modelValue].slice(0, props.fileLimit))
+    const hover = ref(false)
+    const addFileByDrop = (e) => {
+        e.preventDefault()
+        if (e.dataTransfer.files.length) {
+            if (canCrop.value) {
+                croppingFile.value = e.dataTransfer.files[e.dataTransfer.files.length - 1]
+                cropping.value = true
+            } else {
+                addFile(e.dataTransfer.files[e.dataTransfer.files.length - 1])
+            }
         }
     }
 
-    const addFileByInput = () => Array.from(inputFile.value.files).forEach(addFile)
-    const addFileByDrop = (e) => {
-        e.preventDefault()
-        dragover.value = false
-        Array.from(e.dataTransfer.files).forEach(addFile)
-    }
-
-    const downloadFile = (file) => {
-        const a = document.createElement('a')
-        a.href = URL.createObjectURL(file)
-        a.download = file.name
-        a.click()
-    }
-    const removeFile = (file) => {
-        emit(
-            'update:modelValue',
-            props.modelValue.filter((f) => f !== file),
-        )
-    }
+    const removeFile = () => emit('update:modelValue', null)
 </script>
