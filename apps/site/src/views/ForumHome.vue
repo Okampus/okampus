@@ -94,7 +94,7 @@
             </div>
 
             <div class="flex flex-col gap-6">
-                <AppTitle title="Espaces du forum" icon="fas fa-comments" class="mt-2 px-4" />
+                <AppTitle title="Espaces du forum" icon="fas fa-comments" class="text-1 mt-2 px-4" />
                 <div class="flex flex-col gap-4">
                     <router-link
                         v-for="(tab, i) in forumTabs"
@@ -120,7 +120,7 @@
                 </div>
 
                 <div class="flex flex-col gap-6">
-                    <AppTitle title="Posts récents" icon="fas fa-signs-post" class="pl-4" />
+                    <AppTitle title="Posts récents" icon="fa fa-signs-post" class="text-1 pl-4" />
                     <ThreadList :container="false" />
                 </div>
             </div>
@@ -128,7 +128,7 @@
 
         <div class="flex shrink-0 flex-col gap-6 lg:w-[24rem]">
             <div class="hidden flex-col gap-6 lg:flex">
-                <AppTitle title="Membres du staff" icon="fas fa-people-group" class="pl-4" />
+                <AppTitle title="Membres du staff" icon=" fa fa-people-group" class="text-1 pl-4" />
                 <div class="flex flex-col gap-4">
                     <UserActivity v-for="(staff, i) in staffMembers" :key="i" :user="staff">
                         <template #subtitle>

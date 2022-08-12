@@ -2,7 +2,7 @@
     <div class="relative">
         <div
             ref="searchContainer"
-            class="input flex h-max cursor-text flex-wrap items-center gap-2 overflow-auto pt-2"
+            class="input flex h-max cursor-text flex-wrap items-center space-x-1 overflow-auto pt-4"
             tabindex="0"
             v-bind="focused ? { 'focused': 'true' } : {}"
             @focus="activateResults"

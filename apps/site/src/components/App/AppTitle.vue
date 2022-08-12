@@ -1,7 +1,7 @@
 <template>
-    <div class="text-0 ml-1 flex items-center gap-2 text-lg">
-        <i :class="`text-3 ${icon} w-10 h-10 flex justify-center items-center`" />
-        <div class="text-xl font-bold">{{ title }}</div>
+    <div class="ml-1 flex items-center gap-2">
+        <i v-if="icon" class="flex w-8 items-center justify-center text-sm" :class="icon" />
+        <div class="text-lg font-semibold">{{ title }}</div>
     </div>
 </template>
 

@@ -1,18 +1,18 @@
 <template>
-    <div class="centered-container flex flex-col gap-16 p-8 md:p-16 md:pr-20">
+    <div class="centered-container flex flex-col gap-8 p-8 md:p-16 md:pr-20">
         <div class="flex gap-8 sm:justify-between sm:pr-20 md:justify-start md:gap-12 md:pr-0">
             <div class="text-0 flex flex-col gap-6">
                 <div class="title-font text-3xl font-bold md:text-5xl">Détenez vos données sur Okampus.</div>
-                <div class="text-2 text-xl italic md:text-2xl">Politique de confidentialité & RGPD</div>
+                <div class="text-1 text-xl md:text-2xl">Politique de confidentialité & RGPD</div>
             </div>
             <img class="-mt-3 h-28 w-28 md:-mt-6 md:h-40 md:w-40 lg:ml-32" :src="Locker" />
         </div>
 
         <div class="flex flex-col gap-14 md:flex-row lg:gap-24">
             <div class="flex shrink-0 grow flex-col gap-6 md:max-w-[45%]">
-                <AppTitle title="Cookies utilisés" icon="fas fa-cookie" class="text-2xl" />
+                <AppTitle title="Cookies utilisés" icon="fas fa-cookie" class="text-1" />
                 <div class="text-0 flex flex-col gap-8">
-                    <div class="text-lg"><b>2 cookies techniques</b> nécessaires sont utilisés :</div>
+                    <div><b>2 cookies techniques</b> nécessaires sont utilisés :</div>
                     <ul class="flex list-outside list-disc flex-col gap-8 pl-10">
                         <li>
                             <code class="highlighted-field italic lg:text-lg">accessToken</code>
@@ -70,9 +70,9 @@
                 </div>
             </div>
             <div class="flex flex-col gap-6">
-                <AppTitle title="Données collectées" icon="fas fa-database" class="text-2xl" />
+                <AppTitle title="Données collectées" icon="fas fa-database" class="text-1" />
                 <div class="text-0 flex flex-col gap-8">
-                    <div class="text-lg"><b>2 types de données personnelles</b> sont collectées :</div>
+                    <div><b>2 types de données personnelles</b> sont collectées :</div>
                     <ul class="flex list-outside list-disc flex-col gap-8 pl-10">
                         <li>
                             <div class="mb-6 italic lg:text-lg">
@@ -121,7 +121,7 @@
 
         <div v-if="auth.loggedIn">
             <div class="flex flex-col gap-10">
-                <AppTitle title="Préférences" icon="fas fa-gears" class="text-2xl" />
+                <AppTitle title="Préférences" icon="fas fa-gears" class="text-1" />
                 <div class="text-1 flex flex-col gap-6 md:flex-row md:gap-14 lg:gap-24">
                     <div class="flex shrink-0 grow flex-col md:max-w-[45%]">
                         <div class="flex justify-between gap-8">
@@ -140,7 +140,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-4 flex flex-col gap-2 md:flex-row md:gap-6">
+            <div class="mt-8 flex gap-2 md:gap-6">
                 <button class="button-blue flex w-fit items-center gap-2">
                     <i class="fas fa-download"></i>Exportez mes données
                 </button>

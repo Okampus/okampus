@@ -1,7 +1,7 @@
 <template>
     <Dropdown v-model:shown="showCard" theme="no-arrow" @apply-show="focusCard">
         <div
-            class="bg-0 z-10 flex max-w-xs cursor-pointer items-center gap-2 rounded-md px-2.5 py-1 hover:bg-3-light dark:hover:bg-3-dark"
+            class="bg-1 hover:bg-3-light dark:hover:bg-3-dark z-10 flex w-fit max-w-xs cursor-pointer items-center gap-2 rounded-md px-2.5 py-1"
             tabindex="0"
             @click.stop="() => {}"
         >
@@ -13,7 +13,7 @@
                 :name="entity.title"
             />
             <img v-else-if="entity.picture" :src="entity.picture" class="h-6 w-6 rounded-xl" />
-            <div v-tooltip="entity.title" class="text-base line-clamp-1">{{ entity.title }}</div>
+            <div v-tooltip="entity.title" class="line-clamp-1 text-base">{{ entity.title }}</div>
             <i v-if="closable" class="fa fa-times pl-1 text-base" @click="emit('close')" />
         </div>
         <template #popper>

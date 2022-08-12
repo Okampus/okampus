@@ -2,7 +2,13 @@
     <GraphQLQuery
         :query="getThreadById"
         :variables="variables"
-        :update="(data) => data?.threadById"
+        :update="
+            (data) => {
+                const thread = data?.threadById
+                title = thread?.title
+                return thread
+            }
+        "
         resource-type="thread"
         route-base="/forum/posts"
     >
@@ -15,7 +21,19 @@
                         :tag-color="threadType(thread.type).color"
                         :tag-name="threadType(thread.type)[locale]"
                     />
-                    <p class="text-0 break-all text-2xl font-bold">{{ thread.title }}</p>
+                    <EditableTextInput
+                        v-if="userIsOp(thread) || userIsAdmin"
+                        v-model:show-input="editingTitle"
+                        v-model="title"
+                        :min-char="10"
+                        :max-char="128"
+                        min-char-message="Le titre d'un thread doit faire au minimum 10 caractères"
+                        max-char-message="Le titre d'un thread ne peut pas dépasser 128 caractères"
+                        text-class="text-xl"
+                        display-class="font-bold text-0"
+                        placeholder="Titre"
+                    />
+                    <p v-else class="text-0 always-break-words text-xl font-bold">{{ thread.title }}</p>
                 </div>
                 <div class="flex">
                     <div class="w-full">
@@ -108,6 +126,7 @@
 
 <script setup>
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
+    import EditableTextInput from '@/components/Input/EditableTextInput.vue'
     import LabelTag from '@/components/UI/Label/LabelTag.vue'
 
     import ThreadCommentable from '@/components/Thread/ThreadCommentable.vue'
@@ -116,7 +135,7 @@
 
     import AppTitle from '@/components/App/AppTitle.vue'
 
-    import { computed } from 'vue'
+    import { computed, ref } from 'vue'
     import { useRoute } from 'vue-router'
 
     import { getThreadById } from '@/graphql/queries/getThreadById'
@@ -126,13 +145,21 @@
 
     import { useI18n } from 'vue-i18n'
 
+    import { useAuthStore } from '@/store/auth.store'
+
     const { locale } = useI18n({ useScope: 'global' })
 
     const route = useRoute()
+    const auth = useAuthStore()
 
     const variables = computed(() => ({
         id: parseInt(route.params.id),
     }))
+    const editingTitle = ref(false)
+    const title = ref('')
 
     const threadType = (typeKey) => threadTypes.find((type) => type.key === typeKey)
+
+    const userIsOp = computed(() => (thread) => thread.post.author.id === auth.user?.id)
+    const userIsAdmin = computed(() => auth.user?.roles?.includes('admin'))
 </script>

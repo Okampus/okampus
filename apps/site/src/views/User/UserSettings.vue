@@ -22,12 +22,13 @@
                         <div class="text-3">{{ me.id }}</div>
                     </div>
                 </div>
-                <div class="flex flex-col md:w-48 lg:w-56 md-max:w-full">
+                <div class="md-max:w-full flex flex-col md:w-48 lg:w-56">
                     <EditableTextInput
                         v-if="me.shortDescription || editingStatus"
                         v-model:show-input="editingStatus"
                         v-model="status"
                         :max-char="128"
+                        max-char-message="Votre statut ne peut pas dépasser 128 caractères"
                         placeholder="Votre statut"
                         @validate="submitStatus"
                     />

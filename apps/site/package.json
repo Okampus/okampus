@@ -57,13 +57,14 @@
         "vue-avatar-cropper": "^6.0.9",
         "vue-cal": "^3.10.4",
         "vue-chartjs": "^4.1.1",
+        "vue-draggable-next": "^2.1.1",
         "vue-i18n": "9.1.10",
         "vue-image-crop-upload": "3.0.3",
         "vue-instantsearch": "4.4.1",
         "vue-multiselect": "^3.0.0-alpha.2",
         "vue-router": "4.1.2",
         "vue3-cookies": "^1.0.6",
-        "vuedraggable": "^2.24.3",
+        "vuedraggable": "^4.1.0",
         "workbox-precaching": "^6.5.3"
     },
     "devDependencies": {

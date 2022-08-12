@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-3 flex flex-col gap-2">
+    <div class="flex flex-col gap-2">
         <div v-if="show" class="flex flex-wrap gap-2">
             <div class="relative min-w-[10rem] grow">
                 <div
@@ -13,22 +13,23 @@
                     :is="singleLine ? 'input' : 'textarea'"
                     ref="input"
                     class="input w-full resize-none"
+                    :class="textClass"
                     :value="currentValue"
                     @focus="focused = true"
                     @blur="focused = false"
                     @input="updateValue($event)"
                 />
             </div>
-            <div class="flex gap-2 self-start">
-                <button class="button-green mt-1 flex items-center gap-2 py-1.5 text-sm" @click="validate">
+            <div class="flex gap-2 self-start" :class="textClass">
+                <button class="button-green mt-1 flex items-center gap-2 py-1.5 text-base" @click="validate">
                     Valider
                 </button>
-                <button class="button-grey mt-1 flex items-center gap-2 py-1.5 text-sm" @click="cancel">
+                <button class="button-grey mt-1 flex items-center gap-2 py-1.5 text-base" @click="cancel">
                     Annuler
                 </button>
             </div>
         </div>
-        <div v-else-if="currentValue" class="text-1 always-break-words">
+        <div v-else-if="currentValue" class="text-1 always-break-words" :class="[textClass, displayClass]">
             {{ currentValue }}
             <button
                 class="button-blue ml-2 inline-flex h-6 w-6 items-center justify-center rounded-full p-2"
@@ -78,6 +79,14 @@
         maxCharMessage: {
             type: String,
             default: (props) => `Ce champs doit contenir au plus ${props.maxChar} caractères.`,
+        },
+        textClass: {
+            type: String,
+            default: 'text-base',
+        },
+        displayClass: {
+            type: String,
+            default: '',
         },
         singleLine: {
             type: Boolean,
@@ -129,20 +138,21 @@
     const focused = ref(false)
 
     const cancel = () => {
-        if (!checkErrors()) {
-            currentValue.value = initial.value
-            emit('update:modelValue', currentValue.value)
-            emit('update:showInput', false)
-            emit('cancel')
-        }
+        error.value = ''
+        currentValue.value = initial.value
+        emit('update:modelValue', currentValue.value)
+        emit('update:showInput', false)
+        emit('cancel')
     }
 
     const validate = () => {
         if (!checkErrors()) {
-            emit('update:modelValue', currentValue.value)
+            if (initial.value !== currentValue.value) {
+                emit('update:modelValue', currentValue.value)
+                emit('validate', currentValue.value)
+                initial.value = currentValue.value
+            }
             emit('update:showInput', false)
-            emit('validate', currentValue.value)
-            initial.value = currentValue.value
         }
     }
 
