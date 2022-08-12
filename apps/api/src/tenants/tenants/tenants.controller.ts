@@ -4,17 +4,22 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
   Post,
+  Put,
+  UploadedFile,
   UploadedFiles,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import type { Express } from 'express';
+import { Express } from 'express';
 import { FileUploadsService } from '../../files/file-uploads/file-uploads.service';
+import type { ProfileImage } from '../../files/profile-images/profile-image.entity';
+import { simpleImageMimeTypeRegex } from '../../shared/configs/mime-type';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
-import { UploadMultipleInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
+import { UploadInterceptor, UploadMultipleInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
@@ -57,7 +62,7 @@ export class TenantsController {
           FileKind.Tenant,
         );
         if (logoUpload)
-          tenant.logo = logoUpload;
+          tenant.logo = logoUpload.url;
       }
 
       if (files?.logoDark?.length) {
@@ -67,7 +72,7 @@ export class TenantsController {
           FileKind.Tenant,
         );
         if (logoDarkUpload)
-          tenant.logoDark = logoDarkUpload;
+          tenant.logoDark = logoDarkUpload.url;
       }
 
       await this.tenantRepository.flush();
@@ -87,5 +92,33 @@ export class TenantsController {
     @Body() updateTenantDto: UpdateTenantDto,
   ): Promise<Tenant> {
     return await this.tenantsService.update(id, updateTenantDto);
+  }
+
+  @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
+  @Put(':id/logo')
+  @CheckPolicies(ability => ability.can(Action.Update, Tenant))
+  public async updateLogo(
+    @CurrentUser() user: User,
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<ProfileImage> {
+    return await this.tenantsService.setLogo(user, false, id, file);
+  }
+
+  @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
+  @Put(':id/logo-dark')
+  @CheckPolicies(ability => ability.can(Action.Update, Tenant))
+  public async updateLogoDark(
+    @CurrentUser() user: User,
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<ProfileImage> {
+    return await this.tenantsService.setLogo(user, true, id, file);
+  }
+
+  @Delete(':id')
+  @CheckPolicies(ability => ability.can(Action.Update, Tenant))
+  public async delete(@Param('id') id: string): Promise<Tenant> {
+    return await this.tenantsService.delete(id);
   }
 }

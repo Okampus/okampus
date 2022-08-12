@@ -2,12 +2,10 @@ import {
   Collection,
   Entity,
   OneToMany,
-  OneToOne,
   PrimaryKey,
+  Property,
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
-// eslint-disable-next-line import/no-cycle
-import { FileUpload } from '../../files/file-uploads/file-upload.entity';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 // eslint-disable-next-line import/no-cycle
@@ -25,18 +23,18 @@ export class Tenant extends BaseEntity {
   @TransformCollection()
   validationSteps = new Collection<ValidationStep>(this);
 
-  @Field(() => FileUpload, { nullable: true })
-  @OneToOne({ onDelete: 'CASCADE' })
-  logo?: FileUpload | null = null;
+  @Field(() => String, { nullable: true })
+  @Property({ type: 'text' })
+  logo?: string | null = null;
 
-  @Field(() => FileUpload, { nullable: true })
-  @OneToOne({ onDelete: 'CASCADE' })
-  logoDark?: FileUpload | null = null;
+  @Field(() => String, { nullable: true })
+  @Property({ type: 'text' })
+  logoDark?: string | null = null;
 
   constructor(options: {
     id: string;
-    logo?: FileUpload | null;
-    logoDark?: FileUpload | null;
+    logo?: string | null;
+    logoDark?: string | null;
   }) {
     super();
     this.assign(options);

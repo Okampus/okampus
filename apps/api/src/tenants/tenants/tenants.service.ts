@@ -1,8 +1,13 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import type { FileUpload } from '../../files/file-uploads/file-upload.entity';
+import type { Express } from 'express';
+import { FileUploadsService } from '../../files/file-uploads/file-uploads.service';
+import { ProfileImage } from '../../files/profile-images/profile-image.entity';
+import { ProfileImagesService } from '../../files/profile-images/profile-images.service';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
+import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
+import type { User } from '../../users/user.entity';
 import type { CreateTenantDto } from './dto/create-tenant.dto';
 import type { UpdateTenantDto } from './dto/update-tenant.dto';
 import { Tenant } from './tenant.entity';
@@ -10,8 +15,10 @@ import { Tenant } from './tenant.entity';
 @Injectable()
 export class TenantsService {
   constructor(
+    private readonly filesService: FileUploadsService,
+    private readonly profileImagesService: ProfileImagesService,
     @InjectRepository(Tenant) private readonly tenantRepository: BaseRepository<Tenant>,
-
+    @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
   ) {}
 
   public async create(createTenantDto: CreateTenantDto): Promise<Tenant> {
@@ -22,23 +29,39 @@ export class TenantsService {
   }
 
   public async findOne(id: string): Promise<Tenant> {
-    return await this.tenantRepository.findOneOrFail({ id }, { populate: ['validationSteps', 'validationSteps.users', 'logo.user', 'logoDark.user'] });
+    return await this.tenantRepository.findOneOrFail({ id }, { populate: ['validationSteps', 'validationSteps.users'] });
   }
 
-  public async setLogo(id: string, fileUpload: FileUpload): Promise<Tenant> {
+  public async setLogo(
+    user: User,
+    isLogoDark: boolean,
+    id: string,
+    fileUpload: Express.Multer.File,
+  ): Promise<ProfileImage> {
     const tenant = await this.tenantRepository.findOneOrFail({ id });
 
-    tenant.logo = fileUpload;
-    await this.tenantRepository.flush();
-    return tenant;
-  }
+    // Get previous logo it if it exists and set active to false
+    const previousLogo = await this.profileImageRepository.findOne({ tenant, type: isLogoDark ? 'logoDark' : 'logo', active: true });
+    if (previousLogo)
+      previousLogo.active = false;
 
-  public async setLogoDark(id: string, fileUpload: FileUpload): Promise<Tenant> {
-    const tenant = await this.tenantRepository.findOneOrFail({ id });
+    const logoFile = await this.filesService.create(
+      user,
+      fileUpload,
+      FileKind.Tenant,
+    );
+    const logo = await this.profileImagesService.create(logoFile, isLogoDark ? 'logoDark' : 'logo');
+    logo.tenant = tenant;
 
-    tenant.logoDark = fileUpload;
+    if (isLogoDark)
+      tenant.logoDark = logoFile.url;
+    else
+      tenant.logo = logoFile.url;
+
     await this.tenantRepository.flush();
-    return tenant;
+    await this.profileImageRepository.flush();
+
+    return logo;
   }
 
   public async update(id: string, updateTenantDto: UpdateTenantDto): Promise<Tenant> {
@@ -46,6 +69,12 @@ export class TenantsService {
 
     wrap(tenant).assign(updateTenantDto);
     await this.tenantRepository.flush();
+    return tenant;
+  }
+
+  public async delete(id: string): Promise<Tenant> {
+    const tenant = await this.tenantRepository.findOneOrFail({ id });
+    await this.tenantRepository.removeAndFlush(tenant);
     return tenant;
   }
 }

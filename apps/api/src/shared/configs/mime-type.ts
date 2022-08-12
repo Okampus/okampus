@@ -30,6 +30,7 @@ export const mimeTypeRegex = new RegExp(`^(${mimeTypes.join('|')})$`, 'i');
 const simpleImageMimeTypes = [
   'image/jpeg',
   'image/png',
+  'image/svg+xml',
 ];
 
 export const simpleImageMimeTypeRegex = new RegExp(`^(${simpleImageMimeTypes.join('|')})$`, 'i');
