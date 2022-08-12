@@ -43,11 +43,12 @@ async function bootstrap(): Promise<void> {
 
   if (config.get('nodeEnv') === 'production') {
     app.enableCors((req: Request, cb) => {
-      const callback = cb as (err: Error | null, result: { origin: boolean }) => void;
+      const callback = cb as (err: Error | null, result: { origin: boolean; credentials: boolean }) => void;
       const origin = req.header('origin');
       callback(null,
         {
-          origin: origin ? !/^https:\/\/(?:[\dA-Za-z][\dA-Za-z-]{1,61}[\dA-Za-z])+\.okampus\.fr$/.test(origin) : false,
+          origin: origin ? /^https:\/\/(?:[\dA-Za-z][\dA-Za-z-]{1,61}[\dA-Za-z])+\.okampus\.fr$/.test(origin) : false,
+          credentials: true,
         });
     });
     app.use(helmet());
