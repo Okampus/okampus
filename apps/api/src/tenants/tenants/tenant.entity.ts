@@ -4,6 +4,7 @@ import {
   OneToMany,
   PrimaryKey,
   Property,
+  QueryOrder,
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
@@ -19,7 +20,7 @@ export class Tenant extends BaseEntity {
   id!: string;
 
   @Field(() => [ValidationStep])
-  @OneToMany('ValidationStep', 'tenant')
+  @OneToMany(() => ValidationStep, 'tenant', { orderBy: { step: QueryOrder.ASC } })
   @TransformCollection()
   validationSteps = new Collection<ValidationStep>(this);
 

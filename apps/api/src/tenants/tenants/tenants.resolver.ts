@@ -29,7 +29,7 @@ export class TenantsResolver {
   // TODO: Add permission checks
   @Query(() => Tenant)
   public async tenantById(@Args('id') id: string): Promise<Tenant> {
-    return await this.tenantsService.findOne(id);
+    return await this.tenantsService.findOne(id, true);
   }
 
   @ResolveField(() => [ValidationStep])

@@ -28,8 +28,8 @@ export class TenantsService {
     return tenant;
   }
 
-  public async findOne(id: string): Promise<Tenant> {
-    return await this.tenantRepository.findOneOrFail({ id }, { populate: ['validationSteps', 'validationSteps.users'] });
+  public async findOne(id: string, populate = false): Promise<Tenant> {
+    return await this.tenantRepository.findOneOrFail({ id }, populate ? { populate: ['validationSteps', 'validationSteps.users'] } : {});
   }
 
   public async setLogo(

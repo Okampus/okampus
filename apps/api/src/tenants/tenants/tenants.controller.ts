@@ -41,7 +41,7 @@ export class TenantsController {
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Tenant))
   public async findOne(@Param('id') id: string): Promise<Tenant> {
-    return await this.tenantsService.findOne(id);
+    return await this.tenantsService.findOne(id, true);
   }
 
   @UploadMultipleInterceptor(['logo', 'logoDark'])
