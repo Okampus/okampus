@@ -170,8 +170,10 @@ export class TeamsService {
 
     // Get previous avatar image if it exists and set it to inactive
     const previousAvatarImage = await this.profileImageRepository.findOne({ team, type, active: true });
-    if (previousAvatarImage)
+    if (previousAvatarImage) {
       previousAvatarImage.active = false;
+      previousAvatarImage.lastActiveDate = new Date();
+    }
 
     // Update the team's image
     team[type] = avatarImage.file.url;

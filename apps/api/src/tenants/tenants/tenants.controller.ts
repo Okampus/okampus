@@ -57,6 +57,7 @@ export class TenantsController {
 
       if (files?.logo?.length) {
         const logoUpload = await this.filesService.create(
+          tenant,
           user,
           files.logo[0],
           FileKind.Tenant,
@@ -67,6 +68,7 @@ export class TenantsController {
 
       if (files?.logoDark?.length) {
         const logoDarkUpload = await this.filesService.create(
+          tenant,
           user,
           files.logoDark[0],
           FileKind.Tenant,

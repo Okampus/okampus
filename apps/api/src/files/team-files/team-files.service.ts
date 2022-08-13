@@ -24,18 +24,18 @@ export class TeamFilesService {
 
   public async create(
     user: User,
-    createGalleryImageDto: CreateTeamFileDto,
+    createTeamFileDto: CreateTeamFileDto,
     file: FileUpload,
   ): Promise<TeamFile> {
     const team = await this.teamRepository.findOneOrFail(
-      { id: createGalleryImageDto.id },
+      { id: createTeamFileDto.id },
       { populate: ['members'] },
     );
 
     if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
-    const teamFile = new TeamFile({ ...createGalleryImageDto, team, file });
+    const teamFile = new TeamFile({ ...createTeamFileDto, team, file });
     await this.teamFileRepository.persistAndFlush(teamFile);
 
     void this.notificationsService.trigger(

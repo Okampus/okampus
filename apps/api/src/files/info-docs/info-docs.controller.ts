@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Express } from 'express';
+import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { InfoDocFilter } from '../../shared/lib/types/enums/docs-filters.enum';
@@ -20,6 +21,7 @@ import type { Categories } from '../../shared/lib/utils/compute-document-categor
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
+import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
 import { CategoryTypesDto } from './dto/category-types.dto';
@@ -41,6 +43,7 @@ export class InfoDocsController {
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, InfoDoc))
   public async createInfoDoc(
+    @CurrentTenant() tenant: Tenant,
     @CurrentUser() user: User,
     @Body() createInfoDocDto: CreateInfoDocDto,
     @UploadedFile() file: Express.Multer.File,
@@ -49,6 +52,7 @@ export class InfoDocsController {
       throw new BadRequestException('No file provided');
 
     const fileUpload = await this.filesService.create(
+      tenant,
       user,
       file,
       FileKind.InfoDoc,

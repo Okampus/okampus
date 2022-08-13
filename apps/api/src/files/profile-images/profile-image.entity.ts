@@ -7,7 +7,7 @@ import {
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
-import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
 import { Team } from '../../teams/teams/team.entity';
 import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
@@ -15,7 +15,7 @@ import { FileUpload } from '../file-uploads/file-upload.entity';
 
 @ObjectType()
 @Entity()
-export class ProfileImage extends BaseEntity {
+export class ProfileImage extends BaseFileEntity {
   @Field()
   @PrimaryKey()
   id: string = nanoid(32);
@@ -36,10 +36,6 @@ export class ProfileImage extends BaseEntity {
   @ManyToOne({ onDelete: 'CASCADE' })
   tenant: Tenant | null = null;
 
-  @Field(() => Boolean)
-  @Property()
-  active = true;
-
   @Field()
   @Property()
   type: string;
@@ -49,6 +45,7 @@ export class ProfileImage extends BaseEntity {
     user?: User | null;
     team?: Team | null;
     tenant?: Tenant | null;
+    active?: boolean;
     type: string;
   }) {
     super();

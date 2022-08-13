@@ -62,8 +62,10 @@ export class TenantsResolver {
     const tenant = await this.tenantsService.findOne(id);
 
     const previousLogo = await this.profileImageRepository.findOne({ tenant, type: isLogoDark ? 'logoDark' : 'logo', active: true });
-    if (previousLogo)
+    if (previousLogo) {
       previousLogo.active = false;
+      previousLogo.lastActiveDate = new Date();
+    }
 
     if (isLogoDark)
       tenant.logoDark = null;

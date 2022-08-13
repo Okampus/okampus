@@ -6,11 +6,11 @@ import {
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import type { Content } from '../../contents/entities/content.entity';
-import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 
 @Entity()
-export class Attachment extends BaseEntity {
+export class Attachment extends BaseFileEntity {
   @PrimaryKey()
   id: string = nanoid(32);
 
@@ -23,6 +23,7 @@ export class Attachment extends BaseEntity {
   constructor(options: {
     file: FileUpload;
     content?: Content | null;
+    active?: boolean;
   }) {
     super();
     this.assign(options);

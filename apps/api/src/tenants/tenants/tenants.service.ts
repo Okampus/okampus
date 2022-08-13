@@ -42,10 +42,13 @@ export class TenantsService {
 
     // Get previous logo it if it exists and set active to false
     const previousLogo = await this.profileImageRepository.findOne({ tenant, type: isLogoDark ? 'logoDark' : 'logo', active: true });
-    if (previousLogo)
+    if (previousLogo) {
       previousLogo.active = false;
+      previousLogo.lastActiveDate = new Date();
+    }
 
     const logoFile = await this.filesService.create(
+      tenant,
       user,
       fileUpload,
       FileKind.Tenant,

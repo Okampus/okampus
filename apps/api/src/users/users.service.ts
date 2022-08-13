@@ -198,8 +198,10 @@ export class UsersService {
 
     // Get previous avatar image if it exists and set it to inactive
     const previousAvatarImage = await this.profileImageRepository.findOne({ user, type, active: true });
-    if (previousAvatarImage)
+    if (previousAvatarImage) {
       previousAvatarImage.active = false;
+      previousAvatarImage.lastActiveDate = new Date();
+    }
 
     // Update the user's image
     user[type] = avatarImage.file.url;

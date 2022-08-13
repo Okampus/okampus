@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import type { Express } from 'express';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import type { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
+import type { Tenant } from '../../tenants/tenants/tenant.entity';
 import type { User } from '../../users/user.entity';
 import { FilePersistanceService } from './file-persistance.service';
 import { FileUpload } from './file-upload.entity';
@@ -21,12 +22,14 @@ export class FileUploadsService {
   }
 
   public async create(
+    tenant: Tenant,
     user: User,
     file: Express.Multer.File,
     fileKind: FileKind,
     fileLastModifiedAt = new Date(),
   ): Promise<FileUpload> {
     const fileDocument = new FileUpload({
+      tenant,
       user,
       name: file.originalname,
       fileSize: file.size,

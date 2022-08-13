@@ -11,10 +11,12 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { Express } from 'express';
 import { simpleImageMimeTypeRegex } from '../../shared/configs/mime-type';
+import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
+import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
 import { CreateProfileImageDto } from './dto/create-profile-image.dto';
@@ -33,6 +35,7 @@ export class ProfileImagesController {
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, ProfileImage))
   public async createProfileImage(
+    @CurrentTenant() tenant: Tenant,
     @CurrentUser() user: User,
     @Body() createProfileImageDto: CreateProfileImageDto,
     @UploadedFile() file: Express.Multer.File,
@@ -41,6 +44,7 @@ export class ProfileImagesController {
       throw new BadRequestException('No file provided');
 
     const fileUpload = await this.filesService.create(
+      tenant,
       user,
       file,
       FileKind.ProfileImage,

@@ -93,6 +93,7 @@ export class TeamsController {
   @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
   @CheckPolicies(ability => ability.can(Action.Create, ProfileImage))
   public async updateAvatar(
+    @CurrentTenant() tenant: Tenant,
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,
     @UploadedFile() file: Express.Multer.File,
@@ -100,7 +101,7 @@ export class TeamsController {
     if (!file)
       throw new BadRequestException('No file provided');
 
-    const fileUpload = await this.filesService.create(user, file, FileKind.ProfileImage);
+    const fileUpload = await this.filesService.create(tenant, user, file, FileKind.ProfileImage);
     const profileImage = await this.profileImagesService.create(fileUpload, 'avatar');
 
     return await this.teamsService.updateProfileImage(user, id, 'avatar', profileImage);
@@ -113,6 +114,7 @@ export class TeamsController {
     ability => ability.can(Action.Update, Team),
   )
   public async updateBanner(
+    @CurrentTenant() tenant: Tenant,
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,
     @UploadedFile() banner: Express.Multer.File,
@@ -120,7 +122,7 @@ export class TeamsController {
     if (!banner)
       throw new BadRequestException('No file provided');
 
-    const fileUpload = await this.filesService.create(user, banner, FileKind.ProfileImage);
+    const fileUpload = await this.filesService.create(tenant, user, banner, FileKind.ProfileImage);
     const profileImage = await this.profileImagesService.create(fileUpload, 'banner');
 
     return await this.teamsService.updateProfileImage(user, id, 'banner', profileImage);

@@ -7,12 +7,12 @@ import {
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import { SchoolGroup } from '../../school-group/school-group.entity';
-import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
 import type { DocSeries } from '../doc-series/doc-series.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 
 @Entity()
-export class InfoDoc extends BaseEntity {
+export class InfoDoc extends BaseFileEntity {
   @PrimaryKey()
   id: string = nanoid(32);
 

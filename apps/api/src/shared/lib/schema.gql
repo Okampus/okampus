@@ -214,6 +214,7 @@ type FileUpload {
   id: String!
   mimeType: String!
   name: String!
+  tenant: String!
   updatedAt: DateTime!
   url: String!
   user: User!
@@ -344,6 +345,7 @@ type ProfileImage {
   createdAt: DateTime!
   file: FileUpload!
   id: String!
+  lastActiveDate: DateTime!
   team: Team
   tenant: Tenant
   type: String!
@@ -609,19 +611,15 @@ enum TeamEventState {
 }
 
 type TeamFile {
+  active: Boolean!
   createdAt: DateTime!
   description: String
   file: FileUpload!
   id: String!
+  lastActiveDate: DateTime!
   team: Team!
-  type: TeamFileType!
+  type: String!
   updatedAt: DateTime!
-}
-
-enum TeamFileType {
-  Document
-  Gallery
-  Receipt
 }
 
 type TeamFinance {

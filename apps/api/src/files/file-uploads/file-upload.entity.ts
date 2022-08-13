@@ -9,14 +9,14 @@ import {
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
 import { config } from '../../shared/configs/config';
-import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { BaseTenantEntity } from '../../shared/lib/entities/base-tenant-entity';
 import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
-// eslint-disable-next-line import/no-cycle
+import type { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
 
 @ObjectType()
 @Entity()
-export class FileUpload extends BaseEntity {
+export class FileUpload extends BaseTenantEntity {
   @Field(() => String)
   @PrimaryKey()
   id: string = nanoid(64);
@@ -58,6 +58,7 @@ export class FileUpload extends BaseEntity {
   fileKind!: FileKind;
 
   constructor(options: {
+    tenant: Tenant;
     user: User;
     name: string;
     fileSize: number;

@@ -10,10 +10,12 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Express } from 'express';
+import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
+import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
 import { Attachment } from './attachment.entity';
@@ -32,6 +34,7 @@ export class AttachmentsController {
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Attachment))
   public async create(
+    @CurrentTenant() tenant: Tenant,
     @CurrentUser() user: User,
     @Body() createAttachmentDto: CreateAttachmentDto,
     @UploadedFile() file: Express.Multer.File,
@@ -42,6 +45,7 @@ export class AttachmentsController {
     await this.attachmentsService.assertCanCreateAttachment(user, createAttachmentDto);
 
     const fileUpload = await this.filesService.create(
+      tenant,
       user,
       file,
       FileKind.Attachment,

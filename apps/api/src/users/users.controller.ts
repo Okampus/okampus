@@ -103,7 +103,7 @@ export class UsersController {
     if (!file)
       throw new BadRequestException('No file provided');
 
-    const fileUpload = await this.filesService.create(user, file, FileKind.ProfileImage);
+    const fileUpload = await this.filesService.create(user.tenant, user, file, FileKind.ProfileImage);
     const profileImage = await this.profileImagesService.create(fileUpload, 'avatar');
 
     return await this.usersService.updateProfileImage(user, 'avatar', profileImage);
@@ -116,13 +116,14 @@ export class UsersController {
     ability => ability.can(Action.Update, User),
   )
   public async updateBanner(
+    @CurrentTenant() tenant: Tenant,
     @CurrentUser() user: User,
     @UploadedFile() banner: Express.Multer.File,
   ): Promise<User> {
     if (!banner)
       throw new BadRequestException('No file provided');
 
-    const fileUpload = await this.filesService.create(user, banner, FileKind.ProfileImage);
+    const fileUpload = await this.filesService.create(tenant, user, banner, FileKind.ProfileImage);
     const profileImage = await this.profileImagesService.create(fileUpload, 'banner');
 
     return await this.usersService.updateProfileImage(user, 'banner', profileImage);

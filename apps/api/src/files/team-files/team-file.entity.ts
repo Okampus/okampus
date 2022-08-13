@@ -1,6 +1,5 @@
 import {
   Entity,
-  Enum,
   ManyToOne,
   OneToOne,
   PrimaryKey,
@@ -8,14 +7,13 @@ import {
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
-import { BaseEntity } from '../../shared/lib/entities/base.entity';
-import { TeamFileType } from '../../shared/lib/types/enums/team-file-type.enum';
+import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
 import { Team } from '../../teams/teams/team.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 
 @ObjectType()
 @Entity()
-export class TeamFile extends BaseEntity {
+export class TeamFile extends BaseFileEntity {
   @Field(() => String)
   @PrimaryKey()
   id: string = nanoid(32);
@@ -28,9 +26,9 @@ export class TeamFile extends BaseEntity {
   @ManyToOne()
   team!: Team;
 
-  @Field(() => TeamFileType)
-  @Enum(() => TeamFileType)
-  type!: TeamFileType;
+  @Field(() => String)
+  @Property({ type: 'text' })
+  type!: string;
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
@@ -39,8 +37,9 @@ export class TeamFile extends BaseEntity {
   constructor(options: {
     team: Team;
     file: FileUpload;
-    type: TeamFileType;
+    type: string;
     description?: string | null;
+    active?: boolean;
   }) {
     super();
     this.assign(options);
