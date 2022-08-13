@@ -156,11 +156,6 @@ input CreateTeamEventRegistrationDto {
   status: TeamEventRegisterStatus!
 }
 
-input CreateTeamEventValidationDto {
-  approved: Boolean!
-  message: String
-}
-
 input CreateTeamFinanceDto {
   amount: Float!
   category: TeamFinanceCategory!
@@ -335,7 +330,6 @@ type Mutation {
   updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
   updateUser(id: String!, user: UpdateUserDto!): User!
   updateValidationStep(id: Int!, updateStep: UpdateValidationStepDto!): ValidationStep!
-  validateEvent(id: Int!, validation: CreateTeamEventValidationDto!): TeamEvent!
   voteContent(id: Int!, value: Int!): Content!
   wsToken: User!
 }
@@ -545,6 +539,7 @@ type Tag {
 
 type Team {
   activeMemberCount: Int!
+  activeMembers: [TeamMember!]!
   avatar: String
   banner: String
   boardMembers: [TeamMember!]!

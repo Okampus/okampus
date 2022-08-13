@@ -44,6 +44,7 @@ export class TeamsResolver {
   constructor(
     @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     private readonly teamsService: TeamsService,
   ) {}
@@ -108,6 +109,13 @@ export class TeamsResolver {
     );
 
     return teamBoardMembers;
+  }
+
+  @ResolveField(() => [TeamMember])
+  public async activeMembers(@Parent() team: Team): Promise<TeamMember[]> {
+    await this.teamRepository.populate(team, ['members', 'members.user']);
+    const memberships = await team.members.loadItems();
+    return memberships.filter(membership => membership.active);
   }
 
   @ResolveField(() => TeamMembershipStatus, { nullable: true })
