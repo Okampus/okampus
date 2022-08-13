@@ -23,7 +23,9 @@
                 <div class="mt-10 ml-10 text-3xl font-semibold">
                     Tous les événements ({{ events.length }})
                 </div>
-                <div class="mx-12 mt-8 grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-4">
+                <div
+                    class="mx-12 mt-8 grid h-fit w-full grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-4"
+                >
                     <ClubEventCard v-for="event in events" :key="event" :event="event" />
                 </div>
             </div>
