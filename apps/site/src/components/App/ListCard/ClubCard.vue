@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="mt-3 flex h-12 w-full flex-row items-center justify-between">
-                    <div class="-ml-1" @mouseover="showLink = false" @mouseleave="showLink = true">
+                    <div class="z-10 -ml-1" @mouseover="showLink = false" @mouseleave="showLink = true">
                         <button
                             v-if="
                                 club.userMembership.membership?.role &&
