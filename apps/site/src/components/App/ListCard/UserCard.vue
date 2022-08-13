@@ -13,8 +13,8 @@
                 <div class="text-1 font-semibold">{{ user.points }}</div>
             </div>
         </div>
-        <div class="flex flex-col gap-3">
-            <div class="text-0 align-items inline-flex flex-wrap gap-x-6 text-lg">
+        <div class="flex flex-col">
+            <div class="text-0 align-items inline-flex flex-wrap gap-2 text-lg">
                 <router-link :to="`/user/${user.id}`" class="my-auto inline font-semibold hover:underline">{{
                     fullname(user)
                 }}</router-link>
@@ -32,6 +32,7 @@
             </div>
 
             <AvatarGroup
+                class="-ml-1.5 mt-1"
                 :entities="
                     user?.clubs?.map((club) => ({
                         ...club.team,
