@@ -1,7 +1,5 @@
 <template>
-    <div
-        class="card-hover bg-2 text-0 relative flex w-full min-w-[13rem] max-w-[40rem] flex-col rounded-xl pb-4 sm:w-[calc(50%-1rem)] xl:w-[calc(33%-1rem)]"
-    >
+    <div class="card-hover bg-2 text-0 relative flex w-full max-w-[40rem] flex-col rounded-xl pb-4">
         <div class="relative">
             <ProfileBanner class="h-40" :name="event.shortDescription" :data="event.team.category" />
             <router-link :to="`/club/${event.team.id}`" class="absolute bottom-[2.3rem] right-4">

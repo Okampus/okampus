@@ -1,7 +1,5 @@
 <template>
-    <div
-        class="card-hover bg-2 relative flex w-full min-w-[12rem] max-w-[30rem] flex-col rounded-lg pb-4 shadow-md xs:w-[calc(50%-0.7rem)] xl:w-[calc(33%-0.7rem)]"
-    >
+    <div class="card-hover bg-2 relative flex w-full max-w-[30rem] flex-col rounded-lg pb-4 shadow-md">
         <ProfileBanner
             class="h-20 w-full rounded-t-lg"
             :banner="club.banner"
@@ -53,48 +51,42 @@
                 </div>
 
                 <div class="mt-3 flex h-12 w-full flex-row items-center justify-between">
-                    <button
-                        v-if="
-                            club.userMembership.membership?.role &&
-                            specialRoles.includes(club.userMembership.membership?.role)
-                        "
-                        class="button-green pill-button -ml-1"
-                        @mouseover="showLink = false"
-                        @mouseleave="showLink = true"
-                        @click="router.push(`/club/${club.id}/manage`)"
-                    >
-                        <i class="fa fa-gear" />
-                        <div>Gérer</div>
-                    </button>
-                    <button
-                        v-else-if="club.userMembership.membership?.role"
-                        class="button-indigo pill-button -ml-1"
-                        @mouseover="showLink = false"
-                        @mouseleave="showLink = true"
-                        @click="router.push(`/club/${club.id}`)"
-                    >
-                        <i class="fa fa-users" />
-                        <div>Profil</div>
-                    </button>
-                    <button
-                        v-else-if="club.userMembership.pendingRequest"
-                        class="button-grey pill-button -ml-1"
-                        @mouseover="showLink = false"
-                        @mouseleave="showLink = true"
-                        @click="router.push(`/me/clubs/requests`)"
-                    >
-                        <i class="fa fa-envelope" />
-                        <div>En attente</div>
-                    </button>
-                    <button
-                        v-else
-                        class="button-blue -ml-1 rounded-full py-1 text-center font-semibold"
-                        @mouseover="showLink = false"
-                        @mouseleave="showLink = true"
-                        @click="emit('join')"
-                    >
-                        Rejoindre
-                    </button>
+                    <div class="-ml-1" @mouseover="showLink = false" @mouseleave="showLink = true">
+                        <button
+                            v-if="
+                                club.userMembership.membership?.role &&
+                                specialRoles.includes(club.userMembership.membership?.role)
+                            "
+                            class="button-green pill-button"
+                            @click="router.push(`/club/${club.id}/manage`)"
+                        >
+                            <i class="fa fa-gear" />
+                            <div>Gérer</div>
+                        </button>
+                        <button
+                            v-else-if="club.userMembership.membership?.role"
+                            class="button-indigo pill-button -ml-1"
+                            @click="router.push(`/club/${club.id}`)"
+                        >
+                            <i class="fa fa-users" />
+                            <div>Profil</div>
+                        </button>
+                        <button
+                            v-else-if="club.userMembership.pendingRequest"
+                            class="button-grey pill-button"
+                            @click="router.push(`/me/clubs/requests`)"
+                        >
+                            <i class="fa fa-envelope" />
+                            <div>En attente</div>
+                        </button>
+                        <button
+                            v-else
+                            class="button-blue -ml-1 rounded-full py-1 text-center font-semibold"
+                            @click="emit('join')"
+                        >
+                            Rejoindre
+                        </button>
+                    </div>
 
                     <AvatarGroup
                         :link="`/club/${club.id}/members`"

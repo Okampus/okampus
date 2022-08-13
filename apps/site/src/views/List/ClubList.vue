@@ -17,17 +17,7 @@
                     route-name="clubs"
                     class="sticky top-8 hidden md:block"
                 />
-                <div v-if="currentClubs.length === 0" class="text-0 w-full text-center">
-                    <EmojiSad class="mb-3 text-3xl" />
-                    <div class="text-2xl font-bold">Aucune association ne correspond à ces critères.</div>
-                    <div class="text-lg">
-                        Essayez la
-                        <router-link to="/clubs" class="link-blue"
-                            >liste de toutes les associations</router-link
-                        >.
-                    </div>
-                </div>
-                <div v-else class="flex h-fit w-full flex-wrap gap-4">
+                <div class="grid w-full grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-4">
                     <FormPopUp
                         v-model:show="showJoinForm"
                         :submit="
@@ -71,7 +61,6 @@
     import FormPopUp from '@/components/Form/FormPopUp.vue'
     import ClubCard from '@/components/App/ListCard/ClubCard.vue'
 
-    import EmojiSad from '@/icons/Emoji/EmojiSad.vue'
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
 
     import { getClubs } from '@/graphql/queries/teams/getClubs'

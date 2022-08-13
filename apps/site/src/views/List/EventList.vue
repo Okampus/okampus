@@ -5,7 +5,7 @@
         :update="(date) => date?.events"
     >
         <template #default="{ data: events }">
-            <div v-if="events.length" class="centered-container text-0 mt-10 flex flex-col gap-4">
+            <div class="centered-container text-0 mt-10 flex flex-col gap-6">
                 <div class="mx-5 flex items-center -space-x-4">
                     <SwiperButton type="prev" :swiper="swiper" />
                     <Swiper
@@ -23,22 +23,19 @@
                 <div class="mt-10 ml-10 text-3xl font-semibold">
                     Tous les événements ({{ events.length }})
                 </div>
-                <div class="mx-12 mt-8 flex flex-wrap gap-4">
+                <div class="mx-12 mt-8 grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-4">
                     <ClubEventCard v-for="event in events" :key="event" :event="event" />
                 </div>
             </div>
-            <div v-else>
-                <div class="h-content text-0 my-auto -mt-10 flex flex-col items-center justify-center gap-6">
-                    <img class="h-48 w-48" :src="Calendar" />
-                    <div class="text-center">
-                        <h1 class="text-4xl font-bold">Aucun événement</h1>
-                        <p class="text-lg">Aucun événement n'a été prévu pour le moment.</p>
-                    </div>
+        </template>
+        <template #empty>
+            <div class="h-content text-0 my-auto -mt-10 flex flex-col items-center justify-center gap-6">
+                <img class="h-48 w-48" :src="Calendar" />
+                <div class="text-center">
+                    <h1 class="text-4xl font-bold">Aucun événement</h1>
+                    <p class="text-lg">Aucun événement n'a été prévu pour le moment.</p>
                 </div>
             </div>
-            <!-- <div class="mx-16 mt-32">
-                <EventCalendar :events="events" />
-            </div> -->
         </template>
     </GraphQLQuery>
 </template>
