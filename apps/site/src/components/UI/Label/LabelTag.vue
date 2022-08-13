@@ -9,7 +9,7 @@
         class="bg-opacity-/90 flex cursor-pointer items-center justify-center whitespace-normal rounded-full"
     >
         <i v-if="icon" :class="`fa fa-${icon}`" />
-        <div v-if="tagName">{{ tagName }}</div>
+        <div v-if="tagName" class="line-clamp-1">{{ tagName }}</div>
         <i v-if="closable" class="fas text-base" :class="`fa-times`" @click="emit('close')" />
     </div>
 </template>

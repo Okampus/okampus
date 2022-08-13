@@ -1,12 +1,12 @@
 <template>
-    <div class="flex items-start gap-3">
-        <ProfileAvatar :id="user.id" :size="3" :avatar="user.avatar" :name="fullname(user)" />
+    <div class="flex gap-4">
+        <ProfileAvatar :id="user.id" :size="2.5" :avatar="user.avatar" :name="fullname(user)" />
         <div class="flex flex-col">
             <slot v-if="$slots.title" name="title" />
-            <div v-else class="text-1 inline">
+            <div v-else class="-mt-0.5 inline">
                 <router-link
                     :to="user.id ? `/user/${user.id}` : 'users'"
-                    class="text-sm font-semibold hover:underline"
+                    class="text-0 text-base font-medium hover:underline"
                     >{{ fullname(user) }}</router-link
                 >
                 <i v-tooltip="getRole(user)[locale]" class="ml-2" :class="`fa fa-${getRole(user).icon}`" />

@@ -24,17 +24,16 @@
                 <div class="flex items-center gap-3">
                     <UserActivity :user="content.author">
                         <template v-if="authorIsOp" #title>
-                            <div class="inline">
+                            <div class="flex items-center gap-2">
                                 <router-link
-                                    v-tooltip="'OP'"
+                                    v-tooltip="`OP - ${fullname(content.author)}`"
                                     :to="`/user/${content.author.id}`"
-                                    class="w-fit rounded-full bg-[#888] px-2 py-0.5 text-[0.8rem] font-semibold text-white hover:bg-gray-600 dark:hover:bg-gray-400"
+                                    class="w-fit rounded-full bg-[#888] px-2 py-0.5 text-[0.8rem] font-semibold text-white line-clamp-1 hover:bg-gray-600 dark:hover:bg-gray-400"
                                 >
                                     {{ fullname(content.author) }}
                                 </router-link>
                                 <i
                                     v-tooltip="getRole(content.author)[locale]"
-                                    class="ml-2"
                                     :class="`fa fa-${getRole(content.author).icon}`"
                                 />
                             </div>
@@ -155,8 +154,8 @@
     import urlJoin from 'url-join'
     import router from '@/router'
 
-    import { editThread } from '@/graphql/queries/threads/editThread'
-    import { showErrorToast, showInfoToast, showWarningToast } from '@/utils/toast'
+    import { updateThread } from '@/graphql/queries/threads/updateThread'
+    import { showErrorToast, showInfoToast, showToastGraphQLError, showWarningToast } from '@/utils/toast'
 
     import { useI18n } from 'vue-i18n'
 
@@ -185,9 +184,12 @@
     const body = ref(props.content.body)
 
     const { mutate: updateContent, onError } = useMutation(editContent)
-    onError(() => (body.value = props.content.body))
+    onError((errors) => {
+        body.value = props.content.body
+        showToastGraphQLError(errors)
+    })
 
-    const { mutate: validateContent } = useMutation(editThread)
+    const { mutate: validateContent } = useMutation(updateThread)
 
     const contentComments = computed(() =>
         props.content.children.filter((childContent) => childContent.kind === COMMENT),

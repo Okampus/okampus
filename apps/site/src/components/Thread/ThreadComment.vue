@@ -49,11 +49,11 @@
                         />
 
                         <router-link
-                            v-tooltip="authorIsOp ? 'OP' : ''"
+                            v-tooltip="authorIsOp ? `OP - ${fullname(content.author)}` : ''"
                             :to="`/user/${comment.author.id}`"
                             :class="
                                 authorIsOp
-                                    ? 'w-fit rounded-full bg-[#888] px-2 py-0.5 text-[0.8rem] font-semibold text-white hover:bg-gray-600 dark:hover:bg-gray-400'
+                                    ? 'w-fit rounded-full bg-[#888] px-2 py-0.5 text-[0.8rem] font-semibold link-clamp-1 text-white hover:bg-gray-600 dark:hover:bg-gray-400'
                                     : 'link-blue'
                             "
                         >
@@ -120,7 +120,7 @@
     import { fullname } from '@/utils/users'
     import { favorite } from '@/graphql/queries/interactions/favoriteContent'
     import { useRoute } from 'vue-router'
-    import { showErrorToast, showInfoToast, showWarningToast } from '@/utils/toast.js'
+    import { showErrorToast, showInfoToast, showToastGraphQLError, showWarningToast } from '@/utils/toast.js'
 
     const auth = useAuthStore()
     const route = useRoute()
@@ -158,7 +158,10 @@
     const { mutate: favoriteContent } = useMutation(favorite)
 
     const { mutate: updateContent, onError } = useMutation(editContent)
-    onError(() => (body.value = props.comment.body))
+    onError((errors) => {
+        body.value = props.comment.body
+        showToastGraphQLError(errors)
+    })
 
     const actions = [
         {

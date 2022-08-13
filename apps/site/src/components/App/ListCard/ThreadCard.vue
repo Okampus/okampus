@@ -1,8 +1,16 @@
 <template>
-    <div v-if="thread" class="card-2 text-2 card-hover flex w-full flex-row gap-6 py-3 pr-7 pl-5">
-        <div class="flex flex-col gap-4">
-            <VoteInputContent :content="thread.post" />
-            <FavoriteInput :content="thread.post" />
+    <div class="card-2 text-2 card-hover relative flex w-full flex-row gap-6 py-3 pr-7 pl-5">
+        <div class="z-10 flex flex-col gap-4">
+            <VoteInputContent
+                :content="thread.post"
+                @mouseover="showLink = false"
+                @mouseleave="showLink = true"
+            />
+            <FavoriteInput
+                :content="thread.post"
+                @mouseover="showLink = false"
+                @mouseleave="showLink = true"
+            />
         </div>
         <!-- <div class="flex flex-col">
             < :tip="`${threadTypes[thread.type]?.[locale]}`">
@@ -42,36 +50,41 @@
                 </div>
             </div>
 
-            <div class="flex flex-wrap gap-2">
+            <div class="mb-2 flex flex-wrap gap-2">
                 <router-link
                     :to="`/forum/post/${thread.id}`"
                     class="text-0 pr-2 font-semibold hover:underline"
-                    :class="small ? 'text-base' : 'text-xl'"
+                    :class="[small ? 'text-base' : 'text-2xl', { 'card-link': showLink }]"
                 >
                     {{ thread.title }}
                 </router-link>
                 <LabelTag
                     v-for="(tag, i) in thread.tags"
                     :key="i"
-                    class="inline"
+                    class="z-10 inline"
                     :class="small ? 'text-xs' : 'text-sm'"
                     :tag-name="tag.name"
+                    @mouseover="showLink = false"
+                    @mouseleave="showLink = true"
                 />
             </div>
 
-            <div class="flex">
-                <UserActivity :user="thread.post.author">
-                    <template #subtitle>
-                        <div class="text-4 text-sm">
-                            <TipRelativeDateModified
-                                action="Publié"
-                                :created-at="thread.createdAt"
-                                :modified-at="thread.updatedAt"
-                            />
-                        </div>
-                    </template>
-                </UserActivity>
-            </div>
+            <UserActivity
+                :user="thread.post.author"
+                class="z-10 w-fit"
+                @mouseover="showLink = false"
+                @mouseleave="showLink = true"
+            >
+                <template #subtitle>
+                    <div class="text-4 text-sm">
+                        <TipRelativeDateModified
+                            action="Publié"
+                            :created-at="thread.createdAt"
+                            :modified-at="thread.updatedAt"
+                        />
+                    </div>
+                </template>
+            </UserActivity>
 
             <router-link :to="`/forum/post/${thread.id}`" class="text-1 text-justify text-sm line-clamp-2">
                 {{ thread.post.body }}
@@ -105,14 +118,6 @@
             </div>
         </div>
     </div>
-    <div v-else class="flex space-x-2 rounded-lg py-3 px-5 font-semibold">
-        <p class="text-0 text-lg">Erreur: Ce post est vide.</p>
-
-        <!-- TODO: Bug report pages -->
-        <router-link :to="`/report-bug/threads`" class="link-blue text-lg font-semibold line-clamp-1">
-            Signalez ce bug !
-        </router-link>
-    </div>
 
     <!-- <swiper slides-per-view="auto" class="w-[calc(100%-4rem)]">
         <swiper-slide v-for="tag in thread.tags" :key="tag">
@@ -132,10 +137,9 @@
     import { capitalize } from 'lodash'
     import FavoriteInput from '@/components/Input/FavoriteInput.vue'
     import TipRelativeDateModified from '@/components/UI/Tip/TipRelativeDateModified.vue'
+    import { ref } from 'vue'
 
-    // import { useI18n } from 'vue-i18n'
-
-    // const { locale } = useI18n({ useScope: 'global' })
+    const showLink = ref(true)
 
     defineProps({
         thread: {
