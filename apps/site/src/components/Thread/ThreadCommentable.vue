@@ -224,7 +224,7 @@
     const topActions = [
         {
             name: computed(() => (props.content.interactions.userReported ? 'Signalé' : 'Signaler')),
-            condition: () => props.content.isVisible,
+            condition: () => props.content.isVisible && !userIsAuthor.value,
             icon: computed(() => (props.content.interactions.userReported ? 'fas fa-flag' : 'far fa-flag')),
             class: computed(() =>
                 props.content.interactions.userReported

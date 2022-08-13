@@ -179,7 +179,7 @@
     const hiddenActions = [
         {
             name: computed(() => (props.comment.interactions.userReported ? 'Signalé' : 'Signaler')),
-            condition: () => props.comment.isVisible,
+            condition: () => props.comment.isVisible && !userIsAuthor.value,
             icon: props.comment.interactions.userReported ? 'fas fa-flag' : 'far fa-flag',
             class: [
                 props.comment.interactions.userReported ? 'text-red-500 ' : '',
