@@ -66,11 +66,13 @@ $webkit-scrollbar-thumb-color-active: (
     }
 }
 
+%scrollbar-none,
 .scrollbar-none {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
 
+%scrollbar-none::-webkit-scrollbar,
 .scrollbar-none::-webkit-scrollbar {
     display: none;
 }
