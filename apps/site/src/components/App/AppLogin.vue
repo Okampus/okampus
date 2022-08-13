@@ -76,7 +76,7 @@
     import { useMutation } from '@vue/apollo-composable'
     import { login } from '@/graphql/queries/auth/loginUser'
 
-    import { showSuccessToast, showToastGraphQLError } from '@/utils/toast'
+    import { showErrorToast, showSuccessToast, showToastGraphQLError } from '@/utils/toast'
     import { emitter } from '@/shared/modules/emitter'
 
     const myEfreiAuthUrl = `${import.meta.env.VITE_API_URL}/auth/myefrei`
@@ -103,5 +103,11 @@
         emitter.emit('login')
     })
 
-    onError(showToastGraphQLError)
+    onError((errors) => {
+        if (errors.graphQLErrors?.[0]?.message === 'Invalid credentials') {
+            showErrorToast('Identifiants incorrects')
+        } else {
+            showToastGraphQLError(errors)
+        }
+    })
 </script>

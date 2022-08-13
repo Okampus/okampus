@@ -18,7 +18,7 @@
 
     import { getLogoUrls } from '@/graphql/queries/config/getLogoUrls'
     import { getTenant } from '@/utils/getTenant'
-    import { showErrorToast } from '@/utils/toast'
+    import { showToastGraphQLError } from '@/utils/toast'
     import { useQuery } from '@vue/apollo-composable'
     import { useUserConfigStore } from '@/store/user-config.store'
     import { computed } from 'vue'
@@ -37,7 +37,9 @@
     const config = useUserConfigStore()
 
     const { result, onError } = useQuery(getLogoUrls, { id: getTenant() })
-    onError(() => showErrorToast(`Les logos du tenant '${getTenant()}' n'ont pas pu être chargés !`))
+    onError((errors) =>
+        showToastGraphQLError(errors, `Les logos du tenant '${getTenant()}' n'ont pas pu être chargés !`),
+    )
 
     const currentLogo = computed(() => {
         if (result.value) {
