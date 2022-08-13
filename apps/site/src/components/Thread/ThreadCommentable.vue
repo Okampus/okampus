@@ -28,7 +28,7 @@
                                 <router-link
                                     v-tooltip="`OP - ${fullname(content.author)}`"
                                     :to="`/user/${content.author.id}`"
-                                    class="w-fit rounded-full bg-[#888] px-2 py-0.5 text-[0.8rem] font-semibold text-white line-clamp-1 hover:bg-gray-600 dark:hover:bg-gray-400"
+                                    class="w-fit rounded-full bg-[#888] px-2 py-px text-sm font-semibold text-white line-clamp-1 hover:bg-gray-600 dark:hover:bg-gray-400"
                                 >
                                     {{ fullname(content.author) }}
                                 </router-link>
@@ -39,11 +39,12 @@
                             </div>
                         </template>
                         <template #subtitle>
-                            Publié
-                            <TipRelativeDateModified
-                                :created-at="content.createdAt"
-                                :modified-at="content.updatedAt"
-                            />
+                            <div class="mt-0.5 ml-0.5 text-xs">
+                                <TipRelativeDateModified
+                                    :created-at="content.createdAt"
+                                    :modified-at="content.updatedAt"
+                                />
+                            </div>
                         </template>
                     </UserActivity>
 

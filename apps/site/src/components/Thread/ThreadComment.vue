@@ -6,25 +6,27 @@
         @animationend="emit('update:active', false)"
     >
         <div
-            class="text-5 flex shrink-0 cursor-pointer items-center gap-1"
+            class="group text-5 flex shrink-0 cursor-pointer items-center gap-0.5"
             @click="voteContent({ id: comment.id, value: comment.interactions.userVoted === 1 ? 0 : 1 })"
         >
             <IconUpvote
                 :full="true"
-                :width="0.8"
+                :height="0.8"
                 :class="comment.interactions.userVoted === 1 ? 'fill-green-500' : 'fill-gray-500'"
+                class="mb-px group-hover:fill-blue-500"
             />
             <div class="text-3 w-[1rem] text-center text-xs">{{ comment.upvoteCount }}</div>
         </div>
 
         <div
-            class="text-5 ml-2 flex w-[3rem] shrink-0 cursor-pointer items-center gap-1"
+            class="group text-5 ml-2 flex w-[3rem] shrink-0 cursor-pointer items-center gap-0.5"
             @click="favoriteContent({ id: comment.id, favorite: !comment.interactions.userFavorited })"
         >
             <i
                 :class="`${
                     comment.interactions?.userFavorited ? 'text-yellow-400 fas' : 'text-4 far'
-                } fa-star hover:text-yellow-600`"
+                } fa-star`"
+                class="mb-px group-hover:text-yellow-600"
             />
             <div class="text-3 w-[1rem] text-center text-xs">{{ comment.favoriteCount }}</div>
         </div>
@@ -49,11 +51,11 @@
                         />
 
                         <router-link
-                            v-tooltip="authorIsOp ? `OP - ${fullname(content.author)}` : ''"
+                            v-tooltip="authorIsOp ? `OP - ${fullname(comment.author)}` : ''"
                             :to="`/user/${comment.author.id}`"
                             :class="
                                 authorIsOp
-                                    ? 'w-fit rounded-full bg-[#888] px-2 py-0.5 text-[0.8rem] font-semibold link-clamp-1 text-white hover:bg-gray-600 dark:hover:bg-gray-400'
+                                    ? 'w-fit rounded-full bg-[#888] px-2 py-px text-sm font-semibold link-clamp-1 text-white hover:bg-gray-600 dark:hover:bg-gray-400'
                                     : 'link-blue'
                             "
                         >
