@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mt-4">
         <iframe
             class="float-left inline aspect-[16/9] h-fit pr-6 pb-6"
             :class="club.longDescription ? 'md:w-[30rem] md-max:mb-4 md-max:w-full' : 'w-full'"

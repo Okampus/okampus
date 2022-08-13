@@ -8,8 +8,10 @@ export const fullTeamFragment = gql`
         category
         kind
         shortDescription
+        longDescription
         activeMemberCount
         boardMembers {
+            id
             role
             user {
                 id

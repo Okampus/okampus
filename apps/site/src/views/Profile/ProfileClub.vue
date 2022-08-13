@@ -22,7 +22,7 @@
                     icon: 'envelope',
                     label: 'Rejoindre',
                 }"
-                :form-schema="joiningClub?.formSchema ?? DEFAULT_JOIN_FORM_SCHEMA"
+                :form-schema="club?.formSchema ?? DEFAULT_JOIN_FORM_SCHEMA"
                 :form-data="{ club }"
             />
             <ProfileBanner
@@ -102,16 +102,7 @@
             </div>
 
             <div class="centered-container py-4">
-                <Transition mode="out-in" name="switch-fade">
-                    <KeepAlive>
-                        <Suspense timeout="0">
-                            <component :is="currentComponent" :club="club" />
-                            <template #fallback>
-                                <AppLoader />
-                            </template>
-                        </Suspense>
-                    </KeepAlive>
-                </Transition>
+                <component :is="currentComponent" :club="club" class="w-full" />
             </div>
         </template>
     </GraphQLQuery>
@@ -125,14 +116,12 @@
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
 
     import ClubHomepage from '@/components/Profile/Club/ClubHomepage.vue'
-    import ClubDriveAsync from '@/components/Profile/Club/ClubDriveAsync.vue'
-    import ClubActivityAsync from '@/components/Profile/Club/ClubActivityAsync.vue'
-    import ClubMembersAsync from '@/components/Profile/Club/ClubMembersAsync.vue'
+    import ClubDocuments from '@/components/Profile/Club/ClubDocuments.vue'
+    import ClubActivity from '@/components/Profile/Club/ClubActivity.vue'
+    import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
 
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
     import FormPopUp from '@/components/Form/FormPopUp.vue'
-
-    import AppLoader from '@/components/App/AppLoader.vue'
 
     import { computed, ref } from 'vue'
 
@@ -163,7 +152,7 @@
 
     const HOME = 'home'
     const MEMBERS = 'members'
-    const DRIVE = 'drive'
+    const DOCUMENTS = 'drive'
     const ACTIVITY = 'activity'
 
     const clubRoute = computed(() => `/club/${route.params.clubId}`)
@@ -177,11 +166,6 @@
             icon: 'house',
         },
         {
-            id: DRIVE,
-            name: 'Documents légaux',
-            icon: 'file-arrow-down',
-        },
-        {
             id: MEMBERS,
             name: 'Membres',
             icon: 'users',
@@ -191,15 +175,20 @@
             name: 'Évents',
             icon: 'calendar',
         },
+        {
+            id: DOCUMENTS,
+            name: 'Documents',
+            icon: 'file-arrow-down',
+        },
     ]
 
     const DEFAULT_TAB = tabs[0]
 
     const components = {
         [HOME]: ClubHomepage,
-        [DRIVE]: ClubDriveAsync,
-        [MEMBERS]: ClubMembersAsync,
-        [ACTIVITY]: ClubActivityAsync,
+        [DOCUMENTS]: ClubDocuments,
+        [MEMBERS]: ClubMembers,
+        [ACTIVITY]: ClubActivity,
     }
 
     const currentComponent = computed(() => components[currentTab.value ?? DEFAULT_TAB.id])

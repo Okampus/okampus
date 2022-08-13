@@ -32,4 +32,5 @@ export const clubRoleNames = {
     },
 }
 
+export const restrictedRoles = [OWNER, TREASURER, SECRETARY, COOWNER]
 export const specialRoles = [OWNER, TREASURER, SECRETARY, COOWNER, MANAGER]

@@ -203,7 +203,7 @@ const routes = [
     {
         name: 'club',
         path: '/club/:clubId/:tab*',
-        component: () => import('@/views/Profile/ProfileClubAsync.vue'),
+        component: () => import('@/views/Profile/ProfileClub.vue'),
         meta: {
             requiresAuth: true,
         },

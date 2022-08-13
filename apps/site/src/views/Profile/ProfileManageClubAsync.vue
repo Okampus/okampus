@@ -64,7 +64,7 @@
     import { useClubsStore } from '@/store/clubs.store'
     import { isPositiveInteger } from '@/utils/stringUtils'
 
-    import ClubMembersAsync from '@/components/Profile/Club/ClubMembersAsync.vue'
+    import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
 
     const route = useRoute()
     const clubs = useClubsStore()
@@ -124,7 +124,7 @@
         [HOME]: ManageHomepage,
         [REQUESTS]: ManageRequestsAsync,
         [DRIVE]: ManageDriveAsync,
-        [MEMBERS]: ClubMembersAsync,
+        [MEMBERS]: ClubMembers,
         [ACTIVITY]: ManageActivityAsync,
         [TREASURY]: WIP,
     }
