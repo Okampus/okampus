@@ -51,7 +51,9 @@
                                     </div>
                                 </div>
                                 <ThreadCommentable
-                                    v-for="reply in thread.post.children"
+                                    v-for="reply in thread.post.children.filter(
+                                        (child) => child.kind === REPLY,
+                                    )"
                                     :key="reply.id"
                                     :content="reply"
                                     :thread="thread"
@@ -135,6 +137,8 @@
     import ThreadNewReply from '@/components/Thread/ThreadNewReply.vue'
 
     import AppTitle from '@/components/App/AppTitle.vue'
+
+    import { REPLY } from '@/shared/types/content-kinds.enum'
 
     import { computed, ref } from 'vue'
     import { useRoute } from 'vue-router'

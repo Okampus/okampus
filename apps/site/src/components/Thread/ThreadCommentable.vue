@@ -114,7 +114,7 @@
             <ThreadCommentList
                 :thread="thread"
                 :parent="content"
-                :comments="contentComments"
+                :comments="props.content.children.filter((child) => child.kind === COMMENT)"
                 action-class="opacity-70 content-show-focused"
             />
         </div>
@@ -191,10 +191,6 @@
     })
 
     const { mutate: validateContent } = useMutation(updateThread)
-
-    const contentComments = computed(() =>
-        props.content.children.filter((childContent) => childContent.kind === COMMENT),
-    )
 
     const authorIsOp = computed(() => props.thread.post.author.id === props.content.author.id)
     const userIsOp = computed(() => props.thread.post.author.id === auth.user.id)
