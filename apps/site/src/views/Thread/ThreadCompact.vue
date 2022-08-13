@@ -27,11 +27,12 @@
                         v-model="title"
                         :min-char="10"
                         :max-char="128"
-                        min-char-message="Le titre d'un thread doit faire au minimum 10 caractères"
-                        max-char-message="Le titre d'un thread ne peut pas dépasser 128 caractères"
+                        min-char-message="Le titre d'un post doit faire au minimum 10 caractères"
+                        max-char-message="Le titre d'un post ne peut pas dépasser 128 caractères"
                         text-class="text-xl"
                         display-class="font-bold text-0"
                         placeholder="Titre"
+                        @validate="updateTitleThread({ id: thread.id, thread: { title: $event } })"
                     />
                     <p v-else class="text-0 always-break-words text-xl font-bold">{{ thread.title }}</p>
                 </div>
@@ -139,6 +140,7 @@
     import { useRoute } from 'vue-router'
 
     import { getThreadById } from '@/graphql/queries/threads/getThreadById'
+    import { updateThread } from '@/graphql/queries/threads/updateThread'
 
     import { getRole } from '@/utils/users'
     import threadTypes from '@/shared/types/thread-types.enum'
@@ -146,8 +148,14 @@
     import { useI18n } from 'vue-i18n'
 
     import { useAuthStore } from '@/store/auth.store'
+    import { useMutation } from '@vue/apollo-composable'
+    import { showSuccessToast, showToastGraphQLError } from '@/utils/toast'
 
     const { locale } = useI18n({ useScope: 'global' })
+
+    const { mutate: updateTitleThread, onDone, onError } = useMutation(updateThread)
+    onDone(() => showSuccessToast('Titre modifié ✏️'))
+    onError(showToastGraphQLError)
 
     const route = useRoute()
     const auth = useAuthStore()
