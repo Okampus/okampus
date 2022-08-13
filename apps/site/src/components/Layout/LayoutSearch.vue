@@ -145,6 +145,8 @@
 </template>
 
 <script setup>
+    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+
     import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
 
     import { ref } from 'vue'
@@ -156,7 +158,6 @@
     import { unionBy, remove } from 'lodash'
 
     import { getTenant } from '@/utils/getTenant'
-    import ProfileAvatar from '../Profile/ProfileAvatar.vue'
     import { emitter } from '@/shared/modules/emitter'
 
     const itemToLink = (entity) => {

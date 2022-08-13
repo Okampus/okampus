@@ -1,5 +1,5 @@
-import { i18n } from '../../modules/i18n'
-import { clubRoleNames } from '../../types/club-roles.enum'
+import { i18n } from '@/shared/modules/i18n'
+import { clubRoleNames } from '@/shared/types/club-roles.enum'
 
 const roles = Object.entries(clubRoleNames).map(([value, name]) => ({
     value,

@@ -1,6 +1,7 @@
 import { useAuthStore } from '@/store/auth.store'
+import { ADMIN } from '@/shared/types/school-roles.enum'
+
 import { computed } from 'vue'
-import { ADMIN } from '../types/school-roles.enum'
 
 export const sections = computed(() => {
     const auth = useAuthStore()

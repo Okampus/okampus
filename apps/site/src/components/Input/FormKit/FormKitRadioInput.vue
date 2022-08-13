@@ -4,7 +4,7 @@
 
 <script setup>
     import { computed } from 'vue'
-    import RadioInput from '../RadioInput.vue'
+    import RadioInput from '@/components/Input/RadioInput.vue'
     const props = defineProps({
         context: {
             type: Object,

@@ -22,7 +22,7 @@
                         <div class="text-3">{{ me.id }}</div>
                     </div>
                 </div>
-                <div class="md-max:w-full flex flex-col md:w-48 lg:w-56">
+                <div class="flex flex-col md:w-48 lg:w-56 md-max:w-full">
                     <EditableTextInput
                         v-if="me.shortDescription || editingStatus"
                         v-model:show-input="editingStatus"
