@@ -28,8 +28,12 @@ jobs:
       id: version-bump
       run: |
         pybump bump --file charts/okampus/Chart.yaml --level patch
-        pybump bump --file ${{ inputs.chart-path }}/Chart.yaml --set-version ${{ github.sha }} --app-version
       shell: bash
+    
+    - name: Set version and save file
+      uses: mikefarah/yq@master
+      with:
+        cmd: yq -i '.appVersion = "${{ github.sha }}"' 'charts/okampus/Chart.yaml'
     
     - run: |
         git config user.name github-actions
