@@ -13,12 +13,14 @@ jobs:
   bump:
     name: Edit infra chart parameters
     runs-on: ubuntu-latest
+    environment: production
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
         repository: 'Okampus/infra'
-        
+        token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
+
     - name: Set version and save file
       uses: mikefarah/yq@master
       with:

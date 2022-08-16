@@ -13,11 +13,13 @@ jobs:
   bump:
     name: Bump chart version
     runs-on: ubuntu-latest
+    environment: production
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
         repository: 'Okampus/chart'
+        token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
         
     - name: Install PyBump
       run: |
