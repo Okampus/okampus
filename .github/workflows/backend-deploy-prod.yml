@@ -1,0 +1,42 @@
+name: Update production chart version
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'apps/api/**'
+      - '!*/**/*.md'
+      - '.github/workflows/backend-deploy-prod.yml'
+
+jobs:
+  bump:
+    name: Bump chart version
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        repository: 'Okampus/chart'
+        
+    - name: Install PyBump
+      run: |
+        python3 -m pip install pybump
+      shell: bash
+
+    - name: Automated Version Bump
+      id: version-bump
+      run: |
+        pybump bump --file charts/okampus/Chart.yaml --level patch
+        pybump bump --file ${{ inputs.chart-path }}/Chart.yaml --set-version ${{ github.sha }} --app-version
+      shell: bash
+    
+    - run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add .
+        git commit -m 'Updated chart version to ${{ github.sha }}
+        
+        https://github.com/Okampus/okampus/tree/${{ github.sha }}'
+        git push
+    
