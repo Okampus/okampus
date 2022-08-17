@@ -29,6 +29,8 @@ interface Config {
       documents: string;
       attachments: string;
       teamFiles: string;
+      teamGalleries: string;
+      teamReceipts: string;
       tenants: string;
     };
   };
@@ -197,6 +199,16 @@ export const config = createProfiguration<Config>({
         default: 'team-files',
         format: String,
         env: 'S3_BUCKET_NAME_TEAM_FILES',
+      },
+      teamGalleries: {
+        default: 'team-galleries',
+        format: String,
+        env: 'S3_BUCKET_NAME_TEAM_GALLERIES',
+      },
+      teamReceipts: {
+        default: 'team-files',
+        format: String,
+        env: 'S3_BUCKET_NAME_TEAM_RECEIPTS',
       },
       tenants: {
         default: 'tenants',

@@ -5,6 +5,7 @@ import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { AdminTeamLegalFileUpdatedNotification } from '../../shared/modules/notifications/notifications';
 import { NotificationsService } from '../../shared/modules/notifications/notifications.service';
 import type { PaginatedResult } from '../../shared/modules/pagination';
+import { normalizePagination } from '../../shared/modules/pagination';
 import { Team } from '../../teams/teams/team.entity';
 import type { User } from '../../users/user.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
@@ -53,14 +54,14 @@ export class TeamFilesService {
   }
 
   public async findAll(
-    options: Required<TeamFileListOptions>,
+    options: TeamFileListOptions,
   ): Promise<PaginatedResult<TeamFile>> {
     const team = await this.teamRepository.findOneOrFail({ id: options.id });
 
     const query = options.type ? { type: options.type } : {};
 
     return await this.teamFileRepository.findWithPagination(
-      options,
+      normalizePagination(options),
       { team, ...query },
       { populate: ['file', 'file.user', 'team'] },
     );
@@ -69,7 +70,7 @@ export class TeamFilesService {
   public async update(
     user: User,
     id: string,
-    updateGalleryImageDto: UpdateTeamFileDto,
+    updateTeamFileDto: UpdateTeamFileDto,
   ): Promise<TeamFile> {
     const teamFile = await this.teamFileRepository.findOneOrFail(
       { id },
@@ -79,7 +80,7 @@ export class TeamFilesService {
     if (!teamFile.team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
-    wrap(teamFile).assign(updateGalleryImageDto);
+    wrap(teamFile).assign(updateTeamFileDto);
     await this.teamFileRepository.persistAndFlush(teamFile);
 
     void this.notificationsService.trigger(

@@ -6,6 +6,8 @@ export enum FileKind {
   Attachment = 'attachment',
   StudyDoc = 'study-doc',
   TeamFile = 'team-file',
+  TeamGallery = 'team-gallery',
+  TeamReceipt = 'team-receipt',
   Tenant = 'tenant',
 }
 

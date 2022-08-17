@@ -5,16 +5,16 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
 import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
-import { TeamFileType } from '../../shared/lib/types/enums/team-file-type.enum';
+import { TeamEvent } from '../../teams/events/team-event.entity';
 import { Team } from '../../teams/teams/team.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 
 @ObjectType()
 @Entity()
-export class TeamFile extends BaseFileEntity {
+export class TeamGallery extends BaseFileEntity {
   @Field(() => String)
   @PrimaryKey()
   id: string = nanoid(32);
@@ -27,19 +27,29 @@ export class TeamFile extends BaseFileEntity {
   @ManyToOne()
   team!: Team;
 
-  @Field(() => TeamFileType)
-  @Property({ type: 'text' })
-  type!: TeamFileType;
+  @Field(() => TeamEvent, { nullable: true })
+  @OneToOne()
+  event: TeamEvent | null = null;
 
-  @Field(() => String, { nullable: true })
-  @Property({ type: 'text' })
-  description: string | null = null;
+  @Field(() => Int, { nullable: true })
+  @Property()
+  order: number;
+
+  @Field(() => Int, { nullable: true })
+  @Property()
+  width: number;
+
+  @Field(() => Int, { nullable: true })
+  @Property()
+  height: number;
 
   constructor(options: {
     team: Team;
     file: FileUpload;
-    type: string;
-    description?: string | null;
+    order: number;
+    width: number;
+    height: number;
+    event?: TeamEvent | null;
     active?: boolean;
   }) {
     super();

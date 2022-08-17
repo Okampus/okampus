@@ -5,16 +5,16 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
 import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
-import { TeamFileType } from '../../shared/lib/types/enums/team-file-type.enum';
 import { Team } from '../../teams/teams/team.entity';
+import { User } from '../../users/user.entity';
 import { FileUpload } from '../file-uploads/file-upload.entity';
 
 @ObjectType()
 @Entity()
-export class TeamFile extends BaseFileEntity {
+export class TeamReceipt extends BaseFileEntity {
   @Field(() => String)
   @PrimaryKey()
   id: string = nanoid(32);
@@ -27,19 +27,29 @@ export class TeamFile extends BaseFileEntity {
   @ManyToOne()
   team!: Team;
 
-  @Field(() => TeamFileType)
-  @Property({ type: 'text' })
-  type!: TeamFileType;
-
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
   description: string | null = null;
 
+  @Field(() => GraphQLISODateTime)
+  @Property({ type: 'date' })
+  payedAt: Date;
+
+  @Field(() => User)
+  @ManyToOne()
+  payedBy: User;
+
+  @Field(() => String, { nullable: true })
+  @Property({ type: 'text' })
+  paymentLocation: string;
+
   constructor(options: {
     team: Team;
     file: FileUpload;
-    type: string;
     description?: string | null;
+    payedAt?: Date;
+    payedBy?: Date;
+    paymentLocation?: string | null;
     active?: boolean;
   }) {
     super();

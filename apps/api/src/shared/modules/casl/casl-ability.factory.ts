@@ -12,6 +12,8 @@ import { InfoDoc } from '../../../files/info-docs/info-doc.entity';
 import { ProfileImage } from '../../../files/profile-images/profile-image.entity';
 import { StudyDoc } from '../../../files/study-docs/study-doc.entity';
 import { TeamFile } from '../../../files/team-files/team-file.entity';
+import type { TeamGallery } from '../../../files/team-galleries/team-gallery.entity';
+import type { TeamReceipt } from '../../../files/team-receipts/team-receipts.entity';
 import { Metric } from '../../../metrics/metric.entity';
 import { Report } from '../../../reports/report.entity';
 import { DailyInfo } from '../../../restaurant/daily-info/daily-info.entity';
@@ -65,6 +67,8 @@ export type Subjects = InferSubjects<
   | typeof TeamFile
   | typeof TeamFinance
   | typeof TeamForm
+  | typeof TeamGallery
+  | typeof TeamReceipt
   | typeof Tenant
   | typeof Thread
   | typeof User

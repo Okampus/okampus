@@ -14,6 +14,8 @@ export class FilePersistanceService {
     [FileKind.StudyDoc]: config.get('s3.buckets.documents'),
     [FileKind.ProfileImage]: config.get('s3.buckets.profileImages'),
     [FileKind.TeamFile]: config.get('s3.buckets.teamFiles'),
+    [FileKind.TeamGallery]: config.get('s3.buckets.teamGalleries'),
+    [FileKind.TeamReceipt]: config.get('s3.buckets.teamReceipts'),
     [FileKind.Tenant]: config.get('s3.buckets.tenants'),
   };
 
@@ -35,7 +37,7 @@ export class FilePersistanceService {
       ACL: 'public-read',
       Bucket: FilePersistanceService.fileKindBucket[kind],
       Key: key,
-      Body: file.buffer,
+      Body: file.stream,
       ContentType: file.mimetype,
       /* eslint-enable @typescript-eslint/naming-convention */
     };
