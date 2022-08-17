@@ -132,7 +132,7 @@ export class ThreadsService {
   public async update(user: User, id: number, updateThreadDto: UpdateThreadDto): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
       { id },
-      { populate: ['post', 'post.lastEdit', 'tags', 'assignedTeams', 'assignedUsers', 'opValidation', 'opValidation.content', 'adminValidations'] },
+      { populate: ['post', 'post.lastEdit', 'tags', 'assignedTeams', 'assignedUsers', 'participants', 'opValidation', 'opValidation.content', 'adminValidations'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
