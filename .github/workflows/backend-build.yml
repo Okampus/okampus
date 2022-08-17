@@ -38,6 +38,6 @@ jobs:
           context: apps/api
           tags: |
             rg.fr-par.scw.cloud/okampus/okampus:${{ github.sha }}
-            rg.fr-par.scw.cloud/okampus/okampus:${{ github.ref }}
+            rg.fr-par.scw.cloud/okampus/okampus:${{ github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
