@@ -1,5 +1,7 @@
 import { Field, InputType, IntersectionType } from '@nestjs/graphql';
-import { IsEnum, IsString, Length } from 'class-validator';
+import {
+ IsBoolean, IsEnum, IsString, Length,
+} from 'class-validator';
 import { CreateOrphanContentDto } from '../../contents/dto/create-orphan-content.dto';
 import { ThreadType } from '../../shared/lib/types/enums/thread-type.enum';
 import { AssigneesDto } from './assignees.dto';
@@ -22,4 +24,8 @@ export class CreateThreadDto extends IntersectionType(
   @Field(() => String)
   @IsString()
   scope: string;
+
+  @Field(() => Boolean)
+  @IsBoolean()
+  isAnonymous: boolean;
 }

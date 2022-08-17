@@ -17,7 +17,6 @@ import { Transform } from 'class-transformer';
 import type { Favorite } from '../../favorites/favorite.entity';
 import type { Reaction } from '../../reactions/reaction.entity';
 import type { Report } from '../../reports/report.entity';
-import { config } from '../../shared/configs/config';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 // eslint-disable-next-line import/no-cycle
@@ -45,8 +44,11 @@ export class Content extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })
-  @Transform(({ obj }: { obj: Content }) => (obj.isAnonymous ? config.get('anonAccount.username') : obj.author.id))
   author!: User;
+
+  @Field(() => User)
+  @ManyToOne({ onDelete: 'CASCADE', hidden: true })
+  realAuthor!: User;
 
   @Field(() => Int)
   @Property()
@@ -122,9 +124,10 @@ export class Content extends BaseEntity {
 
   constructor(options: {
     body: string;
-    isAnonymous: boolean;
     author: User;
+    realAuthor: User;
     kind: ContentKind;
+    isAnonymous?: boolean;
     contentMaster?: ContentMaster | null;
     parent?: Content | null;
   }) {

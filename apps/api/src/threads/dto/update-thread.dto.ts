@@ -4,11 +4,18 @@ import {
   Int,
   PartialType,
 } from '@nestjs/graphql';
-import { IsBoolean, IsInt, IsOptional } from 'class-validator';
+import {
+ IsBoolean, IsInt, IsOptional, IsString,
+} from 'class-validator';
 import { CreateThreadDto } from './create-thread.dto';
 
 @InputType()
 export class UpdateThreadDto extends PartialType(CreateThreadDto) {
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  title?: string;
+
   @Field(() => Boolean, { nullable: true })
   @IsBoolean()
   @IsOptional()

@@ -5,6 +5,7 @@ import groupBy from 'lodash.groupby';
 import { Favorite } from '../favorites/favorite.entity';
 import { Reaction } from '../reactions/reaction.entity';
 import { Report } from '../reports/report.entity';
+import { config } from '../shared/configs/config';
 import type { ContentListOptionsDto } from '../shared/lib/dto/list-options.dto';
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
@@ -21,7 +22,7 @@ import {
 import { NotificationsService } from '../shared/modules/notifications/notifications.service';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import { serializeOrder } from '../shared/modules/sorting';
-import type { User } from '../users/user.entity';
+import { User } from '../users/user.entity';
 import { Vote } from '../votes/vote.entity';
 import type { ContentInteractions } from './content-interactions.model';
 import type { CreateContentDto } from './dto/create-content.dto';
@@ -41,6 +42,7 @@ export class ContentsService {
     @InjectRepository(Reaction) private readonly reactionRepository: BaseRepository<Reaction>,
     @InjectRepository(Report) private readonly reportRepository: BaseRepository<Report>,
     @InjectRepository(Vote) private readonly voteRepository: BaseRepository<Vote>,
+    @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     private readonly notificationsService: NotificationsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
@@ -73,7 +75,7 @@ export class ContentsService {
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, parent);
 
-    const content = this.createAndPersistContent(createContentDto, ContentKind.Reply, user, parent);
+    const content = await this.createAndPersistContent(createContentDto, ContentKind.Reply, user, parent);
     parent.replyCount++;
 
     await this.contentEditRepository.flush();
@@ -99,7 +101,7 @@ export class ContentsService {
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, parent);
 
-    const content = this.createAndPersistContent(createContentDto, ContentKind.Comment, user, parent);
+    const content = await this.createAndPersistContent(createContentDto, ContentKind.Comment, user, parent);
     parent.replyCount++;
 
     await this.contentEditRepository.flush();
@@ -231,6 +233,13 @@ export class ContentsService {
 
     wrap(content).assign(updateContentDto);
 
+    if (updateContentDto.isAnonymous) {
+      const anonymous = await this.userRepository.findOneOrFail({ id: config.get('anonAccount.username') });
+      content.author = anonymous;
+    } else {
+      content.author = content.realAuthor;
+    }
+
     if (typeof updateContentDto.hidden === 'boolean') {
       const authoredContents = await this.contentRepository.count({
         contentMaster: { id: content.contentMaster!.id },
@@ -297,18 +306,24 @@ export class ContentsService {
     await this.contentRepository.removeAndFlush(content);
   }
 
-  private createAndPersistContent(
+  private async createAndPersistContent(
     createContentDto: CreateContentDto | CreateOrphanContentDto,
     kind: ContentKind,
     user: User,
     parent?: Content | ContentMaster,
-  ): Content {
+  ): Promise<Content> {
+    const { isAnonymous } = createContentDto;
+    const anonymousOrUser = isAnonymous
+      ? await this.userRepository.findOneOrFail({ id: config.get('anonAccount.username') })
+      : user;
+
     const content = new Content({
       ...createContentDto,
       kind,
       contentMaster: parent instanceof Content ? parent.contentMaster : parent,
       parent: parent instanceof Content ? parent : null,
-      author: user,
+      author: anonymousOrUser,
+      realAuthor: user,
     });
 
     const contentEdit = new ContentEdit({

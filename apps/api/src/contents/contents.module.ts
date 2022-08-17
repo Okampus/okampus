@@ -9,6 +9,7 @@ import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { NotificationsModule } from '../shared/modules/notifications/notifications.module';
 import { PubSubModule } from '../shared/modules/pub-sub/pub-sub.module';
+import { User } from '../users/user.entity';
 import { ValidationsModule } from '../validations/validations.module';
 import { Vote } from '../votes/vote.entity';
 import { VotesModule } from '../votes/votes.module';
@@ -27,6 +28,7 @@ import { Content } from './entities/content.entity';
       Favorite,
       Reaction,
       Report,
+      User,
       Vote,
     ]),
     NotificationsModule,

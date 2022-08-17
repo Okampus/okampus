@@ -120,7 +120,7 @@ export class ThreadsService {
   public async findOne(user: User, id: number): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
       { id },
-      { populate: ['post.edits', 'tags', 'assignedTeams', 'assignedUsers', 'participants', 'opValidation', 'adminValidations'] },
+      { populate: ['post', 'post.author', 'post.edits', 'post.lastEdit', 'tags', 'assignedTeams', 'assignedUsers', 'participants', 'opValidation', 'adminValidations'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -132,7 +132,7 @@ export class ThreadsService {
   public async update(user: User, id: number, updateThreadDto: UpdateThreadDto): Promise<Thread> {
     const thread = await this.threadRepository.findOneOrFail(
       { id },
-      { populate: ['post', 'post.lastEdit', 'tags', 'assignedTeams', 'assignedUsers', 'participants', 'opValidation', 'opValidation.content', 'adminValidations'] },
+      { populate: ['post', 'post.author', 'post.lastEdit', 'tags', 'assignedTeams', 'assignedUsers', 'participants', 'opValidation', 'opValidation.content', 'adminValidations'] },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
