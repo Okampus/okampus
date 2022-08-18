@@ -12,7 +12,7 @@ import { APP_PUB_SUB } from '../../shared/lib/constants';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { SubscriptionType } from '../../shared/lib/types/enums/subscription-type.enum';
 import { User } from '../../users/user.entity';
-import { FilterMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
+import { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
 import { Team } from '../teams/team.entity';
 import { TeamsService } from '../teams/teams.service';
 import { CreateTeamMembershipRequestDto } from './dto/create-membership-request.dto';
@@ -33,7 +33,7 @@ export class TeamMembershipRequestsResolver {
   @Query(() => [TeamMembershipRequest], { nullable: true })
   public async teamMembershipRequests(
     @Args('id', { type: () => Int }) id: number,
-    @Args('filter', { nullable: true }) filter?: FilterMembershipRequestsDto,
+    @Args('filter', { nullable: true }) filter?: ListMembershipRequestsDto,
   ): Promise<TeamMembershipRequest[]> {
     const requests = await this.teamMembershipRequestsService.findAll(id, filter);
     return requests.items;

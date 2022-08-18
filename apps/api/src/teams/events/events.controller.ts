@@ -24,7 +24,7 @@ import { UpdateTeamEventDto } from './dto/update-team-event.dto';
 import { TeamEventsService } from './events.service';
 import { TeamEvent } from './team-event.entity';
 
-@ApiTags('Team Events')
+@ApiTags('Events')
 @Controller()
 export class TeamEventsController {
   constructor(

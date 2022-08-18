@@ -11,18 +11,27 @@ import {
   Resolver,
   Subscription,
 } from '@nestjs/graphql';
+import { Express } from 'express';
 import { PubSubEngine } from 'graphql-subscriptions';
+import { GraphQLUpload } from 'graphql-upload-minimal';
 import groupBy from 'lodash.groupby';
 import mapValues from 'lodash.mapvalues';
+import { FileUploadsService } from '../../files/file-uploads/file-uploads.service';
+import { CreateTeamFileDto } from '../../files/team-files/dto/create-team-file.dto';
+import { TeamFile } from '../../files/team-files/team-file.entity';
+import { TeamFilesService } from '../../files/team-files/team-files.service';
 import { APP_PUB_SUB } from '../../shared/lib/constants';
 import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
+import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
 import { SubscriptionType } from '../../shared/lib/types/enums/subscription-type.enum';
 import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
+import { TeamFormsService } from '../forms/forms.service';
+import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
 import { MembershipRequestState } from '../types/membership-request-state.enum';
 import { CreateTeamDto } from './dto/create-team.dto';
@@ -41,12 +50,16 @@ export interface ContextBatchTeams {
 
 @Resolver(() => Team)
 export class TeamsResolver {
+  // eslint-disable-next-line max-params
   constructor(
     @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     private readonly teamsService: TeamsService,
+    private readonly teamFilesService: TeamFilesService,
+    private readonly teamFormsService: TeamFormsService,
+    private readonly fileUploadsService: FileUploadsService,
   ) {}
 
   // TODO: Add permission checks
@@ -116,6 +129,44 @@ export class TeamsResolver {
     await this.teamRepository.populate(team, ['members', 'members.user']);
     const memberships = await team.members.loadItems();
     return memberships.filter(membership => membership.active);
+  }
+
+  @ResolveField(() => [TeamFile])
+  public async teamFiles(@Parent() team: Team): Promise<TeamFile[]> {
+    const paginatedFiles = await this.teamFilesService.findAll({
+      id: team.id, active: true, page: 1, itemsPerPage: 100,
+    });
+    return paginatedFiles.items;
+  }
+
+  @Mutation(() => Team)
+  public async addTeamFile(
+    @CurrentTenant() tenant: Tenant,
+    @CurrentUser() user: User,
+    @Args('file', { type: () => GraphQLUpload }) file: Express.Multer.File,
+    @Args('createFile') createFile: CreateTeamFileDto,
+  ): Promise<Team> {
+    const fileUpload = await this.fileUploadsService.create(
+      tenant,
+      user,
+      file,
+      FileKind.TeamFile,
+      createFile.fileLastModifiedAt,
+    );
+    await this.teamFilesService.create(user, createFile, fileUpload);
+    return await this.teamsService.findOne(createFile.id);
+  }
+
+  @ResolveField(() => [TeamForm])
+  public async forms(@Parent() team: Team): Promise<TeamForm[]> {
+    const paginatedForms = await this.teamFormsService.findAll({ id: team.id, isTemplate: false });
+    return paginatedForms.items;
+  }
+
+  @ResolveField(() => [TeamForm])
+  public async formTemplates(@Parent() team: Team): Promise<TeamForm[]> {
+    const paginatedFormTemplates = await this.teamFormsService.findAll({ id: team.id, isTemplate: true });
+    return paginatedFormTemplates.items;
   }
 
   @ResolveField(() => TeamMembershipStatus, { nullable: true })
