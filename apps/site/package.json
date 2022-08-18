@@ -64,7 +64,6 @@
         "vue-multiselect": "^3.0.0-alpha.2",
         "vue-router": "4.1.2",
         "vue3-cookies": "^1.0.6",
-        "vuedraggable": "^4.1.0",
         "workbox-precaching": "^6.5.3"
     },
     "devDependencies": {
