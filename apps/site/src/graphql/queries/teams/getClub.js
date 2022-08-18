@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
 import { fullTeamFragment } from '@/graphql/fragments/fullTeamFragment'
+import { partialUserFragment } from '@/graphql/fragments/userFragment'
 
 export const getClub = gql`
     query club($id: Int!) {
@@ -9,14 +10,19 @@ export const getClub = gql`
                 id
                 role
                 user {
-                    id
-                    firstname
-                    lastname
-                    avatar
-                    schoolRole
+                    ...PartialUserInfo
                 }
+            }
+            forms {
+                id
+                type
+                name
+                description
+                schema
+                updatedAt
             }
         }
     }
     ${fullTeamFragment}
+    ${partialUserFragment}
 `

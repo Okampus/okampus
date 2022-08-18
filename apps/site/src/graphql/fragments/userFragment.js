@@ -34,3 +34,18 @@ export const userFragment = gql`
     }
     ${schoolGroupFragment}
 `
+
+export const partialUserFragment = gql`
+    fragment PartialUserInfo on User {
+        id
+        shortDescription
+        email
+        points
+        firstname
+        lastname
+        avatar
+        banner
+        roles
+        schoolRole
+    }
+`

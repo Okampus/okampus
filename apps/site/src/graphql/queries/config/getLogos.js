@@ -1,4 +1,4 @@
-import { userFragment } from '@/graphql/fragments/userFragment'
+import { partialUserFragment } from '@/graphql/fragments/userFragment'
 import gql from 'graphql-tag'
 
 export const getLogos = gql`
@@ -11,11 +11,11 @@ export const getLogos = gql`
                 fileSize
                 mimeType
                 user {
-                    ...UserInfo
+                    ...PartialUserFragment
                 }
                 url
             }
         }
     }
-    ${userFragment}
+    ${partialUserFragment}
 `

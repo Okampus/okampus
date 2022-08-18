@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { partialUserFragment } from './userFragment'
 
 export const fullTeamFragment = gql`
     fragment FullTeamInfo on Team {
@@ -14,16 +15,12 @@ export const fullTeamFragment = gql`
             id
             role
             user {
-                id
-                firstname
-                lastname
-                avatar
-                schoolRole
+                ...PartialUserInfo
             }
         }
         membershipRequestForm {
             id
-            form
+            schema
         }
         userMembership {
             pendingRequest
@@ -32,4 +29,5 @@ export const fullTeamFragment = gql`
             }
         }
     }
+    ${partialUserFragment}
 `

@@ -1,4 +1,4 @@
-import { userFragment } from '@/graphql/fragments/userFragment'
+import { partialUserFragment } from '@/graphql/fragments/userFragment'
 import gql from 'graphql-tag'
 
 export const registerEvent = gql`
@@ -8,7 +8,7 @@ export const registerEvent = gql`
             registrations {
                 id
                 user {
-                    ...UserInfo
+                    ...PartialUserInfo
                 }
                 status
             }
@@ -19,5 +19,5 @@ export const registerEvent = gql`
             }
         }
     }
-    ${userFragment}
+    ${partialUserFragment}
 `

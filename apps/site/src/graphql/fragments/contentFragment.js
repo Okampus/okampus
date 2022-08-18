@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { partialUserFragment } from './userFragment'
 
 export const contentFragment = gql`
     fragment ContentInfo on Content {
@@ -19,11 +20,7 @@ export const contentFragment = gql`
             }
             reactions {
                 user {
-                    id
-                    firstname
-                    lastname
-                    avatar
-                    schoolRole
+                    ...PartialUserInfo
                 }
                 value
             }
@@ -31,19 +28,12 @@ export const contentFragment = gql`
         lastEdit {
             createdAt
             editedBy {
-                id
-                firstname
-                lastname
-                avatar
-                schoolRole
+                ...PartialUserInfo
             }
         }
         author {
-            id
-            firstname
-            lastname
-            avatar
-            schoolRole
+            ...PartialUserInfo
         }
     }
+    ${partialUserFragment}
 `

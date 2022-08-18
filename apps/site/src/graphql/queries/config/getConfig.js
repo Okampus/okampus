@@ -1,4 +1,4 @@
-import { userFragment } from '@/graphql/fragments/userFragment'
+import { partialUserFragment } from '@/graphql/fragments/userFragment'
 import gql from 'graphql-tag'
 
 export const getConfig = gql`
@@ -12,7 +12,7 @@ export const getConfig = gql`
                 name
                 step
                 users {
-                    ...UserInfo
+                    ...PartialUserInfo
                 }
             }
             userValidations {
@@ -22,5 +22,5 @@ export const getConfig = gql`
             }
         }
     }
-    ${userFragment}
+    ${partialUserFragment}
 `

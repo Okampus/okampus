@@ -38,7 +38,7 @@ export const getUserRequests = gql`
                 handledMessage
                 formSubmission
                 originalForm {
-                    form
+                    schema
                 }
                 team {
                     ...PartialTeamInfo

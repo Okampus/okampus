@@ -14,6 +14,7 @@ export const getEvents = gql`
             start
             end
             state
+            validationStep
             team {
                 ...PartialTeamInfo
             }

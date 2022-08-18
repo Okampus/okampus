@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { userFragment } from '@/graphql/fragments/userFragment'
+import { partialUserFragment } from '@/graphql/fragments/userFragment'
 
 export const threadFragment = gql`
     fragment ThreadInfo on Thread {
@@ -21,20 +21,20 @@ export const threadFragment = gql`
             id
             active
             user {
-                ...UserInfo
+                ...PartialUserInfo
             }
             content {
                 id
             }
         }
         assignedUsers {
-            ...UserInfo
+            ...PartialUserInfo
         }
         participants {
-            ...UserInfo
+            ...PartialUserInfo
         }
         createdAt
         updatedAt
     }
-    ${userFragment}
+    ${partialUserFragment}
 `

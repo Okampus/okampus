@@ -1,15 +1,15 @@
 import { contentFragment } from '@/graphql/fragments/contentFragment'
-import { userFragment } from '@/graphql/fragments/userFragment'
+import { partialUserFragment } from '@/graphql/fragments/userFragment'
 import gql from 'graphql-tag'
 
 export const getReports = gql`
     query getReports {
         reports {
             user {
-                ...UserInfo
+                ...PartialUserInfo
             }
             target {
-                ...UserInfo
+                ...PartialUserInfo
             }
             content {
                 ...ContentInfo
@@ -21,5 +21,5 @@ export const getReports = gql`
         }
     }
     ${contentFragment}
-    ${userFragment}
+    ${partialUserFragment}
 `

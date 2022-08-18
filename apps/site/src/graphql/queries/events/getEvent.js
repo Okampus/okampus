@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 import { partialTeamFragment } from '@/graphql/fragments/partialTeamFragment'
-import { userFragment } from '@/graphql/fragments/userFragment'
+import { partialUserFragment } from '@/graphql/fragments/userFragment'
 
 export const getEvent = gql`
     query eventById($id: Int!) {
@@ -20,13 +20,13 @@ export const getEvent = gql`
             }
             registrationForm {
                 id
-                form
+                schema
             }
             registrations {
                 id
                 status
                 user {
-                    ...UserInfo
+                    ...PartialUserInfo
                 }
             }
             userRegistration {
@@ -37,5 +37,5 @@ export const getEvent = gql`
         }
     }
     ${partialTeamFragment}
-    ${userFragment}
+    ${partialUserFragment}
 `
