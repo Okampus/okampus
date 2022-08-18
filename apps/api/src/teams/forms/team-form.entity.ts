@@ -1,5 +1,6 @@
 import {
   Entity,
+  Enum,
   Index,
   ManyToOne,
   PrimaryKey,
@@ -8,6 +9,7 @@ import {
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { TeamFormType } from '../../shared/lib/types/enums/team-form-type.enum';
 // eslint-disable-next-line import/no-cycle
 import { User } from '../../users/user.entity';
 // eslint-disable-next-line import/no-cycle
@@ -30,7 +32,11 @@ export class TeamForm extends BaseEntity {
 
   @Field(() => GraphQLJSON)
   @Property({ type: 'json' })
-  form!: object[] | object;
+  schema!: object[] | object;
+
+  @Field(() => TeamFormType)
+  @Enum(() => TeamFormType)
+  type: TeamFormType;
 
   @Field(() => User)
   @ManyToOne()
@@ -49,6 +55,7 @@ export class TeamForm extends BaseEntity {
     name: string;
     form: object[] | object;
     isTemplate: boolean;
+    type: TeamFormType;
     createdBy: User;
     team: Team;
     description?: string | null;

@@ -82,6 +82,7 @@ type Content {
   kind: ContentKind!
   lastEdit: ContentEdit
   parent: Content
+  realAuthor: User!
   replyCount: Int!
   reportCount: Int!
   totalVoteCount: Int!
@@ -156,6 +157,17 @@ input CreateTeamEventRegistrationDto {
   status: TeamEventRegisterStatus!
 }
 
+input CreateTeamEventValidationDto {
+  approved: Boolean!
+  message: String
+}
+
+input CreateTeamFileDto {
+  description: String!
+  id: Int!
+  type: String!
+}
+
 input CreateTeamFinanceDto {
   amount: Float!
   category: TeamFinanceCategory!
@@ -203,6 +215,8 @@ enum FileKind {
   ProfileImage
   StudyDoc
   TeamFile
+  TeamGallery
+  TeamReceipt
   Tenant
 }
 
@@ -220,11 +234,6 @@ type FileUpload {
   user: User!
   validated: Boolean!
   visible: Boolean!
-}
-
-input FilterMembershipRequestsDto {
-  state: MembershipRequestState
-  type: MembershipRequestDirection
 }
 
 input FilterRegisteredEventsDto {
@@ -255,6 +264,13 @@ input InviteMemberDto {
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+input ListMembershipRequestsDto {
+  itemsPerPage: Int!
+  page: Int!
+  state: MembershipRequestState
+  type: MembershipRequestDirection
+}
 
 input ListMetricsDto {
   after: DateTime!
@@ -309,6 +325,7 @@ type Mutation {
   addContent(child: CreateContentWithKindDto!): Content!
   addTeam(team: CreateTeamDto!): Team!
   addTeamEventRegistration(id: Int!, registration: CreateTeamEventRegistrationDto!): TeamEvent!
+  addTeamFile(createFile: CreateTeamFileDto!, file: Upload!): Team!
   addTeamFinance(finance: CreateTeamFinanceDto!, id: Int!): TeamFinance!
   addThread(thread: CreateThreadDto!): Thread!
   addUserToTeam(invite: InviteMemberDto!, teamId: Int!, userId: Int!): TeamMember!
@@ -384,8 +401,8 @@ type Query {
   teamFinanceById(id: Int!): TeamFinance
   teamFinances(filters: TeamFinancesFilterDto!): [TeamFinance!]!
   teamMembers(id: Int!): [TeamMember!]
-  teamMembershipRequests(filter: FilterMembershipRequestsDto, id: Int!): [TeamMembershipRequest!]
-  teamMembershipRequestsByUserId(filters: FilterMembershipRequestsDto, id: String!): [TeamMembershipRequest!]!
+  teamMembershipRequests(filter: ListMembershipRequestsDto, id: Int!): [TeamMembershipRequest!]
+  teamMembershipRequestsByUserId(filters: ListMembershipRequestsDto, id: String!): [TeamMembershipRequest!]!
   teamMembershipsByUserId(id: String!): [TeamMember!]
   teams(filters: TeamsFilterDto): [Team!]!
   tenantById(id: String!): Tenant!
@@ -547,6 +564,8 @@ type Team {
   boardMembers: [TeamMember!]!
   category: String!
   createdAt: DateTime!
+  formTemplates: [TeamForm!]!
+  forms: [TeamForm!]!
   id: Int!
   kind: TeamKind!
   longDescription: String
@@ -555,6 +574,7 @@ type Team {
   name: String!
   shortDescription: String
   tags: [String!]!
+  teamFiles: [TeamFile!]!
   tenant: String!
   updatedAt: DateTime!
   userMembership: TeamMembershipStatus
@@ -618,8 +638,16 @@ type TeamFile {
   id: String!
   lastActiveDate: DateTime!
   team: Team!
-  type: String!
+  type: TeamFileType!
   updatedAt: DateTime!
+}
+
+enum TeamFileType {
+  Brochure
+  Constitution
+  LegalReceipt
+  Rules
+  Transcript
 }
 
 type TeamFinance {
@@ -678,12 +706,19 @@ type TeamForm {
   createdAt: DateTime!
   createdBy: User!
   description: String
-  form: JSON!
   id: Int!
   isTemplate: Boolean!
   name: String!
+  schema: JSON!
   team: Team!
+  type: TeamFormType!
   updatedAt: DateTime!
+}
+
+enum TeamFormType {
+  Internal
+  MembershipRequest
+  Survey
 }
 
 enum TeamKind {
@@ -745,6 +780,12 @@ type Tenant {
   id: String!
   logo: String
   logoDark: String
+  oidcCallbackUri: String!
+  oidcClientId: String!
+  oidcClientSecret: String!
+  oidcDiscoveryUrl: String!
+  oidcEnabled: Boolean!
+  oidcScopes: String!
   updatedAt: DateTime!
   userValidations: [ValidationStep!]!
   validationSteps: [ValidationStep!]!
@@ -824,7 +865,7 @@ input UpdateSettingsDto {
 }
 
 input UpdateTeamDto {
-  membershipRequestFormId: Int!
+  membershipRequestFormId: Int
 }
 
 input UpdateTeamEventRegistrationDto {
@@ -884,6 +925,9 @@ input UpdateValidationStepDto {
   type: ValidationStepType
   users: [String!]
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 type User {
   avatar: String

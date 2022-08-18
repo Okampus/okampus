@@ -1,6 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { Field, InputType } from '@nestjs/graphql';
-import { IntersectionType } from '@nestjs/mapped-types';
+import { Field, InputType, IntersectionType } from '@nestjs/graphql';
 import { IsEnum, IsOptional } from 'class-validator';
 import { MembershipRequestDirection } from '../../shared/lib/types/enums/membership-request-direction.enum';
 import { PaginateDto } from '../../shared/modules/pagination';
@@ -19,4 +18,5 @@ export class FilterMembershipRequestsDto {
   type?: MembershipRequestDirection;
 }
 
+@InputType()
 export class ListMembershipRequestsDto extends IntersectionType(FilterMembershipRequestsDto, PaginateDto) {}

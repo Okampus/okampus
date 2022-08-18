@@ -1,5 +1,5 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { FilterMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
+import { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
 import { TeamMember } from '../members/team-member.entity';
 import { TeamMembershipRequest } from '../requests/team-membership-request.entity';
 import { TeamMembershipsService } from './memberships.service';
@@ -22,7 +22,7 @@ export class TeamMembershipsResolver {
   @Query(() => [TeamMembershipRequest])
   public async teamMembershipRequestsByUserId(
     @Args('id') id: string,
-    @Args('filters', { nullable: true }) filters?: FilterMembershipRequestsDto,
+    @Args('filters', { nullable: true }) filters?: ListMembershipRequestsDto,
   ): Promise<TeamMembershipRequest[]> {
     const membershipRequests = await this.teamMembershipService.findAll(id, filters);
     return membershipRequests.items;

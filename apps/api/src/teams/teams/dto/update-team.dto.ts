@@ -5,8 +5,8 @@ import { CreateTeamDto } from './create-team.dto';
 
 @InputType()
 export class UpdateTeamDto extends PartialType(CreateTeamDto) {
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   @IsOptional()
   @IsInt()
-  membershipRequestFormId?: number;
+  membershipRequestFormId?: number | null;
 }

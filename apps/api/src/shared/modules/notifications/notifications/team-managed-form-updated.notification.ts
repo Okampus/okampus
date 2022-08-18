@@ -39,7 +39,7 @@ export class TeamManagedFormUpdatedNotification extends Notification {
         id: this.teamForm.id,
         name: this.teamForm.name,
         description: this.teamForm.description,
-        form: this.teamForm.form,
+        form: this.teamForm.schema,
         executor: this.userToPayload(this.teamForm.createdBy),
         isTemplate: this.teamForm.isTemplate,
         team: {
