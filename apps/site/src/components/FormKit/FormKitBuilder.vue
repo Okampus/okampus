@@ -1,22 +1,17 @@
 <template>
-    <div class="mt-8 flex w-full flex-col items-center">
-        <div class="card-2 centered-container flex flex-col gap-4 p-8">
-            <h1 class="text-3xl font-bold">Créer votre formulaire</h1>
-            <div class="w-96">
-                <FormKit v-model="formTitle" type="text" label="Titre du Formulaire"></FormKit>
-            </div>
-            <FormKit v-model="formDescription" type="textarea" label="Description du Formulaire"></FormKit>
-            <draggable v-model="schema" group="inputs" item-key="id" @start="drag = true" @end="drag = false">
-                <template #item="{ element, index }">
+    <div class="flex flex-col">
+        <!-- <h1 class="mb-6 text-3xl font-bold">Créer votre formulaire</h1> -->
+        <div class="w-96">
+            <FormKit v-model="formTitle" type="text" label="Titre du Formulaire"></FormKit>
+        </div>
+        <FormKit v-model="formDescription" type="textarea" label="Description du Formulaire"></FormKit>
+        <VueDraggableNext v-model="schema" handle=".handle" item-key="id" class="flex flex-col gap-4">
+            <transition-group name="grid">
+                <div v-for="step in steps" :key="step.id" class="group card bg-1 flex flex-col">
                     <div class="bg-1 mt-8 rounded-md p-4">
                         <div v-if="element.$formkit">
                             <div class="flex items-center gap-4">
-                                <FormKit
-                                    v-model="element.label"
-                                    type="text"
-                                    label="Nom de l'évenement"
-                                    class=""
-                                ></FormKit>
+                                <FormKit v-model="element.label" type="text" label="Nom de l'évenement" />
                                 <FormKit
                                     v-model="element.$formkit"
                                     type="select"
@@ -63,214 +58,222 @@
                             </div>
                         </div>
                         <div v-else class="flex">
-                            <div class="w-full">
-                                <FormKit
-                                    v-model="element.children"
-                                    type="text"
-                                    label="Titre de la section"
-                                ></FormKit>
-                            </div>
+                            <FormKit
+                                v-model="element.children"
+                                type="text"
+                                label="Titre de la section"
+                                outer-class="w-full"
+                            />
                             <button class="mt-6 w-8 text-red-500" @click="() => removeOne(index)">
-                                <i class="fas fa-times"></i>
+                                <i class="fas fa-times" />
                             </button>
                         </div>
                     </div>
-                </template>
-            </draggable>
-            <div class="flex gap-4">
-                <button class="w-fit rounded-md bg-blue-500 py-1 px-4 text-white" @click="addOne">
-                    Ajouter un champ
-                </button>
-                <button class="w-fit rounded-md bg-blue-500 py-1 px-4 text-white" @click="addText">
-                    Ajouter un texte
-                </button>
-            </div>
-            <div class="mt-8 flex w-full">
-                <button
-                    class="w-fit rounded-md bg-blue-500 py-1 px-4 text-lg font-bold text-white"
-                    @click="submit"
-                >
-                    Enregistrer
-                </button>
-            </div>
+                </div>
+            </transition-group>
+        </VueDraggableNext>
+        <div class="flex gap-4">
+            <button class="w-fit rounded-md bg-blue-500 py-1 px-4 text-white" @click="addOne">
+                Ajouter un champ
+            </button>
+            <button class="w-fit rounded-md bg-blue-500 py-1 px-4 text-white" @click="addText">
+                Ajouter un texte
+            </button>
+        </div>
+        <div class="mt-8 flex w-full">
+            <button
+                class="w-fit rounded-md bg-blue-500 py-1 px-4 text-lg font-bold text-white"
+                @click="submit"
+            >
+                Enregistrer
+            </button>
         </div>
     </div>
 </template>
 
 <script setup>
+    import { VueDraggableNext } from 'vue-draggable-next'
     import { FormKit } from '@formkit/vue'
-    import draggable from 'vuedraggable'
     import { ref, watch } from 'vue'
-    import { useClubsStore } from '@/store/clubs.store'
-    import { showErrorToast, showInfoToast, showSuccessToast } from '@/utils/toast.js'
+    import { cloneDeep } from 'lodash'
+    // import { useClubsStore } from '@/store/clubs.store'
+    // import { showErrorToast, showInfoToast, showSuccessToast } from '@/utils/toast.js'
 
-    const clubs = useClubsStore()
+    // const clubs = useClubsStore()
 
-    const schema = ref([])
-    const formTitle = ref('')
-    const formDescription = ref('')
-    const drag = ref(false)
+    // const schema = ref([])
 
     const props = defineProps({
-        formId: {
-            type: Number,
+        form: {
+            type: Object,
             required: false,
             default: null,
         },
     })
 
-    const emit = defineEmits(['update'])
+    const formName = ref(props.form.name)
+    const formDescription = ref(props.form.description)
+    const schema = ref(cloneDeep(props.form.schema))
 
-    const loadSchema = async () => {
-        if (!props.formId) {
-            schema.value = ''
-            formTitle.value = ''
-            formDescription.value = ''
-            return
-        }
-        await clubs.getForm(props.formId).then((res) => {
-            schema.value = res.form
-            formTitle.value = res.name
-            formDescription.value = res.description
-        })
-    }
+    watch(props.form, (form) => {
+        formName.value = form.name
+        formDescription.value = form.description
+        schema.value = form.schema
+    })
 
-    const addOne = () => {
-        schema.value.push({
-            $formkit: 'text',
-            label: '',
-            help: '',
-            validation: null,
-        })
-    }
+    // const drag = ref(false)
+    // const emit = defineEmits(['update'])
 
-    const addText = () => {
-        schema.value.push({
-            $el: 'h1',
-            children: '',
-        })
-    }
+    // const loadSchema = async () => {
+    //     if (!props.formId) {
+    //         schema.value = ''
+    //         formTitle.value = ''
+    //         formDescription.value = ''
+    //         return
+    //     }
+    //     await clubs.getForm(props.formId).then((res) => {
+    //         schema.value = res.form
+    //         formTitle.value = res.name
+    //         formDescription.value = res.description
+    //     })
+    // }
 
-    const removeOne = (idx) => {
-        schema.value.splice(idx, 1)
-    }
+    // const addOne = () => {
+    //     schema.value.push({
+    //         $formkit: 'text',
+    //         label: '',
+    //         help: '',
+    //         validation: null,
+    //     })
+    // }
 
-    const addOption = (idx) => {
-        schema.value[idx].options.push('')
-    }
+    // const addText = () => {
+    //     schema.value.push({
+    //         $el: 'h1',
+    //         children: '',
+    //     })
+    // }
 
-    const patchSchema = (idx) => {
-        if (['select', 'radio', 'checkbox'].includes(schema.value[idx].$formkit)) {
-            if (!schema.value[idx].options) {
-                schema.value[idx].options = ['']
-            }
-        } else if (schema.value[idx].options) {
-            delete schema.value[idx].options
-        }
-        if (schema.value[idx].$formkit === 'range') {
-            if (!schema.value[idx].min) {
-                schema.value[idx].min = 0
-                schema.value[idx].max = 10
-            }
-        } else if (schema.value[idx].min) {
-            delete schema.value[idx].min
-            delete schema.value[idx].max
-        }
-    }
+    // const removeOne = (idx) => {
+    //     schema.value.splice(idx, 1)
+    // }
 
-    const createNew = async () => {
-        await clubs
-            .postForm(clubs.club.id, {
-                name: formTitle.value,
-                description: formDescription.value,
-                form: schema.value,
-                isTemplate: false,
-            })
-            .then(() => showSuccessToast('Le formulaire a bien été créé 📝'))
-            .catch((err) => showErrorToast(err.message))
-    }
+    // const addOption = (idx) => {
+    //     schema.value[idx].options.push('')
+    // }
 
-    const update = async () => {
-        await clubs
-            .patchForm(props.formId, {
-                form: schema.value,
-                name: formTitle.value,
-                description: formDescription.value,
-            })
-            .then(() => showInfoToast('Formulaire mis à jour 📝'))
-            .catch((err) => showErrorToast(err.message))
-    }
+    // const patchSchema = (idx) => {
+    //     if (['select', 'radio', 'checkbox'].includes(schema.value[idx].$formkit)) {
+    //         if (!schema.value[idx].options) {
+    //             schema.value[idx].options = ['']
+    //         }
+    //     } else if (schema.value[idx].options) {
+    //         delete schema.value[idx].options
+    //     }
+    //     if (schema.value[idx].$formkit === 'range') {
+    //         if (!schema.value[idx].min) {
+    //             schema.value[idx].min = 0
+    //             schema.value[idx].max = 10
+    //         }
+    //     } else if (schema.value[idx].min) {
+    //         delete schema.value[idx].min
+    //         delete schema.value[idx].max
+    //     }
+    // }
 
-    const submit = async () => {
-        if (!props.formId) {
-            await createNew()
-        } else {
-            await update()
-        }
-        emit('update')
-    }
+    // const createNew = async () => {
+    //     await clubs
+    //         .postForm(clubs.club.id, {
+    //             name: formTitle.value,
+    //             description: formDescription.value,
+    //             form: schema.value,
+    //             isTemplate: false,
+    //         })
+    //         .then(() => showSuccessToast('Le formulaire a bien été créé 📝'))
+    //         .catch((err) => showErrorToast(err.message))
+    // }
 
-    const types = [
-        {
-            value: 'text',
-            label: 'Réponse courte',
-        },
-        {
-            value: 'textarea',
-            label: 'Paragraphe',
-        },
-        {
-            value: 'email',
-            label: 'Email',
-        },
-        {
-            value: 'number',
-            label: 'Nombre',
-        },
-        {
-            value: 'date',
-            label: 'Date',
-        },
-        {
-            value: 'datetime-local',
-            label: 'Date et heure',
-        },
-        {
-            value: 'time',
-            label: 'Heure',
-        },
-        {
-            value: 'url',
-            label: 'Lien',
-        },
-        {
-            value: 'tel',
-            label: 'Numéro de téléphone',
-        },
-        {
-            value: 'color',
-            label: 'Couleur',
-        },
-        {
-            value: 'radio',
-            label: 'Radio',
-        },
-        {
-            value: 'checkbox',
-            label: 'Case à cocher',
-        },
-        {
-            value: 'select',
-            label: 'Liste déroulante',
-        },
-        {
-            value: 'range',
-            label: 'Range',
-        },
-    ]
+    // const update = async () => {
+    //     await clubs
+    //         .patchForm(props.formId, {
+    //             form: schema.value,
+    //             name: formTitle.value,
+    //             description: formDescription.value,
+    //         })
+    //         .then(() => showInfoToast('Formulaire mis à jour 📝'))
+    //         .catch((err) => showErrorToast(err.message))
+    // }
 
-    watch(
-        () => props.formId,
-        async () => await loadSchema(),
-    )
+    // const submit = async () => {
+    //     if (!props.formId) {
+    //         await createNew()
+    //     } else {
+    //         await update()
+    //     }
+    //     emit('update')
+    // }
+
+    // const types = [
+    //     {
+    //         value: 'text',
+    //         label: 'Réponse courte',
+    //     },
+    //     {
+    //         value: 'textarea',
+    //         label: 'Paragraphe',
+    //     },
+    //     {
+    //         value: 'email',
+    //         label: 'Email',
+    //     },
+    //     {
+    //         value: 'number',
+    //         label: 'Nombre',
+    //     },
+    //     {
+    //         value: 'date',
+    //         label: 'Date',
+    //     },
+    //     {
+    //         value: 'datetime-local',
+    //         label: 'Date et heure',
+    //     },
+    //     {
+    //         value: 'time',
+    //         label: 'Heure',
+    //     },
+    //     {
+    //         value: 'url',
+    //         label: 'Lien',
+    //     },
+    //     {
+    //         value: 'tel',
+    //         label: 'Numéro de téléphone',
+    //     },
+    //     {
+    //         value: 'color',
+    //         label: 'Couleur',
+    //     },
+    //     {
+    //         value: 'radio',
+    //         label: 'Radio',
+    //     },
+    //     {
+    //         value: 'checkbox',
+    //         label: 'Case à cocher',
+    //     },
+    //     {
+    //         value: 'select',
+    //         label: 'Liste déroulante',
+    //     },
+    //     {
+    //         value: 'range',
+    //         label: 'Range',
+    //     },
+    // ]
+
+    // watch(
+    //     () => props.formId,
+    //     async () => await loadSchema(),
+    // )
 </script>
