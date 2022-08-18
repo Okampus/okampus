@@ -89,13 +89,16 @@
                     </div>
                 </template>
                 <template v-else>
-                    <i :class="hover ? 'fa fa-cloud-upload-alt' : type.icon" class="mb-2 text-4xl" />
-                    <div class="text-center text-lg">
+                    <i :class="hover ? 'fa fa-cloud-upload-alt' : type.icon" class="mb-3 text-5xl" />
+                    <div class="text-0 text-center text-lg">
                         Faites glissez ou
                         <span class="card-link text-blue-500 hover:underline">parcourez</span> vos fichiers
                     </div>
-                    <div class="text-1">
-                        {{ type.mimeString }} {{ sizeLimit ? `(Taille Max. ${bytes(sizeLimit)})` : '' }}
+                    <div class="text-1 mt-1.5">
+                        {{ type.mimeString }}
+                        <span class="text-3 ml-1 text-sm">{{
+                            sizeLimit ? `Max. ${bytes(sizeLimit)}` : ''
+                        }}</span>
                     </div>
                     <div v-if="imageParams.ratio && imageParams.minWidth" class="text-1 mt-1 text-sm">
                         Dimensions recommandées :

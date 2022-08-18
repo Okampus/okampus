@@ -17,36 +17,35 @@
         </g>
         <foreignObject x="0" y="45" width="47.5" height="15.991">
             <div
-                class="flex h-full w-full items-center justify-center rounded-b uppercase text-white"
-                :class="color"
+                class="flex h-full w-full items-center justify-center rounded-b text-xs uppercase text-white"
+                :class="fileType.color"
             >
-                {{ fileName.split('.').pop() }}
+                {{ fileType?.type ?? file?.name?.split?.('.')?.[1] ?? 'UNKNOWN' }}
             </div>
         </foreignObject>
     </svg>
 </template>
 
 <script setup>
-    import docTypes, { DEFAULT_TYPE } from '@/shared/types/doc-types.enum'
+    import { getType } from '@/shared/assets/file-types'
+
     import { computed } from 'vue'
 
     const props = defineProps({
-        mime: {
-            type: String,
-            default: '',
-        },
-        fileName: {
-            type: String,
-            default: '',
+        file: {
+            type: Object,
+            required: true,
         },
     })
 
-    const color = computed(() => {
-        for (const type of docTypes) {
-            if (type.condition.test(props.mime)) {
-                return type.color
-            }
-        }
-        return DEFAULT_TYPE
-    })
+    const fileType = computed(() => getType(props.file))
+
+    // const color = computed(() => {
+    //     for (const type of docTypes) {
+    //         if (type.condition.test(props.mime)) {
+    //             return type.color
+    //         }
+    //     }
+    //     return DEFAULT_TYPE
+    // })
 </script>
