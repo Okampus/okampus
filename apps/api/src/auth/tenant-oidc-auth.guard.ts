@@ -42,15 +42,11 @@ export class TenantOidcAuthGuard implements CanActivate {
     if (!oidcEnabled)
       return false;
 
-    let strategy: Strategy<User>;
-
-    if (this.oidcStrategyCache.strategies.get(tenantId)) {
-      strategy = this.oidcStrategyCache.strategies.get(tenantId)!;
-    } else {
+    if (!this.oidcStrategyCache.strategies.has(tenantId)) {
       const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl!);
       // eslint-disable-next-line @typescript-eslint/naming-convention
       const client = new TrustIssuer.Client({ client_id: oidcClientId!, client_secret: oidcClientSecret! });
-      strategy = tenantStrategyFactory(
+      this.oidcStrategyCache.strategies.set(tenantId, tenantStrategyFactory(
         this.authServiceInstance,
         tenantId,
         {
@@ -59,13 +55,9 @@ export class TenantOidcAuthGuard implements CanActivate {
           scope: oidcScopes!,
         },
         client,
-      );
-      this.oidcStrategyCache.strategies.set(tenantId, strategy);
+      ));
     }
-    // Reference
     const guard = new (AuthGuard(tenantId))();
     return await guard.canActivate(context) as boolean;
   }
 }
-// @Injectable()
-// export class OIDCAuthGuard extends AuthGuard('oidc') {}
