@@ -32,10 +32,40 @@ export class Tenant extends BaseEntity {
   @Property({ type: 'text' })
   logoDark?: string | null = null;
 
+  @Field(() => Boolean)
+  @Property()
+  oidcEnabled = false;
+
+  @Field(() => String)
+  @Property()
+  oidcClientId?: string | null = null;
+
+  @Field(() => String)
+  @Property({ type: 'text', hidden: true })
+  oidcClientSecret?: string | null = null;
+
+  @Field(() => String)
+  @Property({ type: 'text' })
+  oidcDiscoveryUrl?: string | null = null;
+
+  @Field(() => String)
+  @Property()
+  oidcScopes?: string | null = null;
+
+  @Field(() => String)
+  @Property({ type: 'text' })
+  oidcCallbackUri?: string | null = null;
+
   constructor(options: {
     id: string;
     logo?: string | null;
     logoDark?: string | null;
+    oidcEnabled?: boolean;
+    oidcClientId?: string | null;
+    oidcClientSecret?: string | null;
+    oidcDiscoveryUrl?: string | null;
+    oidcScopes?: string | null;
+    oidcCallbackUri?: string | null;
   }) {
     super();
     this.assign(options);

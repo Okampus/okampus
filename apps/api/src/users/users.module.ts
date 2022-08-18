@@ -45,9 +45,17 @@ export class UsersModule implements OnModuleInit {
   ) {}
 
   public async onModuleInit(): Promise<void> {
-    let tenant = await this.tenantRepository.findOne({ id: config.get('baseTenant') });
+    let tenant = await this.tenantRepository.findOne({ id: config.get('baseTenant.id') });
     if (!tenant) {
-      tenant = new Tenant({ id: config.get('baseTenant') });
+      tenant = new Tenant({
+        id: config.get('baseTenant.id'),
+        oidcEnabled: config.get('baseTenant.oidcEnabled'),
+        oidcClientId: config.get('baseTenant.oidcClientId'),
+        oidcClientSecret: config.get('baseTenant.oidcClientSecret'),
+        oidcDiscoveryUrl: config.get('baseTenant.oidcDiscoveryUrl'),
+        oidcScopes: config.get('baseTenant.oidcScopes'),
+        oidcCallbackUri: config.get('baseTenant.oidcCallbackUri'),
+      });
       await this.tenantRepository.persistAndFlush(tenant);
     }
 

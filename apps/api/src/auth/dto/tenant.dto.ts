@@ -1,8 +1,8 @@
 import { IsEmail, IsEnum, IsString } from 'class-validator';
-import type { MyEfreiUserinfoResponse } from '../../shared/lib/types/interfaces/myefrei-userinfo-response.interface';
+import type { TenantUserinfoResponse } from '../../shared/lib/types/interfaces/userinfo-response.interface';
 import { SchoolRole } from '../../shared/modules/authorization/types/school-role.enum';
 
-export class MyEfreiDto {
+export class TenantDto {
   @IsString()
   id: string;
 
@@ -18,7 +18,7 @@ export class MyEfreiDto {
   @IsEnum(SchoolRole)
   schoolRole: SchoolRole;
 
-  constructor(data: MyEfreiUserinfoResponse) {
+  constructor(data: TenantUserinfoResponse) {
     this.id = data.sub;
     this.firstname = data.given_name!;
     this.lastname = data.family_name!;

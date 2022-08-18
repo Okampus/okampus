@@ -7,7 +7,15 @@ interface Config {
   frontendOriginUrl: string;
   baseDomain: string;
   nodeEnv: 'development' | 'production' | 'test';
-  baseTenant: string;
+  baseTenant: {
+    id: string;
+    oidcEnabled: boolean;
+    oidcClientId: string;
+    oidcClientSecret: string;
+    oidcDiscoveryUrl: string;
+    oidcScopes: string;
+    oidcCallbackUri: string;
+  };
   release: string;
   upload: {
     maxSize: number;
@@ -64,14 +72,6 @@ interface Config {
   session: {
     secret: string;
   };
-  myefreiOidc: {
-    enabled: boolean;
-    clientId: string;
-    clientSecret: string;
-    discoveryUrl: string;
-    scopes: string;
-    callbackUri: string;
-  };
   adminAccount: {
     username: string;
     email: string;
@@ -115,9 +115,41 @@ export const config = createProfiguration<Config>({
     env: 'NODE_ENV',
   },
   baseTenant: {
-    default: 'demo-tenant',
-    format: String,
-    env: 'BASE_TENANT',
+    id: {
+      default: 'demo-tenant',
+      format: String,
+      env: 'BASE_TENANT_ID',
+    },
+    oidcEnabled: {
+      default: false,
+      format: Boolean,
+      env: 'BASE_TENANT_OIDC_ENABLED',
+    },
+    oidcClientId: {
+      default: 'your_oidc_client_id',
+      format: String,
+      env: 'BASE_TENANT_OIDC_CLIENT_ID',
+    },
+    oidcClientSecret: {
+      default: 'your_oidc_client_secret',
+      format: String,
+      env: 'BASE_TENANT_OIDC_CLIENT_SECRET',
+    },
+    oidcDiscoveryUrl: {
+      default: 'https://oauth2service.com/.well-known/openid-configuration',
+      format: String,
+      env: 'BASE_TENANT_OIDC_DISCOVERY_URL',
+    },
+    oidcScopes: {
+      default: 'openid profile',
+      format: String,
+      env: 'BASE_TENANT_OIDC_SCOPES',
+    },
+    oidcCallbackUri: {
+      default: 'https://api.okampus.fr/auth/tenant/callback',
+      format: String,
+      env: 'BASE_TENANT_OIDC_CALLBACK_URI',
+    },
   },
   release: {
     default: '0.1.0-alpha.0',
@@ -321,38 +353,6 @@ export const config = createProfiguration<Config>({
       default: 'secret',
       format: String,
       env: 'SESSION_SECRET',
-    },
-  },
-  myefreiOidc: {
-    enabled: {
-      default: false,
-      format: Boolean,
-      env: 'MYEFREI_OIDC_ENABLED',
-    },
-    clientId: {
-      default: 'client-id',
-      format: String,
-      env: 'MYEFREI_OIDC_CLIENT_ID',
-    },
-    clientSecret: {
-      default: 'client-secret',
-      format: String,
-      env: 'MYEFREI_OIDC_CLIENT_SECRET',
-    },
-    discoveryUrl: {
-      default: 'https://oauth2service.com/.well-known/openid-configuration',
-      format: String,
-      env: 'MYEFREI_OIDC_DISCOVERY_URL',
-    },
-    scopes: {
-      default: 'openid profile',
-      format: String,
-      env: 'MYEFREI_OIDC_SCOPES',
-    },
-    callbackUri: {
-      default: 'https://api.okampus.fr/auth/myefrei/callback',
-      format: String,
-      env: 'MYEFREI_OIDC_CALLBACK_URI',
     },
   },
   adminAccount: {

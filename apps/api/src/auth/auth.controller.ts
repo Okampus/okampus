@@ -14,7 +14,6 @@ import { Request, Response } from 'express';
 import { computedConfig, config } from '../shared/configs/config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Public } from '../shared/lib/decorators/public.decorator';
-import { MyEfreiOidcEnabledGuard } from '../shared/lib/guards/myefrei-oidc-enabled.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { MeiliSearchGlobal } from '../shared/modules/search/meilisearch.global';
 import type { Tenant } from '../tenants/tenants/tenant.entity';
@@ -26,7 +25,7 @@ import type { TokenResponse } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { PreRegisterSsoDto } from './dto/pre-register-sso.dto';
 import { RegisterDto } from './dto/register.dto';
-import { MyEfreiAuthGuard } from './myefrei-auth.guard';
+import { TenantOidcAuthGuard } from './tenant-oidc-auth.guard';
 
 const cookieOptions = config.get('cookies.options');
 const cookiePublicOptions = { ...config.get('cookies.options'), httpOnly: false };
@@ -88,16 +87,16 @@ export class AuthController {
   }
 
   @Public()
-  @UseGuards(MyEfreiOidcEnabledGuard, MyEfreiAuthGuard)
-  @Get('myefrei')
-  public myefreiLogin(): void {
-    // Logging in with MyEfrei! Everything is handled by the guard.
+  @UseGuards(TenantOidcAuthGuard)
+  @Get(':id')
+  public tenantLogin(): void {
+    // Logging in via tenant OIDC! Everything is handled by the guard.
   }
 
   @Public()
-  @UseGuards(MyEfreiOidcEnabledGuard, MyEfreiAuthGuard)
-  @Get('myefrei/callback')
-  public async myefreiCallback(@CurrentUser() user: User, @Res() res: Response): Promise<void> {
+  @UseGuards(TenantOidcAuthGuard)
+  @Get(':id/callback')
+  public async tenantLoginCallback(@CurrentUser() user: User, @Res() res: Response): Promise<void> {
     const login = await this.authService.login(user);
 
     if (config.get('meilisearch.enabled'))

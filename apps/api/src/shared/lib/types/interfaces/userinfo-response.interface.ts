@@ -1,5 +1,5 @@
 import type { UserinfoResponse } from 'openid-client';
 
-export interface MyEfreiUserinfoResponse extends UserinfoResponse {
+export interface TenantUserinfoResponse extends UserinfoResponse {
   role: string;
 }

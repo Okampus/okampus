@@ -1,8 +1,8 @@
 import { IntersectionType, PickType } from '@nestjs/mapped-types';
-import { MyEfreiDto } from './myefrei.dto';
 import { RegisterDto } from './register.dto';
+import { TenantDto } from './tenant.dto';
 
 export class PreRegisterSsoDto extends IntersectionType(
-  MyEfreiDto,
+  TenantDto,
   PickType(RegisterDto, ['tenantId', 'avatar', 'banner', 'color', 'signature', 'schoolRole', 'roles', 'shortDescription']),
 ) {}

@@ -1,7 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { config } from '../shared/configs/config';
+import { OIDCStrategyCache } from '../shared/modules/authorization/oidc-strategy.cache';
 import { MeiliSearchGlobal } from '../shared/modules/search/meilisearch.global';
 import { TenantsCoreModule } from '../tenants/tenants/tenants.module';
 import { User } from '../users/user.entity';
@@ -10,21 +10,7 @@ import { AuthController } from './auth.controller';
 import { AuthGuard } from './auth.guard';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { MyEfreiAuthGuard } from './myefrei-auth.guard';
-import { buildOpenIdClient, MyEfreiStrategy } from './myefrei.strategy';
-
-const MyEfreiStrategyFactory = {
-  provide: 'OidcStrategy',
-  useFactory: async (authService: AuthService): Promise<MyEfreiStrategy> => {
-    const client = await buildOpenIdClient();
-    return new MyEfreiStrategy(authService, client);
-  },
-  inject: [AuthService],
-};
-
-const myefreiStrategy = config.get('myefreiOidc.enabled')
-  ? [MyEfreiStrategyFactory]
-  : [];
+import { TenantOidcAuthGuard } from './tenant-oidc-auth.guard';
 
 @Module({
   imports: [
@@ -37,11 +23,11 @@ const myefreiStrategy = config.get('myefreiOidc.enabled')
   providers: [
     AuthService,
     AuthGuard,
-    MyEfreiAuthGuard,
+    TenantOidcAuthGuard,
     AuthResolver,
     AuthController,
     MeiliSearchGlobal,
-    ...myefreiStrategy,
+    OIDCStrategyCache,
   ],
   exports: [AuthGuard, AuthService, JwtModule],
 })
