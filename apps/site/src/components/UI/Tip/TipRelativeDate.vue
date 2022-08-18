@@ -1,6 +1,6 @@
 <template>
     <span v-tooltip="dateString" class="cursor-default" :class="textClass">
-        {{ action }} {{ timeAgo(date, 'long', limit) }}
+        {{ action }} {{ timeAgo(date, dateStyle, limit) }}
     </span>
 </template>
 
@@ -16,6 +16,10 @@
         date: {
             type: [String, Date],
             required: true,
+        },
+        dateStyle: {
+            type: String,
+            default: 'long',
         },
         limit: {
             type: Boolean,
