@@ -16,7 +16,7 @@
         },
         bgClass: {
             type: [String, Array, Object],
-            default: 'bg-blue-500 hover:bg-blue-600 dark:hover:bg-blue-400',
+            default: 'bg-gray-500 hover:bg-gray-600 dark:hover:bg-gray-400',
         },
         action: {
             type: Function,
