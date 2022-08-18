@@ -2,6 +2,7 @@ import { join } from 'node:path';
 import type { ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloDriver } from '@nestjs/apollo';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import type { Request } from 'express';
 import { JSONResolver } from 'graphql-scalars';
 import { AuthModule } from '../../auth/auth.module';
 import { AuthService } from '../../auth/auth.service';
@@ -9,7 +10,7 @@ import type { Tenant } from '../../tenants/tenants/tenant.entity';
 import type { User } from '../../users/user.entity';
 import { UsersModule } from '../../users/users.module';
 import { UsersService } from '../../users/users.service';
-import { computedConfig, config } from './config';
+import { config } from './config';
 
 export interface GqlWebsocketContext {
   context: {
@@ -29,9 +30,13 @@ export default {
   debug: config.get('nodeEnv') === 'development',
   cache: 'bounded',
   playground: config.get('nodeEnv') === 'development',
-  cors: {
-    origin: computedConfig.frontendUrl,
-    credentials: true,
+  cors: (req: Request, callback: (err: Error | null, result: { origin: boolean; credentials: boolean }) => void) => {
+    const origin = req.header('origin');
+    callback(null,
+      {
+        origin: origin ? /^https:\/\/(?:[\dA-Za-z][\dA-Za-z-]{1,61}[\dA-Za-z])+\.okampus\.fr$/.test(origin) : false,
+        credentials: true,
+      });
   },
   resolvers: {
     JSON: JSONResolver,
