@@ -99,11 +99,11 @@
             type: Boolean,
             default: false,
         },
-        collapsing: {
+        smallScreen: {
             type: Boolean,
             default: false,
         },
-        smallScreen: {
+        collapsing: {
             type: Boolean,
             default: false,
         },

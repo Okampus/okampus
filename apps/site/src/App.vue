@@ -21,39 +21,43 @@
             <LayoutSidebar
                 ref="sidebar"
                 :uncollapsed="collapsed"
-                :collapsing="collapsing"
                 :small-screen="hiding"
+                :collapsing="collapsing"
                 @toggle-side-bar="toggleSidebar"
             />
 
             <div
+                id="main-content"
                 ref="content"
-                :class="{ 'brightness-50': hiding && collapsing != collapsed }"
-                class="bg-1 h-content after-topbar app-scrollbar relative flex w-full flex-col overflow-auto"
+                :class="{ 'brightness-50 child:pointer-events-none': hiding && collapsing != collapsed }"
+                class="bg-1 grow-1 h-content after-topbar app-scrollbar relative flex w-full flex-col overflow-auto"
                 @mousedown="hiding && collapsed !== collapsing && toggleSidebar()"
             >
-                <div
-                    class="grow-1 flex-auto shrink-0"
-                    :class="{ 'pointer-events-none': hiding && collapsing != collapsed }"
-                >
-                    <AppException v-if="error.code" :code="error.code" />
-                    <RouterView v-else v-slot="{ Component }">
-                        <template v-if="Component">
-                            <!--
+                <AppBottomSheet
+                    v-model:show="modal.show"
+                    :uncollapsed="collapsed"
+                    :small-screen="hiding"
+                    :component="modal.component"
+                    :props="modal.props"
+                />
+
+                <AppException v-if="error.code" :code="error.code" />
+                <RouterView v-else v-slot="{ Component }">
+                    <template v-if="Component">
+                        <!--
                             TODO: Transition f*** everything up - check out an alternative compatible with Apollo Vue(?)
                             <Transition mode="out-in" name="switch-fade">
                             <KeepAlive> -->
-                            <Suspense timeout="0">
-                                <component :is="Component" />
-                                <template #fallback>
-                                    <AppLoader />
-                                </template>
-                            </Suspense>
-                            <!-- </KeepAlive> -->
-                            <!-- </Transition> -->
-                        </template>
-                    </RouterView>
-                </div>
+                        <Suspense timeout="0">
+                            <component :is="Component" />
+                            <template #fallback>
+                                <AppLoader />
+                            </template>
+                        </Suspense>
+                        <!-- </KeepAlive> -->
+                        <!-- </Transition> -->
+                    </template>
+                </RouterView>
             </div>
 
             <LayoutTopbar
@@ -95,6 +99,7 @@
 
     import 'swiper/css'
     import 'swiper/css/effect-coverflow'
+    import AppBottomSheet from './components/App/AppBottomSheet.vue'
 
     SwiperCore.use([EffectCoverflow])
 
@@ -112,11 +117,10 @@
     const topbar = ref(null)
     const content = ref(null)
 
-    const hiding = breakpoints.smaller('hideSidebar')
-
     // TODO: hide sidebar on some routes for better navigation
     // const hideSidebarOnRoute = computed(() => currentRoute.fullPath !== '/')
 
+    const hiding = breakpoints.smaller('hideSidebar')
     const uncollapsing = breakpoints.greater('uncollapseSidebar')
 
     const collapsing = ref(false)
@@ -154,6 +158,12 @@
         type: '',
         duration: null,
         position: 'bottom',
+    })
+
+    const modal = reactive({
+        show: false,
+        component: '',
+        props: {},
     })
 
     const error = reactive({
@@ -195,8 +205,6 @@
     })
 
     emitter.on('show-toast', ({ type, title, message, duration, onClose, position }) => {
-        toast.show = true
-
         toast.type = type
         toast.title = title
         toast.message = message
@@ -204,6 +212,20 @@
         toast.duration = duration
         toast.onClose = onClose ?? (() => {})
         toast.position = position ?? 'bottom'
+
+        toast.show = true
+    })
+
+    emitter.on('show-bottom-sheet', ({ component, props }) => {
+        modal.component = component
+        modal.props = props
+        modal.show = true
+    })
+
+    emitter.on('close-bottom-sheet', () => {
+        modal.show = false
+        modal.component = ''
+        modal.props = {}
     })
 
     emitter.on('error-route', ({ code, path }) => {

@@ -10,6 +10,16 @@ $sidebar-width-lg: 16rem;
     width: $sidebar-width-lg;
 }
 
+.after-sidebar-sm {
+    left: $sidebar-width-sm;
+    width: calc(100vw - $sidebar-width-sm);
+}
+
+.after-sidebar-lg {
+    left: $sidebar-width-lg;
+    width: calc(100vw - $sidebar-width-lg);
+}
+
 .hidden-sidebar-sm {
     margin-left: calc(-1 * $sidebar-width-sm);
 }
@@ -18,38 +28,8 @@ $sidebar-width-lg: 16rem;
     margin-left: calc(-1 * $sidebar-width-lg);
 }
 
-.w-sidebar {
-    width: $sidebar-width-sm;
-}
-
 .w-content {
     width: calc(100% - $sidebar-width-sm);
-}
-
-.hidden-sidebar {
-    margin-left: calc(-1 * $sidebar-width-sm);
-}
-
-.after-sidebar {
-    left: $sidebar-width-sm;
-}
-
-@media (min-width: 1536px) {
-    .w-sidebar {
-        width: $sidebar-width-lg;
-    }
-
-    .w-content {
-        width: calc(100% - $sidebar-width-lg);
-    }
-
-    .after-sidebar {
-        left: $sidebar-width-lg;
-    }
-
-    .hidden-sidebar {
-        margin-left: calc(-1 * $sidebar-width-lg);
-    }
 }
 
 .h-topbar {
