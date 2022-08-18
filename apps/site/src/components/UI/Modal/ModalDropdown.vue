@@ -1,6 +1,14 @@
 <template>
-    <Dropdown class="z-10">
-        <slot />
+    <Dropdown
+        class="z-10"
+        :popper-hide-triggers="(triggers) => [...triggers, 'click']"
+        @click.stop="() => {}"
+    >
+        <slot v-if="$slots.default" />
+        <i
+            v-else
+            class="fa fa-ellipsis-vertical text-3 -mr-4 flex h-6 w-6 items-center justify-center text-xl"
+        />
 
         <template #popper>
             <div class="card flex flex-col p-2">
