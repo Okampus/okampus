@@ -21,9 +21,9 @@ export const showErrorToast = (message, ...props) => {
 
 export const showToastGraphQLError = (apolloErrors, message = '') => {
     const toast = { ...(TOAST_ERRORS[getGraphQLErrorCode(apolloErrors)] ?? TOAST_ERRORS[errorCodes.UNKNOWN]) }
+    toast.message = toast.message[i18n.global.locale.value]
 
-    if (message) toast.message = `${message} (${toast.message})`
-    else toast.message = toast.message[i18n.global.locale.value]
+    if (message) toast.title = message
 
     emitter.emit('show-toast', toast)
 }
