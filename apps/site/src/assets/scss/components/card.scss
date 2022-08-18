@@ -9,8 +9,6 @@
 }
 
 .card {
-    @include get-color('text', 0);
-    @include get-color('bg', 1);
     @apply shadow-md md:rounded-lg py-4 px-6;
 }
 

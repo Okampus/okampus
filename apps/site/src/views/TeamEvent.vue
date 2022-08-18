@@ -154,7 +154,9 @@
 
                     <ModalPopup :show="showAdmin" @close="showAdmin = false">
                         <template #default="{ close }">
-                            <div class="card flex w-[48rem] flex-col items-center justify-center py-8 px-10">
+                            <div
+                                class="card-0 flex w-[48rem] flex-col items-center justify-center py-8 px-10"
+                            >
                                 <div class="text-2xl font-semibold">
                                     Voici l'onglet de gestion de
                                     <span class="font-bold">{{ event.shortDescription }}</span>

@@ -1,5 +1,5 @@
 <template>
-    <div class="card min-w-[30vw]">
+    <div class="card-0 min-w-[30vw]">
         <div class="flex flex-col items-center">
             <slot />
 
