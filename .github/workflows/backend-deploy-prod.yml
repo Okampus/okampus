@@ -1,13 +1,11 @@
 name: Update production chart version
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'apps/api/**'
-      - '!*/**/*.md'
-      - '.github/workflows/backend-deploy-prod.yml'
+  workflow_run:
+    workflows: ["Build backend"]
+    branches: [master]
+    types:
+      - completed
 
 jobs:
   bump:

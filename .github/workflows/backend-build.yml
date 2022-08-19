@@ -31,6 +31,10 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_TOKEN }}
           registry: rg.fr-par.scw.cloud/okampus
+
+      - name: Fix package-lock temporarily
+        run: cp package-lock.json apps/api
+
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
