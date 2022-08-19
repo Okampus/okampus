@@ -8,16 +8,16 @@ on:
       - completed
 
 jobs:
-  on-failure:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    steps:
-      - run: exit 1
   bump:
     name: Edit infra chart parameters
     runs-on: ubuntu-latest
     environment: production
     steps:
+    - uses: actions/github-script@v3
+      if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+      with:
+        script: |
+            core.setFailed('The container image could not be built, will not deploy to preprod')
     - name: Checkout repository
       uses: actions/checkout@v3
       with:

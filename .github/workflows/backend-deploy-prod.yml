@@ -8,16 +8,16 @@ on:
       - completed
 
 jobs:
-  on-failure:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    steps:
-      - run: exit 1
   bump:
     name: Bump chart version
     runs-on: ubuntu-latest
     environment: production
     steps:
+    - uses: actions/github-script@v3
+      if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+      with:
+        script: |
+            core.setFailed('The container image could not be built, will not change release chart version')
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
