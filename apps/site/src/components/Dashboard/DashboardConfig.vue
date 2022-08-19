@@ -58,11 +58,12 @@
                         @click="showValidationStepForm = true"
                     />
                 </div>
-                <div v-if="!steps.length" class="text-xl font-semibold">
-                    Aucune étape de validation.
-                    <span class="link-blue" @click="showValidationStepForm = true"
-                        >Cliquez pour ajouter la première ✏️ !</span
-                    >
+                <div v-if="!steps.length" class="card-0 flex flex-col gap-2 text-center">
+                    <h3 class="font-semibold">Aucune étape de validation pour le moment</h3>
+                    <h4>
+                        <span class="link-blue" @click="showValidationStepForm = true">Cliquez ici</span> pour
+                        créer la première ✏️
+                    </h4>
                 </div>
                 <div v-else>
                     <VueDraggableNext
