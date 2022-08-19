@@ -13,7 +13,7 @@ RUN chown api:api ./
 USER api
 
 ADD --chown=api:api package*.json ./
-RUN npm install --force
+RUN npm ci
 
 ADD --chown=api:api . ./
 
