@@ -9,13 +9,13 @@
             <slot v-else-if="data && (!Array.isArray(data) || data?.length > 0)" :data="data" />
 
             <slot v-else-if="$slots.empty" name="empty" />
-            <div v-else-if="resource" class="text-0 my-12 flex flex-col items-center gap-2">
+            <div v-else-if="resource" class="text-0 my-12 flex flex-col items-center justify-center gap-2">
                 <img :src="Zoom" class="h-40 w-40" />
-                <div class="text-2xl font-bold">
+                <div class="text-center text-2xl font-bold">
                     Aucun{{ resource.frFeminine ? 'e' : '' }} {{ resource.name.fr }} ne correspond à ces
                     critères.
                 </div>
-                <div v-if="routeBase" class="text-lg">
+                <div v-if="routeBase" class="text-center text-lg">
                     Essayez la
                     <router-link :to="routeBase" class="link-blue"
                         >liste de tou{{ resource.frFeminine ? 'te' : '' }}s les

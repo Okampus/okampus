@@ -9,9 +9,9 @@
                 {{ name }} : {{ JSON.stringify(metrics) }}
             </div> -->
             <div v-if="isEmpty(allMetrics)">
-                <div class="text-0 flex flex-col items-center justify-center text-2xl">
+                <div class="text-0 my-12 flex flex-col items-center justify-center text-2xl">
                     <img :src="Zoom" class="h-40 w-40" />
-                    <span class="font-semibold"> Aucune donnée disponible </span>
+                    <span class="text-center font-semibold"> Aucune donnée disponible </span>
                 </div>
             </div>
             <div v-else class="flex flex-col items-center gap-4">
