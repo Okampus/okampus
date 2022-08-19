@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { UniqueConstraintViolationException } from '@mikro-orm/core';
 import {
   BadRequestException,
@@ -87,26 +88,6 @@ export class AuthController {
   }
 
   @Public()
-  @UseGuards(TenantOidcAuthGuard)
-  @Get(':id')
-  public tenantLogin(): void {
-    // Logging in via tenant OIDC! Everything is handled by the guard.
-  }
-
-  @Public()
-  @UseGuards(TenantOidcAuthGuard)
-  @Get(':id/callback')
-  public async tenantLoginCallback(@CurrentUser() user: User, @Res() res: Response): Promise<void> {
-    const login = await this.authService.login(user);
-
-    if (config.get('meilisearch.enabled'))
-      await this.addMeiliSearchCookie(res, user.tenant);
-
-    this.addAuthCookies(res, login)
-      .redirect(`${computedConfig.frontendUrl + (config.get('nodeEnv') === 'development' ? '/#' : '')}/auth`);
-  }
-
-  @Public()
   @Get('logout')
   public logout(@Res({ passthrough: true }) res: Response): void {
     res.cookie('accessToken', '', { ...cookiePublicOptions, maxAge: 0 })
@@ -171,5 +152,25 @@ export class AuthController {
       .cookie('refreshToken', tokens.refreshToken, { ...cookieOptions, maxAge: maxAgeRefresh })
       .cookie('accessTokenExpiresAt', tokens.accessTokenExpiresAt, { ...cookiePublicOptions, maxAge: maxAgeAccess })
       .cookie('refreshTokenExpiresAt', tokens.refreshTokenExpiresAt, { ...cookiePublicOptions, maxAge: maxAgeRefresh });
+  }
+
+  @Public()
+  @UseGuards(TenantOidcAuthGuard)
+  @Get(':id')
+  public tenantLogin(): void {
+    // Logging in via tenant OIDC! Everything is handled by the guard.
+  }
+
+  @Public()
+  @UseGuards(TenantOidcAuthGuard)
+  @Get(':id/callback')
+  public async tenantLoginCallback(@CurrentUser() user: User, @Res() res: Response): Promise<void> {
+    const login = await this.authService.login(user);
+
+    if (config.get('meilisearch.enabled'))
+      await this.addMeiliSearchCookie(res, user.tenant);
+
+    this.addAuthCookies(res, login)
+      .redirect(`${computedConfig.frontendUrl + (config.get('nodeEnv') === 'development' ? '/#' : '')}/auth`);
   }
 }
