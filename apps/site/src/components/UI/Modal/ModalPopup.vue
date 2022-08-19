@@ -26,7 +26,7 @@
     const props = defineProps({
         show: {
             type: Boolean,
-            require: true,
+            required: true,
         },
     })
 

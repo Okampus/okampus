@@ -15,7 +15,7 @@
                             class="shadow-bottom-sheet bg-0 flex w-full justify-between rounded-t-lg py-4 px-6"
                         >
                             <div class="text-0 w-full text-center text-2xl font-bold">
-                                Créez votre formulaire&nbsp; 🎉
+                                {{ title }}
                             </div>
                             <i
                                 class="fa fa-xmark -mt-1 -mr-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg pl-0.5 text-4xl text-3-light hover:bg-gray-500 dark:text-0-dark"
@@ -40,7 +40,11 @@
     defineProps({
         show: {
             type: Boolean,
-            require: true,
+            required: true,
+        },
+        title: {
+            type: String,
+            required: true,
         },
         component: {
             type: [Object, String],
