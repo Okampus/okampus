@@ -37,7 +37,7 @@ export class FilePersistanceService {
       ACL: 'public-read',
       Bucket: FilePersistanceService.fileKindBucket[kind],
       Key: key,
-      Body: file.stream,
+      Body: file.buffer,
       ContentType: file.mimetype,
       /* eslint-enable @typescript-eslint/naming-convention */
     };
