@@ -2,11 +2,9 @@ import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import type { Strategy } from 'openid-client';
 import { Issuer } from 'openid-client';
 import { OIDCStrategyCache } from '../shared/modules/authorization/oidc-strategy.cache';
 import { TenantsService } from '../tenants/tenants/tenants.service';
-import type { User } from '../users/user.entity';
 import { AuthService } from './auth.service';
 import { tenantStrategyFactory } from './tenant.strategy';
 

@@ -52,7 +52,6 @@
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
 
     import { FORMKIT, FORMKIT_TEMPLATE, getType } from '@/shared/assets/file-types.js'
-    import { downloadFile } from '@/utils/downloadFile'
 
     import { ref } from 'vue'
     import { emitter } from '@/shared/modules/emitter'
