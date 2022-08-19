@@ -48,6 +48,15 @@ $logo-dark-url: url('@/assets/img/logos/logo_dark.png');
     transform: translate(-50%, -50%);
 }
 
+.absolute-centered-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    transform: translate(calc(50vw - 50%), calc(50vh - 50%));
+}
+
 .symmetry-x {
     transform: scale(-1, 1);
 }
