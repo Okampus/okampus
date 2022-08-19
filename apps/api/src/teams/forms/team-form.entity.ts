@@ -53,7 +53,7 @@ export class TeamForm extends BaseEntity {
 
   constructor(options: {
     name: string;
-    form: object[] | object;
+    schema: object[] | object;
     isTemplate: boolean;
     type: TeamFormType;
     createdBy: User;

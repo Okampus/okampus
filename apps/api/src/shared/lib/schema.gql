@@ -180,6 +180,14 @@ input CreateTeamFinanceDto {
   type: TeamFinanceType!
 }
 
+input CreateTeamFormDto {
+  description: String!
+  isTemplate: Boolean!
+  name: String!
+  schema: JSON!
+  type: TeamFormType!
+}
+
 input CreateTeamMembershipRequestDto {
   formSubmission: JSON
   originalFormId: Int
@@ -330,6 +338,7 @@ type Mutation {
   addThread(thread: CreateThreadDto!): Thread!
   addUserToTeam(invite: InviteMemberDto!, teamId: Int!, userId: Int!): TeamMember!
   addValidationStep(createStep: CreateValidationStepDto!): Tenant!
+  createTeamForm(createForm: CreateTeamFormDto!, id: Int!): TeamForm!
   favoriteContent(favorite: Boolean!, id: Int!): Content!
   handleTeamMembershipRequest(payload: PutTeamMembershipRequestDto!, requestId: Int!): TeamMembershipRequest!
   insertStep(atStep: Int!, step: Int!): Tenant!
@@ -343,6 +352,7 @@ type Mutation {
   updateTeam(id: Int!, team: UpdateTeamDto!): Team!
   updateTeamEventRegistration(id: Int!, registration: UpdateTeamEventRegistrationDto!): TeamEventRegistration!
   updateTeamFinance(finance: UpdateTeamFinanceDto!, id: Int!): TeamFinance!
+  updateTeamForm(id: Int!, updateForm: UpdateTeamFormDto!): TeamForm!
   updateTeamMember(teamId: Int!, update: UpdateTeamMemberDto!, userId: Int!): TeamMember!
   updateTeamMembershipRequest(requestId: Int!, update: UpdateTeamMembershipRequestDto!): TeamMembershipRequest!
   updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
@@ -400,6 +410,7 @@ type Query {
   teamEventRegistrations(filters: FilterRegisteredEventsDto!): [TeamEventRegistration!]!
   teamFinanceById(id: Int!): TeamFinance
   teamFinances(filters: TeamFinancesFilterDto!): [TeamFinance!]!
+  teamFormById(id: Int!): TeamForm!
   teamMembers(id: Int!): [TeamMember!]
   teamMembershipRequests(filter: ListMembershipRequestsDto, id: Int!): [TeamMembershipRequest!]
   teamMembershipRequestsByUserId(filters: ListMembershipRequestsDto, id: String!): [TeamMembershipRequest!]!
@@ -884,6 +895,14 @@ input UpdateTeamFinanceDto {
   receipt: String
   title: String
   type: TeamFinanceType
+}
+
+input UpdateTeamFormDto {
+  description: String
+  isTemplate: Boolean
+  name: String
+  schema: JSON
+  type: TeamFormType
 }
 
 input UpdateTeamMemberDto {
