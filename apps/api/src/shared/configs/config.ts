@@ -5,7 +5,7 @@ import { FileKind } from '../lib/types/enums/file-kind.enum';
 // Helpers
 const parseEnvInt = (value: string | undefined, defaultValue: number): number => {
   const parsed = Number(value);
-  return Number.isInteger(value) ? defaultValue : parsed;
+  return Number.isInteger(parsed) ? parsed : defaultValue;
 };
 const parseEnvBoolean = (value: string | undefined, defaultValue: boolean): boolean => {
   const parsed = value && ['true', 'false'].includes(value);
