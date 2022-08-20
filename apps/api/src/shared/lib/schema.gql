@@ -157,11 +157,6 @@ input CreateTeamEventRegistrationDto {
   status: TeamEventRegisterStatus!
 }
 
-input CreateTeamEventValidationDto {
-  approved: Boolean!
-  message: String
-}
-
 input CreateTeamFileDto {
   description: String!
   id: Int!
