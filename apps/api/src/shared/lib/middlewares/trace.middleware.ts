@@ -1,6 +1,6 @@
 import type { NestMiddleware } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
-import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
+import { InjectSentry, SentryService } from '@xiifain/nestjs-sentry';
 import type { NextFunction, Request, Response } from 'express';
 
 @Injectable()

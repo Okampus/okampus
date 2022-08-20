@@ -1,6 +1,6 @@
 import { HttpException } from '@nestjs/common';
-import type { SentryInterceptorOptions, SentryModuleOptions } from '@ntegral/nestjs-sentry';
 import * as Sentry from '@sentry/node';
+import type { SentryInterceptorOptions, SentryModuleOptions } from '@xiifain/nestjs-sentry';
 import { config } from './config';
 
 export default {
