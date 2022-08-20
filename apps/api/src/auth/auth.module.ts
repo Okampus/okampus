@@ -2,7 +2,6 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { OIDCStrategyCache } from '../shared/modules/authorization/oidc-strategy.cache';
-import { MeiliSearchGlobal } from '../shared/modules/search/meilisearch.global';
 import { TenantsCoreModule } from '../tenants/tenants/tenants.module';
 import { User } from '../users/user.entity';
 import { UsersModule } from '../users/users.module';
@@ -26,7 +25,6 @@ import { TenantOidcAuthGuard } from './tenant-oidc-auth.guard';
     TenantOidcAuthGuard,
     AuthResolver,
     AuthController,
-    MeiliSearchGlobal,
     OIDCStrategyCache,
   ],
   exports: [AuthGuard, AuthService, JwtModule],

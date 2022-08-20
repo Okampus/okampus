@@ -12,11 +12,12 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
+import MeiliSearch from 'meilisearch';
+import { InjectMeiliSearch } from 'nestjs-meilisearch';
 import { config } from '../shared/configs/config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Public } from '../shared/lib/decorators/public.decorator';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { MeiliSearchGlobal } from '../shared/modules/search/meilisearch.global';
 import type { Tenant } from '../tenants/tenants/tenant.entity';
 import { TenantsService } from '../tenants/tenants/tenants.service';
 import { User } from '../users/user.entity';
@@ -37,8 +38,8 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly usersService: UsersService,
-    private readonly meiliSearchGlobal: MeiliSearchGlobal,
     private readonly tenantsService: TenantsService,
+    @InjectMeiliSearch() private readonly meiliSearch: MeiliSearch,
   ) {}
 
   @Public()
@@ -131,7 +132,7 @@ export class AuthController {
   private async addMeiliSearchCookie(res: Response, tenant: Tenant): Promise<Response> {
     // MeiliSearch API Key expires with the accessToken
     // Must be passed as Authorization header in the frontend
-    const meiliSearchKey = await this.meiliSearchGlobal.client.createKey({
+    const meiliSearchKey = await this.meiliSearch.createKey({
       indexes: [tenant.id],
       actions: ['search'],
       expiresAt: new Date(Date.now() + config.tokens.accessTokenExpirationSeconds * 1000).toISOString(),

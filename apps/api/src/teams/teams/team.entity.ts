@@ -16,7 +16,7 @@ import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import type { BaseSearchableEntity } from '../../shared/lib/types/interfaces/base-searchable.interface';
 import { Role } from '../../shared/modules/authorization/types/role.enum';
-import type { BaseIndex } from '../../shared/modules/search/meilisearch.global';
+import type { BaseIndex } from '../../shared/modules/search/indexed-entity.interface';
 import type { Tenant } from '../../tenants/tenants/tenant.entity';
 import type { User } from '../../users/user.entity';
 

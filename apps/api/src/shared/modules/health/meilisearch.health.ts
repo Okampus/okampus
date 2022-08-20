@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import type { HealthIndicatorResult } from '@nestjs/terminus';
 import { HealthCheckError, HealthIndicator, TimeoutError } from '@nestjs/terminus';
 import { promiseTimeout, TimeoutError as PromiseTimeoutError } from '@nestjs/terminus/dist/utils';
-import { meiliSearchClient } from '../../configs/meilisearch.config';
+import MeiliSearch from 'meilisearch';
+import { InjectMeiliSearch } from 'nestjs-meilisearch';
 
 interface MeiliSearchHealthIndicatorOptions {
   timeout?: number;
@@ -10,6 +11,10 @@ interface MeiliSearchHealthIndicatorOptions {
 
 @Injectable()
 export class MeiliSearchHealthIndicator extends HealthIndicator {
+  constructor(
+    @InjectMeiliSearch() private readonly meiliSearch: MeiliSearch,
+  ) { super(); }
+
   public async pingCheck(key: string, options?: MeiliSearchHealthIndicatorOptions): Promise<HealthIndicatorResult> {
     const timeout = options?.timeout ?? 1000;
 
@@ -35,6 +40,6 @@ export class MeiliSearchHealthIndicator extends HealthIndicator {
   }
 
   private async pingMeilisearch(timeout: number): Promise<boolean> {
-    return await promiseTimeout(timeout, meiliSearchClient.isHealthy());
+    return await promiseTimeout(timeout, this.meiliSearch.isHealthy());
   }
 }

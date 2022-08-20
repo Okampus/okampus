@@ -2,6 +2,8 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import MeiliSearch from 'meilisearch';
+import { InjectMeiliSearch } from 'nestjs-meilisearch';
 import type { Token } from '../auth/auth.guard';
 import { FileUpload } from '../files/file-uploads/file-upload.entity';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
@@ -9,7 +11,6 @@ import { SchoolGroupMembership } from '../school-group/memberships/school-group-
 import { SchoolGroup } from '../school-group/school-group.entity';
 import { SchoolYear } from '../school-group/school-year/school-year.entity';
 import { config } from '../shared/configs/config';
-import { meiliSearchClient } from '../shared/configs/meilisearch.config';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
@@ -17,7 +18,7 @@ import { Action } from '../shared/modules/authorization';
 import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
-import type { IndexedEntity } from '../shared/modules/search/meilisearch.global';
+import type { IndexedEntity } from '../shared/modules/search/indexed-entity.interface';
 import { Statistics } from '../statistics/statistics.entity';
 import { StatisticsService } from '../statistics/statistics.service';
 import { Tenant } from '../tenants/tenants/tenant.entity';
@@ -39,6 +40,7 @@ export class UsersService {
     private readonly statisticsService: StatisticsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
     private readonly jwtService: JwtService,
+    @InjectMeiliSearch() private readonly meiliSearch: MeiliSearch,
   ) {}
 
   public async findOneById(id: string): Promise<User> {
@@ -147,7 +149,7 @@ export class UsersService {
     tenant: Tenant,
     query: PaginateDto & { search: string },
   ): Promise<PaginatedResult<IndexedEntity>> {
-    const result = await meiliSearchClient.index(tenant.id).search(
+    const result = await this.meiliSearch.index(tenant.id).search(
       query.search,
       {
         filter: 'metaType = user',

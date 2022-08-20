@@ -11,6 +11,7 @@ import { SentryInterceptor, SentryModule } from '@xiifain/nestjs-sentry';
 import RedisStore from 'connect-redis';
 import session from 'express-session';
 import Redis from 'ioredis';
+import { MeiliSearchModule } from 'nestjs-meilisearch';
 import { S3Module } from 'nestjs-s3';
 import passport from 'passport';
 import { AnnouncementsModule } from './announcements/announcements.module';
@@ -36,6 +37,7 @@ import { SettingsModule } from './settings/settings.module';
 import cacheConfig from './shared/configs/cache.config';
 import { config } from './shared/configs/config';
 import graphqlConfig from './shared/configs/graphql.config';
+import meiliSearchConfig from './shared/configs/meilisearch.config';
 import redisConfig from './shared/configs/redis.config';
 import sentryConfig, { sentryInterceptorConfig } from './shared/configs/sentry.config';
 import storageConfig from './shared/configs/storage.config';
@@ -46,11 +48,9 @@ import { RestLoggerMiddleware } from './shared/lib/middlewares/rest-logger.middl
 import { TraceMiddleware } from './shared/lib/middlewares/trace.middleware';
 import { PoliciesGuard } from './shared/modules/authorization';
 import { CaslModule } from './shared/modules/casl/casl.module';
-import { MeiliSearchModule } from './shared/modules/search/meilisearch.module';
+import { MeiliSearchIndexerModule } from './shared/modules/search/meilisearch-indexer.module';
 import { StatisticsModule } from './statistics/statistics.module';
-import { SearchSubscriber } from './statistics/subscribers/search.subscriber';
 import { SubjectsModule } from './subjects/subjects.module';
-
 import { TagsModule } from './tags/tags.module';
 import { TeamsModule } from './teams/teams.module';
 import { TenantsModule } from './tenants/tenants.module';
@@ -64,11 +64,12 @@ import { WikisModule } from './wiki/wikis.module';
 @Module({
   imports: [
     // Configs
-    MeiliSearchModule,
+    MeiliSearchIndexerModule,
     CacheModule.register(cacheConfig),
     CaslModule,
     EventEmitterModule.forRoot(),
     GraphQLModule.forRoot(graphqlConfig),
+    MeiliSearchModule.forRoot(meiliSearchConfig),
     MikroOrmModule.forRoot(),
     RedisModule.forRoot(redisConfig),
     S3Module.forRoot(storageConfig),
@@ -110,7 +111,6 @@ import { WikisModule } from './wiki/wikis.module';
     { provide: APP_GUARD, useClass: PoliciesGuard },
     { provide: APP_FILTER, useClass: ExceptionsFilter },
     { provide: APP_INTERCEPTOR, useFactory: (): SentryInterceptor => new SentryInterceptor(sentryInterceptorConfig) },
-    SearchSubscriber,
   ],
   controllers: [AppController],
   exports: [],
