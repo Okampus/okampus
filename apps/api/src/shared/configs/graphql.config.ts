@@ -27,9 +27,9 @@ export default {
   bodyParserConfig: false,
   autoSchemaFile: join(process.cwd(), 'src', 'shared', 'lib', 'schema.gql'),
   sortSchema: true,
-  debug: config.get('nodeEnv') === 'development',
+  debug: config.env.isDev(),
   cache: 'bounded',
-  playground: config.get('nodeEnv') === 'development',
+  playground: config.env.isDev(),
   cors: (req: Request, callback: (err: Error | null, result: { origin: boolean; credentials: boolean }) => void) => {
     const origin = req.header('origin');
     callback(null,

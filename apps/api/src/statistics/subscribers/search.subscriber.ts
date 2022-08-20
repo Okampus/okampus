@@ -9,7 +9,7 @@ import { MeiliSearchGlobal, searchEntities } from '../../shared/modules/search/m
 const ignore = (args: EventArgs<AllIndexableEntities>): boolean => {
   if (!args.changeSet)
     return true;
-  if (args.changeSet.name === 'user' && args.entity.id === config.get('anonAccount.username'))
+  if (args.changeSet.name === 'user' && args.entity.id === config.anonAccount.username)
     return true;
 
   return false;
@@ -25,11 +25,11 @@ export class SearchSubscriber implements EventSubscriber<AllIndexableEntities> {
   }
 
   public getSubscribedEntities(): Array<EntityName<AllIndexableEntities>> {
-    return searchEntities;
+    return [...searchEntities];
   }
 
   public async afterCreate(args: EventArgs<AllIndexableEntities>): Promise<void> {
-    if (!ignore(args) && config.get('meilisearch.enabled')) {
+    if (!ignore(args) && config.meilisearch.enabled) {
       await this.meiliSearchGlobal.client.index(args.entity.tenant.id).addDocuments(
         MeiliSearchGlobal.entityToIndexedEntity([args.entity], args?.changeSet?.name ?? 'unknown'),
       );
@@ -37,7 +37,7 @@ export class SearchSubscriber implements EventSubscriber<AllIndexableEntities> {
   }
 
   public async afterUpdate(args: EventArgs<AllIndexableEntities>): Promise<void> {
-    if (!ignore(args) && config.get('meilisearch.enabled')) {
+    if (!ignore(args) && config.meilisearch.enabled) {
       await this.meiliSearchGlobal.client.index(args.entity.tenant.id).updateDocuments(
         MeiliSearchGlobal.entityToIndexedEntity([args.entity], args?.changeSet?.name ?? 'unknown'),
       );
@@ -45,7 +45,7 @@ export class SearchSubscriber implements EventSubscriber<AllIndexableEntities> {
   }
 
   public async afterDelete(args: EventArgs<AllIndexableEntities>): Promise<void> {
-    if (args.changeSet && config.get('meilisearch.enabled')) {
+    if (args.changeSet && config.meilisearch.enabled) {
       await this.meiliSearchGlobal.client.index(args.entity.tenant.id).deleteDocument(
         `${args.entity.tenant.id}${MEILISEARCH_ID_SEPARATOR}${args.changeSet.name}${MEILISEARCH_ID_SEPARATOR}${args.entity.id}`,
       );

@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { computedConfig, config } from '../shared/configs/config';
+import { config } from '../shared/configs/config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Public } from '../shared/lib/decorators/public.decorator';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
@@ -28,8 +28,8 @@ import { PreRegisterSsoDto } from './dto/pre-register-sso.dto';
 import { RegisterDto } from './dto/register.dto';
 import { TenantOidcAuthGuard } from './tenant-oidc-auth.guard';
 
-const cookieOptions = config.get('cookies.options');
-const cookiePublicOptions = { ...config.get('cookies.options'), httpOnly: false };
+const cookieOptions = config.cookies.options;
+const cookiePublicOptions = { ...config.cookies.options, httpOnly: false };
 
 @ApiTags('Authentication')
 @Controller({ path: 'auth' })
@@ -51,7 +51,7 @@ export class AuthController {
     const login = await this.authService.login(user);
 
     this.addAuthCookies(res, login);
-    if (config.get('meilisearch.enabled'))
+    if (config.meilisearch.enabled)
       await this.addMeiliSearchCookie(res, user.tenant);
 
     return user;
@@ -104,7 +104,7 @@ export class AuthController {
       new BadRequestException('Missing refresh token');
 
     const login = await this.authService.login(user);
-    if (config.get('meilisearch.enabled'))
+    if (config.meilisearch.enabled)
       await this.addMeiliSearchCookie(res, user.tenant);
 
     res.cookie('accessToken', login.accessToken, cookieOptions).send();
@@ -114,7 +114,10 @@ export class AuthController {
   public async wsToken(@CurrentUser() user: User, @Res() res: Response): Promise<void> {
     const wsToken = await this.authService.getWsToken(user.id);
     if (wsToken) {
-      res.cookie('wsToken', wsToken, { ...cookiePublicOptions, maxAge: config.get('tokens.wsTokenExpirationSeconds') * 1000 });
+      res.cookie('wsToken', wsToken, {
+        ...cookiePublicOptions,
+        maxAge: config.tokens.wsTokenExpirationSeconds * 1000,
+      });
       return;
     }
     new BadRequestException('Missing access token');
@@ -131,7 +134,7 @@ export class AuthController {
     const meiliSearchKey = await this.meiliSearchGlobal.client.createKey({
       indexes: [tenant.id],
       actions: ['search'],
-      expiresAt: new Date(Date.now() + config.get('tokens.accessTokenExpirationSeconds') * 1000).toISOString(),
+      expiresAt: new Date(Date.now() + config.tokens.accessTokenExpirationSeconds * 1000).toISOString(),
     });
 
     return res.cookie(
@@ -139,14 +142,14 @@ export class AuthController {
       meiliSearchKey.key,
       {
         ...cookiePublicOptions,
-        maxAge: config.get('tokens.accessTokenExpirationSeconds') * 1000,
+        maxAge: config.tokens.accessTokenExpirationSeconds * 1000,
       },
     );
   }
 
   private addAuthCookies(res: Response, tokens: TokenResponse): Response {
-    const maxAgeAccess = config.get('tokens.accessTokenExpirationSeconds') * 1000;
-    const maxAgeRefresh = config.get('tokens.refreshTokenExpirationSeconds') * 1000;
+    const maxAgeAccess = config.tokens.accessTokenExpirationSeconds * 1000;
+    const maxAgeRefresh = config.tokens.refreshTokenExpirationSeconds * 1000;
 
     return res.cookie('accessToken', tokens.accessToken, { ...cookieOptions, maxAge: maxAgeAccess })
       .cookie('refreshToken', tokens.refreshToken, { ...cookieOptions, maxAge: maxAgeRefresh })
@@ -167,10 +170,10 @@ export class AuthController {
   public async tenantLoginCallback(@CurrentUser() user: User, @Res() res: Response): Promise<void> {
     const login = await this.authService.login(user);
 
-    if (config.get('meilisearch.enabled'))
+    if (config.meilisearch.enabled)
       await this.addMeiliSearchCookie(res, user.tenant);
 
     this.addAuthCookies(res, login)
-      .redirect(`${computedConfig.frontendUrl + (config.get('nodeEnv') === 'development' ? '/#' : '')}/auth`);
+      .redirect(`${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth`);
   }
 }

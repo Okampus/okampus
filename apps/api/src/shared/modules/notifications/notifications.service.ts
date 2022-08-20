@@ -17,8 +17,8 @@ export class NotificationsService {
   constructor(
     private readonly em: EntityManager,
   ) {
-    if (config.get('novu.enabled'))
-      this.novu = new Novu(config.get('novu.apiKey'));
+    if (config.novu.enabled)
+      this.novu = new Novu(config.novu.apiKey);
   }
 
   public async triggerFirst(...notifications: Notification[]): Promise<void> {
@@ -53,7 +53,7 @@ export class NotificationsService {
         for (const [channel, users] of usersByChannels) {
           this.logger.log(`BATCH: Sending ${notification.type} (${channel}) to ${users.length} user(s) (${users.map(user => user.id).join(', ')})`);
 
-          if (config.get('novu.enabled')) {
+          if (config.novu.enabled) {
             await this.novu!.trigger(`${notification.type}-${channel}`, {
               payload: notification.getPayload(),
               to: [...users].map(user => this.toRecipient(user)),
@@ -64,7 +64,7 @@ export class NotificationsService {
         for (const [channel, users] of usersByChannels) {
           this.logger.log(`INDIVIDUAL: Sending ${notification.type} (${channel}) to ${users.length} user(s) (${users.map(user => user.id).join(', ')})`);
 
-          if (config.get('novu.enabled')) {
+          if (config.novu.enabled) {
             for (const user of users) {
               await this.novu!.trigger(`${notification.type}-${channel}`, {
                 payload: notification.getPayload(user),

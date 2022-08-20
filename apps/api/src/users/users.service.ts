@@ -42,7 +42,7 @@ export class UsersService {
   ) {}
 
   public async findOneById(id: string): Promise<User> {
-    if (id === config.get('anonAccount.username'))
+    if (id === config.anonAccount.username)
         throw new BadRequestException('Anonymous account cannot be accessed');
 
     return await this.userRepository.findOneOrFail({ id }, {
@@ -65,7 +65,7 @@ export class UsersService {
     let token: string | null = null;
     if (options.bot) {
       token = await this.jwtService.signAsync({ sub: user.id, typ: 'bot', aud: 'http' } as Token, {
-        secret: config.get('tokens.botTokenSecret'),
+        secret: config.tokens.botTokenSecret,
       });
       await user.setPassword(token);
     } else if (options.password) {
@@ -129,7 +129,7 @@ export class UsersService {
   public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<User>> {
     return await this.userRepository.findWithPagination(
       paginationOptions,
-      { id: { $ne: config.get('anonAccount.username') } },
+      { id: { $ne: config.anonAccount.username } },
       {
         orderBy: { lastname: 'ASC' },
         populate: [

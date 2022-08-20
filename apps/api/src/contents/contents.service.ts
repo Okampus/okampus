@@ -234,7 +234,7 @@ export class ContentsService {
     wrap(content).assign(updateContentDto);
 
     if (updateContentDto.isAnonymous) {
-      const anonymous = await this.userRepository.findOneOrFail({ id: config.get('anonAccount.username') });
+      const anonymous = await this.userRepository.findOneOrFail({ id: config.anonAccount.username });
       content.author = anonymous;
     } else {
       content.author = content.realAuthor;
@@ -314,7 +314,7 @@ export class ContentsService {
   ): Promise<Content> {
     const { isAnonymous } = createContentDto;
     const anonymousOrUser = isAnonymous
-      ? await this.userRepository.findOneOrFail({ id: config.get('anonAccount.username') })
+      ? await this.userRepository.findOneOrFail({ id: config.anonAccount.username })
       : user;
 
     const content = new Content({

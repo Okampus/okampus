@@ -35,8 +35,12 @@ const countEntities = async (
   tenant: { id: string },
   em: EntityManager,
 ): Promise<[name: string, count: number]> => {
-  if (entity.name.toLowerCase() === 'user')
-    return [entity.name.toLowerCase(), await em.count<User>(entity as typeof User, { tenant, id: { $ne: config.get('anonAccount.username') } })];
+  if (entity.name.toLowerCase() === 'user') {
+    return [
+      entity.name.toLowerCase(),
+      await em.count<User>(entity as typeof User, { tenant, id: { $ne: config.anonAccount.username } }),
+    ];
+  }
   return [entity.name.toLowerCase(), await em.count<AllIndexableEntities>(entity, { tenant })];
 };
 
@@ -46,8 +50,12 @@ const getEntities = async (
   em: EntityManager,
   options: FindOptions<AllIndexableEntities>,
 ): Promise<AllIndexableEntities[]> => {
-  if (entity.name.toLowerCase() === 'user')
-    return await em.find<User>(entity as typeof User, { tenant, id: { $ne: config.get('anonAccount.username') } }, options as FindOptions<User>);
+  if (entity.name.toLowerCase() === 'user') {
+    return await em.find<User>(entity as typeof User, {
+      tenant,
+      id: { $ne: config.anonAccount.username },
+    }, options as FindOptions<User>);
+  }
 
   return await em.find<AllIndexableEntities>(entity, { tenant }, options);
 };

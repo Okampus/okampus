@@ -45,46 +45,46 @@ export class UsersModule implements OnModuleInit {
   ) {}
 
   public async onModuleInit(): Promise<void> {
-    let tenant = await this.tenantRepository.findOne({ id: config.get('baseTenant.id') });
+    let tenant = await this.tenantRepository.findOne({ id: config.baseTenant.id });
     if (!tenant) {
       tenant = new Tenant({
-        id: config.get('baseTenant.id'),
-        oidcEnabled: config.get('baseTenant.oidcEnabled'),
-        oidcClientId: config.get('baseTenant.oidcClientId'),
-        oidcClientSecret: config.get('baseTenant.oidcClientSecret'),
-        oidcDiscoveryUrl: config.get('baseTenant.oidcDiscoveryUrl'),
-        oidcScopes: config.get('baseTenant.oidcScopes'),
-        oidcCallbackUri: config.get('baseTenant.oidcCallbackUri'),
+        id: config.baseTenant.id,
+        oidcEnabled: config.baseTenant.oidc.enabled,
+        oidcClientId: config.baseTenant.oidc.clientId,
+        oidcClientSecret: config.baseTenant.oidc.clientSecret,
+        oidcDiscoveryUrl: config.baseTenant.oidc.discoveryUrl,
+        oidcScopes: config.baseTenant.oidc.scopes,
+        oidcCallbackUri: config.baseTenant.oidc.callbackUri,
       });
       await this.tenantRepository.persistAndFlush(tenant);
     }
 
-    const admin = await this.userRepository.count({ id: config.get('adminAccount.username') });
+    const admin = await this.userRepository.count({ id: config.adminAccount.username });
     if (admin === 0) {
       const user = new User({
         tenant,
-        id: config.get('adminAccount.username'),
-        firstname: config.get('adminAccount.firstName'),
-        lastname: config.get('adminAccount.lastName'),
-        email: config.get('adminAccount.email'),
+        id: config.adminAccount.username,
+        firstname: config.adminAccount.firstName,
+        lastname: config.adminAccount.lastName,
+        email: config.adminAccount.email,
         schoolRole: SchoolRole.Admin,
       });
-      await user.setPassword(config.get('adminAccount.password'));
+      await user.setPassword(config.adminAccount.password);
       user.roles.push(Role.Moderator, Role.Admin);
       await this.userRepository.persistAndFlush(user);
     }
 
-    const anon = await this.userRepository.count({ id: config.get('anonAccount.username') });
+    const anon = await this.userRepository.count({ id: config.anonAccount.username });
     if (anon === 0) {
       const user = new User({
         tenant,
-        id: config.get('anonAccount.username'),
-        firstname: config.get('anonAccount.firstName'),
-        lastname: config.get('anonAccount.lastName'),
-        email: config.get('anonAccount.email'),
+        id: config.anonAccount.username,
+        firstname: config.anonAccount.firstName,
+        lastname: config.anonAccount.lastName,
+        email: config.anonAccount.email,
         schoolRole: SchoolRole.Student,
       });
-      await user.setPassword(config.get('anonAccount.password'));
+      await user.setPassword(config.anonAccount.password);
       await this.userRepository.persistAndFlush(user);
     }
   }

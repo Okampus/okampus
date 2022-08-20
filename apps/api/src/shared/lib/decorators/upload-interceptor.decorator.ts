@@ -11,7 +11,7 @@ export function UploadInterceptor(options: Options = { mimeTypeRegex }): MethodD
   return applyDecorators(
     UseInterceptors(
       FileInterceptor('file', {
-        limits: { fileSize: config.get('upload.maxSize') },
+        limits: { fileSize: config.upload.maxSize },
         fileFilter: (_req, { mimetype }, done): void => {
           if (options.mimeTypeRegex.test(mimetype))
             done(null, true);
@@ -27,7 +27,7 @@ export function UploadMultipleInterceptor(fileNames: string[], options: Options 
   return applyDecorators(
     UseInterceptors(
       FileFieldsInterceptor(fileNames.map(name => ({ name, maxCount: 1 })), {
-        limits: { fileSize: config.get('upload.maxSize') },
+        limits: { fileSize: config.upload.maxSize },
         fileFilter: (_req, { mimetype }, done): void => {
           if (options.mimeTypeRegex.test(mimetype))
             done(null, true);

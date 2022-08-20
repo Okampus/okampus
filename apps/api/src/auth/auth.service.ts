@@ -55,11 +55,11 @@ export class AuthService {
 
     return {
       accessToken: await this.jwtService.signAsync(payload, this.getTokenOptions('access')),
-      refreshToken: config.get('tokens.accessTokenExpirationSeconds')
+      refreshToken: config.tokens.accessTokenExpirationSeconds
         ? await this.jwtService.signAsync(payload, this.getTokenOptions('refresh'))
         : null,
-      accessTokenExpiresAt: Date.now() + config.get('tokens.accessTokenExpirationSeconds') * 1000,
-      refreshTokenExpiresAt: Date.now() + config.get('tokens.refreshTokenExpirationSeconds') * 1000,
+      accessTokenExpiresAt: Date.now() + config.tokens.accessTokenExpirationSeconds * 1000,
+      refreshTokenExpiresAt: Date.now() + config.tokens.refreshTokenExpirationSeconds * 1000,
     };
   }
 
@@ -86,11 +86,11 @@ export class AuthService {
 
   public getTokenOptions(type: 'access' | 'bot' | 'refresh' | 'ws'): JwtSignOptions {
     const options: JwtSignOptions = {
-      secret: config.get(`tokens.${type}TokenSecret`),
+      secret: config.tokens[`${type}TokenSecret`],
     };
 
     if (type !== 'bot') {
-      const expiration = config.get(`tokens.${type}TokenExpirationSeconds`);
+      const expiration = config.tokens[`${type}TokenExpirationSeconds`];
       if (expiration)
         options.expiresIn = `${expiration}s`;
     }

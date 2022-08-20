@@ -73,7 +73,7 @@ export class FileUpload extends BaseTenantEntity {
 
   public getPath(): string {
     return path.join(
-      config.get('upload.path'),
+      config.upload.path,
       this.fileKind,
       `${this.id.toString()}${path.extname(this.name)}`,
     );

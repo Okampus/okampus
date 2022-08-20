@@ -2,9 +2,9 @@ import type { RedisModuleOptions } from '@liaoliaots/nestjs-redis';
 import { config } from './config';
 
 export const redisConnectionOptions = {
-  host: config.get('redis.host'),
-  port: config.get('redis.port'),
-  password: config.get('redis.password'),
+  host: config.redis.host,
+  port: config.redis.port,
+  password: config.redis.password,
 };
 
 export default {

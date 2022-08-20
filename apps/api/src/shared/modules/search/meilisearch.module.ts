@@ -11,7 +11,7 @@ export class MeiliSearchModule implements OnModuleInit {
   constructor(private readonly meiliSearchGlobal: MeiliSearchGlobal) {}
 
   public async onModuleInit(): Promise<void> {
-    if (config.get('meilisearch.enabled'))
+    if (config.meilisearch.enabled)
       await this.meiliSearchGlobal.init();
   }
 }

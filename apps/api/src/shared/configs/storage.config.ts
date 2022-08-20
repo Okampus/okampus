@@ -8,20 +8,16 @@ const awsLogRegex = /\[AWS (?<service>\w+) (?<statusCode>\d+) (?<time>[\d.]+)s (
 
 export default {
   config: {
-    accessKeyId: config.get('s3.accessKeyId'),
-    secretAccessKey: config.get('s3.secretAccessKey'),
-    endpoint: config.get('s3.endpoint'),
-    region: config.get('s3.region'),
+    accessKeyId: config.s3.accessKeyId,
+    secretAccessKey: config.s3.secretAccessKey,
+    endpoint: config.s3.endpoint,
+    region: config.s3.region,
     signatureVersion: 'v4',
     maxRetries: 3,
     logger: {
       log: (message: string) => {
-        if (config.get('nodeEnv') === 'development') {
-          storageLogger.log(message);
-        } else {
-          const awsLog = awsLogRegex.exec(message)?.groups;
-          storageLogger.log(`${awsLog?.method}: ${awsLog?.time}s - ${awsLog?.statusCode} [${awsLog?.retries} retries]`);
-        }
+        const awsLog = awsLogRegex.exec(message)?.groups;
+        storageLogger.log(`${awsLog?.method}: ${awsLog?.time}s - ${awsLog?.statusCode} [${awsLog?.retries} retries]`);
       },
     },
   },

@@ -122,7 +122,7 @@ export class AppModule implements NestModule {
 
   public configure(consumer: MiddlewareConsumer): void {
     // Setup sentry
-    if (config.get('sentry.enabled')) {
+    if (config.sentry.enabled) {
       consumer.apply(
         Sentry.Handlers.requestHandler(),
         TraceMiddleware,
@@ -135,7 +135,7 @@ export class AppModule implements NestModule {
         session({
           store: new (RedisStore(session))({ client: this.redis, logErrors: true }),
           saveUninitialized: false,
-          secret: config.get('session.secret'),
+          secret: config.session.secret,
           resave: false,
         }),
         passport.initialize(),

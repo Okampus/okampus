@@ -1,7 +1,7 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { ICalCalendar, ICalCalendarMethod, ICalEvent } from 'ical-generator';
-import { computedConfig, config } from '../../shared/configs/config';
+import { config } from '../../shared/configs/config';
 import { iCals } from '../../shared/configs/strings';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { User } from '../../users/user.entity';
@@ -43,7 +43,7 @@ export class TeamICalService {
     const calendar = new ICalCalendar({
       prodId: {
         company: 'Okampus',
-        product: config.get('baseTenant.id'),
+        product: config.baseTenant.id,
         language: 'fr',
       },
       method: ICalCalendarMethod.PUBLISH,
@@ -60,7 +60,7 @@ export class TeamICalService {
         email: event.createdBy.email,
       },
       summary: event.name,
-      url: `${computedConfig.frontendUrl}/events/${event.id}`,
+      url: `${config.network.frontendUrl}/events/${event.id}`,
     }, calendar));
 
     calendar.events(events);
