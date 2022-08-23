@@ -213,21 +213,21 @@
     })
 
     const currentForm = reactive({
-        type: props.form?.formType,
+        type: props.form?.meta?.formType,
         name: props.form?.name ?? 'Formulaire sans titre',
         isTemplate: props.form?.isTemplate ?? false,
         description: props.form?.description ?? '',
-        schema: cloneDeep(props.form?.schema) ?? [],
+        schema: cloneDeep(props.form?.meta?.schema) ?? [],
     })
 
     watch(
         () => props.form,
         (form) => {
-            currentForm.type = form.formType
+            currentForm.type = form.meta?.formType
             currentForm.name = form.name ?? 'Formulaire sans titre'
             currentForm.isTemplate = form.isTemplate ?? false
             currentForm.description = form.description ?? ''
-            currentForm.schema = cloneDeep(form.schema) ?? []
+            currentForm.schema = cloneDeep(form.meta?.schema) ?? []
         },
     )
 

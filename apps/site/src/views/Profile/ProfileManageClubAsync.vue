@@ -1,51 +1,51 @@
 <template>
-    <div class="relative flex flex-col">
-        <div class="bg-2 text-0">
-            <div class="centered-container-padded sticky top-0 z-30 flex flex-col pb-0">
-                <div class="flex items-center justify-between gap-4 pt-4">
-                    <div class="flex items-center gap-4">
-                        <ProfileAvatar
-                            :avatar="club.avatar"
-                            :name="club.name"
-                            :size="3"
-                            :rounded-full="false"
+    <GraphQLQuery
+        :query="getClub"
+        :variables="{ id: parseInt(route.params.clubId) }"
+        :update="(data) => data?.clubById"
+    >
+        <template #default="{ data: club }">
+            <div class="relative flex flex-col">
+                <div class="bg-2 text-0">
+                    <div class="centered-container-padded sticky top-0 z-30 flex flex-col pb-0">
+                        <div class="flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-4">
+                                <ProfileAvatar
+                                    :avatar="club.avatar"
+                                    :name="club.name"
+                                    :size="4"
+                                    :rounded-full="false"
+                                />
+                                <div class="flex gap-x-4 lg:items-center lg-max:flex-col">
+                                    <div class="text-2xl">{{ club.name }}</div>
+                                    <LabelSimple class="cursor-default bg-slate-600/40 hover:bg-slate-600/40">
+                                        Vue administrateur
+                                    </LabelSimple>
+                                </div>
+                            </div>
+                            <router-link :to="clubRoute" class="text-lg text-blue-500">
+                                {{ md ? 'Voir en tant que visiteur' : 'Vue visiteur' }}
+                            </router-link>
+                        </div>
+                        <HorizontalTabs
+                            v-model="currentTab"
+                            :tabs="tabs"
+                            :route-base="clubManageRoute"
+                            route-name="manage-club"
+                            :background-variant="2"
                         />
-                        <div class="text-2xl">{{ club.name }}</div>
-                        <LabelSimple class="cursor-default bg-slate-600/40 hover:bg-slate-600/40">
-                            Vue administrateur
-                        </LabelSimple>
                     </div>
-                    <router-link :to="`/club/${clubId}`" class="hidden text-lg text-blue-500 md:block">
-                        Voir en tant que visiteur
-                    </router-link>
-                    <router-link :to="`/club/${clubId}`" class="text-lg text-blue-500 md:hidden">
-                        Vue visiteur
-                    </router-link>
                 </div>
-                <HorizontalTabs
-                    v-model="currentTab"
-                    :tabs="tabs"
-                    :route-base="clubManageRoute"
-                    route-name="manage-club"
-                />
+                <div class="centered-container mt-4 flex flex-col">
+                    <component :is="currentComponent" :club="club" />
+                </div>
             </div>
-        </div>
-        <div class="centered-container-padded flex flex-col">
-            <Transition mode="out-in" name="switch-fade">
-                <KeepAlive>
-                    <Suspense timeout="0">
-                        <component :is="currentComponent" v-model:club="club" />
-                        <template #fallback>
-                            <AppLoader />
-                        </template>
-                    </Suspense>
-                </KeepAlive>
-            </Transition>
-        </div>
-    </div>
+        </template>
+    </GraphQLQuery>
 </template>
 
 <script setup>
+    import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
     import WIP from '@/views/App/WIP.vue'
 
     import ManageHomepage from '@/components/Profile/Manage/ManageHomepage.vue'
@@ -53,26 +53,34 @@
     import ManageDriveAsync from '@/components/Profile/Manage/ManageDriveAsync.vue'
     import ManageActivityAsync from '@/components/Profile/Manage/ManageActivityAsync.vue'
 
+    import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
+
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
-    import AppLoader from '@/components/App/AppLoader.vue'
 
-    import { computed, ref, watchEffect } from 'vue'
+    import { computed, ref } from 'vue'
 
     import { useRoute } from 'vue-router'
-    import { useClubsStore } from '@/store/clubs.store'
-    import { isPositiveInteger } from '@/utils/stringUtils'
 
-    import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
+    import { getClub } from '@/graphql/queries/teams/getClub.js'
+
+    import { useBreakpoints } from '@vueuse/core'
+    import { twBreakpoints } from '@/tailwind'
+
+    const breakpoints = useBreakpoints(twBreakpoints)
+    const md = breakpoints.greater('md')
+    // import { useClubsStore } from '@/store/clubs.store'
+    // import { isPositiveInteger } from '@/utils/stringUtils'
 
     const route = useRoute()
-    const clubs = useClubsStore()
+    // const clubs = useClubsStore()
 
-    const clubId = computed(() => route.params.clubId)
+    // const clubId = computed(() => route.params.clubId)
+    const clubRoute = computed(() => `/club/${route.params.clubId}`)
     const clubManageRoute = computed(() => `/club/${route.params.clubId}/manage`)
 
-    const club = ref(null)
+    // const club = ref(null)
 
     const HOME = 'home'
     const REQUESTS = 'requests'
@@ -100,12 +108,12 @@
         },
         {
             id: DRIVE,
-            name: 'Documents légaux',
+            name: 'Documents',
             icon: 'file-arrow-down',
         },
         {
             id: ACTIVITY,
-            name: 'Events',
+            name: 'Événements',
             icon: 'calendar',
         },
         {
@@ -118,7 +126,7 @@
 
     const currentTab = ref(null)
 
-    await clubs.getClub(clubId.value).then((data) => (club.value = data))
+    // await clubs.getClub(clubId.value).then((data) => (club.value = data))
 
     const components = {
         [HOME]: ManageHomepage,
@@ -130,9 +138,9 @@
     }
     const currentComponent = computed(() => components[currentTab.value ?? DEFAULT_TAB.id])
 
-    watchEffect(async () => {
-        if (isPositiveInteger(clubId.value)) {
-            await clubs.getClub(clubId.value).then((data) => (club.value = data))
-        }
-    })
+    // watchEffect(async () => {
+    //     if (isPositiveInteger(clubId.value)) {
+    //         await clubs.getClub(clubId.value).then((data) => (club.value = data))
+    //     }
+    // })
 </script>

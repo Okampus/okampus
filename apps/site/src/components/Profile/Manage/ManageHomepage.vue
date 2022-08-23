@@ -1,6 +1,50 @@
 <template>
-    <div>
-        <div class="text-2 bg-2 flex flex-col rounded-xl pb-4 shadow-md">
+    <div class="flex flex-col gap-4">
+        <ModalPopup :show="editingPage" @close="editingPage = false">
+            <template #default="{ close }">
+                <div class="card flex flex-col items-center justify-center py-8 px-10">
+                    <div class="text-2xl">Modification des informations de l'association</div>
+                    <FormKit
+                        id="update-club-data"
+                        ref="updateClubForm"
+                        :actions="false"
+                        form-class="flex flex-col mt-6 w-full max-w-xl"
+                        type="form"
+                        @submit="updateClub({ id: club.id, team: $event })"
+                    >
+                        <FormKit
+                            type="text"
+                            name="shortDescription"
+                            label="Description courte"
+                            help="Description accompagnant le nom de l'association"
+                        />
+                        <FormKit
+                            type="textarea"
+                            name="longDescription"
+                            label="Description longue"
+                            rows="6"
+                            help="Description présente sur la page d'accueil de l'association"
+                        />
+                    </FormKit>
+                    <div class="mt-6 flex gap-4 self-end">
+                        <button class="button-grey" @click="close">Annuler</button>
+                        <button
+                            class="button-blue"
+                            @click="
+                                () => {
+                                    updateClubForm.node.submit()
+                                    close()
+                                }
+                            "
+                        >
+                            Valider
+                        </button>
+                    </div>
+                </div>
+            </template>
+        </ModalPopup>
+
+        <div class="card-2 px-0 pt-0">
             <div class="relative">
                 <AvatarCropper
                     v-model="editingBanner"
@@ -15,6 +59,7 @@
                 <ProfileBanner
                     class="h-36 w-full rounded-t-lg"
                     :banner="club.banner"
+                    :rounded-top="md"
                     :name="club.name"
                     :data="club.category"
                 />
@@ -35,8 +80,9 @@
                     />
                 </div>
             </div>
-            <div class="flex">
-                <div class="bg-2 z-10 -mt-[3.5rem] ml-4 w-fit rounded-2xl p-1">
+
+            <div class="flex justify-between">
+                <div class="bg-2 relative z-10 -mt-[3rem] ml-4 w-fit rounded-2xl p-1">
                     <AvatarCropper
                         v-model="editingAvatar"
                         :upload-url="uploadTypeUrl('avatar')"
@@ -48,70 +94,27 @@
                         @completed="(res) => onUploadSuccess(res, 'avatar')"
                     />
                     <ProfileAvatar :rounded-full="false" :avatar="club.avatar" :size="6" :name="club.name" />
-                </div>
-                <div class="flex w-full items-start justify-between">
                     <button
-                        class="button-grey fa fa-camera mt-2 ml-2 flex h-8 w-8 items-center justify-center rounded-full text-lg"
+                        class="button-grey fa fa-camera absolute bottom-0 right-0 mt-2 ml-2 flex h-8 w-8 items-center justify-center rounded-full text-lg"
                         @click="editingAvatar = true"
                     />
-                    <ModalPopup :show="editingPage" @close="editingPage = false">
-                        <template #default="{ close }">
-                            <div class="card flex flex-col items-center justify-center py-8 px-10">
-                                <div class="text-2xl">Modification des informations de l'association</div>
-                                <FormKit
-                                    id="update-club-data"
-                                    ref="updateClubForm"
-                                    v-model="clubData"
-                                    :actions="false"
-                                    form-class="flex flex-col mt-6 w-full max-w-xl"
-                                    type="form"
-                                    @submit="updateClubData"
-                                >
-                                    <FormKit
-                                        type="text"
-                                        name="shortDescription"
-                                        label="Description courte"
-                                        help="Description de l'association présente sous le nom"
-                                    />
-                                    <FormKit
-                                        type="textarea"
-                                        name="longDescription"
-                                        label="Description longue"
-                                        rows="6"
-                                        help="Description longue de l'association"
-                                    />
-                                </FormKit>
-                                <div class="mt-6 flex gap-4 self-end">
-                                    <button class="button-grey" @click="close">Annuler</button>
-                                    <button
-                                        class="button-blue"
-                                        @click="
-                                            () => {
-                                                updateClubForm.node.submit()
-                                                close()
-                                            }
-                                        "
-                                    >
-                                        Valider
-                                    </button>
-                                </div>
-                            </div>
-                        </template>
-                    </ModalPopup>
-                    <button class="button-grey mt-2 mr-4 text-base" @click="editingPage = true">
-                        Modifier
-                    </button>
                 </div>
+                <button
+                    class="button-blue mt-4 mr-4 flex items-center gap-3 text-base"
+                    @click="editingPage = true"
+                >
+                    <i class="fa fa-pencil" /> Modifier la page
+                </button>
             </div>
-            <div class="ml-4 flex grow flex-col">
-                <div class="flex justify-between">
-                    <div class="text-0 mt-1 text-2xl font-semibold">{{ club.name }}</div>
-                </div>
+
+            <div class="mt-4 ml-4 flex flex-col">
+                <div class="text-0 text-2xl font-semibold">{{ club.name }}</div>
                 <div class="text-2 mt-1">{{ club.shortDescription }}</div>
             </div>
         </div>
-        <div class="text-2 bg-2 mt-4 flex flex-col gap-5 rounded-xl p-4 shadow-md">
-            <div>
+
+        <div class="card-2 flex flex-col gap-8">
+            <div class="w-fit">
                 <div class="mb-2 text-lg font-semibold">Catégorie de l'association</div>
                 <router-link :to="`/clubs/${clubTypes[club.category].link}`">
                     <LabelSimple class="bg-slate-600/40 hover:bg-slate-400/40">{{
@@ -123,16 +126,30 @@
                 <div class="mb-2 text-lg font-semibold">Description de l'association</div>
                 <div class="text-2">{{ club.longDescription }}</div>
             </div>
-        </div>
-        <div class="text-2 bg-2 mt-4 flex flex-col gap-5 rounded-xl p-4 shadow-xl">
-            <div>
-                <div class="text-lg font-semibold">Formulaire d'inscription</div>
-                <p>
-                    Vous pouvez décider de modifier le formulaire nécessaire à la demande pour rejoindre votre
-                    association
-                </p>
+            <div class="flex items-center text-lg font-semibold">
+                Formulaire d'adhésion
+                <InfoIcon
+                    tooltip="Changez le formulaire d'adhésion visible sur la liste des associations !"
+                />
             </div>
-            <FormList :club-id="club.id" @submit="(formId) => changeForm(formId)"></FormList>
+            <FormList
+                :model-value="club.membershipRequestForm"
+                :forms="club.forms"
+                :form-type="MEMBERSHIP_REQUEST"
+                :team-id="club.id"
+                :select="true"
+                :default-form="{
+                    id: null,
+                    type: MEMBERSHIP_REQUEST,
+                    name: 'Adhésion simple',
+                    description: 'Formulaire non-modifiable',
+                    schema: DEFAULT_JOIN_FORM_SCHEMA,
+                }"
+                @update:model-value="
+                    updateClub({ id: club.id, team: { membershipRequestFormId: $event?.id ?? null } })
+                "
+                @submit="(formId) => changeForm(formId)"
+            />
         </div>
     </div>
 </template>
@@ -145,10 +162,24 @@
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
     import FormList from '@/components/FormKit/FormList.vue'
 
+    import InfoIcon from '@/icons/InfoIcon.vue'
+
     import { clubTypes } from '@/shared/types/club-types.enum'
-    import { useClubsStore } from '@/store/clubs.store'
     import { emitter } from '@/shared/modules/emitter'
     import { ref } from 'vue'
+
+    import { useBreakpoints } from '@vueuse/core'
+    import { updateTeam } from '@/graphql/queries/teams/updateTeam'
+    import { useMutation } from '@vue/apollo-composable'
+
+    import { MEMBERSHIP_REQUEST } from '@/shared/types/team-form-types.enum'
+    import { DEFAULT_JOIN_FORM_SCHEMA } from '@/shared/assets/form-schemas/default-schemas'
+    import { showSuccessToast, showToastGraphQLError } from '@/utils/toast'
+
+    import { twBreakpoints } from '@/tailwind'
+
+    const breakpoints = useBreakpoints(twBreakpoints)
+    const md = breakpoints.greater('md')
 
     const props = defineProps({
         club: {
@@ -159,35 +190,11 @@
 
     const emit = defineEmits(['update:club'])
 
-    const clubs = useClubsStore()
-    const clubData = ref({
-        shortDescription: ref(props.club.shortDescription),
-        longDescription: ref(props.club.longDescription),
-    })
-
-    const changeForm = async (formId) => {
-        await clubs.patchClub(props.club.id, { membershipRequestFormId: formId })
-    }
+    const { mutate: updateClub, onError, onDone } = useMutation(updateTeam)
+    onError(showToastGraphQLError)
+    onDone(() => showSuccessToast("Formulaire d'adhésion mis à jour 📋"))
 
     const updateClubForm = ref(null)
-
-    const updateClubData = async (data) => {
-        await clubs
-            .patchClub(props.club.id, data)
-            .then((newClub) => {
-                emit('update:club', newClub)
-                emitter.emit('show-toast', {
-                    message: "Les informations de l'association ont bien été mises à jour.",
-                    type: 'success',
-                })
-            })
-            .catch((err) => {
-                emitter.emit('show-toast', {
-                    message: `Erreur: ${JSON.stringify(err)}`,
-                    type: 'error',
-                })
-            })
-    }
 
     const uploadTypeUrl = (type) => `${import.meta.env.VITE_API_URL}/teams/teams/${props.club.id}/${type}`
 
@@ -211,10 +218,7 @@
 
     const onUploadSuccess = (res, type) => {
         if (res?.response?.status === 200) {
-            res.response.json().then((club) => {
-                clubs.replaceClub(club)
-                emit('update:club', club)
-            })
+            res.response.json().then((club) => emit('update:club', club))
 
             emitter.emit('show-toast', {
                 message: `${name[type].name} mis${name[type].frFeminine ? 'e' : ''} à jour.`,
