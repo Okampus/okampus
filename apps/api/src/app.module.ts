@@ -64,12 +64,13 @@ import { WikisModule } from './wiki/wikis.module';
 @Module({
   imports: [
     // Configs
-    MeiliSearchIndexerModule,
     CacheModule.register(cacheConfig),
     CaslModule,
     EventEmitterModule.forRoot(),
     GraphQLModule.forRoot(graphqlConfig),
-    MeiliSearchModule.forRoot(meiliSearchConfig),
+    // TODO: Replace with .forRoot when https://github.com/lambrohan/nestjs-meilisearch/pull/5 is merged & published
+    MeiliSearchModule.forRootAsync(meiliSearchConfig),
+    MeiliSearchIndexerModule,
     MikroOrmModule.forRoot(),
     RedisModule.forRoot(redisConfig),
     S3Module.forRoot(storageConfig),
