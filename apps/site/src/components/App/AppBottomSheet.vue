@@ -1,15 +1,16 @@
 <template>
     <Teleport to="body">
-        <Transition name="fade" @after-enter="showContent = true">
+        <Transition name="fade" @after-enter="open">
             <div
                 v-show="show"
-                class="h-content after-topbar fixed z-50 backdrop-blur backdrop-brightness-50"
+                class="h-content after-topbar fixed z-40 backdrop-blur backdrop-brightness-50"
                 :class="smallScreen ? 'inset-x-0' : uncollapsed ? 'after-sidebar-lg' : 'after-sidebar-sm'"
             >
                 <Transition name="from-bottom">
                     <div
                         v-if="showContent"
-                        class="absolute inset-x-[15%] top-[10%] bottom-0 z-20 h-[90%] w-[70%]"
+                        class="absolute inset-x-[7%] top-[7%] bottom-0 z-20 h-[93%] w-[86%]"
+                        @keydown.escape="close"
                     >
                         <div
                             class="shadow-bottom-sheet bg-0 flex w-full justify-between rounded-t-lg py-4 px-6"
@@ -18,12 +19,45 @@
                                 {{ title }}
                             </div>
                             <i
-                                class="fa fa-xmark -mt-1 -mr-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg pl-0.5 text-4xl text-3-light hover:bg-gray-500 dark:text-0-dark"
+                                class="fa fa-xmark -mt-1 -mr-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg pl-0.5 text-4xl text-3-light hover:bg-4-light dark:text-0-dark dark:hover:bg-4-dark"
                                 @click="close"
                             />
                         </div>
-                        <div class="bg-2 h-full p-10">
-                            <component :is="component || 'div'" :="props" @close="close" />
+                        <div class="bg-2 relative h-[calc(100%-4rem)]">
+                            <component
+                                :is="component || 'div'"
+                                ref="content"
+                                :="props"
+                                class="app-scrollbar overflow-scroll p-10"
+                                :class="unsaved ? 'h-[calc(100%-6rem)]' : 'h-full'"
+                                @close="close"
+                                @change="() => (unsaved = true)"
+                                @save-success="
+                                    (doClose) => {
+                                        unsaved = false
+                                        doClose && close()
+                                    }
+                                "
+                            />
+                            <Transition name="from-bottom">
+                                <div
+                                    v-show="unsaved"
+                                    :class="isNew ? 'h-16 flex-col' : 'h-24'"
+                                    class="bg-0 absolute bottom-0 flex w-full items-center justify-between px-10 py-4 lg-max:flex-col"
+                                >
+                                    <div v-if="!isNew" class="text-0">
+                                        Vous avez des changements non-sauvegardés !
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div class="link-blue cursor-pointer" @click="close">
+                                            {{ isNew ? 'Annuler' : 'Annuler les changements' }}
+                                        </div>
+                                        <button class="button-green" @click="content.save">
+                                            {{ isNew ? 'Valider' : 'Confirmer' }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </Transition>
                         </div>
                     </div>
                 </Transition>
@@ -46,6 +80,10 @@
             type: String,
             required: true,
         },
+        isNew: {
+            type: Boolean,
+            default: false,
+        },
         component: {
             type: [Object, String],
             required: true,
@@ -65,9 +103,21 @@
     })
 
     const showContent = ref(false)
+    const unsaved = ref(false)
+    const content = ref(null)
+
+    const onKeyDown = ({ key }) => (key === 'Escape' ? close() : {})
+
     const close = () => {
-        emitter.emit('close-bottom-sheet')
         showContent.value = false
+        unsaved.value = false
+        emitter.emit('close-bottom-sheet')
+        window.removeEventListener('keydown', onKeyDown)
+    }
+
+    const open = () => {
+        showContent.value = true
+        window.addEventListener('keydown', onKeyDown)
     }
 </script>
 

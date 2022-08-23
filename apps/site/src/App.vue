@@ -35,6 +35,7 @@
             >
                 <AppBottomSheet
                     v-model:show="modal.show"
+                    :is-new="modal.isNew"
                     :title="modal.title"
                     :uncollapsed="collapsed"
                     :small-screen="hiding"
@@ -163,6 +164,7 @@
 
     const modal = reactive({
         show: false,
+        isNew: false,
         title: '',
         component: '',
         props: {},
@@ -218,7 +220,8 @@
         toast.show = true
     })
 
-    emitter.on('show-bottom-sheet', ({ title, component, props }) => {
+    emitter.on('show-bottom-sheet', ({ isNew, title, component, props }) => {
+        modal.isNew = isNew
         modal.title = title
         modal.component = component
         modal.props = props
@@ -227,6 +230,7 @@
     })
 
     emitter.on('close-bottom-sheet', () => {
+        modal.isNew = false
         modal.show = false
         modal.component = ''
         modal.props = {}
