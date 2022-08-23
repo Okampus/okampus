@@ -138,6 +138,7 @@
         collapsing.value = false
         collapsed.value = !collapsed.value
         sidebar.value.$el.removeEventListener('transitionend', switchCollapsed)
+        sidebar.value.$el.focus()
     }
 
     const toggleSidebar = () => {
