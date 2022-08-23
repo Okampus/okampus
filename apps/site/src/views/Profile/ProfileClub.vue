@@ -117,7 +117,6 @@
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
 
     import ClubHomepage from '@/components/Profile/Club/ClubHomepage.vue'
-    import ClubDocuments from '@/components/Profile/Club/ClubDocuments.vue'
     import ClubActivity from '@/components/Profile/Club/ClubActivity.vue'
     import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
 
@@ -153,7 +152,6 @@
 
     const HOME = 'home'
     const MEMBERS = 'members'
-    const DOCUMENTS = 'drive'
     const ACTIVITY = 'activity'
 
     const clubRoute = computed(() => `/club/${route.params.clubId}`)
@@ -176,18 +174,12 @@
             name: 'Évenements',
             icon: 'calendar',
         },
-        {
-            id: DOCUMENTS,
-            name: 'Documents',
-            icon: 'file-arrow-down',
-        },
     ]
 
     const DEFAULT_TAB = tabs[0]
 
     const components = {
         [HOME]: ClubHomepage,
-        [DOCUMENTS]: ClubDocuments,
         [MEMBERS]: ClubMembers,
         [ACTIVITY]: ClubActivity,
     }

@@ -9,10 +9,11 @@
         <path d="M 48,10 38,0 38,10 Z" fill="#ccc" />
         <foreignObject x="0" y="45" width="48" height="15">
             <div
+                v-if="fileType"
                 class="flex h-full w-full items-center justify-center rounded-b text-[0.56rem] text-white"
                 :class="fileType.color"
             >
-                {{ fileType?.typeName ?? file?.name?.split?.('.')?.[1] ?? 'UNKNOWN' }}
+                {{ fileType.typeName }}
             </div>
         </foreignObject>
     </svg>
@@ -30,14 +31,5 @@
         },
     })
 
-    const fileType = computed(() => getType(props.file))
-
-    // const color = computed(() => {
-    //     for (const type of docTypes) {
-    //         if (type.condition.test(props.mime)) {
-    //             return type.color
-    //         }
-    //     }
-    //     return DEFAULT_TYPE
-    // })
+    const fileType = computed(() => props.file.fileType ?? getType(props.file))
 </script>

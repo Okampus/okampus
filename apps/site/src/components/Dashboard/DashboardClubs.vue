@@ -19,6 +19,10 @@
                         id: 'shortDescription',
                         title: 'Description',
                     },
+                    ...Object.entries(TEAM_FILES).map(([key, value]) => ({
+                        id: key,
+                        title: value.name[locale],
+                    })),
                     // {
                     //     id: 'budget',
                     //     title: 'Budget',
@@ -28,16 +32,6 @@
                     // {
                     //     id: 'handover',
                     //     title: 'Passation',
-                    //     class: 'p-2  border-b border-gray-300',
-                    // },
-                    // {
-                    //     id: 'statute',
-                    //     title: 'Statut',
-                    //     class: 'p-2  border-b border-gray-300',
-                    // },
-                    // {
-                    //     id: 'internal',
-                    //     title: 'Réglement interieur',
                     //     class: 'p-2  border-b border-gray-300',
                     // },
                 ]"
@@ -51,7 +45,7 @@
                     </TeamActivity>
                 </template>
                 <template #shortDescription="{ data: { shortDescription } }">
-                    <div class="text-sm">
+                    <div v-tooltip="shortDescription" class="text-sm line-clamp-2">
                         {{ shortDescription }}
                     </div>
                 </template>
@@ -59,7 +53,11 @@
                     <div class="flex justify-center">
                         <AvatarGroup
                             :link="`/club/${id}/members`"
-                            :bg-class="row % 2 ? 'bg-0' : 'bg-2'"
+                            :bg-class="
+                                row % 2
+                                    ? 'bg-0 border-0-light dark:border-0-dark'
+                                    : 'bg-2 border-2-light dark:border-2-dark'
+                            "
                             :total-count="activeMemberCount"
                             :entities="
                                 boardMembers.map((membership) => ({
@@ -70,21 +68,44 @@
                         />
                     </div>
                 </template>
+                <template
+                    v-for="(_, teamFileType) in TEAM_FILES"
+                    :key="teamFileType"
+                    #[teamFileType]="{ data: { teamFiles } }"
+                >
+                    <DocumentIcon
+                        v-if="teamFiles.find((file) => file.type === teamFileType)"
+                        :file="{ fileType: documentType }"
+                        class="scale-on-hover h-12 cursor-pointer"
+                        @click="
+                            downloadFile(teamFiles.find((file) => file.type === teamFileType)?.file, false)
+                        "
+                    />
+                </template>
             </ScrollableTable>
         </template>
     </GraphQLQuery>
 </template>
 
 <script setup>
-    import AvatarGroup from '@/components/List/AvatarGroup.vue'
-    import ScrollableTable from '@/components/App/ScrollableTable.vue'
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
+    import ScrollableTable from '@/components/App/ScrollableTable.vue'
+
+    import AvatarGroup from '@/components/List/AvatarGroup.vue'
+    import DocumentIcon from '@/components/Document/DocumentIcon.vue'
     import TeamActivity from '@/components/App/General/TeamActivity.vue'
+
+    import { useI18n } from 'vue-i18n'
 
     import { getClubs } from '@/graphql/queries/teams/getClubs.js'
     import { clubRoleNames } from '@/shared/types/club-roles.enum'
 
-    import { useI18n } from 'vue-i18n'
+    import { TEAM_FILES } from '@/shared/types/team-files.enum'
+    import { DOCUMENT, FILE_TYPES } from '@/shared/assets/file-types'
+
+    import { downloadFile } from '@/utils/downloadFile'
 
     const { locale } = useI18n({ useScope: 'global' })
+
+    const documentType = FILE_TYPES[DOCUMENT]
 </script>

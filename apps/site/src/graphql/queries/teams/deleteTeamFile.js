@@ -1,9 +1,9 @@
-import gql from 'graphql-tag'
 import { fileFragment } from '@/graphql/fragments/fileFragment'
+import gql from 'graphql-tag'
 
-export const getTeamFiles = gql`
-    query teamFiles($id: Int!) {
-        clubById(id: $id) {
+export const deleteTeamFile = gql`
+    mutation deleteTeamFile($id: String!) {
+        deleteTeamFile(id: $id) {
             id
             teamFiles {
                 id

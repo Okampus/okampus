@@ -79,6 +79,7 @@ export const RICH_DOCUMENT_EXTS = [
     '.wps',
     '.epub',
     '.xps',
+    '.pdf',
 ]
 
 export const PRESENTATION = 'Presentation'
@@ -255,7 +256,7 @@ export const FILE_TYPES = {
                 condition: (filename) => LATEX_EXTS.some((ext) => filename.endsWith(ext)),
                 icon: 'fa fa-square-root-variable',
                 text: 'LaTeX',
-                color: 'bg-grey-500',
+                color: 'bg-gray-500',
                 type: LATEX,
                 typeName: 'LaTeX',
                 parentType: DOCUMENT,
@@ -282,7 +283,7 @@ export const FILE_TYPES = {
                 condition: () => true,
                 icon: 'fa fa-file-lines',
                 text: 'Texte',
-                color: 'bg-grey-500',
+                color: 'bg-gray-500',
                 type: PLAIN,
                 typeName: 'TXT',
                 parentType: DOCUMENT,
@@ -292,8 +293,8 @@ export const FILE_TYPES = {
             (meta && meta === DOCUMENT) ||
             (!meta && (/^text\/(.)+$/.test(mime) || DOCUMENT_EXTS.some((ext) => filename.endsWith(ext)))),
         icon: 'fa fa-file-alt',
-        allowedString: 'Document (Texte, DOC(X), PPT(X), PDF, Code source, LaTeX...)',
-        color: 'bg-grey-500',
+        allowedString: 'Document (Texte, DOC(X), PPT(X), PDF, LaTeX...)',
+        color: 'bg-gray-500',
         type: DOCUMENT,
         typeName: 'DOC',
     },
@@ -432,20 +433,23 @@ export const FILE_TYPES = {
         text: 'Fichier',
         allowedString: 'Tout type de fichier',
         icon: 'fa fa-file',
-        color: 'bg-grey-300',
+        color: 'bg-gray-500',
         type: ANY,
         typeName: 'Fichier',
     },
 }
 
+export const testCondition = (condition, file) =>
+    condition(file.name?.toLowerCase() ?? '', file.type ?? file.mimeType ?? file.mime, file.meta)
+
 export const findType = (file) => {
-    if (!isEmpty(file.type))
-        return file.type in FILE_TYPES
-            ? file.type
-            : Object.entries(FILE_TYPES).find(([, { subtypes }]) => subtypes && file.type in subtypes)[0]
+    if (!isEmpty(file.fileType))
+        return file.fileType in FILE_TYPES
+            ? file.fileType
+            : Object.entries(FILE_TYPES).find(([, { subtypes }]) => subtypes && file.fileType in subtypes)[0]
 
     for (const [type, { condition }] of Object.entries(FILE_TYPES)) {
-        if (condition(file.name, file.mime, file.meta)) return type
+        if (testCondition(condition, file)) return type
     }
     return ANY
 }
@@ -455,7 +459,7 @@ export const findSubtype = (file, returnJson = false) => {
     if (type === ANY) return returnJson ? FILE_TYPES[ANY] : ANY
     const { subtypes } = FILE_TYPES[type]
     for (const [subtypeType, subtype] of Object.entries(subtypes)) {
-        if (subtypeType === file.type || subtype.condition(file.name, file.mime ?? file.mimeType, file.meta))
+        if (subtypeType === file.fileType || testCondition(subtype.condition, file))
             return returnJson ? subtype : subtypeType
     }
     return returnJson ? FILE_TYPES[type] : type

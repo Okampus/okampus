@@ -94,7 +94,7 @@
                 if (fileType.parentType === FORM) {
                     const dataSrc =
                         'data:text/json;charset=utf-8,' +
-                        encodeURIComponent(JSON.stringify(props.file.schema))
+                        encodeURIComponent(JSON.stringify(props.file.meta?.schema))
                     download(dataSrc, props.file.name + '.json')
                 } else if (fileType.type === FOLDER) {
                     // Compress folder and download
