@@ -7,6 +7,7 @@ import {
   QueryOrder,
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-scalars';
 import { TransformCollection } from '../../shared/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 // eslint-disable-next-line import/no-cycle
@@ -23,6 +24,10 @@ export class Tenant extends BaseEntity {
   @OneToMany(() => ValidationStep, 'tenant', { orderBy: { step: QueryOrder.ASC } })
   @TransformCollection()
   validationSteps = new Collection<ValidationStep>(this);
+
+  @Field(() => GraphQLJSON, { nullable: true })
+  @Property({ type: 'json' })
+  eventValidationForm: object[] | object | null = null;
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
@@ -58,6 +63,7 @@ export class Tenant extends BaseEntity {
 
   constructor(options: {
     id: string;
+    eventValidationForm?: object[] | object | null;
     logo?: string | null;
     logoDark?: string | null;
     oidcEnabled?: boolean;

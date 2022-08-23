@@ -1,13 +1,11 @@
 name: Deploy preproduction
 
 on:
-  push:
-    branches:
-      - dev
-    paths:
-      - 'apps/api/**'
-      - '!*/**/*.md'
-      - '.github/workflows/backend-deploy-prod.yml'
+  workflow_run:
+    workflows: ["Build backend"]
+    branches: [dev]
+    types:
+      - completed
 
 jobs:
   bump:
@@ -15,6 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
+    - uses: actions/github-script@v3
+      if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+      with:
+        script: |
+            core.setFailed('The container image could not be built, will not deploy to preprod')
     - name: Checkout repository
       uses: actions/checkout@v3
       with:

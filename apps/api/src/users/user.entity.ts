@@ -29,7 +29,7 @@ import type { BaseSearchableEntity } from '../shared/lib/types/interfaces/base-s
 import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
 import { Role } from '../shared/modules/authorization/types/role.enum';
 import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
-import type { BaseIndex } from '../shared/modules/search/meilisearch.global';
+import type { BaseIndex } from '../shared/modules/search/indexed-entity.interface';
 // eslint-disable-next-line import/no-cycle
 import { Statistics } from '../statistics/statistics.entity';
 // eslint-disable-next-line import/no-cycle

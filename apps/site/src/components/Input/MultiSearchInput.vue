@@ -107,7 +107,7 @@
         <div
             v-if="floatingLabel"
             :class="{ 'floating py-0': focused || selectedItems.length || search }"
-            class="floating-label bg-2 z-0 rounded-t-md p-1"
+            class="floating-label z-0 rounded-t-md p-1"
         >
             {{ placeholder }}
         </div>

@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { fileFragment } from './fileFragment'
 import { partialUserFragment } from './userFragment'
 
 export const fullTeamFragment = gql`
@@ -28,6 +29,16 @@ export const fullTeamFragment = gql`
                 role
             }
         }
+        teamFiles {
+            id
+            type
+            description
+            active
+            file {
+                ...FileInfo
+            }
+        }
     }
     ${partialUserFragment}
+    ${fileFragment}
 `

@@ -143,7 +143,10 @@
     const now = new Date()
     const nowMinusOneMonth = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
 
-    const calculateChange = ({ before, now }) => (before === 0 ? 0 : (now - before) / before)
+    const calculateChange = ({ before, now }) => {
+        console.log(before, now)
+        return before === 0 ? 0 : (now - before) / before
+    }
     const getSummary = (records) => ({ now: last(records).value, before: records[0].value })
 
     const metricsByName = (metrics) =>
@@ -157,8 +160,8 @@
         const userCount = getSummary(metricsBy.UserCount)
         const clubUniqueMembershipCount = getSummary(metricsBy.ClubUniqueMembershipCount)
         const insertionRate = {
-            now: ((clubUniqueMembershipCount.now / userCount.now) * 100).toFixed(2),
-            before: ((clubUniqueMembershipCount.before / userCount.before) * 100).toFixed(2),
+            now: parseFloat(((clubUniqueMembershipCount.now / userCount.now) * 100).toFixed(2)),
+            before: parseFloat(((clubUniqueMembershipCount.before / userCount.before) * 100).toFixed(2)),
         }
         const clubEventCount = getSummary(metricsBy.ClubEventCount)
         const clubCreatedEventCount = getSummary(metricsBy.ClubCreatedEventCount)
@@ -167,15 +170,15 @@
         return [
             {
                 text: "% d'Insertion",
-                value: `${insertionRate.now} %`,
-                change: calculateChange(insertionRate) || 0,
-                diff: `${absDiff(insertionRate)} %`,
+                value: `${insertionRate.now}%`,
+                change: calculateChange(insertionRate),
+                diff: `${absDiff(insertionRate)}%`,
             },
             {
                 text: "Membres d'assos",
-                value: userCount.now,
-                change: calculateChange(userCount),
-                diff: absDiff(userCount),
+                value: clubUniqueMembershipCount.now,
+                change: calculateChange(clubUniqueMembershipCount),
+                diff: absDiff(clubUniqueMembershipCount),
             },
             {
                 text: 'Utilisateurs',

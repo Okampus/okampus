@@ -23,13 +23,13 @@ export class FileUploadsModule implements OnModuleInit {
   public async onModuleInit(): Promise<void> {
     const logger = new Logger('Files');
 
-    if (config.get('s3.enabled')) {
-      logger.log(`Distant storage is enabled, uploading to ${config.get('s3.endpoint')}`);
+    if (config.s3.enabled) {
+      logger.log(`Distant storage is enabled, uploading to ${config.s3.endpoint}`);
       return;
     }
 
     logger.log('Distant storage is disabled, uploading to local file system.');
-    const base = path.join(path.resolve('./'), config.get('upload.path'));
+    const base = path.join(path.resolve('./'), config.upload.path);
 
     const dirs: Array<Promise<string | undefined>> = [];
     for (const value of enumKeys(FileKind))

@@ -79,6 +79,7 @@ export const RICH_DOCUMENT_EXTS = [
     '.wps',
     '.epub',
     '.xps',
+    '.pdf',
 ]
 
 export const PRESENTATION = 'Presentation'
@@ -136,6 +137,7 @@ export const VIDEO = 'Video'
 export const VIDEO_EXTS = ['.avi', '.flv', '.mkv', '.mov', '.mp4', '.mpeg', '.mpg', '.ogv', '.webm']
 
 // !! Conditions are match first !!
+// TODO: improve typename by showing extension instead of typename in some cases
 export const FILE_TYPES = {
     [ARCHIVE]: {
         subtypes: {
@@ -145,7 +147,9 @@ export const FILE_TYPES = {
                 icon: 'fa fa-book',
                 text: 'Archive RAR',
                 color: 'bg-fuschia-700',
-                type: 'RAR',
+                type: RAR,
+                typeName: 'RAR',
+                parentType: ARCHIVE,
             },
             [ZIP]: {
                 condition: (filename, mime) =>
@@ -153,14 +157,18 @@ export const FILE_TYPES = {
                 icon: 'fa fa-file-zipper',
                 text: 'Archive ZIP',
                 color: 'bg-yellow-400',
-                type: 'ZIP',
+                type: ZIP,
+                typeName: 'ZIP',
+                parentType: ARCHIVE,
             },
             [OTHER_ARCHIVE]: {
                 condition: () => true,
                 icon: 'fa fa-file-archive',
                 text: 'Archive',
                 color: 'bg-yellow-400',
-                type: 'ARCHIVE',
+                type: OTHER_ARCHIVE,
+                typeName: 'Archive',
+                parentType: ARCHIVE,
             },
         },
         condition: (filename, mime, meta) =>
@@ -169,7 +177,8 @@ export const FILE_TYPES = {
         allowedString: 'Archive (ZIP, RAR...)',
         icon: 'fa fa-box-archive',
         color: 'bg-yellow-400',
-        type: 'AUDIO',
+        type: ARCHIVE,
+        typeName: 'Archive',
     },
     [AUDIO]: {
         subtypes: {
@@ -178,28 +187,36 @@ export const FILE_TYPES = {
                 icon: 'fa fa-music',
                 text: 'Audio MIDI',
                 color: 'bg-blue-400',
-                type: 'MIDI',
+                type: MIDI,
+                typeName: 'MIDI',
+                parentType: AUDIO,
             },
             [RAW_AUDIO]: {
                 condition: (filename) => RAW_AUDIO_EXTS.some((ext) => filename.endsWith(ext)),
                 icon: 'fa fa-file-audio',
                 text: 'Audio RAW',
                 color: 'bg-blue-400',
-                type: 'RAW',
+                type: RAW_AUDIO,
+                typeName: 'RAW',
+                parentType: AUDIO,
             },
             [COMPRESSED_AUDIO]: {
                 condition: (filename) => COMPRESSED_AUDIO_EXTS.some((ext) => filename.endsWith(ext)),
                 icon: 'fa fa-file-audio',
                 text: 'Audio Compressé',
                 color: 'bg-blue-400',
-                type: 'MP3',
+                type: COMPRESSED_AUDIO,
+                typeName: 'MP3',
+                parentType: AUDIO,
             },
             [OTHER_AUDIO]: {
                 condition: () => true,
                 icon: 'fa fa-music',
                 text: 'Fichier Audio',
                 color: 'bg-blue-400',
-                type: 'AUDIO',
+                type: OTHER_AUDIO,
+                typeName: 'Audio',
+                parentType: AUDIO,
             },
         },
         condition: (filename, mime, meta) =>
@@ -209,7 +226,8 @@ export const FILE_TYPES = {
         allowedString: 'Audio (MP3, M4A, MIDI...)',
         icon: 'fa fa-headphones',
         color: 'bg-blue-400',
-        type: 'AUDIO',
+        type: AUDIO,
+        typeName: 'Audio',
     },
     [DOCUMENT]: {
         subtypes: {
@@ -220,7 +238,9 @@ export const FILE_TYPES = {
                 icon: 'fa fa-markdown',
                 text: 'Markdown',
                 color: 'bg-black',
-                type: 'MKDOWN',
+                type: MARKDOWN,
+                typeName: 'Markdown',
+                parentType: DOCUMENT,
             },
             [CODE]: {
                 condition: (filename) =>
@@ -228,44 +248,55 @@ export const FILE_TYPES = {
                 icon: 'fa fa-code',
                 text: 'Code source',
                 color: 'bg-emerald-500',
-                type: 'CODE',
+                type: CODE,
+                typeName: 'Code',
+                parentType: DOCUMENT,
             },
             [LATEX]: {
                 condition: (filename) => LATEX_EXTS.some((ext) => filename.endsWith(ext)),
                 icon: 'fa fa-square-root-variable',
                 text: 'LaTeX',
-                color: 'bg-grey-500',
-                type: 'LaTeX',
+                color: 'bg-gray-500',
+                type: LATEX,
+                typeName: 'LaTeX',
+                parentType: DOCUMENT,
             },
             [RICH_DOCUMENT]: {
                 condition: (filename) => RICH_DOCUMENT_EXTS.some((ext) => filename.endsWith(ext)),
                 icon: 'fa fa-file-word',
                 text: 'Document',
                 color: 'bg-blue-500',
-                type: 'WORD',
+                type: RICH_DOCUMENT,
+                typeName: 'DOC',
+                parentType: DOCUMENT,
             },
             [PRESENTATION]: {
                 condition: (filename) => PRESENTATION_EXTS.some((ext) => filename.endsWith(ext)),
                 icon: 'fa fa-file-powerpoint',
                 text: 'Présentation',
                 color: 'bg-orange-700',
-                type: 'PPT',
+                type: PRESENTATION,
+                typeName: 'PPT',
+                parentType: DOCUMENT,
             },
             [PLAIN]: {
                 condition: () => true,
                 icon: 'fa fa-file-lines',
                 text: 'Texte',
-                color: 'bg-grey-500',
-                type: 'TXT',
+                color: 'bg-gray-500',
+                type: PLAIN,
+                typeName: 'TXT',
+                parentType: DOCUMENT,
             },
         },
         condition: (filename, mime, meta) =>
             (meta && meta === DOCUMENT) ||
             (!meta && (/^text\/(.)+$/.test(mime) || DOCUMENT_EXTS.some((ext) => filename.endsWith(ext)))),
         icon: 'fa fa-file-alt',
-        allowedString: 'Document (Texte, DOC(X), PPT(X), PDF, Code source, LaTeX...)',
-        color: 'bg-grey-500',
-        type: 'DOC',
+        allowedString: 'Document (Texte, DOC(X), PPT(X), PDF, LaTeX...)',
+        color: 'bg-gray-500',
+        type: DOCUMENT,
+        typeName: 'DOC',
     },
     [FOLDER]: {
         condition: (filename, mime, meta) =>
@@ -274,7 +305,8 @@ export const FILE_TYPES = {
         allowedString: 'Dossier',
         icon: 'fa fa-folder',
         color: 'bg-black',
-        type: 'FOLDER',
+        type: FOLDER,
+        typeName: 'Dossier',
     },
     [FORM]: {
         subtypes: {
@@ -283,14 +315,18 @@ export const FILE_TYPES = {
                 icon: 'fa fa-list',
                 text: 'Formulaire',
                 color: 'bg-purple-700',
-                type: 'FORM',
+                type: FORMKIT,
+                typeName: 'Formulaire',
+                parentType: FORM,
             },
             [FORMKIT_TEMPLATE]: {
                 condition: (filename, mime, meta) => meta === FORMKIT_TEMPLATE,
                 icon: 'fa fa-clipboard-list',
                 text: 'Modèle de formulaire',
                 color: 'bg-purple-900',
-                type: 'FORM_BASE',
+                type: FORMKIT_TEMPLATE,
+                typeName: 'Modèle',
+                parentType: FORM,
             },
         },
         condition: (filename, mime, meta) => [FORMKIT, FORMKIT_TEMPLATE].includes(meta),
@@ -298,7 +334,8 @@ export const FILE_TYPES = {
         allowedString: 'Formulaire',
         icon: 'fa fa-list',
         color: 'bg-purple-700',
-        type: 'FORM',
+        type: FORM,
+        typeName: 'Form',
     },
     [IMAGE]: {
         subtypes: {
@@ -307,21 +344,27 @@ export const FILE_TYPES = {
                 icon: 'fa fa-bezier-curve',
                 text: 'Image vectorielle',
                 color: 'bg-black',
-                type: 'SVG',
+                type: VECTOR,
+                typeName: 'SVG',
+                parentType: IMAGE,
             },
             [ANIMATED]: {
                 condition: (filename) => ANIMATED_EXTS.some((ext) => filename.endsWith(ext)),
                 icon: 'fa fa-images',
                 text: 'Image animée',
                 color: 'bg-black',
-                type: 'GIF',
+                type: ANIMATED,
+                typeName: 'GIF',
+                parentType: IMAGE,
             },
             [RASTER]: {
                 condition: (filename) => RASTER_EXTS.some((ext) => filename.endsWith(ext)),
                 icon: 'fa fa-image',
                 text: 'Image',
                 color: 'bg-black',
-                type: 'IMG',
+                type: RASTER,
+                typeName: 'IMG',
+                parentType: IMAGE,
             },
         },
         condition: (filename, mime, meta) =>
@@ -331,7 +374,8 @@ export const FILE_TYPES = {
         allowedString: 'Images (SVG, JPG, PNG...)',
         icon: 'fa fa-image',
         color: 'bg-black',
-        type: 'IMG',
+        type: IMAGE,
+        typeName: 'IMG',
     },
     [TABLE]: {
         subtypes: {
@@ -340,21 +384,27 @@ export const FILE_TYPES = {
                 icon: 'fa fa-file-csv',
                 text: 'Tableur',
                 color: 'bg-green-700',
-                type: 'CSV',
+                type: SIMPLE_TABLE,
+                typeName: 'CSV',
+                parentType: TABLE,
             },
             [RICH_TABLE]: {
                 condition: (filename) => RICH_TABLE_EXTS.some((ext) => filename.endsWith(ext)),
                 icon: 'fa fa-table',
                 text: 'Tableur Riche',
                 color: 'bg-green-800',
-                type: 'XLS',
+                type: RICH_TABLE,
+                typeName: 'Tableur',
+                parentType: TABLE,
             },
             [FORM_RESULTS]: {
                 condition: (filename, mime, meta) => meta === FORM_RESULTS,
                 icon: 'fa fa-table-list',
                 text: 'Résultats de formulaire',
                 color: 'bg-purple-600',
-                type: 'FORM_CSV',
+                type: FORM_RESULTS,
+                typeName: 'FormCsv',
+                parentType: TABLE,
             },
         },
         condition: (filename, mime, meta) =>
@@ -364,7 +414,8 @@ export const FILE_TYPES = {
         allowedString: 'Tableur (CSV, XLS(X), SQLITE...)',
         icon: 'fa fa-photo-film',
         color: 'bg-green-800',
-        type: 'TABLE',
+        type: TABLE,
+        typeName: 'Tableau',
     },
     [VIDEO]: {
         condition: (filename, mime, meta) =>
@@ -374,26 +425,31 @@ export const FILE_TYPES = {
         allowedString: 'Vidéo (MP4, AVI, WEBM...)',
         icon: 'fa fa-film',
         color: 'bg-red-500',
-        type: 'VIDEO',
+        type: VIDEO,
+        typeName: 'Vidéo',
     },
     [ANY]: {
         condition: () => true,
         text: 'Fichier',
         allowedString: 'Tout type de fichier',
         icon: 'fa fa-file',
-        color: 'bg-grey-300',
-        type: 'FILE',
+        color: 'bg-gray-500',
+        type: ANY,
+        typeName: 'Fichier',
     },
 }
 
+export const testCondition = (condition, file) =>
+    condition(file.name?.toLowerCase() ?? '', file.type ?? file.mimeType ?? file.mime, file.meta)
+
 export const findType = (file) => {
-    if (!isEmpty(file.type))
-        return file.type in FILE_TYPES
-            ? file.type
-            : Object.entries(FILE_TYPES).find(([, { subtypes }]) => subtypes && file.type in subtypes)[0]
+    if (!isEmpty(file.fileType))
+        return file.fileType in FILE_TYPES
+            ? file.fileType
+            : Object.entries(FILE_TYPES).find(([, { subtypes }]) => subtypes && file.fileType in subtypes)[0]
 
     for (const [type, { condition }] of Object.entries(FILE_TYPES)) {
-        if (condition(file.name, file.mime, file.meta)) return type
+        if (testCondition(condition, file)) return type
     }
     return ANY
 }
@@ -402,9 +458,9 @@ export const findSubtype = (file, returnJson = false) => {
     const type = findType(file)
     if (type === ANY) return returnJson ? FILE_TYPES[ANY] : ANY
     const { subtypes } = FILE_TYPES[type]
-    for (const [subtype, { condition }] of Object.entries(subtypes)) {
-        if (condition(file.name, file.mime ?? file.mimeType, file.meta))
-            return returnJson ? FILE_TYPES[subtype] : subtype
+    for (const [subtypeType, subtype] of Object.entries(subtypes)) {
+        if (subtypeType === file.fileType || testCondition(subtype.condition, file))
+            return returnJson ? subtype : subtypeType
     }
     return returnJson ? FILE_TYPES[type] : type
 }

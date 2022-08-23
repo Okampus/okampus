@@ -10,3 +10,8 @@
     @apply cursor-pointer rounded-lg;
     @extend %tab-hover, %tab-active;
 }
+
+.tab-swiper {
+    @extend %raised;
+    @apply flex items-center justify-center gap-3 cursor-pointer rounded-full py-2 px-4 hover:brightness-125;
+}

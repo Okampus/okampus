@@ -1,7 +1,7 @@
 import type { ITriggerPayload } from '@novu/node';
 import { Content } from '../../../../contents/entities/content.entity';
 import { User } from '../../../../users/user.entity';
-import { computedConfig } from '../../../configs/config';
+import { config } from '../../../configs/config';
 import { NotificationType } from '../notification-type.enum';
 import { Notification } from './base.notification';
 
@@ -45,7 +45,7 @@ export class BlogSubscribedUpdatedNotification extends Notification {
         date: this.content.createdAt,
         contentMaster: {
           title: this.content.contentMaster!.title,
-          url: `${computedConfig.frontendUrl}/blog/post/${this.content.contentMaster!.id}`,
+          url: `${config.network.frontendUrl}/blog/post/${this.content.contentMaster!.id}`,
         },
       },
     };

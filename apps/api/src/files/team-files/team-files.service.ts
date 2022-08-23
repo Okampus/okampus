@@ -29,7 +29,7 @@ export class TeamFilesService {
     file: FileUpload,
   ): Promise<TeamFile> {
     const team = await this.teamRepository.findOneOrFail(
-      { id: createTeamFileDto.id },
+      { id: createTeamFileDto.teamId },
       { populate: ['members'] },
     );
 
@@ -37,6 +37,17 @@ export class TeamFilesService {
       throw new ForbiddenException('Not a team admin');
 
     const teamFile = new TeamFile({ ...createTeamFileDto, team, file });
+    teamFile.active = true;
+
+    const previousTeamFile = await this.teamFileRepository.findOne({
+      team,
+      type: createTeamFileDto.type,
+      active: true,
+    });
+
+    if (previousTeamFile)
+      previousTeamFile.active = false;
+
     await this.teamFileRepository.persistAndFlush(teamFile);
 
     void this.notificationsService.trigger(

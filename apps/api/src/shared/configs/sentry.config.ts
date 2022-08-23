@@ -1,13 +1,13 @@
 import { HttpException } from '@nestjs/common';
-import type { SentryInterceptorOptions, SentryModuleOptions } from '@ntegral/nestjs-sentry';
 import * as Sentry from '@sentry/node';
+import type { SentryInterceptorOptions, SentryModuleOptions } from '@xiifain/nestjs-sentry';
 import { config } from './config';
 
 export default {
-  dsn: config.get('sentry.dsn'),
+  dsn: config.sentry.dsn,
   debug: false,
-  enabled: config.get('sentry.enabled'),
-  release: config.get('release'),
+  enabled: config.sentry.enabled,
+  release: config.release,
   integrations: [
     new Sentry.Integrations.Http({ tracing: true }),
   ],
@@ -18,7 +18,7 @@ export default {
     return event;
   },
   tracesSampleRate: 1,
-  environment: config.get('nodeEnv'),
+  environment: config.nodeEnv,
 } as SentryModuleOptions;
 
 export const sentryInterceptorConfig: SentryInterceptorOptions = {};

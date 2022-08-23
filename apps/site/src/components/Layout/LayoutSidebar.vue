@@ -9,6 +9,8 @@
                 : '',
         ]"
         class="w-sidebar-sm sidebar z-[60] flex shrink-0 flex-col"
+        tabindex="0"
+        @keydown.escape="emit('toggle-side-bar')"
     >
         <div v-if="smallScreen && showUncollapsed" class="h-topbar flex shrink-0 items-center">
             <button aria-label="Close Menu" class="w-sidebar-sm" @click="emit('toggle-side-bar')">

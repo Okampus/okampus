@@ -26,7 +26,7 @@ import { FileKind } from '../shared/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
 import type { PaginatedResult } from '../shared/modules/pagination';
-import type { IndexedEntity } from '../shared/modules/search/meilisearch.global';
+import type { IndexedEntity } from '../shared/modules/search/indexed-entity.interface';
 import type { Statistics } from '../statistics/statistics.entity';
 import { Tenant } from '../tenants/tenants/tenant.entity';
 import { UpdateUserDto } from './dto/update-user.dto';

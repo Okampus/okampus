@@ -1,7 +1,7 @@
 import type { ITriggerPayload } from '@novu/node';
 import { Thread } from '../../../../threads/thread.entity';
 import type { User } from '../../../../users/user.entity';
-import { computedConfig } from '../../../configs/config';
+import { config } from '../../../configs/config';
 import { NotificationType } from '../notification-type.enum';
 import { Notification } from './base.notification';
 
@@ -44,7 +44,7 @@ export class AdminThreadAssignedNotification extends Notification {
         tags: this.contentMaster.tags.getItems().map(tag => tag.name),
         locked: this.contentMaster.locked,
         assignees: this.contentMaster.assignedUsers.getItems().map(this.userToPayload),
-        url: `${computedConfig.frontendUrl}/forum/post/${this.contentMaster.id}`,
+        url: `${config.network.frontendUrl}/forum/post/${this.contentMaster.id}`,
       },
     };
   }

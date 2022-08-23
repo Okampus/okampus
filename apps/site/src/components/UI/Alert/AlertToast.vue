@@ -2,11 +2,7 @@
     <Teleport to="body">
         <div
             class="fixed z-[60]"
-            :class="
-                banner
-                    ? 'w-content after-sidebar after-topbar'
-                    : 'md:max-w-[50rem] lg:max-w-[55rem] xl:max-w-[70rem]'
-            "
+            :class="banner ? 'after-topbar' : 'md:max-w-[50rem] lg:max-w-[55rem] xl:max-w-[70rem]'"
             :style="[{ ...transform, ...offsetX, ...offsetY }]"
         >
             <Transition name="toast" :style="{ '--toast-enter-duration': enterDuration }">
@@ -19,8 +15,8 @@
                 >
                     <div
                         class="absolute top-0 left-0 h-1 w-full"
-                        :class="[duration > 0 ? 'progress-bar' : '']"
-                        :style="{ '--progress-bar-duration': duration }"
+                        :class="[toastDuration > 0 && !resetting ? 'progress-bar' : '']"
+                        :style="{ '--progress-bar-duration': toastDuration }"
                     />
 
                     <template v-if="$slots.title || title" #title>
@@ -49,7 +45,7 @@
 <script setup>
     import AlertInline from '@/components/UI/Alert/AlertInline.vue'
     import { readingTime } from '@/utils/readingTime'
-    import { computed, watchEffect } from 'vue'
+    import { computed, nextTick, ref } from 'vue'
 
     const props = defineProps({
         message: {
@@ -82,7 +78,7 @@
         },
         duration: {
             type: Number,
-            default: (props) => (props.message ? readingTime(props.message, 'slow') * 1000 : 2000),
+            default: null,
         },
         dismissable: {
             type: Boolean,
@@ -97,6 +93,14 @@
             default: true,
         },
     })
+
+    const toastDuration = computed(
+        () =>
+            props.duration ??
+            (props.message || props.title
+                ? readingTime((props.title ? props.title + '\n' : '') + props.message, 'medium') * 1000
+                : 2000),
+    )
 
     const emit = defineEmits(['update:active', 'close'])
 
@@ -122,6 +126,7 @@
             : {},
     )
 
+    // FIXME: improve this
     const offsetY = computed(() =>
         props.banner
             ? {}
@@ -145,13 +150,23 @@
     const enterDuration = 300
 
     const dismissToast = () => (emit('update:active', false), emit('close'))
-    const toggleTimeOut = () => (props.duration > 0 ? setTimeout(dismissToast, props.duration) : () => {})
+    const timeOutProcess = ref(null)
 
-    watchEffect(() => {
-        if (props.active && props.autoToggle) {
-            toggleTimeOut()
-        }
-    })
+    const resetting = ref(false)
+    const reset = () => {
+        nextTick(() => {
+            clearTimeout(timeOutProcess.value)
+            if (toastDuration.value > 0) {
+                timeOutProcess.value = setTimeout(dismissToast, toastDuration.value)
+
+                // Reset CSS animation (nextTick doesn't work)
+                // FIXME: improve this?
+                resetting.value = true
+                setTimeout(() => (resetting.value = false), 10)
+            }
+        })
+    }
+    defineExpose({ reset })
 </script>
 
 <style>

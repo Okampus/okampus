@@ -3,7 +3,8 @@ import type { ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloDriver } from '@nestjs/apollo';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import type { Request } from 'express';
-import { JSONResolver } from 'graphql-scalars';
+import { GraphQLJSON } from 'graphql-scalars';
+import { GraphQLUpload } from 'graphql-upload-minimal';
 import { AuthModule } from '../../auth/auth.module';
 import { AuthService } from '../../auth/auth.service';
 import type { Tenant } from '../../tenants/tenants/tenant.entity';
@@ -27,9 +28,9 @@ export default {
   bodyParserConfig: false,
   autoSchemaFile: join(process.cwd(), 'src', 'shared', 'lib', 'schema.gql'),
   sortSchema: true,
-  debug: config.get('nodeEnv') === 'development',
+  debug: config.env.isDev(),
   cache: 'bounded',
-  playground: config.get('nodeEnv') === 'development',
+  playground: config.env.isDev(),
   cors: (req: Request, callback: (err: Error | null, result: { origin: boolean; credentials: boolean }) => void) => {
     const origin = req.header('origin');
     callback(null,
@@ -38,8 +39,11 @@ export default {
         credentials: true,
       });
   },
+  uploads: false,
   resolvers: {
-    JSON: JSONResolver,
+    JSON: GraphQLJSON,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    Upload: GraphQLUpload,
   },
   installSubscriptionHandlers: true,
 

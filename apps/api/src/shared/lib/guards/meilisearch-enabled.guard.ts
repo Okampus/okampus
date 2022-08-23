@@ -5,7 +5,7 @@ import { config } from '../../configs/config';
 @Injectable()
 export class MeiliSearchEnabledGuard implements CanActivate {
   public canActivate(): boolean {
-    if (!config.get('meilisearch.enabled'))
+    if (!config.meilisearch.enabled)
       throw new ServiceUnavailableException('Search is disabled');
     return true;
   }

@@ -1,442 +1,136 @@
-import { createProfiguration } from '@golevelup/profiguration';
-import { Logger } from '@nestjs/common';
+import 'dotenv/config';
 import type { CookieOptions } from 'express';
+import { FileKind } from '../lib/types/enums/file-kind.enum';
 
-interface Config {
-  port: number;
-  frontendOriginUrl: string;
-  baseDomain: string;
-  nodeEnv: 'development' | 'production' | 'test';
-  baseTenant: {
-    id: string;
-    oidcEnabled: boolean;
-    oidcClientId: string;
-    oidcClientSecret: string;
-    oidcDiscoveryUrl: string;
-    oidcScopes: string;
-    oidcCallbackUri: string;
-  };
-  release: string;
-  upload: {
-    maxSize: number;
-    path: string;
-  };
-  meilisearch: {
-    enabled: boolean;
-    apiKey: string;
-    host: string;
-  };
-  s3: {
-    enabled: boolean;
-    accessKeyId: string;
-    secretAccessKey: string;
-    endpoint: string;
-    region: string;
-    buckets: {
-      profileImages: string;
-      documents: string;
-      attachments: string;
-      teamFiles: string;
-      teamGalleries: string;
-      teamReceipts: string;
-      tenants: string;
-    };
-  };
-  redis: {
-    host: string;
-    port: number;
-    password: string;
-  };
-  sentry: {
-    enabled: boolean;
-    dsn: string;
-  };
-  novu: {
-    enabled: boolean;
-    apiKey: string;
-    appId: string;
-  };
-  tokens: {
-    accessTokenSecret: string;
-    accessTokenExpirationSeconds: number;
-    refreshTokenSecret: string;
-    refreshTokenExpirationSeconds: number;
-    wsTokenSecret: string;
-    wsTokenExpirationSeconds: number;
-    botTokenSecret: string;
-  };
-  cookies: {
-    signature: string;
-    options: CookieOptions;
-  };
-  session: {
-    secret: string;
-  };
-  adminAccount: {
-    username: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-  };
-  anonAccount: {
-    username: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-  };
-  settings: {
-    metricsCron: string;
-  };
-}
+// Helpers
+const parseEnvInt = (value: string | undefined, defaultValue: number): number => {
+  const parsed = Number(value);
+  return Number.isInteger(parsed) ? parsed : defaultValue;
+};
+const parseEnvBoolean = (value: string | undefined, defaultValue: boolean): boolean => {
+  const parsed = value && ['true', 'false'].includes(value);
+  return parsed ? value === 'true' : defaultValue;
+};
 
-const logger = new Logger('Configuration');
+// Validation
+if (process.env.NODE_ENV && !['production', 'development', 'test'].includes(process.env.NODE_ENV))
+  throw new TypeError('NODE_ENV is not set to a valid value');
 
-export const config = createProfiguration<Config>({
-  port: {
-    default: 8081,
-    format: Number,
-    env: 'PORT',
+// Shortcuts
+const nodeEnv = process.env.NODE_ENV ?? 'development';
+const baseDomain = process.env.BASE_DOMAIN ?? 'localhost';
+const port = parseEnvInt(process.env.PORT, 8081);
+const frontendOriginUrl = process.env.FRONTEND_ORIGIN_URL ?? 'localhost';
+
+// The config object!
+export const config = {
+  nodeEnv,
+  env: {
+    isDev: () => nodeEnv === 'development',
+    isProd: () => nodeEnv === 'production',
+    isTest: () => nodeEnv === 'test',
   },
-  frontendOriginUrl: {
-    default: 'localhost',
-    format: String,
-    env: 'FRONTEND_URL',
-  },
-  baseDomain: {
-    default: 'localhost',
-    format: String,
-    env: 'BASE_DOMAIN',
-  },
-  nodeEnv: {
-    default: 'development',
-    format: ['development', 'production', 'test'],
-    env: 'NODE_ENV',
+  release: process.env.RELEASE ?? 'alpha',
+  network: {
+    port,
+    frontendOriginUrl,
+    baseDomain,
+    apiUrl: nodeEnv === 'development'
+      ? `http://localhost:${port}`
+      : `https://api.${baseDomain}`,
+    frontendUrl: nodeEnv === 'development'
+      ? 'http://localhost:5173'
+      : `https://${frontendOriginUrl}`,
   },
   baseTenant: {
-    id: {
-      default: 'demo-tenant',
-      format: String,
-      env: 'BASE_TENANT_ID',
+    id: process.env.BASE_TENANT_ID ?? 'demo-tenant',
+    oidc: {
+      enabled: parseEnvBoolean(process.env.BASE_TENANT_OIDC_ENABLED, false),
+      clientId: process.env.BASE_TENANT_OIDC_CLIENT_ID ?? 'your_oidc_client_id',
+      clientSecret: process.env.BASE_TENANT_OIDC_CLIENT_SECRET ?? 'your_oidc_client_secret',
+      discoveryUrl: process.env.BASE_TENANT_OIDC_DISCOVERY_URL ?? 'https://oauth2service.com/.well-known/openid-configuration',
+      scopes: process.env.BASE_TENANT_OIDC_SCOPES ?? 'openid profile',
+      callbackUri: process.env.BASE_TENANT_OIDC_CALLBACK_URI ?? 'https://api.okampus.fr/auth/tenant/callback',
     },
-    oidcEnabled: {
-      default: false,
-      format: Boolean,
-      env: 'BASE_TENANT_OIDC_ENABLED',
-    },
-    oidcClientId: {
-      default: 'your_oidc_client_id',
-      format: String,
-      env: 'BASE_TENANT_OIDC_CLIENT_ID',
-    },
-    oidcClientSecret: {
-      default: 'your_oidc_client_secret',
-      format: String,
-      env: 'BASE_TENANT_OIDC_CLIENT_SECRET',
-    },
-    oidcDiscoveryUrl: {
-      default: 'https://oauth2service.com/.well-known/openid-configuration',
-      format: String,
-      env: 'BASE_TENANT_OIDC_DISCOVERY_URL',
-    },
-    oidcScopes: {
-      default: 'openid profile',
-      format: String,
-      env: 'BASE_TENANT_OIDC_SCOPES',
-    },
-    oidcCallbackUri: {
-      default: 'https://api.okampus.fr/auth/tenant/callback',
-      format: String,
-      env: 'BASE_TENANT_OIDC_CALLBACK_URI',
-    },
-  },
-  release: {
-    default: '0.1.0-alpha.0',
-    format: String,
-    env: 'RELEASE',
   },
   upload: {
-    maxSize: {
-      default: 10_485_760,
-      format: Number,
-      env: 'UPLOAD_MAX_SIZE',
-    },
-    path: {
-      default: 'uploads',
-      format: String,
-      env: 'UPLOAD_PATH',
-    },
+    maxSize: parseEnvInt(process.env.UPLOAD_MAX_SIZE, 10_485_760),
+    path: process.env.UPLOAD_PATH ?? 'uploads',
   },
   meilisearch: {
-    enabled: {
-      default: true,
-      format: Boolean,
-      env: 'MEILISEARCH_ENABLED',
-    },
-    apiKey: {
-      default: 'api-key',
-      format: String,
-      env: 'MEILISEARCH_API_KEY',
-    },
-    host: {
-      default: 'localhost:7700',
-      format: String,
-      env: 'MEILISEARCH_HOST',
-    },
+    enabled: parseEnvBoolean(process.env.MEILISEARCH_ENABLED, false),
+    host: process.env.MEILISEARCH_HOST ?? 'localhost:7700',
+    apiKey: process.env.MEILISEARCH_API_KEY ?? 'api-key',
   },
   s3: {
-    enabled: {
-      default: false,
-      format: Boolean,
-      env: 'S3_ENABLED',
-    },
-    accessKeyId: {
-      default: 'access-key-id',
-      format: String,
-      env: 'S3_ACCESS_KEY_ID',
-    },
-    secretAccessKey: {
-      default: 'secret-access-key',
-      format: String,
-      env: 'S3_SECRET_ACCESS_KEY',
-    },
-    endpoint: {
-      default: 'endpoint',
-      format: String,
-      env: 'S3_ENDPOINT',
-    },
-    region: {
-      default: 'region',
-      format: String,
-      env: 'S3_REGION',
-    },
+    enabled: parseEnvBoolean(process.env.S3_ENABLED, false),
+    accessKeyId: process.env.S3_ACCESS_KEY_ID ?? 'access-key-id',
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? 'secret-access-key',
+    endpoint: process.env.S3_ENDPOINT ?? 'endpoint',
+    region: process.env.S3_REGION ?? 'region',
     buckets: {
-      profileImages: {
-        default: 'profile-images',
-        format: String,
-        env: 'S3_BUCKET_NAME_PROFILE_IMAGES',
-      },
-      documents: {
-        default: 'documents',
-        format: String,
-        env: 'S3_BUCKET_NAME_DOCUMENTS',
-      },
-      attachments: {
-        default: 'attachments',
-        format: String,
-        env: 'S3_BUCKET_NAME_ATTACHMENTS',
-      },
-      teamFiles: {
-        default: 'team-files',
-        format: String,
-        env: 'S3_BUCKET_NAME_TEAM_FILES',
-      },
-      teamGalleries: {
-        default: 'team-galleries',
-        format: String,
-        env: 'S3_BUCKET_NAME_TEAM_GALLERIES',
-      },
-      teamReceipts: {
-        default: 'team-files',
-        format: String,
-        env: 'S3_BUCKET_NAME_TEAM_RECEIPTS',
-      },
-      tenants: {
-        default: 'tenants',
-        format: String,
-        env: 'S3_BUCKET_NAME_TENANTS',
-      },
+      [FileKind.Attachment]: process.env.S3_BUCKET_NAME_ATTACHMENTS ?? 'attachments',
+      [FileKind.InfoDoc]: process.env.S3_BUCKET_NAME_DOCUMENTS ?? 'documents',
+      [FileKind.ProfileImage]: process.env.S3_BUCKET_NAME_DOCUMENTS ?? 'documents',
+      [FileKind.StudyDoc]: process.env.S3_BUCKET_NAME_PROFILE_IMAGES ?? 'profile-images',
+      [FileKind.TeamFile]: process.env.S3_BUCKET_NAME_TEAM_FILES ?? 'team-files',
+      [FileKind.TeamGallery]: process.env.S3_BUCKET_NAME_TEAM_GALLERIES ?? 'team-galleries',
+      [FileKind.TeamReceipt]: process.env.S3_BUCKET_NAME_TEAM_RECEIPTS ?? 'team-receipts',
+      [FileKind.Tenant]: process.env.S3_BUCKET_NAME_TENANTS ?? 'tenants',
     },
   },
   redis: {
-    host: {
-      default: 'localhost',
-      format: String,
-      env: 'REDIS_HOST',
-    },
-    port: {
-      default: 6379,
-      format: Number,
-      env: 'REDIS_PORT',
-    },
-    password: {
-      default: '',
-      format: String,
-      env: 'REDIS_PASSWORD',
-    },
+    host: process.env.REDIS_HOST ?? 'localhost',
+    port: parseEnvInt(process.env.REDIS_PORT, 6379),
+    password: process.env.REDIS_PASSWORD ?? '',
   },
   sentry: {
-    enabled: {
-      default: false,
-      format: Boolean,
-      env: 'SENTRY_ENABLED',
-    },
-    dsn: {
-      default: 'https://sentry.io',
-      format: String,
-      env: 'SENTRY_DSN',
-    },
+    enabled: parseEnvBoolean(process.env.SENTRY_ENABLED, false),
+    dsn: process.env.SENTRY_DSN ?? 'https://sentry.io',
   },
   novu: {
-    enabled: {
-      default: false,
-      format: Boolean,
-      env: 'NOVU_ENABLED',
-    },
-    apiKey: {
-      default: 'api-key',
-      format: String,
-      env: 'NOVU_API_KEY',
-    },
-    appId: {
-      default: 'app-id',
-      format: String,
-      env: 'NOVU_APP_ID',
-    },
+    enabled: parseEnvBoolean(process.env.NOVU_ENABLED, false),
+    apiKey: process.env.NOVU_API_KEY ?? 'api-key',
+    appId: process.env.NOVU_APP_ID ?? 'app-id',
   },
   tokens: {
-    accessTokenSecret: {
-      default: 'secret',
-      format: String,
-      env: 'ACCESS_TOKEN_SECRET',
-    },
-    accessTokenExpirationSeconds: {
-      default: 28_800,
-      format: Number,
-      env: 'ACCESS_TOKEN_EXPIRATION_SECONDS',
-    },
-    refreshTokenSecret: {
-      default: 'secret',
-      format: String,
-      env: 'REFRESH_TOKEN_SECRET',
-    },
-    refreshTokenExpirationSeconds: {
-      default: 604_800,
-      format: Number,
-      env: 'REFRESH_TOKEN_EXPIRATION_SECONDS',
-    },
-    wsTokenSecret: {
-      default: 'secret',
-      format: String,
-      env: 'WS_TOKEN_SECRET',
-    },
-    wsTokenExpirationSeconds: {
-      default: 30,
-      format: Number,
-      env: 'WS_TOKEN_EXPIRATION_SECONDS',
-    },
-    botTokenSecret: {
-      default: 'secret',
-      format: String,
-      env: 'BOT_TOKEN_SECRET',
-    },
+    accessTokenSecret: process.env.ACCESS_TOKEN_SECRET ?? 'secret',
+    accessTokenExpirationSeconds: parseEnvInt(process.env.ACCESS_TOKEN_EXPIRATION_SECONDS, 28_800),
+    refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET ?? 'secret',
+    refreshTokenExpirationSeconds: parseEnvInt(process.env.REFRESH_TOKEN_EXPIRATION_SECONDS, 604_800),
+    wsTokenSecret: process.env.WS_TOKEN_SECRET ?? 'secret',
+    wsTokenExpirationSeconds: parseEnvInt(process.env.WS_TOKEN_EXPIRATION_SECONDS, 30),
+    botTokenSecret: process.env.BOT_TOKEN_SECRET ?? 'secret',
   },
   cookies: {
-    signature: {
-      default: 'secret',
-      format: String,
-      env: 'COOKIE_SIGNATURE_SECRET',
-    },
+    signature: process.env.COOKIE_SIGNATURE_SECRET ?? 'secret',
+    // This is only the default value, the real value is set right after the config is initialized.
     options: {
-      // This is only the default value, the real value is set right after the config is initialized.
-      default: {
-        httpOnly: true,
-        secure: false,
-        signed: true,
-      },
-      format: Object,
-    },
+      signed: true,
+      secure: nodeEnv === 'production',
+      httpOnly: true,
+      // eslint-disable-next-line no-undefined
+      domain: nodeEnv === 'production' ? `.${baseDomain}` : undefined,
+    } as CookieOptions,
   },
   session: {
-    secret: {
-      default: 'secret',
-      format: String,
-      env: 'SESSION_SECRET',
-    },
+    secret: process.env.SESSION_SECRET ?? 'secret',
   },
   adminAccount: {
-    username: {
-      default: 'okampus-admin',
-      format: String,
-      env: 'ADMIN_ACCOUNT_USERNAME',
-    },
-    email: {
-      default: 'admin@okampus.fr',
-      format: String,
-      env: 'ADMIN_ACCOUNT_EMAIL',
-    },
-    firstName: {
-      default: 'Okampus',
-      format: String,
-      env: 'ADMIN_ACCOUNT_FIRST_NAME',
-    },
-    lastName: {
-      default: 'Admin',
-      format: String,
-      env: 'ADMIN_ACCOUNT_LAST_NAME',
-    },
-    password: {
-      default: 'root',
-      format: String,
-      env: 'ADMIN_ACCOUNT_PASSWORD',
-    },
+    username: process.env.ADMIN_ACCOUNT_USERNAME ?? 'okampus-admin',
+    email: process.env.ADMIN_ACCOUNT_EMAIL ?? 'admin@okampus.fr',
+    firstName: process.env.ADMIN_ACCOUNT_FIRST_NAME ?? 'Okampus',
+    lastName: process.env.ADMIN_ACCOUNT_LAST_NAME ?? 'Admin',
+    password: process.env.ADMIN_ACCOUNT_PASSWORD ?? 'root',
   },
   anonAccount: {
-    username: {
-      default: 'anon',
-      format: String,
-      env: 'ANON_ACCOUNT_USERNAME',
-    },
-    email: {
-      default: 'anon@okampus.fr',
-      format: String,
-      env: 'ANON_ACCOUNT_EMAIL',
-    },
-    firstName: {
-      default: 'Anonyme',
-      format: String,
-      env: 'ANON_ACCOUNT_FIRST_NAME',
-    },
-    lastName: {
-      default: '',
-      format: String,
-      env: 'ANON_ACCOUNT_LAST_NAME',
-    },
-    password: {
-      default: 'root',
-      format: String,
-      env: 'ANON_ACCOUNT_PASSWORD',
-    },
+    username: process.env.ANON_ACCOUNT_USERNAME ?? 'okampus-anon',
+    email: process.env.ANON_ACCOUNT_EMAIL ?? 'anon@okampus.fr',
+    firstName: process.env.ANON_ACCOUNT_FIRST_NAME ?? 'Anonyme',
+    lastName: process.env.ANON_ACCOUNT_LAST_NAME ?? '',
+    password: process.env.ANON_ACCOUNT_PASSWORD ?? 'root',
   },
   settings: {
-    metricsCron: {
-      default: '*/15 * * * *',
-      format: String,
-      env: 'METRICS_CRON',
-    },
+    metricsCron: process.env.METRICS_CRON ?? '*/15 * * * *',
   },
-}, {
-  verbose: true,
-  logger: (message: string) => {
-    logger.log(message.replace(/^@golevelup\/profiguration: /g, ''));
-  },
-  configureEnv: () => ({ files: '.env' }),
-});
-
-export const computedConfig = {
-  apiUrl: config.get('nodeEnv') === 'development'
-    ? `http://localhost:${config.get('port')}`
-    : `https://api.${config.get('baseDomain')}`,
-  frontendUrl: config.get('nodeEnv') === 'development'
-    ? 'http://localhost:5173'
-    : `https://${config.get('frontendOriginUrl')}`,
 } as const;
-
-config.set('cookies.options', {
-  signed: true,
-  secure: config.get('nodeEnv') === 'production',
-  httpOnly: true,
-  // eslint-disable-next-line no-undefined
-  domain: config.get('nodeEnv') === 'production' ? `.${config.get('baseDomain')}` : undefined,
-});

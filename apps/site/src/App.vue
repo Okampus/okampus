@@ -1,11 +1,12 @@
 <template>
     <div>
         <AlertToast
+            ref="alertToast"
             v-model:active="toast.show"
             :title="toast.title"
             :message="toast.message"
             :type="toast.type"
-            v-bind="!isNil(toast.duration) ? { duration: toast.duration } : {}"
+            :duration="toast.duration"
             @close="toast.onClose"
         />
 
@@ -35,6 +36,7 @@
             >
                 <AppBottomSheet
                     v-model:show="modal.show"
+                    :is-new="modal.isNew"
                     :title="modal.title"
                     :uncollapsed="collapsed"
                     :small-screen="hiding"
@@ -81,7 +83,7 @@
 
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
 
-    import SwiperCore, { EffectCoverflow } from 'swiper'
+    import SwiperCore, { EffectCoverflow, Navigation } from 'swiper'
 
     import { useBreakpoints } from '@vueuse/core'
 
@@ -91,7 +93,6 @@
 
     import { inject, nextTick, reactive, ref, watch, watchEffect } from 'vue'
 
-    import { isNil } from 'lodash'
     import { errorCodes } from '@/shared/errors/app-exceptions.enum'
 
     import { useRoute } from 'vue-router'
@@ -102,7 +103,7 @@
     import 'swiper/css/effect-coverflow'
     import AppBottomSheet from './components/App/AppBottomSheet.vue'
 
-    SwiperCore.use([EffectCoverflow])
+    SwiperCore.use([EffectCoverflow, Navigation])
 
     const currentRoute = useRoute()
 
@@ -117,6 +118,7 @@
     const sidebar = ref(null)
     const topbar = ref(null)
     const content = ref(null)
+    const alertToast = ref(null)
 
     // TODO: hide sidebar on some routes for better navigation
     // const hideSidebarOnRoute = computed(() => currentRoute.fullPath !== '/')
@@ -136,6 +138,7 @@
         collapsing.value = false
         collapsed.value = !collapsed.value
         sidebar.value.$el.removeEventListener('transitionend', switchCollapsed)
+        sidebar.value.$el.focus()
     }
 
     const toggleSidebar = () => {
@@ -163,6 +166,7 @@
 
     const modal = reactive({
         show: false,
+        isNew: false,
         title: '',
         component: '',
         props: {},
@@ -216,9 +220,12 @@
         toast.position = position ?? 'bottom'
 
         toast.show = true
+
+        alertToast.value.reset()
     })
 
-    emitter.on('show-bottom-sheet', ({ title, component, props }) => {
+    emitter.on('show-bottom-sheet', ({ isNew, title, component, props }) => {
+        modal.isNew = isNew
         modal.title = title
         modal.component = component
         modal.props = props
@@ -227,6 +234,7 @@
     })
 
     emitter.on('close-bottom-sheet', () => {
+        modal.isNew = false
         modal.show = false
         modal.component = ''
         modal.props = {}

@@ -5,18 +5,45 @@
     color: #9ca3af;
 }
 
-%input-focus,
-.input-focus {
+%input-focus:not([disabled]),
+.input-focus:not([disabled]) {
+    @apply transition-[outline-width] duration-300 ease-in;
+
     &:focus,
     &[focused] {
-        @apply outline outline-2 outline-blue-600;
+        @apply outline;
+
+        outline-width: 2px !important;
+        outline-color: #1b73d5 !important;
+    }
+
+    &:hover,
+    &[hovered] {
+        @apply outline outline-1 outline-blue-300 dark:outline-blue-600;
+    }
+}
+
+%input-background,
+.input-background {
+    @include get-color('bg', 2);
+
+    &:disabled {
+        opacity: 0.5;
+        @apply cursor-not-allowed;
+    }
+
+    &:hover:not([disabled]),
+    &[hovered]:not([disabled]),
+    &:focus:not([disabled]),
+    &[focused]:not([disabled]) {
+        @apply brightness-105 dark:brightness-[1.15] transition-[filter] duration-300 ease-in;
     }
 }
 
 %input-flat,
 .input-flat {
     @extend %input-focus;
-    @include get-color('bg', 2);
+    @extend %input-background;
     @include get-color('text', 2);
 
     line-height: 1.43;
@@ -53,7 +80,7 @@ input[type='password']:not(:placeholder-shown) {
 }
 
 input[type='checkbox'] {
-    @apply bg-white transition duration-300 ease-in-out appearance-none h-4 w-4
+    @apply bg-white appearance-none
         hover:bg-slate-100 cursor-pointer
         border-2 border-gray-300 rounded shadow-sm focus:border-blue-500
         focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
@@ -67,7 +94,7 @@ input[type='checkbox'] {
 }
 
 .floating-label {
-    @apply text-placeholder-light dark:text-placeholder-dark;
+    @apply text-placeholder-light dark:text-placeholder-dark bg-inherit;
 
     position: absolute;
     bottom: 50%;

@@ -9,7 +9,7 @@ import { TenantsService } from '../tenants/tenants/tenants.service';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import type { Token } from './auth.guard';
-import type { TenantDto } from './dto/tenant.dto';
+import type { TenantUserDto } from './dto/tenant-user.dto';
 
 export interface TokenResponse {
   accessToken: string;
@@ -55,11 +55,11 @@ export class AuthService {
 
     return {
       accessToken: await this.jwtService.signAsync(payload, this.getTokenOptions('access')),
-      refreshToken: config.get('tokens.accessTokenExpirationSeconds')
+      refreshToken: config.tokens.accessTokenExpirationSeconds
         ? await this.jwtService.signAsync(payload, this.getTokenOptions('refresh'))
         : null,
-      accessTokenExpiresAt: Date.now() + config.get('tokens.accessTokenExpirationSeconds') * 1000,
-      refreshTokenExpiresAt: Date.now() + config.get('tokens.refreshTokenExpirationSeconds') * 1000,
+      accessTokenExpiresAt: Date.now() + config.tokens.accessTokenExpirationSeconds * 1000,
+      refreshTokenExpiresAt: Date.now() + config.tokens.refreshTokenExpirationSeconds * 1000,
     };
   }
 
@@ -86,11 +86,11 @@ export class AuthService {
 
   public getTokenOptions(type: 'access' | 'bot' | 'refresh' | 'ws'): JwtSignOptions {
     const options: JwtSignOptions = {
-      secret: config.get(`tokens.${type}TokenSecret`),
+      secret: config.tokens[`${type}TokenSecret`],
     };
 
     if (type !== 'bot') {
-      const expiration = config.get(`tokens.${type}TokenExpirationSeconds`);
+      const expiration = config.tokens[`${type}TokenExpirationSeconds`];
       if (expiration)
         options.expiresIn = `${expiration}s`;
     }
@@ -98,7 +98,7 @@ export class AuthService {
     return options;
   }
 
-  public async createOrUpdate(tenantId: string, userInfo: TenantDto): Promise<User> {
+  public async createOrUpdate(tenantId: string, userInfo: TenantUserDto): Promise<User> {
     const tenant = await this.tenantsService.findOne(tenantId);
     const user = await this.userRepository.findOne({ id: userInfo.id });
     if (!user) {

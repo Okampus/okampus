@@ -5,7 +5,7 @@ export default function RequireMeilisearch(): MethodDecorator {
     const originalMethod: (...args: any[]) => unknown = descriptor.value;
 
     descriptor.value = function (...args: any[]): void {
-      if (!config.get('meilisearch.enabled'))
+      if (!config.meilisearch.enabled)
         return;
       return Reflect.apply(originalMethod, this, args);
     };

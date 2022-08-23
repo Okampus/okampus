@@ -41,51 +41,44 @@
             @keydown.enter="input.click()"
         >
             <div
-                class="text-2 absolute inset-0 flex h-full w-full cursor-pointer flex-col items-center justify-center p-4"
+                class="text-2 absolute inset-0 flex h-full w-full cursor-pointer flex-col items-center justify-center"
                 @click="input.click()"
             >
                 <template v-if="modelValue !== null">
                     <img
-                        v-if="modelValue.url || isImage(modelValue)"
-                        class="rounded-md"
-                        :src="modelValue.url ? modelValue.url : getImageSrc(modelValue)"
+                        v-if="modelValue.fileType === IMAGE"
+                        class="m-4 rounded-md"
+                        :src="modelValue.url ? modelValue.url : getObjectUrl(modelValue)"
                         :style="imageParams?.ratio ? { 'aspect-ratio': `1 / ${imageParams.ratio}` } : {}"
                     />
-                    <DocumentIcon
-                        v-else
-                        class="my-4 h-[calc(100%-4rem)]"
-                        :file-name="modelValue.name"
-                        :mime="modelValue.type"
-                    />
-                    <div
-                        class="bg-3 mt-[0.5rem] flex h-[3rem] w-full items-center justify-between rounded-md px-4 py-[0.5rem]"
-                    >
+                    <DocumentIcon v-else class="m-4 h-[calc(100%-4rem)]" :file="{ fileType: type }" />
+                    <div class="bg-3 flex h-[3rem] w-full items-center gap-2 rounded-b-md p-2">
                         <!-- TODO: add meta information regarding who uploaded, at what time, etc. -->
-                        <span>{{ bytes(modelValue.url ? modelValue.fileSize : modelValue.size) }}</span>
-                        <span>{{ modelValue.name }}</span>
-                        <div class="flex gap-4">
-                            <button
-                                title="Télécharger"
-                                @click.stop="downloadFile(modelValue, !modelValue.url)"
-                            >
-                                <i
-                                    class="fa-solid fa-download flex h-6 w-8 items-center justify-center rounded-md bg-blue-500 text-sm text-white hover:bg-blue-600"
-                                />
-                            </button>
-                            <button
-                                title="Supprimer"
-                                @click.stop="
-                                    () => {
-                                        removeFile(modelValue)
-                                        removeCallback()
-                                    }
-                                "
-                            >
-                                <i
-                                    class="fas fa-times flex h-6 w-6 items-center justify-center rounded-md bg-red-500 text-lg text-white hover:bg-red-600"
-                                />
-                            </button>
+                        <div class="text-xs">
+                            {{ bytes(modelValue.url ? modelValue.fileSize : modelValue.size) }}
                         </div>
+                        <span v-tooltip="modelValue.name" class="line-clamp-1">{{ modelValue.name }}</span>
+                        <button
+                            v-tooltip="'Télécharger'"
+                            @click.stop="downloadFile(modelValue, !modelValue.url)"
+                        >
+                            <i
+                                class="fa-solid fa-download flex h-6 w-6 items-center justify-center rounded-md bg-blue-500 text-sm text-white hover:bg-blue-600"
+                            />
+                        </button>
+                        <button
+                            v-tooltip="'Supprimer'"
+                            @click.stop="
+                                () => {
+                                    removeCallback(modelValue, file)
+                                    removeFile()
+                                }
+                            "
+                        >
+                            <i
+                                class="fas fa-trash flex h-6 w-6 items-center justify-center rounded-md bg-red-500 text-sm text-white hover:bg-red-600"
+                            />
+                        </button>
                     </div>
                 </template>
                 <template v-else>
@@ -94,9 +87,9 @@
                         Faites glissez ou
                         <span class="card-link text-blue-500 hover:underline">parcourez</span> vos fichiers
                     </div>
-                    <div class="text-1 mt-1.5">
-                        {{ type.mimeString }}
-                        <span class="text-3 ml-1 text-sm">{{
+                    <div class="text-1 mt-1.5 text-center">
+                        <span class="text-sm">{{ type.allowedString }}</span>
+                        <span class="text-3 ml-1 text-xs">{{
                             sizeLimit ? `Max. ${bytes(sizeLimit)}` : ''
                         }}</span>
                     </div>
@@ -122,8 +115,8 @@
 
     import { showSuccessToast, showErrorToast } from '@/utils/toast'
 
-    import { ANY, IMAGE, FILE_TYPES } from '@/shared/assets/file-types'
-    import { downloadFile } from '@/utils/downloadFile'
+    import { ANY, IMAGE, FILE_TYPES, testCondition } from '@/shared/assets/file-types'
+    import { downloadFile, getObjectUrl } from '@/utils/downloadFile'
 
     import { getTenant } from '@/utils/getTenant'
 
@@ -131,6 +124,10 @@
 
     const props = defineProps({
         modelValue: {
+            type: Object,
+            default: null,
+        },
+        file: {
             type: Object,
             default: null,
         },
@@ -165,12 +162,24 @@
     const cropping = ref(false)
     const croppingFile = ref(null)
 
-    const getImageSrc = (img) => URL.createObjectURL(img)
-    const isImage = (file) => RegExp('^image/(.)+').test(file.type)
+    const isAllowedType = (file) => testCondition(type.value.condition, file)
 
-    const isAllowedMime = (fileMime) => type.value.mimes.some((mime) => RegExp(mime).test(fileMime))
     const addFile = (file) => {
-        if (file.size <= props.sizeLimit && isAllowedMime(file.type)) emit('update:modelValue', file)
+        const errorTitle = { title: `Échec de l'upload de "${file.name}"` }
+        if (!isAllowedType(file)) {
+            showErrorToast("Le fichier n'est pas d'un type autorisé.", errorTitle)
+            return
+        }
+        if (props.sizeLimit && file.size > props.sizeLimit) {
+            showErrorToast(
+                `Le fichier ${file.name} est trop volumineux (limite: ${bytes(props.sizeLimit)}).`,
+                errorTitle,
+            )
+            return
+        }
+
+        file.fileType = type
+        emit('update:modelValue', file)
     }
 
     const addFileByInput = () => {

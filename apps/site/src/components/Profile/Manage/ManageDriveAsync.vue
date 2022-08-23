@@ -1,39 +1,92 @@
 <template>
-    <div class="card-2 flex flex-col gap-8">
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div v-for="(doc, i) in documentList" :key="i" class="flex w-full flex-col gap-2">
-                <div class="truncate text-lg">{{ doc.name }}</div>
-                <FileInput
-                    v-if="!doc.file.length"
-                    v-model="doc.model"
-                    :message="doc.message"
-                    class="h-36 w-full"
-                    :file-limit="1"
-                    :size-limit="2000000"
-                />
-                <FilePreview
-                    v-else
-                    class=""
-                    :file="doc.file[0].file"
-                    :can-delete="true"
-                    @delete="(fileId) => clubsStore.deleteClubFileByFileId(fileId)"
-                />
+    <GraphQLQuery
+        :query="getTeamFiles"
+        :variables="{ id: club.id }"
+        :update="(data) => filesByType(data?.clubById?.teamFiles)"
+    >
+        <template #default="{ data: allFiles }">
+            <div v-if="isEmpty(allFiles)">
+                <div class="text-0 my-12 flex flex-col items-center justify-center text-2xl">
+                    <img :src="Zoom" class="h-40 w-40" />
+                    <span class="font-semibold"> Aucune donnée disponible </span>
+                </div>
             </div>
-        </div>
-        <div class="flex items-center justify-center gap-2 text-red-500">
-            <i class="fa-solid fa-xl fa-triangle-exclamation"></i>
-            <div>
-                Mettre à jour vos documents légaux est obligatoire pour pouvoir prétendre à des subventions
+            <div v-else class="grid grid-cols-[repeat(auto-fit,minmax(17rem,1fr))] gap-6">
+                <!-- TODO: sort by type with ordering -->
+                <div
+                    v-for="(files, type) in allFiles"
+                    :key="type"
+                    class="card-2 flex flex-col justify-between gap-10"
+                >
+                    <div class="w-fit">
+                        <h4 class="text-0 inline font-medium">
+                            {{ TEAM_FILES[type].name[locale] }}
+                        </h4>
+                        <InfoIcon :tooltip="TEAM_FILES[type].description[locale]" />
+                    </div>
+
+                    <div class="flex flex-col gap-4">
+                        <FileInput
+                            :model-value="files.find((file) => file.active === true)?.file"
+                            :file="files.find((file) => file.active === true)"
+                            :file-type="DOCUMENT"
+                            :remove-callback="(_, { id }) => removeFile({ id })"
+                            @update:model-value="
+                                (file) => {
+                                    if (file) uploadFile(file, type)
+                                }
+                            "
+                        />
+                        <LabelSimple
+                            v-if="files.some((file) => !file.active)"
+                            @click="showArchiveType[type] = true"
+                        >
+                            Voir les archives...
+                        </LabelSimple>
+                        <ModalPopup :show="showArchiveType[type]" @close="showArchiveType[type] = false">
+                            <div v-for="file in files" :key="file.id">
+                                <FileInput :model-value="file" :file-type="DOCUMENT" />
+                            </div>
+                        </ModalPopup>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </template>
+    </GraphQLQuery>
 </template>
 
 <script setup>
+    import Zoom from '@/assets/img/3dicons/zoom.png'
+
+    import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
     import FileInput from '@/components/Input/FileInput.vue'
-    import FilePreview from '@/components/Document/FilePreview.vue'
-    import { ref, watch } from 'vue'
-    import { useClubsStore } from '@/store/clubs.store'
+    // import FileInput from '@/components/Input/FileInput.vue'
+    // import FilePreview from '@/components/Document/FilePreview.vue'
+
+    import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
+    import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
+    import InfoIcon from '@/icons/InfoIcon.vue'
+
+    import { getTeamFiles } from '@/graphql/queries/teams/getTeamFiles'
+    import { deleteTeamFile } from '@/graphql/queries/teams/deleteTeamFile'
+
+    // FIXME: find a fix for uploading with graphql
+    // import { addTeamFile } from '@/graphql/queries/teams/addTeamFile'
+
+    import { groupBy, isEmpty } from 'lodash'
+    // import { ref, watch } from 'vue'
+    // import { useClubsStore } from '@/store/clubs.store'
+    import { TEAM_FILES } from '@/shared/types/team-files.enum'
+    import { DOCUMENT } from '@/shared/assets/file-types'
+
+    import { useI18n } from 'vue-i18n'
+    import { ref } from 'vue'
+    import $axios from '@/shared/config/axios.config'
+    import { useQuery } from '@vue/apollo-composable'
+    import { useMutation } from '@vue/apollo-composable'
+    import { showErrorToast, showSuccessToast, showToastGraphQLError } from '@/utils/toast'
+
+    const { locale } = useI18n({ useScope: 'global' })
 
     const props = defineProps({
         club: {
@@ -42,53 +95,54 @@
         },
     })
 
-    const clubsStore = useClubsStore()
-    await clubsStore.getClubFiles(props.club.id, 'document')
+    const { onError: onFilesFetchError, refetch } = useQuery(getTeamFiles, { id: props.club.id })
+    onFilesFetchError((errors) => showToastGraphQLError(errors, "Échec de l'upload du fichier !"))
 
-    const documentList = ref([
-        {
-            name: 'Passation',
-            message:
-                "<span class='text-blue-500 hover:underline'> Cliquez </span> ou glissez votre nouveau fichier de passation ici !",
-            file: clubsStore.club.files.filter((doc) => doc.description === 'handover'),
-            description: 'handover',
-            model: [],
-        },
-        {
-            name: 'Status',
-            message:
-                "<span class='text-blue-500 hover:underline'> Cliquez </span> ou glissez vos nouveaux status ici !",
-            file: clubsStore.club.files.filter((doc) => doc.description === 'statute'),
-            description: 'statute',
-            model: [],
-        },
-        {
-            name: 'Réglement intérieur',
-            message:
-                "<span class='text-blue-500 hover:underline'> Cliquez </span> ou glissez votre nouveau réglement intérieur ici !",
-            file: clubsStore.club.files.filter((doc) => doc.description === 'internal'),
-            description: 'internal',
-            model: [],
-        },
-    ])
+    const { mutate: removeFile, onDone, onError: onRemoveFileError } = useMutation(deleteTeamFile)
+    onDone(() => showSuccessToast('Fichier supprimé 🗑️'))
+    onRemoveFileError((errors) => showToastGraphQLError(errors, 'Échec de la suppression du fichier !'))
 
-    for (const doc of documentList.value) {
-        watch(
-            () => doc.model,
-            async (model) => {
-                if (model.length > 0) {
-                    await clubsStore.postClubFile(props.club.id, 'document', model[0], doc.description)
-                    doc.model = []
-                }
-            },
-            { deep: true },
-        )
+    const filesByType = (files) => {
+        const byType = groupBy(files, 'type')
+        for (const type of Object.keys(TEAM_FILES)) {
+            byType[type] = byType[type] || []
+        }
+        return byType
     }
 
-    watch(
-        () => props.club.id,
-        async () => {
-            await clubsStore.getClubFiles(props.club.id, 'document')
-        },
-    )
+    const showArchiveType = ref(Object.fromEntries(Object.entries(TEAM_FILES).map(([key]) => [key, false])))
+
+    const uploadFile = (file, type) => {
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('teamId', props.club.id)
+        formData.append('type', type)
+
+        $axios
+            .post('files/team-files', formData)
+            .then(() => {
+                showSuccessToast('Fichier uploadé 📁')
+                refetch()
+            })
+            .catch((error) => {
+                showErrorToast(error.message, { title: `Échec de l'upload de "${file.name}" !` })
+            })
+    }
+
+    // FIXME: find a fix for uploading with graphql
+    // const { mutate: addFile, onDone, onError } = useMutation(addTeamFile)
+    // onDone(() => showSuccessToast('Fichier uploadé 📁'))
+    // onError((errors) => {
+    //     console.log(errors)
+    //     showToastGraphQLError(errors, "Échec de l'upload du fichier !")
+    // })
+    // const uploadFile = (file, type) => {
+    //     addFile({
+    //         file: { file },
+    //         createFile: {
+    //             id: props.club.id,
+    //             type,
+    //         },
+    //     })
+    // }
 </script>

@@ -60,3 +60,11 @@ $logo-dark-url: url('@/assets/img/logos/logo_dark.png');
 .symmetry-x {
     transform: scale(-1, 1);
 }
+
+.scale-on-hover {
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+        transform: scale(110%);
+    }
+}

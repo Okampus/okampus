@@ -13,8 +13,7 @@ import cookieParser from 'cookie-parser';
 import type { Request } from 'express';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
-import { computedConfig, config } from './shared/configs/config';
-import { meiliSearchClient } from './shared/configs/meilisearch.config';
+import { config } from './shared/configs/config';
 
 const logger = new Logger('Bootstrap');
 
@@ -31,17 +30,12 @@ function setupSwagger(app: NestExpressApplication): void {
 }
 
 async function bootstrap(): Promise<void> {
-  if (config.get('meilisearch.enabled') && !await meiliSearchClient.isHealthy()) {
-    logger.error('MeiliSearch is not healthy and has been disabled!');
-    config.set('meilisearch.enabled', false);
-  }
-
-  if (config.get('sentry.enabled'))
+  if (config.sentry.enabled)
     SentryTracing.addExtensionMethods();
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  if (config.get('nodeEnv') === 'production') {
+  if (config.env.isProd()) {
     app.enableCors((req: Request, cb) => {
       const callback = cb as (err: Error | null, result: { origin: boolean; credentials: boolean }) => void;
       const origin = req.header('origin');
@@ -53,7 +47,7 @@ async function bootstrap(): Promise<void> {
     });
     app.use(helmet());
   } else {
-    app.enableCors({ origin: computedConfig.frontendUrl, credentials: true });
+    app.enableCors({ origin: config.network.frontendUrl, credentials: true });
     // Disable those rules to make the GraphQL playground work
     app.use(helmet({
       contentSecurityPolicy: false,
@@ -61,7 +55,7 @@ async function bootstrap(): Promise<void> {
       crossOriginEmbedderPolicy: false,
     }));
   }
-  app.use(cookieParser(config.get('cookies.signature')));
+  app.use(cookieParser(config.cookies.signature));
 
 
   app.enableShutdownHooks();
@@ -72,9 +66,9 @@ async function bootstrap(): Promise<void> {
     whitelist: true,
   }));
 
-  if (!config.get('s3.enabled')) {
+  if (!config.s3.enabled) {
     app.useStaticAssets(
-      path.join(path.resolve('./'), config.get('upload.path')),
+      path.join(path.resolve('./'), config.upload.path),
       { prefix: '/uploads' },
     );
   }
@@ -83,7 +77,7 @@ async function bootstrap(): Promise<void> {
 
   setupSwagger(app);
 
-  await app.listen(config.get('port'));
+  await app.listen(config.network.port);
   const url = await app.getUrl();
   logger.log(`API running on: ${url.replace('[::1]', 'localhost')}`);
 }

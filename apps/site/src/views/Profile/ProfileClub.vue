@@ -94,6 +94,7 @@
                 <div class="centered-container-padded py-0">
                     <HorizontalTabs
                         v-model="currentTab"
+                        :background-variant="2"
                         :tabs="tabs"
                         :route-base="clubRoute"
                         route-name="club"
@@ -116,7 +117,6 @@
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
 
     import ClubHomepage from '@/components/Profile/Club/ClubHomepage.vue'
-    import ClubDocuments from '@/components/Profile/Club/ClubDocuments.vue'
     import ClubActivity from '@/components/Profile/Club/ClubActivity.vue'
     import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
 
@@ -152,7 +152,6 @@
 
     const HOME = 'home'
     const MEMBERS = 'members'
-    const DOCUMENTS = 'drive'
     const ACTIVITY = 'activity'
 
     const clubRoute = computed(() => `/club/${route.params.clubId}`)
@@ -172,13 +171,8 @@
         },
         {
             id: ACTIVITY,
-            name: 'Évents',
+            name: 'Évenements',
             icon: 'calendar',
-        },
-        {
-            id: DOCUMENTS,
-            name: 'Documents',
-            icon: 'file-arrow-down',
         },
     ]
 
@@ -186,7 +180,6 @@
 
     const components = {
         [HOME]: ClubHomepage,
-        [DOCUMENTS]: ClubDocuments,
         [MEMBERS]: ClubMembers,
         [ACTIVITY]: ClubActivity,
     }

@@ -1,7 +1,7 @@
 import type { ITriggerPayload } from '@novu/node';
 import { Report } from '../../../../reports/report.entity';
 import type { User } from '../../../../users/user.entity';
-import { computedConfig } from '../../../configs/config';
+import { config } from '../../../configs/config';
 import { NotificationType } from '../notification-type.enum';
 import { Notification } from './base.notification';
 
@@ -50,7 +50,7 @@ export class AdminReportCreatedNotification extends Notification {
         },
         contentMaster: {
           title: this.report.contentMaster?.title ?? 'titre',
-          url: `${computedConfig.frontendUrl}/forum/post/${this.report.contentMaster!.id}`,
+          url: `${config.network.frontendUrl}/forum/post/${this.report.contentMaster!.id}`,
         },
         // eslint-disable-next-line no-undefined
         reason: this.report.reason ?? undefined,

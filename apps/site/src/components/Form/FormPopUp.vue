@@ -1,7 +1,7 @@
 <template>
     <ModalPopup :show="show" @close="emit('update:show', false)" @closed="emit('closed')">
         <template #default="{ close }">
-            <div class="card flex flex-col items-center justify-center gap-6 py-8 px-10">
+            <div class="card-0 flex flex-col items-center justify-center gap-6 py-8 px-10">
                 <FormKit ref="form" type="form" :actions="false" @submit="submit($event)">
                     <FormKitSchema :schema="formSchema" :data="formData" />
                 </FormKit>

@@ -11,11 +11,13 @@
             <slot v-else-if="$slots.empty" name="empty" />
             <div v-else-if="resource" class="text-0 my-12 flex flex-col items-center justify-center gap-2">
                 <img :src="Zoom" class="h-40 w-40" />
-                <div class="text-center text-2xl font-bold">
-                    Aucun{{ resource.frFeminine ? 'e' : '' }} {{ resource.name.fr }} ne correspond à ces
-                    critères.
+                <div v-if="resourceType" class="text-center text-2xl font-bold">
+                    Aucun{{ resource.frFeminine ? 'e' : '' }} {{ resource.name.fr }} trouvé{{
+                        resource.frFeminine ? 'e' : ''
+                    }}
                 </div>
-                <div v-if="routeBase" class="text-center text-lg">
+                <div v-else class="text-center text-2xl font-bold">Pas de résultat</div>
+                <div v-if="routeBase && route.fullPath" class="text-center text-lg">
                     Essayez la
                     <router-link :to="routeBase" class="link-blue"
                         >liste de tou{{ resource.frFeminine ? 'te' : '' }}s les
@@ -36,6 +38,10 @@
 
     import { getGraphQLErrorCode } from '@/utils/errors'
     import { DEFAULT, RESOURCE_NAMES } from '@/shared/types/resource-names.enum'
+
+    import { useRoute } from 'vue-router'
+
+    const route = useRoute()
 
     const props = defineProps({
         query: {
@@ -60,7 +66,7 @@
         },
         resourceType: {
             type: String,
-            default: '',
+            default: null,
         },
         routeBase: {
             type: String,

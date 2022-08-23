@@ -13,13 +13,19 @@ import { CreateFileUploadDto } from '../../file-uploads/dto/create-file-upload.d
 export class CreateTeamFileDto extends CreateFileUploadDto {
   @Field(() => Int)
   @IsInt()
-  id: number;
+  teamId: number;
 
   @Field()
   @IsEnum(TeamFileType)
   type: TeamFileType;
 
-  @Field()
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  @Length(1, 500)
+  specialType: string;
+
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
   @Length(0, 500)

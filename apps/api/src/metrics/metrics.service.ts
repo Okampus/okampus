@@ -23,7 +23,7 @@ export class MetricsService {
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
   ) {}
 
-  @Cron(config.get('settings.metricsCron'))
+  @Cron(config.settings.metricsCron)
   public async updateMetrics(): Promise<void> {
     const fifteenMinutesAgo = new Date();
     fifteenMinutesAgo.setMinutes(fifteenMinutesAgo.getMinutes() - 15);

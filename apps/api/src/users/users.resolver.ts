@@ -12,7 +12,7 @@ import { CurrentTenant } from '../shared/lib/decorators/current-tenant.decorator
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { SubscriptionType } from '../shared/lib/types/enums/subscription-type.enum';
 import { PaginateDto } from '../shared/modules/pagination';
-import type { IndexedEntity } from '../shared/modules/search/meilisearch.global';
+import type { IndexedEntity } from '../shared/modules/search/indexed-entity.interface';
 import { Tenant } from '../tenants/tenants/tenant.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IndexedUser } from './user-indexed.model';

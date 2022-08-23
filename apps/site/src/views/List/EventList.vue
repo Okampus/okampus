@@ -57,7 +57,7 @@
     import { getEvents } from '@/graphql/queries/events/getEvents'
 
     import { useBreakpoints } from '@vueuse/core'
-    import twBreakpoints from '@/breakpoints'
+    import { twBreakpoints } from '@/tailwind'
 
     const breakpoints = useBreakpoints(twBreakpoints)
     const sm = breakpoints.greater('sm')

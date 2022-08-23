@@ -1,3 +1,5 @@
+export const getObjectUrl = (blob) => URL.createObjectURL(blob)
+
 export const download = (href, filename) => {
     const a = document.createElement('a')
     a.href = href
@@ -15,13 +17,10 @@ export const downloadResource = (url, filename) => {
         mode: 'cors',
     })
         .then((response) => response.blob())
-        .then((blob) => {
-            let blobUrl = URL.createObjectURL(blob)
-            download(blobUrl, filename)
-        })
+        .then((blob) => download(getObjectUrl(blob), filename))
         .catch((e) => console.error(e))
 }
 
 export const downloadFile = (file, objectUrl = true) => {
-    objectUrl ? download(URL.createObjectURL(file), file.name) : downloadResource(file.url, file.name)
+    objectUrl ? download(getObjectUrl(file), file.name) : downloadResource(file.url, file.name)
 }

@@ -51,10 +51,10 @@
     import DocumentIcon from '@/components/Document/DocumentIcon.vue'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
 
-    import { FORMKIT, FORMKIT_TEMPLATE, getType } from '@/shared/assets/file-types.js'
-    import { downloadFile } from '@/utils/downloadFile'
+    import { FOLDER, FORM, getType } from '@/shared/assets/file-types.js'
+    import { download, downloadFile } from '@/utils/downloadFile'
 
-    import { ref } from 'vue'
+    import { markRaw, ref } from 'vue'
     import { emitter } from '@/shared/modules/emitter'
 
     const props = defineProps({
@@ -76,31 +76,49 @@
 
     const rename = ref(false)
 
+    const fileType = getType(props.file)
     const buttons = [
         {
             name: 'Renommer',
-            icon: 'fas fa-pencil',
-            class: 'hover:bg-blue-300 dark:hover:bg-blue-500',
+            icon: 'fa fa-pencil',
+            class: 'hover:bg-green-300 dark:hover:bg-green-500',
             action: () => {
                 rename.value = true
             },
         },
-        ...[
-            (props.file.type === FORMKIT) | FORMKIT_TEMPLATE
-                ? {
+        {
+            name: 'Télécharger',
+            icon: 'fa fa-download',
+            class: 'hover:bg-blue-300 dark:hover:bg-blue-500',
+            action: () => {
+                if (fileType.parentType === FORM) {
+                    const dataSrc =
+                        'data:text/json;charset=utf-8,' +
+                        encodeURIComponent(JSON.stringify(props.file.meta?.schema))
+                    download(dataSrc, props.file.name + '.json')
+                } else if (fileType.type === FOLDER) {
+                    // Compress folder and download
+                } else {
+                    downloadFile(props.file, !props.file.url)
+                }
+            },
+        },
+        ...(fileType.parentType === FORM && props.file.id
+            ? [
+                  {
                       name: 'Modifier',
-                      icon: 'fas fa-address-book',
+                      icon: 'fa fa-edit',
                       class: 'hover:bg-gray-300 dark:hover:bg-gray-500',
                       action: () =>
                           emitter.emit('show-bottom-sheet', {
-                              component: FormKitBuilder,
-                              props: { form: props.file },
+                              title: 'Modification de formulaire ✏️',
+                              component: markRaw(FormKitBuilder),
+                              props: { form: { ...props.file }, teamId: props.file.teamId },
                           }),
-                  }
-                : {},
-        ],
+                  },
+              ]
+            : []),
     ]
-    const fileType = getType(props.file)
 </script>
 
 <style lang="scss">

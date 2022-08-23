@@ -20,7 +20,24 @@ button.raised {
 
 %select,
 .select {
+    @extend %input-flat;
+    @extend %raised;
+}
+
+.select-0 {
+    @include get-color('bg', 0);
+    @extend %input-flat;
+    @extend %raised;
+}
+
+.select-1 {
     @include get-color('bg', 1);
+    @extend %input-flat;
+    @extend %raised;
+}
+
+.select-2 {
+    @include get-color('bg', 2);
     @extend %input-flat;
     @extend %raised;
 }

@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { partialUserFragment } from '@/graphql/fragments/userFragment'
+import { fileFragment } from '@/graphql/fragments/fileFragment'
 
 export const getTeamFiles = gql`
     query teamFiles($id: Int!) {
@@ -9,14 +9,12 @@ export const getTeamFiles = gql`
                 id
                 type
                 description
+                active
                 file {
-                    id
-                    user {
-                        ...PartialUserInfo
-                    }
+                    ...FileInfo
                 }
             }
         }
     }
-    ${partialUserFragment}
+    ${fileFragment}
 `

@@ -13,7 +13,7 @@ export default {
   type: 'postgresql',
   entities: ['./dist/**/*.entity.js'],
   entitiesTs: ['./src/**/*.entity.ts'],
-  debug: config.get('nodeEnv') === 'development',
+  debug: config.env.isDev(),
   highlighter: new SqlHighlighter(),
   entityRepository: BaseRepository,
   resultCache: {
