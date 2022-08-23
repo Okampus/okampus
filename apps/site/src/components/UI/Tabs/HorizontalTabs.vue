@@ -85,8 +85,6 @@
         }0 80%)`,
     })
 
-    console.log('COLOR', twColors[props.backgroundVariant])
-
     const prevBackground = computed(() => getBg(twColors[props.backgroundVariant]).left)
     const nextBackground = computed(() => getBg(twColors[props.backgroundVariant]).right)
     const prevBackgroundDark = computed(() => getBg(twColors[props.backgroundVariant]).leftDark)

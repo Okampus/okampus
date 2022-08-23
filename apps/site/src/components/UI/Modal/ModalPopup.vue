@@ -6,7 +6,7 @@
                     class="fixed top-0 left-0 z-20 rounded-lg"
                     :style="{ 'transform': 'translate(calc(50vw - 50%), calc(50vh - 50%))' }"
                 >
-                    <div class="modal-content rounded-lg">
+                    <div class="modal-content card-0">
                         <slot :close="() => emit('close')" />
                     </div>
                 </div>

@@ -162,7 +162,7 @@
                 // Reset CSS animation (nextTick doesn't work)
                 // FIXME: improve this?
                 resetting.value = true
-                setTimeout(() => (resetting.value = false), 1)
+                setTimeout(() => (resetting.value = false), 10)
             }
         })
     }

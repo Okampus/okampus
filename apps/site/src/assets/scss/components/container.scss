@@ -2,7 +2,7 @@
     @apply flex w-full max-w-[90rem] md:gap-6 md:mx-auto md:p-4 gap-4;
 
     &-padded {
-        @apply flex w-full max-w-[90rem] md:gap-6 md:mx-auto gap-4 p-4;
+        @apply flex w-full max-w-[90rem] md:gap-6 md:mx-auto gap-4 py-4 px-4 md:px-8;
     }
 }
 
