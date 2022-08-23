@@ -169,15 +169,15 @@
 
     const avatarButtons = [
         {
-            name: 'Changer de photo',
+            name: "Changer d'avatar",
             icon: 'fas fa-camera',
-            // class: 'hover:bg-blue-300 dark:hover:bg-blue-500',
+            class: 'hover:bg-blue-300 dark:hover:bg-blue-500',
             action: () => {
                 editingAvatar.value = true
             },
         },
         {
-            name: 'Supprimer ma photo',
+            name: 'Supprimer mon avatar',
             icon: 'fas fa-xmark',
             class: 'hover:bg-red-300 dark:hover:bg-red-500',
             action: () => {
