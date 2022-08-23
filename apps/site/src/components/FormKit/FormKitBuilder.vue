@@ -1,279 +1,294 @@
 <template>
-    <div class="flex flex-col">
-        <!-- <h1 class="mb-6 text-3xl font-bold">Créer votre formulaire</h1> -->
-        <div class="w-96">
-            <FormKit v-model="formTitle" type="text" label="Titre du Formulaire"></FormKit>
+    <div class="flex flex-col gap-4">
+        <div class="card-0 flex w-full flex-col pt-8">
+            <EditableText
+                v-model="currentForm.name"
+                placeholder="Nom du formulaire"
+                text-class="text-2xl"
+                @update:model-value="emit('change')"
+            />
+            <EditableText
+                v-model="currentForm.description"
+                placeholder="Description"
+                text-class="text-lg"
+                :single-line="false"
+                @update:model-value="emit('change')"
+            />
         </div>
-        <FormKit v-model="formDescription" type="textarea" label="Description du Formulaire"></FormKit>
-        <VueDraggableNext v-model="schema" handle=".handle" item-key="id" class="flex flex-col gap-4">
+
+        <VueDraggableNext
+            v-model="currentForm.schema"
+            handle=".handle"
+            item-key="id"
+            class="flex flex-col gap-4"
+        >
             <transition-group name="grid">
-                <div v-for="step in steps" :key="step.id" class="group card bg-1 flex flex-col">
-                    <div class="bg-1 mt-8 rounded-md p-4">
-                        <div v-if="element.$formkit">
-                            <div class="flex items-center gap-4">
-                                <FormKit v-model="element.label" type="text" label="Nom de l'évenement" />
-                                <FormKit
-                                    v-model="element.$formkit"
-                                    type="select"
-                                    :options="types"
-                                    label="Type d'input"
-                                    @vnode-updated="() => patchSchema(index)"
-                                ></FormKit>
-                                <div class="mt-4">
-                                    <FormKit
-                                        v-model="element.required"
-                                        type="checkbox"
-                                        label="Champ requis"
-                                        @update:model-value="
-                                            () => (element.validation = element.required ? 'required' : null)
-                                        "
-                                    ></FormKit>
-                                </div>
-                                <button class="mt-6 text-red-500" @click="() => removeOne(index)">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                            <div v-if="element.options">
-                                <div class="flex flex-wrap items-center gap-4">
-                                    <div v-for="(option, idx) in element.options" :key="idx">
-                                        <FormKit
-                                            v-model="element.options[idx]"
-                                            type="text"
-                                            :label="'Option ' + (idx + 1)"
-                                        ></FormKit>
-                                    </div>
-                                </div>
-                                <button
-                                    class="mt-4 w-fit rounded-md bg-blue-500 py-1 px-4 text-white"
-                                    @click="() => addOption(index)"
+                <HandleCard v-for="(element, i) in currentForm.schema" :key="element" class="relative">
+                    <div
+                        v-if="element.required"
+                        v-tooltip="'Obligatoire'"
+                        class="absolute left-6 top-2 cursor-default text-2xl text-red-500"
+                    >
+                        *
+                    </div>
+
+                    <div v-if="element.$formkit" class="flex flex-col gap-4">
+                        <div class="flex w-full gap-2 md:items-center md:gap-4 md-max:flex-col">
+                            <EditableText
+                                :ref="(el) => (fieldRefs[`field-${i}`] = el)"
+                                v-model="element.label"
+                                class="grow"
+                                placeholder="Nom du champ"
+                                text-class="text-lg !px-2"
+                                @update:model-value="emit('change')"
+                            />
+                            <FormKit
+                                v-model="element.$formkit"
+                                type="dropdown"
+                                outer-class="mb-0 md-max:w-full"
+                                :update="(value) => value.type"
+                                :options="OPTIONS"
+                                :default-option="
+                                    OPTIONS.findIndex((value) => value.type === element.$formkit)
+                                "
+                                @update:model-value="emit('change')"
+                            />
+                        </div>
+
+                        <div class="flex items-end justify-between">
+                            <input
+                                v-if="element.$formkit === TEXT"
+                                class="input w-full !cursor-default"
+                                disabled
+                                :placeholder="OPTIONS.find((option) => option.type === element.$formkit).name"
+                            />
+                            <div
+                                v-if="element.$formkit === MULTIPLE || element.$formkit === CHECKLIST"
+                                class="flex w-full flex-col items-start"
+                            >
+                                <div
+                                    v-for="(option, j) in element.options"
+                                    :key="option"
+                                    class="flex w-full items-center gap-2"
                                 >
-                                    Ajouter une option
-                                </button>
-                            </div>
-                            <div v-if="element.min != undefined">
-                                <div class="flex flex-wrap items-center gap-4">
-                                    <FormKit v-model="element.min" type="number" label="Minimum"></FormKit>
-                                    <FormKit v-model="element.max" type="number" label="Maximum"></FormKit>
+                                    <input
+                                        :type="element.$formkit === CHECKLIST ? 'checkbox' : 'radio'"
+                                        class="h-6 w-6 !cursor-default"
+                                        disabled
+                                    />
+                                    <EditableText
+                                        :ref="
+                                            (el) => {
+                                                optionRefs[`option-${i}-${j}`] = el
+                                            }
+                                        "
+                                        v-model="option.value"
+                                        text-class="!py-1 !px-2"
+                                        class="grow"
+                                        :placeholder="`Option ${j + 1}`"
+                                        @update:model-value="emit('change')"
+                                    />
+                                    <button
+                                        v-if="element.options.length > 1"
+                                        v-tooltip="`Supprimer`"
+                                        class="fa fa-xmark text-0 h-8 w-6 text-2xl opacity-50"
+                                        @click="
+                                            () => {
+                                                element.options = element.options.filter(
+                                                    (_, idx) => idx !== j,
+                                                )
+                                                emit('change')
+                                            }
+                                        "
+                                    />
+                                </div>
+                                <div class="mt-1 flex items-center gap-2">
+                                    <input
+                                        :type="element.$formkit === CHECKLIST ? 'checkbox' : 'radio'"
+                                        class="h-6 w-6 !cursor-default"
+                                        disabled
+                                    />
+                                    <button
+                                        class="text-placeholder ml-2 cursor-text"
+                                        @click="() => addOption(element, i)"
+                                    >
+                                        Ajouter une option
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <div v-else class="flex">
-                            <FormKit
-                                v-model="element.children"
-                                type="text"
-                                label="Titre de la section"
-                                outer-class="w-full"
-                            />
-                            <button class="mt-6 w-8 text-red-500" @click="() => removeOne(index)">
-                                <i class="fas fa-times" />
+
+                        <div class="mt-2 flex items-center gap-2">
+                            <button
+                                class="button-blue flex h-8 w-8 items-center justify-center"
+                                @click="
+                                    () => {
+                                        currentForm.schema.splice(
+                                            currentForm.schema.indexOf(element),
+                                            0,
+                                            cloneDeep(element),
+                                        )
+                                        emit('change')
+                                    }
+                                "
+                            >
+                                <i class="fa fa-clone" />
                             </button>
+
+                            <button
+                                class="button-red flex h-8 w-8 items-center justify-center"
+                                @click="
+                                    () => {
+                                        currentForm.schema = currentForm.schema.filter(
+                                            (value) => value !== element,
+                                        )
+                                        emit('change')
+                                    }
+                                "
+                            >
+                                <i class="fa fa-trash" />
+                            </button>
+
+                            <div class="ml-4 flex items-center gap-2">
+                                Obligatoire
+                                <SwitchInput
+                                    v-model="element.required"
+                                    height="1.2rem"
+                                    width="2.2rem"
+                                    switch-validate-color="coral"
+                                    @update:model-value="emit('change')"
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                    <!-- <div v-else class="flex">
+                        <FormKit v-model="element.text" type="text" outer-class="w-full" />
+                    </div> -->
+                </HandleCard>
             </transition-group>
         </VueDraggableNext>
         <div class="flex gap-4">
-            <button class="w-fit rounded-md bg-blue-500 py-1 px-4 text-white" @click="addOne">
-                Ajouter un champ
-            </button>
-            <button class="w-fit rounded-md bg-blue-500 py-1 px-4 text-white" @click="addText">
-                Ajouter un texte
-            </button>
-        </div>
-        <div class="mt-8 flex w-full">
-            <button
-                class="w-fit rounded-md bg-blue-500 py-1 px-4 text-lg font-bold text-white"
-                @click="submit"
-            >
-                Enregistrer
-            </button>
+            <button class="button-blue" @click="addOne">Ajouter un champ</button>
+            <!-- <button class="button-blue" @click="addText">Ajouter un texte</button> -->
         </div>
     </div>
 </template>
 
 <script setup>
-    import { VueDraggableNext } from 'vue-draggable-next'
     import { FormKit } from '@formkit/vue'
-    import { ref, watch } from 'vue'
+    import { VueDraggableNext } from 'vue-draggable-next'
+
+    import HandleCard from '@/components/App/Card/HandleCard.vue'
+    import SwitchInput from '@/components/Input/SwitchInput.vue'
+    import EditableText from '@/components/Input/EditableText.vue'
+
+    import { OPTIONS, TEXT, MULTIPLE, CHECKLIST } from '@/shared/types/formkit-builder-input-types.enum'
+
     import { cloneDeep } from 'lodash'
-    // import { useClubsStore } from '@/store/clubs.store'
-    // import { showErrorToast, showInfoToast, showSuccessToast } from '@/utils/toast.js'
+    import { useMutation } from '@vue/apollo-composable'
+    import { reactive, ref, watch } from 'vue'
 
-    // const clubs = useClubsStore()
-
-    // const schema = ref([])
+    import { createForm } from '@/graphql/queries/forms/createForm'
+    import { updateForm } from '@/graphql/queries/forms/updateForm'
+    import { showSuccessToast } from '@/utils/toast'
 
     const props = defineProps({
         form: {
             type: Object,
-            required: false,
             default: null,
+        },
+        teamId: {
+            type: Number,
+            required: true,
+        },
+        isNewForm: {
+            type: Boolean,
+            default: false,
+        },
+        cancellable: {
+            type: Boolean,
+            default: true,
         },
     })
 
-    const formName = ref(props.form.name)
-    const formDescription = ref(props.form.description)
-    const schema = ref(cloneDeep(props.form.schema))
-
-    watch(props.form, (form) => {
-        formName.value = form.name
-        formDescription.value = form.description
-        schema.value = form.schema
+    const currentForm = reactive({
+        type: props.form?.formType,
+        name: props.form?.name ?? 'Formulaire sans titre',
+        isTemplate: props.form?.isTemplate ?? false,
+        description: props.form?.description ?? '',
+        schema: cloneDeep(props.form?.schema) ?? [],
     })
 
-    // const drag = ref(false)
-    // const emit = defineEmits(['update'])
+    watch(
+        () => props.form,
+        (form) => {
+            currentForm.type = form.formType
+            currentForm.name = form.name ?? 'Formulaire sans titre'
+            currentForm.isTemplate = form.isTemplate ?? false
+            currentForm.description = form.description ?? ''
+            currentForm.schema = cloneDeep(form.schema) ?? []
+        },
+    )
 
-    // const loadSchema = async () => {
-    //     if (!props.formId) {
-    //         schema.value = ''
-    //         formTitle.value = ''
-    //         formDescription.value = ''
-    //         return
-    //     }
-    //     await clubs.getForm(props.formId).then((res) => {
-    //         schema.value = res.form
-    //         formTitle.value = res.name
-    //         formDescription.value = res.description
-    //     })
-    // }
+    const emit = defineEmits(['update:form', 'cancel', 'change', 'save-success'])
 
-    // const addOne = () => {
-    //     schema.value.push({
-    //         $formkit: 'text',
-    //         label: '',
-    //         help: '',
-    //         validation: null,
-    //     })
-    // }
+    const { mutate: createTeamForm, onDone: onDoneCreate } = useMutation(createForm)
+    onDoneCreate(() => {
+        emit('save-success', true)
+        showSuccessToast('Formulaire créé !')
+    })
 
-    // const addText = () => {
-    //     schema.value.push({
-    //         $el: 'h1',
-    //         children: '',
-    //     })
-    // }
+    const { mutate: updateTeamForm, onDone: onDoneUpdate } = useMutation(updateForm)
+    onDoneUpdate(() => {
+        emit('save-success', true)
+        showSuccessToast('Formulaire mis à jour !')
+    })
 
-    // const removeOne = (idx) => {
-    //     schema.value.splice(idx, 1)
-    // }
+    const fieldRefs = ref({})
+    const optionRefs = ref({})
 
-    // const addOption = (idx) => {
-    //     schema.value[idx].options.push('')
-    // }
+    const addOne = () => {
+        currentForm.schema.push({
+            $formkit: 'text',
+            label: 'Nom du champ',
+            required: false,
+            validation: null,
+            typeOption: {},
+            options: [{ value: 'Option 1' }],
+        })
 
-    // const patchSchema = (idx) => {
-    //     if (['select', 'radio', 'checkbox'].includes(schema.value[idx].$formkit)) {
-    //         if (!schema.value[idx].options) {
-    //             schema.value[idx].options = ['']
-    //         }
-    //     } else if (schema.value[idx].options) {
-    //         delete schema.value[idx].options
-    //     }
-    //     if (schema.value[idx].$formkit === 'range') {
-    //         if (!schema.value[idx].min) {
-    //             schema.value[idx].min = 0
-    //             schema.value[idx].max = 10
-    //         }
-    //     } else if (schema.value[idx].min) {
-    //         delete schema.value[idx].min
-    //         delete schema.value[idx].max
-    //     }
-    // }
+        setTimeout(() => {
+            fieldRefs.value[`field-${currentForm.schema.length - 1}`].input.focus()
+            fieldRefs.value[`field-${currentForm.schema.length - 1}`].input.select()
+        }, 5)
 
-    // const createNew = async () => {
-    //     await clubs
-    //         .postForm(clubs.club.id, {
-    //             name: formTitle.value,
-    //             description: formDescription.value,
-    //             form: schema.value,
-    //             isTemplate: false,
-    //         })
-    //         .then(() => showSuccessToast('Le formulaire a bien été créé 📝'))
-    //         .catch((err) => showErrorToast(err.message))
-    // }
+        emit('change')
+    }
+    const addOption = (element, i) => {
+        element.options.push({
+            value: `Option ${element.options.length + 1}`,
+        })
 
-    // const update = async () => {
-    //     await clubs
-    //         .patchForm(props.formId, {
-    //             form: schema.value,
-    //             name: formTitle.value,
-    //             description: formDescription.value,
-    //         })
-    //         .then(() => showInfoToast('Formulaire mis à jour 📝'))
-    //         .catch((err) => showErrorToast(err.message))
-    // }
+        setTimeout(() => {
+            optionRefs.value[`option-${i}-${element.options.length - 1}`].input.focus()
+            optionRefs.value[`option-${i}-${element.options.length - 1}`].input.select()
+        }, 5)
 
-    // const submit = async () => {
-    //     if (!props.formId) {
-    //         await createNew()
-    //     } else {
-    //         await update()
-    //     }
-    //     emit('update')
-    // }
+        emit('change')
+    }
 
-    // const types = [
-    //     {
-    //         value: 'text',
-    //         label: 'Réponse courte',
-    //     },
-    //     {
-    //         value: 'textarea',
-    //         label: 'Paragraphe',
-    //     },
-    //     {
-    //         value: 'email',
-    //         label: 'Email',
-    //     },
-    //     {
-    //         value: 'number',
-    //         label: 'Nombre',
-    //     },
-    //     {
-    //         value: 'date',
-    //         label: 'Date',
-    //     },
-    //     {
-    //         value: 'datetime-local',
-    //         label: 'Date et heure',
-    //     },
-    //     {
-    //         value: 'time',
-    //         label: 'Heure',
-    //     },
-    //     {
-    //         value: 'url',
-    //         label: 'Lien',
-    //     },
-    //     {
-    //         value: 'tel',
-    //         label: 'Numéro de téléphone',
-    //     },
-    //     {
-    //         value: 'color',
-    //         label: 'Couleur',
-    //     },
-    //     {
-    //         value: 'radio',
-    //         label: 'Radio',
-    //     },
-    //     {
-    //         value: 'checkbox',
-    //         label: 'Case à cocher',
-    //     },
-    //     {
-    //         value: 'select',
-    //         label: 'Liste déroulante',
-    //     },
-    //     {
-    //         value: 'range',
-    //         label: 'Range',
-    //     },
-    // ]
+    const save = () => {
+        if (props.isNewForm) {
+            createTeamForm({ id: props.teamId, createForm: currentForm })
+        } else {
+            updateTeamForm({ id: props.form.id, updateForm: currentForm })
+        }
+    }
 
-    // watch(
-    //     () => props.formId,
-    //     async () => await loadSchema(),
-    // )
+    if (props.isNewForm) {
+        emit('change')
+    }
+
+    defineExpose({ save })
 </script>
