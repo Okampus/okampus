@@ -1,9 +1,9 @@
 const DEFAULT = 'medium'
 export function readingTime(text, mode = DEFAULT) {
     const WPM = {
-        slow: 130,
+        slow: 150,
         medium: 200,
-        fast: 260,
+        fast: 300,
         veryFast: 400,
     }
 

@@ -1,11 +1,12 @@
 <template>
     <div>
         <AlertToast
+            ref="alertToast"
             v-model:active="toast.show"
             :title="toast.title"
             :message="toast.message"
             :type="toast.type"
-            v-bind="!isNil(toast.duration) ? { duration: toast.duration } : {}"
+            :duration="toast.duration"
             @close="toast.onClose"
         />
 
@@ -92,7 +93,6 @@
 
     import { inject, nextTick, reactive, ref, watch, watchEffect } from 'vue'
 
-    import { isNil } from 'lodash'
     import { errorCodes } from '@/shared/errors/app-exceptions.enum'
 
     import { useRoute } from 'vue-router'
@@ -118,6 +118,7 @@
     const sidebar = ref(null)
     const topbar = ref(null)
     const content = ref(null)
+    const alertToast = ref(null)
 
     // TODO: hide sidebar on some routes for better navigation
     // const hideSidebarOnRoute = computed(() => currentRoute.fullPath !== '/')
@@ -218,6 +219,8 @@
         toast.position = position ?? 'bottom'
 
         toast.show = true
+
+        alertToast.value.reset()
     })
 
     emitter.on('show-bottom-sheet', ({ isNew, title, component, props }) => {
