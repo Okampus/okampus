@@ -2,7 +2,8 @@ import { IsEmail, IsEnum, IsString } from 'class-validator';
 import type { TenantUserinfoResponse } from '../../shared/lib/types/interfaces/userinfo-response.interface';
 import { SchoolRole } from '../../shared/modules/authorization/types/school-role.enum';
 
-export class TenantDto {
+// TODO: flexible (tenant-specific) TenantUserDto
+export class TenantUserDto {
   @IsString()
   id: string;
 

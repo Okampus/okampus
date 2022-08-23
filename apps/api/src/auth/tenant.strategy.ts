@@ -6,7 +6,7 @@ import type { TenantUserinfoResponse } from '../shared/lib/types/interfaces/user
 import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
 import type { User } from '../users/user.entity';
 import type { AuthService } from './auth.service';
-import { TenantDto } from './dto/tenant.dto';
+import { TenantUserDto } from './dto/tenant-user.dto';
 
 export function tenantStrategyFactory(
   authServiceInstance: AuthService,
@@ -39,7 +39,7 @@ export function tenantStrategyFactory(
       if (!Object.values<string>(SchoolRole).includes(data.role))
         throw new UnauthorizedException('Invalid role');
 
-      const userInfo = new TenantDto(data);
+      const userInfo = new TenantUserDto(data);
 
       return await this.authService.createOrUpdate(tenantId, userInfo);
     }
