@@ -157,9 +157,15 @@ input CreateTeamEventRegistrationDto {
   status: TeamEventRegisterStatus!
 }
 
+input CreateTeamEventValidationDto {
+  approved: Boolean!
+  message: String
+}
+
 input CreateTeamFileDto {
-  description: String!
-  id: Int!
+  description: String
+  specialType: String
+  teamId: Int!
   type: String!
 }
 
@@ -333,7 +339,8 @@ type Mutation {
   addThread(thread: CreateThreadDto!): Thread!
   addUserToTeam(invite: InviteMemberDto!, teamId: Int!, userId: Int!): TeamMember!
   addValidationStep(createStep: CreateValidationStepDto!): Tenant!
-  createTeamForm(createForm: CreateTeamFormDto!, id: Int!): TeamForm!
+  createTeamForm(createForm: CreateTeamFormDto!, id: Int!): Team!
+  deleteTeamFile(id: String!): Team!
   favoriteContent(favorite: Boolean!, id: Int!): Content!
   handleTeamMembershipRequest(payload: PutTeamMembershipRequestDto!, requestId: Int!): TeamMembershipRequest!
   insertStep(atStep: Int!, step: Int!): Tenant!
@@ -643,6 +650,7 @@ type TeamFile {
   file: FileUpload!
   id: String!
   lastActiveDate: DateTime!
+  specialType: String!
   team: Team!
   type: TeamFileType!
   updatedAt: DateTime!
@@ -651,6 +659,7 @@ type TeamFile {
 enum TeamFileType {
   Brochure
   Constitution
+  GraphicCharter
   LegalReceipt
   Rules
   Transcript
@@ -783,6 +792,7 @@ input TeamsFilterDto {
 
 type Tenant {
   createdAt: DateTime!
+  eventValidationForm: JSON
   id: String!
   logo: String
   logoDark: String
