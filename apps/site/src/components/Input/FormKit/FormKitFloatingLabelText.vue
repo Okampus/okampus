@@ -1,5 +1,5 @@
 <template>
-    <div class="relative">
+    <div class="input-background relative" :="isFocused ? { focused: '' } : {}">
         <input
             class="input w-full"
             :class="inputClass"
@@ -12,7 +12,7 @@
         <div
             v-if="floatingLabel"
             :class="{ 'floating': isFocused || context._value }"
-            class="floating-label bg-2 rounded-t-md px-1"
+            class="floating-label rounded-t-md px-1"
         >
             {{ floatingLabel }}
         </div>

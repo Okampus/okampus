@@ -2,6 +2,9 @@
     <Dropdown
         class="z-10"
         :popper-hide-triggers="(triggers) => [...triggers, 'click']"
+        placement="right"
+        :distance="7"
+        theme="no-arrow"
         @click.stop="() => {}"
     >
         <slot v-if="$slots.default" />
@@ -11,7 +14,7 @@
         />
 
         <template #popper>
-            <div class="card flex flex-col p-2">
+            <div class="card bg-1 flex flex-col p-2">
                 <div
                     v-for="(button, _, i) in buttons"
                     :key="i"

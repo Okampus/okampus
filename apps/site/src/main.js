@@ -14,6 +14,7 @@ import FormKitMdEditor from '@/components/Input/FormKit/FormKitMdEditor.vue'
 import FormKitTagInput from '@/components/Input/FormKit/FormKitTagInput.vue'
 import FormKitFloatingLabelText from '@/components/Input/FormKit/FormKitFloatingLabelText.vue'
 import FormKitSearchInput from '@/components/Input/FormKit/FormKitSearchInput.vue'
+import FormKitDropdownInput from '@/components/Input/FormKit/FormKitDropdownInput.vue'
 import FormKitMultiselectInput from '@/components/Input/FormKit/FormKitMultiselectInput.vue'
 
 import { plugin, defaultConfig, createInput } from '@formkit/vue'
@@ -135,6 +136,9 @@ app.use(createPinia())
                 }),
                 multisearch: createInput(FormKitSearchInput, {
                     props: ['placeholder', 'searchQuery', 'queryName'],
+                }),
+                dropdown: createInput(FormKitDropdownInput, {
+                    props: ['placeholder', 'defaultOption', 'options', 'update'],
                 }),
                 multiselect: createInput(FormKitMultiselectInput, {
                     props: [

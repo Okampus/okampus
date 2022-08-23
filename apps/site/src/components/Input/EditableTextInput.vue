@@ -1,14 +1,7 @@
 <template>
     <div class="flex flex-col gap-2">
         <div v-if="show" class="flex flex-wrap gap-2">
-            <div class="relative min-w-[10rem] grow">
-                <div
-                    v-if="floatingLabel"
-                    :class="{ 'floating py-0': focused || currentValue }"
-                    class="floating-label bg-2 z-0 rounded-t-md p-1"
-                >
-                    {{ placeholder }}
-                </div>
+            <div class="input-background relative min-w-[10rem] grow" :="focused ? { focused: '' } : {}">
                 <component
                     :is="singleLine ? 'input' : 'textarea'"
                     ref="input"
@@ -19,6 +12,13 @@
                     @blur="focused = false"
                     @input="updateValue($event)"
                 />
+                <div
+                    v-if="floatingLabel"
+                    :class="{ 'floating py-0': focused || currentValue }"
+                    class="floating-label rounded-t-md p-1"
+                >
+                    {{ placeholder }}
+                </div>
             </div>
             <div class="flex gap-2 self-start" :class="textClass">
                 <button class="button-green mt-1 flex items-center gap-2 py-1.5 text-base" @click="validate">
@@ -74,11 +74,11 @@
         },
         minCharMessage: {
             type: String,
-            default: (props) => `Ce champs doit contenir au moins ${props.minChar} caractères.`,
+            default: (props) => `Ce champ doit contenir au moins ${props.minChar} caractères.`,
         },
         maxCharMessage: {
             type: String,
-            default: (props) => `Ce champs doit contenir au plus ${props.maxChar} caractères.`,
+            default: (props) => `Ce champ doit contenir au plus ${props.maxChar} caractères.`,
         },
         textClass: {
             type: String,

@@ -1,5 +1,5 @@
 <template>
-    <div class="relative">
+    <div class="input-background relative" :="focused ? { focused: '' } : {}">
         <div
             ref="tagsContainer"
             class="input flex h-max w-full cursor-text flex-wrap items-center gap-2 overflow-auto"
@@ -31,7 +31,7 @@
         <div
             v-if="floatingLabel"
             :class="{ 'floating': focused || tags.length || newTag }"
-            class="floating-label bg-2 rounded-t-md px-1"
+            class="floating-label rounded-t-md px-1"
         >
             {{ floatingLabel }}
         </div>
