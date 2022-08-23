@@ -3,7 +3,8 @@ import type { ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloDriver } from '@nestjs/apollo';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import type { Request } from 'express';
-import { JSONResolver } from 'graphql-scalars';
+import { GraphQLJSON } from 'graphql-scalars';
+import { GraphQLUpload } from 'graphql-upload-minimal';
 import { AuthModule } from '../../auth/auth.module';
 import { AuthService } from '../../auth/auth.service';
 import type { Tenant } from '../../tenants/tenants/tenant.entity';
@@ -38,8 +39,11 @@ export default {
         credentials: true,
       });
   },
+  uploads: false,
   resolvers: {
-    JSON: JSONResolver,
+    JSON: GraphQLJSON,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    Upload: GraphQLUpload,
   },
   installSubscriptionHandlers: true,
 
