@@ -90,7 +90,7 @@
     import { useUsersStore } from '@/store/users.store'
     import { emitter } from '@/shared/modules/emitter'
     import { useBreakpoints } from '@vueuse/core'
-    import twBreakpoints from '@/breakpoints'
+    import { twBreakpoints } from '@/tailwind'
 
     const breakpoints = useBreakpoints(twBreakpoints)
     const md = breakpoints.greater('md')

@@ -94,6 +94,7 @@
                 <div class="centered-container-padded py-0">
                     <HorizontalTabs
                         v-model="currentTab"
+                        :background-variant="2"
                         :tabs="tabs"
                         :route-base="clubRoute"
                         route-name="club"
@@ -172,7 +173,7 @@
         },
         {
             id: ACTIVITY,
-            name: 'Évents',
+            name: 'Évenements',
             icon: 'calendar',
         },
         {

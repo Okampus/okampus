@@ -81,7 +81,7 @@
 
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
 
-    import SwiperCore, { EffectCoverflow } from 'swiper'
+    import SwiperCore, { EffectCoverflow, Navigation } from 'swiper'
 
     import { useBreakpoints } from '@vueuse/core'
 
@@ -102,7 +102,7 @@
     import 'swiper/css/effect-coverflow'
     import AppBottomSheet from './components/App/AppBottomSheet.vue'
 
-    SwiperCore.use([EffectCoverflow])
+    SwiperCore.use([EffectCoverflow, Navigation])
 
     const currentRoute = useRoute()
 

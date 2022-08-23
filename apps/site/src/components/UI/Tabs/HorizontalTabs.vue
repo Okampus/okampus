@@ -1,9 +1,16 @@
 <template>
-    <Swiper slides-per-view="auto" :space-between="20" class="w-full" @swiper="(s) => (swiper = s)">
-        <SwiperSlide v-for="(tab, i) in computedTabs" :key="i" class="!w-fit">
+    <Swiper
+        :modules="modules"
+        navigation
+        slides-per-view="auto"
+        :space-between="20"
+        class="my-3 w-full"
+        @swiper="(s) => (swiper = s)"
+    >
+        <SwiperSlide v-for="(tab, i) in computedTabs" :key="i" class="!w-fit py-2">
             <div
-                class="tab my-2 flex items-center justify-center gap-3 py-2 px-4"
-                :class="tab.id === modelValue ? 'active' : 'text-1'"
+                class="tab-swiper select-none"
+                :class="tab.id === modelValue ? 'bg-0-alt text-0-alt' : 'bg-4 text-1'"
                 @click="setTab(tab, true)"
             >
                 <i :class="`fas fa-${tab.icon}`" />
@@ -22,14 +29,22 @@
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
     import { Swiper, SwiperSlide } from 'swiper/vue'
 
-    import abbrNumbers from 'approximate-number'
+    import { Navigation } from 'swiper'
 
     import { computed, watch } from 'vue'
     import { useRoute } from 'vue-router'
+
+    import abbrNumbers from 'approximate-number'
+
     import { getCurrentPath } from '@/utils/routeUtils'
     import { showInfoToast } from '@/utils/toast.js'
+    import { twColors } from '@/tailwind'
 
     const props = defineProps({
+        backgroundVariant: {
+            type: Number,
+            default: 0,
+        },
         tabs: {
             type: Object,
             default: () => {},
@@ -54,6 +69,28 @@
             required: true,
         },
     })
+
+    const getBg = (color) => ({
+        left: `linear-gradient(to right, ${color.light} 20%, ${color.light}${
+            color.light.length > 5 ? '0' : ''
+        }0 80%)`,
+        leftDark: `linear-gradient(to right, ${color.dark} 20%, ${color.dark}${
+            color.dark.length > 5 ? '0' : ''
+        }0 80%)`,
+        right: `linear-gradient(to left, ${color.light} 20%, ${color.light}${
+            color.light.length > 5 ? '0' : ''
+        }0 80%)`,
+        rightDark: `linear-gradient(to left, ${color.dark} 20%, ${color.dark}${
+            color.dark.length > 5 ? '0' : ''
+        }0 80%)`,
+    })
+
+    console.log('COLOR', twColors[props.backgroundVariant])
+
+    const prevBackground = computed(() => getBg(twColors[props.backgroundVariant]).left)
+    const nextBackground = computed(() => getBg(twColors[props.backgroundVariant]).right)
+    const prevBackgroundDark = computed(() => getBg(twColors[props.backgroundVariant]).leftDark)
+    const nextBackgroundDark = computed(() => getBg(twColors[props.backgroundVariant]).rightDark)
 
     const computedTabs = computed(() =>
         props.tabs.map((tab) => (Array.isArray(tab?.tabs) ? tab.tabs : [tab])).flat(),
@@ -99,6 +136,8 @@
 
     setCurrentTab()
 
+    const modules = [Navigation]
+
     watch(
         () => route.fullPath,
         () => {
@@ -108,3 +147,44 @@
         },
     )
 </script>
+
+<style lang="scss">
+    /* stylelint-disable function-no-unknown */
+    /* stylelint-disable value-keyword-case */
+
+    .swiper-button-disabled {
+        opacity: 0 !important;
+    }
+
+    .swiper-button-prev {
+        @apply rounded-xl;
+
+        left: -2px !important;
+        width: 6rem;
+        background: v-bind(prevBackground);
+
+        .dark & {
+            background: v-bind(prevBackgroundDark);
+        }
+
+        &::after {
+            @apply text-base text-0-light dark:text-0-dark absolute left-4;
+        }
+    }
+
+    .swiper-button-next {
+        @apply rounded-xl;
+
+        right: -2px !important;
+        width: 6rem;
+        background: v-bind(nextBackground);
+
+        .dark & {
+            background: v-bind(nextBackgroundDark);
+        }
+
+        &::after {
+            @apply text-base text-0-light dark:text-0-dark absolute right-4;
+        }
+    }
+</style>

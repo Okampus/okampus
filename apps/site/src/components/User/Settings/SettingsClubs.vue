@@ -11,6 +11,7 @@
                     v-model="currentTab"
                     route-base="/me/clubs"
                     route-name="me"
+                    :background-variant="2"
                     :tabs="tabs"
                     class="ml-4"
                 />
