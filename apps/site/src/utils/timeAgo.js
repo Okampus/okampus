@@ -1,6 +1,8 @@
 export function timeAgo(dateString, style, limit = true) {
+    style = style ?? 'short'
+
     const date = dateString instanceof Date ? dateString : new Date(dateString)
-    const formatter = new Intl.RelativeTimeFormat('fr', { style: style ?? 'short' })
+    const formatter = new Intl.RelativeTimeFormat('fr', { style: style })
 
     const ranges = {
         years: 3600 * 24 * 365,
@@ -16,7 +18,7 @@ export function timeAgo(dateString, style, limit = true) {
 
     if (limit && secondsElapsed >= -1) {
         // TODO: internationalize
-        return "il y a moins d'une seconde"
+        return style === 'short' ? 'maintenant' : "il y a moins d'une seconde"
     }
 
     for (const key in ranges) {
