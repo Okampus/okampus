@@ -154,7 +154,18 @@ export class TeamsResolver {
       createFile.fileLastModifiedAt,
     );
     await this.teamFilesService.create(user, createFile, fileUpload);
-    return await this.teamsService.findOne(createFile.id);
+    return await this.teamsService.findOne(createFile.teamId);
+  }
+
+  @Mutation(() => Team)
+  public async deleteTeamFile(
+    @CurrentTenant() tenant: Tenant,
+    @CurrentUser() user: User,
+    @Args('id') id: string,
+  ): Promise<Team> {
+    const file = await this.teamFilesService.findOne(id);
+    await this.teamFilesService.remove(user, id);
+    return await this.teamsService.findOne(file.team.id);
   }
 
   @ResolveField(() => [TeamForm])
