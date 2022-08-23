@@ -1,4 +1,5 @@
 
+import { InjectRepository } from '@mikro-orm/nestjs';
 import {
   Args,
   Int,
@@ -7,7 +8,9 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
+import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { User } from '../../users/user.entity';
+import { Team } from '../teams/team.entity';
 import { CreateTeamFormDto } from './dto/create-team-form.dto';
 import { UpdateTeamFormDto } from './dto/update-team-form.dto';
 import { TeamFormsService } from './forms.service';
@@ -17,15 +20,18 @@ import { TeamForm } from './team-form.entity';
 export class FormsResolver {
   constructor(
     private readonly formsService: TeamFormsService,
+    @InjectRepository(Team) private readonly teamRepository:
+      BaseRepository<Team>,
   ) {}
 
-  @Mutation(() => TeamForm)
+  @Mutation(() => Team)
   public async createTeamForm(
     @CurrentUser() user: User,
     @Args('id', { type: () => Int }) id: number,
     @Args('createForm') createForm: CreateTeamFormDto,
-  ): Promise<TeamForm> {
-    return this.formsService.update(user, id, createForm);
+  ): Promise<Team> {
+    await this.formsService.create(user, id, createForm);
+    return await this.teamRepository.findOneOrFail({ id });
   }
 
   @Mutation(() => TeamForm)

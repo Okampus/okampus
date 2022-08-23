@@ -15,7 +15,7 @@ export class CreateTeamFormDto {
 
   @Field()
   @IsString()
-  @Length(1, 3000)
+  @Length(0, 3000)
   description: string;
 
   @Field(() => TeamFormType)
