@@ -6,6 +6,7 @@ export enum TeamFileType {
   Transcript = 'Transcript',
   LegalReceipt = 'LegalReceipt',
   Brochure = 'Brochure',
+  GraphicCharter = 'GraphicCharter',
 }
 
 registerEnumType(TeamFileType, { name: 'TeamFileType' });

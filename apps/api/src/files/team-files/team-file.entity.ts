@@ -1,5 +1,6 @@
 import {
   Entity,
+  Enum,
   ManyToOne,
   OneToOne,
   PrimaryKey,
@@ -28,8 +29,12 @@ export class TeamFile extends BaseFileEntity {
   team!: Team;
 
   @Field(() => TeamFileType)
-  @Property({ type: 'text' })
+  @Enum(() => TeamFileType)
   type!: TeamFileType;
+
+  @Field(() => String)
+  @Property({ type: 'text' })
+  specialType: string | null = null;
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
@@ -39,9 +44,11 @@ export class TeamFile extends BaseFileEntity {
     team: Team;
     file: FileUpload;
     type: string;
+    specialType?: string | null;
     description?: string | null;
     active?: boolean;
   }) {
+    console.log('options', options);
     super();
     this.assign(options);
   }
