@@ -1,11 +1,9 @@
 name: Update production chart version
 
 on:
-  workflow_run:
-    workflows: ["Build backend"]
-    branches: [master]
-    types:
-      - completed
+  push: 
+    branches:
+      - master
 
 jobs:
   bump:
@@ -13,11 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-    - uses: actions/github-script@v3
-      if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-      with:
-        script: |
-            core.setFailed('The container image could not be built, will not change release chart version')
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
