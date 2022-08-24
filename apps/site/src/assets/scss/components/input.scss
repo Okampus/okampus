@@ -27,7 +27,8 @@
 .input-background {
     @include get-color('bg', 2);
 
-    &:disabled {
+    &:disabled,
+    &[disabled] {
         opacity: 0.5;
         @apply cursor-not-allowed;
     }

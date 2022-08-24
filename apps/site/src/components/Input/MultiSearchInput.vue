@@ -1,9 +1,10 @@
 <template>
-    <div class="relative">
+    <div class="input-background relative" :="disabled ? { disabled: '' } : {}">
         <div
             ref="searchContainer"
-            class="input flex h-max cursor-text flex-wrap items-center space-x-1 overflow-auto pt-4"
+            class="input flex cursor-text flex-wrap items-center space-x-1 overflow-auto"
             tabindex="0"
+            :="disabled ? { disabled: '' } : {}"
             v-bind="focused ? { 'focused': 'true' } : {}"
             @focus="activateResults"
             @click="activateResults"
@@ -29,11 +30,17 @@
                 <input
                     ref="searchInput"
                     v-model="search"
+                    :="disabled ? { disabled: '' } : {}"
+                    :class="disabled ? 'cursor-not-allowed' : 'cursor-text'"
                     type="text"
                     :placeholder="floatingLabel ? '' : placeholder"
                     class="placeholder h-8 w-full min-w-[1em] bg-transparent outline-none"
                     @blur="focused = false"
-                    @focus="focused = true"
+                    @focus="
+                        () => {
+                            if (!disabled) focused = true
+                        }
+                    "
                     @keydown="keypress"
                 />
                 <template #popper>
@@ -135,6 +142,10 @@
             type: String,
             required: true,
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
         floatingLabel: {
             type: Boolean,
             default: true,
@@ -169,9 +180,11 @@
     const resultIndex = ref(null)
 
     const activateResults = () => {
-        showResults.value = true
-        focused.value = true
-        searchInput.value.focus()
+        if (!props.disabled) {
+            showResults.value = true
+            focused.value = true
+            searchInput.value.focus()
+        }
     }
 
     const toggleItem = (item) => {

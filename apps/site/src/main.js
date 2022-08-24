@@ -135,7 +135,7 @@ app.use(createPinia())
                     props: ['placeholder', 'floatingLabel', 'inputClass'],
                 }),
                 multisearch: createInput(FormKitSearchInput, {
-                    props: ['placeholder', 'searchQuery', 'queryName'],
+                    props: ['placeholder', 'searchQuery', 'queryName', 'disabled'],
                 }),
                 dropdown: createInput(FormKitDropdownInput, {
                     props: ['placeholder', 'defaultOption', 'options', 'update'],
