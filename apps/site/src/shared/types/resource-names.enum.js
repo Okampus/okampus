@@ -32,8 +32,8 @@ export const RESOURCE_NAMES = {
         frFeminine: false,
     },
     [REPORT]: {
-        demonstrative: { fr: 'ce report', en: 'this report' },
-        name: { fr: 'report', en: 'report' },
+        demonstrative: { fr: 'ce signalement', en: 'this report' },
+        name: { fr: 'signalement', en: 'report' },
         frFeminine: false,
     },
 }

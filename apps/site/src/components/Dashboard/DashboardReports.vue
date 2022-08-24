@@ -4,6 +4,8 @@
         :update="(data) => data?.reports"
         resource-type="report"
         route-base="/admin/reports"
+        :whole-page="true"
+        class="flex flex-col"
     >
         <template #default="{ data: reports }">
             <ScrollableTable
