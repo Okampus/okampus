@@ -5,7 +5,9 @@
         :update="(data) => data?.eventById"
     >
         <template #default="{ data: event }">
-            <div class="text-0 centered-container-padded card-2 flex flex-col gap-10 md:my-8 md-max:p-0">
+            <div
+                class="text-0 centered-container padded whole-page card-2 flex flex-col gap-10 md:my-8 md-max:p-0"
+            >
                 <div class="flex flex-col gap-10 md:flex-row">
                     <div class="relative h-56 w-full shrink-0 md:h-72 md:max-w-[40rem]">
                         <ProfileBanner

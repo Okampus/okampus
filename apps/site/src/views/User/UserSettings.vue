@@ -1,6 +1,6 @@
 <template>
     <Transition mode="out-in" name="switch-fade">
-        <div class="centered-container-padded flex flex-col gap-10 md:flex-row">
+        <div class="centered-container padded flex flex-col gap-10 md:flex-row">
             <div class="sticky top-8 flex h-fit w-full flex-col gap-4 md:w-auto">
                 <div class="flex gap-5 md:flex-col">
                     <ProfileAvatar :avatar="me.avatar" :name="fullname(me)" :size="md ? (lg ? 14 : 12) : 6">

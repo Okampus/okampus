@@ -13,7 +13,7 @@
         route-base="/forum/posts"
     >
         <template #default="{ data: thread }">
-            <div class="centered-container-padded text-0 flex flex-col">
+            <div class="centered-container padded text-0 flex flex-col">
                 <div class="flex items-center gap-5">
                     <LabelTag
                         class="!py-2"

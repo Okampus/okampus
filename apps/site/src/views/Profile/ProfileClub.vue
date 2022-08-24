@@ -33,7 +33,7 @@
                 :rounded-top="false"
             />
             <div class="text-0 bg-2 flex flex-col gap-6 pt-4">
-                <div class="centered-container-padded mb-0 flex items-start justify-between gap-4 py-0">
+                <div class="centered-container padded mb-0 flex items-start justify-between gap-4 py-0">
                     <div class="-mt-[5rem] flex gap-4">
                         <ProfileAvatar
                             :avatar="club.avatar"
@@ -91,7 +91,7 @@
                     </button>
                 </div>
 
-                <div class="centered-container-padded py-0">
+                <div class="centered-container padded py-0">
                     <HorizontalTabs
                         v-model="currentTab"
                         :background-variant="2"

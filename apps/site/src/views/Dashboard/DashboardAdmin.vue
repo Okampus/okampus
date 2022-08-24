@@ -1,7 +1,7 @@
 <template>
     <GraphQLQuery :query="getConfig" :variables="{ id: tenantId }" :update="(data) => data?.tenantById">
         <template #default="{ data: config }">
-            <div class="centered-container flex-col gap-4">
+            <div class="centered-container flex h-full flex-col gap-0">
                 <HorizontalTabs
                     v-model="currentTab"
                     :tabs="

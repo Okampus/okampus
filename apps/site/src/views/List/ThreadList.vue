@@ -5,7 +5,7 @@
         resource-type="thread"
         route-base="/forum/posts"
         class="flex flex-col gap-4"
-        :class="container ? 'centered-container-padded' : ''"
+        :class="container ? 'centered-container padded whole-page' : ''"
         :whole-page="container"
     >
         <template #default="{ data: threads }">

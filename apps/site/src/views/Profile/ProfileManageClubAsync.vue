@@ -7,7 +7,7 @@
         <template #default="{ data: club }">
             <div class="relative flex flex-col">
                 <div class="bg-2 text-0">
-                    <div class="centered-container-padded sticky top-0 z-30 flex flex-col pb-0">
+                    <div class="centered-container padded sticky top-0 z-30 flex flex-col pb-0">
                         <div class="flex items-center justify-between gap-4">
                             <div class="flex items-center gap-4">
                                 <ProfileAvatar

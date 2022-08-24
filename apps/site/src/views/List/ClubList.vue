@@ -9,7 +9,7 @@
                     route-name="clubs"
                 />
             </div>
-            <div class="centered-container-padded flex flex-col gap-4 md:flex-row">
+            <div class="centered-container padded flex flex-col gap-4 md:flex-row">
                 <VerticalTabs
                     v-model="currentTab"
                     :tabs="getTabsFromClubs(clubs).value"
