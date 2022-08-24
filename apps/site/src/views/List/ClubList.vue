@@ -17,7 +17,9 @@
                     route-name="clubs"
                     class="sticky top-4 hidden md:block"
                 />
-                <div class="grid h-fit w-full grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-4">
+                <div
+                    class="grid h-fit w-full grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 md-max:grid-cols-[repeat(auto-fit,minmax(14rem,1fr))]"
+                >
                     <FormPopUp
                         v-model:show="showJoinForm"
                         :submit="
