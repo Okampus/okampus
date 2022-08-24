@@ -3,6 +3,7 @@
         :query="getEvents"
         :variables="{ filter: { state: 'Published' } }"
         :update="(date) => date?.events"
+        :whole-page="true"
     >
         <template #default="{ data: events }">
             <div class="centered-container text-0 mt-10 flex flex-col gap-6">
@@ -31,11 +32,11 @@
             </div>
         </template>
         <template #empty>
-            <div class="h-content text-0 my-auto -mt-10 flex flex-col items-center justify-center gap-6">
+            <div class="text-0 -mt-6 flex h-full flex-col items-center justify-center gap-4">
                 <img class="h-48 w-48" :src="Calendar" />
                 <div class="text-center">
-                    <h1 class="text-4xl font-bold">Aucun événement</h1>
-                    <p class="text-lg">Aucun événement n'a été prévu pour le moment.</p>
+                    <p class="text-4xl font-bold">Aucun événement</p>
+                    <p class="text-2 text-lg">Aucun événement n'a été prévu pour le moment.</p>
                 </div>
             </div>
         </template>
