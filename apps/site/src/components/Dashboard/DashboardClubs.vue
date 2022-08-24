@@ -17,7 +17,7 @@
                     },
                     {
                         id: 'shortDescription',
-                        title: 'Description',
+                        title: 'Description courte',
                     },
                     ...Object.entries(TEAM_FILES).map(([key, value]) => ({
                         id: key,

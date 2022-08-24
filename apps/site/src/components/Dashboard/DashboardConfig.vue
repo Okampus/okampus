@@ -19,7 +19,7 @@
         <div class="flex flex-col gap-14">
             <div class="flex flex-col gap-4">
                 <h1 class="text-0 inline font-semibold">Logos</h1>
-                <div class="md-max:grid-rows-2 grid gap-6 md:grid-cols-2">
+                <div class="grid gap-6 md:grid-cols-2 md-max:grid-rows-2">
                     <div class="flex flex-col">
                         <div class="text-2 mb-2 text-lg font-semibold">Logo thème clair</div>
                         <FileInput
@@ -117,7 +117,7 @@
                                                 type="multisearch"
                                                 :search-query="searchUsers"
                                                 query-name="searchUsers"
-                                                placeholder="Changez puis validez ☑️"
+                                                placeholder="Changer puis valider ☑️"
                                             />
                                             <div class="flex gap-2 self-start" :class="textClass">
                                                 <button
