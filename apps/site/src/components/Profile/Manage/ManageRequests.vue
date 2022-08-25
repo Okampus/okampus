@@ -39,17 +39,16 @@
                                     <div class="text-0 text-xl">{{ value }}</div>
                                 </div>
                                 <div>
-                                    <div class="text-base text-gray-400/80">
+                                    <div
+                                        v-if="statusNames?.[shownRequest?.state]"
+                                        class="text-base text-gray-400/80"
+                                    >
                                         <div>Statut</div>
                                         <div
                                             class="text-0 text-xl"
-                                            :class="{
-                                                '!text-green-500': shownRequest?.state === APPROVED,
-                                                '!text-red-500': shownRequest?.state === REJECTED,
-                                                '!text-gray-500/90': shownRequest?.state === PENDING,
-                                            }"
+                                            :class="statusNames[shownRequest.state].textClass"
                                         >
-                                            {{ statusNames[shownRequest?.state ?? '']?.[locale] ?? '' }}
+                                            {{ statusNames[shownRequest.state][locale] }}
                                         </div>
                                     </div>
                                 </div>
@@ -127,7 +126,7 @@
                                     @click="
                                         handleMembershipRequest({
                                             id: shownRequest.id,
-                                            updateRequest: { state: REJECTED, message: refuseReason },
+                                            updateRequest: { state: REJECTED, handledMessage: refuseReason },
                                         })
                                     "
                                 >
@@ -138,6 +137,7 @@
                     </div>
                 </template>
             </ModalPopup>
+
             <template v-if="requests.length">
                 <div
                     v-for="request in requests"
@@ -162,18 +162,12 @@
                                     <div>Demandé</div>
                                     <TipRelativeDate :date="request.createdAt" />
                                 </div>
-                                <template v-if="request.state === APPROVED">
+                                <template
+                                    v-if="[APPROVED, REJECTED].includes(request.state) && request.handledBy"
+                                >
                                     <div>•</div>
                                     <div class="flex gap-1">
-                                        <div class="text-2">{{ statusNames[APPROVED][locale] }}</div>
-                                        <TipRelativeDate :date="request.handledAt" />
-                                        <div>par {{ request.handledBy.firstname.split(' ')[0] }}</div>
-                                    </div>
-                                </template>
-                                <template v-else-if="request.state === REJECTED">
-                                    <div>•</div>
-                                    <div class="flex gap-1">
-                                        <div class="text-2">{{ statusNames[REJECTED][locale] }}</div>
+                                        <div class="text-2">{{ statusNames[request.state][locale] }}</div>
                                         <TipRelativeDate :date="request.handledAt" />
                                         <div>par {{ request.handledBy.firstname.split(' ')[0] }}</div>
                                     </div>
@@ -183,12 +177,9 @@
                     </div>
 
                     <div
+                        v-if="statusNames?.[request?.state]"
                         class="flex w-36 cursor-pointer items-center justify-center gap-2 rounded-xl py-1 px-3 text-white"
-                        :class="{
-                            'bg-green-500 hover:bg-green-600': request.state === APPROVED,
-                            'bg-red-500 hover:bg-red-600': request.state === REJECTED,
-                            'bg-gray-500/50 hover:bg-gray-600/50': request.state === PENDING,
-                        }"
+                        :class="statusNames[request.state].bgClass"
                         @click="
                             () => {
                                 showRequestForm = true
@@ -196,18 +187,8 @@
                             }
                         "
                     >
-                        <template v-if="request.state === APPROVED">
-                            <i class="fa fa-check" />
-                            <div>{{ statusNames[APPROVED][locale] }}</div>
-                        </template>
-                        <template v-else-if="request.state === REJECTED">
-                            <i class="fa fa-xmark" />
-                            <div>{{ statusNames[REJECTED][locale] }}</div>
-                        </template>
-                        <template v-else-if="request.state === PENDING">
-                            <i class="fa fa-envelope" />
-                            <div>{{ statusNames[PENDING][locale] }}</div>
-                        </template>
+                        <i :class="statusNames[request.state].icon" />
+                        <div>{{ statusNames[request.state][locale] }}</div>
                     </div>
                 </div>
             </template>
