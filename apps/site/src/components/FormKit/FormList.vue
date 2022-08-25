@@ -1,5 +1,5 @@
 <template>
-    <div class="h-fit w-full">
+    <div class="card-2 h-fit w-full">
         <div
             v-if="isNil(defaultForm) && (!forms || !forms.length)"
             class="card-0 flex flex-col gap-2 text-center"
@@ -10,9 +10,9 @@
             </h4>
         </div>
         <template v-else>
-            <div class="grid grid-cols-[repeat(auto-fit,minmax(8rem,17rem))] gap-6">
+            <div class="grid grid-cols-[repeat(auto-fill,minmax(12rem,1fr))] gap-6">
                 <FileCard
-                    v-for="form of forms"
+                    v-for="form of forms.filter((form) => form.type === formType)"
                     :key="form.id"
                     :file="{
                         id: form.id,
@@ -21,7 +21,6 @@
                             formType: form.type,
                             schema: form.schema,
                         },
-                        teamId,
                         lastModifiedAt: form.updatedAt,
                         name: form.name,
                     }"
@@ -59,7 +58,7 @@
                     @click="modelValue?.id ? emit('update:model-value', defaultForm) : () => {}"
                 >
                     <template #inner>
-                        <div v-tooltip="defaultForm.description ?? 'Formulaire par défaut'">
+                        <div v-tooltip="defaultForm.description ?? 'Formulaire par défaut, non-modifiable'">
                             {{ defaultForm.inner ?? 'Par défaut' }}
                         </div>
                         <i
@@ -69,7 +68,7 @@
                     </template>
                 </FileCard>
 
-                <div class="card-0 flex flex-col items-center justify-center">
+                <div v-if="!isNil(teamId)" class="card-0 flex flex-col items-center justify-center">
                     <button class="button-indigo h-10 w-10 rounded-full" @click="showCreateForm">
                         <i class="fa fa-plus text-xl" />
                     </button>
@@ -100,7 +99,7 @@
         },
         teamId: {
             type: Number,
-            required: true,
+            default: null,
         },
         select: {
             type: Boolean,

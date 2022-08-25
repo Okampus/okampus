@@ -107,7 +107,7 @@
                               props: {
                                   form: { ...props.file },
                                   saveCallback: (updateForm) =>
-                                      updateTeamForm({ id: props.file.teamId, updateForm }),
+                                      updateTeamForm({ id: props.file.id, updateForm }),
                               },
                           }),
                   },
