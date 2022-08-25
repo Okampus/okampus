@@ -57,6 +57,9 @@ export class UsersService {
         'teamMemberships.team',
         'teamMembershipRequests',
         'teamMembershipRequests.team',
+        'teamMembershipRequests.handledBy',
+        'teamMembershipRequests.originalForm',
+        'teamMembershipRequests.issuedBy',
       ],
     });
   }
