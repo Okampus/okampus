@@ -97,8 +97,8 @@ export class MeiliSearchIndexerService {
         const entities = await this.getEntities(name, tenant, { offset, limit: MEILISEARCH_BATCH_SIZE });
         const indexedEntities = MeiliSearchIndexerService.entitiesToIndexedEntities(entities, name);
         this.logger.log(`Reindexing ${offset} to ${Math.min(offset + MEILISEARCH_BATCH_SIZE, count)}, found ${indexedEntities.length} entities`);
-        this.logger.log(`Indexed Entities: ${JSON.stringify(indexedEntities)}`);
-        await index.addDocuments(indexedEntities);
+        const response = await index.addDocuments(indexedEntities);
+        console.log('Response:', JSON.stringify(response));
       }
     }
     return true;
