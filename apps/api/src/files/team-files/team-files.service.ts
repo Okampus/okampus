@@ -33,8 +33,8 @@ export class TeamFilesService {
       { populate: ['members'] },
     );
 
-    if (!team.canAdminister(user))
-      throw new ForbiddenException('Not a team admin');
+    if (!team.canManage(user))
+      throw new ForbiddenException('Not a team manager');
 
     const teamFile = new TeamFile({ ...createTeamFileDto, team, file });
     teamFile.active = true;
@@ -88,8 +88,8 @@ export class TeamFilesService {
       { populate: ['file', 'file.user', 'team', 'team.members'] },
     );
 
-    if (!teamFile.team.canAdminister(user))
-      throw new ForbiddenException('Not a team admin');
+    if (!teamFile.team.canManage(user))
+      throw new ForbiddenException('Not a team manager');
 
     wrap(teamFile).assign(updateTeamFileDto);
     await this.teamFileRepository.persistAndFlush(teamFile);
@@ -107,8 +107,8 @@ export class TeamFilesService {
       { populate: ['file', 'file.user', 'team', 'team.members'] },
     );
 
-    if (!teamFile.team.canAdminister(user))
-      throw new ForbiddenException('Not a team admin');
+    if (!teamFile.team.canManage(user))
+      throw new ForbiddenException('Not a team manager');
 
     await this.teamFileRepository.removeAndFlush(teamFile);
 
