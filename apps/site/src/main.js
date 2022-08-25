@@ -132,7 +132,7 @@ app.use(createPinia())
                     props: ['placeholder'],
                 }),
                 floating: createInput(FormKitFloatingLabelText, {
-                    props: ['placeholder', 'floatingLabel', 'inputClass'],
+                    props: ['placeholder', 'floatingLabel', 'inputClass', 'isTextarea'],
                 }),
                 multisearch: createInput(FormKitSearchInput, {
                     props: ['placeholder', 'searchQuery', 'queryName', 'disabled'],
