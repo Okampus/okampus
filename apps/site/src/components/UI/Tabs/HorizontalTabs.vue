@@ -10,7 +10,7 @@
         <SwiperSlide v-for="(tab, i) in computedTabs" :key="i" class="!w-fit py-2">
             <div
                 class="tab-swiper select-none"
-                :class="tab.id === modelValue ? 'bg-0-alt text-0-alt' : 'bg-4 text-1 hover:brightness-125'"
+                :class="tab.id === modelValue ? 'bg-1-alt text-0-alt' : 'bg-3 text-1 hover:brightness-125'"
                 @click="setTab(tab, true)"
             >
                 <i :class="`fas fa-${tab.icon}`" />
