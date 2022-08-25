@@ -22,6 +22,12 @@ export const getEvent = gql`
                 id
                 schema
             }
+            supervisor {
+                user {
+                    ...PartialUserInfo
+                }
+                role
+            }
             registrations {
                 id
                 status
@@ -34,6 +40,15 @@ export const getEvent = gql`
                 status
                 formSubmission
             }
+            lastValidationStep {
+                id
+                name
+                step
+                users {
+                    ...PartialUserInfo
+                }
+            }
+            eventValidationSubmission
         }
     }
     ${partialTeamFragment}

@@ -117,7 +117,7 @@
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
 
     import ClubHomepage from '@/components/Profile/Club/ClubHomepage.vue'
-    import ClubActivity from '@/components/Profile/Club/ClubActivity.vue'
+    import ClubEvents from '@/components/Profile/Club/ClubEvents.vue'
     import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
 
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
@@ -181,7 +181,7 @@
     const components = {
         [HOME]: ClubHomepage,
         [MEMBERS]: ClubMembers,
-        [ACTIVITY]: ClubActivity,
+        [ACTIVITY]: ClubEvents,
     }
 
     const currentComponent = computed(() => components[currentTab.value ?? DEFAULT_TAB.id])

@@ -11,7 +11,7 @@
                     <span class="font-semibold"> Aucune donnée disponible </span>
                 </div>
             </div>
-            <div v-else class="grid grid-cols-[repeat(auto-fit,minmax(17rem,1fr))] gap-6">
+            <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-6">
                 <!-- TODO: sort by type with ordering -->
                 <div
                     v-for="(files, type) in allFiles"

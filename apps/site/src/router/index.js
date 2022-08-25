@@ -22,14 +22,6 @@ const routes = [
         },
     },
 
-    // {
-    //     path: '/admin/clubs',
-    //     component: () => import('@/views/Dashboard/DashboardClub.vue'),
-    //     meta: {
-    //         requiresAuth: true,
-    //     },
-    // },
-
     {
         path: '/admin/:tab*',
         component: () => import('@/views/Dashboard/DashboardAdmin.vue'),
@@ -194,7 +186,7 @@ const routes = [
     {
         name: 'manage-club',
         path: '/club/:clubId/manage/:tab*',
-        component: () => import('@/views/Profile/ProfileManageClubAsync.vue'),
+        component: () => import('@/views/Profile/ManageClub.vue'),
         meta: {
             requiresAuth: true,
         },

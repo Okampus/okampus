@@ -1,10 +1,10 @@
-import gql from 'graphql-tag'
+import { partialUserFragment } from '@/graphql/fragments/userFragment'
 import { partialTeamFragment } from '@/graphql/fragments/partialTeamFragment'
-import { partialUserFragment, userFragment } from '@/graphql/fragments/userFragment'
+import gql from 'graphql-tag'
 
-export const getEvents = gql`
-    query events($filter: ListTeamEventsDto!) {
-        events(filter: $filter) {
+export const createEvent = gql`
+    mutation createEvent($id: Int!, $createEvent: CreateTeamEventDto!) {
+        createEvent(id: $id, createEvent: $createEvent) {
             id
             createdAt
             description
@@ -32,7 +32,7 @@ export const getEvents = gql`
                 id
                 status
                 user {
-                    ...UserInfo
+                    ...PartialUserInfo
                 }
             }
             userRegistration {
@@ -51,7 +51,6 @@ export const getEvents = gql`
             eventValidationSubmission
         }
     }
-    ${partialTeamFragment}
-    ${userFragment}
     ${partialUserFragment}
+    ${partialTeamFragment}
 `

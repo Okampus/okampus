@@ -1,5 +1,6 @@
 import { i18n } from '@/shared/modules/i18n'
 import { clubRoleNames } from '@/shared/types/club-roles.enum'
+// import { searchUsers } from '@/graphql/queries/users/searchUsers'
 
 const roles = Object.entries(clubRoleNames).map(([value, name]) => ({
     value,
@@ -9,7 +10,6 @@ const roles = Object.entries(clubRoleNames).map(([value, name]) => ({
 export const DEFAULT_JOIN_FORM_SCHEMA = [
     {
         $el: 'h1',
-        attrs: { class: 'mb-8' },
         children: ['Vous vous apprêtez à rejoindre ', { $el: 'u', children: ['$club.name'] }, ' 🎉'],
     },
     {
@@ -44,7 +44,6 @@ export const DEFAULT_JOIN_FORM_SCHEMA = [
 export const EVENT_REGISTRATION_STATUS_FORM_SCHEMA = [
     {
         $el: 'h1',
-        attrs: { class: 'mb-8' },
         children: ['$event.name'],
     },
     {
@@ -66,3 +65,50 @@ export const EVENT_REGISTRATION_STATUS_FORM_SCHEMA = [
 ]
 
 export const DEFAULT_EVENT_REGISTRATION_FORM_SCHEMA = [...EVENT_REGISTRATION_STATUS_FORM_SCHEMA]
+
+export const DEFAULT_TENANT_EVENT_VALIDATION_FORM_SCHEMA = [
+    {
+        $el: 'h1',
+        children: ["Formulaire de validation d'événement"],
+    },
+    {
+        $el: 'h4',
+        children: [
+            "Tout événement doit être validé par l'administration scolaire avant d'être publié sur Okampus.\nRemplissez ce formulaire pour que votre événement soit validé ✅",
+        ],
+    },
+    // {
+    //     $formkit: 'multisearch',
+    //     searchQuery: searchUsers,
+    //     queryName: 'searchUsers',
+    //     name: 'managers',
+    //     placeholder: "Responsable de l'événement 🚩",
+    //     validation: 'required',
+    // },
+    {
+        $formkit: 'number',
+        name: 'minAttendance',
+        label: 'Nombre de participants minimum estimé 🧮',
+        validation: 'required',
+    },
+    {
+        $formkit: 'number',
+        name: 'maxAttendance',
+        label: 'Nombre de participants maximum estimé 🧮',
+        validation: 'required',
+    },
+    {
+        $formkit: 'textarea',
+        name: 'risks',
+        label: "Risques potentiels encourus lors de l'événement 🚨",
+        validation: 'required|length:3',
+        help: "Entrer 'N/A' si non-applicable",
+    },
+    {
+        $formkit: 'textarea',
+        name: 'riskPrevention',
+        label: 'Moyens mis en place pour la prévention de risque 🦺',
+        validation: 'required|length:3',
+        help: "Entrer 'N/A' si non-applicable",
+    },
+]

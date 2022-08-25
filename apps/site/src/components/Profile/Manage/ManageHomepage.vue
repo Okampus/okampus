@@ -142,7 +142,6 @@
                     id: null,
                     type: MEMBERSHIP_REQUEST,
                     name: 'Adhésion simple',
-                    description: 'Formulaire non-modifiable',
                     schema: DEFAULT_JOIN_FORM_SCHEMA,
                 }"
                 @update:model-value="
