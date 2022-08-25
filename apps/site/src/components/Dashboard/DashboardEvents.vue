@@ -109,7 +109,7 @@
                     },
                     {
                         id: 'location',
-                        title: 'Lieu',
+                        title: 'Lieu de l\'événement',
                         sortable: true,
                     },
                     {
@@ -125,6 +125,7 @@
                     {
                         id: 'supervisor',
                         title: 'Géré par',
+                        class: 'min-w-[17rem]',
                     },
                     {
                         id: 'participants',
@@ -140,7 +141,10 @@
                                 {{ data.team.category }}
                             </template>
                         </TeamActivity>
-                        <div v-if="data.state === SUBMITTED && config.userValidations.length === 1">
+                        <div
+                            v-if="data.state === SUBMITTED && config.userValidations.length === 1"
+                            class="flex gap-2"
+                        >
                             <button
                                 class="button-green flex h-8 w-8 items-center justify-center"
                                 @click="
@@ -240,6 +244,14 @@
 
                 <template #supervisor="{ data: { supervisor } }">
                     <UserActivity :user="supervisor.user">
+                        <template #title>
+                            <div
+                                v-tooltip="fullname(supervisor.user)"
+                                class="cursor-default font-semibold line-clamp-1"
+                            >
+                                {{ fullname(supervisor.user) }}
+                            </div>
+                        </template>
                         <template #subtitle>
                             {{ supervisor.role }}
                         </template>
@@ -308,6 +320,8 @@
     import { PUBLISHED, REJECTED, SUBMITTED } from '@/shared/types/event-states.enum'
 
     import { useQuery } from '@vue/apollo-composable'
+
+    import { fullname } from '@/utils/users'
 
     const { result: events, loading, onError } = useQuery(getEvents, { filter: {} })
     onError((errors) => showToastGraphQLError(errors, "La liste des événements n'a pas pu être récupérée !"))
