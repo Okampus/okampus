@@ -55,6 +55,10 @@
                         >{{ event.name }}</router-link
                     >
                     <div v-if="event.state === DRAFT" class="text-lg text-red-400">[Brouillon]</div>
+                    <div v-else-if="event.state === SUBMITTED" class="text-lg text-blue-400">
+                        [Soumis pour validation]
+                    </div>
+                    <div v-else-if="event.state === REJECTED" class="text-lg text-red-600">[Refusé]</div>
                 </div>
                 <div class="flex flex-col">
                     <div class="flex items-center gap-2 text-lg">
@@ -100,7 +104,7 @@
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
 
-    import { DRAFT } from '@/shared/types/event-states.enum'
+    import { DRAFT, SUBMITTED, REJECTED } from '@/shared/types/event-states.enum'
 
     import { getDateRangeStringShort, getCountdown } from '@/utils/dateUtils'
     import { ref } from 'vue'
