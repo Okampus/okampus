@@ -106,10 +106,9 @@ input[type='checkbox'] {
     transform: translateY(50%);
 
     &.floating {
-        @apply text-1-light dark:text-1-dark;
+        @apply text-1-light dark:text-1-dark text-base;
 
         bottom: calc(100% + 4px);
         z-index: 50;
-        font-size: 0.8em;
     }
 }
