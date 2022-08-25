@@ -26,6 +26,13 @@ import { TeamForm } from '../forms/team-form.entity';
 import { TeamMember } from '../members/team-member.entity';
 
 const ADMIN_ROLES = new Set([TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasurer, TeamRole.Secretary]);
+const MANAGER_ROLES = new Set([
+  TeamRole.Owner,
+  TeamRole.Coowner,
+  TeamRole.Treasurer,
+  TeamRole.Secretary,
+  TeamRole.Manager,
+]);
 
 @ObjectType()
 @Entity()
@@ -116,6 +123,10 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
     return this.isGlobalAdmin(user) || this.isTeamAdmin(user);
   }
 
+  public canManage(user: User): boolean {
+    return this.isGlobalAdmin(user) || this.isTeamManager(user);
+  }
+
   public canActOnRole(user: User, role: TeamRole): boolean {
     if (this.isGlobalAdmin(user))
       return true;
@@ -139,5 +150,9 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
 
   private isTeamAdmin(user: User): boolean {
     return this.getMemberRoles(user).some(role => ADMIN_ROLES.has(role));
+  }
+
+  private isTeamManager(user: User): boolean {
+    return this.getMemberRoles(user).some(role => MANAGER_ROLES.has(role));
   }
 }

@@ -54,8 +54,8 @@ export class TeamEventsService {
   ): Promise<TeamEvent> {
     const team = await this.teamRepository.findOneOrFail({ id }, { populate: ['members'] });
 
-    if (!team.canAdminister(user))
-      throw new ForbiddenException('Not a team admin');
+    if (!team.canManage(user))
+      throw new ForbiddenException('Not a team manager');
 
     // Check that the provided supervisor id is valid
     let supervisor: TeamMember | undefined;
@@ -213,7 +213,7 @@ export class TeamEventsService {
     const event = await this.teamEventRepository.findOneOrFail({ id }, { populate: ['team', 'team.members', 'lastValidationStep'] });
 
     if (!event.canEdit(user))
-      throw new ForbiddenException('Not a team admin');
+      throw new ForbiddenException('Not allowed to edit event');
 
     if (event.state === TeamEventState.Template && 'state' in updateTeamEventDto)
       throw new BadRequestException('Cannot change state of a template');
@@ -282,7 +282,7 @@ export class TeamEventsService {
   public async remove(user: User, id: number): Promise<void> {
     const event = await this.teamEventRepository.findOneOrFail({ id }, { populate: ['team', 'team.members'] });
     if (!event.canEdit(user))
-      throw new ForbiddenException('Not a team admin');
+      throw new ForbiddenException('Not allowed to edit event');
 
     void this.notificationsService.triggerFirst(
       new TeamManagedEventUpdatedNotification(event, { executor: user }),
