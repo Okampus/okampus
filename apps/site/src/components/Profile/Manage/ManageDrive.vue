@@ -14,7 +14,13 @@
             <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-6">
                 <!-- TODO: sort by type with ordering -->
                 <div
-                    v-for="(files, type) in allFiles"
+                    v-for="(files, type) in Object.fromEntries(
+                        Object.entries(allFiles).sort(
+                            ([type1], [type2]) =>
+                                Object.keys(TEAM_FILES).indexOf(type1) -
+                                Object.keys(TEAM_FILES).indexOf(type2),
+                        ),
+                    )"
                     :key="type"
                     class="card-2 flex flex-col justify-between gap-10"
                 >
