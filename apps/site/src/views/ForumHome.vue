@@ -1,5 +1,5 @@
 <template>
-    <div class="centered-container flex flex-col gap-12 lg:flex-row">
+    <div class="centered-container whole-page flex flex-col gap-12 lg:flex-row">
         <div class="flex flex-col gap-6">
             <div class="card-2 flex flex-col p-10 sm:gap-6">
                 <div class="flex gap-4 md:gap-10">
@@ -138,7 +138,7 @@
                 </div>
             </div>
 
-            <div class="hidden flex-col gap-6 lg:flex">
+            <div class="text-0 mt-16 hidden flex-col gap-6 lg:flex">
                 <AppTitle title="Tags récents" icon="fas fa-tags" class="pl-4" />
                 <GraphQLQuery
                     :query="getTags"

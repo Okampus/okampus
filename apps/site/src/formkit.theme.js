@@ -2,21 +2,18 @@
 // many input types are identical in how
 // we want to style them.
 const textClassification = {
-    label: 'text-1 ml-1 block mb-1 font-semibold text-base formkit-invalid:text-red-500',
-    inner: `
-      border
-      border-transparent
-      formkit-invalid:ouline-red-500
-    `,
+    label: 'text-1 ml-2.5 text-base formkit-invalid:text-red-500',
+    inner: 'border border-transparent formkit-invalid:ouline-red-500',
     input: 'block w-full input',
 }
 const boxClassification = {
     fieldset: 'rounded-md px-3 pb-2 bg-3 shadow mb-2',
-    legend: 'font-bold text-base text-1',
-    wrapper: 'flex items-center mb-1 cursor-pointer',
-    input: 'form-check-input appearance-none h-4 w-4 mr-2 border border-gray-400 rounded-sm bg-white checked:bg-blue-600 focus:outline-none focus:ring-0 transition duration-200 cursor-pointer',
-    label: 'text-base text-1',
+    legend: 'text-1 text-base formkit-invalid:text-red-500',
+    wrapper: 'flex cursor-pointer',
+    input: 'form-check-input appearance-none h-5 w-5 border border-gray-400 rounded-sm bg-white checked:bg-blue-600 focus:outline-none focus:ring-0 transition duration-200 cursor-pointer',
+    label: 'text-1 ml-2.5 text-base formkit-invalid:text-red-500',
     options: 'pt-4',
+    help: 'mb-2',
 }
 const buttonClassification = {
     wrapper: 'mb-1',
@@ -29,7 +26,7 @@ const buttonClassification = {
 export default {
     // the global key will apply to all inputs
     global: {
-        outer: 'mb-5 formkit-disabled:opacity-50',
+        outer: 'mt-8 formkit-disabled:opacity-50',
         help: 'text-xs text-gray-500 mb-2 mt-1',
         messages: 'list-none p-0 mt-1 mb-0',
         message: 'text-red-500 mb-3 text-xs',

@@ -143,7 +143,7 @@ export class TeamEventsService {
       // so we search for all events, private or not.
       filter = {
         team: { id: query.id },
-        state: query.state ?? TeamEventState.Published,
+        ...(query.state ? { state: query.state } : {}),
       };
     } else if (user.schoolRole === SchoolRole.Admin || user.roles.includes(Role.Admin)) {
       filter = query.state ? { state: query.state } : {};
@@ -169,7 +169,7 @@ export class TeamEventsService {
     const events = await this.teamEventRepository.findWithPagination(
       options,
       filter,
-      { orderBy: serializeOrder(options?.sortBy, 'start'), populate: ['supervisor', 'registrations', 'registrations.user', 'createdBy', 'team'] },
+      { orderBy: serializeOrder(options?.sortBy, 'start'), populate: ['supervisor', 'registrations', 'registrations.user', 'createdBy', 'team', 'lastValidationStep'] },
     );
 
     const allRegistrations = await this.teamEventRegistrationRepository.find({ user });
@@ -196,7 +196,7 @@ export class TeamEventsService {
           { private: false, state: TeamEventState.Published },
         ],
       },
-      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'registrations', 'registrations.user', 'registrationForm', 'usedTemplate'] },
+      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'registrations', 'registrations.user', 'registrationForm', 'usedTemplate', 'lastValidationStep'] },
     );
     if (event.state === TeamEventState.Draft && !event.canEdit(user))
       throw new ForbiddenException('Event not published');
@@ -210,7 +210,7 @@ export class TeamEventsService {
     id: number,
     updateTeamEventDto: UpdateTeamEventDto,
   ): Promise<TeamEvent> {
-    const event = await this.teamEventRepository.findOneOrFail({ id }, { populate: ['team', 'team.members'] });
+    const event = await this.teamEventRepository.findOneOrFail({ id }, { populate: ['team', 'team.members', 'lastValidationStep'] });
 
     if (!event.canEdit(user))
       throw new ForbiddenException('Not a team admin');

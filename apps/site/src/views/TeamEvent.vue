@@ -5,7 +5,9 @@
         :update="(data) => data?.eventById"
     >
         <template #default="{ data: event }">
-            <div class="text-0 centered-container-padded card-2 flex flex-col gap-10 md:my-8 md-max:p-0">
+            <div
+                class="text-0 centered-container padded whole-page card-2 flex flex-col gap-10 md:my-8 md-max:p-0"
+            >
                 <div class="flex flex-col gap-10 md:flex-row">
                     <div class="relative h-56 w-full shrink-0 md:h-72 md:max-w-[40rem]">
                         <ProfileBanner
@@ -19,7 +21,7 @@
                             class="absolute inset-0 m-auto flex h-60 flex-col items-center justify-center gap-4 text-center text-white"
                         >
                             <div v-if="timeUntil(event.start) > 0">
-                                <vue-countdown
+                                <VueCountdown
                                     v-slot="{ days, hours, minutes, seconds }"
                                     tag="div"
                                     :time="timeUntil(event.start)"
@@ -59,7 +61,7 @@
                                             Restant{{ days === 0 ? 'e' : '' }}s avant le début de l'événement
                                         </div>
                                     </div>
-                                </vue-countdown>
+                                </VueCountdown>
                             </div>
                             <div v-else class="text-xl">Événement terminé !</div>
                         </div>

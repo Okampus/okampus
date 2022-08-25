@@ -1,11 +1,11 @@
 <template>
-    <div class="centered-container-padded text-0 flex-col">
+    <div class="centered-container padded text-0 flex-col">
         <HorizontalTabs
             v-model="currentTab"
             route-base="/forum/new"
             route-name="forum-new"
             :tabs="tabs"
-            class="ml-4"
+            class="mb-4"
         />
         <div class="card-2 bg-content">
             <GraphQLQuery :query="getTeams" :update="(data) => data?.teams">

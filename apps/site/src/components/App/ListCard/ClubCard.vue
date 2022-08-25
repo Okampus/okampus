@@ -1,5 +1,5 @@
 <template>
-    <div class="card-hover bg-2 relative flex w-full max-w-[30rem] flex-col rounded-lg pb-4 shadow-md">
+    <div class="card-hover bg-2 relative flex max-w-[30rem] flex-col rounded-lg pb-4 shadow-md">
         <ProfileBanner
             class="h-20 w-full rounded-t-lg"
             :banner="club.banner"
@@ -9,11 +9,11 @@
         <div class="mx-3 flex h-full flex-col items-center md:mx-5">
             <div class="flex w-full justify-between">
                 <div class="flex items-start gap-3 pt-2">
-                    <div class="bg-2 z-10 -mt-10 rounded-2xl p-1">
+                    <div class="bg-2 z-10 -mt-6 rounded-2xl p-1">
                         <ProfileAvatar
                             :rounded-full="false"
                             :avatar="club.avatar"
-                            :size="4.5"
+                            :size="3.5"
                             :name="club.name"
                         />
                     </div>

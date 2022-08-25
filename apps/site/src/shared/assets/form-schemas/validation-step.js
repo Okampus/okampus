@@ -3,7 +3,6 @@ import { searchUsers } from '@/graphql/queries/users/searchUsers'
 export const validationStepForm = [
     {
         $el: 'h1',
-        attrs: { class: 'mb-8' },
         children: ['Ajouter une étape de validation'],
     },
     {

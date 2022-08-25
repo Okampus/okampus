@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 import { partialTeamFragment } from '@/graphql/fragments/partialTeamFragment'
-import { userFragment } from '@/graphql/fragments/userFragment'
+import { partialUserFragment, userFragment } from '@/graphql/fragments/userFragment'
 
 export const getEvents = gql`
     query events($filter: ListTeamEventsDto!) {
@@ -14,9 +14,19 @@ export const getEvents = gql`
             start
             end
             state
-            validationStep
             team {
+                id
                 ...PartialTeamInfo
+            }
+            registrationForm {
+                id
+                schema
+            }
+            supervisor {
+                user {
+                    ...PartialUserInfo
+                }
+                role
             }
             registrations {
                 id
@@ -28,9 +38,20 @@ export const getEvents = gql`
             userRegistration {
                 id
                 status
+                formSubmission
             }
+            lastValidationStep {
+                id
+                name
+                step
+                users {
+                    ...PartialUserInfo
+                }
+            }
+            eventValidationSubmission
         }
     }
     ${partialTeamFragment}
     ${userFragment}
+    ${partialUserFragment}
 `

@@ -1,5 +1,5 @@
 <template>
-    <router-link v-if="result" to="/" class="flex cursor-pointer select-none items-center">
+    <router-link v-if="!loading" to="/" class="flex cursor-pointer select-none items-center">
         <img
             :src="currentLogo"
             :style="{
@@ -36,7 +36,7 @@
 
     const config = useUserConfigStore()
 
-    const { result, onError } = useQuery(getLogoUrls, { id: getTenant() })
+    const { result, loading, onError } = useQuery(getLogoUrls, { id: getTenant() })
     onError((errors) =>
         showToastGraphQLError(errors, `Les logos du tenant '${getTenant()}' n'ont pas pu être chargés !`),
     )

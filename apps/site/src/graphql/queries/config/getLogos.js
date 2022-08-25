@@ -11,7 +11,7 @@ export const getLogos = gql`
                 fileSize
                 mimeType
                 user {
-                    ...PartialUserFragment
+                    ...PartialUserInfo
                 }
                 url
             }

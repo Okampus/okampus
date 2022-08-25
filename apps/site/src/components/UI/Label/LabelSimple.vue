@@ -1,6 +1,6 @@
 <template>
     <span
-        class="w-fit cursor-pointer rounded-md py-0.5 px-2 line-clamp-1"
+        class="always-break-words w-fit cursor-pointer rounded-md py-0.5 px-2 line-clamp-1"
         :class="[textClass, bgClass]"
         @click="action"
     >

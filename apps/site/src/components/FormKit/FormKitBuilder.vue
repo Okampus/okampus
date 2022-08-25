@@ -57,13 +57,24 @@
 
                         <div class="flex items-end justify-between">
                             <input
-                                v-if="element.$formkit === TEXT"
-                                class="input w-full !cursor-default"
+                                v-if="
+                                    element.$formkit === TEXT ||
+                                    element.$formkit === MULTIUSER ||
+                                    element.$formkit === TEXTAREA
+                                "
+                                class="input !cursor-default md-max:w-full"
                                 disabled
                                 :placeholder="OPTIONS.find((option) => option.type === element.$formkit).name"
                             />
+                            <input
+                                v-if="element.$formkit === NUMBER"
+                                type="number"
+                                class="input !cursor-default md-max:w-full"
+                                disabled
+                                :placeholder="0"
+                            />
                             <div
-                                v-if="element.$formkit === MULTIPLE || element.$formkit === CHECKLIST"
+                                v-if="element.$formkit === RADIO || element.$formkit === CHECKLIST"
                                 class="flex w-full flex-col items-start"
                             >
                                 <div
@@ -183,24 +194,34 @@
     import SwitchInput from '@/components/Input/SwitchInput.vue'
     import EditableText from '@/components/Input/EditableText.vue'
 
-    import { OPTIONS, TEXT, MULTIPLE, CHECKLIST } from '@/shared/types/formkit-builder-input-types.enum'
+    import {
+        OPTIONS,
+        TEXT,
+        TEXTAREA,
+        NUMBER,
+        RADIO,
+        CHECKLIST,
+        MULTIUSER,
+        OPTION_TYPES,
+    } from '@/shared/types/formkit-builder-input-types.enum'
 
     import { cloneDeep } from 'lodash'
-    import { useMutation } from '@vue/apollo-composable'
     import { reactive, ref, watch } from 'vue'
 
-    import { createForm } from '@/graphql/queries/forms/createForm'
-    import { updateForm } from '@/graphql/queries/forms/updateForm'
-    import { showSuccessToast } from '@/utils/toast'
+    import { searchUsers } from '@/graphql/queries/users/searchUsers'
 
     const props = defineProps({
         form: {
             type: Object,
             default: null,
         },
-        teamId: {
-            type: Number,
-            required: true,
+        saveCallback: {
+            type: Function,
+            default: null,
+        },
+        includeTitle: {
+            type: Boolean,
+            default: false,
         },
         isNewForm: {
             type: Boolean,
@@ -212,12 +233,42 @@
         },
     })
 
+    const formName = ref('')
+    const formDescription = ref('')
+
+    const initParseSchema = (schema) => {
+        if (props.includeTitle) {
+            if (schema?.[1]?.$el === 'h4') {
+                formDescription.value = schema[1].children[0]
+                schema.splice(1, 1)
+            }
+
+            if (schema?.[0]?.$el === 'h1') {
+                formName.value = schema[0].children[0]
+                schema.splice(0, 1)
+            }
+        }
+
+        schema = schema.map((el) => {
+            const { validation, ...element } = el
+            if (validation?.includes('required')) {
+                element.required = true
+            } else {
+                element.required = false
+            }
+            return element
+        })
+
+        return schema
+    }
+
+    const schema = initParseSchema(cloneDeep(props.form?.meta?.schema) ?? [])
     const currentForm = reactive({
         type: props.form?.meta?.formType,
-        name: props.form?.name ?? 'Formulaire sans titre',
+        name: formName.value || (props.form?.name ?? 'Formulaire sans titre'),
+        description: formDescription.value || (props.form?.description ?? ''),
         isTemplate: props.form?.isTemplate ?? false,
-        description: props.form?.description ?? '',
-        schema: cloneDeep(props.form?.meta?.schema) ?? [],
+        schema,
     })
 
     watch(
@@ -233,18 +284,6 @@
 
     const emit = defineEmits(['update:form', 'cancel', 'change', 'save-success'])
 
-    const { mutate: createTeamForm, onDone: onDoneCreate } = useMutation(createForm)
-    onDoneCreate(() => {
-        emit('save-success', true)
-        showSuccessToast('Formulaire créé !')
-    })
-
-    const { mutate: updateTeamForm, onDone: onDoneUpdate } = useMutation(updateForm)
-    onDoneUpdate(() => {
-        emit('save-success', true)
-        showSuccessToast('Formulaire mis à jour !')
-    })
-
     const fieldRefs = ref({})
     const optionRefs = ref({})
 
@@ -253,8 +292,6 @@
             $formkit: 'text',
             label: 'Nom du champ',
             required: false,
-            validation: null,
-            typeOption: {},
             options: [{ value: 'Option 1' }],
         })
 
@@ -278,12 +315,38 @@
         emit('change')
     }
 
-    const save = () => {
-        if (props.isNewForm) {
-            createTeamForm({ id: props.teamId, createForm: currentForm })
-        } else {
-            updateTeamForm({ id: props.form.id, updateForm: currentForm })
+    const cleanSchema = () => {
+        const schema = currentForm.schema.map((el) => {
+            const { required, ...element } = el
+            if (required) element.validation = 'required'
+            if (!OPTION_TYPES.includes(element.$formkit)) delete element.options
+
+            if (element.$formkit === MULTIUSER) {
+                element.$formkit = 'multisearch'
+                element.searchQuery = searchUsers
+                element.queryName = 'searchUsers'
+            }
+
+            return element
+        })
+
+        if (props.includeTitle) {
+            schema.unshift({
+                $el: 'h4',
+                children: [currentForm.description],
+            })
+            schema.unshift({
+                $el: 'h1',
+                children: [currentForm.name],
+            })
         }
+
+        return schema
+    }
+
+    const save = () => {
+        props.saveCallback({ ...currentForm, schema: cleanSchema() })
+        emit('save-success', true)
     }
 
     if (props.isNewForm) {

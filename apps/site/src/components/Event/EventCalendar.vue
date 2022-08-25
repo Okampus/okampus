@@ -1,5 +1,5 @@
 <template>
-    <vue-cal
+    <VueCal
         class="h-screen"
         :disable-views="['years', 'year']"
         :events="
@@ -84,7 +84,7 @@
                 </>
             </div>
         </template> -->
-    </vue-cal>
+    </VueCal>
 </template>
 
 <script setup>

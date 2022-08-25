@@ -6,37 +6,35 @@
     >
         <template #default="{ data: club }">
             <div class="relative flex flex-col">
-                <div class="bg-2 text-0">
-                    <div class="centered-container-padded sticky top-0 z-30 flex flex-col pb-0">
-                        <div class="flex items-center justify-between gap-4">
-                            <div class="flex items-center gap-4">
-                                <ProfileAvatar
-                                    :avatar="club.avatar"
-                                    :name="club.name"
-                                    :size="4"
-                                    :rounded-full="false"
-                                />
-                                <div class="flex gap-x-4 lg:items-center lg-max:flex-col">
-                                    <div class="text-2xl">{{ club.name }}</div>
-                                    <LabelSimple class="cursor-default bg-slate-600/40 hover:bg-slate-600/40">
-                                        Vue administrateur
-                                    </LabelSimple>
-                                </div>
+                <div class="bg-1 text-0 centered-container padded sticky top-0 z-30 flex flex-col pb-0">
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <ProfileAvatar
+                                :avatar="club.avatar"
+                                :name="club.name"
+                                :size="4"
+                                :rounded-full="false"
+                            />
+                            <div class="flex gap-x-4 lg:items-center lg-max:flex-col">
+                                <div class="text-2xl">{{ club.name }}</div>
+                                <LabelSimple class="cursor-default bg-slate-600/40 hover:bg-slate-600/40">
+                                    Vue administrateur
+                                </LabelSimple>
                             </div>
-                            <router-link :to="clubRoute" class="text-lg text-blue-500">
-                                {{ md ? 'Voir en tant que visiteur' : 'Vue visiteur' }}
-                            </router-link>
                         </div>
-                        <HorizontalTabs
-                            v-model="currentTab"
-                            :tabs="tabs"
-                            :route-base="clubManageRoute"
-                            route-name="manage-club"
-                            :background-variant="2"
-                        />
+                        <router-link :to="clubRoute" class="text-lg text-blue-500">
+                            {{ md ? 'Voir en tant que visiteur' : 'Vue visiteur' }}
+                        </router-link>
                     </div>
+                    <HorizontalTabs
+                        v-model="currentTab"
+                        :tabs="tabs"
+                        :route-base="clubManageRoute"
+                        route-name="manage-club"
+                        :background-variant="1"
+                    />
                 </div>
-                <div class="centered-container mt-4 flex flex-col">
+                <div class="centered-container flex flex-col">
                     <component :is="currentComponent" :club="club" />
                 </div>
             </div>
@@ -49,9 +47,9 @@
     import WIP from '@/views/App/WIP.vue'
 
     import ManageHomepage from '@/components/Profile/Manage/ManageHomepage.vue'
-    import ManageRequestsAsync from '@/components/Profile/Manage/ManageRequestsAsync.vue'
-    import ManageDriveAsync from '@/components/Profile/Manage/ManageDriveAsync.vue'
-    import ManageActivityAsync from '@/components/Profile/Manage/ManageActivityAsync.vue'
+    import ManageRequests from '@/components/Profile/Manage/ManageRequests.vue'
+    import ManageDrive from '@/components/Profile/Manage/ManageDrive.vue'
+    import ManageEvents from '@/components/Profile/Manage/ManageEvents.vue'
 
     import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
 
@@ -63,7 +61,7 @@
 
     import { useRoute } from 'vue-router'
 
-    import { getClub } from '@/graphql/queries/teams/getClub.js'
+    import { getClub } from '@/graphql/queries/teams/getClub'
 
     import { useBreakpoints } from '@vueuse/core'
     import { twBreakpoints } from '@/tailwind'
@@ -97,6 +95,16 @@
             icon: 'house',
         },
         {
+            id: ACTIVITY,
+            name: 'Événements',
+            icon: 'calendar',
+        },
+        {
+            id: TREASURY,
+            name: 'Trésorerie',
+            icon: 'sack-dollar',
+        },
+        {
             id: MEMBERS,
             name: 'Membres',
             icon: 'users',
@@ -111,36 +119,18 @@
             name: 'Documents',
             icon: 'file-arrow-down',
         },
-        {
-            id: ACTIVITY,
-            name: 'Événements',
-            icon: 'calendar',
-        },
-        {
-            id: TREASURY,
-            name: 'Trésorerie',
-            icon: 'sack-dollar',
-        },
     ]
     const DEFAULT_TAB = tabs[0]
 
     const currentTab = ref(null)
 
-    // await clubs.getClub(clubId.value).then((data) => (club.value = data))
-
     const components = {
         [HOME]: ManageHomepage,
-        [REQUESTS]: ManageRequestsAsync,
-        [DRIVE]: ManageDriveAsync,
+        [REQUESTS]: ManageRequests,
+        [DRIVE]: ManageDrive,
         [MEMBERS]: ClubMembers,
-        [ACTIVITY]: ManageActivityAsync,
+        [ACTIVITY]: ManageEvents,
         [TREASURY]: WIP,
     }
     const currentComponent = computed(() => components[currentTab.value ?? DEFAULT_TAB.id])
-
-    // watchEffect(async () => {
-    //     if (isPositiveInteger(clubId.value)) {
-    //         await clubs.getClub(clubId.value).then((data) => (club.value = data))
-    //     }
-    // })
 </script>

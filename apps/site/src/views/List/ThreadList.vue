@@ -5,8 +5,9 @@
         resource-type="thread"
         route-base="/forum/posts"
         class="flex flex-col gap-4"
-        :class="container ? 'centered-container-padded' : ''"
+        :class="container ? 'centered-container padded whole-page' : ''"
         :whole-page="container"
+        empty-subtitle="Aucun post n'a encore été créé."
     >
         <template #default="{ data: threads }">
             <ThreadCard v-for="thread in threads" :key="thread.id" :thread="thread" />

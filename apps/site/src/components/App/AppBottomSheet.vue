@@ -3,17 +3,26 @@
         <Transition name="fade" @after-enter="open">
             <div
                 v-show="show"
-                class="h-content after-topbar fixed z-40 backdrop-blur backdrop-brightness-50"
-                :class="smallScreen ? 'inset-x-0' : uncollapsed ? 'after-sidebar-lg' : 'after-sidebar-sm'"
+                class="h-content fixed z-[60] backdrop-blur backdrop-brightness-50"
+                :class="
+                    smallScreen
+                        ? 'inset-0'
+                        : uncollapsed
+                        ? 'after-sidebar-lg after-topbar'
+                        : 'after-sidebar-sm after-topbar'
+                "
             >
                 <Transition name="from-bottom">
                     <div
                         v-if="showContent"
-                        class="absolute inset-x-[7%] top-[7%] bottom-0 z-20 h-[93%] w-[86%]"
+                        ref="sheet"
+                        class="absolute z-20 md:inset-x-[7%] md:top-[7%] md:h-[93%] md:w-[86%] md-max:h-full md-max:w-full"
+                        tabindex="0"
                         @keydown.escape="close"
                     >
                         <div
-                            class="shadow-bottom-sheet bg-0 flex w-full justify-between rounded-t-lg py-4 px-6"
+                            class="bg-0 flex w-full justify-between py-4 px-6 md:rounded-t-lg"
+                            :class="{ 'shadow-bottom-sheet': !smallScreen }"
                         >
                             <div class="text-0 w-full text-center text-2xl font-bold">
                                 {{ title }}
@@ -23,7 +32,7 @@
                                 @click="close"
                             />
                         </div>
-                        <div class="bg-2 relative h-[calc(100%-4rem)]">
+                        <div class="bg-2 relative md:h-[calc(100%-4rem)] md-max:h-full">
                             <component
                                 :is="component || 'div'"
                                 ref="content"
@@ -105,19 +114,17 @@
     const showContent = ref(false)
     const unsaved = ref(false)
     const content = ref(null)
-
-    const onKeyDown = ({ key }) => (key === 'Escape' ? close() : {})
+    const sheet = ref(null)
 
     const close = () => {
         showContent.value = false
         unsaved.value = false
         emitter.emit('close-bottom-sheet')
-        window.removeEventListener('keydown', onKeyDown)
     }
 
     const open = () => {
         showContent.value = true
-        window.addEventListener('keydown', onKeyDown)
+        setTimeout(() => sheet.value.focus(), 100)
     }
 </script>
 

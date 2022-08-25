@@ -1,16 +1,36 @@
 export const TEXT = 'text'
-export const MULTIPLE = 'multiple'
-export const CHECKLIST = 'checklist'
+export const TEXTAREA = 'textarea'
+export const NUMBER = 'number'
+export const RADIO = 'radio'
+export const MULTIUSER = 'multiuser'
+export const CHECKLIST = 'checkbox'
+
+export const OPTION_TYPES = [RADIO, CHECKLIST]
 
 export const OPTIONS = [
     {
-        name: 'Champ de saisie',
+        name: 'Texte court',
         type: TEXT,
-        icon: 'fa fa-paragraph',
+        icon: 'fa fa-align-left',
     },
     {
+        name: 'Texte long',
+        type: TEXTAREA,
+        icon: 'fa fa-quote-left',
+    },
+    {
+        name: 'Saisie de nombre',
+        type: NUMBER,
+        icon: 'fa fa-hashtag',
+    },
+    // {
+    //     name: "Sélection d'utilisateurs",
+    //     type: MULTIUSER,
+    //     icon: 'fa fa-users',
+    // },
+    {
         name: 'Choix multiples',
-        type: MULTIPLE,
+        type: RADIO,
         icon: 'fa fa-rectangle-list',
     },
     {

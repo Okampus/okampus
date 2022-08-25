@@ -44,12 +44,12 @@
                             :disabled="counting"
                             @click="agreeToTerms"
                         >
-                            <vue-countdown
+                            <VueCountdown
                                 v-if="counting"
                                 v-slot="{ totalSeconds }"
                                 :time="4000"
                                 @end="onCountdownEnd"
-                                >{{ totalSeconds }}</vue-countdown
+                                >{{ totalSeconds }}</VueCountdown
                             >
                             <div v-else>J'ai pris connaissance de ces informations et souhaite continuer</div>
                         </button>

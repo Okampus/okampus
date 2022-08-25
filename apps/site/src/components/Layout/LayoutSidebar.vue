@@ -8,7 +8,7 @@
                 ? 'hidden-sidebar-lg'
                 : '',
         ]"
-        class="w-sidebar-sm sidebar z-[60] flex shrink-0 flex-col"
+        class="w-sidebar-sm sidebar z-40 flex shrink-0 flex-col"
         tabindex="0"
         @keydown.escape="emit('toggle-side-bar')"
     >

@@ -19,6 +19,7 @@ import {
 import { GraphQLJSON } from 'graphql-scalars';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamEventState } from '../../shared/lib/types/enums/team-event-state.enum';
+import { ValidationStep } from '../../tenants/validation-steps/validation-step.entity';
 import { User } from '../../users/user.entity';
 // eslint-disable-next-line import/no-cycle
 import { TeamEventRegistration } from '../event-registrations/team-event-registration.entity';
@@ -83,9 +84,9 @@ export class TeamEvent extends BaseEntity {
   @Enum(() => TeamEventState)
   state = TeamEventState.Submitted;
 
-  @Field(() => Int)
-  @Property()
-  validationStep = 0;
+  @Field(() => ValidationStep, { nullable: true })
+  @ManyToOne()
+  lastValidationStep: ValidationStep | null = null;
 
   @Field(() => TeamForm, { nullable: true })
   @OneToOne({ cascade: [Cascade.ALL] })
@@ -98,6 +99,10 @@ export class TeamEvent extends BaseEntity {
   @Field(() => GraphQLJSON)
   @Property({ type: 'json' })
   meta: object[] | object = {};
+
+  @Field(() => GraphQLJSON)
+  @Property({ type: 'json' })
+  eventValidationSubmission: object[] | object = {};
 
   constructor(options: {
     start: Date;

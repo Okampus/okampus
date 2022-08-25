@@ -7,14 +7,20 @@
         <template #default="{ data: allFiles }">
             <div v-if="isEmpty(allFiles)">
                 <div class="text-0 my-12 flex flex-col items-center justify-center text-2xl">
-                    <img :src="Zoom" class="h-40 w-40" />
+                    <img :src="Sleeping" class="h-40 w-40" />
                     <span class="font-semibold"> Aucune donnée disponible </span>
                 </div>
             </div>
-            <div v-else class="grid grid-cols-[repeat(auto-fit,minmax(17rem,1fr))] gap-6">
+            <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-6">
                 <!-- TODO: sort by type with ordering -->
                 <div
-                    v-for="(files, type) in allFiles"
+                    v-for="(files, type) in Object.fromEntries(
+                        Object.entries(allFiles).sort(
+                            ([type1], [type2]) =>
+                                Object.keys(TEAM_FILES).indexOf(type1) -
+                                Object.keys(TEAM_FILES).indexOf(type2),
+                        ),
+                    )"
                     :key="type"
                     class="card-2 flex flex-col justify-between gap-10"
                 >
@@ -56,7 +62,7 @@
 </template>
 
 <script setup>
-    import Zoom from '@/assets/img/3dicons/zoom.png'
+    import Sleeping from '@/assets/img/3dicons/sleeping.png'
 
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
     import FileInput from '@/components/Input/FileInput.vue'

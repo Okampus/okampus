@@ -12,7 +12,7 @@
                     <p class="text-lg">{{ club.name }} n'a pas encore prévu d'événéments.</p>
                 </div>
             </div>
-            <div v-else class="grid grid-cols-[repeat(auto-fit,minmax(23rem,1fr))] gap-6">
+            <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(23rem,1fr))] gap-6">
                 <ClubEventCard v-for="event in events" :key="event.id" :event="event" />
             </div>
             <!-- <div v-if="events.length > 0" class="flex flex-row flex-wrap items-center justify-center gap-4">

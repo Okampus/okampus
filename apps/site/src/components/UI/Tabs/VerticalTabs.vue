@@ -18,7 +18,8 @@
                     <div class="title-font whitespace-nowrap">{{ tab.name }}</div>
                     <LabelSimple
                         v-if="tab.amount || tab.amount === 0"
-                        class="ml-6 bg-gray-500/50 hover:bg-gray-500/50"
+                        class="ml-6"
+                        bg-class="bg-gray-500/50"
                         >{{ abbrNumbers(tab.amount) }}</LabelSimple
                     >
                 </div>

@@ -1,28 +1,54 @@
 <template>
-    <ApolloQuery :debounce="debounce" :query="query" :variables="variables" :update="update">
-        <template #default="{ result: { error, data }, isLoading }">
+    <ApolloQuery
+        :debounce="debounce"
+        :query="query"
+        :variables="variables"
+        :update="update"
+        :class="{ 'h-full': wholePage }"
+    >
+        <template #default="{ result: { error, data }, isLoading, query: q }">
+            <slot name="include" :data="data" :query="q" />
             <AppLoader v-if="isLoading" :size="loaderSize" :whole-page="wholePage" />
 
             <slot v-else-if="error && $slots.error" :code="getGraphQLErrorCode(error)" />
             <AppException v-else-if="error" :code="getGraphQLErrorCode(error)" :whole-page="wholePage" />
 
-            <slot v-else-if="data && (!Array.isArray(data) || data?.length > 0)" :data="data" />
+            <slot
+                v-else-if="hideEmpty || (data && (!Array.isArray(data) || data?.length > 0))"
+                :data="data"
+                :query="q"
+            />
 
             <slot v-else-if="$slots.empty" name="empty" />
-            <div v-else-if="resource" class="text-0 my-12 flex flex-col items-center justify-center gap-2">
-                <img :src="Zoom" class="h-40 w-40" />
-                <div v-if="resourceType" class="text-center text-2xl font-bold">
-                    Aucun{{ resource.frFeminine ? 'e' : '' }} {{ resource.name.fr }} trouvé{{
-                        resource.frFeminine ? 'e' : ''
-                    }}
-                </div>
-                <div v-else class="text-center text-2xl font-bold">Pas de résultat</div>
-                <div v-if="routeBase && route.fullPath" class="text-center text-lg">
-                    Essayez la
-                    <router-link :to="routeBase" class="link-blue"
-                        >liste de tou{{ resource.frFeminine ? 'te' : '' }}s les
-                        {{ resource.name.fr }}s</router-link
-                    >.
+            <div
+                v-else-if="resource"
+                class="text-0 my-12 flex flex-col items-center justify-center gap-4"
+                :class="{ 'h-full -mt-6': wholePage }"
+            >
+                <img :src="Sleeping" :class="wholePage ? 'h-48 w-48' : 'h-36 w-36'" />
+                <div class="text-center">
+                    <div v-if="resourceType" class="font-bold" :class="wholePage ? 'text-4xl' : 'text-2xl'">
+                        Aucun{{ resource.frFeminine ? 'e' : '' }} {{ resource.name.fr }} trouvé{{
+                            resource.frFeminine ? 'e' : ''
+                        }}
+                    </div>
+                    <div v-else class="font-bold" :class="wholePage ? 'text-4xl' : 'text-2xl'">
+                        Aucun résultat
+                    </div>
+                    <div v-if="emptySubtitle" :class="wholePage ? 'text-lg' : 'text-base'" class="text-2">
+                        {{ emptySubtitle }}
+                    </div>
+                    <div
+                        v-else-if="routeBase && route.fullPath !== routeBase"
+                        :class="wholePage ? 'text-lg' : 'text-base'"
+                        class="text-2"
+                    >
+                        Essayez la
+                        <router-link :to="routeBase" class="link-blue"
+                            >liste de tou{{ resource.frFeminine ? 'te' : '' }}s les
+                            {{ resource.name.fr }}s</router-link
+                        >.
+                    </div>
                 </div>
             </div>
         </template>
@@ -30,8 +56,9 @@
 </template>
 
 <script setup>
+    import Sleeping from '@/assets/img/3dicons/sleeping.png'
+
     import { ApolloQuery } from '@vue/apollo-components'
-    import Zoom from '@/assets/img/3dicons/zoom.png'
 
     import AppException from '@/views/App/AppException.vue'
     import AppLoader from '@/components/App/AppLoader.vue'
@@ -47,6 +74,14 @@
         query: {
             type: [Object, Function],
             required: true,
+        },
+        hideEmpty: {
+            type: Boolean,
+            default: false,
+        },
+        emptySubtitle: {
+            type: String,
+            default: '',
         },
         debounce: {
             type: Number,
@@ -74,7 +109,7 @@
         },
         wholePage: {
             type: Boolean,
-            default: true,
+            default: false,
         },
     })
 

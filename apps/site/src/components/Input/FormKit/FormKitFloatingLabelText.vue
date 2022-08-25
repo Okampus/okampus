@@ -1,6 +1,7 @@
 <template>
     <div class="input-background relative" :="isFocused ? { focused: '' } : {}">
-        <input
+        <component
+            :is="isTextarea ? 'textarea' : 'input'"
             class="input w-full"
             :class="inputClass"
             :placeholder="isFocused || context._value ? placeholder : floatingLabel ? '' : placeholder"
@@ -32,6 +33,7 @@
     const isFocused = ref(false)
 
     const floatingLabel = computed(() => props.context.floatingLabel)
+    const isTextarea = computed(() => props.context.isTextarea)
     const placeholder = computed(() => props.context.placeholder)
     const inputClass = computed(() => props.context.inputClass)
 

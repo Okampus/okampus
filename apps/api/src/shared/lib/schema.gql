@@ -151,6 +151,22 @@ input CreateTeamDto {
   tags: [String!]
 }
 
+input CreateTeamEventDto {
+  description: String!
+  end: DateTime!
+  eventValidationSubmission: JSON
+  formId: Int
+  location: String!
+  meta: JSON
+  name: String!
+  price: Float!
+  private: Boolean = false
+  start: DateTime!
+  state: TeamEventState!
+  supervisorId: String!
+  templateId: Int
+}
+
 input CreateTeamEventRegistrationDto {
   formSubmission: JSON
   originalFormId: Int
@@ -160,6 +176,7 @@ input CreateTeamEventRegistrationDto {
 input CreateTeamEventValidationDto {
   approved: Boolean!
   message: String
+  stepId: Int!
 }
 
 input CreateTeamFileDto {
@@ -243,6 +260,11 @@ type FileUpload {
   user: User!
   validated: Boolean!
   visible: Boolean!
+}
+
+input FilterMembershipRequestsDto {
+  state: MembershipRequestState
+  type: MembershipRequestDirection
 }
 
 input FilterRegisteredEventsDto {
@@ -339,10 +361,11 @@ type Mutation {
   addThread(thread: CreateThreadDto!): Thread!
   addUserToTeam(invite: InviteMemberDto!, teamId: Int!, userId: Int!): TeamMember!
   addValidationStep(createStep: CreateValidationStepDto!): Tenant!
+  createEvent(createEvent: CreateTeamEventDto!, id: Int!): TeamEvent!
   createTeamForm(createForm: CreateTeamFormDto!, id: Int!): Team!
   deleteTeamFile(id: String!): Team!
   favoriteContent(favorite: Boolean!, id: Int!): Content!
-  handleTeamMembershipRequest(payload: PutTeamMembershipRequestDto!, requestId: Int!): TeamMembershipRequest!
+  handleTeamMembershipRequest(id: Int!, updateRequest: PutTeamMembershipRequestDto!): TeamMembershipRequest!
   insertStep(atStep: Int!, step: Int!): Tenant!
   joinTeam(id: Int!, request: CreateTeamMembershipRequestDto!): Team!
   login(password: String!, username: String!): User!
@@ -350,6 +373,7 @@ type Mutation {
   reportContent(id: Int!, report: CreateReportDto!): Content!
   unsetLogo(id: String!, isLogoDark: Boolean!): Tenant!
   updateContent(content: UpdateContentDto!, id: Int!): Content!
+  updateEvent(id: Int!, updateEvent: UpdateTeamEventDto!): TeamEvent!
   updateSettings(settings: UpdateSettingsDto!): Settings!
   updateTeam(id: Int!, team: UpdateTeamDto!): Team!
   updateTeamEventRegistration(id: Int!, registration: UpdateTeamEventRegistrationDto!): TeamEventRegistration!
@@ -357,9 +381,11 @@ type Mutation {
   updateTeamForm(id: Int!, updateForm: UpdateTeamFormDto!): TeamForm!
   updateTeamMember(teamId: Int!, update: UpdateTeamMemberDto!, userId: Int!): TeamMember!
   updateTeamMembershipRequest(requestId: Int!, update: UpdateTeamMembershipRequestDto!): TeamMembershipRequest!
+  updateTenant(id: String!, updateTenant: UpdateTenantDto!): Tenant!
   updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
   updateUser(id: String!, user: UpdateUserDto!): User!
   updateValidationStep(id: Int!, updateStep: UpdateValidationStepDto!): ValidationStep!
+  validateEvent(createValidation: CreateTeamEventValidationDto!, id: Int!): TeamEvent!
   voteContent(id: Int!, value: Int!): Content!
   wsToken: User!
 }
@@ -414,7 +440,7 @@ type Query {
   teamFinances(filters: TeamFinancesFilterDto!): [TeamFinance!]!
   teamFormById(id: Int!): TeamForm!
   teamMembers(id: Int!): [TeamMember!]
-  teamMembershipRequests(filter: ListMembershipRequestsDto, id: Int!): [TeamMembershipRequest!]
+  teamMembershipRequests(filter: FilterMembershipRequestsDto, id: Int!): [TeamMembershipRequest!]
   teamMembershipRequestsByUserId(filters: ListMembershipRequestsDto, id: String!): [TeamMembershipRequest!]!
   teamMembershipsByUserId(id: String!): [TeamMember!]
   teams(filters: TeamsFilterDto): [Team!]!
@@ -598,7 +624,9 @@ type TeamEvent {
   createdBy: User!
   description: String!
   end: DateTime!
+  eventValidationSubmission: JSON!
   id: Int!
+  lastValidationStep: ValidationStep
   location: String!
   meta: JSON!
   name: String!
@@ -613,7 +641,6 @@ type TeamEvent {
   updatedAt: DateTime!
   usedTemplate: TeamEvent
   userRegistration: TeamEventRegistration
-  validationStep: Int!
 }
 
 enum TeamEventRegisterStatus {
@@ -731,6 +758,7 @@ type TeamForm {
 }
 
 enum TeamFormType {
+  EventRegistration
   Internal
   MembershipRequest
   Survey
@@ -884,6 +912,21 @@ input UpdateTeamDto {
   membershipRequestFormId: Int
 }
 
+input UpdateTeamEventDto {
+  description: String
+  end: DateTime
+  eventValidationSubmission: JSON
+  formId: Int
+  location: String
+  meta: JSON
+  name: String
+  price: Float
+  private: Boolean = false
+  start: DateTime
+  state: TeamEventState
+  supervisorId: String
+}
+
 input UpdateTeamEventRegistrationDto {
   participationScore: Int
   present: Boolean
@@ -920,6 +963,19 @@ input UpdateTeamMembershipRequestDto {
   formSubmission: JSON
   originalFormId: Int
   role: TeamRole
+}
+
+input UpdateTenantDto {
+  eventValidationForm: JSON = null
+  id: String
+  logo: String
+  logoDark: String
+  oidcCallbackUri: String
+  oidcClientId: String
+  oidcClientSecret: String
+  oidcDiscoveryUrl: String
+  oidcEnabled: Boolean
+  oidcScopes: String
 }
 
 input UpdateThreadDto {

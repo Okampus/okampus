@@ -4,22 +4,20 @@
         navigation
         slides-per-view="auto"
         :space-between="20"
-        class="my-3 w-full"
+        class="w-full"
         @swiper="(s) => (swiper = s)"
     >
-        <SwiperSlide v-for="(tab, i) in computedTabs" :key="i" class="!w-fit py-2">
+        <SwiperSlide v-for="(tab, i) in computedTabs" :key="i" class="!w-fit pb-1">
             <div
                 class="tab-swiper select-none"
-                :class="tab.id === modelValue ? 'bg-0-alt text-0-alt' : 'bg-4 text-1'"
+                :class="tab.id === modelValue ? 'bg-1-alt text-0-alt' : 'bg-3 text-1 hover:brightness-125'"
                 @click="setTab(tab, true)"
             >
                 <i :class="`fas fa-${tab.icon}`" />
                 <p class="title-font">{{ tab.name }}</p>
-                <LabelSimple
-                    v-if="tab.amount || tab.amount === 0"
-                    class="bg-gray-500/50 hover:bg-gray-500/50"
-                    >{{ abbrNumbers(tab.amount) }}</LabelSimple
-                >
+                <LabelSimple v-if="tab.amount || tab.amount === 0" bg-class="bg-gray-500/50">{{
+                    abbrNumbers(tab.amount)
+                }}</LabelSimple>
             </div>
         </SwiperSlide>
     </Swiper>
@@ -31,7 +29,7 @@
 
     import { Navigation } from 'swiper'
 
-    import { computed, watch } from 'vue'
+    import { computed, ref, watch } from 'vue'
     import { useRoute } from 'vue-router'
 
     import abbrNumbers from 'approximate-number'
@@ -85,6 +83,8 @@
         }0 80%)`,
     })
 
+    const swiper = ref(null)
+
     const prevBackground = computed(() => getBg(twColors[props.backgroundVariant]).left)
     const nextBackground = computed(() => getBg(twColors[props.backgroundVariant]).right)
     const prevBackgroundDark = computed(() => getBg(twColors[props.backgroundVariant]).leftDark)
@@ -130,6 +130,8 @@
 
             setTab(defaultTab, true)
         }
+
+        if (swiper.value) swiper.value.slideTo(computedTabs.value.indexOf(tab))
     }
 
     setCurrentTab()
@@ -157,7 +159,7 @@
     .swiper-button-prev {
         @apply rounded-xl;
 
-        left: -2px !important;
+        left: -3px !important;
         width: 6rem;
         background: v-bind(prevBackground);
 
@@ -173,7 +175,7 @@
     .swiper-button-next {
         @apply rounded-xl;
 
-        right: -2px !important;
+        right: -3px !important;
         width: 6rem;
         background: v-bind(nextBackground);
 

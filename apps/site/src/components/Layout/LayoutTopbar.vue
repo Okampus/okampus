@@ -1,5 +1,5 @@
 <template>
-    <nav class="topbar h-topbar text-1 fixed top-0 left-0 z-50 flex w-full items-center justify-between">
+    <nav class="topbar h-topbar text-1 fixed top-0 left-0 z-20 flex w-full items-center justify-between">
         <div class="w-sidebar-lg flex items-center">
             <div class="w-sidebar-sm flex shrink-0 justify-center">
                 <button aria-label="Open Menu" @click="$emit('toggle-side-bar')">

@@ -10,7 +10,7 @@
             </div> -->
             <div v-if="isEmpty(allMetrics)">
                 <div class="text-0 my-12 flex flex-col items-center justify-center text-2xl">
-                    <img :src="Zoom" class="h-40 w-40" />
+                    <img :src="Sleeping" class="h-40 w-40" />
                     <span class="text-center font-semibold"> Aucune donnée disponible </span>
                 </div>
             </div>
@@ -123,7 +123,7 @@
 </template>
 
 <script setup>
-    import Zoom from '@/assets/img/3dicons/zoom.png'
+    import Sleeping from '@/assets/img/3dicons/sleeping.png'
 
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
     import { Line } from 'vue-chartjs'
