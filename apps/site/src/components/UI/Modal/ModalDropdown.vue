@@ -22,7 +22,7 @@
                     :class="button.class"
                     @click="button.action()"
                 >
-                    <i class="fas w-[1.2rem]" :class="`fa-${button.icon ?? 'square'}`" />
+                    <i v-if="button.icon" class="fas w-[1.2rem]" :class="`fa-${button.icon}`" />
                     <div>
                         {{ button.name?.value ?? button.name }}
                     </div>
