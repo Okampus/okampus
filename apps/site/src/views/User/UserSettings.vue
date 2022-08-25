@@ -1,7 +1,7 @@
 <template>
     <Transition mode="out-in" name="switch-fade">
-        <div class="centered-container padded flex flex-col gap-10 md:flex-row">
-            <div class="sticky top-8 flex h-fit w-full flex-col gap-4 md:w-auto">
+        <div class="centered-container padded relative flex flex-col gap-10 md:flex-row">
+            <div class="bg-1 sticky top-0 z-20 flex h-fit w-full flex-col gap-4 md:w-auto md-max:py-8">
                 <div class="flex gap-5 md:flex-col">
                     <ProfileAvatar :avatar="me.avatar" :name="fullname(me)" :size="md ? (lg ? 14 : 12) : 6">
                         <template #icon>
@@ -43,7 +43,13 @@
             </div>
 
             <div class="flex w-full flex-col">
-                <HorizontalTabs v-model="currentTab" :tabs="tabs" route-base="/me" route-name="me" />
+                <HorizontalTabs
+                    v-model="currentTab"
+                    :tabs="tabs"
+                    route-base="/me"
+                    route-name="me"
+                    class="mb-4"
+                />
                 <div class="flex w-full flex-col">
                     <component :is="currentComponent" />
                 </div>

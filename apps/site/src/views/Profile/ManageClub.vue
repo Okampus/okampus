@@ -34,7 +34,7 @@
                         :background-variant="1"
                     />
                 </div>
-                <div class="centered-container mt-4 flex flex-col">
+                <div class="centered-container flex flex-col">
                     <component :is="currentComponent" :club="club" />
                 </div>
             </div>

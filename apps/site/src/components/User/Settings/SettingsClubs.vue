@@ -13,7 +13,7 @@
                     route-name="me"
                     :background-variant="2"
                     :tabs="tabs"
-                    class="ml-4"
+                    class="ml-4 mb-4"
                 />
                 <div class="text-0 divide-y divide-gray-500/40">
                     <template v-if="currentTab === MEMBER">

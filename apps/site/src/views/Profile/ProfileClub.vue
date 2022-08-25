@@ -98,6 +98,7 @@
                         :tabs="tabs"
                         :route-base="clubRoute"
                         route-name="club"
+                        class="mb-4"
                     />
                 </div>
             </div>

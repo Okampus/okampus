@@ -1,7 +1,7 @@
 <template>
     <GraphQLQuery :query="getClubs" :update="(data) => data?.clubs">
         <template #default="{ data: clubs }">
-            <div class="bg-1 sticky top-0 z-30 px-4 md:hidden">
+            <div class="bg-1 sticky top-0 z-30 p-4 md:hidden">
                 <HorizontalTabs
                     v-model="currentTab"
                     :tabs="getTabsFromClubs(clubs).value"

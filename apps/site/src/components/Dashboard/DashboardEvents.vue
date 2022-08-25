@@ -1,10 +1,11 @@
 <template>
-    <div>
+    <div class="card-2">
         <HorizontalTabs
             v-model="currentTab"
             :tabs="computedTabs"
             route-base="/admin/events"
             route-name="admin"
+            class="mb-4"
         />
 
         <div v-if="currentTab === OVERVIEW">
@@ -18,7 +19,7 @@
         <div v-else-if="loading">
             <AppLoader :whole-page="true" :size="3.5" />
         </div>
-        <div v-else class="mt-8 flex flex-col">
+        <div v-else class="flex flex-col">
             <FormSubmission
                 :show="!!validationFormSubmission"
                 :form-submission="validationFormSubmission"

@@ -12,6 +12,7 @@
                     :tabs="config.userValidations.length ? tabs : tabs.filter((t) => t.id !== EVENTS)"
                     route-base="/admin"
                     route-name="admin"
+                    class="mb-4"
                 />
 
                 <Transition mode="out-in" name="switch-fade">

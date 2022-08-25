@@ -4,10 +4,10 @@
         navigation
         slides-per-view="auto"
         :space-between="20"
-        class="my-3 w-full"
+        class="w-full"
         @swiper="(s) => (swiper = s)"
     >
-        <SwiperSlide v-for="(tab, i) in computedTabs" :key="i" class="!w-fit py-2">
+        <SwiperSlide v-for="(tab, i) in computedTabs" :key="i" class="!w-fit pb-1">
             <div
                 class="tab-swiper select-none"
                 :class="tab.id === modelValue ? 'bg-1-alt text-0-alt' : 'bg-3 text-1 hover:brightness-125'"
@@ -159,7 +159,7 @@
     .swiper-button-prev {
         @apply rounded-xl;
 
-        left: -2px !important;
+        left: -3px !important;
         width: 6rem;
         background: v-bind(prevBackground);
 
@@ -175,7 +175,7 @@
     .swiper-button-next {
         @apply rounded-xl;
 
-        right: -2px !important;
+        right: -3px !important;
         width: 6rem;
         background: v-bind(nextBackground);
 

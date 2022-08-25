@@ -5,7 +5,7 @@
             route-base="/forum/new"
             route-name="forum-new"
             :tabs="tabs"
-            class="ml-4"
+            class="mb-4"
         />
         <div class="card-2 bg-content">
             <GraphQLQuery :query="getTeams" :update="(data) => data?.teams">

@@ -49,7 +49,7 @@
                 </tbody>
             </table>
         </div>
-        <div v-if="sortedItems.length === 0" class="bg-2 flex grow flex-col items-center justify-center">
+        <div v-if="sortedItems.length === 0" class="bg-3 flex grow flex-col items-center justify-center">
             <img :src="Sleeping" class="h-40 w-40" />
             <div class="text-0 text-2xl font-bold">Aucun élément à afficher</div>
         </div>
