@@ -172,49 +172,49 @@ export const sections = computed(() => {
                           },
                       ],
                   },
-                  {
-                      name: 'Services',
-                      links: [
-                          {
-                              to: '/docs/',
-                              regActive: /^\/docs?/,
-                              textSmall: 'Documents',
-                              textLarge: 'Documents',
-                              icon: 'file',
-                          },
-                          {
-                              to: '/restaurant/',
-                              regActive: /^\/restaurant?/,
-                              textSmall: 'Cantine',
-                              textLarge: 'Cantine',
-                              icon: 'utensils',
-                          },
-                          {
-                              to: '/lost-found/',
-                              regActive: /^\/lost-found?/,
-                              textSmall: 'Objets',
-                              textLarge: 'Objets trouvés',
-                              icon: 'recycle',
-                          },
-                          {
-                              to: '/wiki/',
-                              regActive: /^\/wiki?/,
-                              textSmall: 'Wiki',
-                              textLarge: 'Wiki interne',
-                              icon: 'info',
-                          },
-                      ],
-                  },
+                  //   {
+                  //       name: 'Services',
+                  //       links: [
+                  //           {
+                  //               to: '/docs/',
+                  //               regActive: /^\/docs?/,
+                  //               textSmall: 'Documents',
+                  //               textLarge: 'Documents',
+                  //               icon: 'file',
+                  //           },
+                  //           {
+                  //               to: '/restaurant/',
+                  //               regActive: /^\/restaurant?/,
+                  //               textSmall: 'Cantine',
+                  //               textLarge: 'Cantine',
+                  //               icon: 'utensils',
+                  //           },
+                  //           {
+                  //               to: '/lost-found/',
+                  //               regActive: /^\/lost-found?/,
+                  //               textSmall: 'Objets',
+                  //               textLarge: 'Objets trouvés',
+                  //               icon: 'recycle',
+                  //           },
+                  //           {
+                  //               to: '/wiki/',
+                  //               regActive: /^\/wiki?/,
+                  //               textSmall: 'Wiki',
+                  //               textLarge: 'Wiki interne',
+                  //               icon: 'info',
+                  //           },
+                  //       ],
+                  //   },
                   {
                       name: 'Communauté',
                       links: [
-                          {
-                              to: '/community/',
-                              regActive: /^\/community/,
-                              textSmall: 'Communauté',
-                              textLarge: 'Communauté',
-                              icon: 'icons',
-                          },
+                          //   {
+                          //       to: '/community/',
+                          //       regActive: /^\/community/,
+                          //       textSmall: 'Communauté',
+                          //       textLarge: 'Communauté',
+                          //       icon: 'icons',
+                          //   },
                           {
                               to: '/users/',
                               regActive: /^\/(users?|me)/,
