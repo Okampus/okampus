@@ -95,8 +95,10 @@ export class MeiliSearchIndexerService {
 
       for (let offset = 0; offset < count; offset += MEILISEARCH_BATCH_SIZE) {
         const entities = await this.getEntities(name, tenant, { offset, limit: MEILISEARCH_BATCH_SIZE });
-        this.logger.log(`Reindexing ${offset} to ${Math.min(offset + MEILISEARCH_BATCH_SIZE, count)}, found ${entities.length} entities`);
-        await index.addDocuments(MeiliSearchIndexerService.entitiesToIndexedEntities(entities, name));
+        const indexedEntities = MeiliSearchIndexerService.entitiesToIndexedEntities(entities, name);
+        this.logger.log(`Reindexing ${offset} to ${Math.min(offset + MEILISEARCH_BATCH_SIZE, count)}, found ${indexedEntities.length} entities`);
+        this.logger.log(`Indexed Entities: ${JSON.stringify(indexedEntities)}`);
+        await index.addDocuments(indexedEntities);
       }
     }
     return true;
