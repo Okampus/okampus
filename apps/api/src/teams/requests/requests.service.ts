@@ -104,7 +104,7 @@ export class TeamMembershipRequestsService {
     return await this.teamMembershipRequestRepository.findWithPagination(
       normalizePagination(options ?? {}),
       { team: { id }, ...query },
-      { orderBy: { createdAt: 'DESC' }, populate: ['team', 'user', 'issuedBy', 'handledBy'] },
+      { orderBy: { createdAt: 'DESC' }, populate: ['team', 'user', 'issuedBy', 'handledBy', 'originalForm'] },
     );
   }
 
@@ -147,7 +147,7 @@ export class TeamMembershipRequestsService {
   ): Promise<TeamMembershipRequest> {
     const request = await this.teamMembershipRequestRepository.findOneOrFail(
       { id },
-      { populate: ['team', 'team.members', 'user', 'issuedBy', 'handledBy'] },
+      { populate: ['team', 'team.members', 'user', 'issuedBy', 'handledBy', 'originalForm'] },
     );
 
     if (request.state !== MembershipRequestState.Pending)
