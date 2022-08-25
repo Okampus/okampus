@@ -15,7 +15,7 @@
                                 :size="4"
                                 :rounded-full="false"
                             />
-                            <div class="lg-max:flex-col flex gap-x-4 lg:items-center">
+                            <div class="flex gap-x-4 lg:items-center lg-max:flex-col">
                                 <div class="text-2xl">{{ club.name }}</div>
                                 <LabelSimple class="cursor-default bg-slate-600/40 hover:bg-slate-600/40">
                                     Vue administrateur
@@ -61,7 +61,7 @@
 
     import { useRoute } from 'vue-router'
 
-    import { getClub } from '@/graphql/queries/teams/getClub.js'
+    import { getClub } from '@/graphql/queries/teams/getClub'
 
     import { useBreakpoints } from '@vueuse/core'
     import { twBreakpoints } from '@/tailwind'

@@ -21,7 +21,7 @@
                             class="absolute inset-0 m-auto flex h-60 flex-col items-center justify-center gap-4 text-center text-white"
                         >
                             <div v-if="timeUntil(event.start) > 0">
-                                <vue-countdown
+                                <VueCountdown
                                     v-slot="{ days, hours, minutes, seconds }"
                                     tag="div"
                                     :time="timeUntil(event.start)"
@@ -61,7 +61,7 @@
                                             Restant{{ days === 0 ? 'e' : '' }}s avant le début de l'événement
                                         </div>
                                     </div>
-                                </vue-countdown>
+                                </VueCountdown>
                             </div>
                             <div v-else class="text-xl">Événement terminé !</div>
                         </div>
