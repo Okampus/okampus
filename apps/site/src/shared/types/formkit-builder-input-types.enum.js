@@ -3,7 +3,7 @@ export const TEXTAREA = 'textarea'
 export const NUMBER = 'number'
 export const RADIO = 'radio'
 export const MULTIUSER = 'multiuser'
-export const CHECKLIST = 'checklist'
+export const CHECKLIST = 'checkbox'
 
 export const OPTION_TYPES = [RADIO, CHECKLIST]
 

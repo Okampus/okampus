@@ -20,6 +20,7 @@ export const getConfig = gql`
                 step
                 name
             }
+            eventValidationForm
         }
     }
     ${partialUserFragment}

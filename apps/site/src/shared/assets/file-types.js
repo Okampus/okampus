@@ -293,7 +293,7 @@ export const FILE_TYPES = {
             (meta && meta === DOCUMENT) ||
             (!meta && (/^text\/(.)+$/.test(mime) || DOCUMENT_EXTS.some((ext) => filename.endsWith(ext)))),
         icon: 'fa fa-file-alt',
-        allowedString: 'Document (Texte, DOC(X), PPT(X), PDF, LaTeX...)',
+        allowedString: 'Document (TXT, DOC, PPT, PDF, LaTeX...)',
         color: 'bg-gray-500',
         type: DOCUMENT,
         typeName: 'DOC',
