@@ -100,6 +100,10 @@ export class TeamEvent extends BaseEntity {
   @Property({ type: 'json' })
   meta: object[] | object = {};
 
+  @Field(() => GraphQLJSON)
+  @Property({ type: 'json' })
+  eventValidationSubmission: object[] | object = {};
+
   constructor(options: {
     start: Date;
     end: Date;
