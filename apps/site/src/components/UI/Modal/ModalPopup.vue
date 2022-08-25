@@ -1,12 +1,25 @@
 <template>
     <Teleport to="body">
-        <Transition name="modal" @after-leave="emit('closed')">
-            <div v-show="show" class="absolute top-0 left-0 z-50 h-screen w-screen">
+        <Transition name="modal" @after-enter="content.focus()" @after-leave="emit('closed')">
+            <div v-show="show" class="absolute inset-0 z-50 h-screen w-screen">
                 <div
-                    class="fixed top-0 left-0 z-20 rounded-lg"
+                    class="app-scrollbar fixed z-20 overflow-scroll rounded-lg md:max-h-[80vh] md:max-w-[60vw] md-max:h-[100vh] md-max:w-[100vw]"
                     :style="{ 'transform': 'translate(calc(50vw - 50%), calc(50vh - 50%))' }"
                 >
-                    <div class="modal-content card-0">
+                    <div
+                        ref="content"
+                        tabindex="0"
+                        class="modal-content relative"
+                        :class="cardClass"
+                        @keydown.escape="emit('close')"
+                    >
+                        <div
+                            class="link-blue bg-0 sticky top-0 z-20 flex w-full items-center gap-4 self-start py-4 md:hidden"
+                            @click="emit('close')"
+                        >
+                            <div class="fa fa-arrow-left text-2xl" />
+                            Revenir au menu précédent
+                        </div>
                         <slot :close="() => emit('close')" />
                     </div>
                 </div>
@@ -21,30 +34,21 @@
 </template>
 
 <script setup>
-    import { watchEffect } from 'vue'
+    import { ref } from 'vue'
 
-    const props = defineProps({
+    defineProps({
         show: {
             type: Boolean,
             required: true,
         },
+        cardClass: {
+            type: [String, Object, Array],
+            default: 'card-0 flex flex-col items-center justify-center py-8 px-10',
+        },
     })
 
     const emit = defineEmits(['close', 'closed'])
-
-    const closeOnKeydown = (e) => {
-        if (e.key === 'Escape') {
-            emit('close')
-        }
-    }
-
-    watchEffect(() => {
-        if (props.show) {
-            window.addEventListener('keydown', closeOnKeydown)
-        } else {
-            window.removeEventListener('keydown', closeOnKeydown)
-        }
-    })
+    const content = ref(null)
 </script>
 
 <style lang="scss">
