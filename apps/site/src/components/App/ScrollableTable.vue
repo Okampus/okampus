@@ -101,7 +101,7 @@
 
 <style lang="scss">
     .first-cell-sticky {
-        @apply first:z-10 first:left-0 first:sticky first:bg-3-light first:dark:bg-3-dark;
+        @apply first:z-20 first:left-0 first:sticky first:bg-3-light first:dark:bg-3-dark;
 
         &:first-child {
             box-shadow: 2px 0 5px -5px rgb(115 115 115 / 75%);
