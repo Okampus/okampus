@@ -92,6 +92,7 @@
                     {
                         id: 'description',
                         title: `Programme`,
+                        class: 'min-w-[15rem]',
                     },
                     {
                         id: 'eventValidationSubmission',
@@ -210,7 +211,7 @@
                 </template>
 
                 <template #description="{ data: { description } }">
-                    <div class="line-clamp-2">
+                    <div v-tooltip="description" class="line-clamp-2">
                         {{ description }}
                     </div>
                 </template>
@@ -235,7 +236,7 @@
                 </template>
 
                 <template #start="{ data: { start } }">
-                    <TipRelativeDate :date="start" />
+                    <TipRelativeDate :date="start" :limit="false" />
                 </template>
 
                 <template #price="{ data: { price } }">
