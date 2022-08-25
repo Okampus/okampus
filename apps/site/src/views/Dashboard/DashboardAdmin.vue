@@ -1,14 +1,15 @@
 <template>
-    <GraphQLQuery :query="getConfig" :variables="{ id: tenantId }" :update="(data) => data?.tenantById">
+    <GraphQLQuery
+        :query="getConfig"
+        :variables="{ id: getTenant() }"
+        :update="(data) => data?.tenantById"
+        :whole-page="true"
+    >
         <template #default="{ data: config }">
             <div class="centered-container flex h-full flex-col gap-0">
                 <HorizontalTabs
                     v-model="currentTab"
-                    :tabs="
-                        config.userValidation && config.userValidation.step > 0
-                            ? tabs
-                            : tabs.filter((t) => t.id !== EVENTS)
-                    "
+                    :tabs="config.userValidations.length ? tabs : tabs.filter((t) => t.id !== EVENTS)"
                     route-base="/admin"
                     route-name="admin"
                 />
@@ -28,10 +29,8 @@
     import DashboardOverview from '@/components/Dashboard/DashboardOverview.vue'
     import DashboardClubs from '@/components/Dashboard/DashboardClubs.vue'
     import DashboardReports from '@/components/Dashboard/DashboardReports.vue'
-    // import DashboardEvents from '@/components/Dashboard/DashboardEvents.vue'
+    import DashboardEvents from '@/components/Dashboard/DashboardEvents.vue'
     import DashboardConfig from '@/components/Dashboard/DashboardConfig.vue'
-
-    // import AppLoader from '@/components/App/AppLoader.vue'
 
     import { getConfig } from '@/graphql/queries/config/getConfig'
     import { getTenant } from '@/utils/getTenant'
@@ -43,8 +42,6 @@
     const REPORTS = 'reports'
     const EVENTS = 'events'
     const CONFIG = 'config'
-
-    const tenantId = getTenant()
 
     // TODO: router: redirect unknown tabs to 404
     // TODO: add tab for user (and tabs for other contents)
@@ -64,11 +61,11 @@
             name: 'Signalements',
             icon: 'flag',
         },
-        // {
-        //     id: EVENTS,
-        //     name: "Validation d'évènements",
-        //     icon: 'check',
-        // },
+        {
+            id: EVENTS,
+            name: 'Événements',
+            icon: 'calendar-check',
+        },
         {
             id: CONFIG,
             name: 'Configuration',
@@ -81,7 +78,7 @@
         [OVERVIEW]: DashboardOverview,
         [CLUBS]: DashboardClubs,
         [REPORTS]: DashboardReports,
-        // [EVENTS]: DashboardEvents,
+        [EVENTS]: DashboardEvents,
         [CONFIG]: DashboardConfig,
     }
 </script>
