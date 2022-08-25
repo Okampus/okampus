@@ -85,7 +85,7 @@ export class TeamEvent extends BaseEntity {
   state = TeamEventState.Submitted;
 
   @Field(() => ValidationStep, { nullable: true })
-  @OneToOne()
+  @ManyToOne()
   lastValidationStep: ValidationStep | null = null;
 
   @Field(() => TeamForm, { nullable: true })

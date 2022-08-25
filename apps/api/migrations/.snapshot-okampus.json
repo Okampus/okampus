@@ -6564,15 +6564,6 @@
         },
         {
           "columnNames": [
-            "last_validation_step_id"
-          ],
-          "composite": false,
-          "keyName": "team_event_last_validation_step_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "columnNames": [
             "registration_form_id"
           ],
           "composite": false,
