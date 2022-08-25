@@ -19,7 +19,11 @@
             <AppLoader :whole-page="true" :size="3.5" />
         </div>
         <div v-else class="mt-8 flex flex-col">
-            <FormSubmission :show="!!validationFormSubmission" :form-submission="validationFormSubmission" @update:show="validationFormSubmission = null" />
+            <FormSubmission
+                :show="!!validationFormSubmission"
+                :form-submission="validationFormSubmission"
+                @update:show="validationFormSubmission = null"
+            />
             <ModalPopup :show="!!validatingEvent" @close="validatingEvent = null">
                 <template #default>
                     <div class="card flex flex-col gap-2">
@@ -199,34 +203,40 @@
                         </div>
                     </div>
                 </template>
+
                 <template #description="{ data: { description } }">
                     <div class="line-clamp-2">
                         {{ description }}
                     </div>
                 </template>
+
                 <template #eventValidationSubmission="{ data: { eventValidationSubmission } }">
-                    <div class="flex justify-center"><button class="button-grey" @click="validationFormSubmission = eventValidationSubmission">Voir la fiche</button></div>
+                    <div class="flex justify-center">
+                        <button
+                            class="button-grey"
+                            @click="validationFormSubmission = eventValidationSubmission"
+                        >
+                            Voir la fiche
+                        </button>
+                    </div>
                 </template>
+
                 <template #validationStep="{ data }">
-                    {{ data?.lastValidationStep?.name ?? '<Aucune>' }} ({{
-                        data.state === PUBLISHED
-                            ? 'Validé ✅'
-                            : data.state === REFUSED
-                            ? 'Refusé ❌'
-                            : `${validationStepsCount - lastStep(data)} restante${
-                                  validationStepsCount - lastStep(data) > 1 ? 's' : ''
-                              }`
-                    }})
+                    {{ validationStepText(data) }}
                 </template>
+
                 <template #date="{ data: { createdAt } }">
                     <TipRelativeDate :date="createdAt" />
                 </template>
+
                 <template #start="{ data: { start } }">
                     <TipRelativeDate :date="start" />
                 </template>
+
                 <template #price="{ data: { price } }">
                     {{ price > 0 ? `${price} €` : 'Gratuit' }}
                 </template>
+
                 <template #supervisor="{ data: { supervisor } }">
                     <UserActivity :user="supervisor.user">
                         <template #subtitle>
@@ -234,6 +244,7 @@
                         </template>
                     </UserActivity>
                 </template>
+
                 <template #participants="{ data: { id, registrations }, row }">
                     <AvatarGroup
                         v-if="registrations.length"
@@ -353,6 +364,16 @@
     const validatingStep = ref(null)
 
     const validationFormSubmission = ref(null)
+    const validationStepText = (data) =>
+        `${data?.lastValidationStep?.name ?? '<Aucune>'} (${
+            data.state === PUBLISHED
+                ? 'Validé ✅'
+                : data.state === REJECTED
+                ? 'Refusé ❌'
+                : `${validationStepsCount - lastStep(data)} restante${
+                      validationStepsCount - lastStep(data) > 1 ? 's' : ''
+                  }`
+        })`
 
     const createValidationForm = ref(() => {})
 
