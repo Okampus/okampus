@@ -35,7 +35,7 @@ export class MeiliSearchIndexerService {
   }
 
   public static getEntityId(entity: IndexableEntities, type: string): string {
-    return [entity.tenant.id, type.toLowerCase(), entity.id].join(MEILISEARCH_ID_SEPARATOR);
+    return [entity.tenant.id, type.toLowerCase(), entity.id].join(MEILISEARCH_ID_SEPARATOR).replace(/[^\w-]/, '_');
   }
 
   public async init(): Promise<void> {
