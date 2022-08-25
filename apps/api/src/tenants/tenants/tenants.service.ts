@@ -55,6 +55,7 @@ export class TenantsService {
     );
     const logo = await this.profileImagesService.create(logoFile, isLogoDark ? 'logoDark' : 'logo');
     logo.tenant = tenant;
+    logo.active = true;
 
     if (isLogoDark)
       tenant.logoDark = logoFile.url;
