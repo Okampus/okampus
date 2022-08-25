@@ -1,7 +1,7 @@
 <template>
     <GraphQLQuery :query="getClubs" :update="(data) => data?.clubs">
         <template #default="{ data: clubs }">
-            <div class="bg-1 sticky top-0 z-50 px-4 md:hidden">
+            <div class="bg-1 sticky top-0 z-30 px-4 md:hidden">
                 <HorizontalTabs
                     v-model="currentTab"
                     :tabs="getTabsFromClubs(clubs).value"
@@ -18,7 +18,7 @@
                     class="sticky top-4 hidden md:block"
                 />
                 <div
-                    class="grid h-fit w-full grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 md-max:grid-cols-[repeat(auto-fit,minmax(14rem,1fr))]"
+                    class="grid h-fit w-full grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4 md-max:grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]"
                 >
                     <FormPopUp
                         v-model:show="showJoinForm"

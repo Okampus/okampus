@@ -7,7 +7,7 @@
     >
         <template #default="{ data: events }">
             <div class="centered-container text-0 mt-10 flex flex-col gap-6">
-                <div class="mx-5 flex items-center -space-x-4">
+                <div v-if="events.length > 3" class="mx-5 flex items-center -space-x-4">
                     <SwiperButton type="prev" :swiper="swiper" />
                     <Swiper
                         :space-between="sm ? 12 : 0"
@@ -25,7 +25,7 @@
                     Tous les événements ({{ events.length }})
                 </div>
                 <div
-                    class="mx-12 mt-8 grid h-fit w-full grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-4"
+                    class="mx-12 mt-8 grid h-fit w-full grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4"
                 >
                     <ClubEventCard v-for="event in events" :key="event" :event="event" />
                 </div>

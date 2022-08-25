@@ -138,7 +138,7 @@
                 </div>
             </div>
 
-            <div class="hidden flex-col gap-6 lg:flex">
+            <div class="text-0 mt-16 hidden flex-col gap-6 lg:flex">
                 <AppTitle title="Tags récents" icon="fas fa-tags" class="pl-4" />
                 <GraphQLQuery
                     :query="getTags"

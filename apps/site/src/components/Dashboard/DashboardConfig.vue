@@ -69,7 +69,7 @@
                     <VueDraggableNext
                         v-model="steps"
                         handle=".handle"
-                        class="grid grid-cols-[repeat(auto-fit,minmax(23rem,1fr))] gap-6"
+                        class="grid grid-cols-[repeat(auto-fill,minmax(23rem,1fr))] gap-6"
                         @change="
                             insertStep({ step: $event.moved.oldIndex + 1, atStep: $event.moved.newIndex + 1 })
                         "

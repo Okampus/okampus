@@ -1,5 +1,5 @@
 <template>
-    <div class="card-hover bg-2 relative flex w-full max-w-[30rem] flex-col rounded-lg pb-4 shadow-md">
+    <div class="card-hover bg-2 relative flex max-w-[30rem] flex-col rounded-lg pb-4 shadow-md">
         <ProfileBanner
             class="h-20 w-full rounded-t-lg"
             :banner="club.banner"
