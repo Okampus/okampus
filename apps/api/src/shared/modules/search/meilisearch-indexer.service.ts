@@ -58,7 +58,7 @@ export class MeiliSearchIndexerService {
         );
 
         for (const [name, count] of counts) {
-          if (count !== 0 && facetDistribution[name] !== count)
+          if (count !== 0 && facetDistribution[name.toLowerCase()] !== count)
             throw new Error(`Facet distribution for ${name} is ${facetDistribution[name]} but should be ${count}`);
         }
       } catch (error) {
@@ -95,6 +95,7 @@ export class MeiliSearchIndexerService {
 
       for (let offset = 0; offset < count; offset += MEILISEARCH_BATCH_SIZE) {
         const entities = await this.getEntities(name, tenant, { offset, limit: MEILISEARCH_BATCH_SIZE });
+        this.logger.log(`Reindexing ${offset} to ${Math.min(offset + MEILISEARCH_BATCH_SIZE, count)}, found ${entities.length} entities`);
         await index.addDocuments(MeiliSearchIndexerService.entitiesToIndexedEntities(entities, name));
       }
     }
