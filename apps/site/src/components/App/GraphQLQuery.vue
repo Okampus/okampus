@@ -6,7 +6,8 @@
         :update="update"
         :class="{ 'h-full': wholePage }"
     >
-        <template #default="{ result: { error, data }, isLoading }">
+        <template #default="{ result: { error, data }, isLoading, query: q }">
+            <slot name="include" :data="data" :query="q" />
             <AppLoader v-if="isLoading" :size="loaderSize" :whole-page="wholePage" />
 
             <slot v-else-if="error && $slots.error" :code="getGraphQLErrorCode(error)" />
@@ -15,6 +16,7 @@
             <slot
                 v-else-if="hideEmpty || (data && (!Array.isArray(data) || data?.length > 0))"
                 :data="data"
+                :query="q"
             />
 
             <slot v-else-if="$slots.empty" name="empty" />
@@ -107,11 +109,9 @@
         },
         wholePage: {
             type: Boolean,
-            default: true,
+            default: false,
         },
     })
-
-    console.log('SUBTITLE', props)
 
     if (import.meta.env.DEV) console.log('[GraphQL Query]', props.query, ' ~ variables', props.variables)
 
