@@ -13,6 +13,7 @@ import { Public } from '../../shared/lib/decorators/public.decorator';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { User } from '../../users/user.entity';
 import { ValidationStep } from '../validation-steps/validation-step.entity';
+import { UpdateTenantDto } from './dto/update-tenant.dto';
 import { TenantLogoUrls } from './tenant-logos.model';
 import { Tenant } from './tenant.entity';
 import { TenantsService } from './tenants.service';
@@ -30,6 +31,14 @@ export class TenantsResolver {
   @Query(() => Tenant)
   public async tenantById(@Args('id') id: string): Promise<Tenant> {
     return await this.tenantsService.findOne(id, true);
+  }
+
+  @Mutation(() => Tenant)
+  public async updateTenant(
+    @Args('id') id: string,
+    @Args('updateTenant') updateTenant: UpdateTenantDto,
+  ): Promise<Tenant> {
+    return await this.tenantsService.update(id, updateTenant);
   }
 
   @ResolveField(() => [ValidationStep])
