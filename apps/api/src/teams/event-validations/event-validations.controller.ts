@@ -15,7 +15,7 @@ import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
-import type { TeamEvent } from '../events/team-event.entity';
+// Import type { TeamEvent } from '../events/team-event.entity';
 import { CreateTeamEventValidationDto } from './dto/create-team-event-validation.dto';
 import { ListTeamEventValidationsDto } from './dto/list-team-event-validations.dto';
 import { TeamEventValidationsService } from './event-validations.service';
@@ -53,23 +53,5 @@ export class TeamEventValidationsController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<TeamEventValidation[]> {
     return await this.eventValidationsService.findOne(id);
-  }
-
-  @Get('/remaining/my-events')
-  @CheckPolicies(ability => ability.can(Action.Read, TeamEventValidation))
-  public async findMyEvents(
-    @CurrentUser() user: User,
-    @CurrentTenant() tenant: Tenant,
-  ): Promise<PaginatedResult<TeamEvent>> {
-    return await this.eventValidationsService.findMyEvents(tenant, user);
-  }
-
-  @Get('/remaining/for-event/:id')
-  @CheckPolicies(ability => ability.can(Action.Read, TeamEventValidation))
-  public async findValidationsLeftForEvent(
-    @Param('id', ParseIntPipe) id: number,
-    @CurrentTenant() tenant: Tenant,
-  ): ReturnType<TeamEventValidationsService['findValidationsLeftForEvent']> {
-    return await this.eventValidationsService.findValidationsLeftForEvent(tenant, id);
   }
 }

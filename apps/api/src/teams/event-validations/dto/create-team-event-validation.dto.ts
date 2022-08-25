@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 @InputType()
@@ -11,4 +11,8 @@ export class CreateTeamEventValidationDto {
   @IsOptional()
   @IsString()
   message?: string;
+
+  @Field(() => Int)
+  @IsOptional()
+  stepId?: number;
 }

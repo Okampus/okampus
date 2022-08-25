@@ -44,17 +44,13 @@ export class TeamEventValidationsService {
       throw new BadRequestException('Event not submitted');
 
     // 2. Fetch the next validation step required for the event
-    const step = await this.validationStepRepository.findOneOrFail({
-      type: ValidationStepType.TeamEvent,
-      tenant,
-      step: event.validationStep + 1,
-    }, { populate: ['users'] });
+    const step = await this.validationStepRepository.findOneOrFail({ id: createTeamEventValidationDto.stepId, type: ValidationStepType.TeamEvent }, { populate: ['users'] });
 
     // 3. Check that the person is allowed to submit a validation for this step
     if (!step.users.contains(user))
       throw new ForbiddenException('Not allowed for current step');
 
-    const validated = await this.teamEventValidationRepository.count({ event, step: event.validationStep, user });
+    const validated = await this.teamEventValidationRepository.count({ event, step });
     if (validated)
       throw new BadRequestException('Already validated');
 
@@ -67,11 +63,11 @@ export class TeamEventValidationsService {
     });
     await this.teamEventValidationRepository.persistAndFlush(validation);
 
+    event.lastValidationStep = step;
     // 5. If we are rejecting the event, we need to update the event state
     if (!createTeamEventValidationDto.approved) {
       // => Rejected !
       event.state = TeamEventState.Rejected;
-      event.validationStep = 0;
       await this.teamEventRepository.flush();
 
       void this.notificationsService.triggerFirst(
@@ -82,35 +78,29 @@ export class TeamEventValidationsService {
       return validation;
     }
 
-    // 6. If we are the last person of the current step, advance to the next step
-    const alreadyValidated = await this.teamEventValidationRepository.count({ event, step: event.validationStep + 1 });
-    if (alreadyValidated === step.users.length) {
-      // 7. If we are at the last step, publish the event
-      const nextStep = await this.validationStepRepository.findOne({
-        type: ValidationStepType.TeamEvent,
-        tenant,
-        step: event.validationStep + 2,
-      });
-      event.validationStep++;
+    const nextStep = await this.validationStepRepository.findOne({
+      type: ValidationStepType.TeamEvent,
+      tenant,
+      step: step.step + 1,
+    });
 
-      if (!nextStep) {
-        // => Approved !
-        event.state = TeamEventState.Published;
-        await this.teamEventRepository.flush();
-
-        void this.notificationsService.triggerFirst(
-          new TeamEventManagedApprovedNotification(event),
-          new AdminTeamEventValidationApprovedNotification(event),
-        );
-
-        return validation;
-      }
-
-      // 6.b. Advance to the next step
+    if (!nextStep) {
+      // => Approved !
+      event.state = TeamEventState.Published;
       await this.teamEventRepository.flush();
 
-      void this.notificationsService.trigger(new AdminTeamEventValidationStepNotification(event, nextStep));
+      void this.notificationsService.triggerFirst(
+        new TeamEventManagedApprovedNotification(event),
+        new AdminTeamEventValidationApprovedNotification(event),
+      );
+
+      return validation;
     }
+
+    // 6.b. Advance to the next step
+    await this.teamEventRepository.flush();
+
+    void this.notificationsService.trigger(new AdminTeamEventValidationStepNotification(event, nextStep));
 
     return validation;
   }
@@ -137,43 +127,5 @@ export class TeamEventValidationsService {
 
   public async findOne(id: number): Promise<TeamEventValidation[]> {
     return await this.teamEventValidationRepository.find({ event: { id } });
-  }
-
-  public async findMyEvents(
-    tenant: Tenant,
-    user: User,
-    options?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<TeamEvent>> {
-    const steps = await this.validationStepRepository.find({
-      tenant,
-      type: ValidationStepType.TeamEvent,
-    }, { populate: ['users'] });
-
-    const mySteps = steps.filter(step => step.users.contains(user)).map(step => step.step);
-
-    return await this.teamEventRepository.findWithPagination(
-      options,
-      { validationStep: { $in: mySteps } },
-      { populate: ['team', 'validationStep'], orderBy: { validationStep: 'desc' } },
-    );
-  }
-
-  public async findValidationsLeftForEvent(tenant: Tenant, id: number): Promise<Array<Omit<ValidationStep, 'users'> & { users: User[] }>> {
-    const event = await this.teamEventRepository.findOneOrFail({ id, state: TeamEventState.Submitted });
-
-    const steps = await this.validationStepRepository.find({
-      tenant,
-      type: ValidationStepType.TeamEvent,
-      step: { $gte: event.validationStep },
-    }, { populate: ['users'] });
-
-    const doneValidations = await this.teamEventValidationRepository.find({ event, step: event.validationStep });
-    const doneUsers = new Set(doneValidations.map(v => v.user));
-
-    const clonedSteps = steps.map(step => ({ ...step, users: step.users.getItems() }));
-    // Remove users that have already validated the current step
-    clonedSteps[0].users = clonedSteps[0].users.filter(user => !doneUsers.has(user));
-
-    return clonedSteps;
   }
 }
