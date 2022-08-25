@@ -46,7 +46,7 @@
             >
                 <template v-if="modelValue !== null">
                     <img
-                        v-if="modelValue.fileType === IMAGE"
+                        v-if="type.type === IMAGE || type.parentType === IMAGE"
                         class="m-4 rounded-md"
                         :src="modelValue.url ? modelValue.url : getObjectUrl(modelValue)"
                         :style="imageParams?.ratio ? { 'aspect-ratio': `1 / ${imageParams.ratio}` } : {}"
