@@ -50,6 +50,8 @@ jobs:
       - name: Build project
         run: npm run build
         working-directory: apps/site
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
 
   lint:
     name: Lint
