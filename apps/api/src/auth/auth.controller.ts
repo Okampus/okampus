@@ -93,8 +93,8 @@ export class AuthController {
   public logout(@Res({ passthrough: true }) res: Response): void {
     res.cookie('accessToken', '', { ...cookiePublicOptions, maxAge: 0 })
       .cookie('refreshToken', '', { ...cookiePublicOptions, maxAge: 0 })
-      .cookie('accessTokenExpiresAt', '', { ...cookiePublicOptions, maxAge: 0 })
-      .cookie('refreshTokenExpiresAt', '', { ...cookiePublicOptions, maxAge: 0 })
+      .cookie('accessTokenExpiresIn', '', { ...cookiePublicOptions, maxAge: 0 })
+      .cookie('refreshTokenExpiresIn', '', { ...cookiePublicOptions, maxAge: 0 })
       .cookie('meiliSearchKey', '', { ...cookiePublicOptions, maxAge: 0 });
   }
 
@@ -154,8 +154,8 @@ export class AuthController {
 
     return res.cookie('accessToken', tokens.accessToken, { ...cookieOptions, maxAge: maxAgeAccess })
       .cookie('refreshToken', tokens.refreshToken, { ...cookieOptions, maxAge: maxAgeRefresh })
-      .cookie('accessTokenExpiresAt', tokens.accessTokenExpiresAt, { ...cookiePublicOptions, maxAge: maxAgeAccess })
-      .cookie('refreshTokenExpiresAt', tokens.refreshTokenExpiresAt, { ...cookiePublicOptions, maxAge: maxAgeRefresh });
+      .cookie('accessTokenExpiresIn', tokens.accessTokenExpiresIn, { ...cookiePublicOptions, maxAge: maxAgeAccess })
+      .cookie('refreshTokenExpiresIn', tokens.refreshTokenExpiresIn, { ...cookiePublicOptions, maxAge: maxAgeRefresh });
   }
 
   @Public()

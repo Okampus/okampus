@@ -89,7 +89,7 @@
 
     import { emitter } from '@/shared/modules/emitter'
     import { highlightElement } from '@/utils/domUtils'
-    import logOutOnExpire from '@/utils/logOutOnExpire'
+    import { logOutOnExpire } from '@/utils/logOutOnExpire'
 
     import { inject, nextTick, reactive, ref, watch, watchEffect } from 'vue'
 
@@ -102,6 +102,7 @@
     import 'swiper/css'
     import 'swiper/css/effect-coverflow'
     import AppBottomSheet from './components/App/AppBottomSheet.vue'
+    import { isEmpty } from 'lodash'
 
     SwiperCore.use([EffectCoverflow, Navigation])
 
@@ -273,7 +274,11 @@
         }
     })
 
-    nextTick(() => logOutOnExpire(auth.user))
+    nextTick(() => {
+        console.log('USER', auth.user)
+        console.log('EXPIRES AT', auth.expiresAt)
+        !isEmpty(auth.user) && logOutOnExpire(auth.expiresAt)
+    })
 </script>
 
 <style lang="scss">
