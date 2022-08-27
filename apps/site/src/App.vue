@@ -65,7 +65,7 @@
 
             <LayoutTopbar
                 ref="topbar"
-                :class="{ 'brightness-50': hiding && collapsing != collapsed }"
+                :class="{ 'brightness-50 child:pointer-events-none': hiding && collapsing != collapsed }"
                 @mousedown="hiding && collapsed !== collapsing && toggleSidebar()"
                 @toggle-side-bar="!collapsing && toggleSidebar()"
             />
