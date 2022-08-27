@@ -14,6 +14,7 @@ export abstract class Notification {
   public readonly settingName: keyof Settings;
   public readonly excludedEmails: string[] = [];
   public readonly batchable: boolean = false;
+  public payloadEnsured = false;
 
   // FIXME: The poor man's DI
   protected entityManager: EntityManager;
