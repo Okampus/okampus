@@ -74,7 +74,7 @@ export const DEFAULT_TENANT_EVENT_VALIDATION_FORM_SCHEMA = [
     {
         $el: 'h4',
         children: [
-            "Tout événement doit être validé par l'administration scolaire avant d'être publié sur Okampus.\nRemplissez ce formulaire pour que votre événement soit validé ✅",
+            "Tout événement doit être validé par l'administration scolaire avant d'être publié sur Okampus. Remplissez ce formulaire pour que votre événement soit validé ✅",
         ],
     },
     // {

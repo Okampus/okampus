@@ -7,8 +7,9 @@
                 :columns="[
                     {
                         id: 'name',
-                        title: 'Nom',
+                        title: 'Association',
                         sortable: true,
+                        class: 'min-w-[15rem]',
                     },
                     {
                         id: 'members',
