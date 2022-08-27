@@ -1,48 +1,14 @@
 <template>
     <div class="flex flex-col gap-4">
-        <ModalPopup :show="editingPage" @close="editingPage = false">
-            <template #default="{ close }">
-                <div class="card flex flex-col items-center justify-center py-8 px-10">
-                    <div class="text-2xl">Modification des informations de l'association</div>
-                    <FormKit
-                        id="update-club-data"
-                        ref="updateClubForm"
-                        :actions="false"
-                        form-class="flex flex-col mt-6 w-full max-w-xl"
-                        type="form"
-                        @submit="updateClub({ id: club.id, team: $event })"
-                    >
-                        <FormKit
-                            type="text"
-                            name="shortDescription"
-                            label="Description courte"
-                            help="Description accompagnant le nom de l'association"
-                        />
-                        <FormKit
-                            type="textarea"
-                            name="longDescription"
-                            label="Description longue"
-                            rows="6"
-                            help="Description présente sur la page d'accueil de l'association"
-                        />
-                    </FormKit>
-                    <div class="mt-6 flex gap-4 self-end">
-                        <button class="button-grey" @click="close">Annuler</button>
-                        <button
-                            class="button-blue"
-                            @click="
-                                () => {
-                                    updateClubForm.node.submit()
-                                    close()
-                                }
-                            "
-                        >
-                            Valider
-                        </button>
-                    </div>
-                </div>
-            </template>
-        </ModalPopup>
+        <FormPopUp
+            v-model:show="showUpdateClubForm"
+            :form-schema="updateClubFormSchema"
+            :submit="
+                (team) => {
+                    updateClub({ id: club.id, team })
+                }
+            "
+        />
 
         <div class="card-2 px-0 pt-0">
             <div class="relative">
@@ -101,7 +67,7 @@
                 </div>
                 <button
                     class="button-blue mt-4 mr-4 flex items-center gap-3 text-base"
-                    @click="editingPage = true"
+                    @click="showUpdateClubForm = true"
                 >
                     <i class="fa fa-pencil" /> Modifier la page
                 </button>
@@ -157,7 +123,6 @@
     import AvatarCropper from 'vue-avatar-cropper'
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
     import FormList from '@/components/FormKit/FormList.vue'
 
@@ -176,6 +141,7 @@
     import { showSuccessToast, showToastGraphQLError } from '@/utils/toast'
 
     import { twBreakpoints } from '@/tailwind'
+    import FormPopUp from '@/components/Form/FormPopUp.vue'
 
     const breakpoints = useBreakpoints(twBreakpoints)
     const md = breakpoints.greater('md')
@@ -191,13 +157,36 @@
 
     const { mutate: updateClub, onError, onDone } = useMutation(updateTeam)
     onError(showToastGraphQLError)
-    onDone(() => showSuccessToast("Formulaire d'adhésion mis à jour 📋"))
+    onDone(() => {
+        showSuccessToast("Formulaire d'adhésion mis à jour 📋")
+        showUpdateClubForm.value = false
+    })
 
-    const updateClubForm = ref(null)
+    const showUpdateClubForm = ref(false)
+    const updateClubFormSchema = [
+        {
+            $el: 'h1',
+            children: ["Modification des informations de l'association 📝"],
+        },
+        {
+            $formkit: 'text',
+            name: 'shortDescription',
+            label: 'Description courte',
+            help: "Description accompagnant le nom de l'association",
+            value: props.club.shortDescription,
+        },
+        {
+            $formkit: 'textarea',
+            name: 'longDescription',
+            label: 'Description longue',
+            rows: '6',
+            help: "Description présente sur la page d'accueil de l'association",
+            value: props.club.longDescription,
+        },
+    ]
 
     const uploadTypeUrl = (type) => `${import.meta.env.VITE_API_URL}/teams/teams/${props.club.id}/${type}`
 
-    const editingPage = ref(false)
     const editingAvatar = ref(false)
     const editingBanner = ref(false)
 
