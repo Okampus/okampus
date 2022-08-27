@@ -1,5 +1,5 @@
 <template>
-    <nav class="topbar h-topbar text-1 fixed top-0 left-0 z-20 flex w-full items-center justify-between">
+    <nav class="topbar h-topbar text-1 fixed top-0 left-0 z-30 flex w-full items-center justify-between">
         <div class="w-sidebar-lg flex items-center">
             <div class="w-sidebar-sm flex shrink-0 justify-center">
                 <button aria-label="Open Menu" @click="$emit('toggle-side-bar')">
@@ -8,6 +8,7 @@
             </div>
             <AppLogo only="dark" />
         </div>
+        <LabelSimple class="mt-2 mr-4 !px-1.5">Beta</LabelSimple>
 
         <div class="relative mr-6 grow bg-transparent">
             <LayoutSearch />
@@ -81,6 +82,7 @@
     import { fullname } from '@/utils/users'
     import { getCurrentPath } from '@/utils/routeUtils'
     import { computed } from 'vue'
+    import LabelSimple from '../UI/Label/LabelSimple.vue'
 
     const auth = useAuthStore()
     const route = useRoute()

@@ -16,7 +16,7 @@
             <button aria-label="Close Menu" class="w-sidebar-sm" @click="emit('toggle-side-bar')">
                 <i class="fas fa-times text-2xl" />
             </button>
-            <AppLogo only="dark" />
+            <AppLogo only="dark" class="-ml-2" />
         </div>
 
         <div
