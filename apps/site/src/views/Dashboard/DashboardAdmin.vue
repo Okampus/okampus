@@ -27,7 +27,7 @@
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
 
-    import DashboardOverview from '@/components/Dashboard/DashboardOverview.vue'
+    import DashboardMetrics from '@/components/Dashboard/DashboardMetrics.vue'
     import DashboardClubs from '@/components/Dashboard/DashboardClubs.vue'
     import DashboardReports from '@/components/Dashboard/DashboardReports.vue'
     import DashboardEvents from '@/components/Dashboard/DashboardEvents.vue'
@@ -38,7 +38,7 @@
 
     import { ref } from 'vue'
 
-    const OVERVIEW = 'overview'
+    const METRICS = 'metrics'
     const CLUBS = 'clubs'
     const REPORTS = 'reports'
     const EVENTS = 'events'
@@ -48,8 +48,8 @@
     // TODO: add tab for user (and tabs for other contents)
     const tabs = [
         {
-            id: OVERVIEW,
-            name: "Vue d'ensemble",
+            id: METRICS,
+            name: 'Métriques',
             icon: 'chart-bar',
         },
         {
@@ -76,7 +76,7 @@
 
     const currentTab = ref(null)
     const components = {
-        [OVERVIEW]: DashboardOverview,
+        [METRICS]: DashboardMetrics,
         [CLUBS]: DashboardClubs,
         [REPORTS]: DashboardReports,
         [EVENTS]: DashboardEvents,
