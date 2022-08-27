@@ -44,9 +44,6 @@ export const createEvent = gql`
                 id
                 name
                 step
-                users {
-                    ...PartialUserInfo
-                }
             }
             eventValidationSubmission
         }

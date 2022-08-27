@@ -9,9 +9,6 @@ export const validateEvent = gql`
                 id
                 name
                 step
-                users {
-                    ...PartialUserInfo
-                }
             }
             state
         }
