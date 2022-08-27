@@ -188,6 +188,10 @@ export class TeamEventsService {
     const memberships = await this.teamMemberRepository.find({ user });
     const ids = memberships.map(m => m.team.id);
 
+    if (user.roles.includes(Role.Admin) || user.schoolRole === SchoolRole.Admin)
+      return await this.teamEventRepository.findOneOrFail({ id }, { populate: ['supervisor', 'registrations', 'registrations.user', 'createdBy', 'team', 'lastValidationStep'] });
+
+
     const event = await this.teamEventRepository.findOneOrFail(
       {
         id,
