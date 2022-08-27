@@ -86,7 +86,7 @@ export class TeamsService {
   public async update(user: User, id: number, updateTeamDto: UpdateTeamDto): Promise<Team> {
     const team = await this.teamRepository.findOneOrFail(
       { id },
-      { populate: ['members'] },
+      { populate: ['members', 'membershipRequestForm'] },
     );
 
     // TODO: Move this to CASL
