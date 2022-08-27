@@ -4,7 +4,7 @@
             <slot />
 
             <a v-if="show === 'sso'" :href="myEfreiAuthUrl">
-                <button role="button" class="button-blue my-8 text-2xl">
+                <button role="button" class="button-blue my-8 flex items-center text-2xl">
                     Connexion myEfrei <i class="fa fa-sign-in ml-2" />
                 </button>
             </a>
