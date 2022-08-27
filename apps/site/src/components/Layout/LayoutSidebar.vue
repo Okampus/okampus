@@ -72,7 +72,9 @@
                                         </router-link>
                                     </div>
                                 </template>
-                                <span v-else class="text-xs tracking-tight">{{ link.textSmall }}</span>
+                                <span v-else class="text-[0.7rem] tracking-tighter">{{
+                                    link.textSmall
+                                }}</span>
                             </div>
                         </router-link>
                     </li>

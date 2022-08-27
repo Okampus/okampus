@@ -159,7 +159,7 @@ export const sections = computed(() => {
                           {
                               to: '/clubs/',
                               regActive: /^\/clubs?/,
-                              textSmall: 'Assos',
+                              textSmall: 'Associations',
                               textLarge: 'Associations',
                               icon: 'people-group',
                           },
