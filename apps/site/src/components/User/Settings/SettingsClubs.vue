@@ -6,14 +6,14 @@
         :update="(data) => data?.userById"
     >
         <template #default="{ data: user }">
-            <div class="text-2 card-2">
+            <div>
                 <HorizontalTabs
                     v-model="currentTab"
                     route-base="/me/clubs"
                     route-name="me"
                     :background-variant="2"
                     :tabs="tabs"
-                    class="ml-4 mb-4"
+                    class="m-4"
                 />
                 <div class="text-0 divide-y divide-gray-500/40">
                     <template v-if="currentTab === MEMBER">

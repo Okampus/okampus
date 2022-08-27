@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-2">
-        <div v-if="show" class="mt-4 flex flex-wrap gap-2">
+        <div v-if="show" class="mt-2.5 flex flex-wrap gap-2">
             <div class="input-background relative min-w-[10rem] grow" :="focused ? { focused: '' } : {}">
                 <component
                     :is="singleLine ? 'input' : 'textarea'"
@@ -127,6 +127,7 @@
 
     const show = computed(() => {
         if (props.showInput || !props.modelValue) {
+            input.value?.focus?.()
             resize()
             return true
         }

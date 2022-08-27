@@ -402,7 +402,7 @@
             id: OVERVIEW,
             name: "Vue d'ensemble",
             route: '/admin/events',
-            icon: 'list',
+            icon: 'book-bookmark',
         },
         {
             id: VALIDATION,

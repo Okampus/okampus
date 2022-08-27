@@ -1,7 +1,9 @@
 <template>
     <Transition mode="out-in" name="switch-fade">
         <div class="centered-container padded relative flex flex-col gap-10 md:flex-row">
-            <div class="bg-1 sticky top-0 z-20 flex h-fit w-full flex-col gap-4 md:w-auto md-max:py-8">
+            <div
+                class="bg-1 sticky top-0 z-20 flex h-fit w-full flex-col gap-4 md:top-8 md:w-auto md-max:pb-8"
+            >
                 <div class="flex gap-5 md:flex-col">
                     <ProfileAvatar :avatar="me.avatar" :name="fullname(me)" :size="md ? (lg ? 14 : 12) : 6">
                         <template #icon>
@@ -22,6 +24,7 @@
                         <div class="text-3">{{ me.id }}</div>
                     </div>
                 </div>
+
                 <div class="flex flex-col md:w-48 lg:w-56 md-max:w-full">
                     <EditableTextInput
                         v-if="me.shortDescription || editingStatus"
@@ -34,7 +37,7 @@
                     />
                     <button
                         v-else
-                        class="button-grey flex cursor-pointer items-center justify-center gap-4 py-1"
+                        class="button-grey pill-button flex cursor-pointer items-center justify-center"
                         @click="editingStatus = true"
                     >
                         <i class="fa fa-icons text-base md:text-lg" />Définir un statut
@@ -42,13 +45,13 @@
                 </div>
             </div>
 
-            <div class="flex w-full flex-col">
+            <div class="relative flex w-full flex-col">
                 <HorizontalTabs
                     v-model="currentTab"
                     :tabs="tabs"
                     route-base="/me"
                     route-name="me"
-                    class="mb-4"
+                    class="sticky top-0"
                 />
                 <div class="flex w-full flex-col">
                     <component :is="currentComponent" />
@@ -75,7 +78,6 @@
     import AvatarCropper from 'vue-avatar-cropper'
 
     import HorizontalTabs from '@/components/UI/Tabs/HorizontalTabs.vue'
-    import AppSuspense from '@/views/App/AppSuspense.vue'
 
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import EditableTextInput from '@/components/Input/EditableTextInput.vue'
@@ -86,7 +88,7 @@
     // import SettingsSocials from '@/components/User/Settings/SettingsSocials.vue'
     import WIP from '@/views/App/WIP.vue'
 
-    import { computed, ref, h } from 'vue'
+    import { computed, ref } from 'vue'
 
     import { getTenant } from '@/utils/getTenant'
 
@@ -118,7 +120,7 @@
             id: OVERVIEW,
             name: 'Général',
             route: '/me',
-            icon: 'user',
+            icon: 'book-bookmark',
         },
         {
             id: CLUBS,
@@ -144,10 +146,10 @@
     const DEFAULT_TAB = tabs[0]
 
     const components = {
-        [OVERVIEW]: h(AppSuspense, { key: OVERVIEW }, { default: () => h(SettingsOverview) }),
-        [CLUBS]: h(AppSuspense, { key: CLUBS }, { default: () => h(SettingsClubs) }),
-        [SOCIALS]: h(AppSuspense, { key: SOCIALS }, { default: () => h(WIP) }),
-        [FAVORITES]: h(AppSuspense, { key: SOCIALS }, { default: () => h(WIP) }),
+        [OVERVIEW]: SettingsOverview,
+        [CLUBS]: SettingsClubs,
+        [SOCIALS]: WIP,
+        [FAVORITES]: WIP,
     }
 
     const currentTab = ref(null)
