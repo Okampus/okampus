@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: useLocalStorage('user', {}),
         agreedToTerms: useLocalStorage('agreedToTerms', false),
-        expiresAt: useLocalStorage('expiresAt', null),
+        expiresAt: useLocalStorage('expiresAt', 0),
     }),
 
     actions: {
