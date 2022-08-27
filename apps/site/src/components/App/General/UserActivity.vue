@@ -1,6 +1,6 @@
 <template>
     <div class="flex gap-4">
-        <ProfileAvatar :id="user.id" :size="2.5" :avatar="user.avatar" :name="fullname(user)" />
+        <ProfileAvatar :id="user.id" :size="avatarSize" :avatar="user.avatar" :name="fullname(user)" />
         <div class="flex flex-col">
             <slot v-if="$slots.title" name="title" />
             <div v-else class="-mt-0.5 inline">
@@ -36,6 +36,10 @@
         subtitle: {
             type: String,
             default: null,
+        },
+        avatarSize: {
+            type: Number,
+            default: 2.5,
         },
     })
 </script>

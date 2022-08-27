@@ -61,8 +61,9 @@
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
     import { isNil, isEmpty } from 'lodash'
-    import { ref } from 'vue'
+
     import { onClickOutside } from '@vueuse/core'
+    import { ref } from 'vue'
 
     const props = defineProps({
         placeholder: {

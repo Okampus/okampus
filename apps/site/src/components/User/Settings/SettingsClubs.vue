@@ -6,14 +6,14 @@
         :update="(data) => data?.userById"
     >
         <template #default="{ data: user }">
-            <div class="text-2 card-2">
+            <div>
                 <HorizontalTabs
                     v-model="currentTab"
                     route-base="/me/clubs"
                     route-name="me"
                     :background-variant="2"
                     :tabs="tabs"
-                    class="ml-4 mb-4"
+                    class="m-4"
                 />
                 <div class="text-0 divide-y divide-gray-500/40">
                     <template v-if="currentTab === MEMBER">
@@ -51,7 +51,7 @@
                             </div>
                         </template>
                         <div v-else class="my-6 flex flex-col items-center gap-4">
-                            <img class="h-48 w-48" :src="Puzzle" />
+                            <img class="h-48 w-48" :src="BookmarkFav" />
                             <div class="text-2 text-lg">
                                 Vous n'êtes actuellement membre d'aucune association.
                             </div>
@@ -124,7 +124,7 @@
                         </template>
 
                         <div v-else class="my-6 flex flex-col items-center gap-4">
-                            <img class="h-48 w-48" :src="Puzzle" />
+                            <img class="h-48 w-48" :src="BookmarkFav" />
                             <div class="text-2 text-lg">Vous n'avez pas de demandes d'adhésion en cours.</div>
 
                             <router-link to="/clubs">
@@ -193,7 +193,7 @@
     import ClubFilledRequestForm from '@/components/Club/ClubFilledRequestForm.vue'
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
 
-    import Puzzle from '@/assets/img/3dicons/puzzle.png'
+    import BookmarkFav from '@/assets/img/3dicons/bookmark-fav.png'
 
     import { fullname } from '@/utils/users'
 

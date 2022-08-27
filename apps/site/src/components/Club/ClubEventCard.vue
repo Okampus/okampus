@@ -1,5 +1,5 @@
 <template>
-    <div class="card-hover bg-2 text-0 relative flex max-w-[25rem] flex-col rounded-xl pb-4">
+    <div class="card-hover bg-2 text-0 relative flex max-w-[35rem] flex-col rounded-xl pb-4">
         <div class="relative">
             <ProfileBanner class="h-32" :name="event.shortDescription" :data="event.team.category" />
             <router-link :to="`/club/${event.team.id}`" class="absolute bottom-4 right-4">
@@ -50,7 +50,7 @@
                 <div class="flex flex-wrap items-center gap-1">
                     <router-link
                         :to="`/event/${event.id}`"
-                        class="text-2xl font-medium"
+                        class="always-break-words text-2xl font-medium"
                         :class="{ 'card-link': showLink }"
                         >{{ event.name }}</router-link
                     >

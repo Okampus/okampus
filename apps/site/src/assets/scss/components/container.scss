@@ -1,5 +1,5 @@
 .whole-page {
-    @apply md:my-12 h-full;
+    @apply md:my-12 min-h-full;
 }
 
 .centered-container.padded {
@@ -7,7 +7,7 @@
 }
 
 .centered-container {
-    @apply flex w-full max-w-[90rem] md:gap-6 md:mx-auto md:p-4 gap-4;
+    @apply flex w-full max-w-[85rem] md:gap-6 md:mx-auto md:p-4 gap-4;
 }
 
 .box-container {

@@ -1,16 +1,12 @@
 <template>
     <ais-instant-search
         v-if="searchClient"
+        ref="searchbar"
         :index-name="tenant"
         :search-client="searchClient"
         class="mx-auto grow items-center justify-center gap-2 md:flex"
     >
         <div class="flex w-full justify-center">
-            <div
-                v-if="showSearchbar"
-                class="fixed top-0 left-0 z-[10] h-screen w-screen"
-                @click="showSearchbar = false"
-            />
             <div
                 class="relative flex w-full cursor-pointer flex-col items-center md:max-w-4xl md:cursor-text md:bg-[#374058] md:shadow-xl"
                 :class="showSearchbar ? 'bg-[#374058]' : 'md:bg-[#374058]'"
@@ -23,7 +19,7 @@
                     class="absolute inset-x-0 -top-5 flex flex-col bg-inherit md:rounded-[1.2rem]"
                     :class="
                         showSearchbar
-                            ? 'md-max:top-0 md-max:left-0 md-max:fixed md-max:w-screen md-max:h-screen md:max-h-[51.5vh] z-[20] md-max:text-xl'
+                            ? 'md-max:top-0 md-max:left-0 md-max:fixed md-max:w-screen md-max:h-screen md:max-h-[51.5vh] md-max:text-xl'
                             : 'md-max:hidden h-10'
                     "
                 >
@@ -151,6 +147,8 @@
 
     import { ref } from 'vue'
 
+    import { onClickOutside } from '@vueuse/core'
+
     import { useRouter } from 'vue-router'
     import { useLocalStorage } from '@vueuse/core'
     import { useCookies } from 'vue3-cookies'
@@ -192,8 +190,11 @@
     emitter.on('logout', () => setSearchClient(null))
     emitter.on('login', () => setSearchClient(cookies.get('meiliSearchKey')))
 
-    const router = useRouter()
     const showSearchbar = ref(false)
+    const searchbar = ref(null)
+    onClickOutside(searchbar, () => (showSearchbar.value = false))
+
+    const router = useRouter()
 
     const closeOnKeydown = (e) => {
         if (e.key === 'Escape') {

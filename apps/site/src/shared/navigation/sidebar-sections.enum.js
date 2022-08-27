@@ -23,7 +23,7 @@ export const sections = computed(() => {
               ]
             : []),
 
-        ...((auth.loggedIn && auth.user.roles.includes(ADMIN)) || auth.user.schoolRole === ADMIN
+        ...((auth.loggedIn && auth.user?.roles?.includes?.(ADMIN)) || auth.user.schoolRole === ADMIN
             ? [
                   {
                       name: 'Admin',
@@ -159,7 +159,7 @@ export const sections = computed(() => {
                           {
                               to: '/clubs/',
                               regActive: /^\/clubs?/,
-                              textSmall: 'Assos',
+                              textSmall: 'Associations',
                               textLarge: 'Associations',
                               icon: 'people-group',
                           },

@@ -5,7 +5,7 @@
     >
         <template v-for="(tabParent, i) in tabs" :key="i">
             <div v-if="isMultiTab" class="flex grow-0 flex-col">
-                <div class="text-5 title-font mb-2 ml-3 text-xs font-bold uppercase">
+                <div class="text-5 mb-2 ml-3 text-[0.78rem] font-bold uppercase">
                     {{ tabParent.title }}
                 </div>
                 <div
@@ -15,7 +15,7 @@
                     :class="tab.id === modelValue ? 'active' : 'text-1'"
                     @click="setTab(tab, true)"
                 >
-                    <div class="title-font whitespace-nowrap">{{ tab.name }}</div>
+                    <div class="text-1 whitespace-nowrap text-[0.9rem]">{{ tab.name }}</div>
                     <LabelSimple
                         v-if="tab.amount || tab.amount === 0"
                         class="ml-6"

@@ -25,6 +25,11 @@ export class NotificationsService {
     for (let i = 0; i < notifications.length; i++) {
       notifications[i].attachEntityManager(this.em);
 
+      if (!notifications[i].payloadEnsured) {
+        await notifications[i].ensurePayload();
+        notifications[i].payloadEnsured = true;
+      }
+
       const notifiees = await notifications[i].getNotifiees();
 
       if (notifiees.size > 0) {
@@ -40,6 +45,11 @@ export class NotificationsService {
     for (const notification of notifications) {
       notification.attachEntityManager(this.em);
 
+      if (!notification.payloadEnsured) {
+        await notification.ensurePayload();
+        notification.payloadEnsured = true;
+      }
+
       const notifiees = await notification.getNotifiees();
       const notifieesWithSettings = await this.addSettings(notifiees);
       const usersByChannels = this.groupBy(notifieesWithSettings, notification.settingName);
@@ -47,7 +57,6 @@ export class NotificationsService {
       if (usersByChannels.length === 0)
         continue;
 
-      await notification.ensurePayload();
 
       if (notification.batchable) {
         for (const [channel, users] of usersByChannels) {

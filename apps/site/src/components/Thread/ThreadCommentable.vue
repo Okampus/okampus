@@ -54,9 +54,9 @@
                         <LabelTag v-if="adminValidated" tag-name="Officiel" tag-color="orange" />
 
                         <i
-                            v-else-if="auth.user.roles.includes('admin') || userIsOp"
+                            v-else-if="auth.user?.roles?.includes(ADMIN) || userIsOp"
                             class="fa text-5 cursor-pointer text-sm"
-                            :class="auth.user.roles.includes('admin') ? 'fa-check-double' : 'fa-check'"
+                            :class="auth.user?.roles?.includes?.(ADMIN) ? 'fa-check-double' : 'fa-check'"
                             @click="
                                 validateContent({
                                     id: thread.id,
@@ -136,6 +136,7 @@
     import { useAuthStore } from '@/store/auth.store'
     import { useRoute } from 'vue-router'
 
+    import { ADMIN } from '@/shared/types/school-roles.enum'
     import { COMMENT, POST } from '@/shared/types/content-kinds.enum'
 
     import { useMutation } from '@vue/apollo-composable'

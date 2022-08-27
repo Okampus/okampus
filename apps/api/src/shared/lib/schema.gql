@@ -909,7 +909,15 @@ input UpdateSettingsDto {
 }
 
 input UpdateTeamDto {
+  avatar: String
+  banner: String
+  category: String
+  kind: TeamKind
+  longDescription: String
   membershipRequestFormId: Int
+  name: String
+  shortDescription: String
+  tags: [String!]
 }
 
 input UpdateTeamEventDto {

@@ -47,11 +47,11 @@
                 <template v-if="modelValue !== null">
                     <img
                         v-if="type.type === IMAGE || type.parentType === IMAGE"
-                        class="m-4 rounded-md"
+                        class="rounded-md p-4"
                         :src="modelValue.url ? modelValue.url : getObjectUrl(modelValue)"
                         :style="imageParams?.ratio ? { 'aspect-ratio': `1 / ${imageParams.ratio}` } : {}"
                     />
-                    <DocumentIcon v-else class="m-4 h-[calc(100%-4rem)]" :file="{ fileType: type }" />
+                    <DocumentIcon v-else class="h-[calc(100%-4.5rem)] p-4" :file="{ fileType: type }" />
                     <div class="bg-3 flex h-[3rem] w-full items-center gap-2 rounded-b-md p-2">
                         <!-- TODO: add meta information regarding who uploaded, at what time, etc. -->
                         <div class="text-xs">

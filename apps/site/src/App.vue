@@ -65,7 +65,7 @@
 
             <LayoutTopbar
                 ref="topbar"
-                :class="{ 'brightness-50': hiding && collapsing != collapsed }"
+                :class="{ 'brightness-50 child:pointer-events-none': hiding && collapsing != collapsed }"
                 @mousedown="hiding && collapsed !== collapsing && toggleSidebar()"
                 @toggle-side-bar="!collapsing && toggleSidebar()"
             />
@@ -83,13 +83,13 @@
 
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
 
-    import SwiperCore, { EffectCoverflow, Navigation } from 'swiper'
+    import SwiperCore, { EffectCoverflow, Navigation, Mousewheel } from 'swiper'
 
     import { useBreakpoints } from '@vueuse/core'
 
     import { emitter } from '@/shared/modules/emitter'
     import { highlightElement } from '@/utils/domUtils'
-    import logOutOnExpire from '@/utils/logOutOnExpire'
+    import { logOutOnExpire } from '@/utils/logOutOnExpire'
 
     import { inject, nextTick, reactive, ref, watch, watchEffect } from 'vue'
 
@@ -102,8 +102,9 @@
     import 'swiper/css'
     import 'swiper/css/effect-coverflow'
     import AppBottomSheet from './components/App/AppBottomSheet.vue'
+    import { isEmpty } from 'lodash'
 
-    SwiperCore.use([EffectCoverflow, Navigation])
+    SwiperCore.use([EffectCoverflow, Navigation, Mousewheel])
 
     const currentRoute = useRoute()
 
@@ -273,7 +274,11 @@
         }
     })
 
-    nextTick(() => logOutOnExpire(auth.user))
+    nextTick(() => {
+        console.log('USER', auth.user)
+        console.log('EXPIRES AT', auth.expiresAt)
+        !isEmpty(auth.user) && logOutOnExpire(auth.expiresAt)
+    })
 </script>
 
 <style lang="scss">

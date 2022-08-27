@@ -2,9 +2,10 @@
     <Swiper
         :modules="modules"
         navigation
+        mousewheel
         slides-per-view="auto"
         :space-between="20"
-        class="w-full"
+        class="w-full shrink-0"
         @swiper="(s) => (swiper = s)"
     >
         <SwiperSlide v-for="(tab, i) in computedTabs" :key="i" class="!w-fit pb-1">
@@ -14,7 +15,7 @@
                 @click="setTab(tab, true)"
             >
                 <i :class="`fas fa-${tab.icon}`" />
-                <p class="title-font">{{ tab.name }}</p>
+                <p>{{ tab.name }}</p>
                 <LabelSimple v-if="tab.amount || tab.amount === 0" bg-class="bg-gray-500/50">{{
                     abbrNumbers(tab.amount)
                 }}</LabelSimple>
@@ -27,7 +28,7 @@
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
     import { Swiper, SwiperSlide } from 'swiper/vue'
 
-    import { Navigation } from 'swiper'
+    import { Navigation, Mousewheel } from 'swiper'
 
     import { computed, ref, watch } from 'vue'
     import { useRoute } from 'vue-router'
@@ -136,7 +137,7 @@
 
     setCurrentTab()
 
-    const modules = [Navigation]
+    const modules = [Navigation, Mousewheel]
 
     watch(
         () => route.fullPath,
@@ -157,9 +158,7 @@
     }
 
     .swiper-button-prev {
-        @apply rounded-xl;
-
-        left: -3px !important;
+        left: 0 !important;
         width: 6rem;
         background: v-bind(prevBackground);
 
@@ -168,14 +167,12 @@
         }
 
         &::after {
-            @apply text-base text-0-light dark:text-0-dark absolute left-4;
+            @apply text-base text-0-light dark:text-0-dark absolute left-2;
         }
     }
 
     .swiper-button-next {
-        @apply rounded-xl;
-
-        right: -3px !important;
+        right: 0 !important;
         width: 6rem;
         background: v-bind(nextBackground);
 
@@ -184,7 +181,7 @@
         }
 
         &::after {
-            @apply text-base text-0-light dark:text-0-dark absolute right-4;
+            @apply text-base text-0-light dark:text-0-dark absolute right-2;
         }
     }
 </style>

@@ -1,4 +1,3 @@
-import { partialUserFragment } from '@/graphql/fragments/userFragment'
 import gql from 'graphql-tag'
 
 export const validateEvent = gql`
@@ -9,12 +8,8 @@ export const validateEvent = gql`
                 id
                 name
                 step
-                users {
-                    ...PartialUserInfo
-                }
             }
             state
         }
     }
-    ${partialUserFragment}
 `

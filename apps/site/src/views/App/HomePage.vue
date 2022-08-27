@@ -67,7 +67,13 @@
                                 <AppLogo :scale="1.6" only="dark" />
                             </div>
                             <div class="mt-8 text-center text-2xl">
-                                Connectez-vous pour accéder aux espaces 🔒
+                                Connectez-vous pour accéder à Okampus
+                                <img
+                                    :src="okampus"
+                                    alt="OKAMPUS"
+                                    class="inline h-10 w-10 rounded-lg border-2 border-black"
+                                />
+                                !
                             </div>
                         </div>
                     </AppLogin>
@@ -139,6 +145,8 @@
 </template>
 
 <script setup>
+    import okampus from '@/assets/img/logos/okampus.png'
+
     import VueCountdown from '@chenfengyuan/vue-countdown'
     import AppLogin from '@/components/App/AppLogin.vue'
     import AppLogo from '@/components/App/AppLogo.vue'

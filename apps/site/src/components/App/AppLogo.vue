@@ -7,7 +7,6 @@
                 height: `${scale * 2.5}rem`,
             }"
         />
-        <div class="ml-[0.3rem] rounded bg-0-light px-[0.1rem] text-[8px] font-bold text-2-light">BETA</div>
     </router-link>
 </template>
 

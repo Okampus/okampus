@@ -1,10 +1,6 @@
 <template>
     <div>
-        <ThreadFormReport
-            :show="Boolean(report.content)"
-            :content="report.content"
-            @close="report.content = null"
-        />
+        <ThreadFormReport :show="!!report.content" :content="report.content" @close="report.content = null" />
         <ThreadCompact />
     </div>
 </template>

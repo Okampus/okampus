@@ -1,5 +1,6 @@
 export const twBreakpoints = {
     'xs': 408,
+    'ssm': 550,
     'sm': 640,
     'md': 768,
     'lg': 1024,

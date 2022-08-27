@@ -1,5 +1,9 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
-import { PartialType } from '@nestjs/mapped-types';
+import {
+  Field,
+  InputType,
+  Int,
+  PartialType,
+} from '@nestjs/graphql';
 import { IsInt, IsOptional } from 'class-validator';
 import { CreateTeamDto } from './create-team.dto';
 

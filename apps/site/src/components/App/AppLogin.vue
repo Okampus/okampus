@@ -4,7 +4,7 @@
             <slot />
 
             <a v-if="show === 'sso'" :href="myEfreiAuthUrl">
-                <button role="button" class="button-blue my-8 text-2xl">
+                <button role="button" class="button-blue my-8 flex items-center text-2xl">
                     Connexion myEfrei <i class="fa fa-sign-in ml-2" />
                 </button>
             </a>
@@ -78,6 +78,7 @@
 
     import { showErrorToast, showSuccessToast, showToastGraphQLError } from '@/utils/toast'
     import { emitter } from '@/shared/modules/emitter'
+    import { getExpirationDate, logOutOnExpire } from '@/utils/logOutOnExpire'
 
     const myEfreiAuthUrl = `${import.meta.env.VITE_API_URL}/auth/myefrei`
 
@@ -98,9 +99,12 @@
     const auth = useAuthStore()
     onDone(({ data }) => {
         auth.user = data.login
+        auth.expiresAt = getExpirationDate()
+        console.log('auth.expiresAt', auth.expiresAt)
+        logOutOnExpire(auth.expiresAt)
+        emitter.emit('login')
         emit('logged-in')
         showSuccessToast('Connexion réussie !')
-        emitter.emit('login')
     })
 
     onError((errors) => {

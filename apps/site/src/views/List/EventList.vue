@@ -7,7 +7,7 @@
     >
         <template #default="{ data: events }">
             <div class="centered-container text-0 mt-10 flex flex-col gap-6">
-                <div v-if="events.length > 3" class="mx-5 flex items-center -space-x-4">
+                <div v-if="events.length > 3" class="mx-5 mb-10 flex items-center -space-x-4">
                     <SwiperButton type="prev" :swiper="swiper" />
                     <Swiper
                         :space-between="sm ? 12 : 0"
@@ -21,12 +21,8 @@
                     </Swiper>
                     <SwiperButton type="next" :swiper="swiper" />
                 </div>
-                <div class="mt-10 ml-10 text-3xl font-semibold">
-                    Tous les événements ({{ events.length }})
-                </div>
-                <div
-                    class="mx-12 mt-8 grid h-fit w-full grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4"
-                >
+                <div class="ml-10 text-3xl font-semibold">Tous les événements ({{ events.length }})</div>
+                <div class="mx-12 grid h-fit grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4">
                     <ClubEventCard v-for="event in events" :key="event" :event="event" />
                 </div>
             </div>
@@ -61,7 +57,7 @@
     import { twBreakpoints } from '@/tailwind'
 
     const breakpoints = useBreakpoints(twBreakpoints)
-    const sm = breakpoints.greater('sm')
+    const sm = breakpoints.greater('ssm')
     const xl = breakpoints.greater('xl')
 
     const swiper = ref(null)

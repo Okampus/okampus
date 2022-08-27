@@ -6,6 +6,7 @@
             route-base="/admin/events"
             route-name="admin"
             class="mb-4"
+            :background-variant="2"
         />
 
         <div v-if="currentTab === OVERVIEW">
@@ -25,56 +26,22 @@
                 :form-submission="validationFormSubmission"
                 @update:show="validationFormSubmission = null"
             />
-            <ModalPopup :show="!!validatingEvent" @close="validatingEvent = null">
-                <template #default>
-                    <div class="card flex flex-col gap-2">
-                        <h2 class="mb-4 text-center">
-                            Validation de l'événement {{ validatingEvent?.name }}
-                        </h2>
-                        <h4>Étape '{{ validatingStep?.name }}'</h4>
-                        <!-- TODO: Change editor to basic textarea ? -->
-                        <FormKit
-                            ref="createValidationForm"
-                            type="form"
-                            :actions="false"
-                            @submit="
-                                validate({
-                                    id: validatingEvent?.id,
-                                    createValidation: {
-                                        approved: validatingApproved,
-                                        message: $event.message,
-                                        stepId: validatingStep.id,
-                                    },
-                                })
-                            "
-                        >
-                            <FormKit
-                                type="textarea"
-                                name="message"
-                                :validation="`required|length:${messageCharLimit.join(',')}`"
-                                rows="6"
-                                outer-class="!mb-0"
-                                validation-visibility="dirty"
-                                :validation-messages="{
-                                    required: 'Vous devez expliquer la raison de votre validation/refus.',
-                                    length: `Votre message doit faire entre ${messageCharLimit[0]} et ${messageCharLimit[1]} caractères.`,
-                                }"
-                            />
-                        </FormKit>
-
-                        <button
-                            class="font-semibold"
-                            :class="{
-                                'button-blue': validatingApproved,
-                                'button-red': !validatingApproved,
-                            }"
-                            @click="() => createValidationForm.node.submit()"
-                        >
-                            {{ validatingApproved ? "Valider l'événement" : "Refuser l'événement" }}
-                        </button>
-                    </div>
-                </template>
-            </ModalPopup>
+            <FormPopUp
+                :show="!!validatingEvent"
+                :form-schema="validationFormSchema"
+                :submit="
+                    (data) =>
+                        validate({
+                            id: validatingEvent?.id,
+                            createValidation: {
+                                approved: validatingApproved,
+                                message: data.message,
+                                stepId: validatingStep.id,
+                            },
+                        })
+                "
+                @close="validatingEvent = null"
+            />
 
             <ScrollableTable
                 class="h-[65vh]"
@@ -84,6 +51,7 @@
                         id: 'club',
                         title: 'Association',
                         sortable: true,
+                        class: 'min-w-[15rem]',
                     },
                     {
                         id: 'name',
@@ -136,77 +104,84 @@
                 :first-column-fixed="true"
             >
                 <template #club="{ data }">
-                    <div class="flex items-center gap-4">
-                        <TeamActivity :team="data.team">
+                    <div class="flex flex-col gap-2">
+                        <TeamActivity :team="data.team" :avatar-size="2.5">
                             <template #subtitle>
                                 {{ data.team.category }}
                             </template>
                         </TeamActivity>
-                        <div
-                            v-if="data.state === SUBMITTED && config.userValidations.length === 1"
-                            class="flex gap-2"
-                        >
-                            <button
-                                class="button-green flex h-8 w-8 items-center justify-center"
-                                @click="
-                                    () => {
-                                        validatingEvent = data
-                                        validatingApproved = true
-                                        validatingStep = config.userValidations[0]
-                                    }
-                                "
+                        <template v-if="canValidate(data)">
+                            <div
+                                v-if="data.state === SUBMITTED && config.userValidations.length === 1"
+                                class="flex gap-2"
                             >
-                                <i class="fa fa-check" />
-                            </button>
-                            <button
-                                class="button-red flex h-8 w-8 items-center justify-center"
-                                @click="
-                                    () => {
-                                        validatingEvent = data
-                                        validatingApproved = true
-                                        validatingStep = config.userValidations[0]
-                                    }
-                                "
-                            >
-                                <i class="fa fa-xmark" />
-                            </button>
-                        </div>
-                        <div v-else-if="data.state === SUBMITTED" class="flex gap-2">
-                            <ModalDropdown
-                                :buttons="
-                                    config.userValidations.map((validation) => ({
-                                        name: `Valider l'étape '${validation.name}'`,
-                                        action: () => {
+                                <button
+                                    class="button-green flex items-center justify-center gap-2 py-0.5 px-1.5"
+                                    @click="
+                                        () => {
                                             validatingEvent = data
                                             validatingApproved = true
-                                            validatingStep = validation
-                                        },
-                                        class: 'hover:bg-green-600',
-                                    }))
-                                "
-                            >
-                                <button class="button-green flex h-8 w-8 items-center justify-center">
-                                    <i class="fa fa-check" />
+                                            validatingStep = config.userValidations[0]
+                                        }
+                                    "
+                                >
+                                    <i class="fa fa-check" /> Valider
                                 </button>
-                            </ModalDropdown>
-                            <ModalDropdown
-                                :buttons="
-                                    config.userValidations.map((validation) => ({
-                                        name: `Refuser l'étape de validation '${validation.name}'`,
-                                        action: () => {
+                                <button
+                                    class="button-red flex items-center justify-center gap-2 py-0.5 px-1.5"
+                                    @click="
+                                        () => {
                                             validatingEvent = data
-                                            validatingApproved = false
-                                            validatingStep = validation
-                                        },
-                                        class: 'hover:bg-red-600',
-                                    }))
-                                "
-                            >
-                                <button class="button-red flex h-8 w-8 items-center justify-center">
-                                    <i class="fa fa-xmark" />
+                                            validatingApproved = true
+                                            validatingStep = config.userValidations[0]
+                                        }
+                                    "
+                                >
+                                    <i class="fa fa-xmark" /> Refuser
                                 </button>
-                            </ModalDropdown>
-                        </div>
+                            </div>
+                            <div v-else-if="data.state === SUBMITTED" class="flex gap-2">
+                                <ModalDropdown
+                                    :buttons="
+                                        config.userValidations.map((validation) => ({
+                                            name: `Valider l'étape '${validation.name}'`,
+                                            action: () => {
+                                                validatingEvent = data
+                                                validatingApproved = true
+                                                validatingStep = validation
+                                            },
+                                            class: 'hover:bg-green-600',
+                                        }))
+                                    "
+                                >
+                                    <button class="button-green flex items-center justify-center gap-2 py-0.5 px-1.5">
+                                        <i class="fa fa-check" /> Valider
+                                    </button>
+                                </ModalDropdown>
+                                <ModalDropdown
+                                    :buttons="
+                                        config.userValidations.map((validation) => ({
+                                            name: `Refuser l'étape de validation '${validation.name}'`,
+                                            action: () => {
+                                                validatingEvent = data
+                                                validatingApproved = false
+                                                validatingStep = validation
+                                            },
+                                            class: 'hover:bg-red-600',
+                                        }))
+                                    "
+                                >
+                                    <button class="button-red flex items-center justify-center gap-2 py-0.5 px-1.5">
+                                        <i class="fa fa-xmark" /> Refuser
+                                    </button>
+                                </ModalDropdown>
+                            </div>
+                        </template>
+                        <template v-else-if="data.state === SUBMITTED">
+                            <div v-tooltip="`Prochaine validation : ${config.validationSteps.find((val) => val.step === data.lastValidationStep?.step + 1)?.name}`" class="bg-1 w-fit rounded-md px-2 py-0.5">
+                                ⌛ {{ config.validationSteps.find((val) => val.step === data.lastValidationStep?.step + 1)?.name }}
+                            </div>
+                        </template>
                     </div>
                 </template>
 
@@ -228,7 +203,8 @@
                 </template>
 
                 <template #validationStep="{ data }">
-                    {{ validationStepText(data) }}
+                    <div>{{ data.lastValidationStep?.name ? (data.lastValidationStep?.name + (data.state === REJECTED ? ' ❌' : ' ✅')) : '<Aucune>' }}</div>
+                    <div>{{ validationStepText(data) }}</div>
                 </template>
 
                 <template #date="{ data: { createdAt } }">
@@ -277,8 +253,7 @@
                         "
                     />
                     <div v-else class="text-sm italic">
-                        <div class="whitespace-nowrap">Pas de participants</div>
-                        <div class="whitespace-nowrap">(pour le moment)</div>
+                        <div class="whitespace-nowrap">Aucun pour le moment</div>
                     </div>
                 </template>
             </ScrollableTable>
@@ -287,10 +262,8 @@
 </template>
 
 <script setup>
-    import { FormKit } from '@formkit/vue'
-
-    import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
     import ModalDropdown from '@/components/UI/Modal/ModalDropdown.vue'
+    import FormPopUp from '@/components/Form/FormPopUp.vue'
     import FormSubmission from '@/components/Form/FormSubmission.vue'
 
     import AppLoader from '@/components/App/AppLoader.vue'
@@ -380,18 +353,40 @@
     const validatingStep = ref(null)
 
     const validationFormSubmission = ref(null)
-    const validationStepText = (data) =>
-        `${data?.lastValidationStep?.name ?? '<Aucune>'} (${
-            data.state === PUBLISHED
-                ? 'Validé ✅'
+    const validationStepText = (data) => data.state === PUBLISHED
+                ? 'Publié 📰'
                 : data.state === REJECTED
-                ? 'Refusé ❌'
-                : `${validationStepsCount - lastStep(data)} restante${
+                ? 'Refusé ⛔'
+                : `${validationStepsCount - lastStep(data)} étapes restante${
                       validationStepsCount - lastStep(data) > 1 ? 's' : ''
                   }`
-        })`
 
-    const createValidationForm = ref(() => {})
+    const validationFormSchema = computed(() => [
+        {
+            $el: 'h1',
+            children: [
+                validatingApproved.value
+                    ? `Validation de ${validatingEvent.value?.name ?? ''} ✅`
+                    : `Refus de ${validatingEvent.value?.name ?? ''} ⛔`,
+            ],
+        },
+        {
+            $el: 'h4',
+            children: [`Étape '${validatingStep.value?.name ?? ''}'`],
+        },
+        {
+            $formkit: 'textarea',
+            name: 'message',
+            validation: validatingApproved.value ? '' : `required|length:${messageCharLimit.join(',')}`,
+            rows: '6',
+            label: validatingApproved.value ? "Commentaire sur l'événement (optionnel)" : 'Raison de refus',
+            validationVisibility: 'dirty',
+            validationMessages: {
+                required: 'Vous devez expliquer la raison de votre validation/refus.',
+                length: `Votre message doit faire entre ${messageCharLimit[0]} et ${messageCharLimit[1]} caractères.`,
+            },
+        },
+    ])
 
     const OVERVIEW = 'overview'
     const VALIDATION = 'validations'
@@ -400,45 +395,40 @@
     const REJECTED_TAB = 'rejected'
 
     const lastStep = (event) => event.lastValidationStep?.step ?? 0
+    const canValidate = (event) => props.config.userValidations.some((val) => val.step > lastStep(event))
 
     const computedTabs = computed(() => [
         {
             id: OVERVIEW,
             name: "Vue d'ensemble",
             route: '/admin/events',
-            icon: 'list',
+            icon: 'book-bookmark',
         },
         {
             id: VALIDATION,
             name: 'Vos validations',
             icon: 'unlock',
-            amount: events.value?.events?.filter(
-                (event) =>
-                    event.state === SUBMITTED &&
-                    props.config.userValidations.some((val) => val.step >= lastStep(event)),
-            ).length,
+            amount: events.value?.events
+                    ?.filter(event => event.state === SUBMITTED && canValidate(event)).length,
         },
         {
             id: PENDING_TAB,
             name: 'Autres validations en attente',
             icon: 'envelope',
-            amount: events.value?.events?.filter(
-                (event) =>
-                    event.state === SUBMITTED &&
-                    !props.config.userValidations.some((val) => val.step >= lastStep(event)),
-            ).length,
+            amount: events.value?.events
+                    ?.filter(event => event.state === SUBMITTED && !canValidate(event)).length,
         },
         {
             id: VALIDATED_TAB,
             name: 'Validés',
             icon: 'check',
-            amount: events.value?.events?.filter((event) => event.state === PUBLISHED).length,
+            amount: events.value?.events?.filter(event => event.state === PUBLISHED).length,
         },
         {
             id: REJECTED_TAB,
             name: 'Rejetés',
             icon: 'xmark',
-            amount: events.value?.events?.filter((event) => event.state === REJECTED).length,
+            amount: events.value?.events?.filter(event => event.state === REJECTED).length,
         },
     ])
 
@@ -446,17 +436,9 @@
 
     const computedEvents = computed(() =>
         currentTab.value === VALIDATION
-            ? events.value?.events?.filter(
-                  (event) =>
-                      event.state === SUBMITTED &&
-                      props.config.userValidations.some((val) => val.step >= lastStep(event)),
-              )
+            ? events.value?.events?.filter(event => event.state === SUBMITTED && canValidate(event))
             : currentTab.value === PENDING_TAB
-            ? events.value?.events?.filter(
-                  (event) =>
-                      event.state === SUBMITTED &&
-                      !props.config.userValidations.some((val) => val.step >= lastStep(event)),
-              )
+            ? events.value?.events?.filter(event => event.state === SUBMITTED && !canValidate(event))
             : currentTab.value === VALIDATED_TAB
             ? events.value?.events?.filter((event) => event.state === PUBLISHED)
             : events.value?.events?.filter((event) => event.state === REJECTED),
