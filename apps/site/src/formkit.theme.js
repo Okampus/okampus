@@ -2,16 +2,16 @@
 // many input types are identical in how
 // we want to style them.
 const textClassification = {
-    label: 'text-1 ml-2.5 text-base formkit-invalid:text-red-500',
+    label: 'text-1 ml-2.5 text-base formkit-invalid:text-red-500 font-medium',
     inner: 'border border-transparent formkit-invalid:ouline-red-500',
     input: 'block w-full input',
 }
 const boxClassification = {
-    fieldset: 'rounded-md px-3 pb-2 bg-3 shadow mb-2',
-    legend: 'text-1 text-base formkit-invalid:text-red-500',
+    fieldset: 'rounded-md px-3 pb-2 bg-3 mb-2 border border-gray-300 dark:border-gray-700',
+    legend: 'text-1 text-base formkit-invalid:text-red-500 px-2 rounded-md font-medium',
     wrapper: 'flex cursor-pointer',
     input: 'form-check-input appearance-none h-5 w-5 border border-gray-400 rounded-sm bg-white checked:bg-blue-600 focus:outline-none focus:ring-0 transition duration-200 cursor-pointer',
-    label: 'text-1 ml-2.5 text-base formkit-invalid:text-red-500',
+    label: 'text-1 ml-2.5 text-base formkit-invalid:text-red-500 font-medium',
     options: 'pt-4',
     help: 'mb-2',
 }

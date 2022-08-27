@@ -1,5 +1,5 @@
 %sidebar-tab-active.active {
-    @apply bg-slate-600/50 text-[#3fa2ff];
+    @apply bg-slate-600/50 text-[#3fa2ff] opacity-100;
 
     &:hover {
         @apply bg-slate-500/50;
@@ -15,7 +15,7 @@
 }
 
 %tab-active.active {
-    @apply bg-gray-400/20 text-blue-600;
+    @apply bg-gray-400/20 text-blue-600 opacity-100;
 
     &:hover {
         @apply bg-gray-400/30 text-blue-500;

@@ -9,13 +9,13 @@
                     route-name="clubs"
                 />
             </div>
-            <div class="centered-container padded flex flex-col gap-4 md:flex-row">
+            <div class="centered-container padded flex flex-col md:flex-row">
                 <VerticalTabs
                     v-model="currentTab"
                     :tabs="getTabsFromClubs(clubs).value"
                     route-base="/clubs"
                     route-name="clubs"
-                    class="sticky top-4 hidden md:block"
+                    class="sticky top-8 hidden md:block"
                 />
                 <div
                     class="grid h-fit w-full grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4 md-max:grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]"

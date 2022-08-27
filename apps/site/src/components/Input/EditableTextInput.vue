@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-2">
-        <div v-if="show" class="flex flex-wrap gap-2">
+        <div v-if="show" class="mt-4 flex flex-wrap gap-2">
             <div class="input-background relative min-w-[10rem] grow" :="focused ? { focused: '' } : {}">
                 <component
                     :is="singleLine ? 'input' : 'textarea'"
@@ -32,7 +32,7 @@
         <div v-else-if="currentValue" class="text-1 always-break-words" :class="[textClass, displayClass]">
             {{ currentValue }}
             <button
-                class="button-blue ml-2 inline-flex h-6 w-6 items-center justify-center rounded-full p-2"
+                class="button-blue ml-2 inline-flex h-6 w-6 items-center justify-center rounded-full p-0"
                 @click="showInput"
             >
                 <i class="fa fa-pen text-xs" />

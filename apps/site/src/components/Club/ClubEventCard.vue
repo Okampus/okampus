@@ -50,7 +50,7 @@
                 <div class="flex flex-wrap items-center gap-1">
                     <router-link
                         :to="`/event/${event.id}`"
-                        class="text-2xl font-medium"
+                        class="always-break-words text-2xl font-medium"
                         :class="{ 'card-link': showLink }"
                         >{{ event.name }}</router-link
                     >
