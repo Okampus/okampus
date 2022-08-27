@@ -248,7 +248,7 @@
         step.editingUsers = false
         step.users =
             props.config.validationSteps
-                .find((step) => step.id === step.id)
+                .find((s) => s.id === step.id)
                 ?.users?.map?.((user) => ({
                     realId: user.id,
                     metaType: 'user',
