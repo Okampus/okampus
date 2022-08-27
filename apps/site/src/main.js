@@ -9,22 +9,10 @@ import { BrowserTracing } from '@sentry/tracing'
 import InstantSearch from 'vue-instantsearch/vue3/es'
 import Particles from 'particles.vue3'
 
-import FormKitRadioInput from '@/components/Input/FormKit/FormKitRadioInput.vue'
-import FormKitMdEditor from '@/components/Input/FormKit/FormKitMdEditor.vue'
-import FormKitTagInput from '@/components/Input/FormKit/FormKitTagInput.vue'
-import FormKitFloatingLabelText from '@/components/Input/FormKit/FormKitFloatingLabelText.vue'
-import FormKitSearchInput from '@/components/Input/FormKit/FormKitSearchInput.vue'
-import FormKitDropdownInput from '@/components/Input/FormKit/FormKitDropdownInput.vue'
-import FormKitMultiselectInput from '@/components/Input/FormKit/FormKitMultiselectInput.vue'
-
-import { plugin, defaultConfig, createInput } from '@formkit/vue'
-import { generateClasses } from '@formkit/themes'
-import formkitTheme from '@/formkit.theme'
+import { plugin } from '@formkit/vue'
 
 import { createApolloProvider } from '@vue/apollo-option'
 import { DefaultApolloClient } from '@vue/apollo-composable'
-
-import { fr } from '@formkit/i18n'
 
 import { i18n } from '@/shared/modules/i18n'
 import { apolloClient } from '@/shared/modules/apollo.client'
@@ -54,6 +42,7 @@ options.themes = {
 
 import '@/assets/css/tailwind.css'
 import 'swiper/css/bundle'
+import formkitConfig from './shared/config/formkit.config'
 
 const apolloProvider = createApolloProvider({
     defaultClient: apolloClient,
@@ -118,50 +107,6 @@ app.use(createPinia())
     .use(i18n)
     .use(InstantSearch)
     .use(Particles)
-    .use(
-        plugin,
-        defaultConfig({
-            inputs: {
-                tabs: createInput(FormKitRadioInput, {
-                    props: ['choices', 'choice'],
-                }),
-                editor: createInput(FormKitMdEditor, {
-                    props: ['uid', 'charCount', 'minCharCount', 'placeholder'],
-                }),
-                tags: createInput(FormKitTagInput, {
-                    props: ['placeholder'],
-                }),
-                floating: createInput(FormKitFloatingLabelText, {
-                    props: ['placeholder', 'floatingLabel', 'inputClass', 'isTextarea'],
-                }),
-                multisearch: createInput(FormKitSearchInput, {
-                    props: ['placeholder', 'searchQuery', 'queryName', 'disabled'],
-                }),
-                dropdown: createInput(FormKitDropdownInput, {
-                    props: ['placeholder', 'defaultOption', 'options', 'update'],
-                }),
-                multiselect: createInput(FormKitMultiselectInput, {
-                    props: [
-                        'options',
-                        'disabled',
-                        'placeholder',
-                        'singleSelectPrefix',
-                        'groupLabel',
-                        'groupValues',
-                        'multiple',
-                        'showMultipleBelow',
-                        'limit',
-                        'searchable',
-                        'allowEmpty',
-                    ],
-                }),
-            },
-            locales: { fr },
-            locale: 'fr',
-            config: {
-                classes: generateClasses(formkitTheme),
-            },
-        }),
-    )
+    .use(plugin, formkitConfig)
 
 app.mount('#app')
