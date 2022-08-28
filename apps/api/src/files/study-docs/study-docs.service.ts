@@ -68,8 +68,11 @@ export class StudyDocsService {
     const allDocuments: StudyDoc[] = await this.studyDocRepository.findAll({ populate: ['subject'] });
 
     const groupFilters: GroupFilters<StudyDoc> = {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       Subject: elt => ({ key: elt.subject.id.toString(), metadata: elt.subject.name }),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       Type: elt => ({ key: elt.type.toString(), metadata: null }),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       Year: elt => ({ key: elt.year.toString(), metadata: null }),
     } as const;
 
