@@ -584,6 +584,7 @@ type Subscription {
   teamUpdated: Team!
   threadAdded: Thread!
   updatedThread: Thread!
+  updatedUser: User!
 }
 
 type Tag {
