@@ -3325,6 +3325,15 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "file_id": {
+          "name": "file_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "last_active_date": {
           "name": "last_active_date",
           "type": "timestamptz(0)",
@@ -3343,15 +3352,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "boolean"
-        },
-        "file_id": {
-          "name": "file_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
         },
         "team_id": {
           "name": "team_id",
@@ -3387,7 +3387,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "payment_location": {
@@ -3396,8 +3396,42 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
+        },
+        "payment_method": {
+          "name": "payment_method",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "enumItems": [
+            "Cash",
+            "CreditCard",
+            "Transfer",
+            "Check",
+            "MobilePayment"
+          ],
+          "mappedType": "enum"
+        },
+        "amount": {
+          "name": "amount",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "amount_payed": {
+          "name": "amount_payed",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
         }
       },
       "name": "team_receipt",
@@ -3459,6 +3493,7 @@
             "id"
           ],
           "referencedTableName": "public.user",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -3494,6 +3529,15 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "file_id": {
+          "name": "file_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "last_active_date": {
           "name": "last_active_date",
           "type": "timestamptz(0)",
@@ -3512,15 +3556,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "boolean"
-        },
-        "file_id": {
-          "name": "file_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
         },
         "team_id": {
           "name": "team_id",

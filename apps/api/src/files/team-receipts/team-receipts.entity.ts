@@ -1,16 +1,19 @@
 import {
   Entity,
+  Enum,
   ManyToOne,
-  OneToOne,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
+import {
+ Field, Float, GraphQLISODateTime, ObjectType,
+} from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
 import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
+import { PaymentMethod } from '../../shared/lib/types/enums/payment-method.enum';
 import { Team } from '../../teams/teams/team.entity';
 import { User } from '../../users/user.entity';
-import { FileUpload } from '../file-uploads/file-upload.entity';
+import type { FileUpload } from '../file-uploads/file-upload.entity';
 
 @ObjectType()
 @Entity()
@@ -18,10 +21,6 @@ export class TeamReceipt extends BaseFileEntity {
   @Field(() => String)
   @PrimaryKey()
   id: string = nanoid(32);
-
-  @Field(() => FileUpload)
-  @OneToOne({ onDelete: 'CASCADE' })
-  file!: FileUpload;
 
   @Field(() => Team)
   @ManyToOne()
@@ -35,24 +34,42 @@ export class TeamReceipt extends BaseFileEntity {
   @Property({ type: 'date' })
   payedAt: Date;
 
-  @Field(() => User)
+  @Field(() => User, { nullable: true })
   @ManyToOne()
-  payedBy: User;
+  payedBy?: User | null = null;
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  paymentLocation: string;
+  paymentLocation?: string | null = null;
+
+  @Field(() => String, { nullable: true })
+  @Enum(() => PaymentMethod)
+  paymentMethod?: PaymentMethod | null = null;
+
+  @Field(() => Float)
+  @Property()
+  amount: number;
+
+  @Field(() => Float)
+  @Property()
+  amountPayed: number;
 
   constructor(options: {
     team: Team;
     file: FileUpload;
+    active?: boolean;
     description?: string | null;
     payedAt?: Date;
-    payedBy?: Date;
+    payedBy?: User | null;
     paymentLocation?: string | null;
-    active?: boolean;
+    paymentMethod?: PaymentMethod | null;
+    amount?: number;
+    amountPayed?: number;
   }) {
     super();
+    if (!this.amountPayed)
+      this.amountPayed = this.amount;
+
     this.assign(options);
   }
 }

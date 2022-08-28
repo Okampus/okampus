@@ -2,7 +2,6 @@ import {
   Entity,
   Enum,
   ManyToOne,
-  OneToOne,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
@@ -11,7 +10,7 @@ import { nanoid } from 'nanoid';
 import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
 import { TeamFileType } from '../../shared/lib/types/enums/team-file-type.enum';
 import { Team } from '../../teams/teams/team.entity';
-import { FileUpload } from '../file-uploads/file-upload.entity';
+import type { FileUpload } from '../file-uploads/file-upload.entity';
 
 @ObjectType()
 @Entity()
@@ -19,10 +18,6 @@ export class TeamFile extends BaseFileEntity {
   @Field(() => String)
   @PrimaryKey()
   id: string = nanoid(32);
-
-  @Field(() => FileUpload)
-  @OneToOne({ onDelete: 'CASCADE' })
-  file!: FileUpload;
 
   @Field(() => Team)
   @ManyToOne()

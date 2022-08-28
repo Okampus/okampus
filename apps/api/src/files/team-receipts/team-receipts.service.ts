@@ -6,7 +6,7 @@ import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { NotificationsService } from '../../shared/modules/notifications/notifications.service';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { Team } from '../../teams/teams/team.entity';
-import type { User } from '../../users/user.entity';
+import { User } from '../../users/user.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 import type { CreateTeamReceiptDto } from './dto/create-team-receipt.dto';
 import type { TeamReceiptListOptions } from './dto/team-receipt-list-options.dto';
@@ -18,6 +18,7 @@ export class TeamReceiptsService {
   constructor(
     @InjectRepository(TeamReceipt) private readonly teamReceiptRepository: BaseRepository<TeamReceipt>,
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
+    @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
 
     private readonly notificationsService: NotificationsService,
   ) {}
@@ -27,16 +28,24 @@ export class TeamReceiptsService {
     createReceiptDto: CreateTeamReceiptDto,
     file: FileUpload,
   ): Promise<TeamReceipt> {
+    const { teamId, payedById, ...createReceipt } = createReceiptDto;
+
     const team = await this.teamRepository.findOneOrFail(
-      { id: createReceiptDto.id },
+      { id: createReceiptDto.teamId },
       { populate: ['members'] },
     );
 
     if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
+    const payedBy = await this.userRepository.findOneOrFail({ id: payedById });
+
     const teamReceipt = new TeamReceipt({
-      ...createReceiptDto, team, file, active: true,
+      ...createReceipt,
+      payedBy,
+      team,
+      file,
+      active: true,
     });
     await this.teamReceiptRepository.persistAndFlush(TeamReceipt);
 
