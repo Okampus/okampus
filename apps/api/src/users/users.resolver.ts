@@ -61,7 +61,7 @@ export class UsersResolver {
   }
 
   @Subscription(() => User)
-  public updatedThread(): AsyncIterator<User> {
+  public updatedUser(): AsyncIterator<User> {
     return this.pubSub.asyncIterator(SubscriptionType.UserUpdated);
   }
 }
