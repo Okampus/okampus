@@ -29,6 +29,7 @@ type Badge {
 enum BadgeLevel {
   Bronze
   Gold
+  Platinum
   Silver
 }
 
@@ -147,7 +148,9 @@ input CreateTeamDto {
   kind: TeamKind!
   longDescription: String
   name: String!
+  presentationVideo: String
   shortDescription: String
+  status: String
   tags: [String!]
 }
 
@@ -192,7 +195,7 @@ input CreateTeamFinanceDto {
   description: String
   dueTo: String
   event: Int
-  means: TeamFinanceMeans!
+  method: PaymentMethod!
   receipt: String
   title: String!
   type: TeamFinanceType!
@@ -393,6 +396,15 @@ type Mutation {
 input PaginateDto {
   itemsPerPage: Int!
   page: Int!
+}
+
+enum PaymentMethod {
+  Cash
+  Check
+  CreditCard
+  MobilePayment
+  Other
+  Transfer
 }
 
 type ProfileImage {
@@ -606,13 +618,16 @@ type Team {
   createdAt: DateTime!
   formTemplates: [TeamForm!]!
   forms: [TeamForm!]!
+  histories: [TeamHistory!]!
   id: Int!
   kind: TeamKind!
   longDescription: String
   members: [TeamMember!]!
   membershipRequestForm: TeamForm
   name: String!
+  presentationVideo: String
   shortDescription: String
+  status: String
   tags: [String!]!
   teamFiles: [TeamFile!]!
   tenant: String!
@@ -702,7 +717,7 @@ type TeamFinance {
   dueTo: User
   event: TeamEvent
   id: Int!
-  means: TeamFinanceMeans!
+  method: PaymentMethod!
   receipt: TeamFile
   team: Team!
   title: String!
@@ -722,14 +737,6 @@ enum TeamFinanceCategory {
   Provider
   Subscriptions
   Transportation
-}
-
-enum TeamFinanceMeans {
-  Card
-  Cash
-  Check
-  Other
-  Transfer
 }
 
 enum TeamFinanceType {
@@ -765,9 +772,32 @@ enum TeamFormType {
   Survey
 }
 
+type TeamHistory {
+  active: Boolean!
+  createdAt: DateTime!
+  day: Int
+  id: Int!
+  month: Int
+  name: String!
+  parent: Team
+  state: TeamHistoryState!
+  team: Team!
+  updatedAt: DateTime!
+  year: Int!
+}
+
+enum TeamHistoryState {
+  Declared
+  Ended
+  Modified
+  Recognized
+  Started
+  Terminated
+}
+
 enum TeamKind {
   Club
-  Department
+  SchoolDepartment
 }
 
 type TeamMember {
@@ -917,7 +947,9 @@ input UpdateTeamDto {
   longDescription: String
   membershipRequestFormId: Int
   name: String
+  presentationVideo: String
   shortDescription: String
+  status: String
   tags: [String!]
 }
 
@@ -948,7 +980,7 @@ input UpdateTeamFinanceDto {
   description: String
   dueTo: String
   event: Int
-  means: TeamFinanceMeans
+  method: PaymentMethod
   receipt: String
   title: String
   type: TeamFinanceType
