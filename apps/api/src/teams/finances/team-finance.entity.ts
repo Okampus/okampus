@@ -10,8 +10,8 @@ import {
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { TeamFile } from '../../files/team-files/team-file.entity';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
+import { PaymentMethod } from '../../shared/lib/types/enums/payment-method.enum';
 import { TeamFinanceCategory } from '../../shared/lib/types/enums/team-finance-category.enum';
-import { TeamFinanceMeans } from '../../shared/lib/types/enums/team-finance-means.enum';
 import { TeamFinanceType } from '../../shared/lib/types/enums/team-finance-type.enum';
 import { User } from '../../users/user.entity';
 import { TeamEvent } from '../events/team-event.entity';
@@ -49,9 +49,9 @@ export class TeamFinance extends BaseEntity {
   @Property()
   amount!: number;
 
-  @Field(() => TeamFinanceMeans)
-  @Enum(() => TeamFinanceMeans)
-  means!: TeamFinanceMeans;
+  @Field(() => PaymentMethod)
+  @Enum(() => PaymentMethod)
+  method!: PaymentMethod;
 
   @Field(() => TeamFinanceType)
   @Enum(() => TeamFinanceType)
@@ -74,7 +74,7 @@ export class TeamFinance extends BaseEntity {
     createdBy: User;
     team: Team;
     amount: number;
-    means: TeamFinanceMeans;
+    method: PaymentMethod;
     type: TeamFinanceType;
     category: TeamFinanceCategory;
     description?: string | null;

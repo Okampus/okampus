@@ -1,14 +1,18 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum StudyDocType {
-  ExamDE = 'examDE',
-  ExamCE = 'examCE',
-  ExamCC = 'examCC',
-  ExamDM = 'examDM',
-  ExamTAI = 'examTAI',
-  Course = 'course',
-  Sheet = 'sheet',
-  Projects = 'projects',
-  SchoolClass = 'schoolClass',
-  EprofClass = 'eprofClass',
-  ClassNote = 'classNote',
-  Other = 'other',
+  ExamDE = 'ExamDE',
+  ExamCE = 'ExamCE',
+  ExamCC = 'ExamCC',
+  ExamDM = 'ExamDM',
+  ExamTAI = 'ExamTAI',
+  Course = 'Course',
+  Sheet = 'Sheet',
+  Projects = 'Projects',
+  SchoolClass = 'SchoolClass',
+  EprofClass = 'EprofClass',
+  ClassNote = 'ClassNote',
+  Other = 'Other',
 }
+
+registerEnumType(StudyDocType, { name: 'StudyDocType' });

@@ -6,6 +6,7 @@ export enum PaymentMethod {
   Transfer = 'Transfer',
   Check = 'Check',
   MobilePayment = 'MobilePayment',
+  Other = 'Other',
 }
 
 registerEnumType(PaymentMethod, { name: 'PaymentMethod' });

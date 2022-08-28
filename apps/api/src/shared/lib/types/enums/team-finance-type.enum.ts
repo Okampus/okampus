@@ -1,8 +1,8 @@
 import { registerEnumType } from '@nestjs/graphql';
 
 export enum TeamFinanceType {
-  Expense = 'expense',
-  Income = 'income',
+  Expense = 'Expense',
+  Income = 'Income',
 }
 
 registerEnumType(TeamFinanceType, { name: 'TeamFinanceType' });

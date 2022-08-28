@@ -1,7 +1,7 @@
 import { registerEnumType } from '@nestjs/graphql';
 
 export enum ValidationStepType {
-  TeamEvent = 'team-event',
+  TeamEvent = 'TeamEvent',
 }
 
 registerEnumType(ValidationStepType, { name: 'ValidationStepType' });

@@ -1,5 +1,9 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum AnnouncementState {
-  Draft = 'draft',
-  Committed = 'committed',
-  Hidden = 'hidden',
+  Draft = 'Draft',
+  Committed = 'Committed',
+  Hidden = 'Hidden',
 }
+
+registerEnumType(AnnouncementState, { name: 'AnnouncementState' });

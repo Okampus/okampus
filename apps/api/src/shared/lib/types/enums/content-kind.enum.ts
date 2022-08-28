@@ -1,9 +1,9 @@
 import { registerEnumType } from '@nestjs/graphql';
 
 export enum ContentKind {
-  Post,
-  Reply,
-  Comment,
+  Post = 'Post',
+  Reply = 'Reply',
+  Comment = 'Comment',
 }
 
 registerEnumType(ContentKind, { name: 'ContentKind' });

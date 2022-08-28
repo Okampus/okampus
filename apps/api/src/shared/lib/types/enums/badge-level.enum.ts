@@ -1,9 +1,10 @@
 import { registerEnumType } from '@nestjs/graphql';
 
 export enum BadgeLevel {
-  Bronze = 1,
-  Silver = 2,
-  Gold = 3,
+  Bronze = 'Bronze',
+  Silver = 'Silver',
+  Gold = 'Gold',
+  Platinum = 'Platinum',
 }
 
 registerEnumType(BadgeLevel, { name: 'BadgeLevel' });

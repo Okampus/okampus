@@ -1,6 +1,10 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum Statistic {
-  Comment = 'comment',
-  Post = 'post',
-  Reply = 'reply',
-  Upload = 'upload',
+  Comment = 'Comment',
+  Post = 'Post',
+  Reply = 'Reply',
+  Upload = 'Upload',
 }
+
+registerEnumType(Statistic, { name: 'Statistic' });

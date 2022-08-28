@@ -8,8 +8,8 @@ import {
   Length,
   Min,
 } from 'class-validator';
+import { PaymentMethod } from '../../../shared/lib/types/enums/payment-method.enum';
 import { TeamFinanceCategory } from '../../../shared/lib/types/enums/team-finance-category.enum';
-import { TeamFinanceMeans } from '../../../shared/lib/types/enums/team-finance-means.enum';
 import { TeamFinanceType } from '../../../shared/lib/types/enums/team-finance-type.enum';
 
 @InputType()
@@ -24,9 +24,9 @@ export class CreateTeamFinanceDto {
   @Min(0)
   amount: number;
 
-  @Field(() => TeamFinanceMeans)
-  @IsEnum(TeamFinanceMeans)
-  means: TeamFinanceMeans;
+  @Field(() => PaymentMethod)
+  @IsEnum(PaymentMethod)
+  method: PaymentMethod;
 
   @Field(() => TeamFinanceType)
   @IsEnum(TeamFinanceType)

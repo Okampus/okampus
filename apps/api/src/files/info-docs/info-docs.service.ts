@@ -65,7 +65,7 @@ export class InfoDocsService {
     const allDocuments: InfoDoc[] = await this.infoDocRepository.findAll();
 
     const groupFilters: GroupFilters<InfoDoc> = {
-      year: elt => ({ key: elt.year.toString(), metadata: null }),
+      Year: elt => ({ key: elt.year.toString(), metadata: null }),
     } as const;
 
     const result = computeDocumentCategories(allDocuments, groupFilters, baseFilters);
