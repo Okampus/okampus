@@ -356,24 +356,23 @@ enum MetricName {
 }
 
 type Mutation {
-  addContent(child: CreateContentWithKindDto!): Content!
   addTeam(team: CreateTeamDto!): Team!
   addTeamEventRegistration(id: Int!, registration: CreateTeamEventRegistrationDto!): TeamEvent!
   addTeamFile(createFile: CreateTeamFileDto!, file: Upload!): Team!
   addTeamFinance(finance: CreateTeamFinanceDto!, id: Int!): TeamFinance!
-  addThread(thread: CreateThreadDto!): Thread!
   addUserToTeam(invite: InviteMemberDto!, teamId: Int!, userId: Int!): TeamMember!
   addValidationStep(createStep: CreateValidationStepDto!): Tenant!
+  createContent(child: CreateContentWithKindDto!): Content!
   createEvent(createEvent: CreateTeamEventDto!, id: Int!): TeamEvent!
+  createReport(id: Int!, report: CreateReportDto!): Content!
   createTeamForm(createForm: CreateTeamFormDto!, id: Int!): Team!
+  createThread(thread: CreateThreadDto!): Thread!
   deleteTeamFile(id: String!): Team!
-  favoriteContent(favorite: Boolean!, id: Int!): Content!
   handleTeamMembershipRequest(id: Int!, updateRequest: PutTeamMembershipRequestDto!): TeamMembershipRequest!
   insertStep(atStep: Int!, step: Int!): Tenant!
   joinTeam(id: Int!, request: CreateTeamMembershipRequestDto!): Team!
   login(password: String!, username: String!): User!
   removeTeamMember(teamId: Int!, userId: Int!): TeamMember
-  reportContent(id: Int!, report: CreateReportDto!): Content!
   unsetLogo(id: String!, isLogoDark: Boolean!): Tenant!
   updateContent(content: UpdateContentDto!, id: Int!): Content!
   updateEvent(id: Int!, updateEvent: UpdateTeamEventDto!): TeamEvent!
@@ -389,7 +388,6 @@ type Mutation {
   updateUser(id: String!, user: UpdateUserDto!): User!
   updateValidationStep(id: Int!, updateStep: UpdateValidationStepDto!): ValidationStep!
   validateEvent(createValidation: CreateTeamEventValidationDto!, id: Int!): TeamEvent!
-  voteContent(id: Int!, value: Int!): Content!
   wsToken: User!
 }
 
