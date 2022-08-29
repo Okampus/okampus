@@ -391,6 +391,12 @@ type Mutation {
   wsToken: User!
 }
 
+type OIDCEnabled {
+  id: String!
+  isEnabled: Boolean!
+  tenantOidcName: String
+}
+
 input PaginateDto {
   itemsPerPage: Int!
   page: Int!
@@ -433,6 +439,7 @@ type Query {
   getLogos(id: String!): [ProfileImage!]!
   me: User!
   metrics(metrics: ListMetricsDto!): [Metric!]!
+  oidcEnabled(id: String!): OIDCEnabled!
   reportById(id: Int!): Report!
   reports: [Report!]!
   schoolGroupById(id: String!): SchoolGroup!
@@ -859,6 +866,7 @@ type Tenant {
   oidcDiscoveryUrl: String!
   oidcEnabled: Boolean!
   oidcScopes: String!
+  tenantOidcName: String!
   updatedAt: DateTime!
   userValidations: [ValidationStep!]!
   validationSteps: [ValidationStep!]!
@@ -1015,6 +1023,7 @@ input UpdateTenantDto {
   oidcDiscoveryUrl: String
   oidcEnabled: Boolean
   oidcScopes: String
+  tenantOidcName: String
 }
 
 input UpdateThreadDto {

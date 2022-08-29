@@ -1,5 +1,5 @@
 <template>
-    <div class="text-0 flex flex-col items-center" :class="[wholePage ? 'm-20' : 'm-2']">
+    <div class="text-0 flex flex-col items-center" :class="[wholePage ? 'm-10' : 'm-2']">
         <router-link v-if="wholePage" to="/" class="mb-10 w-fit">
             <AppLogo :scale="2" />
         </router-link>
@@ -13,16 +13,16 @@
             </template>
         </div>
 
-        <div class="text-center" :class="[wholePage ? 'text-4xl mb-20' : 'text-lg']">
+        <div class="text-center" :class="[wholePage ? 'text-4xl' : 'text-lg']">
             <template v-if="!online">
                 {{ offline.description }}
             </template>
             <template v-else>
-                {{ message.description }}
+                {{ customMessage ? customMessage : message.description }}
             </template>
         </div>
 
-        <div v-if="wholePage" class="flex flex-row gap-5">
+        <div v-if="wholePage && showHome" class="mt-10 flex flex-row gap-5">
             <ButtonHome />
             <ButtonLogin v-if="props.code === errorCodes.UNAUTHORIZED" />
         </div>
@@ -47,6 +47,14 @@
             required: true,
         },
         wholePage: {
+            type: Boolean,
+            default: true,
+        },
+        customMessage: {
+            type: String,
+            default: null,
+        },
+        showHome: {
             type: Boolean,
             default: true,
         },

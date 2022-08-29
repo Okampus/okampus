@@ -68,11 +68,13 @@
                             </div>
                             <div class="mt-8 text-center text-2xl">
                                 Connectez-vous pour accéder à Okampus
-                                <img
-                                    :src="okampus"
-                                    alt="OKAMPUS"
-                                    class="inline h-10 w-10 rounded-lg border-2 border-black"
-                                />
+                                <a href="https://discord.gg/bEwwT9SNQX">
+                                    <img
+                                        :src="okampus"
+                                        alt="OKAMPUS"
+                                        class="inline h-10 w-10 rounded-lg border-2 border-black"
+                                    />
+                                </a>
                                 !
                             </div>
                         </div>

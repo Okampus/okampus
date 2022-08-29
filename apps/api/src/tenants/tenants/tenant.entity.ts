@@ -31,11 +31,15 @@ export class Tenant extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  logo?: string | null = null;
+  logo: string | null = null;
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  logoDark?: string | null = null;
+  logoDark: string | null = null;
+
+  @Field(() => String)
+  @Property()
+  tenantOidcName: string | null = null;
 
   @Field(() => Boolean)
   @Property()
@@ -43,29 +47,30 @@ export class Tenant extends BaseEntity {
 
   @Field(() => String)
   @Property()
-  oidcClientId?: string | null = null;
+  oidcClientId: string | null = null;
 
   @Field(() => String)
   @Property({ type: 'text', hidden: true })
-  oidcClientSecret?: string | null = null;
+  oidcClientSecret: string | null = null;
 
   @Field(() => String)
   @Property({ type: 'text' })
-  oidcDiscoveryUrl?: string | null = null;
+  oidcDiscoveryUrl: string | null = null;
 
   @Field(() => String)
   @Property()
-  oidcScopes?: string | null = null;
+  oidcScopes: string | null = null;
 
   @Field(() => String)
   @Property({ type: 'text' })
-  oidcCallbackUri?: string | null = null;
+  oidcCallbackUri: string | null = null;
 
   constructor(options: {
     id: string;
     eventValidationForm?: object[] | object | null;
     logo?: string | null;
     logoDark?: string | null;
+    tenantOidcName?: string | null;
     oidcEnabled?: boolean;
     oidcClientId?: string | null;
     oidcClientSecret?: string | null;

@@ -24,6 +24,11 @@ export class CreateTenantDto {
   @IsString()
   logoDark?: string | null;
 
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  tenantOidcName?: string;
+
   @Field(() => Boolean, { nullable: true })
   @IsOptional()
   @IsBoolean()
