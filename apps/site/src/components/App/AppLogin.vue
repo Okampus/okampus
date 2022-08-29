@@ -93,7 +93,7 @@
 
     import { showErrorToast, showSuccessToast, showToastGraphQLError } from '@/utils/toast'
     import { emitter } from '@/shared/modules/emitter'
-    import { getExpirationDate, logOutOnExpire } from '@/utils/logOutOnExpire'
+    import { logOutOnExpire } from '@/utils/logOutOnExpire'
     import { getTenant } from '@/utils/getTenant'
     import AppException from '@/views/App/AppException.vue'
 
@@ -125,9 +125,7 @@
     const auth = useAuthStore()
     onDone(({ data }) => {
         auth.user = data.login
-        auth.expiresAt = getExpirationDate()
-        console.log('auth.expiresAt', auth.expiresAt)
-        logOutOnExpire(auth.expiresAt)
+        logOutOnExpire()
         emitter.emit('login')
         emit('logged-in')
         showSuccessToast('Connexion réussie !')

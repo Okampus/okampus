@@ -11,6 +11,8 @@
     import { useRouter } from 'vue-router'
 
     import { getMe } from '@/graphql/queries/auth/getMe'
+    import { logOutOnExpire } from '@/utils/logOutOnExpire'
+    import { emitter } from '@/shared/modules/emitter'
 
     const router = useRouter()
     const { onResult, onError } = useQuery(getMe)
@@ -20,6 +22,8 @@
     onResult(({ data }) => {
         if (data.me) {
             auth.user = data.me
+            logOutOnExpire()
+            emitter.emit('login')
             showSuccessToast('Connexion réussie !')
         } else {
             showErrorToast("[Erreur] Vos informations utilisateur n'ont pas pu être récupérées.")

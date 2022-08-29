@@ -14,8 +14,8 @@ import type { TenantUserDto } from './dto/tenant-user.dto';
 export interface TokenResponse {
   accessToken: string;
   refreshToken: string | null;
-  accessTokenExpiresIn: number;
-  refreshTokenExpiresIn: number;
+  accessTokenExpiresAt: number;
+  refreshTokenExpiresAt: number;
 }
 
 @Injectable()
@@ -58,8 +58,8 @@ export class AuthService {
       refreshToken: config.tokens.accessTokenExpirationSeconds
         ? await this.jwtService.signAsync(payload, this.getTokenOptions('refresh'))
         : null,
-      accessTokenExpiresIn: config.tokens.accessTokenExpirationSeconds * 1000,
-      refreshTokenExpiresIn: config.tokens.refreshTokenExpirationSeconds * 1000,
+      accessTokenExpiresAt: Date.now() + config.tokens.accessTokenExpirationSeconds * 1000,
+      refreshTokenExpiresAt: Date.now() + config.tokens.refreshTokenExpirationSeconds * 1000,
     };
   }
 

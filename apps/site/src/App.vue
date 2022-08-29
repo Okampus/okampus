@@ -274,11 +274,7 @@
         }
     })
 
-    nextTick(() => {
-        console.log('USER', auth.user)
-        console.log('EXPIRES AT', auth.expiresAt)
-        !isEmpty(auth.user) && logOutOnExpire(auth.expiresAt)
-    })
+    nextTick(() => !isEmpty(auth.user) && logOutOnExpire(auth.expiresAt))
 </script>
 
 <style lang="scss">
