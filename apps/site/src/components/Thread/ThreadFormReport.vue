@@ -1,6 +1,6 @@
 <template>
     <FormPopUp
-        :submit="(report) => createReport({ id: content.id, report })"
+        :submit="(report) => createReportMutation({ id: content.id, report })"
         :show="showReport"
         :form-schema="reportFormSchema"
         @close="emit('close')"
@@ -12,7 +12,7 @@
 
     import { useMutation } from '@vue/apollo-composable'
 
-    import { report } from '@/graphql/queries/interactions/reportContent'
+    import { createReport } from '@/graphql/queries/interactions/createReport'
     import { showSuccessToast, showToastGraphQLError } from '@/utils/toast.js'
     import FormPopUp from '../Form/FormPopUp.vue'
 
@@ -49,7 +49,7 @@
         },
     ]
 
-    const { mutate: createReport, onDone, onError } = useMutation(report)
+    const { mutate: createReportMutation, onDone, onError } = useMutation(createReport)
 
     onDone(() => {
         showSuccessToast('Votre signalement a bien été pris en compte.')

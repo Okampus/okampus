@@ -50,7 +50,7 @@
 
     import { useAuthStore } from '@/store/auth.store'
     import { fullname } from '@/utils/users'
-    import { addContent } from '@/graphql/queries/threads/addContent'
+    import { createContent } from '@/graphql/queries/threads/createContent'
 
     import { ref } from 'vue'
 
@@ -64,7 +64,7 @@
     const body = ref('')
     const editor = ref(null)
 
-    const { mutate: addReply } = useMutation(addContent)
+    const { mutate: addReply } = useMutation(createContent)
 
     const auth = useAuthStore()
 </script>

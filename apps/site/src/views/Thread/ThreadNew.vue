@@ -152,18 +152,18 @@
     import { useMutation } from '@vue/apollo-composable'
     import { getTeams } from '@/graphql/queries/teams/getTeams'
 
-    import { addThread } from '@/graphql/queries/threads/addThread'
+    import { createThread } from '@/graphql/queries/threads/createThread'
 
     import { useRouter } from 'vue-router'
     import { showErrorToast, showSuccessToast } from '@/utils/toast.js'
 
     const router = useRouter()
 
-    const { mutate: createThread, onDone } = useMutation(addThread)
+    const { mutate: createThreadMutation, onDone } = useMutation(createThread)
 
     onDone(({ data }) =>
         showSuccessToast('Création réussie ! Tu vas être redirigé sur ton post.', {
-            onClose: () => router.push(`/forum/post/${data.addThread.id}`),
+            onClose: () => router.push(`/forum/post/${data.createThread.id}`),
         }),
     )
 
@@ -208,7 +208,7 @@
         delete state.assignees
         delete state.noAssignees
 
-        createThread({ thread: state })
+        createThreadMutation({ thread: state })
     }
 
     const CLUBS_VALUE = 'clubs'

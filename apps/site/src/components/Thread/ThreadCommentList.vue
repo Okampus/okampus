@@ -57,7 +57,7 @@
     import { COMMENT } from '@/shared/types/content-kinds.enum'
 
     import { fullname } from '@/utils/users'
-    import { addContent } from '@/graphql/queries/threads/addContent'
+    import { createContent } from '@/graphql/queries/threads/createContent'
     import { useMutation } from '@vue/apollo-composable'
 
     import { computed, ref, watch } from 'vue'
@@ -111,7 +111,7 @@
     const body = ref('')
     const showAll = ref(false)
 
-    const { mutate: addComment, onDone } = useMutation(addContent)
+    const { mutate: addComment, onDone } = useMutation(createContent)
     onDone(() => {
         showAll.value = true
         commentsActive.value = props.comments.map(() => false)

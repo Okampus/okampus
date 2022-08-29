@@ -35,10 +35,11 @@ export class FavoritesController {
 
   @Get()
   public async findAllFavorites(
+    @Param('id') id: string,
     @CurrentUser() user: User,
     @Query() query: PaginateDto,
   ): Promise<PaginatedResult<Favorite>> {
-    return await this.favoritesService.findAll(user, normalizePagination(query));
+    return await this.favoritesService.findAll(user, id, normalizePagination(query));
   }
 
   @Get(':id')

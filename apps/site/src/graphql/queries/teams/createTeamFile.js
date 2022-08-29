@@ -1,9 +1,9 @@
 import { fileFragment } from '@/graphql/fragments/fileFragment'
 import gql from 'graphql-tag'
 
-export const addTeamFile = gql`
-    mutation addTeamFile($file: Upload!, $createFile: CreateTeamFileDto!) {
-        addTeamFile(file: $file, createFile: $createFile) {
+export const createTeamFile = gql`
+    mutation createTeamFile($file: Upload!, $createFile: CreateTeamFileDto!) {
+        createTeamFile(file: $file, createFile: $createFile) {
             id
             teamFiles {
                 id

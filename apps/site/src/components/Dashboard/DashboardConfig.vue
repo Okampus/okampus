@@ -175,7 +175,7 @@
 
     import { useMutation, useQuery } from '@vue/apollo-composable'
 
-    import { addValidationStep } from '@/graphql/queries/config/addValidationStep'
+    import { createValidationStep } from '@/graphql/queries/config/createValidationStep'
     import { updateValidationStep } from '@/graphql/queries/config/updateValidationStep'
     import { insertValidationStep } from '@/graphql/queries/config/insertValidationStep'
 
@@ -215,7 +215,7 @@
         })
     }
 
-    const { mutate: addStep, onDone: onDoneAddStep } = useMutation(addValidationStep)
+    const { mutate: addStep, onDone: onDoneAddStep } = useMutation(createValidationStep)
     onDoneAddStep(() => {
         showSuccessToast('Étape de validation ajoutée 🎉')
         showValidationStepForm.value = false

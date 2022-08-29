@@ -1,9 +1,9 @@
 import { partialUserFragment } from '@/graphql/fragments/userFragment'
 import gql from 'graphql-tag'
 
-export const addValidationStep = gql`
-    mutation addValidationStep($createStep: CreateValidationStepDto!) {
-        addValidationStep(createStep: $createStep) {
+export const createValidationStep = gql`
+    mutation createValidationStep($createStep: CreateValidationStepDto!) {
+        createValidationStep(createStep: $createStep) {
             id
             validationSteps {
                 id

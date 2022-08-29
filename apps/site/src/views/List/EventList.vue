@@ -1,7 +1,7 @@
 <template>
     <GraphQLQuery
         :query="getEvents"
-        :variables="{ filter: { state: 'Published' } }"
+        :variables="{ filter: { state: PUBLISHED } }"
         :update="(date) => date?.events"
         :whole-page="true"
     >
@@ -55,6 +55,8 @@
 
     import { useBreakpoints } from '@vueuse/core'
     import { twBreakpoints } from '@/tailwind'
+
+    import { PUBLISHED } from '@/shared/types/event-states.enum'
 
     const breakpoints = useBreakpoints(twBreakpoints)
     const sm = breakpoints.greater('ssm')

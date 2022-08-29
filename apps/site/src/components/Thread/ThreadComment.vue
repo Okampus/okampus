@@ -118,9 +118,9 @@
     import urlJoin from 'url-join'
     import { useMutation } from '@vue/apollo-composable'
     import { editContent } from '@/graphql/queries/threads/editContent'
-    import { vote } from '@/graphql/queries/interactions/voteContent'
+    import { vote } from '@/graphql/queries/interactions/createVote'
     import { fullname } from '@/utils/users'
-    import { favorite } from '@/graphql/queries/interactions/favoriteContent'
+    import { favorite } from '@/graphql/queries/interactions/createFavorite'
     import { useRoute } from 'vue-router'
     import { showErrorToast, showInfoToast, showToastGraphQLError, showWarningToast } from '@/utils/toast.js'
 

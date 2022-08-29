@@ -1,9 +1,9 @@
 import gql from 'graphql-tag'
 import { contentFragment } from '@/graphql/fragments/contentFragment'
 
-export const report = gql`
-    mutation report($id: Int!, $report: CreateReportDto!) {
-        reportContent(id: $id, report: $report) {
+export const createReport = gql`
+    mutation createReport($id: Int!, $report: CreateReportDto!) {
+        createReport(id: $id, report: $report) {
             ...ContentInfo
         }
     }

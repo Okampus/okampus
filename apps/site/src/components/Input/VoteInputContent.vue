@@ -10,7 +10,7 @@
 <script setup>
     import VoteInput from '@/components/Input/VoteInput.vue'
     import { useMutation } from '@vue/apollo-composable'
-    import { vote } from '@/graphql/queries/interactions/voteContent'
+    import { vote } from '@/graphql/queries/interactions/createVote'
 
     defineProps({
         content: {
