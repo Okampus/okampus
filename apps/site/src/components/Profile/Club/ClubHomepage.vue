@@ -1,9 +1,10 @@
 <template>
     <div class="mt-4">
         <iframe
+            v-if="club.presentationVideo"
             class="float-left inline aspect-[16/9] h-fit pr-6 pb-6"
             :class="club.longDescription ? 'md:w-[30rem] md-max:mb-4 md-max:w-full' : 'w-full'"
-            src="https://www.youtube.com/embed/gfxmxDQ6sPM"
+            :src="`https://www.youtube.com/embed/${embedLink}`"
             frameborder="0"
             allowfullscreen
         />
@@ -18,10 +19,18 @@
 
 <script setup>
     import MdRenderer from '@/components/Input/Editor/MdRenderer.vue'
-    defineProps({
+    import { computed } from 'vue'
+    const props = defineProps({
         club: {
             type: Object,
             required: true,
         },
     })
+
+    const embedLink = computed(
+        () =>
+            props.club.presentationVideo?.match?.(
+                /(?:youtu.*be.*)\/(?:watch\?v=|embed\/|v|shorts|)(.*?(?:(?=[&#?])|$))/,
+            )?.[1],
+    )
 </script>
