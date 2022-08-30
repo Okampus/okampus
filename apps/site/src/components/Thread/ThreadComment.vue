@@ -105,26 +105,30 @@
     import TipRelativeDateModified from '@/components/UI/Tip/TipRelativeDateModified.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
-    import { capitalize, computed, nextTick, ref } from 'vue'
-    import { useAuthStore } from '@/store/auth.store'
     import { emitter } from '@/shared/modules/emitter'
     import {
         getContentDemonstrative,
         getContentName,
         isContentFeminine,
     } from '@/shared/types/content-kinds.enum'
+
     import router from '@/router'
-    import { getURL } from '@/utils/routeUtils'
     import urlJoin from 'url-join'
-    import { useMutation } from '@vue/apollo-composable'
-    import { editContent } from '@/graphql/queries/threads/editContent'
-    import { vote } from '@/graphql/queries/interactions/createVote'
+
     import { fullname } from '@/utils/users'
-    import { favorite } from '@/graphql/queries/interactions/createFavorite'
-    import { useRoute } from 'vue-router'
+    import { getURL } from '@/utils/routeUtils'
     import { showErrorToast, showInfoToast, showToastGraphQLError, showWarningToast } from '@/utils/toast.js'
 
-    const auth = useAuthStore()
+    import { editContent } from '@/graphql/queries/threads/editContent'
+    import { vote } from '@/graphql/queries/interactions/createVote'
+    import { favorite } from '@/graphql/queries/interactions/createFavorite'
+
+    import { useRoute } from 'vue-router'
+    import { useMutation } from '@vue/apollo-composable'
+    import { capitalize, computed, nextTick, ref } from 'vue'
+
+    import localStore from '@/store/local.store'
+
     const route = useRoute()
 
     const props = defineProps({
@@ -153,8 +157,8 @@
     const editing = ref(false)
 
     const authorIsOp = computed(() => props.thread.post.author.id === props.comment.author.id)
-    const userIsAuthor = computed(() => props.thread.post.author.id === auth.user.id)
-    const userIsAdmin = computed(() => auth.user?.roles?.includes('admin'))
+    const userIsAuthor = computed(() => props.thread.post.author.id === localStore.value.me.id)
+    const userIsAdmin = computed(() => localStore.value.me?.roles?.includes('admin'))
 
     const { mutate: voteContent } = useMutation(vote)
     const { mutate: favoriteContent } = useMutation(favorite)
@@ -231,6 +235,6 @@
         textClass: 'text-sm',
         editorClasses: ['text-sm'],
         editorButtons: [],
-        placeholder: `${fullname(auth.user)} va commenter...`,
+        placeholder: `${fullname(localStore.value.me)} va commenter...`,
     }
 </script>

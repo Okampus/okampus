@@ -73,7 +73,6 @@
     import { restrictedRoles, specialRoles } from '@/shared/types/club-roles.enum'
 
     // import { ref } from 'vue'
-    // import { useAuthStore } from '@/store/auth.store'
     // import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
 
     // import { useI18n } from 'vue-i18n'

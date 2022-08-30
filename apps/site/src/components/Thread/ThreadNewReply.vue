@@ -23,7 +23,7 @@
                     : 'shadow-md rounded-lg'
             "
         >
-            <ProfileAvatar :avatar="auth.user?.avatar" :name="fullname(auth.user)" />
+            <ProfileAvatar :avatar="localStore.me?.avatar" :name="fullname(localStore.me)" />
             <div class="arrow-left bg-1 mt-2 ml-3" />
             <div class="block w-[calc(100%-6rem)]">
                 <MdEditor
@@ -48,11 +48,12 @@
 
     import { REPLY } from '@/shared/types/content-kinds.enum'
 
-    import { useAuthStore } from '@/store/auth.store'
     import { fullname } from '@/utils/users'
     import { createContent } from '@/graphql/queries/threads/createContent'
 
     import { ref } from 'vue'
+
+    import localStore from '@/store/local.store'
 
     defineProps({
         post: {
@@ -65,8 +66,6 @@
     const editor = ref(null)
 
     const { mutate: addReply } = useMutation(createContent)
-
-    const auth = useAuthStore()
 </script>
 
 <style lang="scss">

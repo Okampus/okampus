@@ -96,8 +96,9 @@
 }
 
 .button-circle {
-    @apply button-grey flex h-12 w-12 cursor-pointer items-center justify-center border-4 border-2-light text-lg dark:border-2-dark md:text-xl;
+    @apply flex h-12 w-12 cursor-pointer items-center justify-center border-4 border-2-light text-lg dark:border-2-dark md:text-xl;
 
+    padding: 0 !important;
     border-radius: 9999px !important;
     box-shadow: none !important;
 }

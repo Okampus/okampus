@@ -82,9 +82,9 @@
 
 <script setup>
     import AppLoader from '@/components/App/AppLoader.vue'
+    import AppException from '@/views/App/AppException.vue'
     import InputWithIcon from '@/components/Input/InputWithIcon.vue'
 
-    import { useAuthStore } from '@/store/auth.store'
     import { computed, ref } from 'vue'
 
     import { useMutation, useQuery } from '@vue/apollo-composable'
@@ -95,7 +95,8 @@
     import { emitter } from '@/shared/modules/emitter'
     import { logOutOnExpire } from '@/utils/logOutOnExpire'
     import { getTenant } from '@/utils/getTenant'
-    import AppException from '@/views/App/AppException.vue'
+
+    import localStore from '@/store/local.store'
 
     const showSso = ref(true)
 
@@ -122,9 +123,8 @@
 
     const oidcUrl = computed(() => `${import.meta.env.VITE_API_URL}/auth/${result.value.oidcEnabled?.id}`)
 
-    const auth = useAuthStore()
     onDone(({ data }) => {
-        auth.user = data.login
+        localStore.value.me = data.login
         logOutOnExpire()
         emitter.emit('login')
         emit('logged-in')

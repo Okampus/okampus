@@ -2,7 +2,7 @@
     <!-- TODO: Refactor all my-auto -->
     <GraphQLQuery
         :query="getUserRequests"
-        :variables="{ id: auth.user.id }"
+        :variables="{ id: localStore.me?.id }"
         :update="(data) => data?.userById"
     >
         <template #default="{ data: user }">
@@ -201,7 +201,6 @@
     import { APPROVED, REJECTED, PENDING, statusNames } from '@/shared/types/club-requests.enum'
 
     // import { useClubsStore } from '@/store/clubs.store'
-    import { useAuthStore } from '@/store/auth.store'
     import { getUserRequests } from '@/graphql/queries/users/getUserById'
     import { ref } from 'vue'
 
@@ -209,9 +208,10 @@
 
     import { useI18n } from 'vue-i18n'
 
+    import localStore from '@/store/local.store'
+
     const { locale } = useI18n({ useScope: 'global' })
 
-    const auth = useAuthStore()
     const WIPText =
         '[Prévu pour Février 2023] Gestion des passations & des assemblées générales / Gestion des rôles avancée'
     // const clubs = useClubsStore()
@@ -240,48 +240,4 @@
     ]
 
     const currentTab = ref(null)
-
-    // const currentMembership = ref(null)
-
-    // const leaveClub = async (membership) => {
-    //     clubs
-    //         .removeMembership(membership.team.id, membership.user.id)
-    //         .then(() => clubs.getMembershipsOf(auth.user))
-    //         .catch((err) => {
-    //             console.error(err)
-    //         })
-    // }
-
-    // const transferRole = async (membership) => {
-    //     currentMembership.value = membership
-    //     clubs.getMembershipsOfClub(membership.team.id).then((memberships) => {
-    //         members.value = memberships
-    //         showTransferModal.value = true
-    //     })
-    // }
-
-    // const transfer = (member) => {
-    //     showTransferModal.value = false
-    //     const role = currentMembership.value.role
-    //     clubs
-    //         .patchMembership(currentMembership.value.team.id, currentMembership.value.user.id, {
-    //             role: 'member',
-    //         })
-    //         .then(() => {
-    //             clubs.getMembershipsOf(auth.user).then((memberships) => {
-    //                 members.value = memberships
-    //             })
-    //         })
-    //     clubs
-    //         .patchMembership(member.team.id, member.user.id, {
-    //             role: role,
-    //         })
-    //         .then(() => {
-    //             clubs.getMembershipsOf(auth.user).then((memberships) => {
-    //                 members.value = memberships
-    //             })
-    //         })
-    // }
-
-    // await Promise.all([clubs.getMembershipsOf(auth.user), clubs.getMembershipRequestsOf(auth.user)])
 </script>

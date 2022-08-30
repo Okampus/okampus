@@ -69,9 +69,10 @@
                 </FileCard>
 
                 <div v-if="!isNil(teamId)" class="card-0 flex flex-col items-center justify-center">
-                    <button class="button-indigo h-10 w-10 rounded-full" @click="showCreateForm">
+                    <button class="button-circle button-indigo" @click="showCreateForm">
                         <i class="fa fa-plus text-xl" />
                     </button>
+                    <div class="text-center text-lg">Créer un nouveau formulaire</div>
                 </div>
             </div>
         </template>

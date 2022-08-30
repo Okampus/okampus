@@ -1,6 +1,6 @@
 import { errorCodes } from '@/shared/errors/app-exceptions.enum'
 import { emitter } from '@/shared/modules/emitter'
-import { useAuthStore } from '@/store/auth.store'
+import localStore from '@/store/local.store'
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 
 const routes = [
@@ -260,12 +260,11 @@ router.beforeEach((to, _, next) => {
 })
 
 router.afterEach((to) => {
-    const auth = useAuthStore()
-    if (to.meta?.requiresAuth && !auth.loggedIn) {
+    if (to.meta?.requiresAuth && !localStore.loggedIn) {
         emitter.emit('error-route', { code: errorCodes.UNAUTHORIZED, path: to.path })
     }
 
-    if (to.meta?.hasPermission && !auth.hasPermission()) {
+    if (to.meta?.hasPermission && !localStore.hasPermission()) {
         emitter.emit('error-route', { code: errorCodes.FORBIDDEN, path: to.path })
     }
 

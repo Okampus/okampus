@@ -10,17 +10,26 @@ const logOutExpired = () => {
     showWarningToast('Votre session a expiré, reconnectez-vous pour accéder à Okampus 🔐', { duration: -1 })
 }
 
-export const logOutOnExpire = () => {
-    const parseIntCookie = (cookie) => parseInt(cookie.split(':')[1].split('.')[0])
-
-    let expirationDate
+const parseIntCookie = (cookie) => parseInt(cookie.split(':')[1].split('.')[0])
+export const getAccessTokenExpiration = () => {
     try {
-        expirationDate = parseIntCookie(cookies.get('accessTokenExpiresAt'))
+        return parseIntCookie(cookies.get('accessTokenExpiresAt'))
     } catch {
-        expirationDate = null
+        return null
     }
+}
 
-    !expirationDate || expirationDate - Date.now() < 0
+export const isAccessTokenExpired = () => {
+    try {
+        return parseIntCookie(cookies.get('accessTokenExpiresAt')) < Date.now()
+    } catch {
+        return false
+    }
+}
+
+export const logOutOnExpire = () => {
+    const expirationDate = getAccessTokenExpiration()
+    !expirationDate || expirationDate < Date.now()
         ? logOutExpired()
         : setToHappen(logOutExpired, expirationDate)
 }

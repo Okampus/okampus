@@ -62,12 +62,11 @@
 
     import { computed, ref, watch } from 'vue'
 
-    import { useAuthStore } from '@/store/auth.store'
     import { useRoute } from 'vue-router'
     import { highlightElement } from '@/utils/domUtils.js'
+    import localStore from '@/store/local.store'
 
     const route = useRoute()
-    const auth = useAuthStore()
 
     const props = defineProps({
         thread: {
@@ -127,7 +126,7 @@
         textClass: 'text-sm',
         editorClasses: ['text-sm'],
         editorButtons: [],
-        placeholder: `${fullname(auth.user)} va commenter...`,
+        placeholder: `${fullname(localStore.value.me)} va commenter...`,
     }
 
     const shownComments = computed(() =>

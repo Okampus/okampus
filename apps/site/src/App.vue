@@ -74,6 +74,7 @@
 </template>
 
 <script setup>
+    import AppBottomSheet from './components/App/AppBottomSheet.vue'
     import LayoutSidebar from '@/components/Layout/LayoutSidebar.vue'
     import LayoutTopbar from '@/components/Layout/LayoutTopbar.vue'
     import AppLogin from './components/App/AppLogin.vue'
@@ -87,29 +88,28 @@
 
     import { useBreakpoints } from '@vueuse/core'
 
+    import { isEmpty } from 'lodash'
+
+    import localStore from '@/store/local.store'
+
+    import $axios from '@/shared/config/axios.config'
+    import { apolloClient } from '@/shared/modules/apollo.client'
+    import { errorCodes } from '@/shared/errors/app-exceptions.enum'
     import { emitter } from '@/shared/modules/emitter'
+
     import { highlightElement } from '@/utils/domUtils'
     import { logOutOnExpire } from '@/utils/logOutOnExpire'
 
     import { inject, nextTick, reactive, ref, watch, watchEffect } from 'vue'
 
-    import { errorCodes } from '@/shared/errors/app-exceptions.enum'
-
     import { useRoute } from 'vue-router'
-    import { useAuthStore } from '@/store/auth.store'
-    import { useUserConfigStore } from '@/store/user-config.store'
 
     import 'swiper/css'
     import 'swiper/css/effect-coverflow'
-    import AppBottomSheet from './components/App/AppBottomSheet.vue'
-    import { isEmpty } from 'lodash'
 
     SwiperCore.use([EffectCoverflow, Navigation, Mousewheel])
 
     const currentRoute = useRoute()
-
-    const config = useUserConfigStore()
-    const auth = useAuthStore()
 
     const breakpoints = useBreakpoints({
         hideSidebar: 1024,
@@ -183,12 +183,12 @@
         if (el) highlightElement(el)
     }
 
-    if (config.darkMode) {
+    if (localStore.value.darkMode === 'dark') {
         document.documentElement.classList.add('dark')
     }
 
     watchEffect(() =>
-        config.darkMode
+        localStore.value.darkMode === 'dark'
             ? document.documentElement.classList.add('dark')
             : document.documentElement.classList.remove('dark'),
     )
@@ -247,7 +247,11 @@
     })
 
     emitter.on('logout', () => {
-        auth.logOut().then(() => {
+        console.log('LOGGING OUT')
+        $axios.get('auth/logout').then(() => {
+            localStore.value.me = {}
+            apolloClient.cache.reset()
+
             if (currentRoute.meta?.requiresAuth) {
                 error.code = errorCodes.UNAUTHORIZED
                 error.path = currentRoute.path
@@ -267,14 +271,15 @@
     watchEffect(() => {
         if (
             error.code &&
-            (currentRoute.path !== error.path || (error.code === errorCodes.UNAUTHORIZED && auth.loggedIn))
+            (currentRoute.path !== error.path ||
+                (error.code === errorCodes.UNAUTHORIZED && localStore.value.loggedIn))
         ) {
             error.code = null
             error.path = null
         }
     })
 
-    nextTick(() => !isEmpty(auth.user) && logOutOnExpire(auth.expiresAt))
+    nextTick(() => !isEmpty(localStore.value.me) && logOutOnExpire())
 </script>
 
 <style lang="scss">

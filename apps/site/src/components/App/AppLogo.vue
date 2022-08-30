@@ -19,8 +19,9 @@
     import { getTenant } from '@/utils/getTenant'
     import { showToastGraphQLError } from '@/utils/toast'
     import { useQuery } from '@vue/apollo-composable'
-    import { useUserConfigStore } from '@/store/user-config.store'
     import { computed } from 'vue'
+
+    import localStore from '@/store/local.store'
 
     const props = defineProps({
         scale: {
@@ -33,8 +34,6 @@
         },
     })
 
-    const config = useUserConfigStore()
-
     const { result, loading, onError } = useQuery(getLogoUrls, { id: getTenant() })
     onError((errors) =>
         showToastGraphQLError(errors, `Les logos du tenant '${getTenant()}' n'ont pas pu être chargés !`),
@@ -46,7 +45,7 @@
                 getLogoUrls: { logoUrl, logoDarkUrl },
             } = result.value
 
-            return (config.darkMode && props.only !== 'light') || props.only === 'dark'
+            return (localStore.value.darkMode && props.only !== 'light') || props.only === 'dark'
                 ? logoDarkUrl
                     ? logoDarkUrl
                     : logoUrl
@@ -57,6 +56,8 @@
                 : logoSrc
         }
 
-        return (config.darkMode && props.only !== 'light') || props.only === 'dark' ? logoDarkSrc : logoSrc
+        return (localStore.value.darkMode && props.only !== 'light') || props.only === 'dark'
+            ? logoDarkSrc
+            : logoSrc
     })
 </script>

@@ -1040,12 +1040,12 @@ input UpdateThreadDto {
 }
 
 input UpdateUserDto {
-  avatar: String!
-  banner: String!
-  color: String!
-  email: String!
-  shortDescription: String!
-  signature: String!
+  avatar: String
+  banner: String
+  color: String
+  email: String
+  shortDescription: String
+  signature: String
 }
 
 input UpdateValidationStepDto {

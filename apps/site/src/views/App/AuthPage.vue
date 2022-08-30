@@ -4,7 +4,6 @@
 
 <script setup>
     import AppLoader from '@/components/App/AppLoader.vue'
-    import { useAuthStore } from '@/store/auth.store'
     import { showErrorToast, showSuccessToast, showToastGraphQLError } from '@/utils/toast'
 
     import { useQuery } from '@vue/apollo-composable'
@@ -14,14 +13,14 @@
     import { logOutOnExpire } from '@/utils/logOutOnExpire'
     import { emitter } from '@/shared/modules/emitter'
 
+    import localStore from '@/store/local.store'
+
     const router = useRouter()
     const { onResult, onError } = useQuery(getMe)
 
-    const auth = useAuthStore()
-
     onResult(({ data }) => {
         if (data.me) {
-            auth.user = data.me
+            localStore.value.me = data.me
             logOutOnExpire()
             emitter.emit('login')
             showSuccessToast('Connexion réussie !')

@@ -49,20 +49,11 @@
 
             <div class="flex justify-between">
                 <div class="bg-2 relative z-10 -mt-[3rem] ml-4 w-fit rounded-2xl p-1">
-                    <AvatarCropper
-                        v-model="editingAvatar"
-                        :upload-url="uploadTypeUrl('avatar')"
-                        :request-options="{ method: 'PUT', credentials: 'include' }"
-                        :cropper-options="{ aspectRatio: 1, zoomable: true, movable: true }"
-                        :labels="{ submit: 'Valider', cancel: 'Annuler' }"
-                        upload-file-name="image.png"
-                        @error="onUploadFailure"
-                        @completed="(res) => onUploadSuccess(res, 'avatar')"
-                    />
-                    <ProfileAvatar :rounded-full="false" :avatar="club.avatar" :size="6" :name="club.name" />
-                    <button
-                        class="button-grey fa fa-camera absolute bottom-0 right-0 mt-2 ml-2 flex h-8 w-8 items-center justify-center rounded-full text-lg"
-                        @click="editingAvatar = true"
+                    <ModifiableAvatar
+                        :entity="club"
+                        entity-type="team"
+                        :size="6"
+                        :avatar-props="{ roundedFull: false }"
                     />
                 </div>
                 <button
@@ -121,10 +112,12 @@
 
 <script setup>
     import AvatarCropper from 'vue-avatar-cropper'
-    import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
-    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
-    import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
+    import FormPopUp from '@/components/Form/FormPopUp.vue'
     import FormList from '@/components/FormKit/FormList.vue'
+
+    import ModifiableAvatar from '@/components/Profile/ModifiableAvatar.vue'
+    import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
+    import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
 
     import InfoIcon from '@/icons/InfoIcon.vue'
 
@@ -141,7 +134,6 @@
     import { showSuccessToast, showToastGraphQLError } from '@/utils/toast'
 
     import { twBreakpoints } from '@/tailwind'
-    import FormPopUp from '@/components/Form/FormPopUp.vue'
 
     const breakpoints = useBreakpoints(twBreakpoints)
     const md = breakpoints.greater('md')
@@ -187,7 +179,6 @@
 
     const uploadTypeUrl = (type) => `${import.meta.env.VITE_API_URL}/teams/teams/${props.club.id}/${type}`
 
-    const editingAvatar = ref(false)
     const editingBanner = ref(false)
 
     const name = {
