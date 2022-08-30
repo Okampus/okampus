@@ -118,10 +118,10 @@ export class AuthController {
       res.cookie('wsToken', wsToken, {
         ...cookiePublicOptions,
         maxAge: config.tokens.wsTokenExpirationSeconds * 1000,
-      });
-      return;
+      }).send();
+    } else {
+      new BadRequestException('Missing access token');
     }
-    new BadRequestException('Missing access token');
   }
 
   @Get('me')
