@@ -154,7 +154,9 @@
                                         }))
                                     "
                                 >
-                                    <button class="button-green flex items-center justify-center gap-2 py-0.5 px-1.5">
+                                    <button
+                                        class="button-green flex items-center justify-center gap-2 py-0.5 px-1.5"
+                                    >
                                         <i class="fa fa-check" /> Valider
                                     </button>
                                 </ModalDropdown>
@@ -171,15 +173,31 @@
                                         }))
                                     "
                                 >
-                                    <button class="button-red flex items-center justify-center gap-2 py-0.5 px-1.5">
+                                    <button
+                                        class="button-red flex items-center justify-center gap-2 py-0.5 px-1.5"
+                                    >
                                         <i class="fa fa-xmark" /> Refuser
                                     </button>
                                 </ModalDropdown>
                             </div>
                         </template>
                         <template v-else-if="data.state === SUBMITTED">
-                            <div v-tooltip="`Prochaine validation : ${config.validationSteps.find((val) => val.step === data.lastValidationStep?.step + 1)?.name}`" class="bg-1 w-fit rounded-md px-2 py-0.5">
-                                ⌛ {{ config.validationSteps.find((val) => val.step === data.lastValidationStep?.step + 1)?.name }}
+                            <div
+                                v-tooltip="
+                                    `Prochaine validation : ${
+                                        config.validationSteps.find(
+                                            (val) => val.step === data.lastValidationStep?.step + 1,
+                                        )?.name
+                                    }`
+                                "
+                                class="bg-1 w-fit rounded-md px-2 py-0.5"
+                            >
+                                ⌛
+                                {{
+                                    config.validationSteps.find(
+                                        (val) => val.step === data.lastValidationStep?.step + 1,
+                                    )?.name
+                                }}
                             </div>
                         </template>
                     </div>
@@ -203,7 +221,7 @@
                 </template>
 
                 <template #validationStep="{ data }">
-                    <div>{{ data.lastValidationStep?.name ? (data.lastValidationStep?.name + (data.state === REJECTED ? ' ❌' : ' ✅')) : '<Aucune>' }}</div>
+                    <div>{{ currentValidationStepText(data) }}</div>
                     <div>{{ validationStepText(data) }}</div>
                 </template>
 
@@ -353,13 +371,18 @@
     const validatingStep = ref(null)
 
     const validationFormSubmission = ref(null)
-    const validationStepText = (data) => data.state === PUBLISHED
-                ? 'Publié 📰'
-                : data.state === REJECTED
-                ? 'Refusé ⛔'
-                : `${validationStepsCount - lastStep(data)} étapes restante${
-                      validationStepsCount - lastStep(data) > 1 ? 's' : ''
-                  }`
+    const currentValidationStepText = (data) =>
+        data.lastValidationStep?.name
+            ? data.lastValidationStep?.name + (data.state === REJECTED ? ' ❌' : ' ✅')
+            : '<Aucune>'
+    const validationStepText = (data) =>
+        data.state === PUBLISHED
+            ? 'Publié 📰'
+            : data.state === REJECTED
+            ? 'Refusé ⛔'
+            : `${validationStepsCount - lastStep(data)} étapes restante${
+                  validationStepsCount - lastStep(data) > 1 ? 's' : ''
+              }`
 
     const validationFormSchema = computed(() => [
         {
@@ -408,27 +431,27 @@
             id: VALIDATION,
             name: 'Vos validations',
             icon: 'unlock',
-            amount: events.value?.events
-                    ?.filter(event => event.state === SUBMITTED && canValidate(event)).length,
+            amount: events.value?.events?.filter((event) => event.state === SUBMITTED && canValidate(event))
+                .length,
         },
         {
             id: PENDING_TAB,
             name: 'Autres validations en attente',
             icon: 'envelope',
-            amount: events.value?.events
-                    ?.filter(event => event.state === SUBMITTED && !canValidate(event)).length,
+            amount: events.value?.events?.filter((event) => event.state === SUBMITTED && !canValidate(event))
+                .length,
         },
         {
             id: VALIDATED_TAB,
             name: 'Validés',
             icon: 'check',
-            amount: events.value?.events?.filter(event => event.state === PUBLISHED).length,
+            amount: events.value?.events?.filter((event) => event.state === PUBLISHED).length,
         },
         {
             id: REJECTED_TAB,
             name: 'Rejetés',
             icon: 'xmark',
-            amount: events.value?.events?.filter(event => event.state === REJECTED).length,
+            amount: events.value?.events?.filter((event) => event.state === REJECTED).length,
         },
     ])
 
@@ -436,9 +459,9 @@
 
     const computedEvents = computed(() =>
         currentTab.value === VALIDATION
-            ? events.value?.events?.filter(event => event.state === SUBMITTED && canValidate(event))
+            ? events.value?.events?.filter((event) => event.state === SUBMITTED && canValidate(event))
             : currentTab.value === PENDING_TAB
-            ? events.value?.events?.filter(event => event.state === SUBMITTED && !canValidate(event))
+            ? events.value?.events?.filter((event) => event.state === SUBMITTED && !canValidate(event))
             : currentTab.value === VALIDATED_TAB
             ? events.value?.events?.filter((event) => event.state === PUBLISHED)
             : events.value?.events?.filter((event) => event.state === REJECTED),
