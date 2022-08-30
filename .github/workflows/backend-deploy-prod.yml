@@ -4,6 +4,10 @@ on:
   push: 
     branches:
       - master
+    paths:
+      - 'apps/api/**'
+      - '!*/**/*.md'
+      - '.github/workflows/backend-deploy-prod.yml'
 
 jobs:
   bump:
