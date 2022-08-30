@@ -25,7 +25,7 @@
                             <p class="text-2 text-lg">{{ user.shortDescription }}</p>
                         </div>
                         <button
-                            v-if="auth.user.id === route.params.userId"
+                            v-if="localStore.me?.id === route.params.userId"
                             class="button-green pill-button"
                             @click="router.push(`/me`)"
                         >
@@ -85,7 +85,6 @@
 
     import { useRoute, useRouter } from 'vue-router'
 
-    import { useAuthStore } from '@/store/auth.store'
     import { fullname } from '@/utils/users'
 
     import { clubRoleNames } from '@/shared/types/club-roles.enum'
@@ -93,12 +92,12 @@
 
     import { useI18n } from 'vue-i18n'
 
+    import localStore from '@/store/local.store'
+
     const { locale } = useI18n({ useScope: 'global' })
 
     const route = useRoute()
     const router = useRouter()
-
-    const auth = useAuthStore()
 
     // TODO: events
     const events = ref([])

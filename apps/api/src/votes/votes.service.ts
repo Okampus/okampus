@@ -5,32 +5,51 @@ import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
-import type { User } from '../users/user.entity';
+import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
+import { User } from '../users/user.entity';
 import { Vote } from './vote.entity';
 
 @Injectable()
 export class VotesService {
   constructor(
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
-    @InjectRepository(Vote) private readonly votesRepository: BaseRepository<Vote>,
+    @InjectRepository(Vote) private readonly voteRepository: BaseRepository<Vote>,
+    @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async findOne(user: User, id: number): Promise<Omit<Vote, 'assign'>> {
+  public async findAll(
+    currentUser: User,
+    userId: string,
+    paginationOptions?: Required<PaginateDto>,
+  ): Promise<PaginatedResult<Vote>> {
+    const user = await this.userRepository.findOneOrFail(userId);
+    const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(currentUser);
+    const visibilityQuery = canSeeHiddenContent ? {} : { content: { isVisible: true } };
+    return await this.voteRepository.findWithPagination(
+      paginationOptions,
+      { user, ...visibilityQuery },
+      {
+        populate: [
+          'user',
+          'content',
+          'content.author',
+          'content.parent',
+          'content.contentMaster',
+          'content.contentMaster.tags',
+        ],
+        orderBy: { createdAt: 'DESC' },
+      },
+    );
+  }
+
+  public async findOne(user: User, id: number): Promise<Vote | null> {
     const content = await this.contentRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, content);
 
-    return await this.votesRepository.findOne({ content, user }) ?? {
-      id: -1,
-      content,
-      user,
-      value: 0,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      contentMaster: null,
-    };
+    return await this.voteRepository.findOne({ content, user });
   }
 
   public async update(user: User, id: number, value: -1 | 0 | 1): Promise<Content> {
@@ -39,7 +58,7 @@ export class VotesService {
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Interact, content);
 
-    let vote = await this.votesRepository.findOne({ content, user });
+    let vote = await this.voteRepository.findOne({ content, user });
     const previousValue = vote?.value ?? 0;
     if (vote && previousValue === value)
       return content;
@@ -49,7 +68,7 @@ export class VotesService {
       vote.value = value;
     else
       vote = new Vote({ content, user, value });
-    await this.votesRepository.persistAndFlush(vote);
+    await this.voteRepository.persistAndFlush(vote);
 
     switch (previousValue) {
       case 0:

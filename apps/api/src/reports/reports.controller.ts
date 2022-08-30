@@ -31,7 +31,7 @@ export class ReportsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Report))
-  public async findAllReports(
+  public async findAll(
     @CurrentUser() user: User,
     @Body() filters: GetReportsDto,
     @Query() query: PaginateDto,
@@ -41,7 +41,7 @@ export class ReportsController {
 
   @Post(':id')
   @CheckPolicies(ability => ability.can(Action.Report, Content))
-  public async createReport(
+  public async create(
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,
     @Body() createReportDto: CreateReportDto,

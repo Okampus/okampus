@@ -14,7 +14,7 @@
                 class="button-blue mt-4 mr-4 flex items-center gap-3 text-base"
                 @click="editValidationForm"
             >
-                <i class="fa fa-pencil" /> Modifier le formulaire de description d'événement
+                <i class="fa fa-pencil" /> Formulaire de description d'événement
             </button>
         </div>
         <div v-else-if="loading">

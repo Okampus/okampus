@@ -14,7 +14,8 @@ import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { User } from '../../users/user.entity';
 import { ValidationStep } from '../validation-steps/validation-step.entity';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
-import { TenantLogoUrls } from './tenant-logos.model';
+import { OIDCEnabled } from './models/oauth-enabled.model';
+import { TenantLogoUrls } from './models/tenant-logos.model';
 import { Tenant } from './tenant.entity';
 import { TenantsService } from './tenants.service';
 
@@ -60,6 +61,13 @@ export class TenantsResolver {
   public async getLogoUrls(@Args('id') id: string): Promise<TenantLogoUrls> {
     const tenant = await this.tenantsService.findOne(id);
     return { id: tenant.id, logoUrl: tenant.logo ?? null, logoDarkUrl: tenant.logoDark ?? null };
+  }
+
+  @Public()
+  @Query(() => OIDCEnabled)
+  public async oidcEnabled(@Args('id') id: string): Promise<OIDCEnabled> {
+    const tenant = await this.tenantsService.findOne(id);
+    return { id: tenant.id, tenantOidcName: tenant.tenantOidcName, isEnabled: tenant.oidcEnabled };
   }
 
   // TODO: Add permission checks

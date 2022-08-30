@@ -83,7 +83,14 @@
 
             <div class="flex items-center justify-center gap-4 p-4">
                 <p class="text-bold text-sm" :class="{ 'hidden': !showUncollapsed }">Mode Sombre</p>
-                <SwitchInput :model-value="config.darkMode" @update:model-value="config.switchDarkMode()" />
+                <SwitchInput
+                    :model-value="localStore.darkMode === 'dark'"
+                    @update:model-value="
+                        (wasLight) => {
+                            localStore.darkMode = wasLight ? 'dark' : 'light'
+                        }
+                    "
+                />
             </div>
         </div>
     </aside>
@@ -94,9 +101,9 @@
     import SwitchInput from '@/components/Input/SwitchInput.vue'
 
     import { sections } from '@/shared/navigation/sidebar-sections.enum'
-    import { computed } from 'vue'
+    import localStore from '@/store/local.store'
 
-    import { useUserConfigStore } from '@/store/user-config.store'
+    import { computed } from 'vue'
 
     const props = defineProps({
         uncollapsed: {
@@ -116,8 +123,6 @@
     const emit = defineEmits(['toggle-side-bar'])
 
     const showUncollapsed = computed(() => props.uncollapsed || props.collapsing)
-
-    const config = useUserConfigStore()
 </script>
 
 <style lang="scss">

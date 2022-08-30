@@ -148,26 +148,24 @@
     import { computed, ref } from 'vue'
     import { EVERYONE, SCHOOL_GROUP_TYPES } from '@/shared/types/school-group-types.enum'
 
-    import { useAuthStore } from '@/store/auth.store'
     import { useMutation } from '@vue/apollo-composable'
     import { getTeams } from '@/graphql/queries/teams/getTeams'
 
-    import { addThread } from '@/graphql/queries/threads/addThread'
+    import { createThread } from '@/graphql/queries/threads/createThread'
 
     import { useRouter } from 'vue-router'
     import { showErrorToast, showSuccessToast } from '@/utils/toast.js'
+    import localStore from '@/store/local.store'
 
     const router = useRouter()
 
-    const { mutate: createThread, onDone } = useMutation(addThread)
+    const { mutate: createThreadMutation, onDone } = useMutation(createThread)
 
     onDone(({ data }) =>
         showSuccessToast('Création réussie ! Tu vas être redirigé sur ton post.', {
-            onClose: () => router.push(`/forum/post/${data.addThread.id}`),
+            onClose: () => router.push(`/forum/post/${data.createThread.id}`),
         }),
     )
-
-    const auth = useAuthStore()
 
     const QUESTION = 'question'
     // const PROBLEM = 'problem'
@@ -208,7 +206,7 @@
         delete state.assignees
         delete state.noAssignees
 
-        createThread({ thread: state })
+        createThreadMutation({ thread: state })
     }
 
     const CLUBS_VALUE = 'clubs'
@@ -224,8 +222,8 @@
                 },
             ]
 
-            if (auth.user.schoolGroupMemberships.length) {
-                for (const schoolGroup of auth.user.schoolGroupMemberships[0].getParents) {
+            if (localStore.value.me?.schoolGroupMemberships?.length) {
+                for (const schoolGroup of localStore.value.me.schoolGroupMemberships[0].getParents) {
                     if (schoolGroup.type !== EVERYONE)
                         options.push({
                             value: schoolGroup.id,

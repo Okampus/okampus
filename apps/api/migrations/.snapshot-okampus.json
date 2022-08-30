@@ -64,11 +64,17 @@
         },
         "level": {
           "name": "level",
-          "type": "smallint",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "enumItems": [
+            "Bronze",
+            "Silver",
+            "Gold",
+            "Platinum"
+          ],
           "mappedType": "enum"
         },
         "icon": {
@@ -97,10 +103,10 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "comment",
-            "post",
-            "reply",
-            "upload"
+            "Comment",
+            "Post",
+            "Reply",
+            "Upload"
           ],
           "mappedType": "enum"
         },
@@ -501,11 +507,16 @@
         },
         "type": {
           "name": "type",
-          "type": "smallint",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "enumItems": [
+            "Starter",
+            "Dish",
+            "Dessert"
+          ],
           "mappedType": "enum"
         }
       },
@@ -768,12 +779,12 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "clubCount",
-            "clubMembershipCount",
-            "clubUniqueMembershipCount",
-            "clubEventCount",
-            "clubCreatedEventCount",
-            "userCount"
+            "ClubCount",
+            "ClubMembershipCount",
+            "ClubUniqueMembershipCount",
+            "ClubEventCount",
+            "ClubCreatedEventCount",
+            "UserCount"
           ],
           "mappedType": "enum"
         }
@@ -845,11 +856,18 @@
         },
         "type": {
           "name": "type",
-          "type": "smallint",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "enumItems": [
+            "Everyone",
+            "Program",
+            "Year",
+            "Sector",
+            "Class"
+          ],
           "mappedType": "enum"
         },
         "parent_id": {
@@ -1167,28 +1185,28 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "amber",
-            "blue",
-            "cyan",
-            "emerald",
-            "fuchsia",
-            "gray",
-            "green",
-            "indigo",
-            "lime",
-            "neutral",
-            "orange",
-            "pink",
-            "purple",
-            "red",
-            "rose",
-            "sky",
-            "slate",
-            "stone",
-            "teal",
-            "violet",
-            "yellow",
-            "zinc"
+            "Amber",
+            "Blue",
+            "Cyan",
+            "Emerald",
+            "Fuchsia",
+            "Gray",
+            "Green",
+            "Indigo",
+            "Lime",
+            "Neutral",
+            "Orange",
+            "Pink",
+            "Purple",
+            "Red",
+            "Rose",
+            "Sky",
+            "Slate",
+            "Stone",
+            "Teal",
+            "Violet",
+            "Yellow",
+            "Zinc"
           ],
           "mappedType": "enum"
         },
@@ -1340,6 +1358,15 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "tenant_oidc_name": {
+          "name": "tenant_oidc_name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
         },
         "oidc_enabled": {
           "name": "oidc_enabled",
@@ -1705,8 +1732,8 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "department",
-            "club"
+            "SchoolDepartment",
+            "Club"
           ],
           "mappedType": "enum"
         },
@@ -1753,6 +1780,24 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "string"
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "presentation_video": {
+          "name": "presentation_video",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "avatar": {
@@ -1909,12 +1954,12 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "owner",
-            "coowner",
-            "treasurer",
-            "secretary",
-            "manager",
-            "member"
+            "Owner",
+            "Coowner",
+            "Treasurer",
+            "Secretary",
+            "Manager",
+            "Member"
           ],
           "mappedType": "enum"
         },
@@ -2022,6 +2067,152 @@
           ],
           "referencedTableName": "public.team",
           "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "day": {
+          "name": "day",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "month": {
+          "name": "month",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "year": {
+          "name": "year",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "state": {
+          "name": "state",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        }
+      },
+      "name": "team_history",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "team_history_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "team_history_parent_id_foreign": {
+          "constraintName": "team_history_parent_id_foreign",
+          "columnNames": [
+            "parent_id"
+          ],
+          "localTableName": "public.team_history",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_history_team_id_foreign": {
+          "constraintName": "team_history_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.team_history",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
           "updateRule": "cascade"
         }
       }
@@ -2262,12 +2453,12 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "owner",
-            "coowner",
-            "treasurer",
-            "secretary",
-            "manager",
-            "member"
+            "Owner",
+            "Coowner",
+            "Treasurer",
+            "Secretary",
+            "Manager",
+            "Member"
           ],
           "mappedType": "enum"
         },
@@ -3020,11 +3211,16 @@
         },
         "role": {
           "name": "role",
-          "type": "smallint",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "enumItems": [
+            "Representative",
+            "Substitute",
+            "Student"
+          ],
           "mappedType": "enum"
         },
         "active": {
@@ -3241,14 +3437,14 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "profile-image",
-            "info-doc",
-            "attachment",
-            "study-doc",
-            "team-file",
-            "team-gallery",
-            "team-receipt",
-            "tenant"
+            "ProfileImage",
+            "InfoDoc",
+            "Attachment",
+            "StudyDoc",
+            "TeamFile",
+            "TeamGallery",
+            "TeamReceipt",
+            "Tenant"
           ],
           "mappedType": "enum"
         }
@@ -3325,6 +3521,15 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "file_id": {
+          "name": "file_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "last_active_date": {
           "name": "last_active_date",
           "type": "timestamptz(0)",
@@ -3343,15 +3548,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "boolean"
-        },
-        "file_id": {
-          "name": "file_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
         },
         "team_id": {
           "name": "team_id",
@@ -3387,7 +3583,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "payment_location": {
@@ -3396,8 +3592,43 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
+        },
+        "payment_method": {
+          "name": "payment_method",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "enumItems": [
+            "Cash",
+            "CreditCard",
+            "Transfer",
+            "Check",
+            "MobilePayment",
+            "Other"
+          ],
+          "mappedType": "enum"
+        },
+        "amount": {
+          "name": "amount",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "amount_payed": {
+          "name": "amount_payed",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
         }
       },
       "name": "team_receipt",
@@ -3459,6 +3690,7 @@
             "id"
           ],
           "referencedTableName": "public.user",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -3494,6 +3726,15 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "file_id": {
+          "name": "file_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "last_active_date": {
           "name": "last_active_date",
           "type": "timestamptz(0)",
@@ -3512,15 +3753,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "boolean"
-        },
-        "file_id": {
-          "name": "file_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
         },
         "team_id": {
           "name": "team_id",
@@ -3721,18 +3953,18 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "examDE",
-            "examCE",
-            "examCC",
-            "examDM",
-            "examTAI",
-            "course",
-            "sheet",
-            "projects",
-            "schoolClass",
-            "eprofClass",
-            "classNote",
-            "other"
+            "ExamDE",
+            "ExamCE",
+            "ExamCC",
+            "ExamDM",
+            "ExamTAI",
+            "Course",
+            "Sheet",
+            "Projects",
+            "SchoolClass",
+            "EprofClass",
+            "ClassNote",
+            "Other"
           ],
           "mappedType": "enum"
         },
@@ -4495,9 +4727,9 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "draft",
-            "committed",
-            "hidden"
+            "Draft",
+            "Committed",
+            "Hidden"
           ],
           "mappedType": "enum"
         },
@@ -4843,11 +5075,16 @@
         },
         "kind": {
           "name": "kind",
-          "type": "smallint",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "enumItems": [
+            "Post",
+            "Reply",
+            "Comment"
+          ],
           "mappedType": "enum"
         },
         "parent_id": {
@@ -5053,8 +5290,8 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "blog",
-            "thread"
+            "Blog",
+            "Thread"
           ],
           "mappedType": "enum"
         },
@@ -5105,11 +5342,18 @@
         },
         "type": {
           "name": "type",
-          "type": "smallint",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "enumItems": [
+            "Question",
+            "Suggestion",
+            "Problem",
+            "Discussion",
+            "Other"
+          ],
           "mappedType": "enum"
         },
         "scope_id": {
@@ -5461,15 +5705,15 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "what",
-            "interesting",
-            "like",
-            "not-an-issue",
-            "bump",
-            "laugh",
-            "unsure",
-            "partial",
-            "perfect"
+            "What",
+            "Interesting",
+            "Like",
+            "NotAnIssue",
+            "Bump",
+            "Laugh",
+            "Unsure",
+            "Partial",
+            "Perfect"
           ],
           "mappedType": "enum"
         }
@@ -6257,7 +6501,7 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "team-event"
+            "TeamEvent"
           ],
           "mappedType": "enum"
         }
@@ -6925,19 +7169,20 @@
           "nullable": false,
           "mappedType": "integer"
         },
-        "means": {
-          "name": "means",
+        "method": {
+          "name": "method",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "cash",
-            "card",
-            "transfer",
-            "check",
-            "other"
+            "Cash",
+            "CreditCard",
+            "Transfer",
+            "Check",
+            "MobilePayment",
+            "Other"
           ],
           "mappedType": "enum"
         },
@@ -6949,18 +7194,31 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "expense",
-            "income"
+            "Expense",
+            "Income"
           ],
           "mappedType": "enum"
         },
         "category": {
           "name": "category",
-          "type": "smallint",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "enumItems": [
+            "Entertainment",
+            "Equipement",
+            "Errands",
+            "Fees",
+            "Insurance",
+            "Logistics",
+            "Marketing",
+            "Provider",
+            "Subscriptions",
+            "Transportation",
+            "Other"
+          ],
           "mappedType": "enum"
         },
         "event_id": {
@@ -7268,9 +7526,9 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "sure",
-            "maybe",
-            "absent"
+            "Sure",
+            "Maybe",
+            "Absent"
           ],
           "mappedType": "enum"
         },

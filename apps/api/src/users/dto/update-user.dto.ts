@@ -9,33 +9,33 @@ import {
 
 @InputType()
 export class UpdateUserDto {
-  @Field()
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @IsEmail()
   email: string;
 
-  @Field()
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
   signature: string;
 
-  @Field()
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @IsHexColor()
   @Transform(({ value }: { value: string }) => (value.startsWith('#') ? value.slice(1) : value))
   color: string;
 
-  @Field()
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
   shortDescription: string;
 
-  @Field()
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
   avatar: string;
 
-  @Field()
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
   banner: string;

@@ -11,8 +11,6 @@ import {
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
 import { FavoritesService } from '../favorites/favorites.service';
-import { CreateReportDto } from '../reports/dto/create-report.dto';
-import { ReportsService } from '../reports/reports.service';
 import { APP_PUB_SUB } from '../shared/lib/constants';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
@@ -33,7 +31,6 @@ export class ContentResolver {
     private readonly contentsService: ContentsService,
     private readonly votesService: VotesService,
     private readonly favoritesService: FavoritesService,
-    private readonly reportsService: ReportsService,
   ) {}
 
   // TODO: Add permission checks
@@ -69,44 +66,8 @@ export class ContentResolver {
     return await this.contentsService.findInteractions(user, content.id);
   }
 
-  // TODO: for future favorite caching in frontend, return both content and favorite in an array
   @Mutation(() => Content)
-  public async reportContent(
-    @CurrentUser() user: User,
-    @Args('id', { type: () => Int }) id: number,
-    @Args('report') report: CreateReportDto,
-  ): Promise<Content> {
-    const updatedContent = await this.reportsService.create(user, id, report);
-    await this.pubSub.publish(SubscriptionType.ReportAdded, { reportAdded: updatedContent });
-    return updatedContent;
-  }
-
-  // TODO: for future favorite caching in frontend, return both content and favorite in an array
-  @Mutation(() => Content)
-  public async favoriteContent(
-    @CurrentUser() user: User,
-    @Args('id', { type: () => Int }) id: number,
-    @Args('favorite', { type: () => Boolean }) favorite: boolean,
-  ): Promise<Content> {
-    const updatedContent = await this.favoritesService.update(user, id, favorite);
-    await this.pubSub.publish(SubscriptionType.FavoriteUpdated, { favoriteUpdated: updatedContent });
-    return updatedContent;
-  }
-
-  // TODO: for future vote caching in frontend, return both content and vote in an array
-  @Mutation(() => Content)
-  public async voteContent(
-    @CurrentUser() user: User,
-    @Args('id', { type: () => Int }) id: number,
-    @Args('value', { type: () => Int }) vote: -1 | 0 | 1,
-  ): Promise<Content> {
-    const updatedContent = this.votesService.update(user, id, vote);
-    await this.pubSub.publish(SubscriptionType.VoteUpdated, { voteUpdated: updatedContent });
-    return updatedContent;
-  }
-
-  @Mutation(() => Content)
-  public async addContent(
+  public async createContent(
     @CurrentUser() user: User,
     @Args('child') child: CreateContentWithKindDto,
   ): Promise<Content> {

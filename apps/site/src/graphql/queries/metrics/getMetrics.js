@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 const names =
-    'clubCount,clubEventCount,clubMembershipCount,clubUniqueMembershipCount,clubCreatedEventCount,userCount'
+    'ClubCount,ClubEventCount,ClubMembershipCount,ClubUniqueMembershipCount,ClubCreatedEventCount,UserCount'
 
 export const getAllMetrics = gql`
     query getAllMetrics($after: DateTime!, $before: DateTime!, $interval: String!) {

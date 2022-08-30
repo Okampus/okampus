@@ -16,6 +16,8 @@ import { NotificationsService } from '../shared/modules/notifications/notificati
 import { User } from '../users/user.entity';
 import { Statistics } from './statistics.entity';
 
+type ThreadStatistics = 'commentCount' | 'postCount' | 'replyCount' | 'uploadCount';
+
 @Injectable()
 export class StatisticsListener {
   constructor(
@@ -79,9 +81,10 @@ export class StatisticsListener {
 
     const badgeUnlocked = await this.badgeUnlockRepository.find({ user: stats.user, badge: { statistic } });
     // TODO: Add heavy cache here
+    const key = `${statistic.toLowerCase()}Count` as ThreadStatistics;
     const badges = await this.badgeRepository.find({
       statistic,
-      statisticThreshold: { $lte: stats[`${statistic}Count`] },
+      statisticThreshold: { $lte: stats[key] },
       $nin: badgeUnlocked.map(badge => badge.badge),
     });
 

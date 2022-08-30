@@ -1,9 +1,9 @@
 import { registerEnumType } from '@nestjs/graphql';
 
 export enum MembershipRequestDirection {
-  All = 'all',
-  Incoming = 'incoming',
-  Outgoing = 'outgoing',
+  All = 'All',
+  Incoming = 'Incoming',
+  Outgoing = 'Outgoing',
 }
 
 registerEnumType(MembershipRequestDirection, { name: 'MembershipRequestDirection' });

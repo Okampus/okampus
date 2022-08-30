@@ -1,4 +1,5 @@
-import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { InputType, OmitType, PartialType } from '@nestjs/graphql';
 import { CreateTeamReceiptDto } from './create-team-receipt.dto';
 
-export class UpdateTeamReceiptDto extends PartialType(OmitType(CreateTeamReceiptDto, ['id'])) {}
+@InputType()
+export class UpdateTeamReceiptDto extends PartialType(OmitType(CreateTeamReceiptDto, ['teamId'])) {}

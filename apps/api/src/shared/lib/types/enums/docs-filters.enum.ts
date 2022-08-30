@@ -1,9 +1,14 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum StudyDocFilter {
-  Subject = 'subject',
-  Type = 'type',
-  Year = 'year',
+  Subject = 'Subject',
+  Type = 'Type',
+  Year = 'Year',
 }
 
 export enum InfoDocFilter {
-  Year = 'year',
+  Year = 'Year',
 }
+
+registerEnumType(StudyDocFilter, { name: 'StudyDocFilter' });
+registerEnumType(InfoDocFilter, { name: 'InfoDocFilter' });

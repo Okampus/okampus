@@ -54,9 +54,9 @@
                         <LabelTag v-if="adminValidated" tag-name="Officiel" tag-color="orange" />
 
                         <i
-                            v-else-if="auth.user?.roles?.includes(ADMIN) || userIsOp"
+                            v-else-if="localStore.me?.roles?.includes?.(ADMIN) || userIsOp"
                             class="fa text-5 cursor-pointer text-sm"
-                            :class="auth.user?.roles?.includes?.(ADMIN) ? 'fa-check-double' : 'fa-check'"
+                            :class="localStore.me?.roles?.includes?.(ADMIN) ? 'fa-check-double' : 'fa-check'"
                             @click="
                                 validateContent({
                                     id: thread.id,
@@ -133,7 +133,6 @@
 
     import { computed, nextTick, ref } from 'vue'
 
-    import { useAuthStore } from '@/store/auth.store'
     import { useRoute } from 'vue-router'
 
     import { ADMIN } from '@/shared/types/school-roles.enum'
@@ -160,10 +159,10 @@
     import { showErrorToast, showInfoToast, showToastGraphQLError, showWarningToast } from '@/utils/toast'
 
     import { useI18n } from 'vue-i18n'
+    import localStore from '@/store/local.store'
 
     const { locale } = useI18n({ useScope: 'global' })
 
-    const auth = useAuthStore()
     const route = useRoute()
 
     const props = defineProps({
@@ -194,9 +193,9 @@
     const { mutate: validateContent } = useMutation(updateThread)
 
     const authorIsOp = computed(() => props.thread.post.author.id === props.content.author.id)
-    const userIsOp = computed(() => props.thread.post.author.id === auth.user.id)
-    const userIsAuthor = computed(() => props.content.author.id === auth.user.id)
-    const userIsAdmin = computed(() => auth.user?.roles?.includes('admin'))
+    const userIsOp = computed(() => props.thread.post.author.id === localStore.value.me.id)
+    const userIsAuthor = computed(() => props.content.author.id === localStore.value.me.id)
+    const userIsAdmin = computed(() => localStore.value.me?.roles?.includes('admin'))
 
     const bottomActions = [
         {

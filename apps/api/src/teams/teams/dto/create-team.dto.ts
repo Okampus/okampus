@@ -40,6 +40,16 @@ export class CreateTeamDto {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
+  status?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  presentationVideo?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
   avatar?: string;
 
   @Field(() => String, { nullable: true })

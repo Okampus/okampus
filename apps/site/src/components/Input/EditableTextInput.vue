@@ -32,7 +32,7 @@
         <div v-else-if="currentValue" class="text-1 always-break-words" :class="[textClass, displayClass]">
             {{ currentValue }}
             <button
-                class="button-blue ml-2 inline-flex h-6 w-6 items-center justify-center rounded-full p-0"
+                class="button-blue ml-2 inline-flex h-6 !min-h-[0px] w-6 items-center justify-center rounded-full p-0"
                 @click="showInput"
             >
                 <i class="fa fa-pen text-xs" />

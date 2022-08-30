@@ -3,7 +3,7 @@
         <div class="h-content relative">
             <Transition name="switch">
                 <div
-                    v-if="!auth.agreedToTerms"
+                    v-if="!localStore.agreedToTerms"
                     class="absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center"
                 >
                     <div
@@ -48,7 +48,7 @@
                                 v-if="counting"
                                 v-slot="{ totalSeconds }"
                                 :time="4000"
-                                @end="onCountdownEnd"
+                                @end="counting.value = false"
                                 >{{ totalSeconds }}</VueCountdown
                             >
                             <div v-else>J'ai pris connaissance de ces informations et souhaite continuer</div>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div
-                    v-else-if="!auth.loggedIn"
+                    v-else-if="!localStore.loggedIn"
                     class="absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center"
                 >
                     <AppLogin class="absolute z-10 w-[80vw] opacity-90 md:w-[60vw] lg:w-[40vw]">
@@ -68,11 +68,13 @@
                             </div>
                             <div class="mt-8 text-center text-2xl">
                                 Connectez-vous pour accéder à Okampus
-                                <img
-                                    :src="okampus"
-                                    alt="OKAMPUS"
-                                    class="inline h-10 w-10 rounded-lg border-2 border-black"
-                                />
+                                <a href="https://discord.gg/bEwwT9SNQX">
+                                    <img
+                                        :src="okampus"
+                                        alt="OKAMPUS"
+                                        class="inline h-10 w-10 rounded-lg border-2 border-black"
+                                    />
+                                </a>
                                 !
                             </div>
                         </div>
@@ -88,7 +90,7 @@
                                     ? 'Bonsoir'
                                     : 'Bonjour'
                             }}
-                            {{ auth.user.firstname.split(' ')[0] }} !
+                            {{ localStore.me?.firstname?.split?.(' ')?.[0] }} !
                         </div>
                         <router-link
                             class="hover-arrow-right text-2xl text-blue-600 dark:text-blue-400"
@@ -151,19 +153,17 @@
     import AppLogin from '@/components/App/AppLogin.vue'
     import AppLogo from '@/components/App/AppLogo.vue'
 
-    import { useAuthStore } from '@/store/auth.store'
+    import localStore from '@/store/local.store'
+
     import { ref } from 'vue'
+    import { showSuccessToast } from '@/utils/toast'
 
-    const auth = useAuthStore()
     const counting = ref(true)
-
-    const onCountdownEnd = () => {
-        counting.value = false
-    }
 
     const agreeToTerms = () => {
         if (!counting.value) {
-            auth.agreeToTerms()
+            localStore.value.agreedToTerms = true
+            showSuccessToast("Bienvenue sur la bêta d'Okampus 🎉 !")
         }
     }
 </script>

@@ -151,9 +151,10 @@
 
     import { useI18n } from 'vue-i18n'
 
-    import { useAuthStore } from '@/store/auth.store'
     import { useMutation } from '@vue/apollo-composable'
     import { showSuccessToast, showToastGraphQLError } from '@/utils/toast'
+
+    import localStore from '@/store/local.store'
 
     const { locale } = useI18n({ useScope: 'global' })
 
@@ -162,7 +163,6 @@
     onError(showToastGraphQLError)
 
     const route = useRoute()
-    const auth = useAuthStore()
 
     const variables = computed(() => ({
         id: parseInt(route.params.id),
@@ -172,6 +172,6 @@
 
     const threadType = (typeKey) => threadTypes.find((type) => type.key === typeKey)
 
-    const userIsOp = computed(() => (thread) => thread.post.author.id === auth.user?.id)
-    const userIsAdmin = computed(() => auth.user?.roles?.includes('admin'))
+    const userIsOp = computed(() => (thread) => thread.post.author.id === localStore.value.me?.id)
+    const userIsAdmin = computed(() => localStore.value.me?.roles?.includes('admin'))
 </script>

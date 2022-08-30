@@ -58,7 +58,8 @@ export class ThreadsService {
 
     if (createThread.scope === 'clubs') {
       thread.scope = null;
-      tags.unshift(`${scopeString}${schoolGroups[SchoolGroupType.Everyone].name}${groupTypeIcons[SchoolGroupType.Everyone]}`);
+      // FIXME: don't rely on hardcoded value / array order
+      tags.unshift(`${scopeString}${schoolGroups[0].name}${groupTypeIcons[SchoolGroupType.Everyone]}`);
       tags.unshift(`${groupTypeIcons.clubs}${clubString}`);
     } else {
       const targetSchoolGroup = await this.schoolGroupRepository.findOneOrFail({ id: createThread.scope });

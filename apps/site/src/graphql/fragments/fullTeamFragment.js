@@ -11,6 +11,8 @@ export const fullTeamFragment = gql`
         kind
         shortDescription
         longDescription
+        status
+        presentationVideo
         activeMemberCount
         boardMembers {
             id

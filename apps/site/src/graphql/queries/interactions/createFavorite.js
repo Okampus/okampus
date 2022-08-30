@@ -1,9 +1,9 @@
 import gql from 'graphql-tag'
 import { contentFragment } from '@/graphql/fragments/contentFragment'
 
-export const vote = gql`
-    mutation vote($id: Int!, $value: Int!) {
-        voteContent(id: $id, value: $value) {
+export const favorite = gql`
+    mutation createFavorite($id: Int!, $favorite: Boolean!) {
+        createFavorite(id: $id, favorite: $favorite) {
             ...ContentInfo
         }
     }

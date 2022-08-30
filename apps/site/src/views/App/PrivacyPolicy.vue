@@ -119,14 +119,14 @@
             </div>
         </div>
 
-        <div v-if="auth.loggedIn">
+        <div v-if="localStore.loggedIn">
             <div class="flex flex-col gap-10">
                 <AppTitle title="Préférences" icon="fas fa-gears" class="text-1" />
                 <div class="text-1 flex flex-col gap-6 md:flex-row md:gap-14 lg:gap-24">
                     <div class="flex shrink-0 grow flex-col md:max-w-[45%]">
                         <div class="flex justify-between gap-8">
                             <div><b>Anonymiser mes données</b> à la désactivation de mon compte</div>
-                            <SwitchInput v-model="state.autoAnonymise" />
+                            <SwitchInput v-model="localStore.autoAnonymise" />
                         </div>
                     </div>
                     <div class="flex flex-col">
@@ -135,7 +135,7 @@
                                 Me transmettre <b>un export de mes données</b> à la désactivation de mon
                                 compte
                             </div>
-                            <SwitchInput v-model="state.sendDump" />
+                            <SwitchInput v-model="localStore.sendRGDPDump" />
                         </div>
                     </div>
                 </div>
@@ -154,11 +154,7 @@
     import AppTitle from '@/components/App/AppTitle.vue'
     import Locker from '@/assets/img/3dicons/locker.png'
     import SwitchInput from '@/components/Input/SwitchInput.vue'
-    import { useAuthStore } from '@/store/auth.store'
-    import { useLocalStorage } from '@vueuse/core'
-
-    const auth = useAuthStore()
-    const state = useLocalStorage('RGPD', { autoAnonymise: true, sendDump: false })
+    import localStore from '@/store/local.store'
 </script>
 
 <style lang="scss">

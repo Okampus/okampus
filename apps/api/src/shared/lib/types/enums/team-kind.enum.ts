@@ -1,8 +1,8 @@
 import { registerEnumType } from '@nestjs/graphql';
 
 export enum TeamKind {
-  Department = 'department',
-  Club = 'club',
+  SchoolDepartment = 'SchoolDepartment',
+  Club = 'Club',
 }
 
 registerEnumType(TeamKind, { name: 'TeamKind' });

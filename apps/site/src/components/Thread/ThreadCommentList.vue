@@ -57,17 +57,16 @@
     import { COMMENT } from '@/shared/types/content-kinds.enum'
 
     import { fullname } from '@/utils/users'
-    import { addContent } from '@/graphql/queries/threads/addContent'
+    import { createContent } from '@/graphql/queries/threads/createContent'
     import { useMutation } from '@vue/apollo-composable'
 
     import { computed, ref, watch } from 'vue'
 
-    import { useAuthStore } from '@/store/auth.store'
     import { useRoute } from 'vue-router'
     import { highlightElement } from '@/utils/domUtils.js'
+    import localStore from '@/store/local.store'
 
     const route = useRoute()
-    const auth = useAuthStore()
 
     const props = defineProps({
         thread: {
@@ -111,7 +110,7 @@
     const body = ref('')
     const showAll = ref(false)
 
-    const { mutate: addComment, onDone } = useMutation(addContent)
+    const { mutate: addComment, onDone } = useMutation(createContent)
     onDone(() => {
         showAll.value = true
         commentsActive.value = props.comments.map(() => false)
@@ -127,7 +126,7 @@
         textClass: 'text-sm',
         editorClasses: ['text-sm'],
         editorButtons: [],
-        placeholder: `${fullname(auth.user)} va commenter...`,
+        placeholder: `${fullname(localStore.value.me)} va commenter...`,
     }
 
     const shownComments = computed(() =>

@@ -1,6 +1,6 @@
 %button {
     @extend %raised;
-    @apply text-white cursor-pointer rounded-lg py-2 px-4 z-10 line-clamp-1 children:line-clamp-1 children:break-all overflow-ellipsis;
+    @apply text-white min-h-[2.25rem] py-2 cursor-pointer rounded-lg px-4 z-10 line-clamp-1 children:line-clamp-1 children:break-all overflow-ellipsis;
 
     transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
 
@@ -96,8 +96,9 @@
 }
 
 .button-circle {
-    @apply button-grey flex h-12 w-12 cursor-pointer items-center justify-center border-4 border-2-light text-lg dark:border-2-dark md:text-xl;
+    @apply flex h-12 w-12 cursor-pointer items-center justify-center border-4 border-2-light text-lg dark:border-2-dark md:text-xl;
 
+    padding: 0 !important;
     border-radius: 9999px !important;
     box-shadow: none !important;
 }

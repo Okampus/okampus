@@ -55,7 +55,7 @@ export class ThreadResolver {
   }
 
   @Mutation(() => Thread)
-  public async addThread(@CurrentUser() user: User, @Args('thread') thread: CreateThreadDto): Promise<Thread> {
+  public async createThread(@CurrentUser() user: User, @Args('thread') thread: CreateThreadDto): Promise<Thread> {
     const createdThread = await this.threadsService.create(user, thread);
     await this.pubSub.publish(SubscriptionType.ThreadAdded, { threadAdded: createdThread });
     return createdThread;

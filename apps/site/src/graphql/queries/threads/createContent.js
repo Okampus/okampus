@@ -1,9 +1,9 @@
 import { contentFragment } from '@/graphql/fragments/contentFragment'
 import gql from 'graphql-tag'
 
-export const addContent = gql`
-    mutation addContent($child: CreateContentWithKindDto!) {
-        addContent(child: $child) {
+export const createContent = gql`
+    mutation createContent($child: CreateContentWithKindDto!) {
+        createContent(child: $child) {
             ...ContentInfo
             children {
                 ...ContentInfo

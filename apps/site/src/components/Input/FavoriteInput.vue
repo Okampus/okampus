@@ -14,7 +14,7 @@
 
 <script setup>
     import { useMutation } from '@vue/apollo-composable'
-    import { favorite } from '@/graphql/queries/interactions/favoriteContent'
+    import { favorite } from '@/graphql/queries/interactions/createFavorite'
 
     const { mutate: favoriteContent } = useMutation(favorite)
 

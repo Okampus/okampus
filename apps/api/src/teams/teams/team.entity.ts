@@ -23,6 +23,8 @@ import type { User } from '../../users/user.entity';
 // eslint-disable-next-line import/no-cycle
 import { TeamForm } from '../forms/team-form.entity';
 // eslint-disable-next-line import/no-cycle
+import { TeamHistory } from '../histories/history.entity';
+// eslint-disable-next-line import/no-cycle
 import { TeamMember } from '../members/team-member.entity';
 
 const ADMIN_ROLES = new Set([TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasurer, TeamRole.Secretary]);
@@ -66,6 +68,18 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
   @Property()
   tags: string[] = [];
 
+  @Field(() => [TeamHistory])
+  @OneToMany('TeamHistory', 'team')
+  histories = new Collection<TeamHistory>(this);
+
+  @Field(() => String, { nullable: true })
+  @Property()
+  status: string | null = null;
+
+  @Field(() => String, { nullable: true })
+  @Property()
+  presentationVideo: string | null = null;
+
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
   avatar: string | null = null;
@@ -94,8 +108,8 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
     kind: TeamKind;
     tenant: Tenant;
     category: string;
-    shortDescription?: string | null;
-    longDescription?: string | null;
+    status?: string | null;
+    presentationVideo?: string | null;
     avatar?: string | null;
     banner?: string | null;
     tags?: string[] | null;

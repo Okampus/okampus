@@ -69,10 +69,7 @@
                         </ClubEventCard>
 
                         <div class="card-2 flex flex-col items-center justify-center gap-4">
-                            <button
-                                class="button-indigo h-10 w-10 rounded-full"
-                                @click="showCreateForm = true"
-                            >
+                            <button class="button-circle button-indigo" @click="showCreateForm = true">
                                 <i class="fa fa-plus text-xl" />
                             </button>
                             <div class="text-center text-lg">Créer un nouvel événement</div>

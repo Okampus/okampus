@@ -34,10 +34,10 @@ export class VotesController {
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Content))
-  public async findAll(
+  public async findOne(
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<Omit<Vote, 'assign'>> {
+  ): Promise<Vote | null> {
     return await this.votesService.findOne(user, id);
   }
 }

@@ -14,8 +14,8 @@
             <LayoutSearch />
         </div>
 
-        <template v-if="!isHome || auth.loggedIn">
-            <div v-if="!auth.loggedIn" class="mr-4 flex shrink-0 items-center justify-center">
+        <template v-if="!isHome || localStore.loggedIn">
+            <div v-if="!localStore.loggedIn" class="mr-4 flex shrink-0 items-center justify-center">
                 <ButtonLogin />
             </div>
 
@@ -25,20 +25,26 @@
                 <Dropdown theme="profile-dropdown">
                     <ProfileAvatar
                         class="cursor-pointer"
-                        :avatar="auth.user.avatar"
-                        :name="fullname(auth.user)"
+                        :avatar="localStore.me.avatar"
+                        :name="fullname(localStore.me)"
                     />
                     <template #popper="{ hide }">
                         <div
                             class="text-1 flex w-64 flex-col gap-2 rounded-b-lg bg-white pb-2 opacity-[0.96] shadow-md dark:bg-gray-800"
                         >
                             <div class="flex gap-3 px-4 pt-4">
-                                <ProfileAvatar :avatar="auth.user.avatar" :name="fullname(auth.user)" />
+                                <ProfileAvatar
+                                    :avatar="localStore.me.avatar"
+                                    :name="fullname(localStore.me)"
+                                />
                                 <div class="w-[calc(100%-5rem)]">
                                     <div class="overflow-hidden text-ellipsis font-bold">
-                                        {{ fullname(auth.user) }}
+                                        {{ fullname(localStore.me) }}
                                     </div>
-                                    <router-link :to="`/user/${auth.user.id}`" class="link-blue" @click="hide"
+                                    <router-link
+                                        :to="`/user/${localStore.me.id}`"
+                                        class="link-blue"
+                                        @click="hide"
                                         >Profil public</router-link
                                     >
                                 </div>
@@ -70,21 +76,22 @@
 <script setup>
     import { Dropdown } from 'floating-vue'
 
+    import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import ButtonLogin from '@/components/UI/Button/ButtonLogin.vue'
     import LayoutSearch from '@/components/Layout/LayoutSearch.vue'
     import AppLogo from '@/components/App/AppLogo.vue'
 
     import { emitter } from '@/shared/modules/emitter'
-    import { useAuthStore } from '@/store/auth.store'
     import { useRoute } from 'vue-router'
 
     import { fullname } from '@/utils/users'
     import { getCurrentPath } from '@/utils/routeUtils'
-    import { computed } from 'vue'
-    import LabelSimple from '../UI/Label/LabelSimple.vue'
 
-    const auth = useAuthStore()
+    import { computed } from 'vue'
+
+    import localStore from '@/store/local.store'
+
     const route = useRoute()
 
     const isHome = computed(() => route.name === 'home' || getCurrentPath() === '/')
@@ -109,10 +116,10 @@
 
     // eslint-disable-next-line no-undef
     novu.init('0Ww3rjlTtbJr', '#notification-bell', {
-        subscriberId: auth.user.id,
-        email: auth.user.email,
-        firstName: auth.user.firstname,
-        lastName: auth.user.lastname,
+        subscriberId: localStore.value.me.id,
+        email: localStore.value.me.email,
+        firstName: localStore.value.me.firstname,
+        lastName: localStore.value.me.lastname,
     })
 
     defineEmits(['toggle-side-bar'])

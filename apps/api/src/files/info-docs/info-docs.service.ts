@@ -65,7 +65,8 @@ export class InfoDocsService {
     const allDocuments: InfoDoc[] = await this.infoDocRepository.findAll();
 
     const groupFilters: GroupFilters<InfoDoc> = {
-      year: elt => ({ key: elt.year.toString(), metadata: null }),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      Year: elt => ({ key: elt.year.toString(), metadata: null }),
     } as const;
 
     const result = computeDocumentCategories(allDocuments, groupFilters, baseFilters);
