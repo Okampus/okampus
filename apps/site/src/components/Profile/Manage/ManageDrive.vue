@@ -7,7 +7,7 @@
         <template #default="{ data: allFiles }">
             <div v-if="isEmpty(allFiles)">
                 <div class="text-0 my-12 flex flex-col items-center justify-center text-2xl">
-                    <img :src="Sleeping" class="h-40 w-40" />
+                    <img :src="NotFound" class="h-40 w-40" />
                     <span class="font-semibold"> Aucune donnée disponible </span>
                 </div>
             </div>
@@ -62,7 +62,7 @@
 </template>
 
 <script setup>
-    import Sleeping from '@/assets/img/3dicons/sleeping.png'
+    import NotFound from '@/assets/img/3dicons/not-found.png'
 
     import GraphQLQuery from '@/components/App/GraphQLQuery.vue'
     import FileInput from '@/components/Input/FileInput.vue'

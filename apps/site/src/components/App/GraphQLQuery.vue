@@ -25,7 +25,7 @@
                 class="text-0 my-12 flex flex-col items-center justify-center gap-4"
                 :class="{ 'h-full -mt-6': wholePage }"
             >
-                <img :src="Sleeping" :class="wholePage ? 'h-48 w-48' : 'h-36 w-36'" />
+                <img :src="NotFound" :class="wholePage ? 'h-48 w-48' : 'h-36 w-36'" />
                 <div class="text-center">
                     <div v-if="resourceType" class="font-bold" :class="wholePage ? 'text-4xl' : 'text-2xl'">
                         Aucun{{ resource.frFeminine ? 'e' : '' }} {{ resource.name.fr }} trouvé{{
@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-    import Sleeping from '@/assets/img/3dicons/sleeping.png'
+    import NotFound from '@/assets/img/3dicons/not-found.png'
 
     import { ApolloQuery } from '@vue/apollo-components'
 

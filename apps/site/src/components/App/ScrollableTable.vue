@@ -50,14 +50,14 @@
             </table>
         </div>
         <div v-if="sortedItems.length === 0" class="bg-3 flex grow flex-col items-center justify-center">
-            <img :src="Sleeping" class="h-40 w-40" />
+            <img :src="NotFound" class="h-40 w-40" />
             <div class="text-0 text-2xl font-bold">Aucun élément à afficher</div>
         </div>
     </div>
 </template>
 
 <script setup>
-    import Sleeping from '@/assets/img/3dicons/sleeping.png'
+    import NotFound from '@/assets/img/3dicons/not-found.png'
 
     import { computed, ref } from 'vue'
 

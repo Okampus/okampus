@@ -1,5 +1,10 @@
 <template>
-    <GraphQLQuery :query="getClubs" :update="(data) => data?.clubs">
+    <GraphQLQuery
+        :query="getClubs"
+        :update="(data) => data?.clubs"
+        :whole-page="true"
+        empty-subtitle="Aucune association n'a encore été créée."
+    >
         <template #default="{ data: clubs }">
             <div class="bg-1 sticky top-0 z-30 p-4 md:hidden">
                 <HorizontalTabs
