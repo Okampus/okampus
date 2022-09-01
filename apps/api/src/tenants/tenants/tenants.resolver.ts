@@ -14,7 +14,7 @@ import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import { User } from '../../users/user.entity';
 import { ValidationStep } from '../validation-steps/validation-step.entity';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
-import { OIDCEnabled } from './models/oauth-enabled.model';
+import { OIDCEnabled } from './models/oidc-enabled.model';
 import { TenantLogoUrls } from './models/tenant-logos.model';
 import { Tenant } from './tenant.entity';
 import { TenantsService } from './tenants.service';
