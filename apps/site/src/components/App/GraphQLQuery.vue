@@ -22,8 +22,8 @@
             <slot v-else-if="$slots.empty" name="empty" />
             <div
                 v-else-if="resource"
-                class="text-0 my-12 flex flex-col items-center justify-center gap-4"
-                :class="{ 'h-full -mt-6': wholePage }"
+                class="text-0 flex flex-col items-center justify-center gap-4"
+                :class="wholePage ? 'h-full -mt-6' : 'my-12'"
             >
                 <img :src="NotFound" :class="wholePage ? 'h-48 w-48' : 'h-36 w-36'" />
                 <div class="text-center">
