@@ -45,7 +45,7 @@
                 getLogoUrls: { logoUrl, logoDarkUrl },
             } = result.value
 
-            return (localStore.value.darkMode && props.only !== 'light') || props.only === 'dark'
+            return (localStore.value.darkMode === 'dark' && props.only !== 'light') || props.only === 'dark'
                 ? logoDarkUrl
                     ? logoDarkUrl
                     : logoUrl
@@ -56,7 +56,11 @@
                 : logoSrc
         }
 
-        return (localStore.value.darkMode && props.only !== 'light') || props.only === 'dark'
+        console.log(
+            'MODE',
+            (localStore.value.darkMode === 'dark' && props.only !== 'light') || props.only === 'dark',
+        )
+        return (localStore.value.darkMode === 'dark' && props.only !== 'light') || props.only === 'dark'
             ? logoDarkSrc
             : logoSrc
     })

@@ -7,14 +7,14 @@
                     class="absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center"
                 >
                     <div
-                        class="bg-0 text-1 m-6 flex max-h-[calc(100%-3rem)] max-w-3xl flex-col gap-6 rounded-xl p-6"
+                        class="bg-0 text-1 m-6 flex max-h-[calc(100%-3rem)] max-w-3xl flex-col gap-6 rounded-xl p-6 text-xl"
                     >
                         <div class="mb-4">
                             <div class="text-0 text-center text-3xl font-semibold">
                                 Bienvenue sur la bêta de Okampus !
                             </div>
                         </div>
-                        <div class="text-xl">
+                        <div>
                             Rejoignez le
                             <a
                                 class="link-blue mx-1 font-semibold underline"
@@ -24,7 +24,7 @@
                             pour suivre l'avancée de la bêta, donner vos avis et échanger par rapport au
                             projet.
                         </div>
-                        <div class="text-xl">
+                        <div>
                             Retrouvez toutes les informations relatives aux données personnelles sur
                             <router-link to="/rgpd" class="link-blue">https://okampus.fr/rgpd</router-link>.
                         </div>
@@ -39,7 +39,7 @@
                             la gestion des permissions sur la plateforme.
                         </div>
                         <button
-                            class="button-blue mt-4 min-w-[3rem] select-none text-center text-lg"
+                            class="button-blue mt-4 min-w-[3rem] select-none text-center"
                             :class="counting ? 'opacity-50' : ''"
                             :disabled="counting"
                             @click="agreeToTerms"
@@ -48,7 +48,7 @@
                                 v-if="counting"
                                 v-slot="{ totalSeconds }"
                                 :time="4000"
-                                @end="counting.value = false"
+                                @end="counting = false"
                                 >{{ totalSeconds }}</VueCountdown
                             >
                             <div v-else>J'ai pris connaissance de ces informations et souhaite continuer</div>
