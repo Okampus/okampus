@@ -4,7 +4,6 @@ import { Injectable } from '@nestjs/common';
 import { Announcement } from '../../../announcements/announcement.entity';
 import { Badge } from '../../../badges/entities/badge.entity';
 import { Blog } from '../../../blogs/blog.entity';
-import type { Contact } from '../../../contacts/entities/contact.entity';
 import { Content } from '../../../contents/entities/content.entity';
 import { Favorite } from '../../../favorites/favorite.entity';
 import { Attachment } from '../../../files/attachments/attachment.entity';
@@ -22,6 +21,7 @@ import { Food } from '../../../restaurant/food/food.entity';
 import type { SchoolGroup } from '../../../school-group/school-group.entity';
 import type { SchoolYear } from '../../../school-group/school-year/school-year.entity';
 import { Settings } from '../../../settings/settings.entity';
+import type { Social } from '../../../socials/social.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
 import { TeamEventValidation } from '../../../teams/event-validations/team-event-validation.entity';
@@ -47,7 +47,6 @@ export type Subjects = InferSubjects<
   | typeof Attachment
   | typeof Badge
   | typeof Blog
-  | typeof Contact
   | typeof Content
   | typeof DailyInfo
   | typeof DailyMenu
@@ -61,6 +60,7 @@ export type Subjects = InferSubjects<
   | typeof SchoolGroup
   | typeof SchoolYear
   | typeof Settings
+  | typeof Social
   | typeof StudyDoc
   | typeof Subject
   | typeof Tag

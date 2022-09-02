@@ -15,6 +15,8 @@ import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { SubscriptionType } from '../shared/lib/types/enums/subscription-type.enum';
 import { PaginateDto } from '../shared/modules/pagination';
 import type { IndexedEntity } from '../shared/modules/search/indexed-entity.interface';
+import { Social } from '../socials/social.entity';
+import { SocialsService } from '../socials/socials.service';
 import { Interest } from '../teams/interests/interest.entity';
 import { InterestsService } from '../teams/interests/interests.service';
 import { Tenant } from '../tenants/tenants/tenant.entity';
@@ -28,6 +30,7 @@ export class UsersResolver {
   constructor(
     @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,
     private readonly usersService: UsersService,
+    private readonly socialsService: SocialsService,
     private readonly interestsService: InterestsService,
   ) {}
 
@@ -35,6 +38,11 @@ export class UsersResolver {
   @Query(() => User)
   public async userById(@Args('id') id: string): Promise<User> {
     return await this.usersService.findOneById(id);
+  }
+
+  @ResolveField(() => [Social])
+  public async socials(@Parent() user: User): Promise<Social[]> {
+    return await this.socialsService.findAllUserSocials(user.id);
   }
 
   @Query(() => [User])

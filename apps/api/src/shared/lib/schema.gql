@@ -152,6 +152,7 @@ input CreateTeamDto {
   avatar: String
   banner: String
   category: String!
+  email: String
   kind: TeamKind!
   longDescription: String
   name: String!
@@ -584,12 +585,12 @@ type Settings {
   gdprEndOfLifeExport: Boolean!
   notificationAdminReportCreated: Int!
   notificationAdminRoleUpdated: Int!
-  notificationAdminTeamContactUpdated: Int!
   notificationAdminTeamEventValidationApproved: Int!
   notificationAdminTeamEventValidationRejected: Int!
   notificationAdminTeamEventValidationStarted: Int!
   notificationAdminTeamEventValidationStep: Int!
   notificationAdminTeamLegalFileUpdated: Int!
+  notificationAdminTeamSocialUpdated: Int!
   notificationAdminThreadAssigned: Int!
   notificationAdminThreadAssignedStale: Int!
   notificationAdminThreadAssignedStaleThreshold: Int!
@@ -614,6 +615,26 @@ type Settings {
   notificationThreadSubscribedUpdated: Int!
   updatedAt: DateTime!
   user: User!
+}
+
+type Social {
+  createdAt: DateTime!
+  id: Int!
+  link: String!
+  pseudo: String!
+  socialType: SocialAccountType!
+  team: Team
+  updatedAt: DateTime!
+  user: User
+}
+
+enum SocialAccountType {
+  Discord
+  Instagram
+  LinkedIn
+  TikTok
+  Twitch
+  YouTube
 }
 
 type Subscription {
@@ -649,6 +670,7 @@ type Team {
   boardMembers: [TeamMember!]!
   category: String!
   createdAt: DateTime!
+  email: String
   formTemplates: [TeamForm!]!
   forms: [TeamForm!]!
   histories: [TeamHistory!]!
@@ -661,6 +683,7 @@ type Team {
   name: String!
   presentationVideo: String
   shortDescription: String
+  socials: [Social!]!
   status: String
   tags: [String!]!
   teamFiles: [TeamFile!]!
@@ -826,7 +849,7 @@ enum TeamHistoryState {
   Modified
   Recognized
   Started
-  Terminated
+  Undeclared
 }
 
 enum TeamKind {
@@ -985,6 +1008,7 @@ input UpdateTeamDto {
   avatar: String
   banner: String
   category: String
+  email: String
   kind: TeamKind
   longDescription: String
   membershipRequestFormId: Int
@@ -1113,6 +1137,7 @@ type User {
   settings: Settings!
   shortDescription: String
   signature: String
+  socials: [Social!]!
   teamEventIcal: String!
   teamMembershipRequests: [TeamMembershipRequest!]!
   teamMemberships: [TeamMember!]!

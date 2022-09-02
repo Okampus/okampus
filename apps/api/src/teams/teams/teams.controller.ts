@@ -25,6 +25,9 @@ import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { normalizePagination } from '../../shared/modules/pagination';
+import { CreateSocialDto } from '../../socials/dto/create-social.dto';
+import type { Social } from '../../socials/social.entity';
+import { SocialsService } from '../../socials/socials.service';
 import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
 import { CreateTeamDto } from './dto/create-team.dto';
@@ -38,6 +41,7 @@ import { TeamsService } from './teams.service';
 export class TeamsController {
   constructor(
     private readonly teamsService: TeamsService,
+    private readonly socialsService: SocialsService,
     private readonly profileImagesService: ProfileImagesService,
     private readonly filesService: FileUploadsService,
   ) {}
@@ -87,6 +91,16 @@ export class TeamsController {
   @CheckPolicies(ability => ability.can(Action.Delete, Team))
   public async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.teamsService.remove(id);
+  }
+
+  @Post(':id/social')
+  @CheckPolicies(ability => ability.can(Action.Update, Team))
+  public async addSocial(
+    @CurrentUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() createSocialDto: CreateSocialDto,
+  ): Promise<Social> {
+    return await this.teamsService.addSocialAccount(user, id, createSocialDto);
   }
 
   @Put(':id/avatar')

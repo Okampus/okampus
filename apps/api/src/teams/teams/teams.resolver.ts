@@ -28,6 +28,8 @@ import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
 import { SubscriptionType } from '../../shared/lib/types/enums/subscription-type.enum';
 import { TeamKind } from '../../shared/lib/types/enums/team-kind.enum';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
+import { Social } from '../../socials/social.entity';
+import { SocialsService } from '../../socials/socials.service';
 import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
 import { TeamFormsService } from '../forms/forms.service';
@@ -61,6 +63,7 @@ export class TeamsResolver {
     private readonly interestsService: InterestsService,
     private readonly teamsService: TeamsService,
     private readonly teamFilesService: TeamFilesService,
+    private readonly socialsService: SocialsService,
     private readonly teamFormsService: TeamFormsService,
     private readonly fileUploadsService: FileUploadsService,
   ) {}
@@ -108,6 +111,11 @@ export class TeamsResolver {
 
     const paginatedTeams = await this.teamsService.findAll({ kind: TeamKind.Club });
     return paginatedTeams.items;
+  }
+
+  @ResolveField(() => [Social])
+  public async socials(@Parent() team: Team): Promise<Social[]> {
+    return await this.socialsService.findAllTeamSocials(team.id);
   }
 
   @ResolveField(() => [TeamMember])

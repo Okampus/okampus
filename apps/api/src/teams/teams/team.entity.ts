@@ -49,6 +49,7 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
   kind!: TeamKind;
 
   @Field()
+  @Index()
   @Property({ type: 'text' })
   name!: string;
 
@@ -63,6 +64,10 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
   @Field()
   @Property({ type: 'text' })
   category!: string;
+
+  @Field(() => String, { nullable: true })
+  @Property({ type: 'text' })
+  email: string | null = null;
 
   @Field(() => [String])
   @Property()
@@ -108,6 +113,7 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
     kind: TeamKind;
     tenant: Tenant;
     category: string;
+    email?: string | null;
     status?: string | null;
     presentationVideo?: string | null;
     avatar?: string | null;

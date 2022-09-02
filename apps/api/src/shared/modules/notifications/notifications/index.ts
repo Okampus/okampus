@@ -1,5 +1,5 @@
 export * from './admin-report-created.notification';
-export * from './admin-team-contact-updated.notification';
+export * from './admin-team-social-updated.notification';
 export * from './admin-team-event-validation-approved.notification';
 export * from './admin-team-event-validation-rejected.notification';
 export * from './admin-team-event-validation-started.notification';

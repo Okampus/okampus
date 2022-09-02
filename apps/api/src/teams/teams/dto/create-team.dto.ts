@@ -31,6 +31,11 @@ export class CreateTeamDto {
   @IsString()
   category: string;
 
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  email?: string;
+
   @Field(() => [String], { nullable: true })
   @IsOptional()
   @IsArray()

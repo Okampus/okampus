@@ -116,10 +116,10 @@ export class Settings extends BaseEntity {
   @Property()
   notificationTeamManagedMemberRoleUpdated: number = MAIL | IN_APP;
 
-  /** ADMIN: A team adds/updates/deletes one of its means of contact */
+  /** ADMIN: A team adds/updates/deletes one of its socials */
   @Field(() => Int)
   @Property()
-  notificationAdminTeamContactUpdated: number = IN_APP;
+  notificationAdminTeamSocialUpdated: number = IN_APP;
 
   /** ADMIN: A team adds/updates/deletes a legal document */
   @Field(() => Int)
