@@ -23,7 +23,7 @@ import type { User } from '../../users/user.entity';
 // eslint-disable-next-line import/no-cycle
 import { TeamForm } from '../forms/team-form.entity';
 // eslint-disable-next-line import/no-cycle
-import { TeamHistory } from '../histories/history.entity';
+import { TeamHistory } from '../histories/team-history.entity';
 // eslint-disable-next-line import/no-cycle
 import { TeamMember } from '../members/team-member.entity';
 

@@ -6,7 +6,7 @@ import type { PaginatedResult, PaginateDto } from '../../shared/modules/paginati
 import { Team } from '../teams/team.entity';
 import type { CreateHistoryDto } from './dto/create-history.dto';
 import type { UpdateHistoryDto } from './dto/update-history.dto';
-import { TeamHistory } from './history.entity';
+import { TeamHistory } from './team-history.entity';
 
 @Injectable()
 export class HistoriesService {
@@ -24,15 +24,15 @@ export class HistoriesService {
 
     const team = await this.teamRepository.findOneOrFail({ id: teamId });
 
-    const subject = new TeamHistory({ ...createHistory, parent, team });
+    const history = new TeamHistory({ ...createHistory, parent, team });
     try {
-      await this.historyRepository.persistAndFlush(subject);
+      await this.historyRepository.persistAndFlush(history);
     } catch (error: unknown) {
       if (error instanceof UniqueConstraintViolationException)
-        throw new BadRequestException('Subject code already exists');
+        throw new BadRequestException('History id already exists');
       throw error;
     }
-    return subject;
+    return history;
   }
 
   public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<TeamHistory>> {
@@ -58,7 +58,7 @@ export class HistoriesService {
   }
 
   public async remove(id: number): Promise<void> {
-    const subject = await this.historyRepository.findOneOrFail({ id });
-    await this.historyRepository.removeAndFlush(subject);
+    const history = await this.historyRepository.findOneOrFail({ id });
+    await this.historyRepository.removeAndFlush(history);
   }
 }

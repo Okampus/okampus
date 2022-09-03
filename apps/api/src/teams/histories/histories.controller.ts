@@ -16,7 +16,7 @@ import type { PaginatedResult } from '../../shared/modules/pagination';
 import { CreateHistoryDto } from './dto/create-history.dto';
 import { UpdateHistoryDto } from './dto/update-history.dto';
 import { HistoriesService } from './histories.service';
-import { TeamHistory } from './history.entity';
+import { TeamHistory } from './team-history.entity';
 
 @ApiTags('Histories')
 @Controller()
@@ -43,8 +43,8 @@ export class HistoriesController {
 
   @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, TeamHistory))
-  public async update(@Param('id', ParseIntPipe) id: number, @Body() updateSubjectDto: UpdateHistoryDto): Promise<TeamHistory> {
-    return await this.historiesService.update(id, updateSubjectDto);
+  public async update(@Param('id', ParseIntPipe) id: number, @Body() updateHistoryDto: UpdateHistoryDto): Promise<TeamHistory> {
+    return await this.historiesService.update(id, updateHistoryDto);
   }
 
   @Delete(':id')
