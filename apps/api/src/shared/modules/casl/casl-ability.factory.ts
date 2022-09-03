@@ -30,6 +30,7 @@ import { TeamFinance } from '../../../teams/finances/team-finance.entity';
 import { TeamForm } from '../../../teams/forms/team-form.entity';
 import type { TeamHistory } from '../../../teams/histories/team-history.entity';
 import type { Interest } from '../../../teams/interests/interest.entity';
+import type { TeamLabel } from '../../../teams/labels/team-label.entity';
 import { Team } from '../../../teams/teams/team.entity';
 import { Tenant } from '../../../tenants/tenants/tenant.entity';
 import { ValidationStep } from '../../../tenants/validation-steps/validation-step.entity';
@@ -72,6 +73,7 @@ export type Subjects = InferSubjects<
   | typeof TeamForm
   | typeof TeamGallery
   | typeof TeamHistory
+  | typeof TeamLabel
   | typeof TeamReceipt
   | typeof Tenant
   | typeof Thread
