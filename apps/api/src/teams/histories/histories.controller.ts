@@ -15,8 +15,8 @@ import { normalizePagination, PaginateDto } from '../../shared/modules/paginatio
 import type { PaginatedResult } from '../../shared/modules/pagination';
 import { CreateHistoryDto } from './dto/create-history.dto';
 import { UpdateHistoryDto } from './dto/update-history.dto';
+import { HistoriesService } from './histories.service';
 import { TeamHistory } from './history.entity';
-import { HistoriesService } from './history.service';
 
 @ApiTags('Histories')
 @Controller()

@@ -5,7 +5,7 @@ import { TeamEventValidationsModule } from './event-validations/event-validation
 import { TeamEventsModule } from './events/events.module';
 import { TeamFinancesModule } from './finances/finances.module';
 import { TeamFormsModule } from './forms/forms.module';
-import { TeamHistoryModule } from './histories/history.module';
+import { TeamHistoriesModule } from './histories/histories.module';
 import { TeamICalModule } from './ical/ical.module';
 import { TeamMembersModule } from './members/members.module';
 import { TeamMembershipsModule } from './memberships/memberships.module';
@@ -20,7 +20,7 @@ import { CoreTeamsModule } from './teams/teams.module';
         // Endpoints to manage the core team concept
         { path: 'teams', module: CoreTeamsModule },
         // Endpoints to manage team histories
-        { path: 'histories', module: TeamHistoryModule },
+        { path: 'histories', module: TeamHistoriesModule },
         // Endpoint to manage team members
         { path: 'members', module: TeamMembersModule },
         // Endpoints to manage the team events
