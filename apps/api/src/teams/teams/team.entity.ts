@@ -3,6 +3,7 @@ import {
   Entity,
   Enum,
   Index,
+  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryKey,
@@ -24,6 +25,7 @@ import type { User } from '../../users/user.entity';
 import { TeamForm } from '../forms/team-form.entity';
 // eslint-disable-next-line import/no-cycle
 import { TeamHistory } from '../histories/team-history.entity';
+import { TeamLabel } from '../labels/team-label.entity';
 // eslint-disable-next-line import/no-cycle
 import { TeamMember } from '../members/team-member.entity';
 
@@ -69,9 +71,10 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
   @Property({ type: 'text' })
   email: string | null = null;
 
-  @Field(() => [String])
-  @Property()
-  tags: string[] = [];
+  @Field(() => [TeamLabel])
+  @ManyToMany()
+  @TransformCollection()
+  labels = new Collection<TeamLabel>(this);
 
   @Field(() => [TeamHistory])
   @OneToMany('TeamHistory', 'team')
@@ -118,7 +121,6 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
     presentationVideo?: string | null;
     avatar?: string | null;
     banner?: string | null;
-    tags?: string[] | null;
     membershipRequestForm?: TeamForm | null;
   }) {
     super();

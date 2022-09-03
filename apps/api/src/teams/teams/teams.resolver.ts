@@ -36,6 +36,7 @@ import { TeamFormsService } from '../forms/forms.service';
 import { TeamForm } from '../forms/team-form.entity';
 import { Interest } from '../interests/interest.entity';
 import { InterestsService } from '../interests/interests.service';
+import { TeamLabel } from '../labels/team-label.entity';
 import { TeamMember } from '../members/team-member.entity';
 import { MembershipRequestState } from '../types/membership-request-state.enum';
 import { CreateTeamDto } from './dto/create-team.dto';
@@ -59,6 +60,7 @@ export class TeamsResolver {
     @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
+    @InjectRepository(TeamLabel) private readonly teamLabelRepository: BaseRepository<TeamLabel>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     private readonly interestsService: InterestsService,
     private readonly teamsService: TeamsService,

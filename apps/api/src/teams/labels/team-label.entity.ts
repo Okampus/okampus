@@ -4,6 +4,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import slugify from 'slugify';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { TeamLabelType } from '../../shared/lib/types/enums/team-label-type.enum';
 
@@ -27,11 +28,17 @@ export class TeamLabel extends BaseEntity {
   type!: TeamLabelType;
 
   constructor(options: {
-    slug: string;
+    slug?: string;
     name: string;
-    tooltip: string;
+    tooltip?: string;
     type: TeamLabelType;
   }) {
+    if (typeof options.slug === 'undefined')
+      options.slug = slugify(options.name, { lower: true });
+
+    if (typeof options.tooltip === 'undefined')
+      options.tooltip = '';
+
     super();
     this.assign(options);
   }

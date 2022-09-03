@@ -40,7 +40,7 @@ export class CreateTeamDto {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  tags?: string[];
+  labels?: string[];
 
   @Field(() => String, { nullable: true })
   @IsOptional()
