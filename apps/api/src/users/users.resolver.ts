@@ -2,7 +2,9 @@ import { Inject } from '@nestjs/common';
 import {
   Args,
   Mutation,
+  Parent,
   Query,
+  ResolveField,
   Resolver,
   Subscription,
 } from '@nestjs/graphql';
@@ -13,6 +15,8 @@ import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { SubscriptionType } from '../shared/lib/types/enums/subscription-type.enum';
 import { PaginateDto } from '../shared/modules/pagination';
 import type { IndexedEntity } from '../shared/modules/search/indexed-entity.interface';
+import { Interest } from '../teams/interests/interest.entity';
+import { InterestsService } from '../teams/interests/interests.service';
 import { Tenant } from '../tenants/tenants/tenant.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IndexedUser } from './user-indexed.model';
@@ -24,6 +28,7 @@ export class UsersResolver {
   constructor(
     @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,
     private readonly usersService: UsersService,
+    private readonly interestsService: InterestsService,
   ) {}
 
   // TODO: Add permission checks
@@ -47,6 +52,11 @@ export class UsersResolver {
   ): Promise<IndexedEntity[]> {
     const paginatedUsers = await this.usersService.search(tenant, { ...query, search });
     return paginatedUsers.items;
+  }
+
+  @ResolveField(() => [Interest])
+  public async interests(@Parent() user: User): Promise<Interest[]> {
+    return await this.interestsService.findAllbyUser(user.id);
   }
 
   @Mutation(() => User)

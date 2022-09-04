@@ -29,6 +29,7 @@ import { TeamEvent } from '../../../teams/events/team-event.entity';
 import { TeamFinance } from '../../../teams/finances/team-finance.entity';
 import { TeamForm } from '../../../teams/forms/team-form.entity';
 import type { TeamHistory } from '../../../teams/histories/history.entity';
+import type { Interest } from '../../../teams/interests/interest.entity';
 import { Team } from '../../../teams/teams/team.entity';
 import { Tenant } from '../../../tenants/tenants/tenant.entity';
 import { ValidationStep } from '../../../tenants/validation-steps/validation-step.entity';
@@ -53,6 +54,7 @@ export type Subjects = InferSubjects<
   | typeof Favorite
   | typeof Food
   | typeof InfoDoc
+  | typeof Interest
   | typeof Metric
   | typeof ProfileImage
   | typeof Report

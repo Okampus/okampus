@@ -32,6 +32,8 @@ import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
 import { TeamFormsService } from '../forms/forms.service';
 import { TeamForm } from '../forms/team-form.entity';
+import { Interest } from '../interests/interest.entity';
+import { InterestsService } from '../interests/interests.service';
 import { TeamMember } from '../members/team-member.entity';
 import { MembershipRequestState } from '../types/membership-request-state.enum';
 import { CreateTeamDto } from './dto/create-team.dto';
@@ -56,6 +58,7 @@ export class TeamsResolver {
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
+    private readonly interestsService: InterestsService,
     private readonly teamsService: TeamsService,
     private readonly teamFilesService: TeamFilesService,
     private readonly teamFormsService: TeamFormsService,
@@ -200,6 +203,11 @@ export class TeamsResolver {
       membership: memberships.find(m => m.team.id === team.id) ?? null,
       pendingRequest: requests.some(r => r.state === MembershipRequestState.Pending && r.team.id === team.id),
     };
+  }
+
+  @ResolveField(() => [Interest], { nullable: true })
+  public async interest(@Parent() team: Team): Promise<Interest[]> {
+    return await this.interestsService.findAllByTeam(team.id);
   }
 
   @Mutation(() => Team)
