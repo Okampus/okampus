@@ -1,5 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import pointsConfig from '../../shared/configs/points.config';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
 import { User } from '../../users/user.entity';
@@ -18,7 +19,7 @@ export class InterestsService {
 
   public async create(createInterestDto: CreateInterestDto): Promise<Interest> {
     const { teamId, userId, ...createInterest } = createInterestDto;
-    const team = await this.teamRepository.findOneOrFail({ id: teamId });
+    const team = await this.teamRepository.findOneOrFail({ id: teamId, kind: 'Club' });
     const user = await this.userRepository.findOneOrFail({ id: userId });
     const interest = new Interest({
       ...createInterest,
@@ -26,6 +27,16 @@ export class InterestsService {
       user,
     });
     await this.interestRepository.persistAndFlush(interest);
+    // Check if the user has finished the onboarding process
+    const countTeam = await this.teamRepository.count({ kind: 'Club' });
+    const countInterest = await this.interestRepository.count({ user: { id: userId } });
+    if (countTeam === countInterest) {
+      this.userRepository.assign(user, {
+         finishedOnboarding: true,
+         points: user.points + pointsConfig.finishedOnboarding,
+        });
+      await this.userRepository.persistAndFlush(user);
+    }
     return interest;
   }
 

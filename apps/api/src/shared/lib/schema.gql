@@ -1157,6 +1157,7 @@ type User {
   color: String
   createdAt: DateTime!
   email: String!
+  finishedOnboarding: Boolean!
   firstname: String!
   id: String!
   interests: [Interest!]!

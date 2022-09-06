@@ -3,6 +3,7 @@ import {
   ManyToOne,
   PrimaryKey,
   Property,
+  Unique,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
@@ -11,6 +12,7 @@ import { User } from '../../users/user.entity';
 import { Team } from '../teams/team.entity';
 
 @ObjectType()
+@Unique({ properties: ['team', 'user'] })
 @Entity()
 export class Interest extends BaseEntity {
   @Field(() => Int)

@@ -1644,6 +1644,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "string"
+        },
+        "finished_onboarding": {
+          "name": "finished_onboarding",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
         }
       },
       "name": "user",
@@ -3634,6 +3643,16 @@
       "name": "interest",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "interest_team_id_user_id_unique",
+          "columnNames": [
+            "team_id",
+            "user_id"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": true
+        },
         {
           "keyName": "interest_pkey",
           "columnNames": [

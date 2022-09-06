@@ -148,6 +148,10 @@ export class User extends BaseTenantEntity implements BaseSearchableEntity {
   @Unique()
   teamEventIcal = nanoid(64);
 
+  @Field(() => Boolean)
+  @Property()
+  finishedOnboarding = false;
+
   isPublic = false;
 
   constructor(options: Omit<UserCreationOptions, 'avatar' | 'banner' | 'password' | 'tenantId'> & { tenant: Tenant }) {

@@ -25,8 +25,8 @@ export class InterestsController {
 
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Interest))
-  public async create(@Body() createHistoryDto: CreateInterestDto): Promise<Interest> {
-    return await this.interestsService.create(createHistoryDto);
+  public async create(@Body() createInterestDto: CreateInterestDto): Promise<Interest> {
+    return await this.interestsService.create(createInterestDto);
   }
 
   @Get()
@@ -43,8 +43,8 @@ export class InterestsController {
 
   @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Interest))
-  public async update(@Param('id', ParseIntPipe) id: number, @Body() updateSubjectDto: UpdateInterestDto): Promise<Interest> {
-    return await this.interestsService.update(id, updateSubjectDto);
+  public async update(@Param('id', ParseIntPipe) id: number, @Body() updateInterestDto: UpdateInterestDto): Promise<Interest> {
+    return await this.interestsService.update(id, updateInterestDto);
   }
 
   @Delete(':id')
