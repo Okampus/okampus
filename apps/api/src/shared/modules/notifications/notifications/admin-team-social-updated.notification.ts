@@ -43,7 +43,7 @@ export class AdminTeamSocialUpdatedNotification extends Notification {
             name: this.social.team.name,
             shortDescription: this.social.team.shortDescription,
             category: this.social.team.category,
-            tags: this.social.team.tags,
+            labels: this.social.team.labels.getItems().map(label => ({ name: label.name, type: label.type })),
             avatar: this.social.team.avatar,
             banner: this.social.team.banner,
           },

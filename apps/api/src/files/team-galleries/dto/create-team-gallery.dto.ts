@@ -8,14 +8,9 @@ export class CreateTeamGalleryDto extends CreateFileUploadDto {
   @IsInt()
   id: number;
 
+  @IsOptional()
   @IsInt()
   order: number;
-
-  @IsInt()
-  width: number;
-
-  @IsInt()
-  height: number;
 
   @IsOptional()
   @IsInt()

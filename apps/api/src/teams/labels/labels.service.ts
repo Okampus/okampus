@@ -16,49 +16,35 @@ export class LabelsService {
   ) {}
 
   public async create(createLabelDto: CreateLabelDto): Promise<TeamLabel> {
-    const { parentId, teamId, ...createLabel } = createLabelDto;
-
-    const parent = (typeof parentId === 'number')
-      ? await this.teamRepository.findOneOrFail({ id: parentId })
-      : null;
-
-    const team = await this.teamRepository.findOneOrFail({ id: teamId });
-
-    const subject = new TeamLabel({ ...createLabel, parent, team });
+    const label = new TeamLabel(createLabelDto);
     try {
-      await this.labelRepository.persistAndFlush(subject);
+      await this.labelRepository.persistAndFlush(label);
     } catch (error: unknown) {
       if (error instanceof UniqueConstraintViolationException)
-        throw new BadRequestException('Subject code already exists');
+        throw new BadRequestException('Label id/slug already exists');
       throw error;
     }
-    return subject;
+    return label;
   }
 
   public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<TeamLabel>> {
     return await this.labelRepository.findWithPagination(paginationOptions);
   }
 
-  public async findOne(id: number): Promise<TeamLabel> {
+  public async findOne(id: string): Promise<TeamLabel> {
     return await this.labelRepository.findOneOrFail({ id });
   }
 
-  public async update(id: number, updateHistoryDto: UpdateLabelDto): Promise<TeamLabel> {
-    const history = await this.labelRepository.findOneOrFail({ id });
+  public async update(id: string, updateLabelDto: UpdateLabelDto): Promise<TeamLabel> {
+    const label = await this.labelRepository.findOneOrFail({ id });
 
-    const { parentId, ...updateHistory } = updateHistoryDto;
-
-    const parent = (typeof parentId === 'string')
-      ? await this.teamRepository.findOneOrFail({ id: parentId })
-      : null;
-
-    wrap(history).assign({ ...updateHistory, parent });
+    wrap(label).assign(updateLabelDto);
     await this.labelRepository.flush();
-    return history;
+    return label;
   }
 
-  public async remove(id: number): Promise<void> {
-    const subject = await this.labelRepository.findOneOrFail({ id });
-    await this.labelRepository.removeAndFlush(subject);
+  public async remove(id: string): Promise<void> {
+    const label = await this.labelRepository.findOneOrFail({ id });
+    await this.labelRepository.removeAndFlush(label);
   }
 }

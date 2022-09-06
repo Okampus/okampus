@@ -51,6 +51,7 @@ import { CoreTeamsModule } from './teams/teams.module';
     TeamFinancesModule,
     TeamFormsModule,
     TeamICalModule,
+    TeamLabelsModule,
     TeamMembershipRequestsModule,
     TeamMembershipsModule,
     TeamMembersModule,

@@ -6,7 +6,10 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
+import {
+ Field, GraphQLISODateTime, Int, ObjectType,
+} from '@nestjs/graphql';
+import mime from 'mime-types';
 import { nanoid } from 'nanoid';
 import { config } from '../../shared/configs/config';
 import { BaseTenantEntity } from '../../shared/lib/entities/base-tenant-entity';
@@ -49,13 +52,21 @@ export class FileUpload extends BaseTenantEntity {
   @Property({ type: 'text' })
   url!: string;
 
-  @Field(() => Boolean)
-  @Property()
-  visible = false;
-
   @Field(() => FileKind)
   @Enum(() => FileKind)
   fileKind!: FileKind;
+
+  @Field(() => Int, { nullable: true })
+  @Property()
+  width: number | null = null;
+
+  @Field(() => Int, { nullable: true })
+  @Property()
+  height: number | null = null;
+
+  @Field(() => Boolean)
+  @Property()
+  visible = false;
 
   constructor(options: {
     tenant: Tenant;
@@ -64,8 +75,10 @@ export class FileUpload extends BaseTenantEntity {
     fileSize: number;
     mimeType: string;
     fileLastModifiedAt: Date;
-    fileKind: FileKind;
     url: string;
+    fileKind: FileKind;
+    width?: number;
+    height?: number;
   }) {
     super();
     this.assign(options);
@@ -75,7 +88,7 @@ export class FileUpload extends BaseTenantEntity {
     return path.join(
       config.upload.path,
       this.fileKind,
-      `${this.id.toString()}${path.extname(this.name)}`,
+      `${this.id.toString()}.${mime.extension(this.mimeType)}`,
     );
   }
 }

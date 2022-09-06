@@ -18,6 +18,8 @@ import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import type { BaseSearchableEntity } from '../../shared/lib/types/interfaces/base-searchable.interface';
 import { Role } from '../../shared/modules/authorization/types/role.enum';
 import type { BaseIndex } from '../../shared/modules/search/indexed-entity.interface';
+// eslint-disable-next-line import/no-cycle
+import { Social } from '../../socials/social.entity';
 import type { Tenant } from '../../tenants/tenants/tenant.entity';
 import type { User } from '../../users/user.entity';
 
@@ -80,9 +82,17 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
   @OneToMany('TeamHistory', 'team')
   histories = new Collection<TeamHistory>(this);
 
+  @Field(() => [Social])
+  @OneToMany('Social', 'team')
+  socials = new Collection<Social>(this);
+
   @Field(() => String, { nullable: true })
   @Property()
   status: string | null = null;
+
+  @Field(() => String, { nullable: true })
+  @Property()
+  location: string | null = null;
 
   @Field(() => String, { nullable: true })
   @Property()
@@ -118,6 +128,7 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
     category: string;
     email?: string | null;
     status?: string | null;
+    location?: string | null;
     presentationVideo?: string | null;
     avatar?: string | null;
     banner?: string | null;
@@ -127,7 +138,8 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
     this.assign(options);
   }
 
-  public toIndexed(): BaseIndex {
+  public async toIndexed(): Promise<BaseIndex> {
+    const labels = await this.labels.loadItems();
     return {
       title: this.name,
       picture: this.avatar,
@@ -137,7 +149,7 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
       updatedDate: this.updatedAt.getTime(),
       score: null,
       users: null,
-      tags: [this.category],
+      tags: labels.map(label => label.name),
     };
   }
 

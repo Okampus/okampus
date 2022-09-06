@@ -154,12 +154,13 @@ input CreateTeamDto {
   category: String!
   email: String
   kind: TeamKind!
+  labels: [String!] = []
+  location: String
   longDescription: String
   name: String!
   presentationVideo: String
   shortDescription: String
   status: String
-  tags: [String!]
 }
 
 input CreateTeamEventDto {
@@ -262,6 +263,7 @@ type FileUpload {
   fileKind: FileKind!
   fileLastModifiedAt: DateTime!
   fileSize: Float!
+  height: Int
   id: String!
   mimeType: String!
   name: String!
@@ -271,6 +273,7 @@ type FileUpload {
   user: User!
   validated: Boolean!
   visible: Boolean!
+  width: Int
 }
 
 input FilterMembershipRequestsDto {
@@ -677,7 +680,10 @@ type Team {
   id: Int!
   interest: [Interest!]
   kind: TeamKind!
+  labels: [TeamLabel!]!
+  location: String
   longDescription: String
+  mainGalleries: [TeamGallery!]!
   members: [TeamMember!]!
   membershipRequestForm: TeamForm
   name: String!
@@ -685,7 +691,6 @@ type Team {
   shortDescription: String
   socials: [Social!]!
   status: String
-  tags: [String!]!
   teamFiles: [TeamFile!]!
   tenant: String!
   updatedAt: DateTime!
@@ -829,6 +834,18 @@ enum TeamFormType {
   Survey
 }
 
+type TeamGallery {
+  active: Boolean!
+  createdAt: DateTime!
+  event: TeamEvent
+  file: FileUpload!
+  id: String!
+  lastActiveDate: DateTime!
+  order: Int!
+  team: Team!
+  updatedAt: DateTime!
+}
+
 type TeamHistory {
   active: Boolean!
   createdAt: DateTime!
@@ -855,6 +872,22 @@ enum TeamHistoryState {
 enum TeamKind {
   Club
   SchoolDepartment
+}
+
+type TeamLabel {
+  createdAt: DateTime!
+  id: String!
+  image: String
+  name: String!
+  tooltip: String
+  type: TeamLabelType!
+  updatedAt: DateTime!
+}
+
+enum TeamLabelType {
+  Category
+  Descriptor
+  Meta
 }
 
 type TeamMember {
@@ -965,8 +998,6 @@ input UpdateContentDto {
 input UpdateInterestDto {
   message: String
   state: InterestState
-  teamId: Float
-  userId: String
 }
 
 input UpdateSettingsDto {
@@ -1010,13 +1041,14 @@ input UpdateTeamDto {
   category: String
   email: String
   kind: TeamKind
+  labels: [String!] = []
+  location: String
   longDescription: String
   membershipRequestFormId: Int
   name: String
   presentationVideo: String
   shortDescription: String
   status: String
-  tags: [String!]
 }
 
 input UpdateTeamEventDto {

@@ -51,7 +51,8 @@ export class TeamManagedMembershipRequestUpdatedNotification extends Notificatio
           name: this.teamMembershipRequest.team.name,
           shortDescription: this.teamMembershipRequest.team.shortDescription,
           category: this.teamMembershipRequest.team.category,
-          tags: this.teamMembershipRequest.team.tags,
+          labels: this.teamMembershipRequest
+                    .team.labels.getItems().map(label => ({ name: label.name, type: label.type })),
           avatar: this.teamMembershipRequest.team.avatar,
           banner: this.teamMembershipRequest.team.banner,
         },

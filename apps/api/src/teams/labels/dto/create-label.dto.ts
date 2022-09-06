@@ -3,15 +3,22 @@ import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { TeamLabelType } from '../../../shared/lib/types/enums/team-label-type.enum';
 
 export class CreateLabelDto {
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  slug: string;
+  id: string;
 
   @Field(() => String)
   @IsString()
   name: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  image: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
   @IsString()
   tooltip: string;
 

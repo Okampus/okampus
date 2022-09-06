@@ -79,7 +79,7 @@ export class TeamsService {
     const allTeams = await this.teamRepository.findWithPagination(
       paginationOptions,
       options,
-      { orderBy: { name: 'ASC' }, populate: ['membershipRequestForm'] },
+      { orderBy: { name: 'ASC' }, populate: ['membershipRequestForm', 'labels', 'socials'] },
     );
 
 

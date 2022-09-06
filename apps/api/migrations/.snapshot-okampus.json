@@ -1237,8 +1237,8 @@
     },
     {
       "columns": {
-        "slug": {
-          "name": "slug",
+        "id": {
+          "name": "id",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -1281,8 +1281,17 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         },
         "type": {
           "name": "type",
@@ -1300,7 +1309,7 @@
         {
           "keyName": "team_label_pkey",
           "columnNames": [
-            "slug"
+            "id"
           ],
           "composite": false,
           "primary": true,
@@ -1793,6 +1802,15 @@
         },
         "status": {
           "name": "status",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "location": {
+          "name": "location",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -2656,8 +2674,8 @@
           "nullable": false,
           "mappedType": "integer"
         },
-        "team_label_slug": {
-          "name": "team_label_slug",
+        "team_label_id": {
+          "name": "team_label_id",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -2673,7 +2691,7 @@
           "keyName": "team_labels_pkey",
           "columnNames": [
             "team_id",
-            "team_label_slug"
+            "team_label_id"
           ],
           "composite": true,
           "primary": true,
@@ -2695,14 +2713,14 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "team_labels_team_label_slug_foreign": {
-          "constraintName": "team_labels_team_label_slug_foreign",
+        "team_labels_team_label_id_foreign": {
+          "constraintName": "team_labels_team_label_id_foreign",
           "columnNames": [
-            "team_label_slug"
+            "team_label_id"
           ],
           "localTableName": "public.team_labels",
           "referencedColumnNames": [
-            "slug"
+            "id"
           ],
           "referencedTableName": "public.team_label",
           "deleteRule": "cascade",
@@ -3758,15 +3776,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "visible": {
-          "name": "visible",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "boolean"
-        },
         "file_kind": {
           "name": "file_kind",
           "type": "text",
@@ -3785,6 +3794,33 @@
             "Tenant"
           ],
           "mappedType": "enum"
+        },
+        "width": {
+          "name": "width",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "height": {
+          "name": "height",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "visible": {
+          "name": "visible",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
         }
       },
       "name": "file_upload",
@@ -7150,24 +7186,6 @@
         },
         "order": {
           "name": "order",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "width": {
-          "name": "width",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "height": {
-          "name": "height",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,

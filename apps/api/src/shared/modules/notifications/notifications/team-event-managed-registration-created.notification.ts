@@ -60,7 +60,8 @@ export class TeamEventManagedRegistrationCreatedNotification extends Notificatio
             name: this.teamEventRegistration.event.team.name,
             shortDescription: this.teamEventRegistration.event.team.shortDescription,
             category: this.teamEventRegistration.event.team.category,
-            tags: this.teamEventRegistration.event.team.tags,
+            labels: this.teamEventRegistration
+              .event.team.labels.getItems().map(label => ({ name: label.name, type: label.type })),
             avatar: this.teamEventRegistration.event.team.avatar,
             banner: this.teamEventRegistration.event.team.banner,
           },
