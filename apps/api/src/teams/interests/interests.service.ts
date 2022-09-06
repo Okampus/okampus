@@ -18,11 +18,7 @@ export class InterestsService {
 
   public async create(createInterestDto: CreateInterestDto): Promise<Interest> {
     const { teamId, userId, ...createInterest } = createInterestDto;
-    console.log(teamId, userId);
-    console.log(await this.teamRepository.findOne({ id: teamId }));
-    console.log(await this.teamRepository.findAll());
     const team = await this.teamRepository.findOneOrFail({ id: teamId });
-    console.log(team);
     const user = await this.userRepository.findOneOrFail({ id: userId });
     const interest = new Interest({
       ...createInterest,
@@ -46,8 +42,7 @@ export class InterestsService {
   }
 
   public async findAllbyUser(id: string): Promise<Interest[]> {
-    const restult = await this.interestRepository.find({ user: { id } }, { populate: ['team', 'user'] });
-    return restult;
+    return await this.interestRepository.find({ user: { id } }, { populate: ['team', 'user'] });
   }
 
   public async update(id: number, updateInterestDto: UpdateInterestDto): Promise<Interest> {
@@ -58,8 +53,8 @@ export class InterestsService {
   }
 
   public async remove(id: number): Promise<Interest> {
-    const subject = await this.interestRepository.findOneOrFail({ id });
-    await this.interestRepository.removeAndFlush(subject);
-    return subject;
+    const interest = await this.interestRepository.findOneOrFail({ id });
+    await this.interestRepository.removeAndFlush(interest);
+    return interest;
   }
 }

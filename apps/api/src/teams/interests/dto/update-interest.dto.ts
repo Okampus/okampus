@@ -1,5 +1,5 @@
-import { InputType, PartialType } from '@nestjs/graphql';
+import { InputType, OmitType, PartialType } from '@nestjs/graphql';
 import { CreateInterestDto } from './create-interest.dto';
 
 @InputType()
-export class UpdateInterestDto extends PartialType(CreateInterestDto) {}
+export class UpdateInterestDto extends PartialType(OmitType(CreateInterestDto, ['teamId', 'userId'])) {}
