@@ -31,7 +31,7 @@
                 <div class="relative mr-6 grow bg-transparent">
                     <LayoutSearch />
                 </div>
-                <div id="notification-bell" class="fa fa-bell mr-6 cursor-pointer text-xl text-gray-200" />
+                <!-- <div id="notification-bell" class="fa fa-bell mr-6 cursor-pointer text-xl text-gray-200" /> -->
                 <!-- TODO: on small screen, use full screen modal -->
                 <Dropdown theme="profile-dropdown">
                     <ProfileAvatar

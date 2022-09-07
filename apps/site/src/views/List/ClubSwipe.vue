@@ -63,7 +63,7 @@
                             <i class="fa fa-comment-dots text-3xl text-blue-500" />
                             <!-- <div class="text-3xl text-blue-500">👋</div> -->
                         </div>
-                        <div class="text-xs font-medium">Contacter</div>
+                        <div class="text-xs font-medium md-max:text-[0.6rem]">Contacter</div>
                     </div>
                 </div>
                 <div
@@ -81,13 +81,13 @@
                         <div
                             class="flex h-16 w-16 items-center justify-center rounded-full border-2 border-yellow-500"
                         >
-                            <i class="fa fa-rotate-left text-4xl text-yellow-500" />
+                            <i class="fa fa-rotate-left text-6xl text-yellow-500 md-max:text-4xl" />
                         </div>
-                        <div class="text-xs font-medium">Retour arrière</div>
+                        <div class="text-xs font-medium md-max:text-[0.6rem]">Retour arrière</div>
                     </div>
                 </div>
                 <div
-                    class="absolute bottom-10 z-10 w-fit cursor-pointer select-none transition-transform hover:scale-110 md:inset-x-0 md:mx-auto md:translate-x-[-10rem] md-max:left-[25%]"
+                    class="absolute bottom-10 z-10 w-fit cursor-pointer select-none transition-transform hover:scale-110 md:inset-x-0 md:mx-auto md:translate-x-[-10rem] md-max:left-[23%]"
                     @click="
                         () => {
                             cardRefs[currentIdx].onThresholdReached('swipe-left')
@@ -101,11 +101,11 @@
                         >
                             <i class="fa fa-xmark text-5xl text-red-500" />
                         </div>
-                        <div class="text-xs font-medium">Pas intéressé(e)</div>
+                        <div class="text-xs font-medium md-max:text-[0.6rem]">Pas intéressé(e)</div>
                     </div>
                 </div>
                 <div
-                    class="absolute bottom-10 z-10 w-fit cursor-pointer select-none transition-transform hover:scale-110 md:inset-x-0 md:mx-auto md:translate-x-[10rem] md-max:right-[25%]"
+                    class="absolute bottom-10 z-10 w-fit cursor-pointer select-none transition-transform hover:scale-110 md:inset-x-0 md:mx-auto md:translate-x-[10rem] md-max:right-[23%]"
                     @click="
                         () => {
                             cardRefs[currentIdx].onThresholdReached('swipe-right')
@@ -119,7 +119,7 @@
                         >
                             <i class="fa fa-check text-5xl text-green-500" />
                         </div>
-                        <div class="text-xs font-medium">Intéressé(e)</div>
+                        <div class="text-xs font-medium md-max:text-[0.6rem]">Intéressé(e)</div>
                     </div>
                 </div>
                 <div
@@ -158,7 +158,7 @@
                                 "
                             />
                         </div>
-                        <div class="text-xs font-medium">Discord</div>
+                        <div class="text-xs font-medium md-max:text-[0.6rem]">Discord</div>
                     </div>
                 </div>
             </template>
@@ -169,21 +169,25 @@
             <div class="z-10 flex w-full flex-col items-center gap-10">
                 <div class="flex flex-col items-center gap-4">
                     <div class="text-0 text-4xl font-semibold">Félicitations 🎉</div>
-                    <div class="text-2 text-xl">Vous avez fini le swipe des associations !</div>
+                    <div class="text-2 text-center text-xl">Vous avez fini le swipe des associations !</div>
                 </div>
                 <div class="flex flex-col items-center gap-2 rounded-lg bg-yellow-200 p-4 dark:bg-yellow-800">
                     <div class="text-2 text-xs uppercase">points attribués</div>
                     <div class="text-4xl font-semibold">🪙 10</div>
                 </div>
-                <div
-                    class="hover-arrow-right cursor-pointer text-2xl text-blue-600 dark:text-blue-400"
-                    @click="showSwipe = true"
-                >
-                    Refaire le swipe des associations<i class="fa fa-arrow-right ml-2" />
+                <div class="flex flex-col gap-6">
+                    <div
+                        class="hover-arrow-right cursor-pointer text-2xl text-blue-600 dark:text-blue-400 md-max:text-xl"
+                        @click="showSwipe = true"
+                    >
+                        Refaire le swipe des associations<i class="fa fa-arrow-right ml-2" />
+                    </div>
+                    <router-link
+                        class="hover-arrow-right text-2xl text-blue-600 dark:text-blue-400 md-max:text-xl"
+                        to="/clubs"
+                        >Commencer à utiliser Okampus<i class="fa fa-arrow-right ml-2"
+                    /></router-link>
                 </div>
-                <router-link class="hover-arrow-right text-2xl text-blue-600 dark:text-blue-400" to="/clubs"
-                    >Commencer à utiliser Okampus<i class="fa fa-arrow-right ml-2"
-                /></router-link>
             </div>
         </div>
     </GraphQLQuery>

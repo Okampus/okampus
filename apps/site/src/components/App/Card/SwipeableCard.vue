@@ -1,10 +1,10 @@
 <template>
     <div
         ref="interactElement"
+        class="dragging-card"
         :style="{
             transform: transformString,
             transition: transitionString,
-            touchAction: 'none',
         }"
     >
         <slot />
@@ -38,12 +38,12 @@
         },
         thresholdX: {
             type: Number,
-            default: 240,
+            default: 170,
             required: false,
         },
         thresholdY: {
             type: Number,
-            default: 240,
+            default: 170,
             required: false,
         },
         canSwipe: {
@@ -171,3 +171,13 @@
         },
     )
 </script>
+
+<style lang="scss">
+    .dragging-card {
+        @apply touch-none;
+
+        & * {
+            @apply touch-none;
+        }
+    }
+</style>
