@@ -176,7 +176,7 @@
     .dragging-card {
         @apply touch-none;
 
-        & * {
+        & > * {
             @apply touch-none;
         }
     }
