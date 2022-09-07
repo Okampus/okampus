@@ -168,7 +168,7 @@
             <ConfettiExplosion class="!z-0" :duration="8000" :particle-count="150" :force="1" />
             <div class="z-10 flex w-full flex-col items-center gap-10">
                 <div class="flex flex-col items-center gap-4">
-                    <div class="text-0 text-6xl font-semibold">Félicitations 🎉</div>
+                    <div class="text-0 text-4xl font-semibold">Félicitations 🎉</div>
                     <div class="text-2 text-xl">Vous avez fini le swipe des associations !</div>
                 </div>
                 <div class="flex flex-col items-center gap-2 rounded-lg bg-yellow-200 p-4 dark:bg-yellow-800">
@@ -221,7 +221,7 @@
     const clubs = ref(null)
     const currentIdx = ref(null)
     const cardRefs = ref(null)
-    const shownCards = computed(() => clubs.value.filter((card) => !card.done).slice(-5))
+    const shownCards = computed(() => clubs.value.filter((card) => !card.done).slice(-3))
 
     const {
         mutate: createInterestMutation,

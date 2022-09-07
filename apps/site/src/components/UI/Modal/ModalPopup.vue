@@ -3,7 +3,7 @@
         <Transition name="modal" @after-enter="content.focus()" @after-leave="emit('closed')">
             <div v-show="show" class="absolute inset-0 z-50 h-screen w-screen">
                 <div
-                    class="app-scrollbar fixed z-20 overflow-scroll rounded-lg md:max-h-[80vh] md:max-w-[60vw] md-max:h-[100vh] md-max:w-[100vw]"
+                    class="app-scrollbar fixed z-20 overflow-auto rounded-lg md:max-h-[80vh] md:max-w-[60vw] md-max:h-[100vh] md-max:w-[100vw]"
                     :style="{ 'transform': 'translate(calc(50vw - 50%), calc(50vh - 50%))' }"
                 >
                     <div
