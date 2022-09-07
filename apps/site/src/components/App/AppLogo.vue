@@ -3,8 +3,8 @@
         <img
             :src="currentLogo"
             :style="{
-                width: `${scale * 7.5}rem`,
-                height: `${scale * 2.5}rem`,
+                width: `${scale * 8}rem`,
+                height: `${scale * 2}rem`,
             }"
         />
     </router-link>
@@ -56,10 +56,6 @@
                 : logoSrc
         }
 
-        console.log(
-            'MODE',
-            (localStore.value.darkMode === 'dark' && props.only !== 'light') || props.only === 'dark',
-        )
         return (localStore.value.darkMode === 'dark' && props.only !== 'light') || props.only === 'dark'
             ? logoDarkSrc
             : logoSrc

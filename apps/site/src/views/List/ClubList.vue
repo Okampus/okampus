@@ -42,7 +42,7 @@
                             icon: 'envelope',
                             label: 'Rejoindre',
                         }"
-                        :form-schema="joiningClub?.formSchema ?? DEFAULT_JOIN_FORM_SCHEMA"
+                        :form-schema="joiningClub?.membershipRequestForm?.schema ?? DEFAULT_JOIN_FORM_SCHEMA"
                         :form-data="{ club: joiningClub }"
                     />
                     <ClubCard
@@ -74,7 +74,6 @@
     import { computed, ref } from 'vue'
 
     import { clubTypes } from '@/shared/types/club-types.enum'
-    import { groupBy } from 'lodash'
 
     import { useI18n } from 'vue-i18n'
     import { joinTeam } from '@/graphql/queries/teams/joinTeam.js'
@@ -82,6 +81,7 @@
     import { showSuccessToast, showToastGraphQLError } from '@/utils/toast.js'
 
     import { DEFAULT_JOIN_FORM_SCHEMA } from '@/shared/assets/form-schemas/default-schemas.js'
+    import { LIKE, SUPERLIKE } from '@/shared/types/interest-states.enum'
 
     const { locale } = useI18n({ useScope: 'global' })
 
@@ -89,28 +89,43 @@
 
     const ALL_LABEL = 'all'
     const MY_CLUBS_LABEL = 'my-clubs'
+    const MY_FAVORITES_LABEL = 'my-favorites'
 
     const getTabsFromClubs = (clubs) => {
-        const clubsByCategory = groupBy(clubs, 'category')
-        const categories = Object.entries(clubsByCategory).map(([type, clubsOfType]) => ({
-            id: type in clubTypes ? clubTypes[type].link : type,
-            name: type,
-            amount: clubsOfType.length,
+        const categories = Object.entries(clubTypes).map(([name, data]) => ({
+            id: data.link,
+            name,
+            amount: clubs.filter((club) =>
+                club.labels.some((label) => label.type === 'Category' && label.name === name),
+            ).length,
         }))
+
+        // const clubsByCategory = groupBy(clubs, 'category')
+        // const categories = Object.entries(clubsByCategory).map(([type, clubsOfType]) => ({
+        //     id: type in clubTypes ? clubTypes[type].link : type,
+        //     name: type,
+        //     amount: clubsOfType.length,
+        // }))
 
         return computed(() => [
             {
                 id: 'all',
-                title: 'Les assos',
+                title: 'Les associations',
                 tabs: [
                     {
                         id: 'all',
                         route: '/clubs',
-                        name: 'Toutes les assos',
+                        name: 'Toutes',
                         amount: clubs.length,
                     },
                     {
-                        id: 'my-clubs',
+                        id: MY_FAVORITES_LABEL,
+                        name: 'Associations suivies',
+                        amount: clubs.filter((club) => [LIKE, SUPERLIKE].includes(club.userInterest?.state))
+                            .length,
+                    },
+                    {
+                        id: MY_CLUBS_LABEL,
                         name: 'Mes associations',
                         amount: clubs.filter((club) => club.userMembership.membership).length,
                     },
@@ -143,12 +158,24 @@
             const clubTypeFromTab = Object.fromEntries(
                 Object.values(clubTypes).map((type) => [type.link, type[locale.value]]),
             )
+
             return !currentTab.value || currentTab.value === ALL_LABEL
                 ? clubs
+                : currentTab.value === MY_FAVORITES_LABEL
+                ? clubs.filter((club) => [LIKE, SUPERLIKE].includes(club.userInterest?.state))
                 : currentTab.value === MY_CLUBS_LABEL
                 ? clubs.filter((club) => club.userMembership.membership)
                 : currentTab.value in clubTypeFromTab
-                ? clubs.filter((club) => club.category === clubTypeFromTab[currentTab.value])
-                : clubs.filter((club) => club.category === currentTab.value)
+                ? clubs.filter((club) =>
+                      club.labels.some(
+                          (label) =>
+                              label.type === 'Category' && label.name === clubTypeFromTab[currentTab.value],
+                      ),
+                  )
+                : clubs.filter((club) =>
+                      club.labels.some(
+                          (label) => label.type === 'Category' && label.name === currentTab.value,
+                      ),
+                  )
         })
 </script>

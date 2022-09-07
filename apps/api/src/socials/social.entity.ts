@@ -9,7 +9,9 @@ import {
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { SocialAccountType } from '../shared/lib/types/enums/social-account-type.enum';
+// eslint-disable-next-line import/no-cycle
 import { Team } from '../teams/teams/team.entity';
+// eslint-disable-next-line import/no-cycle
 import { User } from '../users/user.entity';
 
 

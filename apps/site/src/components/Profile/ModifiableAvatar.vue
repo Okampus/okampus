@@ -13,7 +13,7 @@
                     :class="avatarProps.roundedFull === false ? '-right-3 -bottom-3' : 'right-0 bottom-0'"
                 >
                     <ModalDropdown :buttons="avatarButtons">
-                        <button class="button-grey button-circle">
+                        <button class="button-grey button-circle md-max:h-10 md-max:w-10 md-max:text-sm">
                             <i class="fa fa-camera" />
                         </button>
                     </ModalDropdown>

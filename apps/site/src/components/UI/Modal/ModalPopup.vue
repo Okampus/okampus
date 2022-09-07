@@ -9,7 +9,7 @@
                     <div
                         ref="content"
                         tabindex="0"
-                        class="modal-content relative"
+                        class="modal-content relative h-full"
                         :class="cardClass"
                         @keydown.escape="emit('close')"
                     >
@@ -43,7 +43,7 @@
         },
         cardClass: {
             type: [String, Object, Array],
-            default: 'card-0 flex flex-col items-center justify-center py-8 px-10',
+            default: 'card-0 flex flex-col py-8 px-10',
         },
     })
 

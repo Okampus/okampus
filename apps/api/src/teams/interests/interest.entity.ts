@@ -8,7 +8,9 @@ import {
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { InterestState } from '../../shared/lib/types/enums/interest-state.enum';
+// eslint-disable-next-line import/no-cycle
 import { User } from '../../users/user.entity';
+// eslint-disable-next-line import/no-cycle
 import { Team } from '../teams/team.entity';
 
 @ObjectType()

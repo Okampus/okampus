@@ -85,7 +85,7 @@ module.exports = {
                 },
                 4: {
                     light: '#ddd',
-                    dark: '#303134',
+                    dark: '#292929',
                 },
                 5: {
                     light: '#ccc',

@@ -4,7 +4,7 @@
         :query="query"
         :variables="variables"
         :update="update"
-        :class="{ 'h-full': wholePage }"
+        :class="[{ 'h-full': wholePage }, customClass]"
     >
         <template #default="{ result: { error, data }, isLoading, query: q }">
             <slot name="include" :data="data" :query="q" />
@@ -110,6 +110,10 @@
         wholePage: {
             type: Boolean,
             default: false,
+        },
+        customClass: {
+            type: [Object, Array, String],
+            default: '',
         },
     })
 

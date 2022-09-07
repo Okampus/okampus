@@ -143,10 +143,7 @@
     const now = new Date()
     const nowMinusOneMonth = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
 
-    const calculateChange = ({ before, now }) => {
-        console.log(before, now)
-        return before === 0 ? 0 : (now - before) / before
-    }
+    const calculateChange = ({ before, now }) => (before === 0 ? 0 : (now - before) / before)
     const getSummary = (records) => ({ now: last(records).value, before: records[0].value })
 
     const metricsByName = (metrics) =>

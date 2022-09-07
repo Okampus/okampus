@@ -7,5 +7,7 @@ export const partialTeamFragment = gql`
         name
         category
         kind
+        status
+        location
     }
 `
