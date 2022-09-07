@@ -160,7 +160,7 @@
                             :key="social.id"
                             :href="social.link"
                             target="_blank"
-                            class="flex items-center gap-2"
+                            class="flex w-fit items-center gap-2"
                         >
                             <i
                                 :class="[
