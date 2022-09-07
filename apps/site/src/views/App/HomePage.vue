@@ -13,7 +13,7 @@
             </div>
         </div>
         <div v-else-if="!localStore.me.finishedIntroduction">
-            <Swiper pagination :modules="modules" class="text-0 h-content" @swiper="(s) => (swiper = s)">
+            <Swiper pagination :modules="modules" class="text-0" @swiper="(s) => (swiper = s)">
                 <SwiperButton
                     v-if="swiper?.activeIndex > 0"
                     class="absolute top-1/2 left-0"
@@ -154,7 +154,7 @@
                 </SwiperSlide>
 
                 <SwiperSlide
-                    class="app-scrollbar flex flex-col items-center justify-start gap-10 overflow-auto !pt-0 md:p-28 lg:p-72 md-max:p-12"
+                    class="pb-50 pt-25 app-scrollbar flex flex-col items-center justify-start gap-10 overflow-auto !pt-0 md:p-28 lg:p-72 md-max:p-12"
                 >
                     <div class="flex flex-col gap-2">
                         <div class="text-3xl">Introducing :</div>
@@ -170,29 +170,28 @@
                         <div>
                             Pour chaque association, retrouvez
                             <b class="text-xl underline"
-                                >l'emplacement de leur stand pour la journée des associations à côté de la
-                                boussole 🧭</b
+                                >l'emplacement de leur stand pour le 08/09 à côté de la boussole 🧭</b
                             >
                             sur leur profil !
                         </div>
 
                         <div>
-                            "Swiper" à gauche ou à droite pour montrer votre intérêt, sélectionnez la partie
-                            basse des cartes pour
+                            "Swiper" à gauche/droite pour montrer votre intérêt, cliquez en bas des cartes
+                            pour
                             <span class="text-lg font-medium">obtenir plus d'informations ℹ️</span> et
-                            <span class="text-lg font-medium">"swiper" vers le haut 💬</span> pour initier une
-                            prise de contact avec une association !
+                            <span class="text-lg font-medium">"swiper" en haut 💬</span> pour prendre contact
+                            avec l'association !
                         </div>
 
                         <div>
                             ⚠️ Les associations
                             <span class="text-lg font-medium">ne vous répondront pas depuis Okampus</span>.
-                            Votre email Efrei sera mise a disposition par défaut ! ⚠️
+                            Votre email Efrei sera mise a disposition comme moyen de contact ! ⚠️
                         </div>
 
                         <div>
-                            Complétez le swipe des associations avant le 14 septembre
-                            <b class="underline">pour obtenir 50 points Okampus !</b>
+                            <b class="underline">Obtenez 50 points</b>
+                            en complétant le swipe avant le 14/09 🥇
                         </div>
 
                         <div
