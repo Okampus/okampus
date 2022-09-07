@@ -1,7 +1,7 @@
 <template>
     <div
         class="text-0 flex flex-col items-center justify-center"
-        :class="[wholePage ? 'mt-10 gap-6 text-6xl h-[90%]  w-full' : 'text-2xl m-4']"
+        :class="[wholePage ? 'mt-10 mb-10 gap-6 text-6xl h-[90%]  w-full' : 'text-2xl m-4']"
     >
         <AppLogo v-if="wholePage" :scale="2" />
         <svg
