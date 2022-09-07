@@ -40,7 +40,7 @@
                                 :is="component || 'div'"
                                 ref="content"
                                 :="props"
-                                class="app-scrollbar overflow-scroll"
+                                class="app-scrollbar overflow-auto"
                                 :class="[
                                     unsaved && showUnsaved ? 'h-[calc(100%-6rem)]' : 'h-full',
                                     { 'p-10': padded },

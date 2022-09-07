@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col">
         <div
-            class="box-container app-scrollbar-on-hover overflow-scroll"
+            class="box-container app-scrollbar-on-hover overflow-auto"
             :class="{ 'rounded-b-none': sortedItems.length === 0 }"
         >
             <table ref="table" class="h-full w-full table-auto">
