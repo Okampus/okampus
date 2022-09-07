@@ -26,11 +26,11 @@
                         </div>
                         <button
                             v-if="localStore.me?.id === route.params.userId"
-                            class="button-green pill-button"
+                            class="button-green pill-button shrink-0"
                             @click="router.push(`/me`)"
                         >
                             <i class="fas fa-gear" />
-                            Gérer mon profil
+                            <div class="md-max:hidden">Gérer mon profil</div>
                         </button>
                     </div>
                 </div>
