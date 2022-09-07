@@ -1,7 +1,7 @@
 <template>
     <div
         class="bg-2 app-scrollbar relative cursor-pointer select-none overflow-auto rounded-xl shadow-md"
-        :style="showProfile ? { '-webkit-overflow-scrolling': 'touch' } : {}"
+        :style="showProfile ? { '-webkit-overflow-scrolling': 'touch' } : { 'touch-action': 'none' }"
         @mousedown="startClick($event)"
         @mousemove="disableClickOnDrag($event)"
         @click="enableClick"

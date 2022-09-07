@@ -190,9 +190,5 @@
         & * {
             backface-visibility: hidden;
         }
-
-        & > * {
-            @apply touch-none;
-        }
     }
 </style>
