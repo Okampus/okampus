@@ -209,15 +209,16 @@
 
     import { emitter } from '@/shared/modules/emitter'
 
-    import { useMutation } from '@vue/apollo-composable'
+    import { useMutation, useQuery } from '@vue/apollo-composable'
 
     import { isNil } from 'lodash'
-    import { showInfoToast, showSuccessToast, showToastGraphQLError } from '@/utils/toast'
+    import { showErrorToast, showInfoToast, showSuccessToast, showToastGraphQLError } from '@/utils/toast'
 
     import localStore from '@/store/local.store'
     import { LIKE, SUPERLIKE, NOPE } from '@/shared/types/interest-states.enum'
 
     import { computed, markRaw, ref } from 'vue'
+    import { getMe } from '@/graphql/queries/auth/getMe'
 
     const showSwipe = ref(false)
 
@@ -263,6 +264,21 @@
 
             setTimeout(() => {
                 club.done = true
+                if (!shownCards.value.length) {
+                    const { onResult, onError } = useQuery(getMe)
+                    onError(showToastGraphQLError)
+                    onResult(({ data }) => {
+                        if (data.me) {
+                            localStore.value.me = data.me
+                            emitter.emit('login')
+                            showSuccessToast('Connexion réussie !')
+                        } else {
+                            showErrorToast(
+                                "[Erreur] Vos informations utilisateur n'ont pas pu être récupérées.",
+                            )
+                        }
+                    })
+                }
                 currentIdx.value--
             }, 400)
 
