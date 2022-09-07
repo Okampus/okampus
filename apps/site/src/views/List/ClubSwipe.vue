@@ -16,7 +16,7 @@
             }
         "
         :whole-page="true"
-        class="relative overflow-hidden px-5"
+        class="overflow-hidden px-5"
         empty-subtitle="Aucune association n'a encore été créée."
     >
         <template v-if="shownCards.length && (!localStore.me?.finishedOnboarding || showSwipe)">
