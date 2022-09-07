@@ -20,6 +20,7 @@
 
         <div class="flex h-screen w-screen flex-row overflow-hidden">
             <LayoutSidebar
+                v-if="localStore.me?.finishedOnboarding"
                 ref="sidebar"
                 :uncollapsed="collapsed"
                 :small-screen="hiding"
@@ -31,17 +32,19 @@
                 id="main-content"
                 ref="content"
                 :class="{ 'brightness-50 child:pointer-events-none': hiding && collapsing != collapsed }"
-                class="bg-1 grow-1 h-content after-topbar app-scrollbar relative flex w-full flex-col overflow-auto"
+                class="bg-1 grow-1 h-content app-scrollbar after-topbar relative flex w-full flex-col overflow-auto"
                 @mousedown="hiding && collapsed !== collapsing && toggleSidebar()"
             >
                 <AppBottomSheet
                     v-model:show="modal.show"
                     :is-new="modal.isNew"
                     :title="modal.title"
+                    :padded="modal.padded"
                     :uncollapsed="collapsed"
                     :small-screen="hiding"
                     :component="modal.component"
                     :props="modal.props"
+                    :show-unsaved="modal.showUnsaved"
                 />
 
                 <AppException v-if="error.code" :code="error.code" />
@@ -84,7 +87,7 @@
 
     import ModalPopup from '@/components/UI/Modal/ModalPopup.vue'
 
-    import SwiperCore, { EffectCoverflow, Navigation, Mousewheel } from 'swiper'
+    import SwiperCore, { EffectCoverflow, Navigation, Mousewheel, Pagination } from 'swiper'
 
     import { useBreakpoints } from '@vueuse/core'
 
@@ -106,15 +109,15 @@
 
     import 'swiper/css'
     import 'swiper/css/effect-coverflow'
+    import 'swiper/css/pagination'
 
-    SwiperCore.use([EffectCoverflow, Navigation, Mousewheel])
+    import { twBreakpoints } from './tailwind'
+
+    SwiperCore.use([EffectCoverflow, Navigation, Mousewheel, Pagination])
 
     const currentRoute = useRoute()
 
-    const breakpoints = useBreakpoints({
-        hideSidebar: 1024,
-        uncollapseSidebar: 1536,
-    })
+    const breakpoints = useBreakpoints(twBreakpoints)
 
     const sidebar = ref(null)
     const topbar = ref(null)
@@ -124,8 +127,8 @@
     // TODO: hide sidebar on some routes for better navigation
     // const hideSidebarOnRoute = computed(() => currentRoute.fullPath !== '/')
 
-    const hiding = breakpoints.smaller('hideSidebar')
-    const uncollapsing = breakpoints.greater('uncollapseSidebar')
+    const hiding = breakpoints.smaller('lg')
+    const uncollapsing = breakpoints.greater('2xl')
 
     const collapsing = ref(false)
     const collapsed = ref(false)
@@ -166,11 +169,12 @@
     })
 
     const modal = reactive({
-        show: false,
         isNew: false,
+        padded: true,
         title: '',
         component: '',
         props: {},
+        show: false,
     })
 
     const error = reactive({
@@ -225,8 +229,10 @@
         alertToast.value.reset()
     })
 
-    emitter.on('show-bottom-sheet', ({ isNew, title, component, props }) => {
+    emitter.on('show-bottom-sheet', ({ isNew, showUnsaved, padded, title, component, props }) => {
         modal.isNew = isNew
+        modal.showUnsaved = showUnsaved
+        modal.padded = padded
         modal.title = title
         modal.component = component
         modal.props = props
@@ -235,10 +241,15 @@
     })
 
     emitter.on('close-bottom-sheet', () => {
-        modal.isNew = false
         modal.show = false
+        modal.isNew = false
+        modal.padded = true
+        modal.title = ''
         modal.component = ''
+        modal.showUnsaved = true
         modal.props = {}
+
+        modal.show = false
     })
 
     emitter.on('error-route', ({ code, path }) => {
@@ -247,7 +258,6 @@
     })
 
     emitter.on('logout', () => {
-        console.log('LOGGING OUT')
         $axios.get('auth/logout').then(() => {
             localStore.value.me = {}
             apolloClient.cache.reset()

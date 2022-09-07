@@ -47,7 +47,7 @@ export class TeamManagedFormUpdatedNotification extends Notification {
           name: this.teamForm.team.name,
           shortDescription: this.teamForm.team.shortDescription,
           category: this.teamForm.team.category,
-          tags: this.teamForm.team.tags,
+          labels: this.teamForm.team.labels.getItems().map(label => ({ name: label.name, type: label.type })),
           avatar: this.teamForm.team.avatar,
           banner: this.teamForm.team.banner,
         },

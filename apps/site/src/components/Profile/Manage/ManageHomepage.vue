@@ -71,14 +71,14 @@
         </div>
 
         <div class="card-2 flex flex-col gap-8">
-            <div class="w-fit">
+            <!-- <div class="w-fit">
                 <div class="mb-2 text-lg font-semibold">Catégorie de l'association</div>
                 <router-link :to="`/clubs/${clubTypes[club.category].link}`">
                     <LabelSimple class="bg-slate-600/40 hover:bg-slate-400/40">{{
                         club.category
                     }}</LabelSimple>
                 </router-link>
-            </div>
+            </div> -->
             <div>
                 <div class="mb-2 text-lg font-semibold">Description de l'association</div>
                 <div class="text-2">{{ club.longDescription }}</div>
@@ -117,11 +117,11 @@
 
     import ModifiableAvatar from '@/components/Profile/ModifiableAvatar.vue'
     import ProfileBanner from '@/components/Profile/ProfileBanner.vue'
-    import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
+    // import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
 
     import InfoIcon from '@/icons/InfoIcon.vue'
 
-    import { clubTypes } from '@/shared/types/club-types.enum'
+    // import { clubTypes } from '@/shared/types/club-types.enum'
     import { emitter } from '@/shared/modules/emitter'
     import { ref } from 'vue'
 

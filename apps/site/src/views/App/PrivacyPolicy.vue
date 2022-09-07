@@ -120,7 +120,7 @@
         </div>
 
         <div v-if="localStore.loggedIn">
-            <div class="flex flex-col gap-10">
+            <!-- <div class="flex flex-col gap-10">
                 <AppTitle title="Préférences" icon="fas fa-gears" class="text-1" />
                 <div class="text-1 flex flex-col gap-6 md:flex-row md:gap-14 lg:gap-24">
                     <div class="flex shrink-0 grow flex-col md:max-w-[45%]">
@@ -139,12 +139,18 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="mt-8 flex gap-2 md:gap-6">
-                <button class="button-blue flex w-fit items-center gap-2">
+                <button class="button-blue flex w-fit items-center gap-2" @click="getMyDataDump">
                     <i class="fas fa-download"></i>Exportez mes données
                 </button>
-                <button class="button-grey w-fit">Demande relative à mes données</button>
+                <a
+                    class="button-grey w-fit"
+                    href="mailto:rgpd@okampus.fr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Demande relative à mes données</a
+                >
             </div>
         </div>
     </div>
@@ -153,8 +159,22 @@
 <script setup>
     import AppTitle from '@/components/App/AppTitle.vue'
     import Locker from '@/assets/img/3dicons/locker.png'
-    import SwitchInput from '@/components/Input/SwitchInput.vue'
     import localStore from '@/store/local.store'
+
+    import $axios from '@/shared/config/axios.config'
+    import { downloadJSON } from '@/utils/downloadFile'
+    import { onData } from '@/utils/store'
+
+    const getMyDataDump = () => {
+        $axios.get('users/gdpr-dump').then(
+            onData((data) => {
+                downloadJSON(
+                    data,
+                    `Okampus_GDPR_Dump_${localStore.value.me.id}_${new Date().toLocaleString()}`,
+                )
+            }),
+        )
+    }
 </script>
 
 <style lang="scss">

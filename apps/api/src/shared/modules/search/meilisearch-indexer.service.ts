@@ -25,13 +25,13 @@ export class MeiliSearchIndexerService {
     @InjectMeiliSearch() private readonly meiliSearch: MeiliSearch,
   ) {}
 
-  public static entitiesToIndexedEntities(entities: IndexableEntities[], type: string): IndexedEntity[] {
-    return entities.map(entity => ({
+  public static async entitiesToIndexedEntities(entities: IndexableEntities[], type: string): Promise<IndexedEntity[]> {
+    return await Promise.all(entities.map(async entity => ({
       id: MeiliSearchIndexerService.getEntityId(entity, type),
       realId: entity.id.toString(),
       metaType: type.toLowerCase(),
-      ...entity.toIndexed(),
-    }));
+      ...await entity.toIndexed(),
+    })));
   }
 
   public static getEntityId(entity: IndexableEntities, type: string): string {
@@ -95,10 +95,10 @@ export class MeiliSearchIndexerService {
 
       for (let offset = 0; offset < count; offset += MEILISEARCH_BATCH_SIZE) {
         const entities = await this.getEntities(name, tenant, { offset, limit: MEILISEARCH_BATCH_SIZE });
-        const indexedEntities = MeiliSearchIndexerService.entitiesToIndexedEntities(entities, name);
+        const indexedEntities = await MeiliSearchIndexerService.entitiesToIndexedEntities(entities, name);
         this.logger.log(`Reindexing ${offset} to ${Math.min(offset + MEILISEARCH_BATCH_SIZE, count)}, found ${indexedEntities.length} entities`);
         const response = await index.addDocuments(indexedEntities);
-        console.log('Response:', JSON.stringify(response));
+        this.logger.log(`Response: ${JSON.stringify(response)}`);
       }
     }
     return true;

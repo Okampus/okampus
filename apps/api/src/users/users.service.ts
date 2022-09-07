@@ -19,6 +19,8 @@ import { SchoolRole } from '../shared/modules/authorization/types/school-role.en
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '../shared/modules/pagination';
 import type { IndexedEntity } from '../shared/modules/search/indexed-entity.interface';
+import type { CreateSocialDto } from '../socials/dto/create-social.dto';
+import { Social } from '../socials/social.entity';
 import { Statistics } from '../statistics/statistics.entity';
 import { StatisticsService } from '../statistics/statistics.service';
 import { Tenant } from '../tenants/tenants/tenant.entity';
@@ -31,6 +33,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(Tenant) private readonly tenantRepository: BaseRepository<Tenant>,
+    @InjectRepository(Social) private readonly socialsRepository: BaseRepository<Social>,
     @InjectRepository(Statistics) private readonly statisticsRepository: BaseRepository<Statistics>,
     @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
     @InjectRepository(SchoolGroup)
@@ -50,6 +53,7 @@ export class UsersService {
     return await this.userRepository.findOneOrFail({ id }, {
       refresh: true,
       populate: [
+        'interests',
         'schoolGroupMemberships',
         'schoolGroupMemberships.schoolYear',
         'schoolGroupMemberships.schoolGroup',
@@ -176,6 +180,21 @@ export class UsersService {
   public async delete(id: string): Promise<void> {
     const user = await this.userRepository.findOneOrFail({ id });
     await this.userRepository.removeAndFlush(user);
+  }
+
+  public async addSocialAccount(
+    user: User,
+    id: string,
+    createSocialDto: CreateSocialDto,
+  ): Promise<Social> {
+    const targetUser = await this.userRepository.findOneOrFail({ id });
+
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Update, targetUser);
+
+    const social = new Social({ ...createSocialDto, user });
+    await this.socialsRepository.persistAndFlush(social);
+    return social;
   }
 
   public async getUserStats(id: string): Promise<Omit<Statistics, 'assign'>> {

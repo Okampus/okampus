@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { Announcement } from '../../announcements/announcement.entity';
 import { BadgeUnlock } from '../../badges/entities/badge-unlock.entity';
 import { Blog } from '../../blogs/blog.entity';
-import { UserContactAccount } from '../../contacts/entities/user-contact-account.entity';
 import { Content } from '../../contents/entities/content.entity';
 import { Favorite } from '../../favorites/favorite.entity';
 import { Attachment } from '../../files/attachments/attachment.entity';
@@ -14,6 +13,7 @@ import { TeamFile } from '../../files/team-files/team-file.entity';
 import { Reaction } from '../../reactions/reaction.entity';
 import { Report } from '../../reports/report.entity';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
+import { Social } from '../../socials/social.entity';
 import { Statistics } from '../../statistics/statistics.entity';
 import { TeamEventRegistration } from '../../teams/event-registrations/team-event-registration.entity';
 import { TeamEvent } from '../../teams/events/team-event.entity';
@@ -32,7 +32,7 @@ export class GdprService {
     @InjectRepository(Announcement) private readonly announcementRepository: BaseRepository<Announcement>,
     @InjectRepository(BadgeUnlock) private readonly badgeUnlockRepository: BaseRepository<BadgeUnlock>,
     @InjectRepository(Blog) private readonly blogRepository: BaseRepository<Blog>,
-    @InjectRepository(UserContactAccount) private readonly userContactAccountRepository: BaseRepository<UserContactAccount>,
+    @InjectRepository(Social) private readonly socialsRepository: BaseRepository<Social>,
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
     @InjectRepository(Favorite) private readonly favoriteRepository: BaseRepository<Favorite>,
     @InjectRepository(Attachment) private readonly attachmentRepository: BaseRepository<Attachment>,
@@ -58,7 +58,7 @@ export class GdprService {
     const announcements       = await this.announcementRepository.find({ createdBy: user });
     const unlockedBadges      = await this.badgeUnlockRepository.find({ user });
     const blogs               = await this.blogRepository.find({ post: { author: user } });
-    const userContactAccounts = await this.userContactAccountRepository.find({ user });
+    const userContactAccounts = await this.socialsRepository.find({ user });
     const contents            = await this.contentRepository.find({ author: user });
     const favorites           = await this.favoriteRepository.find({ user });
     const attachments         = await this.attachmentRepository.find({ file: { user } });

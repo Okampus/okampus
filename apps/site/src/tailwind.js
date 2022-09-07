@@ -23,7 +23,7 @@ export const twColors = [
     },
     {
         light: '#eee',
-        dark: '#202227',
+        dark: '#292929',
     },
     {
         light: '#ddd',

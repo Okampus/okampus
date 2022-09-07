@@ -21,10 +21,10 @@
 .button-blue {
     @extend %button;
 
-    background-color: #1b73d5;
+    background-color: #1878f1;
 
     &:hover:enabled {
-        box-shadow: 0 0 8px #50a7ff;
+        box-shadow: 0 0 8px #3384e7;
     }
 }
 
@@ -45,6 +45,16 @@
 
     &:hover:enabled {
         box-shadow: 0 0 8px #2b9c0f;
+    }
+}
+
+.button-black {
+    @extend %button;
+
+    background-color: #111;
+
+    &:hover:enabled {
+        box-shadow: 0 0 8px #918484;
     }
 }
 

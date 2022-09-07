@@ -5,11 +5,15 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 import { FileUpload } from '../../files/file-uploads/file-upload.entity';
 import { ProfileImage } from '../../files/profile-images/profile-image.entity';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
+import { TeamLabelType } from '../../shared/lib/types/enums/team-label-type.enum';
 import { TeamRole } from '../../shared/lib/types/enums/team-role.enum';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
+import type { CreateSocialDto } from '../../socials/dto/create-social.dto';
+import { Social } from '../../socials/social.entity';
 import type { Tenant } from '../../tenants/tenants/tenant.entity';
 import type { User } from '../../users/user.entity';
 import { TeamForm } from '../forms/team-form.entity';
+import { TeamLabel } from '../labels/team-label.entity';
 import { TeamMember } from '../members/team-member.entity';
 import type { CreateTeamDto } from './dto/create-team.dto';
 import type { TeamsFilterDto } from './dto/teams-filter.dto';
@@ -19,17 +23,36 @@ import { Team } from './team.entity';
 
 @Injectable()
 export class TeamsService {
+  // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
+    @InjectRepository(TeamLabel) private readonly teamLabelRepository: BaseRepository<TeamLabel>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
+    @InjectRepository(Social) private readonly socialsRepository: BaseRepository<Social>,
     @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
   ) {}
 
   public async create(tenant: Tenant, user: User, createTeamDto: CreateTeamDto): Promise<Team> {
-    const { avatar, banner, ...dto } = createTeamDto;
+    const {
+      avatar,
+      banner,
+      labels,
+      ...dto
+    } = createTeamDto;
 
     const team = new Team({ ...dto, tenant });
+
+    const existingLabels = await this.teamLabelRepository.find({ name: { $in: labels } });
+    const newLabels: TeamLabel[] = labels
+      ?.filter(tag => !existingLabels.some(t => t.name === tag))
+      ?.map(name => new TeamLabel({ name, type: TeamLabelType.Meta })) ?? [];
+
+    if (newLabels.length > 0) {
+      await this.teamLabelRepository.persistAndFlush(newLabels);
+      team.labels.add(...newLabels);
+    }
+    team.labels.add(...existingLabels);
 
     if (avatar)
       await this.setImage(avatar, 'avatar', team);
@@ -56,7 +79,7 @@ export class TeamsService {
     const allTeams = await this.teamRepository.findWithPagination(
       paginationOptions,
       options,
-      { orderBy: { name: 'ASC' }, populate: ['membershipRequestForm'] },
+      { orderBy: { name: 'ASC' }, populate: ['membershipRequestForm', 'labels', 'socials'] },
     );
 
 
@@ -70,7 +93,7 @@ export class TeamsService {
 
     const team = await this.teamRepository.findOneOrFail(
       { id, ...options },
-      { populate: ['members', 'members.user', 'membershipRequestForm', 'membershipRequestForm.createdBy'] },
+      { populate: ['members', 'members.user', 'membershipRequestForm', 'membershipRequestForm.createdBy', 'labels', 'socials'] },
     );
 
     return team;
@@ -97,8 +120,19 @@ export class TeamsService {
       avatar,
       banner,
       membershipRequestFormId,
+      labels: wantedLabels,
       ...dto
     } = updateTeamDto;
+
+
+    if (wantedLabels) {
+      if (wantedLabels.length === 0) {
+        team.labels.removeAll();
+      } else {
+        const labels = await this.teamLabelRepository.find({ name: { $in: wantedLabels } });
+        team.labels.set(labels);
+      }
+    }
 
     if (typeof avatar !== 'undefined') {
       if (avatar)
@@ -134,6 +168,21 @@ export class TeamsService {
   public async remove(id: number): Promise<void> {
     const team = await this.teamRepository.findOneOrFail({ id });
     await this.teamRepository.removeAndFlush(team);
+  }
+
+  public async addSocialAccount(
+    user: User,
+    id: number,
+    createSocialDto: CreateSocialDto,
+  ): Promise<Social> {
+    const team = await this.teamRepository.findOneOrFail({ id });
+
+    if (!team.canAdminister(user))
+      throw new ForbiddenException('Not a team admin');
+
+    const social = new Social({ ...createSocialDto, team });
+    await this.socialsRepository.persistAndFlush(social);
+    return social;
   }
 
   public async updateProfileImage(

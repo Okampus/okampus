@@ -14,8 +14,11 @@ import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { Role } from '../shared/modules/authorization/types/role.enum';
 import { SchoolRole } from '../shared/modules/authorization/types/school-role.enum';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
+import { Social } from '../socials/social.entity';
+import { SocialsModule } from '../socials/socials.module';
 import { Statistics } from '../statistics/statistics.entity';
 import { StatisticsModule } from '../statistics/statistics.module';
+import { InterestsModule } from '../teams/interests/interests.module';
 import { Tenant } from '../tenants/tenants/tenant.entity';
 import { GdprModule } from './gdpr/gdpr.module';
 import { User } from './user.entity';
@@ -27,12 +30,14 @@ import './user.subscriber';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([ProfileImage, User, Statistics, BadgeUnlock, SchoolGroup, SchoolYear, Tenant]),
+    MikroOrmModule.forFeature([ProfileImage, User, Statistics, BadgeUnlock, SchoolGroup, SchoolYear, Social, Tenant]),
     StatisticsModule,
     ProfileImagesModule,
     FileUploadsModule,
     GdprModule,
     SchoolGroupMembershipsModule,
+    InterestsModule,
+    SocialsModule,
   ],
   controllers: [UsersController],
   providers: [CaslAbilityFactory, UsersService, JwtService, UsersResolver],

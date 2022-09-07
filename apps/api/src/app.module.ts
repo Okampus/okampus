@@ -21,7 +21,6 @@ import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { BadgesModule } from './badges/badges.module';
 import { BlogsModule } from './blogs/blogs.module';
-import { ContactsModule } from './contacts/contacts.module';
 import { ContentsModule } from './contents/contents.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { FilesModule } from './files/files.module';
@@ -50,6 +49,7 @@ import { TraceMiddleware } from './shared/lib/middlewares/trace.middleware';
 import { PoliciesGuard } from './shared/modules/authorization';
 import { CaslModule } from './shared/modules/casl/casl.module';
 import { MeiliSearchIndexerModule } from './shared/modules/search/meilisearch-indexer.module';
+import { SocialsModule } from './socials/socials.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { TagsModule } from './tags/tags.module';
@@ -83,7 +83,6 @@ import { WikisModule } from './wiki/wikis.module';
     AuthModule,
     BadgesModule,
     BlogsModule,
-    ContactsModule,
     ContentsModule,
     FavoritesModule,
     FilesModule,
@@ -93,6 +92,7 @@ import { WikisModule } from './wiki/wikis.module';
     ReportsModule,
     RestaurantModule,
     SettingsModule,
+    SocialsModule,
     StatisticsModule,
     SubjectsModule,
     TagsModule,

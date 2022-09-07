@@ -30,7 +30,7 @@ import { TeamGalleriesService } from './team-gallery.service';
 
 @ApiTags('TeamGallerys')
 @Controller()
-export class TeamGallerysController {
+export class TeamGalleriesController {
   constructor(
     private readonly teamFilesService: TeamGalleriesService,
     private readonly filesService: FileUploadsService,

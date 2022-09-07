@@ -31,24 +31,14 @@ export class TeamGallery extends BaseFileEntity {
   @OneToOne()
   event: TeamEvent | null = null;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => Int)
   @Property()
   order: number;
-
-  @Field(() => Int, { nullable: true })
-  @Property()
-  width: number;
-
-  @Field(() => Int, { nullable: true })
-  @Property()
-  height: number;
 
   constructor(options: {
     team: Team;
     file: FileUpload;
     order: number;
-    width: number;
-    height: number;
     event?: TeamEvent | null;
     active?: boolean;
   }) {

@@ -33,7 +33,7 @@ export class SearchSubscriber implements EventSubscriber<IndexableEntities> {
   public async afterCreate(args: EventArgs<IndexableEntities>): Promise<void> {
     if (config.meilisearch.enabled && isValid(args)) {
       await this.meiliSearch.index(args.entity.tenant.id).addDocuments(
-        MeiliSearchIndexerService.entitiesToIndexedEntities([args.entity], args.changeSet.name),
+        await MeiliSearchIndexerService.entitiesToIndexedEntities([args.entity], args.changeSet.name),
       );
     }
   }
@@ -41,7 +41,7 @@ export class SearchSubscriber implements EventSubscriber<IndexableEntities> {
   public async afterUpdate(args: EventArgs<IndexableEntities>): Promise<void> {
     if (config.meilisearch.enabled && isValid(args)) {
       await this.meiliSearch.index(args.entity.tenant.id).updateDocuments(
-        MeiliSearchIndexerService.entitiesToIndexedEntities([args.entity], args.changeSet.name),
+        await MeiliSearchIndexerService.entitiesToIndexedEntities([args.entity], args.changeSet.name),
       );
     }
   }

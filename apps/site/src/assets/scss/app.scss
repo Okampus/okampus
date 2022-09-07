@@ -68,3 +68,7 @@ $logo-dark-url: url('@/assets/img/logos/logo_dark.png');
         transform: scale(110%);
     }
 }
+
+.formkit-form > h1 {
+    @apply text-center;
+}

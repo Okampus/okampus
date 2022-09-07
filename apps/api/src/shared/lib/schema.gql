@@ -137,6 +137,13 @@ input CreateContentWithKindDto {
   parentId: Int!
 }
 
+input CreateInterestDto {
+  message: String = null
+  state: InterestState!
+  teamId: Float!
+  userId: String!
+}
+
 input CreateReportDto {
   reason: String!
 }
@@ -145,13 +152,15 @@ input CreateTeamDto {
   avatar: String
   banner: String
   category: String!
+  email: String
   kind: TeamKind!
+  labels: [String!] = []
+  location: String
   longDescription: String
   name: String!
   presentationVideo: String
   shortDescription: String
   status: String
-  tags: [String!]
 }
 
 input CreateTeamEventDto {
@@ -254,6 +263,7 @@ type FileUpload {
   fileKind: FileKind!
   fileLastModifiedAt: DateTime!
   fileSize: Float!
+  height: Int
   id: String!
   mimeType: String!
   name: String!
@@ -263,6 +273,7 @@ type FileUpload {
   user: User!
   validated: Boolean!
   visible: Boolean!
+  width: Int
 }
 
 input FilterMembershipRequestsDto {
@@ -288,6 +299,22 @@ type IndexedUser {
   tags: [String!]!
   title: String!
   updatedDate: Int!
+}
+
+type Interest {
+  createdAt: DateTime!
+  id: Int!
+  message: String
+  state: InterestState!
+  team: Team!
+  updatedAt: DateTime!
+  user: User!
+}
+
+enum InterestState {
+  Like
+  Nope
+  SuperLike
 }
 
 input InviteMemberDto {
@@ -364,9 +391,11 @@ type Mutation {
   addValidationStep(createStep: CreateValidationStepDto!): Tenant!
   createContent(child: CreateContentWithKindDto!): Content!
   createEvent(createEvent: CreateTeamEventDto!, id: Int!): TeamEvent!
+  createInterest(input: CreateInterestDto!): Interest!
   createReport(id: Int!, report: CreateReportDto!): Content!
   createTeamForm(createForm: CreateTeamFormDto!, id: Int!): Team!
   createThread(thread: CreateThreadDto!): Thread!
+  deleteInterest(id: Int!): Interest!
   deleteTeamFile(id: String!): Team!
   handleTeamMembershipRequest(id: Int!, updateRequest: PutTeamMembershipRequestDto!): TeamMembershipRequest!
   insertStep(atStep: Int!, step: Int!): Tenant!
@@ -376,6 +405,7 @@ type Mutation {
   unsetLogo(id: String!, isLogoDark: Boolean!): Tenant!
   updateContent(content: UpdateContentDto!, id: Int!): Content!
   updateEvent(id: Int!, updateEvent: UpdateTeamEventDto!): TeamEvent!
+  updateInterest(id: Int!, input: UpdateInterestDto!): Interest!
   updateSettings(settings: UpdateSettingsDto!): Settings!
   updateTeam(id: Int!, team: UpdateTeamDto!): Team!
   updateTeamEventRegistration(id: Int!, registration: UpdateTeamEventRegistrationDto!): TeamEventRegistration!
@@ -437,6 +467,8 @@ type Query {
   events(filter: ListTeamEventsDto!): [TeamEvent!]!
   getLogoUrls(id: String!): TenantLogoUrls!
   getLogos(id: String!): [ProfileImage!]!
+  interestById(id: Int!): Interest!
+  interests: [Interest!]!
   me: User!
   metrics(metrics: ListMetricsDto!): [Metric!]!
   oidcEnabled(id: String!): OIDCEnabled!
@@ -556,12 +588,12 @@ type Settings {
   gdprEndOfLifeExport: Boolean!
   notificationAdminReportCreated: Int!
   notificationAdminRoleUpdated: Int!
-  notificationAdminTeamContactUpdated: Int!
   notificationAdminTeamEventValidationApproved: Int!
   notificationAdminTeamEventValidationRejected: Int!
   notificationAdminTeamEventValidationStarted: Int!
   notificationAdminTeamEventValidationStep: Int!
   notificationAdminTeamLegalFileUpdated: Int!
+  notificationAdminTeamSocialUpdated: Int!
   notificationAdminThreadAssigned: Int!
   notificationAdminThreadAssignedStale: Int!
   notificationAdminThreadAssignedStaleThreshold: Int!
@@ -586,6 +618,26 @@ type Settings {
   notificationThreadSubscribedUpdated: Int!
   updatedAt: DateTime!
   user: User!
+}
+
+type Social {
+  createdAt: DateTime!
+  id: Int!
+  link: String!
+  pseudo: String!
+  socialType: SocialAccountType!
+  team: Team
+  updatedAt: DateTime!
+  user: User
+}
+
+enum SocialAccountType {
+  Discord
+  Instagram
+  LinkedIn
+  TikTok
+  Twitch
+  YouTube
 }
 
 type Subscription {
@@ -621,22 +673,28 @@ type Team {
   boardMembers: [TeamMember!]!
   category: String!
   createdAt: DateTime!
+  email: String
   formTemplates: [TeamForm!]!
   forms: [TeamForm!]!
   histories: [TeamHistory!]!
   id: Int!
+  interest: [Interest!]
   kind: TeamKind!
+  labels: [TeamLabel!]!
+  location: String
   longDescription: String
+  mainGalleries: [TeamGallery!]!
   members: [TeamMember!]!
   membershipRequestForm: TeamForm
   name: String!
   presentationVideo: String
   shortDescription: String
+  socials: [Social!]!
   status: String
-  tags: [String!]!
   teamFiles: [TeamFile!]!
   tenant: String!
   updatedAt: DateTime!
+  userInterest: Interest
   userMembership: TeamMembershipStatus
 }
 
@@ -777,6 +835,18 @@ enum TeamFormType {
   Survey
 }
 
+type TeamGallery {
+  active: Boolean!
+  createdAt: DateTime!
+  event: TeamEvent
+  file: FileUpload!
+  id: String!
+  lastActiveDate: DateTime!
+  order: Int!
+  team: Team!
+  updatedAt: DateTime!
+}
+
 type TeamHistory {
   active: Boolean!
   createdAt: DateTime!
@@ -797,12 +867,28 @@ enum TeamHistoryState {
   Modified
   Recognized
   Started
-  Terminated
+  Undeclared
 }
 
 enum TeamKind {
   Club
   SchoolDepartment
+}
+
+type TeamLabel {
+  createdAt: DateTime!
+  id: String!
+  image: String
+  name: String!
+  tooltip: String
+  type: TeamLabelType!
+  updatedAt: DateTime!
+}
+
+enum TeamLabelType {
+  Category
+  Descriptor
+  Meta
 }
 
 type TeamMember {
@@ -910,6 +996,11 @@ input UpdateContentDto {
   isAnonymous: Boolean = false
 }
 
+input UpdateInterestDto {
+  message: String = null
+  state: InterestState
+}
+
 input UpdateSettingsDto {
   gdprEndOfLifeAnonymize: Boolean
   gdprEndOfLifeExport: Boolean
@@ -949,14 +1040,16 @@ input UpdateTeamDto {
   avatar: String
   banner: String
   category: String
+  email: String
   kind: TeamKind
+  labels: [String!] = []
+  location: String
   longDescription: String
   membershipRequestFormId: Int
   name: String
   presentationVideo: String
   shortDescription: String
   status: String
-  tags: [String!]
 }
 
 input UpdateTeamEventDto {
@@ -1065,8 +1158,10 @@ type User {
   color: String
   createdAt: DateTime!
   email: String!
+  finishedOnboarding: Boolean!
   firstname: String!
   id: String!
+  interests: [Interest!]!
   lastname: String!
   points: Int!
   reputation: Int!
@@ -1076,6 +1171,7 @@ type User {
   settings: Settings!
   shortDescription: String
   signature: String
+  socials: [Social!]!
   teamEventIcal: String!
   teamMembershipRequests: [TeamMembershipRequest!]!
   teamMemberships: [TeamMember!]!

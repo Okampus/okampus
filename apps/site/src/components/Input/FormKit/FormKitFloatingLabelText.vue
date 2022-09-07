@@ -4,6 +4,7 @@
             :is="isTextarea ? 'textarea' : 'input'"
             class="input w-full"
             :class="inputClass"
+            :type="inputType"
             :placeholder="isFocused || context._value ? placeholder : floatingLabel ? '' : placeholder"
             :value="context._value"
             @input="handleInput"
@@ -36,6 +37,7 @@
     const isTextarea = computed(() => props.context.isTextarea)
     const placeholder = computed(() => props.context.placeholder)
     const inputClass = computed(() => props.context.inputClass)
+    const inputType = computed(() => props.context.inputType)
 
     const handleInput = (e) => {
         props.context.node.input(e.target.value)

@@ -1,5 +1,5 @@
 import { Field, Int } from '@nestjs/graphql';
-import { IsEnum, IsInt } from 'class-validator';
+import { IsEnum, IsInt, IsString } from 'class-validator';
 import { TeamHistoryState } from '../../../shared/lib/types/enums/team-history-state.enum';
 
 export class CreateHistoryDto {
@@ -16,7 +16,7 @@ export class CreateHistoryDto {
   year: number;
 
   @Field(() => String)
-  @IsInt()
+  @IsString()
   name: string;
 
   @Field(() => Int)

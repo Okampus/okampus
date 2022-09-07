@@ -1,25 +1,36 @@
 <template>
-    <nav class="topbar h-topbar text-1 fixed top-0 left-0 z-30 flex w-full items-center justify-between">
-        <div class="w-sidebar-lg flex items-center">
-            <div class="w-sidebar-sm flex shrink-0 justify-center">
-                <button aria-label="Open Menu" @click="$emit('toggle-side-bar')">
-                    <i class="fas fa-bars text-2xl text-white" />
-                </button>
+    <nav
+        class="h-topbar text-1 fixed top-0 left-0 z-30 flex w-full items-center"
+        :class="localStore.me?.finishedOnboarding ? 'justify-between topbar' : 'justify-center bg-0'"
+    >
+        <div class="flex shrink-0 items-center gap-2">
+            <div v-if="localStore.me?.finishedOnboarding" class="w-sidebar-lg flex items-center">
+                <div class="w-sidebar-sm flex shrink-0 justify-center">
+                    <button aria-label="Open Menu" @click="$emit('toggle-side-bar')">
+                        <i class="fas fa-bars text-2xl text-white" />
+                    </button>
+                </div>
+                <AppLogo only="dark" />
             </div>
-            <AppLogo only="dark" />
-        </div>
-        <LabelSimple class="mt-2 mr-4 !px-1.5">Beta</LabelSimple>
-
-        <div class="relative mr-6 grow bg-transparent">
-            <LayoutSearch />
+            <LabelSimple v-if="localStore.me?.finishedOnboarding" class="mr-4 !px-1.5">Beta</LabelSimple>
+            <div v-else class="ml-20 flex items-center gap-6">
+                <AppLogo :="localStore.me?.finishedOnboarding ? { only: 'dark' } : {}" class="mt-1.5" />
+                <DarkModeInput />
+            </div>
         </div>
 
         <template v-if="!isHome || localStore.loggedIn">
-            <div v-if="!localStore.loggedIn" class="mr-4 flex shrink-0 items-center justify-center">
+            <div v-if="!localStore.loggedIn" class="ml-10 flex shrink-0 items-center justify-center">
                 <ButtonLogin />
             </div>
 
-            <div v-else class="mr-4 flex h-full items-center justify-between bg-transparent">
+            <div
+                v-else-if="localStore.me?.finishedOnboarding"
+                class="mr-4 flex h-full w-full items-center justify-between bg-transparent"
+            >
+                <div class="relative mr-6 grow bg-transparent">
+                    <LayoutSearch />
+                </div>
                 <div id="notification-bell" class="fa fa-bell mr-6 cursor-pointer text-xl text-gray-200" />
                 <!-- TODO: on small screen, use full screen modal -->
                 <Dropdown theme="profile-dropdown">
@@ -77,6 +88,7 @@
     import { Dropdown } from 'floating-vue'
 
     import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
+    import DarkModeInput from '@/components/Input/DarkModeInput.vue'
     import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
     import ButtonLogin from '@/components/UI/Button/ButtonLogin.vue'
     import LayoutSearch from '@/components/Layout/LayoutSearch.vue'

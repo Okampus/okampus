@@ -23,6 +23,8 @@ import { CreateProfileImageDto } from './dto/create-profile-image.dto';
 import { ProfileImage } from './profile-image.entity';
 import { ProfileImagesService } from './profile-images.service';
 
+
+// TODO: improve check policies
 @ApiTags('ProfileImages')
 @Controller()
 export class ProfileImagesController {

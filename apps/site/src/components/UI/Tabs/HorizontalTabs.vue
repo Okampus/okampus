@@ -55,6 +55,10 @@
                     ? props.tabs[0].tabs[0].id
                     : props.tabs[0].id,
         },
+        virtualRoute: {
+            type: Boolean,
+            default: false,
+        },
         modelValue: {
             type: [String, null],
             required: true,
@@ -102,7 +106,7 @@
 
     const setTab = (tab, force = false) => {
         emit('update:modelValue', tab.id)
-        if (tab.strict || force) {
+        if (!props.virtualRoute && (tab.strict || force)) {
             history.pushState({}, null, (import.meta.env.DEV ? '/#' : '') + getTabRoute(tab))
         }
     }
@@ -122,10 +126,12 @@
         if (tab) {
             setTab(tab)
         } else {
-            showInfoToast(
-                `L'onglet '${getCurrentPath()}' n'existe pas. Redirection sur l'onglet par défaut ↪️`,
-                { duration: 5000 },
-            )
+            if (!props.virtualRoute) {
+                showInfoToast(
+                    `L'onglet '${getCurrentPath()}' n'existe pas. Redirection sur l'onglet par défaut ↪️`,
+                    { duration: 5000 },
+                )
+            }
 
             const defaultTab = computedTabs.value.find((tab) => tab.id === props.defaultTabId)
 

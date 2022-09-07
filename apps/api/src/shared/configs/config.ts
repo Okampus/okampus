@@ -54,7 +54,7 @@ export const config = {
     },
   },
   upload: {
-    maxSize: parseEnvInt(process.env.UPLOAD_MAX_SIZE, 10_485_760),
+    maxSize: parseEnvInt(process.env.UPLOAD_MAX_SIZE, 50_000_000),
     path: process.env.UPLOAD_PATH ?? 'uploads',
   },
   meilisearch: {

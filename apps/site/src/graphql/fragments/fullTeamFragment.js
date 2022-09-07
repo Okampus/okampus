@@ -12,6 +12,7 @@ export const fullTeamFragment = gql`
         shortDescription
         longDescription
         status
+        location
         presentationVideo
         activeMemberCount
         boardMembers {
@@ -21,6 +22,26 @@ export const fullTeamFragment = gql`
                 ...PartialUserInfo
             }
         }
+        socials {
+            id
+            socialType
+            link
+            pseudo
+        }
+        labels {
+            id
+            name
+            tooltip
+            image
+            type
+        }
+        mainGalleries {
+            id
+            order
+            file {
+                ...FileInfo
+            }
+        }
         membershipRequestForm {
             id
             schema
@@ -28,17 +49,14 @@ export const fullTeamFragment = gql`
         userMembership {
             pendingRequest
             membership {
+                id
                 role
             }
         }
-        teamFiles {
+        userInterest {
             id
-            type
-            description
-            active
-            file {
-                ...FileInfo
-            }
+            state
+            message
         }
     }
     ${partialUserFragment}

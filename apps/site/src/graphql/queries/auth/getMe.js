@@ -5,6 +5,7 @@ export const getMe = gql`
     query getMe {
         me {
             ...UserInfo
+            finishedOnboarding
         }
     }
     ${userFragment}

@@ -25,7 +25,7 @@ export class TeamMembershipsService {
     return await this.teamMemberRepository.findWithPagination(
       paginationOptions,
       { user: { id } },
-      { populate: ['user', 'team'], orderBy: { team: { name: 'ASC' } } },
+      { populate: ['user', 'team.avatar', 'team.banner', 'team.status', 'team.location', 'team.kind', 'team.name'], orderBy: { team: { name: 'ASC' } } },
     );
   }
 

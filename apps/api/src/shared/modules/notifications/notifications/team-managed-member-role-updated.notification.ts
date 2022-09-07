@@ -48,7 +48,7 @@ export class TeamManagedMemberRoleUpdatedNotification extends Notification {
           name: this.teamMember.team.name,
           shortDescription: this.teamMember.team.shortDescription,
           category: this.teamMember.team.category,
-          tags: this.teamMember.team.tags,
+          labels: this.teamMember.team.labels.getItems().map(label => ({ name: label.name, type: label.type })),
           avatar: this.teamMember.team.avatar,
           banner: this.teamMember.team.banner,
         },

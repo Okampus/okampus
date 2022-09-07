@@ -27,16 +27,18 @@ export class TeamGalleriesService {
     createGalleryImageDto: CreateTeamGalleryDto,
     file: FileUpload,
   ): Promise<TeamGallery> {
-    const team = await this.teamRepository.findOneOrFail(
-      { id: createGalleryImageDto.id },
-      { populate: ['members'] },
-    );
+    const { id, ...createGalleryImage } = createGalleryImageDto;
+
+    const team = await this.teamRepository.findOneOrFail({ id }, { populate: ['members'] });
 
     if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');
 
     const teamGallery = new TeamGallery({
-      ...createGalleryImageDto, team, file, active: true,
+      ...createGalleryImage,
+      team,
+      file,
+      active: true,
     });
     await this.teamGalleryRepository.persistAndFlush(teamGallery);
 

@@ -43,7 +43,6 @@ export class TeamFile extends BaseFileEntity {
     description?: string | null;
     active?: boolean;
   }) {
-    console.log('options', options);
     super();
     this.assign(options);
   }

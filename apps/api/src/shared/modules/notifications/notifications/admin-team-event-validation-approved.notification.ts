@@ -47,7 +47,7 @@ export class AdminTeamEventValidationApprovedNotification extends Notification {
           name: this.teamEvent.team.name,
           shortDescription: this.teamEvent.team.shortDescription,
           category: this.teamEvent.team.category,
-          tags: this.teamEvent.team.tags,
+          labels: this.teamEvent.team.labels.getItems().map(label => ({ name: label.name, type: label.type })),
           avatar: this.teamEvent.team.avatar,
           banner: this.teamEvent.team.banner,
         },

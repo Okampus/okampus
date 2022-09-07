@@ -1,5 +1,5 @@
 <template>
-    <GraphQLQuery :query="getClubs" :update="(data) => data?.clubs">
+    <GraphQLQuery :query="getFullClubs" :update="(data) => data?.clubs">
         <template #default="{ data: clubs }">
             <ScrollableTable
                 class="h-[70vh]"
@@ -98,7 +98,7 @@
 
     import { useI18n } from 'vue-i18n'
 
-    import { getClubs } from '@/graphql/queries/teams/getClubs.js'
+    import { getFullClubs } from '@/graphql/queries/teams/getFullClubs.js'
     import { clubRoleNames } from '@/shared/types/club-roles.enum'
 
     import { TEAM_FILES } from '@/shared/types/team-files.enum'

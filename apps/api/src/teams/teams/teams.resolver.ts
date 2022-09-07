@@ -20,6 +20,7 @@ import { FileUploadsService } from '../../files/file-uploads/file-uploads.servic
 import { CreateTeamFileDto } from '../../files/team-files/dto/create-team-file.dto';
 import { TeamFile } from '../../files/team-files/team-file.entity';
 import { TeamFilesService } from '../../files/team-files/team-files.service';
+import { TeamGallery } from '../../files/team-galleries/team-gallery.entity';
 import { APP_PUB_SUB } from '../../shared/lib/constants';
 import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
@@ -32,6 +33,8 @@ import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
 import { TeamFormsService } from '../forms/forms.service';
 import { TeamForm } from '../forms/team-form.entity';
+import { Interest } from '../interests/interest.entity';
+import { InterestsService } from '../interests/interests.service';
 import { TeamMember } from '../members/team-member.entity';
 import { MembershipRequestState } from '../types/membership-request-state.enum';
 import { CreateTeamDto } from './dto/create-team.dto';
@@ -42,7 +45,9 @@ import { Team } from './team.entity';
 import { TeamsService } from './teams.service';
 
 export interface ContextBatchTeams {
-  memberships: Record<number, TeamMember | null>;
+  userInterests: Record<number, Interest | null>;
+  userMemberships: Record<number, TeamMember | null>;
+  galleries: Record<number, TeamGallery[]>;
   pendingRequests: Record<number, boolean>;
   boardMembers: Record<number, TeamMember[]>;
   isBatched: boolean;
@@ -56,7 +61,9 @@ export class TeamsResolver {
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
+    @InjectRepository(TeamGallery) private readonly teamGalleryRepository: BaseRepository<TeamGallery>,
     private readonly teamsService: TeamsService,
+    private readonly interestsService: InterestsService,
     private readonly teamFilesService: TeamFilesService,
     private readonly teamFormsService: TeamFormsService,
     private readonly fileUploadsService: FileUploadsService,
@@ -94,12 +101,20 @@ export class TeamsResolver {
       { populate: ['team', 'user'] },
     ), 'team.id');
 
+    teamContext.galleries = groupBy(await this.teamGalleryRepository.find(
+      { event: null, active: true },
+      { populate: ['file'] },
+    ), 'team.id');
+
     const memberships = await user.teamMemberships.loadItems();
-    teamContext.memberships = Object.fromEntries(memberships.map(membership => [membership.team.id, membership]));
+    teamContext.userMemberships = Object.fromEntries(memberships.map(membership => [membership.team.id, membership]));
+    const interests = await user.interests.loadItems();
+    teamContext.userInterests = Object.fromEntries(interests.map(interest => [interest.team.id, interest]));
     teamContext.pendingRequests = mapValues(
       groupBy(await user.teamMembershipRequests.loadItems(), 'team.id'),
       requests => requests.some(r => r.state === MembershipRequestState.Pending),
     );
+
 
     teamContext.isBatched = true;
 
@@ -110,10 +125,10 @@ export class TeamsResolver {
   @ResolveField(() => [TeamMember])
   public async boardMembers(
     @Parent() team: Team,
-    @Context() membershipContext: ContextBatchTeams,
+    @Context() batchContext: ContextBatchTeams,
   ): Promise<TeamMember[]> {
-    if (membershipContext?.isBatched)
-      return membershipContext?.boardMembers?.[team.id] ?? [];
+    if (batchContext?.isBatched)
+      return batchContext?.boardMembers?.[team.id] ?? [];
 
     const boardRoles = [TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasurer, TeamRole.Secretary, TeamRole.Manager];
     const teamBoardMembers = await this.teamMemberRepository.find(
@@ -137,6 +152,19 @@ export class TeamsResolver {
       id: team.id, active: true, page: 1, itemsPerPage: 100,
     });
     return paginatedFiles.items;
+  }
+
+  @ResolveField(() => [TeamGallery])
+  public async mainGalleries(
+    @Parent() team: Team,
+    @Context() batchContext: ContextBatchTeams,
+  ): Promise<TeamGallery[]> {
+    if (batchContext?.isBatched)
+      return batchContext?.galleries?.[team.id] ?? [];
+
+    return await this.teamGalleryRepository.find({
+      active: true, team: { id: team.id }, event: null,
+    }, { populate: ['file'] });
   }
 
   @Mutation(() => Team)
@@ -180,16 +208,28 @@ export class TeamsResolver {
     return paginatedFormTemplates.items;
   }
 
+  @ResolveField(() => Interest, { nullable: true })
+  public async userInterest(
+    @CurrentUser() user: User,
+    @Parent() team: Team,
+    @Context() batchContext: ContextBatchTeams,
+): Promise<Interest | null> {
+    if (batchContext?.isBatched)
+      return batchContext?.userInterests?.[team.id] ?? null;
+
+    return await this.interestsService.findForUserTeam(user.id, team.id);
+  }
+
   @ResolveField(() => TeamMembershipStatus, { nullable: true })
   public async userMembership(
     @CurrentUser() user: User,
     @Parent() team: Team,
-    @Context() membershipContext: ContextBatchTeams,
+    @Context() batchContext: ContextBatchTeams,
   ): Promise<TeamMembershipStatus> {
-    if (membershipContext?.isBatched) {
+    if (batchContext?.isBatched) {
       return {
-        membership: membershipContext?.memberships?.[team.id] ?? null,
-        pendingRequest: membershipContext?.pendingRequests?.[team.id] ?? false,
+        membership: batchContext?.userMemberships?.[team.id] ?? null,
+        pendingRequest: batchContext?.pendingRequests?.[team.id] ?? false,
       };
     }
 
@@ -200,6 +240,11 @@ export class TeamsResolver {
       membership: memberships.find(m => m.team.id === team.id) ?? null,
       pendingRequest: requests.some(r => r.state === MembershipRequestState.Pending && r.team.id === team.id),
     };
+  }
+
+  @ResolveField(() => [Interest], { nullable: true })
+  public async interest(@Parent() team: Team): Promise<Interest[]> {
+    return await this.interestsService.findAllByTeam(team.id);
   }
 
   @Mutation(() => Team)

@@ -4,7 +4,6 @@ import { Injectable } from '@nestjs/common';
 import { Announcement } from '../../../announcements/announcement.entity';
 import { Badge } from '../../../badges/entities/badge.entity';
 import { Blog } from '../../../blogs/blog.entity';
-import type { Contact } from '../../../contacts/entities/contact.entity';
 import { Content } from '../../../contents/entities/content.entity';
 import { Favorite } from '../../../favorites/favorite.entity';
 import { Attachment } from '../../../files/attachments/attachment.entity';
@@ -22,13 +21,16 @@ import { Food } from '../../../restaurant/food/food.entity';
 import type { SchoolGroup } from '../../../school-group/school-group.entity';
 import type { SchoolYear } from '../../../school-group/school-year/school-year.entity';
 import { Settings } from '../../../settings/settings.entity';
+import type { Social } from '../../../socials/social.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
 import { TeamEventValidation } from '../../../teams/event-validations/team-event-validation.entity';
 import { TeamEvent } from '../../../teams/events/team-event.entity';
 import { TeamFinance } from '../../../teams/finances/team-finance.entity';
 import { TeamForm } from '../../../teams/forms/team-form.entity';
-import type { TeamHistory } from '../../../teams/histories/history.entity';
+import type { TeamHistory } from '../../../teams/histories/team-history.entity';
+import type { Interest } from '../../../teams/interests/interest.entity';
+import type { TeamLabel } from '../../../teams/labels/team-label.entity';
 import { Team } from '../../../teams/teams/team.entity';
 import { Tenant } from '../../../tenants/tenants/tenant.entity';
 import { ValidationStep } from '../../../tenants/validation-steps/validation-step.entity';
@@ -46,19 +48,20 @@ export type Subjects = InferSubjects<
   | typeof Attachment
   | typeof Badge
   | typeof Blog
-  | typeof Contact
   | typeof Content
   | typeof DailyInfo
   | typeof DailyMenu
   | typeof Favorite
   | typeof Food
   | typeof InfoDoc
+  | typeof Interest
   | typeof Metric
   | typeof ProfileImage
   | typeof Report
   | typeof SchoolGroup
   | typeof SchoolYear
   | typeof Settings
+  | typeof Social
   | typeof StudyDoc
   | typeof Subject
   | typeof Tag
@@ -70,6 +73,7 @@ export type Subjects = InferSubjects<
   | typeof TeamForm
   | typeof TeamGallery
   | typeof TeamHistory
+  | typeof TeamLabel
   | typeof TeamReceipt
   | typeof Tenant
   | typeof Thread

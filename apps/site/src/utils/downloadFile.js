@@ -24,3 +24,8 @@ export const downloadResource = (url, filename) => {
 export const downloadFile = (file, objectUrl = true) => {
     objectUrl ? download(getObjectUrl(file), file.name) : downloadResource(file.url, file.name)
 }
+
+export const downloadJSON = (object, filename) => {
+    const dataSrc = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(object))
+    download(dataSrc, filename + '.json')
+}

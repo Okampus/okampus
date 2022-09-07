@@ -27,6 +27,7 @@ import { TeamReceiptsModule } from './team-receipts/team-receipts.module';
     AttachmentsModule,
     FileUploadsModule,
     TeamFilesModule,
+    TeamGalleriesModule,
     StudyDocsModule,
     InfoDocsModule,
     ProfileImagesModule,

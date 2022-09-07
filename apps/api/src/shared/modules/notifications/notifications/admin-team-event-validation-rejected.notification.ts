@@ -53,7 +53,8 @@ export class AdminTeamEventValidationRejectedNotification extends Notification {
             name: this.teamEventValidation.event.team.name,
             shortDescription: this.teamEventValidation.event.team.shortDescription,
             category: this.teamEventValidation.event.team.category,
-            tags: this.teamEventValidation.event.team.tags,
+          labels: this.teamEventValidation
+                .event.team.labels.getItems().map(label => ({ name: label.name, type: label.type })),
             avatar: this.teamEventValidation.event.team.avatar,
             banner: this.teamEventValidation.event.team.banner,
           },
