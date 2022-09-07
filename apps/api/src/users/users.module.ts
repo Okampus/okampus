@@ -64,8 +64,8 @@ export class UsersModule implements OnModuleInit {
       await this.tenantRepository.persistAndFlush(tenant);
     }
 
-    const admin = await this.userRepository.count({ id: config.adminAccount.username });
-    if (admin === 0) {
+    const admin = await this.userRepository.findOne({ id: config.adminAccount.username });
+    if (!admin) {
       const user = new User({
         tenant,
         id: config.adminAccount.username,
@@ -77,6 +77,9 @@ export class UsersModule implements OnModuleInit {
       await user.setPassword(config.adminAccount.password);
       user.roles.push(Role.Moderator, Role.Admin);
       await this.userRepository.persistAndFlush(user);
+    } else if (!(await admin.validatePassword(config.adminAccount.password))) {
+      await admin.setPassword(config.adminAccount.password);
+      await this.userRepository.persistAndFlush(admin);
     }
 
     const anon = await this.userRepository.count({ id: config.anonAccount.username });
