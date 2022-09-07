@@ -4,8 +4,8 @@
         :variables="{ id: clubId ?? parseInt(route.params.clubId) }"
         :update="
             (data) => {
-                club = data?.clubById
-                return club
+                clubRef = data?.clubById
+                return clubRef
             }
         "
     >
