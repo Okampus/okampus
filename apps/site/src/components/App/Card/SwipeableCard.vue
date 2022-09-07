@@ -60,10 +60,10 @@
         rotation: 0,
     })
 
-    const transformString = computed(() => {
-        const { x, y, rotation } = interactPosition.value
-        return `translate3D(${x}px, ${y}px, 0) rotate(${rotation}deg)`
-    })
+    const transformString = computed(
+        () =>
+            `translate3D(${interactPosition.value.x}px, ${interactPosition.value.y}px, 0) rotate(${interactPosition.value.rotation}deg)`,
+    )
 
     const transitionString = computed(() => !isDragging.value && props.transition)
     const emit = defineEmits([
@@ -121,22 +121,31 @@
         interact(interactElement.value).unset()
     }
 
+    const moveTriggered = ref(null)
+
     const setInteractElement = () => {
         interact(interactElement.value).draggable({
             onstart: () => {
                 emit('start')
                 isDragging.value = true
+                setInterval(() => {
+                    if (moveTriggered.value) {
+                        emit('move')
+                        const x = interactPosition.value.x + moveTriggered.value.dx
+                        const y = interactPosition.value.y + moveTriggered.value.dy
+                        let rotation = props.maxRotation * (x / props.thresholdX)
+                        if (rotation > props.maxRotation) rotation = props.maxRotation
+                        else if (rotation < -props.maxRotation) rotation = -props.maxRotation
+                        setPosition({ x, y, rotation })
+                        moveTriggered.value = null
+                    }
+                }, 20) // Throttle move triggering by 20ms
             },
             onmove: (event) => {
-                emit('move')
-                const x = interactPosition.value.x + event.dx
-                const y = interactPosition.value.y + event.dy
-                let rotation = props.maxRotation * (x / props.thresholdX)
-                if (rotation > props.maxRotation) rotation = props.maxRotation
-                else if (rotation < -props.maxRotation) rotation = -props.maxRotation
-                setPosition({ x, y, rotation })
+                moveTriggered.value = event
             },
             onend: () => {
+                moveTriggered.value = null
                 emit('end')
                 isDragging.value = false
                 if (interactPosition.value.x > props.thresholdX) onThresholdReached('swipe-right')
@@ -175,6 +184,12 @@
 <style lang="scss">
     .dragging-card {
         @apply touch-none;
+
+        backface-visibility: hidden;
+
+        & * {
+            backface-visibility: hidden;
+        }
 
         & > * {
             @apply touch-none;
