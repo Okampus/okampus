@@ -28,7 +28,7 @@
                 <div
                     v-for="label in club.labels.filter((label) => label.type === 'Meta')"
                     :key="label.id"
-                    class="rounded-full border border-gray-500 bg-transparent px-3 py-1 text-base text-gray-600"
+                    class="text-0 rounded-full border border-gray-500 bg-transparent px-3 py-1 text-base text-gray-600"
                 >
                     {{ label.name }}
                 </div>

@@ -8,28 +8,30 @@
         />
         <div class="mx-3 flex h-full flex-col items-center md:mx-5">
             <div class="flex w-full justify-between">
-                <div class="flex flex-wrap items-start gap-x-2 pt-2">
+                <div class="flex gap-x-2 pt-0.5">
                     <div class="bg-2 z-10 -mt-6 rounded-2xl p-1">
                         <ProfileAvatar
                             :rounded-full="false"
                             :avatar="club.avatar"
-                            :size="3.5"
+                            :size="4"
                             :name="club.name"
                         />
                     </div>
-                    <router-link
-                        v-for="label in club.labels.filter((label) => label.type === 'Category')"
-                        :key="label.id"
-                        class="z-10 mt-1"
-                        :to="`/clubs/${clubTypes?.[label.name]?.link ?? label.name}`"
-                        @mouseover="showLink = false"
-                        @mouseleave="showLink = true"
-                    >
-                        <LabelSimple
-                            class="bg-slate-600/40 py-0 px-1 text-[0.7rem] font-medium tracking-tighter hover:bg-slate-400/40"
-                            >{{ label.name }}</LabelSimple
+                    <div class="flex flex-wrap items-start gap-x-2">
+                        <router-link
+                            v-for="label in club.labels.filter((label) => label.type === 'Category')"
+                            :key="label.id"
+                            class="z-10 mt-1"
+                            :to="`/clubs/${clubTypes?.[label.name]?.link ?? label.name}`"
+                            @mouseover="showLink = false"
+                            @mouseleave="showLink = true"
                         >
-                    </router-link>
+                            <LabelSimple
+                                class="bg-slate-600/40 py-0 px-1 text-[0.7rem] font-medium tracking-tighter hover:bg-slate-400/40"
+                                >{{ label.name }}</LabelSimple
+                            >
+                        </router-link>
+                    </div>
                 </div>
                 <ModalDropdown :buttons="buttons">
                     <i
@@ -80,7 +82,7 @@
                             @click="router.push(`/me/clubs/requests`)"
                         >
                             <i class="fa fa-envelope" />
-                            <div>En attenteNe plus suivre</div>
+                            <div>En attente</div>
                         </button>
                         <button
                             v-else-if="[LIKE, SUPERLIKE].includes(club.userInterest?.state)"
