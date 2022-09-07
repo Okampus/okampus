@@ -157,9 +157,10 @@
 
     import { getTenant } from '@/utils/getTenant'
     import { emitter } from '@/shared/modules/emitter'
+    import { CLUB } from '@/shared/types/team-types.enum'
 
     const itemToLink = (entity) => {
-        if (entity.metaType === 'team' && entity.category === 'club') {
+        if (entity.metaType === 'team' && entity.category === CLUB) {
             return `/club/${entity.realId}`
         }
         if (entity.metaType === 'user') {
@@ -213,6 +214,7 @@
 
         recentSearch.value = unionBy(recentSearch.value, [item], (el) => el.id).slice(-5)
         const link = itemToLink(item)
+        console.log(link)
         if (link && router.currentRoute.path !== link) {
             router.push(link)
         }

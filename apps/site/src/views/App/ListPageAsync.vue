@@ -7,6 +7,7 @@
             :total-pages="results.totalPages"
             :items-per-page="query.itemsPerPage"
             :total-item-count="results.totalItemCount"
+            class="mb-20"
         />
     </div>
 </template>
