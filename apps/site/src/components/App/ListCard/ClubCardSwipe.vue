@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-2 app-scrollbar relative cursor-pointer select-none overflow-scroll rounded-xl shadow-md"
+        class="bg-2 app-scrollbar relative cursor-pointer select-none overflow-auto rounded-xl shadow-md"
         @mousedown="startClick($event)"
         @mousemove="disableClickOnDrag($event)"
         @click="enableClick"

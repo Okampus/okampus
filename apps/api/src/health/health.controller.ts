@@ -37,7 +37,7 @@ export class HealthController {
 
   @Get()
   @Public()
-  // @HealthCheck()
+  @HealthCheck()
   public async check(): Promise<HealthCheckResult> {
     const REDIS_OPTIONS = { type: 'redis', client: this.redisClient } as const;
     const MAX_HEAP_SIZE = 500 * 1024 * 1024;
