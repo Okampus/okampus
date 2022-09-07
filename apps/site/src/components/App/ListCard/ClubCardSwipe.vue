@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-2 app-scrollbar relative cursor-pointer select-none overflow-scroll rounded-xl shadow-md"
+        class="bg-2 app-scrollbar relative cursor-pointer select-none overflow-auto rounded-xl shadow-md"
         @mousedown="startClick($event)"
         @mousemove="disableClickOnDrag($event)"
         @click="enableClick"
@@ -160,7 +160,7 @@
                             :key="social.id"
                             :href="social.link"
                             target="_blank"
-                            class="flex items-center gap-2"
+                            class="flex w-fit items-center gap-2"
                         >
                             <i
                                 :class="[

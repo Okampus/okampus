@@ -19,7 +19,7 @@ import { Interest } from './interest.entity';
 import { InterestsService } from './interests.service';
 
 @ApiTags('Interests')
-@Controller()
+@Controller({ path: 'interests' })
 export class InterestsController {
   constructor(private readonly interestsService: InterestsService) {}
 

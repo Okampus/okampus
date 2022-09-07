@@ -53,6 +53,7 @@ import { SocialsModule } from './socials/socials.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { TagsModule } from './tags/tags.module';
+import { InterestsModule } from './teams/interests/interests.module';
 import { TeamsModule } from './teams/teams.module';
 import { TenantsModule } from './tenants/tenants.module';
 import { TenantsCoreModule } from './tenants/tenants/tenants.module';
@@ -87,6 +88,7 @@ import { WikisModule } from './wiki/wikis.module';
     FavoritesModule,
     FilesModule,
     HealthModule,
+    InterestsModule,
     MetricsModule,
     ReactionsModule,
     ReportsModule,
