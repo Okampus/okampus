@@ -52,7 +52,7 @@ export default defaultConfig({
             props: ['placeholder'],
         }),
         floating: createInput(FormKitFloatingLabelText, {
-            props: ['placeholder', 'floatingLabel', 'inputClass', 'isTextarea'],
+            props: ['placeholder', 'floatingLabel', 'inputClass', 'inputType', 'isTextarea'],
         }),
         multisearch: createInput(FormKitSearchInput, {
             props: ['placeholder', 'searchQuery', 'queryName', 'disabled'],

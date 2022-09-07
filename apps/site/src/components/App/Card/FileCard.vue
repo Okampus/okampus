@@ -36,7 +36,7 @@
     import TipRelativeDate from '@/components/UI/Tip/TipRelativeDate.vue'
 
     import { FOLDER, FORM, getType } from '@/shared/assets/file-types.js'
-    import { download, downloadFile } from '@/utils/downloadFile'
+    import { downloadJSON, downloadFile } from '@/utils/downloadFile'
 
     import { markRaw, ref } from 'vue'
     import { emitter } from '@/shared/modules/emitter'
@@ -83,10 +83,7 @@
             class: 'hover:bg-blue-300 dark:hover:bg-blue-500',
             action: () => {
                 if (fileType.parentType === FORM) {
-                    const dataSrc =
-                        'data:text/json;charset=utf-8,' +
-                        encodeURIComponent(JSON.stringify(props.file.meta?.schema))
-                    download(dataSrc, props.file.name + '.json')
+                    downloadJSON(props.file.meta?.schema, props.file.name)
                 } else if (fileType.type === FOLDER) {
                     // Compress folder and download
                 } else {

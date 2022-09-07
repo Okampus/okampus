@@ -1,14 +1,21 @@
 <template>
     <div class="flex items-start gap-3">
-        <ProfileAvatar :id="team.id" type="team" :size="avatarSize" :avatar="team.avatar" :name="team.name" />
+        <ProfileAvatar
+            :id="team.id"
+            type="team"
+            :size="avatarSize"
+            :avatar="team.avatar"
+            :name="team.name"
+            :clickable="!deactivateClick"
+        />
         <div class="flex flex-col">
             <slot v-if="$slots.title" name="title" />
             <router-link
                 v-else
-                class="text-sm font-semibold line-clamp-1 hover:underline"
                 :to="team.id ? `/club/${team.id}` : '/clubs'"
+                :="deactivateClick ? { custom: true } : { class: 'hover:underline' }"
             >
-                {{ team.name }}
+                <div class="font-semibold line-clamp-1">{{ team.name }}</div>
             </router-link>
 
             <div v-if="$slots.subtitle || subtitle" class="text-4 text-sm line-clamp-1">
@@ -34,6 +41,10 @@
         avatarSize: {
             type: Number,
             default: 3,
+        },
+        deactivateClick: {
+            type: Boolean,
+            default: false,
         },
     })
 </script>

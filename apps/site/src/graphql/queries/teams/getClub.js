@@ -21,6 +21,15 @@ export const getClub = gql`
                 schema
                 updatedAt
             }
+            teamFiles {
+                id
+                type
+                description
+                active
+                file {
+                    ...FileInfo
+                }
+            }
         }
     }
     ${fullTeamFragment}

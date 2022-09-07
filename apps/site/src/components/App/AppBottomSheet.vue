@@ -3,26 +3,29 @@
         <Transition name="fade" @after-enter="open">
             <div
                 v-show="show"
-                class="h-content fixed z-[60] backdrop-blur backdrop-brightness-50"
-                :class="
-                    smallScreen
-                        ? 'inset-0'
-                        : uncollapsed
-                        ? 'after-sidebar-lg after-topbar'
-                        : 'after-sidebar-sm after-topbar'
-                "
+                class="h-content fixed z-[60] outline-none backdrop-blur backdrop-brightness-50"
+                :class="[
+                    md ? 'after-topbar' : 'inset-0',
+                    localStore.me?.finishedOnboarding
+                        ? smallScreen
+                            ? 'inset-x-0'
+                            : uncollapsed
+                            ? 'after-sidebar-lg'
+                            : 'after-sidebar-sm'
+                        : 'w-[100vw]',
+                ]"
             >
                 <Transition name="from-bottom">
                     <div
                         v-if="showContent"
                         ref="sheet"
-                        class="absolute z-20 md:inset-x-[7%] md:top-[7%] md:h-[93%] md:w-[86%] md-max:h-full md-max:w-full"
+                        class="absolute z-20 outline-none md:inset-x-[7%] md:top-[7%] md:h-[93%] md:w-[86%] md-max:h-full md-max:w-full"
                         tabindex="0"
                         @keydown.escape="close"
                     >
                         <div
                             class="bg-0 flex w-full justify-between py-4 px-6 md:rounded-t-lg"
-                            :class="{ 'shadow-bottom-sheet': !smallScreen }"
+                            :class="{ 'shadow-bottom-sheet': md }"
                         >
                             <div class="text-0 w-full text-center text-2xl font-bold">
                                 {{ title }}
@@ -32,13 +35,16 @@
                                 @click="close"
                             />
                         </div>
-                        <div class="bg-2 relative md:h-[calc(100%-4rem)] md-max:h-full">
+                        <div class="bg-1 relative md:h-[calc(100%-4rem)] md-max:h-full">
                             <component
                                 :is="component || 'div'"
                                 ref="content"
                                 :="props"
-                                class="app-scrollbar overflow-scroll p-10"
-                                :class="unsaved ? 'h-[calc(100%-6rem)]' : 'h-full'"
+                                class="app-scrollbar overflow-scroll"
+                                :class="[
+                                    unsaved && showUnsaved ? 'h-[calc(100%-6rem)]' : 'h-full',
+                                    { 'p-10': padded },
+                                ]"
                                 @close="close"
                                 @change="() => (unsaved = true)"
                                 @save-success="
@@ -48,15 +54,13 @@
                                     }
                                 "
                             />
-                            <Transition name="from-bottom">
+                            <Transition v-if="showUnsaved" name="from-bottom">
                                 <div
                                     v-show="unsaved"
                                     :class="isNew ? 'h-16 flex-col' : 'h-24'"
                                     class="bg-0 absolute bottom-0 flex w-full items-center justify-between px-10 py-4 lg-max:flex-col"
                                 >
-                                    <div v-if="!isNew" class="text-0">
-                                        Vous avez des changements non-sauvegardés !
-                                    </div>
+                                    <div class="text-0">Vous avez des changements non-sauvegardés !</div>
                                     <div class="flex items-center gap-4">
                                         <div class="link-blue cursor-pointer" @click="close">
                                             {{ isNew ? 'Annuler' : 'Annuler les changements' }}
@@ -78,12 +82,23 @@
 
 <script setup>
     import { emitter } from '@/shared/modules/emitter'
+    import { twBreakpoints } from '@/tailwind'
+    import { useBreakpoints } from '@vueuse/core'
     import { ref } from 'vue'
+
+    import localStore from '@/store/local.store'
+
+    const breakpoints = useBreakpoints(twBreakpoints)
+    const md = breakpoints.greater('md')
 
     defineProps({
         show: {
             type: Boolean,
             required: true,
+        },
+        padded: {
+            type: Boolean,
+            default: true,
         },
         title: {
             type: String,
@@ -92,6 +107,10 @@
         isNew: {
             type: Boolean,
             default: false,
+        },
+        showUnsaved: {
+            type: Boolean,
+            default: true,
         },
         component: {
             type: [Object, String],

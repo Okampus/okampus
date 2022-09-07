@@ -1,76 +1,34 @@
 <template>
-    <div class="card-0 min-w-[30vw]">
-        <div v-if="!loading" class="mb-6 flex flex-col items-center">
+    <div class="min-w-[30vw]">
+        <div v-if="!loading" class="mb-6 flex flex-col items-center gap-4">
             <slot />
 
             <template v-if="result?.oidcEnabled">
-                <div v-if="showSso && result.oidcEnabled?.isEnabled" class="flex flex-col items-center gap-4">
-                    <a :href="oidcUrl">
-                        <button role="button" class="button-blue mt-8 flex items-center text-2xl">
-                            Connexion
-                            {{ result.oidcEnabled?.tenantOidcName ?? result.oidcEnabled?.id?.toUpperCase() }}
-                            <i class="fa fa-sign-in ml-2" />
-                        </button>
-                    </a>
-                    <div class="mt-4 flex text-slate-500">
-                        <div>ou</div>
-                        <div
-                            class="ml-2 cursor-pointer underline hover:text-slate-400"
-                            @click="showSso = false"
-                        >
-                            Connexion OKAMPUS
-                        </div>
-                    </div>
-                </div>
-                <div v-else class="mt-6 flex w-full flex-col items-center gap-3 px-10">
-                    <div class="w-full">
-                        <label
-                            for="username"
-                            class="block text-sm font-semibold uppercase tracking-wider text-gray-600"
-                            >Identifiant</label
-                        >
-                        <InputWithIcon
-                            v-model="username"
-                            class="text-sm"
-                            input-name="username"
-                            :input-required="true"
-                            input-placeholder="Identifiant OKAMPUS"
-                        >
-                            <i class="fas fa-user-shield ml-0.5" />
-                        </InputWithIcon>
-                    </div>
-                    <div class="w-full">
-                        <label
-                            for="password"
-                            class="mt-2 block text-sm font-semibold uppercase tracking-wider text-gray-600"
-                            >Mot de passe</label
-                        >
-                        <InputWithIcon
-                            v-model="password"
-                            class="text-sm"
-                            input-name="password"
-                            input-type="password"
-                            :input-required="true"
-                            input-placeholder="Mot de passe"
-                        >
-                            <i class="fas fa-key ml-0.5" />
-                        </InputWithIcon>
-                    </div>
-                    <!-- TODO: Error message when login fails -->
-                    <button class="button-green mt-4 w-full" @click="loginUser({ username, password })">
-                        Connexion OKAMPUS
+                <a :href="oidcUrl">
+                    <button
+                        role="button"
+                        class="button-blue flex min-w-fit items-center gap-4 rounded-full py-2 pl-6 pr-5 text-lg font-medium"
+                    >
+                        <i class="fa fa-school" />
+                        Connexion
+                        {{ result.oidcEnabled?.tenantOidcName ?? result.oidcEnabled?.id?.toUpperCase() }}
                     </button>
-                    <div v-if="result.oidcEnabled?.isEnabled" class="mt-4 flex text-slate-500">
-                        <div>ou</div>
-                        <div
-                            class="ml-2 cursor-pointer underline hover:text-slate-400"
-                            @click="showSso = true"
-                        >
-                            Connexion
-                            {{ result.oidcEnabled?.tenantOidcName ?? result.oidcEnabled?.id?.toUpperCase() }}
-                        </div>
-                    </div>
-                </div>
+                </a>
+
+                <FormPopUp v-model:show="showLoginForm" :form-schema="loginFormSchema" :submit="loginUser" />
+
+                <button
+                    role="button"
+                    class="button-black flex min-w-fit items-center gap-3 rounded-full py-2 px-6 text-base font-medium"
+                    @click="showLoginForm = true"
+                >
+                    <img
+                        :src="okampus"
+                        alt="OKAMPUS"
+                        class="inline h-7 w-7 rounded-lg border-2 border-black"
+                    />
+                    Connexion OKAMPUS
+                </button>
             </template>
             <template v-else>
                 <AppException code="404" :custom-message="`Le tenant '${getTenant()}' n'existe pas`" />
@@ -83,7 +41,8 @@
 <script setup>
     import AppLoader from '@/components/App/AppLoader.vue'
     import AppException from '@/views/App/AppException.vue'
-    import InputWithIcon from '@/components/Input/InputWithIcon.vue'
+
+    import okampus from '@/assets/img/logos/okampus.png'
 
     import { computed, ref } from 'vue'
 
@@ -97,8 +56,9 @@
     import { getTenant } from '@/utils/getTenant'
 
     import localStore from '@/store/local.store'
+    import FormPopUp from '../Form/FormPopUp.vue'
 
-    const showSso = ref(true)
+    const showLoginForm = ref(false)
 
     defineProps({
         headerText: {
@@ -107,8 +67,26 @@
         },
     })
 
-    const username = ref('')
-    const password = ref('')
+    const loginFormSchema = [
+        {
+            $el: 'h1',
+            children: ['Connexion à Okampus 🔐'],
+            attrs: {
+                class: 'mb-12',
+            },
+        },
+        {
+            $formkit: 'floating',
+            name: 'username',
+            floatingLabel: 'Identifiant',
+        },
+        {
+            $formkit: 'floating',
+            name: 'password',
+            floatingLabel: 'Mot de passe',
+            inputType: 'password',
+        },
+    ]
 
     const emit = defineEmits(['logged-in'])
     const { mutate: loginUser, onDone, onError } = useMutation(login)
@@ -124,6 +102,7 @@
     const oidcUrl = computed(() => `${import.meta.env.VITE_API_URL}/auth/${result.value.oidcEnabled?.id}`)
 
     onDone(({ data }) => {
+        showLoginForm.value = false
         localStore.value.me = data.login
         logOutOnExpire()
         emitter.emit('login')

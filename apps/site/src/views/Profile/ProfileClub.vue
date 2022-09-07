@@ -1,8 +1,13 @@
 <template>
     <GraphQLQuery
         :query="getClub"
-        :variables="{ id: parseInt(route.params.clubId) }"
-        :update="(data) => data?.clubById"
+        :variables="{ id: clubId ?? parseInt(route.params.clubId) }"
+        :update="
+            (data) => {
+                club = data?.clubById
+                return club
+            }
+        "
     >
         <template #default="{ data: club }">
             <FormPopUp
@@ -35,13 +40,15 @@
             <div class="text-0 bg-2">
                 <div class="centered-container padded flex flex-col gap-3 !py-0">
                     <div class="relative">
+                        <!-- <div class="background-avatar -mt-[5rem] w-fit rounded-full p-1"> -->
                         <ProfileAvatar
                             :avatar="club.avatar"
                             :size="9"
-                            :name="club.name"
                             class="-mt-[5rem]"
-                            inner-class="border-4 border-white dark:border-black !sahdow-none"
+                            :name="club.name"
+                            inner-class="border-4 border-white dark:border-black !shadow-none"
                         />
+                        <!-- </div> -->
 
                         <div class="absolute top-4 right-0 flex gap-4">
                             <button
@@ -49,7 +56,7 @@
                                 @click="WIP(`Fil d'actualité des associations prévu pour fin-2022 !`)"
                             >
                                 <i class="fa fa-plus" />
-                                Suivre
+                                S'abonner au flux
                             </button>
                             <button
                                 v-if="
@@ -80,24 +87,31 @@
                             </button>
                             <button
                                 v-else
+                                class="button-indigo -ml-1 rounded-full py-1 text-center font-semibold"
+                                @click="startContactClub"
+                            >
+                                Contacter
+                            </button>
+                            <!-- <button
+                                v-else
                                 class="button-blue -ml-1 rounded-full py-1 text-center font-semibold"
                                 @click="showJoinForm = true"
                             >
                                 Rejoindre
-                            </button>
+                            </button> -->
                         </div>
                     </div>
 
-                    <div class="flex flex-col gap-1">
+                    <div class="mt-1 flex flex-col gap-1">
                         <div class="flex items-center gap-3">
                             <h3 class="font-semibold">{{ club.name }}</h3>
-                            <router-link :to="`/clubs/${clubTypes[club.category].link}`">
+                            <!-- <router-link :to="`/clubs/${clubTypes[club.category].link}`">
                                 <LabelSimple class="bg-slate-600/40 hover:bg-slate-400/40">{{
                                     club.category
                                 }}</LabelSimple>
-                            </router-link>
+                            </router-link> -->
                         </div>
-                        <h6 class="text-3">{{ club.shortDescription }}</h6>
+                        <h6 class="text-3 my-2">{{ club.shortDescription }}</h6>
                     </div>
 
                     <HorizontalTabs
@@ -105,6 +119,7 @@
                         :background-variant="2"
                         :tabs="tabs"
                         :route-base="clubRoute"
+                        :virtual-route="!isNil(clubId)"
                         route-name="club"
                         class="my-4"
                     />
@@ -129,15 +144,15 @@
     import ClubEvents from '@/components/Profile/Club/ClubEvents.vue'
     import ClubMembers from '@/components/Profile/Club/ClubMembers.vue'
 
-    import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
+    // import LabelSimple from '@/components/UI/Label/LabelSimple.vue'
     import FormPopUp from '@/components/Form/FormPopUp.vue'
 
-    import { computed, ref } from 'vue'
+    import { computed, markRaw, ref } from 'vue'
 
     import { useRoute, useRouter } from 'vue-router'
 
     import { specialRoles } from '@/shared/types/club-roles.enum'
-    import { clubTypes } from '@/shared/types/club-types.enum'
+    // import { clubTypes } from '@/shared/types/club-types.enum'
 
     import { getClub } from '@/graphql/queries/teams/getClub.js'
 
@@ -146,6 +161,10 @@
     import { showSuccessToast, showToastGraphQLError, WIP } from '@/utils/toast.js'
 
     import { DEFAULT_JOIN_FORM_SCHEMA } from '@/shared/assets/form-schemas/default-schemas.js'
+
+    import { isNil } from 'lodash'
+    import { emitter } from '@/shared/modules/emitter'
+    import ClubMessage from '@/components/Club/ClubMessage.vue'
 
     const { mutate: join, onDone, onError } = useMutation(joinTeam)
 
@@ -162,6 +181,28 @@
     const HOME = 'home'
     const MEMBERS = 'members'
     const ACTIVITY = 'activity'
+
+    defineProps({
+        clubId: {
+            type: Number,
+            default: null,
+        },
+    })
+
+    const clubRef = ref(null)
+
+    const startContactClub = () => {
+        emitter.emit('show-bottom-sheet', {
+            title: `Hello ${clubRef.value.name} 👋`,
+            component: markRaw(ClubMessage),
+            padded: true,
+            props: {
+                club: clubRef,
+                successCallback: () => {},
+            },
+            showUnsaved: false,
+        })
+    }
 
     const clubRoute = computed(() => `/club/${route.params.clubId}`)
 
@@ -197,3 +238,9 @@
 
     const showJoinForm = ref(false)
 </script>
+
+<style>
+    .background-avatar {
+        background: linear-gradient(to top, #c471f5 0%, #fa71cd 100%);
+    }
+</style>

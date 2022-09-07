@@ -8,7 +8,7 @@
         />
         <div class="mx-3 flex h-full flex-col items-center md:mx-5">
             <div class="flex w-full justify-between">
-                <div class="flex items-start gap-3 pt-2">
+                <div class="flex flex-wrap items-start gap-x-2 pt-2">
                     <div class="bg-2 z-10 -mt-6 rounded-2xl p-1">
                         <ProfileAvatar
                             :rounded-full="false"
@@ -18,14 +18,17 @@
                         />
                     </div>
                     <router-link
-                        class="z-10 mt-2"
-                        :to="`/clubs/${clubTypes?.[club.category]?.link ?? club.category}`"
+                        v-for="label in club.labels.filter((label) => label.type === 'Category')"
+                        :key="label.id"
+                        class="z-10 mt-1"
+                        :to="`/clubs/${clubTypes?.[label.name]?.link ?? label.name}`"
                         @mouseover="showLink = false"
                         @mouseleave="showLink = true"
                     >
-                        <LabelSimple class="bg-slate-600/40 text-xs hover:bg-slate-400/40">{{
-                            club.category
-                        }}</LabelSimple>
+                        <LabelSimple
+                            class="bg-slate-600/40 py-0 px-1 text-[0.7rem] font-medium tracking-tighter hover:bg-slate-400/40"
+                            >{{ label.name }}</LabelSimple
+                        >
                     </router-link>
                 </div>
                 <ModalDropdown :buttons="buttons">
@@ -40,7 +43,7 @@
             <div class="flex h-full w-full flex-col justify-between">
                 <router-link
                     class="text-1 mt-2 text-xl font-bold line-clamp-1"
-                    :class="{ 'card-link': showLink }"
+                    :class="showLink && clickable ? 'card-link' : 'pointer-events-none'"
                     :to="`/club/${club.id}`"
                 >
                     {{ club.name }}
@@ -77,15 +80,54 @@
                             @click="router.push(`/me/clubs/requests`)"
                         >
                             <i class="fa fa-envelope" />
-                            <div>En attente</div>
+                            <div>En attenteNe plus suivre</div>
                         </button>
                         <button
+                            v-else-if="[LIKE, SUPERLIKE].includes(club.userInterest?.state)"
+                            class="button-red -ml-1 rounded-full py-1 text-center font-semibold"
+                            @click="
+                                () =>
+                                    updateInterestMutation({
+                                        id: club.userInterest.id,
+                                        updateInterest: {
+                                            state: NOPE,
+                                        },
+                                    })
+                            "
+                        >
+                            Ne plus suivre
+                        </button>
+                        <button
+                            v-else
+                            class="button-green -ml-1 rounded-full py-1 text-center font-semibold"
+                            @click="
+                                () => {
+                                    if (!club.userInterest) {
+                                        createInterestMutation({
+                                            createInterest: {
+                                                userId: localStore.me.id,
+                                                teamId: club.id,
+                                                state: LIKE,
+                                            },
+                                        })
+                                    } else {
+                                        updateInterestMutation({
+                                            id: club.userInterest.id,
+                                            updateInterest: { state: LIKE },
+                                        })
+                                    }
+                                }
+                            "
+                        >
+                            + Suivre
+                        </button>
+                        <!-- <button
                             v-else
                             class="button-blue -ml-1 rounded-full py-1 text-center font-semibold"
                             @click="emit('join')"
                         >
                             Rejoindre
-                        </button>
+                        </button> -->
                     </div>
 
                     <AvatarGroup
@@ -121,10 +163,17 @@
     import { getURL } from '@/utils/routeUtils'
 
     import { useRouter } from 'vue-router'
-    import { showErrorToast, showInfoToast } from '@/utils/toast.js'
+    import { showErrorToast, showInfoToast, showSuccessToast, showToastGraphQLError } from '@/utils/toast.js'
 
     import { useI18n } from 'vue-i18n'
     import { ref } from 'vue'
+
+    import { LIKE, SUPERLIKE, NOPE } from '@/shared/types/interest-states.enum'
+    import { useMutation } from '@vue/apollo-composable'
+    import { createInterest } from '@/graphql/queries/teams/createInterest'
+    import { updateInterest } from '@/graphql/queries/teams/updateInterest'
+
+    import localStore from '@/store/local.store'
 
     const { locale } = useI18n({ useScope: 'global' })
 
@@ -135,9 +184,45 @@
             type: Object,
             required: true,
         },
+        clickable: {
+            type: Boolean,
+            default: true,
+        },
     })
 
-    const emit = defineEmits(['join'])
+    const {
+        mutate: createInterestMutation,
+        onError: onErrorCreate,
+        onDone: onDoneCreate,
+    } = useMutation(createInterest)
+    onErrorCreate(showToastGraphQLError)
+
+    const {
+        mutate: updateInterestMutation,
+        onError: onErrorUpdate,
+        onDone: onDoneUpdate,
+    } = useMutation(updateInterest)
+    onErrorUpdate(showToastGraphQLError)
+
+    onDoneCreate(({ data }) => {
+        const name = data.createInterest.team.name
+        showSuccessToast(`Vous êtes maintenant intéressé(e) par ${name} 🙌`)
+        // clubs.value.find((club) => club.name === name).userInterest = data.createInterest
+    })
+
+    onDoneUpdate(({ data }) => {
+        const newState = data.updateInterest.state
+        const name = data.updateInterest.team.name
+        if ([LIKE, SUPERLIKE].includes(newState)) {
+            showSuccessToast(`Vous êtes maintenant intéressé(e) par ${name} 🙌`)
+        } else {
+            showSuccessToast(`Vous n'êtes plus intéressé(e) par ${name} 🙅`)
+        }
+
+        // clubs.value.find((club) => club.name === name).userInterest = data.updateInterest
+    })
+
+    // const emit = defineEmits(['join'])
 
     const showLink = ref(true)
     const buttons = [

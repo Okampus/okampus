@@ -143,17 +143,24 @@ export const sections = computed(() => [
               {
                   name: 'Espaces',
                   links: [
+                      //   {
+                      //       to: '/forum/',
+                      //       regActive: /^\/forum?/,
+                      //       textSmall: 'Forum',
+                      //       textLarge: 'Forum',
+                      //       icon: 'comments',
+                      //       button: {
+                      //           text: 'Créer un post',
+                      //           to: '/forum/new',
+                      //           icon: 'circle-plus',
+                      //       },
+                      //   },
                       {
-                          to: '/forum/',
-                          regActive: /^\/forum?/,
-                          textSmall: 'Forum',
-                          textLarge: 'Forum',
-                          icon: 'comments',
-                          button: {
-                              text: 'Créer un post',
-                              to: '/forum/new',
-                              icon: 'circle-plus',
-                          },
+                          to: '/announcements/',
+                          regActive: /^\/announcements?/,
+                          textSmall: 'Annonces',
+                          textLarge: 'Annonces',
+                          icon: 'bullhorn',
                       },
                       {
                           to: '/clubs/',
@@ -168,6 +175,18 @@ export const sections = computed(() => [
                           textSmall: 'Evénements',
                           textLarge: 'Evénements',
                           icon: 'calendar-days',
+                      },
+                      {
+                          to: '/users/',
+                          regActive: /^\/(users?|me)/,
+                          textSmall: 'Profils',
+                          textLarge: 'Profils',
+                          icon: 'user-group',
+                          button: {
+                              text: 'Mon compte',
+                              to: '/me',
+                              icon: 'user-cog',
+                          },
                       },
                   ],
               },
@@ -204,37 +223,37 @@ export const sections = computed(() => [
               //           },
               //       ],
               //   },
-              {
-                  name: 'Communauté',
-                  links: [
-                      //   {
-                      //       to: '/community/',
-                      //       regActive: /^\/community/,
-                      //       textSmall: 'Communauté',
-                      //       textLarge: 'Communauté',
-                      //       icon: 'icons',
-                      //   },
-                      {
-                          to: '/users/',
-                          regActive: /^\/(users?|me)/,
-                          textSmall: 'Profils',
-                          textLarge: 'Utilisateurs',
-                          icon: 'user-group',
-                          button: {
-                              text: 'Mon compte',
-                              to: '/me',
-                              icon: 'user-cog',
-                          },
-                      },
-                      //   {
-                      //       to: '/me/favorites',
-                      //       regActive: /^\/me\/favorites/,
-                      //       textSmall: 'Mes favoris',
-                      //       textLarge: 'Mes favoris',
-                      //       icon: 'crown',
-                      //   },
-                  ],
-              },
+              //   {
+              //       name: 'Communauté',
+              //       links: [
+              //           //   {
+              //           //       to: '/community/',
+              //           //       regActive: /^\/community/,
+              //           //       textSmall: 'Communauté',
+              //           //       textLarge: 'Communauté',
+              //           //       icon: 'icons',
+              //           //   },
+              //           {
+              //               to: '/users/',
+              //               regActive: /^\/(users?|me)/,
+              //               textSmall: 'Profils',
+              //               textLarge: 'Utilisateurs',
+              //               icon: 'user-group',
+              //               button: {
+              //                   text: 'Mon compte',
+              //                   to: '/me',
+              //                   icon: 'user-cog',
+              //               },
+              //           },
+              //           //   {
+              //           //       to: '/me/favorites',
+              //           //       regActive: /^\/me\/favorites/,
+              //           //       textSmall: 'Mes favoris',
+              //           //       textLarge: 'Mes favoris',
+              //           //       icon: 'crown',
+              //           //   },
+              //       ],
+              //   },
           ]
         : []),
 ])

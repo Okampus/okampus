@@ -61,6 +61,7 @@
         "vue-avatar-cropper": "^6.0.9",
         "vue-cal": "^4.3.4",
         "vue-chartjs": "^4.1.1",
+        "vue-confetti-explosion": "^1.0.1",
         "vue-draggable-next": "^2.1.1",
         "vue-i18n": "9.2.2",
         "vue-image-crop-upload": "3.0.3",

@@ -82,15 +82,8 @@
             </ul>
 
             <div class="flex items-center justify-center gap-4 p-4">
-                <p class="text-bold text-sm" :class="{ 'hidden': !showUncollapsed }">Mode Sombre</p>
-                <SwitchInput
-                    :model-value="localStore.darkMode === 'dark'"
-                    @update:model-value="
-                        (wasLight) => {
-                            localStore.darkMode = wasLight ? 'dark' : 'light'
-                        }
-                    "
-                />
+                <!-- <p class="text-bold text-sm" :class="{ 'hidden': !showUncollapsed }">Mode Sombre</p> -->
+                <DarkModeInput :size="0.7" />
             </div>
         </div>
     </aside>
@@ -98,10 +91,9 @@
 
 <script setup>
     import AppLogo from '@/components/App/AppLogo.vue'
-    import SwitchInput from '@/components/Input/SwitchInput.vue'
+    import DarkModeInput from '@/components/Input/DarkModeInput.vue'
 
     import { sections } from '@/shared/navigation/sidebar-sections.enum'
-    import localStore from '@/store/local.store'
 
     import { computed } from 'vue'
 
