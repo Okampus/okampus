@@ -32,7 +32,7 @@
                 id="main-content"
                 ref="content"
                 :class="{ 'brightness-50 child:pointer-events-none': hiding && collapsing != collapsed }"
-                class="bg-1 grow-1 h-content app-scrollbar after-topbar relative flex w-full flex-col overflow-auto"
+                class="bg-1 grow-1 h-content app-scrollbar after-topbar relative flex w-full flex-col overflow-scroll"
                 @mousedown="hiding && collapsed !== collapsing && toggleSidebar()"
             >
                 <AppBottomSheet
