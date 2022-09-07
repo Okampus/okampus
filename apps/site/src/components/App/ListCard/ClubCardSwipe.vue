@@ -23,15 +23,20 @@
             {{ INTEREST_STATES[club.userInterest.state].name }}
         </div>
         <Swiper
-            pagination
+            :pagination="{
+                bulletClass: 'swiper-club-swipe-pagination-bullet',
+                bulletActiveClass: 'swiper-club-swipe-pagination-bullet-active',
+                modifierClass: 'swiper-club-swipe-pagination-',
+            }"
             mousewheel
             :modules="modules"
             :loop="true"
             :allow-touch-move="false"
-            class="z-0 h-full w-full grow rounded-t-xl"
+            class="relative z-0 h-full w-full grow rounded-t-xl"
             :class="{ 'max-h-[50vh]': showProfile }"
             @swiper="(s) => (swiper = s)"
         >
+            <div class="fade-top absolute inset-x-0 top-0 z-10 h-14" />
             <div
                 class="previous-button-invisible z-10"
                 @click="
@@ -61,11 +66,7 @@
                 class="relative text-white"
             >
                 <img :src="gallery.file.url" class="absolute inset-0 z-0 h-full w-full blur-[20px]" />
-                <img
-                    :src="gallery.file.url"
-                    class="fade-top z-10 h-fit w-full"
-                    :class="{ 'pb-24': !showProfile }"
-                />
+                <img :src="gallery.file.url" class="z-10 h-fit w-full" :class="{ 'pb-24': !showProfile }" />
             </SwiperSlide>
         </Swiper>
         <!-- <div class="mx-3 flex h-full flex-col items-center md:mx-5">
@@ -120,8 +121,8 @@
                     {{ club.shortDescription }}
                 </div>
                 <div class="flex flex-col gap-2">
-                    <div class="flex gap-1">
-                        <div class="w-6">🧭</div>
+                    <div class="flex gap-2">
+                        <span class="text-xl">🧭</span>
                         {{ club.location ? club.location : 'Absent pour la journée des associations' }}
                     </div>
                     <div class="flex gap-1">
@@ -313,21 +314,23 @@
         text-align: center;
     }
 
-    .swiper-pagination {
+    .swiper-club-swipe-pagination-bullets {
         position: absolute;
         top: 10px;
+        right: 5px;
         bottom: unset !important;
+        left: 5px;
+        z-index: 20;
         display: flex;
         flex-direction: row;
-        padding: 0 5px;
     }
 
-    .swiper-pagination-bullet {
+    .swiper-club-swipe-pagination-bullet {
         display: flex;
         flex-grow: 1;
         height: 2px;
         margin: 0 5px;
-        background: #eee;
+        background: #666;
         background-repeat: no-repeat;
         background-position: 100% 50%;
         background-size: 200%;
@@ -336,9 +339,8 @@
         animation-delay: 0.2s;
     }
 
-    .swiper-pagination-bullet-active {
-        animation-name: loader;
-        animation-duration: 5s;
+    .swiper-club-swipe-pagination-bullet-active {
+        background: #eee;
     }
 
     .previous-button-invisible {
@@ -388,7 +390,9 @@
     }
 
     .fade-top {
-        box-shadow: inset 0 0 10px 10px;
+        background-image: linear-gradient(to top, rgb(0 0 0 / 0%) 0%, rgb(0 0 0 / 60%) 100%);
+
+        // box-shadow: inset 0 10px 30px 5px black;
 
         // background-image: linear-gradient(to top, rgb(255 255 255 / 0%), rgb(255 255 255 / 100%) 90%);
     }

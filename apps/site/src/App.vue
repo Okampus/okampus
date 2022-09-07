@@ -94,6 +94,7 @@
     import { isEmpty } from 'lodash'
 
     import localStore from '@/store/local.store'
+    import { getMe } from '@/graphql/queries/auth/getMe'
 
     import $axios from '@/shared/config/axios.config'
     import { apolloClient } from '@/shared/modules/apollo.client'
@@ -112,6 +113,8 @@
     import 'swiper/css/pagination'
 
     import { twBreakpoints } from './tailwind'
+    import { useQuery } from '@vue/apollo-composable'
+    import { showErrorToast, showToastGraphQLError } from './utils/toast'
 
     SwiperCore.use([EffectCoverflow, Navigation, Mousewheel, Pagination])
 
@@ -288,6 +291,20 @@
             error.path = null
         }
     })
+
+    if (localStore.value.loggedIn) {
+        const { onResult, onError } = useQuery(getMe)
+
+        onResult(({ data }) => {
+            if (data.me) {
+                localStore.value.me = data.me
+                logOutOnExpire()
+            } else {
+                showErrorToast("[Erreur] Vos informations utilisateur n'ont pas pu être récupérées.")
+            }
+        })
+        onError(showToastGraphQLError)
+    }
 
     nextTick(() => !isEmpty(localStore.value.me) && logOutOnExpire())
 </script>

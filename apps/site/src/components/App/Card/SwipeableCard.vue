@@ -38,12 +38,12 @@
         },
         thresholdX: {
             type: Number,
-            default: 170,
+            default: 140,
             required: false,
         },
         thresholdY: {
             type: Number,
-            default: 170,
+            default: 140,
             required: false,
         },
         canSwipe: {

@@ -172,7 +172,7 @@
                 </div>
                 <div class="flex flex-col items-center gap-2 rounded-lg bg-yellow-200 p-4 dark:bg-yellow-800">
                     <div class="text-2 text-xs uppercase">points attribués</div>
-                    <div class="text-4xl font-semibold">🪙 10</div>
+                    <div class="text-4xl font-semibold">🪙 50</div>
                 </div>
                 <div class="flex flex-col gap-6">
                     <div
