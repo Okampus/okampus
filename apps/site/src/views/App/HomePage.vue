@@ -154,7 +154,7 @@
                 </SwiperSlide>
 
                 <SwiperSlide
-                    class="flex flex-col items-center justify-start gap-10 !pt-0 md:p-28 lg:p-72 md-max:p-12"
+                    class="app-scrollbar flex flex-col items-center justify-start gap-10 overflow-auto !pt-0 md:p-28 lg:p-72 md-max:p-12"
                 >
                     <div class="flex flex-col gap-2">
                         <div class="text-3xl">Introducing :</div>
@@ -162,9 +162,9 @@
                     </div>
                     <div class="flex flex-col gap-8 text-left">
                         <div>
-                            A l'occasion de la journée des associations du 8 septembre, Okampus a prévu une
-                            <span class="text-lg font-medium">expérience ludique</span> pour
-                            <span class="text-lg font-medium">découvrir les associations de l'école</span> !
+                            A l'occasion de la journée des associations, Okampus a prévu une
+                            <span class="text-lg font-medium">expérience en ligne</span> pour
+                            <span class="text-lg font-medium">découvrir les associations</span> !
                         </div>
 
                         <div>
@@ -177,18 +177,9 @@
                         </div>
 
                         <div>
-                            Similaire à Tinder, vous pouvez
-                            <span class="text-lg font-medium">"swiper" à droite ❤️</span> ou
-                            <span class="text-lg font-medium">"swiper" à gauche ✖️</span> pour montrer votre
-                            intérêt pour une association. Vous pouvez "tap" la partie basse de la carte de
-                            chaque association pour
-                            <span class="text-lg font-medium"
-                                >obtenir plus d'informations sur l'association ℹ️</span
-                            >
-                        </div>
-
-                        <div>
-                            Vous pouvez également
+                            "Swiper" à gauche ou à droite pour montrer votre intérêt, sélectionnez la partie
+                            basse des cartes pour
+                            <span class="text-lg font-medium">obtenir plus d'informations ℹ️</span> et
                             <span class="text-lg font-medium">"swiper" vers le haut 💬</span> pour initier une
                             prise de contact avec une association !
                         </div>
@@ -196,7 +187,7 @@
                         <div>
                             ⚠️ Les associations
                             <span class="text-lg font-medium">ne vous répondront pas depuis Okampus</span>.
-                            Votre email Efrei sera mise a disposition comme moyen de contact par défaut ! ⚠️
+                            Votre email Efrei sera mise a disposition par défaut ! ⚠️
                         </div>
 
                         <div>
