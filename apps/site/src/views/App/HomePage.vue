@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-0">
+    <div>
         <div v-if="!localStore?.loggedIn" class="relative flex h-full flex-col items-center px-10 pt-32">
             <div class="text-0 text-center text-2xl font-medium">Bienvenue sur la bêta d'Okampus 👋</div>
 
@@ -8,116 +8,235 @@
             <div class="text-1 fixed bottom-10 text-center text-sm">
                 Rejoignez le
                 <a class="link-blue underline" href="https://discord.gg/RSgTfjGQpU">Discord public Okampus</a>
-                !
+                ! En vous connectant sur Okampus, vous acceptez ses
+                <router-link to="/rgpd" class="link-blue">conditions RGPD</router-link>.
             </div>
         </div>
-        <ClubSwipe v-else />
-        <!-- <Transition name="switch">
-            <div
-                v-if="!localStore.agreedToTerms"
-                class="absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center"
-            >
-                <div
-                    class="bg-0 text-1 m-6 flex max-h-[calc(100%-3rem)] max-w-3xl flex-col gap-6 rounded-xl p-6 text-xl"
+        <div v-else-if="!localStore.me.finishedIntroduction">
+            <Swiper pagination :modules="modules" class="text-0 h-content" @swiper="(s) => (swiper = s)">
+                <SwiperButton
+                    v-if="swiper?.activeIndex > 0"
+                    class="absolute top-1/2 left-0"
+                    :small="true"
+                    type="prev"
+                    :swiper="swiper"
+                />
+                <SwiperSlide
+                    class="flex flex-col items-center justify-start gap-10 !pt-0 md:p-28 lg:p-72 md-max:p-12"
                 >
-                    <div class="mb-4">
-                        <div class="text-0 text-center text-3xl font-semibold">
-                            Bienvenue sur la bêta de Okampus !
+                    <div class="text-4xl font-semibold">
+                        Qu'est-ce que
+                        <img
+                            class="mx-2 inline"
+                            :src="localStore.darkMode === 'dark' ? logoDarkSrc : logoSrc"
+                            :style="{
+                                width: `12rem`,
+                                height: `3rem`,
+                            }"
+                        />
+                        ?
+                    </div>
+                    <div class="flex flex-col gap-8 text-left">
+                        <div>
+                            <b class="text-xl">Okampus</b> est une
+                            <a
+                                class="link-blue text-lg"
+                                href="https://github.com/Okampus/okampus"
+                                target="_blank"
+                                >plateforme web open-source</a
+                            >
+                            pour les écoles visant à :
+                        </div>
+                        <ul class="flex flex-col gap-4">
+                            <li>
+                                - encourager la
+                                <span class="text-lg font-medium">collaboration étudiante 🖇️</span>
+                            </li>
+                            <li>
+                                - centraliser les remontées d'étudiants dans des
+                                <span class="text-lg font-medium">bases de connaissance 📚</span>
+                            </li>
+                            <li>
+                                - fournir des outils
+                                <span class="text-lg font-medium">pour la gestion d'associations 🧰</span>
+                            </li>
+                            <li>
+                                - simplifier le
+                                <span class="text-lg font-medium"
+                                    >partage de projets et de contenus entre étudiants 📣</span
+                                >
+                            </li>
+                        </ul>
+                        <div>
+                            Okampus voit le jour à EFREI Paris sous la forme d'un projet bénévole de
+                            l'association
+                            <a
+                                class="link-blue"
+                                target="_blank"
+                                href="https://github.com/horizon-efrei/HorizonWeb"
+                                >Horizon EFREI</a
+                            >, et devient le premier projet porté par
+                            <a class="link-blue" target="_blank" href="https://discord.gg/TZ7VUHE9yf"
+                                >Horizon : Web 🌐</a
+                            >
+                            (désormais
+                            <a class="link-blue" target="_blank" href="https://discord.gg/TZ7VUHE9yf"
+                                >Horizon : OpenDEV 🌐</a
+                            >) à devenir une startup 🎉 !
                         </div>
                     </div>
-                    <div>
-                        Rejoignez le
-                        <a
-                            class="link-blue mx-1 font-semibold underline"
-                            href="https://discord.gg/RSgTfjGQpU"
-                            >Discord Okampus</a
-                        >
-                        pour suivre l'avancée de la bêta, donner vos avis et échanger par rapport au
-                        projet.
+                </SwiperSlide>
+
+                <SwiperSlide class="flex flex-col justify-start gap-10 !pt-0 md:p-28 lg:p-72 md-max:p-12">
+                    <div class="text-center text-4xl font-semibold">
+                        Comment participer à
+                        <img
+                            class="mx-2 inline"
+                            :src="localStore.darkMode === 'dark' ? logoDarkSrc : logoSrc"
+                            :style="{
+                                width: `12rem`,
+                                height: `3rem`,
+                            }"
+                        />
+                        ?
                     </div>
-                    <div>
-                        Retrouvez toutes les informations relatives aux données personnelles sur
-                        <router-link to="/rgpd" class="link-blue">https://okampus.fr/rgpd</router-link>.
+                    <div class="text-left">
+                        <b class="text-xl">Okampus</b> est actuellement en bêta et utilise
+                        <a href="https://discord.gg/RSgTfjGQpU" target="_blank">
+                            <span class="link-blue text-lg">Discord</span>
+                            <img
+                                :src="okampus"
+                                alt="OKAMPUS"
+                                class="ml-2 inline h-8 w-8 rounded-lg border-2 border-black"
+                            />
+                        </a>
+                        pour sa gestion de projet ! <u class="text-lg">Rejoignez-le pour</u> :
                     </div>
-                    <div>
-                        Pour toute question ou remarque ne pouvant pas être transmise sur Discord
-                        <a class="link-blue" href="mailto:bonjour@okampus.fr"
-                            >envoyez un mail à bonjour@okampus.fr</a
-                        >
+                    <div class="flex flex-col gap-8 text-left">
+                        <ul class="flex flex-col gap-4">
+                            <li>
+                                - suivre les
+                                <span class="text-lg font-medium">devlogs du projet 📁</span>
+                            </li>
+                            <li>
+                                - faire des
+                                <span class="text-lg font-medium">suggestions de fonctionnalités ✨</span>
+                            </li>
+                            <li>
+                                - signaler des
+                                <span class="text-lg font-medium">bugs ou designs améliorables</span> sur la
+                                plateforme 🌐
+                            </li>
+                            <li>
+                                - bêta-tester des
+                                <span class="text-lg font-medium"
+                                    >nouvelles fonctionnalités et expériences utilisateur 🌟</span
+                                >
+                            </li>
+                            <li>
+                                - ou alors pour
+                                <span class="text-lg font-medium">contribuer</span> directement au projet
+                                <span class="text-lg">🔧</span> !
+                            </li>
+                        </ul>
+                        <div>
+                            La plupart des fonctionnalités d'Okampus sont actuellement cachées car elles ne
+                            sont pas complètement fonctionnelles :
+                            <b class="text-lg underline"
+                                >la prochaine grande mise à jour est prévue pour mi-octobre 🎉</b
+                            >
+                        </div>
                     </div>
-                    <div class="italic">
-                        Les cookies utilisés par Okampus sont des tokens d'authentification nécessaires à
-                        la gestion des permissions sur la plateforme.
+                    <!-- Okampus est un projet open-source toujours en voie de développement. Vous pouvez donc
+                    contribuer en nous rejoignant sur notre serveur Discord (< insert hyperlink) : - suivre
+                    nos actualités - proposer des fonctionnalités - signaler des bugs - intégrer notre
+                    communauté -->
+                </SwiperSlide>
+
+                <SwiperSlide
+                    class="flex flex-col items-center justify-start gap-10 !pt-0 md:p-28 lg:p-72 md-max:p-12"
+                >
+                    <div class="flex flex-col gap-2">
+                        <div class="text-3xl">Introducing :</div>
+                        <div class="text-4xl font-semibold">Le swipe des associations 👏</div>
                     </div>
-                    <button
-                        class="button-blue mt-4 min-w-[3rem] select-none text-center"
-                        :class="counting ? 'opacity-50' : ''"
-                        :disabled="counting"
-                        @click="agreeToTerms"
-                    >
-                        <VueCountdown
-                            v-if="counting"
-                            v-slot="{ totalSeconds }"
-                            :time="4000"
-                            @end="counting = false"
-                            >{{ totalSeconds }}</VueCountdown
-                        >
-                        <div v-else>J'ai pris connaissance de ces informations et souhaite continuer</div>
-                    </button>
-                </div>
-            </div>
-            <div
-                v-else-if="!localStore.loggedIn"
-                class="absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center"
-            >
-                <AppLogin class="absolute z-10 w-[80vw] opacity-90 md:w-[60vw] lg:w-[40vw]">
-                    <div class="-mt-12 flex w-full flex-col items-center">
+                    <div class="flex flex-col gap-8 text-left">
+                        <div>
+                            A l'occasion de la journée des associations du 8 septembre, Okampus a prévu une
+                            <span class="text-lg font-medium">expérience ludique</span> pour
+                            <span class="text-lg font-medium">découvrir les associations de l'école</span> !
+                        </div>
+
+                        <div>
+                            Pour chaque association, retrouvez
+                            <b class="text-xl underline"
+                                >l'emplacement de leur stand pour la journée des associations à côté de la
+                                boussole 🧭</b
+                            >
+                            sur leur profil !
+                        </div>
+
+                        <div>
+                            Similaire à Tinder, vous pouvez
+                            <span class="text-lg font-medium">"swiper" à droite ❤️</span> ou
+                            <span class="text-lg font-medium">"swiper" à gauche ✖️</span> pour montrer votre
+                            intérêt pour une association. Vous pouvez "tap" la partie basse de la carte de
+                            chaque association pour
+                            <span class="text-lg font-medium"
+                                >obtenir plus d'informations sur l'association ℹ️</span
+                            >
+                        </div>
+
+                        <div>
+                            Vous pouvez également
+                            <span class="text-lg font-medium">"swiper" vers le haut 💬</span> pour initier une
+                            prise de contact avec une association !
+                        </div>
+
+                        <div>
+                            ⚠️ Les associations
+                            <span class="text-lg font-medium">ne vous répondront pas depuis Okampus</span>.
+                            Votre email Efrei sera mise a disposition comme moyen de contact par défaut ! ⚠️
+                        </div>
+
+                        <div>
+                            Complétez le swipe des associations avant le 14 septembre
+                            <b class="underline">pour obtenir 50 points Okampus !</b>
+                        </div>
+
                         <div
-                            class="flex w-10/12 justify-center rounded-xl bg-indigo-700 py-3 opacity-100"
+                            class="hover-arrow-right mt-3 cursor-pointer text-center text-4xl text-blue-600 brightness-110 dark:text-blue-400 md-max:text-2xl"
+                            @click="
+                                updateUserMutation({
+                                    id: localStore.me.id,
+                                    user: { finishedIntroduction: true },
+                                })
+                            "
                         >
-                            <AppLogo :scale="1.6" only="dark" />
-                        </div>
-                        <div class="mt-8 text-center text-2xl">
-                            Connectez-vous pour accéder à Okampus
-                            <a href="https://discord.gg/bEwwT9SNQX">
-                                <img
-                                    :src="okampus"
-                                    alt="OKAMPUS"
-                                    class="inline h-10 w-10 rounded-lg border-2 border-black"
-                                />
-                            </a>
-                            !
+                            Commencer le swipe des associations<i class="fa fa-arrow-right ml-2" />
                         </div>
                     </div>
-                </AppLogin>
-            </div>
-            <div v-else class="absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center">
-                <div
-                    class="text-0 bg-opacity/80 bg-2 z-10 flex min-w-[20rem] flex-col gap-4 rounded-xl p-4"
-                >
-                    <div class="text-3xl">
-                        {{
-                            new Date().getHours() > 19 || new Date().getHours() < 6
-                                ? 'Bonsoir'
-                                : 'Bonjour'
-                        }}
-                        {{ localStore.me?.firstname?.split?.(' ')?.[0] }} !
-                    </div>
-                    <router-link
-                        class="hover-arrow-right text-2xl text-blue-600 dark:text-blue-400"
-                        to="/clubs"
-                        >Voir les associations<i class="fa fa-arrow-right ml-2"
-                    /></router-link>
-                </div>
-            </div>
-        </Transition> -->
+                </SwiperSlide>
+                <SwiperButton
+                    v-if="swiper?.activeIndex < 2"
+                    class="absolute top-1/2 right-0"
+                    :small="true"
+                    type="next"
+                    :swiper="swiper"
+                />
+            </Swiper>
+        </div>
+        <ClubSwipe v-else />
     </div>
 </template>
 
 <script setup>
     // import DarkModeInput from '@/components/Input/DarkModeInput.vue'
     // import okampus from '@/assets/img/logos/okampus.png'
+    import okampus from '@/assets/img/logos/okampus.png'
 
+    import logoSrc from '@/assets/img/logos/logo_light.png'
+    import logoDarkSrc from '@/assets/img/logos/logo_dark.png'
     // import VueCountdown from '@chenfengyuan/vue-countdown'
     import AppLogin from '@/components/App/AppLogin.vue'
     // import AppLogo from '@/components/App/AppLogo.vue'
@@ -125,7 +244,28 @@
     import localStore from '@/store/local.store'
 
     // import { ref } from 'vue'
-    import ClubSwipe from '../List/ClubSwipe.vue'
+    import ClubSwipe from '@/views/List/ClubSwipe.vue'
+
+    import { updateUser } from '@/graphql/queries/users/updateUser'
+    import { useMutation } from '@vue/apollo-composable'
+    import { showSuccessToast, showToastGraphQLError } from '@/utils/toast'
+
+    import { Swiper, SwiperSlide } from 'swiper/vue'
+    import { Navigation, Pagination } from 'swiper'
+
+    import { ref } from 'vue'
+    import SwiperButton from '@/components/App/Swiper/SwiperButton.vue'
+
+    const modules = [Pagination, Navigation]
+    const { mutate: updateUserMutation, onDone: onDoneUser, onError: onErrorUser } = useMutation(updateUser)
+
+    onDoneUser(({ data }) => {
+        localStore.value.me = data.updateUser
+        showSuccessToast('Bienvenue sur le swipe des associations 🥂')
+    })
+    onErrorUser(showToastGraphQLError)
+
+    const swiper = ref(null)
     // import { showSuccessToast } from '@/utils/toast'
 
     // const counting = ref(true)

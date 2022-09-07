@@ -51,6 +51,11 @@
                     {{ club.name }}
                 </router-link>
 
+                <div>
+                    <span class="text-xl">🧭</span>
+                    {{ club.location ? club.location : 'Absent pour la journée des associations' }}
+                </div>
+
                 <div class="text-2 mt-1 text-sm">
                     {{ club.shortDescription }}
                 </div>

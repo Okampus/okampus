@@ -6,5 +6,5 @@ export default {
   comment: 2,
   upload: 10,
   validatedUpload: 10,
-  finishedOnboarding: 10,
+  finishedOnboarding: 50,
 } as const;

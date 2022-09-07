@@ -12,7 +12,6 @@
         </div>
         <div class="flex gap-10">
             <div classs="w-fit">
-                <div class="mb-2 text-lg font-medium">Réseaux</div>
                 <div class="flex flex-col gap-1">
                     <a
                         v-for="social in club.socials"
@@ -34,18 +33,30 @@
                 </div>
             </div>
             <div>
-                <div class="mb-2 text-lg font-medium">Présentation</div>
-                <TeamActivity :team="club" :subtitle="club.status" :deactivate-click="true" />
-                <div class="ml-2 mt-2 flex gap-1">
-                    <div class="w-6">🧭</div>
-                    {{ club.location ? club.location : 'Absent pour la journée des associations' }}
+                <div class="flex gap-2">
+                    <ProfileAvatar :avatar="club.avatar" :name="club.name" :size="5" />
+
+                    <div class="flex flex-col">
+                        <div class="text-xl font-bold">{{ club.name }}</div>
+                        <div class="flex gap-1">
+                            {{ club.location ? club.location : 'Absent pour la journée des associations' }}
+                            <span class="text-xl">🧭</span>
+                        </div>
+                    </div>
                 </div>
+                <!-- <TeamActivity
+                    :team="club"
+                    :subtitle="`🧭 ${
+                        club.location ? club.location : 'Absent pour la journée des associations'
+                    }`"
+                    :deactivate-click="true"
+                /> -->
                 <div class="card mt-4 bg-0-light py-2 px-4 dark:bg-2-dark">{{ club.shortDescription }}</div>
             </div>
         </div>
         <div class="flex h-full flex-col gap-2">
             <AppTitle icon="fa fa-comment-dots" :title="`Message pour ${club.name}`"></AppTitle>
-            <textarea v-model="message" class="input h-full" />
+            <textarea v-model="message" class="input app-scrollbar h-full min-h-[7rem]" />
         </div>
         <div class="flex gap-4 self-end">
             <button class="button-grey" @click="emit('close')">Annuler</button>
@@ -96,7 +107,7 @@
     import { ref } from 'vue'
 
     import localStore from '@/store/local.store'
-    import TeamActivity from '../App/General/TeamActivity.vue'
+    import ProfileAvatar from '../Profile/ProfileAvatar.vue'
 
     const props = defineProps({
         club: {

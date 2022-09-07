@@ -1,6 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
 import {
+  IsBoolean,
   IsEmail,
   IsHexColor,
   IsOptional,
@@ -39,4 +40,9 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   banner: string;
+
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  finishedIntroduction: boolean;
 }
