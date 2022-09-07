@@ -1,5 +1,6 @@
 import {
   Args,
+  Int,
   Mutation,
   Query,
   Resolver,
@@ -17,7 +18,7 @@ export class InterestsResolver {
   ) {}
 
   @Query(() => Interest)
-  public async interestById(@Args('id') id: number): Promise<Interest> {
+  public async interestById(@Args('id', { type: () => Int }) id: number): Promise<Interest> {
     return await this.interestsService.findOne(id);
   }
 
@@ -33,12 +34,12 @@ export class InterestsResolver {
   }
 
   @Mutation(() => Interest)
-  public async updateInterest(@Args('id') id: number, @Args('input') input: UpdateInterestDto): Promise<Interest> {
+  public async updateInterest(@Args('id', { type: () => Int }) id: number, @Args('input') input: UpdateInterestDto): Promise<Interest> {
     return await this.interestsService.update(id, input);
   }
 
   @Mutation(() => Interest)
-  public async deleteInterest(@Args('id') id: number): Promise<Interest> {
+  public async deleteInterest(@Args('id', { type: () => Int }) id: number): Promise<Interest> {
     return await this.interestsService.remove(id);
   }
 }

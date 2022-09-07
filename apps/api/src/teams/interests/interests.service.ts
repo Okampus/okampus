@@ -28,15 +28,18 @@ export class InterestsService {
     });
     await this.interestRepository.persistAndFlush(interest);
     // Check if the user has finished the onboarding process
-    const countTeam = await this.teamRepository.count({ kind: 'Club' });
-    const countInterest = await this.interestRepository.count({ user: { id: userId } });
-    if (countTeam === countInterest) {
-      this.userRepository.assign(user, {
-         finishedOnboarding: true,
-         points: user.points + pointsConfig.finishedOnboarding,
-        });
-      await this.userRepository.persistAndFlush(user);
+    if (!user.finishedOnboarding) {
+      const countTeam = await this.teamRepository.count({ kind: 'Club' });
+      const countInterest = await this.interestRepository.count({ user: { id: userId } });
+      if (countTeam === countInterest) {
+        this.userRepository.assign(user, {
+          finishedOnboarding: true,
+          points: user.points + pointsConfig.finishedOnboarding,
+          });
+        await this.userRepository.persistAndFlush(user);
+      }
     }
+
     return interest;
   }
 
@@ -48,6 +51,10 @@ export class InterestsService {
     return await this.interestRepository.findOneOrFail({ id });
   }
 
+  public async findForUserTeam(userId: string, teamId: number): Promise<Interest> {
+    return await this.interestRepository.findOneOrFail({ user: { id: userId }, team: { id: teamId } });
+  }
+
   public async findAllByTeam(id: number): Promise<Interest[]> {
     return await this.interestRepository.find({ team: { id } }, { populate: ['team', 'user'] });
   }
@@ -57,7 +64,7 @@ export class InterestsService {
   }
 
   public async update(id: number, updateInterestDto: UpdateInterestDto): Promise<Interest> {
-    const interest = await this.interestRepository.findOneOrFail({ id });
+    const interest = await this.interestRepository.findOneOrFail({ id }, { populate: ['team.name'] });
     this.interestRepository.assign(interest, updateInterestDto);
     await this.interestRepository.persistAndFlush(interest);
     return interest;

@@ -53,6 +53,7 @@ export class UsersService {
     return await this.userRepository.findOneOrFail({ id }, {
       refresh: true,
       populate: [
+        'interests',
         'schoolGroupMemberships',
         'schoolGroupMemberships.schoolYear',
         'schoolGroupMemberships.schoolGroup',

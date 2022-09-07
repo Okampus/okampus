@@ -98,7 +98,7 @@ export class MeiliSearchIndexerService {
         const indexedEntities = await MeiliSearchIndexerService.entitiesToIndexedEntities(entities, name);
         this.logger.log(`Reindexing ${offset} to ${Math.min(offset + MEILISEARCH_BATCH_SIZE, count)}, found ${indexedEntities.length} entities`);
         const response = await index.addDocuments(indexedEntities);
-        console.log('Response:', JSON.stringify(response));
+        this.logger.log(`Response: ${JSON.stringify(response)}`);
       }
     }
     return true;

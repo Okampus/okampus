@@ -33,6 +33,8 @@ import type { BaseIndex } from '../shared/modules/search/indexed-entity.interfac
 // eslint-disable-next-line import/no-cycle
 import { Statistics } from '../statistics/statistics.entity';
 // eslint-disable-next-line import/no-cycle
+import { Interest } from '../teams/interests/interest.entity';
+// eslint-disable-next-line import/no-cycle
 import { TeamMember } from '../teams/members/team-member.entity';
 // eslint-disable-next-line import/no-cycle
 import { TeamMembershipRequest } from '../teams/requests/team-membership-request.entity';
@@ -98,6 +100,10 @@ export class User extends BaseTenantEntity implements BaseSearchableEntity {
   @Field(() => [TeamMember])
   @OneToMany('TeamMember', 'user')
   teamMemberships = new Collection<TeamMember>(this);
+
+  @Field(() => [Interest])
+  @OneToMany('Interest', 'user')
+  interests = new Collection<Interest>(this);
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })

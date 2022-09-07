@@ -3614,12 +3614,12 @@
         },
         "message": {
           "name": "message",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
-          "mappedType": "string"
+          "nullable": true,
+          "mappedType": "text"
         },
         "team_id": {
           "name": "team_id",

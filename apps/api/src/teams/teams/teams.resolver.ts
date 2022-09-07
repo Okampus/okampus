@@ -45,7 +45,8 @@ import { Team } from './team.entity';
 import { TeamsService } from './teams.service';
 
 export interface ContextBatchTeams {
-  memberships: Record<number, TeamMember | null>;
+  userInterests: Record<number, Interest | null>;
+  userMemberships: Record<number, TeamMember | null>;
   galleries: Record<number, TeamGallery[]>;
   pendingRequests: Record<number, boolean>;
   boardMembers: Record<number, TeamMember[]>;
@@ -106,7 +107,9 @@ export class TeamsResolver {
     ), 'team.id');
 
     const memberships = await user.teamMemberships.loadItems();
-    teamContext.memberships = Object.fromEntries(memberships.map(membership => [membership.team.id, membership]));
+    teamContext.userMemberships = Object.fromEntries(memberships.map(membership => [membership.team.id, membership]));
+    const interests = await user.interests.loadItems();
+    teamContext.userInterests = Object.fromEntries(interests.map(interest => [interest.team.id, interest]));
     teamContext.pendingRequests = mapValues(
       groupBy(await user.teamMembershipRequests.loadItems(), 'team.id'),
       requests => requests.some(r => r.state === MembershipRequestState.Pending),
@@ -205,6 +208,18 @@ export class TeamsResolver {
     return paginatedFormTemplates.items;
   }
 
+  @ResolveField(() => Interest, { nullable: true })
+  public async userInterest(
+    @CurrentUser() user: User,
+    @Parent() team: Team,
+    @Context() batchContext: ContextBatchTeams,
+): Promise<Interest | null> {
+    if (batchContext?.isBatched)
+      return batchContext?.userInterests?.[team.id] ?? null;
+
+    return await this.interestsService.findForUserTeam(user.id, team.id);
+  }
+
   @ResolveField(() => TeamMembershipStatus, { nullable: true })
   public async userMembership(
     @CurrentUser() user: User,
@@ -213,7 +228,7 @@ export class TeamsResolver {
   ): Promise<TeamMembershipStatus> {
     if (batchContext?.isBatched) {
       return {
-        membership: batchContext?.memberships?.[team.id] ?? null,
+        membership: batchContext?.userMemberships?.[team.id] ?? null,
         pendingRequest: batchContext?.pendingRequests?.[team.id] ?? false,
       };
     }

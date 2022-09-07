@@ -23,9 +23,9 @@ export class Interest extends BaseEntity {
   @Property()
   state!: InterestState;
 
-  @Field(() => String)
-  @Property()
-  message!: string;
+  @Field(() => String, { nullable: true })
+  @Property({ type: 'text' })
+  message: string | null = null;
 
   @Field(() => Team)
   @ManyToOne()
@@ -37,7 +37,7 @@ export class Interest extends BaseEntity {
 
   constructor(options: {
     state: InterestState;
-    message: string;
+    message?: string | null;
     team: Team;
     user: User;
   }) {

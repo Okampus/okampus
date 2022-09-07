@@ -93,7 +93,7 @@ export class TeamsService {
 
     const team = await this.teamRepository.findOneOrFail(
       { id, ...options },
-      { populate: ['members', 'members.user', 'membershipRequestForm', 'membershipRequestForm.createdBy'] },
+      { populate: ['members', 'members.user', 'membershipRequestForm', 'membershipRequestForm.createdBy', 'labels', 'socials'] },
     );
 
     return team;

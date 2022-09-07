@@ -138,7 +138,7 @@ input CreateContentWithKindDto {
 }
 
 input CreateInterestDto {
-  message: String!
+  message: String = null
   state: InterestState!
   teamId: Float!
   userId: String!
@@ -304,7 +304,7 @@ type IndexedUser {
 type Interest {
   createdAt: DateTime!
   id: Int!
-  message: String!
+  message: String
   state: InterestState!
   team: Team!
   updatedAt: DateTime!
@@ -395,7 +395,7 @@ type Mutation {
   createReport(id: Int!, report: CreateReportDto!): Content!
   createTeamForm(createForm: CreateTeamFormDto!, id: Int!): Team!
   createThread(thread: CreateThreadDto!): Thread!
-  deleteInterest(id: Float!): Interest!
+  deleteInterest(id: Int!): Interest!
   deleteTeamFile(id: String!): Team!
   handleTeamMembershipRequest(id: Int!, updateRequest: PutTeamMembershipRequestDto!): TeamMembershipRequest!
   insertStep(atStep: Int!, step: Int!): Tenant!
@@ -405,7 +405,7 @@ type Mutation {
   unsetLogo(id: String!, isLogoDark: Boolean!): Tenant!
   updateContent(content: UpdateContentDto!, id: Int!): Content!
   updateEvent(id: Int!, updateEvent: UpdateTeamEventDto!): TeamEvent!
-  updateInterest(id: Float!, input: UpdateInterestDto!): Interest!
+  updateInterest(id: Int!, input: UpdateInterestDto!): Interest!
   updateSettings(settings: UpdateSettingsDto!): Settings!
   updateTeam(id: Int!, team: UpdateTeamDto!): Team!
   updateTeamEventRegistration(id: Int!, registration: UpdateTeamEventRegistrationDto!): TeamEventRegistration!
@@ -467,7 +467,7 @@ type Query {
   events(filter: ListTeamEventsDto!): [TeamEvent!]!
   getLogoUrls(id: String!): TenantLogoUrls!
   getLogos(id: String!): [ProfileImage!]!
-  interestById(id: Float!): Interest!
+  interestById(id: Int!): Interest!
   interests: [Interest!]!
   me: User!
   metrics(metrics: ListMetricsDto!): [Metric!]!
@@ -694,6 +694,7 @@ type Team {
   teamFiles: [TeamFile!]!
   tenant: String!
   updatedAt: DateTime!
+  userInterest: Interest
   userMembership: TeamMembershipStatus
 }
 
@@ -996,7 +997,7 @@ input UpdateContentDto {
 }
 
 input UpdateInterestDto {
-  message: String
+  message: String = null
   state: InterestState
 }
 

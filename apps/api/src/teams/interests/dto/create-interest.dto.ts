@@ -1,5 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsEnum, IsInt, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { InterestState } from '../../../shared/lib/types/enums/interest-state.enum';
 
 @InputType()
@@ -8,9 +13,10 @@ export class CreateInterestDto {
   @IsEnum(InterestState)
   state!: InterestState;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
+  @IsOptional()
   @IsString()
-  message!: string;
+  message: string | null = null;
 
   @Field(() => Number)
   @IsInt()
