@@ -23,7 +23,7 @@
                 v-for="club of shownCards"
                 :ref="(el) => (cardRefs[club.idx] = el)"
                 :key="club"
-                class="absolute inset-0 m-auto h-[95%] max-w-full md:max-w-[50rem]"
+                class="absolute inset-x-0 bottom-10 m-auto h-[95%] max-w-full md:max-w-[50rem]"
                 :can-swipe="canSwipe"
                 @swipe="(direction) => onSwipe(direction, club)"
             >
@@ -47,7 +47,7 @@
             </SwipeableCard>
             <template v-if="showButtons">
                 <div
-                    class="absolute inset-x-0 bottom-10 mx-auto flex w-fit cursor-pointer select-none transition-transform hover:scale-110 md:gap-20 md-max:inset-x-20 md-max:justify-between"
+                    class="absolute inset-x-0 bottom-20 mx-auto flex w-fit cursor-pointer select-none transition-transform hover:scale-110 md:gap-20 md-max:inset-x-20 md-max:justify-between"
                     @click="
                         () => {
                             cardRefs[currentIdx].onThresholdReached('swipe-top')
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div
-                    class="absolute bottom-10 z-10 w-fit cursor-pointer select-none transition-transform hover:scale-110 md:inset-x-0 md:mx-auto md:translate-x-[-20rem] md-max:left-6"
+                    class="absolute bottom-20 z-10 w-fit cursor-pointer select-none transition-transform hover:scale-110 md:inset-x-0 md:mx-auto md:translate-x-[-20rem] md-max:left-6"
                     @click="
                         () => {
                             if (currentIdx < clubs.length - 1) {
@@ -86,7 +86,7 @@
                     </div>
                 </div>
                 <div
-                    class="absolute bottom-10 z-10 w-fit cursor-pointer select-none transition-transform hover:scale-110 md:inset-x-0 md:mx-auto md:translate-x-[-10rem] md-max:left-[23%]"
+                    class="absolute bottom-20 z-10 w-fit cursor-pointer select-none transition-transform hover:scale-110 md:inset-x-0 md:mx-auto md:translate-x-[-10rem] md-max:left-[23%]"
                     @click="
                         () => {
                             cardRefs[currentIdx].onThresholdReached('swipe-left')
@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <div
-                    class="absolute bottom-10 z-10 w-fit cursor-pointer select-none transition-transform hover:scale-110 md:inset-x-0 md:mx-auto md:translate-x-[10rem] md-max:right-[23%]"
+                    class="absolute bottom-20 z-10 w-fit cursor-pointer select-none transition-transform hover:scale-110 md:inset-x-0 md:mx-auto md:translate-x-[10rem] md-max:right-[23%]"
                     @click="
                         () => {
                             cardRefs[currentIdx].onThresholdReached('swipe-right')
@@ -122,7 +122,7 @@
                     </div>
                 </div>
                 <div
-                    class="absolute bottom-10 z-10 w-fit cursor-pointer select-none transition-transform md:inset-x-0 md:mx-auto md:translate-x-[20rem] md-max:right-6"
+                    class="absolute bottom-20 z-10 w-fit cursor-pointer select-none transition-transform md:inset-x-0 md:mx-auto md:translate-x-[20rem] md-max:right-6"
                     :class="{
                         'hover:scale-110': clubs[currentIdx].socials.some(
                             (social) => social.socialType === 'Discord',
