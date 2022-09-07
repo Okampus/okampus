@@ -155,13 +155,13 @@ export const sections = computed(() => [
                       //           icon: 'circle-plus',
                       //       },
                       //   },
-                      {
-                          to: '/announcements/',
-                          regActive: /^\/announcements?/,
-                          textSmall: 'Annonces',
-                          textLarge: 'Annonces',
-                          icon: 'bullhorn',
-                      },
+                      //   {
+                      //       to: '/announcements/',
+                      //       regActive: /^\/announcements?/,
+                      //       textSmall: 'Annonces',
+                      //       textLarge: 'Annonces',
+                      //       icon: 'bullhorn',
+                      //   },
                       {
                           to: '/clubs/',
                           regActive: /^\/clubs?/,
