@@ -58,7 +58,7 @@
             <AppTitle icon="fa fa-comment-dots" :title="`Message pour ${club.name}`"></AppTitle>
             <textarea v-model="message" class="input app-scrollbar h-full min-h-[7rem]" />
         </div>
-        <div class="flex gap-4 self-end">
+        <div class="mb-10 flex gap-4 self-end">
             <button class="button-grey" @click="emit('close')">Annuler</button>
             <button
                 class="button-blue flex items-center gap-2"
