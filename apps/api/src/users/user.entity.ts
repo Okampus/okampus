@@ -155,7 +155,11 @@ export class User extends BaseTenantEntity implements BaseSearchableEntity {
   teamEventIcal = nanoid(64);
 
   @Field(() => Boolean)
-  @Property()
+  @Property({ default: false })
+  finishedIntroduction = false;
+
+  @Field(() => Boolean)
+  @Property({ default: false })
   finishedOnboarding = false;
 
   isPublic = false;

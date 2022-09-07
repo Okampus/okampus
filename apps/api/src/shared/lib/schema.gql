@@ -1137,6 +1137,7 @@ input UpdateUserDto {
   banner: String
   color: String
   email: String
+  finishedIntroduction: Boolean
   shortDescription: String
   signature: String
 }
@@ -1158,6 +1159,7 @@ type User {
   color: String
   createdAt: DateTime!
   email: String!
+  finishedIntroduction: Boolean!
   finishedOnboarding: Boolean!
   firstname: String!
   id: String!

@@ -132,6 +132,7 @@ export class UsersService {
     wrap(user).assign(dto);
     await this.userRepository.flush();
 
+    console.log('USER', user);
     return user;
   }
 
