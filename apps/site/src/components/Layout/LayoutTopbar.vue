@@ -12,7 +12,9 @@
                 </div>
                 <AppLogo only="dark" />
             </div>
-            <LabelSimple v-if="localStore.me?.finishedOnboarding" class="mr-4 !px-1.5">Beta</LabelSimple>
+            <LabelSimple v-if="localStore.me?.finishedOnboarding" class="mr-4 !px-1.5 xs-max:hidden"
+                >Beta</LabelSimple
+            >
             <div v-else class="ml-20 flex items-center gap-6">
                 <AppLogo :="localStore.me?.finishedOnboarding ? { only: 'dark' } : {}" class="mt-1.5" />
                 <DarkModeInput />
@@ -20,7 +22,7 @@
         </div>
 
         <template v-if="!isHome || localStore.loggedIn">
-            <div v-if="!localStore.loggedIn" class="ml-10 flex shrink-0 items-center justify-center">
+            <div v-if="!localStore.loggedIn" class="ml-6 flex shrink-0 items-center justify-center">
                 <ButtonLogin />
             </div>
 

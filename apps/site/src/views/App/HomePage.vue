@@ -1,11 +1,11 @@
 <template>
-    <div class="bg-0 h-full">
+    <div class="bg-0">
         <div v-if="!localStore?.loggedIn" class="relative flex h-full flex-col items-center px-10 pt-32">
             <div class="text-0 text-center text-2xl font-medium">Bienvenue sur la bêta d'Okampus 👋</div>
 
             <AppLogin class="mt-14" />
 
-            <div class="text-1 absolute bottom-4 text-center text-sm">
+            <div class="text-1 fixed bottom-10 text-center text-sm">
                 Rejoignez le
                 <a class="link-blue underline" href="https://discord.gg/RSgTfjGQpU">Discord public Okampus</a>
                 !

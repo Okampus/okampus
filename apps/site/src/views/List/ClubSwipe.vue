@@ -58,7 +58,7 @@
                 >
                     <div class="flex flex-col items-center gap-1 text-blue-200">
                         <div
-                            class="flex h-16 w-16 items-center justify-center rounded-full border-2 border-blue-500"
+                            class="flex h-16 w-16 items-center justify-center rounded-full border-2 border-blue-500 xs-max:h-14 xs-max:w-14"
                         >
                             <i class="fa fa-comment-dots text-3xl text-blue-500" />
                             <!-- <div class="text-3xl text-blue-500">👋</div> -->
@@ -79,9 +79,9 @@
                 >
                     <div class="flex flex-col items-center gap-1 text-yellow-200">
                         <div
-                            class="flex h-16 w-16 items-center justify-center rounded-full border-2 border-yellow-500"
+                            class="flex h-16 w-16 items-center justify-center rounded-full border-2 border-yellow-500 xs-max:h-14 xs-max:w-14"
                         >
-                            <i class="fa fa-rotate-left text-6xl text-yellow-500 md-max:text-4xl" />
+                            <i class="fa fa-rotate-left text-4xl text-yellow-500 xs-max:text-3xl" />
                         </div>
                         <div class="text-xs font-medium md-max:text-[0.6rem]">Retour arrière</div>
                     </div>
@@ -97,9 +97,9 @@
                 >
                     <div class="flex flex-col items-center gap-1 text-red-200">
                         <div
-                            class="flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full border-2 border-red-500"
+                            class="flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full border-2 border-red-500 xs-max:h-[4rem] xs-max:w-[4rem]"
                         >
-                            <i class="fa fa-xmark text-5xl text-red-500" />
+                            <i class="fa fa-xmark text-5xl text-red-500 xs-max:text-4xl" />
                         </div>
                         <div class="text-xs font-medium md-max:text-[0.6rem]">Pas intéressé(e)</div>
                     </div>
@@ -115,9 +115,9 @@
                 >
                     <div class="flex flex-col items-center gap-1 text-green-200">
                         <div
-                            class="flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full border-2 border-green-500"
+                            class="flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full border-2 border-green-500 xs-max:h-[4rem] xs-max:w-[4rem]"
                         >
-                            <i class="fa fa-check text-5xl text-green-500" />
+                            <i class="fa fa-check text-5xl text-green-500 xs-max:text-4xl" />
                         </div>
                         <div class="text-xs font-medium md-max:text-[0.6rem]">Intéressé(e)</div>
                     </div>
@@ -140,7 +140,7 @@
                         "
                     >
                         <div
-                            class="flex h-16 w-16 items-center justify-center rounded-full border-2"
+                            class="flex h-16 w-16 items-center justify-center rounded-full border-2 xs-max:h-14 xs-max:w-14"
                             :class="
                                 clubs[currentIdx].socials.some((social) => social.socialType === 'Discord')
                                     ? 'border-violet-500'
@@ -148,7 +148,7 @@
                             "
                         >
                             <i
-                                class="fab fa-discord text-4xl"
+                                class="fab fa-discord text-4xl xs-max:text-3xl"
                                 :class="
                                     clubs[currentIdx].socials.some(
                                         (social) => social.socialType === 'Discord',
