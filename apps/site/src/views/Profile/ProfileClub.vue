@@ -51,13 +51,13 @@
                         <!-- </div> -->
 
                         <div class="absolute top-4 right-0 flex gap-4">
-                            <button
+                            <!-- <button
                                 class="button-reverse pill-button"
                                 @click="WIP(`Fil d'actualité des associations prévu pour fin-2022 !`)"
                             >
                                 <i class="fa fa-plus" />
                                 S'abonner au flux
-                            </button>
+                            </button> -->
                             <button
                                 v-if="
                                     club.userMembership.membership?.role &&
@@ -158,7 +158,11 @@
 
     import { joinTeam } from '@/graphql/queries/teams/joinTeam.js'
     import { useMutation } from '@vue/apollo-composable'
-    import { showSuccessToast, showToastGraphQLError, WIP } from '@/utils/toast.js'
+    import {
+        showSuccessToast,
+        showToastGraphQLError,
+        // WIP
+    } from '@/utils/toast.js'
 
     import { DEFAULT_JOIN_FORM_SCHEMA } from '@/shared/assets/form-schemas/default-schemas.js'
 
