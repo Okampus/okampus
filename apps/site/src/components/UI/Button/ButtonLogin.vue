@@ -1,6 +1,6 @@
 <template>
     <button class="button-blue flex items-center gap-3" @click="emitter.emit('show-login')">
-        <p v-if="!onlyIcon" class="text-md font-medium uppercase">Se connecter</p>
+        <p v-if="!onlyIcon" class="text-md font-medium uppercase sm-max:hidden">Se connecter</p>
         <i class="fas fa-sign-in-alt text-lg" />
     </button>
 </template>
