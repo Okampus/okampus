@@ -44,6 +44,7 @@
                             <TeamActivity
                                 v-for="(membership, i) in user.teamMemberships"
                                 :key="i"
+                                type="club"
                                 :team="membership.team"
                                 class="w-40"
                             >
@@ -64,7 +65,7 @@
                                 :key="event.eventId"
                                 :event="event"
                                 class="!w-full"
-                            ></ClubEventCard>
+                            />
                         </div>
                         <div v-else class="flex w-fit flex-col gap-4">Aucune activité récente</div>
                     </div>

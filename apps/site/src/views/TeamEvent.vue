@@ -69,7 +69,12 @@
 
                     <div class="flex flex-col gap-6 md-max:px-8">
                         <div class="text-3xl font-bold">{{ event.name }}</div>
-                        <TeamActivity :team="event.team" action-text="Créé" :action-at="event.createdAt">
+                        <TeamActivity
+                            type="club"
+                            :team="event.team"
+                            action-text="Créé"
+                            :action-at="event.createdAt"
+                        >
                             <template #subtitle>
                                 <div class="flex gap-1">
                                     Publié

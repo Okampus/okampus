@@ -2,7 +2,7 @@
     <div class="flex items-start gap-3">
         <ProfileAvatar
             :id="team.id"
-            type="team"
+            :type="type"
             :size="avatarSize"
             :avatar="team.avatar"
             :name="team.name"
@@ -33,6 +33,10 @@
         team: {
             type: Object,
             required: true,
+        },
+        type: {
+            type: String,
+            default: 'team',
         },
         subtitle: {
             type: String,

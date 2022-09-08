@@ -105,7 +105,7 @@
             >
                 <template #club="{ data }">
                     <div class="flex flex-col gap-2">
-                        <TeamActivity :team="data.team" :avatar-size="2.5">
+                        <TeamActivity type="club" :team="data.team" :avatar-size="2.5">
                             <template #subtitle>
                                 {{ data.team.category }}
                             </template>
