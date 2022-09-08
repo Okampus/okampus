@@ -184,6 +184,11 @@
                     <router-link
                         class="hover-arrow-right text-2xl text-blue-600 dark:text-blue-400 md-max:text-xl"
                         to="/clubs"
+                        @click="
+                            () => {
+                                apolloClient.cache.evict({ fieldName: 'Team' })
+                            }
+                        "
                         >Commencer à utiliser Okampus<i class="fa fa-arrow-right ml-2"
                     /></router-link>
                 </div>
@@ -219,6 +224,7 @@
 
     import { computed, markRaw, ref } from 'vue'
     import { getMe } from '@/graphql/queries/auth/getMe'
+    import { apolloClient } from '@/shared/modules/apollo.client'
 
     const showSwipe = ref(false)
 
@@ -264,14 +270,13 @@
 
             setTimeout(() => {
                 club.done = true
-                if (!shownCards.value.length) {
+                currentIdx.value--
+                if (currentIdx.value < 0) {
                     const { onResult, onError } = useQuery(getMe)
                     onError(showToastGraphQLError)
                     onResult(({ data }) => {
                         if (data.me) {
                             localStore.value.me = data.me
-                            emitter.emit('login')
-                            showSuccessToast('Connexion réussie !')
                         } else {
                             showErrorToast(
                                 "[Erreur] Vos informations utilisateur n'ont pas pu être récupérées.",
@@ -279,7 +284,6 @@
                         }
                     })
                 }
-                currentIdx.value--
             }, 400)
 
             if (direction === 'swipe-left') {

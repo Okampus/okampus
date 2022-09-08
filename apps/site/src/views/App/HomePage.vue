@@ -13,16 +13,16 @@
             </div>
         </div>
         <div v-else-if="!localStore.me.finishedIntroduction">
-            <Swiper pagination :modules="modules" class="text-0" @swiper="(s) => (swiper = s)">
+            <Swiper pagination :modules="modules" class="text-0 my-20" @swiper="(s) => (swiper = s)">
                 <SwiperButton
                     v-if="swiper?.activeIndex > 0"
-                    class="absolute top-1/2 left-0"
+                    class="absolute top-1/2 left-2"
                     :small="true"
                     type="prev"
                     :swiper="swiper"
                 />
                 <SwiperSlide
-                    class="flex flex-col items-center justify-start gap-10 !pt-0 md:p-28 lg:p-72 md-max:p-12"
+                    class="flex flex-col items-center justify-start gap-10 pb-20 md:px-28 lg:px-72 md-max:px-12"
                 >
                     <div class="text-4xl font-semibold">
                         Qu'est-ce que
@@ -87,7 +87,7 @@
                     </div>
                 </SwiperSlide>
 
-                <SwiperSlide class="flex flex-col justify-start gap-10 !pt-0 md:p-28 lg:p-72 md-max:p-12">
+                <SwiperSlide class="flex flex-col justify-start gap-10 pb-20 md:px-28 lg:px-72 md-max:px-12">
                     <div class="text-center text-4xl font-semibold">
                         Comment participer à
                         <img
@@ -154,10 +154,10 @@
                 </SwiperSlide>
 
                 <SwiperSlide
-                    class="pb-50 pt-25 app-scrollbar flex flex-col items-center justify-start gap-10 overflow-auto !pt-0 md:p-28 lg:p-72 md-max:p-12"
+                    class="app-scrollbar flex flex-col items-center justify-start gap-10 overflow-auto pb-20 md:px-28 lg:px-72 md-max:px-12"
                 >
                     <div class="flex flex-col gap-2">
-                        <div class="text-3xl">Introducing :</div>
+                        <div class="text-3xl">Découvrez :</div>
                         <div class="text-4xl font-semibold">Le swipe des associations 👏</div>
                     </div>
                     <div class="flex flex-col gap-8 text-left">
@@ -209,7 +209,7 @@
                 </SwiperSlide>
                 <SwiperButton
                     v-if="swiper?.activeIndex < 2"
-                    class="absolute top-1/2 right-0"
+                    class="absolute top-1/2 right-2"
                     :small="true"
                     type="next"
                     :swiper="swiper"
