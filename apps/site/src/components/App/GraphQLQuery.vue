@@ -82,7 +82,7 @@
         },
         fetchPolicy: {
             type: String,
-            default: undefined,
+            default: 'cache-first',
         },
         emptySubtitle: {
             type: String,

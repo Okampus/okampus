@@ -225,7 +225,7 @@
     const clubs = ref(null)
     const currentIdx = ref(null)
     const cardRefs = ref(null)
-    const shownCards = computed(() => clubs.value.filter((card) => !card.done).slice(-3))
+    const shownCards = computed(() => clubs?.value?.filter((card) => !card.done)?.slice?.(-3) ?? [])
 
     const {
         mutate: createInterestMutation,
