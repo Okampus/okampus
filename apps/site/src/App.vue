@@ -291,20 +291,29 @@
             error.path = null
         }
     })
-
+    const { onResult, onError, refetch } = useQuery(getMe)
     if (localStore.value.loggedIn) {
-        const { onResult, onError } = useQuery(getMe)
-
         onResult(({ data }) => {
             if (data.me) {
                 localStore.value.me = data.me
-                logOutOnExpire()
             } else {
                 showErrorToast("[Erreur] Vos informations utilisateur n'ont pas pu être récupérées.")
             }
         })
         onError(showToastGraphQLError)
     }
+
+    emitter.on('refetch-me', () => {
+        onResult(({ data }) => {
+            if (data.me) {
+                localStore.value.me = data.me
+            } else {
+                showErrorToast("[Erreur] Vos informations utilisateur n'ont pas pu être récupérées.")
+            }
+        })
+        onError(showToastGraphQLError)
+        refetch()
+    })
 
     nextTick(() => !isEmpty(localStore.value.me) && logOutOnExpire())
 </script>

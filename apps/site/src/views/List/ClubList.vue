@@ -3,8 +3,10 @@
         :query="getClubs"
         :update="(data) => data?.clubs"
         :whole-page="true"
+        fetch-policy="network-only"
         empty-subtitle="Aucune association n'a encore été créée."
     >
+        <!-- FIXME: Temp network-only -->
         <template #default="{ data: clubs }">
             <div class="bg-1 sticky top-0 z-30 p-4 md:hidden">
                 <HorizontalTabs
