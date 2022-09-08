@@ -47,12 +47,12 @@ export class InterestsService {
     return await this.interestRepository.findWithPagination(paginationOptions);
   }
 
-  public async findOne(id: number): Promise<Interest> {
-    return await this.interestRepository.findOneOrFail({ id });
+  public async findOne(id: number): Promise<Interest | null> {
+    return await this.interestRepository.findOne({ id });
   }
 
-  public async findForUserTeam(userId: string, teamId: number): Promise<Interest> {
-    return await this.interestRepository.findOneOrFail({ user: { id: userId }, team: { id: teamId } });
+  public async findForUserTeam(userId: string, teamId: number): Promise<Interest | null> {
+    return await this.interestRepository.findOne({ user: { id: userId }, team: { id: teamId } });
   }
 
   public async findAllByTeam(id: number): Promise<Interest[]> {
