@@ -1,6 +1,7 @@
 <template>
     <ApolloQuery
         :debounce="debounce"
+        :fetch-policy="fetchPolicy"
         :query="query"
         :variables="variables"
         :update="update"
@@ -78,6 +79,10 @@
         hideEmpty: {
             type: Boolean,
             default: false,
+        },
+        fetchPolicy: {
+            type: String,
+            default: undefined,
         },
         emptySubtitle: {
             type: String,

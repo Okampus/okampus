@@ -184,11 +184,6 @@
                     <router-link
                         class="hover-arrow-right text-2xl text-blue-600 dark:text-blue-400 md-max:text-xl"
                         to="/clubs"
-                        @click="
-                            () => {
-                                apolloClient.cache.evict({ fieldName: 'Team' })
-                            }
-                        "
                         >Commencer à utiliser Okampus<i class="fa fa-arrow-right ml-2"
                     /></router-link>
                 </div>
@@ -214,17 +209,15 @@
 
     import { emitter } from '@/shared/modules/emitter'
 
-    import { useMutation, useQuery } from '@vue/apollo-composable'
+    import { useMutation } from '@vue/apollo-composable'
 
     import { isNil } from 'lodash'
-    import { showErrorToast, showInfoToast, showSuccessToast, showToastGraphQLError } from '@/utils/toast'
+    import { showInfoToast, showSuccessToast, showToastGraphQLError } from '@/utils/toast'
 
     import localStore from '@/store/local.store'
     import { LIKE, SUPERLIKE, NOPE } from '@/shared/types/interest-states.enum'
 
     import { computed, markRaw, ref } from 'vue'
-    import { getMe } from '@/graphql/queries/auth/getMe'
-    import { apolloClient } from '@/shared/modules/apollo.client'
 
     const showSwipe = ref(false)
 
@@ -272,17 +265,7 @@
                 club.done = true
                 currentIdx.value--
                 if (currentIdx.value < 0) {
-                    const { onResult, onError } = useQuery(getMe)
-                    onError(showToastGraphQLError)
-                    onResult(({ data }) => {
-                        if (data.me) {
-                            localStore.value.me = data.me
-                        } else {
-                            showErrorToast(
-                                "[Erreur] Vos informations utilisateur n'ont pas pu être récupérées.",
-                            )
-                        }
-                    })
+                    emitter.emit('refetch-me')
                 }
             }, 400)
 
