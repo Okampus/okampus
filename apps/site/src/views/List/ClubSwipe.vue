@@ -15,7 +15,8 @@
                 return data?.clubs
             }
         "
-        class="h-content relative overflow-hidden px-5"
+        class="relative overflow-hidden px-5"
+        :class="{ 'h-content': shownCards.length && (!localStore.me?.finishedOnboarding || showSwipe) }"
         empty-subtitle="Aucune association n'a encore été créée."
     >
         <template v-if="shownCards.length && (!localStore.me?.finishedOnboarding || showSwipe)">

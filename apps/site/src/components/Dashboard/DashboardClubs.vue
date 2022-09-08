@@ -39,7 +39,7 @@
                 :first-column-fixed="true"
             >
                 <template #name="{ data: { avatar, name, category, teamId } }">
-                    <TeamActivity :team="{ avatar, name, category, teamId }">
+                    <TeamActivity type="club" :team="{ avatar, name, category, teamId }">
                         <template #subtitle>
                             {{ category }}
                         </template>

@@ -23,7 +23,7 @@
                                 :key="membership.id"
                                 class="flex items-center justify-between py-2"
                             >
-                                <TeamActivity :team="membership.team">
+                                <TeamActivity type="club" :team="membership.team">
                                     <template #subtitle>
                                         Votre rôle : <b>{{ clubRoleNames[membership.role][locale] }}</b>
                                     </template>
@@ -71,7 +71,7 @@
                                 :key="request.id"
                                 class="flex items-center justify-between py-2"
                             >
-                                <TeamActivity :team="request.team">
+                                <TeamActivity type="club" :team="request.team">
                                     <template #title>
                                         <div class="inline">
                                             {{ request.team.name }} • Rôle demandé :
