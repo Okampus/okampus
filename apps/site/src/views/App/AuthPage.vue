@@ -27,7 +27,8 @@
         } else {
             showErrorToast("[Erreur] Vos informations utilisateur n'ont pas pu être récupérées.")
         }
-        router.push('/')
+        router.replace(localStore.value.wantedUrl ?? '/')
+        localStore.value.wantedUrl = null
     })
     onError(showToastGraphQLError)
 </script>

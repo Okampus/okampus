@@ -16,6 +16,7 @@ export default ref({
     loggedIn: computed(() => !isAccessTokenExpired() && !isEmpty(me.value)),
     darkMode: useLocalStorage('darkMode', initDarkMode),
     agreedToTerms: useLocalStorage('agreedToTerms', false),
+    wantedUrl: useLocalStorage('wantedUrl', null),
     autoAnonymise: true,
     sendRGDPDump: false,
 })
