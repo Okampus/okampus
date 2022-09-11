@@ -38,19 +38,12 @@
 
                     <div class="flex flex-col">
                         <div class="text-xl font-bold">{{ club.name }}</div>
-                        <div class="flex gap-1">
-                            {{ club.location ? club.location : 'Absent pour la journée des associations' }}
+                        <!-- <div class="flex gap-1" v-if="club.location">
                             <span class="text-xl">🧭</span>
-                        </div>
+                            {{ club.location }}
+                        </div> -->
                     </div>
                 </div>
-                <!-- <TeamActivity
-                    :team="club"
-                    :subtitle="`🧭 ${
-                        club.location ? club.location : 'Absent pour la journée des associations'
-                    }`"
-                    :deactivate-click="true"
-                /> -->
                 <div class="card mt-4 bg-0-light py-2 px-4 dark:bg-2-dark">{{ club.shortDescription }}</div>
             </div>
         </div>
