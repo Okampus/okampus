@@ -1,8 +1,7 @@
-FROM node:16
+FROM node:18-alpine
 
 WORKDIR /app
 
-ADD .env ./
 ADD package*.json ./
 ADD . ./
 RUN chmod 777 ./
