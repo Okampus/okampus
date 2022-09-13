@@ -1,8 +1,8 @@
-name: Deploy preproduction
+name: Deploy strapi
 
 on:
   workflow_run:
-    workflows: ["Build backend"]
+    workflows: ["Build strapi"]
     branches: [dev]
     types:
       - completed
@@ -17,7 +17,7 @@ jobs:
       if: ${{ github.event.workflow_run.conclusion == 'failure' }}
       with:
         script: |
-            core.setFailed('The container image could not be built, will not deploy to preprod')
+            core.setFailed('The container image could not be built, will not deploy strapi')
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
@@ -27,7 +27,7 @@ jobs:
     - name: Set version and save file
       uses: mikefarah/yq@master
       with:
-        cmd: yq -i '.okampus.image.tag = "${{ github.sha }}"' 'values-preprod.yaml'
+        cmd: yq -i '.strapi.image.tag = "${{ github.sha }}"' 'values.yaml'
 
     - run: |
           git config user.name github-actions
