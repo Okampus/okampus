@@ -13,7 +13,7 @@
             </div>
         </div>
         <div v-else-if="!localStore.me.finishedIntroduction">
-            <Swiper pagination :modules="modules" class="text-0 my-20" @swiper="(s) => (swiper = s)">
+            <Swiper pagination :modules="modules" class="text-0 my-10" @swiper="(s) => (swiper = s)">
                 <SwiperButton
                     v-if="swiper?.activeIndex > 0"
                     class="absolute top-1/2 left-2"
@@ -187,11 +187,6 @@
                             ⚠️ Les associations
                             <span class="text-lg font-medium">ne vous répondront pas depuis Okampus</span>.
                             Votre email Efrei sera mise a disposition comme moyen de contact ! ⚠️
-                        </div>
-
-                        <div>
-                            <b class="underline">Obtenez 50 points</b>
-                            en complétant le swipe avant le 14/09 🥇
                         </div>
 
                         <div
