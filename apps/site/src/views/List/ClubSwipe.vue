@@ -178,7 +178,13 @@
                 <div class="flex flex-col gap-6">
                     <div
                         class="hover-arrow-right cursor-pointer text-2xl text-blue-600 dark:text-blue-400 md-max:text-xl"
-                        @click="showSwipe = true"
+                        @click="
+                            () => {
+                                showSwipe = true
+                                clubs = clubs.map((club) => ({ ...club, done: false }))
+                                currentIdx = clubs.length - 1
+                            }
+                        "
                     >
                         Refaire le swipe des associations<i class="fa fa-arrow-right ml-2" />
                     </div>
