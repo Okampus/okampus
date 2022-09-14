@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="h-full w-full">
         <AlertToast
             ref="alertToast"
             v-model:active="toast.show"
@@ -18,7 +18,7 @@
             </Transition>
         </ModalPopup>
 
-        <div class="flex h-screen w-screen flex-row overflow-hidden">
+        <div class="flex h-full w-full flex-row overflow-hidden">
             <LayoutSidebar
                 v-if="localStore.me?.finishedOnboarding"
                 ref="sidebar"
@@ -32,7 +32,7 @@
                 id="main-content"
                 ref="content"
                 :class="{ 'brightness-50 child:pointer-events-none': hiding && collapsing != collapsed }"
-                class="bg-1 grow-1 h-content app-scrollbar after-topbar relative flex w-full flex-col overflow-auto"
+                class="bg-1 grow-1 app-scrollbar after-topbar relative flex h-full w-full flex-col overflow-auto"
                 @mousedown="hiding && collapsed !== collapsing && toggleSidebar()"
             >
                 <AppBottomSheet
@@ -345,6 +345,12 @@
 
     .title-font {
         font-family: AcariSans, sans-serif;
+    }
+
+    html,
+    body,
+    #app {
+        @apply w-full h-full;
     }
 
     // TODO: Adapt font size to screen size (for small screen sizes)
