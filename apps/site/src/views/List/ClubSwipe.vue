@@ -1,25 +1,24 @@
 <template>
-    <GraphQLQuery
-        :query="getClubs"
-        :update="
-            (data) => {
-                if (isNil(clubs)) {
-                    clubs = data?.clubs
-                        .map((club) => ({ value: { ...club, done: false }, sort: Math.random() }))
-                        .sort((a, b) => a.sort - b.sort)
-                        .map(({ value }, i) => ({ ...value, idx: i }))
-
-                    cardRefs = Array(clubs.length)
-                    currentIdx = clubs.length - 1
+    <div class="h-full">
+        <GraphQLQuery
+            v-if="!(currentIdx < 0) && (!localStore.me?.finishedOnboarding || showSwipe)"
+            :query="getClubs"
+            :update="
+                (data) => {
+                    if (isNil(clubs)) {
+                        clubs = data?.clubs
+                            .map((club) => ({ value: { ...club, done: false }, sort: Math.random() }))
+                            .sort((a, b) => a.sort - b.sort)
+                            .map(({ value }, i) => ({ ...value, idx: i }))
+                        cardRefs = Array(clubs.length)
+                        currentIdx = clubs.length - 1
+                    }
+                    return data?.clubs
                 }
-                return data?.clubs
-            }
-        "
-        class="relative overflow-hidden px-5"
-        :class="{ 'h-content': shownCards.length && (!localStore.me?.finishedOnboarding || showSwipe) }"
-        empty-subtitle="Aucune association n'a encore été créée."
-    >
-        <template v-if="shownCards.length && (!localStore.me?.finishedOnboarding || showSwipe)">
+            "
+            class="relative overflow-hidden px-5"
+            empty-subtitle="Aucune association n'a encore été créée."
+        >
             <SwipeableCard
                 v-for="club of shownCards"
                 :ref="(el) => (cardRefs[club.idx] = el)"
@@ -125,16 +124,17 @@
                 <div
                     class="absolute bottom-20 z-10 w-fit cursor-pointer select-none transition-transform md:inset-x-0 md:mx-auto md:translate-x-[20rem] md-max:right-6"
                     :class="{
-                        'hover:scale-110': clubs[currentIdx].socials.some(
-                            (social) => social.socialType === 'Discord',
-                        ),
+                        'hover:scale-110':
+                            clubs?.[currentIdx]?.socials?.some?.(
+                                (social) => social.socialType === 'Discord',
+                            ) ?? false,
                     }"
                     @click="openCurrentDiscord"
                 >
                     <div
                         class="flex flex-col items-center gap-1"
                         :class="
-                            clubs[currentIdx].socials.some((social) => social.socialType === 'Discord')
+                            clubs?.[currentIdx]?.socials?.some?.((social) => social.socialType === 'Discord')
                                 ? 'text-violet-200'
                                 : 'text-gray-200'
                         "
@@ -142,7 +142,9 @@
                         <div
                             class="flex h-16 w-16 items-center justify-center rounded-full border-2 xs-max:h-14 xs-max:w-14"
                             :class="
-                                clubs[currentIdx].socials.some((social) => social.socialType === 'Discord')
+                                clubs?.[currentIdx]?.socials?.some?.(
+                                    (social) => social.socialType === 'Discord',
+                                )
                                     ? 'border-violet-500'
                                     : 'border-gray-500'
                             "
@@ -150,7 +152,7 @@
                             <i
                                 class="fab fa-discord text-4xl xs-max:text-3xl"
                                 :class="
-                                    clubs[currentIdx].socials.some(
+                                    clubs?.[currentIdx]?.socials?.some?.(
                                         (social) => social.socialType === 'Discord',
                                     )
                                         ? 'text-violet-500'
@@ -162,10 +164,17 @@
                     </div>
                 </div>
             </template>
-        </template>
-        <div v-else class="text-1 relative mt-20 flex w-full flex-col items-center">
-            <img :src="Trophy" class="z-10 h-64 w-64" />
-            <ConfettiExplosion class="!z-0" :duration="8000" :particle-count="150" :force="1" />
+        </GraphQLQuery>
+        <div v-else class="text-1 relative flex h-full w-full flex-col items-center">
+            <div class="absolute flex h-full w-full justify-center overflow-hidden">
+                <ConfettiExplosion
+                    class="absolute top-60 !z-0"
+                    :duration="8000"
+                    :particle-count="150"
+                    :force="1"
+                />
+            </div>
+            <img :src="Trophy" class="z-10 mt-20 h-64 w-64" />
             <div class="z-10 flex w-full flex-col items-center gap-10">
                 <div class="flex flex-col items-center gap-4">
                     <div class="text-0 text-4xl font-semibold">Félicitations 🎉</div>
@@ -177,8 +186,10 @@
                         @click="
                             () => {
                                 showSwipe = true
-                                clubs = clubs.map((club) => ({ ...club, done: false }))
-                                currentIdx = clubs.length - 1
+                                if (clubs?.length) {
+                                    clubs = clubs.map((club) => ({ ...club, done: false }))
+                                    currentIdx = clubs.length - 1
+                                }
                             }
                         "
                     >
@@ -192,7 +203,7 @@
                 </div>
             </div>
         </div>
-    </GraphQLQuery>
+    </div>
 </template>
 
 <script setup>

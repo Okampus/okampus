@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="h-full">
         <div v-if="!localStore?.loggedIn" class="relative flex h-full flex-col items-center px-10 pt-32">
             <div class="text-0 text-center text-2xl font-medium">Bienvenue sur la bêta d'Okampus 👋</div>
 
