@@ -41,10 +41,12 @@
 <script setup>
     import AppLoader from '@/components/App/AppLoader.vue'
     import AppException from '@/views/App/AppException.vue'
+    import FormPopUp from '@/components/Form/FormPopUp.vue'
 
     import okampus from '@/assets/img/logos/okampus.png'
 
     import { computed, ref } from 'vue'
+    import { useRoute } from 'vue-router'
 
     import { useMutation, useQuery } from '@vue/apollo-composable'
     import { oidcEnabled } from '@/graphql/queries/config/oidcEnabled'
@@ -56,9 +58,9 @@
     import { getTenant } from '@/utils/getTenant'
 
     import localStore from '@/store/local.store'
-    import FormPopUp from '../Form/FormPopUp.vue'
 
     const showLoginForm = ref(false)
+    const route = useRoute()
 
     defineProps({
         headerText: {
@@ -103,6 +105,8 @@
 
     onDone(({ data }) => {
         showLoginForm.value = false
+        console.log('WANTED ROUTE', route.path)
+        localStore.value.wantedUrl = route.path
         localStore.value.me = data.login
         logOutOnExpire()
         emitter.emit('login')

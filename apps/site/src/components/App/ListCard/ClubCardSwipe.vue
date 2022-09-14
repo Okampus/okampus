@@ -121,10 +121,10 @@
                     {{ club.shortDescription }}
                 </div>
                 <div class="flex flex-col gap-2">
-                    <div class="flex gap-2">
+                    <!-- <div class="flex gap-2" v-if="club.location">
                         <span class="text-xl">🧭</span>
-                        {{ club.location ? club.location : 'Absent pour la journée des associations' }}
-                    </div>
+                        {{ club.location }}
+                    </div> -->
                     <div class="flex gap-1">
                         <div class="w-6">🔗</div>
                         {{ club.status }}
@@ -196,7 +196,7 @@
             <div class="text-4xl font-bold drop-shadow-xl md:text-5xl">
                 {{ club.name }}
             </div>
-            <div v-if="club.location">🧭 {{ club.location }}</div>
+            <!-- <div v-if="club.location">🧭 {{ club.location }}</div> -->
             <div class="mt-4 flex flex-wrap gap-2">
                 <div
                     v-for="(label, i) in labels.filter((label) =>

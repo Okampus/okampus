@@ -114,7 +114,7 @@
         },
         wholePage: {
             type: Boolean,
-            default: false,
+            default: true,
         },
         customClass: {
             type: [Object, Array, String],

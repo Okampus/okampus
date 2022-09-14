@@ -112,6 +112,27 @@
                             </router-link> -->
                         </div>
                         <h6 class="text-3 my-2">{{ club.shortDescription }}</h6>
+                        <div class="flex flex-wrap gap-4">
+                            <a
+                                v-for="social in club.socials"
+                                :key="social.id"
+                                :href="social.link"
+                                target="_blank"
+                                class="flex w-fit items-center gap-2"
+                            >
+                                <i
+                                    :class="[
+                                        SOCIAL_TYPES[social.socialType].icon,
+                                        ['Discord', 'YouTube'].includes(social.socialType)
+                                            ? 'text-2xl'
+                                            : 'text-3xl',
+                                    ]"
+                                    :style="SOCIAL_TYPES[social.socialType].style"
+                                    class="flex h-8 w-8 items-center justify-center"
+                                />
+                                <div class="link-blue">{{ social.pseudo }}</div>
+                            </a>
+                        </div>
                     </div>
 
                     <HorizontalTabs
@@ -165,6 +186,7 @@
     } from '@/utils/toast.js'
 
     import { DEFAULT_JOIN_FORM_SCHEMA } from '@/shared/assets/form-schemas/default-schemas.js'
+    import { SOCIAL_TYPES } from '@/shared/types/social-types.enum'
 
     import { isNil } from 'lodash'
     import { emitter } from '@/shared/modules/emitter'

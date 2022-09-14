@@ -171,14 +171,16 @@
                     <div class="text-0 text-4xl font-semibold">Félicitations 🎉</div>
                     <div class="text-2 text-center text-xl">Vous avez fini le swipe des associations !</div>
                 </div>
-                <div class="flex flex-col items-center gap-2 rounded-lg bg-yellow-200 p-4 dark:bg-yellow-800">
-                    <div class="text-2 text-xs uppercase">points attribués</div>
-                    <div class="text-4xl font-semibold">🪙 50</div>
-                </div>
                 <div class="flex flex-col gap-6">
                     <div
                         class="hover-arrow-right cursor-pointer text-2xl text-blue-600 dark:text-blue-400 md-max:text-xl"
-                        @click="showSwipe = true"
+                        @click="
+                            () => {
+                                showSwipe = true
+                                clubs = clubs.map((club) => ({ ...club, done: false }))
+                                currentIdx = clubs.length - 1
+                            }
+                        "
                     >
                         Refaire le swipe des associations<i class="fa fa-arrow-right ml-2" />
                     </div>
