@@ -1,7 +1,6 @@
 import {
   Entity,
   ManyToOne,
-  OneToOne,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
@@ -9,15 +8,12 @@ import { nanoid } from 'nanoid';
 import { SchoolGroup } from '../../school-group/school-group.entity';
 import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
 import type { DocSeries } from '../doc-series/doc-series.entity';
-import { FileUpload } from '../file-uploads/file-upload.entity';
+import type { FileUpload } from '../file-uploads/file-upload.entity';
 
 @Entity()
 export class InfoDoc extends BaseFileEntity {
   @PrimaryKey()
   id: string = nanoid(32);
-
-  @OneToOne({ onDelete: 'CASCADE' })
-  file!: FileUpload;
 
   @ManyToOne({ onDelete: 'CASCADE' })
   docSeries: DocSeries | null = null;

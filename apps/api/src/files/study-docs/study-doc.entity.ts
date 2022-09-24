@@ -2,7 +2,6 @@ import {
   Entity,
   Enum,
   ManyToOne,
-  OneToOne,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
@@ -12,15 +11,12 @@ import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
 import { StudyDocType } from '../../shared/lib/types/enums/study-doc-type.enum';
 import { Subject } from '../../subjects/subject.entity';
 import type { DocSeries } from '../doc-series/doc-series.entity';
-import { FileUpload } from '../file-uploads/file-upload.entity';
+import type { FileUpload } from '../file-uploads/file-upload.entity';
 
 @Entity()
 export class StudyDoc extends BaseFileEntity {
   @PrimaryKey()
   id: string = nanoid(32);
-
-  @OneToOne({ onDelete: 'CASCADE' })
-  file!: FileUpload;
 
   @ManyToOne()
   subject!: Subject;

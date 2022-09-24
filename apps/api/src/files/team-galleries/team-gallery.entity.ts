@@ -10,7 +10,7 @@ import { nanoid } from 'nanoid';
 import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
 import { TeamEvent } from '../../teams/events/team-event.entity';
 import { Team } from '../../teams/teams/team.entity';
-import { FileUpload } from '../file-uploads/file-upload.entity';
+import type { FileUpload } from '../file-uploads/file-upload.entity';
 
 @ObjectType()
 @Entity()
@@ -18,10 +18,6 @@ export class TeamGallery extends BaseFileEntity {
   @Field(() => String)
   @PrimaryKey()
   id: string = nanoid(32);
-
-  @Field(() => FileUpload)
-  @OneToOne({ onDelete: 'CASCADE' })
-  file!: FileUpload;
 
   @Field(() => Team)
   @ManyToOne()

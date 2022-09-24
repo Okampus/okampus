@@ -1,4 +1,3 @@
-import type { Request } from 'express';
 import morgan from 'morgan';
 import status from 'statuses';
 
@@ -11,6 +10,3 @@ morgan.token('status-colored', (_req, { statusCode }) => {
     : 37; // White
   return `\u001B[${color}m${statusCode}\u001B[32m`;
 });
-
-morgan.token('gql-op-type', (req: Request) => (req.body.query ? req.body.query.split(' ')[0] : ''));
-morgan.token('gql-op-name', (req: Request) => req.body.operationName);

@@ -14,7 +14,7 @@ import {
   UploadedFiles,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Express } from 'express';
+import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import { FileUploadsService } from '../../files/file-uploads/file-uploads.service';
 import type { ProfileImage } from '../../files/profile-images/profile-image.entity';
 import { simpleImageMimeTypeRegex } from '../../shared/configs/mime-type';
@@ -50,7 +50,7 @@ export class TenantsController {
   public async create(
     @CurrentUser() user: User,
     @Body() createTenantDto: CreateTenantDto,
-    @UploadedFiles() files: { logo?: Express.Multer.File[]; logoDark?: Express.Multer.File[] } | null,
+    @UploadedFiles() files: { logo?: MulterFile[]; logoDark?: MulterFile[] } | null,
   ): Promise<Tenant> {
     try {
       const tenant = await this.tenantsService.create(createTenantDto);
@@ -102,7 +102,7 @@ export class TenantsController {
   public async updateLogo(
     @CurrentUser() user: User,
     @Param('id') id: string,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: MulterFile,
   ): Promise<ProfileImage> {
     return await this.tenantsService.setLogo(user, false, id, file);
   }
@@ -113,7 +113,7 @@ export class TenantsController {
   public async updateLogoDark(
     @CurrentUser() user: User,
     @Param('id') id: string,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: MulterFile,
   ): Promise<ProfileImage> {
     return await this.tenantsService.setLogo(user, true, id, file);
   }

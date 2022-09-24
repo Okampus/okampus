@@ -1,7 +1,6 @@
 import {
   Entity,
   ManyToOne,
-  OneToOne,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
@@ -11,7 +10,7 @@ import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
 import { Team } from '../../teams/teams/team.entity';
 import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
-import { FileUpload } from '../file-uploads/file-upload.entity';
+import type { FileUpload } from '../file-uploads/file-upload.entity';
 
 @ObjectType()
 @Entity()
@@ -19,10 +18,6 @@ export class ProfileImage extends BaseFileEntity {
   @Field()
   @PrimaryKey()
   id: string = nanoid(32);
-
-  @Field(() => FileUpload)
-  @OneToOne({ onDelete: 'CASCADE' })
-  file!: FileUpload;
 
   @Field(() => User, { nullable: true })
   @ManyToOne({ onDelete: 'CASCADE' })

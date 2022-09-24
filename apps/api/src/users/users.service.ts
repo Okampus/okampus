@@ -4,7 +4,6 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import MeiliSearch from 'meilisearch';
 import { InjectMeiliSearch } from 'nestjs-meilisearch';
-import type { Token } from '../auth/auth.guard';
 import { FileUpload } from '../files/file-uploads/file-upload.entity';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
 import { SchoolGroupMembership } from '../school-group/memberships/school-group-membership.entity';
@@ -12,6 +11,7 @@ import { SchoolGroup } from '../school-group/school-group.entity';
 import { SchoolYear } from '../school-group/school-year/school-year.entity';
 import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
+import type { TokenClaims } from '../shared/lib/types/interfaces/token-claims.interface';
 import type { UserCreationOptions } from '../shared/lib/types/interfaces/user-creation-options.interface';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
@@ -73,7 +73,7 @@ export class UsersService {
     const user = new User({ ...options, tenant });
     let token: string | null = null;
     if (options.bot) {
-      token = await this.jwtService.signAsync({ sub: user.id, typ: 'bot', aud: 'http' } as Token, {
+      token = await this.jwtService.signAsync({ sub: user.id, userType: 'bot', tokenType: 'http' } as TokenClaims, {
         secret: config.tokens.botTokenSecret,
       });
       await user.setPassword(token);

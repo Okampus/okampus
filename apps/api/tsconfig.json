@@ -17,9 +17,9 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "target": "es2019",
-    "typeRoots": ["./typings", "./node_modules/@types"]
+    "target": "es2022",
+    "typeRoots": ["./node_modules/@types"]
   },
   "include": ["./src/**/*.ts"],
-  "exclude": ["node_modules/", "typings/", "dist"]
+  "exclude": ["node_modules/", "dist"]
 }

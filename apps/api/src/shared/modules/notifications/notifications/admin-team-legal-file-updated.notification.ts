@@ -21,8 +21,8 @@ export class AdminTeamLegalFileUpdatedNotification extends Notification {
     if (!this.entityManager)
       throw new TypeError('Entity Manager not attached');
 
-    const admins = await this.getAdmins(this.settingName);
-    return this.filter(admins);
+    const clubManagers = await this.getClubManagers(this.settingName);
+    return this.filter(clubManagers);
   }
 
   public async ensurePayload(): Promise<void> {

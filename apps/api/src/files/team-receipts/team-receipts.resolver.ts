@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { Express } from 'express';
+import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import { PubSubEngine } from 'graphql-subscriptions';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import { APP_PUB_SUB } from '../../shared/lib/constants';
@@ -28,7 +28,7 @@ export class TeamReceiptsResolver {
   public async addTeamReceipt(
     @CurrentTenant() tenant: Tenant,
     @CurrentUser() user: User,
-    @Args('file', { type: () => GraphQLUpload }) file: Express.Multer.File,
+    @Args('file', { type: () => GraphQLUpload }) file: MulterFile,
     @Args('createReceipt') createReceipt: CreateTeamReceiptDto,
   ): Promise<TeamReceipt> {
     const fileUpload = await this.fileUploadsService.create(

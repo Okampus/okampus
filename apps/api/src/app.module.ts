@@ -5,16 +5,13 @@ import { CacheModule, Module, RequestMethod } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { GraphQLModule } from '@nestjs/graphql';
+import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 import { ScheduleModule } from '@nestjs/schedule';
 import * as Sentry from '@sentry/node';
 import { SentryInterceptor, SentryModule } from '@xiifain/nestjs-sentry';
-import RedisStore from 'connect-redis';
-import session from 'express-session';
-import { graphqlUploadExpress } from 'graphql-upload-minimal';
 import Redis from 'ioredis';
 import { MeiliSearchModule } from 'nestjs-meilisearch';
 import { S3Module } from 'nestjs-s3';
-import passport from 'passport';
 import { AnnouncementsModule } from './announcements/announcements.module';
 import { AppController } from './app.controller';
 import { AuthGuard } from './auth/auth.guard';
@@ -43,7 +40,6 @@ import sentryConfig, { sentryInterceptorConfig } from './shared/configs/sentry.c
 import storageConfig from './shared/configs/storage.config';
 
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
-import { GraphqlLoggerMiddleware } from './shared/lib/middlewares/graphql-logger.middleware';
 import { RestLoggerMiddleware } from './shared/lib/middlewares/rest-logger.middleware';
 import { TraceMiddleware } from './shared/lib/middlewares/trace.middleware';
 import { PoliciesGuard } from './shared/modules/authorization';
@@ -69,7 +65,7 @@ import { WikisModule } from './wiki/wikis.module';
     CacheModule.register(cacheConfig),
     CaslModule,
     EventEmitterModule.forRoot(),
-    GraphQLModule.forRoot(graphqlConfig),
+    GraphQLModule.forRoot<MercuriusDriverConfig>(graphqlConfig),
     // TODO: Replace with .forRoot when https://github.com/lambrohan/nestjs-meilisearch/pull/5 is merged & published
     MeiliSearchModule.forRootAsync(meiliSearchConfig),
     MeiliSearchIndexerModule,
@@ -133,29 +129,10 @@ export class AppModule implements NestModule {
       ).forRoutes({ path: '*', method: RequestMethod.ALL });
     }
 
-    // Setup redis for SSO sessions
-    consumer
-      .apply(
-        session({
-          store: new (RedisStore(session))({ client: this.redis, logErrors: true }),
-          saveUninitialized: false,
-          secret: config.session.secret,
-          resave: false,
-        }),
-        passport.initialize(),
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        passport.session(),
-      )
-      .forRoutes('*');
-
-    // Setup Logger
+    // Setup loggers
     consumer
       .apply(RestLoggerMiddleware)
       .exclude('/graphql')
       .forRoutes('*');
-
-    consumer
-      .apply(GraphqlLoggerMiddleware, graphqlUploadExpress())
-      .forRoutes('/graphql');
   }
 }

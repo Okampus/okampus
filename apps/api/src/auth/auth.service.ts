@@ -5,15 +5,16 @@ import type { JwtSignOptions } from '@nestjs/jwt';
 import { JwtService } from '@nestjs/jwt';
 import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
+import type { TokenClaims } from '../shared/lib/types/interfaces/token-claims.interface';
+import { processToken } from '../shared/lib/utils/process-token';
 import { TenantsService } from '../tenants/tenants/tenants.service';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
-import type { Token } from './auth.guard';
 import type { TenantUserDto } from './dto/tenant-user.dto';
 
 export interface TokenResponse {
   accessToken: string;
-  refreshToken: string | null;
+  refreshToken: string;
   accessTokenExpiresAt: number;
   refreshTokenExpiresAt: number;
 }
@@ -51,13 +52,11 @@ export class AuthService {
   }
 
   public async login(user: User): Promise<TokenResponse> {
-    const payload: Token = { sub: user.id, typ: 'usr', aud: 'http' };
+    const payload: TokenClaims = { sub: user.id, userType: 'usr', tokenType: 'http' };
 
     return {
       accessToken: await this.jwtService.signAsync(payload, this.getTokenOptions('access')),
-      refreshToken: config.tokens.accessTokenExpirationSeconds
-        ? await this.jwtService.signAsync(payload, this.getTokenOptions('refresh'))
-        : null,
+      refreshToken: await this.jwtService.signAsync(payload, this.getTokenOptions('refresh')),
       accessTokenExpiresAt: Date.now() + config.tokens.accessTokenExpirationSeconds * 1000,
       refreshTokenExpiresAt: Date.now() + config.tokens.refreshTokenExpirationSeconds * 1000,
     };
@@ -68,20 +67,8 @@ export class AuthService {
   }
 
   public async loginWithRefreshToken(refreshToken: string): Promise<User> {
-    const decoded = this.jwtService.decode(refreshToken) as Token;
-    if (!decoded)
-      throw new BadRequestException('Failed to decode JWT');
-
-    if (decoded.aud !== 'http')
-      throw new UnauthorizedException('Invalid token');
-
-    try {
-      await this.jwtService.verifyAsync<Token>(refreshToken, this.getTokenOptions('refresh'));
-    } catch {
-      throw new UnauthorizedException('Falsified token');
-    }
-
-    return await this.userRepository.findOneOrFail({ id: decoded.sub });
+    const sub = await processToken(this.jwtService, refreshToken, { tokenType: 'http' }, () => this.getTokenOptions('refresh'));
+    return await this.userRepository.findOneOrFail({ id: sub });
   }
 
   public getTokenOptions(type: 'access' | 'bot' | 'refresh' | 'ws'): JwtSignOptions {

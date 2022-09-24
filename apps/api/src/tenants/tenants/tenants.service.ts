@@ -1,7 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import type { Express } from 'express';
+import type { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import { FileUploadsService } from '../../files/file-uploads/file-uploads.service';
 import { ProfileImage } from '../../files/profile-images/profile-image.entity';
 import { ProfileImagesService } from '../../files/profile-images/profile-images.service';
@@ -36,7 +36,7 @@ export class TenantsService {
     user: User,
     isLogoDark: boolean,
     id: string,
-    fileUpload: Express.Multer.File,
+    fileUpload: MulterFile,
   ): Promise<ProfileImage> {
     const tenant = await this.tenantRepository.findOneOrFail({ id });
 

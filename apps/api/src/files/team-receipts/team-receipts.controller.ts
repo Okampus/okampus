@@ -11,7 +11,7 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Express } from 'express';
+import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
@@ -43,7 +43,7 @@ export class TeamReceiptsController {
     @CurrentTenant() tenant: Tenant,
     @CurrentUser() user: User,
     @Body() createTeamReceiptDto: CreateTeamReceiptDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: MulterFile,
   ): Promise<TeamReceipt> {
     if (!file)
       throw new BadRequestException('No file provided');
