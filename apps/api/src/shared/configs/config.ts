@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import type { CookieOptions } from 'express';
 import { FileKind } from '../lib/types/enums/file-kind.enum';
 
 // Helpers
@@ -111,7 +110,7 @@ export const config = {
       httpOnly: true,
       // eslint-disable-next-line no-undefined
       domain: nodeEnv === 'production' ? `.${baseDomain}` : undefined,
-    } as CookieOptions,
+    },
   },
   session: {
     secret: process.env.SESSION_SECRET ?? 'secret',

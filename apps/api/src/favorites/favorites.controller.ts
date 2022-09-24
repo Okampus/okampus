@@ -9,7 +9,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
+import { FastifyReply } from 'fastify';
 import type { Content } from '../contents/entities/content.entity';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { normalizePagination, PaginateDto } from '../shared/modules/pagination';
@@ -46,10 +46,10 @@ export class FavoritesController {
   public async findOne(
     @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
-    @Res({ passthrough: true }) res: Response,
+    @Res({ passthrough: true }) res: FastifyReply,
   ): Promise<Favorite | null> {
     const favorite = await this.favoritesService.findOne(id, user);
-    res.status(favorite ? 200 : 204);
+    res.statusCode = favorite ? 200 : 204;
     return favorite;
   }
 

@@ -1,6 +1,5 @@
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import {
-  BadRequestException,
   Injectable,
   InternalServerErrorException,
   UnauthorizedException,
@@ -9,25 +8,22 @@ import { Reflector } from '@nestjs/core';
 import type { GqlContextType } from '@nestjs/graphql';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
+import type { FastifyRequest } from 'fastify';
 import type { WebSocket } from 'graphql-ws';
 import mapKeys from 'lodash.mapkeys';
 import type { GqlWebsocketContext } from '../shared/configs/graphql.config';
 import { IS_PUBLIC_KEY, TENANT_ID_HEADER_NAME } from '../shared/lib/constants';
-import type { AuthRequest } from '../shared/lib/types/interfaces/auth-request.interface';
+import { processToken } from '../shared/lib/utils/process-token';
+import type { Tenant } from '../tenants/tenants/tenant.entity';
 import { TenantsService } from '../tenants/tenants/tenants.service';
 import type { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 
-export interface Token {
-  sub: string;
-  typ: 'bot' | 'usr';
-  aud: string;
-}
 
 export interface GqlContext extends GqlWebsocketContext {
-  req: AuthRequest | undefined;
-  request: AuthRequest | undefined;
+  req: FastifyRequest & { user: User; tenant: Tenant } | undefined;
+  request: FastifyRequest & { user: User; tenant: Tenant } | undefined;
   socket: WebSocket | undefined;
   connectionParams: Record<string, unknown>;
 }
@@ -45,6 +41,15 @@ export class AuthGuard implements CanActivate {
     this.reflector = new Reflector();
   }
 
+  public async getTenantFromHeaders(headers: Record<string, string[] | string>): Promise<Tenant> {
+    const tenantId = headers[TENANT_ID_HEADER_NAME.toLowerCase()];
+    if (!tenantId)
+      throw new UnauthorizedException('Tenant not provided');
+
+    return await this.tenantsService.findOne(Array.isArray(tenantId) ? tenantId[0] : tenantId);
+  }
+
+
   public async canActivate(ctx: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       ctx.getHandler(),
@@ -53,81 +58,52 @@ export class AuthGuard implements CanActivate {
     if (isPublic)
       return true;
 
-    let request: AuthRequest;
-    switch (ctx.getType<GqlContextType>()) {
-      case 'http':
-        request = ctx.switchToHttp().getRequest<AuthRequest>();
-        break;
+    const contextType = ctx.getType<GqlContextType>();
+    if (!['http', 'graphql'].includes(contextType))
+      throw new InternalServerErrorException(`Unexpected context type: ${contextType}`);
 
-      case 'graphql': {
-        const gqlContext = GqlExecutionContext.create(ctx).getContext<GqlContext>();
-        if (gqlContext.request && gqlContext.socket && gqlContext.connectionParams) {
-          const headers = mapKeys(
-            gqlContext.connectionParams, (_, k) => k.toLowerCase(),
-          );
+    let request: FastifyRequest & { user: User; tenant: Tenant };
+    if (contextType === 'http') {
+      request = ctx.switchToHttp().getRequest();
+    } else {
+      const context = GqlExecutionContext.create(ctx).getContext<GqlContext>();
+      if (context.request && context.socket && context.connectionParams) { // Websocket case
+        const headers = mapKeys(context.connectionParams, (_, k) => k.toLowerCase());
 
-          request = gqlContext.request;
-          request.user = await this.handleWsRequest((headers.authorization as string).split(' ')[1]);
-          const tenantId = headers[TENANT_ID_HEADER_NAME.toLowerCase()] as string;
-          if (!tenantId)
-            throw new UnauthorizedException('Tenant not provided');
+        context.request.user = await this.handleWsRequest((headers.authorization as string).split(' ')[1]);
+        context.request.tenant = await this.getTenantFromHeaders(headers as Record<string, string[] | string>);
 
-          request.tenant = await this.tenantsService.findOne(tenantId);
-          return Boolean(request.user) && Boolean(request.tenant);
-        }
-
-        if (!gqlContext.req)
-          throw new UnauthorizedException('No request');
-
-        if (gqlContext.context?.headers)
-          return Boolean(gqlContext.context.user) && Boolean(gqlContext.context.tenant);
-
-        request = gqlContext.req;
-        break;
+        return Boolean(context.request.user) && Boolean(context.request.tenant);
       }
 
-      default: throw new InternalServerErrorException('Invalid context type');
+      if (!context.req)
+        throw new UnauthorizedException('No request');
+
+      request = context.req;
     }
 
-    const tenantId = request.headers[TENANT_ID_HEADER_NAME.toLowerCase()];
-    if (!tenantId)
-      throw new UnauthorizedException('Tenant not provided');
-
-    request.tenant = await this.tenantsService.findOne(
-      Array.isArray(tenantId)
-      ? tenantId[0]
-      : tenantId,
-    );
-
+    request.tenant = await this.getTenantFromHeaders(request.headers as Record<string, string[] | string>);
     request.user = await this.handleRequest(request);
+
     return Boolean(request.user) && Boolean(request.tenant);
   }
 
   private async handleWsRequest(token: string): Promise<User> {
-    if (!token)
-      throw new UnauthorizedException('Token not provided');
+    const sub = await processToken(
+      this.jwtService,
+      token,
+      { tokenType: 'ws' },
+      () => this.authService.getTokenOptions('ws'),
+    );
 
-    const decoded = this.jwtService.decode(token) as Token;
-    if (!decoded)
-      throw new BadRequestException('Failed to decode JWT');
-
-    if (decoded.aud !== 'ws')
-      throw new UnauthorizedException('Invalid token');
-
-    try {
-      await this.jwtService.verifyAsync<Token>(token, this.authService.getTokenOptions('ws'));
-    } catch {
-      throw new UnauthorizedException('Falsified token');
-    }
-
-    return await this.userService.findOneById(decoded.sub);
+    return await this.userService.findOneById(sub);
   }
 
-  private async handleRequest(request: AuthRequest): Promise<User> {
+  private async handleRequest(request: FastifyRequest & { user: User; tenant: Tenant }): Promise<User> {
     let fromHeader = false;
 
     // Try first to resolve the token from the cookies
-    let token = request.signedCookies?.accessToken;
+    let token = request.cookies?.accessToken;
     if (!token) {
       // If not found, try to resolve the bearer from the headers
       const header = request.headers?.authorization?.split(' ');
@@ -135,31 +111,19 @@ export class AuthGuard implements CanActivate {
         token = header[1];
         fromHeader = true;
       }
+
+      if (!token)
+        throw new UnauthorizedException('No token provided');
     }
 
-    if (!token)
-      throw new UnauthorizedException('Token not provided');
+    const sub = await processToken(
+      this.jwtService,
+      token,
+      { tokenType: 'http', ...fromHeader && { userType: 'bot' } },
+      decoded => this.authService.getTokenOptions(decoded.userType === 'usr' ? 'access' : 'bot'),
+    );
 
-    const decoded = this.jwtService.decode(token) as Token;
-    if (!decoded)
-      throw new BadRequestException('Failed to decode JWT');
-
-    if (decoded.aud !== 'http')
-      throw new UnauthorizedException('Invalid token');
-
-    if (fromHeader && decoded.typ !== 'bot')
-      throw new UnauthorizedException('Non-bot token provided in header');
-
-    try {
-      await this.jwtService.verifyAsync<Token>(
-        token,
-        this.authService.getTokenOptions(decoded.typ === 'usr' ? 'access' : 'bot'),
-      );
-    } catch {
-      throw new UnauthorizedException('Falsified token');
-    }
-
-    const user = await this.userService.findOneById(decoded.sub);
+    const user = await this.userService.findOneById(sub);
     if (user.bot && !(await user.validatePassword(token)))
       throw new UnauthorizedException('Invalid token');
 

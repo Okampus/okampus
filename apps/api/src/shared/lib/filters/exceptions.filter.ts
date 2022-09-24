@@ -25,8 +25,8 @@ export class ExceptionsFilter implements ExceptionFilter {
 
     host.switchToHttp()
         .getResponse()
-        .status(statusCode)
-        .json(response);
+        .code(statusCode)
+        .send(response);
 
     return response;
   }

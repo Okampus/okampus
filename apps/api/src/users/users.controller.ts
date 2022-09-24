@@ -14,7 +14,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Express } from 'express';
+import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import { FileUploadsService } from '../files/file-uploads/file-uploads.service';
 import { ProfileImage } from '../files/profile-images/profile-image.entity';
 import { ProfileImagesService } from '../files/profile-images/profile-images.service';
@@ -98,7 +98,7 @@ export class UsersController {
   )
   public async updateAvatar(
     @CurrentUser() user: User,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: MulterFile,
   ): Promise<User> {
     if (!file)
       throw new BadRequestException('No file provided');
@@ -118,7 +118,7 @@ export class UsersController {
   public async updateBanner(
     @CurrentTenant() tenant: Tenant,
     @CurrentUser() user: User,
-    @UploadedFile() banner: Express.Multer.File,
+    @UploadedFile() banner: MulterFile,
   ): Promise<User> {
     if (!banner)
       throw new BadRequestException('No file provided');

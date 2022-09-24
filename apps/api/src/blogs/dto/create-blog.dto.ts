@@ -1,6 +1,5 @@
 import { IntersectionType } from '@nestjs/mapped-types';
 import {
-  IsArray,
   IsBoolean,
   IsLatLong,
   IsOptional,
@@ -32,8 +31,4 @@ export class CreateBlogDto extends IntersectionType(TagsDto, CreateOrphanContent
 
   @IsBoolean()
   isDraft: boolean;
-
-  @IsArray()
-  @IsString({ each: true })
-  tags: string[];
 }

@@ -8,7 +8,8 @@ import { User } from './user.entity';
 export class UserSubscriber implements EventSubscriber {
   // eslint-disable-next-line @typescript-eslint/require-await
   public async onFlush(args: FlushEventArgs): Promise<void> {
-    const changeSets = args.uow.getChangeSets();
+    // FIXME: @noftaly fix this
+    const changeSets = args.uow.getChangeSets() as unknown as Array<ChangeSet<User>>;
     const change = changeSets.find((cs): cs is ChangeSet<User> =>
       cs.type === ChangeSetType.CREATE && cs.entity instanceof User);
 

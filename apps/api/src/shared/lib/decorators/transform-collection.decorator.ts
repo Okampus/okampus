@@ -4,7 +4,7 @@ import type { TransformFnParams } from 'class-transformer';
 import { Transform } from 'class-transformer';
 
 interface Params extends TransformFnParams {
-  obj: Record<string, Collection<unknown>>;
+  obj: Record<string, Collection<object>>;
 }
 
 export function TransformCollection(): PropertyDecorator {

@@ -23,8 +23,6 @@ module.exports = {
   },
   rules: {
     'import/no-extraneous-dependencies': 'off',
-    'node/no-extraneous-import': ['error', { allowModules: ['express'] }],
-
     'unicorn/filename-case': ['error', { case: 'kebabCase' }],
 
     // Forbid leading underscore for private properties (in nest almost all if not all class properties are private,
@@ -62,5 +60,8 @@ module.exports = {
         extensions: ['.js', '.ts'],
       },
     },
+  },
+  globals: {
+    AsyncIterator: true,
   },
 };

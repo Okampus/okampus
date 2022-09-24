@@ -11,7 +11,7 @@ import {
   Resolver,
   Subscription,
 } from '@nestjs/graphql';
-import { Express } from 'express';
+import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import { PubSubEngine } from 'graphql-subscriptions';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import groupBy from 'lodash.groupby';
@@ -171,7 +171,7 @@ export class TeamsResolver {
   public async addTeamFile(
     @CurrentTenant() tenant: Tenant,
     @CurrentUser() user: User,
-    @Args('file', { type: () => GraphQLUpload }) file: Express.Multer.File,
+    @Args('file', { type: () => GraphQLUpload }) file: MulterFile,
     @Args('createFile') createFile: CreateTeamFileDto,
   ): Promise<Team> {
     const fileUpload = await this.fileUploadsService.create(

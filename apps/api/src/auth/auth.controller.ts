@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Request, Response } from 'express';
+import { FastifyReply, FastifyRequest } from 'fastify';
 import MeiliSearch from 'meilisearch';
 import { InjectMeiliSearch } from 'nestjs-meilisearch';
 import { config } from '../shared/configs/config';
@@ -46,7 +46,7 @@ export class AuthController {
   @Post('login')
   public async login(
     @Body() body: LoginDto,
-    @Res({ passthrough: true }) res: Response,
+    @Res({ passthrough: true }) res: FastifyReply,
   ): Promise<User> {
     const user = await this.authService.validatePassword(body.username, body.password);
     const login = await this.authService.login(user);
@@ -90,35 +90,38 @@ export class AuthController {
 
   @Public()
   @Get('logout')
-  public logout(@Res({ passthrough: true }) res: Response): void {
-    res.cookie('accessToken', '', { ...cookiePublicOptions, maxAge: 0 })
-      .cookie('refreshToken', '', { ...cookiePublicOptions, maxAge: 0 })
-      .cookie('accessTokenExpiresAt', '', { ...cookiePublicOptions, maxAge: 0 })
-      .cookie('refreshTokenExpiresAt', '', { ...cookiePublicOptions, maxAge: 0 })
-      .cookie('meiliSearchKey', '', { ...cookiePublicOptions, maxAge: 0 });
+  public logout(@Res({ passthrough: true }) res: FastifyReply): void {
+    void res.setCookie('accessToken', '', { ...cookiePublicOptions, maxAge: 0 })
+      .setCookie('refreshToken', '', { ...cookiePublicOptions, maxAge: 0 })
+      .setCookie('accessTokenExpiresAt', '', { ...cookiePublicOptions, maxAge: 0 })
+      .setCookie('refreshTokenExpiresAt', '', { ...cookiePublicOptions, maxAge: 0 })
+      .setCookie('meiliSearchKey', '', { ...cookiePublicOptions, maxAge: 0 });
   }
 
   @Post('refresh-token')
-  public async refreshToken(@Req() req: Request, @Res() res: Response): Promise<void> {
-    const user = await this.authService.loginWithRefreshToken(req.signedCookies?.refreshToken as string);
+  public async refreshToken(@Req() req: FastifyRequest, @Res() res: FastifyReply): Promise<void> {
+    let user: User | undefined;
+    if (req.cookies.refreshToken)
+      user = await this.authService.loginWithRefreshToken(req.cookies.refreshToken);
+
     if (!user)
       new BadRequestException('Missing refresh token');
 
-    const login = await this.authService.login(user);
+    const login = await this.authService.login(user!);
     if (config.meilisearch.enabled)
-      await this.addMeiliSearchCookie(res, user.tenant);
+      await this.addMeiliSearchCookie(res, user!.tenant);
 
-    res.cookie('accessToken', login.accessToken, cookieOptions).send();
+    void res.setCookie('accessToken', login.accessToken, cookieOptions);
   }
 
   @Post('ws-token')
-  public async wsToken(@CurrentUser() user: User, @Res() res: Response): Promise<void> {
+  public async wsToken(@CurrentUser() user: User, @Res() res: FastifyReply): Promise<void> {
     const wsToken = await this.authService.getWsToken(user.id);
     if (wsToken) {
-      res.cookie('wsToken', wsToken, {
+      void res.setCookie('wsToken', wsToken, {
         ...cookiePublicOptions,
         maxAge: config.tokens.wsTokenExpirationSeconds * 1000,
-      }).send();
+      });
     } else {
       new BadRequestException('Missing access token');
     }
@@ -129,7 +132,7 @@ export class AuthController {
     return user;
   }
 
-  private async addMeiliSearchCookie(res: Response, tenant: Tenant): Promise<Response> {
+  private async addMeiliSearchCookie(res: FastifyReply, tenant: Tenant): Promise<void> {
     // MeiliSearch API Key expires with the accessToken
     // Must be passed as Authorization header in the frontend
     const meiliSearchKey = await this.meiliSearch.createKey({
@@ -138,7 +141,7 @@ export class AuthController {
       expiresAt: new Date(Date.now() + config.tokens.accessTokenExpirationSeconds * 1000).toISOString(),
     });
 
-    return res.cookie(
+    void res.setCookie(
       'meiliSearchKey',
       meiliSearchKey.key,
       {
@@ -148,14 +151,14 @@ export class AuthController {
     );
   }
 
-  private addAuthCookies(res: Response, tokens: TokenResponse): Response {
+  private addAuthCookies(res: FastifyReply, tokens: TokenResponse): void {
     const maxAgeAccess = config.tokens.accessTokenExpirationSeconds * 1000;
     const maxAgeRefresh = config.tokens.refreshTokenExpirationSeconds * 1000;
 
-    return res.cookie('accessToken', tokens.accessToken, { ...cookieOptions, maxAge: maxAgeAccess })
-      .cookie('refreshToken', tokens.refreshToken, { ...cookieOptions, maxAge: maxAgeRefresh })
-      .cookie('accessTokenExpiresAt', tokens.accessTokenExpiresAt, { ...cookiePublicOptions, maxAge: maxAgeAccess })
-      .cookie('refreshTokenExpiresAt', tokens.refreshTokenExpiresAt, { ...cookiePublicOptions, maxAge: maxAgeRefresh });
+    void res.setCookie('accessToken', tokens.accessToken, { ...cookieOptions, maxAge: maxAgeAccess })
+      .setCookie('refreshToken', tokens.refreshToken, { ...cookieOptions, maxAge: maxAgeRefresh })
+      .setCookie('accessTokenExpiresAt', tokens.accessTokenExpiresAt.toString(), { ...cookiePublicOptions, maxAge: maxAgeAccess })
+      .setCookie('refreshTokenExpiresAt', tokens.refreshTokenExpiresAt.toString(), { ...cookiePublicOptions, maxAge: maxAgeRefresh });
   }
 
   @Public()
@@ -168,13 +171,13 @@ export class AuthController {
   @Public()
   @UseGuards(TenantOidcAuthGuard)
   @Get(':id/callback')
-  public async tenantLoginCallback(@CurrentUser() user: User, @Res() res: Response): Promise<void> {
+  public async tenantLoginCallback(@CurrentUser() user: User, @Res() res: FastifyReply): Promise<void> {
     const login = await this.authService.login(user);
 
     if (config.meilisearch.enabled)
       await this.addMeiliSearchCookie(res, user.tenant);
 
-    this.addAuthCookies(res, login)
-      .redirect(`${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth`);
+    this.addAuthCookies(res, login);
+    void res.redirect(`${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth`);
   }
 }

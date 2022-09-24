@@ -11,7 +11,7 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Express } from 'express';
+import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
@@ -46,7 +46,7 @@ export class InfoDocsController {
     @CurrentTenant() tenant: Tenant,
     @CurrentUser() user: User,
     @Body() createInfoDocDto: CreateInfoDocDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: MulterFile,
   ): Promise<InfoDoc> {
     if (!file)
       throw new BadRequestException('No file provided');

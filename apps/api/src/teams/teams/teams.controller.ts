@@ -13,7 +13,7 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Express } from 'express';
+import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import { FileUploadsService } from '../../files/file-uploads/file-uploads.service';
 import { ProfileImage } from '../../files/profile-images/profile-image.entity';
 import { ProfileImagesService } from '../../files/profile-images/profile-images.service';
@@ -110,7 +110,7 @@ export class TeamsController {
     @CurrentTenant() tenant: Tenant,
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: MulterFile,
   ): Promise<Team> {
     if (!file)
       throw new BadRequestException('No file provided');
@@ -131,7 +131,7 @@ export class TeamsController {
     @CurrentTenant() tenant: Tenant,
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,
-    @UploadedFile() banner: Express.Multer.File,
+    @UploadedFile() banner: MulterFile,
   ): Promise<Team> {
     if (!banner)
       throw new BadRequestException('No file provided');

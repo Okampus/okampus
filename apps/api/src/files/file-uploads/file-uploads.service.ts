@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import type { Express } from 'express';
+import type { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import sharp from 'sharp';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import type { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
@@ -25,7 +25,7 @@ export class FileUploadsService {
   public async create(
     tenant: Tenant,
     user: User,
-    file: Express.Multer.File,
+    file: MulterFile,
     fileKind: FileKind,
     fileLastModifiedAt = new Date(),
   ): Promise<FileUpload> {

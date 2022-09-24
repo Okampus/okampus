@@ -35,6 +35,18 @@ export abstract class Notification {
     });
   }
 
+  protected async getClubManagers(setting: keyof Settings): Promise<User[]> {
+    return this.entityManager.getRepository(User).find({
+      $or: [
+        { roles: { $contains: [Role.ClubManager] } },
+        { schoolRole: SchoolRole.Admin },
+      ],
+      settings: {
+        [setting]: { $gt: 0 },
+      },
+    });
+  }
+
   protected async getTeamBoard(team: Team): Promise<User[]> {
     const members = await this.entityManager.getRepository(TeamMember).find({
       team,

@@ -1,5 +1,6 @@
 import type { ITriggerPayload } from '@novu/node';
 import { TeamEvent } from '../../../../teams/events/team-event.entity';
+import { ValidationStep } from '../../../../tenants/validation-steps/validation-step.entity';
 import type { User } from '../../../../users/user.entity';
 import { NotificationType } from '../notification-type.enum';
 import { Notification } from './base.notification';
@@ -21,8 +22,10 @@ export class AdminTeamEventValidationStartedNotification extends Notification {
     if (!this.entityManager)
       throw new TypeError('Entity Manager not attached');
 
-    const admins = await this.getAdmins(this.settingName);
-    return this.filter(admins);
+    const validationStep = await this.entityManager.getRepository(ValidationStep).findOneOrFail({ step: 0 }, {
+      populate: ['users'],
+    });
+    return this.filter(validationStep.users.getItems());
   }
 
   public async ensurePayload(): Promise<void> {
