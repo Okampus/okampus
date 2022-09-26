@@ -27,9 +27,9 @@ export class TeamGalleriesService {
     createGalleryImageDto: CreateTeamGalleryDto,
     file: FileUpload,
   ): Promise<TeamGallery> {
-    const { id, ...createGalleryImage } = createGalleryImageDto;
+    const { teamId, ...createGalleryImage } = createGalleryImageDto;
 
-    const team = await this.teamRepository.findOneOrFail({ id }, { populate: ['members'] });
+    const team = await this.teamRepository.findOneOrFail({ id: teamId }, { populate: ['members'] });
 
     if (!team.canAdminister(user))
       throw new ForbiddenException('Not a team admin');

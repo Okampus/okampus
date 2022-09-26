@@ -11,7 +11,7 @@ import type { FileUpload } from '../file-uploads/file-upload.entity';
 import type { CreateTeamReceiptDto } from './dto/create-team-receipt.dto';
 import type { TeamReceiptListOptions } from './dto/team-receipt-list-options.dto';
 import type { UpdateTeamReceiptDto } from './dto/update-team-receipt.dto';
-import { TeamReceipt } from './team-receipts.entity';
+import { TeamReceipt } from './team-receipt.entity';
 
 @Injectable()
 export class TeamReceiptsService {
@@ -47,7 +47,7 @@ export class TeamReceiptsService {
       file,
       active: true,
     });
-    await this.teamReceiptRepository.persistAndFlush(TeamReceipt);
+    await this.teamReceiptRepository.persistAndFlush(teamReceipt);
 
     // Void this.notificationsService.trigger(
     //   new AdminTeamLegalFileUpdatedNotification(teamReceipt, { executor: user }),

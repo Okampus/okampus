@@ -16,8 +16,11 @@ import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as SentryTracing from '@sentry/tracing';
 import connectRedis from 'connect-redis';
-
-import { contentParser } from 'fastify-multer';
+import fastify from 'fastify';
+import * as multer from 'fastify-multer';
+// eslint-disable-next-line import/no-unresolved, @typescript-eslint/no-unused-vars
+import _ from 'fastify-multer/typings/fastify'; // Import to ensure that plugin typings are loaded
+import { processRequest } from 'graphql-upload-minimal';
 import helmet from 'helmet';
 import Redis from 'ioredis';
 import { AppModule } from './app.module';
@@ -43,8 +46,18 @@ async function bootstrap(): Promise<void> {
   if (config.sentry.enabled)
     SentryTracing.addExtensionMethods();
 
-  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter({ trustProxy: false }));
-  await app.register(contentParser);
+  const fastifyInstance = fastify({ trustProxy: false });
+  fastifyInstance.addHook('preValidation', async (_request, _reply) => {
+    if (_request.headers['content-type']?.startsWith('multipart/form-data') && _request.url === '/graphql') {
+      _request.body = await processRequest(_request.raw, _reply.raw, {
+        maxFileSize: 10_000_000, // 10 MB
+        maxFiles: 20,
+      });
+    }
+  });
+
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(fastifyInstance));
+  await app.register(multer.contentParser);
   await app.register(fastifyCookie, {
     secret: config.cookies.signature, // For cookies signature
   });
@@ -54,7 +67,6 @@ async function bootstrap(): Promise<void> {
   });
   await app.register(fastifyCors, config.env.isProd() ? {
     origin: (origin, cb): void => {
-      console.log('QUERY', origin);
       if (/^https:\/\/(?:[\dA-Za-z][\dA-Za-z-]{1,61}[\dA-Za-z])+\.okampus\.fr$/.test(origin))
         // eslint-disable-next-line node/callback-return
         cb(null, true);

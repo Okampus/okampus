@@ -23,7 +23,7 @@ export class CreateTeamReceiptDto extends CreateFileUploadDto {
   @IsInt()
   teamId: number;
 
-  @Field()
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
   @Length(0, 500)
@@ -33,18 +33,17 @@ export class CreateTeamReceiptDto extends CreateFileUploadDto {
   @IsDate()
   payedAt: Date;
 
-  @IsOptional()
   @Field(() => String)
   @IsString()
   payedById: string;
 
-  @IsOptional()
   @Field(() => String, { nullable: true })
+  @IsOptional()
   @IsString()
   paymentLocation?: string | null = null;
 
-  @IsOptional()
   @Field(() => String, { nullable: true })
+  @IsOptional()
   @IsEnum(PaymentMethod)
   paymentMethod?: PaymentMethod | null = null;
 
@@ -52,7 +51,6 @@ export class CreateTeamReceiptDto extends CreateFileUploadDto {
   @IsNumber()
   amount: number;
 
-  @IsOptional()
   @Field(() => Float)
   @IsNumber()
   amountPayed: number;

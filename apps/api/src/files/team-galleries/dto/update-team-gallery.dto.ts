@@ -1,4 +1,6 @@
-import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { InputType, OmitType, PartialType } from '@nestjs/graphql';
 import { CreateTeamGalleryDto } from './create-team-gallery.dto';
 
-export class UpdateTeamGalleryDto extends PartialType(OmitType(CreateTeamGalleryDto, ['id'])) {}
+InputType();
+
+export class UpdateTeamGalleryDto extends PartialType(OmitType(CreateTeamGalleryDto, ['teamId'])) {}

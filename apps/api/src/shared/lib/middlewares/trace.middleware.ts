@@ -1,7 +1,7 @@
+import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { NestMiddleware } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { InjectSentry, SentryService } from '@xiifain/nestjs-sentry';
-import type { FastifyReply, FastifyRequest } from 'fastify';
 
 @Injectable()
 export class TraceMiddleware implements NestMiddleware {
@@ -9,10 +9,10 @@ export class TraceMiddleware implements NestMiddleware {
     @InjectSentry() private readonly sentry: SentryService,
   ) {}
 
-  public use(req: FastifyRequest, res: FastifyReply, next: () => never): void {
+  public use(req: IncomingMessage, res: ServerResponse, next: () => never): void {
     const sentry = this.sentry.instance();
 
-    const transaction = sentry.startTransaction({ op: 'request', name: req.url });
+    const transaction = sentry.startTransaction({ op: 'request', name: req.url! });
 
     sentry.getCurrentHub().configureScope((scope) => {
       scope.addEventProcessor((event) => {
@@ -25,7 +25,7 @@ export class TraceMiddleware implements NestMiddleware {
       scope.setSpan(transaction);
     });
 
-    req.raw.on('close', () => {
+    req.on('close', () => {
       transaction.setHttpStatus(res.statusCode);
       transaction.finish();
     });
