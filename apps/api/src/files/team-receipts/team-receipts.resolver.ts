@@ -12,7 +12,7 @@ import { Tenant } from '../../tenants/tenants/tenant.entity';
 import { User } from '../../users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
 import { CreateTeamReceiptDto } from './dto/create-team-receipt.dto';
-import { TeamReceipt } from './team-receipts.entity';
+import { TeamReceipt } from './team-receipt.entity';
 import { TeamReceiptsService } from './team-receipts.service';
 
 

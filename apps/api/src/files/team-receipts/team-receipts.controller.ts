@@ -25,7 +25,7 @@ import { FileUploadsService } from '../file-uploads/file-uploads.service';
 import { CreateTeamReceiptDto } from './dto/create-team-receipt.dto';
 import { TeamReceiptListOptions } from './dto/team-receipt-list-options.dto';
 import { UpdateTeamReceiptDto } from './dto/update-team-receipt.dto';
-import { TeamReceipt } from './team-receipts.entity';
+import { TeamReceipt } from './team-receipt.entity';
 import { TeamReceiptsService } from './team-receipts.service';
 
 @ApiTags('TeamFiles')
