@@ -67,7 +67,6 @@ async function bootstrap(): Promise<void> {
   });
   await app.register(fastifyCors, config.env.isProd() ? {
     origin: (origin, cb): void => {
-      console.log('QUERY', origin);
       if (/^https:\/\/(?:[\dA-Za-z][\dA-Za-z-]{1,61}[\dA-Za-z])+\.okampus\.fr$/.test(origin))
         // eslint-disable-next-line node/callback-return
         cb(null, true);
