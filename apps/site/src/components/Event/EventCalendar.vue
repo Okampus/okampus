@@ -1,5 +1,8 @@
 <template>
-    <VueCal
+    <div>
+        {{ events }}
+    </div>
+    <!-- <VueCal
         class="h-screen"
         :disable-views="['years', 'year']"
         :events="
@@ -26,7 +29,7 @@
                 </div>
             </div>
         </template>
-        <!-- <template #event="{ event, view }">
+        <template #event="{ event, view }">
             <div v-if="view" class="m-0 w-full p-4">
                 < :prevent-overflow="false" :interactive="true">
                     <div
@@ -83,16 +86,15 @@
                     </template>
                 </>
             </div>
-        </template> -->
-    </VueCal>
+        </template>
+    </VueCal> -->
 </template>
 
 <script setup>
-    import VueCal from 'vue-cal'
-    import 'vue-cal/dist/vuecal.css'
-    import 'vue-cal/dist/i18n/fr.js'
+    // import 'vue-cal/dist/vuecal.css'
+    // import 'vue-cal/dist/i18n/fr.js'
 
-    import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
+    // import ProfileAvatar from '@/components/Profile/ProfileAvatar.vue'
 
     // import { getColorFromData } from '@/utils/colors'
     // import Popper from 'vue3-popper'
@@ -107,7 +109,7 @@
     //     )
     // }
 
-    const props = defineProps({
+    defineProps({
         events: {
             type: Array,
             required: true,

@@ -7,7 +7,6 @@ import * as Sentry from '@sentry/vue'
 import { BrowserTracing } from '@sentry/tracing'
 
 import InstantSearch from 'vue-instantsearch/vue3/es'
-import Particles from 'particles.vue3'
 
 import { plugin } from '@formkit/vue'
 
@@ -101,12 +100,6 @@ app.config.errorHandler = (error, vm, info) => {
 app.provide(DefaultApolloClient, apolloClient)
 
 // TODO: remove injection of modules in favor of composition API
-app.use(createPinia())
-    .use(apolloProvider)
-    .use(router)
-    .use(i18n)
-    .use(InstantSearch)
-    .use(Particles)
-    .use(plugin, formkitConfig)
+app.use(createPinia()).use(apolloProvider).use(router).use(i18n).use(InstantSearch).use(plugin, formkitConfig)
 
 app.mount('#app')
