@@ -1,9 +1,11 @@
+import type { Readable } from 'node:stream';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import type { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import sharp from 'sharp';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import type { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
+import { streamToBuffer } from '../../shared/lib/utils/stream-to-buffer';
 import type { Tenant } from '../../tenants/tenants/tenant.entity';
 import type { User } from '../../users/user.entity';
 import { FilePersistanceService } from './file-persistance.service';
@@ -25,11 +27,13 @@ export class FileUploadsService {
   public async create(
     tenant: Tenant,
     user: User,
-    file: MulterFile,
+    file: MulterFile | MulterFile & { createReadStream: () => Readable | undefined },
     fileKind: FileKind,
     fileLastModifiedAt = new Date(),
   ): Promise<FileUpload> {
-    let { buffer } = file;
+    let buffer = file.buffer
+    ?? (await streamToBuffer((file as MulterFile & { createReadStream: () => Readable }).createReadStream()));
+
     let mimeType = file.mimetype;
     let meta = {};
     if (file.mimetype.startsWith('image/')) {
@@ -41,10 +45,9 @@ export class FileUploadsService {
     }
 
     const fileDocument = new FileUpload({
-
       tenant,
       user,
-      name: file.originalname,
+      name: file.originalname ?? file.filename,
       fileSize: Buffer.byteLength(buffer),
       mimeType,
       fileKind,
