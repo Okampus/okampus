@@ -10,7 +10,6 @@ import type { Tenant } from '../../tenants/tenants/tenant.entity';
 import type { User } from '../../users/user.entity';
 import { UsersModule } from '../../users/users.module';
 import { UsersService } from '../../users/users.service';
-import { config } from './config';
 
 export interface GqlWebsocketContext {
   context: {
@@ -24,18 +23,13 @@ export default {
   imports: [JwtModule, UsersModule, AuthModule],
   inject: [JwtService, UsersService, AuthService],
   driver: MercuriusDriver,
-  bodyParserConfig: false,
   autoSchemaFile: join(process.cwd(), 'src', 'shared', 'lib', 'schema.gql'),
-  sortSchema: true,
-  debug: config.env.isDev(),
-  playground: config.env.isDev(),
   resolvers: {
     JSON: GraphQLJSON,
     // eslint-disable-next-line @typescript-eslint/naming-convention
     Upload: GraphQLUpload,
   },
-  installSubscriptionHandlers: true,
-  subscriptions: {
+  subscription: {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     'graphql-ws': true,
   },
