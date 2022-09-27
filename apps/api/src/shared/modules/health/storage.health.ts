@@ -21,7 +21,7 @@ export class StorageHealthIndicator extends HealthIndicator {
     bucket: string,
     options?: S3HealthIndicatorOptions,
   ): Promise<HealthIndicatorResult> {
-    const timeout = options?.timeout ?? 1000;
+    const timeout = options?.timeout ?? 2000;
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const request = this.s3.headBucket({ Bucket: bucket });
