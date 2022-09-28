@@ -110,7 +110,7 @@ async function bootstrap(): Promise<void> {
 
   setupSwagger(app);
 
-  await app.listen(config.network.port);
+  await app.listen(config.network.port, '0.0.0.0');
   const url = await app.getUrl();
   logger.log(`API running on: ${url.replace('[::1]', 'localhost')}`);
 }
