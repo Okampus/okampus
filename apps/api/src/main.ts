@@ -72,7 +72,7 @@ async function bootstrap(): Promise<void> {
         cb(null, true);
       else
         // eslint-disable-next-line node/callback-return
-        cb(new Error('CORS do not allow origins outside of okampus.fr'), false);
+        cb(null, false);
     },
     credentials: true,
   } : {
