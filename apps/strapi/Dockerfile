@@ -13,7 +13,7 @@ USER strapi
 
 ADD --chown=strapi:strapi package*.json ./
 RUN npm install --force
-RUN yarn add pg
+RUN npm install pg
 
 ADD --chown=strapi:strapi . ./
 
