@@ -9,7 +9,6 @@ import { AuthController } from './auth.controller';
 import { AuthGuard } from './auth.guard';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { TenantOidcAuthGuard } from './tenant-oidc-auth.guard';
 
 @Module({
   imports: [
@@ -22,7 +21,6 @@ import { TenantOidcAuthGuard } from './tenant-oidc-auth.guard';
   providers: [
     AuthService,
     AuthGuard,
-    TenantOidcAuthGuard,
     AuthResolver,
     AuthController,
     OIDCStrategyCache,

@@ -23,9 +23,13 @@ import _ from 'fastify-multer/typings/fastify'; // Import to ensure that plugin 
 import { processRequest } from 'graphql-upload-minimal';
 import helmet from 'helmet';
 import Redis from 'ioredis';
+import { Issuer } from 'openid-client';
 import { AppModule } from './app.module';
+import { AuthService } from './auth/auth.service';
+import { tenantStrategyFactory } from './auth/tenant.strategy';
 import { config } from './shared/configs/config';
 import { redisConnectionOptions } from './shared/configs/redis.config';
+import { TenantsService } from './tenants/tenants/tenants.service';
 
 const logger = new Logger('Bootstrap');
 const RedisStore = connectRedis(fastifySession as never);
@@ -80,8 +84,48 @@ async function bootstrap(): Promise<void> {
     credentials: true,
   });
 
-  await app.register(fastifyPassport.initialize());
-  await app.register(fastifyPassport.secureSession());
+  if (config.env.isProd()) {
+    const tenantService = app.get<TenantsService>(TenantsService);
+    const tenants = await tenantService.find();
+    console.log(tenants);
+
+    await app.register(fastifyPassport.initialize());
+    await app.register(fastifyPassport.secureSession());
+
+    await Promise.all(tenants.map(tenant => (async () => {
+      const {
+        oidcEnabled,
+        oidcClientId,
+        oidcClientSecret,
+        oidcDiscoveryUrl,
+        oidcScopes,
+        oidcCallbackUri,
+      } = tenant;
+
+      if (!oidcEnabled)
+        return false;
+
+      const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl!);
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const client = new TrustIssuer.Client({ client_id: oidcClientId!, client_secret: oidcClientSecret! });
+      fastifyPassport.use(tenantStrategyFactory(
+        app.get<AuthService>(AuthService),
+        tenant.id,
+        {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          redirect_uri: oidcCallbackUri!,
+          scope: oidcScopes!,
+        },
+        client,
+      ));
+
+      fastifyInstance.get(`/auth/${tenant.id}`, {
+        preValidation: fastifyPassport.authenticate(tenant.id, { authInfo: false }),
+      }, () => 'hello world!');
+
+      return true;
+    })));
+  }
 
   if (config.env.isProd()) {
     app.use(helmet());
