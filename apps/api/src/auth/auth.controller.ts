@@ -8,7 +8,7 @@ import {
   Post,
   Req,
   Res,
-  UseGuards,
+  // UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FastifyReply, FastifyRequest } from 'fastify';
@@ -27,7 +27,6 @@ import type { TokenResponse } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { PreRegisterSsoDto } from './dto/pre-register-sso.dto';
 import { RegisterDto } from './dto/register.dto';
-import { TenantOidcAuthGuard } from './tenant-oidc-auth.guard';
 
 const cookieOptions = config.cookies.options;
 const cookiePublicOptions = { ...config.cookies.options, httpOnly: false };
@@ -162,14 +161,6 @@ export class AuthController {
   }
 
   @Public()
-  @UseGuards(TenantOidcAuthGuard)
-  @Get(':id')
-  public tenantLogin(): void {
-    // Logging in via tenant OIDC! Everything is handled by the guard.
-  }
-
-  @Public()
-  @UseGuards(TenantOidcAuthGuard)
   @Get(':id/callback')
   public async tenantLoginCallback(@CurrentUser() user: User, @Res() res: FastifyReply): Promise<void> {
     const login = await this.authService.login(user);
