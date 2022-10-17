@@ -51,6 +51,47 @@ async function bootstrap(): Promise<void> {
     SentryTracing.addExtensionMethods();
 
   const fastifyInstance = fastify({ trustProxy: false });
+  if (config.env.isProd()) {
+    const tempApp = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(fastifyInstance));
+    const tenantService = tempApp.get<TenantsService>(TenantsService);
+    const tenants = await tenantService.find();
+    await Promise.all(tenants.map(tenant => (async () => {
+      const {
+        oidcEnabled,
+        oidcClientId,
+        oidcClientSecret,
+        oidcDiscoveryUrl,
+        oidcScopes,
+        oidcCallbackUri,
+      } = tenant;
+
+      if (!oidcEnabled)
+        return false;
+
+      const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl!);
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const client = new TrustIssuer.Client({ client_id: oidcClientId!, client_secret: oidcClientSecret! });
+      fastifyPassport.use(tenantStrategyFactory(
+        tempApp.get<AuthService>(AuthService),
+        tenant.id,
+        {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          redirect_uri: oidcCallbackUri!,
+          scope: oidcScopes!,
+        },
+        client,
+      ));
+
+      fastifyInstance.get(`/auth/${tenant.id}`, {
+        preValidation: fastifyPassport.authenticate(tenant.id, { authInfo: false }),
+      }, () => 'hello world!');
+
+      return true;
+    })));
+
+    await tempApp.close();
+  }
+
   fastifyInstance.addHook('preValidation', async (_request, _reply) => {
     if (_request.headers['content-type']?.startsWith('multipart/form-data') && _request.url === '/graphql') {
       _request.body = await processRequest(_request.raw, _reply.raw, {
@@ -83,49 +124,6 @@ async function bootstrap(): Promise<void> {
     origin: config.network.frontendUrl,
     credentials: true,
   });
-
-  if (config.env.isProd()) {
-    const tenantService = app.get<TenantsService>(TenantsService);
-    const tenants = await tenantService.find();
-    console.log(tenants);
-
-    await app.register(fastifyPassport.initialize());
-    await app.register(fastifyPassport.secureSession());
-
-    await Promise.all(tenants.map(tenant => (async () => {
-      const {
-        oidcEnabled,
-        oidcClientId,
-        oidcClientSecret,
-        oidcDiscoveryUrl,
-        oidcScopes,
-        oidcCallbackUri,
-      } = tenant;
-
-      if (!oidcEnabled)
-        return false;
-
-      const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl!);
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      const client = new TrustIssuer.Client({ client_id: oidcClientId!, client_secret: oidcClientSecret! });
-      fastifyPassport.use(tenantStrategyFactory(
-        app.get<AuthService>(AuthService),
-        tenant.id,
-        {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          redirect_uri: oidcCallbackUri!,
-          scope: oidcScopes!,
-        },
-        client,
-      ));
-
-      fastifyInstance.get(`/auth/${tenant.id}`, {
-        preValidation: fastifyPassport.authenticate(tenant.id, { authInfo: false }),
-      }, () => 'hello world!');
-
-      return true;
-    })));
-  }
 
   if (config.env.isProd()) {
     app.use(helmet());
