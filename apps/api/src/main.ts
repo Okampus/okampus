@@ -52,7 +52,10 @@ async function bootstrap(): Promise<void> {
 
   const fastifyInstance = fastify({ trustProxy: false });
   if (config.env.isProd()) {
-    const tempApp = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(fastifyInstance));
+    const tempApp = await NestFactory.create<NestFastifyApplication>(
+      AppModule,
+      new FastifyAdapter(fastify({ trustProxy: false })),
+    );
     const tenantService = tempApp.get<TenantsService>(TenantsService);
     const tenants = await tenantService.find();
     await Promise.all(tenants.map(tenant => (async () => {
