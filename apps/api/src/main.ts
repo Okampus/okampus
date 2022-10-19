@@ -60,6 +60,7 @@ async function bootstrap(): Promise<void> {
     const tenants = await tenantService.find();
     console.log('TENANTS', tenants);
     await Promise.all(tenants.map(tenant => (async () => {
+      console.log('HELLO', tenant);
       const {
         oidcEnabled,
         oidcClientId,
