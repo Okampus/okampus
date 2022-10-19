@@ -58,6 +58,7 @@ async function bootstrap(): Promise<void> {
     );
     const tenantService = tempApp.get<TenantsService>(TenantsService);
     const tenants = await tenantService.find();
+    console.log('TENANTS', tenants);
     await Promise.all(tenants.map(tenant => (async () => {
       const {
         oidcEnabled,
@@ -85,6 +86,7 @@ async function bootstrap(): Promise<void> {
         client,
       ));
 
+      console.log('TENANT', `/auth/${tenant.id}`);
       fastifyInstance.get(`/auth/${tenant.id}`, {
         preValidation: fastifyPassport.authenticate(tenant.id, { authInfo: false }),
       }, () => 'hello world!');
@@ -93,6 +95,9 @@ async function bootstrap(): Promise<void> {
     })));
 
     await tempApp.close();
+    // eslint-disable-next-line no-promise-executor-return, @typescript-eslint/explicit-function-return-type
+    const delay = async (ms: number) => new Promise(res => setTimeout(res, ms));
+    await delay(10_000);
   }
 
   fastifyInstance.addHook('preValidation', async (_request, _reply) => {
