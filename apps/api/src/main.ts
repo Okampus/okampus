@@ -119,6 +119,8 @@ async function bootstrap(): Promise<void> {
     store: new RedisStore({ client: new Redis(redisConnectionOptions), logErrors: true }) as never,
     secret: config.session.secret,
   });
+  await app.register(fastifyPassport.initialize());
+  await app.register(fastifyPassport.secureSession());
   await app.register(fastifyCors, config.env.isProd() ? {
     origin: (origin, cb): void => {
       if (/^https:\/\/(?:[\dA-Za-z][\dA-Za-z-]{1,61}[\dA-Za-z])+\.okampus\.fr$/.test(origin))
