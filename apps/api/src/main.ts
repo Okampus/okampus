@@ -59,7 +59,7 @@ async function bootstrap(): Promise<void> {
     const tenantService = tempApp.get<TenantsService>(TenantsService);
     const tenants = await tenantService.find();
     console.log('TENANTS', tenants);
-    await Promise.all(tenants.map(tenant => (async () => {
+    await Promise.all(tenants.map(async (tenant) => {
       console.log('HELLO', tenant);
       const {
         oidcEnabled,
@@ -93,7 +93,7 @@ async function bootstrap(): Promise<void> {
       }, () => 'hello world!');
 
       return true;
-    })));
+    }));
 
     await tempApp.close();
     // eslint-disable-next-line no-promise-executor-return, @typescript-eslint/explicit-function-return-type
