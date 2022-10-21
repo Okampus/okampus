@@ -58,9 +58,7 @@ async function bootstrap(): Promise<void> {
     );
     const tenantService = tempApp.get<TenantsService>(TenantsService);
     const tenants = await tenantService.find();
-    console.log('TENANTS', tenants);
     await Promise.all(tenants.map(async (tenant) => {
-      console.log('HELLO', tenant);
       const {
         oidcEnabled,
         oidcClientId,
@@ -76,7 +74,7 @@ async function bootstrap(): Promise<void> {
       const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl!);
       // eslint-disable-next-line @typescript-eslint/naming-convention
       const client = new TrustIssuer.Client({ client_id: oidcClientId!, client_secret: oidcClientSecret! });
-      fastifyPassport.use(tenantStrategyFactory(
+      fastifyPassport.use(tenant.id, tenantStrategyFactory(
         tempApp.get<AuthService>(AuthService),
         tenant.id,
         {
@@ -87,7 +85,6 @@ async function bootstrap(): Promise<void> {
         client,
       ));
 
-      console.log('TENANT', `/auth/${tenant.id}`);
       fastifyInstance.get(`/auth/${tenant.id}`, {
         preValidation: fastifyPassport.authenticate(tenant.id, { authInfo: false }),
       }, () => 'hello world!');
