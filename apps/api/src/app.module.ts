@@ -3,6 +3,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { CacheModule, Module, RequestMethod } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_OIDC_CACHE } from '@nestjs/core/constants';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { GraphQLModule } from '@nestjs/graphql';
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
@@ -43,6 +44,7 @@ import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
 import { RestLoggerMiddleware } from './shared/lib/middlewares/rest-logger.middleware';
 import { TraceMiddleware } from './shared/lib/middlewares/trace.middleware';
 import { PoliciesGuard } from './shared/modules/authorization';
+import { OIDCStrategyCache } from './shared/modules/authorization/oidc-strategy.cache';
 import { CaslModule } from './shared/modules/casl/casl.module';
 import { MeiliSearchIndexerModule } from './shared/modules/search/meilisearch-indexer.module';
 import { SocialsModule } from './socials/socials.module';
@@ -107,6 +109,7 @@ import { WikisModule } from './wiki/wikis.module';
     ValidationsModule,
   ],
   providers: [
+    { provide: APP_OIDC_CACHE, useValue: new OIDCStrategyCache() },
     { provide: APP_GUARD, useClass: AuthGuard },
     { provide: APP_GUARD, useClass: PoliciesGuard },
     { provide: APP_FILTER, useClass: ExceptionsFilter },

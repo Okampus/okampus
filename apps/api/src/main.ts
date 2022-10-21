@@ -12,6 +12,7 @@ import fastifySession from '@fastify/session';
 
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { APP_OIDC_CACHE } from '@nestjs/core/constants';
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -30,7 +31,6 @@ import { AuthService } from './auth/auth.service';
 import { tenantStrategyFactory } from './auth/tenant.strategy';
 import { config } from './shared/configs/config';
 import { redisConnectionOptions } from './shared/configs/redis.config';
-import { OIDCStrategyCache } from './shared/modules/authorization/oidc-strategy.cache';
 import { TenantsService } from './tenants/tenants/tenants.service';
 
 const logger = new Logger('Bootstrap');
@@ -89,7 +89,8 @@ async function bootstrap(): Promise<void> {
     credentials: true,
   });
 
-  const oidcStrategyCache = app.get<OIDCStrategyCache>(OIDCStrategyCache);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  const oidcStrategyCache = app.get(APP_OIDC_CACHE);
   const tenantsService = app.get<TenantsService>(TenantsService);
   const authService = app.get<AuthService>(AuthService);
 
