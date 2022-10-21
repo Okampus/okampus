@@ -7,6 +7,7 @@ import path from 'node:path';
 import fastifyCookie from '@fastify/cookie';
 import fastifyCors from '@fastify/cors';
 import fastifyPassport from '@fastify/passport';
+import type { AnyStrategy } from '@fastify/passport/dist/strategies';
 import fastifySession from '@fastify/session';
 
 import { Logger, ValidationPipe } from '@nestjs/common';
@@ -29,6 +30,7 @@ import { AuthService } from './auth/auth.service';
 import { tenantStrategyFactory } from './auth/tenant.strategy';
 import { config } from './shared/configs/config';
 import { redisConnectionOptions } from './shared/configs/redis.config';
+import { OIDCStrategyCache } from './shared/modules/authorization/oidc-strategy.cache';
 import { TenantsService } from './tenants/tenants/tenants.service';
 
 const logger = new Logger('Bootstrap');
@@ -51,52 +53,6 @@ async function bootstrap(): Promise<void> {
     SentryTracing.addExtensionMethods();
 
   const fastifyInstance = fastify({ trustProxy: false });
-  if (config.env.isProd()) {
-    const tempApp = await NestFactory.create<NestFastifyApplication>(
-      AppModule,
-      new FastifyAdapter(fastify({ trustProxy: false })),
-    );
-    const tenantService = tempApp.get<TenantsService>(TenantsService);
-    const tenants = await tenantService.find();
-    await Promise.all(tenants.map(async (tenant) => {
-      const {
-        oidcEnabled,
-        oidcClientId,
-        oidcClientSecret,
-        oidcDiscoveryUrl,
-        oidcScopes,
-        oidcCallbackUri,
-      } = tenant;
-
-      if (!oidcEnabled)
-        return false;
-
-      const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl!);
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      const client = new TrustIssuer.Client({ client_id: oidcClientId!, client_secret: oidcClientSecret! });
-      fastifyPassport.use(tenant.id, tenantStrategyFactory(
-        tempApp.get<AuthService>(AuthService),
-        tenant.id,
-        {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          redirect_uri: oidcCallbackUri!,
-          scope: oidcScopes!,
-        },
-        client,
-      ));
-
-      fastifyInstance.get(`/auth/${tenant.id}`, {
-        preValidation: fastifyPassport.authenticate(tenant.id, { authInfo: false }),
-      }, () => 'hello world!');
-
-      return true;
-    }));
-
-    await tempApp.close();
-    // eslint-disable-next-line no-promise-executor-return, @typescript-eslint/explicit-function-return-type
-    const delay = async (ms: number) => new Promise(res => setTimeout(res, ms));
-    await delay(10_000);
-  }
 
   fastifyInstance.addHook('preValidation', async (_request, _reply) => {
     if (_request.headers['content-type']?.startsWith('multipart/form-data') && _request.url === '/graphql') {
@@ -132,6 +88,51 @@ async function bootstrap(): Promise<void> {
     origin: config.network.frontendUrl,
     credentials: true,
   });
+
+  const oidcStrategyCache = app.get<OIDCStrategyCache>(OIDCStrategyCache);
+  const tenantsService = app.get<TenantsService>(TenantsService);
+  const authService = app.get<AuthService>(AuthService);
+
+  fastifyInstance.get('/auth/:tenant', {
+    preValidation: async (req) => {
+      const tenantId = (req.params as { tenant: string }).tenant;
+      const tenant = await tenantsService.findOne(tenantId);
+      if (!tenant)
+        return false;
+
+      if (!oidcStrategyCache.strategies.has(tenantId)) {
+        const {
+          oidcEnabled,
+          oidcClientId,
+          oidcClientSecret,
+          oidcDiscoveryUrl,
+          oidcScopes,
+          oidcCallbackUri,
+        } = tenant;
+
+        if (!oidcEnabled)
+          return false;
+
+        const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl!);
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        const client = new TrustIssuer.Client({ client_id: oidcClientId!, client_secret: oidcClientSecret! });
+        this.oidcStrategyCache.strategies.set(tenantId, tenantStrategyFactory(
+          authService,
+          tenantId,
+          {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            redirect_uri: oidcCallbackUri!,
+            scope: oidcScopes!,
+          },
+          client,
+        ));
+
+        fastifyPassport.use(tenant.id, this.oidcStrategyCache.strategies.get(tenant.id) as AnyStrategy);
+      }
+
+      fastifyPassport.authenticate(tenantId, { authInfo: false });
+    },
+  }, () => 'hello world!');
 
   if (config.env.isProd()) {
     app.use(helmet());
