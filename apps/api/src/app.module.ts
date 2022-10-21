@@ -3,7 +3,6 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { CacheModule, Module, RequestMethod } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { APP_OIDC_CACHE } from '@nestjs/core/constants';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { GraphQLModule } from '@nestjs/graphql';
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
@@ -39,6 +38,7 @@ import meiliSearchConfig from './shared/configs/meilisearch.config';
 import redisConfig from './shared/configs/redis.config';
 import sentryConfig, { sentryInterceptorConfig } from './shared/configs/sentry.config';
 import storageConfig from './shared/configs/storage.config';
+import { APP_OIDC_CACHE } from './shared/lib/constants';
 
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
 import { RestLoggerMiddleware } from './shared/lib/middlewares/rest-logger.middleware';
