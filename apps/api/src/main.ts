@@ -117,7 +117,7 @@ async function bootstrap(): Promise<void> {
         const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl!);
         // eslint-disable-next-line @typescript-eslint/naming-convention
         const client = new TrustIssuer.Client({ client_id: oidcClientId!, client_secret: oidcClientSecret! });
-        this.oidcStrategyCache.strategies.set(tenantId, tenantStrategyFactory(
+        oidcStrategyCache.strategies.set(tenantId, tenantStrategyFactory(
           authService,
           tenantId,
           {
@@ -128,7 +128,7 @@ async function bootstrap(): Promise<void> {
           client,
         ));
 
-        fastifyPassport.use(tenant.id, this.oidcStrategyCache.strategies.get(tenant.id) as AnyStrategy);
+        fastifyPassport.use(tenant.id, oidcStrategyCache.strategies.get(tenant.id) as AnyStrategy);
       }
 
       fastifyPassport.authenticate(tenantId, { authInfo: false });
