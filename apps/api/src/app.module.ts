@@ -116,7 +116,7 @@ import { WikisModule } from './wiki/wikis.module';
     { provide: APP_INTERCEPTOR, useFactory: (): SentryInterceptor => new SentryInterceptor(sentryInterceptorConfig) },
   ],
   controllers: [AppController],
-  exports: [],
+  exports: [APP_OIDC_CACHE],
 })
 export class AppModule implements NestModule {
   constructor(
