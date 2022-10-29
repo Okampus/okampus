@@ -131,9 +131,10 @@ async function bootstrap(): Promise<void> {
         fastifyPassport.use(tenant.id, oidcStrategyCache.strategies.get(tenant.id) as AnyStrategy);
       }
 
-      fastifyPassport.authenticate(tenantId, { authInfo: false });
+      fastifyPassport.authenticate(tenantId, { authInfo: false, successRedirect: `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth` });
     },
-  }, () => 'hello world!');
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  }, () => {});
 
   if (config.env.isProd()) {
     app.use(helmet());
