@@ -8,7 +8,7 @@ import fastifyCookie from '@fastify/cookie';
 import fastifyCors from '@fastify/cors';
 import fastifyPassport from '@fastify/passport';
 import type { AnyStrategy } from '@fastify/passport/dist/strategies';
-import fastifySession from '@fastify/session';
+import fastifySecureSession from '@fastify/secure-session';
 
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -16,25 +16,21 @@ import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as SentryTracing from '@sentry/tracing';
-import connectRedis from 'connect-redis';
 import fastify from 'fastify';
 import * as multer from 'fastify-multer';
 // eslint-disable-next-line import/no-unresolved, @typescript-eslint/no-unused-vars
 import _ from 'fastify-multer/typings/fastify'; // Import to ensure that plugin typings are loaded
 import { processRequest } from 'graphql-upload-minimal';
 import helmet from 'helmet';
-import Redis from 'ioredis';
 import { Issuer } from 'openid-client';
 import { AppModule } from './app.module';
 import { AuthService } from './auth/auth.service';
 import { tenantStrategyFactory } from './auth/tenant.strategy';
 import { config } from './shared/configs/config';
-import { redisConnectionOptions } from './shared/configs/redis.config';
 import { APP_OIDC_CACHE } from './shared/lib/constants';
 import { TenantsService } from './tenants/tenants/tenants.service';
 
 const logger = new Logger('Bootstrap');
-const RedisStore = connectRedis(fastifySession as never);
 
 function setupSwagger(app: NestFastifyApplication): void {
   const swaggerConfig = new DocumentBuilder()
@@ -68,9 +64,11 @@ async function bootstrap(): Promise<void> {
   await app.register(fastifyCookie, {
     secret: config.cookies.signature, // For cookies signature
   });
-  await app.register(fastifySession, {
-    store: new RedisStore({ client: new Redis(redisConnectionOptions), logErrors: true }) as never,
-    secret: config.session.secret,
+  await app.register(fastifySecureSession, {
+    key: config.session.secret,
+    cookie: {
+      path: '/',
+    },
   });
   await app.register(fastifyPassport.initialize());
   await app.register(fastifyPassport.secureSession());
