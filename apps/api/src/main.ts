@@ -3,6 +3,7 @@
 import 'multer';
 import './shared/lib/morgan.register';
 
+import crypto from 'node:crypto';
 import path from 'node:path';
 import fastifyCookie from '@fastify/cookie';
 import fastifyCors from '@fastify/cors';
@@ -65,9 +66,11 @@ async function bootstrap(): Promise<void> {
     secret: config.cookies.signature, // For cookies signature
   });
   await app.register(fastifySecureSession, {
-    key: config.session.secret,
+    secret: config.session.secret,
+    salt: crypto.randomBytes(16),
     cookie: {
       path: '/',
+      httpOnly: true,
     },
   });
   await app.register(fastifyPassport.initialize());
@@ -87,7 +90,6 @@ async function bootstrap(): Promise<void> {
     credentials: true,
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const oidcStrategyCache = app.get(APP_OIDC_CACHE);
   const tenantsService = app.get<TenantsService>(TenantsService);
   const authService = app.get<AuthService>(AuthService);
