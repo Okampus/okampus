@@ -87,7 +87,6 @@ async function bootstrap(): Promise<void> {
     credentials: true,
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const oidcStrategyCache = app.get(APP_OIDC_CACHE);
   const tenantsService = app.get<TenantsService>(TenantsService);
   const authService = app.get<AuthService>(AuthService);
