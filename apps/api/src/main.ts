@@ -135,7 +135,7 @@ async function bootstrap(): Promise<void> {
       console.log('REDIRECT URL', `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth`);
 
       try {
-        fastifyPassport.authenticate(tenantId, { authInfo: false, successRedirect: `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth` })(fastifyInstance, req, res);
+        fastifyPassport.authenticate(tenantId, { authInfo: false, successRedirect: `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth` }).bind(fastifyInstance)(req, res);
       } catch (e) {
         logger.error(e);
       }
