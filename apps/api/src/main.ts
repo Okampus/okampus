@@ -95,7 +95,7 @@ async function bootstrap(): Promise<void> {
   const authService = app.get<AuthService>(AuthService);
 
   fastifyInstance.get('/auth/:tenant', {
-    preValidation: async (req) => {
+    preValidation: async (req, res) => {
       const tenantId = (req.params as { tenant: string }).tenant;
       const tenant = await tenantsService.findOne(tenantId);
       if (!tenant)
@@ -135,7 +135,7 @@ async function bootstrap(): Promise<void> {
       console.log('REDIRECT URL', `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth`);
 
       try {
-        fastifyPassport.authenticate(tenantId, { authInfo: false, successRedirect: `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth` });
+        fastifyPassport.authenticate(tenantId, { authInfo: false, successRedirect: `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth` })(fastifyInstance, req, res);
       } catch (e) {
         logger.error(e);
       }
