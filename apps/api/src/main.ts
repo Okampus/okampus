@@ -3,7 +3,6 @@
 import 'multer';
 import './shared/lib/morgan.register';
 
-import crypto from 'node:crypto';
 import path from 'node:path';
 import fastifyCookie from '@fastify/cookie';
 import fastifyCors from '@fastify/cors';
@@ -66,8 +65,7 @@ async function bootstrap(): Promise<void> {
     secret: config.cookies.signature, // For cookies signature
   });
   await app.register(fastifySecureSession, {
-    secret: config.session.secret,
-    salt: crypto.randomBytes(16),
+    key: Buffer.from(config.session.secret, 'hex'),
     cookie: {
       path: '/',
       httpOnly: true,
