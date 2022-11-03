@@ -65,9 +65,6 @@ async function bootstrap(): Promise<void> {
     secret: config.cookies.signature, // For cookies signature
   });
 
-  console.log('KEY', config.session.secret);
-  console.log('KEY BUFFER', Buffer.from(config.session.secret, 'ascii'));
-
   await app.register(fastifySecureSession, {
     key: Buffer.from(config.session.secret, 'ascii'),
     cookie: {
@@ -75,6 +72,7 @@ async function bootstrap(): Promise<void> {
       httpOnly: true,
     },
   });
+
   await app.register(fastifyPassport.initialize());
   await app.register(fastifyPassport.secureSession());
   await app.register(fastifyCors, config.env.isProd() ? {
@@ -132,6 +130,9 @@ async function bootstrap(): Promise<void> {
 
         fastifyPassport.use(tenant.id, oidcStrategyCache.strategies.get(tenant.id) as AnyStrategy);
       }
+
+      console.log('STRATEGY', oidcStrategyCache.strategies.get(tenant.id));
+      console.log('REDIRECT URL', `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth`);
 
       try {
         fastifyPassport.authenticate(tenantId, { authInfo: false, successRedirect: `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth` });
