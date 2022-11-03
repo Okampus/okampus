@@ -64,8 +64,12 @@ async function bootstrap(): Promise<void> {
   await app.register(fastifyCookie, {
     secret: config.cookies.signature, // For cookies signature
   });
+
+  console.log('KEY', config.session.secret);
+  console.log('KEY BUFFER', Buffer.from(config.session.secret, 'ascii'));
+
   await app.register(fastifySecureSession, {
-    key: Buffer.from(config.session.secret, 'hex'),
+    key: Buffer.from(config.session.secret, 'ascii'),
     cookie: {
       path: '/',
       httpOnly: true,
