@@ -7,7 +7,6 @@ import path from 'node:path';
 import fastifyCookie from '@fastify/cookie';
 import fastifyCors from '@fastify/cors';
 import fastifyPassport from '@fastify/passport';
-import type { AnyStrategy } from '@fastify/passport/dist/strategies';
 import fastifySecureSession from '@fastify/secure-session';
 
 import { Logger, ValidationPipe } from '@nestjs/common';
@@ -127,15 +126,13 @@ async function bootstrap(): Promise<void> {
           },
           client,
         ));
-
-        fastifyPassport.use(tenant.id, oidcStrategyCache.strategies.get(tenant.id) as AnyStrategy);
       }
 
       console.log('STRATEGY', oidcStrategyCache.strategies.get(tenant.id));
       console.log('REDIRECT URL', `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth`);
 
       try {
-        fastifyPassport.authenticate(tenantId, { authInfo: false, successRedirect: `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth` }).bind(fastifyInstance)(req, res);
+        return await fastifyPassport.authenticate(oidcStrategyCache.strategies.get(tenant.id), { authInfo: false, successRedirect: `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth` }).bind(fastifyInstance)(req, res);
       } catch (e) {
         logger.error(e);
       }
