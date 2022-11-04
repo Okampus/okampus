@@ -34,16 +34,13 @@ export function tenantStrategyFactory(
     }
 
     public async validate(tokenset: TokenSet): Promise<User> {
-      console.log('Entering strategy validation');
       const data: TenantUserinfoResponse = await this.client.userinfo(tokenset);
-      
-      console.log('Tenant User infos: ', data);
+
       if (!Object.values<string>(SchoolRole).includes(data.role))
       throw new UnauthorizedException('Invalid role');
-      
+
       const userInfo = new TenantUserDto(data);
-      
-      console.log('User infos DTO: ', userInfo);
+
       return await this.authService.createOrUpdate(tenantId, userInfo);
     }
   };
