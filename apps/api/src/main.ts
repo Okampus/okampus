@@ -47,7 +47,7 @@ async function bootstrap(): Promise<void> {
   if (config.sentry.enabled)
     SentryTracing.addExtensionMethods();
 
-  const fastifyInstance = fastify({ trustProxy: false });
+  const fastifyInstance = fastify({ trustProxy: false, logger: { level: "trace" } });
 
   fastifyInstance.addHook('preValidation', async (_request, _reply) => {
     if (_request.headers['content-type']?.startsWith('multipart/form-data') && _request.url === '/graphql') {
@@ -132,13 +132,14 @@ async function bootstrap(): Promise<void> {
       console.log('REDIRECT URL', `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth`);
 
       try {
-        return await fastifyPassport.authenticate(oidcStrategyCache.strategies.get(tenant.id), { authInfo: false, successRedirect: `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth` }).bind(fastifyInstance)(req, res);
+        await fastifyPassport.authenticate(oidcStrategyCache.strategies.get(tenant.id), { authInfo: false, successRedirect: `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth` }).bind(fastifyInstance)(req, res);
+        console.log("Authentication done")
       } catch (e) {
         logger.error(e);
       }
     },
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  }, () => {});
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+  }, () => { });
 
   if (config.env.isProd()) {
     app.use(helmet());
