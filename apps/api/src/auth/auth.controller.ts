@@ -42,6 +42,19 @@ export class AuthController {
   ) {}
 
   @Public()
+  @Get('login-tenant')
+  public async tenantLoginCallback(@CurrentUser() user: User, @Res() res: FastifyReply): Promise<void> {
+    const login = await this.authService.login(user);
+
+    if (config.meilisearch.enabled)
+      await this.addMeiliSearchCookie(res, user.tenant);
+
+    this.addAuthCookies(res, login);
+    console.log(`${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth`);
+    void res.redirect(303, `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth`);
+ }
+
+  @Public()
   @Post('login')
   public async login(
     @Body() body: LoginDto,
@@ -158,17 +171,5 @@ export class AuthController {
       .setCookie('refreshToken', tokens.refreshToken, { ...cookieOptions, maxAge: maxAgeRefresh })
       .setCookie('accessTokenExpiresAt', tokens.accessTokenExpiresAt.toString(), { ...cookiePublicOptions, maxAge: maxAgeAccess })
       .setCookie('refreshTokenExpiresAt', tokens.refreshTokenExpiresAt.toString(), { ...cookiePublicOptions, maxAge: maxAgeRefresh });
-  }
-
-  @Public()
-  @Get(':id/callback')
-  public async tenantLoginCallback(@CurrentUser() user: User, @Res() res: FastifyReply): Promise<void> {
-    const login = await this.authService.login(user);
-
-    if (config.meilisearch.enabled)
-      await this.addMeiliSearchCookie(res, user.tenant);
-
-    this.addAuthCookies(res, login);
-    void res.redirect(`${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth`);
   }
 }
