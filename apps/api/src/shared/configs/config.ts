@@ -107,6 +107,7 @@ export const config = {
     options: {
       signed: true,
       secure: nodeEnv === 'production',
+      path: '/',
       httpOnly: true,
       // eslint-disable-next-line no-undefined
       domain: nodeEnv === 'production' ? `.${baseDomain}` : undefined,
