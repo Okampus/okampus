@@ -1,7 +1,7 @@
 FROM node:18
 
 WORKDIR /app
-RUN adduser -D --uid 1111 api
+RUN adduser --uid 1111 api
 
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
 RUN chmod +x /wait
