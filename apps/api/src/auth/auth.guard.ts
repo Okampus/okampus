@@ -42,7 +42,7 @@ export class AuthGuard implements CanActivate {
   }
 
   public async getTenantFromHeaders(headers: Record<string, string[] | string>): Promise<Tenant> {
-    const tenantId = headers[TENANT_ID_HEADER_NAME.toLowerCase()];
+    const tenantId = headers[TENANT_ID_HEADER_NAME];
     if (!tenantId)
       throw new UnauthorizedException('Tenant not provided');
 
@@ -93,24 +93,20 @@ export class AuthGuard implements CanActivate {
       this.jwtService,
       token,
       { tokenType: 'ws' },
-      () => this.authService.getTokenOptions('ws'),
+      this.authService.getTokenOptions('ws'),
     );
 
     return await this.userService.findOneById(sub);
   }
 
   private async handleRequest(request: FastifyRequest & { user: User; tenant: Tenant }): Promise<User> {
-    let fromHeader = false;
-
     // Try first to resolve the token from the cookies
     let token = request.cookies?.accessToken;
     if (!token) {
       // If not found, try to resolve the bearer from the headers
       const header = request.headers?.authorization?.split(' ');
-      if (header?.[0] === 'Bearer' && header?.[1]) {
+      if (header?.[0] === 'Bearer' && header?.[1])
         token = header[1];
-        fromHeader = true;
-      }
 
       if (!token)
         throw new UnauthorizedException('No token provided');
@@ -119,8 +115,8 @@ export class AuthGuard implements CanActivate {
     const sub = await processToken(
       this.jwtService,
       token,
-      { tokenType: 'http', ...fromHeader && { userType: 'bot' } },
-      decoded => this.authService.getTokenOptions(decoded.userType === 'usr' ? 'access' : 'bot'),
+      { tokenType: 'http' },
+      this.authService.getTokenOptions('access'),
     );
 
     const user = await this.userService.findOneById(sub);
