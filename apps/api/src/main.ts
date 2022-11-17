@@ -94,7 +94,9 @@ async function bootstrap(): Promise<void> {
     },
     credentials: true,
   } : {
-    origin: config.network.frontendUrl,
+    origin: (origin, cb): void => {
+      cb(null, ['http://localhost:19006', 'http://localhost:5173', 'http://localhost:3000'].includes(origin));
+    },
     credentials: true,
   });
 
