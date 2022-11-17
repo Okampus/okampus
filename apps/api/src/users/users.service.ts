@@ -73,7 +73,7 @@ export class UsersService {
     const user = new User({ ...options, tenant });
     let token: string | null = null;
     if (options.bot) {
-      token = await this.jwtService.signAsync({ sub: user.id, userType: 'bot', tokenType: 'http' } as TokenClaims, {
+      token = await this.jwtService.signAsync({ sub: user.id, tokenType: 'http' } as TokenClaims, {
         secret: config.tokens.botTokenSecret,
       });
       await user.setPassword(token);

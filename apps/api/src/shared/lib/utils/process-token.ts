@@ -8,7 +8,7 @@ export async function processToken(
   jwtService: JwtService,
   token: string,
   expectedClaims: Partial<TokenClaims>,
-  expectedOptions: (decoded: TokenClaims) => JwtSignOptions,
+  expectedOptions: JwtSignOptions,
 ): Promise<string> {
   if (!token)
     throw new UnauthorizedException('Token not provided');
@@ -25,7 +25,7 @@ export async function processToken(
     throw new UnauthorizedException('Invalid token claims');
 
   try {
-    await jwtService.verifyAsync<TokenClaims>(unsignedToken.value, expectedOptions(decoded));
+    await jwtService.verifyAsync<TokenClaims>(unsignedToken.value, expectedOptions);
   } catch {
     throw new UnauthorizedException('Falsified token');
   }

@@ -52,7 +52,7 @@ export class AuthService {
   }
 
   public async login(user: User): Promise<TokenResponse> {
-    const payload: TokenClaims = { sub: user.id, userType: 'usr', tokenType: 'http' };
+    const payload: TokenClaims = { sub: user.id, tokenType: 'http' };
 
     return {
       accessToken: await this.jwtService.signAsync(payload, this.getTokenOptions('access')),
@@ -67,20 +67,14 @@ export class AuthService {
   }
 
   public async loginWithRefreshToken(refreshToken: string): Promise<User> {
-    const sub = await processToken(this.jwtService, refreshToken, { tokenType: 'http' }, () => this.getTokenOptions('refresh'));
+    const sub = await processToken(this.jwtService, refreshToken, { tokenType: 'http' }, this.getTokenOptions('refresh'));
     return await this.userRepository.findOneOrFail({ id: sub });
   }
 
-  public getTokenOptions(type: 'access' | 'bot' | 'refresh' | 'ws'): JwtSignOptions {
+  public getTokenOptions(type: 'access' | 'refresh' | 'ws'): JwtSignOptions {
     const options: JwtSignOptions = {
       secret: config.tokens[`${type}TokenSecret`],
     };
-
-    if (type !== 'bot') {
-      const expiration = config.tokens[`${type}TokenExpirationSeconds`];
-      if (expiration)
-        options.expiresIn = `${expiration}s`;
-    }
 
     return options;
   }
