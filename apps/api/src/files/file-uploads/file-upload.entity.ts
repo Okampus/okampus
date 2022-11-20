@@ -11,11 +11,11 @@ import {
 } from '@nestjs/graphql';
 import mime from 'mime-types';
 import { nanoid } from 'nanoid';
+import type { Tenant } from '../../org/tenants/tenants/tenant.entity';
 import { config } from '../../shared/configs/config';
 import { BaseTenantEntity } from '../../shared/lib/entities/base-tenant-entity';
 import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
-import type { Tenant } from '../../tenants/tenants/tenant.entity';
-import { User } from '../../users/user.entity';
+import { User } from '../../uua/users/user.entity';
 
 @ObjectType()
 @Entity()

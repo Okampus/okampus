@@ -1,9 +1,9 @@
 import type { EntityManager } from '@mikro-orm/postgresql';
 import type { ITriggerPayload } from '@novu/node';
-import type { Settings } from '../../../../settings/settings.entity';
-import { TeamMember } from '../../../../teams/members/team-member.entity';
-import type { Team } from '../../../../teams/teams/team.entity';
-import { User } from '../../../../users/user.entity';
+import { TeamMember } from '../../../../org/teams/members/team-member.entity';
+import type { Team } from '../../../../org/teams/teams/team.entity';
+import type { Settings } from '../../../../uua/settings/settings.entity';
+import { User } from '../../../../uua/users/user.entity';
 import { TeamRole } from '../../../lib/types/enums/team-role.enum';
 import { Role } from '../../authorization/types/role.enum';
 import { SchoolRole } from '../../authorization/types/school-role.enum';

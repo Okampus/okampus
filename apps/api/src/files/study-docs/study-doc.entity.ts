@@ -6,10 +6,10 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import type { SchoolGroup } from '../../school-group/school-group.entity';
+import { Subject } from '../../org/data/subjects/subject.entity';
+import type { SchoolGroup } from '../../org/school-group/school-group.entity';
 import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
 import { StudyDocType } from '../../shared/lib/types/enums/study-doc-type.enum';
-import { Subject } from '../../subjects/subject.entity';
 import type { DocSeries } from '../doc-series/doc-series.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 

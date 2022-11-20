@@ -7,7 +7,7 @@ import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { AdminTeamSocialUpdatedNotification } from '../shared/modules/notifications/notifications';
 import { NotificationsService } from '../shared/modules/notifications/notifications.service';
-import type { User } from '../users/user.entity';
+import type { User } from '../uua/users/user.entity';
 import type { CreateSocialDto } from './dto/create-social.dto';
 import type { UpdateSocialDto } from './dto/update-social.dto';
 import { Social } from './social.entity';

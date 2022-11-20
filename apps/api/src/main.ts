@@ -1,4 +1,4 @@
-/* eslint-disable node/no-sync */
+
 // Hack to get Multer to register its typings into the global scope, because why not
 // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47780#issuecomment-790684085
 import 'multer';
@@ -25,12 +25,12 @@ import { processRequest } from 'graphql-upload-minimal';
 import helmet from 'helmet';
 import { Issuer } from 'openid-client';
 import { AppModule } from './app.module';
-import { AuthService } from './auth/auth.service';
-import { tenantStrategyFactory } from './auth/tenant.strategy';
+import { TenantsService } from './org/tenants/tenants/tenants.service';
 import { config } from './shared/configs/config';
 import { APP_OIDC_CACHE } from './shared/lib/constants';
-import { TenantsService } from './tenants/tenants/tenants.service';
-import { UsersService } from './users/users.service';
+import { AuthService } from './uua/auth/auth.service';
+import { tenantStrategyFactory } from './uua/auth/tenant.strategy';
+import { UsersService } from './uua/users/users.service';
 
 const logger = new Logger('Bootstrap');
 

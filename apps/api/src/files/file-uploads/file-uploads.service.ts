@@ -3,11 +3,11 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import type { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import sharp from 'sharp';
+import type { Tenant } from '../../org/tenants/tenants/tenant.entity';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import type { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
 import { streamToBuffer } from '../../shared/lib/utils/stream-to-buffer';
-import type { Tenant } from '../../tenants/tenants/tenant.entity';
-import type { User } from '../../users/user.entity';
+import type { User } from '../../uua/users/user.entity';
 import { FilePersistanceService } from './file-persistance.service';
 import { FileUpload } from './file-upload.entity';
 

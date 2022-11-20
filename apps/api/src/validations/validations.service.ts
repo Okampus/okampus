@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Content } from '../contents/entities/content.entity';
+import { Content } from '../create/contents/entities/content.entity';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { ValidationType } from '../shared/lib/types/enums/validation-type.enum';
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
@@ -8,7 +8,7 @@ import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { ThreadSubscribedAnsweredNotification } from '../shared/modules/notifications/notifications';
 import { NotificationsService } from '../shared/modules/notifications/notifications.service';
-import type { User } from '../users/user.entity';
+import type { User } from '../uua/users/user.entity';
 import { Validation } from './validation.entity';
 
 @Injectable()

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   Entity,
   Enum,
@@ -7,12 +8,10 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Team } from '../org/teams/teams/team.entity';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { SocialAccountType } from '../shared/lib/types/enums/social-account-type.enum';
-// eslint-disable-next-line import/no-cycle
-import { Team } from '../teams/teams/team.entity';
-// eslint-disable-next-line import/no-cycle
-import { User } from '../users/user.entity';
+import { User } from '../uua/users/user.entity';
 
 
 @ObjectType()

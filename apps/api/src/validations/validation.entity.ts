@@ -1,9 +1,9 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import type { Content } from '../contents/entities/content.entity';
+import type { Content } from '../create/contents/entities/content.entity';
 import { BaseContentInteraction } from '../shared/lib/entities/base-content-interaction.entity';
 import { ValidationType } from '../shared/lib/types/enums/validation-type.enum';
-import type { User } from '../users/user.entity';
+import type { User } from '../uua/users/user.entity';
 
 @ObjectType()
 @Entity()

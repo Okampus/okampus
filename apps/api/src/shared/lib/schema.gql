@@ -2,38 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Badge {
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  id: Int!
-  name: String!
-  description: String!
-  pointPrize: Int!
-  level: BadgeLevel!
-  icon: String!
-  series: String!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-enum BadgeLevel {
-  Bronze
-  Silver
-  Gold
-  Platinum
-}
-
-type BadgeUnlock {
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  id: Int!
-  user: User!
-  badge: Badge!
-}
-
 type SchoolGroup {
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -46,6 +14,11 @@ type SchoolGroup {
   memberships: [SchoolGroupMembership!]!
   active: Boolean!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 enum SchoolGroupType {
   Everyone
@@ -78,44 +51,6 @@ enum SchoolGroupRole {
   Representative
   Substitute
   Student
-}
-
-type Settings {
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  user: User!
-  gdprEndOfLifeExport: Boolean!
-  gdprEndOfLifeAnonymize: Boolean!
-  notificationMentionned: Int!
-  notificationBadgeUnlocked: Int!
-  notificationBlogSubscribedUpdated: Int!
-  notificationContentRemoved: Int!
-  notificationAdminReportCreated: Int!
-  notificationTeamEventCreated: Int!
-  notificationTeamSubscribedEventCreated: Int!
-  notificationTeamManagedFormUpdated: Int!
-  notificationTeamManagedEventUpdated: Int!
-  notificationTeamManagedMembershipRequestUpdated: Int!
-  notificationTeamManagedMemberRoleUpdated: Int!
-  notificationAdminTeamSocialUpdated: Int!
-  notificationAdminTeamLegalFileUpdated: Int!
-  notificationTeamEventSubscribedUpdated: Int!
-  notificationTeamEventManagedApproved: Int!
-  notificationTeamEventManagedRejected: Int!
-  notificationTeamEventManagedRegistrationCreated: Int!
-  notificationAdminTeamEventValidationStarted: Int!
-  notificationAdminTeamEventValidationStep: Int!
-  notificationAdminTeamEventValidationApproved: Int!
-  notificationAdminTeamEventValidationRejected: Int!
-  notificationThreadSubscribedUpdated: Int!
-  notificationThreadSubscribedAnswered: Int!
-  notificationAdminThreadStale: Int!
-  notificationAdminThreadStaleThreshold: Int!
-  notificationAdminThreadAssignedStale: Int!
-  notificationAdminThreadAssignedStaleThreshold: Int!
-  notificationAdminThreadAssigned: Int!
-  notificationRoleUpdated: Int!
-  notificationAdminRoleUpdated: Int!
 }
 
 type ValidationStep {
@@ -340,6 +275,71 @@ enum MembershipRequestState {
   Rejected
 }
 
+type Badge {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  id: Int!
+  name: String!
+  description: String!
+  pointPrize: Int!
+  level: BadgeLevel!
+  icon: String!
+  series: String!
+}
+
+enum BadgeLevel {
+  Bronze
+  Silver
+  Gold
+  Platinum
+}
+
+type BadgeUnlock {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  id: Int!
+  user: User!
+  badge: Badge!
+}
+
+type Settings {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+  gdprEndOfLifeExport: Boolean!
+  gdprEndOfLifeAnonymize: Boolean!
+  notificationMentionned: Int!
+  notificationBadgeUnlocked: Int!
+  notificationBlogSubscribedUpdated: Int!
+  notificationContentRemoved: Int!
+  notificationAdminReportCreated: Int!
+  notificationTeamEventCreated: Int!
+  notificationTeamSubscribedEventCreated: Int!
+  notificationTeamManagedFormUpdated: Int!
+  notificationTeamManagedEventUpdated: Int!
+  notificationTeamManagedMembershipRequestUpdated: Int!
+  notificationTeamManagedMemberRoleUpdated: Int!
+  notificationAdminTeamSocialUpdated: Int!
+  notificationAdminTeamLegalFileUpdated: Int!
+  notificationTeamEventSubscribedUpdated: Int!
+  notificationTeamEventManagedApproved: Int!
+  notificationTeamEventManagedRejected: Int!
+  notificationTeamEventManagedRegistrationCreated: Int!
+  notificationAdminTeamEventValidationStarted: Int!
+  notificationAdminTeamEventValidationStep: Int!
+  notificationAdminTeamEventValidationApproved: Int!
+  notificationAdminTeamEventValidationRejected: Int!
+  notificationThreadSubscribedUpdated: Int!
+  notificationThreadSubscribedAnswered: Int!
+  notificationAdminThreadStale: Int!
+  notificationAdminThreadStaleThreshold: Int!
+  notificationAdminThreadAssignedStale: Int!
+  notificationAdminThreadAssignedStaleThreshold: Int!
+  notificationAdminThreadAssigned: Int!
+  notificationRoleUpdated: Int!
+  notificationAdminRoleUpdated: Int!
+}
+
 type User {
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -475,6 +475,59 @@ enum ContentMasterType {
   Thread
 }
 
+type Validation {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  contentMaster: ContentMaster
+  user: User!
+  content: Content!
+  id: Int!
+  active: Boolean!
+  type: ValidationType!
+}
+
+enum ValidationType {
+  Op
+  Admin
+}
+
+type Thread {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  id: Int!
+  title: String!
+  tags: [Tag!]!
+  post: Content!
+  participants: [User!]!
+  kind: ContentMasterType!
+  type: ThreadType!
+  scope: SchoolGroup
+  locked: Boolean!
+  opValidation: Validation
+  adminValidations: [Validation!]!
+  assignedTeams: [Team!]!
+  assignedUsers: [User!]!
+}
+
+enum ThreadType {
+  Question
+  Suggestion
+  Problem
+  Discussion
+  Other
+}
+
+type Report {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  contentMaster: ContentMaster
+  user: User!
+  content: Content!
+  id: Int!
+  target: User!
+  reason: String
+}
+
 type FileUpload {
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -554,17 +607,6 @@ enum MetricName {
   ClubEventCount
   ClubCreatedEventCount
   UserCount
-}
-
-type Report {
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  contentMaster: ContentMaster
-  user: User!
-  content: Content!
-  id: Int!
-  target: User!
-  reason: String
 }
 
 type TeamEventRegistration {
@@ -663,60 +705,6 @@ enum TeamFinanceCategory {
   Other
 }
 
-type Validation {
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  contentMaster: ContentMaster
-  user: User!
-  content: Content!
-  id: Int!
-  active: Boolean!
-  type: ValidationType!
-}
-
-enum ValidationType {
-  Op
-  Admin
-}
-
-type Thread {
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  id: Int!
-  title: String!
-  tags: [Tag!]!
-  post: Content!
-  participants: [User!]!
-  kind: ContentMasterType!
-  type: ThreadType!
-  scope: SchoolGroup
-  locked: Boolean!
-  opValidation: Validation
-  adminValidations: [Validation!]!
-  assignedTeams: [Team!]!
-  assignedUsers: [User!]!
-}
-
-enum ThreadType {
-  Question
-  Suggestion
-  Problem
-  Discussion
-  Other
-}
-
-type OIDCEnabled {
-  id: String!
-  isEnabled: Boolean!
-  tenantOidcName: String
-}
-
-type TenantLogoUrls {
-  id: String!
-  logoUrl: String
-  logoDarkUrl: String
-}
-
 type Reaction {
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -737,19 +725,6 @@ enum AllReactionValue {
   Unsure
   Partial
   Perfect
-}
-
-type IndexedUser {
-  id: String!
-  realId: String!
-  metaType: String!
-  title: String!
-  picture: String
-  category: String!
-  createdDate: Int!
-  updatedDate: Int!
-  score: Int!
-  tags: [String!]!
 }
 
 type ContentInteractions {
@@ -791,6 +766,31 @@ type TeamReceipt {
 type TeamMembershipStatus {
   membership: TeamMember
   pendingRequest: Boolean!
+}
+
+type OIDCEnabled {
+  id: String!
+  isEnabled: Boolean!
+  tenantOidcName: String
+}
+
+type TenantLogoUrls {
+  id: String!
+  logoUrl: String
+  logoDarkUrl: String
+}
+
+type IndexedUser {
+  id: String!
+  realId: String!
+  metaType: String!
+  title: String!
+  picture: String
+  category: String!
+  createdDate: Int!
+  updatedDate: Int!
+  score: Int!
+  tags: [String!]!
 }
 
 type Query {

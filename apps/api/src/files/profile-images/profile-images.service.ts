@@ -5,7 +5,7 @@ import { assertPermissions } from '../../shared/lib/utils/assert-permission';
 import { Action } from '../../shared/modules/authorization';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
-import type { User } from '../../users/user.entity';
+import type { User } from '../../uua/users/user.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 import { ProfileImage } from './profile-image.entity';
 

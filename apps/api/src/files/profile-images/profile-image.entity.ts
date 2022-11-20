@@ -6,10 +6,10 @@ import {
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
+import { Team } from '../../org/teams/teams/team.entity';
+import { Tenant } from '../../org/tenants/tenants/tenant.entity';
 import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
-import { Team } from '../../teams/teams/team.entity';
-import { Tenant } from '../../tenants/tenants/tenant.entity';
-import { User } from '../../users/user.entity';
+import { User } from '../../uua/users/user.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 
 @ObjectType()

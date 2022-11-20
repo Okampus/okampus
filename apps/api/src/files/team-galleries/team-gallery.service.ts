@@ -1,12 +1,12 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Team } from '../../org/teams/teams/team.entity';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 // Import { AdminTeamLegalFileUpdatedNotification } from '../../shared/modules/notifications/notifications';
 import { NotificationsService } from '../../shared/modules/notifications/notifications.service';
 import type { PaginatedResult } from '../../shared/modules/pagination';
-import { Team } from '../../teams/teams/team.entity';
-import type { User } from '../../users/user.entity';
+import type { User } from '../../uua/users/user.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 import type { CreateTeamGalleryDto } from './dto/create-team-gallery.dto';
 import type { TeamGalleryListOptions } from './dto/team-gallery-list-options.dto';

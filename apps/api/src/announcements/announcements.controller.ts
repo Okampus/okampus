@@ -14,7 +14,7 @@ import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { normalizePagination } from '../shared/modules/pagination';
 import type { PaginatedResult } from '../shared/modules/pagination';
-import { User } from '../users/user.entity';
+import { User } from '../uua/users/user.entity';
 import { Announcement } from './announcement.entity';
 import { AnnouncementsService } from './announcements.service';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';

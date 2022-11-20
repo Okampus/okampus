@@ -7,7 +7,7 @@ import {
 } from '@mikro-orm/core';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { AnnouncementState } from '../shared/lib/types/enums/announcement-state.enum';
-import { User } from '../users/user.entity';
+import { User } from '../uua/users/user.entity';
 
 @Entity()
 export class Announcement extends BaseEntity {

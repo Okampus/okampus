@@ -1,7 +1,7 @@
 
 import type { ITriggerPayload } from '@novu/node';
-import { TeamEventRegistration } from '../../../../teams/event-registrations/team-event-registration.entity';
-import type { User } from '../../../../users/user.entity';
+import { TeamEventRegistration } from '../../../../org/teams/event-registrations/team-event-registration.entity';
+import type { User } from '../../../../uua/users/user.entity';
 import { NotificationType } from '../notification-type.enum';
 import { Notification } from './base.notification';
 

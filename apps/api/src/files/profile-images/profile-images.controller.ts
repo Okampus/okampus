@@ -10,14 +10,14 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
+import { Tenant } from '../../org/tenants/tenants/tenant.entity';
 import { simpleImageMimeTypeRegex } from '../../shared/configs/mime-type';
 import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
 import { FileKind } from '../../shared/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
-import { Tenant } from '../../tenants/tenants/tenant.entity';
-import { User } from '../../users/user.entity';
+import { User } from '../../uua/users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
 import { CreateProfileImageDto } from './dto/create-profile-image.dto';
 import { ProfileImage } from './profile-image.entity';

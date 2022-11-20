@@ -1,15 +1,15 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
+import { TeamEvent } from '../org/teams/events/team-event.entity';
+import { TeamMember } from '../org/teams/members/team-member.entity';
+import { Team } from '../org/teams/teams/team.entity';
 import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/orm/base.repository';
 import { MetricName } from '../shared/lib/types/enums/metric-name.enum';
 import { TeamKind } from '../shared/lib/types/enums/team-kind.enum';
 import { oneMonthAgo, roundToInterval } from '../shared/lib/utils/date-utils';
-import { TeamEvent } from '../teams/events/team-event.entity';
-import { TeamMember } from '../teams/members/team-member.entity';
-import { Team } from '../teams/teams/team.entity';
-import { User } from '../users/user.entity';
+import { User } from '../uua/users/user.entity';
 import type { ListMetricsDto } from './dto/list-metrics.dto';
 import { Metric } from './metric.entity';
 

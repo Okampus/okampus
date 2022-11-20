@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
+import { Tenant } from '../../org/tenants/tenants/tenant.entity';
 import { CurrentTenant } from '../../shared/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '../../shared/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '../../shared/lib/decorators/upload-interceptor.decorator';
@@ -21,8 +22,7 @@ import type { Categories } from '../../shared/lib/utils/compute-document-categor
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination } from '../../shared/modules/pagination';
 import type { PaginatedResult } from '../../shared/modules/pagination';
-import { Tenant } from '../../tenants/tenants/tenant.entity';
-import { User } from '../../users/user.entity';
+import { User } from '../../uua/users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
 import { CategoryTypesDto } from './dto/category-types.dto';
 import { CreateInfoDocDto } from './dto/create-info-doc.dto';

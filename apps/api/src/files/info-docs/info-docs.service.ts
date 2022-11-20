@@ -2,7 +2,7 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { SchoolGroup } from '../../school-group/school-group.entity';
+import { SchoolGroup } from '../../org/school-group/school-group.entity';
 import { BaseRepository } from '../../shared/lib/orm/base.repository';
 import type { InfoDocFilter } from '../../shared/lib/types/enums/docs-filters.enum';
 import { assertPermissions } from '../../shared/lib/utils/assert-permission';
@@ -11,7 +11,7 @@ import { computeDocumentCategories } from '../../shared/lib/utils/compute-docume
 import { Action } from '../../shared/modules/authorization';
 import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
-import type { User } from '../../users/user.entity';
+import type { User } from '../../uua/users/user.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 import type { CreateInfoDocDto } from './dto/create-info-doc.dto';

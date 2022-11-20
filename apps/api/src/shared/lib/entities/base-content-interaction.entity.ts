@@ -1,7 +1,7 @@
 import { Index, ManyToOne } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Content } from '../../../contents/entities/content.entity';
-import { User } from '../../../users/user.entity';
+import { Content } from '../../../create/contents/entities/content.entity';
+import { User } from '../../../uua/users/user.entity';
 import { BaseEntity } from './base.entity';
 import { ContentMaster } from './content-master.entity';
 

@@ -1,4 +1,4 @@
-import type { Tenant } from '../../../../tenants/tenants/tenant.entity';
+import type { Tenant } from '../../../../org/tenants/tenants/tenant.entity';
 
 export interface TenantRequest {
   headers: Record<string, string>;

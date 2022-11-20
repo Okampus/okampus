@@ -1,7 +1,7 @@
 import type { ITriggerPayload } from '@novu/node';
-import { TeamEvent } from '../../../../teams/events/team-event.entity';
-import { ValidationStep } from '../../../../tenants/validation-steps/validation-step.entity';
-import type { User } from '../../../../users/user.entity';
+import { TeamEvent } from '../../../../org/teams/events/team-event.entity';
+import { ValidationStep } from '../../../../org/tenants/validation-steps/validation-step.entity';
+import type { User } from '../../../../uua/users/user.entity';
 import { NotificationType } from '../notification-type.enum';
 import { Notification } from './base.notification';
 

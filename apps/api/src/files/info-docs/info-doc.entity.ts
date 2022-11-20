@@ -5,7 +5,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import { SchoolGroup } from '../../school-group/school-group.entity';
+import { SchoolGroup } from '../../org/school-group/school-group.entity';
 import { BaseFileEntity } from '../../shared/lib/entities/base-file-entity';
 import type { DocSeries } from '../doc-series/doc-series.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
