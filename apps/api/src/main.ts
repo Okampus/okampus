@@ -127,19 +127,19 @@ async function bootstrap(): Promise<void> {
           oidcCallbackUri,
         } = tenant;
 
-        if (!oidcEnabled)
+        if (!oidcEnabled || !oidcClientId || !oidcClientSecret || !oidcDiscoveryUrl || !oidcScopes || !oidcCallbackUri)
           return false;
 
-        const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl!);
+        const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl);
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        const client = new TrustIssuer.Client({ client_id: oidcClientId!, client_secret: oidcClientSecret! });
+        const client = new TrustIssuer.Client({ client_id: oidcClientId, client_secret: oidcClientSecret });
         oidcStrategyCache.strategies.set(tenantId, tenantStrategyFactory(
           authService,
           tenantId,
           {
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            redirect_uri: oidcCallbackUri!,
-            scope: oidcScopes!,
+            redirect_uri: oidcCallbackUri,
+            scope: oidcScopes,
           },
           client,
         ));
