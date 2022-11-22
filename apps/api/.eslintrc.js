@@ -11,7 +11,7 @@ module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint/eslint-plugin'],
-  extends: ['noftalint/typescript'],
+  extends: ['noftalint/typescript', 'plugin:import/typescript'],
   ignorePatterns: ['node_modules/', './dist', './migrations/**/*.ts'],
   reportUnusedDisableDirectives: true,
   parserOptions: {
@@ -22,6 +22,7 @@ module.exports = {
     jest: true,
   },
   rules: {
+    'node/no-missing-import': 'off',
     'import/no-extraneous-dependencies': 'off',
     'unicorn/filename-case': ['error', { case: 'kebabCase' }],
 
@@ -59,6 +60,7 @@ module.exports = {
       node: {
         extensions: ['.js', '.ts'],
       },
+      typescript: {},
     },
   },
   globals: {

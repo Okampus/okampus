@@ -1,8 +1,9 @@
 
 // Hack to get Multer to register its typings into the global scope, because why not
 // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47780#issuecomment-790684085
+import './aliases';
 import 'multer';
-import './shared/lib/morgan.register';
+import '@meta/shared/lib/morgan.register';
 
 // KEEP FOR LOCALHOST DEBUG - import fs from 'node:fs';
 import path from 'node:path';
@@ -19,18 +20,18 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as SentryTracing from '@sentry/tracing';
 import fastify from 'fastify';
 import * as multer from 'fastify-multer';
-// eslint-disable-next-line import/no-unresolved, @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import _ from 'fastify-multer/typings/fastify'; // Import to ensure that plugin typings are loaded
 import { processRequest } from 'graphql-upload-minimal';
 import helmet from 'helmet';
 import { Issuer } from 'openid-client';
+import { config } from '@meta/shared/configs/config';
+import { APP_OIDC_CACHE } from '@meta/shared/lib/constants';
+import { TenantsService } from '@modules/org/tenants/tenants.service';
+import { AuthService } from '@modules/uua/auth/auth.service';
+import { tenantStrategyFactory } from '@modules/uua/auth/tenant.strategy';
+import { UsersService } from '@modules/uua/users/users.service';
 import { AppModule } from './app.module';
-import { TenantsService } from './org/tenants/tenants/tenants.service';
-import { config } from './shared/configs/config';
-import { APP_OIDC_CACHE } from './shared/lib/constants';
-import { AuthService } from './uua/auth/auth.service';
-import { tenantStrategyFactory } from './uua/auth/tenant.strategy';
-import { UsersService } from './uua/users/users.service';
 
 const logger = new Logger('Bootstrap');
 

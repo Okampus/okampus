@@ -1,0 +1,21 @@
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { Module } from '@nestjs/common';
+import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
+import { NotificationsModule } from '@meta/shared/modules/notifications/notifications.module';
+import { Team } from '@modules/org/teams/team.entity';
+import { FileUploadsModule } from '../file-uploads/file-uploads.module';
+import { TeamGalleriesController } from './team-gallery.controller';
+import { TeamGallery } from './team-gallery.entity';
+import { TeamGalleriesService } from './team-gallery.service';
+
+@Module({
+  imports: [
+    MikroOrmModule.forFeature([TeamGallery, Team]),
+    FileUploadsModule,
+    NotificationsModule,
+  ],
+  controllers: [TeamGalleriesController],
+  providers: [CaslAbilityFactory, TeamGalleriesService],
+  exports: [TeamGalleriesService],
+})
+export class TeamGalleriesModule {}

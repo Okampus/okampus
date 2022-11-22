@@ -11,6 +11,10 @@
     "module": "commonjs",
     "noImplicitAny": true,
     "outDir": "./dist",
+    "paths": {
+      "@meta/*": ["src/meta/*"],
+      "@modules/*": ["src/modules/*"]
+    },
     "pretty": false,
     "removeComments": true,
     "resolveJsonModule": true,

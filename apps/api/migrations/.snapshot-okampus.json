@@ -140,12 +140,12 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
           "nullable": false,
-          "mappedType": "integer"
+          "mappedType": "string"
         },
         "created_at": {
           "name": "created_at",
@@ -167,49 +167,82 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "date": {
-          "name": "date",
-          "type": "timestamptz(0)",
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
+          "mappedType": "string"
         },
-        "content": {
-          "name": "content",
+        "english_name": {
+          "name": "english_name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "type": {
+          "name": "type",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "enumItems": [
+            "Everyone",
+            "Program",
+            "Year",
+            "Sector",
+            "Class"
+          ],
+          "mappedType": "enum"
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "mappedType": "text"
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
         }
       },
-      "name": "daily_info",
+      "name": "class",
       "schema": "public",
       "indexes": [
         {
           "columnNames": [
-            "date"
+            "parent_id"
           ],
           "composite": false,
-          "keyName": "daily_info_date_index",
+          "keyName": "class_parent_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "date"
-          ],
-          "composite": false,
-          "keyName": "daily_info_date_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "daily_info_pkey",
+          "keyName": "class_pkey",
           "columnNames": [
             "id"
           ],
@@ -219,83 +252,21 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "date": {
-          "name": "date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "daily_menu",
-      "schema": "public",
-      "indexes": [
-        {
+      "foreignKeys": {
+        "class_parent_id_foreign": {
+          "constraintName": "class_parent_id_foreign",
           "columnNames": [
-            "date"
+            "parent_id"
           ],
-          "composite": false,
-          "keyName": "daily_menu_date_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "date"
-          ],
-          "composite": false,
-          "keyName": "daily_menu_date_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "daily_menu_pkey",
-          "columnNames": [
+          "localTableName": "public.class",
+          "referencedColumnNames": [
             "id"
           ],
-          "composite": false,
-          "primary": true,
-          "unique": true
+          "referencedTableName": "public.class",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
         }
-      ],
-      "checks": [],
-      "foreignKeys": {}
+      }
     },
     {
       "columns": {
@@ -472,8 +443,168 @@
     },
     {
       "columns": {
-        "daily_menu_id": {
-          "name": "daily_menu_id",
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "tooltip": {
+          "name": "tooltip",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "label",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "label_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "date": {
+          "name": "date",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "menu",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "date"
+          ],
+          "composite": false,
+          "keyName": "menu_date_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "date"
+          ],
+          "composite": false,
+          "keyName": "menu_date_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "menu_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "menu_id": {
+          "name": "menu_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -491,13 +622,13 @@
           "mappedType": "integer"
         }
       },
-      "name": "daily_menu_starters",
+      "name": "menu_desserts",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "daily_menu_starters_pkey",
+          "keyName": "menu_desserts_pkey",
           "columnNames": [
-            "daily_menu_id",
+            "menu_id",
             "food_id"
           ],
           "composite": true,
@@ -507,25 +638,25 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "daily_menu_starters_daily_menu_id_foreign": {
-          "constraintName": "daily_menu_starters_daily_menu_id_foreign",
+        "menu_desserts_menu_id_foreign": {
+          "constraintName": "menu_desserts_menu_id_foreign",
           "columnNames": [
-            "daily_menu_id"
+            "menu_id"
           ],
-          "localTableName": "public.daily_menu_starters",
+          "localTableName": "public.menu_desserts",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.daily_menu",
+          "referencedTableName": "public.menu",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "daily_menu_starters_food_id_foreign": {
-          "constraintName": "daily_menu_starters_food_id_foreign",
+        "menu_desserts_food_id_foreign": {
+          "constraintName": "menu_desserts_food_id_foreign",
           "columnNames": [
             "food_id"
           ],
-          "localTableName": "public.daily_menu_starters",
+          "localTableName": "public.menu_desserts",
           "referencedColumnNames": [
             "id"
           ],
@@ -537,8 +668,8 @@
     },
     {
       "columns": {
-        "daily_menu_id": {
-          "name": "daily_menu_id",
+        "menu_id": {
+          "name": "menu_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -556,13 +687,13 @@
           "mappedType": "integer"
         }
       },
-      "name": "daily_menu_dishes",
+      "name": "menu_dishes",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "daily_menu_dishes_pkey",
+          "keyName": "menu_dishes_pkey",
           "columnNames": [
-            "daily_menu_id",
+            "menu_id",
             "food_id"
           ],
           "composite": true,
@@ -572,25 +703,25 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "daily_menu_dishes_daily_menu_id_foreign": {
-          "constraintName": "daily_menu_dishes_daily_menu_id_foreign",
+        "menu_dishes_menu_id_foreign": {
+          "constraintName": "menu_dishes_menu_id_foreign",
           "columnNames": [
-            "daily_menu_id"
+            "menu_id"
           ],
-          "localTableName": "public.daily_menu_dishes",
+          "localTableName": "public.menu_dishes",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.daily_menu",
+          "referencedTableName": "public.menu",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "daily_menu_dishes_food_id_foreign": {
-          "constraintName": "daily_menu_dishes_food_id_foreign",
+        "menu_dishes_food_id_foreign": {
+          "constraintName": "menu_dishes_food_id_foreign",
           "columnNames": [
             "food_id"
           ],
-          "localTableName": "public.daily_menu_dishes",
+          "localTableName": "public.menu_dishes",
           "referencedColumnNames": [
             "id"
           ],
@@ -602,8 +733,8 @@
     },
     {
       "columns": {
-        "daily_menu_id": {
-          "name": "daily_menu_id",
+        "menu_id": {
+          "name": "menu_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -621,13 +752,13 @@
           "mappedType": "integer"
         }
       },
-      "name": "daily_menu_desserts",
+      "name": "menu_starters",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "daily_menu_desserts_pkey",
+          "keyName": "menu_starters_pkey",
           "columnNames": [
-            "daily_menu_id",
+            "menu_id",
             "food_id"
           ],
           "composite": true,
@@ -637,25 +768,25 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "daily_menu_desserts_daily_menu_id_foreign": {
-          "constraintName": "daily_menu_desserts_daily_menu_id_foreign",
+        "menu_starters_menu_id_foreign": {
+          "constraintName": "menu_starters_menu_id_foreign",
           "columnNames": [
-            "daily_menu_id"
+            "menu_id"
           ],
-          "localTableName": "public.daily_menu_desserts",
+          "localTableName": "public.menu_starters",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.daily_menu",
+          "referencedTableName": "public.menu",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "daily_menu_desserts_food_id_foreign": {
-          "constraintName": "daily_menu_desserts_food_id_foreign",
+        "menu_starters_food_id_foreign": {
+          "constraintName": "menu_starters_food_id_foreign",
           "columnNames": [
             "food_id"
           ],
-          "localTableName": "public.daily_menu_desserts",
+          "localTableName": "public.menu_starters",
           "referencedColumnNames": [
             "id"
           ],
@@ -738,138 +869,6 @@
       ],
       "checks": [],
       "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "english_name": {
-          "name": "english_name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "Everyone",
-            "Program",
-            "Year",
-            "Sector",
-            "Class"
-          ],
-          "mappedType": "enum"
-        },
-        "parent_id": {
-          "name": "parent_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "active": {
-          "name": "active",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "boolean"
-        }
-      },
-      "name": "school_group",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "parent_id"
-          ],
-          "composite": false,
-          "keyName": "school_group_parent_id_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "school_group_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "school_group_parent_id_foreign": {
-          "constraintName": "school_group_parent_id_foreign",
-          "columnNames": [
-            "parent_id"
-          ],
-          "localTableName": "public.school_group",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.school_group",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        }
-      }
     },
     {
       "columns": {
@@ -1010,7 +1009,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "string"
         },
         "active": {
@@ -1065,8 +1064,7 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.school_group",
-          "deleteRule": "set null",
+          "referencedTableName": "public.class",
           "updateRule": "cascade"
         }
       }
@@ -1234,90 +1232,6 @@
           "updateRule": "cascade"
         }
       }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "tooltip": {
-          "name": "tooltip",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "image": {
-          "name": "image",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "type": {
-          "name": "type",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        }
-      },
-      "name": "team_label",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "team_label_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
     },
     {
       "columns": {
@@ -1568,13 +1482,6 @@
           "primary": false,
           "nullable": false,
           "default": "'{user}'",
-          "enumItems": [
-            "user",
-            "moderator",
-            "restaurant-manager",
-            "club-manager",
-            "admin"
-          ],
           "mappedType": "array"
         },
         "school_role": {
@@ -1753,6 +1660,158 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "schema": {
+          "name": "schema",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "MembershipRequest",
+            "Internal",
+            "EventRegistration",
+            "Survey"
+          ],
+          "mappedType": "enum"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "is_template": {
+          "name": "is_template",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        }
+      },
+      "name": "team_form",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "team_id"
+          ],
+          "composite": false,
+          "keyName": "team_form_team_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "team_form_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "team_form_created_by_id_foreign": {
+          "constraintName": "team_form_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.team_form",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "team_form_team_id_foreign": {
+          "constraintName": "team_form_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.team_form",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
         "tenant_id": {
           "name": "tenant_id",
           "type": "varchar(255)",
@@ -1880,7 +1939,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "integer"
         }
       },
@@ -1948,7 +2007,264 @@
             "id"
           ],
           "referencedTableName": "public.team_form",
-          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "issuer": {
+          "name": "issuer",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "team",
+            "user"
+          ],
+          "mappedType": "enum"
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "pending",
+            "approved",
+            "rejected"
+          ],
+          "mappedType": "enum"
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Owner",
+            "Coowner",
+            "Treasurer",
+            "Secretary",
+            "Manager",
+            "Member"
+          ],
+          "mappedType": "enum"
+        },
+        "handled_by_id": {
+          "name": "handled_by_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "handled_at": {
+          "name": "handled_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "handled_message": {
+          "name": "handled_message",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "issued_by_id": {
+          "name": "issued_by_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "original_form_id": {
+          "name": "original_form_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "form_submission": {
+          "name": "form_submission",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        }
+      },
+      "name": "team_membership_request",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "team_id"
+          ],
+          "composite": false,
+          "keyName": "team_membership_request_team_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "user_id"
+          ],
+          "composite": false,
+          "keyName": "team_membership_request_user_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "state"
+          ],
+          "composite": false,
+          "keyName": "team_membership_request_state_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "team_membership_request_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "team_membership_request_team_id_foreign": {
+          "constraintName": "team_membership_request_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.team_membership_request",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "team_membership_request_user_id_foreign": {
+          "constraintName": "team_membership_request_user_id_foreign",
+          "columnNames": [
+            "user_id"
+          ],
+          "localTableName": "public.team_membership_request",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "team_membership_request_handled_by_id_foreign": {
+          "constraintName": "team_membership_request_handled_by_id_foreign",
+          "columnNames": [
+            "handled_by_id"
+          ],
+          "localTableName": "public.team_membership_request",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "team_membership_request_issued_by_id_foreign": {
+          "constraintName": "team_membership_request_issued_by_id_foreign",
+          "columnNames": [
+            "issued_by_id"
+          ],
+          "localTableName": "public.team_membership_request",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "team_membership_request_original_form_id_foreign": {
+          "constraintName": "team_membership_request_original_form_id_foreign",
+          "columnNames": [
+            "original_form_id"
+          ],
+          "localTableName": "public.team_membership_request",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team_form",
+          "deleteRule": "CASCADE",
           "updateRule": "cascade"
         }
       }
@@ -2275,6 +2591,71 @@
     },
     {
       "columns": {
+        "team_id": {
+          "name": "team_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "label_id": {
+          "name": "label_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "team_labels",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "team_labels_pkey",
+          "columnNames": [
+            "team_id",
+            "label_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "team_labels_team_id_foreign": {
+          "constraintName": "team_labels_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.team_labels",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "team_labels_label_id_foreign": {
+          "constraintName": "team_labels_label_id_foreign",
+          "columnNames": [
+            "label_id"
+          ],
+          "localTableName": "public.team_labels",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.label",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
         "id": {
           "name": "id",
           "type": "serial",
@@ -2296,6 +2677,26 @@
         },
         "updated_at": {
           "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "start": {
+          "name": "start",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "end": {
+          "name": "end",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -2319,32 +2720,17 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "text"
         },
-        "schema": {
-          "name": "schema",
-          "type": "jsonb",
+        "price": {
+          "name": "price",
+          "type": "int",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "json"
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "MembershipRequest",
-            "Internal",
-            "EventRegistration",
-            "Survey"
-          ],
-          "mappedType": "enum"
+          "mappedType": "integer"
         },
         "created_by_id": {
           "name": "created_by_id",
@@ -2364,17 +2750,96 @@
           "nullable": false,
           "mappedType": "integer"
         },
-        "is_template": {
-          "name": "is_template",
+        "location": {
+          "name": "location",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "supervisor_id": {
+          "name": "supervisor_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "private": {
+          "name": "private",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "mappedType": "boolean"
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Template",
+            "Draft",
+            "Submitted",
+            "Rejected",
+            "Published"
+          ],
+          "mappedType": "enum"
+        },
+        "last_validation_step_id": {
+          "name": "last_validation_step_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "registration_form_id": {
+          "name": "registration_form_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "used_template_id": {
+          "name": "used_template_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "meta": {
+          "name": "meta",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "event_validation_submission": {
+          "name": "event_validation_submission",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
         }
       },
-      "name": "team_form",
+      "name": "team_event",
       "schema": "public",
       "indexes": [
         {
@@ -2382,12 +2847,30 @@
             "team_id"
           ],
           "composite": false,
-          "keyName": "team_form_team_id_index",
+          "keyName": "team_event_team_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "keyName": "team_form_pkey",
+          "columnNames": [
+            "private"
+          ],
+          "composite": false,
+          "keyName": "team_event_private_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "registration_form_id"
+          ],
+          "composite": false,
+          "keyName": "team_event_registration_form_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "team_event_pkey",
           "columnNames": [
             "id"
           ],
@@ -2398,29 +2881,81 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "team_form_created_by_id_foreign": {
-          "constraintName": "team_form_created_by_id_foreign",
+        "team_event_created_by_id_foreign": {
+          "constraintName": "team_event_created_by_id_foreign",
           "columnNames": [
             "created_by_id"
           ],
-          "localTableName": "public.team_form",
+          "localTableName": "public.team_event",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.user",
           "updateRule": "cascade"
         },
-        "team_form_team_id_foreign": {
-          "constraintName": "team_form_team_id_foreign",
+        "team_event_team_id_foreign": {
+          "constraintName": "team_event_team_id_foreign",
           "columnNames": [
             "team_id"
           ],
-          "localTableName": "public.team_form",
+          "localTableName": "public.team_event",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.team",
           "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "team_event_supervisor_id_foreign": {
+          "constraintName": "team_event_supervisor_id_foreign",
+          "columnNames": [
+            "supervisor_id"
+          ],
+          "localTableName": "public.team_event",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team_member",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_event_last_validation_step_id_foreign": {
+          "constraintName": "team_event_last_validation_step_id_foreign",
+          "columnNames": [
+            "last_validation_step_id"
+          ],
+          "localTableName": "public.team_event",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team_form",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_event_registration_form_id_foreign": {
+          "constraintName": "team_event_registration_form_id_foreign",
+          "columnNames": [
+            "registration_form_id"
+          ],
+          "localTableName": "public.team_event",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team_form",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "team_event_used_template_id_foreign": {
+          "constraintName": "team_event_used_template_id_foreign",
+          "columnNames": [
+            "used_template_id"
+          ],
+          "localTableName": "public.team_event",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team_event",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -2456,8 +2991,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "team_id": {
-          "name": "team_id",
+        "event_id": {
+          "name": "event_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -2474,86 +3009,37 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "issuer": {
-          "name": "issuer",
+        "status": {
+          "name": "status",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "team",
-            "user"
+            "Sure",
+            "Maybe",
+            "Absent"
           ],
           "mappedType": "enum"
         },
-        "state": {
-          "name": "state",
-          "type": "text",
+        "present": {
+          "name": "present",
+          "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "pending",
-            "approved",
-            "rejected"
-          ],
-          "mappedType": "enum"
+          "mappedType": "boolean"
         },
-        "role": {
-          "name": "role",
-          "type": "text",
+        "participation_score": {
+          "name": "participation_score",
+          "type": "int",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "Owner",
-            "Coowner",
-            "Treasurer",
-            "Secretary",
-            "Manager",
-            "Member"
-          ],
-          "mappedType": "enum"
-        },
-        "handled_by_id": {
-          "name": "handled_by_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "handled_at": {
-          "name": "handled_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "handled_message": {
-          "name": "handled_message",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "issued_by_id": {
-          "name": "issued_by_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
+          "mappedType": "integer"
         },
         "original_form_id": {
           "name": "original_form_id",
@@ -2574,38 +3060,11 @@
           "mappedType": "json"
         }
       },
-      "name": "team_membership_request",
+      "name": "team_event_registration",
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "team_id"
-          ],
-          "composite": false,
-          "keyName": "team_membership_request_team_id_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "user_id"
-          ],
-          "composite": false,
-          "keyName": "team_membership_request_user_id_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "state"
-          ],
-          "composite": false,
-          "keyName": "team_membership_request_state_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "team_membership_request_pkey",
+          "keyName": "team_event_registration_pkey",
           "columnNames": [
             "id"
           ],
@@ -2616,25 +3075,25 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "team_membership_request_team_id_foreign": {
-          "constraintName": "team_membership_request_team_id_foreign",
+        "team_event_registration_event_id_foreign": {
+          "constraintName": "team_event_registration_event_id_foreign",
           "columnNames": [
-            "team_id"
+            "event_id"
           ],
-          "localTableName": "public.team_membership_request",
+          "localTableName": "public.team_event_registration",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.team",
+          "referencedTableName": "public.team_event",
           "deleteRule": "CASCADE",
           "updateRule": "cascade"
         },
-        "team_membership_request_user_id_foreign": {
-          "constraintName": "team_membership_request_user_id_foreign",
+        "team_event_registration_user_id_foreign": {
+          "constraintName": "team_event_registration_user_id_foreign",
           "columnNames": [
             "user_id"
           ],
-          "localTableName": "public.team_membership_request",
+          "localTableName": "public.team_event_registration",
           "referencedColumnNames": [
             "id"
           ],
@@ -2642,108 +3101,17 @@
           "deleteRule": "CASCADE",
           "updateRule": "cascade"
         },
-        "team_membership_request_handled_by_id_foreign": {
-          "constraintName": "team_membership_request_handled_by_id_foreign",
-          "columnNames": [
-            "handled_by_id"
-          ],
-          "localTableName": "public.team_membership_request",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "team_membership_request_issued_by_id_foreign": {
-          "constraintName": "team_membership_request_issued_by_id_foreign",
-          "columnNames": [
-            "issued_by_id"
-          ],
-          "localTableName": "public.team_membership_request",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "team_membership_request_original_form_id_foreign": {
-          "constraintName": "team_membership_request_original_form_id_foreign",
+        "team_event_registration_original_form_id_foreign": {
+          "constraintName": "team_event_registration_original_form_id_foreign",
           "columnNames": [
             "original_form_id"
           ],
-          "localTableName": "public.team_membership_request",
+          "localTableName": "public.team_event_registration",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.team_form",
           "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "team_id": {
-          "name": "team_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "team_label_id": {
-          "name": "team_label_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        }
-      },
-      "name": "team_labels",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "team_labels_pkey",
-          "columnNames": [
-            "team_id",
-            "team_label_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "team_labels_team_id_foreign": {
-          "constraintName": "team_labels_team_id_foreign",
-          "columnNames": [
-            "team_id"
-          ],
-          "localTableName": "public.team_labels",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "team_labels_team_label_id_foreign": {
-          "constraintName": "team_labels_team_label_id_foreign",
-          "columnNames": [
-            "team_label_id"
-          ],
-          "localTableName": "public.team_labels",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_label",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -3449,171 +3817,6 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "user_id": {
-          "name": "user_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "school_year_id": {
-          "name": "school_year_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "school_group_id": {
-          "name": "school_group_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "role": {
-          "name": "role",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "Representative",
-            "Substitute",
-            "Student"
-          ],
-          "mappedType": "enum"
-        },
-        "active": {
-          "name": "active",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "boolean"
-        }
-      },
-      "name": "school_group_membership",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "school_year_id"
-          ],
-          "composite": false,
-          "keyName": "school_group_membership_school_year_id_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "school_group_id"
-          ],
-          "composite": false,
-          "keyName": "school_group_membership_school_group_id_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "active"
-          ],
-          "composite": false,
-          "keyName": "school_group_membership_active_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "school_group_membership_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "school_group_membership_user_id_foreign": {
-          "constraintName": "school_group_membership_user_id_foreign",
-          "columnNames": [
-            "user_id"
-          ],
-          "localTableName": "public.school_group_membership",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "school_group_membership_school_year_id_foreign": {
-          "constraintName": "school_group_membership_school_year_id_foreign",
-          "columnNames": [
-            "school_year_id"
-          ],
-          "localTableName": "public.school_group_membership",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.school_year",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "school_group_membership_school_group_id_foreign": {
-          "constraintName": "school_group_membership_school_group_id_foreign",
-          "columnNames": [
-            "school_group_id"
-          ],
-          "localTableName": "public.school_group_membership",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.school_group",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
         "state": {
           "name": "state",
           "type": "varchar(255)",
@@ -4167,6 +4370,166 @@
           "nullable": false,
           "mappedType": "integer"
         },
+        "event_id": {
+          "name": "event_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "order": {
+          "name": "order",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        }
+      },
+      "name": "team_gallery",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "file_id"
+          ],
+          "composite": false,
+          "keyName": "team_gallery_file_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "columnNames": [
+            "event_id"
+          ],
+          "composite": false,
+          "keyName": "team_gallery_event_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "team_gallery_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "team_gallery_file_id_foreign": {
+          "constraintName": "team_gallery_file_id_foreign",
+          "columnNames": [
+            "file_id"
+          ],
+          "localTableName": "public.team_gallery",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "team_gallery_team_id_foreign": {
+          "constraintName": "team_gallery_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.team_gallery",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "updateRule": "cascade"
+        },
+        "team_gallery_event_id_foreign": {
+          "constraintName": "team_gallery_event_id_foreign",
+          "columnNames": [
+            "event_id"
+          ],
+          "localTableName": "public.team_gallery",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team_event",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "file_id": {
+          "name": "file_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "last_active_date": {
+          "name": "last_active_date",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "type": {
           "name": "type",
           "type": "text",
@@ -4258,6 +4621,260 @@
       "columns": {
         "id": {
           "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "due_to_id": {
+          "name": "due_to_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "amount": {
+          "name": "amount",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "method": {
+          "name": "method",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Cash",
+            "CreditCard",
+            "Transfer",
+            "Check",
+            "MobilePayment",
+            "Other"
+          ],
+          "mappedType": "enum"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Expense",
+            "Income"
+          ],
+          "mappedType": "enum"
+        },
+        "category": {
+          "name": "category",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Entertainment",
+            "Equipement",
+            "Errands",
+            "Fees",
+            "Insurance",
+            "Logistics",
+            "Marketing",
+            "Provider",
+            "Subscriptions",
+            "Transportation",
+            "Other"
+          ],
+          "mappedType": "enum"
+        },
+        "event_id": {
+          "name": "event_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "receipt_id": {
+          "name": "receipt_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "team_finance",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "team_id"
+          ],
+          "composite": false,
+          "keyName": "team_finance_team_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "receipt_id"
+          ],
+          "composite": false,
+          "keyName": "team_finance_receipt_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "team_finance_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "team_finance_created_by_id_foreign": {
+          "constraintName": "team_finance_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.team_finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "team_finance_team_id_foreign": {
+          "constraintName": "team_finance_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.team_finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "team_finance_due_to_id_foreign": {
+          "constraintName": "team_finance_due_to_id_foreign",
+          "columnNames": [
+            "due_to_id"
+          ],
+          "localTableName": "public.team_finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_finance_event_id_foreign": {
+          "constraintName": "team_finance_event_id_foreign",
+          "columnNames": [
+            "event_id"
+          ],
+          "localTableName": "public.team_finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team_event",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_finance_receipt_id_foreign": {
+          "constraintName": "team_finance_receipt_id_foreign",
+          "columnNames": [
+            "receipt_id"
+          ],
+          "localTableName": "public.team_finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team_file",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -4285,6 +4902,15 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "file_id": {
+          "name": "file_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "last_active_date": {
           "name": "last_active_date",
           "type": "timestamptz(0)",
@@ -4303,15 +4929,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "boolean"
-        },
-        "file_id": {
-          "name": "file_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
         },
         "subject_id": {
           "name": "subject_id",
@@ -4477,6 +5094,15 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "file_id": {
+          "name": "file_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "last_active_date": {
           "name": "last_active_date",
           "type": "timestamptz(0)",
@@ -4495,15 +5121,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "boolean"
-        },
-        "file_id": {
-          "name": "file_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
         },
         "user_id": {
           "name": "user_id",
@@ -4651,6 +5268,15 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "file_id": {
+          "name": "file_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "last_active_date": {
           "name": "last_active_date",
           "type": "timestamptz(0)",
@@ -4669,15 +5295,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "boolean"
-        },
-        "file_id": {
-          "name": "file_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
         },
         "doc_series_id": {
           "name": "doc_series_id",
@@ -4703,7 +5320,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "string"
         },
         "description": {
@@ -4784,8 +5401,172 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.school_group",
-          "deleteRule": "set null",
+          "referencedTableName": "public.class",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "school_year_id": {
+          "name": "school_year_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "school_group_id": {
+          "name": "school_group_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Representative",
+            "Substitute",
+            "Student"
+          ],
+          "mappedType": "enum"
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        }
+      },
+      "name": "class_membership",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "school_year_id"
+          ],
+          "composite": false,
+          "keyName": "class_membership_school_year_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "school_group_id"
+          ],
+          "composite": false,
+          "keyName": "class_membership_school_group_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "active"
+          ],
+          "composite": false,
+          "keyName": "class_membership_active_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "class_membership_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "class_membership_user_id_foreign": {
+          "constraintName": "class_membership_user_id_foreign",
+          "columnNames": [
+            "user_id"
+          ],
+          "localTableName": "public.class_membership",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "class_membership_school_year_id_foreign": {
+          "constraintName": "class_membership_school_year_id_foreign",
+          "columnNames": [
+            "school_year_id"
+          ],
+          "localTableName": "public.class_membership",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.school_year",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "class_membership_school_group_id_foreign": {
+          "constraintName": "class_membership_school_group_id_foreign",
+          "columnNames": [
+            "school_group_id"
+          ],
+          "localTableName": "public.class_membership",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.class",
+          "deleteRule": "CASCADE",
           "updateRule": "cascade"
         }
       }
@@ -5458,8 +6239,119 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.content_edit",
+          "referencedTableName": "public.edit",
           "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "edit_order": {
+          "name": "edit_order",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "edited_by_id": {
+          "name": "edited_by_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "edit",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "edit_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "edit_parent_id_foreign": {
+          "constraintName": "edit_parent_id_foreign",
+          "columnNames": [
+            "parent_id"
+          ],
+          "localTableName": "public.edit",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.content",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        },
+        "edit_edited_by_id_foreign": {
+          "constraintName": "edit_edited_by_id_foreign",
+          "columnNames": [
+            "edited_by_id"
+          ],
+          "localTableName": "public.edit",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "CASCADE",
           "updateRule": "cascade"
         }
       }
@@ -5678,7 +6570,7 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.school_group",
+          "referencedTableName": "public.class",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
@@ -6438,117 +7330,6 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "body": {
-          "name": "body",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "edit_order": {
-          "name": "edit_order",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "parent_id": {
-          "name": "parent_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "edited_by_id": {
-          "name": "edited_by_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        }
-      },
-      "name": "content_edit",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "content_edit_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "content_edit_parent_id_foreign": {
-          "constraintName": "content_edit_parent_id_foreign",
-          "columnNames": [
-            "parent_id"
-          ],
-          "localTableName": "public.content_edit",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.content",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "content_edit_edited_by_id_foreign": {
-          "constraintName": "content_edit_edited_by_id_foreign",
-          "columnNames": [
-            "edited_by_id"
-          ],
-          "localTableName": "public.content_edit",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -6575,6 +7356,15 @@
           "nullable": false,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "file_id": {
+          "name": "file_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         },
         "last_active_date": {
           "name": "last_active_date",
@@ -6594,15 +7384,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "boolean"
-        },
-        "file_id": {
-          "name": "file_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
         },
         "content_id": {
           "name": "content_id",
@@ -6862,727 +7643,6 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "start": {
-          "name": "start",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "end": {
-          "name": "end",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "price": {
-          "name": "price",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "team_id": {
-          "name": "team_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "location": {
-          "name": "location",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "supervisor_id": {
-          "name": "supervisor_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
-        "private": {
-          "name": "private",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "boolean"
-        },
-        "state": {
-          "name": "state",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "Template",
-            "Draft",
-            "Submitted",
-            "Rejected",
-            "Published"
-          ],
-          "mappedType": "enum"
-        },
-        "last_validation_step_id": {
-          "name": "last_validation_step_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
-        "registration_form_id": {
-          "name": "registration_form_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
-        "used_template_id": {
-          "name": "used_template_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
-        "meta": {
-          "name": "meta",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "event_validation_submission": {
-          "name": "event_validation_submission",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        }
-      },
-      "name": "team_event",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "team_id"
-          ],
-          "composite": false,
-          "keyName": "team_event_team_id_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "private"
-          ],
-          "composite": false,
-          "keyName": "team_event_private_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "registration_form_id"
-          ],
-          "composite": false,
-          "keyName": "team_event_registration_form_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "team_event_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "team_event_created_by_id_foreign": {
-          "constraintName": "team_event_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.team_event",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
-        },
-        "team_event_team_id_foreign": {
-          "constraintName": "team_event_team_id_foreign",
-          "columnNames": [
-            "team_id"
-          ],
-          "localTableName": "public.team_event",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "team_event_supervisor_id_foreign": {
-          "constraintName": "team_event_supervisor_id_foreign",
-          "columnNames": [
-            "supervisor_id"
-          ],
-          "localTableName": "public.team_event",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_member",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "team_event_last_validation_step_id_foreign": {
-          "constraintName": "team_event_last_validation_step_id_foreign",
-          "columnNames": [
-            "last_validation_step_id"
-          ],
-          "localTableName": "public.team_event",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.validation_step",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "team_event_registration_form_id_foreign": {
-          "constraintName": "team_event_registration_form_id_foreign",
-          "columnNames": [
-            "registration_form_id"
-          ],
-          "localTableName": "public.team_event",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_form",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "team_event_used_template_id_foreign": {
-          "constraintName": "team_event_used_template_id_foreign",
-          "columnNames": [
-            "used_template_id"
-          ],
-          "localTableName": "public.team_event",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_event",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "last_active_date": {
-          "name": "last_active_date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "active": {
-          "name": "active",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "boolean"
-        },
-        "file_id": {
-          "name": "file_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "team_id": {
-          "name": "team_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "event_id": {
-          "name": "event_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
-        "order": {
-          "name": "order",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        }
-      },
-      "name": "team_gallery",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "file_id"
-          ],
-          "composite": false,
-          "keyName": "team_gallery_file_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "columnNames": [
-            "event_id"
-          ],
-          "composite": false,
-          "keyName": "team_gallery_event_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "team_gallery_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "team_gallery_file_id_foreign": {
-          "constraintName": "team_gallery_file_id_foreign",
-          "columnNames": [
-            "file_id"
-          ],
-          "localTableName": "public.team_gallery",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.file_upload",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "team_gallery_team_id_foreign": {
-          "constraintName": "team_gallery_team_id_foreign",
-          "columnNames": [
-            "team_id"
-          ],
-          "localTableName": "public.team_gallery",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team",
-          "updateRule": "cascade"
-        },
-        "team_gallery_event_id_foreign": {
-          "constraintName": "team_gallery_event_id_foreign",
-          "columnNames": [
-            "event_id"
-          ],
-          "localTableName": "public.team_gallery",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_event",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "title": {
-          "name": "title",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "team_id": {
-          "name": "team_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "due_to_id": {
-          "name": "due_to_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "amount": {
-          "name": "amount",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "method": {
-          "name": "method",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "Cash",
-            "CreditCard",
-            "Transfer",
-            "Check",
-            "MobilePayment",
-            "Other"
-          ],
-          "mappedType": "enum"
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "Expense",
-            "Income"
-          ],
-          "mappedType": "enum"
-        },
-        "category": {
-          "name": "category",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "Entertainment",
-            "Equipement",
-            "Errands",
-            "Fees",
-            "Insurance",
-            "Logistics",
-            "Marketing",
-            "Provider",
-            "Subscriptions",
-            "Transportation",
-            "Other"
-          ],
-          "mappedType": "enum"
-        },
-        "event_id": {
-          "name": "event_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
-        "receipt_id": {
-          "name": "receipt_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        }
-      },
-      "name": "team_finance",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "team_id"
-          ],
-          "composite": false,
-          "keyName": "team_finance_team_id_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "receipt_id"
-          ],
-          "composite": false,
-          "keyName": "team_finance_receipt_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "team_finance_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "team_finance_created_by_id_foreign": {
-          "constraintName": "team_finance_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.team_finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
-        },
-        "team_finance_team_id_foreign": {
-          "constraintName": "team_finance_team_id_foreign",
-          "columnNames": [
-            "team_id"
-          ],
-          "localTableName": "public.team_finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "team_finance_due_to_id_foreign": {
-          "constraintName": "team_finance_due_to_id_foreign",
-          "columnNames": [
-            "due_to_id"
-          ],
-          "localTableName": "public.team_finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "team_finance_event_id_foreign": {
-          "constraintName": "team_finance_event_id_foreign",
-          "columnNames": [
-            "event_id"
-          ],
-          "localTableName": "public.team_finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_event",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "team_finance_receipt_id_foreign": {
-          "constraintName": "team_finance_receipt_id_foreign",
-          "columnNames": [
-            "receipt_id"
-          ],
-          "localTableName": "public.team_finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_file",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
         "event_id": {
           "name": "event_id",
           "type": "int",
@@ -7678,162 +7738,6 @@
             "id"
           ],
           "referencedTableName": "public.validation_step",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "event_id": {
-          "name": "event_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "Sure",
-            "Maybe",
-            "Absent"
-          ],
-          "mappedType": "enum"
-        },
-        "present": {
-          "name": "present",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "boolean"
-        },
-        "participation_score": {
-          "name": "participation_score",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "original_form_id": {
-          "name": "original_form_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
-        "form_submission": {
-          "name": "form_submission",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        }
-      },
-      "name": "team_event_registration",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "team_event_registration_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "team_event_registration_event_id_foreign": {
-          "constraintName": "team_event_registration_event_id_foreign",
-          "columnNames": [
-            "event_id"
-          ],
-          "localTableName": "public.team_event_registration",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_event",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "team_event_registration_user_id_foreign": {
-          "constraintName": "team_event_registration_user_id_foreign",
-          "columnNames": [
-            "user_id"
-          ],
-          "localTableName": "public.team_event_registration",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        },
-        "team_event_registration_original_form_id_foreign": {
-          "constraintName": "team_event_registration_original_form_id_foreign",
-          "columnNames": [
-            "original_form_id"
-          ],
-          "localTableName": "public.team_event_registration",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_form",
-          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -8048,11 +7952,11 @@
           "mappedType": "boolean"
         }
       },
-      "name": "wiki_page",
+      "name": "wiki",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "wiki_page_pkey",
+          "keyName": "wiki_pkey",
           "columnNames": [
             "id"
           ],

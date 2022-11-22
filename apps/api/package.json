@@ -63,6 +63,7 @@
     "class-validator": "0.13.2",
     "connect-redis": "^6.1.3",
     "dotenv": "16.0.2",
+    "eslint-import-resolver-typescript": "^3.5.2",
     "fastify": "^4.6.0",
     "fastify-multer": "^2.0.3",
     "graphql": "^16.6.0",
@@ -84,6 +85,7 @@
     "mercurius": "^11.0.0",
     "mercurius-upload": "^5.0.0",
     "mime-types": "^2.1.35",
+    "module-alias": "^2.2.2",
     "morgan": "1.10.0",
     "multer": "^1.4.5-lts.1",
     "nanoid": "3.3.4",
@@ -113,6 +115,7 @@
     "@types/lodash.mapvalues": "^4.6.7",
     "@types/lodash.partition": "4.6.7",
     "@types/mime-types": "^2.1.1",
+    "@types/module-alias": "^2.0.1",
     "@types/morgan": "1.9.3",
     "@types/multer": "1.4.7",
     "@types/node": "18.7.19",
@@ -124,7 +127,7 @@
     "@typescript-eslint/parser": "5.38.0",
     "eslint": "8.24.0",
     "eslint-config-noftalint": "2.10.1",
-    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-unicorn": "43.0.2",
     "ts-node": "10.9.1",
@@ -136,8 +139,8 @@
   "mikro-orm": {
     "useTsNode": true,
     "configPaths": [
-      "./src/shared/configs/mikro-orm.config.ts",
-      "./dist/shared/configs/mikro-orm.config.js"
+      "./src/meta/shared/configs/mikro-orm.config.ts",
+      "./dist/meta/shared/configs/mikro-orm.config.js"
     ]
   }
 }

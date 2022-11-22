@@ -12,54 +12,54 @@ import { SentryInterceptor, SentryModule } from '@xiifain/nestjs-sentry';
 import Redis from 'ioredis';
 import { MeiliSearchModule } from 'nestjs-meilisearch';
 import { S3Module } from 'nestjs-s3';
-import { AnnouncementsModule } from './announcements/announcements.module';
+import { HealthModule } from '@meta/health/health.module';
+
+import cacheConfig from '@meta/shared/configs/cache.config';
+import { config } from '@meta/shared/configs/config';
+import graphqlConfig from '@meta/shared/configs/graphql.config';
+import meiliSearchConfig from '@meta/shared/configs/meilisearch.config';
+import redisConfig from '@meta/shared/configs/redis.config';
+import sentryConfig, { sentryInterceptorConfig } from '@meta/shared/configs/sentry.config';
+import storageConfig from '@meta/shared/configs/storage.config';
+import { APP_OIDC_CACHE } from '@meta/shared/lib/constants';
+
+import { ExceptionsFilter } from '@meta/shared/lib/filters/exceptions.filter';
+import { RestLoggerMiddleware } from '@meta/shared/lib/middlewares/rest-logger.middleware';
+import { TraceMiddleware } from '@meta/shared/lib/middlewares/trace.middleware';
+import { PoliciesGuard } from '@meta/shared/modules/authorization';
+import { OIDCStrategyCache } from '@meta/shared/modules/authorization/oidc-strategy.cache';
+import { CaslModule } from '@meta/shared/modules/casl/casl.module';
+import { MeiliSearchIndexerModule } from '@meta/shared/modules/search/meilisearch-indexer.module';
+import { SubjectsModule } from '@modules/assort/subjects/subjects.module';
+import { TagsModule } from '@modules/assort/tags/tags.module';
+import { BlogsModule } from '@modules/create/blogs/blogs.module';
+import { ContentsModule } from '@modules/create/contents/contents.module';
+import { ThreadsModule } from '@modules/create/threads/threads.module';
+import { WikisModule } from '@modules/create/wikis/wikis.module';
+import { FavoritesModule } from '@modules/interact/favorites/favorites.module';
+import { ReactionsModule } from '@modules/interact/reactions/reactions.module';
+import { ReportsModule } from '@modules/interact/reports/reports.module';
+import { ValidationsModule } from '@modules/interact/validations/validations.module';
+import { VotesModule } from '@modules/interact/votes/votes.module';
+import { AnnouncementsModule } from '@modules/manage/announcements/announcements.module';
+import { MetricsModule } from '@modules/manage/metrics/metrics.module';
+import { CafeteriaModule } from '@modules/org/canteens/canteens.module';
+import { ClassesModule } from '@modules/org/classes/class.module';
+import { ClassMembershipsModule } from '@modules/org/classes/memberships/memberships.module';
+import { SchoolYearsModule } from '@modules/org/classes/school-year/school-years.module';
+import { InterestsModule } from '@modules/org/teams/interests/interests.module';
+import { SocialsModule } from '@modules/org/teams/socials/socials.module';
+import { TeamsModule } from '@modules/org/teams/teams.module';
+import { TenantsCoreModule } from '@modules/org/tenants/core-tenants.module';
+import { TenantsModule } from '@modules/org/tenants/tenants.module';
+import { FilesModule } from '@modules/store/files.module';
+import { AuthGuard } from '@modules/uua/auth/auth.guard';
+import { AuthModule } from '@modules/uua/auth/auth.module';
+import { BadgesModule } from '@modules/uua/badges/badges.module';
+import { SettingsModule } from '@modules/uua/settings/settings.module';
+import { StatisticsModule } from '@modules/uua/statistics/statistics.module';
+import { UsersModule } from '@modules/uua/users/users.module';
 import { AppController } from './app.controller';
-import { RestaurantModule } from './cafeteria/restaurant.module';
-import { BlogsModule } from './create/comm/blogs/blogs.module';
-import { ThreadsModule } from './create/comm/threads/threads.module';
-import { ContentsModule } from './create/contents/contents.module';
-import { FavoritesModule } from './create/interact/favorites/favorites.module';
-import { ReactionsModule } from './create/interact/reactions/reactions.module';
-import { ReportsModule } from './create/interact/reports/reports.module';
-import { VotesModule } from './create/interact/votes/votes.module';
-import { FilesModule } from './files/files.module';
-import { HealthModule } from './health/health.module';
-import { MetricsModule } from './metrics/metrics.module';
-import { SubjectsModule } from './org/data/subjects/subjects.module';
-import { TagsModule } from './org/data/tags/tags.module';
-import { SchoolGroupMembershipsModule } from './org/school-group/memberships/memberships.module';
-import { SchoolGroupsModule } from './org/school-group/school-groups.module';
-import { SchoolYearsModule } from './org/school-group/school-year/school-years.module';
-import { InterestsModule } from './org/teams/interests/interests.module';
-import { TeamsModule } from './org/teams/teams.module';
-import { TenantsModule } from './org/tenants/tenants.module';
-import { TenantsCoreModule } from './org/tenants/tenants/tenants.module';
-
-import cacheConfig from './shared/configs/cache.config';
-import { config } from './shared/configs/config';
-import graphqlConfig from './shared/configs/graphql.config';
-import meiliSearchConfig from './shared/configs/meilisearch.config';
-import redisConfig from './shared/configs/redis.config';
-import sentryConfig, { sentryInterceptorConfig } from './shared/configs/sentry.config';
-import storageConfig from './shared/configs/storage.config';
-import { APP_OIDC_CACHE } from './shared/lib/constants';
-
-import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
-import { RestLoggerMiddleware } from './shared/lib/middlewares/rest-logger.middleware';
-import { TraceMiddleware } from './shared/lib/middlewares/trace.middleware';
-import { PoliciesGuard } from './shared/modules/authorization';
-import { OIDCStrategyCache } from './shared/modules/authorization/oidc-strategy.cache';
-import { CaslModule } from './shared/modules/casl/casl.module';
-import { MeiliSearchIndexerModule } from './shared/modules/search/meilisearch-indexer.module';
-import { SocialsModule } from './socials/socials.module';
-import { AuthGuard } from './uua/auth/auth.guard';
-import { AuthModule } from './uua/auth/auth.module';
-import { BadgesModule } from './uua/badges/badges.module';
-import { SettingsModule } from './uua/settings/settings.module';
-import { StatisticsModule } from './uua/statistics/statistics.module';
-import { UsersModule } from './uua/users/users.module';
-import { ValidationsModule } from './validations/validations.module';
-import { WikisModule } from './create/comm/wikis/wikis.module';
 
 @Module({
   imports: [
@@ -90,7 +90,7 @@ import { WikisModule } from './create/comm/wikis/wikis.module';
     MetricsModule,
     ReactionsModule,
     ReportsModule,
-    RestaurantModule,
+    CafeteriaModule,
     SettingsModule,
     SocialsModule,
     StatisticsModule,
@@ -99,8 +99,8 @@ import { WikisModule } from './create/comm/wikis/wikis.module';
     TeamsModule,
     TenantsCoreModule,
     TenantsModule,
-    SchoolGroupsModule,
-    SchoolGroupMembershipsModule,
+    ClassesModule,
+    ClassMembershipsModule,
     SchoolYearsModule,
     ThreadsModule,
     UsersModule,
