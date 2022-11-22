@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { Entity, Enum, PrimaryKey } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseContentInteraction } from '@meta/shared/lib/entities/base-content-interaction.entity';
