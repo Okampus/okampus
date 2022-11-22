@@ -41,7 +41,7 @@ export class StudyDoc extends BaseFileEntity {
     subject: Subject;
     type: StudyDocType;
     year: number;
-    schoolGroup?: Class | null;
+    schoolClass?: Class | null;
     flags?: number | null;
     docSeries?: DocSeries | null;
     description?: string | null;

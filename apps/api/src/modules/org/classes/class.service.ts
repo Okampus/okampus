@@ -10,52 +10,52 @@ import type { UpdateClassDto } from './dto/update-class.dto';
 @Injectable()
 export class ClassesService {
   constructor(
-    @InjectRepository(Class) private readonly schoolGroupRepository: BaseRepository<Class>,
+    @InjectRepository(Class) private readonly classRepository: BaseRepository<Class>,
   ) {}
 
   public async create(createClassDto: CreateClassDto): Promise<Class> {
     const parent = createClassDto.parentId
-      ? await this.schoolGroupRepository.findOneOrFail({ id: createClassDto.parentId })
+      ? await this.classRepository.findOneOrFail({ id: createClassDto.parentId })
       : null;
 
-    const schoolGroup = new Class({
+    const schoolClass = new Class({
       ...createClassDto,
       parent,
     });
 
     try {
-      await this.schoolGroupRepository.persistAndFlush(schoolGroup);
+      await this.classRepository.persistAndFlush(schoolClass);
     } catch (error: unknown) {
       if (error instanceof UniqueConstraintViolationException)
         throw new BadRequestException('Class code already exists');
       throw error;
     }
-    return schoolGroup;
+    return schoolClass;
   }
 
   public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Class>> {
-    return await this.schoolGroupRepository.findWithPagination(paginationOptions);
+    return await this.classRepository.findWithPagination(paginationOptions);
   }
 
   public async findOne(id: string): Promise<Class> {
-    return await this.schoolGroupRepository.findOneOrFail({ id });
+    return await this.classRepository.findOneOrFail({ id });
   }
 
   public async update(id: string, updateClassDto: UpdateClassDto): Promise<Class> {
     const parent = updateClassDto.parentId
-      ? await this.schoolGroupRepository.findOneOrFail({ id: updateClassDto.parentId })
+      ? await this.classRepository.findOneOrFail({ id: updateClassDto.parentId })
       : null;
 
-    const schoolGroup = await this.schoolGroupRepository.findOneOrFail({ id });
+    const schoolClass = await this.classRepository.findOneOrFail({ id });
 
-    wrap(schoolGroup).assign({ ...updateClassDto, ...(parent ? { parent } : {}) });
-    await this.schoolGroupRepository.flush();
-    return schoolGroup;
+    wrap(schoolClass).assign({ ...updateClassDto, ...(parent ? { parent } : {}) });
+    await this.classRepository.flush();
+    return schoolClass;
   }
 
   // TODO: differentiate soft from hard delete
   public async remove(id: string): Promise<void> {
-    const schoolGroup = await this.schoolGroupRepository.findOneOrFail({ id });
-    await this.schoolGroupRepository.removeAndFlush(schoolGroup);
+    const schoolClass = await this.classRepository.findOneOrFail({ id });
+    await this.classRepository.removeAndFlush(schoolClass);
   }
 }

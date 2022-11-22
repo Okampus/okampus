@@ -9,18 +9,18 @@ import { ClassesService } from './class.service';
 @Resolver(() => Class)
 export class ClassesResolver {
   constructor(
-    private readonly schoolGroupsService: ClassesService,
+    private readonly classesService: ClassesService,
   ) {}
 
   // TODO: Add permission checks
   @Query(() => [Class])
-  public async schoolGroups(): Promise<Class[]> {
-    const paginatedClasses = await this.schoolGroupsService.findAll();
+  public async classes(): Promise<Class[]> {
+    const paginatedClasses = await this.classesService.findAll();
     return paginatedClasses.items;
   }
 
   @Query(() => Class)
-  public async schoolGroupById(@Args('id') id: string): Promise<Class> {
-    return await this.schoolGroupsService.findOne(id);
+  public async classById(@Args('id') id: string): Promise<Class> {
+    return await this.classesService.findOne(id);
   }
 }

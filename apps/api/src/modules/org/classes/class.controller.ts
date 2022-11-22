@@ -21,36 +21,36 @@ import { UpdateClassDto } from './dto/update-class.dto';
 @Controller()
 export class ClassesController {
   constructor(
-    private readonly schoolGroupsService: ClassesService,
+    private readonly classesService: ClassesService,
   ) {}
 
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Class))
   public async create(@Body() createClassDto: CreateClassDto): Promise<Class> {
-    return await this.schoolGroupsService.create(createClassDto);
+    return await this.classesService.create(createClassDto);
   }
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Class))
   public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Class>> {
-    return await this.schoolGroupsService.findAll(normalizePagination(query));
+    return await this.classesService.findAll(normalizePagination(query));
   }
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Class))
   public async findOne(@Param('id') id: string): Promise<Class> {
-    return await this.schoolGroupsService.findOne(id);
+    return await this.classesService.findOne(id);
   }
 
   @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Class))
   public async update(@Param('id') id: string, @Body() updateClassDto: UpdateClassDto): Promise<Class> {
-    return await this.schoolGroupsService.update(id, updateClassDto);
+    return await this.classesService.update(id, updateClassDto);
   }
 
   @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, Class))
   public async remove(@Param('id') id: string): Promise<void> {
-    await this.schoolGroupsService.remove(id);
+    await this.classesService.remove(id);
   }
 }

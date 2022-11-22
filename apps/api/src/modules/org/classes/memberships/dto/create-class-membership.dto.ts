@@ -11,5 +11,5 @@ export class CreateClassMembershipDto {
   @Field(() => ClassRole)
   @IsOptional()
   @IsEnum(ClassRole)
-  schoolGroupRole: ClassRole;
+  classRole: ClassRole;
 }

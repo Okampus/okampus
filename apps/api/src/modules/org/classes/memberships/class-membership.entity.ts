@@ -33,7 +33,7 @@ export class ClassMembership extends BaseEntity {
   @Field(() => Class)
   @ManyToOne({ onDelete: 'CASCADE' })
   @Index()
-  schoolGroup!: Class;
+  schoolClass!: Class;
 
   @Field(() => ClassRole)
   @Enum(() => ClassRole)
@@ -46,7 +46,7 @@ export class ClassMembership extends BaseEntity {
   constructor(options: {
     user: User;
     schoolYear: SchoolYear;
-    schoolGroup: Class;
+    schoolClass: Class;
     role?: ClassRole | null;
   }) {
     super();

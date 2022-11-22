@@ -19,7 +19,7 @@ export class CreateStudyDocDto extends CreateFileUploadDto {
 
   @IsOptional()
   @IsInt()
-  schoolGroupId?: number;
+  classId?: number;
 
   @IsEnum(StudyDocType)
   type: StudyDocType;

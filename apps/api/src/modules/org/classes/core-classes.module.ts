@@ -1,7 +1,7 @@
 import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
-import { schoolGroups } from '@meta/shared/configs/strings';
+import { classes } from '@meta/shared/configs/strings';
 import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
 import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
 import { ClassesController } from './class.controller';
@@ -20,22 +20,22 @@ import { ClassesService } from './class.service';
 
 export class CoreClassesModule implements OnModuleInit {
   constructor(
-    @InjectRepository(Class) private readonly schoolGroupRepository: BaseRepository<Class>,
+    @InjectRepository(Class) private readonly classRepository: BaseRepository<Class>,
   ) {}
 
   public async onModuleInit(): Promise<void> {
     // TODO: Remove or hide in production
-    for (const schoolGroup of schoolGroups) {
+    for (const schoolClass of classes) {
       // eslint-disable-next-line no-await-in-loop
-      const schoolGroupEntity = await this.schoolGroupRepository.count({ id: schoolGroup.id });
-      if (schoolGroupEntity === 0) {
+      const classEntity = await this.classRepository.count({ id: schoolClass.id });
+      if (classEntity === 0) {
         // eslint-disable-next-line no-await-in-loop
-        const parent = await this.schoolGroupRepository.findOne({ id: schoolGroup.parentId });
-        const newClass = new Class({ ...schoolGroup, parent });
-        this.schoolGroupRepository.persist(newClass);
+        const parent = await this.classRepository.findOne({ id: schoolClass.parentId });
+        const newClass = new Class({ ...schoolClass, parent });
+        this.classRepository.persist(newClass);
       }
     }
 
-    await this.schoolGroupRepository.flush();
+    await this.classRepository.flush();
   }
 }

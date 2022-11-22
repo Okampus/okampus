@@ -12,17 +12,17 @@ import { Subject } from './subject.entity';
 export class SubjectsService {
   constructor(
     @InjectRepository(Subject) private readonly subjectRepository: BaseRepository<Subject>,
-    @InjectRepository(Class) private readonly schoolGroupRepository: BaseRepository<Class>,
+    @InjectRepository(Class) private readonly classRepository: BaseRepository<Class>,
   ) {}
 
   public async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
-    const { schoolGroupId, ...createSubject } = createSubjectDto;
+    const { classId, ...createSubject } = createSubjectDto;
 
-    const schoolGroup = (typeof schoolGroupId === 'string')
-      ? await this.schoolGroupRepository.findOneOrFail({ id: schoolGroupId })
+    const schoolClass = (typeof classId === 'string')
+      ? await this.classRepository.findOneOrFail({ id: classId })
       : null;
 
-    const subject = new Subject({ ...createSubject, schoolGroup });
+    const subject = new Subject({ ...createSubject, schoolClass });
     try {
       await this.subjectRepository.persistAndFlush(subject);
     } catch (error: unknown) {
@@ -44,13 +44,13 @@ export class SubjectsService {
   public async update(id: number, updateSubjectDto: UpdateSubjectDto): Promise<Subject> {
     const subject = await this.subjectRepository.findOneOrFail({ id });
 
-    const { schoolGroupId, ...updateSubject } = updateSubjectDto;
+    const { classId, ...updateSubject } = updateSubjectDto;
 
-    const schoolGroup = (typeof schoolGroupId === 'string')
-      ? await this.schoolGroupRepository.findOneOrFail({ id: schoolGroupId })
-      : subject.schoolGroup;
+    const schoolClass = (typeof classId === 'string')
+      ? await this.classRepository.findOneOrFail({ id: classId })
+      : subject.schoolClass;
 
-    wrap(subject).assign({ ...updateSubject, schoolGroup });
+    wrap(subject).assign({ ...updateSubject, schoolClass });
     await this.subjectRepository.flush();
     return subject;
   }

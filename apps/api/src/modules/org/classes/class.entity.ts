@@ -49,7 +49,7 @@ export class Class extends BaseEntity {
   description: string | null = null;
 
   @Field(() => [ClassMembership])
-  @OneToMany('ClassMembership', 'schoolGroup')
+  @OneToMany('ClassMembership', 'schoolClass')
   @TransformCollection()
   memberships = new Collection<ClassMembership>(this);
 

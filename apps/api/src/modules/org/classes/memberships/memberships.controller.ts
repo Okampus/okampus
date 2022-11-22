@@ -24,13 +24,13 @@ import { ClassMembershipsService } from './memberships.service';
 @Controller()
 export class ClassMembershipsController {
   constructor(
-    private readonly schoolGroupMembershipsService: ClassMembershipsService,
+    private readonly classMembershipsService: ClassMembershipsService,
   ) {}
 
   @Get('all')
   @CheckPolicies(ability => ability.can(Action.Read, Class))
   public async findAllMembers(@Query() query: PaginateDto): Promise<PaginatedResult<ClassMembership>> {
-    return await this.schoolGroupMembershipsService.findAllMembers(normalizePagination(query));
+    return await this.classMembershipsService.findAllMembers(normalizePagination(query));
   }
 
   @Get(':id')
@@ -39,40 +39,40 @@ export class ClassMembershipsController {
     @Param('id') id: string,
     @Query() query: PaginateDto,
   ): Promise<PaginatedResult<ClassMembership>> {
-    return await this.schoolGroupMembershipsService.findMembers(id, normalizePagination(query));
+    return await this.classMembershipsService.findMembers(id, normalizePagination(query));
   }
 
-  @Post(':schoolGroupId/:userId')
+  @Post(':classId/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, Class))
   public async addMember(
-    @Param('schoolGroupId') schoolGroupId: string,
+    @Param('classId') classId: string,
     @Param('userId') userId: string,
     @Body() createClassMembershipDto: CreateClassMembershipDto,
     @CurrentUser() requester: User,
   ): Promise<ClassMembership> {
-    return await this.schoolGroupMembershipsService
-      .giveMembership(requester, schoolGroupId, userId, createClassMembershipDto);
+    return await this.classMembershipsService
+      .giveMembership(requester, classId, userId, createClassMembershipDto);
   }
 
-  @Patch(':schoolGroupId/:userId')
+  @Patch(':classId/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, Class))
   public async updateMember(
-    @Param('schoolGroupId') schoolGroupId: string,
+    @Param('classId') classId: string,
     @Param('userId') userId: string,
     @Body() updateClassMembershipDto: UpdateClassMembershipDto,
     @CurrentUser() requester: User,
   ): Promise<ClassMembership> {
-    return await this.schoolGroupMembershipsService
-      .updateMembership(requester, schoolGroupId, userId, updateClassMembershipDto);
+    return await this.classMembershipsService
+      .updateMembership(requester, classId, userId, updateClassMembershipDto);
   }
 
-  @Delete(':schoolGroupId/:userId')
+  @Delete(':classId/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, Class))
   public async removeMember(
-    @Param('schoolGroupId') schoolGroupId: string,
+    @Param('classId') classId: string,
     @Param('userId') userId: string,
     @CurrentUser() requester: User,
   ): Promise<ClassMembership> {
-    return await this.schoolGroupMembershipsService.removeMembership(requester, schoolGroupId, userId);
+    return await this.classMembershipsService.removeMembership(requester, classId, userId);
   }
 }

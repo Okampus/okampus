@@ -29,7 +29,7 @@ export class Subject extends BaseEntity {
   description: string | null = null;
 
   @ManyToOne(() => Class)
-  schoolGroup: Class | null = null;
+  schoolClass: Class | null = null;
 
   @Property()
   active = true;
@@ -37,7 +37,7 @@ export class Subject extends BaseEntity {
   constructor(options: {
     name: string;
     englishName: string;
-    schoolGroup: Class | null;
+    schoolClass: Class | null;
     description?: string | null;
   }) {
     super();

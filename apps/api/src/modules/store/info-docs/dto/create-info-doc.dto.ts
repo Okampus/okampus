@@ -12,7 +12,7 @@ export class CreateInfoDocDto extends CreateFileUploadDto {
 
   @IsOptional()
   @IsString()
-  schoolGroupId?: string;
+  classId?: string;
 
   @IsOptional()
   @IsString()

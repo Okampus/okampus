@@ -4,7 +4,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 
 import {
- clubString, groupTypeIcons, schoolGroups, scopeString,
+ classes, clubString, groupTypeIcons, scopeString,
 } from '@meta/shared/configs/strings';
 import type { ContentListOptionsDto } from '@meta/shared/lib/dto/list-options.dto';
 import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
@@ -38,7 +38,7 @@ export class ThreadsService {
     @InjectRepository(Thread) private readonly threadRepository: BaseRepository<Thread>,
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
-    @InjectRepository(Class) private readonly schoolGroupRepository: BaseRepository<Class>,
+    @InjectRepository(Class) private readonly classRepository: BaseRepository<Class>,
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
     @InjectRepository(Validation) private readonly validationRepository: BaseRepository<Validation>,
@@ -59,10 +59,10 @@ export class ThreadsService {
     if (createThread.scope === 'clubs') {
       thread.scope = null;
       // FIXME: don't rely on hardcoded value / array order
-      tags.unshift(`${scopeString}${schoolGroups[0].name}${groupTypeIcons[ClassType.Everyone]}`);
+      tags.unshift(`${scopeString}${classes[0].name}${groupTypeIcons[ClassType.Everyone]}`);
       tags.unshift(`${groupTypeIcons.clubs}${clubString}`);
     } else {
-      const targetClass = await this.schoolGroupRepository.findOneOrFail({ id: createThread.scope });
+      const targetClass = await this.classRepository.findOneOrFail({ id: createThread.scope });
       thread.scope = targetClass;
       tags.unshift(`${scopeString}${targetClass.name}${groupTypeIcons[targetClass.type]}`);
     }
@@ -153,7 +153,7 @@ export class ThreadsService {
     } = updateThreadDto;
 
     if (scope) {
-        const targetClass = await this.schoolGroupRepository.findOneOrFail({ id: scope });
+        const targetClass = await this.classRepository.findOneOrFail({ id: scope });
         thread.scope = targetClass;
     }
 

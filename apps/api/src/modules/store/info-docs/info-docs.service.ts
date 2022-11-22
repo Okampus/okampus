@@ -24,19 +24,19 @@ export class InfoDocsService {
   constructor(
     @InjectRepository(InfoDoc) private readonly infoDocRepository: BaseRepository<InfoDoc>,
     @InjectRepository(DocSeries) private readonly docSeriesRepository: BaseRepository<DocSeries>,
-    @InjectRepository(Class) private readonly schoolGroupRepository: BaseRepository<Class>,
+    @InjectRepository(Class) private readonly classRepository: BaseRepository<Class>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   public async create(createInfoDocDto: CreateInfoDocDto, file: FileUpload): Promise<InfoDoc> {
     const docSeries = await this.docSeriesRepository.findOne({ id: createInfoDocDto.docSeries });
-    const schoolGroup = (typeof createInfoDocDto.schoolGroupId === 'string')
-      ? await this.schoolGroupRepository.findOneOrFail({ id: createInfoDocDto.schoolGroupId })
+    const schoolClass = (typeof createInfoDocDto.classId === 'string')
+      ? await this.classRepository.findOneOrFail({ id: createInfoDocDto.classId })
       : null;
 
     const infoDoc = new InfoDoc({
       ...createInfoDocDto,
-      ...(schoolGroup ? { schoolGroup } : {}),
+      ...(schoolClass ? { schoolClass } : {}),
       file,
       docSeries,
     });
@@ -88,9 +88,9 @@ export class InfoDocsService {
       { populate: ['file', 'file.user', 'docSeries'] },
     );
 
-    const schoolGroup = (typeof updateCourseDto.schoolGroupId === 'string')
-      ? await this.schoolGroupRepository.findOneOrFail({ id: updateCourseDto.schoolGroupId })
-      : infoDoc.schoolGroup;
+    const schoolClass = (typeof updateCourseDto.classId === 'string')
+      ? await this.classRepository.findOneOrFail({ id: updateCourseDto.classId })
+      : infoDoc.schoolClass;
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, infoDoc);
@@ -99,7 +99,7 @@ export class InfoDocsService {
 
     wrap(infoDoc).assign({
       ...updateCourseDto,
-      ...(schoolGroup ? { schoolGroup } : {}),
+      ...(schoolClass ? { schoolClass } : {}),
       docSeries,
     });
 

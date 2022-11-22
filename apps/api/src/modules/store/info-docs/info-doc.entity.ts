@@ -22,7 +22,7 @@ export class InfoDoc extends BaseFileEntity {
   year!: number;
 
   @ManyToOne(() => Class)
-  schoolGroup: Class | null = null;
+  schoolClass: Class | null = null;
 
   @Property({ type: 'text' })
   description: string | null = null;
@@ -35,7 +35,7 @@ export class InfoDoc extends BaseFileEntity {
   constructor(options: {
     file: FileUpload;
     year: number;
-    schoolGroup?: Class | null;
+    schoolClass?: Class | null;
     docSeries?: DocSeries | null;
     description?: string | null;
     isObsolete?: boolean | null;

@@ -19,7 +19,7 @@ export class CreateSubjectDto {
 
   @IsOptional()
   @IsString()
-  schoolGroupId?: string;
+  classId?: string;
 
   @IsOptional()
   @IsString()

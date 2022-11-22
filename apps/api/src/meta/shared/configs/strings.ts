@@ -1,6 +1,6 @@
 import { ClassType } from '../lib/types/enums/class-type.enum';
 
-export const schoolGroups = [
+export const classes = [
   {
     id: 'everyone',
     name: 'Tout le monde',

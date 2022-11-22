@@ -37,7 +37,7 @@ export class UsersService {
     @InjectRepository(Statistics) private readonly statisticsRepository: BaseRepository<Statistics>,
     @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
     @InjectRepository(Class)
-      private readonly schoolGroupRepository: BaseRepository<Class>,
+      private readonly classRepository: BaseRepository<Class>,
     @InjectRepository(SchoolYear)
       private readonly schoolYearRepository: BaseRepository<SchoolYear>,
     private readonly statisticsService: StatisticsService,
@@ -54,9 +54,9 @@ export class UsersService {
       refresh: true,
       populate: [
         'interests',
-        'schoolGroupMemberships',
-        'schoolGroupMemberships.schoolYear',
-        'schoolGroupMemberships.schoolGroup',
+        'classMemberships',
+        'classMemberships.schoolYear',
+        'classMemberships.schoolClass',
         'teamMemberships',
         'teamMemberships.team',
         'teamMembershipRequests',
@@ -95,13 +95,13 @@ export class UsersService {
 
     if (user.schoolRole === SchoolRole.Student) {
       const schoolYear = await this.schoolYearRepository.findOneOrFail({ id: 'school-year-test' });
-      const schoolGroup = await this.schoolGroupRepository.findOneOrFail({ id: 'group-test' });
-      const schoolGroupMembership = new ClassMembership({
+      const schoolClass = await this.classRepository.findOneOrFail({ id: 'group-test' });
+      const classMembership = new ClassMembership({
         user,
-        schoolGroup,
+        schoolClass,
         schoolYear,
       });
-      await this.schoolGroupRepository.persistAndFlush(schoolGroupMembership);
+      await this.classRepository.persistAndFlush(classMembership);
     }
 
     return { user, token };
@@ -142,9 +142,9 @@ export class UsersService {
       {
         orderBy: { lastname: 'ASC' },
         populate: [
-          'schoolGroupMemberships',
-          'schoolGroupMemberships.schoolYear',
-          'schoolGroupMemberships.schoolGroup',
+          'classMemberships',
+          'classMemberships.schoolYear',
+          'classMemberships.schoolClass',
           'teamMemberships',
           'teamMemberships.team',
         ],

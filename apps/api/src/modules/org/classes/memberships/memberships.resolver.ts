@@ -13,15 +13,15 @@ import { ClassMembershipsService } from './memberships.service';
 @Resolver(() => ClassMembership)
 export class ClassMembershipsResolver {
   constructor(
-    private readonly schoolGroupMembershipsService: ClassMembershipsService,
-    private readonly schoolGroupsService: ClassesService,
+    private readonly classMembershipsService: ClassMembershipsService,
+    private readonly classesService: ClassesService,
   ) {}
 
   @ResolveField(() => [Class])
-  public async getParents(@Parent() schoolGroupMembership: ClassMembership): Promise<Class[]> {
+  public async getParents(@Parent() classMembership: ClassMembership): Promise<Class[]> {
     const nParents = 4;
-    const parents = [schoolGroupMembership.schoolGroup];
-    if (typeof schoolGroupMembership.schoolGroup.parent?.id !== 'string')
+    const parents = [classMembership.schoolClass];
+    if (typeof classMembership.schoolClass.parent?.id !== 'string')
       return parents;
 
     for (let i = 0; i < nParents; i++) {
@@ -30,7 +30,7 @@ export class ClassMembershipsResolver {
         break;
 
       // eslint-disable-next-line no-await-in-loop
-      parents.push(await this.schoolGroupsService.findOne(parentId));
+      parents.push(await this.classesService.findOne(parentId));
     }
 
     return parents;
@@ -38,10 +38,10 @@ export class ClassMembershipsResolver {
 
   // TODO: Add permission checks
   @Query(() => ClassMembership)
-  public async schoolGroupMembershipsById(
+  public async classMembershipsById(
     @Args('id') id: string,
   ): Promise<ClassMembership[]> {
-    const paginatedMemberships = await this.schoolGroupMembershipsService.findMembers(id);
+    const paginatedMemberships = await this.classMembershipsService.findMembers(id);
     return paginatedMemberships.items;
   }
 }

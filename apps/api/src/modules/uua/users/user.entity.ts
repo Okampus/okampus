@@ -87,7 +87,7 @@ export class User extends BaseTenantEntity implements BaseSearchableEntity {
 
   @Field(() => [ClassMembership])
   @OneToMany('ClassMembership', 'user')
-  schoolGroupMemberships = new Collection<ClassMembership>(this);
+  classMemberships = new Collection<ClassMembership>(this);
 
   @Field(() => [TeamMembershipRequest])
   @OneToMany('TeamMembershipRequest', 'user')

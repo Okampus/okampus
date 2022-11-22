@@ -27,7 +27,10 @@ scalar DateTime
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
-scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+scalar JSON
+  @specifiedBy(
+    url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf"
+  )
 
 type Class {
   createdAt: DateTime!
@@ -64,7 +67,7 @@ type ClassMembership {
   id: Int!
   user: User!
   schoolYear: SchoolYear!
-  schoolGroup: Class!
+  schoolClass: Class!
   role: ClassRole!
   getParents: [Class!]!
 }
@@ -338,7 +341,7 @@ type User {
   avatar: String
   roles: [Role!]!
   schoolRole: SchoolRole!
-  schoolGroupMemberships: [ClassMembership!]!
+  classMemberships: [ClassMembership!]!
   teamMembershipRequests: [TeamMembershipRequest!]!
   teamMemberships: [TeamMember!]!
   interests: [Interest!]!
@@ -797,9 +800,9 @@ type Query {
   userById(id: String!): User!
   users: [User!]!
   searchUsers(search: String!, query: PaginateDto): [IndexedUser!]!
-  schoolGroupMembershipsById(id: String!): ClassMembership!
-  schoolGroups: [Class!]!
-  schoolGroupById(id: String!): Class!
+  classMembershipsById(id: String!): ClassMembership!
+  classes: [Class!]!
+  classById(id: String!): Class!
   interestById(id: Int!): Interest!
   interests: [Interest!]!
   tenantById(id: String!): Tenant!
@@ -820,14 +823,22 @@ type Query {
   clubs: [Team!]!
   teamFormById(id: Int!): TeamForm!
   teamEventRegistrationById(id: Int!): TeamEventRegistration
-  teamEventRegistrations(filters: FilterRegisteredEventsDto!): [TeamEventRegistration!]!
+  teamEventRegistrations(
+    filters: FilterRegisteredEventsDto!
+  ): [TeamEventRegistration!]!
   eventById(id: Int!): TeamEvent!
   events(filter: ListTeamEventsDto!): [TeamEvent!]!
   teamFinanceById(id: Int!): TeamFinance
   teamFinances(filters: TeamFinancesFilterDto!): [TeamFinance!]!
-  teamMembershipRequests(id: Int!, filter: FilterMembershipRequestsDto): [TeamMembershipRequest!]
+  teamMembershipRequests(
+    id: Int!
+    filter: FilterMembershipRequestsDto
+  ): [TeamMembershipRequest!]
   teamMembershipsByUserId(id: String!): [TeamMember!]
-  teamMembershipRequestsByUserId(id: String!, filters: ListMembershipRequestsDto): [TeamMembershipRequest!]!
+  teamMembershipRequestsByUserId(
+    id: String!
+    filters: ListMembershipRequestsDto
+  ): [TeamMembershipRequest!]!
   teamMembers(id: Int!): [TeamMember!]
   schoolYearById(id: String!): SchoolYear!
   threadById(id: Int!): Thread
@@ -903,7 +914,10 @@ type Mutation {
   createContent(child: CreateContentWithKindDto!): Content!
   updateContent(id: Int!, content: UpdateContentDto!): Content!
   createReport(id: Int!, report: CreateReportDto!): Content!
-  addTeamReceipt(file: Upload!, createReceipt: CreateTeamReceiptDto!): TeamReceipt!
+  addTeamReceipt(
+    file: Upload!
+    createReceipt: CreateTeamReceiptDto!
+  ): TeamReceipt!
   updateSettings(settings: UpdateSettingsDto!): Settings!
   addTeamFile(file: Upload!, createFile: CreateTeamFileDto!): Team!
   deleteTeamFile(id: String!): Team!
@@ -911,21 +925,47 @@ type Mutation {
   updateTeam(id: Int!, team: UpdateTeamDto!): Team!
   createTeamForm(id: Int!, createForm: CreateTeamFormDto!): Team!
   updateTeamForm(id: Int!, updateForm: UpdateTeamFormDto!): TeamForm!
-  addTeamEventRegistration(id: Int!, registration: CreateTeamEventRegistrationDto!): TeamEvent!
-  updateTeamEventRegistration(id: Int!, registration: UpdateTeamEventRegistrationDto!): TeamEventRegistration!
+  addTeamEventRegistration(
+    id: Int!
+    registration: CreateTeamEventRegistrationDto!
+  ): TeamEvent!
+  updateTeamEventRegistration(
+    id: Int!
+    registration: UpdateTeamEventRegistrationDto!
+  ): TeamEventRegistration!
   createEvent(id: Int!, createEvent: CreateTeamEventDto!): TeamEvent!
   updateEvent(id: Int!, updateEvent: UpdateTeamEventDto!): TeamEvent!
-  validateEvent(id: Int!, createValidation: CreateTeamEventValidationDto!): TeamEvent!
+  validateEvent(
+    id: Int!
+    createValidation: CreateTeamEventValidationDto!
+  ): TeamEvent!
   addTeamFinance(id: Int!, finance: CreateTeamFinanceDto!): TeamFinance!
   updateTeamFinance(id: Int!, finance: UpdateTeamFinanceDto!): TeamFinance!
   joinTeam(id: Int!, request: CreateTeamMembershipRequestDto!): Team!
-  updateTeamMembershipRequest(requestId: Int!, update: UpdateTeamMembershipRequestDto!): TeamMembershipRequest!
-  handleTeamMembershipRequest(id: Int!, updateRequest: PutTeamMembershipRequestDto!): TeamMembershipRequest!
-  addUserToTeam(teamId: Int!, userId: Int!, invite: InviteMemberDto!): TeamMember!
-  updateTeamMember(teamId: Int!, userId: Int!, update: UpdateTeamMemberDto!): TeamMember!
+  updateTeamMembershipRequest(
+    requestId: Int!
+    update: UpdateTeamMembershipRequestDto!
+  ): TeamMembershipRequest!
+  handleTeamMembershipRequest(
+    id: Int!
+    updateRequest: PutTeamMembershipRequestDto!
+  ): TeamMembershipRequest!
+  addUserToTeam(
+    teamId: Int!
+    userId: Int!
+    invite: InviteMemberDto!
+  ): TeamMember!
+  updateTeamMember(
+    teamId: Int!
+    userId: Int!
+    update: UpdateTeamMemberDto!
+  ): TeamMember!
   removeTeamMember(teamId: Int!, userId: Int!): TeamMember
   addValidationStep(createStep: CreateValidationStepDto!): Tenant!
-  updateValidationStep(id: Int!, updateStep: UpdateValidationStepDto!): ValidationStep!
+  updateValidationStep(
+    id: Int!
+    updateStep: UpdateValidationStepDto!
+  ): ValidationStep!
   insertStep(step: Int!, atStep: Int!): Tenant!
   createThread(thread: CreateThreadDto!): Thread!
   updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
@@ -984,7 +1024,9 @@ input CreateReportDto {
   reason: String!
 }
 
-"""The `Upload` scalar type represents a file upload."""
+"""
+The `Upload` scalar type represents a file upload.
+"""
 scalar Upload
 
 input CreateTeamReceiptDto {
