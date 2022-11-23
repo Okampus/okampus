@@ -14,7 +14,7 @@ import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { normalizePagination } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
-import { CreateAnnouncementDto } from '@modules/manage/announcements/dto/create-announcement.dto';
+import { CreateAnnouncementDto } from '@modules/org/teams/announcements/dto/create-announcement.dto';
 import { User } from '@modules/uua/users/user.entity';
 import { Announcement } from './announcement.entity';
 import { AnnouncementsService } from './announcements.service';

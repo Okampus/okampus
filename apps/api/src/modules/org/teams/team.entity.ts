@@ -19,7 +19,7 @@ import type { BaseSearchableEntity } from '@common/lib/types/interfaces/base-sea
 import { Role } from '@common/modules/authorization/types/role.enum';
 import type { BaseIndex } from '@common/modules/search/indexed-entity.interface';
 import { Label } from '@modules/assort/labels/label.entity';
-import { TeamForm } from '@modules/manage/forms/team-form.entity';
+import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import type { User } from '@modules/uua/users/user.entity';
 import type { Tenant } from '../tenants/tenant.entity';
 import { TeamHistory } from './histories/team-history.entity';

@@ -10,7 +10,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
 import { BaseEntity } from '@common/lib/entities/base.entity';
 import { TeamEventRegisterStatus } from '@common/lib/types/enums/team-event-register-status.enum';
-import { TeamForm } from '@modules/manage/forms/team-form.entity';
+import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { TeamEvent } from '../events/team-event.entity';
 

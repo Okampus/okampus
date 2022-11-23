@@ -18,7 +18,7 @@ import {
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
 import type { PaginatedResult } from '@common/modules/pagination';
 import { serializeOrder } from '@common/modules/sorting';
-import { TeamForm } from '@modules/manage/forms/team-form.entity';
+import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import { Team } from '@modules/org/teams/team.entity';
 import type { Tenant } from '@modules/org/tenants/tenant.entity';

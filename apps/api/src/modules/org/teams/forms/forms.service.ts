@@ -6,7 +6,7 @@ import { BaseRepository } from '@common/lib/orm/base.repository';
 import { TeamManagedFormUpdatedNotification } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
 import type { PaginatedResult } from '@common/modules/pagination';
-import type { CreateTeamFormDto } from '@modules/manage/forms/dto/create-team-form.dto';
+import type { CreateTeamFormDto } from '@modules/org/teams/forms/dto/create-team-form.dto';
 import { Team } from '@modules/org/teams/team.entity';
 import type { User } from '@modules/uua/users/user.entity';
 import type { ListTeamFormsDto } from './dto/list-team-forms.dto';

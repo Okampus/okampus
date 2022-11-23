@@ -6,7 +6,7 @@ import type { ListOptionsDto } from '@common/lib/dto/list-options.dto';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { TeamEventState } from '@common/lib/types/enums/team-event-state.enum';
 import type { PaginatedResult } from '@common/modules/pagination';
-import type { CreateTeamFinanceDto } from '@modules/manage/finances/dto/create-team-finance.dto';
+import type { CreateTeamFinanceDto } from '@modules/org/teams/finances/dto/create-team-finance.dto';
 import { Team } from '@modules/org/teams/team.entity';
 import { TeamEvent } from '@modules/plan/events/team-event.entity';
 import { TeamFile } from '@modules/store/team-files/team-file.entity';

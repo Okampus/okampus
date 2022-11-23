@@ -8,7 +8,7 @@ import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
-import type { CreateAnnouncementDto } from '@modules/manage/announcements/dto/create-announcement.dto';
+import type { CreateAnnouncementDto } from '@modules/org/teams/announcements/dto/create-announcement.dto';
 import type { User } from '@modules/uua/users/user.entity';
 import { Announcement } from './announcement.entity';
 import type ListAnnouncementsDto from './dto/list-announcements.dto';

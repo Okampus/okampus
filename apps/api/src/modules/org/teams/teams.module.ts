@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
 import { TeamLabelsModule } from '@modules/assort/labels/labels.module';
-import { TeamFinancesModule } from '@modules/manage/finances/finances.module';
-import { TeamFormsModule } from '@modules/manage/forms/forms.module';
+import { TeamFinancesModule } from '@modules/org/teams/finances/finances.module';
+import { TeamFormsModule } from '@modules/org/teams/forms/forms.module';
 import { TeamEventRegistrationsModule } from '@modules/plan/event-registrations/event-registrations.module';
 import { TeamEventValidationsModule } from '@modules/plan/event-validations/event-validations.module';
 import { TeamEventsModule } from '@modules/plan/events/events.module';

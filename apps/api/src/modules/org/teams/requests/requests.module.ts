@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { NotificationsModule } from '@common/modules/notifications/notifications.module';
 import { Label } from '@modules/assort/labels/label.entity';
-import { TeamForm } from '@modules/manage/forms/team-form.entity';
+import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { ProfileImage } from '@modules/store/profile-images/profile-image.entity';
 import { TeamMember } from '../members/team-member.entity';
 import { Social } from '../socials/social.entity';

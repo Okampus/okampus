@@ -9,7 +9,7 @@ import {
 } from '@nestjs/graphql';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import { CreateTeamFormDto } from '@modules/manage/forms/dto/create-team-form.dto';
+import { CreateTeamFormDto } from '@modules/org/teams/forms/dto/create-team-form.dto';
 import { Team } from '@modules/org/teams/team.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { UpdateTeamFormDto } from './dto/update-team-form.dto';

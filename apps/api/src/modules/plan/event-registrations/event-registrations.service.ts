@@ -6,7 +6,7 @@ import { BaseRepository } from '@common/lib/orm/base.repository';
 import { TeamEventRegisterStatus } from '@common/lib/types/enums/team-event-register-status.enum';
 import { Role } from '@common/modules/authorization/types/role.enum';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
-import { TeamForm } from '@modules/manage/forms/team-form.entity';
+import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import type { CreateTeamEventRegistrationDto } from '@modules/plan/event-registrations/dto/create-team-event-registration.dto';
 import type { User } from '@modules/uua/users/user.entity';
