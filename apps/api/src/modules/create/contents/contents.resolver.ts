@@ -1,4 +1,3 @@
-import { BadRequestException, Inject } from '@nestjs/common';
 import {
   Args,
   Context,
@@ -9,11 +8,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@meta/shared/lib/constants';
 import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { ContentKind } from '@meta/shared/lib/types/enums/content-kind.enum';
-import { SubscriptionType } from '@meta/shared/lib/types/enums/subscription-type.enum';
 import { Interactions } from '@modules/create/contents/interactions.model';
 import { FavoritesService } from '@modules/interact/favorites/favorites.service';
 import { VotesService } from '@modules/interact/votes/votes.service';
@@ -27,7 +22,6 @@ import { Content, DEFAULT_INTERACTIONS } from './entities/content.entity';
 @Resolver(() => Content)
 export class ContentResolver {
   constructor(
-    @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,
     private readonly contentsService: ContentsService,
     private readonly votesService: VotesService,
     private readonly favoritesService: FavoritesService,
@@ -39,7 +33,7 @@ export class ContentResolver {
     @CurrentUser() user: User,
     @Args('id', { type: () => Int }) id: number,
   ): Promise<Content | null> {
-    return await this.contentsService.findOne(user, id);
+    return this.contentsService.findOne(user, id);
   }
 
   @ResolveField(() => [Content])
@@ -63,7 +57,7 @@ export class ContentResolver {
   ): Promise<Interactions> {
     if (batchContext.batchInteractions)
       return batchContext.batchInteractions[content.id] ?? { ...DEFAULT_INTERACTIONS };
-    return await this.contentsService.findInteractions(user, content.id);
+    return this.contentsService.findInteractions(user, content.id);
   }
 
   @Mutation(() => Content)
@@ -71,15 +65,7 @@ export class ContentResolver {
     @CurrentUser() user: User,
     @Args('child') child: CreateContentWithKindDto,
   ): Promise<Content> {
-    if (child.contentKind === ContentKind.Post)
-      throw new BadRequestException('Child content cannot be post');
-
-    const parentContent = child.contentKind === ContentKind.Comment
-      ? await this.contentsService.createComment(user, { ...child, isAnonymous: false })
-      : await this.contentsService.createReply(user, { ...child, isAnonymous: false });
-
-    await this.pubSub.publish(SubscriptionType.ContentAdded, { contentAdded: parentContent });
-    return parentContent;
+    return this.contentsService.createContentWithKind(user, child);
   }
 
   @Mutation(() => Content)
@@ -88,8 +74,6 @@ export class ContentResolver {
     @Args('id', { type: () => Int }) id: number,
     @Args('content') content: UpdateContentDto,
   ): Promise<Content> {
-    const updatedContent = this.contentsService.update(user, id, content);
-    await this.pubSub.publish(SubscriptionType.ContentUpdated, { contentUpdated: updatedContent });
-    return updatedContent;
+    return this.contentsService.update(user, id, content);
   }
 }

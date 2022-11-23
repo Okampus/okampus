@@ -1,13 +1,16 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { PubSubEngine } from 'graphql-subscriptions';
 import groupBy from 'lodash.groupby';
 import { config } from '@meta/shared/configs/config';
+import { APP_PUB_SUB } from '@meta/shared/lib/constants';
 import type { ContentListOptionsDto } from '@meta/shared/lib/dto/list-options.dto';
 import { ContentMaster } from '@meta/shared/lib/entities/content-master.entity';
 import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
 import { ContentKind } from '@meta/shared/lib/types/enums/content-kind.enum';
 import { ContentMasterType } from '@meta/shared/lib/types/enums/content-master-type.enum';
+import { SubscriptionType } from '@meta/shared/lib/types/enums/subscription-type.enum';
 import { assertPermissions } from '@meta/shared/lib/utils/assert-permission';
 import { Action } from '@meta/shared/modules/authorization';
 import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
@@ -26,6 +29,7 @@ import { Reaction } from '@modules/interact/reactions/reaction.entity';
 import { Report } from '@modules/interact/reports/report.entity';
 import { Vote } from '@modules/interact/votes/vote.entity';
 import { User } from '@modules/uua/users/user.entity';
+import type { CreateContentWithKindDto } from './dto/create-content-with-kind.dto';
 import type { CreateContentDto } from './dto/create-content.dto';
 import type { UpdateContentDto } from './dto/update-content.dto';
 import { Content, DEFAULT_INTERACTIONS } from './entities/content.entity';
@@ -35,6 +39,7 @@ import { Edit } from './entities/edit.entity';
 export class ContentsService {
   // eslint-disable-next-line max-params
   constructor(
+    @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
     @InjectRepository(Edit) private readonly contentEditRepository: BaseRepository<Edit>,
     @InjectRepository(ContentMaster) private readonly contentMasterRepository: BaseRepository<ContentMaster>,
@@ -46,6 +51,18 @@ export class ContentsService {
     private readonly notificationsService: NotificationsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
+
+  public async createContentWithKind(
+    user: User,
+    createContentDto: CreateContentWithKindDto,
+  ): Promise<Content> {
+    if (createContentDto.contentKind === ContentKind.Post)
+      throw new BadRequestException('Child content cannot be post');
+
+    return createContentDto.contentKind === ContentKind.Comment
+      ? await this.createComment(user, { ...createContentDto, isAnonymous: false })
+      : await this.createReply(user, { ...createContentDto, isAnonymous: false });
+  }
 
   public async createPost(
     user: User,
@@ -89,6 +106,8 @@ export class ContentsService {
     else if (content.contentMaster!.kind === ContentMasterType.Blog)
       void this.notificationsService.trigger(new BlogSubscribedUpdatedNotification(content));
 
+    await this.pubSub.publish(SubscriptionType.ContentAdded, { contentAdded: parent });
+
     return parent;
   }
 
@@ -112,6 +131,7 @@ export class ContentsService {
 
     // TODO: Add user mentions
     void this.notificationsService.trigger(new ThreadSubscribedUpdatedNotification(content));
+    await this.pubSub.publish(SubscriptionType.ContentAdded, { contentAdded: parent });
 
     return parent;
   }
@@ -279,6 +299,8 @@ export class ContentsService {
     }
 
     await this.contentRepository.flush();
+    await this.pubSub.publish(SubscriptionType.ContentUpdated, { contentUpdated: content });
+
     return content;
   }
 
