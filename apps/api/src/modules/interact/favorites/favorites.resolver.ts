@@ -1,6 +1,3 @@
-
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { Inject } from '@nestjs/common';
 import {
   Args,
   Int,
@@ -8,23 +5,15 @@ import {
   Query,
   Resolver,
 } from '@nestjs/graphql';
-import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@meta/shared/lib/constants';
 import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { SubscriptionType } from '@meta/shared/lib/types/enums/subscription-type.enum';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { Favorite } from './favorite.entity';
 import { FavoritesService } from './favorites.service';
 
 @Resolver(() => Favorite)
-export class ReportsResolver {
-  constructor(
-    @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,
-    @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
-    private readonly favoritesService: FavoritesService,
-  ) {}
+export class FavoritesResolver {
+  constructor(private readonly favoritesService: FavoritesService) {}
 
   // TODO: Add permission checks
   @Query(() => [Favorite])
@@ -51,8 +40,6 @@ export class ReportsResolver {
     @Args('id', { type: () => Int }) id: number,
     @Args('active', { type: () => Boolean }) active: boolean,
   ): Promise<Content> {
-    const updatedContent = await this.favoritesService.update(user, id, active);
-    await this.pubSub.publish(SubscriptionType.ReportAdded, { reportAdded: updatedContent });
-    return updatedContent;
+    return await this.favoritesService.update(user, id, active);
   }
 }

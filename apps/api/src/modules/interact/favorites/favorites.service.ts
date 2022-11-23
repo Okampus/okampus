@@ -1,6 +1,9 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { PubSubEngine } from 'graphql-subscriptions';
+import { APP_PUB_SUB } from '@meta/shared/lib/constants';
 import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
+import { SubscriptionType } from '@meta/shared/lib/types/enums/subscription-type.enum';
 import { assertPermissions } from '@meta/shared/lib/utils/assert-permission';
 import { Action } from '@meta/shared/modules/authorization';
 import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
@@ -12,6 +15,7 @@ import { Favorite } from './favorite.entity';
 @Injectable()
 export class FavoritesService {
   constructor(
+    @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,
     @InjectRepository(Favorite) private readonly favoriteRepository: BaseRepository<Favorite>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
@@ -42,6 +46,8 @@ export class FavoritesService {
     content.favoriteCount += active ? 1 : -1;
 
     await this.contentRepository.flush();
+    await this.pubSub.publish(SubscriptionType.FavoriteUpdated, { favoriteUpdated: content });
+
     return content;
   }
 
