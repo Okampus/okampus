@@ -5,10 +5,10 @@ import { BaseRepository } from '@common/lib/orm/base.repository';
 import { MembershipRequestDirection } from '@common/lib/types/enums/membership-request-direction.enum';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import { normalizePagination } from '@common/modules/pagination';
+import { MembershipRequestIssuer } from '../../../../common/lib/types/enums/membership-request-issuer.enum';
 import type { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
 import { TeamMember } from '../members/team-member.entity';
 import { TeamMembershipRequest } from '../requests/team-membership-request.entity';
-import { MembershipRequestIssuer } from '../types/membership-request-issuer.enum';
 
 @Injectable()
 export class TeamMembershipsService {

@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { TeamMember } from './members/team-member.entity';
+import { TeamMember } from '../../../../modules/org/teams/members/team-member.entity';
 
 @ObjectType()
 export class TeamMembershipStatus {

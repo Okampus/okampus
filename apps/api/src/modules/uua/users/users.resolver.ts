@@ -20,8 +20,8 @@ import { InterestsService } from '@modules/org/teams/interests/interests.service
 import { Social } from '@modules/org/teams/socials/social.entity';
 import { SocialsService } from '@modules/org/teams/socials/socials.service';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
+import { IndexedUser } from '../../../common/lib/types/models/user-indexed.model';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { IndexedUser } from './user-indexed.model';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
 

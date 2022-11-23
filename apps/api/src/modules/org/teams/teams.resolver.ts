@@ -21,6 +21,7 @@ import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { FileKind } from '@common/lib/types/enums/file-kind.enum';
+import { MembershipRequestState } from '@common/lib/types/enums/membership-request-state.enum';
 import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
 import { TeamKind } from '@common/lib/types/enums/team-kind.enum';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
@@ -33,16 +34,15 @@ import { TeamFile } from '@modules/store/team-files/team-file.entity';
 import { TeamFilesService } from '@modules/store/team-files/team-files.service';
 import { TeamGallery } from '@modules/store/team-galleries/team-gallery.entity';
 import { User } from '@modules/uua/users/user.entity';
+import { TeamMembershipStatus } from '../../../common/lib/types/models/team-membership-status.model';
 import { Tenant } from '../tenants/tenant.entity';
 import { TeamsFilterDto } from './dto/teams-filter.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { Interest } from './interests/interest.entity';
 import { InterestsService } from './interests/interests.service';
 import { TeamMember } from './members/team-member.entity';
-import { TeamMembershipStatus } from './team-membership-status.model';
 import { Team } from './team.entity';
 import { TeamsService } from './teams.service';
-import { MembershipRequestState } from './types/membership-request-state.enum';
 
 export interface ContextBatchTeams {
   userInterests: Record<number, Interest | null>;

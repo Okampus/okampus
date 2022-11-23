@@ -15,12 +15,12 @@ import {
 } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
 import { BaseEntity } from '@common/lib/entities/base.entity';
+import { MembershipRequestState } from '@common/lib/types/enums/membership-request-state.enum';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { User } from '@modules/uua/users/user.entity';
+import { MembershipRequestIssuer } from '../../../../common/lib/types/enums/membership-request-issuer.enum';
 import { Team } from '../team.entity';
-import { MembershipRequestIssuer } from '../types/membership-request-issuer.enum';
-import { MembershipRequestState } from '../types/membership-request-state.enum';
 
 @ObjectType()
 @Entity()
