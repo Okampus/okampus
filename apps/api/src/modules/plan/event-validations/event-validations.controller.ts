@@ -8,11 +8,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentTenant } from '@meta/shared/lib/decorators/current-tenant.decorator';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { Action, CheckPolicies } from '@meta/shared/modules/authorization';
-import { normalizePagination } from '@meta/shared/modules/pagination';
-import type { PaginatedResult } from '@meta/shared/modules/pagination';
+import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { Action, CheckPolicies } from '@common/modules/authorization';
+import { normalizePagination } from '@common/modules/pagination';
+import type { PaginatedResult } from '@common/modules/pagination';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { CreateTeamEventValidationDto } from '@modules/plan/event-validations/dto/create-team-event-validation.dto';
 import { User } from '@modules/uua/users/user.entity';

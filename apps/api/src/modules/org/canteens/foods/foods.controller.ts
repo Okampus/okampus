@@ -9,9 +9,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Action, CheckPolicies } from '@meta/shared/modules/authorization';
-import { normalizePagination, PaginateDto } from '@meta/shared/modules/pagination';
-import type { PaginatedResult } from '@meta/shared/modules/pagination';
+import { Action, CheckPolicies } from '@common/modules/authorization';
+import { normalizePagination, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedResult } from '@common/modules/pagination';
 import { CreateFoodDto } from '@modules/org/canteens/foods/dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
 import { Food } from './food.entity';

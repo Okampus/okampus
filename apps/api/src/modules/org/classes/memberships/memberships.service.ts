@@ -1,7 +1,7 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import type { PaginatedResult, PaginateDto } from '@meta/shared/modules/pagination';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import type { CreateClassMembershipDto } from '@modules/org/classes/memberships/dto/create-class-membership.dto';
 import { User } from '@modules/uua/users/user.entity';
 import { Class } from '../class.entity';

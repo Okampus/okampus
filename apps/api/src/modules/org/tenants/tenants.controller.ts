@@ -15,12 +15,12 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
-import { simpleImageMimeTypeRegex } from '@meta/shared/configs/mime-type';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { UploadInterceptor, UploadMultipleInterceptor } from '@meta/shared/lib/decorators/upload-interceptor.decorator';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { FileKind } from '@meta/shared/lib/types/enums/file-kind.enum';
-import { Action, CheckPolicies } from '@meta/shared/modules/authorization';
+import { simpleImageMimeTypeRegex } from '@common/configs/mime-type';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { UploadInterceptor, UploadMultipleInterceptor } from '@common/lib/decorators/upload-interceptor.decorator';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import { FileKind } from '@common/lib/types/enums/file-kind.enum';
+import { Action, CheckPolicies } from '@common/modules/authorization';
 import { CreateTenantDto } from '@modules/org/tenants/dto/create-tenant.dto';
 import { FileUploadsService } from '@modules/store/file-uploads/file-uploads.service';
 import type { ProfileImage } from '@modules/store/profile-images/profile-image.entity';

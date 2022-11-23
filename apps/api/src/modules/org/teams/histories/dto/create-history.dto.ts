@@ -1,6 +1,6 @@
 import { Field, Int } from '@nestjs/graphql';
 import { IsEnum, IsInt, IsString } from 'class-validator';
-import { TeamHistoryState } from '@meta/shared/lib/types/enums/team-history-state.enum';
+import { TeamHistoryState } from '@common/lib/types/enums/team-history-state.enum';
 
 export class CreateHistoryDto {
   @Field(() => Int, { nullable: true })

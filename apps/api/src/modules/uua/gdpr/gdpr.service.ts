@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
+import { BaseRepository } from '@common/lib/orm/base.repository';
 import { Blog } from '@modules/create/blogs/blog.entity';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { Thread } from '@modules/create/threads/thread.entity';

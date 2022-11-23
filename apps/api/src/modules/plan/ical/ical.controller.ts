@@ -8,7 +8,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Public } from '@meta/shared/lib/decorators/public.decorator';
+import { Public } from '@common/lib/decorators/public.decorator';
 import { TeamICalService } from './ical.service';
 
 @ApiTags('Team iCal')

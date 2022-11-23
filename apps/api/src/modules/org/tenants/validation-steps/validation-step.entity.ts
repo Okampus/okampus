@@ -10,9 +10,9 @@ import {
   QueryOrder,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { TransformCollection } from '@meta/shared/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
-import { ValidationStepType } from '@meta/shared/lib/types/enums/validation-step-type.enum';
+import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { ValidationStepType } from '@common/lib/types/enums/validation-step-type.enum';
 import { User } from '@modules/uua/users/user.entity';
 import { Tenant } from '../tenant.entity';
 

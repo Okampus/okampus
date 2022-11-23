@@ -6,8 +6,8 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
-import { NotificationChannel } from '@meta/shared/lib/types/enums/notification-channel.enum';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { NotificationChannel } from '@common/lib/types/enums/notification-channel.enum';
 import { User } from '../users/user.entity';
 
 const week = 7 * 24 * 60 * 60;

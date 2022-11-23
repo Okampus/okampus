@@ -6,8 +6,8 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
-import { TeamHistoryState } from '@meta/shared/lib/types/enums/team-history-state.enum';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { TeamHistoryState } from '@common/lib/types/enums/team-history-state.enum';
 import { Team } from '../team.entity';
 
 @ObjectType()

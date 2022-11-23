@@ -15,10 +15,10 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
-import { TransformCollection } from '@meta/shared/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
-import { ContentMaster } from '@meta/shared/lib/entities/content-master.entity';
-import { ContentKind } from '@meta/shared/lib/types/enums/content-kind.enum';
+import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { ContentMaster } from '@common/lib/entities/content-master.entity';
+import { ContentKind } from '@common/lib/types/enums/content-kind.enum';
 import { Favorite } from '@modules/interact/favorites/favorite.entity';
 import { Reaction } from '@modules/interact/reactions/reaction.entity';
 import { Report } from '@modules/interact/reports/report.entity';

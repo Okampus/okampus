@@ -1,9 +1,9 @@
 import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
-import { classes } from '@meta/shared/configs/strings';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
+import { classes } from '@common/configs/strings';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { ClassesController } from './class.controller';
 import { Class } from './class.entity';
 import { ClassesResolver } from './class.resolver';

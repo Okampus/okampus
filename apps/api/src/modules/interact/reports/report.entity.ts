@@ -7,7 +7,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseContentInteraction } from '@meta/shared/lib/entities/base-content-interaction.entity';
+import { BaseContentInteraction } from '@common/lib/entities/base-content-interaction.entity';
 import type { Content } from '@modules/create/contents/entities/content.entity';
 import { User } from '@modules/uua/users/user.entity';
 

@@ -6,11 +6,11 @@ import {
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { TeamRole } from '@meta/shared/lib/types/enums/team-role.enum';
-import { TeamManagedMemberRoleUpdatedNotification, TeamManagedMembershipRequestUpdatedNotification } from '@meta/shared/modules/notifications/notifications';
-import { NotificationsService } from '@meta/shared/modules/notifications/notifications.service';
-import type { PaginatedResult, PaginateDto } from '@meta/shared/modules/pagination';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import { TeamRole } from '@common/lib/types/enums/team-role.enum';
+import { TeamManagedMemberRoleUpdatedNotification, TeamManagedMembershipRequestUpdatedNotification } from '@common/modules/notifications/notifications';
+import { NotificationsService } from '@common/modules/notifications/notifications.service';
+import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import { User } from '@modules/uua/users/user.entity';
 import { TeamMembershipRequestsService } from '../requests/requests.service';
 import { TeamMembershipRequest } from '../requests/team-membership-request.entity';

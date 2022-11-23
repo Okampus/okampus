@@ -9,8 +9,8 @@ import {
  Field, Float, GraphQLISODateTime, ObjectType,
 } from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
-import { BaseFileEntity } from '@meta/shared/lib/entities/base-file-entity';
-import { PaymentMethod } from '@meta/shared/lib/types/enums/payment-method.enum';
+import { BaseFileEntity } from '@common/lib/entities/base-file-entity';
+import { PaymentMethod } from '@common/lib/types/enums/payment-method.enum';
 import { Team } from '@modules/org/teams/team.entity';
 import { User } from '@modules/uua/users/user.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';

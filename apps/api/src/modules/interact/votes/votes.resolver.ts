@@ -9,10 +9,10 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@meta/shared/lib/constants';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { SubscriptionType } from '@meta/shared/lib/types/enums/subscription-type.enum';
+import { APP_PUB_SUB } from '@common/lib/constants';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { Vote } from './vote.entity';

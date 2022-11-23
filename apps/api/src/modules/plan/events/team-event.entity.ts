@@ -18,8 +18,8 @@ import {
   ObjectType,
 } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
-import { TeamEventState } from '@meta/shared/lib/types/enums/team-event-state.enum';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { TeamEventState } from '@common/lib/types/enums/team-event-state.enum';
 import { TeamForm } from '@modules/manage/forms/team-form.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import { Team } from '@modules/org/teams/team.entity';

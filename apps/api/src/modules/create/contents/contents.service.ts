@@ -3,25 +3,25 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { PubSubEngine } from 'graphql-subscriptions';
 import groupBy from 'lodash.groupby';
-import { config } from '@meta/shared/configs/config';
-import { APP_PUB_SUB } from '@meta/shared/lib/constants';
-import type { ContentListOptionsDto } from '@meta/shared/lib/dto/list-options.dto';
-import { ContentMaster } from '@meta/shared/lib/entities/content-master.entity';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { ContentKind } from '@meta/shared/lib/types/enums/content-kind.enum';
-import { ContentMasterType } from '@meta/shared/lib/types/enums/content-master-type.enum';
-import { SubscriptionType } from '@meta/shared/lib/types/enums/subscription-type.enum';
-import { assertPermissions } from '@meta/shared/lib/utils/assert-permission';
-import { Action } from '@meta/shared/modules/authorization';
-import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
+import { config } from '@common/configs/config';
+import { APP_PUB_SUB } from '@common/lib/constants';
+import type { ContentListOptionsDto } from '@common/lib/dto/list-options.dto';
+import { ContentMaster } from '@common/lib/entities/content-master.entity';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import { ContentKind } from '@common/lib/types/enums/content-kind.enum';
+import { ContentMasterType } from '@common/lib/types/enums/content-master-type.enum';
+import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
+import { assertPermissions } from '@common/lib/utils/assert-permission';
+import { Action } from '@common/modules/authorization';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import {
   BlogSubscribedUpdatedNotification,
   ContentRemovedNotification,
   ThreadSubscribedUpdatedNotification,
-} from '@meta/shared/modules/notifications/notifications';
-import { NotificationsService } from '@meta/shared/modules/notifications/notifications.service';
-import type { PaginatedResult, PaginateDto } from '@meta/shared/modules/pagination';
-import { serializeOrder } from '@meta/shared/modules/sorting';
+} from '@common/modules/notifications/notifications';
+import { NotificationsService } from '@common/modules/notifications/notifications.service';
+import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import { serializeOrder } from '@common/modules/sorting';
 import type { CreateOrphanContentDto } from '@modules/create/contents/dto/create-orphan-content.dto';
 import type { Interactions } from '@modules/create/contents/interactions.model';
 import { Favorite } from '@modules/interact/favorites/favorite.entity';

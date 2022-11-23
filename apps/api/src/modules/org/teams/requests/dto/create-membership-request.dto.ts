@@ -6,7 +6,7 @@ import {
   IsOptional,
 } from 'class-validator';
 import { GraphQLJSON } from 'graphql-scalars';
-import { TeamRole } from '@meta/shared/lib/types/enums/team-role.enum';
+import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 
 @InputType()
 export class CreateTeamMembershipRequestDto {

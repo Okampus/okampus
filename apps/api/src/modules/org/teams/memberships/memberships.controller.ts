@@ -5,9 +5,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Action, CheckPolicies } from '@meta/shared/modules/authorization';
-import { normalizePagination } from '@meta/shared/modules/pagination';
-import type { PaginatedResult } from '@meta/shared/modules/pagination';
+import { Action, CheckPolicies } from '@common/modules/authorization';
+import { normalizePagination } from '@common/modules/pagination';
+import type { PaginatedResult } from '@common/modules/pagination';
 import { User } from '@modules/uua/users/user.entity';
 import { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
 import type { TeamMember } from '../members/team-member.entity';

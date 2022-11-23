@@ -7,9 +7,9 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { Public } from '@meta/shared/lib/decorators/public.decorator';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { Public } from '@common/lib/decorators/public.decorator';
+import { BaseRepository } from '@common/lib/orm/base.repository';
 import { ProfileImage } from '@modules/store/profile-images/profile-image.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { UpdateTenantDto } from './dto/update-tenant.dto';

@@ -4,7 +4,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
+import { BaseEntity } from '@common/lib/entities/base.entity';
 import { ValidationStep } from '@modules/org/tenants/validation-steps/validation-step.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { TeamEvent } from '../events/team-event.entity';

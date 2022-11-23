@@ -8,8 +8,8 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { TeamEventRegisterStatus } from '@meta/shared/lib/types/enums/team-event-register-status.enum';
-import { PaginateDto } from '@meta/shared/modules/pagination';
+import { TeamEventRegisterStatus } from '@common/lib/types/enums/team-event-register-status.enum';
+import { PaginateDto } from '@common/modules/pagination';
 
 @InputType()
 export class FilterRegisteredEventsDto {

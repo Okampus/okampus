@@ -1,7 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
-import { NotificationsModule } from '@meta/shared/modules/notifications/notifications.module';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
+import { NotificationsModule } from '@common/modules/notifications/notifications.module';
 import { User } from '@modules/uua/users/user.entity';
 import { TeamMembershipRequestsModule } from '../requests/requests.module';
 import { TeamMembershipRequest } from '../requests/team-membership-request.entity';

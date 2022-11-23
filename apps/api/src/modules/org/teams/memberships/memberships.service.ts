@@ -1,10 +1,10 @@
 import type { FilterQuery } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { MembershipRequestDirection } from '@meta/shared/lib/types/enums/membership-request-direction.enum';
-import type { PaginatedResult, PaginateDto } from '@meta/shared/modules/pagination';
-import { normalizePagination } from '@meta/shared/modules/pagination';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import { MembershipRequestDirection } from '@common/lib/types/enums/membership-request-direction.enum';
+import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import { normalizePagination } from '@common/modules/pagination';
 import type { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
 import { TeamMember } from '../members/team-member.entity';
 import { TeamMembershipRequest } from '../requests/team-membership-request.entity';

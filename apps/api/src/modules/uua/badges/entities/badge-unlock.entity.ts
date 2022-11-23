@@ -6,7 +6,7 @@ import {
   PrimaryKey,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
+import { BaseEntity } from '@common/lib/entities/base.entity';
 import { User } from '../../users/user.entity';
 import { Badge } from './badge.entity';
 

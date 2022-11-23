@@ -8,9 +8,9 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@meta/shared/lib/constants';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { SubscriptionType } from '@meta/shared/lib/types/enums/subscription-type.enum';
+import { APP_PUB_SUB } from '@common/lib/constants';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
 import { CreateTeamMembershipRequestDto } from '@modules/org/teams/requests/dto/create-membership-request.dto';
 import { User } from '@modules/uua/users/user.entity';
 import { FilterMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';

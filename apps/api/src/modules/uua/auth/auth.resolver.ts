@@ -6,8 +6,8 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import type { FastifyReply } from 'fastify';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { Public } from '@meta/shared/lib/decorators/public.decorator';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { Public } from '@common/lib/decorators/public.decorator';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthController } from './auth.controller';

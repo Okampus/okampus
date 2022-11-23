@@ -8,7 +8,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Interactions } from '@modules/create/contents/interactions.model';
 import { FavoritesService } from '@modules/interact/favorites/favorites.service';
 import { VotesService } from '@modules/interact/votes/votes.service';

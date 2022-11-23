@@ -8,9 +8,9 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentTenant } from '@meta/shared/lib/decorators/current-tenant.decorator';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
+import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { BaseRepository } from '@common/lib/orm/base.repository';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { ValidationStep } from '@modules/org/tenants/validation-steps/validation-step.entity';
 import { CreateTeamEventValidationDto } from '@modules/plan/event-validations/dto/create-team-event-validation.dto';

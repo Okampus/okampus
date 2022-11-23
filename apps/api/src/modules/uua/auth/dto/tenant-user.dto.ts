@@ -1,6 +1,6 @@
 import { IsEmail, IsEnum, IsString } from 'class-validator';
-import type { TenantUserinfoResponse } from '@meta/shared/lib/types/interfaces/userinfo-response.interface';
-import { SchoolRole } from '@meta/shared/modules/authorization/types/school-role.enum';
+import type { TenantUserinfoResponse } from '@common/lib/types/interfaces/userinfo-response.interface';
+import { SchoolRole } from '@common/modules/authorization/types/school-role.enum';
 
 // TODO: flexible (tenant-specific) TenantUserDto
 export class TenantUserDto {

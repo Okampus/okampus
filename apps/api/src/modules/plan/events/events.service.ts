@@ -2,22 +2,22 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import type { ListOptionsDto } from '@meta/shared/lib/dto/list-options.dto';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { TeamEventState } from '@meta/shared/lib/types/enums/team-event-state.enum';
-import { ValidationStepType } from '@meta/shared/lib/types/enums/validation-step-type.enum';
-import { Role } from '@meta/shared/modules/authorization/types/role.enum';
-import { SchoolRole } from '@meta/shared/modules/authorization/types/school-role.enum';
+import type { ListOptionsDto } from '@common/lib/dto/list-options.dto';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import { TeamEventState } from '@common/lib/types/enums/team-event-state.enum';
+import { ValidationStepType } from '@common/lib/types/enums/validation-step-type.enum';
+import { Role } from '@common/modules/authorization/types/role.enum';
+import { SchoolRole } from '@common/modules/authorization/types/school-role.enum';
 import {
   AdminTeamEventValidationStartedNotification,
   TeamEventCreatedNotification,
   TeamEventSubscribedUpdatedNotification,
   TeamManagedEventUpdatedNotification,
   TeamSubscribedEventCreatedNotification,
-} from '@meta/shared/modules/notifications/notifications';
-import { NotificationsService } from '@meta/shared/modules/notifications/notifications.service';
-import type { PaginatedResult } from '@meta/shared/modules/pagination';
-import { serializeOrder } from '@meta/shared/modules/sorting';
+} from '@common/modules/notifications/notifications';
+import { NotificationsService } from '@common/modules/notifications/notifications.service';
+import type { PaginatedResult } from '@common/modules/pagination';
+import { serializeOrder } from '@common/modules/sorting';
 import { TeamForm } from '@modules/manage/forms/team-form.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import { Team } from '@modules/org/teams/team.entity';

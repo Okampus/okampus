@@ -6,7 +6,7 @@ import {
   Property,
   Unique,
 } from '@mikro-orm/core';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
+import { BaseEntity } from '@common/lib/entities/base.entity';
 import { Class } from '@modules/org/classes/class.entity';
 
 @Entity()

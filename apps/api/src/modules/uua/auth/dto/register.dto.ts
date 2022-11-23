@@ -6,8 +6,8 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Role } from '@meta/shared/modules/authorization/types/role.enum';
-import { SchoolRole } from '@meta/shared/modules/authorization/types/school-role.enum';
+import { Role } from '@common/modules/authorization/types/role.enum';
+import { SchoolRole } from '@common/modules/authorization/types/school-role.enum';
 
 export class RegisterDto {
   @IsString()

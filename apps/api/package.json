@@ -140,8 +140,8 @@
   "mikro-orm": {
     "useTsNode": true,
     "configPaths": [
-      "./src/meta/shared/configs/mikro-orm.config.ts",
-      "./dist/meta/shared/configs/mikro-orm.config.js"
+      "./src/common/configs/mikro-orm.config.ts",
+      "./dist/common/configs/mikro-orm.config.js"
     ]
   }
 }

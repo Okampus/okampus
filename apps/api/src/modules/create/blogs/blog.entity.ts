@@ -1,7 +1,7 @@
 import { Entity, Property } from '@mikro-orm/core';
 import { Transform } from 'class-transformer';
-import { ContentMaster } from '@meta/shared/lib/entities/content-master.entity';
-import { ContentMasterType } from '@meta/shared/lib/types/enums/content-master-type.enum';
+import { ContentMaster } from '@common/lib/entities/content-master.entity';
+import { ContentMasterType } from '@common/lib/types/enums/content-master-type.enum';
 import type { Content } from '../contents/entities/content.entity';
 
 @Entity({ discriminatorValue: ContentMasterType.Blog })

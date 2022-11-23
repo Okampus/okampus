@@ -5,7 +5,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { TeamKind } from '@meta/shared/lib/types/enums/team-kind.enum';
+import { TeamKind } from '@common/lib/types/enums/team-kind.enum';
 
 @InputType()
 export class CreateTeamDto {

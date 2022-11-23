@@ -4,7 +4,7 @@ import {
   Mutation,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentTenant } from '@meta/shared/lib/decorators/current-tenant.decorator';
+import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
 import { CreateValidationStepDto } from '@modules/org/tenants/validation-steps/dto/create-validation-step.dto';
 import { Tenant } from '../tenant.entity';
 import { TenantsService } from '../tenants.service';

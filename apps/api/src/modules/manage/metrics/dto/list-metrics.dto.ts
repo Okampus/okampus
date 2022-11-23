@@ -7,8 +7,8 @@ import {
   IsEnum,
   IsOptional,
 } from 'class-validator';
-import { MetricName } from '@meta/shared/lib/types/enums/metric-name.enum';
-import { IsIso8601Duration } from '@meta/shared/lib/validators/iso-8601-duration.validator';
+import { MetricName } from '@common/lib/types/enums/metric-name.enum';
+import { IsIso8601Duration } from '@common/lib/validators/iso-8601-duration.validator';
 
 @InputType()
 export class ListMetricsDto {

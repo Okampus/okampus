@@ -9,7 +9,7 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import { AnnouncementState } from '@meta/shared/lib/types/enums/announcement-state.enum';
+import { AnnouncementState } from '@common/lib/types/enums/announcement-state.enum';
 
 export class CreateAnnouncementDto {
   @Length(1, 200)

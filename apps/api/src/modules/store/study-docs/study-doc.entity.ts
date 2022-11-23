@@ -6,8 +6,8 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import { BaseFileEntity } from '@meta/shared/lib/entities/base-file-entity';
-import { StudyDocType } from '@meta/shared/lib/types/enums/study-doc-type.enum';
+import { BaseFileEntity } from '@common/lib/entities/base-file-entity';
+import { StudyDocType } from '@common/lib/types/enums/study-doc-type.enum';
 import { Subject } from '@modules/assort/subjects/subject.entity';
 import type { Class } from '@modules/org/classes/class.entity';
 import type { DocSeries } from '../doc-series/doc-series.entity';

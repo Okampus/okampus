@@ -6,8 +6,8 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import { TransformCollection } from '@meta/shared/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
+import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
+import { BaseEntity } from '@common/lib/entities/base.entity';
 import type { Tag } from '@modules/assort/tags/tag.entity';
 
 @Entity()

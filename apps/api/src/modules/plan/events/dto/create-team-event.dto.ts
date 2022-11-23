@@ -18,7 +18,7 @@ import {
   Min,
 } from 'class-validator';
 import { GraphQLJSON } from 'graphql-scalars';
-import { TeamEventState } from '@meta/shared/lib/types/enums/team-event-state.enum';
+import { TeamEventState } from '@common/lib/types/enums/team-event-state.enum';
 
 @InputType()
 export class CreateTeamEventDto {

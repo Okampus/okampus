@@ -1,8 +1,8 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import type { ValidationStepType } from '@meta/shared/lib/types/enums/validation-step-type.enum';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import type { ValidationStepType } from '@common/lib/types/enums/validation-step-type.enum';
 import type { CreateValidationStepDto } from '@modules/org/tenants/validation-steps/dto/create-validation-step.dto';
 import { User } from '@modules/uua/users/user.entity';
 import { Tenant } from '../tenant.entity';

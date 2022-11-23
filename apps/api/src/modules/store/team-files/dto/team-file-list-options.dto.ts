@@ -2,7 +2,7 @@ import { Field, InputType, Int } from '@nestjs/graphql';
 import {
  IsBoolean, IsInt, IsOptional, IsString,
 } from 'class-validator';
-import { PaginateDto } from '@meta/shared/modules/pagination';
+import { PaginateDto } from '@common/modules/pagination';
 
 @InputType()
 export class TeamFileListOptions extends PaginateDto {

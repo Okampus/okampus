@@ -1,6 +1,6 @@
 import { Field, InputType, IntersectionType } from '@nestjs/graphql';
 import { IsEnum, IsString, Length } from 'class-validator';
-import { ThreadType } from '@meta/shared/lib/types/enums/thread-type.enum';
+import { ThreadType } from '@common/lib/types/enums/thread-type.enum';
 import { CreateOrphanContentDto } from '@modules/create/contents/dto/create-orphan-content.dto';
 import { AssigneesDto } from './assignees.dto';
 import { TagsDto } from './tags.dto';

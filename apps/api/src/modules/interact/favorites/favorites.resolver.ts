@@ -5,7 +5,7 @@ import {
   Query,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { Favorite } from './favorite.entity';

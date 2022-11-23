@@ -12,24 +12,23 @@ import { SentryInterceptor, SentryModule } from '@xiifain/nestjs-sentry';
 import Redis from 'ioredis';
 import { MeiliSearchModule } from 'nestjs-meilisearch';
 import { S3Module } from 'nestjs-s3';
-import { HealthModule } from '@meta/health/health.module';
 
-import cacheConfig from '@meta/shared/configs/cache.config';
-import { config } from '@meta/shared/configs/config';
-import graphqlConfig from '@meta/shared/configs/graphql.config';
-import meiliSearchConfig from '@meta/shared/configs/meilisearch.config';
-import redisConfig from '@meta/shared/configs/redis.config';
-import sentryConfig, { sentryInterceptorConfig } from '@meta/shared/configs/sentry.config';
-import storageConfig from '@meta/shared/configs/storage.config';
-import { APP_OIDC_CACHE } from '@meta/shared/lib/constants';
+import cacheConfig from '@common/configs/cache.config';
+import { config } from '@common/configs/config';
+import graphqlConfig from '@common/configs/graphql.config';
+import meiliSearchConfig from '@common/configs/meilisearch.config';
+import redisConfig from '@common/configs/redis.config';
+import sentryConfig, { sentryInterceptorConfig } from '@common/configs/sentry.config';
+import storageConfig from '@common/configs/storage.config';
+import { APP_OIDC_CACHE } from '@common/lib/constants';
 
-import { ExceptionsFilter } from '@meta/shared/lib/filters/exceptions.filter';
-import { RestLoggerMiddleware } from '@meta/shared/lib/middlewares/rest-logger.middleware';
-import { TraceMiddleware } from '@meta/shared/lib/middlewares/trace.middleware';
-import { PoliciesGuard } from '@meta/shared/modules/authorization';
-import { OIDCStrategyCache } from '@meta/shared/modules/authorization/oidc-strategy.cache';
-import { CaslModule } from '@meta/shared/modules/casl/casl.module';
-import { MeiliSearchIndexerModule } from '@meta/shared/modules/search/meilisearch-indexer.module';
+import { ExceptionsFilter } from '@common/lib/filters/exceptions.filter';
+import { RestLoggerMiddleware } from '@common/lib/middlewares/rest-logger.middleware';
+import { TraceMiddleware } from '@common/lib/middlewares/trace.middleware';
+import { PoliciesGuard } from '@common/modules/authorization';
+import { OIDCStrategyCache } from '@common/modules/authorization/oidc-strategy.cache';
+import { CaslModule } from '@common/modules/casl/casl.module';
+import { MeiliSearchIndexerModule } from '@common/modules/search/meilisearch-indexer.module';
 import { SubjectsModule } from '@modules/assort/subjects/subjects.module';
 import { TagsModule } from '@modules/assort/tags/tags.module';
 import { BlogsModule } from '@modules/create/blogs/blogs.module';
@@ -60,6 +59,7 @@ import { SettingsModule } from '@modules/uua/settings/settings.module';
 import { StatisticsModule } from '@modules/uua/statistics/statistics.module';
 import { UsersModule } from '@modules/uua/users/users.module';
 import { AppController } from './app.controller';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [

@@ -5,19 +5,19 @@ import { Injectable } from '@nestjs/common';
 
 import {
  classes, clubString, groupTypeIcons, scopeString,
-} from '@meta/shared/configs/strings';
-import type { ContentListOptionsDto } from '@meta/shared/lib/dto/list-options.dto';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { ClassType } from '@meta/shared/lib/types/enums/class-type.enum';
-import { Colors } from '@meta/shared/lib/types/enums/colors.enum';
-import { ContentKind } from '@meta/shared/lib/types/enums/content-kind.enum';
-import { ValidationType } from '@meta/shared/lib/types/enums/validation-type.enum';
-import { assertPermissions } from '@meta/shared/lib/utils/assert-permission';
-import { Action } from '@meta/shared/modules/authorization';
-import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
-import type { PaginatedResult } from '@meta/shared/modules/pagination';
-import { serializeOrder } from '@meta/shared/modules/sorting';
-import { ContentSortOrder } from '@meta/shared/modules/sorting/sort-order.enum';
+} from '@common/configs/strings';
+import type { ContentListOptionsDto } from '@common/lib/dto/list-options.dto';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import { ClassType } from '@common/lib/types/enums/class-type.enum';
+import { Colors } from '@common/lib/types/enums/colors.enum';
+import { ContentKind } from '@common/lib/types/enums/content-kind.enum';
+import { ValidationType } from '@common/lib/types/enums/validation-type.enum';
+import { assertPermissions } from '@common/lib/utils/assert-permission';
+import { Action } from '@common/modules/authorization';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
+import type { PaginatedResult } from '@common/modules/pagination';
+import { serializeOrder } from '@common/modules/sorting';
+import { ContentSortOrder } from '@common/modules/sorting/sort-order.enum';
 import { Tag } from '@modules/assort/tags/tag.entity';
 import type { CreateThreadDto } from '@modules/create/threads/dto/create-thread.dto';
 import { Validation } from '@modules/interact/validations/validation.entity';

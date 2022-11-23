@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import {
  IsEnum, IsOptional, IsString, Length,
 } from 'class-validator';
-import { ClassType } from '@meta/shared/lib/types/enums/class-type.enum';
+import { ClassType } from '@common/lib/types/enums/class-type.enum';
 
 @InputType()
 export class CreateClassDto {

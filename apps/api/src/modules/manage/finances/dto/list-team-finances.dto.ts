@@ -8,9 +8,9 @@ import {
   IsString,
   Min,
 } from 'class-validator';
-import { ListOptionsDto } from '@meta/shared/lib/dto/list-options.dto';
-import { TeamFinanceCategory } from '@meta/shared/lib/types/enums/team-finance-category.enum';
-import { TeamFinanceType } from '@meta/shared/lib/types/enums/team-finance-type.enum';
+import { ListOptionsDto } from '@common/lib/dto/list-options.dto';
+import { TeamFinanceCategory } from '@common/lib/types/enums/team-finance-category.enum';
+import { TeamFinanceType } from '@common/lib/types/enums/team-finance-type.enum';
 
 @InputType()
 export class TeamFinancesFilterDto {

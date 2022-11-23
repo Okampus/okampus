@@ -11,9 +11,9 @@ import {
 } from '@nestjs/graphql';
 import mime from 'mime-types';
 import { nanoid } from 'nanoid';
-import { config } from '@meta/shared/configs/config';
-import { BaseTenantEntity } from '@meta/shared/lib/entities/base-tenant-entity';
-import { FileKind } from '@meta/shared/lib/types/enums/file-kind.enum';
+import { config } from '@common/configs/config';
+import { BaseTenantEntity } from '@common/lib/entities/base-tenant-entity';
+import { FileKind } from '@common/lib/types/enums/file-kind.enum';
 import type { Tenant } from '@modules/org/tenants/tenant.entity';
 import { User } from '@modules/uua/users/user.entity';
 

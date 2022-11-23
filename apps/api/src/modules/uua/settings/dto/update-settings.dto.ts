@@ -7,7 +7,7 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { NotificationChannel } from '@meta/shared/lib/types/enums/notification-channel.enum';
+import { NotificationChannel } from '@common/lib/types/enums/notification-channel.enum';
 
 const day = 24 * 60 * 60;
 

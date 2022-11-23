@@ -9,8 +9,8 @@ import {
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
-// Import { TransformCollection } from '@meta/shared/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
+// Import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
+import { BaseEntity } from '@common/lib/entities/base.entity';
 // Import { ValidationStep } from './validation-steps/validation-step.entity';
 
 @ObjectType()

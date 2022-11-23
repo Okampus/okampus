@@ -1,6 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { BadgesController } from './badges.controller';
 import { BadgesService } from './badges.service';
 import { BadgeUnlock } from './entities/badge-unlock.entity';

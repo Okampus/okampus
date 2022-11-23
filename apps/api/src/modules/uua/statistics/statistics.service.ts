@@ -1,7 +1,7 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { isBeforeYesterday } from '@meta/shared/lib/utils/date-utils';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import { isBeforeYesterday } from '@common/lib/utils/date-utils';
 import { Statistics } from './statistics.entity';
 
 @Injectable()

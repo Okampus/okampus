@@ -5,8 +5,8 @@ import {
   IsOptional,
   Min,
 } from 'class-validator';
-import { TeamEventState } from '@meta/shared/lib/types/enums/team-event-state.enum';
-import { PaginateDto } from '@meta/shared/modules/pagination';
+import { TeamEventState } from '@common/lib/types/enums/team-event-state.enum';
+import { PaginateDto } from '@common/modules/pagination';
 
 export class ListTeamEventValidationsDto extends PartialType(PaginateDto) {
   @IsOptional()

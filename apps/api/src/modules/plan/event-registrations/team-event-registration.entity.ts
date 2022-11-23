@@ -8,8 +8,8 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
-import { TeamEventRegisterStatus } from '@meta/shared/lib/types/enums/team-event-register-status.enum';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { TeamEventRegisterStatus } from '@common/lib/types/enums/team-event-register-status.enum';
 import { TeamForm } from '@modules/manage/forms/team-form.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { TeamEvent } from '../events/team-event.entity';

@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { TeamRole } from '@meta/shared/lib/types/enums/team-role.enum';
+import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 
 @InputType()
 export class UpdateTeamMemberDto {

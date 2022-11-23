@@ -3,8 +3,8 @@ import {
  IsBoolean, IsEnum, IsString, Length,
 } from 'class-validator';
 import { GraphQLJSON } from 'graphql-scalars';
-import { TeamFormType } from '@meta/shared/lib/types/enums/team-form-type.enum';
-import { IsFormKitSchema } from '@meta/shared/lib/validators/formkit-schema.validator';
+import { TeamFormType } from '@common/lib/types/enums/team-form-type.enum';
+import { IsFormKitSchema } from '@common/lib/validators/formkit-schema.validator';
 
 @InputType()
 export class CreateTeamFormDto {

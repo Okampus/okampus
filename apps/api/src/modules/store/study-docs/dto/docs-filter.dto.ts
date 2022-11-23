@@ -4,8 +4,8 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { StudyDocType } from '@meta/shared/lib/types/enums/study-doc-type.enum';
-import { PaginateDto } from '@meta/shared/modules/pagination';
+import { StudyDocType } from '@common/lib/types/enums/study-doc-type.enum';
+import { PaginateDto } from '@common/modules/pagination';
 
 export class DocsFilterDto extends PaginateDto {
   @IsOptional()

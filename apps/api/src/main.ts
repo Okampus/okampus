@@ -3,7 +3,7 @@
 // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47780#issuecomment-790684085
 import './aliases';
 import 'multer';
-import '@meta/shared/lib/morgan.register';
+import '@common/lib/morgan.register';
 
 // KEEP FOR LOCALHOST DEBUG - import fs from 'node:fs';
 import path from 'node:path';
@@ -25,8 +25,8 @@ import _ from 'fastify-multer/typings/fastify'; // Import to ensure that plugin 
 import { processRequest } from 'graphql-upload-minimal';
 import helmet from 'helmet';
 import { Issuer } from 'openid-client';
-import { config } from '@meta/shared/configs/config';
-import { APP_OIDC_CACHE } from '@meta/shared/lib/constants';
+import { config } from '@common/configs/config';
+import { APP_OIDC_CACHE } from '@common/lib/constants';
 import { TenantsService } from '@modules/org/tenants/tenants.service';
 import { AuthService } from '@modules/uua/auth/auth.service';
 import { tenantStrategyFactory } from '@modules/uua/auth/tenant.strategy';

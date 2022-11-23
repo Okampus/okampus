@@ -8,9 +8,9 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@meta/shared/lib/constants';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { SubscriptionType } from '@meta/shared/lib/types/enums/subscription-type.enum';
+import { APP_PUB_SUB } from '@common/lib/constants';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
 import { CreateTeamFinanceDto } from '@modules/manage/finances/dto/create-team-finance.dto';
 import { User } from '@modules/uua/users/user.entity';
 import { TeamFinancesFilterDto } from './dto/list-team-finances.dto';

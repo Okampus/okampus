@@ -16,13 +16,13 @@ import * as bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
 
 
-import { TransformCollection } from '@meta/shared/lib/decorators/transform-collection.decorator';
-import { BaseTenantEntity } from '@meta/shared/lib/entities/base-tenant-entity';
-import type { BaseSearchableEntity } from '@meta/shared/lib/types/interfaces/base-searchable.interface';
-import type { UserCreationOptions } from '@meta/shared/lib/types/interfaces/user-creation-options.interface';
-import { Role } from '@meta/shared/modules/authorization/types/role.enum';
-import { SchoolRole } from '@meta/shared/modules/authorization/types/school-role.enum';
-import type { BaseIndex } from '@meta/shared/modules/search/indexed-entity.interface';
+import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
+import { BaseTenantEntity } from '@common/lib/entities/base-tenant-entity';
+import type { BaseSearchableEntity } from '@common/lib/types/interfaces/base-searchable.interface';
+import type { UserCreationOptions } from '@common/lib/types/interfaces/user-creation-options.interface';
+import { Role } from '@common/modules/authorization/types/role.enum';
+import { SchoolRole } from '@common/modules/authorization/types/school-role.enum';
+import type { BaseIndex } from '@common/modules/search/indexed-entity.interface';
 import type { Favorite } from '@modules/interact/favorites/favorite.entity';
 import type { Reaction } from '@modules/interact/reactions/reaction.entity';
 import type { Report } from '@modules/interact/reports/report.entity';

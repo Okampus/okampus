@@ -1,10 +1,10 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { assertPermissions } from '@meta/shared/lib/utils/assert-permission';
-import { Action } from '@meta/shared/modules/authorization';
-import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
-import type { PaginatedResult, PaginateDto } from '@meta/shared/modules/pagination';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import { assertPermissions } from '@common/lib/utils/assert-permission';
+import { Action } from '@common/modules/authorization';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
+import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import type { User } from '@modules/uua/users/user.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 import { ProfileImage } from './profile-image.entity';

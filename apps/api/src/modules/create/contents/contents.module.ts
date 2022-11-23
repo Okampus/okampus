@@ -1,9 +1,9 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { ContentMaster } from '@meta/shared/lib/entities/content-master.entity';
-import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
-import { NotificationsModule } from '@meta/shared/modules/notifications/notifications.module';
-import { PubSubModule } from '@meta/shared/modules/pub-sub/pub-sub.module';
+import { ContentMaster } from '@common/lib/entities/content-master.entity';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
+import { NotificationsModule } from '@common/modules/notifications/notifications.module';
+import { PubSubModule } from '@common/modules/pub-sub/pub-sub.module';
 import { Favorite } from '@modules/interact/favorites/favorite.entity';
 import { FavoritesModule } from '@modules/interact/favorites/favorites.module';
 import { Reaction } from '@modules/interact/reactions/reaction.entity';

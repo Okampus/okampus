@@ -1,6 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { Tag } from '@modules/assort/tags/tag.entity';
 import { ContentsModule } from '../contents/contents.module';
 import { Content } from '../contents/entities/content.entity';

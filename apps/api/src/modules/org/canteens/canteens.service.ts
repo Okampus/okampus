@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
+import { BaseRepository } from '@common/lib/orm/base.repository';
 import { Menu } from './menus/menu.entity';
 
 @Injectable()

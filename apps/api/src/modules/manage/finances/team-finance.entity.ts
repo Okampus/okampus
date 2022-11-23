@@ -8,10 +8,10 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
-import { PaymentMethod } from '@meta/shared/lib/types/enums/payment-method.enum';
-import { TeamFinanceCategory } from '@meta/shared/lib/types/enums/team-finance-category.enum';
-import { TeamFinanceType } from '@meta/shared/lib/types/enums/team-finance-type.enum';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { PaymentMethod } from '@common/lib/types/enums/payment-method.enum';
+import { TeamFinanceCategory } from '@common/lib/types/enums/team-finance-category.enum';
+import { TeamFinanceType } from '@common/lib/types/enums/team-finance-type.enum';
 import { Team } from '@modules/org/teams/team.entity';
 import { TeamEvent } from '@modules/plan/events/team-event.entity';
 import { TeamFile } from '@modules/store/team-files/team-file.entity';

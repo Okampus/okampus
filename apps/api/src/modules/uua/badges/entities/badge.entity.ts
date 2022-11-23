@@ -5,9 +5,9 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
-import { BadgeLevel } from '@meta/shared/lib/types/enums/badge-level.enum';
-import { Statistic } from '@meta/shared/lib/types/enums/statistic.enum';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { BadgeLevel } from '@common/lib/types/enums/badge-level.enum';
+import { Statistic } from '@common/lib/types/enums/statistic.enum';
 
 @ObjectType()
 @Entity()

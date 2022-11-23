@@ -1,7 +1,7 @@
 
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { User } from '@modules/uua/users/user.entity';
 import { Class } from '../class.entity';
 import { CoreClassesModule } from '../core-classes.module';

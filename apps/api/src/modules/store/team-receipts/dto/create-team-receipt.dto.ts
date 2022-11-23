@@ -14,7 +14,7 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import { PaymentMethod } from '@meta/shared/lib/types/enums/payment-method.enum';
+import { PaymentMethod } from '@common/lib/types/enums/payment-method.enum';
 import { CreateFileUploadDto } from '@modules/store/file-uploads/dto/create-file-upload.dto';
 
 @InputType()

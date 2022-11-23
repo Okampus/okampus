@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsBoolean, IsOptional, IsString } from 'class-validator';
 import { GraphQLJSON } from 'graphql-scalars';
-import { IsFormKitSchema } from '@meta/shared/lib/validators/formkit-schema.validator';
+import { IsFormKitSchema } from '@common/lib/validators/formkit-schema.validator';
 
 @InputType()
 export class CreateTenantDto {

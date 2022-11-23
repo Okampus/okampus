@@ -5,8 +5,8 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
-import { AnnouncementState } from '@meta/shared/lib/types/enums/announcement-state.enum';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { AnnouncementState } from '@common/lib/types/enums/announcement-state.enum';
 import { User } from '@modules/uua/users/user.entity';
 
 @Entity()

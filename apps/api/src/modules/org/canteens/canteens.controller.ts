@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { ParseDatePipe } from '@meta/shared/lib/pipes/parse-date.pipe';
-import { Action, CheckPolicies } from '@meta/shared/modules/authorization';
+import { ParseDatePipe } from '@common/lib/pipes/parse-date.pipe';
+import { Action, CheckPolicies } from '@common/modules/authorization';
 import { CanteensService } from './canteens.service';
 import { Menu } from './menus/menu.entity';
 

@@ -8,9 +8,9 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@meta/shared/lib/constants';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { SubscriptionType } from '@meta/shared/lib/types/enums/subscription-type.enum';
+import { APP_PUB_SUB } from '@common/lib/constants';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { CreateReportDto } from '@modules/interact/reports/dto/create-report.dto';
 import { User } from '@modules/uua/users/user.entity';

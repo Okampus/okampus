@@ -11,13 +11,13 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { TransformCollection } from '@meta/shared/lib/decorators/transform-collection.decorator';
-import { BaseTenantEntity } from '@meta/shared/lib/entities/base-tenant-entity';
-import { TeamKind } from '@meta/shared/lib/types/enums/team-kind.enum';
-import { TeamRole } from '@meta/shared/lib/types/enums/team-role.enum';
-import type { BaseSearchableEntity } from '@meta/shared/lib/types/interfaces/base-searchable.interface';
-import { Role } from '@meta/shared/modules/authorization/types/role.enum';
-import type { BaseIndex } from '@meta/shared/modules/search/indexed-entity.interface';
+import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
+import { BaseTenantEntity } from '@common/lib/entities/base-tenant-entity';
+import { TeamKind } from '@common/lib/types/enums/team-kind.enum';
+import { TeamRole } from '@common/lib/types/enums/team-role.enum';
+import type { BaseSearchableEntity } from '@common/lib/types/interfaces/base-searchable.interface';
+import { Role } from '@common/modules/authorization/types/role.enum';
+import type { BaseIndex } from '@common/modules/search/indexed-entity.interface';
 import { Label } from '@modules/assort/labels/label.entity';
 import { TeamForm } from '@modules/manage/forms/team-form.entity';
 import type { User } from '@modules/uua/users/user.entity';

@@ -1,6 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { NotificationsModule } from '@meta/shared/modules/notifications/notifications.module';
+import { NotificationsModule } from '@common/modules/notifications/notifications.module';
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { Badge } from '../badges/entities/badge.entity';
 import { User } from '../users/user.entity';

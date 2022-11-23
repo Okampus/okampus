@@ -10,9 +10,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Action, CheckPolicies } from '@meta/shared/modules/authorization';
-import { normalizePagination, PaginateDto } from '@meta/shared/modules/pagination';
-import type { PaginatedResult } from '@meta/shared/modules/pagination';
+import { Action, CheckPolicies } from '@common/modules/authorization';
+import { normalizePagination, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedResult } from '@common/modules/pagination';
 import { CreateHistoryDto } from '@modules/org/teams/histories/dto/create-history.dto';
 import { UpdateHistoryDto } from './dto/update-history.dto';
 import { HistoriesService } from './histories.service';

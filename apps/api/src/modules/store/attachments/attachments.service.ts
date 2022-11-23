@@ -1,10 +1,10 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { ContentKind } from '@meta/shared/lib/types/enums/content-kind.enum';
-import { assertPermissions } from '@meta/shared/lib/utils/assert-permission';
-import { Action } from '@meta/shared/modules/authorization';
-import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import { ContentKind } from '@common/lib/types/enums/content-kind.enum';
+import { assertPermissions } from '@common/lib/utils/assert-permission';
+import { Action } from '@common/modules/authorization';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import type { User } from '@modules/uua/users/user.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';

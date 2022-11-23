@@ -8,8 +8,8 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
-import { ClassRole } from '@meta/shared/lib/types/enums/class-role.enum';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { ClassRole } from '@common/lib/types/enums/class-role.enum';
 import { User } from '@modules/uua/users/user.entity';
 import { Class } from '../class.entity';
 import { SchoolYear } from '../school-year/school-year.entity';

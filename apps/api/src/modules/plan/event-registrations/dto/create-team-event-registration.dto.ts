@@ -6,7 +6,7 @@ import {
   IsOptional,
 } from 'class-validator';
 import { GraphQLJSON } from 'graphql-scalars';
-import { TeamEventRegisterStatus } from '@meta/shared/lib/types/enums/team-event-register-status.enum';
+import { TeamEventRegisterStatus } from '@common/lib/types/enums/team-event-register-status.enum';
 
 @InputType()
 export class CreateTeamEventRegistrationDto {

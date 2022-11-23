@@ -1,9 +1,9 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { ICalCalendar, ICalCalendarMethod, ICalEvent } from 'ical-generator';
-import { config } from '@meta/shared/configs/config';
-import { iCals } from '@meta/shared/configs/strings';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
+import { config } from '@common/configs/config';
+import { iCals } from '@common/configs/strings';
+import { BaseRepository } from '@common/lib/orm/base.repository';
 import { User } from '@modules/uua/users/user.entity';
 import { TeamEventRegistration } from '../event-registrations/team-event-registration.entity';
 import { TeamEvent } from '../events/team-event.entity';

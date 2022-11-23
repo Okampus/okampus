@@ -1,11 +1,11 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import type { ListOptionsDto } from '@meta/shared/lib/dto/list-options.dto';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { TeamManagedFormUpdatedNotification } from '@meta/shared/modules/notifications/notifications';
-import { NotificationsService } from '@meta/shared/modules/notifications/notifications.service';
-import type { PaginatedResult } from '@meta/shared/modules/pagination';
+import type { ListOptionsDto } from '@common/lib/dto/list-options.dto';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import { TeamManagedFormUpdatedNotification } from '@common/modules/notifications/notifications';
+import { NotificationsService } from '@common/modules/notifications/notifications.service';
+import type { PaginatedResult } from '@common/modules/pagination';
 import type { CreateTeamFormDto } from '@modules/manage/forms/dto/create-team-form.dto';
 import { Team } from '@modules/org/teams/team.entity';
 import type { User } from '@modules/uua/users/user.entity';

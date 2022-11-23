@@ -1,7 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { CaslAbilityFactory } from '@meta/shared/modules/casl/casl-ability.factory';
-import { PubSubModule } from '@meta/shared/modules/pub-sub/pub-sub.module';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
+import { PubSubModule } from '@common/modules/pub-sub/pub-sub.module';
 import { Tag } from '@modules/assort/tags/tag.entity';
 import { Validation } from '@modules/interact/validations/validation.entity';
 import { ValidationsModule } from '@modules/interact/validations/validations.module';

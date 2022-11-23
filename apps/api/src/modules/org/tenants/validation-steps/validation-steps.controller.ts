@@ -10,8 +10,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentTenant } from '@meta/shared/lib/decorators/current-tenant.decorator';
-import { Action, CheckPolicies } from '@meta/shared/modules/authorization';
+import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
+import { Action, CheckPolicies } from '@common/modules/authorization';
 import { CreateValidationStepDto } from '@modules/org/tenants/validation-steps/dto/create-validation-step.dto';
 import { Tenant } from '../tenant.entity';
 import { ListValidationStepsDto } from './dto/list-validation-steps.dto';

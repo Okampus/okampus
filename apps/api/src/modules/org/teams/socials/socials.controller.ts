@@ -9,7 +9,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { CreateSocialDto } from '@modules/org/teams/socials/dto/create-social.dto';
 import { User } from '@modules/uua/users/user.entity';
 import { UpdateSocialDto } from './dto/update-social.dto';

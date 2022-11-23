@@ -10,10 +10,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { Action, CheckPolicies } from '@meta/shared/modules/authorization';
-import { normalizePagination } from '@meta/shared/modules/pagination';
-import type { PaginatedResult } from '@meta/shared/modules/pagination';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { Action, CheckPolicies } from '@common/modules/authorization';
+import { normalizePagination } from '@common/modules/pagination';
+import type { PaginatedResult } from '@common/modules/pagination';
 import { CreateTeamFinanceDto } from '@modules/manage/finances/dto/create-team-finance.dto';
 import { User } from '@modules/uua/users/user.entity';
 import { ListTeamFinancesDto } from './dto/list-team-finances.dto';

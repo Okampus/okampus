@@ -10,10 +10,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { ParseDatePipe } from '@meta/shared/lib/pipes/parse-date.pipe';
-import { Action, CheckPolicies } from '@meta/shared/modules/authorization';
-import { normalizePagination, PaginateDto } from '@meta/shared/modules/pagination';
-import type { PaginatedResult } from '@meta/shared/modules/pagination';
+import { ParseDatePipe } from '@common/lib/pipes/parse-date.pipe';
+import { Action, CheckPolicies } from '@common/modules/authorization';
+import { normalizePagination, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedResult } from '@common/modules/pagination';
 import { CreateMenuDto } from '@modules/org/canteens/menus/dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { Menu } from './menu.entity';

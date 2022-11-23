@@ -1,5 +1,5 @@
 import { IsOptional, IsString } from 'class-validator';
-import { PaginateDto } from '@meta/shared/modules/pagination';
+import { PaginateDto } from '@common/modules/pagination';
 
 export class FilterAndPaginateDto extends PaginateDto {
   @IsOptional()

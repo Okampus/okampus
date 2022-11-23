@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { FoodType } from '@meta/shared/lib/types/enums/food-type.enum';
+import { FoodType } from '@common/lib/types/enums/food-type.enum';
 
 export class CreateFoodDto {
   @IsString()

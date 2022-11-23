@@ -7,7 +7,7 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { StudyDocType } from '@meta/shared/lib/types/enums/study-doc-type.enum';
+import { StudyDocType } from '@common/lib/types/enums/study-doc-type.enum';
 import { CreateFileUploadDto } from '@modules/store/file-uploads/dto/create-file-upload.dto';
 
 export class CreateStudyDocDto extends CreateFileUploadDto {

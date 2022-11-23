@@ -9,10 +9,10 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { TransformCollection } from '@meta/shared/lib/decorators/transform-collection.decorator';
-import { ContentMaster } from '@meta/shared/lib/entities/content-master.entity';
-import { ContentMasterType } from '@meta/shared/lib/types/enums/content-master-type.enum';
-import { ThreadType } from '@meta/shared/lib/types/enums/thread-type.enum';
+import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
+import { ContentMaster } from '@common/lib/entities/content-master.entity';
+import { ContentMasterType } from '@common/lib/types/enums/content-master-type.enum';
+import { ThreadType } from '@common/lib/types/enums/thread-type.enum';
 import { Validation } from '@modules/interact/validations/validation.entity';
 import { Class } from '@modules/org/classes/class.entity';
 import { Team } from '@modules/org/teams/team.entity';

@@ -7,8 +7,8 @@ import {
   Unique,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
-import { InterestState } from '@meta/shared/lib/types/enums/interest-state.enum';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { InterestState } from '@common/lib/types/enums/interest-state.enum';
 import { User } from '@modules/uua/users/user.entity';
 import { Team } from '../team.entity';
 

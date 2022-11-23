@@ -1,8 +1,8 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import type { PaginatedResult, PaginateDto } from '@meta/shared/modules/pagination';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import type { CreateSchoolYearDto } from '@modules/org/classes/school-year/dto/create-school-year.dto';
 import type { UpdateSchoolYearDto } from './dto/update-school-year.dto';
 import { SchoolYear } from './school-year.entity';

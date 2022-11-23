@@ -14,8 +14,8 @@ import {
   ObjectType,
 } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
-import { TeamRole } from '@meta/shared/lib/types/enums/team-role.enum';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import { TeamForm } from '@modules/manage/forms/team-form.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { Team } from '../team.entity';

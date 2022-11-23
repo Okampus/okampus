@@ -7,7 +7,7 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
+import { BaseEntity } from '@common/lib/entities/base.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { Content } from './content.entity';
 

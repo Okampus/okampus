@@ -23,7 +23,7 @@ export default {
   imports: [JwtModule, UsersModule, AuthModule],
   inject: [JwtService, UsersService, AuthService],
   driver: MercuriusDriver,
-  autoSchemaFile: join(process.cwd(), 'src', 'meta', 'shared', 'lib', 'schema.gql'),
+  autoSchemaFile: join(process.cwd(), 'src', 'common', 'lib', 'schema.gql'),
   resolvers: {
     JSON: GraphQLJSON,
     // eslint-disable-next-line @typescript-eslint/naming-convention

@@ -1,18 +1,18 @@
 import type { FilterQuery } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
-import { TeamEventState } from '@meta/shared/lib/types/enums/team-event-state.enum';
-import { ValidationStepType } from '@meta/shared/lib/types/enums/validation-step-type.enum';
+import { BaseRepository } from '@common/lib/orm/base.repository';
+import { TeamEventState } from '@common/lib/types/enums/team-event-state.enum';
+import { ValidationStepType } from '@common/lib/types/enums/validation-step-type.enum';
 import {
   AdminTeamEventValidationApprovedNotification,
   AdminTeamEventValidationRejectedNotification,
   AdminTeamEventValidationStepNotification,
   TeamEventManagedApprovedNotification,
   TeamEventManagedRejectedNotification,
-} from '@meta/shared/modules/notifications/notifications';
-import { NotificationsService } from '@meta/shared/modules/notifications/notifications.service';
-import type { PaginatedResult, PaginateDto } from '@meta/shared/modules/pagination';
+} from '@common/modules/notifications/notifications';
+import { NotificationsService } from '@common/modules/notifications/notifications.service';
+import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import type { Tenant } from '@modules/org/tenants/tenant.entity';
 import { ValidationStep } from '@modules/org/tenants/validation-steps/validation-step.entity';
 import type { CreateTeamEventValidationDto } from '@modules/plan/event-validations/dto/create-team-event-validation.dto';

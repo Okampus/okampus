@@ -6,7 +6,7 @@ import {
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
-import { BaseFileEntity } from '@meta/shared/lib/entities/base-file-entity';
+import { BaseFileEntity } from '@common/lib/entities/base-file-entity';
 import { Team } from '@modules/org/teams/team.entity';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { User } from '@modules/uua/users/user.entity';

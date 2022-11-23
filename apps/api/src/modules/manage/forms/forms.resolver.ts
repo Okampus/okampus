@@ -7,8 +7,8 @@ import {
   Query,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { BaseRepository } from '@meta/shared/lib/orm/base.repository';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { BaseRepository } from '@common/lib/orm/base.repository';
 import { CreateTeamFormDto } from '@modules/manage/forms/dto/create-team-form.dto';
 import { Team } from '@modules/org/teams/team.entity';
 import { User } from '@modules/uua/users/user.entity';

@@ -10,8 +10,8 @@ import {
   IsOptional,
   Min,
 } from 'class-validator';
-import { ListOptionsDto } from '@meta/shared/lib/dto/list-options.dto';
-import { TeamEventState } from '@meta/shared/lib/types/enums/team-event-state.enum';
+import { ListOptionsDto } from '@common/lib/dto/list-options.dto';
+import { TeamEventState } from '@common/lib/types/enums/team-event-state.enum';
 
 @InputType()
 export class ListTeamEventsDto extends PartialType(ListOptionsDto) {

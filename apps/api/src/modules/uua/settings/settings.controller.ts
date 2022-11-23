@@ -5,8 +5,8 @@ import {
   Patch,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { Action, CheckPolicies } from '@meta/shared/modules/authorization';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { Action, CheckPolicies } from '@common/modules/authorization';
 import { User } from '../users/user.entity';
 import { UpdateSettingsDto } from './dto/update-settings.dto';
 import { Settings } from './settings.entity';

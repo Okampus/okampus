@@ -10,11 +10,11 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { TransformCollection } from '@meta/shared/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
-import { ClassRole } from '@meta/shared/lib/types/enums/class-role.enum';
-import { ClassType } from '@meta/shared/lib/types/enums/class-type.enum';
-import { Role } from '@meta/shared/modules/authorization/types/role.enum';
+import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { ClassRole } from '@common/lib/types/enums/class-role.enum';
+import { ClassType } from '@common/lib/types/enums/class-type.enum';
+import { Role } from '@common/modules/authorization/types/role.enum';
 import type { User } from '@modules/uua/users/user.entity';
 import { ClassMembership } from './memberships/class-membership.entity';
 

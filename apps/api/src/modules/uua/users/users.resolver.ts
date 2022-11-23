@@ -9,12 +9,12 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@meta/shared/lib/constants';
-import { CurrentTenant } from '@meta/shared/lib/decorators/current-tenant.decorator';
-import { CurrentUser } from '@meta/shared/lib/decorators/current-user.decorator';
-import { SubscriptionType } from '@meta/shared/lib/types/enums/subscription-type.enum';
-import { PaginateDto } from '@meta/shared/modules/pagination';
-import type { IndexedEntity } from '@meta/shared/modules/search/indexed-entity.interface';
+import { APP_PUB_SUB } from '@common/lib/constants';
+import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
+import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
+import { PaginateDto } from '@common/modules/pagination';
+import type { IndexedEntity } from '@common/modules/search/indexed-entity.interface';
 import { Interest } from '@modules/org/teams/interests/interest.entity';
 import { InterestsService } from '@modules/org/teams/interests/interests.service';
 import { Social } from '@modules/org/teams/socials/social.entity';

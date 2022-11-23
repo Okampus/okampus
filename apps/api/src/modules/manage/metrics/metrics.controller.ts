@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Action, CheckPolicies } from '@meta/shared/modules/authorization';
+import { Action, CheckPolicies } from '@common/modules/authorization';
 import { ListMetricsDto } from './dto/list-metrics.dto';
 import { Metric } from './metric.entity';
 import { MetricsService } from './metrics.service';

@@ -12,7 +12,7 @@
     "noImplicitAny": true,
     "outDir": "./dist",
     "paths": {
-      "@meta/*": ["src/meta/*"],
+      "@common/*": ["src/common/*"],
       "@modules/*": ["src/modules/*"]
     },
     "pretty": false,

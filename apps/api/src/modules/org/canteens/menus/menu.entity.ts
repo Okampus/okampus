@@ -7,8 +7,8 @@ import {
   Property,
   Unique,
 } from '@mikro-orm/core';
-import { TransformCollection } from '@meta/shared/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '@meta/shared/lib/entities/base.entity';
+import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
+import { BaseEntity } from '@common/lib/entities/base.entity';
 import type { Food } from '../foods/food.entity';
 
 @Entity()
