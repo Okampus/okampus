@@ -9,6 +9,7 @@ import type { GqlContextType } from '@nestjs/graphql';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import type { FastifyRequest } from 'fastify';
+import type { GraphQLResolveInfo } from 'graphql';
 import type { WebSocket } from 'graphql-ws';
 import mapKeys from 'lodash.mapkeys';
 import type { GqlWebsocketContext } from '@meta/shared/configs/graphql.config';
@@ -20,10 +21,9 @@ import type { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 
-
 export interface GqlContext extends GqlWebsocketContext {
-  req: FastifyRequest & { user: User; tenant: Tenant } | undefined;
-  request: FastifyRequest & { user: User; tenant: Tenant } | undefined;
+  req: FastifyRequest & { user: User; tenant: Tenant; gqlInfo: GraphQLResolveInfo } | undefined;
+  request: FastifyRequest & { user: User; tenant: Tenant; gqlInfo: GraphQLResolveInfo } | undefined;
   socket: WebSocket | undefined;
   connectionParams: Record<string, unknown>;
 }
@@ -49,29 +49,36 @@ export class AuthGuard implements CanActivate {
     return await this.tenantsService.findOne(Array.isArray(tenantId) ? tenantId[0] : tenantId);
   }
 
-
+  // TODO: refactor for easier detection of different cases & improved readability
   public async canActivate(ctx: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       ctx.getHandler(),
       ctx.getClass(),
     ]);
-    if (isPublic)
-      return true;
 
     const contextType = ctx.getType<GqlContextType>();
     if (!['http', 'graphql'].includes(contextType))
       throw new InternalServerErrorException(`Unexpected context type: ${contextType}`);
 
-    let request: FastifyRequest & { user: User; tenant: Tenant };
+    let request: FastifyRequest & { user: User; tenant: Tenant; gqlInfo: GraphQLResolveInfo };
     if (contextType === 'http') {
+      if (isPublic)
+        return true;
+
       request = ctx.switchToHttp().getRequest();
-    } else {
-      const context = GqlExecutionContext.create(ctx).getContext<GqlContext>();
+    } else { // GraphQL or WebSocket
+      const gqlContext = GqlExecutionContext.create(ctx);
+      const context = gqlContext.getContext<GqlContext>();
+
       if (context.request && context.socket && context.connectionParams) { // Websocket case
+        if (isPublic)
+          return true;
+
         const headers = mapKeys(context.connectionParams, (_, k) => k.toLowerCase());
 
         context.request.user = await this.handleWsRequest((headers.authorization as string).split(' ')[1]);
         context.request.tenant = await this.getTenantFromHeaders(headers as Record<string, string[] | string>);
+        context.request.gqlInfo = gqlContext.getInfo();
 
         return Boolean(context.request.user) && Boolean(context.request.tenant);
       }
@@ -80,7 +87,11 @@ export class AuthGuard implements CanActivate {
         throw new UnauthorizedException('No request');
 
       request = context.req;
+      request.gqlInfo = gqlContext.getInfo();
     }
+
+    if (isPublic)
+      return true;
 
     request.tenant = await this.getTenantFromHeaders(request.headers as Record<string, string[] | string>);
     request.user = await this.handleRequest(request);
