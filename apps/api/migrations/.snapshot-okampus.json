@@ -1003,8 +1003,8 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "school_group_id": {
-          "name": "school_group_id",
+        "school_class_id": {
+          "name": "school_class_id",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -1055,10 +1055,10 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "subject_school_group_id_foreign": {
-          "constraintName": "subject_school_group_id_foreign",
+        "subject_school_class_id_foreign": {
+          "constraintName": "subject_school_class_id_foreign",
           "columnNames": [
-            "school_group_id"
+            "school_class_id"
           ],
           "localTableName": "public.subject",
           "referencedColumnNames": [
@@ -5314,8 +5314,8 @@
           "nullable": false,
           "mappedType": "integer"
         },
-        "school_group_id": {
-          "name": "school_group_id",
+        "school_class_id": {
+          "name": "school_class_id",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -5392,10 +5392,10 @@
           "deleteRule": "CASCADE",
           "updateRule": "cascade"
         },
-        "info_doc_school_group_id_foreign": {
-          "constraintName": "info_doc_school_group_id_foreign",
+        "info_doc_school_class_id_foreign": {
+          "constraintName": "info_doc_school_class_id_foreign",
           "columnNames": [
-            "school_group_id"
+            "school_class_id"
           ],
           "localTableName": "public.info_doc",
           "referencedColumnNames": [
@@ -5455,8 +5455,8 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "school_group_id": {
-          "name": "school_group_id",
+        "school_class_id": {
+          "name": "school_class_id",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -5502,10 +5502,10 @@
         },
         {
           "columnNames": [
-            "school_group_id"
+            "school_class_id"
           ],
           "composite": false,
-          "keyName": "class_membership_school_group_id_index",
+          "keyName": "class_membership_school_class_id_index",
           "primary": false,
           "unique": false
         },
@@ -5556,10 +5556,10 @@
           "deleteRule": "CASCADE",
           "updateRule": "cascade"
         },
-        "class_membership_school_group_id_foreign": {
-          "constraintName": "class_membership_school_group_id_foreign",
+        "class_membership_school_class_id_foreign": {
+          "constraintName": "class_membership_school_class_id_foreign",
           "columnNames": [
-            "school_group_id"
+            "school_class_id"
           ],
           "localTableName": "public.class_membership",
           "referencedColumnNames": [
