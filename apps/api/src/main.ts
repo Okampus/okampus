@@ -57,9 +57,9 @@ async function bootstrap(): Promise<void> {
     //   key: fs.readFileSync('./secrets/server.key'),
     //   cert: fs.readFileSync('./secrets/server.crt'),
     // },
-    logger: {
-      level: 'trace',
-    },
+    // logger: {
+    //   level: 'trace',
+    // },
   });
 
   fastifyInstance.addHook('preValidation', async (_request, _reply) => {
