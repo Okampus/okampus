@@ -30,6 +30,7 @@
     "@fastify/secure-session": "^5.2.0",
     "@liaoliaots/nestjs-redis": "9.0.2",
     "@liaoliaots/nestjs-redis-health": "^9.0.1",
+    "@medibloc/nestjs-request-context": "^1.0.1",
     "@mikro-orm/core": "5.4.2",
     "@mikro-orm/migrations": "5.4.2",
     "@mikro-orm/nestjs": "5.1.2",

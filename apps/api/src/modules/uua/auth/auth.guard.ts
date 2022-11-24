@@ -1,3 +1,4 @@
+import { RequestContext } from '@medibloc/nestjs-request-context';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import {
   Injectable,
@@ -13,6 +14,7 @@ import type { GraphQLResolveInfo } from 'graphql';
 import type { WebSocket } from 'graphql-ws';
 import mapKeys from 'lodash.mapkeys';
 import type { GqlWebsocketContext } from '@common/configs/graphql.config';
+import type { FullRequestContext } from '@common/lib/classes/full-request-context';
 import { IS_PUBLIC_KEY, TENANT_ID_HEADER_NAME } from '@common/lib/constants';
 import { processToken } from '@common/lib/utils/process-token';
 import type { Tenant } from '@modules/org/tenants/tenant.entity';
@@ -56,6 +58,8 @@ export class AuthGuard implements CanActivate {
       ctx.getClass(),
     ]);
 
+    const requestContext = RequestContext.get<FullRequestContext>();
+
     const contextType = ctx.getType<GqlContextType>();
     if (!['http', 'graphql'].includes(contextType))
       throw new InternalServerErrorException(`Unexpected context type: ${contextType}`);
@@ -79,6 +83,7 @@ export class AuthGuard implements CanActivate {
         context.request.user = await this.handleWsRequest((headers.authorization as string).split(' ')[1]);
         context.request.tenant = await this.getTenantFromHeaders(headers as Record<string, string[] | string>);
         context.request.gqlInfo = gqlContext.getInfo();
+        requestContext.gqlInfo = gqlContext.getInfo();
 
         return Boolean(context.request.user) && Boolean(context.request.tenant);
       }
@@ -88,6 +93,7 @@ export class AuthGuard implements CanActivate {
 
       request = context.req;
       request.gqlInfo = gqlContext.getInfo();
+      requestContext.gqlInfo = gqlContext.getInfo();
     }
 
     if (isPublic)

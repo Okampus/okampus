@@ -1,8 +1,7 @@
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
-import { GqlFriendlyService } from '@common/lib/gql-friendly-service';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { GqlFriendlyService } from '@common/lib/classes/gql-friendly-service';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import type { CreateClassDto } from '@modules/org/classes/dto/create-class.dto';
@@ -11,12 +10,7 @@ import type { UpdateClassDto } from './dto/update-class.dto';
 
 @Injectable()
 export class ClassesService extends GqlFriendlyService {
-  constructor(
-    @InjectRepository(Class) private readonly classRepository: BaseRepository<Class>,
-    @Inject(REQUEST) protected readonly request: Record<string, unknown>,
-  ) {
-    super(request);
-  }
+  constructor(@InjectRepository(Class) private readonly classRepository: BaseRepository<Class>) { super(); }
 
   public async create(createClassDto: CreateClassDto): Promise<Class> {
     const parent = createClassDto.parentId

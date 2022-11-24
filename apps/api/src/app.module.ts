@@ -1,4 +1,5 @@
 import { InjectRedis, RedisModule } from '@liaoliaots/nestjs-redis';
+import { RequestContextModule } from '@medibloc/nestjs-request-context';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { CacheModule, Module, RequestMethod } from '@nestjs/common';
@@ -22,6 +23,7 @@ import sentryConfig, {
   sentryInterceptorConfig,
 } from '@common/configs/sentry.config';
 import storageConfig from '@common/configs/storage.config';
+import { FullRequestContext } from '@common/lib/classes/full-request-context';
 import { APP_OIDC_CACHE } from '@common/lib/constants';
 
 import { ExceptionsFilter } from '@common/lib/filters/exceptions.filter';
@@ -78,6 +80,12 @@ import { HealthModule } from './health/health.module';
     S3Module.forRoot(storageConfig),
     ScheduleModule.forRoot(),
     SentryModule.forRoot(sentryConfig),
+
+    // Global request context
+    RequestContextModule.forRoot({
+      contextClass: FullRequestContext,
+      isGlobal: true,
+    }),
 
     // Custom modules
     AnnouncementsModule,
