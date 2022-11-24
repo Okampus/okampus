@@ -168,8 +168,8 @@ export class CaslAbilityFactory {
           Wiki,
         ]);
       } else {
-        // @ts-expect-error
         forbid(Action.Manage, [Blog, Thread], {
+          // @ts-expect-error
           'post.isVisible': false,
         }).because('Content has been removed');
         forbid(Action.Manage, Wiki, { hidden: true }).because(
@@ -178,37 +178,40 @@ export class CaslAbilityFactory {
         forbid(Action.Manage, Content, { isVisible: false }).because(
           'Content has been removed',
         );
-        // @ts-expect-error
         forbid(Action.Manage, [Attachment, Favorite, Report], {
+          // @ts-expect-error
           'content.isVisible': false,
         }).because('Content has been removed');
 
-        // @ts-expect-error
         allow(
           Action.Update,
           Thread,
           ['opValidated', 'tags', 'title', 'type'],
+          // @ts-expect-error
           isAuthor,
         ).because('Not the author');
+
         // @ts-expect-error
         allow(Action.Update, Content, ['body', 'hidden'], isAuthor).because(
           'Not the author',
         );
 
-        // @ts-expect-error
         allow(
           Action.Update,
           StudyDoc,
           ['description', 'docSeries', 'name', 'subject', 'tags', 'year'],
+          // @ts-expect-error
           isFileUploader,
         ).because('Not the author');
-        // @ts-expect-error
+
         allow(
           Action.Update,
           InfoDoc,
           ['description', 'docSeries', 'name', 'tags', 'year'],
+          // @ts-expect-error
           isFileUploader,
         ).because('Not the author');
+
         // @ts-expect-error
         allow(Action.Manage, ProfileImage, isFileUploader).because(
           'Not the user',
@@ -226,10 +229,11 @@ export class CaslAbilityFactory {
         forbid([Action.Update, Action.Delete, Action.Interact], Thread, {
           locked: true,
         }).because('Thread is locked');
-        // @ts-expect-error
+
         forbid(
           [Action.Create, Action.Update, Action.Delete, Action.Interact],
           Content,
+          // @ts-expect-error
           { 'contentMaster.locked': true },
         ).because('Thread is locked');
       }
