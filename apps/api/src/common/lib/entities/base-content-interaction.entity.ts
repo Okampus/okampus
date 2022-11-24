@@ -1,4 +1,4 @@
-/* eslint-disable import/no-cycle */
+
 import { Index, ManyToOne } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Content } from '@modules/create/contents/entities/content.entity';
@@ -9,8 +9,8 @@ import { ContentMaster } from './content-master.entity';
 @ObjectType()
 export abstract class BaseContentInteraction extends BaseEntity {
   @Field(() => ContentMaster, { nullable: true })
-  @ManyToOne({ onDelete: 'CASCADE' })
-  contentMaster: ContentMaster | null = null;
+  @ManyToOne({ type: 'ContentMaster', onDelete: 'CASCADE', nullable: true })
+  contentMaster?: ContentMaster | null = null;
 
   @Field(() => User)
   @ManyToOne({ onDelete: 'CASCADE' })

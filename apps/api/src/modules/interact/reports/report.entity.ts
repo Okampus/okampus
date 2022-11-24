@@ -7,13 +7,14 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseContentInteraction } from '@common/lib/entities/base-content-interaction.entity';
-import type { Content } from '@modules/create/contents/entities/content.entity';
+import { BaseEntity } from '@common/lib/entities/base.entity';
+import { ContentMaster } from '@common/lib/entities/content-master.entity';
+import { Content } from '@modules/create/contents/entities/content.entity';
 import { User } from '@modules/uua/users/user.entity';
 
 @ObjectType()
 @Entity()
-export class Report extends BaseContentInteraction {
+export class Report extends BaseEntity {
   @Field(() => Int)
   @PrimaryKey()
   id!: number;
@@ -27,13 +28,27 @@ export class Report extends BaseContentInteraction {
   @Property({ type: 'text' })
   reason: string | null = null;
 
+  @Field(() => Content)
+  @ManyToOne({ onDelete: 'CASCADE' })
+  @Index()
+  content!: Content;
+
+  @Field(() => ContentMaster, { nullable: true })
+  @ManyToOne({ type: 'ContentMaster', onDelete: 'CASCADE', nullable: true })
+  contentMaster?: ContentMaster | null = null;
+
+  @Field(() => User)
+  @ManyToOne({ onDelete: 'CASCADE' })
+  @Index()
+  user!: User;
+
   constructor(options: {
     user: User;
     target: User;
     content: Content;
     reason?: string | null;
   }) {
-    super(options);
+    super();
     this.assign(options);
   }
 }
