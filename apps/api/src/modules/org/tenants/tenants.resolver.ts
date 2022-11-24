@@ -12,7 +12,7 @@ import { Public } from '@common/lib/decorators/public.decorator';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { TenantLogoUrls } from '@common/lib/types/models/tenant-logos.model';
 import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
-import { ProfileImage } from '@modules/store/profile-images/profile-image.entity';
+import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { OIDCEnabled } from '../../../common/lib/types/models/oidc-enabled.model';
 import { UpdateTenantDto } from './dto/update-tenant.dto';

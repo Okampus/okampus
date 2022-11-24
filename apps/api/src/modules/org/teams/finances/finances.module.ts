@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { Team } from '@modules/org/teams/team.entity';
 import { Event } from '@modules/plan/events/event.entity';
-import { TeamFile } from '@modules/store/team-files/team-file.entity';
+import { TeamFile } from '@modules/upload/team-files/team-file.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { TeamFinancesController } from './finances.controller';
 import { TeamFinancesResolver } from './finances.resolver';

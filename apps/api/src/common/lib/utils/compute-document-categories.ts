@@ -1,6 +1,6 @@
 import partition from 'lodash.partition';
-import type { InfoDoc } from '@modules/store/info-docs/info-doc.entity';
-import type { StudyDoc } from '@modules/store/study-docs/study-doc.entity';
+import type { InfoDoc } from '@modules/upload/info-docs/info-doc.entity';
+import type { StudyDoc } from '@modules/upload/study-docs/study-doc.entity';
 import type { InfoDocFilter, StudyDocFilter } from '../types/enums/docs-filters.enum';
 import { groupBy } from './group-by';
 

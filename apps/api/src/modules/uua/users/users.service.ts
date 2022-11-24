@@ -20,8 +20,8 @@ import { SchoolYear } from '@modules/org/classes/school-year/school-year.entity'
 import type { CreateSocialDto } from '@modules/org/teams/socials/dto/create-social.dto';
 import { Social } from '@modules/org/teams/socials/social.entity';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { FileUpload } from '@modules/store/file-uploads/file-upload.entity';
-import { ProfileImage } from '@modules/store/profile-images/profile-image.entity';
+import { FileUpload } from '@modules/upload/file-uploads/file-upload.entity';
+import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
 import { Statistics } from '../statistics/statistics.entity';
 import { StatisticsService } from '../statistics/statistics.service';
 import type { UpdateUserDto } from './dto/update-user.dto';

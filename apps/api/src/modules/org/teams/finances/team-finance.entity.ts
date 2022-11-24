@@ -14,7 +14,7 @@ import { TeamFinanceCategory } from '@common/lib/types/enums/team-finance-catego
 import { TeamFinanceType } from '@common/lib/types/enums/team-finance-type.enum';
 import { Team } from '@modules/org/teams/team.entity';
 import { Event } from '@modules/plan/events/event.entity';
-import { TeamFile } from '@modules/store/team-files/team-file.entity';
+import { TeamFile } from '@modules/upload/team-files/team-file.entity';
 import { User } from '@modules/uua/users/user.entity';
 
 @ObjectType()

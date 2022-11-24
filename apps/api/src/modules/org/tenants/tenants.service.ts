@@ -5,9 +5,9 @@ import type { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/int
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { FileKind } from '@common/lib/types/enums/file-kind.enum';
 import type { CreateTenantDto } from '@modules/org/tenants/dto/create-tenant.dto';
-import { FileUploadsService } from '@modules/store/file-uploads/file-uploads.service';
-import { ProfileImage } from '@modules/store/profile-images/profile-image.entity';
-import { ProfileImagesService } from '@modules/store/profile-images/profile-images.service';
+import { FileUploadsService } from '@modules/upload/file-uploads/file-uploads.service';
+import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
+import { ProfileImagesService } from '@modules/upload/profile-images/profile-images.service';
 import type { User } from '@modules/uua/users/user.entity';
 import type { UpdateTenantDto } from './dto/update-tenant.dto';
 import { Tenant } from './tenant.entity';

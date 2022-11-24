@@ -53,7 +53,7 @@ import { SocialsModule } from '@modules/org/teams/socials/socials.module';
 import { TeamsModule } from '@modules/org/teams/teams.module';
 import { TenantsCoreModule } from '@modules/org/tenants/core-tenants.module';
 import { TenantsModule } from '@modules/org/tenants/tenants.module';
-import { FilesModule } from '@modules/store/files.module';
+import { FilesModule } from '@modules/upload/files.module';
 import { AuthGuard } from '@modules/uua/auth/auth.guard';
 import { AuthModule } from '@modules/uua/auth/auth.module';
 import { BadgesModule } from '@modules/uua/badges/badges.module';

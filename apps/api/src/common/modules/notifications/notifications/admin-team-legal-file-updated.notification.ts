@@ -1,5 +1,5 @@
 import type { ITriggerPayload } from '@novu/node';
-import { TeamFile } from '@modules/store/team-files/team-file.entity';
+import { TeamFile } from '@modules/upload/team-files/team-file.entity';
 import type { User } from '@modules/uua/users/user.entity';
 import { NotificationType } from '../notification-type.enum';
 import { Notification } from './base.notification';

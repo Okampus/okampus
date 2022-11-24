@@ -15,11 +15,11 @@ import { TeamMembershipRequest } from '@modules/org/teams/requests/team-membersh
 import { Social } from '@modules/org/teams/socials/social.entity';
 import { Event } from '@modules/plan/events/event.entity';
 import { EventRegistration } from '@modules/plan/registrations/registration.entity';
-import { Attachment } from '@modules/store/attachments/attachment.entity';
-import { InfoDoc } from '@modules/store/info-docs/info-doc.entity';
-import { ProfileImage } from '@modules/store/profile-images/profile-image.entity';
-import { StudyDoc } from '@modules/store/study-docs/study-doc.entity';
-import { TeamFile } from '@modules/store/team-files/team-file.entity';
+import { Attachment } from '@modules/upload/attachments/attachment.entity';
+import { InfoDoc } from '@modules/upload/info-docs/info-doc.entity';
+import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
+import { StudyDoc } from '@modules/upload/study-docs/study-doc.entity';
+import { TeamFile } from '@modules/upload/team-files/team-file.entity';
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { Statistics } from '../statistics/statistics.entity';
 import type { User } from '../users/user.entity';

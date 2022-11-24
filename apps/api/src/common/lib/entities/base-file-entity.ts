@@ -1,6 +1,6 @@
 import { OneToOne, Property } from '@mikro-orm/core';
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
-import { FileUpload } from '@modules/store/file-uploads/file-upload.entity';
+import { FileUpload } from '@modules/upload/file-uploads/file-upload.entity';
 import { BaseEntity } from './base.entity';
 
 @ObjectType()
