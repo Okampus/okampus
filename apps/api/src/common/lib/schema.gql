@@ -6,7 +6,7 @@ type Tenant {
   createdAt: DateTime!
   updatedAt: DateTime!
   id: String!
-  eventValidationForm: JSON
+  eventApprovalForm: JSON
   logo: String
   logoDark: String
   tenantOidcName: String!
@@ -16,7 +16,7 @@ type Tenant {
   oidcDiscoveryUrl: String!
   oidcScopes: String!
   oidcCallbackUri: String!
-  userValidations: [ValidationStep!]!
+  approvalStepsByUser: [ApprovalStep!]!
 }
 
 """
@@ -297,7 +297,7 @@ type Settings {
   notificationBlogSubscribedUpdated: Int!
   notificationContentRemoved: Int!
   notificationAdminReportCreated: Int!
-  notificationTeamEventCreated: Int!
+  notificationEventCreated: Int!
   notificationTeamSubscribedEventCreated: Int!
   notificationTeamManagedFormUpdated: Int!
   notificationTeamManagedEventUpdated: Int!
@@ -305,14 +305,14 @@ type Settings {
   notificationTeamManagedMemberRoleUpdated: Int!
   notificationAdminTeamSocialUpdated: Int!
   notificationAdminTeamLegalFileUpdated: Int!
-  notificationTeamEventSubscribedUpdated: Int!
-  notificationTeamEventManagedApproved: Int!
-  notificationTeamEventManagedRejected: Int!
-  notificationTeamEventManagedRegistrationCreated: Int!
-  notificationAdminTeamEventValidationStarted: Int!
-  notificationAdminTeamEventValidationStep: Int!
-  notificationAdminTeamEventValidationApproved: Int!
-  notificationAdminTeamEventValidationRejected: Int!
+  notificationEventSubscribedUpdated: Int!
+  notificationEventManagedApproved: Int!
+  notificationEventManagedRejected: Int!
+  notificationEventManagedRegistrationCreated: Int!
+  notificationAdminEventValidationStarted: Int!
+  notificationAdminEventValidationStep: Int!
+  notificationAdminEventValidationApproved: Int!
+  notificationAdminEventValidationRejected: Int!
   notificationThreadSubscribedUpdated: Int!
   notificationThreadSubscribedAnswered: Int!
   notificationAdminThreadStale: Int!
@@ -348,7 +348,7 @@ type User {
   shortDescription: String
   settings: Settings!
   points: Int!
-  teamEventIcal: String!
+  eventIcal: String!
   finishedIntroduction: Boolean!
   finishedOnboarding: Boolean!
   socials: [Social!]!
@@ -576,41 +576,41 @@ enum ThreadType {
   Other
 }
 
-type ValidationStep {
+type ApprovalStep {
   createdAt: DateTime!
   updatedAt: DateTime!
   id: Int!
   tenant: Tenant!
   step: Int!
   name: String!
-  type: ValidationStepType!
+  type: ApprovalStepType!
   users: [User!]!
 }
 
-enum ValidationStepType {
-  TeamEvent
+enum ApprovalStepType {
+  Event
 }
 
-type TeamEventRegistration {
+type EventRegistration {
   createdAt: DateTime!
   updatedAt: DateTime!
   id: Int!
-  event: TeamEvent!
+  event: Event!
   user: User!
-  status: TeamEventRegisterStatus!
+  status: EventRegisterStatus!
   present: Boolean!
   participationScore: Int!
   originalForm: TeamForm
   formSubmission: JSON
 }
 
-enum TeamEventRegisterStatus {
+enum EventRegisterStatus {
   Sure
   Maybe
   Absent
 }
 
-type TeamEvent {
+type Event {
   createdAt: DateTime!
   updatedAt: DateTime!
   id: Int!
@@ -621,20 +621,20 @@ type TeamEvent {
   price: Float!
   createdBy: User!
   team: Team!
-  registrations: [TeamEventRegistration!]!
+  registrations: [EventRegistration!]!
   location: String!
   supervisor: TeamMember
   private: Boolean!
-  state: TeamEventState!
-  lastValidationStep: ValidationStep
+  state: EventState!
+  lastApprovalStep: ApprovalStep
   registrationForm: TeamForm
-  usedTemplate: TeamEvent
+  usedTemplate: Event
   meta: JSON!
-  eventValidationSubmission: JSON!
-  userRegistration: TeamEventRegistration
+  eventApprovalSubmission: JSON!
+  userRegistration: EventRegistration
 }
 
-enum TeamEventState {
+enum EventState {
   Template
   Draft
   Submitted
@@ -677,7 +677,7 @@ type TeamFinance {
   method: PaymentMethod!
   type: TeamFinanceType!
   category: TeamFinanceCategory!
-  event: TeamEvent
+  event: Event
   receipt: TeamFile
 }
 
@@ -726,16 +726,16 @@ enum MetricName {
   UserCount
 }
 
-type OIDCEnabled {
-  id: String!
-  isEnabled: Boolean!
-  tenantOidcName: String
-}
-
 type TenantLogoUrls {
   id: String!
   logoUrl: String
   logoDarkUrl: String
+}
+
+type OIDCEnabled {
+  id: String!
+  isEnabled: Boolean!
+  tenantOidcName: String
 }
 
 type IndexedUser {
@@ -766,7 +766,7 @@ type TeamGallery {
   active: Boolean!
   id: String!
   team: Team!
-  event: TeamEvent
+  event: Event
   order: Int!
 }
 
@@ -819,10 +819,10 @@ type Query {
   teams(filters: TeamsFilterDto): [Team!]!
   clubs: [Team!]!
   teamFormById(id: Int!): TeamForm!
-  teamEventRegistrationById(id: Int!): TeamEventRegistration
-  teamEventRegistrations(filters: FilterRegisteredEventsDto!): [TeamEventRegistration!]!
-  eventById(id: Int!): TeamEvent!
-  events(filter: ListTeamEventsDto!): [TeamEvent!]!
+  eventRegistrationById(id: Int!): EventRegistration
+  eventRegistrations(filters: FilterRegisteredEventsDto!): [EventRegistration!]!
+  eventById(id: Int!): Event!
+  events(filter: ListEventsDto!): [Event!]!
   teamFinanceById(id: Int!): TeamFinance
   teamFinances(filters: TeamFinancesFilterDto!): [TeamFinance!]!
   teamMembershipRequests(id: Int!, filter: FilterMembershipRequestsDto): [TeamMembershipRequest!]
@@ -853,16 +853,16 @@ input TeamsFilterDto {
 input FilterRegisteredEventsDto {
   eventId: Int
   userId: String
-  status: TeamEventRegisterStatus
+  status: EventRegisterStatus
   present: Boolean
 }
 
-input ListTeamEventsDto {
+input ListEventsDto {
   id: Int
   before: DateTime
   after: DateTime
   priceBelow: Float
-  state: TeamEventState
+  state: EventState
 }
 
 input TeamFinancesFilterDto {
@@ -911,11 +911,11 @@ type Mutation {
   updateTeam(id: Int!, team: UpdateTeamDto!): Team!
   createTeamForm(id: Int!, createForm: CreateTeamFormDto!): Team!
   updateTeamForm(id: Int!, updateForm: UpdateTeamFormDto!): TeamForm!
-  addTeamEventRegistration(id: Int!, registration: CreateTeamEventRegistrationDto!): TeamEvent!
-  updateTeamEventRegistration(id: Int!, registration: UpdateTeamEventRegistrationDto!): TeamEventRegistration!
-  createEvent(id: Int!, createEvent: CreateTeamEventDto!): TeamEvent!
-  updateEvent(id: Int!, updateEvent: UpdateTeamEventDto!): TeamEvent!
-  validateEvent(id: Int!, createValidation: CreateTeamEventValidationDto!): TeamEvent!
+  addEventRegistration(id: Int!, registration: CreateEventRegistrationDto!): Event!
+  updateEventRegistration(id: Int!, registration: UpdateEventRegistrationDto!): EventRegistration!
+  createEvent(id: Int!, createEvent: CreateEventDto!): Event!
+  updateEvent(id: Int!, updateEvent: UpdateEventDto!): Event!
+  validateEvent(id: Int!, createApproval: CreateEventApprovalDto!): Event!
   addTeamFinance(id: Int!, finance: CreateTeamFinanceDto!): TeamFinance!
   updateTeamFinance(id: Int!, finance: UpdateTeamFinanceDto!): TeamFinance!
   joinTeam(id: Int!, request: CreateTeamMembershipRequestDto!): Team!
@@ -924,8 +924,8 @@ type Mutation {
   addUserToTeam(teamId: Int!, userId: Int!, invite: InviteMemberDto!): TeamMember!
   updateTeamMember(teamId: Int!, userId: Int!, update: UpdateTeamMemberDto!): TeamMember!
   removeTeamMember(teamId: Int!, userId: Int!): TeamMember
-  addValidationStep(createStep: CreateValidationStepDto!): Tenant!
-  updateValidationStep(id: Int!, updateStep: UpdateValidationStepDto!): ValidationStep!
+  addApprovalStep(createStep: ApprovalStepDto!): Tenant!
+  updateApprovalStep(id: Int!, updateStep: UpdateApprovalStepDto!): ApprovalStep!
   insertStep(step: Int!, atStep: Int!): Tenant!
   createThread(thread: CreateThreadDto!): Thread!
   updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
@@ -1007,7 +1007,7 @@ input UpdateSettingsDto {
   notificationBlogSubscribedUpdated: Int
   notificationContentRemoved: Int
   notificationAdminReportCreated: Int
-  notificationTeamEventCreated: Int
+  notificationEventCreated: Int
   notificationTeamSubscribedEventCreated: Int
   notificationTeamManagedFormUpdated: Int
   notificationTeamManagedEventUpdated: Int
@@ -1015,14 +1015,14 @@ input UpdateSettingsDto {
   notificationTeamManagedMemberRoleUpdated: Int
   notificationAdminTeamContactUpdated: Int
   notificationAdminTeamLegalFileUpdated: Int
-  notificationTeamEventSubscribedUpdated: Int
-  notificationTeamEventManagedApproved: Int
-  notificationTeamEventManagedRejected: Int
-  notificationTeamEventManagedRegistrationCreated: Int
-  notificationAdminTeamEventValidationStarted: Int
-  notificationAdminTeamEventValidationStep: Int
-  notificationAdminTeamEventValidationApproved: Int
-  notificationAdminTeamEventValidationRejected: Int
+  notificationEventSubscribedUpdated: Int
+  notificationEventManagedApproved: Int
+  notificationEventManagedRejected: Int
+  notificationEventManagedRegistrationCreated: Int
+  notificationAdminEventValidationStarted: Int
+  notificationAdminEventValidationStep: Int
+  notificationAdminEventValidationApproved: Int
+  notificationAdminEventValidationRejected: Int
   notificationThreadSubscribedUpdated: Int
   notificationThreadSubscribedAnswered: Int
   notificationAdminThreadStale: Int
@@ -1089,19 +1089,19 @@ input UpdateTeamFormDto {
   schema: JSON
 }
 
-input CreateTeamEventRegistrationDto {
-  status: TeamEventRegisterStatus!
+input CreateEventRegistrationDto {
+  status: EventRegisterStatus!
   originalFormId: Int
   formSubmission: JSON
 }
 
-input UpdateTeamEventRegistrationDto {
-  status: TeamEventRegisterStatus
+input UpdateEventRegistrationDto {
+  status: EventRegisterStatus
   present: Boolean
   participationScore: Int
 }
 
-input CreateTeamEventDto {
+input CreateEventDto {
   start: DateTime!
   end: DateTime!
   name: String!
@@ -1110,14 +1110,14 @@ input CreateTeamEventDto {
   price: Float!
   supervisorId: String!
   private: Boolean = false
-  state: TeamEventState!
+  state: EventState!
   formId: Int
   templateId: Int
   meta: JSON
-  eventValidationSubmission: JSON
+  eventApprovalSubmission: JSON
 }
 
-input UpdateTeamEventDto {
+input UpdateEventDto {
   start: DateTime
   end: DateTime
   name: String
@@ -1126,13 +1126,13 @@ input UpdateTeamEventDto {
   price: Float
   supervisorId: String
   private: Boolean = false
-  state: TeamEventState
+  state: EventState
   formId: Int
   meta: JSON
-  eventValidationSubmission: JSON
+  eventApprovalSubmission: JSON
 }
 
-input CreateTeamEventValidationDto {
+input CreateEventApprovalDto {
   approved: Boolean!
   message: String
   stepId: Int!
@@ -1189,16 +1189,16 @@ input UpdateTeamMemberDto {
   transferTo: String
 }
 
-input CreateValidationStepDto {
+input ApprovalStepDto {
   step: Int!
   name: String!
-  type: ValidationStepType!
+  type: ApprovalStepType!
   users: [String!]!
 }
 
-input UpdateValidationStepDto {
+input UpdateApprovalStepDto {
   name: String
-  type: ValidationStepType
+  type: ApprovalStepType
   users: [String!]
 }
 
@@ -1230,8 +1230,8 @@ type Subscription {
   updatedUser: User!
   teamAdded: Team!
   teamUpdated: Team!
-  teamEventRegistrationAdded: TeamEventRegistration!
-  teamEventRegistrationUpdated: TeamEventRegistration!
+  eventRegistrationAdded: EventRegistration!
+  eventRegistrationUpdated: EventRegistration!
   teamFinanceAdded: TeamFinance!
   teamFinanceUpdated: TeamFinance!
   teamMembershipRequestAdded: TeamMembershipRequest!
