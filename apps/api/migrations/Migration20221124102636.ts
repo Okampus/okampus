@@ -60,10 +60,6 @@ export class Migration20221124102636 extends Migration {
 
     this.addSql('drop table if exists "team_event_validation" cascade;');
 
-    this.addSql('alter table "team_gallery" drop constraint "team_gallery_event_id_foreign";');
-
-    this.addSql('alter table "team_finance" drop constraint "team_finance_event_id_foreign";');
-
     this.addSql('alter table "tenant" rename column "event_validation_form" to "event_approval_form";');
 
     this.addSql('drop index "user_team_event_ical_index";');
@@ -72,16 +68,15 @@ export class Migration20221124102636 extends Migration {
     this.addSql('create index "user_event_ical_index" on "user" ("event_ical");');
     this.addSql('alter table "user" add constraint "user_event_ical_unique" unique ("event_ical");');
 
-    this.addSql('alter table "settings" add column "notification_event_created" int not null, add column "notification_event_subscribed_updated" int not null, add column "notification_event_managed_approved" int not null, add column "notification_event_managed_rejected" int not null, add column "notification_event_managed_registration_created" int not null, add column "notification_admin_event_validation_started" int not null, add column "notification_admin_event_validation_step" int not null, add column "notification_admin_event_validation_approved" int not null, add column "notification_admin_event_validation_rejected" int not null;');
-    this.addSql('alter table "settings" drop column "notification_team_event_created";');
-    this.addSql('alter table "settings" drop column "notification_team_event_subscribed_updated";');
-    this.addSql('alter table "settings" drop column "notification_team_event_managed_approved";');
-    this.addSql('alter table "settings" drop column "notification_team_event_managed_rejected";');
-    this.addSql('alter table "settings" drop column "notification_team_event_managed_registration_created";');
-    this.addSql('alter table "settings" drop column "notification_admin_team_event_validation_started";');
-    this.addSql('alter table "settings" drop column "notification_admin_team_event_validation_step";');
-    this.addSql('alter table "settings" drop column "notification_admin_team_event_validation_approved";');
-    this.addSql('alter table "settings" drop column "notification_admin_team_event_validation_rejected";');
+    this.addSql('alter table "settings" rename column "notification_team_event_created" to "notification_event_created";');
+    this.addSql('alter table "settings" rename column "notification_team_event_subscribed_updated" to "notification_event_subscribed_updated";');
+    this.addSql('alter table "settings" rename column "notification_team_event_managed_approved" to "notification_event_managed_approved";');
+    this.addSql('alter table "settings" rename column "notification_team_event_managed_rejected" to "notification_event_managed_rejected";');
+    this.addSql('alter table "settings" rename column "notification_team_event_managed_registration_created" to "notification_event_managed_registration_created";');
+    this.addSql('alter table "settings" rename column "notification_admin_team_event_validation_started" to "notification_admin_event_validation_started";');
+    this.addSql('alter table "settings" rename column "notification_admin_team_event_validation_step" to "notification_admin_event_validation_step";');
+    this.addSql('alter table "settings" rename column "notification_admin_team_event_validation_approved" to "notification_admin_event_validation_approved";');
+    this.addSql('alter table "settings" rename column "notification_admin_team_event_validation_rejected" to "notification_admin_event_validation_rejected";');
 
     this.addSql('alter table "team_gallery" add constraint "team_gallery_event_id_foreign" foreign key ("event_id") references "event" ("id") on update cascade on delete CASCADE;');
 
@@ -146,10 +141,6 @@ export class Migration20221124102636 extends Migration {
 
     this.addSql('drop table if exists "approval_step_users" cascade;');
 
-    this.addSql('alter table "team_gallery" drop constraint "team_gallery_event_id_foreign";');
-
-    this.addSql('alter table "team_finance" drop constraint "team_finance_event_id_foreign";');
-
     this.addSql('alter table "tenant" rename column "event_approval_form" to "event_validation_form";');
 
     this.addSql('drop index "user_event_ical_index";');
@@ -158,16 +149,15 @@ export class Migration20221124102636 extends Migration {
     this.addSql('create index "user_team_event_ical_index" on "user" ("team_event_ical");');
     this.addSql('alter table "user" add constraint "user_team_event_ical_unique" unique ("team_event_ical");');
 
-    this.addSql('alter table "settings" add column "notification_team_event_created" int not null, add column "notification_team_event_subscribed_updated" int not null, add column "notification_team_event_managed_approved" int not null, add column "notification_team_event_managed_rejected" int not null, add column "notification_team_event_managed_registration_created" int not null, add column "notification_admin_team_event_validation_started" int not null, add column "notification_admin_team_event_validation_step" int not null, add column "notification_admin_team_event_validation_approved" int not null, add column "notification_admin_team_event_validation_rejected" int not null;');
-    this.addSql('alter table "settings" drop column "notification_event_created";');
-    this.addSql('alter table "settings" drop column "notification_event_subscribed_updated";');
-    this.addSql('alter table "settings" drop column "notification_event_managed_approved";');
-    this.addSql('alter table "settings" drop column "notification_event_managed_rejected";');
-    this.addSql('alter table "settings" drop column "notification_event_managed_registration_created";');
-    this.addSql('alter table "settings" drop column "notification_admin_event_validation_started";');
-    this.addSql('alter table "settings" drop column "notification_admin_event_validation_step";');
-    this.addSql('alter table "settings" drop column "notification_admin_event_validation_approved";');
-    this.addSql('alter table "settings" drop column "notification_admin_event_validation_rejected";');
+    this.addSql('alter table "settings" rename column "notification_event_created" to "notification_team_event_created";');
+    this.addSql('alter table "settings" rename column "notification_event_subscribed_updated" to "notification_team_event_subscribed_updated";');
+    this.addSql('alter table "settings" rename column "notification_event_managed_approved" to "notification_team_event_managed_approved";');
+    this.addSql('alter table "settings" rename column "notification_event_managed_rejected" to "notification_team_event_managed_rejected";');
+    this.addSql('alter table "settings" rename column "notification_event_managed_registration_created" to "notification_team_event_managed_registration_created";');
+    this.addSql('alter table "settings" rename column "notification_admin_event_validation_started" to "notification_admin_team_event_validation_started";');
+    this.addSql('alter table "settings" rename column "notification_admin_event_validation_step" to "notification_admin_team_event_validation_step";');
+    this.addSql('alter table "settings" rename column "notification_admin_event_validation_approved" to "notification_admin_team_event_validation_approved";');
+    this.addSql('alter table "settings" rename column "notification_admin_event_validation_rejected" to "notification_admin_team_event_validation_rejected";');
 
     this.addSql('alter table "team_gallery" add constraint "team_gallery_event_id_foreign" foreign key ("event_id") references "team_event" ("id") on update cascade on delete CASCADE;');
 
