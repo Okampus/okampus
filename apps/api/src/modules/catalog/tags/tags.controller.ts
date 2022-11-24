@@ -12,7 +12,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { normalizePagination, PaginateDto } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
-import { CreateTagDto } from '@modules/assort/tags/dto/create-tag.dto';
+import { CreateTagDto } from '@modules/catalog/tags/dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { Tag } from './tag.entity';
 import { TagsService } from './tags.service';
@@ -30,7 +30,9 @@ export class TagsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Tag))
-  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Tag>> {
+  public async findAll(
+    @Query() query: PaginateDto,
+  ): Promise<PaginatedResult<Tag>> {
     return await this.tagsService.findAll(normalizePagination(query));
   }
 
@@ -42,7 +44,10 @@ export class TagsController {
 
   @Patch(':name')
   @CheckPolicies(ability => ability.can(Action.Update, Tag))
-  public async update(@Param('name') name: string, @Body() updateTagDto: UpdateTagDto): Promise<Tag> {
+  public async update(
+    @Param('name') name: string,
+    @Body() updateTagDto: UpdateTagDto,
+  ): Promise<Tag> {
     return await this.tagsService.update(name, updateTagDto);
   }
 

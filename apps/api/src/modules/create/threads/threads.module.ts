@@ -2,7 +2,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { PubSubModule } from '@common/modules/pub-sub/pub-sub.module';
-import { Tag } from '@modules/assort/tags/tag.entity';
+import { Tag } from '@modules/catalog/tags/tag.entity';
 import { Validation } from '@modules/interact/validations/validation.entity';
 import { ValidationsModule } from '@modules/interact/validations/validations.module';
 import { Class } from '@modules/org/classes/class.entity';

@@ -8,7 +8,7 @@ import {
 import { nanoid } from 'nanoid';
 import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '@common/lib/entities/base.entity';
-import type { Tag } from '@modules/assort/tags/tag.entity';
+import type { Tag } from '@modules/catalog/tags/tag.entity';
 
 @Entity()
 export class DocSeries extends BaseEntity {

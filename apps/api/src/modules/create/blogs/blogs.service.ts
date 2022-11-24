@@ -9,7 +9,7 @@ import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedResult } from '@common/modules/pagination';
 import { serializeOrder } from '@common/modules/sorting';
-import { Tag } from '@modules/assort/tags/tag.entity';
+import { Tag } from '@modules/catalog/tags/tag.entity';
 import type { CreateBlogDto } from '@modules/create/blogs/dto/create-blog.dto';
 import type { User } from '@modules/uua/users/user.entity';
 import { ContentsService } from '../contents/contents.service';
@@ -20,8 +20,10 @@ import type { UpdateBlogDto } from './dto/update-blog.dto';
 @Injectable()
 export class BlogsService {
   constructor(
-    @InjectRepository(Blog) private readonly blogRepository: BaseRepository<Blog>,
-    @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
+    @InjectRepository(Blog)
+    private readonly blogRepository: BaseRepository<Blog>,
+    @InjectRepository(Content)
+    private readonly contentRepository: BaseRepository<Content>,
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
     private readonly contentsService: ContentsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
@@ -33,12 +35,16 @@ export class BlogsService {
       ...createBlogDto,
       post,
       slug: slugify(createBlogDto.slug ?? createBlogDto.title),
-      location: createBlogDto?.location?.split(',').map(Number) as [lat: number, lon: number] | undefined,
+      location: createBlogDto?.location?.split(',').map(Number) as
+        | [lat: number, lon: number]
+        | undefined,
     });
     post.contentMaster = blog;
 
     // TODO: Keep the original order
-    const tags = await this.tagRepository.find({ name: { $in: createBlogDto.tags } });
+    const tags = await this.tagRepository.find({
+      name: { $in: createBlogDto.tags },
+    });
     blog.tags.add(...tags);
 
     await this.contentRepository.flush();
@@ -47,21 +53,29 @@ export class BlogsService {
     return blog;
   }
 
-  public async findAll(user: User, options?: Required<ContentListOptionsDto>): Promise<PaginatedResult<Blog>> {
+  public async findAll(
+    user: User,
+    options?: Required<ContentListOptionsDto>,
+  ): Promise<PaginatedResult<Blog>> {
     const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
-    const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
+    const visibilityQuery = canSeeHiddenContent
+      ? {}
+      : { post: { isVisible: true } };
     return await this.blogRepository.findWithPagination(
       options,
       visibilityQuery,
-      { populate: ['post', 'tags'], orderBy: { post: serializeOrder(options?.sortBy) } },
+      {
+        populate: ['post', 'tags'],
+        orderBy: { post: serializeOrder(options?.sortBy) },
+      },
     );
   }
 
   public async findOne(user: User, id: number): Promise<Blog> {
     const blog: Blog & { contents?: Content[] } = await this.blogRepository.findOneOrFail(
-      { id },
-      { populate: ['tags', 'participants'] },
-    );
+        { id },
+        { populate: ['tags', 'participants'] },
+      );
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Read, blog);
@@ -75,8 +89,15 @@ export class BlogsService {
     return blog;
   }
 
-  public async update(user: User, id: number, updateBlogDto: UpdateBlogDto): Promise<Blog> {
-    const blog = await this.blogRepository.findOneOrFail({ id }, { populate: ['post', 'tags'] });
+  public async update(
+    user: User,
+    id: number,
+    updateBlogDto: UpdateBlogDto,
+  ): Promise<Blog> {
+    const blog = await this.blogRepository.findOneOrFail(
+      { id },
+      { populate: ['post', 'tags'] },
+    );
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, blog, Object.keys(updateBlogDto));
@@ -92,13 +113,15 @@ export class BlogsService {
         blog.tags.removeAll();
       } else {
         // TODO: Keep the original order
-        const tags = await this.tagRepository.find({ name: { $in: wantedTags } });
+        const tags = await this.tagRepository.find({
+          name: { $in: wantedTags },
+        });
         blog.tags.set(tags);
       }
     }
 
     if (updatedProps)
-      wrap(blog).assign(updatedProps);
+wrap(blog).assign(updatedProps);
 
     await this.blogRepository.flush();
     return blog;

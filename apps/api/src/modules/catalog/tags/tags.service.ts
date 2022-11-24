@@ -3,7 +3,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
-import type { CreateTagDto } from '@modules/assort/tags/dto/create-tag.dto';
+import type { CreateTagDto } from '@modules/catalog/tags/dto/create-tag.dto';
 import type { UpdateTagDto } from './dto/update-tag.dto';
 import { Tag } from './tag.entity';
 
@@ -25,7 +25,9 @@ export class TagsService {
     return tag;
   }
 
-  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Tag>> {
+  public async findAll(
+    paginationOptions?: Required<PaginateDto>,
+  ): Promise<PaginatedResult<Tag>> {
     return await this.tagRepository.findWithPagination(paginationOptions);
   }
 

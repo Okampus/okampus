@@ -1,7 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import { Label } from '@modules/assort/labels/label.entity';
+import { Label } from '@modules/catalog/labels/label.entity';
 import { TeamFormsModule } from '@modules/org/teams/forms/forms.module';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { FileUploadsModule } from '@modules/store/file-uploads/file-uploads.module';
@@ -21,7 +21,16 @@ import { TeamsService } from './teams.service';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([Team, TeamGallery, Label, TeamMember, TeamForm, ProfileImage, User, Social]),
+    MikroOrmModule.forFeature([
+      Team,
+      TeamGallery,
+      Label,
+      TeamMember,
+      TeamForm,
+      ProfileImage,
+      User,
+      Social,
+    ]),
     FileUploadsModule,
     ProfileImagesModule,
     TeamFilesModule,

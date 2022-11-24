@@ -18,7 +18,7 @@ import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import type { BaseSearchableEntity } from '@common/lib/types/interfaces/base-searchable.interface';
 import { Role } from '@common/modules/authorization/types/role.enum';
 import type { BaseIndex } from '@common/modules/search/indexed-entity.interface';
-import { Label } from '@modules/assort/labels/label.entity';
+import { Label } from '@modules/catalog/labels/label.entity';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import type { User } from '@modules/uua/users/user.entity';
 import type { Tenant } from '../tenants/tenant.entity';
@@ -26,7 +26,12 @@ import { TeamHistory } from './histories/team-history.entity';
 import { TeamMember } from './members/team-member.entity';
 import { Social } from './socials/social.entity';
 
-const ADMIN_ROLES = new Set([TeamRole.Owner, TeamRole.Coowner, TeamRole.Treasurer, TeamRole.Secretary]);
+const ADMIN_ROLES = new Set([
+  TeamRole.Owner,
+  TeamRole.Coowner,
+  TeamRole.Treasurer,
+  TeamRole.Secretary,
+]);
 const MANAGER_ROLES = new Set([
   TeamRole.Owner,
   TeamRole.Coowner,
@@ -158,16 +163,19 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
 
   public canActOnRole(user: User, role: TeamRole): boolean {
     if (this.isGlobalAdmin(user))
-      return true;
+return true;
 
     if (!ADMIN_ROLES.has(role))
-      return this.isTeamAdmin(user);
+return this.isTeamAdmin(user);
 
     return this.getMemberRoles(user).includes(TeamRole.Owner);
   }
 
   public isGlobalAdmin(user: User): boolean {
-    return user.roles.includes(Role.Admin) || (this.kind === TeamKind.Club && user.roles.includes(Role.ClubManager));
+    return (
+      user.roles.includes(Role.Admin)
+      || (this.kind === TeamKind.Club && user.roles.includes(Role.ClubManager))
+    );
   }
 
   private getMemberRoles(user: User): TeamRole[] {

@@ -11,7 +11,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Tag } from '@modules/assort/tags/tag.entity';
+import { Tag } from '@modules/catalog/tags/tag.entity';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import type { Favorite } from '@modules/interact/favorites/favorite.entity';
 import type { Reaction } from '@modules/interact/reactions/reaction.entity';
@@ -76,10 +76,7 @@ export abstract class ContentMaster extends BaseEntity {
   @TransformCollection()
   favorites = new Collection<Favorite>(this);
 
-  constructor(options: {
-    title: string;
-    post: Content;
-  }) {
+  constructor(options: { title: string; post: Content }) {
     super();
     this.assign(options);
   }

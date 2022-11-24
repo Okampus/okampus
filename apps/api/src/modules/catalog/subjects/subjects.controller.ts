@@ -13,7 +13,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { normalizePagination, PaginateDto } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
-import { CreateSubjectDto } from '@modules/assort/subjects/dto/create-subject.dto';
+import { CreateSubjectDto } from '@modules/catalog/subjects/dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
 import { Subject } from './subject.entity';
 import { SubjectsService } from './subjects.service';
@@ -25,25 +25,34 @@ export class SubjectsController {
 
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Subject))
-  public async create(@Body() createSubjectDto: CreateSubjectDto): Promise<Subject> {
+  public async create(
+    @Body() createSubjectDto: CreateSubjectDto,
+  ): Promise<Subject> {
     return await this.subjectsService.create(createSubjectDto);
   }
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Subject))
-  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Subject>> {
+  public async findAll(
+    @Query() query: PaginateDto,
+  ): Promise<PaginatedResult<Subject>> {
     return await this.subjectsService.findAll(normalizePagination(query));
   }
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Subject))
-  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Subject> {
+  public async findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Subject> {
     return await this.subjectsService.findOne(id);
   }
 
   @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Subject))
-  public async update(@Param('id', ParseIntPipe) id: number, @Body() updateSubjectDto: UpdateSubjectDto): Promise<Subject> {
+  public async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateSubjectDto: UpdateSubjectDto,
+  ): Promise<Subject> {
     return await this.subjectsService.update(id, updateSubjectDto);
   }
 

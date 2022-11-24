@@ -1,12 +1,16 @@
 import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { LabelType } from '@common/lib/types/enums/label-type.enum';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
-import { Label } from '@modules/assort/labels/label.entity';
+import { Label } from '@modules/catalog/labels/label.entity';
 import type { CreateTeamDto } from '@modules/org/teams/dto/create-team.dto';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import type { CreateSocialDto } from '@modules/org/teams/socials/dto/create-social.dto';
@@ -20,33 +24,41 @@ import { TeamMember } from './members/team-member.entity';
 import { Social } from './socials/social.entity';
 import { Team } from './team.entity';
 
-
 @Injectable()
 export class TeamsService {
   // eslint-disable-next-line max-params
   constructor(
-    @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
-    @InjectRepository(Label) private readonly teamLabelRepository: BaseRepository<Label>,
-    @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
-    @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
-    @InjectRepository(Social) private readonly socialsRepository: BaseRepository<Social>,
-    @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
+    @InjectRepository(Team)
+    private readonly teamRepository: BaseRepository<Team>,
+    @InjectRepository(Label)
+    private readonly teamLabelRepository: BaseRepository<Label>,
+    @InjectRepository(TeamMember)
+    private readonly teamMemberRepository: BaseRepository<TeamMember>,
+    @InjectRepository(TeamForm)
+    private readonly teamFormRepository: BaseRepository<TeamForm>,
+    @InjectRepository(Social)
+    private readonly socialsRepository: BaseRepository<Social>,
+    @InjectRepository(ProfileImage)
+    private readonly profileImageRepository: BaseRepository<ProfileImage>,
   ) {}
 
-  public async create(tenant: Tenant, user: User, createTeamDto: CreateTeamDto): Promise<Team> {
+  public async create(
+    tenant: Tenant,
+    user: User,
+    createTeamDto: CreateTeamDto,
+  ): Promise<Team> {
     const {
-      avatar,
-      banner,
-      labels,
-      ...dto
-    } = createTeamDto;
+ avatar, banner, labels, ...dto
+} = createTeamDto;
 
     const team = new Team({ ...dto, tenant });
 
-    const existingLabels = await this.teamLabelRepository.find({ name: { $in: labels } });
+    const existingLabels = await this.teamLabelRepository.find({
+      name: { $in: labels },
+    });
     const newLabels: Label[] = labels
-      ?.filter(tag => !existingLabels.some(t => t.name === tag))
-      ?.map(name => new Label({ name, type: LabelType.Meta })) ?? [];
+        ?.filter(tag => !existingLabels.some(t => t.name === tag))
+        ?.map(name => new Label({ name, type: LabelType.Meta })) ?? [];
 
     if (newLabels.length > 0) {
       await this.teamLabelRepository.persistAndFlush(newLabels);
@@ -55,10 +67,10 @@ export class TeamsService {
     team.labels.add(...existingLabels);
 
     if (avatar)
-      await this.setImage(avatar, 'avatar', team);
+await this.setImage(avatar, 'avatar', team);
 
     if (banner)
-      await this.setImage(banner, 'banner', team);
+await this.setImage(banner, 'banner', team);
 
     await this.teamRepository.persistAndFlush(team);
 
@@ -74,14 +86,16 @@ export class TeamsService {
   ): Promise<PaginatedResult<Team>> {
     let options: FilterQuery<Team> = {};
     if (filters?.kind)
-      options = { kind: filters.kind };
+options = { kind: filters.kind };
 
     const allTeams = await this.teamRepository.findWithPagination(
       paginationOptions,
       options,
-      { orderBy: { name: 'ASC' }, populate: ['membershipRequestForm', 'labels', 'socials'] },
+      {
+        orderBy: { name: 'ASC' },
+        populate: ['membershipRequestForm', 'labels', 'socials'],
+      },
     );
-
 
     return allTeams;
   }
@@ -89,24 +103,41 @@ export class TeamsService {
   public async findOne(id: number, filters?: TeamsFilterDto): Promise<Team> {
     let options: FilterQuery<Team> = {};
     if (filters?.kind)
-      options = { kind: filters.kind };
+options = { kind: filters.kind };
 
     const team = await this.teamRepository.findOneOrFail(
       { id, ...options },
-      { populate: ['members', 'members.user', 'membershipRequestForm', 'membershipRequestForm.createdBy', 'labels', 'socials'] },
+      {
+        populate: [
+          'members',
+          'members.user',
+          'membershipRequestForm',
+          'membershipRequestForm.createdBy',
+          'labels',
+          'socials',
+        ],
+      },
     );
 
     return team;
   }
 
-  public async findNames(): Promise<Array<Pick<Team, 'avatar' | 'id' | 'name'>>> {
+  public async findNames(): Promise<
+    Array<Pick<Team, 'avatar' | 'id' | 'name'>>
+  > {
     // TODO: Add possibility to filter by kind
-    const teams = await this.teamRepository.findAll({ fields: ['name', 'avatar', 'id'] });
+    const teams = await this.teamRepository.findAll({
+      fields: ['name', 'avatar', 'id'],
+    });
     // Remove null values for M:N relations that are automatically filled
     return teams.map(({ members, ...keep }) => keep);
   }
 
-  public async update(user: User, id: number, updateTeamDto: UpdateTeamDto): Promise<Team> {
+  public async update(
+    user: User,
+    id: number,
+    updateTeamDto: UpdateTeamDto,
+  ): Promise<Team> {
     const team = await this.teamRepository.findOneOrFail(
       { id },
       { populate: ['members', 'membershipRequestForm'] },
@@ -124,34 +155,38 @@ export class TeamsService {
       ...dto
     } = updateTeamDto;
 
-
     if (wantedLabels) {
       if (wantedLabels.length === 0) {
         team.labels.removeAll();
       } else {
-        const labels = await this.teamLabelRepository.find({ name: { $in: wantedLabels } });
+        const labels = await this.teamLabelRepository.find({
+          name: { $in: wantedLabels },
+        });
         team.labels.set(labels);
       }
     }
 
     if (typeof avatar !== 'undefined') {
       if (avatar)
-        await this.setImage(avatar, 'avatar', team);
+await this.setImage(avatar, 'avatar', team);
       else
-        team.avatar = null;
+team.avatar = null;
     }
 
     if (typeof banner !== 'undefined') {
       if (banner)
-        await this.setImage(banner, 'banner', team);
+await this.setImage(banner, 'banner', team);
       else
-        team.banner = null;
+team.banner = null;
     }
 
     // Check that the provided form id is valid, is a template, and is not already used
     if (typeof membershipRequestFormId !== 'undefined') {
       if (membershipRequestFormId) {
-        const form = await this.teamFormRepository.findOneOrFail({ id: membershipRequestFormId, team });
+        const form = await this.teamFormRepository.findOneOrFail({
+          id: membershipRequestFormId,
+          team,
+        });
         if (form.isTemplate)
           throw new BadRequestException('Form is a template');
         team.membershipRequestForm = form;
@@ -207,18 +242,30 @@ export class TeamsService {
     return team;
   }
 
-  private async setImage(profileImage: ProfileImage | string, type: 'avatar' | 'banner', team: Team): Promise<void> {
+  private async setImage(
+    profileImage: ProfileImage | string,
+    type: 'avatar' | 'banner',
+    team: Team,
+  ): Promise<void> {
     // Get the avatar image and validate it
     const id = typeof profileImage === 'string' ? profileImage : profileImage.id;
-    const avatarImage = profileImage instanceof ProfileImage && profileImage.file instanceof FileUpload
-      ? profileImage
-      : await this.profileImageRepository.findOne({ id, type }, { populate: ['file'] });
+    const avatarImage = profileImage instanceof ProfileImage
+      && profileImage.file instanceof FileUpload
+        ? profileImage
+        : await this.profileImageRepository.findOne(
+            { id, type },
+            { populate: ['file'] },
+          );
 
     if (!avatarImage || !avatarImage.isAvailableFor('team', team.id))
       throw new BadRequestException(`Invalid ${type} image`);
 
     // Get previous avatar image if it exists and set it to inactive
-    const previousAvatarImage = await this.profileImageRepository.findOne({ team, type, active: true });
+    const previousAvatarImage = await this.profileImageRepository.findOne({
+      team,
+      type,
+      active: true,
+    });
     if (previousAvatarImage) {
       previousAvatarImage.active = false;
       previousAvatarImage.lastActiveDate = new Date();

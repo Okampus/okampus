@@ -18,7 +18,9 @@ import { config } from '@common/configs/config';
 import graphqlConfig from '@common/configs/graphql.config';
 import meiliSearchConfig from '@common/configs/meilisearch.config';
 import redisConfig from '@common/configs/redis.config';
-import sentryConfig, { sentryInterceptorConfig } from '@common/configs/sentry.config';
+import sentryConfig, {
+  sentryInterceptorConfig,
+} from '@common/configs/sentry.config';
 import storageConfig from '@common/configs/storage.config';
 import { APP_OIDC_CACHE } from '@common/lib/constants';
 
@@ -29,8 +31,8 @@ import { PoliciesGuard } from '@common/modules/authorization';
 import { OIDCStrategyCache } from '@common/modules/authorization/oidc-strategy.cache';
 import { CaslModule } from '@common/modules/casl/casl.module';
 import { MeiliSearchIndexerModule } from '@common/modules/search/meilisearch-indexer.module';
-import { SubjectsModule } from '@modules/assort/subjects/subjects.module';
-import { TagsModule } from '@modules/assort/tags/tags.module';
+import { SubjectsModule } from '@modules/catalog/subjects/subjects.module';
+import { TagsModule } from '@modules/catalog/tags/tags.module';
 import { BlogsModule } from '@modules/create/blogs/blogs.module';
 import { ContentsModule } from '@modules/create/contents/contents.module';
 import { ThreadsModule } from '@modules/create/threads/threads.module';
@@ -113,29 +115,27 @@ import { HealthModule } from './health/health.module';
     { provide: APP_GUARD, useClass: AuthGuard },
     { provide: APP_GUARD, useClass: PoliciesGuard },
     { provide: APP_FILTER, useClass: ExceptionsFilter },
-    { provide: APP_INTERCEPTOR, useFactory: (): SentryInterceptor => new SentryInterceptor(sentryInterceptorConfig) },
+    {
+      provide: APP_INTERCEPTOR,
+      useFactory: (): SentryInterceptor =>
+        new SentryInterceptor(sentryInterceptorConfig),
+    },
   ],
   controllers: [AppController],
   exports: [APP_OIDC_CACHE],
 })
 export class AppModule implements NestModule {
-  constructor(
-    @InjectRedis() private readonly redis: Redis,
-  ) {}
+  constructor(@InjectRedis() private readonly redis: Redis) {}
 
   public configure(consumer: MiddlewareConsumer): void {
     // Setup sentry
     if (config.sentry.enabled) {
-      consumer.apply(
-        Sentry.Handlers.requestHandler(),
-        TraceMiddleware,
-      ).forRoutes({ path: '*', method: RequestMethod.ALL });
+      consumer
+        .apply(Sentry.Handlers.requestHandler(), TraceMiddleware)
+        .forRoutes({ path: '*', method: RequestMethod.ALL });
     }
 
     // Setup loggers
-    consumer
-      .apply(RestLoggerMiddleware)
-      .exclude('/graphql')
-      .forRoutes('*');
+    consumer.apply(RestLoggerMiddleware).exclude('/graphql').forRoutes('*');
   }
 }

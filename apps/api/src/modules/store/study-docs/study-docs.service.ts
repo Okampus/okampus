@@ -5,12 +5,15 @@ import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import type { StudyDocFilter } from '@common/lib/types/enums/docs-filters.enum';
 import { assertPermissions } from '@common/lib/utils/assert-permission';
-import type { Categories, GroupFilters } from '@common/lib/utils/compute-document-categories';
+import type {
+  Categories,
+  GroupFilters,
+} from '@common/lib/utils/compute-document-categories';
 import { computeDocumentCategories } from '@common/lib/utils/compute-document-categories';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
-import { Subject } from '@modules/assort/subjects/subject.entity';
+import { Subject } from '@modules/catalog/subjects/subject.entity';
 import type { CreateStudyDocDto } from '@modules/store/study-docs/dto/create-study-doc.dto';
 import type { User } from '@modules/uua/users/user.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
@@ -22,15 +25,25 @@ import { StudyDoc } from './study-doc.entity';
 @Injectable()
 export class StudyDocsService {
   constructor(
-    @InjectRepository(StudyDoc) private readonly studyDocRepository: BaseRepository<StudyDoc>,
-    @InjectRepository(Subject) private readonly subjectRepository: BaseRepository<Subject>,
-    @InjectRepository(DocSeries) private readonly docSeriesRepository: BaseRepository<DocSeries>,
+    @InjectRepository(StudyDoc)
+    private readonly studyDocRepository: BaseRepository<StudyDoc>,
+    @InjectRepository(Subject)
+    private readonly subjectRepository: BaseRepository<Subject>,
+    @InjectRepository(DocSeries)
+    private readonly docSeriesRepository: BaseRepository<DocSeries>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async create(createStudyDocDto: CreateStudyDocDto, file: FileUpload): Promise<StudyDoc> {
-    const subject = await this.subjectRepository.findOneOrFail({ id: createStudyDocDto.subjectId });
-    const docSeries = await this.docSeriesRepository.findOne({ id: createStudyDocDto.docSeries });
+  public async create(
+    createStudyDocDto: CreateStudyDocDto,
+    file: FileUpload,
+  ): Promise<StudyDoc> {
+    const subject = await this.subjectRepository.findOneOrFail({
+      id: createStudyDocDto.subjectId,
+    });
+    const docSeries = await this.docSeriesRepository.findOne({
+      id: createStudyDocDto.docSeries,
+    });
     const studyDoc = new StudyDoc({
       ...createStudyDocDto,
       subject,
@@ -51,9 +64,9 @@ export class StudyDocsService {
     let options: FilterQuery<StudyDoc> = {};
     if (typeof filters.year !== 'undefined')
       options = { ...options, year: filters.year };
-    if (typeof filters.subject !== 'undefined')
-      // @ts-expect-error: ts(2339)
+    if (typeof filters.subject !== 'undefined') // @ts-expect-error: ts(2339)
       options = { ...options, subject: { ...options.subject, id: filters.subject } };
+
     if (typeof filters.type !== 'undefined')
       options = { ...options, type: filters.type };
 
@@ -64,12 +77,19 @@ export class StudyDocsService {
     );
   }
 
-  public async findCategories(baseFilters: StudyDocFilter[]): Promise<Categories<StudyDoc>> {
-    const allDocuments: StudyDoc[] = await this.studyDocRepository.findAll({ populate: ['subject'] });
+  public async findCategories(
+    baseFilters: StudyDocFilter[],
+  ): Promise<Categories<StudyDoc>> {
+    const allDocuments: StudyDoc[] = await this.studyDocRepository.findAll({
+      populate: ['subject'],
+    });
 
     const groupFilters: GroupFilters<StudyDoc> = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      Subject: elt => ({ key: elt.subject.id.toString(), metadata: elt.subject.name }),
+      Subject: elt => ({
+        key: elt.subject.id.toString(),
+        metadata: elt.subject.name,
+      }),
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Type: elt => ({ key: elt.type.toString(), metadata: null }),
       // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -88,7 +108,11 @@ export class StudyDocsService {
     );
   }
 
-  public async update(user: User, id: string, updateStudyDocDto: UpdateStudyDocDto): Promise<StudyDoc> {
+  public async update(
+    user: User,
+    id: string,
+    updateStudyDocDto: UpdateStudyDocDto,
+  ): Promise<StudyDoc> {
     const studyDoc = await this.studyDocRepository.findOneOrFail(
       { id },
       { populate: ['file', 'file.user', 'subject', 'docSeries'] },
@@ -97,8 +121,12 @@ export class StudyDocsService {
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Update, studyDoc);
 
-    const subject = await this.subjectRepository.findOneOrFail({ id: updateStudyDocDto.subjectId });
-    const docSeries = await this.docSeriesRepository.findOneOrFail({ id: updateStudyDocDto.docSeries });
+    const subject = await this.subjectRepository.findOneOrFail({
+      id: updateStudyDocDto.subjectId,
+    });
+    const docSeries = await this.docSeriesRepository.findOneOrFail({
+      id: updateStudyDocDto.docSeries,
+    });
 
     wrap(studyDoc).assign({ ...updateStudyDocDto, subject, docSeries });
     await this.studyDocRepository.flush();
@@ -106,7 +134,10 @@ export class StudyDocsService {
   }
 
   public async remove(user: User, id: string): Promise<void> {
-    const studyDoc = await this.studyDocRepository.findOneOrFail({ id }, { populate: ['file', 'file.user'] });
+    const studyDoc = await this.studyDocRepository.findOneOrFail(
+      { id },
+      { populate: ['file', 'file.user'] },
+    );
 
     const ability = this.caslAbilityFactory.createForUser(user);
     assertPermissions(ability, Action.Delete, studyDoc);

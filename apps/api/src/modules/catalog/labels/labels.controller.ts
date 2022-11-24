@@ -13,7 +13,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { normalizePagination, PaginateDto } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
-import { CreateLabelDto } from '@modules/assort/labels/dto/create-label.dto';
+import { CreateLabelDto } from '@modules/catalog/labels/dto/create-label.dto';
 import { UpdateLabelDto } from './dto/update-label.dto';
 import { Label } from './label.entity';
 import { LabelsService } from './labels.service';
@@ -31,7 +31,9 @@ export class LabelsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Label))
-  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Label>> {
+  public async findAll(
+    @Query() query: PaginateDto,
+  ): Promise<PaginatedResult<Label>> {
     return await this.labelsService.findAll(normalizePagination(query));
   }
 
@@ -43,7 +45,10 @@ export class LabelsController {
 
   @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Label))
-  public async update(@Param('id', ParseIntPipe) id: string, @Body() updateLabelDto: UpdateLabelDto): Promise<Label> {
+  public async update(
+    @Param('id', ParseIntPipe) id: string,
+    @Body() updateLabelDto: UpdateLabelDto,
+  ): Promise<Label> {
     return await this.labelsService.update(id, updateLabelDto);
   }
 
