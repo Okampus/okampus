@@ -447,11 +447,11 @@ enum Colors {
 type Reaction {
   createdAt: DateTime!
   updatedAt: DateTime!
-  contentMaster: ContentMaster
-  user: User!
-  content: Content!
   id: Int!
   value: AllReactionValue!
+  content: Content!
+  contentMaster: ContentMaster
+  user: User!
 }
 
 enum AllReactionValue {
@@ -469,12 +469,12 @@ enum AllReactionValue {
 type Report {
   createdAt: DateTime!
   updatedAt: DateTime!
-  contentMaster: ContentMaster
-  user: User!
-  content: Content!
   id: Int!
   target: User!
   reason: String
+  content: Content!
+  contentMaster: ContentMaster
+  user: User!
 }
 
 type Edit {
