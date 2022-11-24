@@ -17,62 +17,62 @@ import { normalizePagination } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
 import { normalizeSort } from '@common/modules/sorting';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { CreateTeamEventDto } from '@modules/plan/events/dto/create-team-event.dto';
+import { CreateEventDto } from '@modules/plan/events/dto/create-event.dto';
 import { User } from '@modules/uua/users/user.entity';
-import { ListTeamEventsDto } from './dto/list-team-events.dto';
-import { UpdateTeamEventDto } from './dto/update-team-event.dto';
-import { TeamEventsService } from './events.service';
-import { TeamEvent } from './team-event.entity';
+import { ListEventsDto } from './dto/list-events.dto';
+import { UpdateEventDto } from './dto/update-event.dto';
+import { Event } from './event.entity';
+import { EventsService } from './events.service';
 
 @ApiTags('Events')
 @Controller()
-export class TeamEventsController {
+export class EventsController {
   constructor(
-    private readonly eventsService: TeamEventsService,
+    private readonly eventsService: EventsService,
   ) {}
 
   @Post(':id')
-  @CheckPolicies(ability => ability.can(Action.Create, TeamEvent))
+  @CheckPolicies(ability => ability.can(Action.Create, Event))
   public async create(
     @CurrentTenant() tenant: Tenant,
     @Param('id', ParseIntPipe) id: number,
-    @Body() createTeamEventDto: CreateTeamEventDto,
+    @Body() createEventDto: CreateEventDto,
     @CurrentUser() user: User,
-  ): Promise<TeamEvent> {
-    return await this.eventsService.create(tenant, user, id, createTeamEventDto);
+  ): Promise<Event> {
+    return await this.eventsService.create(tenant, user, id, createEventDto);
   }
 
   @Get()
-  @CheckPolicies(ability => ability.can(Action.Read, TeamEvent))
+  @CheckPolicies(ability => ability.can(Action.Read, Event))
   public async findAll(
     @CurrentUser() user: User,
-    @Query() query: ListTeamEventsDto,
-  ): Promise<PaginatedResult<TeamEvent>> {
+    @Query() query: ListEventsDto,
+  ): Promise<PaginatedResult<Event>> {
     return await this.eventsService.findAll(user, query, { ...normalizePagination(query), ...normalizeSort(query) });
   }
 
   @Get(':id')
-  @CheckPolicies(ability => ability.can(Action.Read, TeamEvent))
+  @CheckPolicies(ability => ability.can(Action.Read, Event))
   public async findOne(
     @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
-  ): Promise<TeamEvent> {
+  ): Promise<Event> {
     return await this.eventsService.findOne(user, id);
   }
 
   @Patch(':id')
-  @CheckPolicies(ability => ability.can(Action.Update, TeamEvent))
+  @CheckPolicies(ability => ability.can(Action.Update, Event))
   public async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateTeamEventDto: UpdateTeamEventDto,
+    @Body() updateEventDto: UpdateEventDto,
     @CurrentUser() user: User,
     @CurrentTenant() tenant: Tenant,
-  ): Promise<TeamEvent> {
-    return await this.eventsService.update(tenant, user, id, updateTeamEventDto);
+  ): Promise<Event> {
+    return await this.eventsService.update(tenant, user, id, updateEventDto);
   }
 
   @Delete(':id')
-  @CheckPolicies(ability => ability.can(Action.Delete, TeamEvent))
+  @CheckPolicies(ability => ability.can(Action.Delete, Event))
   public async remove(
     @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,

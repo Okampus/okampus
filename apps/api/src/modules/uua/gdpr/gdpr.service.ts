@@ -13,8 +13,8 @@ import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import { TeamMembershipRequest } from '@modules/org/teams/requests/team-membership-request.entity';
 import { Social } from '@modules/org/teams/socials/social.entity';
-import { TeamEventRegistration } from '@modules/plan/event-registrations/team-event-registration.entity';
-import { TeamEvent } from '@modules/plan/events/team-event.entity';
+import { Event } from '@modules/plan/events/event.entity';
+import { EventRegistration } from '@modules/plan/registrations/registration.entity';
 import { Attachment } from '@modules/store/attachments/attachment.entity';
 import { InfoDoc } from '@modules/store/info-docs/info-doc.entity';
 import { ProfileImage } from '@modules/store/profile-images/profile-image.entity';
@@ -43,8 +43,8 @@ export class GdprService {
     @InjectRepository(Reaction) private readonly reactionRepository: BaseRepository<Reaction>,
     @InjectRepository(Report) private readonly reportRepository: BaseRepository<Report>,
     @InjectRepository(Statistics) private readonly statisticsRepository: BaseRepository<Statistics>,
-    @InjectRepository(TeamEventRegistration) private readonly teamEventRegistrationRepository: BaseRepository<TeamEventRegistration>,
-    @InjectRepository(TeamEvent) private readonly teamEventRepository: BaseRepository<TeamEvent>,
+    @InjectRepository(EventRegistration) private readonly eventRegistrationRepository: BaseRepository<EventRegistration>,
+    @InjectRepository(Event) private readonly eventRepository: BaseRepository<Event>,
     @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamMembershipRequest) private readonly teamMembershipRequestRepository: BaseRepository<TeamMembershipRequest>,
@@ -69,9 +69,9 @@ export class GdprService {
     const reactions           = await this.reactionRepository.find({ user });
     const reports             = await this.reportRepository.find({ user });
     const statistics          = await this.statisticsRepository.findOne({ user });
-    const eventRegistrations  = await this.teamEventRegistrationRepository.find({ user });
-    const createdEvents       = await this.teamEventRepository.find({ createdBy: user });
-    const supervisedEvents    = await this.teamEventRepository.find({ supervisor: { user } });
+    const eventRegistrations  = await this.eventRegistrationRepository.find({ user });
+    const createdEvents       = await this.eventRepository.find({ createdBy: user });
+    const supervisedEvents    = await this.eventRepository.find({ supervisor: { user } });
     const forms               = await this.teamFormRepository.find({ createdBy: user });
     const memberships         = await this.teamMemberRepository.find({ user });
     const membershipRequests  = await this.teamMembershipRequestRepository.find({ user });

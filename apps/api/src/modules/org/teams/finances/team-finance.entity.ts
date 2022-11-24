@@ -13,7 +13,7 @@ import { PaymentMethod } from '@common/lib/types/enums/payment-method.enum';
 import { TeamFinanceCategory } from '@common/lib/types/enums/team-finance-category.enum';
 import { TeamFinanceType } from '@common/lib/types/enums/team-finance-type.enum';
 import { Team } from '@modules/org/teams/team.entity';
-import { TeamEvent } from '@modules/plan/events/team-event.entity';
+import { Event } from '@modules/plan/events/event.entity';
 import { TeamFile } from '@modules/store/team-files/team-file.entity';
 import { User } from '@modules/uua/users/user.entity';
 
@@ -61,9 +61,9 @@ export class TeamFinance extends BaseEntity {
   @Enum(() => TeamFinanceCategory)
   category!: TeamFinanceCategory;
 
-  @Field(() => TeamEvent, { nullable: true })
-  @ManyToOne({ type: TeamEvent, nullable: true })
-  event: TeamEvent | null = null;
+  @Field(() => Event, { nullable: true })
+  @ManyToOne({ type: Event, nullable: true })
+  event: Event | null = null;
 
   @Field(() => TeamFile, { nullable: true })
   @OneToOne('TeamFile')
@@ -79,7 +79,7 @@ export class TeamFinance extends BaseEntity {
     category: TeamFinanceCategory;
     description?: string | null;
     dueTo?: User | null;
-    event?: TeamEvent | null;
+    event?: Event | null;
     receipt?: TeamFile | null;
   }) {
     super();

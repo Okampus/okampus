@@ -75,7 +75,7 @@ export class UpdateSettingsDto {
   // Team notifications
 
   @IsRequiredNotifiationChannel()
-  notificationTeamEventCreated: number;
+  notificationEventCreated: number;
 
   @IsRequiredNotifiationChannel()
   notificationTeamSubscribedEventCreated: number;
@@ -101,28 +101,28 @@ export class UpdateSettingsDto {
   // Team Event notifications
 
   @IsRequiredNotifiationChannel()
-  notificationTeamEventSubscribedUpdated: number;
+  notificationEventSubscribedUpdated: number;
 
   @IsRequiredNotifiationChannel()
-  notificationTeamEventManagedApproved: number;
+  notificationEventManagedApproved: number;
 
   @IsRequiredNotifiationChannel()
-  notificationTeamEventManagedRejected: number;
+  notificationEventManagedRejected: number;
 
   @IsRequiredNotifiationChannel()
-  notificationTeamEventManagedRegistrationCreated: number;
+  notificationEventManagedRegistrationCreated: number;
 
   @IsRequiredNotifiationChannel()
-  notificationAdminTeamEventValidationStarted: number;
+  notificationAdminEventValidationStarted: number;
 
   @IsRequiredNotifiationChannel()
-  notificationAdminTeamEventValidationStep: number;
+  notificationAdminEventValidationStep: number;
 
   @IsRequiredNotifiationChannel()
-  notificationAdminTeamEventValidationApproved: number;
+  notificationAdminEventValidationApproved: number;
 
   @IsRequiredNotifiationChannel()
-  notificationAdminTeamEventValidationRejected: number;
+  notificationAdminEventValidationRejected: number;
 
   // Thread notifications
 

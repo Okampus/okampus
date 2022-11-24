@@ -4,21 +4,21 @@ import { ICalCalendar, ICalCalendarMethod, ICalEvent } from 'ical-generator';
 import { config } from '@common/configs/config';
 import { iCals } from '@common/configs/strings';
 import { BaseRepository } from '@common/lib/orm/base.repository';
+import { EventRegistration } from '@modules/plan/registrations/registration.entity';
 import { User } from '@modules/uua/users/user.entity';
-import { TeamEventRegistration } from '../event-registrations/team-event-registration.entity';
-import { TeamEvent } from '../events/team-event.entity';
+import { Event } from '../events/event.entity';
 
 @Injectable()
 export class TeamICalService {
   constructor(
-    @InjectRepository(TeamEvent) private readonly teamEventRepository: BaseRepository<TeamEvent>,
+    @InjectRepository(Event) private readonly eventRepository: BaseRepository<Event>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
-    @InjectRepository(TeamEventRegistration)
-    private readonly teamEventRegistrationRepository: BaseRepository<TeamEventRegistration>,
+    @InjectRepository(EventRegistration)
+    private readonly eventRegistrationRepository: BaseRepository<EventRegistration>,
   ) {}
 
   public async getAllPublicEventsCalendar(): Promise<ICalCalendar> {
-    const events = await this.teamEventRepository.find({ private: false });
+    const events = await this.eventRepository.find({ private: false });
 
     const calendar = this.getCalendarFromEvents(events);
     calendar.name(iCals.globalName);
@@ -27,11 +27,11 @@ export class TeamICalService {
   }
 
   public async getPersonnalCalendar(id: string): Promise<ICalCalendar> {
-    const user = await this.userRepository.findOneOrFail({ teamEventIcal: id });
+    const user = await this.userRepository.findOneOrFail({ eventIcal: id });
 
-    const registrations = await this.teamEventRegistrationRepository.find({ user });
+    const registrations = await this.eventRegistrationRepository.find({ user });
     const eventIds = registrations.map(registration => registration.event.id);
-    const events = await this.teamEventRepository.find({ id: { $in: eventIds } });
+    const events = await this.eventRepository.find({ id: { $in: eventIds } });
 
     const calendar = this.getCalendarFromEvents(events);
     calendar.name(iCals.personnalName.replace('{0}', user.getFullName()));
@@ -39,7 +39,7 @@ export class TeamICalService {
     return calendar;
   }
 
-  private getCalendarFromEvents(teamEvents: TeamEvent[]): ICalCalendar {
+  private getCalendarFromEvents(events: Event[]): ICalCalendar {
     const calendar = new ICalCalendar({
       prodId: {
         company: 'Okampus',
@@ -49,7 +49,7 @@ export class TeamICalService {
       method: ICalCalendarMethod.PUBLISH,
     });
 
-    const events: ICalEvent[] = teamEvents.map(event => new ICalEvent({
+    const calEvents: ICalEvent[] = events.map(event => new ICalEvent({
       start: event.start,
       end: event.end,
       created: event.createdAt,
@@ -63,7 +63,7 @@ export class TeamICalService {
       url: `${config.network.frontendUrl}/events/${event.id}`,
     }, calendar));
 
-    calendar.events(events);
+    calendar.events(calEvents);
 
     return calendar;
   }

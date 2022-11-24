@@ -11,7 +11,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
 // Import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '@common/lib/entities/base.entity';
-// Import { ValidationStep } from './validation-steps/validation-step.entity';
+// Import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
 
 @ObjectType()
 @Entity()
@@ -20,14 +20,14 @@ export class Tenant extends BaseEntity {
   @PrimaryKey()
   id!: string;
 
-  // @Field(() => [ValidationStep])
-  // @OneToMany(() => ValidationStep, 'tenant', { orderBy: { step: QueryOrder.ASC } })
+  // @Field(() => [ApprovalStep])
+  // @OneToMany(() => ApprovalStep, 'tenant', { orderBy: { step: QueryOrder.ASC } })
   // @TransformCollection()
-  // validationSteps = new Collection<ValidationStep>(this);
+  // approvalSteps = new Collection<ApprovalStep>(this);
 
   @Field(() => GraphQLJSON, { nullable: true })
   @Property({ type: 'json' })
-  eventValidationForm: object[] | object | null = null;
+  eventApprovalForm: object[] | object | null = null;
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })

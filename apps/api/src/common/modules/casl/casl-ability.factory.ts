@@ -22,10 +22,10 @@ import type { Interest } from '@modules/org/teams/interests/interest.entity';
 import { Metric } from '@modules/org/teams/metrics/metric.entity';
 import type { Social } from '@modules/org/teams/socials/social.entity';
 import { Team } from '@modules/org/teams/team.entity';
+import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { ValidationStep } from '@modules/org/tenants/validation-steps/validation-step.entity';
-import { TeamEventValidation } from '@modules/plan/event-validations/team-event-validation.entity';
-import { TeamEvent } from '@modules/plan/events/team-event.entity';
+import { EventApproval } from '@modules/plan/approvals/approval.entity';
+import { Event } from '@modules/plan/events/event.entity';
 import { Attachment } from '@modules/store/attachments/attachment.entity';
 import { InfoDoc } from '@modules/store/info-docs/info-doc.entity';
 import { ProfileImage } from '@modules/store/profile-images/profile-image.entity';
@@ -44,11 +44,14 @@ import { Role } from '../authorization/types/role.enum';
 
 export type Subjects = InferSubjects<
   | typeof Announcement
+  | typeof ApprovalStep
   | typeof Attachment
   | typeof Badge
   | typeof Blog
   | typeof Class
   | typeof Content
+  | typeof Event
+  | typeof EventApproval
   | typeof Favorite
   | typeof Food
   | typeof InfoDoc
@@ -65,8 +68,6 @@ export type Subjects = InferSubjects<
   | typeof Subject
   | typeof Tag
   | typeof Team
-  | typeof TeamEvent
-  | typeof TeamEventValidation
   | typeof TeamFile
   | typeof TeamFinance
   | typeof TeamForm
@@ -76,7 +77,6 @@ export type Subjects = InferSubjects<
   | typeof Tenant
   | typeof Thread
   | typeof User
-  | typeof ValidationStep
   | typeof Wiki>
   | 'all';
 export type AppAbility = Ability<[action: Action, subjects: Subjects]>;
@@ -107,7 +107,7 @@ export class CaslAbilityFactory {
     } else {
       allow(Action.Read, 'all');
       forbid(Action.Read, [Tenant, Report, Announcement, Metric]);
-      forbid(Action.Manage, [ValidationStep, TeamEventValidation]);
+      forbid(Action.Manage, [ApprovalStep, EventApproval]);
 
       // @ts-expect-error
       allow([Action.Read, Action.Update], Report, isMe);
@@ -125,7 +125,7 @@ export class CaslAbilityFactory {
       allow(Action.Interact, Content);
 
       // This is all managed by-hand inside the services.
-      allow(Action.Manage, [Team, TeamEvent, TeamFile, TeamFinance, TeamForm]);
+      allow(Action.Manage, [Team, Event, TeamFile, TeamFinance, TeamForm]);
 
       forbid(Action.Update, User)
         .because('Not the user');
@@ -135,8 +135,8 @@ export class CaslAbilityFactory {
       if (user.roles.includes(Role.Moderator)) {
         allow(Action.Read, 'all');
         allow(Action.Update, 'all');
-        forbid(Action.Update, [Badge, TeamEventValidation]);
-        forbid(Action.Manage, [Tenant, ValidationStep]);
+        forbid(Action.Update, [Badge, EventApproval]);
+        forbid(Action.Manage, [Tenant, ApprovalStep]);
         allow(
           Action.Manage,
           [Announcement, Blog, Content, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag, Thread, Wiki],
@@ -193,8 +193,8 @@ export class CaslAbilityFactory {
       if (user.roles.includes(Role.ClubManager)) {
         allow(Action.Manage, Team, isClub);
         // @ts-expect-error
-        allow(Action.Manage, [TeamEvent, TeamFile], { 'team.kind': TeamKind.Club });
-        allow(Action.Manage, [Metric, Tenant, ValidationStep, TeamEventValidation]);
+        allow(Action.Manage, [Event, TeamFile], { 'team.kind': TeamKind.Club });
+        allow(Action.Manage, [Metric, Tenant, ApprovalStep, EventApproval]);
       }
     }
 

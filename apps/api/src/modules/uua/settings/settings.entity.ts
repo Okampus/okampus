@@ -89,7 +89,7 @@ export class Settings extends BaseEntity {
   /** A team publishes an event */
   @Field(() => Int)
   @Property()
-  notificationTeamEventCreated: number = IN_APP;
+  notificationEventCreated: number = IN_APP;
 
   /** A team to which I am subscribed (member) publishes an event */
   @Field(() => Int)
@@ -134,42 +134,42 @@ export class Settings extends BaseEntity {
   // TODO: more granularity : price updated/place update/is-private updated...
   @Field(() => Int)
   @Property()
-  notificationTeamEventSubscribedUpdated: number = IN_APP;
+  notificationEventSubscribedUpdated: number = IN_APP;
 
   /** An event that I manage (creator/supervisor/board) is approved */
   @Field(() => Int)
   @Property()
-  notificationTeamEventManagedApproved: number = MAIL | IN_APP | PUSH;
+  notificationEventManagedApproved: number = MAIL | IN_APP | PUSH;
 
   /** An event I manage (creator/supervisor/board) is rejected */
   @Field(() => Int)
   @Property()
-  notificationTeamEventManagedRejected: number = MAIL | IN_APP | PUSH;
+  notificationEventManagedRejected: number = MAIL | IN_APP | PUSH;
 
   /** An event I manage (creator/supervisor/board) has a new registrant */
   @Field(() => Int)
   @Property()
-  notificationTeamEventManagedRegistrationCreated: number = IN_APP;
+  notificationEventManagedRegistrationCreated: number = IN_APP;
 
   /** ADMIN: An event was submitted for validation */
   @Field(() => Int)
   @Property()
-  notificationAdminTeamEventValidationStarted: number = MAIL | IN_APP;
+  notificationAdminEventValidationStarted: number = MAIL | IN_APP;
 
   /** ADMIN: An event submitted for validation has reached a stage for which I am responsible */
   @Field(() => Int)
   @Property()
-  notificationAdminTeamEventValidationStep: number = MAIL | IN_APP;
+  notificationAdminEventValidationStep: number = MAIL | IN_APP;
 
   /** ADMIN: An event is approved */
   @Field(() => Int)
   @Property()
-  notificationAdminTeamEventValidationApproved: number = IN_APP;
+  notificationAdminEventValidationApproved: number = IN_APP;
 
   /** ADMIN: An event is rejected */
   @Field(() => Int)
   @Property()
-  notificationAdminTeamEventValidationRejected: number = IN_APP;
+  notificationAdminEventValidationRejected: number = IN_APP;
 
   //
   // Thread notifications

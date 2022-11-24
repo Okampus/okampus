@@ -11,19 +11,19 @@ import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Public } from '@common/lib/decorators/public.decorator';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { TenantLogoUrls } from '@common/lib/types/models/tenant-logos.model';
+import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
 import { ProfileImage } from '@modules/store/profile-images/profile-image.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { OIDCEnabled } from '../../../common/lib/types/models/oidc-enabled.model';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
 import { Tenant } from './tenant.entity';
 import { TenantsService } from './tenants.service';
-import { ValidationStep } from './validation-steps/validation-step.entity';
 
 @Resolver(() => Tenant)
 export class TenantsResolver {
   constructor(
     private readonly tenantsService: TenantsService,
-    @InjectRepository(ValidationStep) private readonly validationStepRepository: BaseRepository<ValidationStep>,
+    @InjectRepository(ApprovalStep) private readonly approvalStepRepository: BaseRepository<ApprovalStep>,
     @InjectRepository(Tenant) private readonly tenantRepository: BaseRepository<Tenant>,
     @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
   ) {}
@@ -42,12 +42,12 @@ export class TenantsResolver {
     return await this.tenantsService.update(id, updateTenant);
   }
 
-  @ResolveField(() => [ValidationStep])
-  public async userValidations(
+  @ResolveField(() => [ApprovalStep])
+  public async approvalStepsByUser(
     @CurrentUser() user: User,
     @Parent() tenant: Tenant,
-  ): Promise<ValidationStep[]> {
-    return await this.validationStepRepository.find({ users: { id: user.id }, tenant });
+  ): Promise<ApprovalStep[]> {
+    return await this.approvalStepRepository.find({ users: { id: user.id }, tenant });
   }
 
   @Query(() => [ProfileImage])

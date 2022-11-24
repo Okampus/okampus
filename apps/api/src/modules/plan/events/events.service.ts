@@ -4,14 +4,14 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import type { ListOptionsDto } from '@common/lib/dto/list-options.dto';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import { TeamEventState } from '@common/lib/types/enums/team-event-state.enum';
-import { ValidationStepType } from '@common/lib/types/enums/validation-step-type.enum';
+import { ApprovalStepType } from '@common/lib/types/enums/approval-step-type.enum';
+import { EventState } from '@common/lib/types/enums/event-state.enum';
 import { Role } from '@common/modules/authorization/types/role.enum';
 import { SchoolRole } from '@common/modules/authorization/types/school-role.enum';
 import {
-  AdminTeamEventValidationStartedNotification,
-  TeamEventCreatedNotification,
-  TeamEventSubscribedUpdatedNotification,
+  AdminEventValidationStartedNotification,
+  EventCreatedNotification,
+  EventSubscribedUpdatedNotification,
   TeamManagedEventUpdatedNotification,
   TeamSubscribedEventCreatedNotification,
 } from '@common/modules/notifications/notifications';
@@ -21,27 +21,27 @@ import { serializeOrder } from '@common/modules/sorting';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import { Team } from '@modules/org/teams/team.entity';
+import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
 import type { Tenant } from '@modules/org/tenants/tenant.entity';
-import { ValidationStep } from '@modules/org/tenants/validation-steps/validation-step.entity';
-import type { CreateTeamEventDto } from '@modules/plan/events/dto/create-team-event.dto';
+import type { CreateEventDto } from '@modules/plan/events/dto/create-event.dto';
+import { EventRegistration } from '@modules/plan/registrations/registration.entity';
 import { User } from '@modules/uua/users/user.entity';
-import { TeamEventRegistration } from '../event-registrations/team-event-registration.entity';
-import type { ListTeamEventsDto } from './dto/list-team-events.dto';
-import type { UpdateTeamEventDto } from './dto/update-team-event.dto';
-import { TeamEvent } from './team-event.entity';
+import type { ListEventsDto } from './dto/list-events.dto';
+import type { UpdateEventDto } from './dto/update-event.dto';
+import { Event } from './event.entity';
 
 @Injectable()
-export class TeamEventsService {
+export class EventsService {
   // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
-    @InjectRepository(TeamEvent) private readonly teamEventRepository: BaseRepository<TeamEvent>,
-    @InjectRepository(TeamEventRegistration)
-    private readonly teamEventRegistrationRepository: BaseRepository<TeamEventRegistration>,
+    @InjectRepository(Event) private readonly eventRepository: BaseRepository<Event>,
+    @InjectRepository(EventRegistration)
+    private readonly eventRegistrationRepository: BaseRepository<EventRegistration>,
     @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
-    @InjectRepository(ValidationStep) private readonly validationStepRepository: BaseRepository<ValidationStep>,
+    @InjectRepository(ApprovalStep) private readonly approvalStepRepository: BaseRepository<ApprovalStep>,
 
     private readonly notificationsService: NotificationsService,
   ) {}
@@ -50,8 +50,8 @@ export class TeamEventsService {
     tenant: Tenant,
     user: User,
     id: number,
-    createTeamEventDto: CreateTeamEventDto,
-  ): Promise<TeamEvent> {
+    createEventDto: CreateEventDto,
+  ): Promise<Event> {
     const team = await this.teamRepository.findOneOrFail({ id }, { populate: ['members'] });
 
     if (!team.canManage(user))
@@ -59,10 +59,10 @@ export class TeamEventsService {
 
     // Check that the provided supervisor id is valid
     let supervisor: TeamMember | undefined;
-    if (createTeamEventDto.supervisorId) {
+    if (createEventDto.supervisorId) {
       supervisor = await this.teamMemberRepository.findOneOrFail(
         {
-          user: { id: createTeamEventDto.supervisorId },
+          user: { id: createEventDto.supervisorId },
           active: true,
         },
         { populate: ['user'] },
@@ -71,37 +71,37 @@ export class TeamEventsService {
 
     // Check that the provided form id is valid, is a template, and is not already used
     let registrationForm: TeamForm | undefined;
-    if (createTeamEventDto.formId) {
-      registrationForm = await this.teamFormRepository.findOneOrFail({ id: createTeamEventDto.formId, team });
+    if (createEventDto.formId) {
+      registrationForm = await this.teamFormRepository.findOneOrFail({ id: createEventDto.formId, team });
       if (registrationForm.isTemplate)
         throw new BadRequestException('Form is a template');
 
-      const isAlreadyUsed = await this.teamEventRepository.findOne({ registrationForm });
+      const isAlreadyUsed = await this.eventRepository.findOne({ registrationForm });
       if (isAlreadyUsed)
         throw new BadRequestException('Form is already used');
     }
 
     // Check that the provided event template id is valid and is a template
-    let usedTemplate: TeamEvent | undefined;
-    if (createTeamEventDto.templateId && createTeamEventDto.state !== TeamEventState.Template) {
-      usedTemplate = await this.teamEventRepository.findOneOrFail({ id: createTeamEventDto.templateId, team });
-      if (usedTemplate.state !== TeamEventState.Template)
+    let usedTemplate: Event | undefined;
+    if (createEventDto.templateId && createEventDto.state !== EventState.Template) {
+      usedTemplate = await this.eventRepository.findOneOrFail({ id: createEventDto.templateId, team });
+      if (usedTemplate.state !== EventState.Template)
         throw new BadRequestException('Template is not a template');
     }
 
-    let validationStepCount = 0;
-    if (createTeamEventDto.state === TeamEventState.Submitted) {
-      validationStepCount = await this.validationStepRepository.count({
+    let approvalStepCount = 0;
+    if (createEventDto.state === EventState.Submitted) {
+      approvalStepCount = await this.approvalStepRepository.count({
         tenant,
-        type: ValidationStepType.TeamEvent,
+        type: ApprovalStepType.Event,
       });
 
-      if (validationStepCount === 0)
-        createTeamEventDto.state = TeamEventState.Published;
+      if (approvalStepCount === 0)
+        createEventDto.state = EventState.Published;
     }
 
-    const event = new TeamEvent({
-      ...createTeamEventDto,
+    const event = new Event({
+      ...createEventDto,
       supervisor,
       usedTemplate,
       team,
@@ -109,11 +109,11 @@ export class TeamEventsService {
       createdBy: user,
     });
 
-    await this.teamEventRepository.persistAndFlush(event);
+    await this.eventRepository.persistAndFlush(event);
 
-    if (createTeamEventDto.state === TeamEventState.Submitted && validationStepCount > 0) {
+    if (createEventDto.state === EventState.Submitted && approvalStepCount > 0) {
       void this.notificationsService.trigger(
-        new AdminTeamEventValidationStartedNotification(event, { executor: user }),
+        new AdminEventValidationStartedNotification(event, { executor: user }),
       );
     }
     void this.notificationsService.trigger(new TeamManagedEventUpdatedNotification(event, { executor: user }));
@@ -123,20 +123,20 @@ export class TeamEventsService {
 
   public async findAll(
     user: User,
-    query: ListTeamEventsDto,
+    query: ListEventsDto,
     options?: Required<ListOptionsDto>,
-  ): Promise<PaginatedResult<TeamEvent>> {
+  ): Promise<PaginatedResult<Event>> {
     const memberships = await this.teamMemberRepository.find({ user });
     const ids = memberships.map(m => m.team.id);
 
-    let filter: FilterQuery<TeamEvent> = {};
+    let filter: FilterQuery<Event> = {};
     if (query.id && !ids.includes(query.id)) {
       // We asked for the events of a team that the user is not a member of
       // so we only search for public & published events
       filter = {
         team: { id: query.id },
         private: false,
-        state: TeamEventState.Published,
+        state: EventState.Published,
       };
     } else if (query.id) {
       // We asked for the events of a team that the user is a member of
@@ -153,8 +153,8 @@ export class TeamEventsService {
       // and the public & published events of the teams the user is not a member of
       filter = {
         $or: [
-          { team: { $in: ids }, state: query.state ?? TeamEventState.Published },
-          { team: { $nin: ids }, private: false, state: TeamEventState.Published },
+          { team: { $in: ids }, state: query.state ?? EventState.Published },
+          { team: { $nin: ids }, private: false, state: EventState.Published },
         ],
       };
     }
@@ -166,13 +166,13 @@ export class TeamEventsService {
     if (query.after)
       filter = { ...filter, start: { $gte: query.after } };
 
-    const events = await this.teamEventRepository.findWithPagination(
+    const events = await this.eventRepository.findWithPagination(
       options,
       filter,
-      { orderBy: serializeOrder(options?.sortBy, 'start'), populate: ['supervisor', 'registrations', 'registrations.user', 'createdBy', 'team', 'lastValidationStep'] },
+      { orderBy: serializeOrder(options?.sortBy, 'start'), populate: ['supervisor', 'registrations', 'registrations.user', 'createdBy', 'team', 'lastApprovalStep'] },
     );
 
-    const allRegistrations = await this.teamEventRegistrationRepository.find({ user });
+    const allRegistrations = await this.eventRegistrationRepository.find({ user });
 
     events.items = events.items.map((event) => {
       // TODO: Maybe find a better way to add these properties? Something virtual? computed on-the-fly? added elsewhere?
@@ -184,25 +184,25 @@ export class TeamEventsService {
     return events;
   }
 
-  public async findOne(user: User, id: number): Promise<TeamEvent> {
+  public async findOne(user: User, id: number): Promise<Event> {
     const memberships = await this.teamMemberRepository.find({ user });
     const ids = memberships.map(m => m.team.id);
 
     if (user.roles.includes(Role.Admin) || user.schoolRole === SchoolRole.Admin)
-      return await this.teamEventRepository.findOneOrFail({ id }, { populate: ['supervisor', 'registrations', 'registrations.user', 'createdBy', 'team', 'lastValidationStep'] });
+      return await this.eventRepository.findOneOrFail({ id }, { populate: ['supervisor', 'registrations', 'registrations.user', 'createdBy', 'team', 'lastApprovalStep'] });
 
 
-    const event = await this.teamEventRepository.findOneOrFail(
+    const event = await this.eventRepository.findOneOrFail(
       {
         id,
         $or: [
           { team: { $in: ids } },
-          { private: false, state: TeamEventState.Published },
+          { private: false, state: EventState.Published },
         ],
       },
-      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'registrations', 'registrations.user', 'registrationForm', 'usedTemplate', 'lastValidationStep'] },
+      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'registrations', 'registrations.user', 'registrationForm', 'usedTemplate', 'lastApprovalStep'] },
     );
-    if (event.state === TeamEventState.Draft && !event.canEdit(user))
+    if (event.state === EventState.Draft && !event.canEdit(user))
       throw new ForbiddenException('Event not published');
 
     return event;
@@ -212,17 +212,17 @@ export class TeamEventsService {
     tenant: Tenant,
     user: User,
     id: number,
-    updateTeamEventDto: UpdateTeamEventDto,
-  ): Promise<TeamEvent> {
-    const event = await this.teamEventRepository.findOneOrFail({ id }, { populate: ['team', 'team.members', 'lastValidationStep'] });
+    updateEventDto: UpdateEventDto,
+  ): Promise<Event> {
+    const event = await this.eventRepository.findOneOrFail({ id }, { populate: ['team', 'team.members', 'lastApprovalStep'] });
 
     if (!event.canEdit(user))
       throw new ForbiddenException('Not allowed to edit event');
 
-    if (event.state === TeamEventState.Template && 'state' in updateTeamEventDto)
+    if (event.state === EventState.Template && 'state' in updateEventDto)
       throw new BadRequestException('Cannot change state of a template');
 
-    const { supervisorId, ...dto } = updateTeamEventDto;
+    const { supervisorId, ...dto } = updateEventDto;
 
     // Check that the provided supervisor id is valid
     if (typeof supervisorId !== 'undefined') {
@@ -243,56 +243,56 @@ export class TeamEventsService {
       if (registrationForm.isTemplate)
         throw new BadRequestException('Form is a template');
 
-      const isAlreadyUsed = await this.teamEventRepository.findOne({ registrationForm });
+      const isAlreadyUsed = await this.eventRepository.findOne({ registrationForm });
       if (isAlreadyUsed)
         throw new BadRequestException('Form is already used');
     }
 
-    let validationStepCount = 0;
-    if (dto.state === TeamEventState.Submitted) {
-      validationStepCount = await this.validationStepRepository.count({
+    let approvalStepCount = 0;
+    if (dto.state === EventState.Submitted) {
+      approvalStepCount = await this.approvalStepRepository.count({
         tenant,
-        type: ValidationStepType.TeamEvent,
+        type: ApprovalStepType.Event,
       });
-      if (validationStepCount === 0)
-        dto.state = TeamEventState.Published;
+      if (approvalStepCount === 0)
+        dto.state = EventState.Published;
     }
 
-    if (event.state !== TeamEventState.Submitted && dto.state === TeamEventState.Submitted && validationStepCount > 0) {
+    if (event.state !== EventState.Submitted && dto.state === EventState.Submitted && approvalStepCount > 0) {
       void this.notificationsService.trigger(
-        new AdminTeamEventValidationStartedNotification(event, { executor: user }),
+        new AdminEventValidationStartedNotification(event, { executor: user }),
       );
-    } else if (event.state !== TeamEventState.Published && dto.state === TeamEventState.Published) {
+    } else if (event.state !== EventState.Published && dto.state === EventState.Published) {
       void this.notificationsService.triggerFirst(
         new TeamManagedEventUpdatedNotification(event, { executor: user }),
         new TeamSubscribedEventCreatedNotification(event, { executor: user }),
-        new TeamEventCreatedNotification(event, { executor: user }),
+        new EventCreatedNotification(event, { executor: user }),
       );
-    } else if (event.state === TeamEventState.Published) {
+    } else if (event.state === EventState.Published) {
       void this.notificationsService.triggerFirst(
         new TeamManagedEventUpdatedNotification(event, { executor: user }),
-        new TeamEventSubscribedUpdatedNotification(event, { executor: user }),
+        new EventSubscribedUpdatedNotification(event, { executor: user }),
       );
     } else {
       void this.notificationsService.trigger(new TeamManagedEventUpdatedNotification(event, { executor: user }));
     }
 
     wrap(event).assign({ ...dto, registrationForm });
-    await this.teamEventRepository.flush();
+    await this.eventRepository.flush();
 
     return event;
   }
 
   public async remove(user: User, id: number): Promise<void> {
-    const event = await this.teamEventRepository.findOneOrFail({ id }, { populate: ['team', 'team.members'] });
+    const event = await this.eventRepository.findOneOrFail({ id }, { populate: ['team', 'team.members'] });
     if (!event.canEdit(user))
       throw new ForbiddenException('Not allowed to edit event');
 
     void this.notificationsService.triggerFirst(
       new TeamManagedEventUpdatedNotification(event, { executor: user }),
-      new TeamEventSubscribedUpdatedNotification(event, { executor: user }),
+      new EventSubscribedUpdatedNotification(event, { executor: user }),
     );
 
-    await this.teamEventRepository.removeAndFlush(event);
+    await this.eventRepository.removeAndFlush(event);
   }
 }

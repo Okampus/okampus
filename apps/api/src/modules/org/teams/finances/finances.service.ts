@@ -4,11 +4,11 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import type { ListOptionsDto } from '@common/lib/dto/list-options.dto';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import { TeamEventState } from '@common/lib/types/enums/team-event-state.enum';
+import { EventState } from '@common/lib/types/enums/event-state.enum';
 import type { PaginatedResult } from '@common/modules/pagination';
 import type { CreateTeamFinanceDto } from '@modules/org/teams/finances/dto/create-team-finance.dto';
 import { Team } from '@modules/org/teams/team.entity';
-import { TeamEvent } from '@modules/plan/events/team-event.entity';
+import { Event } from '@modules/plan/events/event.entity';
 import { TeamFile } from '@modules/store/team-files/team-file.entity';
 import { User } from '@modules/uua/users/user.entity';
 import type { ListTeamFinancesDto } from './dto/list-team-finances.dto';
@@ -20,7 +20,7 @@ export class TeamFinancesService {
   constructor(
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
-    @InjectRepository(TeamEvent) private readonly teamEventRepository: BaseRepository<TeamEvent>,
+    @InjectRepository(Event) private readonly eventRepository: BaseRepository<Event>,
     @InjectRepository(TeamFinance) private readonly teamFinanceRepository: BaseRepository<TeamFinance>,
     @InjectRepository(TeamFile) private readonly teamFileRepository: BaseRepository<TeamFile>,
   ) {}
@@ -39,11 +39,11 @@ export class TeamFinancesService {
     if (typeof createTeamFinanceDto.dueTo !== 'undefined')
       dueTo = await this.userRepository.findOneOrFail({ id: createTeamFinanceDto.dueTo });
 
-    let event: TeamEvent | undefined;
+    let event: Event | undefined;
     if (typeof createTeamFinanceDto.event !== 'undefined') {
-      event = await this.teamEventRepository.findOneOrFail({
+      event = await this.eventRepository.findOneOrFail({
         id: createTeamFinanceDto.event,
-        state: { $ne: TeamEventState.Template },
+        state: { $ne: EventState.Template },
       });
     }
 
@@ -121,7 +121,7 @@ export class TeamFinancesService {
 
     if (typeof event !== 'undefined') {
       finance.event = typeof event === 'number'
-        ? await this.teamEventRepository.findOneOrFail({ id: event })
+        ? await this.eventRepository.findOneOrFail({ id: event })
         : null;
     }
 

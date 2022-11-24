@@ -1,9 +1,9 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
+import { ApprovalStepsModule } from '@modules/org/tenants/approval-steps/approval-steps.module';
 import { TenantsCoreModule } from './core-tenants.module';
 import { Tenant } from './tenant.entity';
-import { ValidationStepsModule } from './validation-steps/validation-steps.module';
 
 @Module({
   imports: [
@@ -12,11 +12,11 @@ import { ValidationStepsModule } from './validation-steps/validation-steps.modul
       path: 'tenants',
       children: [
         { path: 'tenants', module: TenantsCoreModule },
-        { path: 'validation-steps', module: ValidationStepsModule },
+        { path: 'approval-steps', module: ApprovalStepsModule },
       ],
     }]),
     TenantsCoreModule,
-    ValidationStepsModule,
+    ApprovalStepsModule,
   ],
   controllers: [],
   providers: [],

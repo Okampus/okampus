@@ -12,8 +12,8 @@ import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import { TeamMembershipRequest } from '@modules/org/teams/requests/team-membership-request.entity';
 import { Social } from '@modules/org/teams/socials/social.entity';
-import { TeamEventRegistration } from '@modules/plan/event-registrations/team-event-registration.entity';
-import { TeamEvent } from '@modules/plan/events/team-event.entity';
+import { Event } from '@modules/plan/events/event.entity';
+import { EventRegistration } from '@modules/plan/registrations/registration.entity';
 import { Attachment } from '@modules/store/attachments/attachment.entity';
 import { InfoDoc } from '@modules/store/info-docs/info-doc.entity';
 import { ProfileImage } from '@modules/store/profile-images/profile-image.entity';
@@ -40,8 +40,8 @@ import { GdprService } from './gdpr.service';
       Reaction,
       Report,
       Statistics,
-      TeamEventRegistration,
-      TeamEvent,
+      EventRegistration,
+      Event,
       TeamForm,
       TeamMember,
       TeamMembershipRequest,

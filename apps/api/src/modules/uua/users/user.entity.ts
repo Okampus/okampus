@@ -148,7 +148,7 @@ export class User extends BaseTenantEntity implements BaseSearchableEntity {
   @Property()
   @Index()
   @Unique()
-  teamEventIcal = nanoid(64);
+  eventIcal = nanoid(64);
 
   @Field(() => Boolean)
   @Property({ default: false })

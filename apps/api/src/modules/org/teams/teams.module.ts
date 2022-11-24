@@ -3,10 +3,10 @@ import { RouterModule } from '@nestjs/core';
 import { TeamLabelsModule } from '@modules/assort/labels/labels.module';
 import { TeamFinancesModule } from '@modules/org/teams/finances/finances.module';
 import { TeamFormsModule } from '@modules/org/teams/forms/forms.module';
-import { TeamEventRegistrationsModule } from '@modules/plan/event-registrations/event-registrations.module';
-import { TeamEventValidationsModule } from '@modules/plan/event-validations/event-validations.module';
-import { TeamEventsModule } from '@modules/plan/events/events.module';
+import { EventApprovalsModule } from '@modules/plan/approvals/approvals.module';
+import { EventsModule } from '@modules/plan/events/events.module';
 import { TeamICalModule } from '@modules/plan/ical/ical.module';
+import { EventRegistrationsModule } from '@modules/plan/registrations/registrations.module';
 import { CoreTeamsModule } from './core-teams.module';
 import { TeamHistoriesModule } from './histories/histories.module';
 import { TeamMembersModule } from './members/members.module';
@@ -25,11 +25,11 @@ import { TeamMembershipRequestsModule } from './requests/requests.module';
         // Endpoint to manage team members
         { path: 'members', module: TeamMembersModule },
         // Endpoints to manage the team events
-        { path: 'events', module: TeamEventsModule },
+        { path: 'events', module: EventsModule },
         // Endpoints to manage the team event registrations
-        { path: 'event-registrations', module: TeamEventRegistrationsModule },
+        { path: 'event-registrations', module: EventRegistrationsModule },
         // Endpoints to manage the team event registrations
-        { path: 'event-validations', module: TeamEventValidationsModule },
+        { path: 'event-approvals', module: EventApprovalsModule },
         // Endpoints to manage forms
         { path: 'forms', module: TeamFormsModule },
         // Endpoints to manage finances
@@ -45,9 +45,9 @@ import { TeamMembershipRequestsModule } from './requests/requests.module';
       ],
     }]),
     CoreTeamsModule,
-    TeamEventRegistrationsModule,
-    TeamEventValidationsModule,
-    TeamEventsModule,
+    EventRegistrationsModule,
+    EventApprovalsModule,
+    EventsModule,
     TeamFinancesModule,
     TeamFormsModule,
     TeamICalModule,

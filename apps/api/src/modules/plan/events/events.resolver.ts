@@ -11,80 +11,80 @@ import {
 import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { BaseRepository } from '@common/lib/orm/base.repository';
+// Import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { ValidationStep } from '@modules/org/tenants/validation-steps/validation-step.entity';
-import { CreateTeamEventValidationDto } from '@modules/plan/event-validations/dto/create-team-event-validation.dto';
-import { CreateTeamEventDto } from '@modules/plan/events/dto/create-team-event.dto';
+// Import { EventApproval } from '@modules/plan/approvals/approval.entity';
+import { EventApprovalsService } from '@modules/plan/approvals/approvals.service';
+import { CreateEventApprovalDto } from '@modules/plan/approvals/dto/create-approval.dto';
+import { CreateEventDto } from '@modules/plan/events/dto/create-event.dto';
+import { EventRegistration } from '@modules/plan/registrations/registration.entity';
 import { User } from '@modules/uua/users/user.entity';
-import { TeamEventRegistration } from '../event-registrations/team-event-registration.entity';
-import { TeamEventValidationsService } from '../event-validations/event-validations.service';
-import { TeamEventValidation } from '../event-validations/team-event-validation.entity';
-import { ListTeamEventsDto } from './dto/list-team-events.dto';
-import { UpdateTeamEventDto } from './dto/update-team-event.dto';
-import { TeamEventsService } from './events.service';
-import { TeamEvent } from './team-event.entity';
+import { ListEventsDto } from './dto/list-events.dto';
+import { UpdateEventDto } from './dto/update-event.dto';
+import { Event } from './event.entity';
+import { EventsService } from './events.service';
 
-@Resolver(() => TeamEvent)
-export class TeamEventsResolver {
+@Resolver(() => Event)
+export class EventsResolver {
   constructor(
-    private readonly teamEventsService: TeamEventsService,
-    private readonly eventValidationsService: TeamEventValidationsService,
-    @InjectRepository(TeamEventRegistration) private readonly teamEventRegistrationRepository:
-      BaseRepository<TeamEventRegistration>,
-    @InjectRepository(ValidationStep) private readonly validationStepRepository:
-      BaseRepository<ValidationStep>,
-    @InjectRepository(TeamEventValidation) private readonly eventValidationRepository:
-      BaseRepository<TeamEventValidation>,
+    private readonly eventsService: EventsService,
+    private readonly eventApprovalsService: EventApprovalsService,
+    @InjectRepository(EventRegistration) private readonly eventRegistrationRepository:
+      BaseRepository<EventRegistration>,
+    // @InjectRepository(ApprovalStep) private readonly approvalStepRepository:
+    //   BaseRepository<ApprovalStep>,
+    // @InjectRepository(EventApproval) private readonly eventApprovalRepository:
+    //   BaseRepository<EventApproval>,
   ) {}
 
   // TODO: Add permission checks
-  @Query(() => TeamEvent)
-  public async eventById(@CurrentUser() user: User, @Args('id', { type: () => Int }) id: number): Promise<TeamEvent> {
-    return await this.teamEventsService.findOne(user, id);
+  @Query(() => Event)
+  public async eventById(@CurrentUser() user: User, @Args('id', { type: () => Int }) id: number): Promise<Event> {
+    return await this.eventsService.findOne(user, id);
   }
 
-  @Query(() => [TeamEvent])
-  public async events(@CurrentUser() user: User, @Args('filter') filter: ListTeamEventsDto): Promise<TeamEvent[]> {
-    const paginatedEvents = await this.teamEventsService.findAll(user, filter);
+  @Query(() => [Event])
+  public async events(@CurrentUser() user: User, @Args('filter') filter: ListEventsDto): Promise<Event[]> {
+    const paginatedEvents = await this.eventsService.findAll(user, filter);
     return paginatedEvents.items;
   }
 
-  @Mutation(() => TeamEvent)
+  @Mutation(() => Event)
   public async createEvent(
     @CurrentUser() user: User,
     @CurrentTenant() tenant: Tenant,
     @Args('id', { type: () => Int }) id: number,
-    @Args('createEvent') createEvent: CreateTeamEventDto,
-  ): Promise<TeamEvent> {
-    return await this.teamEventsService.create(tenant, user, id, createEvent);
+    @Args('createEvent') createEvent: CreateEventDto,
+  ): Promise<Event> {
+    return await this.eventsService.create(tenant, user, id, createEvent);
   }
 
-  @Mutation(() => TeamEvent)
+  @Mutation(() => Event)
   public async updateEvent(
     @CurrentUser() user: User,
     @CurrentTenant() tenant: Tenant,
     @Args('id', { type: () => Int }) id: number,
-    @Args('updateEvent') updateEvent: UpdateTeamEventDto,
-  ): Promise<TeamEvent> {
-    return await this.teamEventsService.update(tenant, user, id, updateEvent);
+    @Args('updateEvent') updateEvent: UpdateEventDto,
+  ): Promise<Event> {
+    return await this.eventsService.update(tenant, user, id, updateEvent);
   }
 
-  @Mutation(() => TeamEvent)
+  @Mutation(() => Event)
   public async validateEvent(
     @CurrentUser() user: User,
     @CurrentTenant() tenant: Tenant,
     @Args('id', { type: () => Int }) id: number,
-    @Args('createValidation') createValidation: CreateTeamEventValidationDto,
-  ): Promise<TeamEvent> {
-    await this.eventValidationsService.create(tenant, user, id, createValidation);
-    return await this.teamEventsService.findOne(user, id);
+    @Args('createApproval') createApproval: CreateEventApprovalDto,
+  ): Promise<Event> {
+    await this.eventApprovalsService.create(tenant, user, id, createApproval);
+    return await this.eventsService.findOne(user, id);
   }
 
-  @ResolveField(() => TeamEventRegistration, { nullable: true })
+  @ResolveField(() => EventRegistration, { nullable: true })
   public async userRegistration(
     @CurrentUser() user: User,
-    @Parent() event: TeamEvent,
-  ): Promise<TeamEventRegistration | null> {
-    return await this.teamEventRegistrationRepository.findOne({ user, event });
+    @Parent() event: Event,
+  ): Promise<EventRegistration | null> {
+    return await this.eventRegistrationRepository.findOne({ user, event });
   }
 }

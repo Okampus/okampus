@@ -9,7 +9,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
 import { BaseFileEntity } from '@common/lib/entities/base-file-entity';
 import { Team } from '@modules/org/teams/team.entity';
-import { TeamEvent } from '@modules/plan/events/team-event.entity';
+import { Event } from '@modules/plan/events/event.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 
 @ObjectType()
@@ -23,9 +23,9 @@ export class TeamGallery extends BaseFileEntity {
   @ManyToOne()
   team!: Team;
 
-  @Field(() => TeamEvent, { nullable: true })
-  @OneToOne({ type: TeamEvent, nullable: true, onDelete: 'CASCADE' })
-  event: TeamEvent | null = null;
+  @Field(() => Event, { nullable: true })
+  @OneToOne({ type: Event, nullable: true, onDelete: 'CASCADE' })
+  event: Event | null = null;
 
   @Field(() => Int)
   @Property()
@@ -35,7 +35,7 @@ export class TeamGallery extends BaseFileEntity {
     team: Team;
     file: FileUpload;
     order: number;
-    event?: TeamEvent | null;
+    event?: Event | null;
     active?: boolean;
   }) {
     super();

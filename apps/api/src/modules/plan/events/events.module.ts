@@ -5,33 +5,33 @@ import { NotificationsModule } from '@common/modules/notifications/notifications
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import { Team } from '@modules/org/teams/team.entity';
-import { ValidationStep } from '@modules/org/tenants/validation-steps/validation-step.entity';
+import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
+import { EventApproval } from '@modules/plan/approvals/approval.entity';
+import { EventApprovalsModule } from '@modules/plan/approvals/approvals.module';
+import { EventRegistration } from '@modules/plan/registrations/registration.entity';
 import { User } from '@modules/uua/users/user.entity';
-import { TeamEventRegistration } from '../event-registrations/team-event-registration.entity';
-import { TeamEventValidationsModule } from '../event-validations/event-validations.module';
-import { TeamEventValidation } from '../event-validations/team-event-validation.entity';
-import { TeamEventsController } from './events.controller';
-import { TeamEventsResolver } from './events.resolver';
-import { TeamEventsService } from './events.service';
-import { TeamEvent } from './team-event.entity';
+import { Event } from './event.entity';
+import { EventsController } from './events.controller';
+import { EventsResolver } from './events.resolver';
+import { EventsService } from './events.service';
 
 @Module({
   imports: [
     MikroOrmModule.forFeature([
       Team,
-      TeamEvent,
-      TeamEventRegistration,
+      Event,
+      EventRegistration,
       TeamForm,
       TeamMember,
       User,
-      TeamEventValidation,
-      ValidationStep,
+      EventApproval,
+      ApprovalStep,
     ]),
     NotificationsModule,
-    TeamEventValidationsModule,
+    EventApprovalsModule,
   ],
-  controllers: [TeamEventsController],
-  providers: [CaslAbilityFactory, TeamEventsService, TeamEventsResolver],
-  exports: [TeamEventsService],
+  controllers: [EventsController],
+  providers: [CaslAbilityFactory, EventsService, EventsResolver],
+  exports: [EventsService],
 })
-export class TeamEventsModule {}
+export class EventsModule {}
