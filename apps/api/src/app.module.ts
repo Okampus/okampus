@@ -23,10 +23,10 @@ import sentryConfig, {
   sentryInterceptorConfig,
 } from '@common/configs/sentry.config';
 import storageConfig from '@common/configs/storage.config';
-import { FullRequestContext } from '@common/lib/classes/full-request-context';
 import { APP_OIDC_CACHE } from '@common/lib/constants';
 
 import { ExceptionsFilter } from '@common/lib/filters/exceptions.filter';
+import { GlobalRequestContext } from '@common/lib/helpers/global-request-context';
 import { RestLoggerMiddleware } from '@common/lib/middlewares/rest-logger.middleware';
 import { TraceMiddleware } from '@common/lib/middlewares/trace.middleware';
 import { PoliciesGuard } from '@common/modules/authorization';
@@ -83,7 +83,7 @@ import { HealthModule } from './health/health.module';
 
     // Global request context
     RequestContextModule.forRoot({
-      contextClass: FullRequestContext,
+      contextClass: GlobalRequestContext,
       isGlobal: true,
     }),
 

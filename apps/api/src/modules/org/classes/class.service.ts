@@ -1,7 +1,7 @@
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { GqlFriendlyService } from '@common/lib/classes/gql-friendly-service';
+import { GqlFriendlyService } from '@common/lib/helpers/gql-friendly-service';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import type { CreateClassDto } from '@modules/org/classes/dto/create-class.dto';

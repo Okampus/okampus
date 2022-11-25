@@ -7,6 +7,7 @@ import { config } from '@common/configs/config';
 import { APP_PUB_SUB } from '@common/lib/constants';
 import type { ContentListOptionsDto } from '@common/lib/dto/list-options.dto';
 import { ContentMaster } from '@common/lib/entities/content-master.entity';
+import { GqlFriendlyService } from '@common/lib/helpers/gql-friendly-service';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { ContentKind } from '@common/lib/types/enums/content-kind.enum';
 import { ContentMasterType } from '@common/lib/types/enums/content-master-type.enum';
@@ -36,7 +37,7 @@ import { Content, DEFAULT_INTERACTIONS } from './entities/content.entity';
 import { Edit } from './entities/edit.entity';
 
 @Injectable()
-export class ContentsService {
+export class ContentsService extends GqlFriendlyService {
   // eslint-disable-next-line max-params
   constructor(
     @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,
@@ -50,7 +51,7 @@ export class ContentsService {
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     private readonly notificationsService: NotificationsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
-  ) {}
+  ) { super(); }
 
   public async createContentWithKind(
     user: User,
@@ -75,7 +76,7 @@ export class ContentsService {
   }
 
   public async updateParticipants(action: 'add' | 'remove', user: User, id: number): Promise<void> {
-    const master = await this.contentMasterRepository.findOneOrFail({ id }, { populate: ['participants'] });
+    const master = await this.contentMasterRepository.findOneOrFail({ id }, { populate: this.autoGqlPopulate(['participants']) });
     if ((action === 'add' && !master.participants.contains(user))
       || (action === 'remove' && master.participants.contains(user))) {
       master.participants[action](user);
@@ -86,7 +87,7 @@ export class ContentsService {
   public async createReply(user: User, createContentDto: CreateContentDto): Promise<Content> {
     const parent = await this.contentRepository.findOneOrFail(
       { id: createContentDto.parentId, kind: ContentKind.Post },
-      { populate: ['author', 'lastEdit', 'contentMaster'] },
+      { populate: this.autoGqlPopulate(['author', 'lastEdit', 'contentMaster']) },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -114,7 +115,7 @@ export class ContentsService {
   public async createComment(user: User, createContentDto: CreateContentDto): Promise<Content> {
     const parent = await this.contentRepository.findOneOrFail(
       { id: createContentDto.parentId, kind: { $in: [ContentKind.Post, ContentKind.Reply] } },
-      { populate: ['author', 'lastEdit', 'contentMaster'] },
+      { populate: this.autoGqlPopulate(['author', 'lastEdit', 'contentMaster']) },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -149,14 +150,14 @@ export class ContentsService {
         ...visibilityQuery,
         parent: { id: parentId },
       },
-      { populate: ['author', 'lastEdit', 'edits'], orderBy: serializeOrder(options?.sortBy) },
+      { populate: this.autoGqlPopulate(['author', 'lastEdit', 'edits']), orderBy: serializeOrder(options?.sortBy) },
     );
   }
 
   public async findOne(user: User, id: number): Promise<Content> {
     const content = await this.contentRepository.findOneOrFail(
       { id },
-      { populate: ['author', 'lastEdit', 'parent', 'parent.parent', 'edits'] },
+      { populate: this.autoGqlPopulate(['author', 'lastEdit', 'parent', 'parent.parent', 'edits']) },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -165,6 +166,7 @@ export class ContentsService {
     return content;
   }
 
+  // TODO: backrefs instead?
   public async getInteractionsByMaster(
     userId: string,
     contentMasterId: number,
@@ -201,11 +203,11 @@ export class ContentsService {
   public async getContentsByMaster(id: number): Promise<Record<number, Content[]>> {
     return groupBy(await this.contentRepository.find(
       { contentMaster: { id }, parent: { $ne: null } },
-      { populate: ['author', 'lastEdit', 'edits'] },
+      { populate: this.autoGqlPopulate(['author', 'lastEdit', 'edits']) },
     ), 'parent.id');
   }
 
-  // Highly unoptimised query - use only when querying one or few contents
+  // Highly unoptimised query - use only when querying one or few contents; TODO: backrefs instead
   public async findInteractions(user: User, id: number): Promise<Interactions> {
     const content = await this.contentRepository.findOneOrFail({ id });
 
@@ -245,7 +247,7 @@ export class ContentsService {
   public async update(user: User, id: number, updateContentDto: UpdateContentDto): Promise<Content> {
     const content = await this.contentRepository.findOneOrFail(
       { id },
-      { populate: ['author', 'lastEdit', 'parent'] },
+      { populate: this.autoGqlPopulate(['author', 'lastEdit', 'parent']) },
     );
 
     const ability = this.caslAbilityFactory.createForUser(user);

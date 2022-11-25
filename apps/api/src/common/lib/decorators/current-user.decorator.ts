@@ -1,15 +1,5 @@
-import type { ExecutionContext } from '@nestjs/common';
+import { RequestContext } from '@medibloc/nestjs-request-context';
 import { createParamDecorator } from '@nestjs/common';
-import { GqlExecutionContext } from '@nestjs/graphql';
-import type { GqlContext } from '@modules/uua/auth/auth.guard';
-import type { AuthRequest } from '../types/interfaces/auth-request.interface';
+import type { GlobalRequestContext } from '@common/lib/helpers/global-request-context';
 
-export const CurrentUser = createParamDecorator(
-  (_data: unknown, ctx: ExecutionContext) => {
-    if (ctx.getType() === 'http')
-      return ctx.switchToHttp().getRequest<AuthRequest>().user;
-
-    const { req, context }: GqlContext = GqlExecutionContext.create(ctx).getContext();
-    return context?.headers ? context.user : req?.user;
-  },
-);
+export const CurrentUser = createParamDecorator(() => RequestContext.get<GlobalRequestContext>().user);

@@ -1,3 +1,4 @@
+import type { IncomingHttpHeaders } from 'node:http';
 import { RequestContext } from '@medibloc/nestjs-request-context';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import {
@@ -8,27 +9,33 @@ import {
 import { Reflector } from '@nestjs/core';
 import type { GqlContextType } from '@nestjs/graphql';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { JwtService } from '@nestjs/jwt';
 import type { FastifyRequest } from 'fastify';
-import type { GraphQLResolveInfo } from 'graphql';
 import type { WebSocket } from 'graphql-ws';
 import mapKeys from 'lodash.mapkeys';
 import type { GqlWebsocketContext } from '@common/configs/graphql.config';
-import type { FullRequestContext } from '@common/lib/classes/full-request-context';
 import { IS_PUBLIC_KEY, TENANT_ID_HEADER_NAME } from '@common/lib/constants';
-import { processToken } from '@common/lib/utils/process-token';
-import type { Tenant } from '@modules/org/tenants/tenant.entity';
+import type { GlobalRequestContext } from '@common/lib/helpers/global-request-context';
+import { RequestType } from '@common/lib/types/enums/request-type.enum';
+import { TokenType } from '@common/lib/types/enums/token-type.enum';
 import { TenantsService } from '@modules/org/tenants/tenants.service';
 import type { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 
 export interface GqlContext extends GqlWebsocketContext {
-  req: FastifyRequest & { user: User; tenant: Tenant; gqlInfo: GraphQLResolveInfo } | undefined;
-  request: FastifyRequest & { user: User; tenant: Tenant; gqlInfo: GraphQLResolveInfo } | undefined;
+  req: FastifyRequest | undefined;
+  request: FastifyRequest | undefined;
   socket: WebSocket | undefined;
   connectionParams: Record<string, unknown>;
 }
+
+const getTokenFromAuthHeader = (authHeader: string): string => {
+  const [bearer, token] = authHeader.split(' ');
+  if (bearer !== 'Bearer' || !token)
+    throw new UnauthorizedException('Invalid authorization header');
+
+  return token;
+};
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -36,110 +43,100 @@ export class AuthGuard implements CanActivate {
 
   constructor(
     private readonly authService: AuthService,
-    private readonly jwtService: JwtService,
     private readonly userService: UsersService,
     private readonly tenantsService: TenantsService,
   ) {
     this.reflector = new Reflector();
   }
 
-  public async getTenantFromHeaders(headers: Record<string, string[] | string>): Promise<Tenant> {
-    const tenantId = headers[TENANT_ID_HEADER_NAME];
+  public getAuthInfo(
+    headers: IncomingHttpHeaders,
+    cookies: Record<string, string | undefined> | null,
+  ): { token: string; tenantId: string; tokenType: TokenType } {
+    const tenantId = headers[TENANT_ID_HEADER_NAME] as string | undefined;
     if (!tenantId)
       throw new UnauthorizedException('Tenant not provided');
 
-    return await this.tenantsService.findOne(Array.isArray(tenantId) ? tenantId[0] : tenantId);
+    let token: string;
+    let tokenType: TokenType;
+
+    if (cookies === null && headers.authorization) { // WebSocket header case
+      token = getTokenFromAuthHeader(headers.authorization);
+      tokenType = TokenType.Access;
+    } else if (cookies?.accessToken) { // HTTP cookie case
+      token = cookies.accessToken;
+      tokenType = TokenType.Access;
+    } else if (headers.authorization) { // HTTP bearer token case (Bot)
+      token = getTokenFromAuthHeader(headers.authorization);
+      tokenType = TokenType.Bot;
+    } else {
+      throw new UnauthorizedException('No token provided');
+    }
+
+    return { token, tenantId, tokenType };
   }
 
-  // TODO: refactor for easier detection of different cases & improved readability
   public async canActivate(ctx: ExecutionContext): Promise<boolean> {
+    const globalRequestContext = RequestContext.get<GlobalRequestContext>();
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       ctx.getHandler(),
       ctx.getClass(),
     ]);
 
-    const requestContext = RequestContext.get<FullRequestContext>();
+    let token: string;
+    let tenantId: string;
+    let tokenType: TokenType;
+    let requestType: RequestType;
 
     const contextType = ctx.getType<GqlContextType>();
-    if (!['http', 'graphql'].includes(contextType))
-      throw new InternalServerErrorException(`Unexpected context type: ${contextType}`);
 
-    let request: FastifyRequest & { user: User; tenant: Tenant; gqlInfo: GraphQLResolveInfo };
-    if (contextType === 'http') {
+    if (contextType === 'graphql') { // GraphQL or WebSocket case
+      const gqlExecutionContext = GqlExecutionContext.create(ctx);
+      globalRequestContext.gqlInfo = gqlExecutionContext.getInfo();
       if (isPublic)
         return true;
 
-      request = ctx.switchToHttp().getRequest();
-    } else { // GraphQL or WebSocket
-      const gqlContext = GqlExecutionContext.create(ctx);
-      const context = gqlContext.getContext<GqlContext>();
+      const { connectionParams, socket, req } = gqlExecutionContext.getContext<GqlContext>();
+      if (socket && connectionParams) { // Websocket case
+        const headers = mapKeys(connectionParams, (_, key) => key.toLowerCase()) as IncomingHttpHeaders;
+        ({ token, tenantId, tokenType } = this.getAuthInfo(headers, null));
+        requestType = RequestType.WebSocket;
+      } else { // GraphQL case
+        if (!req)
+          throw new InternalServerErrorException('No request found in GraphQL context');
 
-      if (context.request && context.socket && context.connectionParams) { // Websocket case
-        if (isPublic)
-          return true;
-
-        const headers = mapKeys(context.connectionParams, (_, k) => k.toLowerCase());
-
-        context.request.user = await this.handleWsRequest((headers.authorization as string).split(' ')[1]);
-        context.request.tenant = await this.getTenantFromHeaders(headers as Record<string, string[] | string>);
-        context.request.gqlInfo = gqlContext.getInfo();
-        requestContext.gqlInfo = gqlContext.getInfo();
-
-        return Boolean(context.request.user) && Boolean(context.request.tenant);
+        ({ token, tenantId, tokenType } = this.getAuthInfo(req.headers, req.cookies));
+        requestType = RequestType.Http;
       }
+    } else if (contextType === 'http') { // HTTP case
+      requestType = RequestType.Http;
+      if (isPublic)
+        return true;
 
-      if (!context.req)
-        throw new UnauthorizedException('No request');
-
-      request = context.req;
-      request.gqlInfo = gqlContext.getInfo();
-      requestContext.gqlInfo = gqlContext.getInfo();
+      const req = ctx.switchToHttp().getRequest<FastifyRequest>();
+      ({ token, tenantId, tokenType } = this.getAuthInfo(req.headers, req.cookies));
+    } else {
+      throw new InternalServerErrorException(`Unexpected context type: ${contextType}`);
     }
 
-    if (isPublic)
-      return true;
+    // TODO: optimize with caching for user session
+    globalRequestContext.user = await this.handleRequest(token, requestType, tokenType);
+    globalRequestContext.tenant = await this.tenantsService.findOne(tenantId);
 
-    request.tenant = await this.getTenantFromHeaders(request.headers as Record<string, string[] | string>);
-    request.user = await this.handleRequest(request);
-
-    return Boolean(request.user) && Boolean(request.tenant);
+    return Boolean(globalRequestContext.user) && Boolean(globalRequestContext.tenant);
   }
 
-  private async handleWsRequest(token: string): Promise<User> {
-    const sub = await processToken(
-      this.jwtService,
+  private async handleRequest(
+    token: string,
+    requestType: RequestType,
+    tokenType: TokenType,
+  ): Promise<User> {
+    const sub = await this.authService.processToken(
       token,
-      { tokenType: 'ws' },
-      this.authService.getTokenOptions('ws'),
+      { requestType },
+      this.authService.getTokenOptions(tokenType),
     );
 
     return await this.userService.findOneById(sub);
-  }
-
-  private async handleRequest(request: FastifyRequest & { user: User; tenant: Tenant }): Promise<User> {
-    // Try first to resolve the token from the cookies
-    let token = request.cookies?.accessToken;
-    if (!token) {
-      // If not found, try to resolve the bearer from the headers
-      const header = request.headers?.authorization?.split(' ');
-      if (header?.[0] === 'Bearer' && header?.[1])
-        token = header[1];
-
-      if (!token)
-        throw new UnauthorizedException('No token provided');
-    }
-
-    const sub = await processToken(
-      this.jwtService,
-      token,
-      { tokenType: 'http' },
-      this.authService.getTokenOptions('access'),
-    );
-
-    const user = await this.userService.findOneById(sub);
-    if (user.bot && !(await user.validatePassword(token)))
-      throw new UnauthorizedException('Invalid token');
-
-    return user;
   }
 }
