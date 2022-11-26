@@ -17,7 +17,7 @@ import { nanoid } from 'nanoid';
 
 
 import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
-import { BaseTenantEntity } from '@common/lib/entities/base-tenant-entity';
+import { BaseTenantEntity } from '@common/lib/entities/base-tenant.entity';
 import type { BaseSearchableEntity } from '@common/lib/types/interfaces/base-searchable.interface';
 import type { UserCreationOptions } from '@common/lib/types/interfaces/user-creation-options.interface';
 import { Role } from '@common/modules/authorization/types/role.enum';

@@ -2,7 +2,7 @@ import {
  Entity, Enum, ManyToOne, PrimaryKey, Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import { BaseFileEntity } from '@common/lib/entities/base-file-entity';
+import { BaseFileEntity } from '@common/lib/entities/base-file.entity';
 import { StudyDocType } from '@common/lib/types/enums/study-doc-type.enum';
 import { Subject } from '@modules/catalog/subjects/subject.entity';
 import type { Class } from '@modules/org/classes/class.entity';

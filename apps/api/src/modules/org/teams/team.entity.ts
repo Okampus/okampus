@@ -12,7 +12,7 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
-import { BaseTenantEntity } from '@common/lib/entities/base-tenant-entity';
+import { BaseTenantEntity } from '@common/lib/entities/base-tenant.entity';
 import { TeamKind } from '@common/lib/types/enums/team-kind.enum';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import type { BaseSearchableEntity } from '@common/lib/types/interfaces/base-searchable.interface';

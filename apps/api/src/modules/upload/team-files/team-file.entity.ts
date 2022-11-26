@@ -7,7 +7,7 @@ import {
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
-import { BaseFileEntity } from '@common/lib/entities/base-file-entity';
+import { BaseFileEntity } from '@common/lib/entities/base-file.entity';
 import { TeamFileType } from '@common/lib/types/enums/team-file-type.enum';
 import { Team } from '@modules/org/teams/team.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
