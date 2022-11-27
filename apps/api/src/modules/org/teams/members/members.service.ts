@@ -11,7 +11,7 @@ import { MembershipRequestState } from '@common/lib/types/enums/membership-reque
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import { TeamManagedMemberRoleUpdatedNotification, TeamManagedMembershipRequestUpdatedNotification } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import { User } from '@modules/uaa/users/user.entity';
 import { MembershipRequestIssuer } from '../../../../common/lib/types/enums/membership-request-issuer.enum';
 import { TeamMembershipRequestsService } from '../requests/requests.service';
@@ -110,12 +110,14 @@ export class TeamMembersService {
 
   public async findAllMembers(
     id: number,
-    paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<TeamMember>> {
+    paginationOptions?: PaginationArgs,
+  ): Promise<PaginatedNodes<TeamMember>> {
     return await this.teamMemberRepository.findWithPagination(
       paginationOptions,
       { team: { id } },
-      { populate: ['user', 'team'], orderBy: { user: { lastName: 'ASC' } } },
+      // FIXME: Enable orderBy with pagination
+      // { populate: ['user', 'team'], orderBy: { user: { lastName: 'ASC' } } },
+      { populate: ['user', 'team'] },
     );
   }
 

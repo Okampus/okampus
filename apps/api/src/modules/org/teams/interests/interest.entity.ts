@@ -9,6 +9,7 @@ import {
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '@common/lib/entities/base.entity';
 import { InterestState } from '@common/lib/types/enums/interest-state.enum';
+import { Paginated } from '@common/modules/pagination';
 import { User } from '@modules/uaa/users/user.entity';
 import { Team } from '../team.entity';
 
@@ -46,3 +47,7 @@ export class Interest extends BaseEntity {
     this.assign(options);
   }
 }
+
+
+@ObjectType()
+export class PaginatedInterest extends Paginated(Interest) {}

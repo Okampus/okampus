@@ -12,8 +12,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateAnnouncementDto } from '@modules/org/teams/announcements/dto/create-announcement.dto';
 import { User } from '@modules/uaa/users/user.entity';
 import { Announcement } from './announcement.entity';
@@ -42,8 +41,8 @@ export class AnnouncementsController {
   public async findAllCurrent(
     @Query() query: ListAnnouncementsDto,
     @CurrentUser() user: User,
-  ): Promise<PaginatedResult<Announcement>> {
-    return await this.announcementsService.findAll(user, query, normalizePagination(query));
+  ): Promise<PaginatedNodes<Announcement>> {
+    return await this.announcementsService.findAll(user, query, query);
   }
 
   @Get(':id')

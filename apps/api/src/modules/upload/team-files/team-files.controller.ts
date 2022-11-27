@@ -17,8 +17,7 @@ import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '@common/lib/decorators/upload-interceptor.decorator';
 import { FileKind } from '@common/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { User } from '@modules/uaa/users/user.entity';
 import { CreateTeamFileDto } from '@modules/upload/team-files/dto/create-team-file.dto';
@@ -62,8 +61,8 @@ export class TeamFilesController {
   @CheckPolicies(ability => ability.can(Action.Read, TeamFile))
   public async findAll(
     @Query() options: TeamFileListOptions,
-  ): Promise<PaginatedResult<TeamFile>> {
-    return await this.teamFilesService.findAll(normalizePagination(options));
+  ): Promise<PaginatedNodes<TeamFile>> {
+    return await this.teamFilesService.findAll(options);
   }
 
   @Get(':id')

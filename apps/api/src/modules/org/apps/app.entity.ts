@@ -8,6 +8,7 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '@common/lib/entities/base.entity';
+import { Paginated } from '@common/modules/pagination';
 import { User } from '@modules/uaa/users/user.entity';
 
 @ObjectType()
@@ -42,3 +43,6 @@ export class App extends BaseEntity {
     this.assign(options);
   }
 }
+
+@ObjectType()
+export class PaginatedApp extends Paginated(App) {}

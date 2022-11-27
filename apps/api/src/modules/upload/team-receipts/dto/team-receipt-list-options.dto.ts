@@ -1,7 +1,7 @@
 import { IsInt } from 'class-validator';
-import { PaginateDto } from '@common/modules/pagination';
+import { PaginationArgs } from '@common/modules/pagination';
 
-export class TeamReceiptListOptions extends PaginateDto {
+export class TeamReceiptListOptions extends PaginationArgs {
   @IsInt()
   id: number;
 }

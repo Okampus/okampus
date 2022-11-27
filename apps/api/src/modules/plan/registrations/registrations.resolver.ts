@@ -17,7 +17,7 @@ import { Event } from '../events/event.entity';
 import { EventsService } from '../events/events.service';
 import { FilterRegisteredEventsDto } from './dto/list-registered-events.dto';
 import { UpdateEventRegistrationDto } from './dto/update-event-registration.dto';
-import { EventRegistration } from './registration.entity';
+import { EventRegistration, PaginatedEventRegistration } from './registration.entity';
 import { EventRegistrationsService } from './registrations.service';
 
 @Resolver(() => EventRegistration)
@@ -37,13 +37,12 @@ export class EventRegistrationsResolver {
     return await this.eventRegistrationsService.findOne(user, id);
   }
 
-  @Query(() => [EventRegistration])
+  @Query(() => PaginatedEventRegistration)
   public async eventRegistrations(
     @CurrentUser() user: User,
     @Args('filters') filters: FilterRegisteredEventsDto,
-  ): Promise<EventRegistration[]> {
-    const paginatedTeams = await this.eventRegistrationsService.findAll(user, filters);
-    return paginatedTeams.items;
+  ): Promise<PaginatedEventRegistration> {
+    return await this.eventRegistrationsService.findAll(user, filters);
   }
 
   @Mutation(() => Event)

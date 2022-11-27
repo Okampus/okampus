@@ -12,7 +12,7 @@ import {
   EventManagedRejectedNotification,
 } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
 import type { Tenant } from '@modules/org/tenants/tenant.entity';
 import type { CreateEventApprovalDto } from '@modules/plan/approvals/dto/create-approval.dto';
@@ -107,8 +107,8 @@ export class EventApprovalsService {
 
   public async findAll(
     query: ListEventApprovalsDto,
-    options?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<EventApproval>> {
+    options?: PaginationArgs,
+  ): Promise<PaginatedNodes<EventApproval>> {
     let filter: FilterQuery<EventApproval> = {};
 
     if (typeof query.step === 'number')

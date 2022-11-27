@@ -3,7 +3,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { GlobalRequestService } from '@common/lib/helpers/global-request-service';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import type { CreateClassDto } from '@modules/org/classes/dto/create-class.dto';
 import { Class } from './class.entity';
 import type { UpdateClassDto } from './dto/update-class.dto';
@@ -32,7 +32,7 @@ export class ClassesService extends GlobalRequestService {
     return schoolClass;
   }
 
-  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Class>> {
+  public async findAll(paginationOptions?: PaginationArgs): Promise<PaginatedNodes<Class>> {
     return await this.classRepository.findWithPagination(paginationOptions, {}, { populate: this.autoGqlPopulate() });
   }
 

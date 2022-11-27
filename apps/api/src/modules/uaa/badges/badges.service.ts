@@ -2,7 +2,7 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import type { User } from '../users/user.entity';
 import type { CreateBadgeDto } from './dto/create-badge.dto';
 import type { UpdateBadgeDto } from './dto/update-badge.dto';
@@ -23,8 +23,10 @@ export class BadgesService {
     return badge;
   }
 
-  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Badge>> {
-    return await this.badgeRepository.findWithPagination(paginationOptions, {}, { orderBy: { createdAt: 'DESC' } });
+  public async findAll(paginationOptions?: PaginationArgs): Promise<PaginatedNodes<Badge>> {
+    // FIXME: Enable orderBy with pagination
+    // return await this.badgeRepository.findWithPagination(paginationOptions, {}, { orderBy: { createdAt: 'DESC' } });
+    return await this.badgeRepository.findWithPagination(paginationOptions, {});
   }
 
   public async findOne(id: number): Promise<Badge> {
@@ -53,12 +55,14 @@ export class BadgesService {
 
   public async findAllForUser(
     id: string,
-    paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<BadgeUnlock>> {
+    paginationOptions?: PaginationArgs,
+  ): Promise<PaginatedNodes<BadgeUnlock>> {
     return await this.badgeUnlockRepository.findWithPagination(
       paginationOptions,
       { user: { id } },
-      { populate: ['badge', 'user'], orderBy: { createdAt: 'DESC' } },
+      // FIXME: Enable orderBy with pagination
+      // { populate: ['badge', 'user'], orderBy: { createdAt: 'DESC' } },
+      { populate: ['badge', 'user'] },
     );
   }
 }

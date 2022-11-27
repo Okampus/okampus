@@ -17,8 +17,7 @@ import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '@common/lib/decorators/upload-interceptor.decorator';
 import { FileKind } from '@common/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { User } from '@modules/uaa/users/user.entity';
 import { CreateTeamReceiptDto } from '@modules/upload/team-receipts/dto/create-team-receipt.dto';
@@ -62,8 +61,8 @@ export class TeamReceiptsController {
   @CheckPolicies(ability => ability.can(Action.Read, TeamReceipt))
   public async findAll(
     @Query() options: TeamReceiptListOptions,
-  ): Promise<PaginatedResult<TeamReceipt>> {
-    return await this.teamReceiptsService.findAll(normalizePagination(options));
+  ): Promise<PaginatedNodes<TeamReceipt>> {
+    return await this.teamReceiptsService.findAll(options);
   }
 
   @Get(':id')

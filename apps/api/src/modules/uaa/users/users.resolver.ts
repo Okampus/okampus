@@ -13,7 +13,7 @@ import { APP_PUB_SUB } from '@common/lib/constants';
 import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
-import { PaginateDto } from '@common/modules/pagination';
+import { PaginationArgs } from '@common/modules/pagination';
 import type { IndexedEntity } from '@common/modules/search/indexed-entity.interface';
 import { Interest } from '@modules/org/teams/interests/interest.entity';
 import { InterestsService } from '@modules/org/teams/interests/interests.service';
@@ -22,7 +22,7 @@ import { SocialsService } from '@modules/org/teams/socials/socials.service';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { IndexedUser } from '../../../common/lib/types/models/user-indexed.model';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './user.entity';
+import { PaginatedUser, User } from './user.entity';
 import { UsersService } from './users.service';
 
 @Resolver(() => User)
@@ -45,10 +45,9 @@ export class UsersResolver {
     return await this.socialsService.findAllUserSocials(user.id);
   }
 
-  @Query(() => [User])
-  public async users(): Promise<User[]> {
-    const paginatedUsers = await this.usersService.findAll();
-    return paginatedUsers.items;
+  @Query(() => PaginatedUser)
+  public async users(): Promise<PaginatedUser> {
+    return await this.usersService.findAll();
   }
 
   // TODO: Add permission checks
@@ -56,7 +55,7 @@ export class UsersResolver {
   public async searchUsers(
     @CurrentTenant() tenant: Tenant,
     @Args('search') search: string,
-    @Args('query', { nullable: true }) query: PaginateDto,
+    @Args('query', { nullable: true }) query: PaginationArgs,
   ): Promise<IndexedEntity[]> {
     const paginatedUsers = await this.usersService.search(tenant, { ...query, search });
     return paginatedUsers.items;

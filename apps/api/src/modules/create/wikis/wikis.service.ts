@@ -3,7 +3,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import type { CreateWikiPageDto } from '@modules/create/wikis/dto/create-wiki-page.dto';
 import type { User } from '@modules/uaa/users/user.entity';
 import type { UpdateWikiPageDto } from './dto/update-wiki-page.dto';
@@ -22,27 +22,29 @@ export class WikisService {
     return wiki;
   }
 
-  public async findAll(user: User, paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Wiki>> {
+  public async findAll(user: User, paginationOptions?: PaginationArgs): Promise<PaginatedNodes<Wiki>> {
     const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { hidden: false };
     return await this.wikiPageRepository.findWithPagination(
       paginationOptions,
       visibilityQuery,
-      { orderBy: { createdAt: 'DESC' } },
+      // FIXME: Enable orderBy with pagination
+      // { orderBy: { createdAt: 'DESC' } },
     );
   }
 
   public async findAllByCategory(
     user: User,
     category: string,
-    paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<Wiki>> {
+    paginationOptions?: PaginationArgs,
+  ): Promise<PaginatedNodes<Wiki>> {
     const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { hidden: false };
     return await this.wikiPageRepository.findWithPagination(
       paginationOptions,
       { category, ...visibilityQuery },
-      { orderBy: { createdAt: 'DESC' } },
+      // FIXME: Enable orderBy with pagination
+      // { orderBy: { createdAt: 'DESC' } },
     );
   }
 

@@ -3,8 +3,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { MembershipRequestDirection } from '@common/lib/types/enums/membership-request-direction.enum';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
-import { normalizePagination } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import { MembershipRequestIssuer } from '../../../../common/lib/types/enums/membership-request-issuer.enum';
 import type { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
 import { TeamMember } from '../members/team-member.entity';
@@ -20,14 +19,15 @@ export class TeamMembershipsService {
 
   public async findOne(
     id: string,
-    paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<TeamMember>> {
+    paginationOptions?: PaginationArgs,
+  ): Promise<PaginatedNodes<TeamMember>> {
     return await this.teamMemberRepository.findWithPagination(
       paginationOptions,
       { user: { id } },
       {
         populate: ['user', 'team.logo', 'team.logoDark', 'team.banner', 'team.status', 'team.kind', 'team.name'],
-        orderBy: { team: { name: 'ASC' } },
+        // FIXME: Enable orderBy with pagination
+        // orderBy: { team: { name: 'ASC' } },
       },
     );
   }
@@ -35,7 +35,7 @@ export class TeamMembershipsService {
   public async findAll(
     id: string,
     options?: ListMembershipRequestsDto,
-  ): Promise<PaginatedResult<TeamMembershipRequest>> {
+  ): Promise<PaginatedNodes<TeamMembershipRequest>> {
     let query: FilterQuery<TeamMembershipRequest> = {};
 
     if (options?.state)
@@ -46,9 +46,11 @@ export class TeamMembershipsService {
       query = { ...query, issuer: MembershipRequestIssuer.Team };
 
     return await this.requestRepository.findWithPagination(
-      normalizePagination(options ?? {}),
+      options,
       { user: { id }, ...query },
-      { orderBy: { createdAt: 'DESC' }, populate: ['team', 'user', 'issuedBy', 'handledBy'] },
+      // FIXME: Enable orderBy with pagination
+      // { orderBy: { createdAt: 'DESC' }, populate: ['team', 'user', 'issuedBy', 'handledBy'] },
+      { populate: ['team', 'user', 'issuedBy', 'handledBy'] },
     );
   }
 }

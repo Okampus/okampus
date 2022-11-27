@@ -7,6 +7,7 @@ import {
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '@common/lib/entities/base.entity';
 import { Colors } from '@common/lib/types/enums/colors.enum';
+import { Paginated } from '@common/modules/pagination';
 
 @ObjectType()
 @Entity()
@@ -36,3 +37,6 @@ export class Tag extends BaseEntity {
     this.assign(options);
   }
 }
+
+@ObjectType()
+export class PaginatedTags extends Paginated(Tag) {}

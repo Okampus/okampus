@@ -2,7 +2,7 @@ import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import type { CreateSubjectDto } from '@modules/catalog/subjects/dto/create-subject.dto';
 import { Class } from '@modules/org/classes/class.entity';
 import type { UpdateSubjectDto } from './dto/update-subject.dto';
@@ -36,8 +36,8 @@ export class SubjectsService {
   }
 
   public async findAll(
-    paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<Subject>> {
+    paginationOptions?: PaginationArgs,
+  ): Promise<PaginatedNodes<Subject>> {
     return await this.subjectRepository.findWithPagination(paginationOptions);
   }
 

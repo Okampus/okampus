@@ -7,7 +7,7 @@ import {
 } from '@nestjs/graphql';
 import { Class } from '../class.entity';
 import { ClassesService } from '../class.service';
-import { ClassMembership } from './class-membership.entity';
+import { ClassMembership, PaginatedClassMembership } from './class-membership.entity';
 import { ClassMembershipsService } from './memberships.service';
 
 @Resolver(() => ClassMembership)
@@ -37,11 +37,10 @@ export class ClassMembershipsResolver {
   }
 
   // TODO: Add permission checks
-  @Query(() => ClassMembership)
+  @Query(() => PaginatedClassMembership)
   public async classMembershipsById(
     @Args('id') id: string,
-  ): Promise<ClassMembership[]> {
-    const paginatedMemberships = await this.classMembershipsService.findMembers(id);
-    return paginatedMemberships.items;
+  ): Promise<PaginatedClassMembership> {
+    return await this.classMembershipsService.findMembers(id);
   }
 }

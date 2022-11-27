@@ -12,8 +12,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateTeamFinanceDto } from '@modules/org/teams/finances/dto/create-team-finance.dto';
 import { User } from '@modules/uaa/users/user.entity';
 import { ListTeamFinancesDto } from './dto/list-team-finances.dto';
@@ -42,8 +41,8 @@ export class TeamFinancesController {
   @CheckPolicies(ability => ability.can(Action.Read, TeamFinance))
   public async findAll(
     @Query() query: ListTeamFinancesDto,
-  ): Promise<PaginatedResult<TeamFinance>> {
-    return await this.teamFinancesService.findAll(query, normalizePagination(query));
+  ): Promise<PaginatedNodes<TeamFinance>> {
+    return await this.teamFinancesService.findAll(query, query);
   }
 
   @Get(':id')

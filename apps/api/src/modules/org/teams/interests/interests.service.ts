@@ -2,7 +2,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import pointsConfig from '@common/configs/points.config';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import type { CreateInterestDto } from '@modules/org/teams/interests/dto/create-interest.dto';
 import { User } from '@modules/uaa/users/user.entity';
 import { Team } from '../team.entity';
@@ -43,7 +43,7 @@ export class InterestsService {
     return interest;
   }
 
-  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<Interest>> {
+  public async findAll(paginationOptions?: PaginationArgs): Promise<PaginatedNodes<Interest>> {
     return await this.interestRepository.findWithPagination(paginationOptions);
   }
 

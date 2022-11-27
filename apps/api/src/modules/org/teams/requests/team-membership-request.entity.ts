@@ -17,6 +17,7 @@ import { GraphQLJSON } from 'graphql-scalars';
 import { BaseEntity } from '@common/lib/entities/base.entity';
 import { MembershipRequestState } from '@common/lib/types/enums/membership-request-state.enum';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
+import { Paginated } from '@common/modules/pagination';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { User } from '@modules/uaa/users/user.entity';
 import { MembershipRequestIssuer } from '../../../../common/lib/types/enums/membership-request-issuer.enum';
@@ -90,3 +91,6 @@ export class TeamMembershipRequest extends BaseEntity {
     this.assign(options);
   }
 }
+
+@ObjectType()
+export class PaginatedTeamMembershipRequest extends Paginated(TeamMembershipRequest) {}

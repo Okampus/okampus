@@ -15,7 +15,7 @@ import { BaseRepository } from '@common/lib/orm/base.repository';
 import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { User } from '@modules/uaa/users/user.entity';
-import { Vote } from './vote.entity';
+import { PaginatedVote, Vote } from './vote.entity';
 import { VotesService } from './votes.service';
 
 @Resolver(() => Vote)
@@ -27,13 +27,12 @@ export class ReportsResolver {
   ) {}
 
   // TODO: Add permission checks
-  @Query(() => [Vote])
+  @Query(() => PaginatedVote)
   public async votesByUser(
     @CurrentUser() currentUser: User,
     @Args('id') id: string,
-  ): Promise<Vote[]> {
-    const paginatedReports = await this.votesService.findAll(currentUser, id);
-    return paginatedReports.items;
+  ): Promise<PaginatedVote> {
+    return await this.votesService.findAll(currentUser, id);
   }
 
   @Query(() => Vote, { nullable: true })

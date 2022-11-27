@@ -13,6 +13,7 @@ import { TransformCollection } from '@common/lib/decorators/transform-collection
 import { ContentMaster } from '@common/lib/entities/content-master.entity';
 import { ContentMasterType } from '@common/lib/types/enums/content-master-type.enum';
 import { ThreadType } from '@common/lib/types/enums/thread-type.enum';
+import { Paginated } from '@common/modules/pagination';
 import { Validation } from '@modules/interact/validations/validation.entity';
 import { Class } from '@modules/org/classes/class.entity';
 import { Team } from '@modules/org/teams/team.entity';
@@ -62,3 +63,6 @@ export class Thread extends ContentMaster {
     this.assign(options);
   }
 }
+
+@ObjectType()
+export class PaginatedThread extends Paginated(Thread) {}

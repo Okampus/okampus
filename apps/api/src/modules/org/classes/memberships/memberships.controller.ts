@@ -11,8 +11,8 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination, PaginateDto } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import { PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateClassMembershipDto } from '@modules/org/classes/memberships/dto/create-class-membership.dto';
 import { User } from '@modules/uaa/users/user.entity';
 import { Class } from '../class.entity';
@@ -29,17 +29,17 @@ export class ClassMembershipsController {
 
   @Get('all')
   @CheckPolicies(ability => ability.can(Action.Read, Class))
-  public async findAllMembers(@Query() query: PaginateDto): Promise<PaginatedResult<ClassMembership>> {
-    return await this.classMembershipsService.findAllMembers(normalizePagination(query));
+  public async findAllMembers(@Query() query: PaginationArgs): Promise<PaginatedNodes<ClassMembership>> {
+    return await this.classMembershipsService.findAllMembers(query);
   }
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Class))
   public async findMembers(
     @Param('id') id: string,
-    @Query() query: PaginateDto,
-  ): Promise<PaginatedResult<ClassMembership>> {
-    return await this.classMembershipsService.findMembers(id, normalizePagination(query));
+    @Query() query: PaginationArgs,
+  ): Promise<PaginatedNodes<ClassMembership>> {
+    return await this.classMembershipsService.findMembers(id, query);
   }
 
   @Post(':classId/:userId')

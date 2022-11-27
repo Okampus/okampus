@@ -8,8 +8,7 @@ import { MembershipRequestState } from '@common/lib/types/enums/membership-reque
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import { TeamManagedMembershipRequestUpdatedNotification } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
-import type { PaginatedResult } from '@common/modules/pagination';
-import { normalizePagination } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import type { CreateTeamMembershipRequestDto } from '@modules/org/teams/requests/dto/create-membership-request.dto';
 import type { User } from '@modules/uaa/users/user.entity';
@@ -90,7 +89,7 @@ export class TeamMembershipRequestsService {
   public async findAll(
     id: number,
     options?: ListMembershipRequestsDto,
-  ): Promise<PaginatedResult<TeamMembershipRequest>> {
+  ): Promise<PaginatedNodes<TeamMembershipRequest>> {
     let query: FilterQuery<TeamMembershipRequest> = {};
 
     if (options?.state)
@@ -101,9 +100,11 @@ export class TeamMembershipRequestsService {
       query = { ...query, issuer: MembershipRequestIssuer.User };
 
     return await this.requestRepository.findWithPagination(
-      normalizePagination(options ?? {}),
+      options,
       { team: { id }, ...query },
-      { orderBy: { createdAt: 'DESC' }, populate: ['team', 'user', 'issuedBy', 'handledBy', 'originalForm'] },
+      // FIXME: Enable orderBy with pagination
+      // { orderBy: { createdAt: 'DESC' }, populate: ['team', 'user', 'issuedBy', 'handledBy', 'originalForm'] },
+      { populate: ['team', 'user', 'issuedBy', 'handledBy', 'originalForm'] },
     );
   }
 

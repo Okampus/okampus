@@ -16,7 +16,7 @@ import { User } from '@modules/uaa/users/user.entity';
 import { TeamFinancesFilterDto } from './dto/list-team-finances.dto';
 import { UpdateTeamFinanceDto } from './dto/update-team-finance.dto';
 import { TeamFinancesService } from './finances.service';
-import { TeamFinance } from './team-finance.entity';
+import { PaginatedTeamFinance, TeamFinance } from './team-finance.entity';
 
 @Resolver(() => TeamFinance)
 export class TeamFinancesResolver {
@@ -33,12 +33,11 @@ export class TeamFinancesResolver {
     return await this.teamFinancesService.findOne(id);
   }
 
-  @Query(() => [TeamFinance])
+  @Query(() => PaginatedTeamFinance)
   public async teamFinances(
     @Args('filters') filters: TeamFinancesFilterDto,
-  ): Promise<TeamFinance[]> {
-    const paginatedTeamFinances = await this.teamFinancesService.findAll(filters);
-    return paginatedTeamFinances.items;
+  ): Promise<PaginatedTeamFinance> {
+    return await this.teamFinancesService.findAll(filters);
   }
 
   @Mutation(() => TeamFinance)

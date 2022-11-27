@@ -5,7 +5,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import type { ListOptionsDto } from '@common/lib/dto/list-options.dto';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { EventState } from '@common/lib/types/enums/event-state.enum';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import type { CreateTeamFinanceDto } from '@modules/org/teams/finances/dto/create-team-finance.dto';
 import { Team } from '@modules/org/teams/team.entity';
 import { Event } from '@modules/plan/events/event.entity';
@@ -66,8 +66,8 @@ export class TeamFinancesService {
 
   public async findAll(
     query: ListTeamFinancesDto,
-    options?: Required<ListOptionsDto>,
-  ): Promise<PaginatedResult<TeamFinance>> {
+    options?: ListOptionsDto,
+  ): Promise<PaginatedNodes<TeamFinance>> {
     const filters: FilterQuery<TeamFinance> = { team: { id: query.id } };
 
     if (typeof query.type !== 'undefined')

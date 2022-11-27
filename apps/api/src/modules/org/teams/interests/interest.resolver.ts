@@ -7,7 +7,7 @@ import {
 } from '@nestjs/graphql';
 import { CreateInterestDto } from '@modules/org/teams/interests/dto/create-interest.dto';
 import { UpdateInterestDto } from './dto/update-interest.dto';
-import { Interest } from './interest.entity';
+import { Interest, PaginatedInterest } from './interest.entity';
 import { InterestsService } from './interests.service';
 
 // TODO: Add permission checks
@@ -22,10 +22,9 @@ export class InterestsResolver {
     return await this.interestsService.findOne(id);
   }
 
-  @Query(() => [Interest])
-  public async interests(): Promise<Interest[]> {
-    const paginatedEvents = await this.interestsService.findAll();
-    return paginatedEvents.items;
+  @Query(() => PaginatedInterest)
+  public async interests(): Promise<PaginatedInterest> {
+    return await this.interestsService.findAll();
   }
 
   @Mutation(() => Interest)

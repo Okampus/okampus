@@ -20,6 +20,7 @@ import {
 import { GraphQLJSON } from 'graphql-scalars';
 import { BaseEntity } from '@common/lib/entities/base.entity';
 import { EventState } from '@common/lib/types/enums/event-state.enum';
+import { Paginated } from '@common/modules/pagination';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import { Team } from '@modules/org/teams/team.entity';
@@ -132,3 +133,6 @@ export class Event extends BaseEntity {
       || this.team.canAdminister(user);
   }
 }
+
+@ObjectType()
+export class PaginatedEvent extends Paginated(Event) {}

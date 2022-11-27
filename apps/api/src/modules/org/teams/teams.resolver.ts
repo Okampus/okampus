@@ -27,11 +27,11 @@ import { TeamKind } from '@common/lib/types/enums/team-kind.enum';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import { CreateTeamDto } from '@modules/org/teams/dto/create-team.dto';
 import { TeamFormsService } from '@modules/org/teams/forms/forms.service';
-import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
+import { PaginatedTeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { User } from '@modules/uaa/users/user.entity';
 import { FileUploadsService } from '@modules/upload/file-uploads/file-uploads.service';
 import { CreateTeamFileDto } from '@modules/upload/team-files/dto/create-team-file.dto';
-import { TeamFile } from '@modules/upload/team-files/team-file.entity';
+import { PaginatedTeamFile } from '@modules/upload/team-files/team-file.entity';
 import { TeamFilesService } from '@modules/upload/team-files/team-files.service';
 import { TeamGallery } from '@modules/upload/team-galleries/team-gallery.entity';
 import { TeamMembershipStatus } from '../../../common/lib/types/models/team-membership-status.model';
@@ -41,7 +41,7 @@ import { UpdateTeamDto } from './dto/update-team.dto';
 import { Interest } from './interests/interest.entity';
 import { InterestsService } from './interests/interests.service';
 import { TeamMember } from './members/team-member.entity';
-import { Team } from './team.entity';
+import { PaginatedTeam, Team } from './team.entity';
 import { TeamsService } from './teams.service';
 
 export interface ContextBatchTeams {
@@ -84,16 +84,15 @@ export class TeamsResolver {
     return await this.teamsService.findOne(id, { kind: TeamKind.Club });
   }
 
-  @Query(() => [Team])
+  @Query(() => PaginatedTeam)
   public async teams(
     @Args('filters', { nullable: true }) filters?: TeamsFilterDto,
-  ): Promise<Team[]> {
-    const paginatedTeams = await this.teamsService.findAll(filters ?? {});
-    return paginatedTeams.items;
+  ): Promise<PaginatedTeam> {
+    return await this.teamsService.findAll(filters ?? {});
   }
 
-  @Query(() => [Team])
-  public async clubs(@CurrentUser() user: User, @Context() teamContext: ContextBatchTeams): Promise<Team[]> {
+  @Query(() => PaginatedTeam)
+  public async clubs(@CurrentUser() user: User, @Context() teamContext: ContextBatchTeams): Promise<PaginatedTeam> {
     await this.userRepository.populate(user, ['teamMembershipRequests', 'teamMemberships']);
 
     teamContext.boardMembers = groupBy(await this.teamMemberRepository.find(
@@ -118,8 +117,7 @@ export class TeamsResolver {
 
     teamContext.isBatched = true;
 
-    const paginatedTeams = await this.teamsService.findAll({ kind: TeamKind.Club });
-    return paginatedTeams.items;
+    return await this.teamsService.findAll({ kind: TeamKind.Club });
   }
 
   @ResolveField(() => [TeamMember])
@@ -146,12 +144,11 @@ export class TeamsResolver {
     return memberships.filter(membership => membership.active);
   }
 
-  @ResolveField(() => [TeamFile])
-  public async teamFiles(@Parent() team: Team): Promise<TeamFile[]> {
-    const paginatedFiles = await this.teamFilesService.findAll({
-      id: team.id, active: true, page: 1, itemsPerPage: 100,
+  @ResolveField(() => PaginatedTeamFile)
+  public async teamFiles(@Parent() team: Team): Promise<PaginatedTeamFile> {
+    return await this.teamFilesService.findAll({
+      id: team.id, active: true, limit: 100, offset: 0,
     });
-    return paginatedFiles.items;
   }
 
   @ResolveField(() => [TeamGallery])
@@ -197,16 +194,14 @@ export class TeamsResolver {
     return await this.teamsService.findOne(file.team.id);
   }
 
-  @ResolveField(() => [TeamForm])
-  public async forms(@Parent() team: Team): Promise<TeamForm[]> {
-    const paginatedForms = await this.teamFormsService.findAll({ id: team.id, isTemplate: false });
-    return paginatedForms.items;
+  @ResolveField(() => PaginatedTeamForm)
+  public async forms(@Parent() team: Team): Promise<PaginatedTeamForm> {
+    return await this.teamFormsService.findAll({ id: team.id, isTemplate: false });
   }
 
-  @ResolveField(() => [TeamForm])
-  public async formTemplates(@Parent() team: Team): Promise<TeamForm[]> {
-    const paginatedFormTemplates = await this.teamFormsService.findAll({ id: team.id, isTemplate: true });
-    return paginatedFormTemplates.items;
+  @ResolveField(() => PaginatedTeamForm)
+  public async formTemplates(@Parent() team: Team): Promise<PaginatedTeamForm> {
+    return await this.teamFormsService.findAll({ id: team.id, isTemplate: true });
   }
 
   @ResolveField(() => Interest, { nullable: true })

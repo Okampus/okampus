@@ -2,7 +2,7 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import type { CreateSchoolYearDto } from '@modules/org/classes/school-year/dto/create-school-year.dto';
 import type { UpdateSchoolYearDto } from './dto/update-school-year.dto';
 import { SchoolYear } from './school-year.entity';
@@ -19,7 +19,7 @@ export class SchoolYearsService {
     return schoolYear;
   }
 
-  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<SchoolYear>> {
+  public async findAll(paginationOptions?: PaginationArgs): Promise<PaginatedNodes<SchoolYear>> {
     return await this.schoolYearRepository.findWithPagination(paginationOptions);
   }
 

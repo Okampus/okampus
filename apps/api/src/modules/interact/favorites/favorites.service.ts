@@ -7,7 +7,7 @@ import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum
 import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { User } from '@modules/uaa/users/user.entity';
 import { Favorite } from './favorite.entity';
@@ -54,8 +54,8 @@ export class FavoritesService {
   public async findAll(
     currentUser: User,
     userId: string,
-    paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<Favorite>> {
+    paginationOptions?: PaginationArgs,
+  ): Promise<PaginatedNodes<Favorite>> {
     const user = await this.userRepository.findOneOrFail(userId);
     const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(currentUser);
     const visibilityQuery = canSeeHiddenContent ? {} : { content: { isVisible: true } };
@@ -71,7 +71,8 @@ export class FavoritesService {
           'content.contentMaster',
           'content.contentMaster.tags',
         ],
-        orderBy: { createdAt: 'DESC' },
+        // FIXME: Enable orderBy with pagination
+        // orderBy: { createdAt: 'DESC' },
       },
     );
   }

@@ -19,8 +19,7 @@ import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '@common/lib/decorators/upload-interceptor.decorator';
 import { TeamImageType } from '@common/lib/types/enums/team-image-type.enum';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import type { PaginatedResult } from '@common/modules/pagination';
-import { normalizePagination } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateTeamDto } from '@modules/org/teams/dto/create-team.dto';
 import { CreateSocialDto } from '@modules/org/teams/socials/dto/create-social.dto';
 import { User } from '@modules/uaa/users/user.entity';
@@ -52,8 +51,8 @@ export class TeamsController {
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   public async findAll(
     @Query() options: TeamListOptions,
-    ): Promise<PaginatedResult<Team>> {
-    const teams = await this.teamsService.findAll(options, normalizePagination(options));
+    ): Promise<PaginatedNodes<Team>> {
+    const teams = await this.teamsService.findAll(options, options);
     return teams;
   }
 

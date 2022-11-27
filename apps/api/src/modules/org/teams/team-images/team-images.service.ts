@@ -9,7 +9,7 @@ import type { TeamImageType } from '@common/lib/types/enums/team-image-type.enum
 import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import { FileUploadsService } from '@modules/upload/file-uploads/file-uploads.service';
 import { Team } from '../team.entity';
 import type { CreateTeamImageDto } from './dto/create-team-image.dto';
@@ -48,7 +48,7 @@ export class TeamImagesService extends GlobalRequestService {
     return teamImage;
   }
 
-  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<TeamImage>> {
+  public async findAll(paginationOptions?: PaginationArgs): Promise<PaginatedNodes<TeamImage>> {
     return await this.teamImageRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'team'] });
   }
 

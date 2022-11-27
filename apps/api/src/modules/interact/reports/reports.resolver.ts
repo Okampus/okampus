@@ -14,7 +14,7 @@ import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { CreateReportDto } from '@modules/interact/reports/dto/create-report.dto';
 import { User } from '@modules/uaa/users/user.entity';
-import { Report } from './report.entity';
+import { PaginatedReport, Report } from './report.entity';
 import { ReportsService } from './reports.service';
 
 @Resolver(() => Report)
@@ -25,10 +25,9 @@ export class ReportsResolver {
   ) {}
 
   // TODO: Add permission checks
-  @Query(() => [Report])
-  public async reports(@CurrentUser() user: User): Promise<Report[]> {
-    const paginatedReports = await this.reportsService.findAll(user);
-    return paginatedReports.items;
+  @Query(() => PaginatedReport)
+  public async reports(@CurrentUser() user: User): Promise<PaginatedReport> {
+    return await this.reportsService.findAll(user);
   }
 
   @Query(() => Report)

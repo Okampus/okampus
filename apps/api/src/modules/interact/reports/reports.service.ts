@@ -8,7 +8,7 @@ import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { AdminReportCreatedNotification } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import type { CreateReportDto } from '@modules/interact/reports/dto/create-report.dto';
 import type { User } from '@modules/uaa/users/user.entity';
@@ -59,8 +59,8 @@ export class ReportsService {
   public async findAll(
     user: User,
     filters?: GetReportsDto,
-    paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<Report>> {
+    paginationOptions?: PaginationArgs,
+  ): Promise<PaginatedNodes<Report>> {
     let options: FilterQuery<Report> = {};
     if (filters?.byUserId)
       options = { ...options, user: { id: filters.byUserId } };
@@ -75,7 +75,9 @@ export class ReportsService {
     return await this.reportRepository.findWithPagination(
       paginationOptions,
       options,
-      { populate: ['content', 'content.lastEdit', 'target', 'user'], orderBy: { createdAt: 'DESC' } },
+      // FIXME: Enable orderBy with pagination
+      // { populate: ['content', 'content.lastEdit', 'target', 'user'], orderBy: { createdAt: 'DESC' } },
+      { populate: ['content', 'content.lastEdit', 'target', 'user'] },
     );
   }
 

@@ -4,7 +4,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 // Import { AdminTeamLegalFileUpdatedNotification } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { Team } from '@modules/org/teams/team.entity';
 import { User } from '@modules/uaa/users/user.entity';
 import type { CreateTeamReceiptDto } from '@modules/upload/team-receipts/dto/create-team-receipt.dto';
@@ -64,8 +64,8 @@ export class TeamReceiptsService {
   }
 
   public async findAll(
-    options: Required<TeamReceiptListOptions>,
-  ): Promise<PaginatedResult<TeamReceipt>> {
+    options: TeamReceiptListOptions,
+  ): Promise<PaginatedNodes<TeamReceipt>> {
     const team = await this.teamRepository.findOneOrFail({ id: options.id });
 
     const query = {};

@@ -9,6 +9,7 @@ import {
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '@common/lib/entities/base.entity';
 import { ContentMaster } from '@common/lib/entities/content-master.entity';
+import { Paginated } from '@common/modules/pagination';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { User } from '@modules/uaa/users/user.entity';
 
@@ -52,3 +53,6 @@ export class Report extends BaseEntity {
     this.assign(options);
   }
 }
+
+@ObjectType()
+export class PaginatedReport extends Paginated(Report) {}

@@ -16,7 +16,7 @@ import type { TeamMembershipRequest } from '../requests/team-membership-request.
 import { InviteMemberDto } from './dto/invite-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { TeamMembersService } from './members.service';
-import { TeamMember } from './team-member.entity';
+import { PaginatedTeamMember, TeamMember } from './team-member.entity';
 
 @Resolver(() => TeamMember)
 export class TeamMembersResolver {
@@ -26,12 +26,11 @@ export class TeamMembersResolver {
   ) {}
 
   // TODO: Add permission checks
-  @Query(() => [TeamMember], { nullable: true })
+  @Query(() => PaginatedTeamMember, { nullable: true })
   public async teamMembers(
     @Args('id', { type: () => Int }) id: number,
-  ): Promise<TeamMember[]> {
-    const memberships = await this.teamMembersService.findAllMembers(id);
-    return memberships.items;
+  ): Promise<PaginatedTeamMember> {
+    return await this.teamMembersService.findAllMembers(id);
   }
 
   @Mutation(() => TeamMember)

@@ -1,7 +1,7 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import type { CreateClassMembershipDto } from '@modules/org/classes/memberships/dto/create-class-membership.dto';
 import { User } from '@modules/uaa/users/user.entity';
 import { Class } from '../class.entity';
@@ -20,23 +20,27 @@ export class ClassMembershipsService {
   ) {}
 
   public async findAllMembers(
-    paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<ClassMembership>> {
+    paginationOptions?: PaginationArgs,
+  ): Promise<PaginatedNodes<ClassMembership>> {
     return await this.classMembershipsRepository.findWithPagination(
       paginationOptions,
       {},
-      { populate: ['user', 'schoolClass'], orderBy: { user: { lastName: 'ASC' } } },
+      // FIXME: Enable orderBy with pagination
+      // { populate: ['user', 'schoolClass'], orderBy: { user: { lastName: 'ASC' } } },
+      { populate: ['user', 'schoolClass'] },
     );
   }
 
   public async findMembers(
     id: string,
-    paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<ClassMembership>> {
+    paginationOptions?: PaginationArgs,
+  ): Promise<PaginatedNodes<ClassMembership>> {
     return await this.classMembershipsRepository.findWithPagination(
       paginationOptions,
       { schoolClass: { id } },
-      { populate: ['user', 'schoolClass'], orderBy: { user: { lastName: 'ASC' } } },
+      // FIXME: Enable orderBy with pagination
+      // { populate: ['user', 'schoolClass'], orderBy: { user: { lastName: 'ASC' } } },
+      { populate: ['user', 'schoolClass'] },
     );
   }
 

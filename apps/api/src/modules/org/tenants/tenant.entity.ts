@@ -14,6 +14,7 @@ import { GraphQLJSON } from 'graphql-scalars';
 import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '@common/lib/entities/base.entity';
 
+import { Paginated } from '@common/modules/pagination';
 import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
 import { TenantImage } from './tenant-images/tenant-image.entity';
 
@@ -86,3 +87,6 @@ export class Tenant extends BaseEntity {
     this.assign(options);
   }
 }
+
+@ObjectType()
+export class PaginatedTenant extends Paginated(Tenant) {}

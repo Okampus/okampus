@@ -19,6 +19,7 @@ import { TransformCollection } from '@common/lib/decorators/transform-collection
 import { BaseEntity } from '@common/lib/entities/base.entity';
 import { ContentMaster } from '@common/lib/entities/content-master.entity';
 import { ContentKind } from '@common/lib/types/enums/content-kind.enum';
+import { Paginated } from '@common/modules/pagination';
 import { Favorite } from '@modules/interact/favorites/favorite.entity';
 import { Reaction } from '@modules/interact/reactions/reaction.entity';
 import { Report } from '@modules/interact/reports/report.entity';
@@ -148,3 +149,6 @@ export const DEFAULT_INTERACTIONS = {
   userVoted: 0,
   userReported: null,
 };
+
+@ObjectType()
+export class PaginatedContent extends Paginated(Content) {}

@@ -12,8 +12,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateTeamFormDto } from '@modules/org/teams/forms/dto/create-team-form.dto';
 import { User } from '@modules/uaa/users/user.entity';
 import { ListTeamFormsDto } from './dto/list-team-forms.dto';
@@ -42,8 +41,8 @@ export class TeamFormsController {
   @CheckPolicies(ability => ability.can(Action.Read, TeamForm))
   public async findAll(
     @Query() query: ListTeamFormsDto,
-  ): Promise<PaginatedResult<TeamForm>> {
-    return await this.teamFormsService.findAll(query, normalizePagination(query));
+  ): Promise<PaginatedNodes<TeamForm>> {
+    return await this.teamFormsService.findAll(query);
   }
 
   @Get(':id')

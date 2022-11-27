@@ -19,9 +19,7 @@ import { config } from '@common/configs/config';
 import graphqlConfig from '@common/configs/graphql.config';
 import meiliSearchConfig from '@common/configs/meilisearch.config';
 import redisConfig from '@common/configs/redis.config';
-import sentryConfig, {
-  sentryInterceptorConfig,
-} from '@common/configs/sentry.config';
+import sentryConfig, { sentryInterceptorConfig } from '@common/configs/sentry.config';
 import storageConfig from '@common/configs/storage.config';
 import { APP_OIDC_CACHE } from '@common/lib/constants';
 
@@ -82,16 +80,16 @@ import { HealthModule } from './health/health.module';
     SentryModule.forRoot(sentryConfig),
 
     // Global request context
-    RequestContextModule.forRoot({
-      contextClass: GlobalRequestContext,
-      isGlobal: true,
-    }),
+    RequestContextModule.forRoot({ contextClass: GlobalRequestContext, isGlobal: true }),
 
     // Custom modules
     AnnouncementsModule,
     AuthModule,
     BadgesModule,
     BlogsModule,
+    CafeteriaModule,
+    ClassesModule,
+    ClassMembershipsModule,
     ContentsModule,
     FavoritesModule,
     FilesModule,
@@ -100,7 +98,7 @@ import { HealthModule } from './health/health.module';
     MetricsModule,
     ReactionsModule,
     ReportsModule,
-    CafeteriaModule,
+    SchoolYearsModule,
     SettingsModule,
     SocialsModule,
     StatisticsModule,
@@ -109,14 +107,11 @@ import { HealthModule } from './health/health.module';
     TeamsModule,
     TenantsCoreModule,
     TenantsModule,
-    ClassesModule,
-    ClassMembershipsModule,
-    SchoolYearsModule,
     ThreadsModule,
     UsersModule,
+    ValidationsModule,
     VotesModule,
     WikisModule,
-    ValidationsModule,
   ],
   providers: [
     { provide: APP_OIDC_CACHE, useValue: new OIDCStrategyCache() },

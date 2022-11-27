@@ -12,8 +12,8 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination, PaginateDto } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import { PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { CreateReportDto } from '@modules/interact/reports/dto/create-report.dto';
 import { User } from '@modules/uaa/users/user.entity';
@@ -34,9 +34,9 @@ export class ReportsController {
   public async findAll(
     @CurrentUser() user: User,
     @Body() filters: GetReportsDto,
-    @Query() query: PaginateDto,
-  ): Promise<PaginatedResult<Report>> {
-    return await this.reportsService.findAll(user, filters, normalizePagination(query));
+    @Query() query: PaginationArgs,
+  ): Promise<PaginatedNodes<Report>> {
+    return await this.reportsService.findAll(user, filters, query);
   }
 
   @Post(':id')

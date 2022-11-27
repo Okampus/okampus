@@ -1,5 +1,6 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { Tag } from './tag.entity';
+import { PaginationArgs } from '@common/modules/pagination';
+import { PaginatedTags, Tag } from './tag.entity';
 import { TagsService } from './tags.service';
 
 @Resolver(() => Tag)
@@ -9,10 +10,11 @@ export class TagsResolver {
   ) {}
 
   // TODO: Add permission checks
-  @Query(() => [Tag])
-  public async tags(): Promise<Tag[]> {
-    const paginatedTags = await this.tagsService.findAll();
-    return paginatedTags.items;
+  @Query(() => PaginatedTags)
+  public async tags(
+    @Args('query', { nullable: true }) query: PaginationArgs,
+  ): Promise<PaginatedTags> {
+    return await this.tagsService.findAll(query);
   }
 
   @Query(() => Tag)

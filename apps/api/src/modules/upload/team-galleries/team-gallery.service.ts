@@ -4,7 +4,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 // Import { AdminTeamLegalFileUpdatedNotification } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { Team } from '@modules/org/teams/team.entity';
 import type { User } from '@modules/uaa/users/user.entity';
 import type { CreateTeamGalleryDto } from '@modules/upload/team-galleries/dto/create-team-gallery.dto';
@@ -56,9 +56,7 @@ export class TeamGalleriesService {
     );
   }
 
-  public async findAll(
-    options: Required<TeamGalleryListOptions>,
-  ): Promise<PaginatedResult<TeamGallery>> {
+  public async findAll(options: TeamGalleryListOptions): Promise<PaginatedNodes<TeamGallery>> {
     const team = await this.teamRepository.findOneOrFail({ id: options.id });
 
     const query = {};

@@ -11,8 +11,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { CreateEventApprovalDto } from '@modules/plan/approvals/dto/create-approval.dto';
 import { User } from '@modules/uaa/users/user.entity';
@@ -43,8 +42,8 @@ export class EventApprovalsController {
   @CheckPolicies(ability => ability.can(Action.Read, EventApproval))
   public async findAll(
     @Query() query: ListEventApprovalsDto,
-  ): Promise<PaginatedResult<EventApproval>> {
-    return await this.eventValidationsService.findAll(query, normalizePagination(query));
+  ): Promise<PaginatedNodes<EventApproval>> {
+    return await this.eventValidationsService.findAll(query, query);
   }
 
   @Get(':id')

@@ -1,4 +1,5 @@
-export { labelize } from './labelize.util';
-export { normalizePagination } from './normalize-pagination';
-export { PaginateDto } from './paginate.dto';
-export type { PaginatedResult } from './pagination.interface';
+export { PageInfo } from './page-info.type';
+export { PaginationArgs } from './pagination-args.type';
+export type { Edge, PaginatedNodes } from './paginated.type';
+export { Paginated } from './paginated.type';
+export type { PaginationOptions } from './pagination-options.type';

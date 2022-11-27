@@ -19,8 +19,7 @@ import { InfoDocFilter } from '@common/lib/types/enums/docs-filters.enum';
 import { FileKind } from '@common/lib/types/enums/file-kind.enum';
 import type { Categories } from '@common/lib/utils/compute-document-categories';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { User } from '@modules/uaa/users/user.entity';
 import { CreateInfoDocDto } from '@modules/upload/info-docs/dto/create-info-doc.dto';
@@ -65,8 +64,8 @@ export class InfoDocsController {
   @CheckPolicies(ability => ability.can(Action.Read, InfoDoc))
   public async findAllInfoDocs(
     @Query() query: DocsFilterDto,
-  ): Promise<PaginatedResult<InfoDoc>> {
-    return await this.infoDocsService.findAll(query, normalizePagination(query));
+  ): Promise<PaginatedNodes<InfoDoc>> {
+    return await this.infoDocsService.findAll(query, query);
   }
 
   @Get('/categories')

@@ -12,8 +12,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { normalizeSort } from '@common/modules/sorting';
 import { CreateThreadDto } from '@modules/create/threads/dto/create-thread.dto';
 import { User } from '@modules/uaa/users/user.entity';
@@ -40,11 +39,11 @@ export class ThreadsController {
   public async findAll(
     @CurrentUser() user: User,
     @Query() options: ThreadListOptionsDto,
-  ): Promise<PaginatedResult<Thread>> {
+  ): Promise<PaginatedNodes<Thread>> {
     return await this.threadsService.findAll(
       user,
       options,
-      { ...normalizePagination(options), ...normalizeSort(options) },
+      { ...options, ...normalizeSort(options) },
     );
   }
 

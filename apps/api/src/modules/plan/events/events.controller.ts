@@ -13,8 +13,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { normalizeSort } from '@common/modules/sorting';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { CreateEventDto } from '@modules/plan/events/dto/create-event.dto';
@@ -47,8 +46,8 @@ export class EventsController {
   public async findAll(
     @CurrentUser() user: User,
     @Query() query: ListEventsDto,
-  ): Promise<PaginatedResult<Event>> {
-    return await this.eventsService.findAll(user, query, { ...normalizePagination(query), ...normalizeSort(query) });
+  ): Promise<PaginatedNodes<Event>> {
+    return await this.eventsService.findAll(user, query, { ...query, ...normalizeSort(query) });
   }
 
   @Get(':id')

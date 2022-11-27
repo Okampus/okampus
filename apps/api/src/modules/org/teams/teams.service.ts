@@ -16,7 +16,7 @@ import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { catchUniqueViolation } from '@common/lib/utils/catch-unique-violation';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import { Label } from '@modules/catalog/labels/label.entity';
 import type { CreateTeamDto } from '@modules/org/teams/dto/create-team.dto';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
@@ -85,8 +85,8 @@ export class TeamsService extends GlobalRequestService {
 
   public async findAll(
     filters?: TeamsFilterDto,
-    paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<Team>> {
+    paginationOptions?: PaginationArgs,
+  ): Promise<PaginatedNodes<Team>> {
     let options: FilterQuery<Team> = {};
     if (filters?.kind)
       options = { kind: filters.kind };
@@ -95,7 +95,8 @@ export class TeamsService extends GlobalRequestService {
       paginationOptions,
       options,
       {
-        orderBy: { name: 'ASC' },
+        // FIXME: Enable orderBy with pagination
+        // orderBy: { name: 'ASC' },
         populate: ['membershipRequestForm', 'labels', 'socials'],
       },
     );

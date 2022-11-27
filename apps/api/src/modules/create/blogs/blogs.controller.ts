@@ -13,8 +13,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { ContentListOptionsDto } from '@common/lib/dto/list-options.dto';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { normalizeSort } from '@common/modules/sorting';
 import { CreateBlogDto } from '@modules/create/blogs/dto/create-blog.dto';
 import { User } from '@modules/uaa/users/user.entity';
@@ -40,8 +39,8 @@ export class BlogsController {
   public async findAll(
     @CurrentUser() user: User,
     @Query() query: ContentListOptionsDto,
-  ): Promise<PaginatedResult<Blog>> {
-    return await this.blogsService.findAll(user, { ...normalizePagination(query), ...normalizeSort(query) });
+  ): Promise<PaginatedNodes<Blog>> {
+    return await this.blogsService.findAll(user, { ...query, ...normalizeSort(query) });
   }
 
   @Get(':id')
