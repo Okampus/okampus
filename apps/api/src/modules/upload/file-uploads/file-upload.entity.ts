@@ -13,14 +13,13 @@ import {
 import mime from 'mime-types';
 import { nanoid } from 'nanoid';
 import { config } from '@common/configs/config';
-import { BaseTenantEntity } from '@common/lib/entities/base-tenant.entity';
+import { BaseEntity } from '@common/lib/entities/base.entity';
 import { FileKind } from '@common/lib/types/enums/file-kind.enum';
-import type { Tenant } from '@modules/org/tenants/tenant.entity';
 import { User } from '@modules/uaa/users/user.entity';
 
 @ObjectType()
 @Entity()
-export class FileUpload extends BaseTenantEntity {
+export class FileUpload extends BaseEntity {
   @Field(() => String)
   @PrimaryKey()
   id: string = nanoid(64);
@@ -71,7 +70,6 @@ export class FileUpload extends BaseTenantEntity {
   height: number | null = null;
 
   constructor(options: {
-    tenant: Tenant;
     user: User;
     name: string;
     fileSize: number;

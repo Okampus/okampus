@@ -13,6 +13,7 @@ import { BaseRepository } from '@common/lib/orm/base.repository';
 import { TeamImageType } from '@common/lib/types/enums/team-image-type.enum';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import { assertPermissions } from '@common/lib/utils/assert-permission';
+import { catchUniqueViolation } from '@common/lib/utils/catch-unique-violation';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
@@ -58,6 +59,7 @@ export class TeamsService extends GlobalRequestService {
     const { logo, logoDark, banner, labels, ...createTeam } = createTeamDto;
 
     const team = new Team({ ...createTeam, tenant });
+    await catchUniqueViolation(this.teamRepository, team);
 
     const existingLabels = await this.teamLabelRepository.find({ name: { $in: labels } });
     const existingLabelsNames = new Set(existingLabels.map(label => label.name));
@@ -74,10 +76,9 @@ export class TeamsService extends GlobalRequestService {
       this.setImage(team, TeamImageType.Banner, banner ?? null),
     ]);
 
-    await this.teamRepository.persistAndFlush(team);
-
     const member = new TeamMember({ user, team, role: TeamRole.Owner });
     await this.teamMemberRepository.persistAndFlush(member);
+    await this.teamRepository.flush();
 
     return team;
   }
@@ -105,7 +106,7 @@ export class TeamsService extends GlobalRequestService {
   public async findOne(id: number, filters?: TeamsFilterDto): Promise<Team> {
     let options: FilterQuery<Team> = {};
     if (filters?.kind)
-options = { kind: filters.kind };
+      options = { kind: filters.kind };
 
     const team = await this.teamRepository.findOneOrFail(
       { id, ...options },
@@ -134,29 +135,17 @@ options = { kind: filters.kind };
     const { logo, logoDark, banner, membershipRequestFormId, labels: wantedLabels, ...dto } = updateTeamDto;
 
     if (wantedLabels) {
-      if (wantedLabels.length === 0) {
+      if (wantedLabels.length === 0)
         team.labels.removeAll();
-      } else {
-        const labels = await this.teamLabelRepository.find({
-          name: { $in: wantedLabels },
-        });
-        team.labels.set(labels);
-      }
+       else
+        team.labels.set(await this.teamLabelRepository.find({ name: { $in: wantedLabels } }));
     }
 
-//     If (typeof avatar !== 'undefined') {
-//       if (avatar)
-// await this.setImage(avatar, 'avatar', team);
-//       else
-// team.avatar = null;
-//     }
-
-//     if (typeof banner !== 'undefined') {
-//       if (banner)
-// await this.setImage(banner, 'banner', team);
-//       else
-// team.banner = null;
-//     }
+    await Promise.all([
+      typeof logo !== 'undefined' && this.setImage(team, TeamImageType.Logo, logo ?? null),
+      typeof logoDark !== 'undefined' && this.setImage(team, TeamImageType.LogoDark, logoDark ?? null),
+      typeof banner !== 'undefined' && this.setImage(team, TeamImageType.Banner, banner ?? null),
+    ]);
 
     // Check that the provided form id is valid, is a template, and is not already used
     if (typeof membershipRequestFormId !== 'undefined') {
@@ -204,9 +193,12 @@ options = { kind: filters.kind };
       teamImage.type === TeamImageType.Logo
       || teamImage.type === TeamImageType.Banner
       || teamImage.type === TeamImageType.LogoDark
-    )
-      return await this.setImage(teamImage.team, teamImage.type, teamImage);
+    ) {
+      const team = await this.setImage(teamImage.team, teamImage.type, teamImage);
 
+      await this.teamRepository.flush();
+      return team;
+    }
 
     return teamImage.team;
   }
@@ -214,82 +206,20 @@ options = { kind: filters.kind };
   public async setImage(
     team: Team,
     type: TeamImageType.Banner | TeamImageType.Logo | TeamImageType.LogoDark,
-    userImage: TeamImage | string | null,
+    teamImage: TeamImage | string | null,
   ): Promise<Team> {
     const ability = this.caslAbilityFactory.createForUser(this.currentUser());
     assertPermissions(ability, Action.Update, team);
 
-    if (typeof userImage === 'string') // UserImage passed by ID
-      userImage = await this.teamImagesService.findOne(userImage);
+    if (typeof teamImage === 'string') // TeamImage passed by ID
+      teamImage = await this.teamImagesService.findOne(teamImage);
 
-    if (userImage)
-      userImage.active = true;
+    if (teamImage)
+      teamImage.active = true;
 
-    team[teamImageTypeToKey[type]] = userImage;
     await this.teamImagesService.setInactiveLastActive(team.id, type);
-    await this.teamRepository.flush();
+    team[teamImageTypeToKey[type]] = teamImage;
 
     return team;
   }
-
-  // Public async updateProfileImage(
-  //   user: User,
-  //   id: number,
-  //   type: 'avatar' | 'banner',
-  //   profileImage: ProfileImage,
-  // ): Promise<Team> {
-  //   const team = await this.teamRepository.findOneOrFail(
-  //     { id },
-  //     { populate: ['members'] },
-  //   );
-
-  //   // TODO: Move this to CASL
-  //   if (!team.canAdminister(user))
-  //     throw new ForbiddenException('Not a team admin');
-
-  //   await this.setImage(profileImage, type, team);
-
-  //   await this.profileImageRepository.flush();
-  //   await this.teamRepository.flush();
-  //   return team;
-  // }
-
-  // private async setImage(
-  //   profileImage: ProfileImage | string,
-  //   type: 'avatar' | 'banner',
-  //   team: Team,
-  // ): Promise<void> {
-  //   // Get the avatar image and validate it
-  //   const id = typeof profileImage === 'string' ? profileImage : profileImage.id;
-  //   const avatarImage = profileImage instanceof ProfileImage
-  //     && profileImage.file instanceof FileUpload
-  //       ? profileImage
-  //       : await this.profileImageRepository.findOne(
-  //           { id, type },
-  //           { populate: ['file'] },
-  //         );
-
-  //   if (!avatarImage || !avatarImage.isAvailableFor('team', team.id))
-  //     throw new BadRequestException(`Invalid ${type} image`);
-
-  //   // Get previous avatar image if it exists and set it to inactive
-  //   const previousAvatarImage = await this.profileImageRepository.findOne({
-  //     team,
-  //     type,
-  //     active: true,
-  //   });
-  //   if (previousAvatarImage) {
-  //     previousAvatarImage.active = false;
-  //     previousAvatarImage.lastActiveDate = new Date();
-  //   }
-
-  //   // Update the team's image
-  //   team[type] = avatarImage.file.url;
-
-  //   // Update the target type of the image
-  //   avatarImage.team = team;
-  //   avatarImage.active = true;
-
-  //   await this.profileImageRepository.flush();
-  // }
 }

@@ -69,7 +69,7 @@ export class TeamImagesService extends GlobalRequestService {
     }
   }
 
-  public async remove(userId: string, id: string): Promise<void> {
+  public async remove(id: string): Promise<void> {
     const teamImage = await this.teamImageRepository.findOneOrFail({ id }, { populate: ['file'] });
 
     const ability = this.caslAbilityFactory.createForUser(this.currentUser());

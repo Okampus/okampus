@@ -11,6 +11,7 @@ import { GlobalRequestService } from '@common/lib/helpers/global-request-service
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { UserImageType } from '@common/lib/types/enums/user-image-type.enum';
 import { assertPermissions } from '@common/lib/utils/assert-permission';
+import { catchUniqueViolation } from '@common/lib/utils/catch-unique-violation';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
@@ -70,25 +71,25 @@ export class UsersService extends GlobalRequestService {
     const { avatar, banner, ...createBot } = createBotDto;
 
     const user = new User(createBot, this.currentTenant());
-    user.bot = true;
+    await catchUniqueViolation(this.userRepository, user);
 
     const ability = this.caslAbilityFactory.createForUser(this.currentUser());
     assertPermissions(ability, Action.Update, user);
 
     await Promise.all([
-      await this.setImage(user, UserImageType.Avatar, avatar ?? null),
-      await this.setImage(user, UserImageType.Banner, banner ?? null),
+      this.setImage(user, UserImageType.Avatar, avatar ?? null),
+      this.setImage(user, UserImageType.Banner, banner ?? null),
     ]);
 
-    await this.userRepository.persistAndFlush(user);
+    user.bot = true;
+    await this.userRepository.flush();
     return user;
   }
 
   public async create(createUserDto: RegisterDto): Promise<User> {
     const { avatar, banner, password, ...userDto } = createUserDto;
     const user = new User(userDto, this.currentTenant());
-    if (await this.findBareUser(user.email) || await this.findBareUser(user.id))
-      throw new BadRequestException('User already exists');
+    await catchUniqueViolation(this.userRepository, user);
 
     await Promise.all([
       user.setPassword(password),
@@ -107,14 +108,15 @@ export class UsersService extends GlobalRequestService {
     //     });
     //     await this.classRepository.persistAndFlush(classMembership);
     //   }
-    await this.userRepository.persistAndFlush(user);
+    await this.userRepository.flush();
     return user;
   }
 
   public async createBare(createUserDto: TenantUserDto, forTenant: string): Promise<User> {
     const tenant = await this.tenantsService.findOne(forTenant);
     const user = new User(createUserDto, tenant);
-    await this.userRepository.persistAndFlush(user);
+
+    await catchUniqueViolation(this.userRepository, user);
     return user;
   }
 
@@ -195,8 +197,12 @@ export class UsersService extends GlobalRequestService {
 
   public async addImage(file: MulterFile, createUserImageDto: CreateUserImageDto): Promise<User> {
     const userImage = await this.userImagesService.create(file, createUserImageDto);
-    if (userImage.type === UserImageType.Avatar || userImage.type === UserImageType.Banner)
-      return await this.setImage(userImage.user, userImage.type, userImage);
+    if (userImage.type === UserImageType.Avatar || userImage.type === UserImageType.Banner) {
+      const user = await this.setImage(userImage.user, userImage.type, userImage);
+
+      await this.userRepository.flush();
+      return user;
+    }
 
     return userImage.user;
   }
@@ -215,9 +221,10 @@ export class UsersService extends GlobalRequestService {
     if (userImage)
       userImage.active = true;
 
-    user[userImageTypeToKey[type]] = userImage;
     await this.userImagesService.setInactiveLastActive(user.id, type);
-    await this.userRepository.flush();
+
+    user[userImageTypeToKey[type]] = userImage;
+
 
     return user;
   }

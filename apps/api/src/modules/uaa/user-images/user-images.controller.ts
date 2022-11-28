@@ -43,10 +43,7 @@ export class UserImagesController {
 
   @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Update, UserImage))
-  public async removeUserImage(
-    @Param('userId') userId: string,
-    @Param('id') id: string,
-  ): Promise<void> {
-    await this.userImagesService.remove(userId, id);
+  public async removeUserImage(@Param('id') id: string): Promise<void> {
+    await this.userImagesService.remove(id);
   }
 }

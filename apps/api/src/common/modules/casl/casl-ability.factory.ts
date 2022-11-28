@@ -29,6 +29,7 @@ import type { Social } from '@modules/org/teams/socials/social.entity';
 import type { TeamImage } from '@modules/org/teams/team-images/team-image.entity';
 import { Team } from '@modules/org/teams/team.entity';
 import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
+import type { TenantImage } from '@modules/org/tenants/tenant-images/tenant-image.entity';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { EventApproval } from '@modules/plan/approvals/approval.entity';
 import { Event } from '@modules/plan/events/event.entity';
@@ -38,7 +39,6 @@ import type { UserImage } from '@modules/uaa/user-images/user-image.entity';
 import { User } from '@modules/uaa/users/user.entity';
 import { Attachment } from '@modules/upload/attachments/attachment.entity';
 import { InfoDoc } from '@modules/upload/info-docs/info-doc.entity';
-import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
 import { StudyDoc } from '@modules/upload/study-docs/study-doc.entity';
 import { TeamFile } from '@modules/upload/team-files/team-file.entity';
 import type { TeamGallery } from '@modules/upload/team-galleries/team-gallery.entity';
@@ -68,7 +68,6 @@ export type Subjects =
       | typeof Label
       | typeof Menu
       | typeof Metric
-      | typeof ProfileImage
       | typeof Report
       | typeof SchoolYear
       | typeof Settings
@@ -85,6 +84,7 @@ export type Subjects =
       | typeof TeamImage
       | typeof TeamReceipt
       | typeof Tenant
+      | typeof TenantImage
       | typeof Thread
       | typeof User
       | typeof UserImage
@@ -171,7 +171,6 @@ export class CaslAbilityFactory {
           Blog,
           Content,
           InfoDoc,
-          ProfileImage,
           Report,
           StudyDoc,
           Subject,
@@ -223,16 +222,6 @@ export class CaslAbilityFactory {
           // @ts-expect-error
           isFileUploader,
         ).because('Not the author');
-
-        // @ts-expect-error
-        allow(Action.Manage, ProfileImage, isFileUploader).because(
-          'Not the user',
-        );
-
-        // @ts-expect-error
-        allow(Action.Manage, ProfileImage, isFileUploader).because(
-          'Not the user',
-        );
 
         // @ts-expect-error
         allow(Action.Delete, Content, isAuthor).because('Not the author');

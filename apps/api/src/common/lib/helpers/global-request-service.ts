@@ -7,7 +7,7 @@ import type { User } from '@modules/uaa/users/user.entity';
 export abstract class GlobalRequestService {
   public autoGqlPopulate(defaultPopulate?: string[]): readonly never[] {
     const globalRequestContext = RequestContext.get<GlobalRequestContext>();
-    const info = globalRequestContext.gqlInfo;
+    const info = globalRequestContext?.gqlInfo;
     if (info && !globalRequestContext.alreadyPopulated) {
       globalRequestContext.alreadyPopulated = true;
       return fieldToRelations(info) as never[];

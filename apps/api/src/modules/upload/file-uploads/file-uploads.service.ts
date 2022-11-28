@@ -45,7 +45,6 @@ export class FileUploadsService {
     }
 
     const fileDocument = new FileUpload({
-      tenant,
       user,
       name: file.originalname ?? file.filename,
       fileSize: Buffer.byteLength(buffer),

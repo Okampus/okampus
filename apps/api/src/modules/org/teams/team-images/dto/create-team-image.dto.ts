@@ -18,5 +18,5 @@ export class CreateTeamImageDto extends CreateFileUploadDto {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
 }

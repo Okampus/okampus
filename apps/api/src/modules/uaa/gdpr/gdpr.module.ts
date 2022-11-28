@@ -16,11 +16,11 @@ import { Event } from '@modules/plan/events/event.entity';
 import { EventRegistration } from '@modules/plan/registrations/registration.entity';
 import { Attachment } from '@modules/upload/attachments/attachment.entity';
 import { InfoDoc } from '@modules/upload/info-docs/info-doc.entity';
-import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
 import { StudyDoc } from '@modules/upload/study-docs/study-doc.entity';
 import { TeamFile } from '@modules/upload/team-files/team-file.entity';
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { Statistics } from '../statistics/statistics.entity';
+import { UserImage } from '../user-images/user-image.entity';
 import { GdprService } from './gdpr.service';
 
 @Module({
@@ -34,7 +34,6 @@ import { GdprService } from './gdpr.service';
       Favorite,
       Attachment,
       InfoDoc,
-      ProfileImage,
       StudyDoc,
       TeamFile,
       Reaction,
@@ -46,6 +45,7 @@ import { GdprService } from './gdpr.service';
       TeamMember,
       TeamMembershipRequest,
       Thread,
+      UserImage,
       Vote,
     ]),
   ],

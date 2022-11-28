@@ -4,7 +4,6 @@ import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { NotificationsModule } from '@common/modules/notifications/notifications.module';
 import { Label } from '@modules/catalog/labels/label.entity';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
-import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
 import { CoreTeamsModule } from '../core-teams.module';
 import { TeamMember } from '../members/team-member.entity';
 import { Social } from '../socials/social.entity';
@@ -22,7 +21,6 @@ import { TeamMembershipRequest } from './team-membership-request.entity';
       Label,
       TeamForm,
       Social,
-      ProfileImage,
       TeamMembershipRequest,
     ]),
     NotificationsModule,

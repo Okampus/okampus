@@ -68,7 +68,7 @@ export class UserImagesService extends GlobalRequestService {
     }
   }
 
-  public async remove(userId: string, id: string): Promise<void> {
+  public async remove(id: string): Promise<void> {
     const userImage = await this.userImageRepository.findOneOrFail({ id }, { populate: ['file'] });
 
     const ability = this.caslAbilityFactory.createForUser(this.currentUser());

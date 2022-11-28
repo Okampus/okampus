@@ -7,7 +7,6 @@ import { TeamFormsModule } from '@modules/org/teams/forms/forms.module';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { User } from '@modules/uaa/users/user.entity';
 import { FileUploadsModule } from '@modules/upload/file-uploads/file-uploads.module';
-import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
 import { TeamFilesModule } from '@modules/upload/team-files/team-files.module';
 import { TeamGallery } from '@modules/upload/team-galleries/team-gallery.entity';
 import { InterestsModule } from './interests/interests.module';
@@ -28,7 +27,6 @@ import { TeamsService } from './teams.service';
       Label,
       TeamMember,
       TeamForm,
-      ProfileImage,
       User,
       Social,
     ]),

@@ -2,82 +2,88 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import type { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
+import { GlobalRequestService } from '@common/lib/helpers/global-request-service';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import { FileKind } from '@common/lib/types/enums/file-kind.enum';
+import { TenantImageType } from '@common/lib/types/enums/tenant-image-type.enum';
+import { assertPermissions } from '@common/lib/utils/assert-permission';
+import { catchUniqueViolation } from '@common/lib/utils/catch-unique-violation';
+import { Action } from '@common/modules/authorization';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { CreateTenantDto } from '@modules/org/tenants/dto/create-tenant.dto';
-import type { User } from '@modules/uaa/users/user.entity';
-import { FileUploadsService } from '@modules/upload/file-uploads/file-uploads.service';
-import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
-import { ProfileImagesService } from '@modules/upload/profile-images/profile-images.service';
 import type { UpdateTenantDto } from './dto/update-tenant.dto';
+import type { CreateTenantImageDto } from './tenant-images/dto/create-tenant-image.dto';
+import type { TenantImage } from './tenant-images/tenant-image.entity';
+import { TenantImagesService } from './tenant-images/tenant-images.service';
 import { Tenant } from './tenant.entity';
 
+const tenantImageTypeToKey = {
+  [TenantImageType.Logo]: 'logo' as const,
+  [TenantImageType.LogoDark]: 'logoDark' as const,
+};
+
 @Injectable()
-export class TenantsService {
+export class TenantsService extends GlobalRequestService {
   constructor(
-    private readonly filesService: FileUploadsService,
-    private readonly profileImagesService: ProfileImagesService,
     @InjectRepository(Tenant) private readonly tenantRepository: BaseRepository<Tenant>,
-    @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
-  ) {}
+    private readonly tenantImagesService: TenantImagesService,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
+  ) { super(); }
 
-  public async create(createTenantDto: CreateTenantDto): Promise<Tenant> {
+  public async create(
+    createTenantDto: Omit<CreateTenantDto, 'logo' | 'logoDark'>,
+    files: { logo?: MulterFile[]; logoDark?: MulterFile[] } | null = null,
+  ): Promise<Tenant> {
     const tenant = new Tenant({ ...createTenantDto });
+    await catchUniqueViolation(this.tenantRepository, tenant);
 
-    await this.tenantRepository.persistAndFlush(tenant);
+    if (files?.logo?.length)
+      await this.addImage(files.logo[0], { tenantId: tenant.id, type: TenantImageType.Logo });
+
+    if (files?.logoDark?.length)
+      await this.addImage(files.logoDark[0], { tenantId: tenant.id, type: TenantImageType.Logo });
+
     return tenant;
   }
 
-  public async findOne(id: string | undefined, populate = false): Promise<Tenant> {
-    return await this.tenantRepository.findOneOrFail({ id }, populate ? {
- populate: [
-      // 'approvalSteps', 'approvalSteps.users'
-    ],
-} : {});
+  public async findOne(id: string | undefined): Promise<Tenant> {
+    return await this.tenantRepository.findOneOrFail({ id }, { populate: this.autoGqlPopulate() });
   }
 
-  public async find(populate = false): Promise<Tenant[]> {
-    return await this.tenantRepository.find({}, populate ? {
- populate: [
-      // 'approvalSteps', 'approvalSteps.users'
-    ],
-} : {});
+  public async find(): Promise<Tenant[]> {
+    return await this.tenantRepository.findAll({ populate: this.autoGqlPopulate() });
   }
 
-  public async setLogo(
-    user: User,
-    isLogoDark: boolean,
-    id: string,
-    fileUpload: MulterFile,
-  ): Promise<ProfileImage> {
-    const tenant = await this.tenantRepository.findOneOrFail({ id });
+  public async addImage(file: MulterFile, createTenantImageDto: CreateTenantImageDto): Promise<Tenant> {
+    const tenantImage = await this.tenantImagesService.create(file, createTenantImageDto);
+    if (tenantImage.type === TenantImageType.Logo || tenantImage.type === TenantImageType.LogoDark) {
+      const user = await this.setImage(tenantImage.tenant, tenantImage.type, tenantImage);
 
-    // Get previous logo it if it exists and set active to false
-    const previousLogo = await this.profileImageRepository.findOne({ tenant, type: isLogoDark ? 'logoDark' : 'logo', active: true });
-    if (previousLogo) {
-      previousLogo.active = false;
-      previousLogo.lastActiveDate = new Date();
+      await this.tenantRepository.flush();
+      return user;
     }
 
-    const logoFile = await this.filesService.create(
-      tenant,
-      user,
-      fileUpload,
-      FileKind.Tenant,
-    );
-    const logo = await this.profileImagesService.create(logoFile, isLogoDark ? 'logoDark' : 'logo');
-    logo.tenant = tenant;
-    logo.active = true;
+    return tenantImage.tenant;
+  }
 
-    if (isLogoDark)
-      tenant.logoDark = logoFile.url;
-    else
-      tenant.logo = logoFile.url;
+  public async setImage(
+    tenant: Tenant,
+    type: TenantImageType.Logo | TenantImageType.LogoDark,
+    tenantImage: TenantImage | string | null,
+  ): Promise<Tenant> {
+    const ability = this.caslAbilityFactory.createForUser(this.currentUser());
+    assertPermissions(ability, Action.Update, tenant);
 
+    if (typeof tenantImage === 'string') // TenantImage passed by ID
+      tenantImage = await this.tenantImagesService.findOne(tenantImage);
+
+    if (tenantImage)
+      tenantImage.active = true;
+
+    tenant[tenantImageTypeToKey[type]] = tenantImage;
+    await this.tenantImagesService.setInactiveLastActive(tenant.id, type);
     await this.tenantRepository.flush();
-    await this.profileImageRepository.flush();
 
-    return logo;
+    return tenant;
   }
 
   public async update(id: string, updateTenantDto: UpdateTenantDto): Promise<Tenant> {

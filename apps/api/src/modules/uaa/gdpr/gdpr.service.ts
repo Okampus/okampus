@@ -17,11 +17,11 @@ import { Event } from '@modules/plan/events/event.entity';
 import { EventRegistration } from '@modules/plan/registrations/registration.entity';
 import { Attachment } from '@modules/upload/attachments/attachment.entity';
 import { InfoDoc } from '@modules/upload/info-docs/info-doc.entity';
-import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
 import { StudyDoc } from '@modules/upload/study-docs/study-doc.entity';
 import { TeamFile } from '@modules/upload/team-files/team-file.entity';
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { Statistics } from '../statistics/statistics.entity';
+import { UserImage } from '../user-images/user-image.entity';
 import type { User } from '../users/user.entity';
 
 @Injectable()
@@ -37,7 +37,6 @@ export class GdprService {
     @InjectRepository(Favorite) private readonly favoriteRepository: BaseRepository<Favorite>,
     @InjectRepository(Attachment) private readonly attachmentRepository: BaseRepository<Attachment>,
     @InjectRepository(InfoDoc) private readonly infoDocRepository: BaseRepository<InfoDoc>,
-    @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
     @InjectRepository(StudyDoc) private readonly studyDocRepository: BaseRepository<StudyDoc>,
     @InjectRepository(TeamFile) private readonly teamFileRepository: BaseRepository<TeamFile>,
     @InjectRepository(Reaction) private readonly reactionRepository: BaseRepository<Reaction>,
@@ -49,6 +48,7 @@ export class GdprService {
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamMembershipRequest) private readonly teamMembershipRequestRepository: BaseRepository<TeamMembershipRequest>,
     @InjectRepository(Thread) private readonly threadRepository: BaseRepository<Thread>,
+    @InjectRepository(UserImage) private readonly userImageRepository: BaseRepository<UserImage>,
     @InjectRepository(Vote) private readonly voteRepository: BaseRepository<Vote>,
     /* eslint-enable max-len */
   ) {}
@@ -63,7 +63,7 @@ export class GdprService {
     const favorites           = await this.favoriteRepository.find({ user });
     const attachments         = await this.attachmentRepository.find({ file: { user } });
     const infoDocs            = await this.infoDocRepository.find({ file: { user } });
-    const profileImages       = await this.profileImageRepository.find({ file: { user } });
+    const userImages          = await this.userImageRepository.find({ file: { user } });
     const studyDocs           = await this.studyDocRepository.find({ file: { user } });
     const teamFiles           = await this.teamFileRepository.find({ file: { user } });
     const reactions           = await this.reactionRepository.find({ user });
@@ -88,7 +88,7 @@ export class GdprService {
       favorites,
       attachments,
       infoDocs,
-      profileImages,
+      userImages,
       studyDocs,
       teamFiles,
       reactions,

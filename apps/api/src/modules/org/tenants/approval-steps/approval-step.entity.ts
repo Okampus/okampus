@@ -1,4 +1,4 @@
-
+/* eslint-disable import/no-cycle */
 import {
   Collection,
   Entity,
