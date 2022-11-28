@@ -42,7 +42,7 @@ export class UserImagesService extends GlobalRequestService {
       fileLastModifiedAt,
     );
 
-    const userImage = new UserImage({ file, ...createUserImage });
+    const userImage = new UserImage({ file, ...createUserImage, user });
     await this.userImageRepository.persistAndFlush(userImage);
     return userImage;
   }

@@ -73,7 +73,7 @@ export class UsersResolver {
     @Args('id') id: string,
     @Args('user') user: UpdateUserDto,
   ): Promise<User> {
-    const updatedUser = await this.usersService.update(requester, id, user);
+    const updatedUser = await this.usersService.update(id, user);
     await this.pubSub.publish(SubscriptionType.UserUpdated, { userUpdated: updatedUser });
     return updatedUser;
   }

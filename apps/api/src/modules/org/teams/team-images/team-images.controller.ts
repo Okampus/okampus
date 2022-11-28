@@ -12,38 +12,38 @@ import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfac
 import { simpleImageMimeTypeRegex } from '@common/configs/mime-type';
 import { UploadInterceptor } from '@common/lib/decorators/upload-interceptor.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { CreateUserImageDto } from './dto/create-user-image.dto';
-import { UserImage } from './user-image.entity';
-import { UserImagesService } from './user-images.service';
+import { CreateTeamImageDto } from './dto/create-team-image.dto';
+import { TeamImage } from './team-image.entity';
+import { TeamImagesService } from './team-images.service';
 
 
 // TODO: improve check policies
-@ApiTags('User Images')
-@Controller('users/images')
-export class UserImagesController {
+@ApiTags('Team Images')
+@Controller()
+export class TeamImagesController {
   constructor(
-    private readonly userImagesService: UserImagesService,
+    private readonly userImagesService: TeamImagesService,
   ) {}
 
   @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
   @Post()
-  @CheckPolicies(ability => ability.can(Action.Create, UserImage))
-  public async createUserImage(
+  @CheckPolicies(ability => ability.can(Action.Create, TeamImage))
+  public async createTeamImage(
     @UploadedFile() file: MulterFile,
-    @Body() createUserImageDto: CreateUserImageDto,
-  ): Promise<UserImage> {
-    return await this.userImagesService.create(file, createUserImageDto);
+    @Body() createTeamImageDto: CreateTeamImageDto,
+  ): Promise<TeamImage> {
+    return await this.userImagesService.create(file, createTeamImageDto);
   }
 
   @Get(':id')
-  @CheckPolicies(ability => ability.can(Action.Read, UserImage))
-  public async findUserImage(@Param('id') id: string): Promise<UserImage> {
+  @CheckPolicies(ability => ability.can(Action.Read, TeamImage))
+  public async findTeamImage(@Param('id') id: string): Promise<TeamImage> {
     return await this.userImagesService.findOne(id);
   }
 
   @Delete(':id')
-  @CheckPolicies(ability => ability.can(Action.Update, UserImage))
-  public async removeUserImage(
+  @CheckPolicies(ability => ability.can(Action.Update, TeamImage))
+  public async removeTeamImage(
     @Param('userId') userId: string,
     @Param('id') id: string,
   ): Promise<void> {

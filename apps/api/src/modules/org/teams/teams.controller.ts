@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -18,33 +17,26 @@ import { simpleImageMimeTypeRegex } from '@common/configs/mime-type';
 import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '@common/lib/decorators/upload-interceptor.decorator';
-import { FileKind } from '@common/lib/types/enums/file-kind.enum';
+import { TeamImageType } from '@common/lib/types/enums/team-image-type.enum';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import type { PaginatedResult } from '@common/modules/pagination';
 import { normalizePagination } from '@common/modules/pagination';
 import { CreateTeamDto } from '@modules/org/teams/dto/create-team.dto';
 import { CreateSocialDto } from '@modules/org/teams/socials/dto/create-social.dto';
 import { User } from '@modules/uaa/users/user.entity';
-import { FileUploadsService } from '@modules/upload/file-uploads/file-uploads.service';
-import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
-import { ProfileImagesService } from '@modules/upload/profile-images/profile-images.service';
 import { Tenant } from '../tenants/tenant.entity';
 import { TeamListOptions } from './dto/team-list-options.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import type { Social } from './socials/social.entity';
-import { SocialsService } from './socials/socials.service';
+import type { CreateTeamImageDto } from './team-images/dto/create-team-image.dto';
+import { TeamImage } from './team-images/team-image.entity';
 import { Team } from './team.entity';
 import { TeamsService } from './teams.service';
 
 @ApiTags('Teams')
 @Controller()
 export class TeamsController {
-  constructor(
-    private readonly teamsService: TeamsService,
-    private readonly socialsService: SocialsService,
-    private readonly profileImagesService: ProfileImagesService,
-    private readonly filesService: FileUploadsService,
-  ) {}
+  constructor(private readonly teamsService: TeamsService) {}
 
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Team))
@@ -65,12 +57,6 @@ export class TeamsController {
     return teams;
   }
 
-  @Get('/names')
-  @CheckPolicies(ability => ability.can(Action.Read, Team))
-  public async findNames(): Promise<Array<Pick<Team, 'avatar' | 'id' | 'name'>>> {
-    return await this.teamsService.findNames();
-  }
-
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Team> {
@@ -79,12 +65,8 @@ export class TeamsController {
 
   @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Team))
-  public async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateSubjectDto: UpdateTeamDto,
-    @CurrentUser() requester: User,
-  ): Promise<Team> {
-    return await this.teamsService.update(requester, id, updateSubjectDto);
+  public async update(@Param('id', ParseIntPipe) id: number, @Body() updateSubjectDto: UpdateTeamDto): Promise<Team> {
+    return await this.teamsService.update(id, updateSubjectDto);
   }
 
   @Delete(':id')
@@ -103,42 +85,42 @@ export class TeamsController {
     return await this.teamsService.addSocialAccount(user, id, createSocialDto);
   }
 
-  @Put(':id/avatar')
+  @Put(':id/logo')
   @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
-  @CheckPolicies(ability => ability.can(Action.Create, ProfileImage))
-  public async updateAvatar(
-    @CurrentTenant() tenant: Tenant,
-    @CurrentUser() user: User,
-    @Param('id', ParseIntPipe) id: number,
-    @UploadedFile() file: MulterFile,
+  @CheckPolicies(
+    ability => ability.can(Action.Create, TeamImage),
+    ability => ability.can(Action.Update, Team),
+  )
+  public async updateLogo(
+    @UploadedFile() logo: MulterFile,
+    @Body() createTeamImage: Omit<CreateTeamImageDto, 'type'>,
   ): Promise<Team> {
-    if (!file)
-      throw new BadRequestException('No file provided');
+    return await this.teamsService.addImage(logo, { ...createTeamImage, type: TeamImageType.Logo });
+  }
 
-    const fileUpload = await this.filesService.create(tenant, user, file, FileKind.TeamImage);
-    const profileImage = await this.profileImagesService.create(fileUpload, 'avatar');
-
-    return await this.teamsService.updateProfileImage(user, id, 'avatar', profileImage);
+  @Put(':id/logo-dark')
+  @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
+  @CheckPolicies(
+    ability => ability.can(Action.Create, TeamImage),
+    ability => ability.can(Action.Update, Team),
+  )
+  public async updateLogoDark(
+    @UploadedFile() logoDark: MulterFile,
+    @Body() createTeamImage: Omit<CreateTeamImageDto, 'type'>,
+  ): Promise<Team> {
+    return await this.teamsService.addImage(logoDark, { ...createTeamImage, type: TeamImageType.LogoDark });
   }
 
   @Put(':id/banner')
   @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
   @CheckPolicies(
-    ability => ability.can(Action.Create, ProfileImage),
+    ability => ability.can(Action.Create, TeamImage),
     ability => ability.can(Action.Update, Team),
   )
   public async updateBanner(
-    @CurrentTenant() tenant: Tenant,
-    @CurrentUser() user: User,
-    @Param('id', ParseIntPipe) id: number,
     @UploadedFile() banner: MulterFile,
+    @Body() createTeamImage: Omit<CreateTeamImageDto, 'type'>,
   ): Promise<Team> {
-    if (!banner)
-      throw new BadRequestException('No file provided');
-
-    const fileUpload = await this.filesService.create(tenant, user, banner, FileKind.TeamImage);
-    const profileImage = await this.profileImagesService.create(fileUpload, 'banner');
-
-    return await this.teamsService.updateProfileImage(user, id, 'banner', profileImage);
+    return await this.teamsService.addImage(banner, { ...createTeamImage, type: TeamImageType.Banner });
   }
 }

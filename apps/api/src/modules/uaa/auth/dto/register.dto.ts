@@ -12,6 +12,7 @@ import { colorStringTransform } from '@common/lib/utils/color-string-transform';
 import { Role } from '@common/modules/authorization/types/role.enum';
 import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
 
+// TODO: no UserImage on create
 @InputType()
 export class RegisterDto {
   @Field()

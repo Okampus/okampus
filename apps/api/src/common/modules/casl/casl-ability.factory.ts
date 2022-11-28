@@ -26,6 +26,7 @@ import type { TeamHistory } from '@modules/org/teams/histories/team-history.enti
 import type { Interest } from '@modules/org/teams/interests/interest.entity';
 import { Metric } from '@modules/org/teams/metrics/metric.entity';
 import type { Social } from '@modules/org/teams/socials/social.entity';
+import type { TeamImage } from '@modules/org/teams/team-images/team-image.entity';
 import { Team } from '@modules/org/teams/team.entity';
 import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
@@ -81,6 +82,7 @@ export type Subjects =
       | typeof TeamForm
       | typeof TeamGallery
       | typeof TeamHistory
+      | typeof TeamImage
       | typeof TeamReceipt
       | typeof Tenant
       | typeof Thread

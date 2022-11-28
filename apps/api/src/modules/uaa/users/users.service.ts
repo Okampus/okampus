@@ -67,14 +67,18 @@ export class UsersService extends GlobalRequestService {
   }
 
   public async createBot(createBotDto: CreateBotDto): Promise<User> {
-    const user = new User(createBotDto, this.currentTenant());
+    const { avatar, banner, ...createBot } = createBotDto;
+
+    const user = new User(createBot, this.currentTenant());
     user.bot = true;
 
     const ability = this.caslAbilityFactory.createForUser(this.currentUser());
     assertPermissions(ability, Action.Update, user);
 
-    await this.setUserImage(user, UserImageType.Avatar, createBotDto.avatar ?? null);
-    await this.setUserImage(user, UserImageType.Banner, createBotDto.banner ?? null);
+    await Promise.all([
+      await this.setImage(user, UserImageType.Avatar, avatar ?? null),
+      await this.setImage(user, UserImageType.Banner, banner ?? null),
+    ]);
 
     await this.userRepository.persistAndFlush(user);
     return user;
@@ -88,8 +92,8 @@ export class UsersService extends GlobalRequestService {
 
     await Promise.all([
       user.setPassword(password),
-      this.setUserImage(user, UserImageType.Avatar, createUserDto.avatar ?? null),
-      this.setUserImage(user, UserImageType.Banner, createUserDto.banner ?? null),
+      this.setImage(user, UserImageType.Avatar, avatar ?? null),
+      this.setImage(user, UserImageType.Banner, banner ?? null),
     ]);
 
     // TODO: manage users class/cohort memberships on creation and update
@@ -114,63 +118,21 @@ export class UsersService extends GlobalRequestService {
     return user;
   }
 
-  // Public async create(options: RegisterDto): Promise<{ user: User; token: string | null }> {
-  //   const tenant = await this.tenantRepository.findOneOrFail({ id: options.tenantId });
-  //   const user = new User({ ...options, tenant });
-  //   let token: string | null = null;
-  //   if (options.bot) {
-  //     token = await this.jwtService.signAsync({ sub: user.id, requestType: RequestType.Http } as TokenClaims, {
-  //       secret: config.tokens.secrets.bot,
-  //     });
-  //     await user.setPassword(token);
-  //   } else if (options.password) {
-  //     await user.setPassword(options.password);
-  //   }
-
-  //   if (options.avatar)
-  //     await this.setImage(options.avatar, 'avatar', user);
-  //   else
-  //     user.avatar = null;
-
-  //   if (options.banner)
-  //     await this.setImage(options.banner, 'banner', user);
-  //   else
-  //     user.banner = null;
-
-  //   await this.userRepository.persistAndFlush(user);
-
-  //   if (user.scopeRole === SchoolRole.Student) {
-  //     const schoolYear = await this.schoolYearRepository.findOneOrFail({ id: 'school-year-test' });
-  //     const schoolClass = await this.classRepository.findOneOrFail({ id: 'group-test' });
-  //     const classMembership = new ClassMembership({
-  //       user,
-  //       schoolClass,
-  //       schoolYear,
-  //     });
-  //     await this.classRepository.persistAndFlush(classMembership);
-  //   }
-
-  //   return { user, token };
-  // }
-
-  public async update(requester: User, id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  public async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.findOneOrFail({ id }, { populate: ['badges'] });
 
-    const ability = this.caslAbilityFactory.createForUser(requester);
+    const ability = this.caslAbilityFactory.createForUser(this.currentUser());
     assertPermissions(ability, Action.Update, user);
 
-    const { avatar, banner, password, ...dto } = updateUserDto;
+    const { avatar, banner, password, ...updateUser } = updateUserDto;
 
-    if (password)
-      await user.setPassword(password);
+    await Promise.all([
+      password && user.setPassword(password),
+      typeof avatar !== 'undefined' && this.setImage(user, UserImageType.Avatar, avatar ?? null),
+      typeof banner !== 'undefined' && this.setImage(user, UserImageType.Banner, banner ?? null),
+    ]);
 
-    if (typeof avatar !== 'undefined')
-      await this.setUserImage(user, UserImageType.Avatar, avatar);
-
-    if (typeof banner !== 'undefined')
-      await this.setUserImage(user, UserImageType.Banner, banner);
-
-    wrap(user).assign(dto);
+    wrap(user).assign(updateUser);
     await this.userRepository.flush();
 
     return user;
@@ -225,26 +187,26 @@ export class UsersService extends GlobalRequestService {
     return social;
   }
 
-  public async getUserStats(id: string): Promise<Omit<Statistics, 'assign'>> {
+  public async getStats(id: string): Promise<Omit<Statistics, 'assign'>> {
     const stats = await this.statisticsRepository.findOneOrFail({ user: { id } });
     const streaks = await this.statisticsService.getAllStreaks(stats);
     return { ...stats, ...streaks };
   }
 
-  public async addUserImage(file: MulterFile, createUserImageDto: CreateUserImageDto): Promise<User> {
+  public async addImage(file: MulterFile, createUserImageDto: CreateUserImageDto): Promise<User> {
     const userImage = await this.userImagesService.create(file, createUserImageDto);
     if (userImage.type === UserImageType.Avatar || userImage.type === UserImageType.Banner)
-      return await this.setUserImage(userImage.user, userImage.type, userImage);
+      return await this.setImage(userImage.user, userImage.type, userImage);
 
     return userImage.user;
   }
 
-  public async setUserImage(
+  public async setImage(
     user: User,
     type: UserImageType.Avatar | UserImageType.Banner,
     userImage: UserImage | string | null,
   ): Promise<User> {
-    const ability = this.caslAbilityFactory.createForUser(user);
+    const ability = this.caslAbilityFactory.createForUser(this.currentUser());
     assertPermissions(ability, Action.Update, user);
 
     if (typeof userImage === 'string') // UserImage passed by ID
@@ -255,8 +217,8 @@ export class UsersService extends GlobalRequestService {
 
     user[userImageTypeToKey[type]] = userImage;
     await this.userImagesService.setInactiveLastActive(user.id, type);
-
     await this.userRepository.flush();
+
     return user;
   }
 }

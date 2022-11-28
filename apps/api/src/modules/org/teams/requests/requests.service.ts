@@ -27,8 +27,7 @@ export class TeamMembershipRequestsService {
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
-    @InjectRepository(TeamMembershipRequest)
-    private readonly teamMembershipRequestRepository: BaseRepository<TeamMembershipRequest>,
+    @InjectRepository(TeamMembershipRequest) private readonly requestRepository: BaseRepository<TeamMembershipRequest>,
     private readonly notificationsService: NotificationsService,
   ) {}
 
@@ -50,7 +49,7 @@ export class TeamMembershipRequestsService {
 
     // 3. Check that the user has not already requested to join the team (BadRequest),
     // or has been invited to the team (Conflict)
-    const existingRequest = await this.teamMembershipRequestRepository.findOne({
+    const existingRequest = await this.requestRepository.findOne({
       team,
       user: requester,
       state: MembershipRequestState.Pending,
@@ -80,7 +79,7 @@ export class TeamMembershipRequestsService {
       issuer: MembershipRequestIssuer.User,
       role: createTeamMembershipRequestDto.role,
     });
-    await this.teamMembershipRequestRepository.persistAndFlush(teamMembershipRequest);
+    await this.requestRepository.persistAndFlush(teamMembershipRequest);
 
     // 6. Send a notification to the team.
     void this.notificationsService.trigger(new TeamManagedMembershipRequestUpdatedNotification(teamMembershipRequest));
@@ -101,7 +100,7 @@ export class TeamMembershipRequestsService {
     else if (options?.type === MembershipRequestDirection.Outgoing)
       query = { ...query, issuer: MembershipRequestIssuer.User };
 
-    return await this.teamMembershipRequestRepository.findWithPagination(
+    return await this.requestRepository.findWithPagination(
       normalizePagination(options ?? {}),
       { team: { id }, ...query },
       { orderBy: { createdAt: 'DESC' }, populate: ['team', 'user', 'issuedBy', 'handledBy', 'originalForm'] },
@@ -113,7 +112,7 @@ export class TeamMembershipRequestsService {
     id: number,
     updateTeamMembershipRequestDto: UpdateTeamMembershipRequestDto,
   ): Promise<TeamMembershipRequest> {
-    const request = await this.teamMembershipRequestRepository.findOneOrFail(
+    const request = await this.requestRepository.findOneOrFail(
       { id },
       { populate: ['team', 'team.members', 'user'] },
     );
@@ -135,7 +134,7 @@ export class TeamMembershipRequestsService {
     );
 
     wrap(request).assign({ ...updateTeamMembershipRequestDto, ...formFields });
-    await this.teamMembershipRequestRepository.flush();
+    await this.requestRepository.flush();
 
     return request;
   }
@@ -145,7 +144,7 @@ export class TeamMembershipRequestsService {
     id: number,
     updateTeamMembershipRequestDto: PutTeamMembershipRequestDto,
   ): Promise<TeamMembershipRequest> {
-    const request = await this.teamMembershipRequestRepository.findOneOrFail(
+    const request = await this.requestRepository.findOneOrFail(
       { id },
       { populate: ['team', 'team.members', 'user', 'issuedBy', 'handledBy', 'originalForm'] },
     );
@@ -172,7 +171,7 @@ export class TeamMembershipRequestsService {
     request.handledAt = new Date();
     request.handledMessage = updateTeamMembershipRequestDto.handledMessage ?? null;
     request.state = updateTeamMembershipRequestDto.state;
-    await this.teamMembershipRequestRepository.flush();
+    await this.requestRepository.flush();
 
     if (updateTeamMembershipRequestDto.state === MembershipRequestState.Approved) {
       const teamMember = new TeamMember({ team: request.team, user: request.user, role: request.role });

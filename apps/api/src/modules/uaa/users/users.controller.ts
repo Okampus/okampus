@@ -42,7 +42,7 @@ export class UsersController {
 
   @CacheTTL(60 * 60 * 24 * 3) // 3 days in seconds
   @UseInterceptors(CacheInterceptor)
-  @Get('/gdpr-dump')
+  @Get('gdpr-dump')
   public async getGdprDump(@CurrentUser() user: User): Promise<object> {
     return await this.gdprService.getGdprDump(user);
   }
@@ -57,7 +57,7 @@ export class UsersController {
     return await this.usersService.findAll(normalizePagination(query));
   }
 
-  @Get('/all/search')
+  @Get('all/search')
   public async search(
     @CurrentTenant() tenant: Tenant,
     @Query() query: PaginateDto & { search: string },
@@ -65,28 +65,24 @@ export class UsersController {
     return await this.usersService.search(tenant, query);
   }
 
-  @Delete('/:id')
+  @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Delete, User))
   public async delete(@Param('id') id: string): Promise<void> {
     await this.usersService.delete(id);
   }
 
-  @Get('/:id/statistics')
+  @Get(':id/statistics')
   public async getUserStats(@Param('id') id: string): Promise<Omit<Statistics, 'assign'> | null> {
-    return await this.usersService.getUserStats(id);
+    return await this.usersService.getStats(id);
   }
 
-  @Patch('/:id')
+  @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, User))
-  public async update(
-    @CurrentUser() user: User,
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ): Promise<User> {
-    return await this.usersService.update(user, id, updateUserDto);
+  public async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<User> {
+    return await this.usersService.update(id, updateUserDto);
   }
 
-  @Put('/avatar')
+  @Put('avatar')
   @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
   @CheckPolicies(
     ability => ability.can(Action.Create, UserImage),
@@ -96,10 +92,10 @@ export class UsersController {
     @UploadedFile() avatar: MulterFile,
     @Body() createUserImage: Omit<CreateUserImageDto, 'type'>,
   ): Promise<User> {
-    return await this.usersService.addUserImage(avatar, { ...createUserImage, type: UserImageType.Avatar });
+    return await this.usersService.addImage(avatar, { ...createUserImage, type: UserImageType.Avatar });
   }
 
-  @Put('/banner')
+  @Put('banner')
   @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
   @CheckPolicies(
     ability => ability.can(Action.Create, UserImage),
@@ -109,6 +105,6 @@ export class UsersController {
     @UploadedFile() banner: MulterFile,
     @Body() createUserImage: Omit<CreateUserImageDto, 'type'>,
   ): Promise<User> {
-    return await this.usersService.addUserImage(banner, { ...createUserImage, type: UserImageType.Banner });
+    return await this.usersService.addImage(banner, { ...createUserImage, type: UserImageType.Banner });
   }
 }

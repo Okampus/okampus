@@ -12,6 +12,7 @@ import { TeamHistoriesModule } from './histories/histories.module';
 import { TeamMembersModule } from './members/members.module';
 import { TeamMembershipsModule } from './memberships/memberships.module';
 import { TeamMembershipRequestsModule } from './requests/requests.module';
+import { TeamImagesModule } from './team-images/team-images.module';
 
 @Module({
   imports: [
@@ -19,30 +20,20 @@ import { TeamMembershipRequestsModule } from './requests/requests.module';
       {
         path: 'teams',
         children: [
-          // Endpoints to manage the core team concept
           { path: 'org', module: CoreTeamsModule },
-          // Endpoints to manage team histories
           { path: 'histories', module: TeamHistoriesModule },
-          // Endpoint to manage team members
+          { path: 'images', module: TeamImagesModule },
           { path: 'members', module: TeamMembersModule },
-          // Endpoints to manage the team events
-          { path: 'events', module: EventsModule },
-          // Endpoints to manage the team event registrations
-          { path: 'event-registrations', module: EventRegistrationsModule },
-          // Endpoints to manage the team event registrations
-          { path: 'event-approvals', module: EventApprovalsModule },
-          // Endpoints to manage forms
           { path: 'forms', module: TeamFormsModule },
-          // Endpoints to manage finances
           { path: 'finances', module: TeamFinancesModule },
-          // Endpoints to manage iCalendars
           { path: 'ical', module: TeamICalModule },
-          // Endpoint to fetch data on a user's team memberships
           { path: 'memberships', module: TeamMembershipsModule },
-          // Endpoint to manage team membership requests
           { path: 'requests', module: TeamMembershipRequestsModule },
-          // Endpoint to manage team labels
           { path: 'labels', module: TeamLabelsModule },
+          // TODO: move events to their own module
+          { path: 'events', module: EventsModule },
+          { path: 'event-registrations', module: EventRegistrationsModule },
+          { path: 'event-approvals', module: EventApprovalsModule },
         ],
       },
     ]),
@@ -52,6 +43,7 @@ import { TeamMembershipRequestsModule } from './requests/requests.module';
     EventsModule,
     TeamFinancesModule,
     TeamFormsModule,
+    TeamImagesModule,
     TeamICalModule,
     TeamLabelsModule,
     TeamMembershipRequestsModule,

@@ -1,10 +1,12 @@
 /* eslint-disable import/no-cycle */
 import {
+  Cascade,
   Collection,
   Entity,
   Enum,
   Index,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryKey,
@@ -25,6 +27,7 @@ import type { Tenant } from '../tenants/tenant.entity';
 import { TeamHistory } from './histories/team-history.entity';
 import { TeamMember } from './members/team-member.entity';
 import { Social } from './socials/social.entity';
+import { TeamImage } from './team-images/team-image.entity';
 
 const ADMIN_ROLES = new Set([
   TeamRole.Owner,
@@ -92,19 +95,19 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
 
   @Field(() => String, { nullable: true })
   @Property()
-  location: string | null = null;
-
-  @Field(() => String, { nullable: true })
-  @Property()
   presentationVideo: string | null = null;
 
-  @Field(() => String, { nullable: true })
-  @Property({ type: 'text' })
-  avatar: string | null = null;
+  @Field(() => TeamImage, { nullable: true })
+  @ManyToOne({ type: TeamImage, cascade: [Cascade.ALL], nullable: true })
+  logo: TeamImage | null = null;
 
-  @Field(() => String, { nullable: true })
-  @Property({ type: 'text' })
-  banner: string | null = null;
+  @Field(() => TeamImage, { nullable: true })
+  @ManyToOne({ type: TeamImage, cascade: [Cascade.ALL], nullable: true })
+  logoDark: TeamImage | null = null;
+
+  @Field(() => TeamImage, { nullable: true })
+  @ManyToOne({ type: TeamImage, cascade: [Cascade.ALL], nullable: true })
+  banner: TeamImage | null = null;
 
   @Field(() => [TeamMember])
   @OneToMany('TeamMember', 'team')
@@ -130,8 +133,6 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
     status?: string | null;
     location?: string | null;
     presentationVideo?: string | null;
-    avatar?: string | null;
-    banner?: string | null;
     membershipRequestForm?: TeamForm | null;
   }) {
     super();
@@ -142,7 +143,7 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
     const labels = await this.labels.loadItems();
     return {
       title: this.name,
-      picture: this.avatar,
+      picture: this.logo?.file?.url ?? null,
       description: this.shortDescription,
       category: this.kind,
       createdDate: this.createdAt.getTime(),
@@ -163,10 +164,10 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
 
   public canActOnRole(user: User, role: TeamRole): boolean {
     if (this.isGlobalAdmin(user))
-return true;
+      return true;
 
     if (!ADMIN_ROLES.has(role))
-return this.isTeamAdmin(user);
+      return this.isTeamAdmin(user);
 
     return this.getMemberRoles(user).includes(TeamRole.Owner);
   }

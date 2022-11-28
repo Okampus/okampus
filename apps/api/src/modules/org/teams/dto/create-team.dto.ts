@@ -7,6 +7,7 @@ import {
 } from 'class-validator';
 import { TeamKind } from '@common/lib/types/enums/team-kind.enum';
 
+// TODO: no TeamImage on create
 @InputType()
 export class CreateTeamDto {
   @Field()
@@ -50,17 +51,17 @@ export class CreateTeamDto {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  location?: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  @IsString()
   presentationVideo?: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  avatar?: string;
+  logo?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  logoDark?: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()

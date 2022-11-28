@@ -162,9 +162,10 @@ export class TeamsResolver {
     if (batchContext?.isBatched)
       return batchContext?.galleries?.[team.id] ?? [];
 
-    return await this.teamGalleryRepository.find({
-      active: true, team: { id: team.id }, event: null,
-    }, { populate: ['file'] });
+    return await this.teamGalleryRepository.find(
+      { active: true, team: { id: team.id }, event: null },
+      { populate: ['file'] },
+    );
   }
 
   @Mutation(() => Team)
@@ -264,7 +265,7 @@ export class TeamsResolver {
     @Args('id', { type: () => Int }) id: number,
     @Args('team') team: UpdateTeamDto,
   ): Promise<Team> {
-    const updatedTeam = await this.teamsService.update(user, id, team);
+    const updatedTeam = await this.teamsService.update(id, team);
     await this.pubSub.publish(SubscriptionType.TeamUpdated, { teamUpdated: updatedTeam });
     return updatedTeam;
   }

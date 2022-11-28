@@ -15,7 +15,7 @@ export class TeamMembershipsService {
   constructor(
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
     @InjectRepository(TeamMembershipRequest)
-    private readonly teamMembershipRequestRepository: BaseRepository<TeamMembershipRequest>,
+    private readonly requestRepository: BaseRepository<TeamMembershipRequest>,
   ) {}
 
   public async findOne(
@@ -25,7 +25,10 @@ export class TeamMembershipsService {
     return await this.teamMemberRepository.findWithPagination(
       paginationOptions,
       { user: { id } },
-      { populate: ['user', 'team.avatar', 'team.banner', 'team.status', 'team.location', 'team.kind', 'team.name'], orderBy: { team: { name: 'ASC' } } },
+      {
+        populate: ['user', 'team.logo', 'team.logoDark', 'team.banner', 'team.status', 'team.kind', 'team.name'],
+        orderBy: { team: { name: 'ASC' } },
+      },
     );
   }
 
@@ -42,7 +45,7 @@ export class TeamMembershipsService {
     else if (options?.type === MembershipRequestDirection.Outgoing)
       query = { ...query, issuer: MembershipRequestIssuer.Team };
 
-    return await this.teamMembershipRequestRepository.findWithPagination(
+    return await this.requestRepository.findWithPagination(
       normalizePagination(options ?? {}),
       { user: { id }, ...query },
       { orderBy: { createdAt: 'DESC' }, populate: ['team', 'user', 'issuedBy', 'handledBy'] },

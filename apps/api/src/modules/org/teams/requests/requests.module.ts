@@ -5,10 +5,10 @@ import { NotificationsModule } from '@common/modules/notifications/notifications
 import { Label } from '@modules/catalog/labels/label.entity';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
+import { CoreTeamsModule } from '../core-teams.module';
 import { TeamMember } from '../members/team-member.entity';
 import { Social } from '../socials/social.entity';
 import { Team } from '../team.entity';
-import { TeamsService } from '../teams.service';
 import { TeamMembershipRequestsController } from './requests.controller';
 import { TeamMembershipRequestsResolver } from './requests.resolver';
 import { TeamMembershipRequestsService } from './requests.service';
@@ -26,14 +26,10 @@ import { TeamMembershipRequest } from './team-membership-request.entity';
       TeamMembershipRequest,
     ]),
     NotificationsModule,
+    CoreTeamsModule,
   ],
   controllers: [TeamMembershipRequestsController],
-  providers: [
-    TeamsService,
-    CaslAbilityFactory,
-    TeamMembershipRequestsService,
-    TeamMembershipRequestsResolver,
-  ],
+  providers: [CaslAbilityFactory, TeamMembershipRequestsService, TeamMembershipRequestsResolver],
   exports: [TeamMembershipRequestsService],
 })
 export class TeamMembershipRequestsModule {}

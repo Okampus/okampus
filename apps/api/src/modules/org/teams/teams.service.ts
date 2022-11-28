@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
@@ -6,70 +7,72 @@ import {
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
+import type { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
+import { GlobalRequestService } from '@common/lib/helpers/global-request-service';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import { LabelType } from '@common/lib/types/enums/label-type.enum';
+import { TeamImageType } from '@common/lib/types/enums/team-image-type.enum';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
+import { assertPermissions } from '@common/lib/utils/assert-permission';
+import { Action } from '@common/modules/authorization';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import { Label } from '@modules/catalog/labels/label.entity';
 import type { CreateTeamDto } from '@modules/org/teams/dto/create-team.dto';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import type { CreateSocialDto } from '@modules/org/teams/socials/dto/create-social.dto';
 import type { User } from '@modules/uaa/users/user.entity';
-import { FileUpload } from '@modules/upload/file-uploads/file-upload.entity';
-import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
 import type { Tenant } from '../tenants/tenant.entity';
 import type { TeamsFilterDto } from './dto/teams-filter.dto';
 import type { UpdateTeamDto } from './dto/update-team.dto';
 import { TeamMember } from './members/team-member.entity';
 import { Social } from './socials/social.entity';
+import type { CreateTeamImageDto } from './team-images/dto/create-team-image.dto';
+import type { TeamImage } from './team-images/team-image.entity';
+import { TeamImagesService } from './team-images/team-images.service';
 import { Team } from './team.entity';
 
+const teamImageTypeToKey = {
+  [TeamImageType.Logo]: 'logo' as const,
+  [TeamImageType.LogoDark]: 'logoDark' as const,
+  [TeamImageType.Banner]: 'banner' as const,
+};
+
 @Injectable()
-export class TeamsService {
+export class TeamsService extends GlobalRequestService {
   // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
-    @InjectRepository(Label)
-    private readonly teamLabelRepository: BaseRepository<Label>,
-    @InjectRepository(TeamMember)
-    private readonly teamMemberRepository: BaseRepository<TeamMember>,
-    @InjectRepository(TeamForm)
-    private readonly teamFormRepository: BaseRepository<TeamForm>,
-    @InjectRepository(Social)
-    private readonly socialsRepository: BaseRepository<Social>,
-    @InjectRepository(ProfileImage)
-    private readonly profileImageRepository: BaseRepository<ProfileImage>,
-  ) {}
+    @InjectRepository(Label) private readonly teamLabelRepository: BaseRepository<Label>,
+    @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
+    @InjectRepository(TeamForm) private readonly teamFormRepository: BaseRepository<TeamForm>,
+    @InjectRepository(Social) private readonly socialsRepository: BaseRepository<Social>,
+    private readonly teamImagesService: TeamImagesService,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
+  ) { super(); }
 
   public async create(
     tenant: Tenant,
     user: User,
     createTeamDto: CreateTeamDto,
   ): Promise<Team> {
-    const {
- avatar, banner, labels, ...dto
-} = createTeamDto;
+    const { logo, logoDark, banner, labels, ...createTeam } = createTeamDto;
 
-    const team = new Team({ ...dto, tenant });
+    const team = new Team({ ...createTeam, tenant });
 
-    const existingLabels = await this.teamLabelRepository.find({
-      name: { $in: labels },
-    });
-    const newLabels: Label[] = labels
-        ?.filter(tag => !existingLabels.some(t => t.name === tag))
-        ?.map(name => new Label({ name, type: LabelType.Meta })) ?? [];
+    const existingLabels = await this.teamLabelRepository.find({ name: { $in: labels } });
+    const existingLabelsNames = new Set(existingLabels.map(label => label.name));
+    const newLabels = labels?.filter(name => !existingLabelsNames.has(name)).map(name => new Label({ name }));
 
-    if (newLabels.length > 0) {
+    if (newLabels && newLabels.length > 0)
       await this.teamLabelRepository.persistAndFlush(newLabels);
-      team.labels.add(...newLabels);
-    }
-    team.labels.add(...existingLabels);
 
-    if (avatar)
-await this.setImage(avatar, 'avatar', team);
+    team.labels.add(...existingLabels, ...newLabels ?? []);
 
-    if (banner)
-await this.setImage(banner, 'banner', team);
+    await Promise.all([
+      this.setImage(team, TeamImageType.Logo, logo ?? null),
+      this.setImage(team, TeamImageType.LogoDark, logoDark ?? null),
+      this.setImage(team, TeamImageType.Banner, banner ?? null),
+    ]);
 
     await this.teamRepository.persistAndFlush(team);
 
@@ -85,7 +88,7 @@ await this.setImage(banner, 'banner', team);
   ): Promise<PaginatedResult<Team>> {
     let options: FilterQuery<Team> = {};
     if (filters?.kind)
-options = { kind: filters.kind };
+      options = { kind: filters.kind };
 
     const allTeams = await this.teamRepository.findWithPagination(
       paginationOptions,
@@ -121,38 +124,14 @@ options = { kind: filters.kind };
     return team;
   }
 
-  public async findNames(): Promise<
-    Array<Pick<Team, 'avatar' | 'id' | 'name'>>
-  > {
-    // TODO: Add possibility to filter by kind
-    const teams = await this.teamRepository.findAll({
-      fields: ['name', 'avatar', 'id'],
-    });
-    // Remove null values for M:N relations that are automatically filled
-    return teams.map(({ members, ...keep }) => keep);
-  }
-
-  public async update(
-    user: User,
-    id: number,
-    updateTeamDto: UpdateTeamDto,
-  ): Promise<Team> {
-    const team = await this.teamRepository.findOneOrFail(
-      { id },
-      { populate: ['members', 'membershipRequestForm'] },
-    );
+  public async update(id: number, updateTeamDto: UpdateTeamDto): Promise<Team> {
+    const team = await this.teamRepository.findOneOrFail({ id }, { populate: ['members', 'membershipRequestForm'] });
 
     // TODO: Move this to CASL
-    if (!team.canAdminister(user))
+    if (!team.canAdminister(this.currentUser()))
       throw new ForbiddenException('Not a team admin');
 
-    const {
-      avatar,
-      banner,
-      membershipRequestFormId,
-      labels: wantedLabels,
-      ...dto
-    } = updateTeamDto;
+    const { logo, logoDark, banner, membershipRequestFormId, labels: wantedLabels, ...dto } = updateTeamDto;
 
     if (wantedLabels) {
       if (wantedLabels.length === 0) {
@@ -165,19 +144,19 @@ options = { kind: filters.kind };
       }
     }
 
-    if (typeof avatar !== 'undefined') {
-      if (avatar)
-await this.setImage(avatar, 'avatar', team);
-      else
-team.avatar = null;
-    }
+//     If (typeof avatar !== 'undefined') {
+//       if (avatar)
+// await this.setImage(avatar, 'avatar', team);
+//       else
+// team.avatar = null;
+//     }
 
-    if (typeof banner !== 'undefined') {
-      if (banner)
-await this.setImage(banner, 'banner', team);
-      else
-team.banner = null;
-    }
+//     if (typeof banner !== 'undefined') {
+//       if (banner)
+// await this.setImage(banner, 'banner', team);
+//       else
+// team.banner = null;
+//     }
 
     // Check that the provided form id is valid, is a template, and is not already used
     if (typeof membershipRequestFormId !== 'undefined') {
@@ -219,64 +198,98 @@ team.banner = null;
     return social;
   }
 
-  public async updateProfileImage(
-    user: User,
-    id: number,
-    type: 'avatar' | 'banner',
-    profileImage: ProfileImage,
+  public async addImage(file: MulterFile, createTeamImageDto: CreateTeamImageDto): Promise<Team> {
+    const teamImage = await this.teamImagesService.create(file, createTeamImageDto);
+    if (
+      teamImage.type === TeamImageType.Logo
+      || teamImage.type === TeamImageType.Banner
+      || teamImage.type === TeamImageType.LogoDark
+    )
+      return await this.setImage(teamImage.team, teamImage.type, teamImage);
+
+
+    return teamImage.team;
+  }
+
+  public async setImage(
+    team: Team,
+    type: TeamImageType.Banner | TeamImageType.Logo | TeamImageType.LogoDark,
+    userImage: TeamImage | string | null,
   ): Promise<Team> {
-    const team = await this.teamRepository.findOneOrFail(
-      { id },
-      { populate: ['members'] },
-    );
+    const ability = this.caslAbilityFactory.createForUser(this.currentUser());
+    assertPermissions(ability, Action.Update, team);
 
-    // TODO: Move this to CASL
-    if (!team.canAdminister(user))
-      throw new ForbiddenException('Not a team admin');
+    if (typeof userImage === 'string') // UserImage passed by ID
+      userImage = await this.teamImagesService.findOne(userImage);
 
-    await this.setImage(profileImage, type, team);
+    if (userImage)
+      userImage.active = true;
 
-    await this.profileImageRepository.flush();
+    team[teamImageTypeToKey[type]] = userImage;
+    await this.teamImagesService.setInactiveLastActive(team.id, type);
     await this.teamRepository.flush();
+
     return team;
   }
 
-  private async setImage(
-    profileImage: ProfileImage | string,
-    type: 'avatar' | 'banner',
-    team: Team,
-  ): Promise<void> {
-    // Get the avatar image and validate it
-    const id = typeof profileImage === 'string' ? profileImage : profileImage.id;
-    const avatarImage = profileImage instanceof ProfileImage
-      && profileImage.file instanceof FileUpload
-        ? profileImage
-        : await this.profileImageRepository.findOne(
-            { id, type },
-            { populate: ['file'] },
-          );
+  // Public async updateProfileImage(
+  //   user: User,
+  //   id: number,
+  //   type: 'avatar' | 'banner',
+  //   profileImage: ProfileImage,
+  // ): Promise<Team> {
+  //   const team = await this.teamRepository.findOneOrFail(
+  //     { id },
+  //     { populate: ['members'] },
+  //   );
 
-    if (!avatarImage || !avatarImage.isAvailableFor('team', team.id))
-      throw new BadRequestException(`Invalid ${type} image`);
+  //   // TODO: Move this to CASL
+  //   if (!team.canAdminister(user))
+  //     throw new ForbiddenException('Not a team admin');
 
-    // Get previous avatar image if it exists and set it to inactive
-    const previousAvatarImage = await this.profileImageRepository.findOne({
-      team,
-      type,
-      active: true,
-    });
-    if (previousAvatarImage) {
-      previousAvatarImage.active = false;
-      previousAvatarImage.lastActiveDate = new Date();
-    }
+  //   await this.setImage(profileImage, type, team);
 
-    // Update the team's image
-    team[type] = avatarImage.file.url;
+  //   await this.profileImageRepository.flush();
+  //   await this.teamRepository.flush();
+  //   return team;
+  // }
 
-    // Update the target type of the image
-    avatarImage.team = team;
-    avatarImage.active = true;
+  // private async setImage(
+  //   profileImage: ProfileImage | string,
+  //   type: 'avatar' | 'banner',
+  //   team: Team,
+  // ): Promise<void> {
+  //   // Get the avatar image and validate it
+  //   const id = typeof profileImage === 'string' ? profileImage : profileImage.id;
+  //   const avatarImage = profileImage instanceof ProfileImage
+  //     && profileImage.file instanceof FileUpload
+  //       ? profileImage
+  //       : await this.profileImageRepository.findOne(
+  //           { id, type },
+  //           { populate: ['file'] },
+  //         );
 
-    await this.profileImageRepository.flush();
-  }
+  //   if (!avatarImage || !avatarImage.isAvailableFor('team', team.id))
+  //     throw new BadRequestException(`Invalid ${type} image`);
+
+  //   // Get previous avatar image if it exists and set it to inactive
+  //   const previousAvatarImage = await this.profileImageRepository.findOne({
+  //     team,
+  //     type,
+  //     active: true,
+  //   });
+  //   if (previousAvatarImage) {
+  //     previousAvatarImage.active = false;
+  //     previousAvatarImage.lastActiveDate = new Date();
+  //   }
+
+  //   // Update the team's image
+  //   team[type] = avatarImage.file.url;
+
+  //   // Update the target type of the image
+  //   avatarImage.team = team;
+  //   avatarImage.active = true;
+
+  //   await this.profileImageRepository.flush();
+  // }
 }

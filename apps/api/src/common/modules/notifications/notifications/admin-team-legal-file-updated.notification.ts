@@ -43,7 +43,8 @@ export class AdminTeamLegalFileUpdatedNotification extends Notification {
           shortDescription: this.teamFile.team.shortDescription,
           category: this.teamFile.team.category,
           labels: this.teamFile.team.labels.getItems().map(label => ({ name: label.name, type: label.type })),
-          avatar: this.teamFile.team.avatar,
+          logo: this.teamFile.team.logo,
+          logoDark: this.teamFile.team.logoDark,
           banner: this.teamFile.team.banner,
         },
         file: {

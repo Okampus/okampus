@@ -177,6 +177,27 @@ enum SocialAccountType {
   LinkedIn
 }
 
+type TeamImage {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  file: FileUpload!
+  lastActiveDate: DateTime!
+  active: Boolean!
+  id: String!
+  team: User!
+  type: TeamImageType!
+  descriptor: String
+}
+
+enum TeamImageType {
+  Logo
+  LogoDark
+  Banner
+  Profile
+  Sticker
+  Other
+}
+
 type Team {
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -192,10 +213,10 @@ type Team {
   histories: [TeamHistory!]!
   socials: [Social!]!
   status: String
-  location: String
   presentationVideo: String
-  avatar: String
-  banner: String
+  logo: TeamImage
+  logoDark: TeamImage
+  banner: TeamImage
   members: [TeamMember!]!
   activeMemberCount: Int!
   membershipRequestForm: TeamForm
@@ -1076,9 +1097,9 @@ input CreateTeamDto {
   email: String
   labels: [String!] = []
   status: String
-  location: String
   presentationVideo: String
-  avatar: String
+  logo: String
+  logoDark: String
   banner: String
 }
 
@@ -1091,9 +1112,9 @@ input UpdateTeamDto {
   email: String
   labels: [String!] = []
   status: String
-  location: String
   presentationVideo: String
-  avatar: String
+  logo: String
+  logoDark: String
   banner: String
   membershipRequestFormId: Int
 }

@@ -1,5 +1,6 @@
 import {
   Entity,
+  Enum,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
@@ -28,15 +29,15 @@ export class Label extends BaseEntity {
   image: string | null = null;
 
   @Field(() => LabelType)
-  @Property()
-  type!: LabelType;
+  @Enum(() => LabelType)
+  type: LabelType = LabelType.Meta;
 
   constructor(options: {
     id?: string;
     name: string;
     tooltip?: string;
     image?: string;
-    type: LabelType;
+    type?: LabelType;
   }) {
     if (typeof options.id === 'undefined')
       options.id = slugify(options.name, { lower: true });

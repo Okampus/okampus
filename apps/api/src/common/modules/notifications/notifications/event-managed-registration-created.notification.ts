@@ -11,28 +11,28 @@ export class EventManagedRegistrationCreatedNotification extends Notification {
   public readonly batchable = true;
 
   constructor(
-    private readonly eventRegistration: EventRegistration,
+    private readonly registration: EventRegistration,
   ) {
     super();
-    this.excludedEmails.push(this.eventRegistration.user.email);
+    this.excludedEmails.push(this.registration.user.email);
   }
 
   public async getNotifiees(): Promise<Set<User>> {
     if (!this.entityManager)
       throw new TypeError('Entity Manager not attached');
 
-    const boardUsers = await this.getTeamBoard(this.eventRegistration.event.team);
-    boardUsers.push(this.eventRegistration.event.createdBy);
+    const boardUsers = await this.getTeamBoard(this.registration.event.team);
+    boardUsers.push(this.registration.event.createdBy);
 
-    if (this.eventRegistration.event.supervisor)
-      boardUsers.push(this.eventRegistration.event.supervisor.user);
+    if (this.registration.event.supervisor)
+      boardUsers.push(this.registration.event.supervisor.user);
 
     return this.filter(boardUsers);
   }
 
   public async ensurePayload(): Promise<void> {
     await this.entityManager.getRepository(EventRegistration).populate(
-      this.eventRegistration,
+      this.registration,
       ['event.team', 'event.supervisor', 'event.createdBy', 'user'],
     );
   }
@@ -40,30 +40,30 @@ export class EventManagedRegistrationCreatedNotification extends Notification {
   public getPayload(): ITriggerPayload {
     return {
       registration: {
-        id: this.eventRegistration.id,
-        status: this.eventRegistration.status,
-        user: this.userToPayload(this.eventRegistration.user),
+        id: this.registration.id,
+        status: this.registration.status,
+        user: this.userToPayload(this.registration.user),
         event: {
-          start: this.eventRegistration.event.start,
-          end: this.eventRegistration.event.end,
-          name: this.eventRegistration.event.name,
-          description: this.eventRegistration.event.description,
-          price: this.eventRegistration.event.price,
-          location: this.eventRegistration.event.location,
-          supervisor: this.eventRegistration.event.supervisor
-            ? this.userToPayload(this.eventRegistration.event.supervisor.user)
+          start: this.registration.event.start,
+          end: this.registration.event.end,
+          name: this.registration.event.name,
+          description: this.registration.event.description,
+          price: this.registration.event.price,
+          location: this.registration.event.location,
+          supervisor: this.registration.event.supervisor
+            ? this.userToPayload(this.registration.event.supervisor.user)
             : null,
-          private: this.eventRegistration.event.private,
-          meta: this.eventRegistration.event.meta,
+          private: this.registration.event.private,
+          meta: this.registration.event.meta,
           team: {
-            id: this.eventRegistration.event.team.id,
-            name: this.eventRegistration.event.team.name,
-            shortDescription: this.eventRegistration.event.team.shortDescription,
-            category: this.eventRegistration.event.team.category,
-            labels: this.eventRegistration
-              .event.team.labels.getItems().map(label => ({ name: label.name, type: label.type })),
-            avatar: this.eventRegistration.event.team.avatar,
-            banner: this.eventRegistration.event.team.banner,
+            id: this.registration.event.team.id,
+            name: this.registration.event.team.name,
+            shortDescription: this.registration.event.team.shortDescription,
+            category: this.registration.event.team.category,
+            labels: this.registration.event.team.labels.getItems().map(_ => ({ name: _.name, type: _.type })),
+              logo: this.registration.event.team.logo,
+              logoDark: this.registration.event.team.logoDark,
+              banner: this.registration.event.team.banner,
           },
         },
       },
