@@ -18,7 +18,7 @@ import type { Reaction } from '@modules/interact/reactions/reaction.entity';
 import type { Report } from '@modules/interact/reports/report.entity';
 import type { Validation } from '@modules/interact/validations/validation.entity';
 import type { Vote } from '@modules/interact/votes/vote.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 
 import { TransformCollection } from '../decorators/transform-collection.decorator';
 import { ContentMasterType } from '../types/enums/content-master-type.enum';

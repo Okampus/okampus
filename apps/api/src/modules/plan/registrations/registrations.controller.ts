@@ -16,7 +16,7 @@ import { Action, CheckPolicies } from '@common/modules/authorization';
 import { normalizePagination } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
 import { CreateEventRegistrationDto } from '@modules/plan/registrations/dto/create-event-registration.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Event } from '../events/event.entity';
 import { ListRegisteredEventsDto } from './dto/list-registered-events.dto';
 import { UpdateEventRegistrationDto } from './dto/update-event-registration.dto';

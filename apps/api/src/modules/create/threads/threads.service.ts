@@ -27,7 +27,7 @@ import { Validation } from '@modules/interact/validations/validation.entity';
 import { ValidationsService } from '@modules/interact/validations/validations.service';
 import { Class } from '@modules/org/classes/class.entity';
 import { Team } from '@modules/org/teams/team.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { ContentsService } from '../contents/contents.service';
 import { Content } from '../contents/entities/content.entity';
 import type { ThreadListOptionsDto } from './dto/thread-list-options.dto';

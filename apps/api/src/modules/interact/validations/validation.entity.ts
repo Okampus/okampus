@@ -3,7 +3,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseContentInteraction } from '@common/lib/entities/base-content-interaction.entity';
 import { ValidationType } from '@common/lib/types/enums/validation-type.enum';
 import type { Content } from '@modules/create/contents/entities/content.entity';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 
 @ObjectType()
 @Entity()

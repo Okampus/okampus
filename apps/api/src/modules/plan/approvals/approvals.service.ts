@@ -16,7 +16,7 @@ import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
 import type { Tenant } from '@modules/org/tenants/tenant.entity';
 import type { CreateEventApprovalDto } from '@modules/plan/approvals/dto/create-approval.dto';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import { Event } from '../events/event.entity';
 import { EventApproval } from './approval.entity';
 import type { ListEventApprovalsDto } from './dto/list-approvals.dto';

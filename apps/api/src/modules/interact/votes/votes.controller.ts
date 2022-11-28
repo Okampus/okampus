@@ -10,7 +10,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { Content } from '@modules/create/contents/entities/content.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { VoteDto } from './dto/vote.dto';
 import type { Vote } from './vote.entity';
 import { VotesService } from './votes.service';

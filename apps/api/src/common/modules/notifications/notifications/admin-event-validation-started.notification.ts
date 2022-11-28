@@ -1,7 +1,7 @@
 import type { ITriggerPayload } from '@novu/node';
 import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
 import { Event } from '@modules/plan/events/event.entity';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import { NotificationType } from '../notification-type.enum';
 import { Notification } from './base.notification';
 

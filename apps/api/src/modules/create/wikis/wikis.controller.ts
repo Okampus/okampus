@@ -15,7 +15,7 @@ import { Action, CheckPolicies } from '@common/modules/authorization';
 import { normalizePagination } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
 import { CreateWikiPageDto } from '@modules/create/wikis/dto/create-wiki-page.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { FilterAndPaginateDto } from './dto/filter-and-paginate.dto';
 import { UpdateWikiPageDto } from './dto/update-wiki-page.dto';
 import { Wiki } from './wiki.entity';

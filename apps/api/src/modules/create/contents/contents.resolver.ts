@@ -12,7 +12,7 @@ import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Interactions } from '@modules/create/contents/interactions.model';
 import { FavoritesService } from '@modules/interact/favorites/favorites.service';
 import { VotesService } from '@modules/interact/votes/votes.service';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { ContextBatchContents } from '../threads/threads.resolver';
 import { ContentsService } from './contents.service';
 import { CreateContentWithKindDto } from './dto/create-content-with-kind.dto';

@@ -6,7 +6,7 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Validation } from './validation.entity';
 import { ValidationsService } from './validations.service';
 

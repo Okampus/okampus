@@ -9,7 +9,7 @@ import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import type { CreateEventRegistrationDto } from '@modules/plan/registrations/dto/create-event-registration.dto';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import { Event } from '../events/event.entity';
 import type { ListRegisteredEventsDto } from './dto/list-registered-events.dto';
 import type { UpdateEventRegistrationDto } from './dto/update-event-registration.dto';

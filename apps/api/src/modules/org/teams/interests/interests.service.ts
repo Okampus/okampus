@@ -4,7 +4,7 @@ import pointsConfig from '@common/configs/points.config';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import type { CreateInterestDto } from '@modules/org/teams/interests/dto/create-interest.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Team } from '../team.entity';
 import type { UpdateInterestDto } from './dto/update-interest.dto';
 import { Interest } from './interest.entity';

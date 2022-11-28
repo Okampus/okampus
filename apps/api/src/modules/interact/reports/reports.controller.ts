@@ -16,7 +16,7 @@ import { normalizePagination, PaginateDto } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { CreateReportDto } from '@modules/interact/reports/dto/create-report.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { GetReportsDto } from './dto/get-reports.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
 import { Report } from './report.entity';

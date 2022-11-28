@@ -16,7 +16,7 @@ import { ThreadType } from '@common/lib/types/enums/thread-type.enum';
 import { Validation } from '@modules/interact/validations/validation.entity';
 import { Class } from '@modules/org/classes/class.entity';
 import { Team } from '@modules/org/teams/team.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import type { Content } from '../contents/entities/content.entity';
 
 @ObjectType()

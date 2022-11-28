@@ -8,7 +8,7 @@ import {
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
 import { BaseEntity } from '@common/lib/entities/base.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Content } from './content.entity';
 
 @ObjectType()

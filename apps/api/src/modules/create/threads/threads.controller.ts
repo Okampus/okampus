@@ -16,7 +16,7 @@ import { normalizePagination } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
 import { normalizeSort } from '@common/modules/sorting';
 import { CreateThreadDto } from '@modules/create/threads/dto/create-thread.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { AssigneesDto } from './dto/assignees.dto';
 import { TagsDto } from './dto/tags.dto';
 import { ThreadListOptionsDto } from './dto/thread-list-options.dto';

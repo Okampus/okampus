@@ -7,7 +7,7 @@ import { Validation } from '@modules/interact/validations/validation.entity';
 import { ValidationsModule } from '@modules/interact/validations/validations.module';
 import { Class } from '@modules/org/classes/class.entity';
 import { Team } from '@modules/org/teams/team.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { ContentsModule } from '../contents/contents.module';
 import { Content } from '../contents/entities/content.entity';
 import { Thread } from './thread.entity';

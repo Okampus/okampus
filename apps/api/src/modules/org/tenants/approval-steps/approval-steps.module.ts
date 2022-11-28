@@ -4,7 +4,7 @@ import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { ApprovalStepsController } from '@modules/org/tenants/approval-steps/approval-steps.controller';
 import { ApprovalStepsResolver } from '@modules/org/tenants/approval-steps/approval-steps.resolver';
 import { ApprovalStepsService } from '@modules/org/tenants/approval-steps/approval-steps.service';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 
 import { TenantsCoreModule } from '../core-tenants.module';
 import { Tenant } from '../tenant.entity';

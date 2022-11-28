@@ -3,7 +3,7 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import type { CreateClassMembershipDto } from '@modules/org/classes/memberships/dto/create-class-membership.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Class } from '../class.entity';
 import { SchoolYear } from '../school-year/school-year.entity';
 import { ClassMembership } from './class-membership.entity';

@@ -5,7 +5,7 @@ import { BaseRepository } from '@common/lib/orm/base.repository';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import type { CreateWikiPageDto } from '@modules/create/wikis/dto/create-wiki-page.dto';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import type { UpdateWikiPageDto } from './dto/update-wiki-page.dto';
 import { Wiki } from './wiki.entity';
 

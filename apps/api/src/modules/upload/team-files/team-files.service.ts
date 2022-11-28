@@ -7,8 +7,8 @@ import { NotificationsService } from '@common/modules/notifications/notification
 import type { PaginatedResult } from '@common/modules/pagination';
 import { normalizePagination } from '@common/modules/pagination';
 import { Team } from '@modules/org/teams/team.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import type { CreateTeamFileDto } from '@modules/upload/team-files/dto/create-team-file.dto';
-import type { User } from '@modules/uua/users/user.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 import type { TeamFileListOptions } from './dto/team-file-list-options.dto';
 import type { UpdateTeamFileDto } from './dto/update-team-file.dto';

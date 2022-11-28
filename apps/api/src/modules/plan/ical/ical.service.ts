@@ -5,7 +5,7 @@ import { config } from '@common/configs/config';
 import { iCals } from '@common/configs/strings';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { EventRegistration } from '@modules/plan/registrations/registration.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Event } from '../events/event.entity';
 
 @Injectable()

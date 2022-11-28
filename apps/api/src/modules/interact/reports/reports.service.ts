@@ -11,7 +11,7 @@ import { NotificationsService } from '@common/modules/notifications/notification
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import type { CreateReportDto } from '@modules/interact/reports/dto/create-report.dto';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import type { GetReportsDto } from './dto/get-reports.dto';
 import type { UpdateReportDto } from './dto/update-report.dto';
 import { Report } from './report.entity';

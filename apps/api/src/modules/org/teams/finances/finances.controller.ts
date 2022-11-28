@@ -15,7 +15,7 @@ import { Action, CheckPolicies } from '@common/modules/authorization';
 import { normalizePagination } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
 import { CreateTeamFinanceDto } from '@modules/org/teams/finances/dto/create-team-finance.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { ListTeamFinancesDto } from './dto/list-team-finances.dto';
 import { UpdateTeamFinanceDto } from './dto/update-team-finance.dto';
 import { TeamFinancesService } from './finances.service';

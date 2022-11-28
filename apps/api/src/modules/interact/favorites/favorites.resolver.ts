@@ -7,7 +7,7 @@ import {
 } from '@nestjs/graphql';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Content } from '@modules/create/contents/entities/content.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Favorite } from './favorite.entity';
 import { FavoritesService } from './favorites.service';
 

@@ -18,7 +18,7 @@ import { EventApprovalsService } from '@modules/plan/approvals/approvals.service
 import { CreateEventApprovalDto } from '@modules/plan/approvals/dto/create-approval.dto';
 import { CreateEventDto } from '@modules/plan/events/dto/create-event.dto';
 import { EventRegistration } from '@modules/plan/registrations/registration.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { ListEventsDto } from './dto/list-events.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './event.entity';

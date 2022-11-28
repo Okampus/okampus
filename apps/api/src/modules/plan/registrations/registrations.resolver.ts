@@ -12,7 +12,7 @@ import { APP_PUB_SUB } from '@common/lib/constants';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
 import { CreateEventRegistrationDto } from '@modules/plan/registrations/dto/create-event-registration.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Event } from '../events/event.entity';
 import { EventsService } from '../events/events.service';
 import { FilterRegisteredEventsDto } from './dto/list-registered-events.dto';

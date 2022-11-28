@@ -2,7 +2,7 @@ import fieldToRelations from '@banksnussman/graphql-fields-to-relations';
 import { RequestContext } from '@medibloc/nestjs-request-context';
 import type { GlobalRequestContext } from '@common/lib/helpers/global-request-context';
 import type { Tenant } from '@modules/org/tenants/tenant.entity';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 
 export abstract class GlobalRequestService {
   public autoGqlPopulate(defaultPopulate?: string[]): readonly never[] {

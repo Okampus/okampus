@@ -28,9 +28,9 @@ import { Issuer } from 'openid-client';
 import { config } from '@common/configs/config';
 import { APP_OIDC_CACHE } from '@common/lib/constants';
 import { TenantsService } from '@modules/org/tenants/tenants.service';
-import { AuthService } from '@modules/uua/auth/auth.service';
-import { tenantStrategyFactory } from '@modules/uua/auth/tenant.strategy';
-import { UsersService } from '@modules/uua/users/users.service';
+import { AuthService } from '@modules/uaa/auth/auth.service';
+import { tenantStrategyFactory } from '@modules/uaa/auth/tenant.strategy';
+import { UsersService } from '@modules/uaa/users/users.service';
 import { AppModule } from './app.module';
 
 const logger = new Logger('Bootstrap');

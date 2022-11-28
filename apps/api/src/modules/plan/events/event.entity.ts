@@ -25,7 +25,7 @@ import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import { Team } from '@modules/org/teams/team.entity';
 import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
 import { EventRegistration } from '@modules/plan/registrations/registration.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 
 @ObjectType()
 @Entity()

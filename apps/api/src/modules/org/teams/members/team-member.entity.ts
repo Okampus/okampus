@@ -15,7 +15,7 @@ import {
 } from '@nestjs/graphql';
 import { BaseEntity } from '@common/lib/entities/base.entity';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Team } from '../team.entity';
 
 @ObjectType()

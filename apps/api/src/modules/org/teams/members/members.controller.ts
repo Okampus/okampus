@@ -14,7 +14,7 @@ import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { normalizePagination, PaginateDto } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import type { TeamMembershipRequest } from '../requests/team-membership-request.entity';
 import { Team } from '../team.entity';
 import { InviteMemberDto } from './dto/invite-member.dto';

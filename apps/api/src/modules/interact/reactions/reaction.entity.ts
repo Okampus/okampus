@@ -11,7 +11,7 @@ import { BaseEntity } from '@common/lib/entities/base.entity';
 import { ContentMaster } from '@common/lib/entities/content-master.entity';
 import { AllReaction } from '@common/lib/types/enums/reaction.enum';
 import { Content } from '@modules/create/contents/entities/content.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 
 @ObjectType()
 @Entity()

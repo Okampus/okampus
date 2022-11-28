@@ -10,7 +10,7 @@ import {
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '@common/lib/entities/base.entity';
 import { SocialAccountType } from '@common/lib/types/enums/social-account-type.enum';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Team } from '../team.entity';
 
 

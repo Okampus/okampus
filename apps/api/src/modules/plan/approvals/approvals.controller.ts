@@ -15,7 +15,7 @@ import { normalizePagination } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { CreateEventApprovalDto } from '@modules/plan/approvals/dto/create-approval.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 // Import type { Event } from '../events/team-event.entity';
 import { EventApproval } from './approval.entity';
 import { EventApprovalsService } from './approvals.service';

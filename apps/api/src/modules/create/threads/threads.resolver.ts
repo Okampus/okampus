@@ -14,7 +14,7 @@ import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
 import type { Interactions } from '@modules/create/contents/interactions.model';
 import { CreateThreadDto } from '@modules/create/threads/dto/create-thread.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { ContentsService } from '../contents/contents.service';
 import type { Content } from '../contents/entities/content.entity';
 import { UpdateThreadDto } from './dto/update-thread.dto';

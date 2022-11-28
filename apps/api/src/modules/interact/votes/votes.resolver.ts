@@ -14,7 +14,7 @@ import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
 import { Content } from '@modules/create/contents/entities/content.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Vote } from './vote.entity';
 import { VotesService } from './votes.service';
 

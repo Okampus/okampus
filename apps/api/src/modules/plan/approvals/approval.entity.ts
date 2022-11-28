@@ -6,7 +6,7 @@ import {
 } from '@mikro-orm/core';
 import { BaseEntity } from '@common/lib/entities/base.entity';
 import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Event } from '../events/event.entity';
 
 @Entity()

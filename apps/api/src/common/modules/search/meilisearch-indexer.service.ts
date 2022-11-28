@@ -6,7 +6,7 @@ import { MeiliSearch } from 'meilisearch';
 import { InjectMeiliSearch } from 'nestjs-meilisearch';
 import { Team } from '@modules/org/teams/team.entity';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { config } from '../../configs/config';
 import { MEILISEARCH_BATCH_SIZE, MEILISEARCH_ID_SEPARATOR } from '../../lib/constants';
 import type { IndexedEntity } from './indexed-entity.interface';

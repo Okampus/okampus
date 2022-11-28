@@ -20,7 +20,7 @@ import { Role } from '@common/modules/authorization/types/role.enum';
 import type { BaseIndex } from '@common/modules/search/indexed-entity.interface';
 import { Label } from '@modules/catalog/labels/label.entity';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import type { Tenant } from '../tenants/tenant.entity';
 import { TeamHistory } from './histories/team-history.entity';
 import { TeamMember } from './members/team-member.entity';

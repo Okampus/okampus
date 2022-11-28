@@ -1,6 +1,6 @@
 import type { ITriggerPayload } from '@novu/node';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import type { TeamRole } from '../../../lib/types/enums/team-role.enum';
 import { NotificationType } from '../notification-type.enum';
 import { Notification } from './base.notification';

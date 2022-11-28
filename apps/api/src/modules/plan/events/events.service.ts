@@ -25,7 +25,7 @@ import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.
 import type { Tenant } from '@modules/org/tenants/tenant.entity';
 import type { CreateEventDto } from '@modules/plan/events/dto/create-event.dto';
 import { EventRegistration } from '@modules/plan/registrations/registration.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import type { ListEventsDto } from './dto/list-events.dto';
 import type { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './event.entity';

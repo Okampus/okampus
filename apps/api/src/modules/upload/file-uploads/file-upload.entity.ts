@@ -16,7 +16,7 @@ import { config } from '@common/configs/config';
 import { BaseTenantEntity } from '@common/lib/entities/base-tenant.entity';
 import { FileKind } from '@common/lib/types/enums/file-kind.enum';
 import type { Tenant } from '@modules/org/tenants/tenant.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 
 @ObjectType()
 @Entity()

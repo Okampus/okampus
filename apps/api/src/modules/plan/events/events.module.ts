@@ -9,7 +9,7 @@ import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.
 import { EventApproval } from '@modules/plan/approvals/approval.entity';
 import { EventApprovalsModule } from '@modules/plan/approvals/approvals.module';
 import { EventRegistration } from '@modules/plan/registrations/registration.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Event } from './event.entity';
 import { EventsController } from './events.controller';
 import { EventsResolver } from './events.resolver';

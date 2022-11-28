@@ -29,7 +29,7 @@ import { Favorite } from '@modules/interact/favorites/favorite.entity';
 import { Reaction } from '@modules/interact/reactions/reaction.entity';
 import { Report } from '@modules/interact/reports/report.entity';
 import { Vote } from '@modules/interact/votes/vote.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import type { CreateContentWithKindDto } from './dto/create-content-with-kind.dto';
 import type { CreateContentDto } from './dto/create-content.dto';
 import type { UpdateContentDto } from './dto/update-content.dto';

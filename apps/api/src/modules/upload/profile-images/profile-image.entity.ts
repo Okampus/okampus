@@ -9,7 +9,7 @@ import { nanoid } from 'nanoid';
 import { BaseFileEntity } from '@common/lib/entities/base-file.entity';
 import { Team } from '@modules/org/teams/team.entity';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 
 @ObjectType()

@@ -4,7 +4,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import type { ApprovalStepType } from '@common/lib/types/enums/approval-step-type.enum';
 import type { ApprovalStepDto } from '@modules/org/tenants/approval-steps/dto/create-approval-step.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Tenant } from '../tenant.entity';
 import { ApprovalStep } from './approval-step.entity';
 import type { UpdateApprovalStepDto } from './dto/update-approval-step.dto';

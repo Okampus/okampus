@@ -12,7 +12,7 @@ import { ReportsModule } from '@modules/interact/reports/reports.module';
 import { ValidationsModule } from '@modules/interact/validations/validations.module';
 import { Vote } from '@modules/interact/votes/vote.entity';
 import { VotesModule } from '@modules/interact/votes/votes.module';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { ContentsController } from './contents.controller';
 import { ContentResolver } from './contents.resolver';
 import { ContentsService } from './contents.service';

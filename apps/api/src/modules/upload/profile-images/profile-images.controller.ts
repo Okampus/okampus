@@ -17,7 +17,7 @@ import { UploadInterceptor } from '@common/lib/decorators/upload-interceptor.dec
 import { FileKind } from '@common/lib/types/enums/file-kind.enum';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { FileUploadsService } from '../file-uploads/file-uploads.service';
 import { CreateProfileImageDto } from './dto/create-profile-image.dto';
 import { ProfileImage } from './profile-image.entity';

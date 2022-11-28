@@ -7,7 +7,7 @@ import { BaseRepository } from '@common/lib/orm/base.repository';
 import type { FileKind } from '@common/lib/types/enums/file-kind.enum';
 import { streamToBuffer } from '@common/lib/utils/stream-to-buffer';
 import type { Tenant } from '@modules/org/tenants/tenant.entity';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import { FilePersistanceService } from './file-persistance.service';
 import { FileUpload } from './file-upload.entity';
 

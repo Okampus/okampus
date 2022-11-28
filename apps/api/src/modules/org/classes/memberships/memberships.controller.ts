@@ -14,7 +14,7 @@ import { Action, CheckPolicies } from '@common/modules/authorization';
 import { normalizePagination, PaginateDto } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
 import { CreateClassMembershipDto } from '@modules/org/classes/memberships/dto/create-class-membership.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Class } from '../class.entity';
 import type { ClassMembership } from './class-membership.entity';
 import { UpdateClassMembershipDto } from './dto/update-class-membership.dto';

@@ -11,7 +11,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { CreateSocialDto } from '@modules/org/teams/socials/dto/create-social.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { UpdateSocialDto } from './dto/update-social.dto';
 import type { Social } from './social.entity';
 import { SocialsService } from './socials.service';

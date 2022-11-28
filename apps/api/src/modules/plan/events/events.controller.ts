@@ -18,7 +18,7 @@ import type { PaginatedResult } from '@common/modules/pagination';
 import { normalizeSort } from '@common/modules/sorting';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { CreateEventDto } from '@modules/plan/events/dto/create-event.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { ListEventsDto } from './dto/list-events.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './event.entity';

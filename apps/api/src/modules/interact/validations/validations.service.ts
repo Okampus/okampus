@@ -8,7 +8,7 @@ import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { ThreadSubscribedAnsweredNotification } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
 import { Content } from '@modules/create/contents/entities/content.entity';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import { Validation } from './validation.entity';
 
 @Injectable()

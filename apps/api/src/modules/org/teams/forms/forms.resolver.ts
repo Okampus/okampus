@@ -11,7 +11,7 @@ import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { CreateTeamFormDto } from '@modules/org/teams/forms/dto/create-team-form.dto';
 import { Team } from '@modules/org/teams/team.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { UpdateTeamFormDto } from './dto/update-team-form.dto';
 import { TeamFormsService } from './forms.service';
 import { TeamForm } from './team-form.entity';

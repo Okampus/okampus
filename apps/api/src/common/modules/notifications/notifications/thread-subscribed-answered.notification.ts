@@ -1,6 +1,6 @@
 import type { ITriggerPayload } from '@novu/node';
 import { Content } from '@modules/create/contents/entities/content.entity';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import { config } from '../../../configs/config';
 import { NotificationType } from '../notification-type.enum';
 import { Notification } from './base.notification';

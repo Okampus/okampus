@@ -5,11 +5,11 @@ import { MercuriusDriver } from '@nestjs/mercurius';
 import { GraphQLJSON } from 'graphql-scalars';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import type { Tenant } from '@modules/org/tenants/tenant.entity';
-import { AuthModule } from '@modules/uua/auth/auth.module';
-import { AuthService } from '@modules/uua/auth/auth.service';
-import type { User } from '@modules/uua/users/user.entity';
-import { UsersModule } from '@modules/uua/users/users.module';
-import { UsersService } from '@modules/uua/users/users.service';
+import { AuthModule } from '@modules/uaa/auth/auth.module';
+import { AuthService } from '@modules/uaa/auth/auth.service';
+import type { User } from '@modules/uaa/users/user.entity';
+import { UsersModule } from '@modules/uaa/users/users.module';
+import { UsersService } from '@modules/uaa/users/users.service';
 
 export interface GqlWebsocketContext {
   context: {

@@ -8,7 +8,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { normalizePagination } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
 import type { TeamMember } from '../members/team-member.entity';
 import type { TeamMembershipRequest } from '../requests/team-membership-request.entity';

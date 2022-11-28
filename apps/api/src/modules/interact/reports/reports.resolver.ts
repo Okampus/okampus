@@ -13,7 +13,7 @@ import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { CreateReportDto } from '@modules/interact/reports/dto/create-report.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Report } from './report.entity';
 import { ReportsService } from './reports.service';
 

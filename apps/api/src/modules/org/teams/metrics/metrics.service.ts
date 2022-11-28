@@ -9,7 +9,7 @@ import { oneMonthAgo, roundToInterval } from '@common/lib/utils/date-utils';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import { Team } from '@modules/org/teams/team.entity';
 import { Event } from '@modules/plan/events/event.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import type { ListMetricsDto } from './dto/list-metrics.dto';
 import { Metric } from './metric.entity';
 

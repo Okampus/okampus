@@ -11,7 +11,7 @@ import type { PaginatedResult } from '@common/modules/pagination';
 import { serializeOrder } from '@common/modules/sorting';
 import { Tag } from '@modules/catalog/tags/tag.entity';
 import type { CreateBlogDto } from '@modules/create/blogs/dto/create-blog.dto';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import { ContentsService } from '../contents/contents.service';
 import { Content } from '../contents/entities/content.entity';
 import { Blog } from './blog.entity';

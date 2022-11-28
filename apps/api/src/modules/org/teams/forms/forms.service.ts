@@ -8,7 +8,7 @@ import { NotificationsService } from '@common/modules/notifications/notification
 import type { PaginatedResult } from '@common/modules/pagination';
 import type { CreateTeamFormDto } from '@modules/org/teams/forms/dto/create-team-form.dto';
 import { Team } from '@modules/org/teams/team.entity';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import type { ListTeamFormsDto } from './dto/list-team-forms.dto';
 import type { UpdateTeamFormDto } from './dto/update-team-form.dto';
 import { TeamForm } from './team-form.entity';

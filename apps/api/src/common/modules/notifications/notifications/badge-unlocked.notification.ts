@@ -1,6 +1,6 @@
 import type { ITriggerPayload } from '@novu/node';
-import { BadgeUnlock } from '@modules/uua/badges/entities/badge-unlock.entity';
-import type { User } from '@modules/uua/users/user.entity';
+import { BadgeUnlock } from '@modules/uaa/badges/entities/badge-unlock.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import { NotificationType } from '../notification-type.enum';
 import { Notification } from './base.notification';
 

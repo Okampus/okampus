@@ -14,7 +14,7 @@ import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { normalizePagination, PaginateDto } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
 import type { Content } from '@modules/create/contents/entities/content.entity';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import type { Favorite } from './favorite.entity';
 import { FavoritesService } from './favorites.service';
 

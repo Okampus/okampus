@@ -6,7 +6,7 @@ import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { Content } from '@modules/create/contents/entities/content.entity';
-import type { User } from '@modules/uua/users/user.entity';
+import type { User } from '@modules/uaa/users/user.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
 import { Attachment } from './attachment.entity';
 import type { CreateAttachmentDto } from './dto/create-attachment.dto';

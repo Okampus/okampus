@@ -17,7 +17,7 @@ import { normalizePagination } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
 import { normalizeSort } from '@common/modules/sorting';
 import { CreateBlogDto } from '@modules/create/blogs/dto/create-blog.dto';
-import { User } from '@modules/uua/users/user.entity';
+import { User } from '@modules/uaa/users/user.entity';
 import { Blog } from './blog.entity';
 import { BlogsService } from './blogs.service';
 import { UpdateBlogDto } from './dto/update-blog.dto';
