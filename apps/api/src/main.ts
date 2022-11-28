@@ -114,7 +114,7 @@ async function bootstrap(): Promise<void> {
   fastifyInstance.get('/auth/:tenant', {
     preValidation: async (req, res) => {
       const tenantId = (req.params as { tenant: string }).tenant;
-      const tenant = await tenantsService.findOne(tenantId);
+      const tenant = await tenantsService.findBareTenant(tenantId);
       if (!tenant)
         return false;
 

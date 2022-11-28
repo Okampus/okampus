@@ -53,7 +53,7 @@ export class UsersService extends GlobalRequestService {
     @InjectMeiliSearch() private readonly meiliSearch: MeiliSearch,
   ) { super(); }
 
-  public async findBareUser(idOrEmail: string): Promise<User> {
+  public async findBareUser(idOrEmail: string): Promise<User | null> {
     return await this.userRepository.findOneOrFail(
       { $or: [{ id: idOrEmail }, { email: idOrEmail.toLowerCase() }] },
       { fields: ['id', 'password', 'name', 'lastName', 'email', 'avatar', 'roles', 'banner', 'bot', 'points'] },
@@ -113,7 +113,10 @@ export class UsersService extends GlobalRequestService {
   }
 
   public async createBare(createUserDto: TenantUserDto, forTenant: string): Promise<User> {
-    const tenant = await this.tenantsService.findOne(forTenant);
+    const tenant = await this.tenantsService.findBareTenant(forTenant);
+    if (!tenant)
+      throw new BadRequestException('Tenant does not exist');
+
     const user = new User(createUserDto, tenant);
 
     await catchUniqueViolation(this.userRepository, user);

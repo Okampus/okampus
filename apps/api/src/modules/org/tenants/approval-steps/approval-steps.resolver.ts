@@ -26,7 +26,7 @@ export class ApprovalStepsResolver {
     @Args('createStep') createStep: ApprovalStepDto,
   ): Promise<Tenant> {
     await this.approvalStepsService.create(tenant, createStep);
-    return await this.tenantsService.findOne(tenant.id);
+    return tenant;
   }
 
   // TODO: Add permission checks

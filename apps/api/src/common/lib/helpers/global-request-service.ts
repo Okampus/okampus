@@ -1,5 +1,6 @@
 import fieldToRelations from '@banksnussman/graphql-fields-to-relations';
 import { RequestContext } from '@medibloc/nestjs-request-context';
+import { UnauthorizedException } from '@nestjs/common';
 import type { GlobalRequestContext } from '@common/lib/helpers/global-request-context';
 import type { Tenant } from '@modules/org/tenants/tenant.entity';
 import type { User } from '@modules/uaa/users/user.entity';
@@ -17,10 +18,18 @@ export abstract class GlobalRequestService {
   }
 
   public currentUser(): User {
-    return RequestContext.get<GlobalRequestContext>().user;
+    const { user } = RequestContext.get<GlobalRequestContext>();
+    if (user === null)
+      throw new UnauthorizedException('User is not authenticated');
+
+    return user;
   }
 
   public currentTenant(): Tenant {
-    return RequestContext.get<GlobalRequestContext>().tenant;
+    const { tenant } = RequestContext.get<GlobalRequestContext>();
+    if (tenant === null)
+      throw new UnauthorizedException('Tenant has not been set');
+
+    return tenant;
   }
 }

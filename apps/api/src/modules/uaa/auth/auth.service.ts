@@ -82,6 +82,9 @@ export class AuthService extends GlobalRequestService {
 
   public async generateBotToken(botId: string): Promise<string> {
     const bot = await this.usersService.findBareUser(botId);
+    if (!bot)
+      throw new BadRequestException('Bot does not exist');
+
     if (!bot.bot)
       throw new BadRequestException('Only bots can generate tokens');
 

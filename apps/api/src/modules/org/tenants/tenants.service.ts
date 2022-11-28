@@ -29,6 +29,14 @@ export class TenantsService extends GlobalRequestService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) { super(); }
 
+  public async findBareTenant(id: string): Promise<Tenant | null> {
+    return await this.tenantRepository.findOne({ id });
+  }
+
+  public async findOne(id: string): Promise<Tenant> {
+    return await this.tenantRepository.findOneOrFail({ id }, { populate: this.autoGqlPopulate() });
+  }
+
   public async create(
     createTenantDto: Omit<CreateTenantDto, 'logo' | 'logoDark'>,
     files: { logo?: MulterFile[]; logoDark?: MulterFile[] } | null = null,
@@ -43,10 +51,6 @@ export class TenantsService extends GlobalRequestService {
       await this.addImage(files.logoDark[0], { tenantId: tenant.id, type: TenantImageType.Logo });
 
     return tenant;
-  }
-
-  public async findOne(id: string | undefined): Promise<Tenant> {
-    return await this.tenantRepository.findOneOrFail({ id }, { populate: this.autoGqlPopulate() });
   }
 
   public async find(): Promise<Tenant[]> {

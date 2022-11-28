@@ -117,7 +117,9 @@ export class AuthGuard implements CanActivate {
         throw new UnauthorizedException('No tenant ID provided');
 
       // TODO: optimize with caching for tenant
-      globalRequestContext.tenant = await this.tenantsService.findOne(tenantId);
+      globalRequestContext.tenant = await this.tenantsService.findBareTenant(tenantId);
+      if (!globalRequestContext.tenant)
+        throw new UnauthorizedException('Tenant does not exist');
     }
 
     if (isPublic)
@@ -129,6 +131,8 @@ export class AuthGuard implements CanActivate {
 
     // TODO: optimize with caching for user session
     globalRequestContext.user = await this.userService.findBareUser(sub);
+    if (!globalRequestContext.user)
+      throw new UnauthorizedException('User does not exist');
 
     // Automatically refresh access tokens if only a refresh token is detected
     if (tokenType === TokenType.Refresh)

@@ -48,7 +48,7 @@ export class UsersModule implements OnModuleInit {
   ) {}
 
   public async onModuleInit(): Promise<void> {
-    let tenant = await this.tenantsService.findOne(config.baseTenant.id);
+    let tenant = await this.tenantsService.findBareTenant(config.baseTenant.id);
     if (!tenant) {
       tenant = await this.tenantsService.create({
         id: config.baseTenant.id,
