@@ -115,7 +115,7 @@ export class TeamsController {
     if (!file)
       throw new BadRequestException('No file provided');
 
-    const fileUpload = await this.filesService.create(tenant, user, file, FileKind.ProfileImage);
+    const fileUpload = await this.filesService.create(tenant, user, file, FileKind.TeamImage);
     const profileImage = await this.profileImagesService.create(fileUpload, 'avatar');
 
     return await this.teamsService.updateProfileImage(user, id, 'avatar', profileImage);
@@ -136,7 +136,7 @@ export class TeamsController {
     if (!banner)
       throw new BadRequestException('No file provided');
 
-    const fileUpload = await this.filesService.create(tenant, user, banner, FileKind.ProfileImage);
+    const fileUpload = await this.filesService.create(tenant, user, banner, FileKind.TeamImage);
     const profileImage = await this.profileImagesService.create(fileUpload, 'banner');
 
     return await this.teamsService.updateProfileImage(user, id, 'banner', profileImage);

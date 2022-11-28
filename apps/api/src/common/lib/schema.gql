@@ -324,48 +324,68 @@ type Settings {
   notificationAdminRoleUpdated: Int!
 }
 
+type UserImage {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  file: FileUpload!
+  lastActiveDate: DateTime!
+  active: Boolean!
+  id: String!
+  user: User!
+  type: UserImageType!
+  descriptor: String
+}
+
+enum UserImageType {
+  Avatar
+  Banner
+  Profile
+  Other
+}
+
 type User {
   createdAt: DateTime!
   updatedAt: DateTime!
   tenant: String!
   id: String!
-  firstname: String!
-  lastname: String!
-  email: String!
-  badges: [BadgeUnlock!]
+  email: String
   bot: Boolean!
-  reputation: Int!
-  avatar: String
+  name: String!
+  lastName: String
+  eventIcal: String!
   roles: [Role!]!
-  schoolRole: SchoolRole!
+  scopeRole: ScopeRole!
+  settings: Settings!
+  points: Int!
+  badges: [BadgeUnlock!]
+  avatar: UserImage
+  banner: UserImage
+  status: String
+  color: String
+  signature: String
+  finishedIntroduction: Boolean!
+  finishedOnboarding: Boolean!
   classMemberships: [ClassMembership!]!
   teamMembershipRequests: [TeamMembershipRequest!]!
   teamMemberships: [TeamMember!]!
   interests: [Interest!]!
-  color: String
-  signature: String
-  banner: String
-  shortDescription: String
-  settings: Settings!
-  points: Int!
-  eventIcal: String!
-  finishedIntroduction: Boolean!
-  finishedOnboarding: Boolean!
   socials: [Social!]!
 }
 
 enum Role {
   User
   Moderator
-  RestaurantManager
+  CafeteriaManager
   ClubManager
-  Admin
+  TenantAdmin
 }
 
-enum SchoolRole {
+enum ScopeRole {
   Student
   Teacher
   Admin
+  AdminBot
+  UserBot
 }
 
 type FileUpload {
@@ -375,26 +395,26 @@ type FileUpload {
   id: String!
   user: User!
   name: String!
-  fileSize: Float!
+  size: Float!
   mimeType: String!
+  kind: FileKind!
   fileLastModifiedAt: DateTime!
-  validated: Boolean!
   url: String!
-  fileKind: FileKind!
   width: Int
   height: Int
-  visible: Boolean!
 }
 
 enum FileKind {
-  ProfileImage
-  InfoDoc
+  UserImage
+  TeamImage
+  TenantImage
   Attachment
+  Tenant
   StudyDoc
+  InfoDoc
   TeamFile
   TeamGallery
   TeamReceipt
-  Tenant
 }
 
 type ProfileImage {
@@ -932,13 +952,18 @@ type Mutation {
 }
 
 input UpdateUserDto {
+  id: String
+  name: String
+  lastName: String
+  password: String
   email: String
-  signature: String
-  color: String
-  shortDescription: String
+  scopeRole: String
+  roles: [Role!]
+  status: String
   avatar: String
   banner: String
-  finishedIntroduction: Boolean
+  color: String
+  signature: String
 }
 
 input CreateInterestDto {
@@ -955,7 +980,7 @@ input UpdateInterestDto {
 
 input UpdateTenantDto {
   id: String
-  eventValidationForm: JSON = null
+  eventValidationForm: JSON
   logo: String
   logoDark: String
   tenantOidcName: String

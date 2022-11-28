@@ -7,7 +7,7 @@ import { BaseRepository } from '@common/lib/orm/base.repository';
 import { ApprovalStepType } from '@common/lib/types/enums/approval-step-type.enum';
 import { EventState } from '@common/lib/types/enums/event-state.enum';
 import { Role } from '@common/modules/authorization/types/role.enum';
-import { SchoolRole } from '@common/modules/authorization/types/school-role.enum';
+import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
 import {
   AdminEventValidationStartedNotification,
   EventCreatedNotification,
@@ -145,7 +145,7 @@ export class EventsService {
         team: { id: query.id },
         ...(query.state ? { state: query.state } : {}),
       };
-    } else if (user.schoolRole === SchoolRole.Admin || user.roles.includes(Role.Admin)) {
+    } else if (user.scopeRole === ScopeRole.Admin || user.roles.includes(Role.TenantAdmin)) {
       filter = query.state ? { state: query.state } : {};
     } else {
       // We asked for all the events of all teams
@@ -188,7 +188,7 @@ export class EventsService {
     const memberships = await this.teamMemberRepository.find({ user });
     const ids = memberships.map(m => m.team.id);
 
-    if (user.roles.includes(Role.Admin) || user.schoolRole === SchoolRole.Admin)
+    if (user.roles.includes(Role.TenantAdmin) || user.scopeRole === ScopeRole.Admin)
       return await this.eventRepository.findOneOrFail({ id }, { populate: ['supervisor', 'registrations', 'registrations.user', 'createdBy', 'team', 'lastApprovalStep'] });
 
 

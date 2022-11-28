@@ -33,9 +33,9 @@ import { TenantsService } from './tenants.service';
 @Controller()
 export class TenantsController {
   constructor(
+    @InjectRepository(Tenant) private readonly tenantRepository: BaseRepository<Tenant>,
     private readonly tenantsService: TenantsService,
     private readonly filesService: FileUploadsService,
-    @InjectRepository(Tenant) private readonly tenantRepository: BaseRepository<Tenant>,
   ) {}
 
   @Get(':id')

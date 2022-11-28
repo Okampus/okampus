@@ -3,4 +3,5 @@ export enum TokenType {
   Refresh = 'refresh',
   WebSocket = 'ws',
   Bot = 'bot',
+  MeiliSearch = 'meilisearch',
 }

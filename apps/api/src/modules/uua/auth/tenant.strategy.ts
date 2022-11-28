@@ -1,9 +1,10 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
+import capitalize from 'lodash.capitalize';
 import type { BaseClient, Client, TokenSet } from 'openid-client';
 import { Strategy } from 'openid-client';
 import type { TenantUserinfoResponse } from '@common/lib/types/interfaces/userinfo-response.interface';
-import { SchoolRole } from '@common/modules/authorization/types/school-role.enum';
+import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
 import type { User } from '../users/user.entity';
 import type { AuthService } from './auth.service';
 import { TenantUserDto } from './dto/tenant-user.dto';
@@ -17,7 +18,6 @@ export function tenantStrategyFactory(
 ): Strategy<User> {
   const TenantStrategy = class extends PassportStrategy(Strategy, tenantId) {
     private readonly client: BaseClient;
-
 
     constructor(
       private readonly authService: AuthService,
@@ -36,12 +36,12 @@ export function tenantStrategyFactory(
     public async validate(tokenset: TokenSet): Promise<User> {
       const data: TenantUserinfoResponse = await this.client.userinfo(tokenset);
 
-      if (!Object.values<string>(SchoolRole).includes(data.role))
-      throw new UnauthorizedException('Invalid role');
+      if (!Object.values<string>(ScopeRole).includes(capitalize(data.role)))
+        throw new UnauthorizedException('Invalid role');
 
       const userInfo = new TenantUserDto(data);
 
-      return await this.authService.createOrUpdate(tenantId, userInfo);
+      return await this.authService.createOrUpdate(userInfo, tenantId);
     }
   };
 

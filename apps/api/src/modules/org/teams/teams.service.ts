@@ -28,8 +28,7 @@ import { Team } from './team.entity';
 export class TeamsService {
   // eslint-disable-next-line max-params
   constructor(
-    @InjectRepository(Team)
-    private readonly teamRepository: BaseRepository<Team>,
+    @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(Label)
     private readonly teamLabelRepository: BaseRepository<Label>,
     @InjectRepository(TeamMember)

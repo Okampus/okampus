@@ -215,12 +215,12 @@ export class Settings extends BaseEntity {
   // User notifications
   //
 
-  /** My role was updated (includes role AND schoolRole) */
+  /** My role was updated (includes role AND scopeRole) */
   @Field(() => Int)
   @Property()
   notificationRoleUpdated: number = IN_APP;
 
-  /** ADMIN: The role of somebody has been updated (includes role AND schoolRole) */
+  /** ADMIN: The role of somebody has been updated (includes role AND scopeRole) */
   @Field(() => Int)
   @Property()
   notificationAdminRoleUpdated: number = IN_APP;

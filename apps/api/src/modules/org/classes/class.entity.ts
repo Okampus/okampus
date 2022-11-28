@@ -74,7 +74,7 @@ export class Class extends BaseEntity {
   }
 
   public isGlobalAdmin(user: User): boolean {
-    return user.roles.includes(Role.Admin);
+    return user.roles.includes(Role.TenantAdmin);
   }
 
   private getMemberRoles(user: User): ClassRole[] {

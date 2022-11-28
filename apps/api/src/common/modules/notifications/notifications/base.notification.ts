@@ -6,7 +6,7 @@ import type { Settings } from '@modules/uua/settings/settings.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { TeamRole } from '../../../lib/types/enums/team-role.enum';
 import { Role } from '../../authorization/types/role.enum';
-import { SchoolRole } from '../../authorization/types/school-role.enum';
+import { ScopeRole } from '../../authorization/types/scope-role.enum';
 import type { NotificationType } from '../notification-type.enum';
 
 export abstract class Notification {
@@ -26,8 +26,8 @@ export abstract class Notification {
   protected async getAdmins(setting: keyof Settings): Promise<User[]> {
     return this.entityManager.getRepository(User).find({
       $or: [
-        { roles: { $contains: [Role.Admin] } },
-        { schoolRole: SchoolRole.Admin },
+        { roles: { $contains: [Role.TenantAdmin] } },
+        { scopeRole: ScopeRole.Admin },
       ],
       settings: {
         [setting]: { $gt: 0 },
@@ -39,7 +39,7 @@ export abstract class Notification {
     return this.entityManager.getRepository(User).find({
       $or: [
         { roles: { $contains: [Role.ClubManager] } },
-        { schoolRole: SchoolRole.Admin },
+        { scopeRole: ScopeRole.Admin },
       ],
       settings: {
         [setting]: { $gt: 0 },
@@ -71,8 +71,7 @@ export abstract class Notification {
     return {
       fullName: user.getFullName(),
       email: user.email,
-      firstname: user.firstname,
-      lastname: user.lastname,
+      firstname: user.name,
     };
   }
 

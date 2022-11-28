@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'node:path';
 import {
   Entity,
@@ -34,27 +35,32 @@ export class FileUpload extends BaseTenantEntity {
 
   @Field(() => Number)
   @Property()
-  fileSize!: number;
+  size!: number;
 
   @Field(() => String)
   @Property({ type: 'text' })
   mimeType!: string;
 
+  @Field(() => FileKind)
+  @Enum(() => FileKind)
+  kind!: FileKind;
+
   @Field(() => GraphQLISODateTime)
   @Property()
   fileLastModifiedAt!: Date;
 
-  @Field(() => Boolean)
-  @Property()
-  validated = false;
+  // TODO: implement antivirus and NSFW scanning
+  // @Field(() => Boolean)
+  // @Property()
+  // validated = false;
+
+  // @Field(() => Boolean)
+  // @Property()
+  // visible = false;
 
   @Field(() => String)
   @Property({ type: 'text' })
   url!: string;
-
-  @Field(() => FileKind)
-  @Enum(() => FileKind)
-  fileKind!: FileKind;
 
   @Field(() => Int, { nullable: true })
   @Property()
@@ -63,10 +69,6 @@ export class FileUpload extends BaseTenantEntity {
   @Field(() => Int, { nullable: true })
   @Property()
   height: number | null = null;
-
-  @Field(() => Boolean)
-  @Property()
-  visible = false;
 
   constructor(options: {
     tenant: Tenant;
@@ -87,7 +89,7 @@ export class FileUpload extends BaseTenantEntity {
   public getPath(): string {
     return path.join(
       config.upload.path,
-      this.fileKind,
+      this.kind,
       `${this.id.toString()}.${mime.extension(this.mimeType)}`,
     );
   }

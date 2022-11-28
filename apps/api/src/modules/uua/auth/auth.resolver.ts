@@ -38,6 +38,6 @@ export class AuthResolver {
 
   @Query(() => User)
   public async me(@CurrentUser() user: User): Promise<User> {
-    return await this.usersService.findOneById(user.id);
+    return await this.usersService.findOne(user.id);
   }
 }

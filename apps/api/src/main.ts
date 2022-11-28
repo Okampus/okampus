@@ -109,7 +109,7 @@ async function bootstrap(): Promise<void> {
 
   // eslint-disable-next-line @typescript-eslint/require-await
   fastifyPassport.registerUserSerializer(async (user: { id: string }, _request) => user.id);
-  fastifyPassport.registerUserDeserializer(async (id: string, _request) => await usersService.findOneById(id));
+  fastifyPassport.registerUserDeserializer(async (id: string, _request) => await usersService.findBareUser(id));
 
   fastifyInstance.get('/auth/:tenant', {
     preValidation: async (req, res) => {
@@ -147,8 +147,8 @@ async function bootstrap(): Promise<void> {
       }
 
       await fastifyPassport
-              .authenticate(oidcStrategyCache.strategies.get(tenantId), { authInfo: false })
-              .bind(fastifyInstance)(req, res);
+        .authenticate(oidcStrategyCache.strategies.get(tenantId), { authInfo: false })
+        .bind(fastifyInstance)(req, res);
     },
   }, () => ({}));
 
@@ -156,7 +156,7 @@ async function bootstrap(): Promise<void> {
     preValidation: async (req, res) => {
       const tenantId = (req.params as { tenant: string }).tenant;
       await fastifyPassport
-        .authenticate(oidcStrategyCache.strategies.get(tenantId), { authInfo: false, successRedirect: '/auth/login-tenant' })
+        .authenticate(oidcStrategyCache.strategies.get(tenantId), { authInfo: false, successRedirect: '/auth/oidc-login' })
         .bind(fastifyInstance)(req, res);
     },
   }, () => ({}));

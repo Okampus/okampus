@@ -1,111 +1,157 @@
+/* eslint-disable object-curly-newline */
+
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import type { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import MeiliSearch from 'meilisearch';
 import { InjectMeiliSearch } from 'nestjs-meilisearch';
 import { config } from '@common/configs/config';
+import { GlobalRequestService } from '@common/lib/helpers/global-request-service';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { TokenClaims } from '@common/lib/types/interfaces/token-claims.interface';
-import type { UserCreationOptions } from '@common/lib/types/interfaces/user-creation-options.interface';
+import { UserImageType } from '@common/lib/types/enums/user-image-type.enum';
 import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
-import { SchoolRole } from '@common/modules/authorization/types/school-role.enum';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
 import type { IndexedEntity } from '@common/modules/search/indexed-entity.interface';
-import { Class } from '@modules/org/classes/class.entity';
-import { ClassMembership } from '@modules/org/classes/memberships/class-membership.entity';
-import { SchoolYear } from '@modules/org/classes/school-year/school-year.entity';
 import type { CreateSocialDto } from '@modules/org/teams/socials/dto/create-social.dto';
 import { Social } from '@modules/org/teams/socials/social.entity';
-import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { FileUpload } from '@modules/upload/file-uploads/file-upload.entity';
-import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
+import type { Tenant } from '@modules/org/tenants/tenant.entity';
+import { TenantsService } from '@modules/org/tenants/tenants.service';
+import type { RegisterDto } from '../auth/dto/register.dto';
+import type { TenantUserDto } from '../auth/dto/tenant-user.dto';
 import { Statistics } from '../statistics/statistics.entity';
 import { StatisticsService } from '../statistics/statistics.service';
+import type { CreateUserImageDto } from '../user-images/dto/create-user-image.dto';
+import type { UserImage } from '../user-images/user-image.entity';
+import { UserImagesService } from '../user-images/user-images.service';
+import type { CreateBotDto } from './dto/create-bot.dto';
 import type { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
 
+const userImageTypeToKey = {
+  [UserImageType.Avatar]: 'avatar' as const,
+  [UserImageType.Banner]: 'banner' as const,
+};
+
+const defaultUserPopulate = ['classMemberships', 'classMemberships.schoolYear', 'classMemberships.schoolClass'];
+
+
 @Injectable()
-export class UsersService {
+export class UsersService extends GlobalRequestService {
   // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
-    @InjectRepository(Tenant) private readonly tenantRepository: BaseRepository<Tenant>,
     @InjectRepository(Social) private readonly socialsRepository: BaseRepository<Social>,
     @InjectRepository(Statistics) private readonly statisticsRepository: BaseRepository<Statistics>,
-    @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
-    @InjectRepository(Class)
-      private readonly classRepository: BaseRepository<Class>,
-    @InjectRepository(SchoolYear)
-      private readonly schoolYearRepository: BaseRepository<SchoolYear>,
     private readonly statisticsService: StatisticsService,
+    private readonly userImagesService: UserImagesService,
+    private readonly tenantsService: TenantsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
-    private readonly jwtService: JwtService,
     @InjectMeiliSearch() private readonly meiliSearch: MeiliSearch,
-  ) {}
+  ) { super(); }
 
-  public async findOneById(id: string): Promise<User> {
+  public async findBareUser(idOrEmail: string): Promise<User> {
+    return await this.userRepository.findOneOrFail(
+      { $or: [{ id: idOrEmail }, { email: idOrEmail.toLowerCase() }] },
+      { fields: ['id', 'password', 'name', 'lastName', 'email', 'avatar', 'roles', 'banner', 'bot', 'points'] },
+    );
+  }
+
+  public async findOne(id: string): Promise<User> {
     if (id === config.anonAccount.username)
         throw new BadRequestException('Anonymous account cannot be accessed');
 
-    return await this.userRepository.findOneOrFail({ id }, {
-      refresh: true,
-      populate: [
-        'interests',
-        'classMemberships',
-        'classMemberships.schoolYear',
-        'classMemberships.schoolClass',
-        'teamMemberships',
-        'teamMemberships.team',
-        'teamMembershipRequests',
-        'teamMembershipRequests.team',
-        'teamMembershipRequests.handledBy',
-        'teamMembershipRequests.originalForm',
-        'teamMembershipRequests.issuedBy',
-      ],
-    });
+    return await this.userRepository.findOneOrFail({ id }, { populate: this.autoGqlPopulate(defaultUserPopulate) });
   }
 
-  public async create(options: UserCreationOptions): Promise<{ user: User; token: string | null }> {
-    const tenant = await this.tenantRepository.findOneOrFail({ id: options.tenantId });
-    const user = new User({ ...options, tenant });
-    let token: string | null = null;
-    if (options.bot) {
-      token = await this.jwtService.signAsync({ sub: user.id, requestType: 'http' } as TokenClaims, {
-        secret: config.tokens.botTokenSecret,
-      });
-      await user.setPassword(token);
-    } else if (options.password) {
-      await user.setPassword(options.password);
-    }
+  public async createBot(createBotDto: CreateBotDto): Promise<User> {
+    const user = new User(createBotDto, this.currentTenant());
+    user.bot = true;
 
-    if (options.avatar)
-      await this.setImage(options.avatar, 'avatar', user);
-    else
-      user.avatar = null;
+    const ability = this.caslAbilityFactory.createForUser(this.currentUser());
+    assertPermissions(ability, Action.Update, user);
 
-    if (options.banner)
-      await this.setImage(options.banner, 'banner', user);
-    else
-      user.banner = null;
+    await this.setUserImage(user, UserImageType.Avatar, createBotDto.avatar ?? null);
+    await this.setUserImage(user, UserImageType.Banner, createBotDto.banner ?? null);
 
     await this.userRepository.persistAndFlush(user);
-
-    if (user.schoolRole === SchoolRole.Student) {
-      const schoolYear = await this.schoolYearRepository.findOneOrFail({ id: 'school-year-test' });
-      const schoolClass = await this.classRepository.findOneOrFail({ id: 'group-test' });
-      const classMembership = new ClassMembership({
-        user,
-        schoolClass,
-        schoolYear,
-      });
-      await this.classRepository.persistAndFlush(classMembership);
-    }
-
-    return { user, token };
+    return user;
   }
+
+  public async create(createUserDto: RegisterDto): Promise<User> {
+    const { avatar, banner, password, ...userDto } = createUserDto;
+    const user = new User(userDto, this.currentTenant());
+    if (await this.findBareUser(user.email) || await this.findBareUser(user.id))
+      throw new BadRequestException('User already exists');
+
+    await Promise.all([
+      user.setPassword(password),
+      this.setUserImage(user, UserImageType.Avatar, createUserDto.avatar ?? null),
+      this.setUserImage(user, UserImageType.Banner, createUserDto.banner ?? null),
+    ]);
+
+    // TODO: manage users class/cohort memberships on creation and update
+    //   if (user.scopeRole === SchoolRole.Student) {
+    //     const schoolYear = await this.schoolYearRepository.findOneOrFail({ id: 'school-year-test' });
+    //     const schoolClass = await this.classRepository.findOneOrFail({ id: 'group-test' });
+    //     const classMembership = new ClassMembership({
+    //       user,
+    //       schoolClass,
+    //       schoolYear,
+    //     });
+    //     await this.classRepository.persistAndFlush(classMembership);
+    //   }
+    await this.userRepository.persistAndFlush(user);
+    return user;
+  }
+
+  public async createBare(createUserDto: TenantUserDto, forTenant: string): Promise<User> {
+    const tenant = await this.tenantsService.findOne(forTenant);
+    const user = new User(createUserDto, tenant);
+    await this.userRepository.persistAndFlush(user);
+    return user;
+  }
+
+  // Public async create(options: RegisterDto): Promise<{ user: User; token: string | null }> {
+  //   const tenant = await this.tenantRepository.findOneOrFail({ id: options.tenantId });
+  //   const user = new User({ ...options, tenant });
+  //   let token: string | null = null;
+  //   if (options.bot) {
+  //     token = await this.jwtService.signAsync({ sub: user.id, requestType: RequestType.Http } as TokenClaims, {
+  //       secret: config.tokens.secrets.bot,
+  //     });
+  //     await user.setPassword(token);
+  //   } else if (options.password) {
+  //     await user.setPassword(options.password);
+  //   }
+
+  //   if (options.avatar)
+  //     await this.setImage(options.avatar, 'avatar', user);
+  //   else
+  //     user.avatar = null;
+
+  //   if (options.banner)
+  //     await this.setImage(options.banner, 'banner', user);
+  //   else
+  //     user.banner = null;
+
+  //   await this.userRepository.persistAndFlush(user);
+
+  //   if (user.scopeRole === SchoolRole.Student) {
+  //     const schoolYear = await this.schoolYearRepository.findOneOrFail({ id: 'school-year-test' });
+  //     const schoolClass = await this.classRepository.findOneOrFail({ id: 'group-test' });
+  //     const classMembership = new ClassMembership({
+  //       user,
+  //       schoolClass,
+  //       schoolYear,
+  //     });
+  //     await this.classRepository.persistAndFlush(classMembership);
+  //   }
+
+  //   return { user, token };
+  // }
 
   public async update(requester: User, id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.findOneOrFail({ id }, { populate: ['badges'] });
@@ -113,21 +159,16 @@ export class UsersService {
     const ability = this.caslAbilityFactory.createForUser(requester);
     assertPermissions(ability, Action.Update, user);
 
-    const { avatar, banner, ...dto } = updateUserDto;
+    const { avatar, banner, password, ...dto } = updateUserDto;
 
-    if (typeof avatar !== 'undefined') {
-      if (avatar)
-        await this.setImage(avatar, 'avatar', user);
-      else
-        user.avatar = null;
-    }
+    if (password)
+      await user.setPassword(password);
 
-    if (typeof banner !== 'undefined') {
-      if (banner)
-        await this.setImage(banner, 'banner', user);
-      else
-        user.banner = null;
-    }
+    if (typeof avatar !== 'undefined')
+      await this.setUserImage(user, UserImageType.Avatar, avatar);
+
+    if (typeof banner !== 'undefined')
+      await this.setUserImage(user, UserImageType.Banner, banner);
 
     wrap(user).assign(dto);
     await this.userRepository.flush();
@@ -139,16 +180,7 @@ export class UsersService {
     return await this.userRepository.findWithPagination(
       paginationOptions,
       { id: { $ne: config.anonAccount.username } },
-      {
-        orderBy: { lastname: 'ASC' },
-        populate: [
-          'classMemberships',
-          'classMemberships.schoolYear',
-          'classMemberships.schoolClass',
-          'teamMemberships',
-          'teamMemberships.team',
-        ],
-      },
+      { populate: this.autoGqlPopulate(defaultUserPopulate) },
     );
   }
 
@@ -182,11 +214,7 @@ export class UsersService {
     await this.userRepository.removeAndFlush(user);
   }
 
-  public async addSocialAccount(
-    user: User,
-    id: string,
-    createSocialDto: CreateSocialDto,
-  ): Promise<Social> {
+  public async addSocialAccount(user: User, id: string, createSocialDto: CreateSocialDto): Promise<Social> {
     const targetUser = await this.userRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -203,37 +231,32 @@ export class UsersService {
     return { ...stats, ...streaks };
   }
 
-  public async updateProfileImage(user: User, type: 'avatar' | 'banner', profileImage: ProfileImage): Promise<User> {
-    await this.setImage(profileImage, type, user);
+  public async addUserImage(file: MulterFile, createUserImageDto: CreateUserImageDto): Promise<User> {
+    const userImage = await this.userImagesService.create(file, createUserImageDto);
+    if (userImage.type === UserImageType.Avatar || userImage.type === UserImageType.Banner)
+      return await this.setUserImage(userImage.user, userImage.type, userImage);
+
+    return userImage.user;
+  }
+
+  public async setUserImage(
+    user: User,
+    type: UserImageType.Avatar | UserImageType.Banner,
+    userImage: UserImage | string | null,
+  ): Promise<User> {
+    const ability = this.caslAbilityFactory.createForUser(user);
+    assertPermissions(ability, Action.Update, user);
+
+    if (typeof userImage === 'string') // UserImage passed by ID
+      userImage = await this.userImagesService.findOne(userImage);
+
+    if (userImage)
+      userImage.active = true;
+
+    user[userImageTypeToKey[type]] = userImage;
+    await this.userImagesService.setInactiveLastActive(user.id, type);
 
     await this.userRepository.flush();
     return user;
-  }
-
-  private async setImage(profileImage: ProfileImage | string, type: 'avatar' | 'banner', user: User): Promise<void> {
-    // Get the avatar image and validate it
-    const id = typeof profileImage === 'string' ? profileImage : profileImage.id;
-    const avatarImage = profileImage instanceof ProfileImage && profileImage.file instanceof FileUpload
-      ? profileImage
-      : await this.profileImageRepository.findOne({ id }, { populate: ['file'] });
-
-    if (!avatarImage || !avatarImage.isAvailableFor('user', user.id))
-      throw new BadRequestException(`Invalid ${type} image`);
-
-    // Get previous avatar image if it exists and set it to inactive
-    const previousAvatarImage = await this.profileImageRepository.findOne({ user, type, active: true });
-    if (previousAvatarImage) {
-      previousAvatarImage.active = false;
-      previousAvatarImage.lastActiveDate = new Date();
-    }
-
-    // Update the user's image
-    user[type] = avatarImage.file.url;
-
-    // Update the target type of the image
-    avatarImage.user = user;
-    avatarImage.active = true;
-
-    await this.profileImageRepository.flush();
   }
 }

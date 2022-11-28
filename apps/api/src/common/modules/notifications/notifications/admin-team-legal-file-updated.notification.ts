@@ -49,10 +49,10 @@ export class AdminTeamLegalFileUpdatedNotification extends Notification {
         file: {
           id: this.teamFile.file.id,
           name: this.teamFile.file.name,
-          fileSize: this.teamFile.file.fileSize,
+          fileSize: this.teamFile.file.size,
           mimeType: this.teamFile.file.mimeType,
           url: this.teamFile.file.url,
-          fileKind: this.teamFile.file.fileKind,
+          fileKind: this.teamFile.file.kind,
         },
         type: this.teamFile.type,
         description: this.teamFile.description,

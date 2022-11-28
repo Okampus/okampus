@@ -25,7 +25,7 @@ export class ClassMembershipsService {
     return await this.classMembershipsRepository.findWithPagination(
       paginationOptions,
       {},
-      { populate: ['user', 'schoolClass'], orderBy: { user: { lastname: 'ASC' } } },
+      { populate: ['user', 'schoolClass'], orderBy: { user: { lastName: 'ASC' } } },
     );
   }
 
@@ -36,7 +36,7 @@ export class ClassMembershipsService {
     return await this.classMembershipsRepository.findWithPagination(
       paginationOptions,
       { schoolClass: { id } },
-      { populate: ['user', 'schoolClass'], orderBy: { user: { lastname: 'ASC' } } },
+      { populate: ['user', 'schoolClass'], orderBy: { user: { lastName: 'ASC' } } },
     );
   }
 

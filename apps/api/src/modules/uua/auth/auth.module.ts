@@ -1,6 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
+import { CaslModule } from '@common/modules/casl/casl.module';
 import { TenantsCoreModule } from '@modules/org/tenants/core-tenants.module';
 import { User } from '../users/user.entity';
 import { UsersModule } from '../users/users.module';
@@ -15,6 +16,7 @@ import { AuthService } from './auth.service';
     JwtModule.register({}),
     UsersModule,
     TenantsCoreModule,
+    CaslModule,
   ],
   controllers: [AuthController],
   providers: [
@@ -23,6 +25,6 @@ import { AuthService } from './auth.service';
     AuthResolver,
     AuthController,
   ],
-  exports: [AuthGuard, AuthService, JwtModule],
+  exports: [AuthGuard, AuthService],
 })
 export class AuthModule {}

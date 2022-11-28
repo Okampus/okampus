@@ -7,4 +7,5 @@ export class GlobalRequestContext extends RequestContext {
   user: User;
   tenant: Tenant;
   gqlInfo: GraphQLResolveInfo;
+  alreadyPopulated: boolean;
 }

@@ -89,10 +89,10 @@ export class NotificationsService {
   private toRecipient(user: User): ISubscribersDefine {
     return {
       subscriberId: user.id,
-      firstName: user.firstname,
-      lastName: user.lastname,
+      firstName: user.name,
+      lastName: user.lastName ?? undefined, // eslint-disable-line no-undefined
       email: user.email,
-      avatar: user.avatar ?? undefined, // eslint-disable-line no-undefined
+      avatar: user.avatar?.file?.url ?? undefined, // eslint-disable-line no-undefined
     };
   }
 

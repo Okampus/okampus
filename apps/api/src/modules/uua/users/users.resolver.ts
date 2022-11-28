@@ -37,7 +37,7 @@ export class UsersResolver {
   // TODO: Add permission checks
   @Query(() => User)
   public async userById(@Args('id') id: string): Promise<User> {
-    return await this.usersService.findOneById(id);
+    return await this.usersService.findOne(id);
   }
 
   @ResolveField(() => [Social])

@@ -1,3 +1,4 @@
+import { TokenType } from '@common/lib/types/enums/token-type.enum';
 import 'dotenv/config';
 import { FileKind } from '../lib/types/enums/file-kind.enum';
 
@@ -70,12 +71,14 @@ export const config = {
     buckets: {
       [FileKind.Attachment]: process.env.S3_BUCKET_NAME_ATTACHMENTS ?? 'attachments',
       [FileKind.InfoDoc]: process.env.S3_BUCKET_NAME_DOCUMENTS ?? 'documents',
-      [FileKind.ProfileImage]: process.env.S3_BUCKET_NAME_DOCUMENTS ?? 'documents',
       [FileKind.StudyDoc]: process.env.S3_BUCKET_NAME_PROFILE_IMAGES ?? 'profile-images',
       [FileKind.TeamFile]: process.env.S3_BUCKET_NAME_TEAM_FILES ?? 'team-files',
       [FileKind.TeamGallery]: process.env.S3_BUCKET_NAME_TEAM_GALLERIES ?? 'team-galleries',
+      [FileKind.TeamImage]: process.env.S3_BUCKET_NAME_TEAM_IMAGES ?? 'team-images',
       [FileKind.TeamReceipt]: process.env.S3_BUCKET_NAME_TEAM_RECEIPTS ?? 'team-receipts',
       [FileKind.Tenant]: process.env.S3_BUCKET_NAME_TENANTS ?? 'tenants',
+      [FileKind.TenantImage]: process.env.S3_BUCKET_NAME_TENANT_IMAGES ?? 'tenant-images',
+      [FileKind.UserImage]: process.env.S3_BUCKET_NAME_USER_IMAGES ?? 'user-images',
     },
   },
   redis: {
@@ -93,15 +96,28 @@ export const config = {
     appId: process.env.NOVU_APP_ID ?? 'app-id',
   },
   tokens: {
-    accessTokenSecret: process.env.ACCESS_TOKEN_SECRET ?? 'secret',
-    accessTokenExpirationSeconds: parseEnvInt(process.env.ACCESS_TOKEN_EXPIRATION_SECONDS, 28_800),
-    refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET ?? 'secret',
-    refreshTokenExpirationSeconds: parseEnvInt(process.env.REFRESH_TOKEN_EXPIRATION_SECONDS, 604_800),
-    wsTokenSecret: process.env.WS_TOKEN_SECRET ?? 'secret',
-    wsTokenExpirationSeconds: parseEnvInt(process.env.WS_TOKEN_EXPIRATION_SECONDS, 30),
-    botTokenSecret: process.env.BOT_TOKEN_SECRET ?? 'secret',
+    issuerName: process.env.TOKEN_ISSUER_NAME ?? 'Okampus',
+    secrets: {
+      [TokenType.Access]: process.env.ACCESS_TOKEN_SECRET ?? 'secret',
+      [TokenType.Refresh]: process.env.REFRESH_TOKEN_SECRET ?? 'secret',
+      [TokenType.WebSocket]: process.env.WS_TOKEN_SECRET ?? 'secret',
+      [TokenType.Bot]: process.env.BOT_TOKEN_SECRET ?? 'secret',
+    },
+    expiration: {
+      [TokenType.Access]: parseEnvInt(process.env.ACCESS_TOKEN_EXPIRATION_SECONDS, 28_800),
+      [TokenType.Refresh]: parseEnvInt(process.env.REFRESH_TOKEN_EXPIRATION_SECONDS, 604_800),
+      [TokenType.WebSocket]: parseEnvInt(process.env.WS_TOKEN_EXPIRATION_SECONDS, 30),
+    },
   },
   cookies: {
+    names: {
+      [TokenType.Access]: process.env.ACCESS_TOKEN_COOKIE_NAME ?? 'access_token',
+      [TokenType.Refresh]: process.env.REFRESH_TOKEN_COOKIE_NAME ?? 'refresh_token',
+      [TokenType.WebSocket]: process.env.WS_TOKEN_COOKIE_NAME ?? 'ws_token',
+      accessExpiration: process.env.ACCESS_TOKEN_EXPIRATION_COOKIE_NAME ?? 'access_exp',
+      refreshExpiration: process.env.REFRESH_TOKEN_EXPIRATION_COOKIE_NAME ?? 'refresh_exp',
+      [TokenType.MeiliSearch]: process.env.MEILISEARCH_TOKEN_COOKIE_NAME ?? 'meilisearch_key',
+    },
     signature: process.env.COOKIE_SIGNATURE_SECRET ?? 'secret',
     // This is only the default value, the real value is set right after the config is initialized.
     options: {

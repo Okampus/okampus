@@ -173,7 +173,7 @@ return this.isTeamAdmin(user);
 
   public isGlobalAdmin(user: User): boolean {
     return (
-      user.roles.includes(Role.Admin)
+      user.roles.includes(Role.TenantAdmin)
       || (this.kind === TeamKind.Club && user.roles.includes(Role.ClubManager))
     );
   }

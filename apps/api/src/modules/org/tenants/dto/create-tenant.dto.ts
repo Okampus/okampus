@@ -10,19 +10,20 @@ export class CreateTenantDto {
   @IsString()
   id: string;
 
-  @Field(() => GraphQLJSON)
+  @Field(() => GraphQLJSON, { nullable: true })
+  @IsOptional()
   @IsFormKitSchema()
-  eventValidationForm: object[] | object | null = null;
+  eventValidationForm?: object[] | object;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  logo?: string | null;
+  logo?: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  logoDark?: string | null;
+  logoDark?: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
@@ -37,25 +38,25 @@ export class CreateTenantDto {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  oidcClientId?: string | null;
+  oidcClientId?: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  oidcClientSecret?: string | null;
+  oidcClientSecret?: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  oidcDiscoveryUrl?: string | null;
+  oidcDiscoveryUrl?: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  oidcScopes?: string | null;
+  oidcScopes?: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  oidcCallbackUri?: string | null;
+  oidcCallbackUri?: string;
 }

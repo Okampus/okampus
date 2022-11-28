@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { OneToOne, Property } from '@mikro-orm/core';
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
 import { FileUpload } from '@modules/upload/file-uploads/file-upload.entity';

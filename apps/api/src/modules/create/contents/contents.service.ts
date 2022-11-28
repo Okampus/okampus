@@ -7,7 +7,7 @@ import { config } from '@common/configs/config';
 import { APP_PUB_SUB } from '@common/lib/constants';
 import type { ContentListOptionsDto } from '@common/lib/dto/list-options.dto';
 import { ContentMaster } from '@common/lib/entities/content-master.entity';
-import { GqlFriendlyService } from '@common/lib/helpers/gql-friendly-service';
+import { GlobalRequestService } from '@common/lib/helpers/global-request-service';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { ContentKind } from '@common/lib/types/enums/content-kind.enum';
 import { ContentMasterType } from '@common/lib/types/enums/content-master-type.enum';
@@ -37,7 +37,7 @@ import { Content, DEFAULT_INTERACTIONS } from './entities/content.entity';
 import { Edit } from './entities/edit.entity';
 
 @Injectable()
-export class ContentsService extends GqlFriendlyService {
+export class ContentsService extends GlobalRequestService {
   // eslint-disable-next-line max-params
   constructor(
     @Inject(APP_PUB_SUB) private readonly pubSub: PubSubEngine,

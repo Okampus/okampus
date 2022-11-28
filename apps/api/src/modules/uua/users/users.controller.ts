@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   CacheInterceptor,
   CacheTTL,
@@ -19,17 +18,16 @@ import { simpleImageMimeTypeRegex } from '@common/configs/mime-type';
 import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '@common/lib/decorators/upload-interceptor.decorator';
-import { FileKind } from '@common/lib/types/enums/file-kind.enum';
+import { UserImageType } from '@common/lib/types/enums/user-image-type.enum';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { normalizePagination, PaginateDto } from '@common/modules/pagination';
 import type { PaginatedResult } from '@common/modules/pagination';
 import type { IndexedEntity } from '@common/modules/search/indexed-entity.interface';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { FileUploadsService } from '@modules/upload/file-uploads/file-uploads.service';
-import { ProfileImage } from '@modules/upload/profile-images/profile-image.entity';
-import { ProfileImagesService } from '@modules/upload/profile-images/profile-images.service';
 import { GdprService } from '../gdpr/gdpr.service';
 import type { Statistics } from '../statistics/statistics.entity';
+import type { CreateUserImageDto } from '../user-images/dto/create-user-image.dto';
+import { UserImage } from '../user-images/user-image.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
@@ -39,8 +37,6 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private readonly profileImagesService: ProfileImagesService,
-    private readonly filesService: FileUploadsService,
     private readonly gdprService: GdprService,
   ) {}
 
@@ -53,7 +49,7 @@ export class UsersController {
 
   @Get(':id')
   public async findOne(@Param('id') id: string): Promise<User> {
-    return await this.usersService.findOneById(id);
+    return await this.usersService.findOne(id);
   }
 
   @Get()
@@ -90,42 +86,29 @@ export class UsersController {
     return await this.usersService.update(user, id, updateUserDto);
   }
 
-  @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
   @Put('/avatar')
+  @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
   @CheckPolicies(
-    ability => ability.can(Action.Create, ProfileImage),
+    ability => ability.can(Action.Create, UserImage),
     ability => ability.can(Action.Update, User),
   )
   public async updateAvatar(
-    @CurrentUser() user: User,
-    @UploadedFile() file: MulterFile,
+    @UploadedFile() avatar: MulterFile,
+    @Body() createUserImage: Omit<CreateUserImageDto, 'type'>,
   ): Promise<User> {
-    if (!file)
-      throw new BadRequestException('No file provided');
-
-    const fileUpload = await this.filesService.create(user.tenant, user, file, FileKind.ProfileImage);
-    const profileImage = await this.profileImagesService.create(fileUpload, 'avatar');
-
-    return await this.usersService.updateProfileImage(user, 'avatar', profileImage);
+    return await this.usersService.addUserImage(avatar, { ...createUserImage, type: UserImageType.Avatar });
   }
 
   @Put('/banner')
   @UploadInterceptor({ mimeTypeRegex: simpleImageMimeTypeRegex })
   @CheckPolicies(
-    ability => ability.can(Action.Create, ProfileImage),
+    ability => ability.can(Action.Create, UserImage),
     ability => ability.can(Action.Update, User),
   )
   public async updateBanner(
-    @CurrentTenant() tenant: Tenant,
-    @CurrentUser() user: User,
     @UploadedFile() banner: MulterFile,
+    @Body() createUserImage: Omit<CreateUserImageDto, 'type'>,
   ): Promise<User> {
-    if (!banner)
-      throw new BadRequestException('No file provided');
-
-    const fileUpload = await this.filesService.create(tenant, user, banner, FileKind.ProfileImage);
-    const profileImage = await this.profileImagesService.create(fileUpload, 'banner');
-
-    return await this.usersService.updateProfileImage(user, 'banner', profileImage);
+    return await this.usersService.addUserImage(banner, { ...createUserImage, type: UserImageType.Banner });
   }
 }

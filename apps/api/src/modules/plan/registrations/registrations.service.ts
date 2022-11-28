@@ -98,7 +98,11 @@ export class EventRegistrationsService {
       // if (!event.canEdit(user))
       //   throw new ForbiddenException('Cannot view registrations');
       filter = { ...filter, event: { id: query.eventId } };
-    } else if (query.userId && [Role.Moderator, Role.ClubManager, Role.Admin].some(role => user.roles.includes(role))) {
+    } else if (query.userId && [
+        Role.Moderator,
+        Role.ClubManager,
+        Role.TenantAdmin,
+      ].some(role => user.roles.includes(role))) {
       filter = { ...filter, user: { id: query.userId } };
     } else {
       filter = { ...filter, user };

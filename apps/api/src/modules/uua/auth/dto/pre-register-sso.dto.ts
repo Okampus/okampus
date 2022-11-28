@@ -1,8 +1,14 @@
-import { IntersectionType, PickType } from '@nestjs/mapped-types';
+import { Field, InputType, OmitType } from '@nestjs/graphql';
+import { IsString } from 'class-validator';
 import { RegisterDto } from './register.dto';
-import { TenantUserDto } from './tenant-user.dto';
 
-export class PreRegisterSsoDto extends IntersectionType(
-  TenantUserDto,
-  PickType(RegisterDto, ['tenantId', 'avatar', 'banner', 'color', 'signature', 'schoolRole', 'roles', 'shortDescription']),
-) {}
+@InputType()
+export class PreRegisterSsoDto extends OmitType(RegisterDto, ['password']) {
+  @Field()
+  @IsString()
+  lastName: string;
+
+  @Field()
+  @IsString()
+  email: string;
+}

@@ -1,48 +1,5 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Transform } from 'class-transformer';
-import {
-  IsBoolean,
-  IsEmail,
-  IsHexColor,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { InputType, PartialType } from '@nestjs/graphql';
+import { RegisterDto } from '../../auth/dto/register.dto';
 
 @InputType()
-export class UpdateUserDto {
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  @IsEmail()
-  email: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  @IsString()
-  signature: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  @IsHexColor()
-  @Transform(({ value }: { value: string }) => (value.startsWith('#') ? value.slice(1) : value))
-  color: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  @IsString()
-  shortDescription: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  @IsString()
-  avatar: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  @IsString()
-  banner: string;
-
-  @Field(() => Boolean, { nullable: true })
-  @IsOptional()
-  @IsBoolean()
-  finishedIntroduction: boolean;
-}
+export class UpdateUserDto extends PartialType(RegisterDto) {}

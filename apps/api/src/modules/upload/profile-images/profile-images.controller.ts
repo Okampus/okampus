@@ -49,7 +49,7 @@ export class ProfileImagesController {
       tenant,
       user,
       file,
-      FileKind.ProfileImage,
+      FileKind.TeamImage,
       createProfileImageDto.fileLastModifiedAt,
     );
     return await this.profileImagesService.create(fileUpload, createProfileImageDto.type);

@@ -115,7 +115,7 @@ export class TeamMembersService {
     return await this.teamMemberRepository.findWithPagination(
       paginationOptions,
       { team: { id } },
-      { populate: ['user', 'team'], orderBy: { user: { lastname: 'ASC' } } },
+      { populate: ['user', 'team'], orderBy: { user: { lastName: 'ASC' } } },
     );
   }
 

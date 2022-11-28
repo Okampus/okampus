@@ -5,6 +5,7 @@ import {
   Entity,
   Enum,
   Index,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryKey,
@@ -21,7 +22,7 @@ import { BaseTenantEntity } from '@common/lib/entities/base-tenant.entity';
 import type { BaseSearchableEntity } from '@common/lib/types/interfaces/base-searchable.interface';
 import type { UserCreationOptions } from '@common/lib/types/interfaces/user-creation-options.interface';
 import { Role } from '@common/modules/authorization/types/role.enum';
-import { SchoolRole } from '@common/modules/authorization/types/school-role.enum';
+import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
 import type { BaseIndex } from '@common/modules/search/indexed-entity.interface';
 import type { Favorite } from '@modules/interact/favorites/favorite.entity';
 import type { Reaction } from '@modules/interact/reactions/reaction.entity';
@@ -31,11 +32,13 @@ import { ClassMembership } from '@modules/org/classes/memberships/class-membersh
 import { Interest } from '@modules/org/teams/interests/interest.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import { TeamMembershipRequest } from '@modules/org/teams/requests/team-membership-request.entity';
-import type { Tenant } from '@modules/org/tenants/tenant.entity';
+import { Tenant } from '@modules/org/tenants/tenant.entity';
 
+import type { RegisterDto } from '../auth/dto/register.dto';
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { Settings } from '../settings/settings.entity';
 import { Statistics } from '../statistics/statistics.entity';
+import { UserImage } from '../user-images/user-image.entity';
 
 @ObjectType()
 @Entity()
@@ -44,46 +47,87 @@ export class User extends BaseTenantEntity implements BaseSearchableEntity {
   @PrimaryKey()
   id!: string;
 
-  @Field()
-  @Property({ type: 'text' })
-  firstname!: string;
+  @Field(() => String, { nullable: true })
+  @Unique()
+  @Property({ type: 'text', nullable: true })
+  email!: string;
+
+  @Field(() => Boolean)
+  @Index()
+  @Property()
+  bot = false;
 
   @Field()
   @Property({ type: 'text' })
-  lastname!: string;
+  name: string;
 
-  @Property({ type: 'text', hidden: true })
+  @Field(() => String, { nullable: true })
+  @Index()
+  @Property({ type: 'text', nullable: true })
+  lastName: string | null = null;
+
+  @Property({ type: 'text', hidden: true, nullable: true })
   password: string | null = null;
 
-  @Field()
-  @Property({ type: 'text' })
-  @Index()
-  email!: string;
+  @Field(() => String)
+  @Property()
+  @Unique()
+  eventIcal = nanoid(64);
+
+  // Roles
+  @Field(() => [Role])
+  @Enum({ default: [Role.User], array: true })
+  roles = [Role.User];
+
+  @Field(() => ScopeRole)
+  @Enum(() => ScopeRole)
+  scopeRole!: ScopeRole;
+
+  // Stats & point system
+  @Field(() => Settings)
+  @OneToOne('Settings', 'user', { cascade: [Cascade.ALL] })
+  settings!: Settings;
+
+  // TODO: add full reputation system
+  @OneToOne('Statistics', 'user', { cascade: [Cascade.ALL] })
+  statistics!: Statistics;
+
+  @Field(() => Int)
+  @Property()
+  points = 0;
 
   @Field(() => [BadgeUnlock], { nullable: true })
   @OneToMany('BadgeUnlock', 'user')
   badges = new Collection<BadgeUnlock>(this);
 
-  @Field(() => Boolean)
-  @Property()
-  bot = false;
+  // Profile customization
+  @Field(() => UserImage, { nullable: true })
+  @ManyToOne({ type: UserImage, cascade: [Cascade.ALL], nullable: true })
+  avatar: UserImage | null = null;
 
-  // TODO: Add full 'reputation' support
-  @Field(() => Int)
-  @Property()
-  reputation = 0;
+  @Field(() => UserImage, { nullable: true })
+  @ManyToOne({ type: UserImage, cascade: [Cascade.ALL], nullable: true })
+  banner: UserImage | null = null;
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
-  avatar: string | null = null;
+  status: string | null = null;
 
-  @Field(() => [Role])
-  @Enum({ default: [Role.User], array: true })
-  roles = [Role.User];
+  @Field(() => String, { nullable: true })
+  @Property({ type: 'text' })
+  color: string | null = null;
 
-  @Field(() => SchoolRole)
-  @Enum(() => SchoolRole)
-  schoolRole!: SchoolRole;
+  @Field(() => String, { nullable: true })
+  @Property({ type: 'text' })
+  signature: string | null = null;
+
+  @Field(() => Boolean)
+  @Property({ default: false })
+  finishedIntroduction = false;
+
+  @Field(() => Boolean)
+  @Property({ default: false })
+  finishedOnboarding = false;
 
   @Field(() => [ClassMembership])
   @OneToMany('ClassMembership', 'user')
@@ -101,29 +145,6 @@ export class User extends BaseTenantEntity implements BaseSearchableEntity {
   @OneToMany('Interest', 'user')
   interests = new Collection<Interest>(this);
 
-  @Field(() => String, { nullable: true })
-  @Property({ type: 'text' })
-  color: string | null = null;
-
-  @Field(() => String, { nullable: true })
-  @Property({ type: 'text' })
-  signature: string | null = null;
-
-  @Field(() => String, { nullable: true })
-  @Property({ type: 'text' })
-  banner: string | null = null;
-
-  @Field(() => String, { nullable: true })
-  @Property({ type: 'text' })
-  shortDescription: string | null = null;
-
-  @OneToOne('Statistics', 'user', { cascade: [Cascade.ALL] })
-  statistics!: Statistics;
-
-  @Field(() => Settings)
-  @OneToOne('Settings', 'user', { cascade: [Cascade.ALL] })
-  settings!: Settings;
-
   @OneToMany('Reaction', 'user', { cascade: [Cascade.ALL] })
   @TransformCollection()
   reactions = new Collection<Reaction>(this);
@@ -140,41 +161,26 @@ export class User extends BaseTenantEntity implements BaseSearchableEntity {
   @TransformCollection()
   favorites = new Collection<Favorite>(this);
 
-  @Field(() => Int)
-  @Property()
-  points = 0;
-
-  @Field(() => String)
-  @Property()
-  @Index()
-  @Unique()
-  eventIcal = nanoid(64);
-
-  @Field(() => Boolean)
-  @Property({ default: false })
-  finishedIntroduction = false;
-
-  @Field(() => Boolean)
-  @Property({ default: false })
-  finishedOnboarding = false;
-
   isPublic = false;
 
-  constructor(options: Omit<UserCreationOptions, 'avatar' | 'banner' | 'password' | 'tenantId'> & { tenant: Tenant }) {
+  constructor(
+    options: Omit<RegisterDto, 'avatar' | 'banner' | 'password'>,
+    tenant: Tenant,
+  ) {
     super();
-    this.assign(options);
+    this.assign({ ...options, tenant });
   }
 
   public toIndexed(): BaseIndex {
     return {
-      title: `${this.firstname.split(' ')[0]} ${this.lastname}`,
-      picture: this.avatar,
-      description: this.shortDescription ?? this.schoolRole,
-      category: this.schoolRole,
+      title: `${this.name.split(' ')[0]} ${this.lastName}`,
+      picture: this.avatar?.file.url ?? null,
+      description: this.status ?? this.scopeRole,
+      category: this.scopeRole,
       createdDate: this.createdAt.getTime(),
       updatedDate: this.updatedAt.getTime(),
       score: this.points,
-      users: [`${this.firstname.split(' ')[0]} ${this.lastname}`],
+      users: [`${this.name.split(' ')[0]} ${this.lastName}`],
       tags: this.roles,
     };
   }
@@ -188,13 +194,13 @@ export class User extends BaseTenantEntity implements BaseSearchableEntity {
   }
 
   public hasChanged(dto: UserCreationOptions): boolean {
-    return this.firstname !== dto.firstname
-      || this.lastname !== dto.lastname
+    return this.name !== dto.name
+      || this.lastName !== dto.lastName
       || this.email !== dto.email
-      || this.schoolRole !== dto.schoolRole;
+      || this.scopeRole !== dto.scopeRole;
   }
 
   public getFullName(): string {
-    return `${this.firstname.split(' ')[0]} ${this.lastname}`;
+    return `${this.name.split(' ')[0]} ${this.lastName}`;
   }
 }

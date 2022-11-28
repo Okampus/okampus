@@ -1,62 +1,75 @@
+import { Field, InputType } from '@nestjs/graphql';
+import { Transform } from 'class-transformer';
 import {
   IsArray,
-  IsBoolean,
   IsEmail,
   IsEnum,
+  IsHexColor,
   IsOptional,
   IsString,
 } from 'class-validator';
+import { colorStringTransform } from '@common/lib/utils/color-string-transform';
 import { Role } from '@common/modules/authorization/types/role.enum';
-import { SchoolRole } from '@common/modules/authorization/types/school-role.enum';
+import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
 
+@InputType()
 export class RegisterDto {
-  @IsString()
-  tenantId: string;
-
+  @Field()
   @IsString()
   id: string;
 
+  @Field()
   @IsString()
-  firstname: string;
+  name: string;
 
+  @Field(() => String, { nullable: true })
+  @IsOptional()
   @IsString()
-  lastname: string;
+  lastName?: string;
 
+  // TODO: add password validation so that it's not too weak
+  @Field()
   @IsString()
   password: string;
 
+  @Field(() => String, { nullable: true })
+  @IsOptional()
   @IsEmail()
-  email: string;
+  email?: string;
 
-  @IsEnum(SchoolRole)
-  schoolRole: SchoolRole;
+  @Field()
+  @IsEnum(ScopeRole)
+  scopeRole: ScopeRole;
 
+  @Field(() => [Role])
   @IsOptional()
   @IsArray()
   @IsEnum(Role, { each: true })
   roles?: Role[];
 
+  @Field()
+  @IsOptional()
+  @IsString()
+  status?: string;
+
+  @Field()
   @IsOptional()
   @IsString()
   avatar?: string;
 
-  @IsOptional()
-  @IsString()
-  color?: string;
-
-  @IsOptional()
-  @IsString()
-  signature?: string;
-
+  @Field()
   @IsOptional()
   @IsString()
   banner?: string;
 
+  @Field()
+  @IsOptional()
+  @IsHexColor()
+  @Transform(colorStringTransform)
+  color?: string;
+
+  @Field()
   @IsOptional()
   @IsString()
-  shortDescription?: string;
-
-  @IsOptional()
-  @IsBoolean()
-  bot?: boolean;
+  signature?: string;
 }

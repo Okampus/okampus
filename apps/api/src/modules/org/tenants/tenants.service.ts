@@ -28,7 +28,7 @@ export class TenantsService {
     return tenant;
   }
 
-  public async findOne(id: string, populate = false): Promise<Tenant> {
+  public async findOne(id: string | undefined, populate = false): Promise<Tenant> {
     return await this.tenantRepository.findOneOrFail({ id }, populate ? {
  populate: [
       // 'approvalSteps', 'approvalSteps.users'

@@ -53,8 +53,8 @@ export class FileUploadsService {
       fileKind,
       fileLastModifiedAt,
       url: '',
-    ...meta,
-   });
+      ...meta,
+    });
 
     await this.fileUploadRepository.persistAndFlush(fileDocument);
 

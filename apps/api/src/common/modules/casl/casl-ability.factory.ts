@@ -14,6 +14,7 @@ import { Thread } from '@modules/create/threads/thread.entity';
 import { Wiki } from '@modules/create/wikis/wiki.entity';
 import { Favorite } from '@modules/interact/favorites/favorite.entity';
 import { Report } from '@modules/interact/reports/report.entity';
+import type { App } from '@modules/org/apps/app.entity';
 import { Food } from '@modules/org/canteens/foods/food.entity';
 import { Menu } from '@modules/org/canteens/menus/menu.entity';
 import type { Class } from '@modules/org/classes/class.entity';
@@ -39,6 +40,7 @@ import type { TeamGallery } from '@modules/upload/team-galleries/team-gallery.en
 import type { TeamReceipt } from '@modules/upload/team-receipts/team-receipt.entity';
 import { Badge } from '@modules/uua/badges/entities/badge.entity';
 import { Settings } from '@modules/uua/settings/settings.entity';
+import type { UserImage } from '@modules/uua/user-images/user-image.entity';
 import { User } from '@modules/uua/users/user.entity';
 import { AnnouncementState } from '../../lib/types/enums/announcement-state.enum';
 import { ContentKind } from '../../lib/types/enums/content-kind.enum';
@@ -49,6 +51,7 @@ import { Role } from '../authorization/types/role.enum';
 export type Subjects =
   | InferSubjects<
       | typeof Announcement
+      | typeof App
       | typeof ApprovalStep
       | typeof Attachment
       | typeof Badge
@@ -82,6 +85,7 @@ export type Subjects =
       | typeof Tenant
       | typeof Thread
       | typeof User
+      | typeof UserImage
       | typeof Wiki
     >
   | 'all';
@@ -106,13 +110,17 @@ export class CaslAbilityFactory {
       build,
     } = new AbilityBuilder<AppAbility>(Ability as AbilityClass<AppAbility>);
 
+    // TODO: rules for modifying UserImage, TeamImage, App
+    // TODO: rules for modifying specific fields of User, Team, etc.
+
     /* eslint-disable @typescript-eslint/naming-convention */
     const isAuthor = { 'author.id': user.id } as const;
     const isFileUploader = { 'file.user.id': user.id } as const;
     const isClub = { kind: TeamKind.Club } as const;
     const isMe = { 'user.userId': user.id } as const;
+    const isBotOwner = { 'owner.id': user.id, bot: true } as const;
 
-    if (user.roles.includes(Role.Admin)) {
+    if (user.roles.includes(Role.TenantAdmin)) {
       allow(Action.Manage, 'all');
     } else {
       allow(Action.Read, 'all');
@@ -148,6 +156,8 @@ export class CaslAbilityFactory {
 
       forbid(Action.Update, User).because('Not the user');
       allow(Action.Update, User, { id: user.id }).because('Not the user');
+      allow(Action.Update, User, isBotOwner);
+
 
       if (user.roles.includes(Role.Moderator)) {
         allow(Action.Read, 'all');
@@ -218,6 +228,11 @@ export class CaslAbilityFactory {
         );
 
         // @ts-expect-error
+        allow(Action.Manage, ProfileImage, isFileUploader).because(
+          'Not the user',
+        );
+
+        // @ts-expect-error
         allow(Action.Delete, Content, isAuthor).because('Not the author');
         // @ts-expect-error
         allow(Action.Delete, StudyDoc, isFileUploader).because(
@@ -238,7 +253,7 @@ export class CaslAbilityFactory {
         ).because('Thread is locked');
       }
 
-      if (user.roles.includes(Role.RestaurantManager))
+      if (user.roles.includes(Role.CafeteriaManager))
         allow(Action.Manage, [Menu, Food]);
 
       if (user.roles.includes(Role.ClubManager)) {
@@ -270,7 +285,7 @@ export class CaslAbilityFactory {
 
   public isModOrAdmin(user: User): boolean {
     return (
-      user.roles.includes(Role.Moderator) || user.roles.includes(Role.Admin)
+      user.roles.includes(Role.Moderator) || user.roles.includes(Role.TenantAdmin)
     );
   }
 }
