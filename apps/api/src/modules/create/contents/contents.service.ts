@@ -22,7 +22,6 @@ import {
 } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
 import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
-import { serializeOrder } from '@common/modules/sorting';
 import type { CreateOrphanContentDto } from '@modules/create/contents/dto/create-orphan-content.dto';
 import type { Interactions } from '@modules/create/contents/interactions.model';
 import { Favorite } from '@modules/interact/favorites/favorite.entity';

@@ -1,6 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
 import {
- IsEnum, IsNumber, IsOptional, IsString,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
 } from 'class-validator';
 import { TeamImageType } from '@common/lib/types/enums/team-image-type.enum';
 import { CreateFileUploadDto } from '@modules/upload/file-uploads/dto/create-file-upload.dto';

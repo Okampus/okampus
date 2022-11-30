@@ -1,4 +1,3 @@
-
 import type { ITriggerPayload } from '@novu/node';
 import { EventRegistration } from '@modules/plan/registrations/registration.entity';
 import type { User } from '@modules/uaa/users/user.entity';

@@ -1,7 +1,6 @@
-
+import './aliases';
 // Hack to get Multer to register its typings into the global scope, because why not
 // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47780#issuecomment-790684085
-import './aliases';
 import 'multer';
 import '@common/lib/morgan.register';
 

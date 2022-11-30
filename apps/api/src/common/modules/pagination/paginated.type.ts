@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import type { Type } from '@nestjs/common';
 import { Field, ObjectType } from '@nestjs/graphql';
 import type { BaseEntity } from '@common/lib/entities/base.entity';

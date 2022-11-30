@@ -1,5 +1,9 @@
 import {
- Entity, Enum, ManyToOne, PrimaryKey, Property,
+  Entity,
+  Enum,
+  ManyToOne,
+  PrimaryKey,
+  Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 import { BaseFileEntity } from '@common/lib/entities/base-file.entity';

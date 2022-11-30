@@ -1,7 +1,6 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import type { ListOptionsDto } from '@common/lib/dto/list-options.dto';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { TeamManagedFormUpdatedNotification } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';

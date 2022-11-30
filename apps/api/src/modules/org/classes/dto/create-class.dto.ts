@@ -1,6 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
 import {
- IsEnum, IsOptional, IsString, Length,
+  IsEnum,
+  IsOptional,
+  IsString,
+  Length,
 } from 'class-validator';
 import { ClassType } from '@common/lib/types/enums/class-type.enum';
 

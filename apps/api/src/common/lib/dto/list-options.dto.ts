@@ -1,4 +1,3 @@
-// eslint-disable-next-line max-classes-per-file
 import { IntersectionType } from '@nestjs/mapped-types';
 import { PaginationArgs } from '../../modules/pagination';
 import { SortDto } from '../../modules/sorting';

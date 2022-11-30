@@ -19,8 +19,6 @@ import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { serializeOrder } from '@common/modules/sorting';
-import { ContentSortOrder } from '@common/modules/sorting/sort-order.enum';
 import { Tag } from '@modules/catalog/tags/tag.entity';
 import type { CreateThreadDto } from '@modules/create/threads/dto/create-thread.dto';
 import { Validation } from '@modules/interact/validations/validation.entity';
@@ -62,8 +60,11 @@ export class ThreadsService {
   ): Promise<Thread> {
     const post = await this.contentsService.createPost(user, createThreadDto);
     const {
- tags, assignedTeams, assignedUsers, ...createThread
-} = createThreadDto;
+      tags,
+      assignedTeams,
+      assignedUsers,
+      ...createThread
+    } = createThreadDto;
 
     const thread = new Thread({ ...createThread, post });
     post.contentMaster = thread;

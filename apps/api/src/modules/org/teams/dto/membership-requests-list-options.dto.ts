@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import { Field, InputType, IntersectionType } from '@nestjs/graphql';
 import { IsEnum, IsOptional } from 'class-validator';
 import { MembershipRequestDirection } from '@common/lib/types/enums/membership-request-direction.enum';

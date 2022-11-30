@@ -6,7 +6,10 @@ import {
   Property,
 } from '@mikro-orm/core';
 import {
- Field, Float, GraphQLISODateTime, ObjectType,
+  Field,
+  Float,
+  GraphQLISODateTime,
+  ObjectType,
 } from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
 import { BaseFileEntity } from '@common/lib/entities/base-file.entity';
