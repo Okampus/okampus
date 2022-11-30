@@ -22,26 +22,18 @@ import { UpdateApprovalStepDto } from './dto/update-approval-step.dto';
 @ApiTags('Approval Steps')
 @Controller()
 export class ApprovalStepsController {
-  constructor(
-    private readonly approvalStepsService: ApprovalStepsService,
-  ) {}
+  constructor(private readonly approvalStepsService: ApprovalStepsService) {}
 
   @Post(':id')
   @CheckPolicies(ability => ability.can(Action.Create, ApprovalStep))
-  public async create(
-    @CurrentTenant() tenant: Tenant,
-    @Body() createApprovalStepDto: ApprovalStepDto,
-  ): Promise<ApprovalStep> {
-    return await this.approvalStepsService.create(tenant, createApprovalStepDto);
+  public async create(@Body() createApprovalStepDto: ApprovalStepDto): Promise<ApprovalStep> {
+    return await this.approvalStepsService.create(createApprovalStepDto);
   }
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, ApprovalStep))
-  public async findAll(
-    @CurrentTenant() tenant: Tenant,
-    @Query() query: ListApprovalStepsDto,
-  ): Promise<ApprovalStep[]> {
-    return await this.approvalStepsService.findAll(tenant, query.type);
+  public async findAll(@Query() query: ListApprovalStepsDto): Promise<ApprovalStep[]> {
+    return await this.approvalStepsService.findAll(query.type);
   }
 
   @Patch(':id')
@@ -56,22 +48,22 @@ export class ApprovalStepsController {
     await this.approvalStepsService.remove(id);
   }
 
-  @Post(':id/users/:userId')
+  @Post(':stepId/users/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, ApprovalStep))
   public async addUser(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('stepId', ParseIntPipe) stepId: number,
     @Param('userId') userId: string,
   ): Promise<ApprovalStep> {
-    return await this.approvalStepsService.addUser(id, userId);
+    return await this.approvalStepsService.addUser(stepId, userId);
   }
 
-  @Delete(':id/users/:userId')
+  @Delete(':stepId/users/:userId')
   @CheckPolicies(ability => ability.can(Action.Update, ApprovalStep))
   public async removeUser(
     @CurrentTenant() tenant: Tenant,
-    @Param('id', ParseIntPipe) id: number,
+    @Param('stepId', ParseIntPipe) stepId: number,
     @Param('userId') userId: string,
   ): Promise<void> {
-    await this.approvalStepsService.removeUser(tenant, id, userId);
+    await this.approvalStepsService.removeUser(stepId, userId);
   }
 }

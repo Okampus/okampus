@@ -4,29 +4,21 @@ import {
   Mutation,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
+import { ApprovalStepType } from '@common/lib/types/enums/approval-step-type.enum';
 import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
 import { ApprovalStepDto } from '@modules/org/tenants/approval-steps/dto/create-approval-step.dto';
 import { Tenant } from '../tenant.entity';
-import { TenantsService } from '../tenants.service';
 import { ApprovalStepsService } from './approval-steps.service';
 import { UpdateApprovalStepDto } from './dto/update-approval-step.dto';
 
 @Resolver(() => ApprovalStep)
 export class ApprovalStepsResolver {
-  constructor(
-    private readonly approvalStepsService: ApprovalStepsService,
-    private readonly tenantsService: TenantsService,
-  ) {}
+  constructor(private readonly approvalStepsService: ApprovalStepsService) {}
 
   // TODO: Add permission checks
   @Mutation(() => Tenant)
-  public async addApprovalStep(
-    @CurrentTenant() tenant: Tenant,
-    @Args('createStep') createStep: ApprovalStepDto,
-  ): Promise<Tenant> {
-    await this.approvalStepsService.create(tenant, createStep);
-    return tenant;
+  public async addApprovalStep(@Args('createStep') createStep: ApprovalStepDto): Promise<ApprovalStep> {
+    return await this.approvalStepsService.create(createStep);
   }
 
   // TODO: Add permission checks
@@ -38,12 +30,11 @@ export class ApprovalStepsResolver {
     return await this.approvalStepsService.update(id, updateStep);
   }
 
-  @Mutation(() => Tenant)
-  public async insertStep(
-    @CurrentTenant() tenant: Tenant,
+  @Mutation(() => [ApprovalStep])
+  public async reinsertStep(
     @Args('step', { type: () => Int }) step: number,
-    @Args('atStep', { type: () => Int }) atStep: number,
-  ): Promise<Tenant> {
-    return await this.approvalStepsService.insertStep(tenant, step, atStep);
+    @Args('atStepNumber', { type: () => Int }) atStepNumber: number,
+  ): Promise<ApprovalStep[]> {
+    return await this.approvalStepsService.reinsertStep(step, atStepNumber, ApprovalStepType.Event);
   }
 }

@@ -1,4 +1,5 @@
 import {
+  Cascade,
   Entity,
   ManyToOne,
   PrimaryKey,
@@ -14,7 +15,7 @@ export class EventApproval extends BaseEntity {
   @PrimaryKey()
   id!: number;
 
-  @ManyToOne()
+  @ManyToOne({ cascade: [Cascade.ALL] })
   event!: Event;
 
   @ManyToOne()
@@ -23,10 +24,13 @@ export class EventApproval extends BaseEntity {
   @Property({ type: 'text' })
   message: string | null = null;
 
+  @Property({ type: 'text' })
+  reason: string | null = null;
+
   @Property()
   approved!: boolean;
 
-  @ManyToOne()
+  @ManyToOne({ cascade: [Cascade.ALL] })
   step!: ApprovalStep;
 
   constructor(options: {

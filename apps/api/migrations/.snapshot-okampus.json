@@ -6015,7 +6015,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "integer"
         },
         "user_id": {
@@ -6029,6 +6029,15 @@
         },
         "message": {
           "name": "message",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "reason": {
+          "name": "reason",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -6051,7 +6060,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "integer"
         }
       },
@@ -6080,6 +6089,7 @@
             "id"
           ],
           "referencedTableName": "public.event",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "event_approval_user_id_foreign": {
@@ -6104,6 +6114,7 @@
             "id"
           ],
           "referencedTableName": "public.approval_step",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

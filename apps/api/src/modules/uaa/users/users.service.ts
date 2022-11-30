@@ -1,5 +1,6 @@
 /* eslint-disable object-curly-newline */
 
+import type { EntityField } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -37,7 +38,9 @@ const userImageTypeToKey = {
 };
 
 const defaultUserPopulate = ['classMemberships', 'classMemberships.schoolYear', 'classMemberships.schoolClass'];
-
+const bareUserFields: Array<EntityField<User, string>> = [
+  'id', 'password', 'name', 'lastName', 'email', 'avatar', 'roles', 'banner', 'bot', 'points',
+];
 
 @Injectable()
 export class UsersService extends GlobalRequestService {
@@ -54,10 +57,12 @@ export class UsersService extends GlobalRequestService {
   ) { super(); }
 
   public async findBareUser(idOrEmail: string): Promise<User | null> {
-    return await this.userRepository.findOneOrFail(
-      { $or: [{ id: idOrEmail }, { email: idOrEmail.toLowerCase() }] },
-      { fields: ['id', 'password', 'name', 'lastName', 'email', 'avatar', 'roles', 'banner', 'bot', 'points'] },
-    );
+    const where = { $or: [{ id: idOrEmail }, { email: idOrEmail.toLowerCase() }] };
+    return await this.userRepository.findOneOrFail(where, { fields: bareUserFields });
+  }
+
+  public async findBareUsers(ids: string[]): Promise<User[]> {
+    return await this.userRepository.find({ id: { $in: ids } }, { fields: bareUserFields });
   }
 
   public async findOne(id: string): Promise<User> {

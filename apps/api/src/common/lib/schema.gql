@@ -972,7 +972,7 @@ type Mutation {
   removeTeamMember(teamId: Int!, userId: Int!): TeamMember
   addApprovalStep(createStep: ApprovalStepDto!): Tenant!
   updateApprovalStep(id: Int!, updateStep: UpdateApprovalStepDto!): ApprovalStep!
-  insertStep(step: Int!, atStep: Int!): Tenant!
+  reinsertStep(step: Int!, atStepNumber: Int!): [ApprovalStep!]!
   createThread(thread: CreateThreadDto!): Thread!
   updateThread(id: Int!, thread: UpdateThreadDto!): Thread!
 }

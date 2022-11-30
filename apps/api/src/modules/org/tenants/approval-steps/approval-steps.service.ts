@@ -1,40 +1,47 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { GlobalRequestService } from '@common/lib/helpers/global-request-service';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { ApprovalStepType } from '@common/lib/types/enums/approval-step-type.enum';
+import { ApprovalStepType } from '@common/lib/types/enums/approval-step-type.enum';
+import { catchUniqueViolation } from '@common/lib/utils/catch-unique-violation';
+import { getMinMax } from '@common/lib/utils/get-min-max';
 import type { ApprovalStepDto } from '@modules/org/tenants/approval-steps/dto/create-approval-step.dto';
-import { User } from '@modules/uaa/users/user.entity';
-import { Tenant } from '../tenant.entity';
+import { EventApproval } from '@modules/plan/approvals/approval.entity';
+import { Event } from '@modules/plan/events/event.entity';
+import { UsersService } from '@modules/uaa/users/users.service';
 import { ApprovalStep } from './approval-step.entity';
 import type { UpdateApprovalStepDto } from './dto/update-approval-step.dto';
 
 @Injectable()
-export class ApprovalStepsService {
+export class ApprovalStepsService extends GlobalRequestService {
   constructor(
-    @InjectRepository(Tenant) private readonly tenantRepository: BaseRepository<Tenant>,
     @InjectRepository(ApprovalStep) private readonly approvalStepRepository: BaseRepository<ApprovalStep>,
-    @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
-  ) {}
+    @InjectRepository(EventApproval) private readonly eventApprovalRepository: BaseRepository<EventApproval>,
+    @InjectRepository(Event) private readonly eventRepository: BaseRepository<Event>,
+    private readonly usersService: UsersService,
+  ) { super(); }
 
-  public async create(tenant: Tenant, createApprovalStepDto: ApprovalStepDto): Promise<ApprovalStep> {
-    const step = await this.approvalStepRepository.count({ tenant, step: createApprovalStepDto.step });
+  public async create(createApprovalStepDto: ApprovalStepDto): Promise<ApprovalStep> {
+    const tenant = this.currentTenant();
+    const { users: wantedUsers, ...createApprovalStep } = createApprovalStepDto;
+
+    const where = { tenant, type: createApprovalStep.type, step: createApprovalStep.step };
+    const step = await this.approvalStepRepository.count(where);
+
     if (step > 0)
       throw new BadRequestException('Step already exists');
 
-    const { users: wantedUsers, ...dto } = createApprovalStepDto;
-    const approvalStep = new ApprovalStep({ ...dto, tenant });
+    const approvalStep = new ApprovalStep({ ...createApprovalStep, tenant });
+    approvalStep.users.add(...await this.usersService.findBareUsers(wantedUsers));
 
-    const users = await this.userRepository.find({ id: { $in: wantedUsers } });
-    approvalStep.users.add(...users);
-
-    await this.approvalStepRepository.persistAndFlush(approvalStep);
+    await catchUniqueViolation(this.approvalStepRepository, approvalStep);
     return approvalStep;
   }
 
-  public async findAll(tenant: Tenant, type: ApprovalStepType): Promise<ApprovalStep[]> {
+  public async findAll(type: ApprovalStepType): Promise<ApprovalStep[]> {
     return await this.approvalStepRepository.find(
-      { tenant, type },
+      { tenant: this.currentTenant(), type },
       { orderBy: { step: 'ASC' }, populate: ['users'] },
     );
   }
@@ -47,7 +54,7 @@ export class ApprovalStepsService {
       if (users.length === 0) {
         approvalStep.users.removeAll();
       } else {
-        const newUsers = await this.userRepository.find({ id: { $in: users } });
+        const newUsers = await this.usersService.findBareUsers(users);
         approvalStep.users.set(newUsers);
       }
     }
@@ -57,52 +64,126 @@ export class ApprovalStepsService {
     return approvalStep;
   }
 
-  public async insertStep(tenant: Tenant, step: number, atStep: number): Promise<Tenant> {
-    const stepCount = await this.approvalStepRepository.count({ tenant });
-    if (step === atStep || step < 1 || step > stepCount || step < 1 || atStep > stepCount)
+  public async reinsertStep(step: number, atStepNumber: number, type: ApprovalStepType): Promise<ApprovalStep[]> {
+    const tenant = this.currentTenant();
+    const stepCount = await this.approvalStepRepository.count({ tenant, type });
+    // TODO: Remove any approvals that have maxStep < bigStep and maxStep > smallStep
+    const { min: smallStep, max: bigStep } = getMinMax(step, atStepNumber);
+    if (step === atStepNumber || smallStep < 1 || bigStep > stepCount)
       throw new BadRequestException('Invalid step numbers');
 
-    const approvalStep = await this.approvalStepRepository.findOneOrFail({ tenant, step });
-    if (step < atStep) {
-      const previousSteps = await this.approvalStepRepository.find(
-        { tenant, step: { $gt: step, $lte: atStep } },
-      );
+    const nextSteps = await this.approvalStepRepository.find({ tenant, step: { $gte: smallStep, $lt: bigStep } });
 
-      for (const previousStep of previousSteps)
-        previousStep.step -= 1;
-    } else {
-      const nextSteps = await this.approvalStepRepository.find(
-        { tenant, step: { $gte: atStep, $lt: step } },
-      );
+    const currStep = await this.approvalStepRepository.findOneOrFail({ tenant, type, step });
 
-      for (const nextStep of nextSteps)
-        nextStep.step += 1;
+    if (step > atStepNumber) {
+      if (type === ApprovalStepType.Event) {
+        const newApprovalStep = await this.approvalStepRepository.findOneOrFail({ tenant, type, step: step - 1 });
+        const approvedEvents = await this.eventRepository.find({ lastApprovalStep: currStep });
+        for (const approvedEvent of approvedEvents)
+          approvedEvent.lastApprovalStep = newApprovalStep;
+
+        const unapprovedApprovals = await this.eventApprovalRepository.find({
+          step: { step: { $gte: smallStep, $lt: bigStep } },
+        });
+
+        for (const unapprovedApproval of unapprovedApprovals) {
+          unapprovedApproval.approved = false;
+          // TODO: i18n + automated reasons management
+          unapprovedApproval.reason = `Refused because approval steps have been reordered by ${this.currentUser().getFullName()} (${(new Date()).toLocaleString()})`;
+        }
+
+        const nonApprovedEvents = await this.eventRepository.find(
+          { lastApprovalStep: { step: { $gte: smallStep, $lt: bigStep } } },
+        );
+        for (const nonApprovedEvent of nonApprovedEvents)
+          nonApprovedEvent.lastApprovalStep = currStep;
+      }
+    } else if (type === ApprovalStepType.Event) {
+        const approvedEvents = await this.eventRepository.find({ lastApprovalStep: { step: atStepNumber } });
+        for (const approvedEvent of approvedEvents)
+          approvedEvent.lastApprovalStep = currStep;
     }
 
-    approvalStep.step = atStep;
+    const stepDiff = step > atStepNumber ? 1 : -1;
+    for (const nextStep of nextSteps)
+      nextStep.step += stepDiff;
+
+    currStep.step = atStepNumber;
 
     await this.approvalStepRepository.flush();
-    await this.tenantRepository.populate(tenant, [
-      // 'approvalSteps', 'approvalSteps.users'
-    ]);
-
-    return tenant;
+    return await this.findAll(type);
   }
 
-  public async remove(id: number): Promise<void> {
-    const approvalStep = await this.approvalStepRepository.findOneOrFail({ id });
-    await this.approvalStepRepository.removeAndFlush(approvalStep);
+  // Public async switchSteps(step1: number, step2: number, type: ApprovalStepType): Promise<ApprovalStep[]> {
+  //   const tenant = this.currentTenant();
+  //   const stepCount = await this.approvalStepRepository.count({ tenant, type });
+  //   // TODO: Remove any approvals that have maxStep < bigStep and maxStep > smallStep
+  //   const { min: smallStep, max: bigStep } = getMinMax(step1, step2);
+  //   if (step1 === step2 || smallStep < 1 || bigStep > stepCount)
+  //     throw new BadRequestException('Invalid step numbers');
+
+  //   const nextSteps = await this.approvalStepRepository.find({ tenant, step: { $gt: smallStep, $lt: bigStep } });
+
+  //   const minStep = await this.approvalStepRepository.findOneOrFail({ tenant, type, step: smallStep });
+  //   const maxStep = await this.approvalStepRepository.findOneOrFail({ tenant, type, step: bigStep });
+
+  //   if (type === ApprovalStepType.Event) {
+  //     // Set all already validated steps to the new bigger step (i.e. minStep)
+  //     const maxStepEventApprovals = await this.eventApprovalRepository.find({ step: maxStep });
+  //     for (const eventApproval of maxStepEventApprovals)
+  //       eventApproval.step = minStep;
+
+  //     // Set all other steps to the new smaller step (i.e. maxStep)
+  //     const eventApprovals = await this.eventApprovalRepository.find(
+  //       { step: { tenant, type, step: { $gt: smallStep, $lt: bigStep } } },
+  //     );
+  //     for (const eventApproval of eventApprovals)
+  //       eventApproval.step = maxStep;
+
+  //     await this.eventApprovalRepository.flush();
+  //   }
+
+  //   // Diminish all nextSteps by -1
+  //   for (const step of nextSteps)
+  //     step.step--;
+
+  //   maxStep.step = smallStep;
+  //   minStep.step = bigStep;
+
+  //   await this.approvalStepRepository.flush();
+  //   return await this.findAll(type);
+  // }
+
+  public async remove(stepId: number): Promise<void> {
+    // TODO: Check if step is used in any approval, if so, remove approvals
+    const step = await this.approvalStepRepository.findOneOrFail({ id: stepId });
+    const nextSteps = await this.approvalStepRepository.find({ tenant: step.tenant, step: { $gt: step.step } });
+    for (const nextStep of nextSteps)
+      nextStep.step -= 1;
+
+    const previousStep = step.step > 1
+      ? await this.approvalStepRepository.findOneOrFail({ tenant: step.tenant, step: step.step - 1 })
+      : null;
+
+    if (step.type === ApprovalStepType.Event) {
+      for (const event of await this.eventRepository.find({ lastApprovalStep: { step: step.step - 1 } }))
+        event.lastApprovalStep = previousStep;
+
+      await this.eventRepository.flush();
+    }
+
+    await this.approvalStepRepository.removeAndFlush(step);
   }
 
-  public async addUser(id: number, userId: string): Promise<ApprovalStep> {
-    const approvalStep = await this.approvalStepRepository.findOneOrFail(
-      { id },
-      { populate: ['users'] },
-    );
+  public async addUser(stepId: number, userId: string): Promise<ApprovalStep> {
+    const approvalStep = await this.approvalStepRepository.findOneOrFail({ id: stepId }, { populate: ['users'] });
+    const user = await this.usersService.findBareUser(userId);
+    if (!user)
+      throw new BadRequestException('User not found');
 
-    const user = await this.userRepository.findOneOrFail({ id: userId });
     if (approvalStep.users.contains(user))
-      throw new BadRequestException('User already in Approval Step');
+      throw new BadRequestException('User already part of step');
 
     approvalStep.users.add(user);
 
@@ -110,15 +191,15 @@ export class ApprovalStepsService {
     return approvalStep;
   }
 
-  public async removeUser(tenant: Tenant, id: number, userId: string): Promise<void> {
-    const approvalStep = await this.approvalStepRepository.findOneOrFail(
-      { id, tenant },
-      { populate: ['users'] },
-    );
+  public async removeUser(stepId: number, userId: string): Promise<void> {
+    const tenant = this.currentTenant();
+    const approvalStep = await this.approvalStepRepository.findOneOrFail({ id: stepId, tenant }, { populate: ['users'] });
+    const user = await this.usersService.findBareUser(userId);
+    if (!user)
+      throw new BadRequestException('User not found');
 
-    const user = await this.userRepository.findOneOrFail({ id: userId });
     if (!approvalStep.users.contains(user))
-      throw new BadRequestException('User not in Approval Step');
+      throw new BadRequestException('User not part of step');
 
     approvalStep.users.remove(user);
 
