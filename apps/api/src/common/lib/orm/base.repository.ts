@@ -1,69 +1,112 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable unicorn/no-array-method-this-argument */
 import type { FilterQuery, FindOptions } from '@mikro-orm/core';
 import { QueryOrder } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import { PageInfo } from '@common/modules/pagination';
 import type { BaseEntity } from '../entities/base.entity';
+import type { CursorColumnTypes } from '../utils/cursor-serializer';
 import { decodeCursor, encodeCursor } from '../utils/cursor-serializer';
 
-type PaginationFindOptions<T extends BaseEntity, P extends string> = Omit<FindOptions<T, P>, 'limit' | 'offset' | 'orderBy'>;
+type PaginationFindOptions<T extends BaseEntity, P extends string> = Omit<
+  FindOptions<T, P>, 'limit' | 'offset' | 'orderBy'
+>;
+type ColumnList = Record<string, [value: CursorColumnTypes, order: QueryOrder]>;
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   private static readonly defaultLimit = 10;
 
   public async findWithPagination<P extends string = never>(
-    paginationOptions?: PaginationOptions<T>,
+    paginationOptions?: PaginationArgs,
     where: FilterQuery<T> = {} as FilterQuery<T>,
     baseOptions?: PaginationFindOptions<T, P>,
   ): Promise<PaginatedNodes<T>> {
-    const limit = paginationOptions?.limit ?? BaseRepository.defaultLimit;
-    // FIXME: 'id' might not always be the primary key, load it dynamically instead.
-    const cursorColumn: keyof T = paginationOptions?.cursorColumn ?? 'id' as keyof T;
+    let columns: ColumnList | null = null;
 
-    let selector: '$gt' | '$lt' | undefined;
-    let order: QueryOrder = QueryOrder.ASC;
-    let offsetId: number | string | undefined;
-    let offset: number | undefined;
+    const limit = paginationOptions?.limit ?? BaseRepository.defaultLimit;
+    const offset: number = paginationOptions?.offset ?? 0;
 
     if (paginationOptions?.after) {
-      offsetId = decodeCursor(paginationOptions.after);
-      selector = '$gt';
+      columns = decodeCursor(paginationOptions.after);
     } else if (paginationOptions?.before) {
-      offsetId = decodeCursor(paginationOptions.before);
-      selector = '$lt';
-      order = QueryOrder.DESC;
-    } else if (paginationOptions?.offset && paginationOptions.offset > 0) {
-      offset = paginationOptions.offset;
-    } else {
-      offset = 0;
+      // Invert the query order of the columns
+      columns = Object.fromEntries(Object.entries(decodeCursor(paginationOptions.before)).map(
+        ([colName, [value, order]]) => [colName, [value, order === QueryOrder.ASC ? QueryOrder.DESC : QueryOrder.ASC]],
+      ));
     }
 
-    const items = await this.find(
-      offsetId && selector
-        ? { ...where, [cursorColumn]: { [selector]: offsetId } }
-        : where,
-      // eslint-disable-next-line unicorn/no-array-method-this-argument
-      {
-        ...baseOptions,
-        // @ts-expect-error: i don't know why `keyof T` is not recognized as a valid key for `orderBy`
-        orderBy: { [cursorColumn]: order },
-        limit,
-        offset,
-      },
+    // FIXME: 'id' might not always be the primary key, load it dynamically instead.
+    const orderBy = paginationOptions?.orderBy ?? (columns
+      ? Object.fromEntries(Object.entries(columns).map(([col, [_, order]]) => [col, order]))
+      : { id: QueryOrder.ASC }
     );
 
-    const startCursorId = items.length > 0 ? items[0][cursorColumn] : null;
-    const endCursorId = items.length > 0 ? items.slice(-1)[0][cursorColumn] : null;
+    if (!('id' in orderBy))
+      orderBy.id = QueryOrder.ASC;
+
+    const colCondition = (colName: string, value: CursorColumnTypes, selector: '$gt' | '$lt'): FilterQuery<T> => (
+      selector === '$lt'
+        ? value === null ? { [colName]: { $ne: null } } : { [colName]: { [selector]: value } }
+        : { $or: [{ [colName]: { $gt: value } }, { [colName]: { $eq: null } }] }
+    ) as FilterQuery<T>;
+
+    const getNextColsConditions = (
+      colArray: Array<[colName: string, colInfo: [value: CursorColumnTypes, order: QueryOrder]]>,
+    ): FilterQuery<T> => {
+      const [lastCol, ...eqCols] = colArray.reverse();
+      const lastColCondition = colCondition(
+        lastCol[0], lastCol[1][0], lastCol[1][1] === QueryOrder.ASC ? '$gt' : '$lt',
+      );
+
+      if (eqCols.length === 0)
+        return lastColCondition;
+
+      const eqColsConditions = eqCols.map(([colName, [value, _]]) => ({ [colName]: { $eq: value } }));
+      return {
+        $and: [
+          ...eqColsConditions,
+          lastColCondition,
+        ],
+      } as FilterQuery<T>;
+    };
+
+    const getWhereFind = (findColumns: ColumnList): FilterQuery<T> => {
+      if (!findColumns)
+        return {} as FilterQuery<T>;
+
+      return {
+        $or: Object.entries(findColumns).map(([_, [value, order]], idx, arr) => (
+            value === null && order === QueryOrder.ASC
+          ? null  // > NULL is always false
+          : getNextColsConditions(arr.slice(0, idx + 1)))).filter(x => x !== null),
+      } as FilterQuery<T>;
+    };
+
+    const items = await this.find(
+      columns ? { ...where, ...getWhereFind(columns) } : where, { ...baseOptions, orderBy, limit, offset },
+    );
+
+    const startCusorColumns = (items.length > 0 ? Object.fromEntries(Object.entries(orderBy).map(
+      ([colName, order]) => [
+        colName, [items[0][colName as keyof T], order === QueryOrder.ASC ? QueryOrder.DESC : QueryOrder.ASC],
+      ],
+    )) : null) as ColumnList | null;
+
+    const endCursorColumns = (items.length > 0 ? Object.fromEntries(Object.entries(orderBy).map(
+      ([colName, order]) => [colName, [items[items.length - 1][colName as keyof T], order]],
+    )) : null) as ColumnList | null;
 
     const [countBefore, countAfter] = await Promise.all([
-      this.count({ ...where, [cursorColumn]: { $lt: startCursorId } }),
-      this.count({ ...where, [cursorColumn]: { $gt: endCursorId } }),
+      this.count({ ...where, ...getWhereFind(startCusorColumns!) }),
+      this.count({ ...where, ...getWhereFind(endCursorColumns!) }),
     ]);
 
     const edges = items.map(value => ({
       node: value,
-      // @ts-expect-error: `keyof T` cannot be used to index `Loaded<T, P>`...
-      cursor: encodeCursor(value[cursorColumn]),
+      cursor: encodeCursor(Object.fromEntries(Object.entries(orderBy).map(
+        ([colName, order]) => [colName, [value[colName as keyof T] as CursorColumnTypes, order]],
+      ))),
     }));
 
     const pageInfo = new PageInfo(edges, countBefore, countAfter, limit);

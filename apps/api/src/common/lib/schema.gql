@@ -518,6 +518,11 @@ type SchoolYearEdge {
   node: SchoolYear!
 }
 
+type PaginatedSchoolYear {
+  edges: [SchoolYearEdge!]
+  pageInfo: PageInfo
+}
+
 type ClassMembership {
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -1076,7 +1081,7 @@ type Query {
   users: PaginatedUser!
   searchUsers(search: String!, query: PaginationArgs): [IndexedUser!]!
   classMembershipsById(id: String!): PaginatedClassMembership!
-  classes: PaginatedClass!
+  classes(pagination: PaginationArgs!): PaginatedClass!
   classById(id: String!): Class!
   interestById(id: Int!): Interest!
   interests: PaginatedInterest!
@@ -1088,6 +1093,7 @@ type Query {
   reportById(id: Int!): Report!
   validationById(id: Int!): Validation!
   schoolYearById(id: String!): SchoolYear!
+  schoolYears(pagination: PaginationArgs!): PaginatedSchoolYear!
   metrics(metrics: ListMetricsDto!): [Metric!]!
   settings: Settings!
   tags(query: PaginationArgs): PaginatedTags!
@@ -1116,7 +1122,11 @@ input PaginationArgs {
   after: String
   before: String
   offset: Int
+  orderBy: QueryOrderMap
 }
+
+"""QueryOrderMap custom scalar type"""
+scalar QueryOrderMap
 
 input ListMetricsDto {
   names: String!
@@ -1170,6 +1180,7 @@ input ListMembershipRequestsDto {
   after: String
   before: String
   offset: Int
+  orderBy: QueryOrderMap
 }
 
 type Mutation {
