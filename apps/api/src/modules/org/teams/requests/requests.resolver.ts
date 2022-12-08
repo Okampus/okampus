@@ -19,7 +19,7 @@ import { TeamsService } from '../teams.service';
 import { PutTeamMembershipRequestDto } from './dto/put-membership-request.dto';
 import { UpdateTeamMembershipRequestDto } from './dto/update-membership-request.dto';
 import { TeamMembershipRequestsService } from './requests.service';
-import { TeamMembershipRequest } from './team-membership-request.entity';
+import { PaginatedTeamMembershipRequest, TeamMembershipRequest } from './team-membership-request.entity';
 
 @Resolver(() => TeamMembershipRequest)
 export class TeamMembershipRequestsResolver {
@@ -30,13 +30,12 @@ export class TeamMembershipRequestsResolver {
   ) {}
 
   // TODO: Add permission checks
-  @Query(() => [TeamMembershipRequest], { nullable: true })
+  @Query(() => PaginatedTeamMembershipRequest, { nullable: true })
   public async teamMembershipRequests(
     @Args('id', { type: () => Int }) id: number,
     @Args('filter', { nullable: true }) filter?: FilterMembershipRequestsDto,
-  ): Promise<TeamMembershipRequest[]> {
-    const requests = await this.teamMembershipRequestsService.findAll(id, filter);
-    return requests.items;
+  ): Promise<PaginatedTeamMembershipRequest> {
+    return await this.teamMembershipRequestsService.findAll(id, filter);
   }
 
   @Mutation(() => Team)

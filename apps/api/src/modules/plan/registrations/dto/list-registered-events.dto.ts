@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import { Field, InputType, Int } from '@nestjs/graphql';
 import { IntersectionType, PartialType } from '@nestjs/mapped-types';
 import {
@@ -9,7 +8,7 @@ import {
   IsString,
 } from 'class-validator';
 import { EventRegisterStatus } from '@common/lib/types/enums/event-register-status.enum';
-import { PaginateDto } from '@common/modules/pagination';
+import { PaginationArgs } from '@common/modules/pagination';
 
 @InputType()
 export class FilterRegisteredEventsDto {
@@ -36,5 +35,5 @@ export class FilterRegisteredEventsDto {
 
 export class ListRegisteredEventsDto extends IntersectionType(
   FilterRegisteredEventsDto,
-  PartialType(PaginateDto),
+  PartialType(PaginationArgs),
 ) {}

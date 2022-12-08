@@ -1,4 +1,3 @@
-
 import type { FastifyReply } from 'fastify';
 import type { Cookie } from '../types/interfaces/cookie';
 

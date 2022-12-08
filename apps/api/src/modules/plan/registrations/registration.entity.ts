@@ -10,6 +10,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
 import { BaseEntity } from '@common/lib/entities/base.entity';
 import { EventRegisterStatus } from '@common/lib/types/enums/event-register-status.enum';
+import { Paginated } from '@common/modules/pagination';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { User } from '@modules/uaa/users/user.entity';
 import { Event } from '../events/event.entity';
@@ -60,3 +61,6 @@ export class EventRegistration extends BaseEntity {
     this.assign(options);
   }
 }
+
+@ObjectType()
+export class PaginatedEventRegistration extends Paginated(EventRegistration) {}

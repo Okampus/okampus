@@ -19,8 +19,7 @@ import { StudyDocFilter } from '@common/lib/types/enums/docs-filters.enum';
 import { FileKind } from '@common/lib/types/enums/file-kind.enum';
 import type { Categories } from '@common/lib/utils/compute-document-categories';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { User } from '@modules/uaa/users/user.entity';
 import { CreateStudyDocDto } from '@modules/upload/study-docs/dto/create-study-doc.dto';
@@ -69,8 +68,8 @@ export class StudyDocsController {
   @CheckPolicies(ability => ability.can(Action.Read, StudyDoc))
   public async findAllStudyDocs(
     @Query() query: DocsFilterDto,
-  ): Promise<PaginatedResult<StudyDoc>> {
-    return await this.studyDocsService.findAll(query, normalizePagination(query));
+  ): Promise<PaginatedNodes<StudyDoc>> {
+    return await this.studyDocsService.findAll(query, query);
   }
 
   @Get('/categories')

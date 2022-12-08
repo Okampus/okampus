@@ -16,8 +16,7 @@ import {
   TeamSubscribedEventCreatedNotification,
 } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
-import type { PaginatedResult } from '@common/modules/pagination';
-import { serializeOrder } from '@common/modules/sorting';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import { Team } from '@modules/org/teams/team.entity';
@@ -125,7 +124,7 @@ export class EventsService {
     user: User,
     query: ListEventsDto,
     options?: Required<ListOptionsDto>,
-  ): Promise<PaginatedResult<Event>> {
+  ): Promise<PaginatedNodes<Event>> {
     const memberships = await this.teamMemberRepository.find({ user });
     const ids = memberships.map(m => m.team.id);
 
@@ -169,12 +168,16 @@ export class EventsService {
     const events = await this.eventRepository.findWithPagination(
       options,
       filter,
-      { orderBy: serializeOrder(options?.sortBy, 'start'), populate: ['supervisor', 'registrations', 'registrations.user', 'createdBy', 'team', 'lastApprovalStep'] },
+      {
+        // FIXME: Enable orderBy with pagination
+        // orderBy: serializeOrder(options?.sortBy, 'start'),
+        populate: ['supervisor', 'registrations', 'registrations.user', 'createdBy', 'team', 'lastApprovalStep'],
+      },
     );
 
     const allRegistrations = await this.eventRegistrationRepository.find({ user });
 
-    events.items = events.items.map((event) => {
+    events.edges = events.edges.map((event) => {
       // TODO: Maybe find a better way to add these properties? Something virtual? computed on-the-fly? added elsewhere?
       // @ts-expect-error: We add a new property to the object, but it's fine.
       event.isRegistered = allRegistrations.some(r => r.event.id === event.id);

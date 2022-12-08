@@ -12,8 +12,8 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination, PaginateDto } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import { PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { User } from '@modules/uaa/users/user.entity';
 import type { TeamMembershipRequest } from '../requests/team-membership-request.entity';
 import { Team } from '../team.entity';
@@ -44,9 +44,9 @@ export class TeamMembersController {
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   public async findAllMembers(
     @Param('id', ParseIntPipe) id: number,
-    @Query() query: PaginateDto,
-  ): Promise<PaginatedResult<TeamMember>> {
-    return await this.membersService.findAllMembers(id, normalizePagination(query));
+    @Query() query: PaginationArgs,
+  ): Promise<PaginatedNodes<TeamMember>> {
+    return await this.membersService.findAllMembers(id, query);
   }
 
   @Patch(':teamId/:userId')

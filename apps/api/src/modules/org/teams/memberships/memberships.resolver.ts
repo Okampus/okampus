@@ -1,7 +1,7 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
-import { TeamMember } from '../members/team-member.entity';
-import { TeamMembershipRequest } from '../requests/team-membership-request.entity';
+import { PaginatedTeamMember } from '../members/team-member.entity';
+import { PaginatedTeamMembershipRequest, TeamMembershipRequest } from '../requests/team-membership-request.entity';
 import { TeamMembershipsService } from './memberships.service';
 
 @Resolver(() => TeamMembershipRequest)
@@ -11,20 +11,18 @@ export class TeamMembershipsResolver {
   ) {}
 
   // TODO: Add permission checks
-  @Query(() => [TeamMember], { nullable: true })
+  @Query(() => PaginatedTeamMember, { nullable: true })
   public async teamMembershipsByUserId(
     @Args('id') id: string,
-  ): Promise<TeamMember[]> {
-    const memberships = await this.teamMembershipService.findOne(id);
-    return memberships.items;
+  ): Promise<PaginatedTeamMember> {
+    return await this.teamMembershipService.findOne(id);
   }
 
-  @Query(() => [TeamMembershipRequest])
+  @Query(() => PaginatedTeamMembershipRequest)
   public async teamMembershipRequestsByUserId(
     @Args('id') id: string,
     @Args('filters', { nullable: true }) filters?: ListMembershipRequestsDto,
-  ): Promise<TeamMembershipRequest[]> {
-    const membershipRequests = await this.teamMembershipService.findAll(id, filters);
-    return membershipRequests.items;
+  ): Promise<PaginatedTeamMembershipRequest> {
+    return await this.teamMembershipService.findAll(id, filters);
   }
 }

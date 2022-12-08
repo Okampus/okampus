@@ -4,8 +4,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { AdminTeamLegalFileUpdatedNotification } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
-import type { PaginatedResult } from '@common/modules/pagination';
-import { normalizePagination } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { Team } from '@modules/org/teams/team.entity';
 import type { User } from '@modules/uaa/users/user.entity';
 import type { CreateTeamFileDto } from '@modules/upload/team-files/dto/create-team-file.dto';
@@ -64,15 +63,13 @@ export class TeamFilesService {
     );
   }
 
-  public async findAll(
-    options: TeamFileListOptions,
-  ): Promise<PaginatedResult<TeamFile>> {
+  public async findAll(options: TeamFileListOptions): Promise<PaginatedNodes<TeamFile>> {
     const team = await this.teamRepository.findOneOrFail({ id: options.id });
 
     const query = options.type ? { type: options.type } : {};
 
     return await this.teamFileRepository.findWithPagination(
-      normalizePagination(options),
+      options,
       { team, ...query },
       { populate: ['file', 'file.user', 'team'] },
     );

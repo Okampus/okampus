@@ -3,7 +3,8 @@ import {
   Query,
   Resolver,
 } from '@nestjs/graphql';
-import { Class } from './class.entity';
+import { PaginationArgs } from '@common/modules/pagination';
+import { Class, PaginatedClass } from './class.entity';
 import { ClassesService } from './class.service';
 
 @Resolver(() => Class)
@@ -13,10 +14,9 @@ export class ClassesResolver {
   ) {}
 
   // TODO: Add permission checks
-  @Query(() => [Class])
-  public async classes(): Promise<Class[]> {
-    const paginatedClasses = await this.classesService.findAll();
-    return paginatedClasses.items;
+  @Query(() => PaginatedClass)
+  public async classes(@Args('pagination') paginationOptions: PaginationArgs): Promise<PaginatedClass> {
+    return await this.classesService.findAll(paginationOptions);
   }
 
   @Query(() => Class)

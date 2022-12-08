@@ -13,8 +13,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateEventRegistrationDto } from '@modules/plan/registrations/dto/create-event-registration.dto';
 import { User } from '@modules/uaa/users/user.entity';
 import { Event } from '../events/event.entity';
@@ -45,11 +44,11 @@ export class EventRegistrationsController {
   public async findAll(
     @CurrentUser() user: User,
     @Query() query: ListRegisteredEventsDto,
-  ): Promise<PaginatedResult<EventRegistration>> {
+  ): Promise<PaginatedNodes<EventRegistration>> {
     if (!query.eventId && !query.userId)
       throw new BadRequestException('Invalid filter query');
 
-    return await this.eventRegistrationsService.findAll(user, query, normalizePagination(query));
+    return await this.eventRegistrationsService.findAll(user, query, query);
   }
 
   @Get(':id')

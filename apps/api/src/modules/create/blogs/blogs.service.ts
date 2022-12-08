@@ -7,8 +7,7 @@ import { BaseRepository } from '@common/lib/orm/base.repository';
 import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedResult } from '@common/modules/pagination';
-import { serializeOrder } from '@common/modules/sorting';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { Tag } from '@modules/catalog/tags/tag.entity';
 import type { CreateBlogDto } from '@modules/create/blogs/dto/create-blog.dto';
 import type { User } from '@modules/uaa/users/user.entity';
@@ -56,7 +55,7 @@ export class BlogsService {
   public async findAll(
     user: User,
     options?: Required<ContentListOptionsDto>,
-  ): Promise<PaginatedResult<Blog>> {
+  ): Promise<PaginatedNodes<Blog>> {
     const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
     const visibilityQuery = canSeeHiddenContent
       ? {}
@@ -66,7 +65,8 @@ export class BlogsService {
       visibilityQuery,
       {
         populate: ['post', 'tags'],
-        orderBy: { post: serializeOrder(options?.sortBy) },
+        // FIXME: Enable orderBy with pagination
+        // orderBy: { post: serializeOrder(options?.sortBy) },
       },
     );
   }

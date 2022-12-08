@@ -11,8 +11,8 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination, PaginateDto } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import { PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateInterestDto } from '@modules/org/teams/interests/dto/create-interest.dto';
 import { UpdateInterestDto } from './dto/update-interest.dto';
 import { Interest } from './interest.entity';
@@ -31,8 +31,8 @@ export class InterestsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Interest))
-  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Interest>> {
-    return await this.interestsService.findAll(normalizePagination(query));
+  public async findAll(@Query() query: PaginationArgs): Promise<PaginatedNodes<Interest>> {
+    return await this.interestsService.findAll(query);
   }
 
   @Get(':id')

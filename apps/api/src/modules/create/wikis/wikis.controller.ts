@@ -12,11 +12,10 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateWikiPageDto } from '@modules/create/wikis/dto/create-wiki-page.dto';
 import { User } from '@modules/uaa/users/user.entity';
-import { FilterAndPaginateDto } from './dto/filter-and-paginate.dto';
+import { FilterAndPaginationArgs } from './dto/filter-and-paginate.dto';
 import { UpdateWikiPageDto } from './dto/update-wiki-page.dto';
 import { Wiki } from './wiki.entity';
 import { WikisService } from './wikis.service';
@@ -38,11 +37,11 @@ export class WikisController {
   @CheckPolicies(ability => ability.can(Action.Read, Wiki))
   public async findAll(
     @CurrentUser() user: User,
-    @Query() query: FilterAndPaginateDto,
-  ): Promise<PaginatedResult<Wiki>> {
+    @Query() query: FilterAndPaginationArgs,
+  ): Promise<PaginatedNodes<Wiki>> {
     if (query.category)
-      return await this.wikisService.findAllByCategory(user, query.category, normalizePagination(query));
-    return await this.wikisService.findAll(user, normalizePagination(query));
+      return await this.wikisService.findAllByCategory(user, query.category, query);
+    return await this.wikisService.findAll(user, query);
   }
 
   @Get(':id')

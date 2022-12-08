@@ -1,6 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
 import {
- IsBoolean, IsEnum, IsString, Length,
+  IsBoolean,
+  IsEnum,
+  IsString,
+  Length,
 } from 'class-validator';
 import { GraphQLJSON } from 'graphql-scalars';
 import { TeamFormType } from '@common/lib/types/enums/team-form-type.enum';

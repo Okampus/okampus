@@ -8,7 +8,7 @@ import {
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { User } from '@modules/uaa/users/user.entity';
-import { Favorite } from './favorite.entity';
+import { Favorite, PaginatedFavorite } from './favorite.entity';
 import { FavoritesService } from './favorites.service';
 
 @Resolver(() => Favorite)
@@ -16,13 +16,12 @@ export class FavoritesResolver {
   constructor(private readonly favoritesService: FavoritesService) {}
 
   // TODO: Add permission checks
-  @Query(() => [Favorite])
+  @Query(() => PaginatedFavorite)
   public async favoritesByUser(
     @CurrentUser() currentUser: User,
     @Args('id') id: string,
-  ): Promise<Favorite[]> {
-    const paginatedReports = await this.favoritesService.findAll(currentUser, id);
-    return paginatedReports.items;
+  ): Promise<PaginatedFavorite> {
+    return await this.favoritesService.findAll(currentUser, id);
   }
 
   @Query(() => Favorite)

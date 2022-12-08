@@ -1,5 +1,9 @@
 import {
- Field, Float, GraphQLISODateTime, InputType, Int,
+  Field,
+  Float,
+  GraphQLISODateTime,
+  InputType,
+  Int,
 } from '@nestjs/graphql';
 import { PartialType } from '@nestjs/mapped-types';
 import {
@@ -23,12 +27,12 @@ export class ListEventsDto extends PartialType(ListOptionsDto) {
   @Field(() => GraphQLISODateTime, { nullable: true })
   @IsOptional()
   @IsDate()
-  before?: Date;
+  beforeDate?: Date;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
   @IsOptional()
   @IsDate()
-  after?: Date;
+  afterDate?: Date;
 
   @Field(() => Float, { nullable: true })
   @IsOptional()

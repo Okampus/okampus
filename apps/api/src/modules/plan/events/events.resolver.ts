@@ -21,7 +21,7 @@ import { EventRegistration } from '@modules/plan/registrations/registration.enti
 import { User } from '@modules/uaa/users/user.entity';
 import { ListEventsDto } from './dto/list-events.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { Event } from './event.entity';
+import { Event, PaginatedEvent } from './event.entity';
 import { EventsService } from './events.service';
 
 @Resolver(() => Event)
@@ -43,10 +43,9 @@ export class EventsResolver {
     return await this.eventsService.findOne(user, id);
   }
 
-  @Query(() => [Event])
-  public async events(@CurrentUser() user: User, @Args('filter') filter: ListEventsDto): Promise<Event[]> {
-    const paginatedEvents = await this.eventsService.findAll(user, filter);
-    return paginatedEvents.items;
+  @Query(() => PaginatedEvent)
+  public async events(@CurrentUser() user: User, @Args('filter') filter: ListEventsDto): Promise<PaginatedEvent> {
+    return await this.eventsService.findAll(user, filter);
   }
 
   @Mutation(() => Event)

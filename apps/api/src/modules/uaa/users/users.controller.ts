@@ -19,9 +19,10 @@ import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { UploadInterceptor } from '@common/lib/decorators/upload-interceptor.decorator';
 import { UserImageType } from '@common/lib/types/enums/user-image-type.enum';
+import type { FullPageInfo } from '@common/lib/types/interfaces/full-page-info.interface';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination, PaginateDto } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import { PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import type { IndexedEntity } from '@common/modules/search/indexed-entity.interface';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
 import { GdprService } from '../gdpr/gdpr.service';
@@ -53,15 +54,15 @@ export class UsersController {
   }
 
   @Get()
-  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<User>> {
-    return await this.usersService.findAll(normalizePagination(query));
+  public async findAll(@Query() query: PaginationArgs): Promise<PaginatedNodes<User>> {
+    return await this.usersService.findAll(query);
   }
 
   @Get('all/search')
   public async search(
     @CurrentTenant() tenant: Tenant,
-    @Query() query: PaginateDto & { search: string },
-  ): Promise<PaginatedResult<IndexedEntity>> {
+    @Query() query: PaginationArgs & { search: string },
+  ): Promise<FullPageInfo<IndexedEntity>> {
     return await this.usersService.search(tenant, query);
   }
 

@@ -5,9 +5,9 @@ import {
   IsString,
 } from 'class-validator';
 import { StudyDocType } from '@common/lib/types/enums/study-doc-type.enum';
-import { PaginateDto } from '@common/modules/pagination';
+import { PaginationArgs } from '@common/modules/pagination';
 
-export class DocsFilterDto extends PaginateDto {
+export class DocsFilterDto extends PaginationArgs {
   @IsOptional()
   @IsInt()
   year?: number;

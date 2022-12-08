@@ -2,7 +2,7 @@ import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import type { CreateHistoryDto } from '@modules/org/teams/histories/dto/create-history.dto';
 import { Team } from '../team.entity';
 import type { UpdateHistoryDto } from './dto/update-history.dto';
@@ -35,7 +35,7 @@ export class HistoriesService {
     return history;
   }
 
-  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<TeamHistory>> {
+  public async findAll(paginationOptions?: PaginationArgs): Promise<PaginatedNodes<TeamHistory>> {
     return await this.historyRepository.findWithPagination(paginationOptions);
   }
 

@@ -1,4 +1,3 @@
-
 import {
   Body,
   Controller,
@@ -39,7 +38,7 @@ export class AuthController {
   public async tenantLoginCallback(@CurrentUser() user: User, @Res() res: FastifyReply): Promise<void> {
     addCookiesToResponse(await this.authService.generateTokens(user), res);
     void res.redirect(303, `${config.network.frontendUrl + (config.env.isDev() ? '/#' : '')}/auth`);
- }
+  }
 
   @Public()
   @Post('login')

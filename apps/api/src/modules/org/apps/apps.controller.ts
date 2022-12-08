@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination, PaginateDto } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import { PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { App } from './app.entity';
 import { AppsService } from './apps.service';
 import { CreateAppDto } from './dto/create-app.dto';
@@ -31,9 +31,9 @@ export class AppsController {
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, App))
   public async findAll(
-    @Query() query: PaginateDto,
-  ): Promise<PaginatedResult<App>> {
-    return await this.appsService.findAll(normalizePagination(query));
+    @Query() query: PaginationArgs,
+  ): Promise<PaginatedNodes<App>> {
+    return await this.appsService.findAll(query);
   }
 
   @Get(':name')

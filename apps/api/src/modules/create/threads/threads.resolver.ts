@@ -18,7 +18,7 @@ import { User } from '@modules/uaa/users/user.entity';
 import { ContentsService } from '../contents/contents.service';
 import type { Content } from '../contents/entities/content.entity';
 import { UpdateThreadDto } from './dto/update-thread.dto';
-import { Thread } from './thread.entity';
+import { PaginatedThread, Thread } from './thread.entity';
 import { ThreadsService } from './threads.service';
 
 export interface ContextBatchContents {
@@ -48,10 +48,9 @@ export class ThreadResolver {
     return thread;
   }
 
-  @Query(() => [Thread])
-  public async threads(@CurrentUser() user: User): Promise<Thread[]> {
-    const paginatedThreads = await this.threadsService.findAll(user);
-    return paginatedThreads.items;
+  @Query(() => PaginatedThread)
+  public async threads(@CurrentUser() user: User): Promise<PaginatedThread> {
+    return await this.threadsService.findAll(user);
   }
 
   @Mutation(() => Thread)

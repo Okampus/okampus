@@ -8,7 +8,10 @@ import {
   Property,
 } from '@mikro-orm/core';
 import {
- Field, GraphQLISODateTime, Int, ObjectType,
+  Field,
+  GraphQLISODateTime,
+  Int,
+  ObjectType,
 } from '@nestjs/graphql';
 import mime from 'mime-types';
 import { nanoid } from 'nanoid';

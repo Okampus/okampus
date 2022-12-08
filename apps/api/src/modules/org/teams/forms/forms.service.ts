@@ -1,11 +1,10 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import type { ListOptionsDto } from '@common/lib/dto/list-options.dto';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { TeamManagedFormUpdatedNotification } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
-import type { PaginatedResult } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import type { CreateTeamFormDto } from '@modules/org/teams/forms/dto/create-team-form.dto';
 import { Team } from '@modules/org/teams/team.entity';
 import type { User } from '@modules/uaa/users/user.entity';
@@ -44,12 +43,9 @@ export class TeamFormsService {
     return form;
   }
 
-  public async findAll(
-    query: ListTeamFormsDto,
-    options?: Required<ListOptionsDto>,
-  ): Promise<PaginatedResult<TeamForm>> {
+  public async findAll(query: ListTeamFormsDto): Promise<PaginatedNodes<TeamForm>> {
     return await this.teamFormRepository.findWithPagination(
-      options,
+      query,
       { team: { id: query.id }, isTemplate: query.isTemplate },
       { populate: ['createdBy', 'team'] },
     );

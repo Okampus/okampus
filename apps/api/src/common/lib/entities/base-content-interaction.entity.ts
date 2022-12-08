@@ -1,4 +1,3 @@
-
 import { Index, ManyToOne } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Content } from '@modules/create/contents/entities/content.entity';

@@ -19,6 +19,7 @@ import { TeamKind } from '@common/lib/types/enums/team-kind.enum';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import type { BaseSearchableEntity } from '@common/lib/types/interfaces/base-searchable.interface';
 import { Role } from '@common/modules/authorization/types/role.enum';
+import { Paginated } from '@common/modules/pagination';
 import type { BaseIndex } from '@common/modules/search/indexed-entity.interface';
 import { Label } from '@modules/catalog/labels/label.entity';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
@@ -194,3 +195,6 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
     return this.getMemberRoles(user).some(role => MANAGER_ROLES.has(role));
   }
 }
+
+@ObjectType()
+export class PaginatedTeam extends Paginated(Team) {}

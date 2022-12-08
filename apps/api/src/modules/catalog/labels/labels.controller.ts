@@ -11,8 +11,8 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { normalizePagination, PaginateDto } from '@common/modules/pagination';
-import type { PaginatedResult } from '@common/modules/pagination';
+import { PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateLabelDto } from '@modules/catalog/labels/dto/create-label.dto';
 import { UpdateLabelDto } from './dto/update-label.dto';
 import { Label } from './label.entity';
@@ -32,9 +32,9 @@ export class LabelsController {
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Label))
   public async findAll(
-    @Query() query: PaginateDto,
-  ): Promise<PaginatedResult<Label>> {
-    return await this.labelsService.findAll(normalizePagination(query));
+    @Query() query: PaginationArgs,
+  ): Promise<PaginatedNodes<Label>> {
+    return await this.labelsService.findAll(query);
   }
 
   @Get(':id')

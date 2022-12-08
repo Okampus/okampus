@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { EventRegisterStatus } from '@common/lib/types/enums/event-register-status.enum';
 import { Role } from '@common/modules/authorization/types/role.enum';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import type { CreateEventRegistrationDto } from '@modules/plan/registrations/dto/create-event-registration.dto';
@@ -74,8 +74,8 @@ export class EventRegistrationsService {
   public async findAll(
     user: User,
     query: ListRegisteredEventsDto,
-    options?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<EventRegistration>> {
+    options?: PaginationArgs,
+  ): Promise<PaginatedNodes<EventRegistration>> {
     let filter: FilterQuery<EventRegistration> = {};
 
     /**
@@ -114,7 +114,9 @@ export class EventRegistrationsService {
     return await this.eventRegistrationRepository.findWithPagination(
       options,
       filter,
-      { orderBy: { createdAt: 'ASC' }, populate: ['user', 'event', 'event.team'] },
+      // FIXME: Enable orderBy with pagination
+      // { orderBy: { createdAt: 'ASC' }, populate: ['user', 'event', 'event.team'] },
+      { populate: ['user', 'event', 'event.team'] },
     );
   }
 

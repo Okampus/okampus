@@ -1,7 +1,7 @@
 import { IsOptional, IsString } from 'class-validator';
-import { PaginateDto } from '@common/modules/pagination';
+import { PaginationArgs } from '@common/modules/pagination';
 
-export class FilterAndPaginateDto extends PaginateDto {
+export class FilterAndPaginationArgs extends PaginationArgs {
   @IsOptional()
   @IsString()
   category?: string;

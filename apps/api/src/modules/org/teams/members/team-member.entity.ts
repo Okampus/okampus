@@ -15,6 +15,7 @@ import {
 } from '@nestjs/graphql';
 import { BaseEntity } from '@common/lib/entities/base.entity';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
+import { Paginated } from '@common/modules/pagination';
 import { User } from '@modules/uaa/users/user.entity';
 import { Team } from '../team.entity';
 
@@ -69,3 +70,6 @@ export class TeamMember extends BaseEntity {
     this.assign(options);
   }
 }
+
+@ObjectType()
+export class PaginatedTeamMember extends Paginated(TeamMember) {}

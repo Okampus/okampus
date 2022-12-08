@@ -12,6 +12,7 @@ import { BaseEntity } from '@common/lib/entities/base.entity';
 import { PaymentMethod } from '@common/lib/types/enums/payment-method.enum';
 import { TeamFinanceCategory } from '@common/lib/types/enums/team-finance-category.enum';
 import { TeamFinanceType } from '@common/lib/types/enums/team-finance-type.enum';
+import { Paginated } from '@common/modules/pagination';
 import { Team } from '@modules/org/teams/team.entity';
 import { Event } from '@modules/plan/events/event.entity';
 import { User } from '@modules/uaa/users/user.entity';
@@ -86,3 +87,7 @@ export class TeamFinance extends BaseEntity {
     this.assign(options);
   }
 }
+
+
+@ObjectType()
+export class PaginatedTeamFinance extends Paginated(TeamFinance) {}

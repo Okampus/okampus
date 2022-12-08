@@ -23,6 +23,7 @@ import type { BaseSearchableEntity } from '@common/lib/types/interfaces/base-sea
 import type { UserCreationOptions } from '@common/lib/types/interfaces/user-creation-options.interface';
 import { Role } from '@common/modules/authorization/types/role.enum';
 import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
+import { Paginated } from '@common/modules/pagination';
 import type { BaseIndex } from '@common/modules/search/indexed-entity.interface';
 import type { Favorite } from '@modules/interact/favorites/favorite.entity';
 import type { Reaction } from '@modules/interact/reactions/reaction.entity';
@@ -204,3 +205,6 @@ export class User extends BaseTenantEntity implements BaseSearchableEntity {
     return `${this.name.split(' ')[0]} ${this.lastName}`;
   }
 }
+
+@ObjectType()
+export class PaginatedUser extends Paginated(User) {}

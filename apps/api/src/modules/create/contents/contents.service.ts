@@ -21,8 +21,7 @@ import {
   ThreadSubscribedUpdatedNotification,
 } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
-import { serializeOrder } from '@common/modules/sorting';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import type { CreateOrphanContentDto } from '@modules/create/contents/dto/create-orphan-content.dto';
 import type { Interactions } from '@modules/create/contents/interactions.model';
 import { Favorite } from '@modules/interact/favorites/favorite.entity';
@@ -141,7 +140,7 @@ export class ContentsService extends GlobalRequestService {
     user: User,
     parentId: number,
     options?: Required<ContentListOptionsDto>,
-  ): Promise<PaginatedResult<Content>> {
+  ): Promise<PaginatedNodes<Content>> {
     const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
     const visibilityQuery = canSeeHiddenContent ? {} : { isVisible: true };
     return await this.contentRepository.findWithPagination(
@@ -150,7 +149,9 @@ export class ContentsService extends GlobalRequestService {
         ...visibilityQuery,
         parent: { id: parentId },
       },
-      { populate: this.autoGqlPopulate(['author', 'lastEdit', 'edits']), orderBy: serializeOrder(options?.sortBy) },
+      // FIXME: Enable orderBy with pagination
+      // { populate: this.autoGqlPopulate(['author', 'lastEdit', 'edits']), orderBy: serializeOrder(options?.sortBy) },
+      { populate: this.autoGqlPopulate(['author', 'lastEdit', 'edits']) },
     );
   }
 
@@ -230,8 +231,8 @@ export class ContentsService extends GlobalRequestService {
   public async findEdits(
     user: User,
     id: number,
-    paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<Edit>> {
+    paginationOptions?: PaginationArgs,
+  ): Promise<PaginatedNodes<Edit>> {
     const content = await this.contentRepository.findOneOrFail({ id });
 
     const ability = this.caslAbilityFactory.createForUser(user);
@@ -240,7 +241,8 @@ export class ContentsService extends GlobalRequestService {
     return await this.contentEditRepository.findWithPagination(
       paginationOptions,
       { parent: content },
-      { orderBy: { createdAt: 'DESC' } },
+      // FIXME: Enable orderBy with pagination
+      // { orderBy: { createdAt: 'DESC' } },
     );
   }
 

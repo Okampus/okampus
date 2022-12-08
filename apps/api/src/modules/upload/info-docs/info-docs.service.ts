@@ -9,7 +9,7 @@ import type { Categories, GroupFilters } from '@common/lib/utils/compute-documen
 import { computeDocumentCategories } from '@common/lib/utils/compute-document-categories';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedResult, PaginateDto } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import { Class } from '@modules/org/classes/class.entity';
 import type { User } from '@modules/uaa/users/user.entity';
 import type { CreateInfoDocDto } from '@modules/upload/info-docs/dto/create-info-doc.dto';
@@ -46,8 +46,8 @@ export class InfoDocsService {
 
   public async findAll(
     filters: DocsFilterDto,
-    paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<InfoDoc>> {
+    paginationOptions?: PaginationArgs,
+  ): Promise<PaginatedNodes<InfoDoc>> {
     // TODO: Maybe the user won't have access to all docs. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
     let options: FilterQuery<InfoDoc> = {};

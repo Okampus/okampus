@@ -10,21 +10,17 @@ import {
 } from '@nestjs/graphql';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Interactions } from '@modules/create/contents/interactions.model';
-import { FavoritesService } from '@modules/interact/favorites/favorites.service';
-import { VotesService } from '@modules/interact/votes/votes.service';
 import { User } from '@modules/uaa/users/user.entity';
 import { ContextBatchContents } from '../threads/threads.resolver';
 import { ContentsService } from './contents.service';
 import { CreateContentWithKindDto } from './dto/create-content-with-kind.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
-import { Content, DEFAULT_INTERACTIONS } from './entities/content.entity';
+import { Content, DEFAULT_INTERACTIONS, PaginatedContent } from './entities/content.entity';
 
 @Resolver(() => Content)
 export class ContentResolver {
   constructor(
     private readonly contentsService: ContentsService,
-    private readonly votesService: VotesService,
-    private readonly favoritesService: FavoritesService,
   ) {}
 
   // TODO: Add permission checks
@@ -36,17 +32,17 @@ export class ContentResolver {
     return this.contentsService.findOne(user, id);
   }
 
-  @ResolveField(() => [Content])
+  @ResolveField(() => PaginatedContent)
   public async children(
     @CurrentUser() user: User,
     @Parent() content: Content,
-    @Context() batchContext: ContextBatchContents,
-  ): Promise<Content[]> {
-    if (batchContext.batchContents)
-      return batchContext.batchContents?.[content.id] ?? [];
+    // @Context() batchContext: ContextBatchContents,
+  ): Promise<PaginatedContent> {
+    // FIXME: Fix batch loading with new pagination method
+    // if (batchContext.batchContents)
+    //   return batchContext.batchContents?.[content.id] ?? [];
 
-    const paginatedThreads = await this.contentsService.findAllChildren(user, content.id);
-    return paginatedThreads.items;
+    return await this.contentsService.findAllChildren(user, content.id);
   }
 
   @ResolveField(() => Interactions)

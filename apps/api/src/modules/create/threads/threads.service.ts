@@ -18,9 +18,7 @@ import { ValidationType } from '@common/lib/types/enums/validation-type.enum';
 import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedResult } from '@common/modules/pagination';
-import { serializeOrder } from '@common/modules/sorting';
-import { ContentSortOrder } from '@common/modules/sorting/sort-order.enum';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import { Tag } from '@modules/catalog/tags/tag.entity';
 import type { CreateThreadDto } from '@modules/create/threads/dto/create-thread.dto';
 import { Validation } from '@modules/interact/validations/validation.entity';
@@ -62,8 +60,11 @@ export class ThreadsService {
   ): Promise<Thread> {
     const post = await this.contentsService.createPost(user, createThreadDto);
     const {
- tags, assignedTeams, assignedUsers, ...createThread
-} = createThreadDto;
+      tags,
+      assignedTeams,
+      assignedUsers,
+      ...createThread
+    } = createThreadDto;
 
     const thread = new Thread({ ...createThread, post });
     post.contentMaster = thread;
@@ -118,7 +119,7 @@ export class ThreadsService {
     user: User,
     filters?: ThreadListOptionsDto,
     options?: Required<ContentListOptionsDto>,
-  ): Promise<PaginatedResult<Thread>> {
+  ): Promise<PaginatedNodes<Thread>> {
     const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(user);
     const visibility = canSeeHiddenContent ? {} : { isVisible: true };
     let query: FilterQuery<Thread> = {};
@@ -141,9 +142,10 @@ query = { ...query, post: visibility };
         'opValidation',
         'adminValidations',
       ],
-      orderBy: {
-        post: serializeOrder(options?.sortBy ?? ContentSortOrder.Newest),
-      },
+      // FIXME: Enable orderBy with pagination
+      // orderBy: {
+      //   post: serializeOrder(options?.sortBy ?? ContentSortOrder.Newest),
+      // },
     });
   }
 
