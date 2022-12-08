@@ -55,7 +55,7 @@ export class AuthService extends GlobalRequestService {
     const meiliSearchKey = await this.meiliSearch.createKey({
       indexes: [this.currentTenant().id],
       actions: ['search'],
-      expiresAt: new Date(Date.now() + maxAge).toISOString(),
+      expiresAt: new Date(Date.now() + maxAge),
     });
 
     return {

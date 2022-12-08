@@ -170,14 +170,14 @@ export class UsersService extends GlobalRequestService {
       },
     );
 
-    const page = Math.floor(result.offset / result.limit);
+    const page = Math.floor(result.offset! / result.limit!);
     return {
       items: result.hits as IndexedEntity[],
-      itemsPerPage: result.limit,
+      itemsPerPage: result.limit!,
       itemCount: result.hits.length,
-      totalItemCount: result.estimatedTotalHits,
-      totalPages: Math.ceil(result.estimatedTotalHits / result.limit),
-      offset: result.offset - page * result.limit,
+      totalItemCount: result.estimatedTotalHits!,
+      totalPages: Math.ceil(result.estimatedTotalHits! / result.limit!),
+      offset: result.offset! - page * result.limit!,
       page,
     };
   }

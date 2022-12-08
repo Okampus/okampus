@@ -94,19 +94,19 @@ export class ThreadsService {
 
     if (newTags.length > 0) {
       await this.tagRepository.persistAndFlush(newTags);
-      thread.tags.add(...newTags);
+      thread.tags.add(newTags);
     }
-    thread.tags.add(...existingTags);
+    thread.tags.add(existingTags);
 
     const foundTeamAssignees = await this.teamRepository.find({
       id: { $in: assignedTeams },
     });
-    thread.assignedTeams.add(...foundTeamAssignees);
+    thread.assignedTeams.add(foundTeamAssignees);
 
     const foundUserAssignees = await this.userRepository.find({
       id: { $in: assignedUsers },
     });
-    thread.assignedUsers.add(...foundUserAssignees);
+    thread.assignedUsers.add(foundUserAssignees);
     thread.participants.add(user);
 
     await this.contentRepository.flush();
@@ -318,7 +318,7 @@ wrap(thread).assign(updatedProps);
     );
 
     const tags = await this.tagRepository.find({ name: { $in: newTags } });
-    thread.tags.add(...tags);
+    thread.tags.add(tags);
     await this.threadRepository.flush();
     return thread;
   }
@@ -330,7 +330,7 @@ wrap(thread).assign(updatedProps);
     );
 
     const tags = await this.tagRepository.find({ name: { $in: droppedTags } });
-    thread.tags.remove(...tags);
+    thread.tags.remove(tags);
     await this.threadRepository.flush();
   }
 
@@ -353,9 +353,7 @@ wrap(thread).assign(updatedProps);
     );
 
     const users = await this.userRepository.find({ id: { $in: assignees } });
-    thread.assignedUsers.add(
-      ...users.filter(user => !thread.assignedUsers.contains(user)),
-    );
+    thread.assignedUsers.add(users.filter(user => !thread.assignedUsers.contains(user)));
     await this.threadRepository.flush();
     return thread;
   }
@@ -379,9 +377,7 @@ wrap(thread).assign(updatedProps);
     );
 
     const teams = await this.teamRepository.find({ id: { $in: assignees } });
-    thread.assignedTeams.add(
-      ...teams.filter(user => !thread.assignedTeams.contains(user)),
-    );
+    thread.assignedTeams.add(teams.filter(user => !thread.assignedTeams.contains(user)));
     await this.threadRepository.flush();
     return thread;
   }
@@ -396,7 +392,7 @@ wrap(thread).assign(updatedProps);
     );
 
     const users = await this.userRepository.find({ id: { $in: assignees } });
-    thread.assignedUsers.remove(...users);
+    thread.assignedUsers.remove(users);
     await this.threadRepository.flush();
   }
 
@@ -410,7 +406,7 @@ wrap(thread).assign(updatedProps);
     );
 
     const teams = await this.teamRepository.find({ id: { $in: assignees } });
-    thread.assignedTeams.remove(...teams);
+    thread.assignedTeams.remove(teams);
     await this.threadRepository.flush();
   }
 }

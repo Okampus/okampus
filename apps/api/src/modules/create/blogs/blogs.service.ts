@@ -44,7 +44,7 @@ export class BlogsService {
     const tags = await this.tagRepository.find({
       name: { $in: createBlogDto.tags },
     });
-    blog.tags.add(...tags);
+    blog.tags.add(tags);
 
     await this.contentRepository.flush();
     await this.blogRepository.persistAndFlush(blog);
