@@ -19,10 +19,8 @@ import type { UpdateBlogDto } from './dto/update-blog.dto';
 @Injectable()
 export class BlogsService {
   constructor(
-    @InjectRepository(Blog)
-    private readonly blogRepository: BaseRepository<Blog>,
-    @InjectRepository(Content)
-    private readonly contentRepository: BaseRepository<Content>,
+    @InjectRepository(Blog) private readonly blogRepository: BaseRepository<Blog>,
+    @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
     private readonly contentsService: ContentsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,

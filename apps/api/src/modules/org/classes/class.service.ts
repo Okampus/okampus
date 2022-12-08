@@ -10,7 +10,9 @@ import type { UpdateClassDto } from './dto/update-class.dto';
 
 @Injectable()
 export class ClassesService extends GlobalRequestService {
-  constructor(@InjectRepository(Class) private readonly classRepository: BaseRepository<Class>) { super(); }
+  constructor(
+    @InjectRepository(Class) private readonly classRepository: BaseRepository<Class>,
+  ) { super(); }
 
   public async create(createClassDto: CreateClassDto): Promise<Class> {
     const parent = createClassDto.parentId

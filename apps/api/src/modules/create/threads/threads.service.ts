@@ -36,19 +36,13 @@ import { Thread } from './thread.entity';
 export class ThreadsService {
   // eslint-disable-next-line max-params
   constructor(
-    @InjectRepository(Thread)
-    private readonly threadRepository: BaseRepository<Thread>,
+    @InjectRepository(Thread) private readonly threadRepository: BaseRepository<Thread>,
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
-    @InjectRepository(User)
-    private readonly userRepository: BaseRepository<User>,
-    @InjectRepository(Class)
-    private readonly classRepository: BaseRepository<Class>,
-    @InjectRepository(Team)
-    private readonly teamRepository: BaseRepository<Team>,
-    @InjectRepository(Content)
-    private readonly contentRepository: BaseRepository<Content>,
-    @InjectRepository(Validation)
-    private readonly validationRepository: BaseRepository<Validation>,
+    @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(Class) private readonly classRepository: BaseRepository<Class>,
+    @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
+    @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
+    @InjectRepository(Validation) private readonly validationRepository: BaseRepository<Validation>,
     private readonly contentsService: ContentsService,
     private readonly validationsService: ValidationsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,

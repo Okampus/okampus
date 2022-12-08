@@ -25,12 +25,9 @@ import { StudyDoc } from './study-doc.entity';
 @Injectable()
 export class StudyDocsService {
   constructor(
-    @InjectRepository(StudyDoc)
-    private readonly studyDocRepository: BaseRepository<StudyDoc>,
-    @InjectRepository(Subject)
-    private readonly subjectRepository: BaseRepository<Subject>,
-    @InjectRepository(DocSeries)
-    private readonly docSeriesRepository: BaseRepository<DocSeries>,
+    @InjectRepository(StudyDoc) private readonly studyDocRepository: BaseRepository<StudyDoc>,
+    @InjectRepository(Subject) private readonly subjectRepository: BaseRepository<Subject>,
+    @InjectRepository(DocSeries) private readonly docSeriesRepository: BaseRepository<DocSeries>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 

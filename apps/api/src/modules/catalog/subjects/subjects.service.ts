@@ -11,10 +11,8 @@ import { Subject } from './subject.entity';
 @Injectable()
 export class SubjectsService {
   constructor(
-    @InjectRepository(Subject)
-    private readonly subjectRepository: BaseRepository<Subject>,
-    @InjectRepository(Class)
-    private readonly classRepository: BaseRepository<Class>,
+    @InjectRepository(Subject) private readonly subjectRepository: BaseRepository<Subject>,
+    @InjectRepository(Class) private readonly classRepository: BaseRepository<Class>,
   ) {}
 
   public async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {

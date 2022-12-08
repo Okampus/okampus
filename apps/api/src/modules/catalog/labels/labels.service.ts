@@ -4,17 +4,13 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
 import type { CreateLabelDto } from '@modules/catalog/labels/dto/create-label.dto';
-import { Team } from '@modules/org/teams/team.entity';
 import type { UpdateLabelDto } from './dto/update-label.dto';
 import { Label } from './label.entity';
 
 @Injectable()
 export class LabelsService {
   constructor(
-    @InjectRepository(Label)
-    private readonly labelRepository: BaseRepository<Label>,
-    @InjectRepository(Team)
-    private readonly teamRepository: BaseRepository<Team>,
+    @InjectRepository(Label) private readonly labelRepository: BaseRepository<Label>,
   ) {}
 
   public async create(createLabelDto: CreateLabelDto): Promise<Label> {

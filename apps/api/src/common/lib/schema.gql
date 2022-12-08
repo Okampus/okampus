@@ -1089,12 +1089,11 @@ type Query {
   getLogos(id: String!): [TenantImage]!
   oidcEnabled(id: String!): OIDCEnabled!
   contentById(id: Int!): Content
-  reports: PaginatedReport!
-  reportById(id: Int!): Report!
-  validationById(id: Int!): Validation!
   schoolYearById(id: String!): SchoolYear!
   schoolYears(pagination: PaginationArgs!): PaginatedSchoolYear!
   metrics(metrics: ListMetricsDto!): [Metric!]!
+  reports: PaginatedReport!
+  reportById(id: Int!): Report!
   settings: Settings!
   tags(query: PaginationArgs): PaginatedTags!
   tagById(id: String!): Tag!
@@ -1115,6 +1114,7 @@ type Query {
   teamMembers(id: Int!): PaginatedTeamMember
   threadById(id: Int!): Thread
   threads: PaginatedThread!
+  validationById(id: Int!): Validation!
 }
 
 input PaginationArgs {
@@ -1195,8 +1195,8 @@ type Mutation {
   unsetLogoDark(id: String!): Tenant!
   createContent(child: CreateContentWithKindDto!): Content!
   updateContent(id: Int!, content: UpdateContentDto!): Content!
-  createReport(id: Int!, report: CreateReportDto!): Content!
   addTeamReceipt(file: Upload!, createReceipt: CreateTeamReceiptDto!): TeamReceipt!
+  createReport(id: Int!, report: CreateReportDto!): Content!
   updateSettings(settings: UpdateSettingsDto!): Settings!
   addTeamFile(file: Upload!, createFile: CreateTeamFileDto!): Team!
   deleteTeamFile(id: String!): Team!
@@ -1267,7 +1267,7 @@ input UpdateTenantDto {
 
 input CreateContentWithKindDto {
   body: String!
-  isAnonymous: Boolean = false
+  isAnonymous: Boolean! = false
   contentKind: ContentKind!
   parentId: Int!
 }
@@ -1276,10 +1276,6 @@ input UpdateContentDto {
   body: String
   isAnonymous: Boolean = false
   hidden: Boolean
-}
-
-input CreateReportDto {
-  reason: String!
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -1295,6 +1291,10 @@ input CreateTeamReceiptDto {
   paymentMethod: String = null
   amount: Float!
   amountPayed: Float!
+}
+
+input CreateReportDto {
+  reason: String!
 }
 
 input UpdateSettingsDto {
@@ -1407,7 +1407,7 @@ input CreateEventDto {
   location: String!
   price: Float!
   supervisorId: String!
-  private: Boolean = false
+  private: Boolean! = false
   state: EventState!
   formId: Int
   templateId: Int
@@ -1502,7 +1502,7 @@ input UpdateApprovalStepDto {
 
 input CreateThreadDto {
   body: String!
-  isAnonymous: Boolean = false
+  isAnonymous: Boolean! = false
   assignedTeams: [Int!]
   assignedUsers: [String!]
   tags: [String!]

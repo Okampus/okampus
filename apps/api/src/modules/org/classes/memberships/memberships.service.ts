@@ -14,8 +14,7 @@ export class ClassMembershipsService {
   constructor(
     @InjectRepository(Class) private readonly classRepository: BaseRepository<Class>,
     @InjectRepository(SchoolYear) private readonly schoolYearRepository: BaseRepository<SchoolYear>,
-    @InjectRepository(ClassMembership)
-    private readonly classMembershipsRepository: BaseRepository<ClassMembership>,
+    @InjectRepository(ClassMembership) private readonly classMembershipsRepository: BaseRepository<ClassMembership>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
   ) {}
 

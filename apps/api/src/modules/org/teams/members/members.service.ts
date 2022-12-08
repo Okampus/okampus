@@ -30,7 +30,6 @@ export class TeamMembersService {
     @InjectRepository(TeamMembershipRequest)
     private readonly teamMembershipRequestRepository: BaseRepository<TeamMembershipRequest>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
-
     private readonly teamMembershipRequestsService: TeamMembershipRequestsService,
     private readonly notificationsService: NotificationsService,
   ) {}

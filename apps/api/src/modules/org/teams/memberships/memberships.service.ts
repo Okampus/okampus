@@ -13,8 +13,7 @@ import { TeamMembershipRequest } from '../requests/team-membership-request.entit
 export class TeamMembershipsService {
   constructor(
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
-    @InjectRepository(TeamMembershipRequest)
-    private readonly requestRepository: BaseRepository<TeamMembershipRequest>,
+    @InjectRepository(TeamMembershipRequest) private readonly requestRepository: BaseRepository<TeamMembershipRequest>,
   ) {}
 
   public async findOne(

@@ -8,7 +8,6 @@ import {
   DiskHealthIndicator,
   HealthCheck,
   HealthCheckService,
-  HttpHealthIndicator,
   MemoryHealthIndicator,
   MikroOrmHealthIndicator,
 } from '@nestjs/terminus';
@@ -24,7 +23,6 @@ export class HealthController {
   // eslint-disable-next-line max-params
   constructor(
     private readonly health: HealthCheckService,
-    private readonly http: HttpHealthIndicator,
     private readonly redis: RedisHealthIndicator,
     private readonly database: MikroOrmHealthIndicator,
     private readonly meilisearch: MeiliSearchHealthIndicator,

@@ -33,7 +33,7 @@ export class ApprovalStepsService extends GlobalRequestService {
       throw new BadRequestException('Step already exists');
 
     const approvalStep = new ApprovalStep({ ...createApprovalStep, tenant });
-    approvalStep.users.add(...await this.usersService.findBareUsers(wantedUsers));
+    approvalStep.users.add(await this.usersService.findBareUsers(wantedUsers));
 
     await catchUniqueViolation(this.approvalStepRepository, approvalStep);
     return approvalStep;

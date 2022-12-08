@@ -1,5 +1,4 @@
 import { RedisHealthModule } from '@liaoliaots/nestjs-redis-health';
-import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
 import { MeiliSearchHealthIndicator } from '@common/modules/health/meilisearch.health';
@@ -10,7 +9,6 @@ import { HealthController } from './health.controller';
   imports: [
     TerminusModule,
     RedisHealthModule,
-    HttpModule,
   ],
   controllers: [HealthController],
   providers: [MeiliSearchHealthIndicator, StorageHealthIndicator],
