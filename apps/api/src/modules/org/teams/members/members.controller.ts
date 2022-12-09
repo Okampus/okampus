@@ -12,7 +12,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import { User } from '@modules/uaa/users/user.entity';
 import type { TeamMembershipRequest } from '../requests/team-membership-request.entity';
@@ -44,7 +44,7 @@ export class TeamMembersController {
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   public async findAllMembers(
     @Param('id', ParseIntPipe) id: number,
-    @Query() query: PaginationArgs,
+    @Query() query: PaginationOptions,
   ): Promise<PaginatedNodes<TeamMember>> {
     return await this.membersService.findAllMembers(id, query);
   }

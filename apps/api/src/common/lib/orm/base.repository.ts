@@ -3,26 +3,25 @@
 import type { FilterQuery, FindOptions } from '@mikro-orm/core';
 import { QueryOrder } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import { PageInfo } from '@common/modules/pagination';
 import type { BaseEntity } from '../entities/base.entity';
-import type { CursorColumnTypes } from '../utils/cursor-serializer';
+import type { CursorColumns, CursorColumnTypes } from '../types/interfaces/cursor-columns.interface';
 import { decodeCursor, encodeCursor } from '../utils/cursor-serializer';
 
 type PaginationFindOptions<T extends BaseEntity, P extends string> = Omit<
   FindOptions<T, P>, 'limit' | 'offset' | 'orderBy'
 >;
-type ColumnList = Record<string, [value: CursorColumnTypes, order: QueryOrder]>;
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   private static readonly defaultLimit = 10;
 
   public async findWithPagination<P extends string = never>(
-    paginationOptions?: PaginationArgs,
+    paginationOptions?: PaginationOptions,
     where: FilterQuery<T> = {} as FilterQuery<T>,
     baseOptions?: PaginationFindOptions<T, P>,
   ): Promise<PaginatedNodes<T>> {
-    let columns: ColumnList | null = null;
+    let columns: CursorColumns | null = null;
 
     const limit = paginationOptions?.limit ?? BaseRepository.defaultLimit;
     const offset: number = paginationOptions?.offset ?? 0;
@@ -71,7 +70,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       } as FilterQuery<T>;
     };
 
-    const getWhereFind = (findColumns: ColumnList): FilterQuery<T> => {
+    const getWhereFind = (findColumns: CursorColumns): FilterQuery<T> => {
       if (!findColumns)
         return {} as FilterQuery<T>;
 
@@ -91,11 +90,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       ([colName, order]) => [
         colName, [items[0][colName as keyof T], order === QueryOrder.ASC ? QueryOrder.DESC : QueryOrder.ASC],
       ],
-    )) : null) as ColumnList | null;
+    )) : null) as CursorColumns | null;
 
     const endCursorColumns = (items.length > 0 ? Object.fromEntries(Object.entries(orderBy).map(
       ([colName, order]) => [colName, [items[items.length - 1][colName as keyof T], order]],
-    )) : null) as ColumnList | null;
+    )) : null) as CursorColumns | null;
 
     const [countBefore, countAfter] = await Promise.all([
       this.count({ ...where, ...getWhereFind(startCusorColumns!) }),

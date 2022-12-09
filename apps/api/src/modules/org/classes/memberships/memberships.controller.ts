@@ -11,7 +11,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateClassMembershipDto } from '@modules/org/classes/memberships/dto/create-class-membership.dto';
 import { User } from '@modules/uaa/users/user.entity';
@@ -29,7 +29,7 @@ export class ClassMembershipsController {
 
   @Get('all')
   @CheckPolicies(ability => ability.can(Action.Read, Class))
-  public async findAllMembers(@Query() query: PaginationArgs): Promise<PaginatedNodes<ClassMembership>> {
+  public async findAllMembers(@Query() query: PaginationOptions): Promise<PaginatedNodes<ClassMembership>> {
     return await this.classMembershipsService.findAllMembers(query);
   }
 
@@ -37,7 +37,7 @@ export class ClassMembershipsController {
   @CheckPolicies(ability => ability.can(Action.Read, Class))
   public async findMembers(
     @Param('id') id: string,
-    @Query() query: PaginationArgs,
+    @Query() query: PaginationOptions,
   ): Promise<PaginatedNodes<ClassMembership>> {
     return await this.classMembershipsService.findMembers(id, query);
   }

@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import { BadgesService } from './badges.service';
 import { CreateBadgeDto } from './dto/create-badge.dto';
@@ -34,7 +34,7 @@ export class BadgesController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Badge))
-  public async findAll(@Query() query: PaginationArgs): Promise<PaginatedNodes<Badge>> {
+  public async findAll(@Query() query: PaginationOptions): Promise<PaginatedNodes<Badge>> {
     return await this.badgesService.findAll(query);
   }
 
@@ -42,7 +42,7 @@ export class BadgesController {
   @CheckPolicies(ability => ability.can(Action.Read, Badge))
   public async findAllForUser(
     @Param('id') id: string,
-    @Query() query: PaginationArgs,
+    @Query() query: PaginationOptions,
   ): Promise<PaginatedNodes<BadgeUnlock>> {
     return await this.badgesService.findAllForUser(id, query);
   }

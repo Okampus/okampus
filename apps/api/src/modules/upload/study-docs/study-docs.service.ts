@@ -12,7 +12,7 @@ import type {
 import { computeDocumentCategories } from '@common/lib/utils/compute-document-categories';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import { Subject } from '@modules/catalog/subjects/subject.entity';
 import type { User } from '@modules/uaa/users/user.entity';
 import type { CreateStudyDocDto } from '@modules/upload/study-docs/dto/create-study-doc.dto';
@@ -54,7 +54,7 @@ export class StudyDocsService {
 
   public async findAll(
     filters: DocsFilterDto,
-    paginationOptions?: PaginationArgs,
+    paginationOptions?: PaginationOptions,
   ): Promise<PaginatedNodes<StudyDoc>> {
     // TODO: Maybe the user won't have access to all docs. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)

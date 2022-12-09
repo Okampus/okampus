@@ -21,7 +21,7 @@ import { UploadInterceptor } from '@common/lib/decorators/upload-interceptor.dec
 import { UserImageType } from '@common/lib/types/enums/user-image-type.enum';
 import type { FullPageInfo } from '@common/lib/types/interfaces/full-page-info.interface';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import type { IndexedEntity } from '@common/modules/search/indexed-entity.interface';
 import { Tenant } from '@modules/org/tenants/tenant.entity';
@@ -54,14 +54,14 @@ export class UsersController {
   }
 
   @Get()
-  public async findAll(@Query() query: PaginationArgs): Promise<PaginatedNodes<User>> {
+  public async findAll(@Query() query: PaginationOptions): Promise<PaginatedNodes<User>> {
     return await this.usersService.findAll(query);
   }
 
   @Get('all/search')
   public async search(
     @CurrentTenant() tenant: Tenant,
-    @Query() query: PaginationArgs & { search: string },
+    @Query() query: PaginationOptions & { search: string },
   ): Promise<FullPageInfo<IndexedEntity>> {
     return await this.usersService.search(tenant, query);
   }

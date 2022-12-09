@@ -1,7 +1,7 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import type { CreateClassMembershipDto } from '@modules/org/classes/memberships/dto/create-class-membership.dto';
 import { User } from '@modules/uaa/users/user.entity';
 import { Class } from '../class.entity';
@@ -19,7 +19,7 @@ export class ClassMembershipsService {
   ) {}
 
   public async findAllMembers(
-    paginationOptions?: PaginationArgs,
+    paginationOptions?: PaginationOptions,
   ): Promise<PaginatedNodes<ClassMembership>> {
     return await this.classMembershipsRepository.findWithPagination(
       paginationOptions,
@@ -32,7 +32,7 @@ export class ClassMembershipsService {
 
   public async findMembers(
     id: string,
-    paginationOptions?: PaginationArgs,
+    paginationOptions?: PaginationOptions,
   ): Promise<PaginatedNodes<ClassMembership>> {
     return await this.classMembershipsRepository.findWithPagination(
       paginationOptions,

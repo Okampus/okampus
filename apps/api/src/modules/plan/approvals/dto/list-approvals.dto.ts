@@ -6,9 +6,9 @@ import {
   Min,
 } from 'class-validator';
 import { EventState } from '@common/lib/types/enums/event-state.enum';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 
-export class ListEventApprovalsDto extends PartialType(PaginationArgs) {
+export class ListEventApprovalsDto extends PartialType(PaginationOptions) {
   @IsOptional()
   @IsInt()
   step?: number;

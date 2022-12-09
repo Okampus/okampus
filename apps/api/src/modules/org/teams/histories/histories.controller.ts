@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateHistoryDto } from '@modules/org/teams/histories/dto/create-history.dto';
 import { UpdateHistoryDto } from './dto/update-history.dto';
@@ -31,7 +31,7 @@ export class HistoriesController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, TeamHistory))
-  public async findAll(@Query() query: PaginationArgs): Promise<PaginatedNodes<TeamHistory>> {
+  public async findAll(@Query() query: PaginationOptions): Promise<PaginatedNodes<TeamHistory>> {
     return await this.historiesService.findAll(query);
   }
 

@@ -12,7 +12,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { CreateReportDto } from '@modules/interact/reports/dto/create-report.dto';
@@ -34,7 +34,7 @@ export class ReportsController {
   public async findAll(
     @CurrentUser() user: User,
     @Body() filters: GetReportsDto,
-    @Query() query: PaginationArgs,
+    @Query() query: PaginationOptions,
   ): Promise<PaginatedNodes<Report>> {
     return await this.reportsService.findAll(user, filters, query);
   }

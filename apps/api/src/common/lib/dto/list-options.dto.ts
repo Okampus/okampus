@@ -1,8 +1,8 @@
 import { IntersectionType } from '@nestjs/mapped-types';
-import { PaginationArgs } from '../../modules/pagination';
+import { PaginationOptions } from '../../modules/pagination';
 import { SortDto } from '../../modules/sorting';
 import { ContentSortDto } from '../../modules/sorting/sort.dto';
 
-export class ListOptionsDto extends IntersectionType(PaginationArgs, SortDto) {}
+export class ListOptionsDto extends IntersectionType(PaginationOptions, SortDto) {}
 
-export class ContentListOptionsDto extends IntersectionType(PaginationArgs, ContentSortDto) {}
+export class ContentListOptionsDto extends IntersectionType(PaginationOptions, ContentSortDto) {}

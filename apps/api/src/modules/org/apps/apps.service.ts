@@ -6,7 +6,7 @@ import { BaseRepository } from '@common/lib/orm/base.repository';
 import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import { App } from './app.entity';
 import type { CreateAppDto } from './dto/create-app.dto';
 import type { UpdateAppDto } from './dto/update-app.dto';
@@ -35,7 +35,7 @@ export class AppsService extends GlobalRequestService {
   }
 
   public async findAll(
-    paginationOptions?: PaginationArgs,
+    paginationOptions?: PaginationOptions,
   ): Promise<PaginatedNodes<App>> {
     return await this.appRepository.findWithPagination(paginationOptions);
   }

@@ -3,7 +3,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { FoodType } from '@common/lib/types/enums/food-type.enum';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import type { CreateMenuDto } from '@modules/org/canteens/menus/dto/create-menu.dto';
 import { Food } from '../foods/food.entity';
 import type { UpdateMenuDto } from './dto/update-menu.dto';
@@ -35,7 +35,7 @@ export class MenusService {
     return menu;
   }
 
-  public async findAll(paginationOptions?: PaginationArgs): Promise<PaginatedNodes<Menu>> {
+  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedNodes<Menu>> {
     return await this.menuRepository.findWithPagination(
       paginationOptions,
       {},

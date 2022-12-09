@@ -21,7 +21,7 @@ import {
   ThreadSubscribedUpdatedNotification,
 } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import type { CreateOrphanContentDto } from '@modules/create/contents/dto/create-orphan-content.dto';
 import type { Interactions } from '@modules/create/contents/interactions.model';
 import { Favorite } from '@modules/interact/favorites/favorite.entity';
@@ -231,7 +231,7 @@ export class ContentsService extends GlobalRequestService {
   public async findEdits(
     user: User,
     id: number,
-    paginationOptions?: PaginationArgs,
+    paginationOptions?: PaginationOptions,
   ): Promise<PaginatedNodes<Edit>> {
     const content = await this.contentRepository.findOneOrFail({ id });
 

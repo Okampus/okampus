@@ -16,7 +16,7 @@ import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { catchUniqueViolation } from '@common/lib/utils/catch-unique-violation';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import type { IndexedEntity } from '@common/modules/search/indexed-entity.interface';
 import type { CreateSocialDto } from '@modules/org/teams/socials/dto/create-social.dto';
 import { Social } from '@modules/org/teams/socials/social.entity';
@@ -149,7 +149,7 @@ export class UsersService extends GlobalRequestService {
     return user;
   }
 
-  public async findAll(paginationOptions?: PaginationArgs): Promise<PaginatedNodes<User>> {
+  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedNodes<User>> {
     return await this.userRepository.findWithPagination(
       paginationOptions,
       { id: { $ne: config.anonAccount.username } },
@@ -159,7 +159,7 @@ export class UsersService extends GlobalRequestService {
 
   public async search(
     tenant: Tenant,
-    query: PaginationArgs & { search: string },
+    query: PaginationOptions & { search: string },
   ): Promise<FullPageInfo<IndexedEntity>> {
     const result = await this.meiliSearch.index(tenant.id).search(
       query.search,

@@ -2,7 +2,7 @@ import { Field, InputType, IntersectionType } from '@nestjs/graphql';
 import { IsEnum, IsOptional } from 'class-validator';
 import { MembershipRequestDirection } from '@common/lib/types/enums/membership-request-direction.enum';
 import { MembershipRequestState } from '@common/lib/types/enums/membership-request-state.enum';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 
 @InputType()
 export class FilterMembershipRequestsDto {
@@ -18,4 +18,4 @@ export class FilterMembershipRequestsDto {
 }
 
 @InputType()
-export class ListMembershipRequestsDto extends IntersectionType(FilterMembershipRequestsDto, PaginationArgs) {}
+export class ListMembershipRequestsDto extends IntersectionType(FilterMembershipRequestsDto, PaginationOptions) {}

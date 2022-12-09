@@ -8,7 +8,7 @@ import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { AdminReportCreatedNotification } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import type { CreateReportDto } from '@modules/interact/reports/dto/create-report.dto';
 import type { User } from '@modules/uaa/users/user.entity';
@@ -59,7 +59,7 @@ export class ReportsService {
   public async findAll(
     user: User,
     filters?: GetReportsDto,
-    paginationOptions?: PaginationArgs,
+    paginationOptions?: PaginationOptions,
   ): Promise<PaginatedNodes<Report>> {
     let options: FilterQuery<Report> = {};
     if (filters?.byUserId)

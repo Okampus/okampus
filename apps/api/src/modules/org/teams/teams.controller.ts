@@ -51,7 +51,7 @@ export class TeamsController {
   @CheckPolicies(ability => ability.can(Action.Read, Team))
   public async findAll(
     @Query() options: TeamListOptions,
-    ): Promise<PaginatedNodes<Team>> {
+  ): Promise<PaginatedNodes<Team>> {
     const teams = await this.teamsService.findAll(options, options);
     return teams;
   }

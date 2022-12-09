@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateSchoolYearDto } from '@modules/org/classes/school-year/dto/create-school-year.dto';
 import { UpdateSchoolYearDto } from './dto/update-school-year.dto';
@@ -32,7 +32,7 @@ export class SchoolYearsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, SchoolYear))
-  public async findAll(@Query() query: PaginationArgs): Promise<PaginatedNodes<SchoolYear>> {
+  public async findAll(@Query() query: PaginationOptions): Promise<PaginatedNodes<SchoolYear>> {
     return await this.schoolYearsService.findAll(query);
   }
 

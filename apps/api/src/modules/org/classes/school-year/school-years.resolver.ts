@@ -3,7 +3,7 @@ import {
   Query,
   Resolver,
 } from '@nestjs/graphql';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import { PaginatedSchoolYear, SchoolYear } from './school-year.entity';
 import { SchoolYearsService } from './school-years.service';
 
@@ -20,7 +20,7 @@ export class SchoolYearsResolver {
   }
 
   @Query(() => PaginatedSchoolYear)
-  public async schoolYears(@Args('pagination') paginationOptions: PaginationArgs): Promise<PaginatedSchoolYear> {
+  public async schoolYears(@Args('pagination') paginationOptions: PaginationOptions): Promise<PaginatedSchoolYear> {
     return await this.schoolYearsService.findAll(paginationOptions);
   }
 }

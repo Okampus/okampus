@@ -13,7 +13,7 @@ import { APP_PUB_SUB } from '@common/lib/constants';
 import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import type { IndexedEntity } from '@common/modules/search/indexed-entity.interface';
 import { Interest } from '@modules/org/teams/interests/interest.entity';
 import { InterestsService } from '@modules/org/teams/interests/interests.service';
@@ -55,7 +55,7 @@ export class UsersResolver {
   public async searchUsers(
     @CurrentTenant() tenant: Tenant,
     @Args('search') search: string,
-    @Args('query', { nullable: true }) query: PaginationArgs,
+    @Args('query', { nullable: true }) query: PaginationOptions,
   ): Promise<IndexedEntity[]> {
     const paginatedUsers = await this.usersService.search(tenant, { ...query, search });
     return paginatedUsers.items;

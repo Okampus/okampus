@@ -25,6 +25,7 @@ import { MembershipRequestState } from '@common/lib/types/enums/membership-reque
 import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
 import { TeamKind } from '@common/lib/types/enums/team-kind.enum';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
+import { PaginationOptions } from '@common/modules/pagination';
 import { CreateTeamDto } from '@modules/org/teams/dto/create-team.dto';
 import { TeamFormsService } from '@modules/org/teams/forms/forms.service';
 import { PaginatedTeamForm } from '@modules/org/teams/forms/team-form.entity';
@@ -86,9 +87,10 @@ export class TeamsResolver {
 
   @Query(() => PaginatedTeam)
   public async teams(
+    @Args('query', { nullable: true }) paginationArgs: PaginationOptions,
     @Args('filters', { nullable: true }) filters?: TeamsFilterDto,
   ): Promise<PaginatedTeam> {
-    return await this.teamsService.findAll(filters ?? {});
+    return await this.teamsService.findAll(filters ?? {}, paginationArgs ?? {});
   }
 
   @Query(() => PaginatedTeam)

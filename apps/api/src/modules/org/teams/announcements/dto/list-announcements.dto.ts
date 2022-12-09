@@ -1,8 +1,8 @@
 import { IsBoolean, IsIn, IsOptional } from 'class-validator';
 import { AnnouncementState } from '@common/lib/types/enums/announcement-state.enum';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 
-export default class ListAnnouncementsDto extends PaginationArgs {
+export default class ListAnnouncementsDto extends PaginationOptions {
   @IsOptional()
   @IsIn([...Object.values(AnnouncementState), 'all'])
   state?: AnnouncementState | 'all';

@@ -8,7 +8,7 @@ import type { UserImageType } from '@common/lib/types/enums/user-image-type.enum
 import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import { FileUploadsService } from '@modules/upload/file-uploads/file-uploads.service';
 import { User } from '../users/user.entity';
 import type { CreateUserImageDto } from './dto/create-user-image.dto';
@@ -46,7 +46,7 @@ export class UserImagesService extends GlobalRequestService {
     return userImage;
   }
 
-  public async findAll(paginationOptions?: PaginationArgs): Promise<PaginatedNodes<UserImage>> {
+  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedNodes<UserImage>> {
     return await this.userImageRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'user'] });
   }
 

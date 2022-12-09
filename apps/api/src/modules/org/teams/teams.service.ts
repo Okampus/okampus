@@ -16,7 +16,7 @@ import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { catchUniqueViolation } from '@common/lib/utils/catch-unique-violation';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import { Label } from '@modules/catalog/labels/label.entity';
 import type { CreateTeamDto } from '@modules/org/teams/dto/create-team.dto';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
@@ -68,7 +68,7 @@ export class TeamsService extends GlobalRequestService {
     if (newLabels && newLabels.length > 0)
       await this.teamLabelRepository.persistAndFlush(newLabels);
 
-    team.labels.add([...existingLabels, ...newLabels ?? []]);
+    team.labels.add(...existingLabels, ...newLabels ?? []);
 
     await Promise.all([
       this.setImage(team, TeamImageType.Logo, logo ?? null),
@@ -85,7 +85,7 @@ export class TeamsService extends GlobalRequestService {
 
   public async findAll(
     filters?: TeamsFilterDto,
-    paginationOptions?: PaginationArgs,
+    paginationOptions?: PaginationOptions,
   ): Promise<PaginatedNodes<Team>> {
     let options: FilterQuery<Team> = {};
     if (filters?.kind)

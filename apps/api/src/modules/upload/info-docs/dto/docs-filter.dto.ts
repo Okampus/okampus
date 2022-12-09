@@ -1,8 +1,8 @@
 import { IsInt, IsOptional } from 'class-validator';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 
 // TODO: add filter via schoolClass
-export class DocsFilterDto extends PaginationArgs {
+export class DocsFilterDto extends PaginationOptions {
   @IsOptional()
   @IsInt()
   year?: number;

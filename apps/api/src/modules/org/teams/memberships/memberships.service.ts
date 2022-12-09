@@ -3,7 +3,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { MembershipRequestDirection } from '@common/lib/types/enums/membership-request-direction.enum';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import { MembershipRequestIssuer } from '../../../../common/lib/types/enums/membership-request-issuer.enum';
 import type { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
 import { TeamMember } from '../members/team-member.entity';
@@ -18,7 +18,7 @@ export class TeamMembershipsService {
 
   public async findOne(
     id: string,
-    paginationOptions?: PaginationArgs,
+    paginationOptions?: PaginationOptions,
   ): Promise<PaginatedNodes<TeamMember>> {
     return await this.teamMemberRepository.findWithPagination(
       paginationOptions,

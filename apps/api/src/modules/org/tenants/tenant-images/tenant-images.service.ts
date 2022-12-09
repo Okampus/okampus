@@ -8,7 +8,7 @@ import type { TenantImageType } from '@common/lib/types/enums/tenant-image-type.
 import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import { FileUploadsService } from '@modules/upload/file-uploads/file-uploads.service';
 import { Tenant } from '../tenant.entity';
 import type { CreateTenantImageDto } from './dto/create-tenant-image.dto';
@@ -46,7 +46,7 @@ export class TenantImagesService extends GlobalRequestService {
     return tenantImage;
   }
 
-  public async findAll(paginationOptions?: PaginationArgs): Promise<PaginatedNodes<TenantImage>> {
+  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedNodes<TenantImage>> {
     return await this.tenantImageRepository.findWithPagination(paginationOptions, {}, { populate: ['file', 'tenant'] });
   }
 

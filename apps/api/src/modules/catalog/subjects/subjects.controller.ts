@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateSubjectDto } from '@modules/catalog/subjects/dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
@@ -34,7 +34,7 @@ export class SubjectsController {
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Subject))
   public async findAll(
-    @Query() query: PaginationArgs,
+    @Query() query: PaginationOptions,
   ): Promise<PaginatedNodes<Subject>> {
     return await this.subjectsService.findAll(query);
   }

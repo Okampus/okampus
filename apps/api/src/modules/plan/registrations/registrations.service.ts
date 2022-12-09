@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { EventRegisterStatus } from '@common/lib/types/enums/event-register-status.enum';
 import { Role } from '@common/modules/authorization/types/role.enum';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import type { CreateEventRegistrationDto } from '@modules/plan/registrations/dto/create-event-registration.dto';
@@ -74,7 +74,7 @@ export class EventRegistrationsService {
   public async findAll(
     user: User,
     query: ListRegisteredEventsDto,
-    options?: PaginationArgs,
+    options?: PaginationOptions,
   ): Promise<PaginatedNodes<EventRegistration>> {
     let filter: FilterQuery<EventRegistration> = {};
 

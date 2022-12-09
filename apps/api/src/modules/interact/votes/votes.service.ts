@@ -4,7 +4,7 @@ import { BaseRepository } from '@common/lib/orm/base.repository';
 import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import { Content } from '@modules/create/contents/entities/content.entity';
 import { User } from '@modules/uaa/users/user.entity';
 import { Vote } from './vote.entity';
@@ -21,7 +21,7 @@ export class VotesService {
   public async findAll(
     currentUser: User,
     userId: string,
-    paginationOptions?: PaginationArgs,
+    paginationOptions?: PaginationOptions,
   ): Promise<PaginatedNodes<Vote>> {
     const user = await this.userRepository.findOneOrFail(userId);
     const canSeeHiddenContent = this.caslAbilityFactory.isModOrAdmin(currentUser);

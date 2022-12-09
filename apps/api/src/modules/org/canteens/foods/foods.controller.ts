@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateFoodDto } from '@modules/org/canteens/foods/dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
@@ -33,7 +33,7 @@ export class FoodsController {
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Food))
   public async findAll(
-    @Query() query: PaginationArgs,
+    @Query() query: PaginationOptions,
   ): Promise<PaginatedNodes<Food>> {
     return await this.foodService.findAll(query);
   }

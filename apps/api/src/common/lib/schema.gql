@@ -1079,9 +1079,9 @@ type Query {
   me: User!
   userById(id: String!): User!
   users: PaginatedUser!
-  searchUsers(search: String!, query: PaginationArgs): [IndexedUser!]!
+  searchUsers(search: String!, query: PaginationOptions): [IndexedUser!]!
   classMembershipsById(id: String!): PaginatedClassMembership!
-  classes(pagination: PaginationArgs!): PaginatedClass!
+  classes(pagination: PaginationOptions!): PaginatedClass!
   classById(id: String!): Class!
   interestById(id: Int!): Interest!
   interests: PaginatedInterest!
@@ -1090,12 +1090,12 @@ type Query {
   oidcEnabled(id: String!): OIDCEnabled!
   contentById(id: Int!): Content
   schoolYearById(id: String!): SchoolYear!
-  schoolYears(pagination: PaginationArgs!): PaginatedSchoolYear!
+  schoolYears(pagination: PaginationOptions!): PaginatedSchoolYear!
   metrics(metrics: ListMetricsDto!): [Metric!]!
   reports: PaginatedReport!
   reportById(id: Int!): Report!
   settings: Settings!
-  tags(query: PaginationArgs): PaginatedTags!
+  tags(query: PaginationOptions): PaginatedTags!
   tagById(id: String!): Tag!
   teamById(id: Int!): Team
   clubById(id: Int!): Team
@@ -1117,7 +1117,7 @@ type Query {
   validationById(id: Int!): Validation!
 }
 
-input PaginationArgs {
+input PaginationOptions {
   limit: Int
   after: String
   before: String
@@ -1267,7 +1267,7 @@ input UpdateTenantDto {
 
 input CreateContentWithKindDto {
   body: String!
-  isAnonymous: Boolean! = false
+  isAnonymous: Boolean = false
   contentKind: ContentKind!
   parentId: Int!
 }
@@ -1407,7 +1407,7 @@ input CreateEventDto {
   location: String!
   price: Float!
   supervisorId: String!
-  private: Boolean! = false
+  private: Boolean = false
   state: EventState!
   formId: Int
   templateId: Int
@@ -1502,7 +1502,7 @@ input UpdateApprovalStepDto {
 
 input CreateThreadDto {
   body: String!
-  isAnonymous: Boolean! = false
+  isAnonymous: Boolean = false
   assignedTeams: [Int!]
   assignedUsers: [String!]
   tags: [String!]

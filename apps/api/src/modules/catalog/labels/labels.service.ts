@@ -2,7 +2,7 @@ import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import type { CreateLabelDto } from '@modules/catalog/labels/dto/create-label.dto';
 import type { UpdateLabelDto } from './dto/update-label.dto';
 import { Label } from './label.entity';
@@ -26,7 +26,7 @@ export class LabelsService {
   }
 
   public async findAll(
-    paginationOptions?: PaginationArgs,
+    paginationOptions?: PaginationOptions,
   ): Promise<PaginatedNodes<Label>> {
     return await this.labelRepository.findWithPagination(paginationOptions);
   }

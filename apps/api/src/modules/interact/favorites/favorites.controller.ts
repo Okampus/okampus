@@ -11,7 +11,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import type { Content } from '@modules/create/contents/entities/content.entity';
 import { User } from '@modules/uaa/users/user.entity';
@@ -37,7 +37,7 @@ export class FavoritesController {
   public async findAllFavorites(
     @Param('id') id: string,
     @CurrentUser() user: User,
-    @Query() query: PaginationArgs,
+    @Query() query: PaginationOptions,
   ): Promise<PaginatedNodes<Favorite>> {
     return await this.favoritesService.findAll(user, id, query);
   }

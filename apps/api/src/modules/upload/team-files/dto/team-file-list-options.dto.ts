@@ -5,10 +5,10 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 
 @InputType()
-export class TeamFileListOptions extends PaginationArgs {
+export class TeamFileListOptions extends PaginationOptions {
   @Field(() => Int)
   @IsOptional()
   @IsInt()

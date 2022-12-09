@@ -1,5 +1,7 @@
 import type { QueryOrder } from '@mikro-orm/core';
+import { BadRequestException } from '@nestjs/common';
 import { GqlCursorTypes } from '../types/enums/gql-cursor-types';
+import type { CursorColumnTypes } from '../types/interfaces/cursor-columns.interface';
 
 const COL_SEPARATOR = ':';
 const METADATA_SEPARATOR = '.';
@@ -28,7 +30,6 @@ const deserializers = {
   [GqlCursorTypes.Null]: (): null => null,
 };
 
-export type CursorColumnTypes = Date | boolean | number | string | null;
 
 function encodeColumn(colName: string, value: CursorColumnTypes, order: QueryOrder): string {
   const colType = value == null
@@ -56,6 +57,10 @@ export function encodeCursor(
 }
 
 export function decodeCursor(cursor: string): Record<string, [value: CursorColumnTypes, order: QueryOrder]> {
-  return Object.fromEntries(cursor.split(COL_SEPARATOR).map(decodeColumn)
-    .map(([colName, value, order]) => [colName, [value, order]]));
+  try {
+    return Object.fromEntries(cursor.split(COL_SEPARATOR).map(decodeColumn)
+      .map(([colName, value, order]) => [colName, [value, order]]));
+  } catch {
+    throw new BadRequestException('Invalid cursor');
+  }
 }

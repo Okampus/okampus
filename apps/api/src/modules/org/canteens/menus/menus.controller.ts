@@ -12,7 +12,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { ParseDatePipe } from '@common/lib/pipes/parse-date.pipe';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import { CreateMenuDto } from '@modules/org/canteens/menus/dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
@@ -35,7 +35,7 @@ export class MenusController {
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Menu))
   public async findAll(
-    @Query() query: PaginationArgs,
+    @Query() query: PaginationOptions,
   ): Promise<PaginatedNodes<Menu>> {
     return await this.menuService.findAll(query);
   }

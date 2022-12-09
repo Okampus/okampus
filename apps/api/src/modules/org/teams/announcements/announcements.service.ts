@@ -7,7 +7,7 @@ import { AnnouncementState } from '@common/lib/types/enums/announcement-state.en
 import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedNodes, PaginationArgs } from '@common/modules/pagination';
+import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import type { CreateAnnouncementDto } from '@modules/org/teams/announcements/dto/create-announcement.dto';
 import type { User } from '@modules/uaa/users/user.entity';
 import { Announcement } from './announcement.entity';
@@ -30,7 +30,7 @@ export class AnnouncementsService {
   public async findAll(
     user: User,
     query: ListAnnouncementsDto,
-    paginationOptions?: PaginationArgs,
+    paginationOptions?: PaginationOptions,
   ): Promise<PaginatedNodes<Announcement>> {
     let filter: FilterQuery<Announcement> = { state: AnnouncementState.Committed };
 

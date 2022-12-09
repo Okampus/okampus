@@ -12,7 +12,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { PaginationArgs } from '@common/modules/pagination';
+import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import type { Interactions } from '@modules/create/contents/interactions.model';
 import { User } from '@modules/uaa/users/user.entity';
@@ -70,7 +70,7 @@ export class ContentsController {
   public async findEdits(
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,
-    @Query() query: PaginationArgs,
+    @Query() query: PaginationOptions,
   ): Promise<PaginatedNodes<Edit>> {
     return await this.contentsService.findEdits(user, id, query);
   }

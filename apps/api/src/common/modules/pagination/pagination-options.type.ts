@@ -10,7 +10,7 @@ import {
 import { QueryOrderMapScalar } from '@common/lib/types/scalars/query-order-map.scalar';
 
 @InputType()
-export class PaginationArgs {
+export class PaginationOptions {
   @Field(() => Int, { nullable: true })
   @IsOptional()
   @IsInt()
