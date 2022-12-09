@@ -124,7 +124,7 @@ query = { ...query, post: visibility };
       query = { ...query, type: filters.type };
 
     return await this.threadRepository.findWithPagination(options, query, {
-      // TODO: Remove 'post.lastEdit' once we add activities
+      // TODO: Remove 'post.lastEdit' once we add activityCount
       populate: [
         'post',
         'tags',

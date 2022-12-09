@@ -28,5 +28,5 @@ export class UpdateEventRegistrationDto extends PartialType(
   @IsInt()
   @Min(0)
   @Max(10)
-  participationScore?: number;
+  activityScore?: number;
 }

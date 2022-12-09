@@ -40,7 +40,7 @@ export class EventRegistration extends BaseEntity {
 
   @Field(() => Int)
   @Property()
-  participationScore = 0;
+  activityScore = 0;
 
   @Field(() => TeamForm, { nullable: true })
   @ManyToOne({ type: TeamForm, nullable: true })

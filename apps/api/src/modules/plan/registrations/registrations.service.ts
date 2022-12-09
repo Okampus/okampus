@@ -148,7 +148,7 @@ export class EventRegistrationsService {
       { populate: ['user', 'event', 'event.team', 'event.team.members'] },
     );
 
-    if ('present' in updateEventRegistrationDto || 'participationScore' in updateEventRegistrationDto) {
+    if ('present' in updateEventRegistrationDto || 'activityScore' in updateEventRegistrationDto) {
       if (!registration.event.canEdit(user))
         throw new ForbiddenException('Not a team admin');
       if (registration.event.start.getTime() > Date.now())
@@ -157,12 +157,12 @@ export class EventRegistrationsService {
 
     const member = await this.teamMemberRepository.findOneOrFail({ user: registration.user.id });
     if (!registration.present && updateEventRegistrationDto.present)
-      member.participations += 1;
+      member.activityCount += 1;
     else if (registration.present && updateEventRegistrationDto.present === false)
-      member.participations -= 1;
+      member.activityCount -= 1;
 
-    if (updateEventRegistrationDto.participationScore)
-      member.participationScore += updateEventRegistrationDto.participationScore - registration.participationScore;
+    if (updateEventRegistrationDto.activityScore)
+      member.activityScore += updateEventRegistrationDto.activityScore - registration.activityScore;
 
     wrap(registration).assign(updateEventRegistrationDto);
     await this.eventRegistrationRepository.flush();
@@ -182,8 +182,8 @@ export class EventRegistrationsService {
 
     const member = await this.teamMemberRepository.findOneOrFail({ user: registration.user.id });
     if (registration.present)
-      member.participations -= 1;
-    member.participationScore -= registration.participationScore;
+      member.activityCount -= 1;
+    member.activityScore -= registration.activityScore;
 
     await this.eventRegistrationRepository.removeAndFlush(registration);
     await this.teamMemberRepository.flush();

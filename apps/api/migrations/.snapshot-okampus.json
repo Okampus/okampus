@@ -3409,8 +3409,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "participations": {
-          "name": "participations",
+        "activity_count": {
+          "name": "activity_count",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -3418,8 +3418,8 @@
           "nullable": false,
           "mappedType": "integer"
         },
-        "participation_score": {
-          "name": "participation_score",
+        "activity_score": {
+          "name": "activity_score",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -6086,8 +6086,8 @@
           "nullable": false,
           "mappedType": "boolean"
         },
-        "participation_score": {
-          "name": "participation_score",
+        "activity_score": {
+          "name": "activity_score",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,

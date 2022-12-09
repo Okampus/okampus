@@ -50,11 +50,11 @@ export class TeamMember extends BaseEntity {
 
   @Field(() => Int)
   @Property()
-  participations = 0;
+  activityCount = 0;
 
   @Field(() => Int)
   @Property()
-  participationScore = 0;
+  activityScore = 0;
 
   @Field(() => Boolean, { defaultValue: true })
   @Property()
