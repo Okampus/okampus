@@ -118,8 +118,8 @@ export class UsersService extends GlobalRequestService {
     return user;
   }
 
-  public async createBare(createUserDto: TenantUserDto, forTenant: string): Promise<User> {
-    const tenant = await this.tenantsService.findBareTenant(forTenant);
+  public async createBare(createUserDto: TenantUserDto, tenantSlug: string): Promise<User> {
+    const tenant = await this.tenantsService.findBareTenant(tenantSlug);
     if (!tenant)
       throw new BadRequestException('Tenant does not exist');
 
@@ -161,7 +161,7 @@ export class UsersService extends GlobalRequestService {
     tenant: Tenant,
     query: PaginationOptions & { search: string },
   ): Promise<FullPageInfo<IndexedEntity>> {
-    const result = await this.meiliSearch.index(tenant.id).search(
+    const result = await this.meiliSearch.index(tenant.slug).search(
       query.search,
       {
         filter: 'metaType = user',

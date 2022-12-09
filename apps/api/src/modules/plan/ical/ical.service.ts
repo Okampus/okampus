@@ -3,19 +3,20 @@ import { Injectable } from '@nestjs/common';
 import { ICalCalendar, ICalCalendarMethod, ICalEvent } from 'ical-generator';
 import { config } from '@common/configs/config';
 import { iCals } from '@common/configs/strings';
+import { GlobalRequestService } from '@common/lib/helpers/global-request-service';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { EventRegistration } from '@modules/plan/registrations/registration.entity';
 import { User } from '@modules/uaa/users/user.entity';
 import { Event } from '../events/event.entity';
 
 @Injectable()
-export class TeamICalService {
+export class TeamICalService extends GlobalRequestService {
   constructor(
     @InjectRepository(Event) private readonly eventRepository: BaseRepository<Event>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(EventRegistration)
     private readonly eventRegistrationRepository: BaseRepository<EventRegistration>,
-  ) {}
+  ) { super(); }
 
   public async getAllPublicEventsCalendar(): Promise<ICalCalendar> {
     const events = await this.eventRepository.find({ private: false });
@@ -43,7 +44,7 @@ export class TeamICalService {
     const calendar = new ICalCalendar({
       prodId: {
         company: 'Okampus',
-        product: config.baseTenant.id,
+        product: this.currentTenant().slug,
         language: 'fr',
       },
       method: ICalCalendarMethod.PUBLISH,

@@ -112,12 +112,12 @@ async function bootstrap(): Promise<void> {
 
   fastifyInstance.get('/auth/:tenant', {
     preValidation: async (req, res) => {
-      const tenantId = (req.params as { tenant: string }).tenant;
-      const tenant = await tenantsService.findBareTenant(tenantId);
+      const tenantSlug = (req.params as { tenant: string }).tenant;
+      const tenant = await tenantsService.findBareTenant(tenantSlug);
       if (!tenant)
         return false;
 
-      if (!oidcStrategyCache.strategies.has(tenantId)) {
+      if (!oidcStrategyCache.strategies.has(tenantSlug)) {
         const {
           oidcEnabled,
           oidcClientId,
@@ -133,9 +133,9 @@ async function bootstrap(): Promise<void> {
         const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl);
         // eslint-disable-next-line @typescript-eslint/naming-convention
         const client = new TrustIssuer.Client({ client_id: oidcClientId, client_secret: oidcClientSecret });
-        oidcStrategyCache.strategies.set(tenantId, tenantStrategyFactory(
+        oidcStrategyCache.strategies.set(tenantSlug, tenantStrategyFactory(
           authService,
-          tenantId,
+          tenantSlug,
           {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             redirect_uri: oidcCallbackUri,
@@ -146,16 +146,16 @@ async function bootstrap(): Promise<void> {
       }
 
       await fastifyPassport
-        .authenticate(oidcStrategyCache.strategies.get(tenantId), { authInfo: false })
+        .authenticate(oidcStrategyCache.strategies.get(tenantSlug), { authInfo: false })
         .bind(fastifyInstance)(req, res);
     },
   }, () => ({}));
 
   fastifyInstance.get('/auth/:tenant/callback', {
     preValidation: async (req, res) => {
-      const tenantId = (req.params as { tenant: string }).tenant;
+      const tenantSlug = (req.params as { tenant: string }).tenant;
       await fastifyPassport
-        .authenticate(oidcStrategyCache.strategies.get(tenantId), { authInfo: false, successRedirect: '/auth/oidc-login' })
+        .authenticate(oidcStrategyCache.strategies.get(tenantSlug), { authInfo: false, successRedirect: '/auth/oidc-login' })
         .bind(fastifyInstance)(req, res);
     },
   }, () => ({}));

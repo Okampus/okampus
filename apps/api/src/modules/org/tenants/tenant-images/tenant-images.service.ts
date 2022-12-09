@@ -27,12 +27,12 @@ export class TenantImagesService extends GlobalRequestService {
     if (!multerFile)
       throw new BadRequestException('No file provided');
 
-    const { tenantId, fileLastModifiedAt, ...createTenantImage } = createTenantImageDto;
+    const { tenantSlug, fileLastModifiedAt, ...createTenantImage } = createTenantImageDto;
 
     const ability = this.caslAbilityFactory.createForUser(this.currentUser());
     assertPermissions(ability, Action.Create, TenantImage);
 
-    const tenant = await this.tenantRepository.findOneOrFail({ id: tenantId });
+    const tenant = await this.tenantRepository.findOneOrFail({ slug: tenantSlug });
     const file = await this.filesService.create(
       tenant,
       this.currentUser(),
@@ -54,12 +54,12 @@ export class TenantImagesService extends GlobalRequestService {
     return await this.tenantImageRepository.findOneOrFail({ id }, { populate: ['file', 'tenant'] });
   }
 
-  public async findLastActive(tenantId: string, type: TenantImageType): Promise<TenantImage | null> {
-    return await this.tenantImageRepository.findOne({ tenant: { id: tenantId }, active: true, type }, { populate: ['file', 'tenant'] });
+  public async findLastActive(slug: string, type: TenantImageType): Promise<TenantImage | null> {
+    return await this.tenantImageRepository.findOne({ tenant: { slug }, active: true, type }, { populate: ['file', 'tenant'] });
   }
 
-  public async setInactiveLastActive(tenantId: string, type: TenantImageType): Promise<void> {
-    const tenantImage = await this.findLastActive(tenantId, type);
+  public async setInactiveLastActive(slug: string, type: TenantImageType): Promise<void> {
+    const tenantImage = await this.findLastActive(slug, type);
     if (tenantImage) {
       tenantImage.active = false;
       tenantImage.lastActiveDate = new Date();

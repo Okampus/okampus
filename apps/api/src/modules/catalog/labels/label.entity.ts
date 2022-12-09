@@ -5,9 +5,9 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
-import slugify from 'slugify';
 import { BaseEntity } from '@common/lib/entities/base.entity';
 import { LabelType } from '@common/lib/types/enums/label-type.enum';
+import { _slugify } from '@common/lib/utils/slugify';
 
 @ObjectType()
 @Entity()
@@ -40,7 +40,7 @@ export class Label extends BaseEntity {
     type?: LabelType;
   }) {
     if (typeof options.id === 'undefined')
-      options.id = slugify(options.name, { lower: true });
+      options.id = _slugify(options.name);
 
     super();
     this.assign(options);

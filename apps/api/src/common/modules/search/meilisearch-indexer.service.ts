@@ -35,7 +35,7 @@ export class MeiliSearchIndexerService {
   }
 
   public static getEntityId(entity: IndexableEntities, type: string): string {
-    return [entity.tenant.id, type.toLowerCase(), entity.id.toString()]
+    return [entity.tenant.slug, type.toLowerCase(), entity.id.toString()]
       .join(MEILISEARCH_ID_SEPARATOR)
       .replaceAll(/[^\w-]/g, x => x.codePointAt(0)!.toString());
   }
@@ -45,7 +45,7 @@ export class MeiliSearchIndexerService {
 
     for (const tenant of tenants) {
       try {
-        const index = this.meiliSearch.index(tenant.id);
+        const index = this.meiliSearch.index(tenant.slug);
         const response = await index.search('', { facets: ['metaType'] });
 
         const facetDistribution: Record<string, number> = {};
@@ -53,7 +53,7 @@ export class MeiliSearchIndexerService {
           for (const [name, count] of Object.entries(response.facetDistribution.metaType))
             facetDistribution[name] = count;
         }
-        this.logger.log(`Tenant "${tenant.id}" facet distribution: ${JSON.stringify(facetDistribution)}`);
+        this.logger.log(`Tenant "${tenant.slug}" facet distribution: ${JSON.stringify(facetDistribution)}`);
 
         const counts = await Promise.all(
           MeiliSearchIndexerService.indexedEntities.map(async entityName => this.countEntities(entityName, tenant)),
@@ -75,17 +75,17 @@ export class MeiliSearchIndexerService {
   }
 
   public async reindex(tenant: Tenant): Promise<boolean> {
-    this.logger.log(`Reindexing for tenant ${tenant.id}...`);
+    this.logger.log(`Reindexing for tenant ${tenant.slug}...`);
 
     if (!(await this.meiliSearch.isHealthy())) {
       this.logger.warn('MeiliSearch is not healthy');
       return false;
     }
 
-    await this.meiliSearch.deleteIndexIfExists(tenant.id);
-    await this.meiliSearch.createIndex(tenant.id);
+    await this.meiliSearch.deleteIndexIfExists(tenant.slug);
+    await this.meiliSearch.createIndex(tenant.slug);
 
-    const index = this.meiliSearch.index(tenant.id);
+    const index = this.meiliSearch.index(tenant.slug);
     await index.updateSettings({ filterableAttributes: this.filterables });
 
     const counts = await Promise.all(

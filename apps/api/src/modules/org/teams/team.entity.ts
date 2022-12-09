@@ -18,13 +18,15 @@ import { BaseTenantEntity } from '@common/lib/entities/base-tenant.entity';
 import { TeamKind } from '@common/lib/types/enums/team-kind.enum';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import type { BaseSearchableEntity } from '@common/lib/types/interfaces/base-searchable.interface';
+import { _slugify } from '@common/lib/utils/slugify';
 import { Role } from '@common/modules/authorization/types/role.enum';
 import { Paginated } from '@common/modules/pagination';
 import type { BaseIndex } from '@common/modules/search/indexed-entity.interface';
 import { Label } from '@modules/catalog/labels/label.entity';
 import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
 import type { User } from '@modules/uaa/users/user.entity';
-import type { Tenant } from '../tenants/tenant.entity';
+import { Tenant } from '../tenants/tenant.entity';
+import { CreateTeamDto } from './dto/create-team.dto';
 import { TeamHistory } from './histories/team-history.entity';
 import { TeamMember } from './members/team-member.entity';
 import { Social } from './socials/social.entity';
@@ -51,15 +53,28 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
   @PrimaryKey()
   id!: number;
 
-  @Field(() => TeamKind)
-  @Enum(() => TeamKind)
-  @Index()
-  kind!: TeamKind;
+  @Field()
+  @PrimaryKey()
+  @Property({ type: 'text' })
+  slug!: string;
 
   @Field()
   @Index()
   @Property({ type: 'text' })
   name!: string;
+
+  @Field(() => TeamImage, { nullable: true })
+  @ManyToOne({ type: TeamImage, cascade: [Cascade.ALL], nullable: true })
+  logo: TeamImage | null = null;
+
+  @Field(() => TeamImage, { nullable: true })
+  @ManyToOne({ type: TeamImage, cascade: [Cascade.ALL], nullable: true })
+  logoDark: TeamImage | null = null;
+
+  @Field(() => TeamKind)
+  @Enum(() => TeamKind)
+  @Index()
+  kind!: TeamKind;
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text' })
@@ -100,14 +115,6 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
 
   @Field(() => TeamImage, { nullable: true })
   @ManyToOne({ type: TeamImage, cascade: [Cascade.ALL], nullable: true })
-  logo: TeamImage | null = null;
-
-  @Field(() => TeamImage, { nullable: true })
-  @ManyToOne({ type: TeamImage, cascade: [Cascade.ALL], nullable: true })
-  logoDark: TeamImage | null = null;
-
-  @Field(() => TeamImage, { nullable: true })
-  @ManyToOne({ type: TeamImage, cascade: [Cascade.ALL], nullable: true })
   banner: TeamImage | null = null;
 
   @Field(() => [TeamMember])
@@ -125,19 +132,11 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
 
   isPublic = false;
 
-  constructor(options: {
-    name: string;
-    kind: TeamKind;
-    tenant: Tenant;
-    category: string;
-    email?: string | null;
-    status?: string | null;
-    location?: string | null;
-    presentationVideo?: string | null;
-    membershipRequestForm?: TeamForm | null;
-  }) {
+  constructor(options: CreateTeamDto, tenant: Tenant) {
+    options.slug = _slugify(options.slug ?? options.name);
+
     super();
-    this.assign(options);
+    this.assign({ ...options, tenant });
   }
 
   public async toIndexed(): Promise<BaseIndex> {

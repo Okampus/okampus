@@ -13,12 +13,10 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import { simpleImageMimeTypeRegex } from '@common/configs/mime-type';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { UploadInterceptor, UploadMultipleInterceptor } from '@common/lib/decorators/upload-interceptor.decorator';
 import { TenantImageType } from '@common/lib/types/enums/tenant-image-type.enum';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { CreateTenantDto } from '@modules/org/tenants/dto/create-tenant.dto';
-import { User } from '@modules/uaa/users/user.entity';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
 import type { CreateTenantImageDto } from './tenant-images/dto/create-tenant-image.dto';
 import { TenantImage } from './tenant-images/tenant-image.entity';
@@ -32,15 +30,14 @@ export class TenantsController {
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Tenant))
-  public async findOne(@Param('id') id: string): Promise<Tenant> {
-    return await this.tenantsService.findOne(id);
+  public async findOne(@Param('slug') slug: string): Promise<Tenant> {
+    return await this.tenantsService.findOne(slug);
   }
 
   @UploadMultipleInterceptor(['logo', 'logoDark'])
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Tenant))
   public async create(
-    @CurrentUser() user: User,
     @Body() createTenantDto: CreateTenantDto,
     @UploadedFiles() files: { logo?: MulterFile[]; logoDark?: MulterFile[] } | null,
   ): Promise<Tenant> {

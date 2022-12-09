@@ -29,12 +29,12 @@ export class TenantsService extends GlobalRequestService {
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) { super(); }
 
-  public async findBareTenant(id: string): Promise<Tenant | null> {
-    return await this.tenantRepository.findOne({ id });
+  public async findBareTenant(slug: string): Promise<Tenant | null> {
+    return await this.tenantRepository.findOne({ slug });
   }
 
-  public async findOne(id: string): Promise<Tenant> {
-    return await this.tenantRepository.findOneOrFail({ id }, { populate: this.autoGqlPopulate() });
+  public async findOne(slug: string): Promise<Tenant> {
+    return await this.tenantRepository.findOneOrFail({ slug }, { populate: this.autoGqlPopulate() });
   }
 
   public async create(
@@ -45,10 +45,10 @@ export class TenantsService extends GlobalRequestService {
     await catchUniqueViolation(this.tenantRepository, tenant);
 
     if (files?.logo?.length)
-      await this.addImage(files.logo[0], { tenantId: tenant.id, type: TenantImageType.Logo });
+      await this.addImage(files.logo[0], { tenantSlug: tenant.slug, type: TenantImageType.Logo });
 
     if (files?.logoDark?.length)
-      await this.addImage(files.logoDark[0], { tenantId: tenant.id, type: TenantImageType.Logo });
+      await this.addImage(files.logoDark[0], { tenantSlug: tenant.slug, type: TenantImageType.Logo });
 
     return tenant;
   }
@@ -84,22 +84,22 @@ export class TenantsService extends GlobalRequestService {
       tenantImage.active = true;
 
     tenant[tenantImageTypeToKey[type]] = tenantImage;
-    await this.tenantImagesService.setInactiveLastActive(tenant.id, type);
+    await this.tenantImagesService.setInactiveLastActive(tenant.slug, type);
     await this.tenantRepository.flush();
 
     return tenant;
   }
 
-  public async update(id: string, updateTenantDto: UpdateTenantDto): Promise<Tenant> {
-    const tenant = await this.tenantRepository.findOneOrFail({ id });
+  public async update(slug: string, updateTenantDto: UpdateTenantDto): Promise<Tenant> {
+    const tenant = await this.tenantRepository.findOneOrFail({ slug });
 
     wrap(tenant).assign(updateTenantDto);
     await this.tenantRepository.flush();
     return tenant;
   }
 
-  public async delete(id: string): Promise<Tenant> {
-    const tenant = await this.tenantRepository.findOneOrFail({ id });
+  public async delete(slug: string): Promise<Tenant> {
+    const tenant = await this.tenantRepository.findOneOrFail({ slug });
     await this.tenantRepository.removeAndFlush(tenant);
     return tenant;
   }

@@ -58,7 +58,7 @@ export class TeamsService extends GlobalRequestService {
   ): Promise<Team> {
     const { logo, logoDark, banner, labels, ...createTeam } = createTeamDto;
 
-    const team = new Team({ ...createTeam, tenant });
+    const team = new Team({ ...createTeam }, tenant);
     await catchUniqueViolation(this.teamRepository, team);
 
     const existingLabels = await this.teamLabelRepository.find({ name: { $in: labels } });
@@ -68,7 +68,7 @@ export class TeamsService extends GlobalRequestService {
     if (newLabels && newLabels.length > 0)
       await this.teamLabelRepository.persistAndFlush(newLabels);
 
-    team.labels.add(...existingLabels, ...newLabels ?? []);
+    team.labels.add([...existingLabels, ...newLabels ?? []]);
 
     await Promise.all([
       this.setImage(team, TeamImageType.Logo, logo ?? null),

@@ -6,7 +6,7 @@ import { BaseEntity } from './base.entity';
 
 @ObjectType()
 export abstract class BaseTenantEntity extends BaseEntity {
-  @Field(() => String)
+  @Field(() => Tenant)
   @ManyToOne({ type: Tenant })
   tenant: Tenant;
 }

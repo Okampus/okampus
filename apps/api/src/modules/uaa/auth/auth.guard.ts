@@ -110,13 +110,13 @@ export class AuthGuard implements CanActivate {
       throw new InternalServerErrorException(`Unexpected context type: ${contextType}`);
     }
 
-    const tenantId = headers[TENANT_ID_HEADER_NAME] as string | undefined;
-    if (tenantId || !isPublic) {
-      if (!tenantId)
+    const tenantSlug = headers[TENANT_ID_HEADER_NAME] as string | undefined;
+    if (tenantSlug || !isPublic) {
+      if (!tenantSlug)
         throw new UnauthorizedException('No tenant ID provided');
 
       // TODO: optimize with caching for tenant
-      globalRequestContext.tenant = await this.tenantsService.findBareTenant(tenantId);
+      globalRequestContext.tenant = await this.tenantsService.findBareTenant(tenantSlug);
       if (!globalRequestContext.tenant)
         throw new UnauthorizedException('Tenant does not exist');
     }

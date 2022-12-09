@@ -1,10 +1,10 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import slugify from 'slugify';
 import type { ContentListOptionsDto } from '@common/lib/dto/list-options.dto';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { assertPermissions } from '@common/lib/utils/assert-permission';
+import { _slugify } from '@common/lib/utils/slugify';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedNodes } from '@common/modules/pagination';
@@ -31,7 +31,7 @@ export class BlogsService {
     const blog = new Blog({
       ...createBlogDto,
       post,
-      slug: slugify(createBlogDto.slug ?? createBlogDto.title),
+      slug: _slugify(createBlogDto.slug ?? createBlogDto.title),
       location: createBlogDto?.location?.split(',').map(Number) as
         | [lat: number, lon: number]
         | undefined,

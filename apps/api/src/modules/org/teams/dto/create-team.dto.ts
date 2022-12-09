@@ -10,6 +10,11 @@ import { TeamKind } from '@common/lib/types/enums/team-kind.enum';
 // TODO: no TeamImage on create
 @InputType()
 export class CreateTeamDto {
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  slug?: string;
+
   @Field()
   @IsString()
   name: string;

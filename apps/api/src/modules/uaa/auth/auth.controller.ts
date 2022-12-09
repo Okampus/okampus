@@ -57,7 +57,7 @@ export class AuthController {
   @CheckPolicies(ability => ability.can(Action.Create, User))
   @Post('pre-register-sso')
   public async preRegisterSso(@Body() dto: PreRegisterSsoDto, @CurrentTenant() tenant: Tenant): Promise<User> {
-    return await this.authService.createOrUpdate(dto, tenant.id);
+    return await this.authService.createOrUpdate(dto, tenant.slug);
   }
 
   @Public()

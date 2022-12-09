@@ -3,6 +3,7 @@ import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
 import { config } from '@common/configs/config';
 import { BaseRepository } from '@common/lib/orm/base.repository';
+import { _slugify } from '@common/lib/utils/slugify';
 import { Role } from '@common/modules/authorization/types/role.enum';
 import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
@@ -47,10 +48,10 @@ export class UsersModule implements OnModuleInit {
   ) {}
 
   public async onModuleInit(): Promise<void> {
-    let tenant = await this.tenantsService.findBareTenant(config.baseTenant.id);
+    let tenant = await this.tenantsService.findBareTenant(_slugify(config.baseTenant.name));
     if (!tenant) {
       tenant = await this.tenantsService.create({
-        id: config.baseTenant.id,
+        name: config.baseTenant.name,
         oidcEnabled: config.baseTenant.oidc.enabled,
         oidcClientId: config.baseTenant.oidc.clientId,
         oidcClientSecret: config.baseTenant.oidc.clientSecret,

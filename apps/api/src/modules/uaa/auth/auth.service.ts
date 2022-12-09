@@ -53,7 +53,7 @@ export class AuthService extends GlobalRequestService {
     // Must be passed as Authorization header in the frontend
     const maxAge = config.tokens.expiration.access * 1000;
     const meiliSearchKey = await this.meiliSearch.createKey({
-      indexes: [this.currentTenant().id],
+      indexes: [this.currentTenant().slug],
       actions: ['search'],
       expiresAt: new Date(Date.now() + maxAge),
     });

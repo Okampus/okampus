@@ -11,12 +11,12 @@ import { TenantUserDto } from './dto/tenant-user.dto';
 
 export function tenantStrategyFactory(
   authServiceInstance: AuthService,
-  tenantId: string,
+  tenantSlug: string,
   // eslint-disable-next-line @typescript-eslint/naming-convention
   paramsOptions: { redirect_uri: string; scope: string },
   oidcClient: Client,
 ): Strategy<User> {
-  const TenantStrategy = class extends PassportStrategy(Strategy, tenantId) {
+  const TenantStrategy = class extends PassportStrategy(Strategy, tenantSlug) {
     private readonly client: BaseClient;
 
     constructor(
@@ -41,7 +41,7 @@ export function tenantStrategyFactory(
 
       const userInfo = new TenantUserDto(data);
 
-      return await this.authService.createOrUpdate(userInfo, tenantId);
+      return await this.authService.createOrUpdate(userInfo, tenantSlug);
     }
   };
 

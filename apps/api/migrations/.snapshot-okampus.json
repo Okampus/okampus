@@ -1269,8 +1269,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "tenant_id": {
-          "name": "tenant_id",
+        "tenant_slug": {
+          "name": "tenant_slug",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -1294,6 +1294,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         },
         "name": {
@@ -1365,6 +1366,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "integer"
         },
         "avatar_id": {
@@ -1484,14 +1486,14 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "user_tenant_id_foreign": {
-          "constraintName": "user_tenant_id_foreign",
+        "user_tenant_slug_foreign": {
+          "constraintName": "user_tenant_slug_foreign",
           "columnNames": [
-            "tenant_id"
+            "tenant_slug"
           ],
           "localTableName": "public.user",
           "referencedColumnNames": [
-            "id"
+            "slug"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
@@ -1555,8 +1557,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "tenant_id": {
-          "name": "tenant_id",
+        "tenant_slug": {
+          "name": "tenant_slug",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -1650,14 +1652,14 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "user_image_tenant_id_foreign": {
-          "constraintName": "user_image_tenant_id_foreign",
+        "user_image_tenant_slug_foreign": {
+          "constraintName": "user_image_tenant_slug_foreign",
           "columnNames": [
-            "tenant_id"
+            "tenant_slug"
           ],
           "localTableName": "public.user_image",
           "referencedColumnNames": [
-            "id"
+            "slug"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
@@ -2371,8 +2373,8 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
+        "slug": {
+          "name": "slug",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -2399,6 +2401,15 @@
           "nullable": false,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
         },
         "event_approval_form": {
           "name": "event_approval_form",
@@ -2495,9 +2506,18 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": [
+            "name"
+          ],
+          "composite": false,
+          "keyName": "tenant_name_index",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "tenant_pkey",
           "columnNames": [
-            "id"
+            "slug"
           ],
           "composite": false,
           "primary": true,
@@ -2565,8 +2585,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "tenant_id": {
-          "name": "tenant_id",
+        "tenant_slug": {
+          "name": "tenant_slug",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -2651,14 +2671,14 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "tenant_image_tenant_id_foreign": {
-          "constraintName": "tenant_image_tenant_id_foreign",
+        "tenant_image_tenant_slug_foreign": {
+          "constraintName": "tenant_image_tenant_slug_foreign",
           "columnNames": [
-            "tenant_id"
+            "tenant_slug"
           ],
           "localTableName": "public.tenant_image",
           "referencedColumnNames": [
-            "id"
+            "slug"
           ],
           "referencedTableName": "public.tenant",
           "deleteRule": "CASCADE",
@@ -2710,8 +2730,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "tenant_id": {
-          "name": "tenant_id",
+        "tenant_slug": {
+          "name": "tenant_slug",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -2765,14 +2785,14 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "approval_step_tenant_id_foreign": {
-          "constraintName": "approval_step_tenant_id_foreign",
+        "approval_step_tenant_slug_foreign": {
+          "constraintName": "approval_step_tenant_slug_foreign",
           "columnNames": [
-            "tenant_id"
+            "tenant_slug"
           ],
           "localTableName": "public.approval_step",
           "referencedColumnNames": [
-            "id"
+            "slug"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
@@ -2783,12 +2803,21 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "slug": {
+          "name": "slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         },
         "created_at": {
           "name": "created_at",
@@ -2810,13 +2839,40 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "tenant_id": {
-          "name": "tenant_id",
+        "tenant_slug": {
+          "name": "tenant_slug",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "string"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "logo_id": {
+          "name": "logo_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "logo_dark_id": {
+          "name": "logo_dark_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "kind": {
@@ -2831,15 +2887,6 @@
             "Club"
           ],
           "mappedType": "enum"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
         },
         "short_description": {
           "name": "short_description",
@@ -2895,24 +2942,6 @@
           "nullable": true,
           "mappedType": "string"
         },
-        "logo_id": {
-          "name": "logo_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "logo_dark_id": {
-          "name": "logo_dark_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
         "banner_id": {
           "name": "banner_id",
           "type": "varchar(255)",
@@ -2946,19 +2975,19 @@
       "indexes": [
         {
           "columnNames": [
-            "kind"
+            "name"
           ],
           "composite": false,
-          "keyName": "team_kind_index",
+          "keyName": "team_name_index",
           "primary": false,
           "unique": false
         },
         {
           "columnNames": [
-            "name"
+            "kind"
           ],
           "composite": false,
-          "keyName": "team_name_index",
+          "keyName": "team_kind_index",
           "primary": false,
           "unique": false
         },
@@ -2974,23 +3003,24 @@
         {
           "keyName": "team_pkey",
           "columnNames": [
-            "id"
+            "id",
+            "slug"
           ],
-          "composite": false,
+          "composite": true,
           "primary": true,
           "unique": true
         }
       ],
       "checks": [],
       "foreignKeys": {
-        "team_tenant_id_foreign": {
-          "constraintName": "team_tenant_id_foreign",
+        "team_tenant_slug_foreign": {
+          "constraintName": "team_tenant_slug_foreign",
           "columnNames": [
-            "tenant_id"
+            "tenant_slug"
           ],
           "localTableName": "public.team",
           "referencedColumnNames": [
-            "id"
+            "slug"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
@@ -3079,8 +3109,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "tenant_id": {
-          "name": "tenant_id",
+        "tenant_slug": {
+          "name": "tenant_slug",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -3124,6 +3154,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         },
         "description": {
           "name": "description",
@@ -3222,14 +3261,14 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "team_receipt_tenant_id_foreign": {
-          "constraintName": "team_receipt_tenant_id_foreign",
+        "team_receipt_tenant_slug_foreign": {
+          "constraintName": "team_receipt_tenant_slug_foreign",
           "columnNames": [
-            "tenant_id"
+            "tenant_slug"
           ],
           "localTableName": "public.team_receipt",
           "referencedColumnNames": [
-            "id"
+            "slug"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
@@ -3247,14 +3286,16 @@
           "deleteRule": "CASCADE",
           "updateRule": "cascade"
         },
-        "team_receipt_team_id_foreign": {
-          "constraintName": "team_receipt_team_id_foreign",
+        "team_receipt_team_id_team_slug_foreign": {
+          "constraintName": "team_receipt_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.team_receipt",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "updateRule": "cascade"
@@ -3322,6 +3363,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         },
         "role": {
           "name": "role",
@@ -3400,11 +3450,12 @@
           "unique": false
         },
         {
+          "keyName": "team_member_team_id_team_slug_index",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
-          "composite": false,
-          "keyName": "team_member_team_id_index",
+          "composite": true,
           "primary": false,
           "unique": false
         },
@@ -3433,14 +3484,16 @@
           "deleteRule": "CASCADE",
           "updateRule": "cascade"
         },
-        "team_member_team_id_foreign": {
-          "constraintName": "team_member_team_id_foreign",
+        "team_member_team_id_team_slug_foreign": {
+          "constraintName": "team_member_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.team_member",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "deleteRule": "CASCADE",
@@ -3479,8 +3532,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "tenant_id": {
-          "name": "tenant_id",
+        "tenant_slug": {
+          "name": "tenant_slug",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -3524,6 +3577,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         },
         "type": {
           "name": "type",
@@ -3576,14 +3638,14 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "team_image_tenant_id_foreign": {
-          "constraintName": "team_image_tenant_id_foreign",
+        "team_image_tenant_slug_foreign": {
+          "constraintName": "team_image_tenant_slug_foreign",
           "columnNames": [
-            "tenant_id"
+            "tenant_slug"
           ],
           "localTableName": "public.team_image",
           "referencedColumnNames": [
-            "id"
+            "slug"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
@@ -3601,14 +3663,16 @@
           "deleteRule": "CASCADE",
           "updateRule": "cascade"
         },
-        "team_image_team_id_foreign": {
-          "constraintName": "team_image_team_id_foreign",
+        "team_image_team_id_team_slug_foreign": {
+          "constraintName": "team_image_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.team_image",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "deleteRule": "CASCADE",
@@ -3692,6 +3756,15 @@
           "nullable": true,
           "mappedType": "integer"
         },
+        "parent_slug": {
+          "name": "parent_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
         "team_id": {
           "name": "team_id",
           "type": "int",
@@ -3700,6 +3773,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         },
         "state": {
           "name": "state",
@@ -3735,27 +3817,31 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "team_history_parent_id_foreign": {
-          "constraintName": "team_history_parent_id_foreign",
+        "team_history_parent_id_parent_slug_foreign": {
+          "constraintName": "team_history_parent_id_parent_slug_foreign",
           "columnNames": [
-            "parent_id"
+            "parent_id",
+            "parent_slug"
           ],
           "localTableName": "public.team_history",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "team_history_team_id_foreign": {
-          "constraintName": "team_history_team_id_foreign",
+        "team_history_team_id_team_slug_foreign": {
+          "constraintName": "team_history_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.team_history",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "updateRule": "cascade"
@@ -3853,6 +3939,15 @@
           "nullable": false,
           "mappedType": "integer"
         },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "is_template": {
           "name": "is_template",
           "type": "boolean",
@@ -3867,11 +3962,12 @@
       "schema": "public",
       "indexes": [
         {
+          "keyName": "team_form_team_id_team_slug_index",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
-          "composite": false,
-          "keyName": "team_form_team_id_index",
+          "composite": true,
           "primary": false,
           "unique": false
         },
@@ -3899,14 +3995,16 @@
           "referencedTableName": "public.user",
           "updateRule": "cascade"
         },
-        "team_form_team_id_foreign": {
-          "constraintName": "team_form_team_id_foreign",
+        "team_form_team_id_team_slug_foreign": {
+          "constraintName": "team_form_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.team_form",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "deleteRule": "CASCADE",
@@ -3953,6 +4051,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         },
         "user_id": {
           "name": "user_id",
@@ -4068,15 +4175,6 @@
       "indexes": [
         {
           "columnNames": [
-            "team_id"
-          ],
-          "composite": false,
-          "keyName": "team_membership_request_team_id_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
             "user_id"
           ],
           "composite": false,
@@ -4094,6 +4192,16 @@
           "unique": false
         },
         {
+          "keyName": "team_membership_request_team_id_team_slug_index",
+          "columnNames": [
+            "team_id",
+            "team_slug"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "team_membership_request_pkey",
           "columnNames": [
             "id"
@@ -4105,14 +4213,16 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "team_membership_request_team_id_foreign": {
-          "constraintName": "team_membership_request_team_id_foreign",
+        "team_membership_request_team_id_team_slug_foreign": {
+          "constraintName": "team_membership_request_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.team_membership_request",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "deleteRule": "CASCADE",
@@ -4183,6 +4293,15 @@
           "nullable": false,
           "mappedType": "integer"
         },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "label_id": {
           "name": "label_id",
           "type": "varchar(255)",
@@ -4200,6 +4319,7 @@
           "keyName": "team_labels_pkey",
           "columnNames": [
             "team_id",
+            "team_slug",
             "label_id"
           ],
           "composite": true,
@@ -4209,14 +4329,16 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "team_labels_team_id_foreign": {
-          "constraintName": "team_labels_team_id_foreign",
+        "team_labels_team_id_team_slug_foreign": {
+          "constraintName": "team_labels_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.team_labels",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "deleteRule": "cascade",
@@ -4320,6 +4442,15 @@
           "primary": false,
           "nullable": true,
           "mappedType": "integer"
+        },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
         }
       },
       "name": "social",
@@ -4335,11 +4466,12 @@
           "unique": false
         },
         {
+          "keyName": "social_team_id_team_slug_index",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
-          "composite": false,
-          "keyName": "social_team_id_index",
+          "composite": true,
           "primary": false,
           "unique": false
         },
@@ -4368,14 +4500,16 @@
           "deleteRule": "CASCADE",
           "updateRule": "cascade"
         },
-        "social_team_id_foreign": {
-          "constraintName": "social_team_id_foreign",
+        "social_team_id_team_slug_foreign": {
+          "constraintName": "social_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.social",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "deleteRule": "CASCADE",
@@ -4441,6 +4575,15 @@
           "nullable": false,
           "mappedType": "integer"
         },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "user_id": {
           "name": "user_id",
           "type": "varchar(255)",
@@ -4455,9 +4598,10 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "interest_team_id_user_id_unique",
+          "keyName": "interest_team_id_team_slug_user_id_unique",
           "columnNames": [
             "team_id",
+            "team_slug",
             "user_id"
           ],
           "composite": true,
@@ -4476,14 +4620,16 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "interest_team_id_foreign": {
-          "constraintName": "interest_team_id_foreign",
+        "interest_team_id_team_slug_foreign": {
+          "constraintName": "interest_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.interest",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "updateRule": "cascade"
@@ -4533,8 +4679,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "tenant_id": {
-          "name": "tenant_id",
+        "tenant_slug": {
+          "name": "tenant_slug",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -4578,6 +4724,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         },
         "type": {
           "name": "type",
@@ -4639,14 +4794,14 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "team_file_tenant_id_foreign": {
-          "constraintName": "team_file_tenant_id_foreign",
+        "team_file_tenant_slug_foreign": {
+          "constraintName": "team_file_tenant_slug_foreign",
           "columnNames": [
-            "tenant_id"
+            "tenant_slug"
           ],
           "localTableName": "public.team_file",
           "referencedColumnNames": [
-            "id"
+            "slug"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
@@ -4664,14 +4819,16 @@
           "deleteRule": "CASCADE",
           "updateRule": "cascade"
         },
-        "team_file_team_id_foreign": {
-          "constraintName": "team_file_team_id_foreign",
+        "team_file_team_id_team_slug_foreign": {
+          "constraintName": "team_file_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.team_file",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "updateRule": "cascade"
@@ -4709,8 +4866,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "tenant_id": {
-          "name": "tenant_id",
+        "tenant_slug": {
+          "name": "tenant_slug",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -4839,14 +4996,14 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "study_doc_tenant_id_foreign": {
-          "constraintName": "study_doc_tenant_id_foreign",
+        "study_doc_tenant_slug_foreign": {
+          "constraintName": "study_doc_tenant_slug_foreign",
           "columnNames": [
-            "tenant_id"
+            "tenant_slug"
           ],
           "localTableName": "public.study_doc",
           "referencedColumnNames": [
-            "id"
+            "slug"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
@@ -4922,8 +5079,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "tenant_id": {
-          "name": "tenant_id",
+        "tenant_slug": {
+          "name": "tenant_slug",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -5029,14 +5186,14 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "info_doc_tenant_id_foreign": {
-          "constraintName": "info_doc_tenant_id_foreign",
+        "info_doc_tenant_slug_foreign": {
+          "constraintName": "info_doc_tenant_slug_foreign",
           "columnNames": [
-            "tenant_id"
+            "tenant_slug"
           ],
           "localTableName": "public.info_doc",
           "referencedColumnNames": [
-            "id"
+            "slug"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
@@ -5177,6 +5334,15 @@
           "nullable": false,
           "mappedType": "integer"
         },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "location": {
           "name": "location",
           "type": "text",
@@ -5271,15 +5437,6 @@
       "indexes": [
         {
           "columnNames": [
-            "team_id"
-          ],
-          "composite": false,
-          "keyName": "event_team_id_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
             "private"
           ],
           "composite": false,
@@ -5295,6 +5452,16 @@
           "keyName": "event_registration_form_id_unique",
           "primary": false,
           "unique": true
+        },
+        {
+          "keyName": "event_team_id_team_slug_index",
+          "columnNames": [
+            "team_id",
+            "team_slug"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": false
         },
         {
           "keyName": "event_pkey",
@@ -5320,14 +5487,16 @@
           "referencedTableName": "public.user",
           "updateRule": "cascade"
         },
-        "event_team_id_foreign": {
-          "constraintName": "event_team_id_foreign",
+        "event_team_id_team_slug_foreign": {
+          "constraintName": "event_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.event",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "deleteRule": "CASCADE",
@@ -5418,8 +5587,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "tenant_id": {
-          "name": "tenant_id",
+        "tenant_slug": {
+          "name": "tenant_slug",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -5463,6 +5632,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         },
         "event_id": {
           "name": "event_id",
@@ -5516,14 +5694,14 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "team_gallery_tenant_id_foreign": {
-          "constraintName": "team_gallery_tenant_id_foreign",
+        "team_gallery_tenant_slug_foreign": {
+          "constraintName": "team_gallery_tenant_slug_foreign",
           "columnNames": [
-            "tenant_id"
+            "tenant_slug"
           ],
           "localTableName": "public.team_gallery",
           "referencedColumnNames": [
-            "id"
+            "slug"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
@@ -5541,14 +5719,16 @@
           "deleteRule": "CASCADE",
           "updateRule": "cascade"
         },
-        "team_gallery_team_id_foreign": {
-          "constraintName": "team_gallery_team_id_foreign",
+        "team_gallery_team_id_team_slug_foreign": {
+          "constraintName": "team_gallery_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.team_gallery",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "updateRule": "cascade"
@@ -5634,6 +5814,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         },
         "due_to_id": {
           "name": "due_to_id",
@@ -5729,21 +5918,22 @@
       "indexes": [
         {
           "columnNames": [
-            "team_id"
-          ],
-          "composite": false,
-          "keyName": "team_finance_team_id_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
             "receipt_id"
           ],
           "composite": false,
           "keyName": "team_finance_receipt_id_unique",
           "primary": false,
           "unique": true
+        },
+        {
+          "keyName": "team_finance_team_id_team_slug_index",
+          "columnNames": [
+            "team_id",
+            "team_slug"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": false
         },
         {
           "keyName": "team_finance_pkey",
@@ -5769,14 +5959,16 @@
           "referencedTableName": "public.user",
           "updateRule": "cascade"
         },
-        "team_finance_team_id_foreign": {
-          "constraintName": "team_finance_team_id_foreign",
+        "team_finance_team_id_team_slug_foreign": {
+          "constraintName": "team_finance_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.team_finance",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "deleteRule": "CASCADE",
@@ -8177,6 +8369,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "team_slug": {
+          "name": "team_slug",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         }
       },
       "name": "content_master_assigned_teams",
@@ -8186,7 +8387,8 @@
           "keyName": "content_master_assigned_teams_pkey",
           "columnNames": [
             "content_master_id",
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "composite": true,
           "primary": true,
@@ -8208,14 +8410,16 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "content_master_assigned_teams_team_id_foreign": {
-          "constraintName": "content_master_assigned_teams_team_id_foreign",
+        "content_master_assigned_teams_team_id_team_slug_foreign": {
+          "constraintName": "content_master_assigned_teams_team_id_team_slug_foreign",
           "columnNames": [
-            "team_id"
+            "team_id",
+            "team_slug"
           ],
           "localTableName": "public.content_master_assigned_teams",
           "referencedColumnNames": [
-            "id"
+            "id",
+            "slug"
           ],
           "referencedTableName": "public.team",
           "deleteRule": "cascade",
@@ -8254,8 +8458,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "tenant_id": {
-          "name": "tenant_id",
+        "tenant_slug": {
+          "name": "tenant_slug",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -8325,14 +8529,14 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "attachment_tenant_id_foreign": {
-          "constraintName": "attachment_tenant_id_foreign",
+        "attachment_tenant_slug_foreign": {
+          "constraintName": "attachment_tenant_slug_foreign",
           "columnNames": [
-            "tenant_id"
+            "tenant_slug"
           ],
           "localTableName": "public.attachment",
           "referencedColumnNames": [
-            "id"
+            "slug"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"

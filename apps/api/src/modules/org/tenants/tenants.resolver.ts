@@ -8,12 +8,10 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { Public } from '@common/lib/decorators/public.decorator';
 import { BaseRepository } from '@common/lib/orm/base.repository';
 import { TenantImageType } from '@common/lib/types/enums/tenant-image-type.enum';
 import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
 import { User } from '@modules/uaa/users/user.entity';
-import { OIDCEnabled } from '../../../common/lib/types/models/oidc-enabled.model';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
 import { TenantImage } from './tenant-images/tenant-image.entity';
 import { TenantImagesService } from './tenant-images/tenant-images.service';
@@ -34,6 +32,7 @@ export class TenantsResolver {
     return await this.tenantsService.findOne(id);
   }
 
+
   @Mutation(() => Tenant)
   public async updateTenant(
     @Args('id') id: string,
@@ -50,30 +49,24 @@ export class TenantsResolver {
     return await this.approvalStepRepository.find({ users: { id: user.id }, tenant });
   }
 
+  // TODO: Create a public endpoint for getting tenant metadata
   @Query(() => [TenantImage], { nullable: 'items' })
-  public async getLogos(@Args('id') id: string): Promise<Array<TenantImage | null>> {
+  public async getLogos(@Args('slug') slug: string): Promise<Array<TenantImage | null>> {
     return Promise.all([
-      this.tenantImagesService.findLastActive(id, TenantImageType.Logo),
-      this.tenantImagesService.findLastActive(id, TenantImageType.LogoDark),
+      this.tenantImagesService.findLastActive(slug, TenantImageType.Logo),
+      this.tenantImagesService.findLastActive(slug, TenantImageType.LogoDark),
     ]);
   }
 
-  @Public()
-  @Query(() => OIDCEnabled)
-  public async oidcEnabled(@Args('id') id: string): Promise<OIDCEnabled> {
-    const tenant = await this.tenantsService.findOne(id);
-    return { id: tenant.id, tenantOidcName: tenant.tenantOidcName, isEnabled: tenant.oidcEnabled };
-  }
-
   @Mutation(() => Tenant)
-  public async unsetLogo(@Args('id') id: string): Promise<Tenant> {
-    const tenant = await this.tenantsService.findOne(id);
+  public async unsetLogo(@Args('slug') slug: string): Promise<Tenant> {
+    const tenant = await this.tenantsService.findOne(slug);
     return await this.tenantsService.setImage(tenant, TenantImageType.Logo, null);
   }
 
   @Mutation(() => Tenant)
-  public async unsetLogoDark(@Args('id') id: string): Promise<Tenant> {
-    const tenant = await this.tenantsService.findOne(id);
+  public async unsetLogoDark(@Args('slug') slug: string): Promise<Tenant> {
+    const tenant = await this.tenantsService.findOne(slug);
     return await this.tenantsService.setImage(tenant, TenantImageType.LogoDark, null);
   }
 }

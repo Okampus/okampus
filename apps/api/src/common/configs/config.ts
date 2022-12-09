@@ -43,7 +43,7 @@ export const config = {
       : `https://${frontendOriginUrl}`,
   },
   baseTenant: {
-    id: process.env.BASE_TENANT_ID ?? 'demo-tenant',
+    name: process.env.BASE_TENANT_ID ?? 'demo-tenant',
     oidc: {
       enabled: parseEnvBoolean(process.env.BASE_TENANT_OIDC_ENABLED, false),
       clientId: process.env.BASE_TENANT_OIDC_CLIENT_ID ?? 'your_oidc_client_id',

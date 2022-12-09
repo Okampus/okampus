@@ -84,7 +84,9 @@ enum TenantImageType {
 type Tenant {
   createdAt: DateTime!
   updatedAt: DateTime!
-  id: String!
+  id: Int!
+  slug: String!
+  name: String!
   approvalSteps: [ApprovalStep!]!
   eventApprovalForm: JSON
   logo: TenantImage
@@ -258,8 +260,11 @@ type Team {
   updatedAt: DateTime!
   tenant: String!
   id: Int!
-  kind: TeamKind!
+  slug: String!
   name: String!
+  logo: TeamImage
+  logoDark: TeamImage
+  kind: TeamKind!
   shortDescription: String
   longDescription: String
   category: String!
@@ -269,8 +274,6 @@ type Team {
   socials: [Social!]!
   status: String
   presentationVideo: String
-  logo: TeamImage
-  logoDark: TeamImage
   banner: TeamImage
   members: [TeamMember!]!
   activeMemberCount: Int!
@@ -998,12 +1001,6 @@ enum MetricName {
   UserCount
 }
 
-type OIDCEnabled {
-  id: String!
-  isEnabled: Boolean!
-  tenantOidcName: String
-}
-
 type IndexedUser {
   id: String!
   realId: String!
@@ -1086,8 +1083,7 @@ type Query {
   interestById(id: Int!): Interest!
   interests: PaginatedInterest!
   tenantById(id: String!): Tenant!
-  getLogos(id: String!): [TenantImage]!
-  oidcEnabled(id: String!): OIDCEnabled!
+  getLogos(slug: String!): [TenantImage]!
   contentById(id: Int!): Content
   schoolYearById(id: String!): SchoolYear!
   schoolYears(pagination: PaginationOptions!): PaginatedSchoolYear!
@@ -1099,7 +1095,7 @@ type Query {
   tagById(id: String!): Tag!
   teamById(id: Int!): Team
   clubById(id: Int!): Team
-  teams(filters: TeamsFilterDto): PaginatedTeam!
+  teams(query: PaginationOptions, filters: TeamsFilterDto): PaginatedTeam!
   clubs: PaginatedTeam!
   teamFormById(id: Int!): TeamForm!
   eventRegistrationById(id: Int!): EventRegistration
@@ -1252,7 +1248,8 @@ input UpdateInterestDto {
 }
 
 input UpdateTenantDto {
-  id: String
+  slug: String
+  name: String
   eventValidationForm: JSON
   logo: String
   logoDark: String
@@ -1267,7 +1264,7 @@ input UpdateTenantDto {
 
 input CreateContentWithKindDto {
   body: String!
-  isAnonymous: Boolean = false
+  isAnonymous: Boolean! = false
   contentKind: ContentKind!
   parentId: Int!
 }
@@ -1407,7 +1404,7 @@ input CreateEventDto {
   location: String!
   price: Float!
   supervisorId: String!
-  private: Boolean = false
+  private: Boolean! = false
   state: EventState!
   formId: Int
   templateId: Int
@@ -1502,7 +1499,7 @@ input UpdateApprovalStepDto {
 
 input CreateThreadDto {
   body: String!
-  isAnonymous: Boolean = false
+  isAnonymous: Boolean! = false
   assignedTeams: [Int!]
   assignedUsers: [String!]
   tags: [String!]

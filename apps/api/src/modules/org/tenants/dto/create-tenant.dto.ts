@@ -8,7 +8,11 @@ export class CreateTenantDto {
   @Field()
   @IsOptional()
   @IsString()
-  id: string;
+  slug?: string;
+
+  @Field()
+  @IsString()
+  name: string;
 
   @Field(() => GraphQLJSON, { nullable: true })
   @IsOptional()
