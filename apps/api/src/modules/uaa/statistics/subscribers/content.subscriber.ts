@@ -2,7 +2,7 @@ import { EntityManager } from '@mikro-orm/core';
 import type { EntityName, EventArgs, EventSubscriber } from '@mikro-orm/core';
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Content } from '@modules/create/contents/entities/content.entity';
+import { Content } from '@create/contents/entities/content.entity';
 
 @Injectable()
 export class ContentSubscriber implements EventSubscriber<Content> {

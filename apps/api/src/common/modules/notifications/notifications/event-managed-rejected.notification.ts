@@ -1,7 +1,7 @@
 import type { ITriggerPayload } from '@novu/node';
-import { Event } from '@modules/plan/events/event.entity';
-import type { User } from '@modules/uaa/users/user.entity';
-import { NotificationType } from '../notification-type.enum';
+import { NotificationType } from '@common/modules/notifications/notification-type.enum';
+import { Event } from '@plan/events/event.entity';
+import type { User } from '@uaa/users/user.entity';
 import { Notification } from './base.notification';
 
 export class EventManagedRejectedNotification extends Notification {

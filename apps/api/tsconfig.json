@@ -13,7 +13,21 @@
     "outDir": "./dist",
     "paths": {
       "@common/*": ["src/common/*"],
-      "@modules/*": ["src/modules/*"]
+      "@lib/*": ["src/common/lib/*"],
+      "@configs/*": ["src/common/configs/*"],
+
+      "@modules/*": ["src/modules/*"],
+      "@catalog/*": ["src/modules/catalog/*"],
+      "@create/*": ["src/modules/create/*"],
+      "@interact/*": ["src/modules/interact/*"],
+      "@org/*": ["src/modules/org/*"],
+      "@canteens/*": ["src/modules/org/canteens/*"],
+      "@classes/*": ["src/modules/org/classes/*"],
+      "@teams/*": ["src/modules/org/teams/*"],
+      "@tenants/*": ["src/modules/org/tenants/*"],
+      "@plan/*": ["src/modules/plan/*"],
+      "@uaa/*": ["src/modules/uaa/*"],
+      "@upload/*": ["src/modules/upload/*"]
     },
     "pretty": false,
     "removeComments": true,

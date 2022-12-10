@@ -1,7 +1,7 @@
 import type { QueryOrder } from '@mikro-orm/core';
 import { BadRequestException } from '@nestjs/common';
-import { GqlCursorTypes } from '../types/enums/gql-cursor-types';
-import type { CursorColumnTypes } from '../types/interfaces/cursor-columns.interface';
+import { GqlCursorTypes } from '@lib/types/enums/gql-cursor-types';
+import type { CursorColumnTypes } from '@lib/types/interfaces/cursor-columns.interface';
 
 const COL_SEPARATOR = ':';
 const METADATA_SEPARATOR = '.';

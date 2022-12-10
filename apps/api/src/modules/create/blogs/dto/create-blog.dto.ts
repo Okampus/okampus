@@ -6,8 +6,8 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import { CreateOrphanContentDto } from '@modules/create/contents/dto/create-orphan-content.dto';
-import { TagsDto } from '../../threads/dto/tags.dto';
+import { CreateOrphanContentDto } from '@create/contents/dto/create-orphan-content.dto';
+import { TagsDto } from '@create/threads/dto/tags.dto';
 
 export class CreateBlogDto extends IntersectionType(TagsDto, CreateOrphanContentDto) {
   @Length(15, 100)

@@ -7,7 +7,7 @@ import {
   Length,
   Min,
 } from 'class-validator';
-import { ApprovalStepType } from '@common/lib/types/enums/approval-step-type.enum';
+import { ApprovalStepType } from '@lib/types/enums/approval-step-type.enum';
 
 @InputType()
 export class ApprovalStepDto {

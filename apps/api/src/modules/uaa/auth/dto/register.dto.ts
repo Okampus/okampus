@@ -8,9 +8,9 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { colorStringTransform } from '@common/lib/utils/color-string-transform';
 import { Role } from '@common/modules/authorization/types/role.enum';
 import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
+import { colorStringTransform } from '@lib/utils/color-string-transform';
 
 // TODO: no UserImage on create
 @InputType()

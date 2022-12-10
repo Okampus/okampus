@@ -5,7 +5,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { InterestState } from '@common/lib/types/enums/interest-state.enum';
+import { InterestState } from '@lib/types/enums/interest-state.enum';
 
 @InputType()
 export class CreateInterestDto {

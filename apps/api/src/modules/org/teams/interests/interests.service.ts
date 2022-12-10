@@ -1,11 +1,11 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import pointsConfig from '@common/configs/points.config';
-import { BaseRepository } from '@common/lib/orm/base.repository';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import type { CreateInterestDto } from '@modules/org/teams/interests/dto/create-interest.dto';
-import { User } from '@modules/uaa/users/user.entity';
-import { Team } from '../team.entity';
+import pointsConfig from '@configs/points.config';
+import { BaseRepository } from '@lib/orm/base.repository';
+import type { CreateInterestDto } from '@teams/interests/dto/create-interest.dto';
+import { Team } from '@teams/team.entity';
+import { User } from '@uaa/users/user.entity';
 import type { UpdateInterestDto } from './dto/update-interest.dto';
 import { Interest } from './interest.entity';
 

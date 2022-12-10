@@ -1,9 +1,6 @@
 import type { FilterQuery } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { ApprovalStepType } from '@common/lib/types/enums/approval-step-type.enum';
-import { EventState } from '@common/lib/types/enums/event-state.enum';
 import {
   AdminEventValidationApprovedNotification,
   AdminEventValidationRejectedNotification,
@@ -13,11 +10,14 @@ import {
 } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
-import type { Tenant } from '@modules/org/tenants/tenant.entity';
-import type { CreateEventApprovalDto } from '@modules/plan/approvals/dto/create-approval.dto';
-import type { User } from '@modules/uaa/users/user.entity';
-import { Event } from '../events/event.entity';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { ApprovalStepType } from '@lib/types/enums/approval-step-type.enum';
+import { EventState } from '@lib/types/enums/event-state.enum';
+import type { CreateEventApprovalDto } from '@plan/approvals/dto/create-approval.dto';
+import { Event } from '@plan/events/event.entity';
+import { ApprovalStep } from '@tenants/approval-steps/approval-step.entity';
+import type { Tenant } from '@tenants/tenant.entity';
+import type { User } from '@uaa/users/user.entity';
 import { EventApproval } from './approval.entity';
 import type { ListEventApprovalsDto } from './dto/list-approvals.dto';
 

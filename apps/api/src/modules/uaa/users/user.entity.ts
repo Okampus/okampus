@@ -18,31 +18,30 @@ import { Factory } from '@mikro-orm/seeder';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
-
-import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
-import { BaseTenantEntity } from '@common/lib/entities/base-tenant.entity';
-import type { BaseSearchableEntity } from '@common/lib/types/interfaces/base-searchable.interface';
-import type { UserCreationOptions } from '@common/lib/types/interfaces/user-creation-options.interface';
-import { _slugify } from '@common/lib/utils/slugify';
+import { ClassMembership } from '@classes/memberships/class-membership.entity';
 import { Role } from '@common/modules/authorization/types/role.enum';
 import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
 import { Paginated } from '@common/modules/pagination';
 import type { BaseIndex } from '@common/modules/search/indexed-entity.interface';
-import type { Favorite } from '@modules/interact/favorites/favorite.entity';
-import type { Reaction } from '@modules/interact/reactions/reaction.entity';
-import type { Report } from '@modules/interact/reports/report.entity';
-import type { Vote } from '@modules/interact/votes/vote.entity';
-import { ClassMembership } from '@modules/org/classes/memberships/class-membership.entity';
-import { Interest } from '@modules/org/teams/interests/interest.entity';
-import { TeamMember } from '@modules/org/teams/members/team-member.entity';
-import { TeamMembershipRequest } from '@modules/org/teams/requests/team-membership-request.entity';
-import { Tenant } from '@modules/org/tenants/tenant.entity';
+import type { Favorite } from '@interact/favorites/favorite.entity';
+import type { Reaction } from '@interact/reactions/reaction.entity';
+import type { Report } from '@interact/reports/report.entity';
+import type { Vote } from '@interact/votes/vote.entity';
+import { TransformCollection } from '@lib/decorators/transform-collection.decorator';
+import { BaseTenantEntity } from '@lib/entities/base-tenant.entity';
+import type { BaseSearchableEntity } from '@lib/types/interfaces/base-searchable.interface';
+import type { UserCreationOptions } from '@lib/types/interfaces/user-creation-options.interface';
+import { _slugify } from '@lib/utils/slugify';
+import { Interest } from '@teams/interests/interest.entity';
+import { TeamMember } from '@teams/members/team-member.entity';
+import { TeamMembershipRequest } from '@teams/requests/team-membership-request.entity';
+import { Tenant } from '@tenants/tenant.entity';
 
-import type { RegisterDto } from '../auth/dto/register.dto';
-import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
-import { Settings } from '../settings/settings.entity';
-import { Statistics } from '../statistics/statistics.entity';
-import { UserImage } from '../user-images/user-image.entity';
+import type { RegisterDto } from '@uaa/auth/dto/register.dto';
+import { BadgeUnlock } from '@uaa/badges/entities/badge-unlock.entity';
+import { Settings } from '@uaa/settings/settings.entity';
+import { Statistics } from '@uaa/statistics/statistics.entity';
+import { UserImage } from '@uaa/user-images/user-image.entity';
 
 @ObjectType()
 @Entity()

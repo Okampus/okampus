@@ -6,8 +6,8 @@ import {
   Property,
   Unique,
 } from '@mikro-orm/core';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { Class } from '@modules/org/classes/class.entity';
+import { Class } from '@classes/class.entity';
+import { BaseEntity } from '@lib/entities/base.entity';
 
 @Entity()
 export class Subject extends BaseEntity {

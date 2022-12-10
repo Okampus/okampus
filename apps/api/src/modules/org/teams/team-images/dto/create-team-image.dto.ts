@@ -5,8 +5,8 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { TeamImageType } from '@common/lib/types/enums/team-image-type.enum';
-import { CreateFileUploadDto } from '@modules/upload/file-uploads/dto/create-file-upload.dto';
+import { TeamImageType } from '@lib/types/enums/team-image-type.enum';
+import { CreateFileUploadDto } from '@upload/file-uploads/dto/create-file-upload.dto';
 
 @InputType()
 export class CreateTeamImageDto extends CreateFileUploadDto {

@@ -5,7 +5,7 @@ import {
   PartialType,
 } from '@nestjs/graphql';
 import { IsBoolean, IsInt, IsOptional } from 'class-validator';
-import { CreateThreadDto } from '@modules/create/threads/dto/create-thread.dto';
+import { CreateThreadDto } from '@create/threads/dto/create-thread.dto';
 
 @InputType()
 export class UpdateThreadDto extends PartialType(CreateThreadDto) {

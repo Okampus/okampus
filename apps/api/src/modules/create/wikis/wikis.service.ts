@@ -1,11 +1,11 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import type { CreateWikiPageDto } from '@modules/create/wikis/dto/create-wiki-page.dto';
-import type { User } from '@modules/uaa/users/user.entity';
+import type { CreateWikiPageDto } from '@create/wikis/dto/create-wiki-page.dto';
+import { BaseRepository } from '@lib/orm/base.repository';
+import type { User } from '@uaa/users/user.entity';
 import type { UpdateWikiPageDto } from './dto/update-wiki-page.dto';
 import { Wiki } from './wiki.entity';
 

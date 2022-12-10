@@ -1,53 +1,49 @@
-import type {
-  AbilityClass,
-  ExtractSubjectType,
-  InferSubjects,
-} from '@casl/ability';
+import type { AbilityClass, ExtractSubjectType, InferSubjects } from '@casl/ability';
 import { Ability, AbilityBuilder, ForbiddenError } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
-import type { Label } from '@modules/catalog/labels/label.entity';
-import { Subject } from '@modules/catalog/subjects/subject.entity';
-import { Tag } from '@modules/catalog/tags/tag.entity';
-import { Blog } from '@modules/create/blogs/blog.entity';
-import { Content } from '@modules/create/contents/entities/content.entity';
-import { Thread } from '@modules/create/threads/thread.entity';
-import { Wiki } from '@modules/create/wikis/wiki.entity';
-import { Favorite } from '@modules/interact/favorites/favorite.entity';
-import { Report } from '@modules/interact/reports/report.entity';
-import type { App } from '@modules/org/apps/app.entity';
-import { Food } from '@modules/org/canteens/foods/food.entity';
-import { Menu } from '@modules/org/canteens/menus/menu.entity';
-import type { Class } from '@modules/org/classes/class.entity';
-import type { SchoolYear } from '@modules/org/classes/school-year/school-year.entity';
-import { Announcement } from '@modules/org/teams/announcements/announcement.entity';
-import { TeamFinance } from '@modules/org/teams/finances/team-finance.entity';
-import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
-import type { TeamHistory } from '@modules/org/teams/histories/team-history.entity';
-import type { Interest } from '@modules/org/teams/interests/interest.entity';
-import { Metric } from '@modules/org/teams/metrics/metric.entity';
-import type { Social } from '@modules/org/teams/socials/social.entity';
-import type { TeamImage } from '@modules/org/teams/team-images/team-image.entity';
-import { Team } from '@modules/org/teams/team.entity';
-import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
-import type { TenantImage } from '@modules/org/tenants/tenant-images/tenant-image.entity';
-import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { EventApproval } from '@modules/plan/approvals/approval.entity';
-import { Event } from '@modules/plan/events/event.entity';
-import { Badge } from '@modules/uaa/badges/entities/badge.entity';
-import { Settings } from '@modules/uaa/settings/settings.entity';
-import type { UserImage } from '@modules/uaa/user-images/user-image.entity';
-import { User } from '@modules/uaa/users/user.entity';
-import { Attachment } from '@modules/upload/attachments/attachment.entity';
-import { InfoDoc } from '@modules/upload/info-docs/info-doc.entity';
-import { StudyDoc } from '@modules/upload/study-docs/study-doc.entity';
-import { TeamFile } from '@modules/upload/team-files/team-file.entity';
-import type { TeamGallery } from '@modules/upload/team-galleries/team-gallery.entity';
-import type { TeamReceipt } from '@modules/upload/team-receipts/team-receipt.entity';
-import { AnnouncementState } from '../../lib/types/enums/announcement-state.enum';
-import { ContentKind } from '../../lib/types/enums/content-kind.enum';
-import { TeamKind } from '../../lib/types/enums/team-kind.enum';
-import { Action } from '../authorization/types/action.enum';
-import { Role } from '../authorization/types/role.enum';
+import { Food } from '@canteens/foods/food.entity';
+import { Menu } from '@canteens/menus/menu.entity';
+import type { Label } from '@catalog/labels/label.entity';
+import { Subject } from '@catalog/subjects/subject.entity';
+import { Tag } from '@catalog/tags/tag.entity';
+import type { Class } from '@classes/class.entity';
+import type { SchoolYear } from '@classes/school-year/school-year.entity';
+import { Action } from '@common/modules/authorization/types/action.enum';
+import { Role } from '@common/modules/authorization/types/role.enum';
+import { Blog } from '@create/blogs/blog.entity';
+import { Content } from '@create/contents/entities/content.entity';
+import { Thread } from '@create/threads/thread.entity';
+import { Wiki } from '@create/wikis/wiki.entity';
+import { Favorite } from '@interact/favorites/favorite.entity';
+import { Report } from '@interact/reports/report.entity';
+import { AnnouncementState } from '@lib/types/enums/announcement-state.enum';
+import { ContentKind } from '@lib/types/enums/content-kind.enum';
+import { TeamKind } from '@lib/types/enums/team-kind.enum';
+import type { App } from '@org/apps/app.entity';
+import { EventApproval } from '@plan/approvals/approval.entity';
+import { Event } from '@plan/events/event.entity';
+import { Announcement } from '@teams/announcements/announcement.entity';
+import { TeamFinance } from '@teams/finances/team-finance.entity';
+import { TeamForm } from '@teams/forms/team-form.entity';
+import type { TeamHistory } from '@teams/histories/team-history.entity';
+import type { Interest } from '@teams/interests/interest.entity';
+import { Metric } from '@teams/metrics/metric.entity';
+import type { Social } from '@teams/socials/social.entity';
+import type { TeamImage } from '@teams/team-images/team-image.entity';
+import { Team } from '@teams/team.entity';
+import { ApprovalStep } from '@tenants/approval-steps/approval-step.entity';
+import type { TenantImage } from '@tenants/tenant-images/tenant-image.entity';
+import { Tenant } from '@tenants/tenant.entity';
+import { Badge } from '@uaa/badges/entities/badge.entity';
+import { Settings } from '@uaa/settings/settings.entity';
+import type { UserImage } from '@uaa/user-images/user-image.entity';
+import { User } from '@uaa/users/user.entity';
+import { Attachment } from '@upload/attachments/attachment.entity';
+import { InfoDoc } from '@upload/info-docs/info-doc.entity';
+import { StudyDoc } from '@upload/study-docs/study-doc.entity';
+import { TeamFile } from '@upload/team-files/team-file.entity';
+import type { TeamGallery } from '@upload/team-galleries/team-gallery.entity';
+import type { TeamReceipt } from '@upload/team-receipts/team-receipt.entity';
 
 export type Subjects =
   | InferSubjects<
@@ -159,7 +155,6 @@ export class CaslAbilityFactory {
       forbid(Action.Update, User).because('Not the user');
       allow(Action.Update, User, { id: user.id }).because('Not the user');
       allow(Action.Update, User, isBotOwner);
-
 
       if (user.roles.includes(Role.Moderator)) {
         allow(Action.Read, 'all');

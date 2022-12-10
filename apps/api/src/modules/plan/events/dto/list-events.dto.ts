@@ -14,8 +14,8 @@ import {
   IsOptional,
   Min,
 } from 'class-validator';
-import { ListOptionsDto } from '@common/lib/dto/list-options.dto';
-import { EventState } from '@common/lib/types/enums/event-state.enum';
+import { ListOptionsDto } from '@lib/dto/list-options.dto';
+import { EventState } from '@lib/types/enums/event-state.enum';
 
 @InputType()
 export class ListEventsDto extends PartialType(ListOptionsDto) {

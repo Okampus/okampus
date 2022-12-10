@@ -2,9 +2,9 @@ import { RequestContext } from '@medibloc/nestjs-request-context';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import type { GlobalRequestContext } from '@common/lib/helpers/global-request-context';
-import type { AppAbility } from '../casl/casl-ability.factory';
-import { CaslAbilityFactory } from '../casl/casl-ability.factory';
+import type { AppAbility } from '@common/modules/casl/casl-ability.factory';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
+import type { GlobalRequestContext } from '@lib/helpers/global-request-context';
 import { CHECK_POLICIES_KEY } from './check-policies.decorator';
 import type { PolicyHandler } from './types/policy-handler.type';
 

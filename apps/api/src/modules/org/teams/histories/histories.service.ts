@@ -1,10 +1,10 @@
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import type { CreateHistoryDto } from '@modules/org/teams/histories/dto/create-history.dto';
-import { Team } from '../team.entity';
+import { BaseRepository } from '@lib/orm/base.repository';
+import type { CreateHistoryDto } from '@teams/histories/dto/create-history.dto';
+import { Team } from '@teams/team.entity';
 import type { UpdateHistoryDto } from './dto/update-history.dto';
 import { TeamHistory } from './team-history.entity';
 

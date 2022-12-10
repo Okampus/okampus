@@ -1,9 +1,9 @@
 import fieldToRelations from '@banksnussman/graphql-fields-to-relations';
 import { RequestContext } from '@medibloc/nestjs-request-context';
 import { UnauthorizedException } from '@nestjs/common';
-import type { GlobalRequestContext } from '@common/lib/helpers/global-request-context';
-import type { Tenant } from '@modules/org/tenants/tenant.entity';
-import type { User } from '@modules/uaa/users/user.entity';
+import type { GlobalRequestContext } from '@lib/helpers/global-request-context';
+import type { Tenant } from '@tenants/tenant.entity';
+import type { User } from '@uaa/users/user.entity';
 
 const detachStrings = new Set(['edges', 'edges.node']);
 const forbidStrings = ['pageInfo'];

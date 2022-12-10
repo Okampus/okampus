@@ -8,11 +8,10 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { SocialAccountType } from '@common/lib/types/enums/social-account-type.enum';
-import { User } from '@modules/uaa/users/user.entity';
-import { Team } from '../team.entity';
-
+import { BaseEntity } from '@lib/entities/base.entity';
+import { SocialAccountType } from '@lib/types/enums/social-account-type.enum';
+import { Team } from '@teams/team.entity';
+import { User } from '@uaa/users/user.entity';
 
 @ObjectType()
 @Entity()
@@ -39,7 +38,7 @@ export class Social extends BaseEntity {
   user: User | null = null;
 
   @Field(() => Team, { nullable: true })
-  @ManyToOne({ onDelete: 'CASCADE' })
+  @ManyToOne({ type: 'Team', onDelete: 'CASCADE' })
   @Index()
   team: Team | null = null;
 

@@ -10,12 +10,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import type { Interactions } from '@modules/create/contents/interactions.model';
-import { User } from '@modules/uaa/users/user.entity';
+import type { Interactions } from '@create/contents/interactions.model';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { User } from '@uaa/users/user.entity';
 import { ContentsService } from './contents.service';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
@@ -56,7 +56,7 @@ export class ContentsController {
     return await this.contentsService.findOne(user, id);
   }
 
-  @Get('@modules/interactions')
+  @Get(':id/interactions')
   @CheckPolicies(ability => ability.can(Action.Read, Content))
   public async findInteractions(
     @CurrentUser() user: User,

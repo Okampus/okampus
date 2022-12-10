@@ -8,11 +8,11 @@ import {
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
-import { BaseFileEntity } from '@common/lib/entities/base-file.entity';
-import { TeamImageType } from '@common/lib/types/enums/team-image-type.enum';
-import { User } from '@modules/uaa/users/user.entity';
-import type { FileUpload } from '@modules/upload/file-uploads/file-upload.entity';
-import { Team } from '../team.entity';
+import { BaseFileEntity } from '@lib/entities/base-file.entity';
+import { TeamImageType } from '@lib/types/enums/team-image-type.enum';
+import { Team } from '@teams/team.entity';
+import { User } from '@uaa/users/user.entity';
+import type { FileUpload } from '@upload/file-uploads/file-upload.entity';
 
 @ObjectType()
 @Entity()

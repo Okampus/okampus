@@ -1,9 +1,9 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
+import { Subject } from '@catalog/subjects/subject.entity';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import { Subject } from '@modules/catalog/subjects/subject.entity';
-import { DocSeries } from '../doc-series/doc-series.entity';
-import { FileUploadsModule } from '../file-uploads/file-uploads.module';
+import { DocSeries } from '@upload/doc-series/doc-series.entity';
+import { FileUploadsModule } from '@upload/file-uploads/file-uploads.module';
 import { StudyDoc } from './study-doc.entity';
 import { StudyDocsController } from './study-docs.controller';
 import { StudyDocsService } from './study-docs.service';

@@ -1,7 +1,7 @@
 import { IsEmail, IsEnum, IsString } from 'class-validator';
 import capitalize from 'lodash.capitalize';
-import type { TenantUserinfoResponse } from '@common/lib/types/interfaces/userinfo-response.interface';
 import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
+import type { TenantUserinfoResponse } from '@lib/types/interfaces/userinfo-response.interface';
 
 // TODO: flexible (tenant-specific) TenantUserDto
 export class TenantUserDto {

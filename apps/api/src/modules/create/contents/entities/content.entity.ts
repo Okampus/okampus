@@ -15,16 +15,16 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
-import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { ContentMaster } from '@common/lib/entities/content-master.entity';
-import { ContentKind } from '@common/lib/types/enums/content-kind.enum';
 import { Paginated } from '@common/modules/pagination';
-import { Favorite } from '@modules/interact/favorites/favorite.entity';
-import { Reaction } from '@modules/interact/reactions/reaction.entity';
-import { Report } from '@modules/interact/reports/report.entity';
-import { Vote } from '@modules/interact/votes/vote.entity';
-import { User } from '@modules/uaa/users/user.entity';
+import { Favorite } from '@interact/favorites/favorite.entity';
+import { Reaction } from '@interact/reactions/reaction.entity';
+import { Report } from '@interact/reports/report.entity';
+import { Vote } from '@interact/votes/vote.entity';
+import { TransformCollection } from '@lib/decorators/transform-collection.decorator';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { ContentMaster } from '@lib/entities/content-master.entity';
+import { ContentKind } from '@lib/types/enums/content-kind.enum';
+import { User } from '@uaa/users/user.entity';
 import { Edit } from './edit.entity';
 
 @ObjectType()

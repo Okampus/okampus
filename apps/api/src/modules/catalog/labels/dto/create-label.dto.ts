@@ -1,6 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { LabelType } from '@common/lib/types/enums/label-type.enum';
+import { LabelType } from '@lib/types/enums/label-type.enum';
 
 export class CreateLabelDto {
   @Field(() => String, { nullable: true })

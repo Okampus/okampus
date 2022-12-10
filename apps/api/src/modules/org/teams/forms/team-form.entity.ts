@@ -9,11 +9,11 @@ import {
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { TeamFormType } from '@common/lib/types/enums/team-form-type.enum';
 import { Paginated } from '@common/modules/pagination';
-import { Team } from '@modules/org/teams/team.entity';
-import { User } from '@modules/uaa/users/user.entity';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { TeamFormType } from '@lib/types/enums/team-form-type.enum';
+import { Team } from '@teams/team.entity';
+import { User } from '@uaa/users/user.entity';
 
 @ObjectType()
 @Entity()

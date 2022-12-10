@@ -2,8 +2,8 @@ import { EntityManager } from '@mikro-orm/core';
 import type { EntityName, EventArgs, EventSubscriber } from '@mikro-orm/core';
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { InfoDoc } from '@modules/upload/info-docs/info-doc.entity';
-import { StudyDoc } from '@modules/upload/study-docs/study-doc.entity';
+import { InfoDoc } from '@upload/info-docs/info-doc.entity';
+import { StudyDoc } from '@upload/study-docs/study-doc.entity';
 
 @Injectable()
 export class DocumentSubscriber implements EventSubscriber<InfoDoc | StudyDoc> {

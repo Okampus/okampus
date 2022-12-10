@@ -5,9 +5,9 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { Colors } from '@common/lib/types/enums/colors.enum';
 import { Paginated } from '@common/modules/pagination';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { Colors } from '@lib/types/enums/colors.enum';
 
 @ObjectType()
 @Entity()

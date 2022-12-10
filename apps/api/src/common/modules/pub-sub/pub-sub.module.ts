@@ -1,7 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
-import { redisConnectionOptions } from '../../configs/redis.config';
-import { APP_PUB_SUB } from '../../lib/constants';
+import { redisConnectionOptions } from '@configs/redis.config';
+import { APP_PUB_SUB } from '@lib/constants';
 
 @Global()
 @Module({

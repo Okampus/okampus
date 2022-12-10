@@ -10,14 +10,14 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import { normalizeSort } from '@common/modules/sorting';
-import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { CreateEventDto } from '@modules/plan/events/dto/create-event.dto';
-import { User } from '@modules/uaa/users/user.entity';
+import { CurrentTenant } from '@lib/decorators/current-tenant.decorator';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { CreateEventDto } from '@plan/events/dto/create-event.dto';
+import { Tenant } from '@tenants/tenant.entity';
+import { User } from '@uaa/users/user.entity';
 import { ListEventsDto } from './dto/list-events.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './event.entity';

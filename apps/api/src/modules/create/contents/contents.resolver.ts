@@ -8,10 +8,10 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { Interactions } from '@modules/create/contents/interactions.model';
-import { User } from '@modules/uaa/users/user.entity';
-import { ContextBatchContents } from '../threads/threads.resolver';
+import { Interactions } from '@create/contents/interactions.model';
+import { ContextBatchContents } from '@create/threads/threads.resolver';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { User } from '@uaa/users/user.entity';
 import { ContentsService } from './contents.service';
 import { CreateContentWithKindDto } from './dto/create-content-with-kind.dto';
 import { UpdateContentDto } from './dto/update-content.dto';

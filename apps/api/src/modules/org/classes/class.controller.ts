@@ -9,10 +9,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateClassDto } from '@classes/dto/create-class.dto';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { CreateClassDto } from '@modules/org/classes/dto/create-class.dto';
 import { Class } from './class.entity';
 import { ClassesService } from './class.service';
 import { UpdateClassDto } from './dto/update-class.dto';

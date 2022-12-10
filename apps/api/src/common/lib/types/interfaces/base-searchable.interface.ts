@@ -1,5 +1,5 @@
-import type { BaseIndex } from '../../../modules/search/indexed-entity.interface';
-import type { BaseTenantEntity } from '../../entities/base-tenant.entity';
+import type { BaseIndex } from '@common/modules/search/indexed-entity.interface';
+import type { BaseTenantEntity } from '@lib/entities/base-tenant.entity';
 
 export interface BaseSearchableEntity extends Omit<BaseTenantEntity, 'assign'> {
   id: number | string;

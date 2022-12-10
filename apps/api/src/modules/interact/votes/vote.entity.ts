@@ -7,11 +7,11 @@ import {
   PrimaryKey,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { ContentMaster } from '@common/lib/entities/content-master.entity';
 import { Paginated } from '@common/modules/pagination';
-import { Content } from '@modules/create/contents/entities/content.entity';
-import { User } from '@modules/uaa/users/user.entity';
+import { Content } from '@create/contents/entities/content.entity';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { ContentMaster } from '@lib/entities/content-master.entity';
+import { User } from '@uaa/users/user.entity';
 
 @ObjectType()
 @Entity()

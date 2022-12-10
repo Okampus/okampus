@@ -12,11 +12,11 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
-import { simpleImageMimeTypeRegex } from '@common/configs/mime-type';
-import { UploadInterceptor, UploadMultipleInterceptor } from '@common/lib/decorators/upload-interceptor.decorator';
-import { TenantImageType } from '@common/lib/types/enums/tenant-image-type.enum';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { CreateTenantDto } from '@modules/org/tenants/dto/create-tenant.dto';
+import { simpleImageMimeTypeRegex } from '@configs/mime-type';
+import { UploadInterceptor, UploadMultipleInterceptor } from '@lib/decorators/upload-interceptor.decorator';
+import { TenantImageType } from '@lib/types/enums/tenant-image-type.enum';
+import { CreateTenantDto } from '@tenants/dto/create-tenant.dto';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
 import type { CreateTenantImageDto } from './tenant-images/dto/create-tenant-image.dto';
 import { TenantImage } from './tenant-images/tenant-image.entity';

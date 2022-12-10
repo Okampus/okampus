@@ -1,6 +1,6 @@
-import { TokenType } from '@common/lib/types/enums/token-type.enum';
 import 'dotenv/config';
-import { FileKind } from '../lib/types/enums/file-kind.enum';
+import { FileKind } from '@lib/types/enums/file-kind.enum';
+import { TokenType } from '@lib/types/enums/token-type.enum';
 
 // Helpers
 const parseEnvInt = (value: string | undefined, defaultValue: number): number => {

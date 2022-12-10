@@ -4,8 +4,8 @@ import {
   Query,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { User } from '@modules/uaa/users/user.entity';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { User } from '@uaa/users/user.entity';
 import { Validation } from './validation.entity';
 import { ValidationsService } from './validations.service';
 

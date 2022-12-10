@@ -8,13 +8,13 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@common/lib/constants';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
-import { CreateEventRegistrationDto } from '@modules/plan/registrations/dto/create-event-registration.dto';
-import { User } from '@modules/uaa/users/user.entity';
-import { Event } from '../events/event.entity';
-import { EventsService } from '../events/events.service';
+import { APP_PUB_SUB } from '@lib/constants';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { SubscriptionType } from '@lib/types/enums/subscription-type.enum';
+import { Event } from '@plan/events/event.entity';
+import { EventsService } from '@plan/events/events.service';
+import { CreateEventRegistrationDto } from '@plan/registrations/dto/create-event-registration.dto';
+import { User } from '@uaa/users/user.entity';
 import { FilterRegisteredEventsDto } from './dto/list-registered-events.dto';
 import { UpdateEventRegistrationDto } from './dto/update-event-registration.dto';
 import { EventRegistration, PaginatedEventRegistration } from './registration.entity';

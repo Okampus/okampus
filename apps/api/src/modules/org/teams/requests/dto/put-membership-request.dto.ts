@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsIn, IsOptional, IsString } from 'class-validator';
-import { MembershipRequestState } from '@common/lib/types/enums/membership-request-state.enum';
+import { MembershipRequestState } from '@lib/types/enums/membership-request-state.enum';
 
 @InputType()
 export class PutTeamMembershipRequestDto {

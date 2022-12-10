@@ -3,8 +3,8 @@ import type { EntityName, EventArgs, EventSubscriber } from '@mikro-orm/core';
 import { Injectable } from '@nestjs/common';
 import MeiliSearch from 'meilisearch';
 import { InjectMeiliSearch } from 'nestjs-meilisearch';
-import { config } from '../../configs/config';
-import type { RequiredProp } from '../../lib/types/types/required-prop.type';
+import { config } from '@configs/config';
+import type { RequiredProp } from '@lib/types/types/required-prop.type';
 import type { IndexableEntities } from './meilisearch-indexer.service';
 import { MeiliSearchIndexerService } from './meilisearch-indexer.service';
 

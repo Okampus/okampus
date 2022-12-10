@@ -1,16 +1,16 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import type { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
-import { GlobalRequestService } from '@common/lib/helpers/global-request-service';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { FileKind } from '@common/lib/types/enums/file-kind.enum';
-import type { UserImageType } from '@common/lib/types/enums/user-image-type.enum';
-import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import { FileUploadsService } from '@modules/upload/file-uploads/file-uploads.service';
-import { User } from '../users/user.entity';
+import { GlobalRequestService } from '@lib/helpers/global-request-service';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { FileKind } from '@lib/types/enums/file-kind.enum';
+import type { UserImageType } from '@lib/types/enums/user-image-type.enum';
+import { assertPermissions } from '@lib/utils/assert-permission';
+import { User } from '@uaa/users/user.entity';
+import { FileUploadsService } from '@upload/file-uploads/file-uploads.service';
 import type { CreateUserImageDto } from './dto/create-user-image.dto';
 import { UserImage } from './user-image.entity';
 

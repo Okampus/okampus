@@ -2,7 +2,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
 import { CaslModule } from '@common/modules/casl/casl.module';
-import { ApprovalStepsModule } from '@modules/org/tenants/approval-steps/approval-steps.module';
+import { ApprovalStepsModule } from '@tenants/approval-steps/approval-steps.module';
 import { TenantsCoreModule } from './core-tenants.module';
 import { TenantImagesModule } from './tenant-images/tenant-images.module';
 import { Tenant } from './tenant.entity';

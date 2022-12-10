@@ -4,7 +4,7 @@ import { MemoryCacheAdapter } from '@mikro-orm/core';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import { Logger, NotFoundException } from '@nestjs/common';
-import { BaseRepository } from '../lib/orm/base.repository';
+import { BaseRepository } from '@lib/orm/base.repository';
 import { config } from './config';
 
 const ormLogger = new Logger('MikroORM');

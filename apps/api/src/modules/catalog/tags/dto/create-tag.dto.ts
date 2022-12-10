@@ -5,7 +5,7 @@ import {
   Length,
   Matches,
 } from 'class-validator';
-import { Colors } from '@common/lib/types/enums/colors.enum';
+import { Colors } from '@lib/types/enums/colors.enum';
 
 const tagRegex = /^[\d:a-z-]+$/;
 

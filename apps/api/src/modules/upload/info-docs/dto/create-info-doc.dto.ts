@@ -4,7 +4,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { CreateFileUploadDto } from '@modules/upload/file-uploads/dto/create-file-upload.dto';
+import { CreateFileUploadDto } from '@upload/file-uploads/dto/create-file-upload.dto';
 
 export class CreateInfoDocDto extends CreateFileUploadDto {
   @IsInt()

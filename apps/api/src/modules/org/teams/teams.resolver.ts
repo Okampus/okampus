@@ -16,27 +16,27 @@ import { PubSubEngine } from 'graphql-subscriptions';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import groupBy from 'lodash.groupby';
 import mapValues from 'lodash.mapvalues';
-import { APP_PUB_SUB } from '@common/lib/constants';
-import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { FileKind } from '@common/lib/types/enums/file-kind.enum';
-import { MembershipRequestState } from '@common/lib/types/enums/membership-request-state.enum';
-import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
-import { TeamKind } from '@common/lib/types/enums/team-kind.enum';
-import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import { PaginationOptions } from '@common/modules/pagination';
-import { CreateTeamDto } from '@modules/org/teams/dto/create-team.dto';
-import { TeamFormsService } from '@modules/org/teams/forms/forms.service';
-import { PaginatedTeamForm } from '@modules/org/teams/forms/team-form.entity';
-import { User } from '@modules/uaa/users/user.entity';
-import { FileUploadsService } from '@modules/upload/file-uploads/file-uploads.service';
-import { CreateTeamFileDto } from '@modules/upload/team-files/dto/create-team-file.dto';
-import { PaginatedTeamFile } from '@modules/upload/team-files/team-file.entity';
-import { TeamFilesService } from '@modules/upload/team-files/team-files.service';
-import { TeamGallery } from '@modules/upload/team-galleries/team-gallery.entity';
-import { TeamMembershipStatus } from '../../../common/lib/types/models/team-membership-status.model';
-import { Tenant } from '../tenants/tenant.entity';
+import { APP_PUB_SUB } from '@lib/constants';
+import { CurrentTenant } from '@lib/decorators/current-tenant.decorator';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { FileKind } from '@lib/types/enums/file-kind.enum';
+import { MembershipRequestState } from '@lib/types/enums/membership-request-state.enum';
+import { SubscriptionType } from '@lib/types/enums/subscription-type.enum';
+import { TeamKind } from '@lib/types/enums/team-kind.enum';
+import { TeamRole } from '@lib/types/enums/team-role.enum';
+import { TeamMembershipStatus } from '@lib/types/models/team-membership-status.model';
+import { CreateTeamDto } from '@teams/dto/create-team.dto';
+import { TeamFormsService } from '@teams/forms/forms.service';
+import { PaginatedTeamForm } from '@teams/forms/team-form.entity';
+import { Tenant } from '@tenants/tenant.entity';
+import { User } from '@uaa/users/user.entity';
+import { FileUploadsService } from '@upload/file-uploads/file-uploads.service';
+import { CreateTeamFileDto } from '@upload/team-files/dto/create-team-file.dto';
+import { PaginatedTeamFile } from '@upload/team-files/team-file.entity';
+import { TeamFilesService } from '@upload/team-files/team-files.service';
+import { TeamGallery } from '@upload/team-galleries/team-gallery.entity';
 import { TeamsFilterDto } from './dto/teams-filter.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { Interest } from './interests/interest.entity';
@@ -115,7 +115,6 @@ export class TeamsResolver {
       groupBy(await user.teamMembershipRequests.loadItems(), 'team.id'),
       requests => requests.some(r => r.state === MembershipRequestState.Pending),
     );
-
 
     teamContext.isBatched = true;
 

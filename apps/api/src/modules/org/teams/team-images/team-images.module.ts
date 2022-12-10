@@ -1,8 +1,8 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import { FileUploadsModule } from '@modules/upload/file-uploads/file-uploads.module';
-import { Team } from '../team.entity';
+import { Team } from '@teams/team.entity';
+import { FileUploadsModule } from '@upload/file-uploads/file-uploads.module';
 import { TeamImage } from './team-image.entity';
 import { TeamImagesController } from './team-images.controller';
 import { TeamImagesService } from './team-images.service';

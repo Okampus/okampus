@@ -1,7 +1,7 @@
 import { UniqueConstraintViolationException } from '@mikro-orm/core';
 import { BadRequestException } from '@nestjs/common';
-import type { BaseEntity } from '../entities/base.entity';
-import type { BaseRepository } from '../orm/base.repository';
+import type { BaseEntity } from '@lib/entities/base.entity';
+import type { BaseRepository } from '@lib/orm/base.repository';
 
 export async function catchUniqueViolation<U extends BaseEntity, T extends BaseRepository<U>>(
   repository: T,

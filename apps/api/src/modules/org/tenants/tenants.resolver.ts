@@ -7,11 +7,11 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { TenantImageType } from '@common/lib/types/enums/tenant-image-type.enum';
-import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
-import { User } from '@modules/uaa/users/user.entity';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { TenantImageType } from '@lib/types/enums/tenant-image-type.enum';
+import { ApprovalStep } from '@tenants/approval-steps/approval-step.entity';
+import { User } from '@uaa/users/user.entity';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
 import { TenantImage } from './tenant-images/tenant-image.entity';
 import { TenantImagesService } from './tenant-images/tenant-images.service';

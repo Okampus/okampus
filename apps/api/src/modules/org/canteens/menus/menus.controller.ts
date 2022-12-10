@@ -10,11 +10,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { ParseDatePipe } from '@common/lib/pipes/parse-date.pipe';
+import { CreateMenuDto } from '@canteens/menus/dto/create-menu.dto';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { CreateMenuDto } from '@modules/org/canteens/menus/dto/create-menu.dto';
+import { ParseDatePipe } from '@lib/pipes/parse-date.pipe';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { Menu } from './menu.entity';
 import { MenusService } from './menus.service';

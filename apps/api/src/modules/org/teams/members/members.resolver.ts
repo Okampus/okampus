@@ -8,11 +8,11 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@common/lib/constants';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
-import { User } from '@modules/uaa/users/user.entity';
-import type { TeamMembershipRequest } from '../requests/team-membership-request.entity';
+import { APP_PUB_SUB } from '@lib/constants';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { SubscriptionType } from '@lib/types/enums/subscription-type.enum';
+import type { TeamMembershipRequest } from '@teams/requests/team-membership-request.entity';
+import { User } from '@uaa/users/user.entity';
 import { InviteMemberDto } from './dto/invite-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { TeamMembersService } from './members.service';

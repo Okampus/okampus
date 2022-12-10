@@ -7,8 +7,8 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { EventRegisterStatus } from '@common/lib/types/enums/event-register-status.enum';
 import { PaginationOptions } from '@common/modules/pagination';
+import { EventRegisterStatus } from '@lib/types/enums/event-register-status.enum';
 
 @InputType()
 export class FilterRegisteredEventsDto {

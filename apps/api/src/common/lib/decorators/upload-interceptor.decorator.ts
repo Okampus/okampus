@@ -1,7 +1,7 @@
 import { applyDecorators, BadRequestException, UseInterceptors } from '@nestjs/common';
 import { FileFieldsInterceptor, FileInterceptor } from '@webundsoehne/nest-fastify-file-upload';
-import { config } from '../../configs/config';
-import { mimeTypeRegex } from '../../configs/mime-type';
+import { config } from '@configs/config';
+import { mimeTypeRegex } from '@configs/mime-type';
 
 interface Options {
   mimeTypeRegex: RegExp;

@@ -8,14 +8,14 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@common/lib/constants';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
-import { CreateTeamMembershipRequestDto } from '@modules/org/teams/requests/dto/create-membership-request.dto';
-import { User } from '@modules/uaa/users/user.entity';
-import { FilterMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
-import { Team } from '../team.entity';
-import { TeamsService } from '../teams.service';
+import { APP_PUB_SUB } from '@lib/constants';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { SubscriptionType } from '@lib/types/enums/subscription-type.enum';
+import { FilterMembershipRequestsDto } from '@teams/dto/membership-requests-list-options.dto';
+import { CreateTeamMembershipRequestDto } from '@teams/requests/dto/create-membership-request.dto';
+import { Team } from '@teams/team.entity';
+import { TeamsService } from '@teams/teams.service';
+import { User } from '@uaa/users/user.entity';
 import { PutTeamMembershipRequestDto } from './dto/put-membership-request.dto';
 import { UpdateTeamMembershipRequestDto } from './dto/update-membership-request.dto';
 import { TeamMembershipRequestsService } from './requests.service';

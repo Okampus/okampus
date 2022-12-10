@@ -21,17 +21,17 @@ import {
   ObjectType,
 } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
-import { BaseTenantEntity } from '@common/lib/entities/base-tenant.entity';
-import { EventState } from '@common/lib/types/enums/event-state.enum';
-import { randomInt } from '@common/lib/utils/random-utils';
 import { Paginated } from '@common/modules/pagination';
-import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
-import { TeamMember } from '@modules/org/teams/members/team-member.entity';
-import { Team } from '@modules/org/teams/team.entity';
-import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
-import type { Tenant } from '@modules/org/tenants/tenant.entity';
-import { EventRegistration } from '@modules/plan/registrations/registration.entity';
-import { User } from '@modules/uaa/users/user.entity';
+import { BaseTenantEntity } from '@lib/entities/base-tenant.entity';
+import { EventState } from '@lib/types/enums/event-state.enum';
+import { randomInt } from '@lib/utils/random-utils';
+import { EventRegistration } from '@plan/registrations/registration.entity';
+import { TeamForm } from '@teams/forms/team-form.entity';
+import { TeamMember } from '@teams/members/team-member.entity';
+import { Team } from '@teams/team.entity';
+import { ApprovalStep } from '@tenants/approval-steps/approval-step.entity';
+import type { Tenant } from '@tenants/tenant.entity';
+import { User } from '@uaa/users/user.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 
 @ObjectType()
@@ -124,6 +124,8 @@ export class Event extends BaseTenantEntity {
     this.assign({
       ...options, supervisor, createdBy, team, template, registerForm,
     });
+
+    // This.approvalStep = this.state === EventState.Submitted ? 1 : 0;
   }
 
   public canEdit(user: User): boolean {

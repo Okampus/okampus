@@ -3,31 +3,31 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 
+import { Tag } from '@catalog/tags/tag.entity';
+import { Class } from '@classes/class.entity';
+import { Action } from '@common/modules/authorization';
+import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
+import type { PaginatedNodes } from '@common/modules/pagination';
 import {
   classes,
   clubString,
   groupTypeIcons,
   scopeString,
-} from '@common/configs/strings';
-import type { ContentListOptionsDto } from '@common/lib/dto/list-options.dto';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { ClassType } from '@common/lib/types/enums/class-type.enum';
-import { Colors } from '@common/lib/types/enums/colors.enum';
-import { ContentKind } from '@common/lib/types/enums/content-kind.enum';
-import { ValidationType } from '@common/lib/types/enums/validation-type.enum';
-import { assertPermissions } from '@common/lib/utils/assert-permission';
-import { Action } from '@common/modules/authorization';
-import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import type { PaginatedNodes } from '@common/modules/pagination';
-import { Tag } from '@modules/catalog/tags/tag.entity';
-import type { CreateThreadDto } from '@modules/create/threads/dto/create-thread.dto';
-import { Validation } from '@modules/interact/validations/validation.entity';
-import { ValidationsService } from '@modules/interact/validations/validations.service';
-import { Class } from '@modules/org/classes/class.entity';
-import { Team } from '@modules/org/teams/team.entity';
-import { User } from '@modules/uaa/users/user.entity';
-import { ContentsService } from '../contents/contents.service';
-import { Content } from '../contents/entities/content.entity';
+} from '@configs/strings';
+import { ContentsService } from '@create/contents/contents.service';
+import { Content } from '@create/contents/entities/content.entity';
+import type { CreateThreadDto } from '@create/threads/dto/create-thread.dto';
+import { Validation } from '@interact/validations/validation.entity';
+import { ValidationsService } from '@interact/validations/validations.service';
+import type { ContentListOptionsDto } from '@lib/dto/list-options.dto';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { ClassType } from '@lib/types/enums/class-type.enum';
+import { Colors } from '@lib/types/enums/colors.enum';
+import { ContentKind } from '@lib/types/enums/content-kind.enum';
+import { ValidationType } from '@lib/types/enums/validation-type.enum';
+import { assertPermissions } from '@lib/utils/assert-permission';
+import { Team } from '@teams/team.entity';
+import { User } from '@uaa/users/user.entity';
 import type { ThreadListOptionsDto } from './dto/thread-list-options.dto';
 import type { UpdateThreadDto } from './dto/update-thread.dto';
 import { Thread } from './thread.entity';

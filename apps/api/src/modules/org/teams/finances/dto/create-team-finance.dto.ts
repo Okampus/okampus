@@ -8,9 +8,9 @@ import {
   Length,
   Min,
 } from 'class-validator';
-import { PaymentMethod } from '@common/lib/types/enums/payment-method.enum';
-import { TeamFinanceCategory } from '@common/lib/types/enums/team-finance-category.enum';
-import { TeamFinanceType } from '@common/lib/types/enums/team-finance-type.enum';
+import { PaymentMethod } from '@lib/types/enums/payment-method.enum';
+import { TeamFinanceCategory } from '@lib/types/enums/team-finance-category.enum';
+import { TeamFinanceType } from '@lib/types/enums/team-finance-type.enum';
 
 @InputType()
 export class CreateTeamFinanceDto {

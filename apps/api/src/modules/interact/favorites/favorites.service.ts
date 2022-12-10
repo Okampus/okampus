@@ -1,15 +1,15 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@common/lib/constants';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
-import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import { Content } from '@modules/create/contents/entities/content.entity';
-import { User } from '@modules/uaa/users/user.entity';
+import { Content } from '@create/contents/entities/content.entity';
+import { APP_PUB_SUB } from '@lib/constants';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { SubscriptionType } from '@lib/types/enums/subscription-type.enum';
+import { assertPermissions } from '@lib/utils/assert-permission';
+import { User } from '@uaa/users/user.entity';
 import { Favorite } from './favorite.entity';
 
 @Injectable()

@@ -8,17 +8,15 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-// Import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
-import { Tenant } from '@modules/org/tenants/tenant.entity';
-// Import { EventApproval } from '@modules/plan/approvals/approval.entity';
-import { EventApprovalsService } from '@modules/plan/approvals/approvals.service';
-import { CreateEventApprovalDto } from '@modules/plan/approvals/dto/create-approval.dto';
-import { CreateEventDto } from '@modules/plan/events/dto/create-event.dto';
-import { EventRegistration } from '@modules/plan/registrations/registration.entity';
-import { User } from '@modules/uaa/users/user.entity';
+import { CurrentTenant } from '@lib/decorators/current-tenant.decorator';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { EventApprovalsService } from '@plan/approvals/approvals.service';
+import { CreateEventApprovalDto } from '@plan/approvals/dto/create-approval.dto';
+import { CreateEventDto } from '@plan/events/dto/create-event.dto';
+import { EventRegistration } from '@plan/registrations/registration.entity';
+import { Tenant } from '@tenants/tenant.entity';
+import { User } from '@uaa/users/user.entity';
 import { ListEventsDto } from './dto/list-events.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event, PaginatedEvent } from './event.entity';
@@ -29,12 +27,8 @@ export class EventsResolver {
   constructor(
     private readonly eventsService: EventsService,
     private readonly eventApprovalsService: EventApprovalsService,
-    @InjectRepository(EventRegistration) private readonly eventRegistrationRepository:
-      BaseRepository<EventRegistration>,
-    // @InjectRepository(ApprovalStep) private readonly approvalStepRepository:
-    //   BaseRepository<ApprovalStep>,
-    // @InjectRepository(EventApproval) private readonly eventApprovalRepository:
-    //   BaseRepository<EventApproval>,
+    @InjectRepository(EventRegistration)
+    private readonly eventRegistrationRepository: BaseRepository<EventRegistration>,
   ) {}
 
   // TODO: Add permission checks

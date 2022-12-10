@@ -1,11 +1,11 @@
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { FoodType } from '@common/lib/types/enums/food-type.enum';
+import { Food } from '@canteens/foods/food.entity';
+import type { CreateMenuDto } from '@canteens/menus/dto/create-menu.dto';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import type { CreateMenuDto } from '@modules/org/canteens/menus/dto/create-menu.dto';
-import { Food } from '../foods/food.entity';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { FoodType } from '@lib/types/enums/food-type.enum';
 import type { UpdateMenuDto } from './dto/update-menu.dto';
 import { Menu } from './menu.entity';
 

@@ -13,7 +13,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { CreateInterestDto } from '@modules/org/teams/interests/dto/create-interest.dto';
+import { CreateInterestDto } from '@teams/interests/dto/create-interest.dto';
 import { UpdateInterestDto } from './dto/update-interest.dto';
 import { Interest } from './interest.entity';
 import { InterestsService } from './interests.service';

@@ -6,8 +6,8 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import { TeamFileType } from '@common/lib/types/enums/team-file-type.enum';
-import { CreateFileUploadDto } from '@modules/upload/file-uploads/dto/create-file-upload.dto';
+import { TeamFileType } from '@lib/types/enums/team-file-type.enum';
+import { CreateFileUploadDto } from '@upload/file-uploads/dto/create-file-upload.dto';
 
 @InputType()
 export class CreateTeamFileDto extends CreateFileUploadDto {

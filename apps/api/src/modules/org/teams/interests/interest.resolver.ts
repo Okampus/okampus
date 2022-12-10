@@ -5,7 +5,7 @@ import {
   Query,
   Resolver,
 } from '@nestjs/graphql';
-import { CreateInterestDto } from '@modules/org/teams/interests/dto/create-interest.dto';
+import { CreateInterestDto } from '@teams/interests/dto/create-interest.dto';
 import { UpdateInterestDto } from './dto/update-interest.dto';
 import { Interest, PaginatedInterest } from './interest.entity';
 import { InterestsService } from './interests.service';

@@ -8,10 +8,10 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { Content } from '@modules/create/contents/entities/content.entity';
-import { User } from '@modules/uaa/users/user.entity';
+import { Content } from '@create/contents/entities/content.entity';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { User } from '@uaa/users/user.entity';
 import { ReactContentDto } from './dto/react-content.dto';
 import type { Reaction } from './reaction.entity';
 import { ReactionsService } from './reactions.service';

@@ -9,13 +9,12 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
-import { simpleImageMimeTypeRegex } from '@common/configs/mime-type';
-import { UploadInterceptor } from '@common/lib/decorators/upload-interceptor.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
+import { simpleImageMimeTypeRegex } from '@configs/mime-type';
+import { UploadInterceptor } from '@lib/decorators/upload-interceptor.decorator';
 import { CreateTenantImageDto } from './dto/create-tenant-image.dto';
 import { TenantImage } from './tenant-image.entity';
 import { TenantImagesService } from './tenant-images.service';
-
 
 // TODO: improve check policies
 @ApiTags('Tenant Images')

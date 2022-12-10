@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import type { BaseEntity } from '@common/lib/entities/base.entity';
+import type { BaseEntity } from '@lib/entities/base.entity';
 
 @ObjectType()
 export class PageInfo {

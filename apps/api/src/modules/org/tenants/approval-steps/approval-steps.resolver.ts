@@ -4,10 +4,10 @@ import {
   Mutation,
   Resolver,
 } from '@nestjs/graphql';
-import { ApprovalStepType } from '@common/lib/types/enums/approval-step-type.enum';
-import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
-import { ApprovalStepDto } from '@modules/org/tenants/approval-steps/dto/create-approval-step.dto';
-import { Tenant } from '../tenant.entity';
+import { ApprovalStepType } from '@lib/types/enums/approval-step-type.enum';
+import { ApprovalStep } from '@tenants/approval-steps/approval-step.entity';
+import { ApprovalStepDto } from '@tenants/approval-steps/dto/create-approval-step.dto';
+import { Tenant } from '@tenants/tenant.entity';
 import { ApprovalStepsService } from './approval-steps.service';
 import { UpdateApprovalStepDto } from './dto/update-approval-step.dto';
 

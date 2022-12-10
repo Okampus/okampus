@@ -1,6 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { Food } from '../foods/food.entity';
+import { Food } from '@canteens/foods/food.entity';
 import { Menu } from './menu.entity';
 import { MenusController } from './menus.controller';
 import { MenusService } from './menus.service';

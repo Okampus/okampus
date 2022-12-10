@@ -12,7 +12,7 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { CreateEventRegistrationDto } from '@modules/plan/registrations/dto/create-event-registration.dto';
+import { CreateEventRegistrationDto } from '@plan/registrations/dto/create-event-registration.dto';
 
 @InputType()
 export class UpdateEventRegistrationDto extends PartialType(

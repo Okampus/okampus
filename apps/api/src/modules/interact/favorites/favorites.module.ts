@@ -1,8 +1,8 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import { Content } from '@modules/create/contents/entities/content.entity';
-import { User } from '@modules/uaa/users/user.entity';
+import { Content } from '@create/contents/entities/content.entity';
+import { User } from '@uaa/users/user.entity';
 import { Favorite } from './favorite.entity';
 import { FavoritesController } from './favorites.controller';
 import { FavoritesService } from './favorites.service';

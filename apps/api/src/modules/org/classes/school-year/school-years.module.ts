@@ -1,8 +1,8 @@
 import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
+import { BaseRepository } from '@lib/orm/base.repository';
 import { SchoolYear } from './school-year.entity';
 import { SchoolYearsController } from './school-years.controller';
 import { SchoolYearsResolver } from './school-years.resolver';

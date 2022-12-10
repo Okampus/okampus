@@ -7,8 +7,8 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { StudyDocType } from '@common/lib/types/enums/study-doc-type.enum';
-import { CreateFileUploadDto } from '@modules/upload/file-uploads/dto/create-file-upload.dto';
+import { StudyDocType } from '@lib/types/enums/study-doc-type.enum';
+import { CreateFileUploadDto } from '@upload/file-uploads/dto/create-file-upload.dto';
 
 export class CreateStudyDocDto extends CreateFileUploadDto {
   @IsInt()

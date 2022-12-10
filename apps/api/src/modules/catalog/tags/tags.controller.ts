@@ -9,10 +9,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateTagDto } from '@catalog/tags/dto/create-tag.dto';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { CreateTagDto } from '@modules/catalog/tags/dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { Tag } from './tag.entity';
 import { TagsService } from './tags.service';

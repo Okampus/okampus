@@ -14,52 +14,51 @@ import Redis from 'ioredis';
 import { MeiliSearchModule } from 'nestjs-meilisearch';
 import { S3Module } from 'nestjs-s3';
 
-import cacheConfig from '@common/configs/cache.config';
-import { config } from '@common/configs/config';
-import graphqlConfig from '@common/configs/graphql.config';
-import meiliSearchConfig from '@common/configs/meilisearch.config';
-import redisConfig from '@common/configs/redis.config';
-import sentryConfig, { sentryInterceptorConfig } from '@common/configs/sentry.config';
-import storageConfig from '@common/configs/storage.config';
-import { APP_OIDC_CACHE } from '@common/lib/constants';
-
-import { ExceptionsFilter } from '@common/lib/filters/exceptions.filter';
-import { GlobalRequestContext } from '@common/lib/helpers/global-request-context';
-import { RestLoggerMiddleware } from '@common/lib/middlewares/rest-logger.middleware';
-import { TraceMiddleware } from '@common/lib/middlewares/trace.middleware';
+import { CafeteriaModule } from '@canteens/canteens.module';
+import { SubjectsModule } from '@catalog/subjects/subjects.module';
+import { TagsModule } from '@catalog/tags/tags.module';
+import { ClassesModule } from '@classes/class.module';
+import { ClassMembershipsModule } from '@classes/memberships/memberships.module';
+import { SchoolYearsModule } from '@classes/school-year/school-years.module';
 import { PoliciesGuard } from '@common/modules/authorization';
 import { OIDCStrategyCache } from '@common/modules/authorization/oidc-strategy.cache';
 import { CaslModule } from '@common/modules/casl/casl.module';
 import { MeiliSearchIndexerModule } from '@common/modules/search/meilisearch-indexer.module';
-import { SubjectsModule } from '@modules/catalog/subjects/subjects.module';
-import { TagsModule } from '@modules/catalog/tags/tags.module';
-import { BlogsModule } from '@modules/create/blogs/blogs.module';
-import { ContentsModule } from '@modules/create/contents/contents.module';
-import { ThreadsModule } from '@modules/create/threads/threads.module';
-import { WikisModule } from '@modules/create/wikis/wikis.module';
-import { FavoritesModule } from '@modules/interact/favorites/favorites.module';
-import { ReactionsModule } from '@modules/interact/reactions/reactions.module';
-import { ReportsModule } from '@modules/interact/reports/reports.module';
-import { ValidationsModule } from '@modules/interact/validations/validations.module';
-import { VotesModule } from '@modules/interact/votes/votes.module';
-import { CafeteriaModule } from '@modules/org/canteens/canteens.module';
-import { ClassesModule } from '@modules/org/classes/class.module';
-import { ClassMembershipsModule } from '@modules/org/classes/memberships/memberships.module';
-import { SchoolYearsModule } from '@modules/org/classes/school-year/school-years.module';
-import { AnnouncementsModule } from '@modules/org/teams/announcements/announcements.module';
-import { InterestsModule } from '@modules/org/teams/interests/interests.module';
-import { MetricsModule } from '@modules/org/teams/metrics/metrics.module';
-import { SocialsModule } from '@modules/org/teams/socials/socials.module';
-import { TeamsModule } from '@modules/org/teams/teams.module';
-import { TenantsCoreModule } from '@modules/org/tenants/core-tenants.module';
-import { TenantsModule } from '@modules/org/tenants/tenants.module';
-import { AuthGuard } from '@modules/uaa/auth/auth.guard';
-import { AuthModule } from '@modules/uaa/auth/auth.module';
-import { BadgesModule } from '@modules/uaa/badges/badges.module';
-import { SettingsModule } from '@modules/uaa/settings/settings.module';
-import { StatisticsModule } from '@modules/uaa/statistics/statistics.module';
-import { UsersModule } from '@modules/uaa/users/users.module';
-import { FilesModule } from '@modules/upload/files.module';
+import cacheConfig from '@configs/cache.config';
+import { config } from '@configs/config';
+import graphqlConfig from '@configs/graphql.config';
+import meiliSearchConfig from '@configs/meilisearch.config';
+import redisConfig from '@configs/redis.config';
+import sentryConfig, { sentryInterceptorConfig } from '@configs/sentry.config';
+import storageConfig from '@configs/storage.config';
+import { BlogsModule } from '@create/blogs/blogs.module';
+import { ContentsModule } from '@create/contents/contents.module';
+import { ThreadsModule } from '@create/threads/threads.module';
+import { WikisModule } from '@create/wikis/wikis.module';
+import { FavoritesModule } from '@interact/favorites/favorites.module';
+import { ReactionsModule } from '@interact/reactions/reactions.module';
+import { ReportsModule } from '@interact/reports/reports.module';
+import { ValidationsModule } from '@interact/validations/validations.module';
+import { VotesModule } from '@interact/votes/votes.module';
+import { APP_OIDC_CACHE } from '@lib/constants';
+import { ExceptionsFilter } from '@lib/filters/exceptions.filter';
+import { GlobalRequestContext } from '@lib/helpers/global-request-context';
+import { RestLoggerMiddleware } from '@lib/middlewares/rest-logger.middleware';
+import { TraceMiddleware } from '@lib/middlewares/trace.middleware';
+import { AnnouncementsModule } from '@teams/announcements/announcements.module';
+import { InterestsModule } from '@teams/interests/interests.module';
+import { MetricsModule } from '@teams/metrics/metrics.module';
+import { SocialsModule } from '@teams/socials/socials.module';
+import { TeamsModule } from '@teams/teams.module';
+import { TenantsCoreModule } from '@tenants/core-tenants.module';
+import { TenantsModule } from '@tenants/tenants.module';
+import { AuthGuard } from '@uaa/auth/auth.guard';
+import { AuthModule } from '@uaa/auth/auth.module';
+import { BadgesModule } from '@uaa/badges/badges.module';
+import { SettingsModule } from '@uaa/settings/settings.module';
+import { StatisticsModule } from '@uaa/statistics/statistics.module';
+import { UsersModule } from '@uaa/users/users.module';
+import { FilesModule } from '@upload/files.module';
 import { AppController } from './app.controller';
 import { HealthModule } from './health/health.module';
 
@@ -120,8 +119,7 @@ import { HealthModule } from './health/health.module';
     { provide: APP_FILTER, useClass: ExceptionsFilter },
     {
       provide: APP_INTERCEPTOR,
-      useFactory: (): SentryInterceptor =>
-        new SentryInterceptor(sentryInterceptorConfig),
+      useFactory: (): SentryInterceptor => new SentryInterceptor(sentryInterceptorConfig),
     },
   ],
   controllers: [AppController],

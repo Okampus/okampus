@@ -1,10 +1,10 @@
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { GlobalRequestService } from '@common/lib/helpers/global-request-service';
-import { BaseRepository } from '@common/lib/orm/base.repository';
+import type { CreateClassDto } from '@classes/dto/create-class.dto';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import type { CreateClassDto } from '@modules/org/classes/dto/create-class.dto';
+import { GlobalRequestService } from '@lib/helpers/global-request-service';
+import { BaseRepository } from '@lib/orm/base.repository';
 import { Class } from './class.entity';
 import type { UpdateClassDto } from './dto/update-class.dto';
 

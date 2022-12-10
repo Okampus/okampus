@@ -6,10 +6,10 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import type { FastifyReply } from 'fastify';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { Public } from '@common/lib/decorators/public.decorator';
-import { User } from '../users/user.entity';
-import { UsersService } from '../users/users.service';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { Public } from '@lib/decorators/public.decorator';
+import { User } from '@uaa/users/user.entity';
+import { UsersService } from '@uaa/users/users.service';
 import { AuthController } from './auth.controller';
 
 interface GraphQLResponse {

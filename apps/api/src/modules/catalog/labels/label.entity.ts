@@ -5,9 +5,9 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { LabelType } from '@common/lib/types/enums/label-type.enum';
-import { _slugify } from '@common/lib/utils/slugify';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { LabelType } from '@lib/types/enums/label-type.enum';
+import { _slugify } from '@lib/utils/slugify';
 
 @ObjectType()
 @Entity()

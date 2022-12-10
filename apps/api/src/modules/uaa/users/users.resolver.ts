@@ -9,18 +9,18 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@common/lib/constants';
-import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
 import { PaginationOptions } from '@common/modules/pagination';
 import type { IndexedEntity } from '@common/modules/search/indexed-entity.interface';
-import { Interest } from '@modules/org/teams/interests/interest.entity';
-import { InterestsService } from '@modules/org/teams/interests/interests.service';
-import { Social } from '@modules/org/teams/socials/social.entity';
-import { SocialsService } from '@modules/org/teams/socials/socials.service';
-import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { IndexedUser } from '../../../common/lib/types/models/user-indexed.model';
+import { APP_PUB_SUB } from '@lib/constants';
+import { CurrentTenant } from '@lib/decorators/current-tenant.decorator';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { SubscriptionType } from '@lib/types/enums/subscription-type.enum';
+import { IndexedUser } from '@lib/types/models/user-indexed.model';
+import { Interest } from '@teams/interests/interest.entity';
+import { InterestsService } from '@teams/interests/interests.service';
+import { Social } from '@teams/socials/social.entity';
+import { SocialsService } from '@teams/socials/socials.service';
+import { Tenant } from '@tenants/tenant.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginatedUser, User } from './user.entity';
 import { UsersService } from './users.service';

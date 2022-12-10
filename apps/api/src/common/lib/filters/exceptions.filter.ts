@@ -1,7 +1,7 @@
 import { Catch, HttpException } from '@nestjs/common';
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
 import type { GqlContextType } from '@nestjs/graphql';
-import type { ErrorFilterResponse } from '../types/interfaces/error-filter-response.interface';
+import type { ErrorFilterResponse } from '@lib/types/interfaces/error-filter-response.interface';
 
 @Catch(HttpException)
 export class ExceptionsFilter implements ExceptionFilter {

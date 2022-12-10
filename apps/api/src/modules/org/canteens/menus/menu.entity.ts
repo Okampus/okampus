@@ -7,9 +7,9 @@ import {
   Property,
   Unique,
 } from '@mikro-orm/core';
-import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import type { Food } from '../foods/food.entity';
+import type { Food } from '@canteens/foods/food.entity';
+import { TransformCollection } from '@lib/decorators/transform-collection.decorator';
+import { BaseEntity } from '@lib/entities/base.entity';
 
 @Entity()
 export class Menu extends BaseEntity {

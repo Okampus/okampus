@@ -2,8 +2,8 @@ import { promises as fs } from 'node:fs';
 import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
 import { InjectS3 } from 'nestjs-s3';
-import { config } from '@common/configs/config';
-import type { FileKind } from '@common/lib/types/enums/file-kind.enum';
+import { config } from '@configs/config';
+import type { FileKind } from '@lib/types/enums/file-kind.enum';
 
 @Injectable()
 export class FilePersistanceService {

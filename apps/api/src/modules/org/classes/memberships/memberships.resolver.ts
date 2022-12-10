@@ -5,8 +5,8 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { Class } from '../class.entity';
-import { ClassesService } from '../class.service';
+import { Class } from '@classes/class.entity';
+import { ClassesService } from '@classes/class.service';
 import { ClassMembership, PaginatedClassMembership } from './class-membership.entity';
 import { ClassMembershipsService } from './memberships.service';
 

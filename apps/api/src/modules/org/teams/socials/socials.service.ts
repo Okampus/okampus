@@ -1,14 +1,14 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { AdminTeamSocialUpdatedNotification } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
-import type { CreateSocialDto } from '@modules/org/teams/socials/dto/create-social.dto';
-import type { User } from '@modules/uaa/users/user.entity';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { assertPermissions } from '@lib/utils/assert-permission';
+import type { CreateSocialDto } from '@teams/socials/dto/create-social.dto';
+import type { User } from '@uaa/users/user.entity';
 import type { UpdateSocialDto } from './dto/update-social.dto';
 import { Social } from './social.entity';
 

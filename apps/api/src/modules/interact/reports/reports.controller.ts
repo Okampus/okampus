@@ -10,13 +10,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { Content } from '@modules/create/contents/entities/content.entity';
-import { CreateReportDto } from '@modules/interact/reports/dto/create-report.dto';
-import { User } from '@modules/uaa/users/user.entity';
+import { Content } from '@create/contents/entities/content.entity';
+import { CreateReportDto } from '@interact/reports/dto/create-report.dto';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { User } from '@uaa/users/user.entity';
 import { GetReportsDto } from './dto/get-reports.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
 import { Report } from './report.entity';

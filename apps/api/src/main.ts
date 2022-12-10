@@ -1,8 +1,5 @@
 import './aliases';
-// Hack to get Multer to register its typings into the global scope, because why not
-// https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47780#issuecomment-790684085
-import 'multer';
-import '@common/lib/morgan.register';
+import '@lib/morgan.register';
 
 // KEEP FOR LOCALHOST DEBUG - import fs from 'node:fs';
 import path from 'node:path';
@@ -10,7 +7,6 @@ import fastifyCookie from '@fastify/cookie';
 import fastifyCors from '@fastify/cors';
 import fastifyPassport from '@fastify/passport';
 import fastifySecureSession from '@fastify/secure-session';
-
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
@@ -19,17 +15,15 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as SentryTracing from '@sentry/tracing';
 import fastify from 'fastify';
 import * as multer from 'fastify-multer';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import _ from 'fastify-multer/typings/fastify'; // Import to ensure that plugin typings are loaded
 import { processRequest } from 'graphql-upload-minimal';
 import helmet from 'helmet';
 import { Issuer } from 'openid-client';
-import { config } from '@common/configs/config';
-import { APP_OIDC_CACHE } from '@common/lib/constants';
-import { TenantsService } from '@modules/org/tenants/tenants.service';
-import { AuthService } from '@modules/uaa/auth/auth.service';
-import { tenantStrategyFactory } from '@modules/uaa/auth/tenant.strategy';
-import { UsersService } from '@modules/uaa/users/users.service';
+import { config } from '@configs/config';
+import { APP_OIDC_CACHE } from '@lib/constants';
+import { TenantsService } from '@tenants/tenants.service';
+import { AuthService } from '@uaa/auth/auth.service';
+import { tenantStrategyFactory } from '@uaa/auth/tenant.strategy';
+import { UsersService } from '@uaa/users/users.service';
 import { AppModule } from './app.module';
 
 const logger = new Logger('Bootstrap');
@@ -104,7 +98,6 @@ async function bootstrap(): Promise<void> {
   const tenantsService = app.get<TenantsService>(TenantsService);
   const authService = app.get<AuthService>(AuthService);
   const usersService = app.get<UsersService>(UsersService);
-
 
   // eslint-disable-next-line @typescript-eslint/require-await
   fastifyPassport.registerUserSerializer(async (user: { id: string }, _request) => user.id);

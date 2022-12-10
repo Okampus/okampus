@@ -5,8 +5,8 @@ import {
   PrimaryKeyType,
   Property,
 } from '@mikro-orm/core';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { User } from '../users/user.entity';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { User } from '@uaa/users/user.entity';
 
 @Entity()
 export class Statistics extends BaseEntity {

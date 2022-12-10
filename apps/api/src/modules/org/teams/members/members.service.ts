@@ -6,17 +6,17 @@ import {
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { MembershipRequestState } from '@common/lib/types/enums/membership-request-state.enum';
-import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import { TeamManagedMemberRoleUpdatedNotification, TeamManagedMembershipRequestUpdatedNotification } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import { User } from '@modules/uaa/users/user.entity';
-import { MembershipRequestIssuer } from '../../../../common/lib/types/enums/membership-request-issuer.enum';
-import { TeamMembershipRequestsService } from '../requests/requests.service';
-import { TeamMembershipRequest } from '../requests/team-membership-request.entity';
-import { Team } from '../team.entity';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { MembershipRequestIssuer } from '@lib/types/enums/membership-request-issuer.enum';
+import { MembershipRequestState } from '@lib/types/enums/membership-request-state.enum';
+import { TeamRole } from '@lib/types/enums/team-role.enum';
+import { TeamMembershipRequestsService } from '@teams/requests/requests.service';
+import { TeamMembershipRequest } from '@teams/requests/team-membership-request.entity';
+import { Team } from '@teams/team.entity';
+import { User } from '@uaa/users/user.entity';
 import type { InviteMemberDto } from './dto/invite-member.dto';
 import type { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { TeamMember } from './team-member.entity';

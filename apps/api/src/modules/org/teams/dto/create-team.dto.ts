@@ -5,7 +5,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { TeamKind } from '@common/lib/types/enums/team-kind.enum';
+import { TeamKind } from '@lib/types/enums/team-kind.enum';
 
 // TODO: no TeamImage on create
 @InputType()

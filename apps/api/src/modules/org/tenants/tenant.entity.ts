@@ -14,12 +14,11 @@ import type { Faker } from '@mikro-orm/seeder';
 import { Factory } from '@mikro-orm/seeder';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
-import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-
-import { _slugify } from '@common/lib/utils/slugify';
 import { Paginated } from '@common/modules/pagination';
-import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
+import { TransformCollection } from '@lib/decorators/transform-collection.decorator';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { _slugify } from '@lib/utils/slugify';
+import { ApprovalStep } from '@tenants/approval-steps/approval-step.entity';
 import { CreateTenantDto } from './dto/create-tenant.dto';
 import { TenantImage } from './tenant-images/tenant-image.entity';
 

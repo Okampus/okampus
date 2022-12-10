@@ -10,13 +10,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { User } from '@modules/uaa/users/user.entity';
-import type { TeamMembershipRequest } from '../requests/team-membership-request.entity';
-import { Team } from '../team.entity';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import type { TeamMembershipRequest } from '@teams/requests/team-membership-request.entity';
+import { Team } from '@teams/team.entity';
+import { User } from '@uaa/users/user.entity';
 import { InviteMemberDto } from './dto/invite-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { TeamMembersService } from './members.service';

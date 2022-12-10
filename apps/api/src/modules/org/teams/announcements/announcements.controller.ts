@@ -10,11 +10,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { CreateAnnouncementDto } from '@modules/org/teams/announcements/dto/create-announcement.dto';
-import { User } from '@modules/uaa/users/user.entity';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { CreateAnnouncementDto } from '@teams/announcements/dto/create-announcement.dto';
+import { User } from '@uaa/users/user.entity';
 import { Announcement } from './announcement.entity';
 import { AnnouncementsService } from './announcements.service';
 import ListAnnouncementsDto from './dto/list-announcements.dto';

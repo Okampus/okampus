@@ -1,13 +1,13 @@
 import type { EntityManager } from '@mikro-orm/postgresql';
 import type { ITriggerPayload } from '@novu/node';
-import { TeamMember } from '@modules/org/teams/members/team-member.entity';
-import type { Team } from '@modules/org/teams/team.entity';
-import type { Settings } from '@modules/uaa/settings/settings.entity';
-import { User } from '@modules/uaa/users/user.entity';
-import { TeamRole } from '../../../lib/types/enums/team-role.enum';
-import { Role } from '../../authorization/types/role.enum';
-import { ScopeRole } from '../../authorization/types/scope-role.enum';
-import type { NotificationType } from '../notification-type.enum';
+import { Role } from '@common/modules/authorization/types/role.enum';
+import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
+import type { NotificationType } from '@common/modules/notifications/notification-type.enum';
+import { TeamRole } from '@lib/types/enums/team-role.enum';
+import { TeamMember } from '@teams/members/team-member.entity';
+import type { Team } from '@teams/team.entity';
+import type { Settings } from '@uaa/settings/settings.entity';
+import { User } from '@uaa/users/user.entity';
 
 export abstract class Notification {
   public readonly type: NotificationType;

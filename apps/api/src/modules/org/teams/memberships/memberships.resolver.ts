@@ -1,7 +1,7 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
-import { PaginatedTeamMember } from '../members/team-member.entity';
-import { PaginatedTeamMembershipRequest, TeamMembershipRequest } from '../requests/team-membership-request.entity';
+import { ListMembershipRequestsDto } from '@teams/dto/membership-requests-list-options.dto';
+import { PaginatedTeamMember } from '@teams/members/team-member.entity';
+import { PaginatedTeamMembershipRequest, TeamMembershipRequest } from '@teams/requests/team-membership-request.entity';
 import { TeamMembershipsService } from './memberships.service';
 
 @Resolver(() => TeamMembershipRequest)

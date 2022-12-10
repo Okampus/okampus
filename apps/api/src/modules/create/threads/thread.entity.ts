@@ -9,16 +9,16 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
-import { ContentMaster } from '@common/lib/entities/content-master.entity';
-import { ContentMasterType } from '@common/lib/types/enums/content-master-type.enum';
-import { ThreadType } from '@common/lib/types/enums/thread-type.enum';
+import { Class } from '@classes/class.entity';
 import { Paginated } from '@common/modules/pagination';
-import { Validation } from '@modules/interact/validations/validation.entity';
-import { Class } from '@modules/org/classes/class.entity';
-import { Team } from '@modules/org/teams/team.entity';
-import { User } from '@modules/uaa/users/user.entity';
-import type { Content } from '../contents/entities/content.entity';
+import type { Content } from '@create/contents/entities/content.entity';
+import { Validation } from '@interact/validations/validation.entity';
+import { TransformCollection } from '@lib/decorators/transform-collection.decorator';
+import { ContentMaster } from '@lib/entities/content-master.entity';
+import { ContentMasterType } from '@lib/types/enums/content-master-type.enum';
+import { ThreadType } from '@lib/types/enums/thread-type.enum';
+import { Team } from '@teams/team.entity';
+import { User } from '@uaa/users/user.entity';
 
 @ObjectType()
 @Entity({ discriminatorValue: ContentMasterType.Thread })

@@ -8,21 +8,21 @@ import {
   Injectable,
 } from '@nestjs/common';
 import type { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
-import { GlobalRequestService } from '@common/lib/helpers/global-request-service';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { TeamImageType } from '@common/lib/types/enums/team-image-type.enum';
-import { TeamRole } from '@common/lib/types/enums/team-role.enum';
-import { assertPermissions } from '@common/lib/utils/assert-permission';
-import { catchUniqueViolation } from '@common/lib/utils/catch-unique-violation';
+import { Label } from '@catalog/labels/label.entity';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import { Label } from '@modules/catalog/labels/label.entity';
-import type { CreateTeamDto } from '@modules/org/teams/dto/create-team.dto';
-import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
-import type { CreateSocialDto } from '@modules/org/teams/socials/dto/create-social.dto';
-import type { User } from '@modules/uaa/users/user.entity';
-import type { Tenant } from '../tenants/tenant.entity';
+import { GlobalRequestService } from '@lib/helpers/global-request-service';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { TeamImageType } from '@lib/types/enums/team-image-type.enum';
+import { TeamRole } from '@lib/types/enums/team-role.enum';
+import { assertPermissions } from '@lib/utils/assert-permission';
+import { catchUniqueViolation } from '@lib/utils/catch-unique-violation';
+import type { CreateTeamDto } from '@teams/dto/create-team.dto';
+import { TeamForm } from '@teams/forms/team-form.entity';
+import type { CreateSocialDto } from '@teams/socials/dto/create-social.dto';
+import type { Tenant } from '@tenants/tenant.entity';
+import type { User } from '@uaa/users/user.entity';
 import type { TeamsFilterDto } from './dto/teams-filter.dto';
 import type { UpdateTeamDto } from './dto/update-team.dto';
 import { TeamMember } from './members/team-member.entity';
@@ -138,7 +138,7 @@ export class TeamsService extends GlobalRequestService {
     if (wantedLabels) {
       if (wantedLabels.length === 0)
         team.labels.removeAll();
-       else
+      else
         team.labels.set(await this.teamLabelRepository.find({ name: { $in: wantedLabels } }));
     }
 

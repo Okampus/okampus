@@ -1,9 +1,9 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
+import type { CreateFoodDto } from '@canteens/foods/dto/create-food.dto';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import type { CreateFoodDto } from '@modules/org/canteens/foods/dto/create-food.dto';
+import { BaseRepository } from '@lib/orm/base.repository';
 import type { UpdateFoodDto } from './dto/update-food.dto';
 import { Food } from './food.entity';
 

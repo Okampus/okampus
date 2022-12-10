@@ -1,4 +1,4 @@
-import { ClassType } from '../lib/types/enums/class-type.enum';
+import { ClassType } from '@lib/types/enums/class-type.enum';
 
 export const classes = [
   {

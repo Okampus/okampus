@@ -10,11 +10,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { CreateTeamFormDto } from '@modules/org/teams/forms/dto/create-team-form.dto';
-import { User } from '@modules/uaa/users/user.entity';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { CreateTeamFormDto } from '@teams/forms/dto/create-team-form.dto';
+import { User } from '@uaa/users/user.entity';
 import { ListTeamFormsDto } from './dto/list-team-forms.dto';
 import { UpdateTeamFormDto } from './dto/update-team-form.dto';
 import { TeamFormsService } from './forms.service';

@@ -1,13 +1,13 @@
 import type { FilterQuery } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { MembershipRequestDirection } from '@common/lib/types/enums/membership-request-direction.enum';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import { MembershipRequestIssuer } from '../../../../common/lib/types/enums/membership-request-issuer.enum';
-import type { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
-import { TeamMember } from '../members/team-member.entity';
-import { TeamMembershipRequest } from '../requests/team-membership-request.entity';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { MembershipRequestDirection } from '@lib/types/enums/membership-request-direction.enum';
+import { MembershipRequestIssuer } from '@lib/types/enums/membership-request-issuer.enum';
+import type { ListMembershipRequestsDto } from '@teams/dto/membership-requests-list-options.dto';
+import { TeamMember } from '@teams/members/team-member.entity';
+import { TeamMembershipRequest } from '@teams/requests/team-membership-request.entity';
 
 @Injectable()
 export class TeamMembershipsService {

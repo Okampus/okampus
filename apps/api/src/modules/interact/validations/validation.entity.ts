@@ -1,10 +1,10 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseContentInteraction } from '@common/lib/entities/base-content-interaction.entity';
-import { ValidationType } from '@common/lib/types/enums/validation-type.enum';
 import { Paginated } from '@common/modules/pagination';
-import type { Content } from '@modules/create/contents/entities/content.entity';
-import type { User } from '@modules/uaa/users/user.entity';
+import type { Content } from '@create/contents/entities/content.entity';
+import { BaseContentInteraction } from '@lib/entities/base-content-interaction.entity';
+import { ValidationType } from '@lib/types/enums/validation-type.enum';
+import type { User } from '@uaa/users/user.entity';
 
 @ObjectType()
 @Entity()

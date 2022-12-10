@@ -1,15 +1,15 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { GlobalRequestService } from '@common/lib/helpers/global-request-service';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { ApprovalStepType } from '@common/lib/types/enums/approval-step-type.enum';
-import { catchUniqueViolation } from '@common/lib/utils/catch-unique-violation';
-import { getMinMax } from '@common/lib/utils/get-min-max';
-import type { ApprovalStepDto } from '@modules/org/tenants/approval-steps/dto/create-approval-step.dto';
-import { EventApproval } from '@modules/plan/approvals/approval.entity';
-import { Event } from '@modules/plan/events/event.entity';
-import { UsersService } from '@modules/uaa/users/users.service';
+import { GlobalRequestService } from '@lib/helpers/global-request-service';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { ApprovalStepType } from '@lib/types/enums/approval-step-type.enum';
+import { catchUniqueViolation } from '@lib/utils/catch-unique-violation';
+import { getMinMax } from '@lib/utils/get-min-max';
+import { EventApproval } from '@plan/approvals/approval.entity';
+import { Event } from '@plan/events/event.entity';
+import type { ApprovalStepDto } from '@tenants/approval-steps/dto/create-approval-step.dto';
+import { UsersService } from '@uaa/users/users.service';
 import { ApprovalStep } from './approval-step.entity';
 import type { UpdateApprovalStepDto } from './dto/update-approval-step.dto';
 

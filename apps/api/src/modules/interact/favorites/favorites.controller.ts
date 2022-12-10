@@ -10,11 +10,11 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import type { Content } from '@modules/create/contents/entities/content.entity';
-import { User } from '@modules/uaa/users/user.entity';
+import type { Content } from '@create/contents/entities/content.entity';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { User } from '@uaa/users/user.entity';
 import type { Favorite } from './favorite.entity';
 import { FavoritesService } from './favorites.service';
 

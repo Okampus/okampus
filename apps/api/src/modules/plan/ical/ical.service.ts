@@ -1,13 +1,13 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { ICalCalendar, ICalCalendarMethod, ICalEvent } from 'ical-generator';
-import { config } from '@common/configs/config';
-import { iCals } from '@common/configs/strings';
-import { GlobalRequestService } from '@common/lib/helpers/global-request-service';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { EventRegistration } from '@modules/plan/registrations/registration.entity';
-import { User } from '@modules/uaa/users/user.entity';
-import { Event } from '../events/event.entity';
+import { config } from '@configs/config';
+import { iCals } from '@configs/strings';
+import { GlobalRequestService } from '@lib/helpers/global-request-service';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { Event } from '@plan/events/event.entity';
+import { EventRegistration } from '@plan/registrations/registration.entity';
+import { User } from '@uaa/users/user.entity';
 
 @Injectable()
 export class TeamICalService extends GlobalRequestService {

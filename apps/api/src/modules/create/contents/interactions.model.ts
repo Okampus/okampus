@@ -1,6 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Reaction } from '@modules/interact/reactions/reaction.entity';
-import { Report } from '@modules/interact/reports/report.entity';
+import { Reaction } from '@interact/reactions/reaction.entity';
+import { Report } from '@interact/reports/report.entity';
 
 @ObjectType()
 export class Interactions {

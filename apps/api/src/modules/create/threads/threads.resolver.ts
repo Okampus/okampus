@@ -9,14 +9,14 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@common/lib/constants';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
-import type { Interactions } from '@modules/create/contents/interactions.model';
-import { CreateThreadDto } from '@modules/create/threads/dto/create-thread.dto';
-import { User } from '@modules/uaa/users/user.entity';
-import { ContentsService } from '../contents/contents.service';
-import type { Content } from '../contents/entities/content.entity';
+import { ContentsService } from '@create/contents/contents.service';
+import type { Content } from '@create/contents/entities/content.entity';
+import type { Interactions } from '@create/contents/interactions.model';
+import { CreateThreadDto } from '@create/threads/dto/create-thread.dto';
+import { APP_PUB_SUB } from '@lib/constants';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { SubscriptionType } from '@lib/types/enums/subscription-type.enum';
+import { User } from '@uaa/users/user.entity';
 import { UpdateThreadDto } from './dto/update-thread.dto';
 import { PaginatedThread, Thread } from './thread.entity';
 import { ThreadsService } from './threads.service';

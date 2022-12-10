@@ -5,7 +5,7 @@ import {
   PartialType,
 } from '@nestjs/graphql';
 import { IsInt, IsOptional } from 'class-validator';
-import { CreateTeamDto } from '@modules/org/teams/dto/create-team.dto';
+import { CreateTeamDto } from '@teams/dto/create-team.dto';
 
 @InputType()
 export class UpdateTeamDto extends PartialType(CreateTeamDto) {

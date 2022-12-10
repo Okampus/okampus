@@ -18,7 +18,7 @@ import {
   Min,
 } from 'class-validator';
 import { GraphQLJSON } from 'graphql-scalars';
-import { EventState } from '@common/lib/types/enums/event-state.enum';
+import { EventState } from '@lib/types/enums/event-state.enum';
 
 @InputType()
 export class CreateEventDto {

@@ -7,7 +7,7 @@ import {
   IsString,
   Min,
 } from 'class-validator';
-import { QueryOrderMapScalar } from '@common/lib/types/scalars/query-order-map.scalar';
+import { QueryOrderMapScalar } from '@lib/types/scalars/query-order-map.scalar';
 
 @InputType()
 export class PaginationOptions {

@@ -6,12 +6,12 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import { BaseFileEntity } from '@common/lib/entities/base-file.entity';
-import { StudyDocType } from '@common/lib/types/enums/study-doc-type.enum';
-import { Subject } from '@modules/catalog/subjects/subject.entity';
-import type { Class } from '@modules/org/classes/class.entity';
-import type { DocSeries } from '../doc-series/doc-series.entity';
-import type { FileUpload } from '../file-uploads/file-upload.entity';
+import { Subject } from '@catalog/subjects/subject.entity';
+import type { Class } from '@classes/class.entity';
+import { BaseFileEntity } from '@lib/entities/base-file.entity';
+import { StudyDocType } from '@lib/types/enums/study-doc-type.enum';
+import type { DocSeries } from '@upload/doc-series/doc-series.entity';
+import type { FileUpload } from '@upload/file-uploads/file-upload.entity';
 
 @Entity()
 export class StudyDoc extends BaseFileEntity {
@@ -21,7 +21,7 @@ export class StudyDoc extends BaseFileEntity {
   @ManyToOne()
   subject!: Subject;
 
-  @ManyToOne({ onDelete: 'CASCADE' })
+  @ManyToOne({ type: 'DocSeries', onDelete: 'CASCADE' })
   docSeries: DocSeries | null = null;
 
   @Property()

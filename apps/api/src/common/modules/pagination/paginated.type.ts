@@ -1,7 +1,7 @@
 import type { Type } from '@nestjs/common';
 import { Field, ObjectType } from '@nestjs/graphql';
-import type { BaseEntity } from '@common/lib/entities/base.entity';
-import type { AbstractConstructor } from '@common/lib/types/types/abstract-constructor.type';
+import type { BaseEntity } from '@lib/entities/base.entity';
+import type { AbstractConstructor } from '@lib/types/types/abstract-constructor.type';
 import { PageInfo } from './page-info.type';
 
 export interface Edge<T extends BaseEntity> {

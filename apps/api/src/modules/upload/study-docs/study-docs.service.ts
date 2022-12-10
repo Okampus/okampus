@@ -2,22 +2,22 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { StudyDocFilter } from '@common/lib/types/enums/docs-filters.enum';
-import { assertPermissions } from '@common/lib/utils/assert-permission';
-import type {
-  Categories,
-  GroupFilters,
-} from '@common/lib/utils/compute-document-categories';
-import { computeDocumentCategories } from '@common/lib/utils/compute-document-categories';
+import { Subject } from '@catalog/subjects/subject.entity';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import { Subject } from '@modules/catalog/subjects/subject.entity';
-import type { User } from '@modules/uaa/users/user.entity';
-import type { CreateStudyDocDto } from '@modules/upload/study-docs/dto/create-study-doc.dto';
-import { DocSeries } from '../doc-series/doc-series.entity';
-import type { FileUpload } from '../file-uploads/file-upload.entity';
+import { BaseRepository } from '@lib/orm/base.repository';
+import type { StudyDocFilter } from '@lib/types/enums/docs-filters.enum';
+import { assertPermissions } from '@lib/utils/assert-permission';
+import type {
+  Categories,
+  GroupFilters,
+} from '@lib/utils/compute-document-categories';
+import { computeDocumentCategories } from '@lib/utils/compute-document-categories';
+import type { User } from '@uaa/users/user.entity';
+import { DocSeries } from '@upload/doc-series/doc-series.entity';
+import type { FileUpload } from '@upload/file-uploads/file-upload.entity';
+import type { CreateStudyDocDto } from '@upload/study-docs/dto/create-study-doc.dto';
 import type { DocsFilterDto } from './dto/docs-filter.dto';
 import type { UpdateStudyDocDto } from './dto/update-study-doc.dto';
 import { StudyDoc } from './study-doc.entity';

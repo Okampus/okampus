@@ -1,8 +1,8 @@
 import type { ITriggerPayload } from '@novu/node';
-import { Report } from '@modules/interact/reports/report.entity';
-import type { User } from '@modules/uaa/users/user.entity';
-import { config } from '../../../configs/config';
-import { NotificationType } from '../notification-type.enum';
+import { NotificationType } from '@common/modules/notifications/notification-type.enum';
+import { config } from '@configs/config';
+import { Report } from '@interact/reports/report.entity';
+import type { User } from '@uaa/users/user.entity';
 import { Notification } from './base.notification';
 
 export class AdminReportCreatedNotification extends Notification {

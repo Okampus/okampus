@@ -1,13 +1,12 @@
-/* eslint-disable object-curly-newline */
-/* eslint-disable unicorn/no-array-method-this-argument */
+/* eslint-disable object-curly-newline, unicorn/no-array-method-this-argument */
 import type { FilterQuery, FindOptions } from '@mikro-orm/core';
 import { QueryOrder } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import { PageInfo } from '@common/modules/pagination';
-import type { BaseEntity } from '../entities/base.entity';
-import type { CursorColumns, CursorColumnTypes } from '../types/interfaces/cursor-columns.interface';
-import { decodeCursor, encodeCursor } from '../utils/cursor-serializer';
+import type { BaseEntity } from '@lib/entities/base.entity';
+import type { CursorColumns, CursorColumnTypes } from '@lib/types/interfaces/cursor-columns.interface';
+import { decodeCursor, encodeCursor } from '@lib/utils/cursor-serializer';
 
 type PaginationFindOptions<T extends BaseEntity, P extends string> = Omit<
   FindOptions<T, P>, 'limit' | 'offset' | 'orderBy'

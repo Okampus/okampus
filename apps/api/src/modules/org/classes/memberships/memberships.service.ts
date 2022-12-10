@@ -1,11 +1,11 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
+import { Class } from '@classes/class.entity';
+import type { CreateClassMembershipDto } from '@classes/memberships/dto/create-class-membership.dto';
+import { SchoolYear } from '@classes/school-year/school-year.entity';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import type { CreateClassMembershipDto } from '@modules/org/classes/memberships/dto/create-class-membership.dto';
-import { User } from '@modules/uaa/users/user.entity';
-import { Class } from '../class.entity';
-import { SchoolYear } from '../school-year/school-year.entity';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { User } from '@uaa/users/user.entity';
 import { ClassMembership } from './class-membership.entity';
 import type { UpdateClassMembershipDto } from './dto/update-class-membership.dto';
 

@@ -12,11 +12,11 @@ import {
 import type { EntityManager } from '@mikro-orm/core';
 import { Factory } from '@mikro-orm/seeder';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { ApprovalStepType } from '@common/lib/types/enums/approval-step-type.enum';
-import { User } from '@modules/uaa/users/user.entity';
-import { Tenant } from '../tenant.entity';
+import { TransformCollection } from '@lib/decorators/transform-collection.decorator';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { ApprovalStepType } from '@lib/types/enums/approval-step-type.enum';
+import { Tenant } from '@tenants/tenant.entity';
+import { User } from '@uaa/users/user.entity';
 
 @ObjectType()
 @Entity()

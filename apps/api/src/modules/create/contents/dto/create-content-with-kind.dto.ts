@@ -1,5 +1,5 @@
 import { InputType, IntersectionType } from '@nestjs/graphql';
-import { CreateOrphanContentDto } from '@modules/create/contents/dto/create-orphan-content.dto';
+import { CreateOrphanContentDto } from '@create/contents/dto/create-orphan-content.dto';
 import { ContentKindDto } from './content-kind.dto';
 import { ParentDto } from './parent.dto';
 

@@ -1,7 +1,7 @@
 import type { ChangeSet, EventSubscriber, FlushEventArgs } from '@mikro-orm/core';
 import { ChangeSetType, Subscriber } from '@mikro-orm/core';
-import { Settings } from '../settings/settings.entity';
-import { Statistics } from '../statistics/statistics.entity';
+import { Settings } from '@uaa/settings/settings.entity';
+import { Statistics } from '@uaa/statistics/statistics.entity';
 import { User } from './user.entity';
 
 @Subscriber()

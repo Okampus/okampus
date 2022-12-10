@@ -5,8 +5,8 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { MetricName } from '@common/lib/types/enums/metric-name.enum';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { MetricName } from '@lib/types/enums/metric-name.enum';
 
 @ObjectType()
 @Entity()

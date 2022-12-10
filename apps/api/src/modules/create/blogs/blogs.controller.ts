@@ -10,13 +10,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { ContentListOptionsDto } from '@common/lib/dto/list-options.dto';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import type { PaginatedNodes } from '@common/modules/pagination';
 import { normalizeSort } from '@common/modules/sorting';
-import { CreateBlogDto } from '@modules/create/blogs/dto/create-blog.dto';
-import { User } from '@modules/uaa/users/user.entity';
+import { CreateBlogDto } from '@create/blogs/dto/create-blog.dto';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { ContentListOptionsDto } from '@lib/dto/list-options.dto';
+import { User } from '@uaa/users/user.entity';
 import { Blog } from './blog.entity';
 import { BlogsService } from './blogs.service';
 import { UpdateBlogDto } from './dto/update-blog.dto';

@@ -1,6 +1,6 @@
 import { Transform } from 'class-transformer';
 import { IsArray, IsEnum, IsOptional } from 'class-validator';
-import { InfoDocFilter } from '@common/lib/types/enums/docs-filters.enum';
+import { InfoDocFilter } from '@lib/types/enums/docs-filters.enum';
 
 export class CategoryTypesDto {
   @Transform(({ value }) => value.split(','))

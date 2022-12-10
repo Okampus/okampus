@@ -6,7 +6,7 @@ import {
   IsOptional,
 } from 'class-validator';
 import { GraphQLJSON } from 'graphql-scalars';
-import { EventRegisterStatus } from '@common/lib/types/enums/event-register-status.enum';
+import { EventRegisterStatus } from '@lib/types/enums/event-register-status.enum';
 
 @InputType()
 export class CreateEventRegistrationDto {

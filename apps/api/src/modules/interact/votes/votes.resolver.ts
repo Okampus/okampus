@@ -8,12 +8,12 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@common/lib/constants';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
-import { Content } from '@modules/create/contents/entities/content.entity';
-import { User } from '@modules/uaa/users/user.entity';
+import { Content } from '@create/contents/entities/content.entity';
+import { APP_PUB_SUB } from '@lib/constants';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { SubscriptionType } from '@lib/types/enums/subscription-type.enum';
+import { User } from '@uaa/users/user.entity';
 import { PaginatedVote, Vote } from './vote.entity';
 import { VotesService } from './votes.service';
 

@@ -14,6 +14,29 @@ type PageInfo {
   countTotal: Float!
 }
 
+type SchoolYear {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  id: String!
+  name: String!
+  active: Boolean!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type SchoolYearEdge {
+  cursor: String!
+  node: SchoolYear!
+}
+
+type PaginatedSchoolYear {
+  edges: [SchoolYearEdge!]
+  pageInfo: PageInfo
+}
+
 type ApprovalStep {
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -24,11 +47,6 @@ type ApprovalStep {
   type: ApprovalStepType!
   users: [User!]!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 enum ApprovalStepType {
   Event
@@ -504,24 +522,6 @@ type UserEdge {
 
 type PaginatedUser {
   edges: [UserEdge!]
-  pageInfo: PageInfo
-}
-
-type SchoolYear {
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  id: String!
-  name: String!
-  active: Boolean!
-}
-
-type SchoolYearEdge {
-  cursor: String!
-  node: SchoolYear!
-}
-
-type PaginatedSchoolYear {
-  edges: [SchoolYearEdge!]
   pageInfo: PageInfo
 }
 

@@ -13,7 +13,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { CreateHistoryDto } from '@modules/org/teams/histories/dto/create-history.dto';
+import { CreateHistoryDto } from '@teams/histories/dto/create-history.dto';
 import { UpdateHistoryDto } from './dto/update-history.dto';
 import { HistoriesService } from './histories.service';
 import { TeamHistory } from './team-history.entity';

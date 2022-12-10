@@ -13,11 +13,11 @@ import {
   Int,
   ObjectType,
 } from '@nestjs/graphql';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import { Paginated } from '@common/modules/pagination';
-import { User } from '@modules/uaa/users/user.entity';
-import { Team } from '../team.entity';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { TeamRole } from '@lib/types/enums/team-role.enum';
+import { Team } from '@teams/team.entity';
+import { User } from '@uaa/users/user.entity';
 
 @ObjectType()
 @Entity()

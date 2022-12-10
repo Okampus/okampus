@@ -8,14 +8,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { CreateEventApprovalDto } from '@modules/plan/approvals/dto/create-approval.dto';
-import { User } from '@modules/uaa/users/user.entity';
-// Import type { Event } from '../events/team-event.entity';
+import { CurrentTenant } from '@lib/decorators/current-tenant.decorator';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { CreateEventApprovalDto } from '@plan/approvals/dto/create-approval.dto';
+import { Tenant } from '@tenants/tenant.entity';
+import { User } from '@uaa/users/user.entity';
 import { EventApproval } from './approval.entity';
 import { EventApprovalsService } from './approvals.service';
 import { ListEventApprovalsDto } from './dto/list-approvals.dto';

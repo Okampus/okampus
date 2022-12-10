@@ -8,12 +8,12 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { ClassRole } from '@common/lib/types/enums/class-role.enum';
+import { Class } from '@classes/class.entity';
+import { SchoolYear } from '@classes/school-year/school-year.entity';
 import { Paginated } from '@common/modules/pagination';
-import { User } from '@modules/uaa/users/user.entity';
-import { Class } from '../class.entity';
-import { SchoolYear } from '../school-year/school-year.entity';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { ClassRole } from '@lib/types/enums/class-role.enum';
+import { User } from '@uaa/users/user.entity';
 
 @ObjectType()
 @Entity()

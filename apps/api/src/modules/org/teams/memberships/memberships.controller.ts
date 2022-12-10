@@ -7,10 +7,10 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { User } from '@modules/uaa/users/user.entity';
-import { ListMembershipRequestsDto } from '../dto/membership-requests-list-options.dto';
-import type { TeamMember } from '../members/team-member.entity';
-import type { TeamMembershipRequest } from '../requests/team-membership-request.entity';
+import { ListMembershipRequestsDto } from '@teams/dto/membership-requests-list-options.dto';
+import type { TeamMember } from '@teams/members/team-member.entity';
+import type { TeamMembershipRequest } from '@teams/requests/team-membership-request.entity';
+import { User } from '@uaa/users/user.entity';
 import { TeamMembershipsService } from './memberships.service';
 
 @ApiTags('Team Memberships')

@@ -10,11 +10,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
-import { ApprovalStepsService } from '@modules/org/tenants/approval-steps/approval-steps.service';
-import { ApprovalStepDto } from '@modules/org/tenants/approval-steps/dto/create-approval-step.dto';
-import { Tenant } from '../tenant.entity';
+import { CurrentTenant } from '@lib/decorators/current-tenant.decorator';
+import { ApprovalStepsService } from '@tenants/approval-steps/approval-steps.service';
+import { ApprovalStepDto } from '@tenants/approval-steps/dto/create-approval-step.dto';
+import { Tenant } from '@tenants/tenant.entity';
 import { ApprovalStep } from './approval-step.entity';
 import { ListApprovalStepsDto } from './dto/list-approval-steps.dto';
 import { UpdateApprovalStepDto } from './dto/update-approval-step.dto';

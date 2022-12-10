@@ -9,13 +9,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
+import { Class } from '@classes/class.entity';
+import { CreateClassMembershipDto } from '@classes/memberships/dto/create-class-membership.dto';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import { PaginationOptions } from '@common/modules/pagination';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { CreateClassMembershipDto } from '@modules/org/classes/memberships/dto/create-class-membership.dto';
-import { User } from '@modules/uaa/users/user.entity';
-import { Class } from '../class.entity';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { User } from '@uaa/users/user.entity';
 import type { ClassMembership } from './class-membership.entity';
 import { UpdateClassMembershipDto } from './dto/update-class-membership.dto';
 import { ClassMembershipsService } from './memberships.service';

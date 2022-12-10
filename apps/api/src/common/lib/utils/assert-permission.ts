@@ -1,7 +1,7 @@
 import { ForbiddenError } from '@casl/ability';
 import { ForbiddenException, InternalServerErrorException } from '@nestjs/common';
-import type { Action } from '../../modules/authorization';
-import type { AppAbility, Subjects } from '../../modules/casl/casl-ability.factory';
+import type { Action } from '@common/modules/authorization';
+import type { AppAbility, Subjects } from '@common/modules/casl/casl-ability.factory';
 
 export function assertPermissions(
   ability: AppAbility,

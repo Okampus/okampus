@@ -14,8 +14,8 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import { PaymentMethod } from '@common/lib/types/enums/payment-method.enum';
-import { CreateFileUploadDto } from '@modules/upload/file-uploads/dto/create-file-upload.dto';
+import { PaymentMethod } from '@lib/types/enums/payment-method.enum';
+import { CreateFileUploadDto } from '@upload/file-uploads/dto/create-file-upload.dto';
 
 @InputType()
 export class CreateTeamReceiptDto extends CreateFileUploadDto {

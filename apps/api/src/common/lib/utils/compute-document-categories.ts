@@ -1,7 +1,7 @@
 import partition from 'lodash.partition';
-import type { InfoDoc } from '@modules/upload/info-docs/info-doc.entity';
-import type { StudyDoc } from '@modules/upload/study-docs/study-doc.entity';
-import type { InfoDocFilter, StudyDocFilter } from '../types/enums/docs-filters.enum';
+import type { InfoDocFilter, StudyDocFilter } from '@lib/types/enums/docs-filters.enum';
+import type { InfoDoc } from '@upload/info-docs/info-doc.entity';
+import type { StudyDoc } from '@upload/study-docs/study-doc.entity';
 import { groupBy } from './group-by';
 
 export interface Category<T extends InfoDocFilter | StudyDocFilter> {

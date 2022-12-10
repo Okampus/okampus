@@ -1,12 +1,12 @@
 import { Field, InputType } from '@nestjs/graphql';
 import {
- IsEnum,
- IsInt,
- IsOptional,
- IsString,
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsString,
 } from 'class-validator';
-import { TenantImageType } from '@common/lib/types/enums/tenant-image-type.enum';
-import { CreateFileUploadDto } from '@modules/upload/file-uploads/dto/create-file-upload.dto';
+import { TenantImageType } from '@lib/types/enums/tenant-image-type.enum';
+import { CreateFileUploadDto } from '@upload/file-uploads/dto/create-file-upload.dto';
 
 @InputType()
 export class CreateTenantImageDto extends CreateFileUploadDto {

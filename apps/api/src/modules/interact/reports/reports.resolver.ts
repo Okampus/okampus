@@ -7,12 +7,12 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
-import { APP_PUB_SUB } from '@common/lib/constants';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { SubscriptionType } from '@common/lib/types/enums/subscription-type.enum';
-import { Content } from '@modules/create/contents/entities/content.entity';
-import { CreateReportDto } from '@modules/interact/reports/dto/create-report.dto';
-import { User } from '@modules/uaa/users/user.entity';
+import { Content } from '@create/contents/entities/content.entity';
+import { CreateReportDto } from '@interact/reports/dto/create-report.dto';
+import { APP_PUB_SUB } from '@lib/constants';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { SubscriptionType } from '@lib/types/enums/subscription-type.enum';
+import { User } from '@uaa/users/user.entity';
 import { PaginatedReport, Report } from './report.entity';
 import { ReportsService } from './reports.service';
 

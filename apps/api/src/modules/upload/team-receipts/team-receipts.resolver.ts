@@ -3,18 +3,17 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import { PubSubEngine } from 'graphql-subscriptions';
 import { GraphQLUpload } from 'graphql-upload-minimal';
-import { APP_PUB_SUB } from '@common/lib/constants';
-import { CurrentTenant } from '@common/lib/decorators/current-tenant.decorator';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { FileKind } from '@common/lib/types/enums/file-kind.enum';
-import { Team } from '@modules/org/teams/team.entity';
-import { Tenant } from '@modules/org/tenants/tenant.entity';
-import { User } from '@modules/uaa/users/user.entity';
-import { CreateTeamReceiptDto } from '@modules/upload/team-receipts/dto/create-team-receipt.dto';
-import { FileUploadsService } from '../file-uploads/file-uploads.service';
+import { APP_PUB_SUB } from '@lib/constants';
+import { CurrentTenant } from '@lib/decorators/current-tenant.decorator';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { FileKind } from '@lib/types/enums/file-kind.enum';
+import { Team } from '@teams/team.entity';
+import { Tenant } from '@tenants/tenant.entity';
+import { User } from '@uaa/users/user.entity';
+import { FileUploadsService } from '@upload/file-uploads/file-uploads.service';
+import { CreateTeamReceiptDto } from '@upload/team-receipts/dto/create-team-receipt.dto';
 import { TeamReceipt } from './team-receipt.entity';
 import { TeamReceiptsService } from './team-receipts.service';
-
 
 @Resolver(() => Team)
 export class TeamReceiptsResolver {

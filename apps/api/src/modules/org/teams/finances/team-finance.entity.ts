@@ -8,15 +8,15 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { PaymentMethod } from '@common/lib/types/enums/payment-method.enum';
-import { TeamFinanceCategory } from '@common/lib/types/enums/team-finance-category.enum';
-import { TeamFinanceType } from '@common/lib/types/enums/team-finance-type.enum';
 import { Paginated } from '@common/modules/pagination';
-import { Team } from '@modules/org/teams/team.entity';
-import { Event } from '@modules/plan/events/event.entity';
-import { User } from '@modules/uaa/users/user.entity';
-import { TeamFile } from '@modules/upload/team-files/team-file.entity';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { PaymentMethod } from '@lib/types/enums/payment-method.enum';
+import { TeamFinanceCategory } from '@lib/types/enums/team-finance-category.enum';
+import { TeamFinanceType } from '@lib/types/enums/team-finance-type.enum';
+import { Event } from '@plan/events/event.entity';
+import { Team } from '@teams/team.entity';
+import { User } from '@uaa/users/user.entity';
+import { TeamFile } from '@upload/team-files/team-file.entity';
 
 @ObjectType()
 @Entity()
@@ -87,7 +87,6 @@ export class TeamFinance extends BaseEntity {
     this.assign(options);
   }
 }
-
 
 @ObjectType()
 export class PaginatedTeamFinance extends Paginated(TeamFinance) {}

@@ -15,10 +15,10 @@ import {
 } from '@nestjs/graphql';
 import mime from 'mime-types';
 import { nanoid } from 'nanoid';
-import { config } from '@common/configs/config';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { FileKind } from '@common/lib/types/enums/file-kind.enum';
-import { User } from '@modules/uaa/users/user.entity';
+import { config } from '@configs/config';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { FileKind } from '@lib/types/enums/file-kind.enum';
+import { User } from '@uaa/users/user.entity';
 
 @ObjectType()
 @Entity()

@@ -1,9 +1,9 @@
 import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
+import type { CreateTagDto } from '@catalog/tags/dto/create-tag.dto';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import type { CreateTagDto } from '@modules/catalog/tags/dto/create-tag.dto';
+import { BaseRepository } from '@lib/orm/base.repository';
 import type { UpdateTagDto } from './dto/update-tag.dto';
 import { Tag } from './tag.entity';
 

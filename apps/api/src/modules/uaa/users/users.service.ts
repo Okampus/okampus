@@ -7,28 +7,28 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import type { MulterFile } from '@webundsoehne/nest-fastify-file-upload/dist/interfaces/multer-options.interface';
 import MeiliSearch from 'meilisearch';
 import { InjectMeiliSearch } from 'nestjs-meilisearch';
-import { config } from '@common/configs/config';
-import { GlobalRequestService } from '@common/lib/helpers/global-request-service';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { UserImageType } from '@common/lib/types/enums/user-image-type.enum';
-import type { FullPageInfo } from '@common/lib/types/interfaces/full-page-info.interface';
-import { assertPermissions } from '@common/lib/utils/assert-permission';
-import { catchUniqueViolation } from '@common/lib/utils/catch-unique-violation';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import type { IndexedEntity } from '@common/modules/search/indexed-entity.interface';
-import type { CreateSocialDto } from '@modules/org/teams/socials/dto/create-social.dto';
-import { Social } from '@modules/org/teams/socials/social.entity';
-import type { Tenant } from '@modules/org/tenants/tenant.entity';
-import { TenantsService } from '@modules/org/tenants/tenants.service';
-import type { RegisterDto } from '../auth/dto/register.dto';
-import type { TenantUserDto } from '../auth/dto/tenant-user.dto';
-import { Statistics } from '../statistics/statistics.entity';
-import { StatisticsService } from '../statistics/statistics.service';
-import type { CreateUserImageDto } from '../user-images/dto/create-user-image.dto';
-import type { UserImage } from '../user-images/user-image.entity';
-import { UserImagesService } from '../user-images/user-images.service';
+import { config } from '@configs/config';
+import { GlobalRequestService } from '@lib/helpers/global-request-service';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { UserImageType } from '@lib/types/enums/user-image-type.enum';
+import type { FullPageInfo } from '@lib/types/interfaces/full-page-info.interface';
+import { assertPermissions } from '@lib/utils/assert-permission';
+import { catchUniqueViolation } from '@lib/utils/catch-unique-violation';
+import type { CreateSocialDto } from '@teams/socials/dto/create-social.dto';
+import { Social } from '@teams/socials/social.entity';
+import type { Tenant } from '@tenants/tenant.entity';
+import { TenantsService } from '@tenants/tenants.service';
+import type { RegisterDto } from '@uaa/auth/dto/register.dto';
+import type { TenantUserDto } from '@uaa/auth/dto/tenant-user.dto';
+import { Statistics } from '@uaa/statistics/statistics.entity';
+import { StatisticsService } from '@uaa/statistics/statistics.service';
+import type { CreateUserImageDto } from '@uaa/user-images/dto/create-user-image.dto';
+import type { UserImage } from '@uaa/user-images/user-image.entity';
+import { UserImagesService } from '@uaa/user-images/user-images.service';
 import type { CreateBotDto } from './dto/create-bot.dto';
 import type { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
@@ -233,7 +233,6 @@ export class UsersService extends GlobalRequestService {
     await this.userImagesService.setInactiveLastActive(user.id, type);
 
     user[userImageTypeToKey[type]] = userImage;
-
 
     return user;
   }

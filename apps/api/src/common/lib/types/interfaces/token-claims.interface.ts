@@ -1,4 +1,4 @@
-import type { RequestType } from '../enums/request-type.enum';
+import type { RequestType } from '@lib/types/enums/request-type.enum';
 
 export interface TokenClaims {
   iss: string;

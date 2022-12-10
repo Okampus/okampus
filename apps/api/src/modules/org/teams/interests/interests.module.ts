@@ -1,8 +1,8 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import { User } from '@modules/uaa/users/user.entity';
-import { Team } from '../team.entity';
+import { Team } from '@teams/team.entity';
+import { User } from '@uaa/users/user.entity';
 import { Interest } from './interest.entity';
 import { InterestsResolver } from './interest.resolver';
 import { InterestsController } from './interests.controller';

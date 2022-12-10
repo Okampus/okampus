@@ -1,7 +1,7 @@
 import type { ITriggerPayload } from '@novu/node';
-import type { User } from '@modules/uaa/users/user.entity';
-import { TeamFile } from '@modules/upload/team-files/team-file.entity';
-import { NotificationType } from '../notification-type.enum';
+import { NotificationType } from '@common/modules/notifications/notification-type.enum';
+import type { User } from '@uaa/users/user.entity';
+import { TeamFile } from '@upload/team-files/team-file.entity';
 import { Notification } from './base.notification';
 
 export class AdminTeamLegalFileUpdatedNotification extends Notification {

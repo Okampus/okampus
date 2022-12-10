@@ -1,6 +1,6 @@
 import type { ValidationArguments, ValidationOptions, ValidatorConstraintInterface } from 'class-validator';
 import { registerDecorator, ValidatorConstraint } from 'class-validator';
-import { validateFormkit } from '../utils/formkit-schema-validator';
+import { validateFormkit } from '@lib/utils/formkit-schema-validator';
 
 @ValidatorConstraint()
 export class FormKitSchemaConstraint implements ValidatorConstraintInterface {

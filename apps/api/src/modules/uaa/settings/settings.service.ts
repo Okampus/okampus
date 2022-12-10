@@ -1,8 +1,8 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { User } from '../users/user.entity';
+import { BaseRepository } from '@lib/orm/base.repository';
+import type { User } from '@uaa/users/user.entity';
 import type { UpdateSettingsDto } from './dto/update-settings.dto';
 import { Settings } from './settings.entity';
 

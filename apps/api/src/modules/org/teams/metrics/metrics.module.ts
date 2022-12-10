@@ -1,9 +1,9 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { TeamMember } from '@modules/org/teams/members/team-member.entity';
-import { Team } from '@modules/org/teams/team.entity';
-import { Event } from '@modules/plan/events/event.entity';
-import { User } from '@modules/uaa/users/user.entity';
+import { Event } from '@plan/events/event.entity';
+import { TeamMember } from '@teams/members/team-member.entity';
+import { Team } from '@teams/team.entity';
+import { User } from '@uaa/users/user.entity';
 import { Metric } from './metric.entity';
 import { MetricsController } from './metrics.controller';
 import { MetricsResolver } from './metrics.resolver';

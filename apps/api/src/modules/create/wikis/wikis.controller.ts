@@ -10,11 +10,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { CreateWikiPageDto } from '@modules/create/wikis/dto/create-wiki-page.dto';
-import { User } from '@modules/uaa/users/user.entity';
+import { CreateWikiPageDto } from '@create/wikis/dto/create-wiki-page.dto';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { User } from '@uaa/users/user.entity';
 import { FilterAndPaginationArgs } from './dto/filter-and-paginate.dto';
 import { UpdateWikiPageDto } from './dto/update-wiki-page.dto';
 import { Wiki } from './wiki.entity';

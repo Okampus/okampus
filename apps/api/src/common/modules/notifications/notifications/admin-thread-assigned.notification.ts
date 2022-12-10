@@ -1,8 +1,8 @@
 import type { ITriggerPayload } from '@novu/node';
-import { Thread } from '@modules/create/threads/thread.entity';
-import type { User } from '@modules/uaa/users/user.entity';
-import { config } from '../../../configs/config';
-import { NotificationType } from '../notification-type.enum';
+import { NotificationType } from '@common/modules/notifications/notification-type.enum';
+import { config } from '@configs/config';
+import { Thread } from '@create/threads/thread.entity';
+import type { User } from '@uaa/users/user.entity';
 import { Notification } from './base.notification';
 
 export class AdminThreadAssignedNotification extends Notification {

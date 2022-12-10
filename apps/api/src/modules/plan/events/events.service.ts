@@ -2,10 +2,6 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import type { ListOptionsDto } from '@common/lib/dto/list-options.dto';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { ApprovalStepType } from '@common/lib/types/enums/approval-step-type.enum';
-import { EventState } from '@common/lib/types/enums/event-state.enum';
 import { Role } from '@common/modules/authorization/types/role.enum';
 import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
 import {
@@ -17,14 +13,18 @@ import {
 } from '@common/modules/notifications/notifications';
 import { NotificationsService } from '@common/modules/notifications/notifications.service';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
-import { TeamMember } from '@modules/org/teams/members/team-member.entity';
-import { Team } from '@modules/org/teams/team.entity';
-import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
-import type { Tenant } from '@modules/org/tenants/tenant.entity';
-import type { CreateEventDto } from '@modules/plan/events/dto/create-event.dto';
-import { EventRegistration } from '@modules/plan/registrations/registration.entity';
-import type { User } from '@modules/uaa/users/user.entity';
+import type { ListOptionsDto } from '@lib/dto/list-options.dto';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { ApprovalStepType } from '@lib/types/enums/approval-step-type.enum';
+import { EventState } from '@lib/types/enums/event-state.enum';
+import type { CreateEventDto } from '@plan/events/dto/create-event.dto';
+import { EventRegistration } from '@plan/registrations/registration.entity';
+import { TeamForm } from '@teams/forms/team-form.entity';
+import { TeamMember } from '@teams/members/team-member.entity';
+import { Team } from '@teams/team.entity';
+import { ApprovalStep } from '@tenants/approval-steps/approval-step.entity';
+import type { Tenant } from '@tenants/tenant.entity';
+import type { User } from '@uaa/users/user.entity';
 import type { ListEventsDto } from './dto/list-events.dto';
 import type { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './event.entity';
@@ -185,7 +185,6 @@ export class EventsService {
 
     if (user.roles.includes(Role.TenantAdmin) || user.scopeRole === ScopeRole.Admin)
       return await this.eventRepository.findOneOrFail({ id }, { populate: ['supervisor', 'registrations', 'registrations.user', 'createdBy', 'team', 'lastApprovalStep'] });
-
 
     const event = await this.eventRepository.findOneOrFail(
       {

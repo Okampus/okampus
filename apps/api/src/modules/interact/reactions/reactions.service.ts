@@ -1,12 +1,12 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import type { AllReaction } from '@common/lib/types/enums/reaction.enum';
-import { assertPermissions } from '@common/lib/utils/assert-permission';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
-import { Content } from '@modules/create/contents/entities/content.entity';
-import type { User } from '@modules/uaa/users/user.entity';
+import { Content } from '@create/contents/entities/content.entity';
+import { BaseRepository } from '@lib/orm/base.repository';
+import type { AllReaction } from '@lib/types/enums/reaction.enum';
+import { assertPermissions } from '@lib/utils/assert-permission';
+import type { User } from '@uaa/users/user.entity';
 import { Reaction } from './reaction.entity';
 
 @Injectable()

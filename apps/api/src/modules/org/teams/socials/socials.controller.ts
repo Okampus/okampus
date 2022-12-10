@@ -9,9 +9,9 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { CreateSocialDto } from '@modules/org/teams/socials/dto/create-social.dto';
-import { User } from '@modules/uaa/users/user.entity';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { CreateSocialDto } from '@teams/socials/dto/create-social.dto';
+import { User } from '@uaa/users/user.entity';
 import { UpdateSocialDto } from './dto/update-social.dto';
 import type { Social } from './social.entity';
 import { SocialsService } from './socials.service';

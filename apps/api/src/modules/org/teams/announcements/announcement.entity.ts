@@ -5,9 +5,9 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { AnnouncementState } from '@common/lib/types/enums/announcement-state.enum';
-import { User } from '@modules/uaa/users/user.entity';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { AnnouncementState } from '@lib/types/enums/announcement-state.enum';
+import { User } from '@uaa/users/user.entity';
 
 @Entity()
 export class Announcement extends BaseEntity {

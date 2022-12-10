@@ -1,7 +1,7 @@
 import type { Readable } from 'node:stream';
 
 export async function streamToBuffer(stream: Readable): Promise<Buffer> {
-   return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const _buf: Uint8Array[] = [];
 
     stream.on('data', (chunk: Uint8Array) => {

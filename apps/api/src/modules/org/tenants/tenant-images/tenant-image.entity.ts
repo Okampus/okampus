@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   Entity,
   Enum,
@@ -8,12 +9,11 @@ import {
 } from '@mikro-orm/core';
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
 import { nanoid } from 'nanoid';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { TenantImageType } from '@common/lib/types/enums/tenant-image-type.enum';
-// eslint-disable-next-line import/no-cycle
-import { FileUpload } from '@modules/upload/file-uploads/file-upload.entity';
-// eslint-disable-next-line import/no-cycle
-import { Tenant } from '../tenant.entity';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { TenantImageType } from '@lib/types/enums/tenant-image-type.enum';
+import { Tenant } from '@tenants/tenant.entity';
+import { FileUpload } from '@upload/file-uploads/file-upload.entity';
+
 
 @ObjectType()
 @Entity()

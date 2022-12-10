@@ -23,7 +23,6 @@ module.exports = {
   },
   rules: {
     'node/no-missing-import': 'off',
-    'import/no-extraneous-dependencies': 'off',
     'unicorn/filename-case': ['error', { case: 'kebabCase' }],
     'max-classes-per-file': 'off',
 

@@ -5,17 +5,17 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import { BaseFileEntity } from '@common/lib/entities/base-file.entity';
-import { Class } from '@modules/org/classes/class.entity';
-import type { DocSeries } from '../doc-series/doc-series.entity';
-import type { FileUpload } from '../file-uploads/file-upload.entity';
+import { Class } from '@classes/class.entity';
+import { BaseFileEntity } from '@lib/entities/base-file.entity';
+import type { DocSeries } from '@upload/doc-series/doc-series.entity';
+import type { FileUpload } from '@upload/file-uploads/file-upload.entity';
 
 @Entity()
 export class InfoDoc extends BaseFileEntity {
   @PrimaryKey()
   id: string = nanoid(32);
 
-  @ManyToOne({ onDelete: 'CASCADE' })
+  @ManyToOne({ type: 'DocSeries', onDelete: 'CASCADE' })
   docSeries: DocSeries | null = null;
 
   @Property()

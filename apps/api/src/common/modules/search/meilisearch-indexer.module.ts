@@ -1,6 +1,6 @@
 import type { OnModuleInit } from '@nestjs/common';
 import { Module } from '@nestjs/common';
-import { config } from '../../configs/config';
+import { config } from '@configs/config';
 import { MeiliSearchIndexerService } from './meilisearch-indexer.service';
 import { SearchSubscriber } from './search.subscriber';
 

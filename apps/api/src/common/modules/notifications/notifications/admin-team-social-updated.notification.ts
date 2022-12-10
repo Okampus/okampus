@@ -1,7 +1,7 @@
 import type { ITriggerPayload } from '@novu/node';
-import { Social } from '@modules/org/teams/socials/social.entity';
-import type { User } from '@modules/uaa/users/user.entity';
-import { NotificationType } from '../notification-type.enum';
+import { NotificationType } from '@common/modules/notifications/notification-type.enum';
+import { Social } from '@teams/socials/social.entity';
+import type { User } from '@uaa/users/user.entity';
 import { Notification } from './base.notification';
 
 export class AdminTeamSocialUpdatedNotification extends Notification {

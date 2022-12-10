@@ -6,9 +6,9 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
-import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import type { Tag } from '@modules/catalog/tags/tag.entity';
+import type { Tag } from '@catalog/tags/tag.entity';
+import { TransformCollection } from '@lib/decorators/transform-collection.decorator';
+import { BaseEntity } from '@lib/entities/base.entity';
 
 @Entity()
 export class DocSeries extends BaseEntity {

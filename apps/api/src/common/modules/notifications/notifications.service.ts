@@ -3,10 +3,10 @@ import { EntityManager } from '@mikro-orm/postgresql';
 import { Injectable, Logger } from '@nestjs/common';
 import type { ISubscribersDefine } from '@novu/node';
 import { Novu } from '@novu/node';
-import type { Settings } from '@modules/uaa/settings/settings.entity';
-import { User } from '@modules/uaa/users/user.entity';
-import { config } from '../../configs/config';
-import { NotificationChannel } from '../../lib/types/enums/notification-channel.enum';
+import { config } from '@configs/config';
+import { NotificationChannel } from '@lib/types/enums/notification-channel.enum';
+import type { Settings } from '@uaa/settings/settings.entity';
+import { User } from '@uaa/users/user.entity';
 import type { Notification } from './notifications/base.notification';
 
 @Injectable()
@@ -56,7 +56,6 @@ export class NotificationsService {
 
       if (usersByChannels.length === 0)
         continue;
-
 
       if (notification.batchable) {
         for (const [channel, users] of usersByChannels) {

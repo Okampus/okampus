@@ -5,10 +5,10 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
-import { User } from '@modules/uaa/users/user.entity';
-import { Event } from '../events/event.entity';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { Event } from '@plan/events/event.entity';
+import { ApprovalStep } from '@tenants/approval-steps/approval-step.entity';
+import { User } from '@uaa/users/user.entity';
 
 @Entity()
 export class EventApproval extends BaseEntity {

@@ -1,22 +1,22 @@
 /* eslint-disable object-curly-newline */
 import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import { MembershipRequestIssuer } from '@common/lib/types/enums/membership-request-issuer.enum';
-import { MembershipRequestState } from '@common/lib/types/enums/membership-request-state.enum';
-import { TeamRole } from '@common/lib/types/enums/team-role.enum';
-import { sampleArray, sampleArrayWithRest } from '@common/lib/utils/array-utils';
-import { randomEnum } from '@common/lib/utils/random-enum';
-import { randomInt } from '@common/lib/utils/random-utils';
 import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
-import { TeamMember } from '@modules/org/teams/members/team-member.entity';
-import { TeamMembershipRequest } from '@modules/org/teams/requests/team-membership-request.entity';
-import { TeamFactory } from '@modules/org/teams/team.entity';
-import type { ApprovalStep } from '@modules/org/tenants/approval-steps/approval-step.entity';
-import { ApprovalStepFactory } from '@modules/org/tenants/approval-steps/approval-step.entity';
-import { TenantFactory } from '@modules/org/tenants/tenant.entity';
-import { EventFactory } from '@modules/plan/events/event.entity';
-import type { User } from '@modules/uaa/users/user.entity';
-import { UserFactory } from '@modules/uaa/users/user.entity';
+import { MembershipRequestIssuer } from '@lib/types/enums/membership-request-issuer.enum';
+import { MembershipRequestState } from '@lib/types/enums/membership-request-state.enum';
+import { TeamRole } from '@lib/types/enums/team-role.enum';
+import { sampleArray, sampleArrayWithRest } from '@lib/utils/array-utils';
+import { randomEnum } from '@lib/utils/random-enum';
+import { randomInt } from '@lib/utils/random-utils';
+import { EventFactory } from '@plan/events/event.entity';
+import { TeamMember } from '@teams/members/team-member.entity';
+import { TeamMembershipRequest } from '@teams/requests/team-membership-request.entity';
+import { TeamFactory } from '@teams/team.entity';
+import type { ApprovalStep } from '@tenants/approval-steps/approval-step.entity';
+import { ApprovalStepFactory } from '@tenants/approval-steps/approval-step.entity';
+import { TenantFactory } from '@tenants/tenant.entity';
+import type { User } from '@uaa/users/user.entity';
+import { UserFactory } from '@uaa/users/user.entity';
 
 const seedingConfig = {
   N_ADMINS: 10,

@@ -11,12 +11,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies } from '@common/modules/authorization';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { CreateEventRegistrationDto } from '@modules/plan/registrations/dto/create-event-registration.dto';
-import { User } from '@modules/uaa/users/user.entity';
-import { Event } from '../events/event.entity';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { Event } from '@plan/events/event.entity';
+import { CreateEventRegistrationDto } from '@plan/registrations/dto/create-event-registration.dto';
+import { User } from '@uaa/users/user.entity';
 import { ListRegisteredEventsDto } from './dto/list-registered-events.dto';
 import { UpdateEventRegistrationDto } from './dto/update-event-registration.dto';
 import type { EventRegistration } from './registration.entity';

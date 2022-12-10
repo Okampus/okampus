@@ -4,8 +4,8 @@ import {
   Query,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { User } from '../users/user.entity';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { User } from '@uaa/users/user.entity';
 import { UpdateSettingsDto } from './dto/update-settings.dto';
 import { Settings } from './settings.entity';
 import { SettingsService } from './settings.service';

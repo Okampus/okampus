@@ -12,15 +12,15 @@ import type { GqlContextType } from '@nestjs/graphql';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { WebSocket } from 'graphql-ws';
-import { config } from '@common/configs/config';
-import type { GqlWebsocketContext } from '@common/configs/graphql.config';
-import { IS_PUBLIC_KEY, TENANT_ID_HEADER_NAME } from '@common/lib/constants';
-import type { GlobalRequestContext } from '@common/lib/helpers/global-request-context';
-import { RequestType } from '@common/lib/types/enums/request-type.enum';
-import { TokenType } from '@common/lib/types/enums/token-type.enum';
-import { addCookiesToResponse } from '@common/lib/utils/add-cookies-to-response';
-import { TenantsService } from '@modules/org/tenants/tenants.service';
-import { UsersService } from '../users/users.service';
+import { config } from '@configs/config';
+import type { GqlWebsocketContext } from '@configs/graphql.config';
+import { IS_PUBLIC_KEY, TENANT_ID_HEADER_NAME } from '@lib/constants';
+import type { GlobalRequestContext } from '@lib/helpers/global-request-context';
+import { RequestType } from '@lib/types/enums/request-type.enum';
+import { TokenType } from '@lib/types/enums/token-type.enum';
+import { addCookiesToResponse } from '@lib/utils/add-cookies-to-response';
+import { TenantsService } from '@tenants/tenants.service';
+import { UsersService } from '@uaa/users/users.service';
 import { AuthService } from './auth.service';
 
 export interface GqlContext extends GqlWebsocketContext {

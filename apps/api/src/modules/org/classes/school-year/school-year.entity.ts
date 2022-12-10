@@ -1,7 +1,7 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@common/lib/entities/base.entity';
 import { Paginated } from '@common/modules/pagination';
+import { BaseEntity } from '@lib/entities/base.entity';
 
 @ObjectType()
 @Entity()

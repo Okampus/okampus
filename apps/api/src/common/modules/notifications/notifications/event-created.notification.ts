@@ -1,9 +1,9 @@
 import type { FilterQuery } from '@mikro-orm/core';
 import type { ITriggerPayload } from '@novu/node';
-import { TeamMember } from '@modules/org/teams/members/team-member.entity';
-import { Event } from '@modules/plan/events/event.entity';
-import { User } from '@modules/uaa/users/user.entity';
-import { NotificationType } from '../notification-type.enum';
+import { NotificationType } from '@common/modules/notifications/notification-type.enum';
+import { Event } from '@plan/events/event.entity';
+import { TeamMember } from '@teams/members/team-member.entity';
+import { User } from '@uaa/users/user.entity';
 import { Notification } from './base.notification';
 
 export class EventCreatedNotification extends Notification {

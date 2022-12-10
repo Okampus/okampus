@@ -12,10 +12,10 @@ import {
   MikroOrmHealthIndicator,
 } from '@nestjs/terminus';
 import Redis from 'ioredis';
-import { config } from '@common/configs/config';
-import { Public } from '@common/lib/decorators/public.decorator';
 import { MeiliSearchHealthIndicator } from '@common/modules/health/meilisearch.health';
 import { StorageHealthIndicator } from '@common/modules/health/storage.health';
+import { config } from '@configs/config';
+import { Public } from '@lib/decorators/public.decorator';
 
 @ApiTags('Health')
 @Controller({ path: 'health' })

@@ -6,8 +6,8 @@ import {
   Length,
 } from 'class-validator';
 import { GraphQLJSON } from 'graphql-scalars';
-import { TeamFormType } from '@common/lib/types/enums/team-form-type.enum';
-import { IsFormKitSchema } from '@common/lib/validators/formkit-schema.validator';
+import { TeamFormType } from '@lib/types/enums/team-form-type.enum';
+import { IsFormKitSchema } from '@lib/validators/formkit-schema.validator';
 
 @InputType()
 export class CreateTeamFormDto {

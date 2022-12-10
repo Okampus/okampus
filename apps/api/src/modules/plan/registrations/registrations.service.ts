@@ -2,15 +2,15 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { EventRegisterStatus } from '@common/lib/types/enums/event-register-status.enum';
 import { Role } from '@common/modules/authorization/types/role.enum';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
-import { TeamForm } from '@modules/org/teams/forms/team-form.entity';
-import { TeamMember } from '@modules/org/teams/members/team-member.entity';
-import type { CreateEventRegistrationDto } from '@modules/plan/registrations/dto/create-event-registration.dto';
-import type { User } from '@modules/uaa/users/user.entity';
-import { Event } from '../events/event.entity';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { EventRegisterStatus } from '@lib/types/enums/event-register-status.enum';
+import { Event } from '@plan/events/event.entity';
+import type { CreateEventRegistrationDto } from '@plan/registrations/dto/create-event-registration.dto';
+import { TeamForm } from '@teams/forms/team-form.entity';
+import { TeamMember } from '@teams/members/team-member.entity';
+import type { User } from '@uaa/users/user.entity';
 import type { ListRegisteredEventsDto } from './dto/list-registered-events.dto';
 import type { UpdateEventRegistrationDto } from './dto/update-event-registration.dto';
 import { EventRegistration } from './registration.entity';
@@ -198,7 +198,6 @@ export class EventRegistrationsService {
     // TODO: formalize default forms (shared in monorepo) for validation
     if (formSubmission && !teamForm && !askedFormId)
       return { formSubmission, originalForm: null };
-
 
     if (teamForm && askedFormId && formSubmission) {
       if (askedFormId !== teamForm.id)

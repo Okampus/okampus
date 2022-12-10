@@ -1,6 +1,6 @@
 import type { PipeTransform } from '@nestjs/common';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { isISO8601 } from '../utils/iso-8601-date';
+import { isISO8601 } from '@lib/utils/iso-8601-date';
 
 @Injectable()
 export class ParseDatePipe implements PipeTransform<string, Date> {

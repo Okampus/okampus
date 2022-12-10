@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import {
   Cascade,
   Collection,
@@ -11,17 +10,17 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Tag } from '@modules/catalog/tags/tag.entity';
-import { Content } from '@modules/create/contents/entities/content.entity';
-import type { Favorite } from '@modules/interact/favorites/favorite.entity';
-import type { Reaction } from '@modules/interact/reactions/reaction.entity';
-import type { Report } from '@modules/interact/reports/report.entity';
-import type { Validation } from '@modules/interact/validations/validation.entity';
-import type { Vote } from '@modules/interact/votes/vote.entity';
-import { User } from '@modules/uaa/users/user.entity';
-
-import { TransformCollection } from '../decorators/transform-collection.decorator';
-import { ContentMasterType } from '../types/enums/content-master-type.enum';
+import { Tag } from '@catalog/tags/tag.entity';
+// eslint-disable-next-line import/no-cycle
+import { Content } from '@create/contents/entities/content.entity';
+import type { Favorite } from '@interact/favorites/favorite.entity';
+import type { Reaction } from '@interact/reactions/reaction.entity';
+import type { Report } from '@interact/reports/report.entity';
+import type { Validation } from '@interact/validations/validation.entity';
+import type { Vote } from '@interact/votes/vote.entity';
+import { TransformCollection } from '@lib/decorators/transform-collection.decorator';
+import { ContentMasterType } from '@lib/types/enums/content-master-type.enum';
+import { User } from '@uaa/users/user.entity';
 import { BaseEntity } from './base.entity';
 
 @ObjectType()

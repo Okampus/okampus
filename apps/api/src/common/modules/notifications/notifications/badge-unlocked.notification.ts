@@ -1,7 +1,7 @@
 import type { ITriggerPayload } from '@novu/node';
-import { BadgeUnlock } from '@modules/uaa/badges/entities/badge-unlock.entity';
-import type { User } from '@modules/uaa/users/user.entity';
-import { NotificationType } from '../notification-type.enum';
+import { NotificationType } from '@common/modules/notifications/notification-type.enum';
+import { BadgeUnlock } from '@uaa/badges/entities/badge-unlock.entity';
+import type { User } from '@uaa/users/user.entity';
 import { Notification } from './base.notification';
 
 export class BadgeUnlockedNotification extends Notification {

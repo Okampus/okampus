@@ -5,7 +5,7 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import { ClassType } from '@common/lib/types/enums/class-type.enum';
+import { ClassType } from '@lib/types/enums/class-type.enum';
 
 @InputType()
 export class CreateClassDto {

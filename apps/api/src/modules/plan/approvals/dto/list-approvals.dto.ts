@@ -5,8 +5,8 @@ import {
   IsOptional,
   Min,
 } from 'class-validator';
-import { EventState } from '@common/lib/types/enums/event-state.enum';
 import { PaginationOptions } from '@common/modules/pagination';
+import { EventState } from '@lib/types/enums/event-state.enum';
 
 export class ListEventApprovalsDto extends PartialType(PaginationOptions) {
   @IsOptional()

@@ -5,9 +5,9 @@ import {
   Query,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentUser } from '@common/lib/decorators/current-user.decorator';
-import { Content } from '@modules/create/contents/entities/content.entity';
-import { User } from '@modules/uaa/users/user.entity';
+import { Content } from '@create/contents/entities/content.entity';
+import { CurrentUser } from '@lib/decorators/current-user.decorator';
+import { User } from '@uaa/users/user.entity';
 import { Favorite, PaginatedFavorite } from './favorite.entity';
 import { FavoritesService } from './favorites.service';
 

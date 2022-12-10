@@ -6,9 +6,9 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '@common/lib/entities/base.entity';
-import { TeamHistoryState } from '@common/lib/types/enums/team-history-state.enum';
-import { Team } from '../team.entity';
+import { BaseEntity } from '@lib/entities/base.entity';
+import { TeamHistoryState } from '@lib/types/enums/team-history-state.enum';
+import { Team } from '@teams/team.entity';
 
 @ObjectType()
 @Entity()
@@ -34,7 +34,7 @@ export class TeamHistory extends BaseEntity {
   name!: string;
 
   @Field(() => Team, { nullable: true })
-  @ManyToOne()
+  @ManyToOne({ type: 'Team' })
   parent: Team | null = null;
 
   @Field(() => Team)

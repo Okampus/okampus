@@ -3,9 +3,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import capitalize from 'lodash.capitalize';
 import type { BaseClient, Client, TokenSet } from 'openid-client';
 import { Strategy } from 'openid-client';
-import type { TenantUserinfoResponse } from '@common/lib/types/interfaces/userinfo-response.interface';
 import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
-import type { User } from '../users/user.entity';
+import type { TenantUserinfoResponse } from '@lib/types/interfaces/userinfo-response.interface';
+import type { User } from '@uaa/users/user.entity';
 import type { AuthService } from './auth.service';
 import { TenantUserDto } from './dto/tenant-user.dto';
 

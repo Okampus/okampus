@@ -1,18 +1,18 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import type { ContentListOptionsDto } from '@common/lib/dto/list-options.dto';
-import { BaseRepository } from '@common/lib/orm/base.repository';
-import { assertPermissions } from '@common/lib/utils/assert-permission';
-import { _slugify } from '@common/lib/utils/slugify';
+import { Tag } from '@catalog/tags/tag.entity';
 import { Action } from '@common/modules/authorization';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import type { PaginatedNodes } from '@common/modules/pagination';
-import { Tag } from '@modules/catalog/tags/tag.entity';
-import type { CreateBlogDto } from '@modules/create/blogs/dto/create-blog.dto';
-import type { User } from '@modules/uaa/users/user.entity';
-import { ContentsService } from '../contents/contents.service';
-import { Content } from '../contents/entities/content.entity';
+import type { CreateBlogDto } from '@create/blogs/dto/create-blog.dto';
+import { ContentsService } from '@create/contents/contents.service';
+import { Content } from '@create/contents/entities/content.entity';
+import type { ContentListOptionsDto } from '@lib/dto/list-options.dto';
+import { BaseRepository } from '@lib/orm/base.repository';
+import { assertPermissions } from '@lib/utils/assert-permission';
+import { _slugify } from '@lib/utils/slugify';
+import type { User } from '@uaa/users/user.entity';
 import { Blog } from './blog.entity';
 import type { UpdateBlogDto } from './dto/update-blog.dto';
 
