@@ -42,7 +42,7 @@ export class AuthController {
 
   @Public()
   @Post('login')
-  public async login(@Body() body: LoginDto, @Res() res: FastifyReply): Promise<User> {
+  public async login(@Body() body: LoginDto, @Res({ passthrough: true }) res: FastifyReply): Promise<User> {
     const { user, tokens } = await this.authService.login(body);
     addCookiesToResponse(tokens, res);
     return user;

@@ -51,11 +51,6 @@ export class CreateEventDto {
   @Min(0)
   price?: number;
 
-  @Field()
-  @IsString()
-  @IsOptional()
-  supervisorId?: string;
-
   @Field(() => Boolean)
   @IsOptional()
   @IsBoolean()
@@ -65,6 +60,11 @@ export class CreateEventDto {
   @IsOptional()
   @IsIn([EventState.Draft, EventState.Template, EventState.Submitted])
   state?: EventState;
+
+  @Field()
+  @IsString()
+  @IsOptional()
+  supervisorId?: string;
 
   @Field(() => Int, { nullable: true })
   @IsOptional()

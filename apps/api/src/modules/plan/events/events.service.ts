@@ -68,22 +68,22 @@ export class EventsService {
     }
 
     // Check that the provided form id is valid, is a template, and is not already used
-    let registrationForm: TeamForm | undefined;
+    let registerForm: TeamForm | undefined;
     if (createEventDto.formId) {
-      registrationForm = await this.teamFormRepository.findOneOrFail({ id: createEventDto.formId, team });
-      if (registrationForm.isTemplate)
+      registerForm = await this.teamFormRepository.findOneOrFail({ id: createEventDto.formId, team });
+      if (registerForm.isTemplate)
         throw new BadRequestException('Form is a template');
 
-      const isAlreadyUsed = await this.eventRepository.findOne({ registrationForm });
+      const isAlreadyUsed = await this.eventRepository.findOne({ registerForm });
       if (isAlreadyUsed)
         throw new BadRequestException('Form is already used');
     }
 
     // Check that the provided event template id is valid and is a template
-    let usedTemplate: Event | undefined;
+    let template: Event | undefined;
     if (createEventDto.templateId && createEventDto.state !== EventState.Template) {
-      usedTemplate = await this.eventRepository.findOneOrFail({ id: createEventDto.templateId, team });
-      if (usedTemplate.state !== EventState.Template)
+      template = await this.eventRepository.findOneOrFail({ id: createEventDto.templateId, team });
+      if (template.state !== EventState.Template)
         throw new BadRequestException('Template is not a template');
     }
 
@@ -98,14 +98,7 @@ export class EventsService {
         createEventDto.state = EventState.Published;
     }
 
-    const event = new Event({
-      ...createEventDto,
-      supervisor,
-      usedTemplate,
-      team,
-      registrationForm,
-      createdBy: user,
-    });
+    const event = new Event(createEventDto, user, supervisor, team, template, registerForm);
 
     await this.eventRepository.persistAndFlush(event);
 
@@ -202,7 +195,7 @@ export class EventsService {
           { private: false, state: EventState.Published },
         ],
       },
-      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'registrations', 'registrations.user', 'registrationForm', 'usedTemplate', 'lastApprovalStep'] },
+      { populate: ['supervisor', 'createdBy', 'team', 'team.members', 'registrations', 'registrations.user', 'registerForm', 'template', 'lastApprovalStep'] },
     );
     if (event.state === EventState.Draft && !event.canEdit(user))
       throw new ForbiddenException('Event not published');
@@ -245,7 +238,7 @@ export class EventsService {
       if (registrationForm.isTemplate)
         throw new BadRequestException('Form is a template');
 
-      const isAlreadyUsed = await this.eventRepository.findOne({ registrationForm });
+      const isAlreadyUsed = await this.eventRepository.findOne({ registerForm: registrationForm });
       if (isAlreadyUsed)
         throw new BadRequestException('Form is already used');
     }
@@ -279,7 +272,7 @@ export class EventsService {
       void this.notificationsService.trigger(new TeamManagedEventUpdatedNotification(event, { executor: user }));
     }
 
-    wrap(event).assign({ ...dto, registrationForm });
+    wrap(event).assign({ ...dto, registerForm: registrationForm });
     await this.eventRepository.flush();
 
     return event;

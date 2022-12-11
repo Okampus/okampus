@@ -10,6 +10,8 @@ import {
   Property,
   QueryOrder,
 } from '@mikro-orm/core';
+import type { Faker } from '@mikro-orm/seeder';
+import { Factory } from '@mikro-orm/seeder';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
 import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
@@ -88,3 +90,15 @@ export class Tenant extends BaseEntity {
 
 @ObjectType()
 export class PaginatedTenant extends Paginated(Tenant) {}
+
+export class TenantFactory extends Factory<Tenant> {
+  model = Tenant;
+
+  public definition(faker: Faker): Partial<Tenant> {
+    const name = faker.company.name();
+    return {
+      name,
+      eventApprovalForm: [],
+    };
+  }
+}

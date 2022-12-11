@@ -54,7 +54,7 @@ export class EventRegistrationsService {
 
     // 4. Check that the form is valid
     const formFields = await this.getAndValidateFormSubmission(
-      event.registrationForm,
+      event.registerForm,
       createEventRegistrationDto.originalFormId,
       createEventRegistrationDto.formSubmission,
     );

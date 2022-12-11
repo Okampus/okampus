@@ -13,6 +13,11 @@ export default {
   type: 'postgresql',
   entities: ['./dist/**/*.entity.js'],
   entitiesTs: ['./src/**/*.entity.ts'],
+  seeder: {
+    path: './dist/',
+    entitiesTs: './src/',
+    glob: '**/*.seeder.{js,ts}',
+  },
   debug: config.env.isDev(),
   highlighter: new SqlHighlighter(),
   entityRepository: BaseRepository,

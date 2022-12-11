@@ -1,4 +1,5 @@
 /* eslint-disable import/no-cycle */
+import type { EntityManager } from '@mikro-orm/core';
 import {
   Cascade,
   Collection,
@@ -12,15 +13,17 @@ import {
   Property,
   Unique,
 } from '@mikro-orm/core';
+import type { Faker } from '@mikro-orm/seeder';
+import { Factory } from '@mikro-orm/seeder';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
-
 
 import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
 import { BaseTenantEntity } from '@common/lib/entities/base-tenant.entity';
 import type { BaseSearchableEntity } from '@common/lib/types/interfaces/base-searchable.interface';
 import type { UserCreationOptions } from '@common/lib/types/interfaces/user-creation-options.interface';
+import { _slugify } from '@common/lib/utils/slugify';
 import { Role } from '@common/modules/authorization/types/role.enum';
 import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
 import { Paginated } from '@common/modules/pagination';
@@ -208,3 +211,32 @@ export class User extends BaseTenantEntity implements BaseSearchableEntity {
 
 @ObjectType()
 export class PaginatedUser extends Paginated(User) {}
+
+export class UserFactory extends Factory<User> {
+  tenant: Tenant;
+  scopeRole: ScopeRole;
+  model = User;
+
+  constructor(em: EntityManager, tenant: Tenant, scopeRole: ScopeRole) {
+    super(em);
+    this.tenant = tenant;
+    this.scopeRole = scopeRole;
+  }
+
+  public definition(faker: Faker): Partial<User> {
+    const firstName = faker.name.firstName();
+    const lastName = faker.name.lastName();
+
+    return {
+      id: nanoid(16),
+      tenant: this.tenant,
+      name: firstName,
+      lastName,
+      email: _slugify(`${firstName}.${lastName}@${this.tenant.slug}.fr`),
+      // eslint-disable-next-line node/no-sync
+      password: bcrypt.hashSync('root', 10),
+      scopeRole: this.scopeRole,
+      bot: this.scopeRole === ScopeRole.AdminBot || this.scopeRole === ScopeRole.UserBot,
+    };
+  }
+}

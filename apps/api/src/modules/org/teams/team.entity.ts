@@ -1,4 +1,5 @@
 /* eslint-disable import/no-cycle */
+import type { EntityManager } from '@mikro-orm/core';
 import {
   Cascade,
   Collection,
@@ -12,12 +13,15 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
+import type { Faker } from '@mikro-orm/seeder';
+import { Factory } from '@mikro-orm/seeder';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { TransformCollection } from '@common/lib/decorators/transform-collection.decorator';
 import { BaseTenantEntity } from '@common/lib/entities/base-tenant.entity';
 import { TeamKind } from '@common/lib/types/enums/team-kind.enum';
 import { TeamRole } from '@common/lib/types/enums/team-role.enum';
 import type { BaseSearchableEntity } from '@common/lib/types/interfaces/base-searchable.interface';
+import { randomEnum } from '@common/lib/utils/random-enum';
 import { _slugify } from '@common/lib/utils/slugify';
 import { Role } from '@common/modules/authorization/types/role.enum';
 import { Paginated } from '@common/modules/pagination';
@@ -38,6 +42,7 @@ const ADMIN_ROLES = new Set([
   TeamRole.Treasurer,
   TeamRole.Secretary,
 ]);
+
 const MANAGER_ROLES = new Set([
   TeamRole.Owner,
   TeamRole.Coowner,
@@ -197,3 +202,25 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
 
 @ObjectType()
 export class PaginatedTeam extends Paginated(Team) {}
+
+export class TeamFactory extends Factory<Team> {
+  tenant: Tenant;
+  model = Team;
+
+  constructor(em: EntityManager, tenant: Tenant) {
+    super(em);
+    this.tenant = tenant;
+  }
+
+  public definition(faker: Faker): Partial<Team> {
+    const name = faker.company.name();
+    return {
+      name,
+      tenant: this.tenant,
+      kind: randomEnum(TeamKind),
+      category: faker.random.word(),
+      email: _slugify(`${name}@${this.tenant.slug}.fr`),
+      status: faker.lorem.sentence(),
+    };
+  }
+}

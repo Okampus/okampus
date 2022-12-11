@@ -63,9 +63,7 @@ export class TeamReceiptsService {
     );
   }
 
-  public async findAll(
-    options: TeamReceiptListOptions,
-  ): Promise<PaginatedNodes<TeamReceipt>> {
+  public async findAll(options: TeamReceiptListOptions): Promise<PaginatedNodes<TeamReceipt>> {
     const team = await this.teamRepository.findOneOrFail({ id: options.id });
 
     const query = {};
