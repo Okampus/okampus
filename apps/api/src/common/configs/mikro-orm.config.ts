@@ -14,9 +14,7 @@ export default {
   entities: ['./dist/**/*.entity.js'],
   entitiesTs: ['./src/**/*.entity.ts'],
   seeder: {
-    path: './dist/',
-    entitiesTs: './src/',
-    glob: '**/*.seeder.{js,ts}',
+    path: './database/seeders',
   },
   debug: config.env.isDev(),
   highlighter: new SqlHighlighter(),

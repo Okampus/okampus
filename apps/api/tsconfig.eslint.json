@@ -2,10 +2,8 @@
   "extends": "./tsconfig.json",
   "include": [
     "./src/**/*.ts",
+    "./database/seeders/**/*.ts",
     "**/*.d.ts",
-    ".*rc.js",
-    "*.config.js",
-    "*.config.ts"
   ],
   "exclude": []
 }

@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-import type { EntityManager } from '@mikro-orm/core';
 import {
   Cascade,
   Collection,
@@ -13,8 +12,6 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import type { Faker } from '@mikro-orm/seeder';
-import { Factory } from '@mikro-orm/seeder';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Label } from '@catalog/labels/label.entity';
 import { Role } from '@common/modules/authorization/types/role.enum';
@@ -25,7 +22,6 @@ import { BaseTenantEntity } from '@lib/entities/base-tenant.entity';
 import { TeamKind } from '@lib/types/enums/team-kind.enum';
 import { TeamRole } from '@lib/types/enums/team-role.enum';
 import type { BaseSearchableEntity } from '@lib/types/interfaces/base-searchable.interface';
-import { randomEnum } from '@lib/utils/random-enum';
 import { _slugify } from '@lib/utils/slugify';
 import { TeamForm } from '@teams/forms/team-form.entity';
 import { Tenant } from '@tenants/tenant.entity';
@@ -202,25 +198,3 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
 
 @ObjectType()
 export class PaginatedTeam extends Paginated(Team) {}
-
-export class TeamFactory extends Factory<Team> {
-  tenant: Tenant;
-  model = Team;
-
-  constructor(em: EntityManager, tenant: Tenant) {
-    super(em);
-    this.tenant = tenant;
-  }
-
-  public definition(faker: Faker): Partial<Team> {
-    const name = faker.company.name();
-    return {
-      name,
-      tenant: this.tenant,
-      kind: randomEnum(TeamKind),
-      category: faker.random.word(),
-      email: _slugify(`${name}@${this.tenant.slug}.fr`),
-      status: faker.lorem.sentence(),
-    };
-  }
-}

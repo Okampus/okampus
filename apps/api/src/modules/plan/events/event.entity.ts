@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-import type { EntityManager } from '@mikro-orm/core';
 import {
   Cascade,
   Collection,
@@ -12,8 +11,6 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import type { Faker } from '@mikro-orm/seeder';
-import { Factory } from '@mikro-orm/seeder';
 import {
   Field,
   GraphQLISODateTime,
@@ -24,13 +21,11 @@ import { GraphQLJSON } from 'graphql-scalars';
 import { Paginated } from '@common/modules/pagination';
 import { BaseTenantEntity } from '@lib/entities/base-tenant.entity';
 import { EventState } from '@lib/types/enums/event-state.enum';
-import { randomInt } from '@lib/utils/random-utils';
 import { EventRegistration } from '@plan/registrations/registration.entity';
 import { TeamForm } from '@teams/forms/team-form.entity';
 import { TeamMember } from '@teams/members/team-member.entity';
 import { Team } from '@teams/team.entity';
 import { ApprovalStep } from '@tenants/approval-steps/approval-step.entity';
-import type { Tenant } from '@tenants/tenant.entity';
 import { User } from '@uaa/users/user.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 
@@ -137,45 +132,3 @@ export class Event extends BaseTenantEntity {
 
 @ObjectType()
 export class PaginatedEvent extends Paginated(Event) {}
-
-export class EventFactory extends Factory<Event> {
-  tenant: Tenant;
-  team: Team;
-  steps: ApprovalStep[];
-  model = Event;
-
-  constructor(em: EntityManager, team: Team, steps: ApprovalStep[]) {
-    super(em);
-    this.tenant = team.tenant;
-    this.team = team;
-    this.steps = steps;
-  }
-
-  public definition(faker: Faker): Partial<Event> {
-    const start = faker.date.future();
-    const end = new Date(start.getDate() + 1000 * 60 * 60 * 2);
-    const submitted = Math.random() > 0.5;
-    let state = Math.random() > 0.5 ? EventState.Template : EventState.Draft;
-    let step = null;
-    if (submitted) {
-      step = this.steps[randomInt(0, this.steps.length - 1)];
-      state = step === this.steps[this.steps.length - 1]
-        ? EventState.Published
-        : Math.random() > 0.2 ? EventState.Rejected : EventState.Submitted;
-    }
-    // Let state = submitted ? (Math.random() > 0.5: EventState.Submitted) : EventState.Draft;
-
-    return {
-      tenant: this.tenant,
-      name: faker.lorem.words(3),
-      description: faker.lorem.paragraphs(3),
-      start,
-      end,
-      team: this.team,
-      price: randomInt(0, 100),
-      location: faker.address.streetAddress(),
-      state,
-      lastApprovalStep: step,
-    };
-  }
-}

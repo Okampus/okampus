@@ -19,8 +19,8 @@
     "db:new": "mikro-orm migration:create && mikro-orm migration:up",
     "db:down": "mikro-orm migration:down",
     "db:fresh": "mikro-orm migration:fresh",
-    "lint": "eslint \"src/**/*.ts\"",
-    "lint:fix": "eslint \"src/**/*.ts\" --fix"
+    "lint": "eslint src/**/*.ts database/seeders/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts database/seeders/**/*.ts --fix"
   },
   "dependencies": {
     "@banksnussman/graphql-fields-to-relations": "^2.0.0",
