@@ -26,12 +26,18 @@ export default {
     adapter: MemoryCacheAdapter,
     expiration: 1000,
   },
+  cache: {
+    options: {
+      cacheDir: './database/temp',
+    },
+  },
   schemaGenerator: {
     // Prevents error permission denied to set parameter "session_replication_role"
     disableForeignKeys: false, // Try to disable foreign_key_checks (or equivalent)
     createForeignKeyConstraints: true, // Do not generate FK constraints
   },
   migrations: {
+    path: './database/migrations',
     disableForeignKeys: false,    // Prevents error permission denied to set parameter "session_replication_role"
   },
   logger: ormLogger.log.bind(ormLogger),

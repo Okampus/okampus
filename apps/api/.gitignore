@@ -7,7 +7,7 @@ secrets
 # Compiled output
 /dist
 /node_modules
-/temp
+/database/temp
 /uploads
 
 # Logs

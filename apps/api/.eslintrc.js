@@ -12,7 +12,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: ['noftalint/typescript', 'plugin:import/typescript'],
-  ignorePatterns: ['node_modules/', './dist', './migrations/**/*.ts'],
+  ignorePatterns: ['node_modules/', './dist', './database/migrations/**/*.ts'],
   reportUnusedDisableDirectives: true,
   parserOptions: {
     project: './tsconfig.eslint.json',
