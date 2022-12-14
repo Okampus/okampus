@@ -11,7 +11,7 @@ import { Content } from '@create/contents/entities/content.entity';
 import type { ContentListOptionsDto } from '@lib/dto/list-options.dto';
 import { BaseRepository } from '@lib/orm/base.repository';
 import { assertPermissions } from '@lib/utils/assert-permission';
-import { _slugify } from '@lib/utils/slugify';
+import { slugify } from '@lib/utils/slugify';
 import type { User } from '@uaa/users/user.entity';
 import { Blog } from './blog.entity';
 import type { UpdateBlogDto } from './dto/update-blog.dto';
@@ -31,7 +31,7 @@ export class BlogsService {
     const blog = new Blog({
       ...createBlogDto,
       post,
-      slug: _slugify(createBlogDto.slug ?? createBlogDto.title),
+      slug: slugify(createBlogDto.slug ?? createBlogDto.title),
       location: createBlogDto?.location?.split(',').map(Number) as
         | [lat: number, lon: number]
         | undefined,

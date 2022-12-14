@@ -22,7 +22,7 @@ import { BaseTenantEntity } from '@lib/entities/base-tenant.entity';
 import { TeamKind } from '@lib/types/enums/team-kind.enum';
 import { TeamRole } from '@lib/types/enums/team-role.enum';
 import type { BaseSearchableEntity } from '@lib/types/interfaces/base-searchable.interface';
-import { _slugify } from '@lib/utils/slugify';
+import { slugify } from '@lib/utils/slugify';
 import { TeamForm } from '@teams/forms/team-form.entity';
 import { Tenant } from '@tenants/tenant.entity';
 import type { User } from '@uaa/users/user.entity';
@@ -134,7 +134,7 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
   isPublic = false;
 
   constructor(options: CreateTeamDto, tenant: Tenant) {
-    options.slug = _slugify(options.slug ?? options.name);
+    options.slug = slugify(options.slug ?? options.name);
 
     super();
     this.assign({ ...options, tenant });

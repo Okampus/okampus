@@ -15,7 +15,7 @@ import { GraphQLJSON } from 'graphql-scalars';
 import { Paginated } from '@common/modules/pagination';
 import { TransformCollection } from '@lib/decorators/transform-collection.decorator';
 import { BaseEntity } from '@lib/entities/base.entity';
-import { _slugify } from '@lib/utils/slugify';
+import { slugify } from '@lib/utils/slugify';
 import { ApprovalStep } from '@tenants/approval-steps/approval-step.entity';
 import { CreateTenantDto } from './dto/create-tenant.dto';
 import { TenantImage } from './tenant-images/tenant-image.entity';
@@ -78,7 +78,7 @@ export class Tenant extends BaseEntity {
   oidcCallbackUri: string | null = null;
 
   constructor(options: CreateTenantDto) {
-    options.slug = _slugify(options.slug ?? options.name);
+    options.slug = slugify(options.slug ?? options.name);
 
     super();
     this.assign(options);

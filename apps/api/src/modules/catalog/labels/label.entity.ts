@@ -7,7 +7,7 @@ import {
 import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '@lib/entities/base.entity';
 import { LabelType } from '@lib/types/enums/label-type.enum';
-import { _slugify } from '@lib/utils/slugify';
+import { slugify } from '@lib/utils/slugify';
 
 @ObjectType()
 @Entity()
@@ -40,7 +40,7 @@ export class Label extends BaseEntity {
     type?: LabelType;
   }) {
     if (typeof options.id === 'undefined')
-      options.id = _slugify(options.name);
+      options.id = slugify(options.name);
 
     super();
     this.assign(options);

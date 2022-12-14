@@ -1,6 +1,6 @@
 import type { Faker } from '@mikro-orm/seeder';
 import { Factory } from '@mikro-orm/seeder';
-import { _slugify } from '../../../src/common/lib/utils/slugify';
+import { slugify } from '../../../src/common/lib/utils/slugify';
 import { Tenant } from '../../../src/modules/org/tenants/tenant.entity';
 
 export class TenantFactory extends Factory<Tenant> {
@@ -12,7 +12,7 @@ export class TenantFactory extends Factory<Tenant> {
     const name = faker.company.name();
     return {
       name,
-      slug: _slugify(name),
+      slug: slugify(name),
       eventApprovalForm: [],
     };
   }

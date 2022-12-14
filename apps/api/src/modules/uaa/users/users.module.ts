@@ -7,7 +7,7 @@ import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
 import { CaslAbilityFactory } from '@common/modules/casl/casl-ability.factory';
 import { config } from '@configs/config';
 import { BaseRepository } from '@lib/orm/base.repository';
-import { _slugify } from '@lib/utils/slugify';
+import { slugify } from '@lib/utils/slugify';
 import { InterestsModule } from '@teams/interests/interests.module';
 import { Social } from '@teams/socials/social.entity';
 import { SocialsModule } from '@teams/socials/socials.module';
@@ -48,7 +48,7 @@ export class UsersModule implements OnModuleInit {
   ) {}
 
   public async onModuleInit(): Promise<void> {
-    let tenant = await this.tenantsService.findBareTenant(_slugify(config.baseTenant.name));
+    let tenant = await this.tenantsService.findBareTenant(slugify(config.baseTenant.name));
     if (!tenant) {
       tenant = await this.tenantsService.create({
         name: config.baseTenant.name,
