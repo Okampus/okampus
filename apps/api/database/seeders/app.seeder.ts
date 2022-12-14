@@ -4,7 +4,7 @@ import { Seeder } from '@mikro-orm/seeder';
 import { MembershipRequestIssuer } from '../../src/common/lib/types/enums/membership-request-issuer.enum';
 import { MembershipRequestState } from '../../src/common/lib/types/enums/membership-request-state.enum';
 import { TeamRole } from '../../src/common/lib/types/enums/team-role.enum';
-import { sampleArray, sampleArrayWithRest } from '../../src/common/lib/utils/array-utils';
+import { randomFromArray, randomFromArrayWithRemainder } from '../../src/common/lib/utils/array-utils';
 import { randomEnum } from '../../src/common/lib/utils/random-enum';
 import { randomInt } from '../../src/common/lib/utils/random-utils';
 import { ScopeRole } from '../../src/common/modules/authorization/types/scope-role.enum';
@@ -38,9 +38,7 @@ const seedingConfig = {
   MAX_EVENTS_BY_CLUB: 10,
 };
 
-const _issuer = (): MembershipRequestIssuer => randomEnum(MembershipRequestIssuer);
-const _role = (): TeamRole => randomEnum(TeamRole);
-const _actions = (): { activityCount: number; activityScore: number } => ({
+const actions = (): { activityCount: number; activityScore: number } => ({
   activityCount: randomInt(0, 10),
   activityScore: randomInt(0, 10) * 5,
 });
@@ -63,8 +61,9 @@ export class DatabaseSeeder extends Seeder {
     let stepAdmins: User[];
 
     for (let i = 0; i < seedingConfig.N_APPROVAL_STEPS; i++) {
-      [stepAdmins, restAdmins] = sampleArrayWithRest(
-        restAdmins, randomInt(seedingConfig.MIN_ADMINS_BY_STEP, seedingConfig.MAX_ADMINS_BY_STEP),
+      [stepAdmins, restAdmins] = randomFromArrayWithRemainder(
+        restAdmins,
+        randomInt(seedingConfig.MIN_ADMINS_BY_STEP, seedingConfig.MAX_ADMINS_BY_STEP),
       );
       approvalStepsCreations.push((async (): Promise<ApprovalStep> => {
         const step = await new ApprovalStepFactory(em, tenant, i + 1).createOne();
@@ -72,32 +71,44 @@ export class DatabaseSeeder extends Seeder {
         return step;
       })());
     }
+
     const approvalSteps = await Promise.all(approvalStepsCreations);
 
     const teams = await new TeamFactory(em, tenant).create(10);
 
     for (const team of teams) {
-      const [supervisors, rest] = sampleArrayWithRest(students, 4);
+      const [supervisors, rest] = randomFromArrayWithRemainder(students, 4);
       const [president, treasurer, secretary, manager] = supervisors;
-      const [members, others] = sampleArrayWithRest(
-        rest, seedingConfig.MIN_MEMBERS, Math.min(students.length - 4, seedingConfig.MAX_MEMBERS),
+      const [members, others] = randomFromArrayWithRemainder(
+        rest,
+        seedingConfig.MIN_MEMBERS,
+        Math.min(students.length - 4, seedingConfig.MAX_MEMBERS),
       );
-      const requests = sampleArray(
-        others, seedingConfig.MIN_REQUESTS, Math.min(others.length, seedingConfig.MAX_REQUESTS),
+      const requests = randomFromArray(
+        others,
+        seedingConfig.MIN_REQUESTS,
+        Math.min(others.length, seedingConfig.MAX_REQUESTS),
       );
 
-      const _member = { createdAt, updatedAt, active: true, joinDate: new Date(), team };
-      const _request = { createdAt, updatedAt, team, state: MembershipRequestState.Pending };
+      const member = { createdAt, updatedAt, active: true, joinDate: new Date(), team };
+      const request = { createdAt, updatedAt, team, state: MembershipRequestState.Pending };
 
-      em.create(TeamMember, { ..._member, user: president, role: TeamRole.Owner, ..._actions() });
-      em.create(TeamMember, { ..._member, user: treasurer, role: TeamRole.Treasurer, ..._actions() });
-      em.create(TeamMember, { ..._member, user: secretary, role: TeamRole.Secretary, ..._actions() });
-      em.create(TeamMember, { ..._member, user: manager, role: TeamRole.Manager, ..._actions() });
-      members.map(user => em.create(TeamMember, { ..._member, user, role: TeamRole.Member, ..._actions() }));
+      em.create(TeamMember, { ...member, user: president, role: TeamRole.Owner, ...actions() });
+      em.create(TeamMember, { ...member, user: treasurer, role: TeamRole.Treasurer, ...actions() });
+      em.create(TeamMember, { ...member, user: secretary, role: TeamRole.Secretary, ...actions() });
+      em.create(TeamMember, { ...member, user: manager, role: TeamRole.Manager, ...actions() });
+      members.map(user => em.create(TeamMember, { ...member, user, role: TeamRole.Member, ...actions() }));
+
       requests.map((user) => {
-        const issuer = _issuer();
-        const issuedBy = issuer === MembershipRequestIssuer.Team ? sampleArray(supervisors, 1)[0] : user;
-        return em.create(TeamMembershipRequest, { ..._request, user, issuer, role: _role(), issuedBy });
+        const issuer = randomEnum(MembershipRequestIssuer);
+        const issuedBy = issuer === MembershipRequestIssuer.Team ? randomFromArray(supervisors, 1)[0] : user;
+        return em.create(TeamMembershipRequest, {
+          ...request,
+          user,
+          issuer,
+          role: randomEnum(TeamRole),
+          issuedBy,
+        });
       });
 
       // eslint-disable-next-line no-await-in-loop, @typescript-eslint/no-unused-vars
