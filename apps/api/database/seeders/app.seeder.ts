@@ -1,17 +1,17 @@
 /* eslint-disable object-curly-newline */
 import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import { MembershipRequestIssuer } from '../../src/common/lib/types/enums/membership-request-issuer.enum';
-import { MembershipRequestState } from '../../src/common/lib/types/enums/membership-request-state.enum';
-import { TeamRole } from '../../src/common/lib/types/enums/team-role.enum';
-import { randomFromArray, randomFromArrayWithRemainder } from '../../src/common/lib/utils/array-utils';
-import { randomEnum } from '../../src/common/lib/utils/random-enum';
-import { randomInt } from '../../src/common/lib/utils/random-utils';
-import { ScopeRole } from '../../src/common/modules/authorization/types/scope-role.enum';
-import { TeamMember } from '../../src/modules/org/teams/members/team-member.entity';
-import { TeamMembershipRequest } from '../../src/modules/org/teams/requests/team-membership-request.entity';
-import type { ApprovalStep } from '../../src/modules/org/tenants/approval-steps/approval-step.entity';
-import type { User } from '../../src/modules/uaa/users/user.entity';
+import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
+import { MembershipRequestIssuer } from '@lib/types/enums/membership-request-issuer.enum';
+import { MembershipRequestState } from '@lib/types/enums/membership-request-state.enum';
+import { TeamRole } from '@lib/types/enums/team-role.enum';
+import { randomFromArray, randomFromArrayWithRemainder } from '@lib/utils/array-utils';
+import { randomEnum } from '@lib/utils/random-enum';
+import { randomInt } from '@lib/utils/random-utils';
+import { TeamMember } from '@org/teams/members/team-member.entity';
+import { TeamMembershipRequest } from '@org/teams/requests/team-membership-request.entity';
+import type { ApprovalStep } from '@org/tenants/approval-steps/approval-step.entity';
+import type { User } from '@uaa/users/user.entity';
 import { ApprovalStepFactory } from './factories/approval-step.factory';
 import { EventFactory } from './factories/event.factory';
 import { TeamFactory } from './factories/team.factory';

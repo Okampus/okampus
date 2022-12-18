@@ -1,11 +1,11 @@
 import type { EntityManager } from '@mikro-orm/core';
 import type { Faker } from '@mikro-orm/seeder';
 import { Factory } from '@mikro-orm/seeder';
-import { TeamKind } from '../../../src/common/lib/types/enums/team-kind.enum';
-import { randomEnum } from '../../../src/common/lib/utils/random-enum';
-import { slugify } from '../../../src/common/lib/utils/slugify';
-import { Team } from '../../../src/modules/org/teams/team.entity';
-import type { Tenant } from '../../../src/modules/org/tenants/tenant.entity';
+import { TeamKind } from '@lib/types/enums/team-kind.enum';
+import { randomEnum } from '@lib/utils/random-enum';
+import { slugify } from '@lib/utils/slugify';
+import { Team } from '@org/teams/team.entity';
+import type { Tenant } from '@org/tenants/tenant.entity';
 
 export class TeamFactory extends Factory<Team> {
   public static lastId = 0;

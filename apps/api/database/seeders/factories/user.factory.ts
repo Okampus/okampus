@@ -3,10 +3,10 @@ import type { Faker } from '@mikro-orm/seeder';
 import { Factory } from '@mikro-orm/seeder';
 import * as bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
-import { slugify } from '../../../src/common/lib/utils/slugify';
-import { ScopeRole } from '../../../src/common/modules/authorization/types/scope-role.enum';
-import type { Tenant } from '../../../src/modules/org/tenants/tenant.entity';
-import { User } from '../../../src/modules/uaa/users/user.entity';
+import { ScopeRole } from '@common/modules/authorization/types/scope-role.enum';
+import { slugify } from '@lib/utils/slugify';
+import type { Tenant } from '@org/tenants/tenant.entity';
+import { User } from '@uaa/users/user.entity';
 
 export class UserFactory extends Factory<User> {
   tenant: Tenant;

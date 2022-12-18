@@ -1,8 +1,8 @@
 import type { EntityManager } from '@mikro-orm/core';
 import { Factory } from '@mikro-orm/seeder';
-import { ApprovalStepType } from '../../../src/common/lib/types/enums/approval-step-type.enum';
-import { ApprovalStep } from '../../../src/modules/org/tenants/approval-steps/approval-step.entity';
-import type { Tenant } from '../../../src/modules/org/tenants/tenant.entity';
+import { ApprovalStepType } from '@lib/types/enums/approval-step-type.enum';
+import { ApprovalStep } from '@org/tenants/approval-steps/approval-step.entity';
+import type { Tenant } from '@org/tenants/tenant.entity';
 
 export class ApprovalStepFactory extends Factory<ApprovalStep> {
   public static lastId = 0;

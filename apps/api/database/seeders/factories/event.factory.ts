@@ -1,12 +1,12 @@
 import type { EntityManager } from '@mikro-orm/core';
 import type { Faker } from '@mikro-orm/seeder';
 import { Factory } from '@mikro-orm/seeder';
-import { EventState } from '../../../src/common/lib/types/enums/event-state.enum';
-import { randomInt } from '../../../src/common/lib/utils/random-utils';
-import type { Team } from '../../../src/modules/org/teams/team.entity';
-import type { ApprovalStep } from '../../../src/modules/org/tenants/approval-steps/approval-step.entity';
-import type { Tenant } from '../../../src/modules/org/tenants/tenant.entity';
-import { Event } from '../../../src/modules/plan/events/event.entity';
+import { EventState } from '@lib/types/enums/event-state.enum';
+import { randomInt } from '@lib/utils/random-utils';
+import type { Team } from '@org/teams/team.entity';
+import type { ApprovalStep } from '@org/tenants/approval-steps/approval-step.entity';
+import type { Tenant } from '@org/tenants/tenant.entity';
+import { Event } from '@plan/events/event.entity';
 
 export class EventFactory extends Factory<Event> {
   public static lastId = 0;
