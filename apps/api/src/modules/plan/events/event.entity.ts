@@ -87,7 +87,7 @@ export class Event extends BaseTenantEntity {
   private = false;
 
   @Field(() => ApprovalStep, { nullable: true })
-  @ManyToOne({ type: TeamForm, nullable: true })
+  @ManyToOne({ type: ApprovalStep, nullable: true })
   lastApprovalStep: ApprovalStep | null = null;
 
   @Field(() => TeamForm, { nullable: true })

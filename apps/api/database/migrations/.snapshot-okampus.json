@@ -5418,7 +5418,7 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.team_form",
+          "referencedTableName": "public.approval_step",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
