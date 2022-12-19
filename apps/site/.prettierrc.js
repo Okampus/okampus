@@ -1,9 +1,9 @@
 module.exports = {
     semi: false,
-    tabWidth: 4,
+    tabWidth: 2,
     trailingComma: 'all',
     singleQuote: true,
-    printWidth: 110,
+    printWidth: 120,
     quoteProps: 'preserve',
     vueIndentScriptAndStyle: true,
 }
