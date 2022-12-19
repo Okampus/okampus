@@ -51,7 +51,7 @@ export class TeamFilesController {
       tenant,
       user,
       file,
-      FileKind.TeamFile,
+      FileKind.TeamDocument,
       createTeamFile.fileLastModifiedAt,
     );
     return await this.teamFilesService.create(user, createTeamFile, fileUpload);

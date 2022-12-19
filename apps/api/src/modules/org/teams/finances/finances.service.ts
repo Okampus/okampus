@@ -47,16 +47,17 @@ export class TeamFinancesService {
       });
     }
 
-    let receipt: TeamFile | undefined;
-    if (typeof createTeamFinanceDto.receipt !== 'undefined')
-      receipt = await this.teamFileRepository.findOneOrFail({ id: createTeamFinanceDto.receipt });
+    // TODO: fix
+    // let receipt: TeamFile | undefined;
+    // if (typeof createTeamFinanceDto.receipt !== 'undefined')
+    //   receipt = await this.teamFileRepository.findOneOrFail({ id: createTeamFinanceDto.receipt });
 
     const finance = new TeamFinance({
       ...createTeamFinanceDto,
       dueTo,
       event,
       team,
-      receipt,
+      receipt: null,
       createdBy: user,
     });
 
@@ -71,7 +72,7 @@ export class TeamFinancesService {
     const filters: FilterQuery<TeamFinance> = { team: { id: query.id } };
 
     if (typeof query.type !== 'undefined')
-      filters.type = query.type;
+      filters.state = query.type;
     if (typeof query.category !== 'undefined')
       filters.category = query.category;
     if (typeof query.dueTo !== 'undefined')
@@ -125,11 +126,12 @@ export class TeamFinancesService {
         : null;
     }
 
-    if (typeof receipt !== 'undefined') {
-      finance.receipt = typeof receipt === 'number'
-        ? await this.teamFileRepository.findOneOrFail({ id: receipt })
-        : null;
-    }
+    // TODO: fix
+    // if (typeof receipt !== 'undefined') {
+    //   finance.receipt = typeof receipt === 'number'
+    //     ? await this.teamFileRepository.findOneOrFail({ id: receipt })
+    //     : null;
+    // }
 
     wrap(finance).assign(dto);
     await this.teamFinanceRepository.flush();

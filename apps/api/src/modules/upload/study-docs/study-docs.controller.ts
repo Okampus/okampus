@@ -58,7 +58,7 @@ export class StudyDocsController {
       tenant,
       user,
       file,
-      FileKind.StudyDoc,
+      FileKind.Document,
       createStudyDocDto.fileLastModifiedAt,
     );
     return await this.studyDocsService.create(createStudyDocDto, fileUpload);

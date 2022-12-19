@@ -54,7 +54,7 @@ export class InfoDocsController {
       tenant,
       user,
       file,
-      FileKind.InfoDoc,
+      FileKind.Document,
       createInfoDocDto.fileLastModifiedAt,
     );
     return await this.infoDocsService.create(createInfoDocDto, fileUpload);

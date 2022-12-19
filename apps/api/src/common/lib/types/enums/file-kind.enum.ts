@@ -1,16 +1,13 @@
 import { registerEnumType } from '@nestjs/graphql';
 
 export enum FileKind {
-  UserImage = 'UserImage',
   TeamImage = 'TeamImage',
-  TenantImage = 'TenantImage',
-  Attachment = 'Attachment',
-  Tenant = 'Tenant',
-  StudyDoc = 'StudyDoc',
-  InfoDoc = 'InfoDoc',
-  TeamFile = 'TeamFile',
-  TeamGallery = 'TeamGallery',
+  TeamDocument = 'TeamDocument',
   TeamReceipt = 'TeamReceipt',
+  TenantImage = 'TenantImage',
+  UserImage = 'UserImage',
+  Attachment = 'Attachment',
+  Document = 'Document',
 }
 
 registerEnumType(FileKind, { name: 'FileKind' });

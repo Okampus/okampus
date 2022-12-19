@@ -27,7 +27,7 @@ import { UpdateTeamGalleryDto } from './dto/update-team-gallery.dto';
 import { TeamGallery } from './team-gallery.entity';
 import { TeamGalleriesService } from './team-gallery.service';
 
-@ApiTags('TeamGallerys')
+@ApiTags('TeamGalleries')
 @Controller()
 export class TeamGalleriesController {
   constructor(
@@ -51,7 +51,7 @@ export class TeamGalleriesController {
       tenant,
       user,
       file,
-      FileKind.TeamGallery,
+      FileKind.TeamImage,
       createAttachmentDto.fileLastModifiedAt,
     );
     return await this.teamFilesService.create(user, createAttachmentDto, fileUpload);

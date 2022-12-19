@@ -177,7 +177,7 @@ export class TeamsResolver {
       tenant,
       user,
       file,
-      FileKind.TeamFile,
+      FileKind.TeamDocument,
       createFile.fileLastModifiedAt,
     );
     await this.teamFilesService.create(user, createFile, fileUpload);

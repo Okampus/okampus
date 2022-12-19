@@ -34,7 +34,7 @@ export class TeamReceiptsResolver {
       tenant,
       user,
       file,
-      FileKind.TeamFile,
+      FileKind.TeamDocument,
       createReceipt.fileLastModifiedAt,
     );
     return await this.teamReceiptsService.create(user, createReceipt, fileUpload);

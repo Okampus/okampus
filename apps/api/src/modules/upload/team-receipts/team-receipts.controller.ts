@@ -51,7 +51,7 @@ export class TeamReceiptsController {
       tenant,
       user,
       file,
-      FileKind.TeamFile,
+      FileKind.TeamDocument,
       createTeamReceiptDto.fileLastModifiedAt,
     );
     return await this.teamReceiptsService.create(user, createTeamReceiptDto, fileUpload);
