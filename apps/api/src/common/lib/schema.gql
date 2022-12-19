@@ -830,14 +830,14 @@ type EventRegistration {
   id: Int!
   event: Event!
   user: User!
-  status: EventRegisterStatus!
+  status: EventRegistrationStatus!
   present: Boolean!
   activityScore: Int!
   originalForm: TeamForm
   formSubmission: JSON
 }
 
-enum EventRegisterStatus {
+enum EventRegistrationStatus {
   Sure
   Maybe
   Absent
@@ -940,7 +940,7 @@ type TeamFinance {
   dueTo: User
   amount: Float!
   method: PaymentMethod!
-  type: TeamFinanceType!
+  type: TeamFinanceState!
   category: TeamFinanceCategory!
   event: Event
   receipt: TeamFile
@@ -950,14 +950,16 @@ enum PaymentMethod {
   Cash
   CreditCard
   Transfer
+  RegularTransfer
   Check
   MobilePayment
   Other
 }
 
-enum TeamFinanceType {
-  Expense
-  Income
+enum TeamFinanceState {
+  Canceled
+  Ongoing
+  Completed
 }
 
 enum TeamFinanceCategory {
@@ -1138,7 +1140,7 @@ input TeamsFilterDto {
 input FilterRegisteredEventsDto {
   eventId: Int
   userId: String
-  status: EventRegisterStatus
+  status: EventRegistrationStatus
   present: Boolean
 }
 
@@ -1152,7 +1154,7 @@ input ListEventsDto {
 
 input TeamFinancesFilterDto {
   id: Int!
-  type: TeamFinanceType
+  type: TeamFinanceState
   category: TeamFinanceCategory
   dueTo: String
   event: Int
@@ -1387,13 +1389,13 @@ input UpdateTeamFormDto {
 }
 
 input CreateEventRegistrationDto {
-  status: EventRegisterStatus!
+  status: EventRegistrationStatus!
   originalFormId: Int
   formSubmission: JSON
 }
 
 input UpdateEventRegistrationDto {
-  status: EventRegisterStatus
+  status: EventRegistrationStatus
   present: Boolean
   activityScore: Int
 }
@@ -1439,7 +1441,7 @@ input CreateTeamFinanceDto {
   title: String!
   amount: Float!
   method: PaymentMethod!
-  type: TeamFinanceType!
+  type: TeamFinanceState!
   category: TeamFinanceCategory!
   description: String
   dueTo: String
@@ -1451,7 +1453,7 @@ input UpdateTeamFinanceDto {
   title: String
   amount: Float
   method: PaymentMethod
-  type: TeamFinanceType
+  type: TeamFinanceState
   category: TeamFinanceCategory
   description: String
   dueTo: String
