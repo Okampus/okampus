@@ -7,7 +7,9 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
+import {
+ Field, Float, Int, ObjectType,
+} from '@nestjs/graphql';
 import { Paginated } from '@common/modules/pagination';
 import { BaseEntity } from '@lib/entities/base.entity';
 import { PaymentMethod } from '@lib/types/enums/payment-method.enum';
