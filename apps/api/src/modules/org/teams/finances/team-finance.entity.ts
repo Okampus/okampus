@@ -56,7 +56,7 @@ export class TeamFinance extends BaseEntity {
 
   @Field(() => TeamFinanceState)
   @Enum(() => TeamFinanceState)
-  type!: TeamFinanceState;
+  state!: TeamFinanceState;
 
   @Field(() => TeamFinanceCategory)
   @Enum(() => TeamFinanceCategory)

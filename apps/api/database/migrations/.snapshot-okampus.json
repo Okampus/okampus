@@ -5733,8 +5733,8 @@
           ],
           "mappedType": "enum"
         },
-        "type": {
-          "name": "type",
+        "state": {
+          "name": "state",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
