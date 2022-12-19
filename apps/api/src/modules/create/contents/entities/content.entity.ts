@@ -119,7 +119,7 @@ export class Content extends BaseEntity {
   isVisible = true;
 
   @Field(() => Edit, { nullable: true })
-  @OneToOne()
+  @OneToOne('Edit', { nullable: true })
   lastEdit: Edit | null = null;
 
   constructor(options: {

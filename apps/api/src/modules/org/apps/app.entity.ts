@@ -31,7 +31,7 @@ export class App extends BaseEntity {
   owner: User;
 
   @Field(() => User, { nullable: true })
-  @OneToOne('User')
+  @OneToOne('User', { nullable: true })
   bot: User | null = null;
 
   constructor(options: {

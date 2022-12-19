@@ -2966,7 +2966,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "integer"
         }
       },
@@ -3082,6 +3082,7 @@
             "id"
           ],
           "referencedTableName": "public.team_form",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -5802,7 +5803,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         }
       },
@@ -5900,6 +5901,7 @@
             "id"
           ],
           "referencedTableName": "public.file_upload",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -6597,7 +6599,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         }
       },
@@ -6648,6 +6650,7 @@
             "id"
           ],
           "referencedTableName": "public.user",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }

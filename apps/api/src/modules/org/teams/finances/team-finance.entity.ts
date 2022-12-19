@@ -76,7 +76,7 @@ export class TeamFinance extends BaseEntity {
 
   // TODO: OneToMany relationship
   @Field(() => FileUpload, { nullable: true })
-  @OneToOne('FileUpload')
+  @OneToOne('FileUpload', { nullable: true })
   receipt: FileUpload | null = null;
 
   constructor(options: {

@@ -128,7 +128,7 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
   activeMemberCount = 1; // The member count is always at least one (when created - the first user is the owner)
 
   @Field(() => TeamForm, { nullable: true })
-  @OneToOne('TeamForm')
+  @OneToOne('TeamForm', { nullable: true })
   membershipRequestForm: TeamForm | null = null;
 
   isPublic = false;
