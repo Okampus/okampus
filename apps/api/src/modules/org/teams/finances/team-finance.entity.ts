@@ -13,10 +13,10 @@ import { BaseEntity } from '@lib/entities/base.entity';
 import { PaymentMethod } from '@lib/types/enums/payment-method.enum';
 import { TeamFinanceCategory } from '@lib/types/enums/team-finance-category.enum';
 import { TeamFinanceState } from '@lib/types/enums/team-finance-type.enum';
+import { FileUpload } from '@modules/upload/file-uploads/file-upload.entity';
 import { Event } from '@plan/events/event.entity';
 import { Team } from '@teams/team.entity';
 import { User } from '@uaa/users/user.entity';
-import { TeamFile } from '@upload/team-files/team-file.entity';
 
 @ObjectType()
 @Entity()
@@ -50,6 +50,10 @@ export class TeamFinance extends BaseEntity {
   @Property()
   amount!: number;
 
+  @Field(() => Number, { nullable: true })
+  @Property()
+  amountPayed: number | null = null;
+
   @Field(() => PaymentMethod)
   @Enum(() => PaymentMethod)
   method!: PaymentMethod;
@@ -57,6 +61,10 @@ export class TeamFinance extends BaseEntity {
   @Field(() => TeamFinanceState)
   @Enum(() => TeamFinanceState)
   state!: TeamFinanceState;
+
+  @Field(() => String, { nullable: true })
+  @Property({ type: 'text' })
+  location?: string | null = null;
 
   @Field(() => TeamFinanceCategory)
   @Enum(() => TeamFinanceCategory)
@@ -66,9 +74,10 @@ export class TeamFinance extends BaseEntity {
   @ManyToOne({ type: Event, nullable: true })
   event: Event | null = null;
 
-  @Field(() => TeamFile, { nullable: true })
-  @OneToOne('TeamFile')
-  receipt: TeamFile | null = null;
+  // TODO: OneToMany relationship
+  @Field(() => FileUpload, { nullable: true })
+  @OneToOne('FileUpload')
+  receipt: FileUpload | null = null;
 
   constructor(options: {
     title: string;
@@ -81,7 +90,7 @@ export class TeamFinance extends BaseEntity {
     description?: string | null;
     dueTo?: User | null;
     event?: Event | null;
-    receipt?: TeamFile | null;
+    receipt?: FileUpload | null;
   }) {
     super();
     this.assign(options);

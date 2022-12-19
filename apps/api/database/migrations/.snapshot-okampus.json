@@ -5715,6 +5715,15 @@
           "nullable": false,
           "mappedType": "integer"
         },
+        "amount_payed": {
+          "name": "amount_payed",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
         "method": {
           "name": "method",
           "type": "text",
@@ -5746,6 +5755,15 @@
             "Completed"
           ],
           "mappedType": "enum"
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         },
         "category": {
           "name": "category",
@@ -5881,7 +5899,7 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.team_file",
+          "referencedTableName": "public.file_upload",
           "updateRule": "cascade"
         }
       }
