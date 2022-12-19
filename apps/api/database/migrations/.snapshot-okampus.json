@@ -5709,21 +5709,21 @@
         },
         "amount": {
           "name": "amount",
-          "type": "int",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "integer"
+          "mappedType": "float"
         },
         "amount_payed": {
           "name": "amount_payed",
-          "type": "int",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "integer"
+          "mappedType": "float"
         },
         "method": {
           "name": "method",

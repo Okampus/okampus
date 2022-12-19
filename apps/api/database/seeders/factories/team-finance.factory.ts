@@ -38,8 +38,6 @@ export class TeamFinanceFactory extends Factory<TeamFinance> {
 
   public definition(faker: Faker): Partial<TeamFinance> {
     const event = (Math.random() < 0.2) ? null : randomFromArray(this.events, 1)[0];
-    console.log('members', this.teamMembers.filter(m =>
-      [TeamRole.Treasurer, TeamRole.Coowner, TeamRole.Owner, TeamRole.Manager].includes(m.role)));
     return {
       id: TeamFinanceFactory.lastId++,
       title: faker.lorem.sentence(),

@@ -7,7 +7,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 import { Paginated } from '@common/modules/pagination';
 import { BaseEntity } from '@lib/entities/base.entity';
 import { PaymentMethod } from '@lib/types/enums/payment-method.enum';
@@ -46,12 +46,12 @@ export class TeamFinance extends BaseEntity {
   @ManyToOne({ type: User, nullable: true })
   dueTo: User | null = null;
 
-  @Field(() => Number)
-  @Property()
+  @Field(() => Float)
+  @Property({ type: 'float' })
   amount!: number;
 
-  @Field(() => Number, { nullable: true })
-  @Property()
+  @Field(() => Float, { nullable: true })
+  @Property({ type: 'float' })
   amountPayed: number | null = null;
 
   @Field(() => PaymentMethod)
