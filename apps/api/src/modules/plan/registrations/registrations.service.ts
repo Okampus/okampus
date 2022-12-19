@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 import { Role } from '@common/modules/authorization/types/role.enum';
 import type { PaginatedNodes, PaginationOptions } from '@common/modules/pagination';
 import { BaseRepository } from '@lib/orm/base.repository';
-import { EventRegisterStatus } from '@lib/types/enums/event-register-status.enum';
+import { EventRegistrationStatus } from '@lib/types/enums/event-register-status.enum';
 import { Event } from '@plan/events/event.entity';
 import type { CreateEventRegistrationDto } from '@plan/registrations/dto/create-event-registration.dto';
 import { TeamForm } from '@teams/forms/team-form.entity';
@@ -44,7 +44,7 @@ export class EventRegistrationsService {
 
     // Check that the user is not already registered for the event
     const existing = await this.eventRegistrationRepository.findOne({ user, event: { id } });
-    if (existing && existing.status === EventRegisterStatus.Absent) {
+    if (existing && existing.status === EventRegistrationStatus.Absent) {
       existing.status = createEventRegistrationDto.status;
       await this.eventRegistrationRepository.flush();
       return existing;

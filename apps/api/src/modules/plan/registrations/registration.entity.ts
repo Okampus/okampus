@@ -10,7 +10,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
 import { Paginated } from '@common/modules/pagination';
 import { BaseEntity } from '@lib/entities/base.entity';
-import { EventRegisterStatus } from '@lib/types/enums/event-register-status.enum';
+import { EventRegistrationStatus } from '@lib/types/enums/event-register-status.enum';
 import { Event } from '@plan/events/event.entity';
 import { TeamForm } from '@teams/forms/team-form.entity';
 import { User } from '@uaa/users/user.entity';
@@ -30,9 +30,9 @@ export class EventRegistration extends BaseEntity {
   @ManyToOne({ onDelete: 'CASCADE' })
   user!: User;
 
-  @Field(() => EventRegisterStatus)
-  @Enum(() => EventRegisterStatus)
-  status!: EventRegisterStatus;
+  @Field(() => EventRegistrationStatus)
+  @Enum(() => EventRegistrationStatus)
+  status!: EventRegistrationStatus;
 
   @Field(() => Boolean)
   @Property()
@@ -53,7 +53,7 @@ export class EventRegistration extends BaseEntity {
   constructor(options: {
     event: Event;
     user: User;
-    status: EventRegisterStatus;
+    status: EventRegistrationStatus;
     originalForm?: TeamForm | null;
     formSubmission?: object[] | object | null;
   }) {

@@ -12,7 +12,7 @@ import { Paginated } from '@common/modules/pagination';
 import { BaseEntity } from '@lib/entities/base.entity';
 import { PaymentMethod } from '@lib/types/enums/payment-method.enum';
 import { TeamFinanceCategory } from '@lib/types/enums/team-finance-category.enum';
-import { TeamFinanceType } from '@lib/types/enums/team-finance-type.enum';
+import { TeamFinanceState } from '@lib/types/enums/team-finance-type.enum';
 import { Event } from '@plan/events/event.entity';
 import { Team } from '@teams/team.entity';
 import { User } from '@uaa/users/user.entity';
@@ -54,9 +54,9 @@ export class TeamFinance extends BaseEntity {
   @Enum(() => PaymentMethod)
   method!: PaymentMethod;
 
-  @Field(() => TeamFinanceType)
-  @Enum(() => TeamFinanceType)
-  type!: TeamFinanceType;
+  @Field(() => TeamFinanceState)
+  @Enum(() => TeamFinanceState)
+  type!: TeamFinanceState;
 
   @Field(() => TeamFinanceCategory)
   @Enum(() => TeamFinanceCategory)
@@ -76,7 +76,7 @@ export class TeamFinance extends BaseEntity {
     team: Team;
     amount: number;
     method: PaymentMethod;
-    type: TeamFinanceType;
+    type: TeamFinanceState;
     category: TeamFinanceCategory;
     description?: string | null;
     dueTo?: User | null;

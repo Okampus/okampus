@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 import { ListOptionsDto } from '@lib/dto/list-options.dto';
 import { TeamFinanceCategory } from '@lib/types/enums/team-finance-category.enum';
-import { TeamFinanceType } from '@lib/types/enums/team-finance-type.enum';
+import { TeamFinanceState } from '@lib/types/enums/team-finance-type.enum';
 
 @InputType()
 export class TeamFinancesFilterDto {
@@ -18,10 +18,10 @@ export class TeamFinancesFilterDto {
   @Min(0)
   id: number;
 
-  @Field(() => TeamFinanceType, { nullable: true })
+  @Field(() => TeamFinanceState, { nullable: true })
   @IsOptional()
-  @IsEnum(TeamFinanceType)
-  type?: TeamFinanceType;
+  @IsEnum(TeamFinanceState)
+  type?: TeamFinanceState;
 
   @Field(() => TeamFinanceCategory, { nullable: true })
   @IsOptional()

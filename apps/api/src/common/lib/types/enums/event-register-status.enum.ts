@@ -1,9 +1,9 @@
 import { registerEnumType } from '@nestjs/graphql';
 
-export enum EventRegisterStatus {
+export enum EventRegistrationStatus {
   Sure = 'Sure',
   Maybe = 'Maybe',
   Absent = 'Absent',
 }
 
-registerEnumType(EventRegisterStatus, { name: 'EventRegisterStatus' });
+registerEnumType(EventRegistrationStatus, { name: 'EventRegistrationStatus' });

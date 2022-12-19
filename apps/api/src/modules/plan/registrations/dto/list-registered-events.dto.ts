@@ -8,7 +8,7 @@ import {
   IsString,
 } from 'class-validator';
 import { PaginationOptions } from '@common/modules/pagination';
-import { EventRegisterStatus } from '@lib/types/enums/event-register-status.enum';
+import { EventRegistrationStatus } from '@lib/types/enums/event-register-status.enum';
 
 @InputType()
 export class FilterRegisteredEventsDto {
@@ -22,10 +22,10 @@ export class FilterRegisteredEventsDto {
   @IsString()
   userId?: string;
 
-  @Field(() => EventRegisterStatus, { nullable: true })
+  @Field(() => EventRegistrationStatus, { nullable: true })
   @IsOptional()
-  @IsEnum(EventRegisterStatus)
-  status?: EventRegisterStatus;
+  @IsEnum(EventRegistrationStatus)
+  status?: EventRegistrationStatus;
 
   @Field(() => Boolean, { nullable: true })
   @IsOptional()

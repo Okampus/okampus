@@ -6,13 +6,13 @@ import {
   IsOptional,
 } from 'class-validator';
 import { GraphQLJSON } from 'graphql-scalars';
-import { EventRegisterStatus } from '@lib/types/enums/event-register-status.enum';
+import { EventRegistrationStatus } from '@lib/types/enums/event-register-status.enum';
 
 @InputType()
 export class CreateEventRegistrationDto {
-  @Field(() => EventRegisterStatus)
-  @IsEnum(EventRegisterStatus)
-  status!: EventRegisterStatus;
+  @Field(() => EventRegistrationStatus)
+  @IsEnum(EventRegistrationStatus)
+  status!: EventRegistrationStatus;
 
   @Field(() => Int, { nullable: true })
   @IsOptional()

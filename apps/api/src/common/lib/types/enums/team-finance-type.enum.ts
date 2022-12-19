@@ -1,8 +1,9 @@
 import { registerEnumType } from '@nestjs/graphql';
 
-export enum TeamFinanceType {
-  Expense = 'Expense',
-  Income = 'Income',
+export enum TeamFinanceState {
+  Canceled = 'Canceled',
+  Ongoing = 'Ongoing',
+  Completed = 'Completed',
 }
 
-registerEnumType(TeamFinanceType, { name: 'TeamFinanceType' });
+registerEnumType(TeamFinanceState, { name: 'TeamFinanceState' });

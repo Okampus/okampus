@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 import { PaymentMethod } from '@lib/types/enums/payment-method.enum';
 import { TeamFinanceCategory } from '@lib/types/enums/team-finance-category.enum';
-import { TeamFinanceType } from '@lib/types/enums/team-finance-type.enum';
+import { TeamFinanceState } from '@lib/types/enums/team-finance-type.enum';
 
 @InputType()
 export class CreateTeamFinanceDto {
@@ -28,9 +28,9 @@ export class CreateTeamFinanceDto {
   @IsEnum(PaymentMethod)
   method: PaymentMethod;
 
-  @Field(() => TeamFinanceType)
-  @IsEnum(TeamFinanceType)
-  type: TeamFinanceType;
+  @Field(() => TeamFinanceState)
+  @IsEnum(TeamFinanceState)
+  type: TeamFinanceState;
 
   @Field(() => TeamFinanceCategory)
   @IsEnum(TeamFinanceCategory)
