@@ -55,7 +55,7 @@ export class Team extends BaseTenantEntity implements BaseSearchableEntity {
   id!: number;
 
   @Field()
-  @PrimaryKey()
+  @Index()
   @Property({ type: 'text' })
   slug!: string;
 
