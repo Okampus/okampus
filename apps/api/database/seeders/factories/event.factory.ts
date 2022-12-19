@@ -1,8 +1,11 @@
 import type { EntityManager } from '@mikro-orm/core';
 import type { Faker } from '@mikro-orm/seeder';
 import { Factory } from '@mikro-orm/seeder';
+import { TeamRole } from '@common/lib/types/enums/team-role.enum';
+import { randomFromArray } from '@common/lib/utils/array-utils';
 import { EventState } from '@lib/types/enums/event-state.enum';
 import { randomInt } from '@lib/utils/random-utils';
+import type { TeamMember } from '@modules/org/teams/members/team-member.entity';
 import type { Team } from '@org/teams/team.entity';
 import type { ApprovalStep } from '@org/tenants/approval-steps/approval-step.entity';
 import type { Tenant } from '@org/tenants/tenant.entity';
@@ -14,13 +17,15 @@ export class EventFactory extends Factory<Event> {
   tenant: Tenant;
   team: Team;
   steps: ApprovalStep[];
+  teamMembers: TeamMember[];
   model = Event;
 
-  constructor(em: EntityManager, team: Team, steps: ApprovalStep[]) {
+  constructor(em: EntityManager, team: Team, steps: ApprovalStep[], teamMembers: TeamMember[]) {
     super(em);
     this.tenant = team.tenant;
     this.team = team;
     this.steps = steps;
+    this.teamMembers = teamMembers;
   }
 
   public definition(faker: Faker): Partial<Event> {
@@ -41,6 +46,8 @@ export class EventFactory extends Factory<Event> {
       id: EventFactory.lastId++,
       tenant: this.tenant,
       name: faker.lorem.words(3),
+      createdBy: randomFromArray(this.teamMembers.filter(m =>
+        [TeamRole.Treasurer, TeamRole.Coowner, TeamRole.Owner, TeamRole.Manager].includes(m.role)), 1)[0].user,
       description: faker.lorem.paragraphs(3),
       start,
       end,

@@ -21,13 +21,14 @@ export class TeamFactory extends Factory<Team> {
   public definition(faker: Faker): Partial<Team> {
     const name = faker.company.name();
     return {
-      name,
       id: TeamFactory.lastId++,
+      name,
       tenant: this.tenant,
       kind: randomEnum(TeamKind),
       category: faker.random.word(),
       email: `${slugify(name)}@${this.tenant.slug}.fr`,
       status: faker.lorem.sentence(),
+      membershipRequestForm: null,
     };
   }
 }
