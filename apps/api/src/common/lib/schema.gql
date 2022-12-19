@@ -68,16 +68,13 @@ type FileUpload {
 }
 
 enum FileKind {
-  UserImage
   TeamImage
-  TenantImage
-  Attachment
-  Tenant
-  StudyDoc
-  InfoDoc
-  TeamFile
-  TeamGallery
+  TeamDocument
   TeamReceipt
+  TenantImage
+  UserImage
+  Attachment
+  Document
 }
 
 type TenantImage {
@@ -896,39 +893,6 @@ type PaginatedEvent {
   pageInfo: PageInfo
 }
 
-type TeamFile {
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  tenant: Tenant!
-  file: FileUpload!
-  lastActiveDate: DateTime!
-  active: Boolean!
-  id: String!
-  team: Team!
-  type: TeamFileType!
-  specialType: String!
-  description: String
-}
-
-enum TeamFileType {
-  Constitution
-  Rules
-  Transcript
-  LegalReceipt
-  Brochure
-  GraphicCharter
-}
-
-type TeamFileEdge {
-  cursor: String!
-  node: TeamFile!
-}
-
-type PaginatedTeamFile {
-  edges: [TeamFileEdge!]
-  pageInfo: PageInfo
-}
-
 type TeamFinance {
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -939,11 +903,13 @@ type TeamFinance {
   team: Team!
   dueTo: User
   amount: Float!
+  amountPayed: Float
   method: PaymentMethod!
-  type: TeamFinanceState!
+  state: TeamFinanceState!
+  location: String
   category: TeamFinanceCategory!
   event: Event
-  receipt: TeamFile
+  receipt: FileUpload
 }
 
 enum PaymentMethod {
@@ -1001,6 +967,39 @@ enum MetricName {
   ClubEventCount
   ClubCreatedEventCount
   UserCount
+}
+
+type TeamFile {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  tenant: Tenant!
+  file: FileUpload!
+  lastActiveDate: DateTime!
+  active: Boolean!
+  id: String!
+  team: Team!
+  type: TeamFileType!
+  specialType: String!
+  description: String
+}
+
+enum TeamFileType {
+  Constitution
+  Rules
+  Transcript
+  LegalReceipt
+  Brochure
+  GraphicCharter
+}
+
+type TeamFileEdge {
+  cursor: String!
+  node: TeamFile!
+}
+
+type PaginatedTeamFile {
+  edges: [TeamFileEdge!]
+  pageInfo: PageInfo
 }
 
 type IndexedUser {
