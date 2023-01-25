@@ -1,0 +1,17 @@
+import { Field, InputType } from '@nestjs/graphql';
+import { UUID } from '@okampus/shared/types';
+import { IsArray, IsString } from 'class-validator';
+import { EventApprovalStepProps } from './event-approval-step.props';
+
+@InputType()
+export class CreateEventApprovalStepDto extends EventApprovalStepProps {
+  @Field(() => [String])
+  @IsArray()
+  @IsString({ each: true })
+  validatorsIds!: UUID[];
+
+  @Field(() => [String])
+  @IsArray()
+  @IsString({ each: true })
+  notifieesIds!: UUID[];
+}

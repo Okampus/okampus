@@ -1,0 +1,54 @@
+import { Injectable } from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CreateEventApprovalDto, UpdateEventApprovalDto } from '@okampus/shared/dtos';
+import { UUID } from '@okampus/shared/types';
+import { RequestContext } from '../../../shards/global-request/request-context';
+import { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import { EventApprovalModel, PaginatedEventApprovalModel } from '../../factories/events/event-approval.model';
+import { CreateEventApprovalCommand } from './commands/create-event-approval/create-event-approval.command';
+import { DeleteEventApprovalCommand } from './commands/delete-event-approval/delete-event-approval.command';
+import { UpdateEventApprovalCommand } from './commands/update-event-approval/update-event-approval.command';
+import { GetEventApprovalByIdQuery } from './queries/get-event-approval-by-id/get-event-approval-by-id.query';
+import { GetEventApprovalsQuery } from './queries/get-event-approvals/get-event-approvals.query';
+
+const defaultEventPopulate = ['actor', 'actor.images', 'actor.socials'];
+
+@Injectable()
+export class EventApprovalsService extends RequestContext {
+  constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {
+    super();
+  }
+
+  findOneById(id: UUID): Promise<EventApprovalModel> {
+    const query = new GetEventApprovalByIdQuery(id, this.tenant(), this.autoGqlPopulate(defaultEventPopulate));
+    return this.queryBus.execute(query);
+  }
+
+  find(paginationOptions: PaginationOptions): Promise<PaginatedEventApprovalModel> {
+    const query = new GetEventApprovalsQuery(
+      paginationOptions,
+      this.tenant(),
+      this.autoGqlPopulate(defaultEventPopulate)
+    );
+    return this.queryBus.execute(query);
+  }
+
+  create(createEventApproval: CreateEventApprovalDto): Promise<EventApprovalModel> {
+    const command = new CreateEventApprovalCommand(createEventApproval, this.tenant(), this.requester());
+    return this.commandBus.execute(command);
+  }
+
+  update(updateEventApproval: UpdateEventApprovalDto): Promise<EventApprovalModel> {
+    const command = new UpdateEventApprovalCommand(
+      updateEventApproval,
+      this.tenant(),
+      this.autoGqlPopulate(defaultEventPopulate)
+    );
+    return this.commandBus.execute(command);
+  }
+
+  delete(id: UUID) {
+    const command = new DeleteEventApprovalCommand(id, this.tenant());
+    return this.commandBus.execute(command);
+  }
+}

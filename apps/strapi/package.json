@@ -1,28 +1,30 @@
 {
-  "name": "okampus-strapi",
+  "name": "strapi",
+  "private": true,
   "version": "0.1.0",
   "description": "A Strapi application",
-  "author": "Okampus  Dev. Team",
-  "private": true,
-  "license": "MIT",
   "scripts": {
-    "dev": "strapi develop",
+    "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi"
   },
+  "devDependencies": {},
   "dependencies": {
-    "@strapi/plugin-documentation": "^4.3.0",
-    "@strapi/plugin-users-permissions": "4.3.0",
-    "@strapi/provider-upload-aws-s3": "^4.3.0",
-    "@strapi/strapi": "4.3.0",
-    "better-sqlite3": "7.4.6",
-    "strapi-plugin-fuzzy-search": "^1.9.4"
+    "@strapi/strapi": "4.5.4",
+    "@strapi/plugin-users-permissions": "4.5.4",
+    "@strapi/plugin-i18n": "4.5.4",
+    "better-sqlite3": "7.4.6"
+  },
+  "author": {
+    "name": "Ivan STEPANIAN"
   },
   "strapi": {
-    "uuid": "21404380-e895-4815-8673-20828dd632e0"
+    "uuid": "cf556cad-3b33-4eb9-97d3-82dab20e819b"
   },
   "engines": {
-    "node": ">=14.0.0"
-  }
+    "node": ">=14.19.1 <=18.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
 }

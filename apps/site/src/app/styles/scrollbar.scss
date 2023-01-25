@@ -1,0 +1,71 @@
+
+$scrollbar-thumb-color-light: "#888";
+$scrollbar-thumb-color-dark: "#64748b";
+$scrollbar-thumb-color-hover-light: "#6d6d6d";
+$scrollbar-thumb-color-hover-dark: "#7e90aa";
+$scrollbar-thumb-color-active-light: "#3d3d3d";
+$scrollbar-thumb-color-active-dark: "#dbf4ff";
+
+.app-scrollbar,
+%app-scrollbar {
+    --scrollbar-thumb-color: $scrollbar-thumb-color-light;
+    --scrollbar-thumb-color-hover: $scrollbar-thumb-color-hover-light;
+    --scrollbar-thumb-color-active: $scrollbar-thumb-color-active-light;
+
+    scrollbar-color: var(--scrollbar-thumb-color) rgb(0 0 0 / 0%);
+    overflow: overlay;
+
+    &::-webkit-scrollbar-corner {
+        display: none;
+    }
+
+    &::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        background-clip: padding-box;
+        border: solid 4px transparent;
+        border-radius: 8px;
+        box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color);
+
+        &:hover {
+            border: solid 3px transparent;
+            box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color-hover);
+        }
+
+        &:active {
+            box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color-active);
+        }
+    }
+
+    &-on-hover {
+        @extend %app-scrollbar;
+
+        &:not(:hover) {
+            --scrollbar-thumb-color: rgb(0 0 0 / 0%) !important;
+
+            &::-webkit-scrollbar-thumb {
+                box-shadow: none;
+            }
+        }
+    }
+
+    .dark & {
+        --scrollbar-thumb-color: $scrollbar-thumb-color-dark;
+        --scrollbar-thumb-color-hover: $scrollbar-thumb-color-hover-dark;
+        --scrollbar-thumb-color-active: $scrollbar-thumb-color-active-dark;
+    }
+}
+
+%scrollbar-none,
+.scrollbar-none {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+%scrollbar-none::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}

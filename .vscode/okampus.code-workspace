@@ -1,0 +1,89 @@
+{
+  "folders": [
+    {
+      "name": "site",
+      "path": "../apps/site"
+    },
+    {
+      "name": "ui-atoms",
+      "path": "../libs//ui/atoms"
+    },
+    {
+      "name": "ui-molecules",
+      "path": "../libs//ui/molecules"
+    },
+    {
+      "name": "ui-organisms",
+      "path": "../libs//ui/organisms"
+    },
+    {
+      "name": "ui-templates",
+      "path": "../libs//ui/templates"
+    },
+    {
+      "name": "api",
+      "path": "../apps/api"
+    },
+    {
+      "name": "mobile",
+      "path": "../apps/mobile"
+    },
+    {
+      "name": "strapi",
+      "path": "../apps/strapi"
+    },
+    {
+      "name": "libs-shared",
+      "path": "../libs/shared"
+    },
+    {
+      "name": "libs-site",
+      "path": "../libs/site"
+    },
+    {
+      "name": "libs-api",
+      "path": "../libs/api"
+    },
+    {
+      "name": "libs-mobile",
+      "path": "../libs/mobile"
+    },
+    {
+      "name": "/",
+      "path": ".."
+    }
+  ],
+  "settings": {
+    "editor.indentSize": 2,
+    "editor.insertSpaces": true,
+    "files.insertFinalNewline": true,
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "apps": true,
+      "dist": true,
+      "libs": true,
+      "tools": true,
+      "tmp": true,
+      "node_modules": true
+    },
+    "jest.autoRun": "off",
+    "jest.disabledWorkspaceFolders": [
+      "site",
+      "ui-atoms",
+      "ui-molecules",
+      "ui-organisms",
+      "ui-templates",
+      "api",
+      "strapi",
+      "libs-shared",
+      "libs-site",
+      "libs-api",
+      "libs-mobile"
+    ]
+  }
+}

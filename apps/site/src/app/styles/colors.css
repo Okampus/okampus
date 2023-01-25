@@ -1,0 +1,101 @@
+.bg-0 {
+  @apply bg-[#fff] dark:bg-[#000];
+}
+
+.bg-1 {
+  @apply bg-[#fff] dark:bg-[#121213];
+}
+
+.bg-2 {
+  @apply bg-[#f0f2f3] dark:bg-[#1C1E1F];
+}
+
+.bg-3 {
+  @apply bg-[#e6e8eb] dark:bg-[#2a2c2e];
+}
+
+.bg-active {
+  @apply bg-[#bedbff] dark:bg-[#172b51];
+}
+
+.bg-hover {
+  @apply bg-[#dbeafc] dark:bg-[#0e1f3f];
+}
+
+.bg-opposite {
+  @apply bg-[#333] dark:bg-[#eee];
+}
+
+.bg-bubble {
+  @apply bg-[#444] [&.active]:bg-purple-500;
+}
+
+.bg-hover-1 {
+  @apply hover:bg-gray-300 dark:hover:bg-gray-800;
+}
+
+.text-0 {
+  @apply text-[#000000] dark:text-[#ffffff];
+}
+
+.text-1 {
+  @apply text-[#474a63] dark:text-[#e7e9f3];
+}
+
+.text-2 {
+  @apply text-[#6e718f] dark:text-[#b8bdd8];
+}
+
+.text-3 {
+  @apply text-[#888bb1] dark:text-[#666e96];
+}
+
+.text-opposite {
+  @apply text-[#fff] dark:text-[#4e5169];
+}
+
+.text-icon {
+  @apply text-[#4a7de2] dark:text-[#8eb3fc];
+}
+
+.text-brand {
+  @apply bg-clip-text bg-gradient-to-r from-[#B621FE] to-[#1f7df9] text-transparent;
+}
+
+.gray-button {
+  @apply rounded-lg border border-gray-300 bg-slate-100 text-gray-700 hover:bg-gray-200;
+}
+
+.bc-1 {
+  @apply border-gray-200 dark:border-gray-600;
+}
+
+.bc-2 {
+  @apply border-gray-300 dark:border-gray-500;
+}
+
+.bc-3 {
+  @apply border-gray-200 dark:border-gray-700;
+}
+
+
+.bg-gradient {
+  background:
+    radial-gradient(
+      100.99% 100.73% at 0% 0%,
+      rgb(0 196 204 / 72.6%) 0%,
+      #00c4cc 0.01%,
+      rgb(0 196 204 / 0%) 100%
+    ),
+    radial-gradient(68.47% 129.02% at 22.82% 97.71%, #6420ff 0%, rgb(100 32 255 / 0%) 100%),
+    radial-gradient(106.1% 249.18% at 0% 0%, #00c4cc 0%, rgb(0 196 204 / 0%) 100%),
+    radial-gradient(64.14% 115.13% at 5.49% 50%, #6420ff 0%, rgb(100 32 255 / 0%) 100%),
+    #7d2ae7;
+}
+
+html.dark .bg-gradient {
+  background:
+    linear-gradient(104.19deg, rgb(37 1 83 / 0%) 39.91%, #3b0388 77.15%),
+    linear-gradient(96.54deg, rgb(6 189 196 / 78%) 13.14%, rgb(2 214 215 / 0%) 57.93%),
+    #440496;
+}

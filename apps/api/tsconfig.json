@@ -1,43 +1,13 @@
 {
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": "./",
-    "checkJs": true,
-    "declaration": true,
-    "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "incremental": true,
-    "module": "commonjs",
-    "noImplicitAny": true,
-    "outDir": "./dist",
-    "paths": {
-      "@common/*": ["src/common/*"],
-      "@lib/*": ["src/common/lib/*"],
-      "@configs/*": ["src/common/configs/*"],
-
-      "@modules/*": ["src/modules/*"],
-      "@catalog/*": ["src/modules/catalog/*"],
-      "@create/*": ["src/modules/create/*"],
-      "@interact/*": ["src/modules/interact/*"],
-      "@org/*": ["src/modules/org/*"],
-      "@canteens/*": ["src/modules/org/canteens/*"],
-      "@classes/*": ["src/modules/org/classes/*"],
-      "@teams/*": ["src/modules/org/teams/*"],
-      "@tenants/*": ["src/modules/org/tenants/*"],
-      "@plan/*": ["src/modules/plan/*"],
-      "@uaa/*": ["src/modules/uaa/*"],
-      "@upload/*": ["src/modules/upload/*"]
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
     },
-    "pretty": false,
-    "removeComments": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strictNullChecks": true,
-    "target": "es2022",
-    "typeRoots": ["./node_modules/@types"]
-  },
-  "include": ["./src/**/*.ts", "./database/seeders/**/*.ts"],
-  "exclude": ["node_modules/", "dist"]
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

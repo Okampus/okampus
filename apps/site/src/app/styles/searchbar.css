@@ -1,0 +1,37 @@
+/* .home-searchbar {
+  animation: pulse 10s linear infinite;
+} */
+
+@keyframes pulse {
+  0% {
+    color: white;
+  }
+  10% {
+    color: transparent;
+  }
+  30% {
+    color: transparent;
+  }
+  50% {
+    color: white;
+  }
+  60% {
+    color: transparent;
+  }
+  80% {
+    color: transparent;
+  }
+  100% {
+    color: white;
+  }
+}
+
+.home-searchbar::after {
+  content: "";
+  animation: spin 10s linear infinite, pulse 10s linear infinite;
+}
+
+@keyframes spin {
+  0% { content: " les associations de ton école..."; }
+  100% { content: " les événements à venir..."; }
+}

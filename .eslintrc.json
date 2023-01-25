@@ -1,0 +1,180 @@
+{
+  "root": true,
+  "ignorePatterns": ["**/*"],
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+        "project": ["apps/*/tsconfig.app.json", "apps/*/e2e/tsconfig.json", "libs/**/tsconfig.lib.json"]
+      }
+    }
+  },
+  "plugins": ["@nrwl/nx", "import", "unused-imports"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "extends": ["plugin:unicorn/recommended"],
+      "rules": {
+        "max-len": ["error", { "code": 120, "ignorePattern": "^\\s*<path" }],
+        "import/no-cycle": ["error", { "maxDepth": 3, "ignoreExternal": true }],
+        "unicorn/prevent-abbreviations": "off",
+        "unicorn/no-null": "off",
+        "unicorn/no-array-callback-reference": "off",
+        "unicorn/prefer-module": "off",
+        "unicorn/prefer-top-level-await": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "warn",
+          {
+            "vars": "all",
+            "varsIgnorePattern": "^_",
+            "args": "after-used",
+            "argsIgnorePattern": "^_"
+          }
+        ],
+        "@nrwl/nx/enforce-module-boundaries": [
+          "error",
+          {
+            "allow": [],
+            // update depConstraints based on your tags
+            "depConstraints": [
+              {
+                "sourceTag": "scope:shared",
+                "onlyDependOnLibsWithTags": ["scope:shared"]
+              },
+              {
+                "sourceTag": "scope:api",
+                "onlyDependOnLibsWithTags": ["scope:shared", "scope:api"]
+              },
+              {
+                "sourceTag": "scope:site",
+                "onlyDependOnLibsWithTags": ["scope:shared", "scope:site"]
+              },
+              {
+                "sourceTag": "scope:mobile",
+                "onlyDependOnLibsWithTags": ["scope:shared", "scope:mobile"]
+              },
+              {
+                "sourceTag": "scope:mobile-e2e",
+                "onlyDependOnLibsWithTags": ["scope:shared", "scope:mobile-e2e", "scope:mobile"]
+              },
+              {
+                "sourceTag": "scope:site-e2e",
+                "onlyDependOnLibsWithTags": ["scope:shared", "scope:site-e2e", "scope:site"]
+              },
+              {
+                "sourceTag": "scope:strapi",
+                "onlyDependOnLibsWithTags": ["scope:shared", "scope:strapi"]
+              },
+              {
+                "sourceTag": "layer:*",
+                "onlyDependOnLibsWithTags": ["layer:*"]
+              },
+              {
+                "sourceTag": "layer:dal",
+                "onlyDependOnLibsWithTags": ["layer:dal", "layer:*"]
+              },
+              {
+                "sourceTag": "layer:bll",
+                "onlyDependOnLibsWithTags": ["layer:bll", "layer:dal", "layer:*"]
+              },
+              {
+                "sourceTag": "layer:atom",
+                "onlyDependOnLibsWithTags": ["layer:atom", "layer:*"]
+              },
+              {
+                "sourceTag": "layer:molecule",
+                "onlyDependOnLibsWithTags": ["layer:molecule", "layer:atom", "layer:*"]
+              },
+              {
+                "sourceTag": "layer:organism",
+                "onlyDependOnLibsWithTags": ["layer:organism", "layer:molecule", "layer:atom", "layer:*"]
+              },
+              {
+                "sourceTag": "layer:template",
+                "onlyDependOnLibsWithTags": [
+                  "layer:template",
+                  "layer:organism",
+                  "layer:molecule",
+                  "layer:atom",
+                  "layer:*"
+                ]
+              },
+              {
+                "sourceTag": "type:const",
+                "onlyDependOnLibsWithTags": ["type:const"]
+              },
+              {
+                "sourceTag": "type:typing",
+                "onlyDependOnLibsWithTags": ["type:typing", "type:const"]
+              },
+              {
+                "sourceTag": "type:util",
+                "onlyDependOnLibsWithTags": ["type:util", "type:typing", "type:const"]
+              },
+              {
+                "sourceTag": "type:ui",
+                "onlyDependOnLibsWithTags": ["type:ui", "type:shard", "type:util", "type:typing", "type:const"]
+              },
+              {
+                "sourceTag": "type:shard",
+                "onlyDependOnLibsWithTags": ["type:shard", "type:util", "type:typing", "type:const"]
+              },
+              {
+                "sourceTag": "type:feat",
+                "onlyDependOnLibsWithTags": ["type:ui", "type:shard", "type:util", "type:typing", "type:const"]
+              },
+              {
+                "sourceTag": "type:layer",
+                "onlyDependOnLibsWithTags": [
+                  "type:layer",
+                  "type:ui",
+                  "type:shard",
+                  "type:util",
+                  "type:typing",
+                  "type:const"
+                ]
+              },
+              {
+                "sourceTag": "type:app",
+                "onlyDependOnLibsWithTags": [
+                  "type:layer",
+                  "type:feat",
+                  "type:ui",
+                  "type:shard",
+                  "type:util",
+                  "type:typing",
+                  "type:const"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nrwl/nx/javascript"],
+      "rules": {
+        "no-unused-vars": "off"
+      }
+    },
+    {
+      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
+      "env": {
+        "jest": true
+      },
+      "rules": {}
+    }
+  ]
+}
