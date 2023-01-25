@@ -8,7 +8,7 @@ const columns = [
   {
     label: 'Association',
     sortable: true,
-    render: (value: ITeam) => (
+    render: (value: Required<ITeam>) => (
       <div className="flex gap-2 items-center">
         <Avatar
           src={value.actor.actorImages?.find((actorImage) => actorImage.type === ActorImageType.Avatar)?.image?.url}
@@ -21,9 +21,9 @@ const columns = [
   {
     label: 'Président',
     sortable: true,
-    render: (value: ITeam) => {
+    render: (value: Required<ITeam>) => {
       const president = value?.members?.find((member) => (member.role as unknown as string) === 'president')
-        ?.user as IUser;
+        ?.user as Required<IUser>;
 
       return (
         <div className="flex gap-2 items-center">
@@ -41,9 +41,9 @@ const columns = [
   {
     label: 'Trésorier',
     sortable: true,
-    render: (value: ITeam) => {
+    render: (value: Required<ITeam>) => {
       const treasurer = value?.members?.find((member) => (member.role as unknown as string) === 'treasurer')
-        ?.user as IUser;
+        ?.user as Required<IUser>;
 
       return (
         <div className="flex gap-2 items-center">
@@ -179,7 +179,7 @@ const data = [
       },
     ],
   },
-] as unknown as ITeam[];
+] as unknown as Required<ITeam>[];
 
 console.log(columns);
 
