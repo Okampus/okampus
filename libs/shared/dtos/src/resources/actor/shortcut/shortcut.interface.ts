@@ -1,9 +1,10 @@
-import { ITenantScopedEntity } from '../../tenant-scoped.interface';
+import { ShortcutType } from '@okampus/shared/enums';
+import { ITenantScoped } from '../../tenant-scoped.interface';
+import { IActor } from '../actor.interface';
 import { IUser } from '../user/user.interface';
 
-export type IShortcut = ITenantScopedEntity & {
-  name: string;
-  subroute: string;
-  resourceId: string;
+export type IShortcut = ITenantScoped & {
+  type: ShortcutType;
   user?: IUser;
+  targetActor?: IActor;
 };

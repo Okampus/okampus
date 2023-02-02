@@ -2,8 +2,8 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Actor, BaseRepository } from '@okampus/api/dal';
-import { BotFactory } from '../../../../factories/bots/bot.factory';
-import { BotModel } from '../../../../factories/bots/bot.model';
+import { BotFactory } from '../../../../factories/domains/bots/bot.factory';
+import { BotModel } from '../../../../factories/domains/bots/bot.model';
 import { CreateBotCommand } from './create-bot.command';
 
 @CommandHandler(CreateBotCommand)

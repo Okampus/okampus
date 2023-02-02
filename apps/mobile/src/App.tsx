@@ -7,8 +7,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Navigation from './app/components/navigation';
 import useCachedResources from './app/hooks/useCachedResources';
 import useColorScheme from './app/hooks/useColorScheme';
-import { client } from './app/modules/apollo';
-import { emitter } from './app/modules/mitt';
+import { client } from './app/providers/apollo';
+import { emitter } from './app/providers/mitt';
 import { loginMutation } from '@okampus/shared/graphql';
 
 export default function App() {

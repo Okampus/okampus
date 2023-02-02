@@ -1,3 +1,4 @@
+import { IOrgDocument } from '../../../manage-org/org-document/org-document.interface';
 import type { IEventApprovalStep } from '../../../manage-tenant/event-approval-step/event-approval-step.interface';
 import { IForm } from '../../../ugc/form/form.interface';
 import { IOrg } from '../../org.interface';
@@ -7,4 +8,5 @@ export type ITenant = IOrg &
   TenantProps & {
     eventApprovalSteps: IEventApprovalStep[];
     eventValidationForm?: IForm | null;
+    documents: IOrgDocument[];
   };

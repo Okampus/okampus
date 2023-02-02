@@ -13,18 +13,19 @@ import { BadRequestException } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { ActorEntityType, BaseEntity, BaseRepository, FlatActorData, TenantScopedEntity } from '@okampus/api/dal';
 import { DEFAULT_PAGINATION_LIMIT } from '@okampus/shared/consts';
-import { IBaseEntity } from '@okampus/shared/dtos';
+import { IBase } from '@okampus/shared/dtos';
 import { Action } from '@okampus/shared/enums';
 import { CursorColumns, CursorColumnTypes } from '@okampus/shared/types';
 import { processPopulatePaginated } from '@okampus/api/shards';
 import { Subjects } from '../../features/uaa/authorization/casl/get-abilities';
 import { assertPermissions, checkPermissions } from '../../features/uaa/authorization/check-permissions';
-import { RequestContext } from '../../shards/global-request/request-context';
+import { RequestContext } from '../../shards/request-context/request-context';
 import { PageInfo } from '../../shards/types/page-info.type';
 import { Edge, PaginatedNodes } from '../../shards/types/paginated.type';
 import { PaginationOptions } from '../../shards/types/pagination-options.type';
 import { decodeCursor, encodeCursor, getCursorColumns, makeCursor } from '../../shards/utils/cursor-serializer';
 import { BaseModel } from './abstract/base.model';
+import { loadTenantScopedEntity } from './domains/loader';
 
 type PaginationFindOptions<T extends BaseEntity, P extends string> = Omit<
   FindOptions<T, P>,
@@ -36,7 +37,7 @@ const forbiddenKeys = ['id', 'createdAt', 'updatedAt', 'deletedAt'];
 export abstract class BaseFactory<
   Model extends BaseModel,
   Entity extends TenantScopedEntity,
-  Interface extends IBaseEntity,
+  Interface extends IBase,
   Options
 > extends RequestContext {
   constructor(
@@ -48,14 +49,20 @@ export abstract class BaseFactory<
     super();
   }
 
-  public abstract modelToEntity(model: Required<Model>, ...args: unknown[]): Entity;
-  public abstract entityToModel(entity: Entity, ...args: unknown[]): Model | undefined;
+  public abstract modelToEntity(model: Required<Model>): Entity;
 
-  public async entityToModelOrFail(entity: Entity, ...args: unknown[]): Promise<Model> {
-    const model = this.entityToModel(entity, ...args);
+  public entityToModel(entity: Entity): Model | undefined {
+    const raw = loadTenantScopedEntity(entity, {});
+    if (!raw) return undefined;
+    return this.createModel(raw as unknown as Interface);
+  }
+
+  public entityToModelOrFail(entity: Entity): Model {
+    const model = this.entityToModel(entity);
     if (!model) throw new BadRequestException('Entity could not be loaded');
     return model;
   }
+
   // public async findOne(where: FilterQuery<Entity>, findOptions?: FindOneOptions<Entity>): Promise<Model | null> {
   //   const entity = await this.repository.findOne(where, findOptions);
   //   return entity ? this.entityToModel(entity) : null;
@@ -63,7 +70,6 @@ export abstract class BaseFactory<
 
   public async findOneOrFail(where: FilterQuery<Entity>, findOptions?: FindOneOrFailOptions<Entity>): Promise<Model> {
     const entity = await this.repository.findOneOrFail(where, findOptions);
-
     const requester = this.requester();
     if (requester) assertPermissions(requester, Action.Read, entity as unknown as Subjects);
     return this.entityToModelOrFail(entity);
@@ -144,7 +150,6 @@ export abstract class BaseFactory<
       } as FilterQuery<Entity>;
     };
 
-    // console.log('where', columns ? ({ $or: [where, getWhereFind(columns)] } as FilterQuery<Entity>) : where);
     const items = await this.repository.find(
       columns ? ({ $or: [where, getWhereFind(columns)] } as FilterQuery<Entity>) : where,
       // eslint-disable-next-line unicorn/no-array-method-this-argument
@@ -305,9 +310,6 @@ export abstract class BaseFactory<
 
     const requester = this.requester();
     if (requester) assertPermissions(requester, Action.Delete, entity as unknown as Subjects);
-    // if (entity.deletedAt) {
-    //   throw new BadRequestException(`${this.EntityClass.name} has been deleted`);
-    // }
 
     entity.deletedAt = new Date();
     await this.repository.flush();

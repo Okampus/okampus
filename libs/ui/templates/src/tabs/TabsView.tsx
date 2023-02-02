@@ -1,4 +1,4 @@
-import { fuseClasses } from '@okampus/shared/utils';
+import { clsx } from 'clsx';
 import { NumberBadge } from '@okampus/ui/atoms';
 import { useState } from 'react';
 
@@ -34,7 +34,7 @@ export function TabsView({ tabs }: TabsViewProps) {
       </div>
 
       {/* Content */}
-      <div className={fuseClasses('h-full w-full border bc-3 rounded-lg', tabs[activeTab].noPad ? '' : 'p-6')}>
+      <div className={clsx('h-full w-full border border-color-3 rounded-lg', tabs[activeTab].noPad ? '' : 'p-6')}>
         {tabs[activeTab].content}
       </div>
     </div>

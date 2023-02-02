@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { BotFactory } from '../../../../factories/bots/bot.factory';
-import { PaginatedBotModel } from '../../../../factories/bots/bot.model';
+import { BotFactory } from '../../../../factories/domains/bots/bot.factory';
+import { PaginatedBotModel } from '../../../../factories/domains/bots/bot.model';
 import { GetBotsQuery } from './get-bots.query';
 
 @QueryHandler(GetBotsQuery)

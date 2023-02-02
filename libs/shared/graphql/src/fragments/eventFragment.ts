@@ -1,9 +1,8 @@
-import { gql } from '@apollo/client';
-import { orgFragment } from './orgFragment';
-import { userFragment } from './userFragment';
+import { gql } from '../schema/__generated__/gql';
 
-export const eventFragment = gql`
+export const eventFragment = gql(`
   fragment EventInfo on TenantEventModel {
+    __typename
     id
     createdAt
     updatedAt
@@ -12,23 +11,28 @@ export const eventFragment = gql`
     end
     state
     supervisor {
+      __typename
       id
     }
     location {
+      __typename
+      name
       street
       city
       state
       zip
     }
     lastEventApprovalStep {
+      __typename
       id
       name
       order
     }
     rootContent {
+      __typename
       ugcKind
       isAnonymous
-      org {
+      representingOrg {
         id
         createdAt
         updatedAt
@@ -38,10 +42,7 @@ export const eventFragment = gql`
           name
           slug
           actorImages {
-            image {
-              url
-            }
-            type
+            ...ActorImageBareInfo
           }
         }
       }
@@ -53,5 +54,4 @@ export const eventFragment = gql`
       }
     }
   }
-  ${userFragment}
-`;
+`);

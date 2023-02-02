@@ -1,5 +1,4 @@
 import {
-  Cascade,
   Collection,
   Entity,
   EntityRepositoryType,
@@ -13,13 +12,15 @@ import { Org } from '../org.entity';
 import { OrgKind, TeamRoleCategory, TeamType } from '@okampus/shared/enums';
 import { TeamOptions } from './team.options';
 import { TransformCollection } from '@okampus/api/shards';
-import { FileUpload } from '../../file-upload/file-upload.entity';
 import { TeamCategory } from '../../label/team-category/team-category.entity';
 import { VideoUpload } from '../../file-upload/video-upload/video-upload.entity';
 import { Form } from '../../ugc/form/form.entity';
 import type { TeamMember } from '../../membership/team-member/team-member.entity';
 // eslint-disable-next-line import/no-cycle
 import { TeamRepository } from './team.repository';
+import type { TeamRole } from '../../role/team-role/team-role.entity';
+// eslint-disable-next-line import/no-cycle
+import { Finance } from '../../manage-team/finance/finance.entity';
 
 @Entity({
   customRepository: () => TeamRepository,
@@ -31,7 +32,7 @@ export class Team extends Org {
   tagline: string | null = null;
 
   @Enum(() => TeamType)
-  type = TeamType.Team;
+  type = TeamType.Project;
 
   @ManyToMany({ type: 'TeamCategory' })
   @TransformCollection()
@@ -47,13 +48,20 @@ export class Team extends Org {
   @Property({ type: 'int' })
   membershipFees = 0;
 
-  @ManyToMany({ type: 'FileUpload', cascade: [Cascade.ALL] })
-  @TransformCollection()
-  files = new Collection<FileUpload>(this);
+  @Property({ type: 'int' })
+  currentFinance = 0;
 
   @OneToMany({ type: 'TeamMember', mappedBy: 'team' })
   @TransformCollection()
   members = new Collection<TeamMember>(this);
+
+  @OneToMany({ type: 'TeamRole', mappedBy: 'team' })
+  @TransformCollection()
+  roles = new Collection<TeamRole>(this);
+
+  @OneToMany({ type: 'Finance', mappedBy: 'team' })
+  @TransformCollection()
+  finances = new Collection<Finance>(this);
 
   // Member count starts at one (1st user is owner)
   @Property({ type: 'int' })

@@ -1,8 +1,7 @@
-import { gql } from '@apollo/client';
-import { eventFragment } from '../fragments/eventFragment';
+import { gql } from '../schema/__generated__/gql';
 
-export const getEventsQuery = gql`
-  query {
+export const getEventsQuery = gql(`
+  query getEvents {
     events {
       edges {
         node {
@@ -11,5 +10,4 @@ export const getEventsQuery = gql`
       }
     }
   }
-  ${eventFragment}
-`;
+`);

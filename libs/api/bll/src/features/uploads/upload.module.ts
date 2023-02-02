@@ -30,7 +30,7 @@ export class UploadModule implements OnModuleInit {
     }
 
     logger.log('Distant storage is disabled, uploading to local file system.');
-    const base = path.join(path.resolve('./'), this.config.upload.path);
+    const base = path.join(__dirname, '..', '..', '..', 'apps/api', this.config.upload.path);
 
     const dirs: Array<Promise<string | undefined>> = [];
     for (const value of enumKeys(S3Buckets)) dirs.push(mkdir(path.join(base, S3Buckets[value]), { recursive: true }));

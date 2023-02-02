@@ -65,8 +65,8 @@ export const allEntities = [
   Individual,
   Bot,
   User,
-  Shortcut,
   UserProfile,
+  Shortcut,
 
   Org,
   Canteen,
@@ -136,3 +136,5 @@ export const allEntities = [
   FormSubmission,
   FormSubmissionEdit,
 ];
+
+// TODO: add test to match all *.entity.ts files with this list

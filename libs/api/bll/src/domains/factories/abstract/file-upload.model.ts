@@ -1,11 +1,24 @@
-import { Field, GraphQLISODateTime, Int, ObjectType } from '@nestjs/graphql';
+import { Field, GraphQLISODateTime, Int, InterfaceType, ObjectType } from '@nestjs/graphql';
 import { IFileUpload, IIndividual, ITenantCore } from '@okampus/shared/dtos';
 import { FileUploadKind } from '@okampus/shared/enums';
 import { IndividualModel } from './individual.model';
 // eslint-disable-next-line import/no-cycle
 import { TenantScopedModel } from './tenant-scoped.model';
 
-@ObjectType()
+@InterfaceType({
+  resolveType: (value) => {
+    if (value.fileUploadKind === FileUploadKind.DocumentUpload) {
+      return 'DocumentUploadModel';
+    }
+    if (value.fileUploadKind === FileUploadKind.ImageUpload) {
+      return 'ImageUploadModel';
+    }
+    if (value.fileUploadKind === FileUploadKind.VideoUpload) {
+      return 'VideoUploadModel';
+    }
+    return 'FileUploadModel';
+  },
+})
 export abstract class FileUploadModel extends TenantScopedModel implements IFileUpload {
   @Field(() => FileUploadKind)
   fileUploadKind!: FileUploadKind;

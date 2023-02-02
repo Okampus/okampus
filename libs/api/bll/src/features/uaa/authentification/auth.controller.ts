@@ -3,13 +3,12 @@ import { ApiTags } from '@nestjs/swagger';
 import { User } from '@okampus/api/dal';
 import { Public, TenantPublic } from '@okampus/api/shards';
 import { TokenType } from '@okampus/shared/enums';
-import { ApiConfig, UUID } from '@okampus/shared/types';
+import { ApiConfig, Snowflake } from '@okampus/shared/types';
 import { referenceRemover } from '@okampus/shared/utils';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { UserModel } from '../../../domains/factories/users/user.model';
-import { UsersService } from '../../../domains/resources/users/users.service';
 import { ConfigService } from '../../../global/config.module';
-import { Requester } from '../../../shards/global-request/current-user.decorator';
+import { Requester } from '../../../shards/request-context/requester.decorator';
+import { AuthContextModel } from './auth-context.model';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 // import { RegisterDto } from './dto/register.dto';
@@ -20,11 +19,7 @@ import { LoginDto } from './dto/login.dto';
 export class AuthController {
   config: ApiConfig;
 
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly authService: AuthService,
-    private readonly usersService: UsersService
-  ) {
+  constructor(private readonly configService: ConfigService, private readonly authService: AuthService) {
     this.config = this.configService.config;
   }
 
@@ -45,10 +40,8 @@ export class AuthController {
     @Body() body: LoginDto,
     @Req() req: FastifyRequest,
     @Res({ passthrough: true }) res: FastifyReply
-  ): Promise<UserModel> {
-    const model = await this.authService.login(body, req, res);
-    console.log(referenceRemover(model));
-    return referenceRemover(model);
+  ): Promise<AuthContextModel> {
+    return referenceRemover(await this.authService.login(body, req, res));
   }
 
   // @CheckPolicies((ability) => ability.can(Action.Create, User))
@@ -82,7 +75,7 @@ export class AuthController {
   }
 
   @Post('bot-token')
-  public async botToken(@Param('id') id: UUID): Promise<string> {
+  public async botToken(@Param('id') id: Snowflake): Promise<string> {
     return await this.authService.createBotToken(id);
   }
 

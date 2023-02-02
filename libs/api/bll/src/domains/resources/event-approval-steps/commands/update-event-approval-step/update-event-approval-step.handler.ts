@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { EventApprovalStepFactory } from '../../../../factories/events/event-approval-step.factory';
-import { EventApprovalStepModel } from '../../../../factories/events/event-approval-step.model';
+import { EventApprovalStepFactory } from '../../../../factories/domains/events/event-approval-step.factory';
+import { EventApprovalStepModel } from '../../../../factories/domains/events/event-approval-step.model';
 import { UpdateEventApprovalStepCommand } from './update-event-approval-step.command';
 
 @CommandHandler(UpdateEventApprovalStepCommand)

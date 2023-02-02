@@ -57,5 +57,5 @@
       }
     }
   },
-  "tags": ["scope:shared", "type:typing", "layer:*"]
+  "tags": ["scope:shared", "type:const", "layer:*"]
 }

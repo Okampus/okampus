@@ -1,6 +1,6 @@
 export enum UgcKind {
   Content = 'Content',
-  Document = 'Document',
+  TenantDocument = 'TenantDocument',
   Form = 'Form',
   FormSubmission = 'FormSubmission',
 }

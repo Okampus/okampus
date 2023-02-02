@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { TenantEventFactory } from '../../../../factories/events/event.factory';
-import { TenantEventModel } from '../../../../factories/events/event.model';
+import { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
+import { TenantEventModel } from '../../../../factories/domains/events/event.model';
 import { CreateEventCommand } from './create-event.command';
 
 @CommandHandler(CreateEventCommand)

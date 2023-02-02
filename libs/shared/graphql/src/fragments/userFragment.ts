@@ -1,21 +1,21 @@
-import { gql } from '@apollo/client';
+import { gql } from '../schema/__generated__/gql';
 
-export const userFragment = gql`
+export const userFragment = gql(`
   fragment UserInfo on UserModel {
+    __typename
     id
     createdAt
     updatedAt
     actor {
+      __typename
+      id
       slug
       name
       bio
       primaryEmail
       ical
       actorImages {
-        image {
-          url
-        }
-        type
+        ...ActorImageBareInfo
       }
     }
     firstName
@@ -23,4 +23,4 @@ export const userFragment = gql`
     roles
     scopeRole
   }
-`;
+`);

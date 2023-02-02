@@ -18,13 +18,5 @@
     "src/**/*.spec.jsx",
     "src/**/*.test.jsx"
   ],
-  "include": [
-    "src/**/*.js",
-    "src/**/*.jsx",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "../../libs/ui/templates/src/tabs/TabsView.tsx",
-    "../../libs/ui/atoms/src/cards/EventCard.tsx",
-    "../../libs/ui/atoms/src/popups/Modal.tsx"
-  ]
+  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
 }

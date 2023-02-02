@@ -11,6 +11,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        'xxs': '.625rem',
+        'modest': '0.925rem',
+      },
       screens: {
         'xxs': '361px',
         'xs': '408px',
@@ -24,8 +28,10 @@ module.exports = {
         'xl-max': { max: '1279px' },
         '2xl-max': { max: '1535px' },
         '3xl-max': { max: '1799px' },
+        'short': { 'raw': '(max-height: 500px)' },
+        'tall': { 'raw': '(min-height: 500px)' },
     },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/line-clamp')],
 };

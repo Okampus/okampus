@@ -1,5 +1,6 @@
 export enum TeamType {
-  Team = 'Team',
+  Association = 'Association',
   Club = 'Club',
   Project = 'Project',
+  Department = 'Department',
 }

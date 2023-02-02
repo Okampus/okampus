@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { UUID } from '@okampus/shared/types';
+import { Snowflake } from '@okampus/shared/types';
 import { IsArray, IsString } from 'class-validator';
 import { EventApprovalStepProps } from './event-approval-step.props';
 
@@ -8,10 +8,10 @@ export class CreateEventApprovalStepDto extends EventApprovalStepProps {
   @Field(() => [String])
   @IsArray()
   @IsString({ each: true })
-  validatorsIds!: UUID[];
+  validatorsIds!: Snowflake[];
 
   @Field(() => [String])
   @IsArray()
   @IsString({ each: true })
-  notifieesIds!: UUID[];
+  notifieesIds!: Snowflake[];
 }

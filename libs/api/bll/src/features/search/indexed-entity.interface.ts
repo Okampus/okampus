@@ -1,4 +1,4 @@
-import { UUID } from '@okampus/shared/types';
+import { Snowflake } from '@okampus/shared/types';
 
 export interface BaseIndex {
   [key: string]: unknown;
@@ -13,7 +13,7 @@ export interface BaseIndex {
 }
 
 export interface IndexedEntity extends BaseIndex {
-  id: UUID;
+  id: Snowflake;
   realId: string;
   metaType: string;
 }

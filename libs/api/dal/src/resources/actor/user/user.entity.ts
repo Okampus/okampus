@@ -11,6 +11,8 @@ import { UserRepository } from './user.repository';
 import { UserProfile } from '../user-profile/user-profile.entity';
 import { Actor } from '../actor.entity';
 import { fullName } from '@okampus/shared/utils';
+import { Shortcut } from '../shortcut/shortcut.entity';
+import { TransformCollection } from '@okampus/api/shards';
 
 @Entity({ customRepository: () => UserRepository })
 export class User extends Individual {
@@ -39,12 +41,14 @@ export class User extends Individual {
   profile = new UserProfile({ user: this });
 
   @OneToMany({ type: 'Shortcut', mappedBy: 'user' })
-  shortcuts = new Collection<Session>(this);
+  @TransformCollection()
+  shortcuts = new Collection<Shortcut>(this);
 
   // @OneToMany('BadgeUnlock', 'user')
   // badgesUnlocked = new Collection<BadgeUnlock>(this);
 
   @OneToMany({ type: 'Session', mappedBy: 'user' })
+  @TransformCollection()
   sessions = new Collection<Session>(this);
 
   // @OneToMany('ClassMembership', 'user')
@@ -54,6 +58,7 @@ export class User extends Individual {
   // teamMembershipRequests = new Collection<TeamMembershipRequest>(this);
 
   @OneToMany({ type: 'TeamMember', mappedBy: 'user' })
+  @TransformCollection()
   teamMemberships = new Collection<TeamMember>(this);
 
   // @OneToMany('Interest', 'user')

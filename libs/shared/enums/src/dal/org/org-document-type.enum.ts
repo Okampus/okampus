@@ -1,9 +1,11 @@
 export enum OrgDocumentType {
-  Constitution = 'Constitution',
-  Documentation = 'Documentation',
-  Rules = 'Rules',
-  Transcript = 'Transcript',
-  LegalReceipt = 'LegalReceipt',
-  Brochure = 'Brochure',
-  GraphicCharter = 'GraphicCharter',
+  TenantGuide = 'TenantGuide',
+
+  AssociationConstitution = 'AssociationConstitution', // "Récépissé de préfecture"
+  AssociationDeclaration = 'AssociationDeclaration', // "Statuts"
+  ClubHandover = 'ClubHandover', // "Courrier de passation"
+  ClubCharter = 'ClubCharter', // "Réglement intérieur"
+
+  OrgMeetingTranscript = 'OrgMeetingTranscript',
+  OrgGraphicCharter = 'OrgGraphicCharter',
 }

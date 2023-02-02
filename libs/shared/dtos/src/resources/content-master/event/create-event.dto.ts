@@ -1,5 +1,5 @@
 import { Field, InputType, IntersectionType } from '@nestjs/graphql';
-import { UUID } from '@okampus/shared/types';
+import { Snowflake } from '@okampus/shared/types';
 import { IsString } from 'class-validator';
 import { ContentMasterProps } from '../content-master.props';
 import { TenantEventProps } from './event.props';
@@ -12,9 +12,9 @@ export class CreateEventDto extends IntersectionType(TenantEventProps, ContentMa
 
   @Field(() => String)
   @IsString()
-  supervisorId!: UUID;
+  supervisorId!: Snowflake;
 
   @Field(() => String)
   @IsString()
-  orgId!: UUID;
+  orgId!: Snowflake;
 }

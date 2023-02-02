@@ -38,7 +38,9 @@ export function createAbilitiesForIndividual(individual: Individual): AppAbility
   const isAuthor = { realAuthor: { id: individual.id } } as const;
 
   if (individual.individualKind === IndividualKind.User && (individual as User).roles.includes(RoleType.TenantAdmin)) {
+    allow(Action.Read, 'all');
     allow(Action.Manage, 'all');
+    allow(Action.Create, 'all');
   } else {
     allow(Action.Read, 'all');
     forbid(Action.Read, [
@@ -134,7 +136,7 @@ export function createAbilitiesForIndividual(individual: Individual): AppAbility
   }
 
   ForbiddenError.setDefaultMessage(
-    (error) => `Cannot perform ${error.action.toLowerCase()} on a ${error.subjectType.toLowerCase()}`
+    (error) => `You do not have permission to ${error.action.toLowerCase()} a ${error.subjectType.toLowerCase()}`
   );
 
   return build({

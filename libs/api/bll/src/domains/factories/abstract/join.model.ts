@@ -1,8 +1,8 @@
 import { Field, InterfaceType } from '@nestjs/graphql';
 import { IFormSubmission, IIndividual, IJoin, ITenantCore, IUser } from '@okampus/shared/dtos';
 import { JoinKind, JoinState } from '@okampus/shared/enums';
-import { FormSubmissionModel } from '../forms/form-submission.model';
-import { UserModel } from '../users/user.model';
+import { FormSubmissionModel } from '../domains/forms/form-submission.model';
+import { UserModel } from '../domains/users/user.model';
 // eslint-disable-next-line import/no-cycle
 import { IndividualModel } from './individual.model';
 import { TenantScopedModel } from './tenant-scoped.model';

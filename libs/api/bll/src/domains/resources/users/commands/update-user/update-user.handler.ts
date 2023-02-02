@@ -1,8 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { User } from '@okampus/api/dal';
 import { fullName } from '@okampus/shared/utils';
-import { UserFactory } from '../../../../factories/users/user.factory';
-import { UserModel } from '../../../../factories/users/user.model';
+import { UserFactory } from '../../../../factories/domains/users/user.factory';
+import { UserModel } from '../../../../factories/domains/users/user.model';
 import { UpdateUserCommand } from './update-user.command';
 
 async function updateFullName(data: Partial<User>, user: User) {

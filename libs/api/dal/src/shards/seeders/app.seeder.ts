@@ -95,13 +95,13 @@ function createTeamRole(
   });
 }
 
-function createTeamMember(em: EntityManager, team: Team, user: User, role: TeamRole) {
+function createTeamMember(em: EntityManager, team: Team, user: User, roles: TeamRole[]) {
   return em.create(TeamMember, {
     createdAt: new Date(),
     updatedAt: new Date(),
     tenant: team.tenant,
     team,
-    role,
+    roles,
     membershipKind: MembershipKind.TeamMember,
     startDate: new Date(),
     user,
@@ -156,11 +156,11 @@ export class DatabaseSeeder extends Seeder {
       const [members, others] = randomFromArrayWithRemainder(rest, N_MEMBERS);
 
       const teamMembers = [
-        createTeamMember(em, team, president, presidentRole),
-        createTeamMember(em, team, treasurer, treasurerRole),
-        createTeamMember(em, team, secretary, secretaryRole),
-        createTeamMember(em, team, manager, managerRole),
-        ...members.map((user) => createTeamMember(em, team, user, memberRole)),
+        createTeamMember(em, team, president, [presidentRole]),
+        createTeamMember(em, team, treasurer, [treasurerRole]),
+        createTeamMember(em, team, secretary, [secretaryRole]),
+        createTeamMember(em, team, manager, [managerRole]),
+        ...members.map((user) => createTeamMember(em, team, user, [memberRole])),
       ];
 
       const requesters = randomFromArray(others, N_REQUESTERS);

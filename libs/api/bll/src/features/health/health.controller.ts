@@ -38,7 +38,7 @@ export class HealthController {
     const REDIS_OPTIONS = { type: 'redis', client: this.redisClient } as const;
     const MAX_HEAP_SIZE = 500 * 1024 * 1024;
     const _LOCAL_STORAGE_OPTIONS = {
-      path: path.join(path.resolve('./'), this.configService.config.upload.path),
+      path: path.join(__dirname, '../apps/api', this.configService.config.upload.path),
       thresholdPercent: 0.75,
     };
 

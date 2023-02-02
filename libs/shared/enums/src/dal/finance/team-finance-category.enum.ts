@@ -3,6 +3,7 @@ export enum FinanceCategory {
   Equipement = 'Equipement',
   Errands = 'Errands',
   Fees = 'Fees',
+  MembershipFees = 'MembershipFees',
   Insurance = 'Insurance',
   Logistics = 'Logistics',
   Marketing = 'Marketing',

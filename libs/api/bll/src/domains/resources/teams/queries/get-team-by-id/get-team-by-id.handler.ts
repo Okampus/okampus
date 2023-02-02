@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { TeamFactory } from '../../../../factories/teams/team.factory';
-import { TeamModel } from '../../../../factories/teams/team.model';
+import { TeamFactory } from '../../../../factories/domains/teams/team.factory';
+import { TeamModel } from '../../../../factories/domains/teams/team.model';
 import { GetTeamByIdQuery } from './get-team-by-id.query';
 
 @QueryHandler(GetTeamByIdQuery)

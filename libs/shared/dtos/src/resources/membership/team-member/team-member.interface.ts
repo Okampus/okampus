@@ -7,6 +7,6 @@ import { TeamMemberProps } from './team-member.props';
 export type ITeamMember = IMembership &
   TeamMemberProps & {
     team?: ITeam;
-    role?: ITeamRole;
+    roles?: ITeamRole[];
     activities: ITeamAction[];
   };

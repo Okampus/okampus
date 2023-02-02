@@ -15,8 +15,10 @@ import type { Reaction } from '../interaction/reaction/reaction.entity';
 import type { Report } from '../interaction/report/report.entity';
 import type { Vote } from '../interaction/vote/vote.entity';
 import type { Favorite } from '../interaction/favorite/favorite.entity';
+// eslint-disable-next-line import/no-cycle
+import { ActorRepository } from './actor.repository';
 
-@Entity()
+@Entity({ customRepository: () => ActorRepository })
 export class Actor extends TenantScopedEntity {
   @OneToOne({ type: 'Individual', mappedBy: 'actor', nullable: true })
   individual: Individual | null = null;
@@ -45,9 +47,11 @@ export class Actor extends TenantScopedEntity {
   ical = nanoid(23);
 
   @OneToMany({ type: 'ActorImage', mappedBy: 'actor' })
+  @TransformCollection()
   actorImages = new Collection<ActorImage>(this);
 
   @OneToMany({ type: 'Social', mappedBy: 'actor' })
+  @TransformCollection()
   socials = new Collection<Social>(this);
 
   @OneToMany({ type: 'Validation', mappedBy: 'actor' })

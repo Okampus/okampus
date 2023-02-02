@@ -1,22 +1,22 @@
 import type { FilterQuery, FindOneOptions, FindOneOrFailOptions } from '@mikro-orm/core';
 // import { QueryOrder } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { UUID } from '@okampus/shared/types';
+import { Snowflake } from '@okampus/shared/types';
 // import { CursorColumns, CursorColumnTypes } from '@okampus/shared/types';
 // import { decodeCursor, encodeCursor } from '../../../../../bll/src/shards/utils/cursor-serializer';
 // import { PageInfo, PaginatedNodes, PaginationOptions } from '../pagination';
 import { BaseEntity } from './base.entity';
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
-  public async findById(id: UUID, findOptions?: FindOneOptions<T>): Promise<T | null> {
+  public async findById(id: Snowflake, findOptions?: FindOneOptions<T>): Promise<T | null> {
     return this.findOne({ id } as FilterQuery<T>, findOptions);
   }
 
-  public async findByIdOrFail(id: UUID, findOptions?: FindOneOrFailOptions<T>): Promise<T> {
+  public async findByIdOrFail(id: Snowflake, findOptions?: FindOneOrFailOptions<T>): Promise<T> {
     return this.findOneOrFail({ id } as FilterQuery<T>, findOptions);
   }
 
-  public async findByIds(ids: UUID[]): Promise<T[]> {
+  public async findByIds(ids: Snowflake[]): Promise<T[]> {
     return this.find({ id: { $in: ids } } as FilterQuery<T>);
   }
 

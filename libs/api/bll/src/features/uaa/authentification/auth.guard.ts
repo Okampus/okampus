@@ -140,12 +140,12 @@ export class AuthGuard implements CanActivate {
     const isTenantPublic = this.reflector.getAllAndOverride<boolean>(IS_TENANT_PUBLIC, targets);
     if (isTenantPublic) return true;
 
-    /* Find user */
+    /* Get user */
     const { token, tokenType } = this.getAuthInfo(headers, cookies);
 
     // TODO: optimize with caching for individual
 
-    // Bot token case - check if token matches bot token
+    /* Bot token case */
     if (tokenType === TokenType.Bot) {
       requestContext.set('requester', await this.authService.validateBotToken(token));
       return true;

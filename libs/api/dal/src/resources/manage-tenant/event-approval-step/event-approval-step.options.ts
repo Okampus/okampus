@@ -6,7 +6,7 @@ import type { Tenant } from '../../org/tenant/tenant.entity';
 
 export type EventApprovalStepOptions = EventApprovalStepProps &
   TenantScopedOptions & {
-    createdBy: Individual;
+    createdBy?: Individual | null;
     order?: number;
     tenantOrg: Tenant;
     validators?: Individual[];

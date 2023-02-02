@@ -1,6 +1,6 @@
 import fastifyCookie from '@fastify/cookie';
 // import { wrap } from '@mikro-orm/core';
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import type { JwtSignOptions } from '@nestjs/jwt';
 import { JwtService } from '@nestjs/jwt';
 import {
@@ -10,16 +10,17 @@ import {
   SessionRepository,
   TenantCore,
   TenantCoreRepository,
+  TenantRepository,
   User,
   UserRepository,
 } from '@okampus/api/dal';
 import { RequestType, SessionClientType, TokenType } from '@okampus/shared/enums';
-import { ApiConfig, Cookie, Claims, UUID } from '@okampus/shared/types';
+import { ApiConfig, Cookie, Claims, Snowflake } from '@okampus/shared/types';
 import { objectContains } from '@okampus/shared/utils';
 import MeiliSearch from 'meilisearch';
 import { InjectMeiliSearch } from 'nestjs-meilisearch';
 import { ConfigService } from '../../../global/config.module';
-import { RequestContext } from '../../../shards/global-request/request-context';
+import { RequestContext } from '../../../shards/request-context/request-context';
 import type { LoginDto } from './dto/login.dto';
 // import type { PreRegisterSsoDto } from './dto/pre-register-sso.dto';
 // const cookiePublicOptions = { ...config.cookies.options, httpOnly: false };
@@ -29,8 +30,10 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { SessionProps } from '@okampus/shared/dtos';
 import DeviceDetector from 'device-detector-js';
 import { nanoid } from 'nanoid';
-import { UserFactory } from '../../../domains/factories/users/user.factory';
-import { UserModel } from '../../../domains/factories/users/user.model';
+import { UserFactory } from '../../../domains/factories/domains/users/user.factory';
+import { JsonWebTokenError, NotBeforeError, TokenExpiredError } from 'jsonwebtoken';
+import { AuthContextModel, getAuthContextPopulate } from './auth-context.model';
+import { TenantFactory } from '../../../domains/factories/domains/tenants/tenant.factory';
 
 type HttpOnlyTokens = TokenType.Access | TokenType.Refresh;
 type AuthTokens = HttpOnlyTokens | TokenType.WebSocket;
@@ -59,8 +62,10 @@ export class AuthService extends RequestContext {
     private readonly configService: ConfigService,
     private readonly tenantCoreRepository: TenantCoreRepository,
     private readonly sessionRepository: SessionRepository,
-    private readonly userRepository: UserRepository,
     private readonly userFactory: UserFactory,
+    private readonly tenantFactory: TenantFactory,
+    private readonly userRepository: UserRepository,
+    private readonly tenantRepository: TenantRepository,
     private readonly botRepository: BotRepository,
     @InjectMeiliSearch() private readonly meiliSearch: MeiliSearch,
     private readonly jwtService: JwtService
@@ -91,7 +96,7 @@ export class AuthService extends RequestContext {
     return tenant;
   }
 
-  public findBareUserOrFail(id: UUID) {
+  public findBareUserOrFail(id: Snowflake) {
     return this.sessionRepository.findOneOrFail({ id }, { populate: ['user'] });
   }
 
@@ -103,8 +108,11 @@ export class AuthService extends RequestContext {
 
     try {
       await this.jwtService.verifyAsync<Claims>(unsignedToken.value, options);
-    } catch {
-      throw new UnauthorizedException('Falsified token');
+    } catch (error) {
+      if (error instanceof TokenExpiredError) throw new UnauthorizedException('Token expired');
+      if (error instanceof JsonWebTokenError) throw new UnauthorizedException('Invalid token');
+      if (error instanceof NotBeforeError) throw new UnauthorizedException('Token not active yet');
+      throw new InternalServerErrorException('Token could not be verified');
     }
 
     const decoded = this.jwtService.decode(unsignedToken.value) as Claims;
@@ -112,8 +120,6 @@ export class AuthService extends RequestContext {
 
     if (!objectContains(decoded, { ...claims, iss: this.configService.config.tokens.issuer }) || !decoded.sub)
       throw new UnauthorizedException('Invalid token claims');
-
-    if (decoded.exp && decoded.exp < Date.now()) throw new UnauthorizedException('Token expired');
 
     return decoded;
   }
@@ -131,7 +137,7 @@ export class AuthService extends RequestContext {
     return bot;
   }
 
-  public async createBotToken(sub: UUID): Promise<string> {
+  public async createBotToken(sub: Snowflake): Promise<string> {
     const bot = await this.botRepository.findByIdOrFail(sub);
     const token = await this.jwtService.signAsync({ sub: bot.id, req: RequestType.Http }, this.signOptions.bot);
 
@@ -193,7 +199,7 @@ export class AuthService extends RequestContext {
     return { userAgent, ip: ip as string, country: country as string, clientType };
   }
 
-  public async createRefreshToken(sub: UUID, req: FastifyRequest): Promise<Cookie[]> {
+  public async createRefreshToken(sub: Snowflake, req: FastifyRequest): Promise<Cookie[]> {
     const userSession = this.getUserSession(req);
     const session = await this.sessionRepository.findActiveSession(sub, userSession);
     let jwt, exp, fam;
@@ -221,7 +227,7 @@ export class AuthService extends RequestContext {
     return [jwt, exp];
   }
 
-  public async addTokensOnAuth(req: FastifyRequest, res: FastifyReply, sub?: UUID): Promise<void> {
+  public async addTokensOnAuth(req: FastifyRequest, res: FastifyReply, sub?: Snowflake): Promise<void> {
     if (!sub) throw new UnauthorizedException('User not found, cannot create tokens');
 
     const tokens = await Promise.all([
@@ -233,7 +239,7 @@ export class AuthService extends RequestContext {
     addCookiesToResponse(tokens.flat(), res);
   }
 
-  public async addWebSocketTokenIfAuthenticated(res: FastifyReply, sub?: UUID): Promise<void> {
+  public async addWebSocketTokenIfAuthenticated(res: FastifyReply, sub?: Snowflake): Promise<void> {
     if (!sub) throw new UnauthorizedException('User not found, cannot create tokens');
 
     const claims = { sub, req: RequestType.WebSocket, tok: TokenType.WebSocket };
@@ -246,7 +252,7 @@ export class AuthService extends RequestContext {
     tenant: TenantCore,
     token: string,
     tokenFamily: string,
-    sub: UUID
+    sub: Snowflake
   ): Promise<Session> {
     const user = { id: sub } as User;
     const refreshTokenHash = await hash(token, { secret: this.pepper });
@@ -278,7 +284,8 @@ export class AuthService extends RequestContext {
 
   public async validateUserToken(token: string, tok: TokenType, req: FastifyRequest, res: FastifyReply): Promise<User> {
     const reqType = tok === TokenType.WebSocket ? RequestType.WebSocket : RequestType.Http;
-    const decoded = await this.processToken(token, { req: reqType, tok }, this.signOptions.refresh);
+    const options = tok === TokenType.Refresh ? this.signOptions.refresh : this.signOptions.access;
+    const decoded = await this.processToken(token, { req: reqType, tok }, options);
 
     const session = await this.sessionRepository.findActiveSession(decoded.sub, this.getUserSession(req));
     if (!session) throw new UnauthorizedException('No active session found');
@@ -289,18 +296,30 @@ export class AuthService extends RequestContext {
     return session.user;
   }
 
-  public async login(body: LoginDto, req: FastifyRequest, res: FastifyReply): Promise<UserModel> {
+  public async getAuthContext(user: User, req: FastifyRequest, res: FastifyReply) {
+    const populate = getAuthContextPopulate(this.autoGqlPopulate());
+    const getUser = async () => {
+      await this.userRepository.populate(user, populate.user);
+      return this.userFactory.entityToModelOrFail(user);
+    };
+
+    const [userModel, tenantModel] = await Promise.all([
+      getUser(),
+      this.tenantRepository.findOneOrFail({ tenant: { id: user.tenant.id } }, { populate: populate.tenant }),
+    ]);
+
+    await this.addTokensOnAuth(req, res, user.id);
+    return new AuthContextModel(userModel, this.tenantFactory.entityToModelOrFail(tenantModel));
+  }
+
+  public async login(body: LoginDto, req: FastifyRequest, res: FastifyReply): Promise<AuthContextModel> {
     const user = await this.userRepository.findOneByQuery(body.username);
     if (!user || !user.passwordHash) throw new UnauthorizedException('Account not yet registered with password');
 
     const isPasswordValid = await verify(user.passwordHash, body.password, { secret: this.pepper });
     if (!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
 
-    const [userModel] = await Promise.all([
-      this.userFactory.entityToModelOrFail(user),
-      this.addTokensOnAuth(req, res, user.id),
-    ]);
-    return userModel;
+    return this.getAuthContext(user, req, res);
   }
 
   // public async createOrUpdate(userInfo: PreRegisterSsoDto, forTenant: string): Promise<User> {

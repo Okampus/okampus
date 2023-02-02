@@ -1,22 +1,24 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
 import { IsInt, IsOptional, IsString, Length, Max, Min } from 'class-validator';
+import { UgcProps } from '../ugc.props';
 
 @InputType()
-export class DocumentProps {
+export class DocumentProps extends UgcProps {
   @Field(() => String)
   @Length(1, 100)
   @IsString()
   name!: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @Length(1, 10_000)
   @IsString()
-  description?: string;
+  description?: string | null = null;
 
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
   @Min(1970)
   @Max(2100) // TODO: Make this dynamic
   @IsInt()
-  yearVersion!: number;
+  yearVersion?: number | null = null;
 }

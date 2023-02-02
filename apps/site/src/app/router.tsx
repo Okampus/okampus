@@ -2,13 +2,16 @@ import { FullCalendar } from '@okampus/ui/molecules';
 import { createBrowserRouter } from 'react-router-dom';
 import { AdminEventDashboard } from './views/AdminEventDashboard';
 import { ErrorPage } from './views/ErrorPage';
-import { EventManage } from './views/EventManage';
+import { EventManageView } from './views/TeamManage/EventManageView';
 import { TeamDashboard } from './views/TeamDashboard';
 import { TeamList } from './views/TeamList';
 import TenantApp from './views/TenantApp';
-import { TreasuryView } from './views/TreasuryView';
-import WelcomePage from './views/WelcomePage';
+import { FinanceManageView } from './views/TeamManage/FinanceManageView';
+import WelcomePage from './views/Welcome/WelcomePage';
 import { WIP } from './views/WIP';
+import { GuideManageView } from './views/AdminManage/GuideManageView';
+import { GuideView } from './views/GuideView';
+import { DocumentManageView } from './views/TeamManage/DocumentManageView';
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +32,10 @@ export const router = createBrowserRouter([
         element: <TeamList />,
       },
       {
+        path: '/guides',
+        element: <GuideView />,
+      },
+      {
         path: '/people',
         element: <WIP />,
       },
@@ -39,6 +46,10 @@ export const router = createBrowserRouter([
       {
         path: '/admin/clubs',
         element: <TeamDashboard />,
+      },
+      {
+        path: '/admin/guides',
+        element: <GuideManageView />,
       },
       {
         path: '/admin/settings',
@@ -65,12 +76,16 @@ export const router = createBrowserRouter([
         element: <WIP />,
       },
       {
+        path: '/:orgId/manage/documents',
+        element: <DocumentManageView />,
+      },
+      {
         path: '/:orgId/manage/events',
-        element: <EventManage />,
+        element: <EventManageView />,
       },
       {
         path: '/:orgId/manage/treasury',
-        element: <TreasuryView />,
+        element: <FinanceManageView />,
       },
       {
         path: '/:orgId/manage/settings',

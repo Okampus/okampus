@@ -43,7 +43,7 @@ export class EventSeeder extends Factory<TenantEvent> {
           : EventState.Submitted;
     }
 
-    const user = pickOneFromArray(this.teamMembers.filter((m) => m.role.canManage())).user;
+    const user = pickOneFromArray(this.teamMembers.filter((m) => m.roles.getItems().some((r) => r.canManage()))).user;
 
     return {
       description: faker.lorem.paragraphs(3),

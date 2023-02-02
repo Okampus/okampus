@@ -1,39 +1,63 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { useContext } from 'react';
-import { NavigationContext } from '../context/NavigationContext';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Modal, Toast } from '@okampus/ui/atoms';
-import { Backdrop } from '../components/layout/Backdrop';
-import Sidebar from '../components/layout/Sidebar/Sidebar';
-import { SideModal } from '../components/layout/SideModal';
+import { Backdrop } from '../components/Layout/Backdrop';
+import Sidebar from '../components/Layout/Sidebar/Sidebar';
+import { SideModal } from '../components/Layout/SideModal';
+import { FilePreviewer } from '../misc/FilePreviewer';
+import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
+import { selectedMenuFromPath } from '../menus';
 
 function TenantApp() {
-  const { user, isModalShown, isSideModalShown, modal, hideModal, sideModal, hideSideModal, notifications } =
-    useContext(NavigationContext);
+  const {
+    isModalShown,
+    modal,
+    hideModal,
+    isSideModalShown,
+    sideModal,
+    hideSideModal,
+    isFilePreviewed,
+    previewedFile,
+    hideFilePreview,
+    notifications,
+    setSelected,
+  } = useContext(NavigationContext);
 
-  console.log('user', user);
+  const location = useLocation();
+  const [{ user }] = useCurrentContext();
 
-  if (!user) return <Navigate to="/welcome" />;
-  // const [selected, setSelected] = useState({ menu: 0, subMenu: 0 });
-  // const [theme, setTheme] = useTheme();
+  useEffect(() => {
+    const selectedMenu = selectedMenuFromPath(location.pathname);
+    setSelected(selectedMenu);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location]);
+
+  if (!user) {
+    localStorage.setItem('next', location.pathname);
+    return <Navigate to="/welcome" />;
+  }
+
   return (
-    <div className="bg-1 w-full h-full overflow-hidden flex">
+    <div className="bg-main w-full h-full overflow-hidden flex">
       <Sidebar />
       <div className="w-full px-6 pt-6 h-full overflow-x-hidden scrollbar-none">
         <Outlet />
       </div>
       <AnimatePresence>
-        {isSideModalShown && (
+        {isSideModalShown && sideModal && (
           <Backdrop onClick={hideSideModal} classes="justify-end">
-            <SideModal hideModal={hideModal}>{sideModal?.content}</SideModal>
+            <SideModal hideModal={hideModal}>{sideModal.content}</SideModal>
           </Backdrop>
         )}
 
-        {isModalShown && (
+        {isModalShown && modal && (
           <Backdrop onClick={hideModal} classes="items-center justify-center">
-            <Modal title={modal?.title}>{modal?.content}</Modal>
+            <Modal title={modal.title}>{modal.content}</Modal>
           </Backdrop>
         )}
+
+        {isFilePreviewed && previewedFile && <FilePreviewer file={previewedFile} onClose={hideFilePreview} />}
 
         {notifications.length > 0 && (
           <ul className="absolute top-4 right-0 flex flex-col gap-2 overflow-hidden px-10 z-[101]">

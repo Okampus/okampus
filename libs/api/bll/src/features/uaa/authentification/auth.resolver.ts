@@ -1,11 +1,16 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { TenantPublic } from '@okampus/api/shards';
-import { User } from '@okampus/api/dal';
+import { Individual, User } from '@okampus/api/dal';
 import { UsersService } from '../../../domains/resources/users/users.service';
-import { Requester } from '../../../shards/global-request/current-user.decorator';
-import { UserModel } from '../../../domains/factories/users/user.model';
+import { Requester } from '../../../shards/request-context/requester.decorator';
+import { UserModel } from '../../../domains/factories/domains/users/user.model';
 import { AuthService } from './auth.service';
+import { AuthContextModel } from './auth-context.model';
+import { UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '../../../global/config.module';
+import { TokenType } from '@okampus/shared/enums';
+import { ApiConfig } from '@okampus/shared/types';
 
 interface GraphQLContext {
   req: FastifyRequest;
@@ -14,19 +19,44 @@ interface GraphQLContext {
 
 @Resolver(() => UserModel)
 export class AuthResolver {
-  constructor(private readonly usersService: UsersService, private readonly authService: AuthService) {}
+  config: ApiConfig;
+
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService
+  ) {
+    this.config = this.configService.config;
+  }
 
   // TODO: Add permission checks
   @TenantPublic()
-  @Mutation(() => UserModel)
+  @Mutation(() => AuthContextModel)
   public async login(
     @Args('username') username: string,
     @Args('password') password: string,
     @Context() ctx: GraphQLContext
-  ): Promise<UserModel> {
-    const user = await this.authService.login({ username, password }, ctx.req, ctx.reply);
-    console.log('user', user);
-    return user;
+  ): Promise<AuthContextModel> {
+    return await this.authService.login({ username, password }, ctx.req, ctx.reply);
+  }
+
+  @TenantPublic()
+  @Mutation(() => Boolean)
+  public async logout(@Context() ctx: GraphQLContext): Promise<boolean> {
+    const res = ctx.reply;
+    const cookiePublicOptions = { ...this.config.cookies.options, httpOnly: false };
+    try {
+      void res
+        .clearCookie(this.config.cookies.names[TokenType.Access], this.config.cookies.options)
+        .clearCookie(this.config.cookies.names[TokenType.Refresh], this.config.cookies.options)
+        .clearCookie(this.config.cookies.names.AccessExpiration, cookiePublicOptions)
+        .clearCookie(this.config.cookies.names.RefreshExpiration, cookiePublicOptions)
+        .clearCookie(this.config.cookies.names[TokenType.WebSocket], cookiePublicOptions)
+        .clearCookie(this.config.cookies.names[TokenType.MeiliSearch], cookiePublicOptions);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   @Mutation(() => Boolean)
@@ -35,8 +65,9 @@ export class AuthResolver {
     return true;
   }
 
-  @Query(() => UserModel)
-  public async me(@Requester() user: User): Promise<UserModel> {
-    return await this.usersService.findOneById(user.id);
+  @Query(() => AuthContextModel)
+  public async me(@Requester() requester: Individual, @Context() ctx: GraphQLContext): Promise<AuthContextModel> {
+    if (!(requester instanceof User)) throw new UnauthorizedException('Only users can query their auth context');
+    return await this.authService.getAuthContext(requester, ctx.req, ctx.reply);
   }
 }

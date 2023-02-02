@@ -9,10 +9,10 @@ import { DocumentUploadRepository } from './document-upload.repository';
   customRepository: () => DocumentUploadRepository,
 })
 export class DocumentUpload extends FileUpload {
-  @Property({ type: 'smallint' })
+  @Property({ type: 'smallint', nullable: true })
   numberOfPages: number | null = null;
 
-  @Property({ type: 'int' })
+  @Property({ type: 'int', nullable: true })
   numberOfWords: number | null = null;
 
   @Enum(() => DocumentUploadType)

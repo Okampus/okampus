@@ -6,5 +6,5 @@ export class DocumentEditProps {
   @Field(() => Int, { nullable: true })
   @IsOptional()
   @IsInt()
-  yearVersion?: number;
+  yearVersion?: number | null = null;
 }

@@ -1,7 +1,7 @@
 import { Field, InterfaceType } from '@nestjs/graphql';
 import { IContentMaster, IIndividual, ITag, ITenantCore, IUgc } from '@okampus/shared/dtos';
 import { ContentMasterKind } from '@okampus/shared/enums';
-import { TagModel } from '../tags/tag.model';
+import { TagModel } from '../domains/tags/tag.model';
 import { IndividualModel } from './individual.model';
 import { TenantScopedModel } from './tenant-scoped.model';
 // eslint-disable-next-line import/no-cycle

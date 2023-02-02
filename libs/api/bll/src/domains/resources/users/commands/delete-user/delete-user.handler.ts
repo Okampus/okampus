@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserFactory } from '../../../../factories/users/user.factory';
+import { UserFactory } from '../../../../factories/domains/users/user.factory';
 import { DeleteUserCommand } from './delete-user.command';
 
 @CommandHandler(DeleteUserCommand)

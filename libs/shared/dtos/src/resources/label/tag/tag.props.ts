@@ -4,9 +4,15 @@ import { Colors } from '@okampus/shared/enums';
 
 @InputType()
 export class TagProps {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
+  @IsOptional()
   @Length(1, 50)
   @Matches(/^[\d:a-z-]+$/)
+  @IsString()
+  slug?: string;
+
+  @Field(() => String)
+  @Length(1, 50)
   @IsString()
   name!: string;
 
@@ -17,5 +23,5 @@ export class TagProps {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  description?: string | null;
+  description?: string | null = null;
 }

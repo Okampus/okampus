@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { TenantEventFactory } from '../../../../factories/events/event.factory';
-import { PaginatedTenantEventModel } from '../../../../factories/events/event.model';
+import { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
+import { PaginatedTenantEventModel } from '../../../../factories/domains/events/event.model';
 import { GetEventsQuery } from './get-events.query';
 
 @QueryHandler(GetEventsQuery)

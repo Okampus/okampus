@@ -1,7 +1,7 @@
-import { UUID } from '@okampus/shared/types';
+import { Snowflake } from '@okampus/shared/types';
 
 export type EventType = {
-  id: UUID;
+  id: Snowflake;
   label: string;
   day: number;
   title: string;

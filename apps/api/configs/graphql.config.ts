@@ -38,7 +38,7 @@ export default {
   //     Upload: 'Upload',
   //   },
   // },
-  autoSchemaFile: join(process.cwd(), 'libs', 'assets', 'src', 'graphql', 'schema.gql'),
+  autoSchemaFile: join(process.cwd(), 'libs', 'shared', 'graphql', 'src', 'schema', 'schema.gql'),
   resolvers: {
     JSON: GraphQLJSON,
     Upload: GraphQLUpload,

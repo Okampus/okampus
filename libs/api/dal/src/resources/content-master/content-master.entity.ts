@@ -30,7 +30,7 @@ export abstract class ContentMaster extends TenantScopedEntity {
   title!: string;
 
   @OneToOne({ type: 'Ugc', onDelete: 'CASCADE' })
-  rootContent!: Ugc;
+  rootContent!: Ugc; // TODO: rename to description? switch to Content? ...
 
   @ManyToMany({ type: 'Individual' })
   @TransformCollection()

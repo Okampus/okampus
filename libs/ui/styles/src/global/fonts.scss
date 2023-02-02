@@ -1,0 +1,109 @@
+@font-face {
+  font-family: HarmonyOS;
+  font-weight: 800;
+  src: local(harmonyos-black), url("@assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Black.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: HarmonyOS;
+  font-weight: 700;
+  src: local(harmonyos-bold), url("@assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: HarmonyOS;
+  font-weight: 500;
+  src: local(harmonyos-medium), url("@assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: HarmonyOS;
+  font-weight: 400;
+  src: local(harmonyos-regular), url("@assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: HarmonyOS;
+  font-weight: 300;
+  src: local(harmonyos-light), url("@assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: HarmonyOS;
+  font-weight: 200;
+  src: local(harmonyos-thin), url("@assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Thin.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: HarmonyOS;
+  font-weight: 800;
+  font-style: italic;
+  src: local(harmonyos-black-italic), url("@assets/fonts/HarmonyOS_Sans_Italic/HarmonyOS_Sans_Black_Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: HarmonyOS;
+  font-weight: 700;
+  font-style: italic;
+  src: local(harmonyos-bold-italic), url("@assets/fonts/HarmonyOS_Sans_Italic/HarmonyOS_Sans_Bold_Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: HarmonyOS;
+  font-weight: 500;
+  font-style: italic;
+  src: local(harmonyos-medium-italic), url("@assets/fonts/HarmonyOS_Sans_Italic/HarmonyOS_Sans_Medium_Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: HarmonyOS;
+  font-weight: 400;
+  font-style: italic;
+  src: local(harmonyos-regular-italic), url("@assets/fonts/HarmonyOS_Sans_Italic/HarmonyOS_Sans_Regular_Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: HarmonyOS;
+  font-weight: 300;
+  font-style: italic;
+  src: local(harmonyos-light-italic), url("@assets/fonts/HarmonyOS_Sans_Italic/HarmonyOS_Sans_Light_Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: HarmonyOS;
+  font-weight: 200;
+  font-style: italic;
+  src: local(harmonyos-thin-italic), url("@assets/fonts/HarmonyOS_Sans_Italic/HarmonyOS_Sans_Thin_Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Lexend;
+  src: local(lexend), url("@assets/fonts/Lexend/Lexend-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 1000;
+}
+
+@font-face {
+  font-family: SpaceMono;
+  src: local(spacemono), url("@assets/fonts/SpaceMono/SpaceMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+.font-heading {
+  font-family: Lexend, sans-serif;
+}
+
+.font-body {
+  font-family: HarmonyOS, sans-serif;
+}
+
+html, body {
+  font-family: HarmonyOS, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, button {
+  font-family: Lexend, sans-serif;
+}
+
+code, pre {
+  font-family: SpaceMono, monospace;
+}

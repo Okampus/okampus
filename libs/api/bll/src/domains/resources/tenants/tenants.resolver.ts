@@ -1,16 +1,18 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { TenantsService } from './tenants.service';
-import { CreateTenantDto, UpdateTenantDto } from '@okampus/shared/dtos';
-import { PaginatedTenantModel, TenantModel } from '../../factories/tenants/tenant.model';
+import { CreateDocumentDto, CreateTenantDto, UpdateTenantDto } from '@okampus/shared/dtos';
+import { PaginatedTenantModel, TenantModel } from '../../factories/domains/tenants/tenant.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { UUID } from '@okampus/shared/types';
+import { MulterFileType, Snowflake } from '@okampus/shared/types';
+import { GraphQLUpload } from 'graphql-upload-minimal';
+import { OrgDocumentModel } from '../../factories/domains/documents/org-document.model';
 
 @Resolver(() => TenantModel)
 export class TenantsResolver {
   constructor(private readonly tenantsService: TenantsService) {}
 
   @Query(() => TenantModel)
-  tenantById(@Args('id', { type: () => String }) id: UUID) {
+  tenantById(@Args('id', { type: () => String }) id: Snowflake) {
     return this.tenantsService.findOneById(id);
   }
 
@@ -29,13 +31,22 @@ export class TenantsResolver {
     return this.tenantsService.create(tenant);
   }
 
+  @Mutation(() => OrgDocumentModel)
+  tenantAddDocument(
+    @Args('tenantId') tenantId: string,
+    @Args('createDocument') createDocument: CreateDocumentDto,
+    @Args('documentFile', { type: () => GraphQLUpload }) documentFile: MulterFileType
+  ): Promise<OrgDocumentModel> {
+    return this.tenantsService.tenantAddDocument(tenantId, createDocument, documentFile);
+  }
+
   @Mutation(() => TenantModel)
   updateTenant(@Args('updateTenant') updateTenant: UpdateTenantDto) {
     return this.tenantsService.update(updateTenant);
   }
 
   @Mutation(() => Boolean)
-  deleteTenant(@Args('id', { type: () => String }) id: UUID) {
+  deleteTenant(@Args('id', { type: () => String }) id: Snowflake) {
     return this.tenantsService.delete(id);
   }
 }

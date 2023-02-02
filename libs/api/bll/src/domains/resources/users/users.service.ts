@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ActorImageUploadProps } from '@okampus/api/dal';
 import { CreateUserDto, UpdateUserDto } from '@okampus/shared/dtos';
-import { UUID } from '@okampus/shared/types';
-import { RequestContext } from '../../../shards/global-request/request-context';
+import { Snowflake } from '@okampus/shared/types';
+import { RequestContext } from '../../../shards/request-context/request-context';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { PaginatedUserModel, UserModel } from '../../factories/users/user.model';
+import { PaginatedUserModel, UserModel } from '../../factories/domains/users/user.model';
 import { CreateUserCommand } from './commands/create-user/create-user.command';
 import { DeleteUserCommand } from './commands/delete-user/delete-user.command';
 import { UpdateUserCommand } from './commands/update-user/update-user.command';
@@ -21,12 +21,12 @@ export class UsersService extends RequestContext {
     super();
   }
 
-  findOneById(id: UUID): Promise<UserModel> {
+  findOneById(id: Snowflake): Promise<UserModel> {
     const query = new GetUserByIdQuery(id, this.tenant(), this.autoGqlPopulate(defaultUserPopulate));
     return this.queryBus.execute(query);
   }
 
-  findBareById(id: UUID): Promise<UserModel> {
+  findBareById(id: Snowflake): Promise<UserModel> {
     const query = new GetUserByIdQuery(id, this.tenant());
     return this.queryBus.execute(query);
   }
@@ -52,7 +52,7 @@ export class UsersService extends RequestContext {
     return this.commandBus.execute(command);
   }
 
-  delete(id: UUID): Promise<boolean> {
+  delete(id: Snowflake): Promise<boolean> {
     const command = new DeleteUserCommand(id, this.tenant());
     return this.commandBus.execute(command);
   }

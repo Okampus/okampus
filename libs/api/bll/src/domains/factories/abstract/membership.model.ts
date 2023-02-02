@@ -2,7 +2,7 @@ import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
 import { IMembership, ITenantCore, IUser } from '@okampus/shared/dtos';
 import { MembershipKind } from '@okampus/shared/enums';
 import { Paginated } from '../../../shards/types/paginated.type';
-import { UserModel } from '../users/user.model';
+import { UserModel } from '../domains/users/user.model';
 import { TenantScopedModel } from './tenant-scoped.model';
 
 @ObjectType()

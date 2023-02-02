@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateEventApprovalStepDto, UpdateEventApprovalStepDto } from '@okampus/shared/dtos';
-import { UUID } from '@okampus/shared/types';
-import { RequestContext } from '../../../shards/global-request/request-context';
+import { Snowflake } from '@okampus/shared/types';
+import { RequestContext } from '../../../shards/request-context/request-context';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
 import {
   EventApprovalStepModel,
   PaginatedEventApprovalStepModel,
-} from '../../factories/events/event-approval-step.model';
+} from '../../factories/domains/events/event-approval-step.model';
 import { CreateEventApprovalStepCommand } from './commands/create-event-approval-step/create-event-approval-step.command';
 import { DeleteEventApprovalStepCommand } from './commands/delete-event-approval-step/delete-event-approval-step.command';
 import { UpdateEventApprovalStepCommand } from './commands/update-event-approval-step/update-event-approval-step.command';
@@ -22,7 +22,7 @@ export class EventApprovalStepsService extends RequestContext {
     super();
   }
 
-  findOneById(id: UUID): Promise<EventApprovalStepModel> {
+  findOneById(id: Snowflake): Promise<EventApprovalStepModel> {
     const query = new GetEventApprovalStepByIdQuery(id, this.tenant(), this.autoGqlPopulate(defaultEventPopulate));
     return this.queryBus.execute(query);
   }
@@ -50,7 +50,7 @@ export class EventApprovalStepsService extends RequestContext {
     return this.commandBus.execute(command);
   }
 
-  delete(id: UUID) {
+  delete(id: Snowflake) {
     const command = new DeleteEventApprovalStepCommand(id, this.tenant());
     return this.commandBus.execute(command);
   }

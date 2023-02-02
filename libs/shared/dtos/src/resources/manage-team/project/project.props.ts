@@ -10,9 +10,14 @@ export class ProjectProps {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  description?: string;
+  description: string | null = null;
 
   @Field(() => Int)
   @IsInt()
   expectedBudget!: number;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsInt()
+  actualBudget: number | null = null;
 }

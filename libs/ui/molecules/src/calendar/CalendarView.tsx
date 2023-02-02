@@ -7,20 +7,17 @@ import Sidebar from './Sidebar';
 import Month from './Month';
 import GlobalContext from './GlobalContext';
 import EventModal from './EventModal';
-import { useQuery } from '@apollo/client';
-import { getEventsQuery } from '@okampus/shared/graphql';
 import { ITenantEvent } from '@okampus/shared/dtos';
-import { EventState } from '@okampus/shared/enums';
 
-export function CalendarView() {
+export function CalendarView({ events }: { events: ITenantEvent[] }) {
   const [currentMonth, setCurrentMonth] = useState(getMonth());
   const { monthIndex, showEventModal } = useContext(GlobalContext);
-  const { loading, error, data } = useQuery(getEventsQuery);
+  // const { loading, error, data } = useQuery(getEventsQuery);
 
-  const filteredEvents =
-    data?.events?.edges
-      .filter((event: { node: ITenantEvent }) => event.node.state === EventState.Approved)
-      ?.map((evt: { node: ITenantEvent }) => evt.node) ?? [];
+  // const filteredEvents = data?.events
+  // data?.events?.edges
+  //   .filter((event: { node: ITenantEvent }) => event.node.state === EventState.Approved)
+  //   ?.map((evt: { node: ITenantEvent }) => evt.node) ?? [];
 
   useEffect(() => {
     console.log('monthIndex', monthIndex); // TODO: fix on route transition (avoid flicker)
@@ -35,7 +32,7 @@ export function CalendarView() {
         <CalendarHeader />
         <div className="flex flex-1 pb-4">
           <Sidebar />
-          <Month month={currentMonth} events={filteredEvents} />
+          <Month month={currentMonth} events={events} />
         </div>
       </div>
     </React.Fragment>

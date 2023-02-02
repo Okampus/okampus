@@ -5,7 +5,6 @@
     "jsx": "react-native",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "lib": ["dom", "esnext"],
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "declaration": true,

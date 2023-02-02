@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { EventApprovalFactory } from '../../../../factories/events/event-approval.factory';
-import { EventApprovalModel } from '../../../../factories/events/event-approval.model';
+import { EventApprovalFactory } from '../../../../factories/domains/events/event-approval.factory';
+import { EventApprovalModel } from '../../../../factories/domains/events/event-approval.model';
 import { GetEventApprovalByIdQuery } from './get-event-approval-by-id.query';
 
 @QueryHandler(GetEventApprovalByIdQuery)

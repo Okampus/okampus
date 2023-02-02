@@ -30,7 +30,7 @@ export class Ugc extends TenantScopedEntity {
   isAnonymous = false;
 
   @ManyToOne({ type: 'Org', nullable: true, cascade: [Cascade.ALL] })
-  org: Org | null = null;
+  representingOrg: Org | null = null;
 
   @ManyToOne({ type: 'ContentMaster', nullable: true })
   contentMaster: ContentMaster | null = null;

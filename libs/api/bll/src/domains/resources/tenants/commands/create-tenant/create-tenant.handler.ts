@@ -1,8 +1,8 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Actor, BaseRepository } from '@okampus/api/dal';
-import { TenantFactory } from '../../../../factories/tenants/tenant.factory';
-import { TenantModel } from '../../../../factories/tenants/tenant.model';
+import { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
+import { TenantModel } from '../../../../factories/domains/tenants/tenant.model';
 import { CreateTenantCommand } from './create-tenant.command';
 
 @CommandHandler(CreateTenantCommand)

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateEventDto, UpdateEventDto } from '@okampus/shared/dtos';
-import { UUID } from '@okampus/shared/types';
-import { RequestContext } from '../../../shards/global-request/request-context';
+import { Snowflake } from '@okampus/shared/types';
+import { RequestContext } from '../../../shards/request-context/request-context';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { TenantEventModel, PaginatedTenantEventModel } from '../../factories/events/event.model';
+import { TenantEventModel, PaginatedTenantEventModel } from '../../factories/domains/events/event.model';
 import { CreateEventCommand } from './commands/create-event/create-event.command';
 import { DeleteEventCommand } from './commands/delete-event/delete-event.command';
 import { UpdateEventCommand } from './commands/update-event/update-event.command';
@@ -19,7 +19,7 @@ export class EventsService extends RequestContext {
     super();
   }
 
-  findOneById(id: UUID): Promise<TenantEventModel> {
+  findOneById(id: Snowflake): Promise<TenantEventModel> {
     const query = new GetEventByIdQuery(id, this.tenant(), this.autoGqlPopulate(defaultEventPopulate));
     return this.queryBus.execute(query);
   }
@@ -39,7 +39,7 @@ export class EventsService extends RequestContext {
     return this.commandBus.execute(command);
   }
 
-  delete(id: UUID) {
+  delete(id: Snowflake) {
     const command = new DeleteEventCommand(id, this.tenant());
     return this.commandBus.execute(command);
   }

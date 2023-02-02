@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { TenantCore } from '@okampus/api/dal';
-import { EventApprovalFactory } from '../../../../factories/events/event-approval.factory';
-import { EventApprovalModel } from '../../../../factories/events/event-approval.model';
+import { EventApprovalFactory } from '../../../../factories/domains/events/event-approval.factory';
+import { EventApprovalModel } from '../../../../factories/domains/events/event-approval.model';
 import { CreateEventApprovalCommand } from './create-event-approval.command';
 
 @CommandHandler(CreateEventApprovalCommand)

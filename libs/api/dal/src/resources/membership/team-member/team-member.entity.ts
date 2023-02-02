@@ -6,14 +6,18 @@ import type { Team } from '../../org/team/team.entity';
 import type { TeamRole } from '../../role/team-role/team-role.entity';
 import { TransformCollection } from '@okampus/api/shards';
 import type { TeamAction } from '../../manage-team/team-action/team-action.entity';
+// eslint-disable-next-line import/no-cycle
+import { TeamMemberRepository } from './team-member.repository';
 
-@Entity()
+@Entity({ customRepository: () => TeamMemberRepository })
 export class TeamMember extends Membership {
   @ManyToOne({ type: 'Team' })
+  @TransformCollection()
   team!: Team;
 
   @ManyToMany({ type: 'TeamRole' })
-  role!: TeamRole;
+  @TransformCollection()
+  roles = new Collection<TeamRole>(this);
 
   @OneToMany({ type: 'TeamAction', mappedBy: 'teamMember' })
   @TransformCollection()

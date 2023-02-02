@@ -1,16 +1,16 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { BotsService } from './bots.service';
-import { CreateBotDto, UpdateBotDto } from '@okampus/shared/dtos';
-import { PaginatedBotModel, BotModel } from '../../factories/bots/bot.model';
+import { CreateBotDto, UpdateDocumentDto } from '@okampus/shared/dtos';
+import { PaginatedBotModel, BotModel } from '../../factories/domains/bots/bot.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { UUID } from '@okampus/shared/types';
+import { Snowflake } from '@okampus/shared/types';
 
 @Resolver(() => BotModel)
 export class BotsResolver {
   constructor(private readonly botsService: BotsService) {}
 
   @Query(() => BotModel)
-  botById(@Args('id', { type: () => String }) id: UUID) {
+  botById(@Args('id', { type: () => String }) id: Snowflake) {
     return this.botsService.findOneById(id);
   }
 
@@ -30,12 +30,12 @@ export class BotsResolver {
   }
 
   @Mutation(() => BotModel)
-  updateBot(@Args('updateBot') updateBot: UpdateBotDto) {
+  updateBot(@Args('updateBot') updateBot: UpdateDocumentDto) {
     return this.botsService.update(updateBot);
   }
 
   @Mutation(() => Boolean)
-  deleteBot(@Args('id', { type: () => String }) id: UUID) {
+  deleteBot(@Args('id', { type: () => String }) id: Snowflake) {
     return this.botsService.delete(id);
   }
 }

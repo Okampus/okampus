@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { UserFactory } from '../../../../factories/users/user.factory';
-import { UserModel } from '../../../../factories/users/user.model';
+import { UserFactory } from '../../../../factories/domains/users/user.factory';
+import { UserModel } from '../../../../factories/domains/users/user.model';
 import { GetUserByIdQuery } from './get-user-by-id.query';
 
 @QueryHandler(GetUserByIdQuery)

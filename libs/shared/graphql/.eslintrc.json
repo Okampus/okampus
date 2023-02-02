@@ -2,7 +2,9 @@
   "extends": ["../../../.eslintrc.json"],
   "ignorePatterns": ["!**/*"],
   "rules": {
-    "unicorn/filename-case": "camelCase"
+    "unicorn/filename-case": "off",
+    "unicorn/no-abusive-eslint-disable": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   },
   "overrides": [
     {

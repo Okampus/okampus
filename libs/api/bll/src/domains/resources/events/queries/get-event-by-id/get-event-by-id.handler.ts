@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { TenantEventFactory } from '../../../../factories/events/event.factory';
-import { TenantEventModel } from '../../../../factories/events/event.model';
+import { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
+import { TenantEventModel } from '../../../../factories/domains/events/event.model';
 import { GetEventByIdQuery } from './get-event-by-id.query';
 
 @QueryHandler(GetEventByIdQuery)

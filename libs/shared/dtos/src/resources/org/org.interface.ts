@@ -1,11 +1,13 @@
 import { OrgKind } from '@okampus/shared/enums';
 import type { IActor } from '../actor/actor.interface';
-import { ITenantScopedEntity } from '../tenant-scoped.interface';
+import { IOrgDocument } from '../manage-org/org-document/org-document.interface';
+import { ITenantScoped } from '../tenant-scoped.interface';
 import { OrgProps } from './org.props';
 
-export type IOrg = ITenantScopedEntity &
+export type IOrg = ITenantScoped &
   OrgProps & {
-    actor?: IActor;
     orgKind: OrgKind;
+    actor?: IActor;
     parent?: IOrg | null;
+    documents: IOrgDocument[];
   };

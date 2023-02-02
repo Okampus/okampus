@@ -1,9 +1,10 @@
-import { RoleKind } from '@okampus/shared/enums';
-import { ITenantScopedEntity } from '../tenant-scoped.interface';
+import { RoleKind, TeamRoleKey } from '@okampus/shared/enums';
+import { ITenantScoped } from '../tenant-scoped.interface';
 import { RoleProps } from './role.props';
 
-export type IRole = ITenantScopedEntity &
+export type IRole = ITenantScoped &
   RoleProps & {
     roleKind: RoleKind;
+    key: TeamRoleKey | null;
     required: boolean;
   };

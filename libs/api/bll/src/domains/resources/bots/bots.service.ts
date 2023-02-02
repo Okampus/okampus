@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateBotDto, UpdateBotDto } from '@okampus/shared/dtos';
-import { UUID } from '@okampus/shared/types';
-import { RequestContext } from '../../../shards/global-request/request-context';
+import { CreateBotDto, UpdateDocumentDto } from '@okampus/shared/dtos';
+import { Snowflake } from '@okampus/shared/types';
+import { RequestContext } from '../../../shards/request-context/request-context';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { PaginatedBotModel, BotModel } from '../../factories/bots/bot.model';
+import { PaginatedBotModel, BotModel } from '../../factories/domains/bots/bot.model';
 import { CreateBotCommand } from './commands/create-bot/create-bot.command';
 import { DeleteBotCommand } from './commands/delete-bot/delete-bot.command';
 import { UpdateBotCommand } from './commands/update-bot/update-bot.command';
@@ -20,12 +20,12 @@ export class BotsService extends RequestContext {
     super();
   }
 
-  findOneById(id: UUID): Promise<BotModel> {
+  findOneById(id: Snowflake): Promise<BotModel> {
     const query = new GetBotByIdQuery(id, this.tenant(), this.autoGqlPopulate(defaultBotPopulate));
     return this.queryBus.execute(query);
   }
 
-  findOneBySlug(slug: UUID): Promise<BotModel> {
+  findOneBySlug(slug: Snowflake): Promise<BotModel> {
     const query = new GetBotBySlugQuery(slug, this.tenant(), this.autoGqlPopulate(defaultBotPopulate));
     return this.queryBus.execute(query);
   }
@@ -40,12 +40,12 @@ export class BotsService extends RequestContext {
     return this.commandBus.execute(command);
   }
 
-  update(updateBot: UpdateBotDto): Promise<BotModel> {
+  update(updateBot: UpdateDocumentDto): Promise<BotModel> {
     const command = new UpdateBotCommand(updateBot, this.tenant(), this.autoGqlPopulate(defaultBotPopulate));
     return this.commandBus.execute(command);
   }
 
-  delete(id: UUID) {
+  delete(id: Snowflake) {
     const command = new DeleteBotCommand(id, this.tenant());
     return this.commandBus.execute(command);
   }

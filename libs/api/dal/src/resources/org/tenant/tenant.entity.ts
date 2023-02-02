@@ -1,19 +1,16 @@
-import { Cascade, Collection, Entity, EntityRepositoryType, OneToMany, OneToOne, Property } from '@mikro-orm/core';
+import { Cascade, Collection, Entity, EntityRepositoryType, OneToMany, OneToOne } from '@mikro-orm/core';
 import { TenantOptions } from './tenant.options';
 import { Org } from '../org.entity';
 import { OrgKind } from '@okampus/shared/enums';
 import { TransformCollection } from '@okampus/api/shards';
 // eslint-disable-next-line import/no-cycle
 import { TenantRepository } from './tenant.repository';
-import { EventApprovalStep } from '../../manage-tenant/event-approval-step/event-approval-step.entity';
-import { Form } from '../../ugc/form/form.entity';
+import type { EventApprovalStep } from '../../manage-tenant/event-approval-step/event-approval-step.entity';
+import type { Form } from '../../ugc/form/form.entity';
 
 @Entity({ customRepository: () => TenantRepository })
 export class Tenant extends Org {
   [EntityRepositoryType]!: TenantRepository;
-
-  @Property({ type: 'int' })
-  nApprovalSteps = 0;
 
   @OneToMany({ type: 'EventApprovalStep', mappedBy: 'tenantOrg' })
   @TransformCollection()

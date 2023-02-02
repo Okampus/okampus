@@ -1,5 +1,5 @@
 import { Readable } from 'node:stream';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 // import type { FileKind } from '@lib/types/enums/file-kind.enum';
 // import { streamToBuffer } from '@lib/utils/stream-to-buffer';
 // import type { Tenant } from '@tenants/tenant.entity';
@@ -7,13 +7,13 @@ import { Injectable } from '@nestjs/common';
 // import { FileUpload } from './file-upload.entity';
 import { promises } from 'node:fs';
 
-import { DocumentUpload, FileUploadOptions, ImageUpload, TenantCore, VideoUpload } from '@okampus/api/dal';
+import { DocumentUpload, FileUpload, FileUploadOptions, ImageUpload, TenantCore, VideoUpload } from '@okampus/api/dal';
 import { S3 } from 'aws-sdk';
 import { InjectS3 } from 'nestjs-s3';
-import { DocumentUploadType, S3Buckets } from '@okampus/shared/enums';
+import { DocumentUploadType, FileUploadKind, ResourceType, S3Buckets } from '@okampus/shared/enums';
 import { ApiConfig, MulterFileType } from '@okampus/shared/types';
-import { snowflake, streamableS3, streamToBuffer } from '@okampus/shared/utils';
-import { RequestContext } from '../../shards/global-request/request-context';
+import { checkDocument, checkImage, checkVideo, snowflake, streamableS3, streamToBuffer } from '@okampus/shared/utils';
+import { RequestContext } from '../../shards/request-context/request-context';
 import path from 'node:path';
 import { HTTPResource } from '../../shards/types/http-resource.type';
 import { ConfigService } from '../../global/config.module';
@@ -32,10 +32,14 @@ export class UploadService extends RequestContext {
       const { writeFile } = promises;
 
       const buffer = await streamToBuffer(stream);
-      const fullPath = path.join(this.config.upload.path, bucket, key);
+      const fullPath = path.join(__dirname, '..', '..', '..', 'apps/api', this.config.upload.path, bucket, key);
       await writeFile(fullPath, buffer);
 
-      return { url: path.join(this.config.network.apiUrl, fullPath), etag: key };
+      return {
+        url: new URL(path.join(this.config.upload.path, bucket, key), this.config.network.apiUrl).href,
+        etag: key,
+        size: buffer.length,
+      };
     }
 
     const bucketUrl = this.config.s3.buckets[bucket];
@@ -43,16 +47,72 @@ export class UploadService extends RequestContext {
 
     stream.pipe(writeStream);
     const { Location, ETag } = await uploadPromise;
+    // TODO: add ContentType?
+    const { ContentLength } = await this.s3.headObject({ Bucket: bucketUrl, Key: key }).promise();
 
-    return { url: Location, etag: ETag };
+    return { url: Location, etag: ETag, size: ContentLength ?? 0 };
+  }
+
+  public async createFileUpload(
+    tenant: TenantCore,
+    file: MulterFileType,
+    resourceType: ResourceType
+  ): Promise<FileUpload | null> {
+    const fileCheckPayload = { type: file.mimetype ?? 'application/octet-stream' };
+    if (checkImage(fileCheckPayload)) {
+      switch (resourceType) {
+        case ResourceType.Content: {
+          return this.createImageUpload(tenant, file, S3Buckets.Attachments);
+        }
+        case ResourceType.User: {
+          return this.createImageUpload(tenant, file, S3Buckets.UserImages);
+        }
+        case ResourceType.Org: {
+          return this.createImageUpload(tenant, file, S3Buckets.OrgImages);
+        }
+        default: {
+          return null;
+        }
+      }
+    } else if (checkDocument(fileCheckPayload)) {
+      switch (resourceType) {
+        case ResourceType.Content: {
+          return this.createDocumentUpload(tenant, file, S3Buckets.Attachments);
+        }
+        case ResourceType.Org: {
+          return this.createDocumentUpload(tenant, file, S3Buckets.OrgDocuments);
+        }
+        default: {
+          return null;
+        }
+      }
+    } else if (checkVideo(fileCheckPayload)) {
+      switch (resourceType) {
+        case ResourceType.Content: {
+          return this.createDocumentUpload(tenant, file, S3Buckets.Attachments);
+        }
+        case ResourceType.Org: {
+          return this.createVideoUpload(tenant, file, S3Buckets.OrgVideos);
+        }
+        default: {
+          return null;
+        }
+      }
+    }
+
+    if (resourceType === ResourceType.Content) {
+      const fileOptions = await this.uploadFile(tenant, file, S3Buckets.Attachments);
+      return new FileUpload({ ...fileOptions, fileUploadKind: FileUploadKind.FileUpload });
+    }
+
+    return null;
   }
 
   public async createImageUpload(tenant: TenantCore, file: MulterFileType, bucket: S3Buckets): Promise<ImageUpload> {
     // TODO: safe validation
-    // if (file.mimetype.startsWith('image/')) {
     const payload = await this.uploadFile(tenant, file, bucket);
 
-    // Run in a separate event
+    // TODO: Run in a separate event
 
     // let meta = {};
     // if (file.mimetype.startsWith('image/')) {
@@ -73,28 +133,31 @@ export class UploadService extends RequestContext {
   ): Promise<DocumentUpload> {
     const payload = await this.uploadFile(tenant, file, bucket);
 
-    // TODO: manage types later
+    // TODO: manage types later & extra events
     return new DocumentUpload({ ...payload, documentType: DocumentUploadType.Document });
   }
 
   public async createVideoUpload(tenant: TenantCore, file: MulterFileType, bucket: S3Buckets): Promise<VideoUpload> {
     const payload = await this.uploadFile(tenant, file, bucket);
-
     return new VideoUpload(payload);
   }
 
   public async uploadFile(tenant: TenantCore, file: MulterFileType, bucket: S3Buckets): Promise<FileUploadOptions> {
     const id = snowflake();
-    const mime = file.mimetype;
-    const stream = file?.createReadStream?.() ?? Readable.from(file.buffer);
-    const resource = await this.upload(stream, mime, id, bucket);
+    const mime = file.mimetype ?? 'application/octet-stream';
 
+    let stream: Readable;
+    if (file.createReadStream) stream = file.createReadStream();
+    else if (file.buffer) stream = Readable.from(file.buffer);
+    else throw new BadRequestException('File is not a stream or buffer');
+
+    const resource = await this.upload(stream, mime, id, bucket);
     return {
       id,
       tenant,
       uploadedBy: this.requester(),
-      name: file.originalname ?? file.filename,
-      size: file.size,
+      name: file.originalname ?? file.filename ?? id,
+      size: resource.size ?? file.size ?? 0,
       mime,
       lastModifiedAt: file.fileLastModifiedAt,
       url: resource.url,

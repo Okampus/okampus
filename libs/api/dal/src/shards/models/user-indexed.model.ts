@@ -1,10 +1,10 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { UUID } from '@okampus/shared/types';
+import { Snowflake } from '@okampus/shared/types';
 
 @ObjectType()
 export class IndexedUser {
   @Field(() => String)
-  id!: UUID;
+  id!: Snowflake;
 
   @Field(() => String)
   realId!: string;

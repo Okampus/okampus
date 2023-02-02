@@ -1,8 +1,10 @@
-import { CalendarView } from './CalendarView';
-import ContextWrapper from './ContextWrapper';
+// TODO: clean
+// import { CalendarView } from './CalendarView';
+// import ContextWrapper from './ContextWrapper';
 
 export const FullCalendar = () => (
-  <ContextWrapper>
-    <CalendarView />
-  </ContextWrapper>
+  <div></div>
+  // <ContextWrapper>
+  //   <CalendarView />
+  // </ContextWrapper>
 );

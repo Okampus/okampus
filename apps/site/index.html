@@ -12,17 +12,20 @@
   <body style="background-color: black;">
     <div id="root"></div>
     
-    <div class="global-app-loader">
-      <div class="app-loader-cube app-loader-cube1"></div>
-      <div class="app-loader-cube app-loader-cube2"></div>
-      <div class="app-loader-cube app-loader-cube3"></div>
-      <div class="app-loader-cube app-loader-cube4"></div>
-      <div class="app-loader-cube app-loader-cube5"></div>
-      <div class="app-loader-cube app-loader-cube6"></div>
-      <div class="app-loader-cube app-loader-cube7"></div>
-      <div class="app-loader-cube app-loader-cube8"></div>
-      <div class="app-loader-cube app-loader-cube9"></div>
-    </div>
+    <!-- <div id="global-loader" style="background-color: black; position: absolute; top: 0; width: 100%; height: 100%; z-index: 10;">
+      <div class="grid-loader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div> -->
     <script type="module" src="/src/main.tsx"></script>
+    <script>window.global = window;</script>
   </body>
 </html>

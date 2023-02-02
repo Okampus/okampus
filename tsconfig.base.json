@@ -18,7 +18,7 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "commonjs",
-    "lib": ["es2022", "dom"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": ["node", "vite/client"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
@@ -42,9 +42,12 @@
       "@okampus/shared/i18n": ["libs/shared/i18n/src/index.ts"],
       "@okampus/shared/types": ["libs/shared/types/src/index.ts"],
       "@okampus/shared/utils": ["libs/shared/utils/src/index.ts"],
+      "@okampus/site/shards": ["libs/site/shards/src/index.ts"],
       "@okampus/ui/atoms": ["libs/ui/atoms/src/index.ts"],
+      "@okampus/ui/hooks": ["libs/ui/hooks/src/index.ts"],
       "@okampus/ui/molecules": ["libs/ui/molecules/src/index.ts"],
       "@okampus/ui/organisms": ["libs/ui/organisms/src/index.ts"],
+      "@okampus/ui/styles/*": ["libs/ui/styles/src/*"],
       "@okampus/ui/templates": ["libs/ui/templates/src/index.ts"]
     },
     "resolveJsonModule": true

@@ -86,6 +86,7 @@ export class TenantEvent extends ContentMaster {
   lastEventApprovalStep: EventApprovalStep | null = null;
 
   @OneToMany({ type: 'EventApproval', mappedBy: 'event' })
+  @TransformCollection()
   eventApprovals = new Collection<EventApproval>(this);
 
   @OneToMany({ type: 'EventJoin', mappedBy: 'event' })
@@ -101,7 +102,7 @@ export class TenantEvent extends ContentMaster {
     // Event description
     this.rootContent = new Content({
       contentMaster: this,
-      org: options.org,
+      representingOrg: options.org,
       realAuthor: options.createdBy,
       tenant: options.tenant,
       text: options.description ?? '',

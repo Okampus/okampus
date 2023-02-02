@@ -15,8 +15,8 @@ export class EventApprovalStep extends TenantScopedEntity {
   @ManyToOne({ type: 'Tenant' })
   tenantOrg!: Tenant;
 
-  @ManyToOne({ type: 'Individual' })
-  createdBy!: Individual;
+  @ManyToOne({ type: 'Individual', nullable: true })
+  createdBy: Individual | null = null; // add null as system
 
   @Property()
   order!: number;

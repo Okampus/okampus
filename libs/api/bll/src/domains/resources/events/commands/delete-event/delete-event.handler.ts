@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { TenantEventFactory } from '../../../../factories/events/event.factory';
+import { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
 import { DeleteEventCommand } from './delete-event.command';
 
 @CommandHandler(DeleteEventCommand)

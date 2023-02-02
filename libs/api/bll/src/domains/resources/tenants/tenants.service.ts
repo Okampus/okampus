@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateTenantDto, UpdateTenantDto } from '@okampus/shared/dtos';
-import { UUID } from '@okampus/shared/types';
-import { RequestContext } from '../../../shards/global-request/request-context';
+import { CreateDocumentDto, CreateTenantDto, UpdateTenantDto } from '@okampus/shared/dtos';
+import { OrgDocumentType } from '@okampus/shared/enums';
+import { MulterFileType, Snowflake } from '@okampus/shared/types';
+import { RequestContext } from '../../../shards/request-context/request-context';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { TenantModel, PaginatedTenantModel } from '../../factories/tenants/tenant.model';
+import { TenantModel, PaginatedTenantModel } from '../../factories/domains/tenants/tenant.model';
+import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-document/create-org-document.command';
 import { CreateTenantCommand } from './commands/create-tenant/create-tenant.command';
 import { DeleteTenantCommand } from './commands/delete-tenant/delete-tenant.command';
 import { UpdateTenantCommand } from './commands/update-tenant/update-tenant.command';
@@ -20,7 +22,7 @@ export class TenantsService extends RequestContext {
     super();
   }
 
-  findOneById(id: UUID): Promise<TenantModel> {
+  findOneById(id: Snowflake): Promise<TenantModel> {
     const query = new GetTenantByIdQuery(id, this.tenant(), this.autoGqlPopulate(defaultTenantPopulate));
     return this.queryBus.execute(query);
   }
@@ -45,12 +47,22 @@ export class TenantsService extends RequestContext {
     return this.commandBus.execute(command);
   }
 
+  tenantAddDocument(tenantId: Snowflake, createDocument: CreateDocumentDto, documentFile: MulterFileType) {
+    const command = new CreateOrgDocumentCommand(
+      tenantId,
+      { ...createDocument, type: OrgDocumentType.TenantGuide },
+      documentFile,
+      this.tenant()
+    );
+    return this.commandBus.execute(command);
+  }
+
   update(updateTenant: UpdateTenantDto): Promise<TenantModel> {
     const command = new UpdateTenantCommand(updateTenant, this.tenant(), this.autoGqlPopulate(defaultTenantPopulate));
     return this.commandBus.execute(command);
   }
 
-  delete(id: UUID) {
+  delete(id: Snowflake) {
     const command = new DeleteTenantCommand(id, this.tenant());
     return this.commandBus.execute(command);
   }

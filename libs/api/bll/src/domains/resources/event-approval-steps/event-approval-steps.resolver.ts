@@ -2,18 +2,18 @@ import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { EventApprovalStepsService } from './event-approval-steps.service';
 import { CreateEventApprovalStepDto, UpdateEventApprovalStepDto } from '@okampus/shared/dtos';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { UUID } from '@okampus/shared/types';
+import { Snowflake } from '@okampus/shared/types';
 import {
   EventApprovalStepModel,
   PaginatedEventApprovalStepModel,
-} from '../../factories/events/event-approval-step.model';
+} from '../../factories/domains/events/event-approval-step.model';
 
 @Resolver(() => EventApprovalStepModel)
 export class EventApprovalStepsResolver {
   constructor(private readonly eventApprovalStepsService: EventApprovalStepsService) {}
 
   @Query(() => EventApprovalStepModel)
-  eventApprovalStepById(@Args('id', { type: () => String }) id: UUID) {
+  eventApprovalStepById(@Args('id', { type: () => String }) id: Snowflake) {
     return this.eventApprovalStepsService.findOneById(id);
   }
 
@@ -33,7 +33,7 @@ export class EventApprovalStepsResolver {
   }
 
   @Mutation(() => Boolean)
-  deleteEventApprovalStep(@Args('id', { type: () => String }) id: UUID) {
+  deleteEventApprovalStep(@Args('id', { type: () => String }) id: Snowflake) {
     return this.eventApprovalStepsService.delete(id);
   }
 }

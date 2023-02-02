@@ -69,7 +69,6 @@ export class UsersModule implements OnModuleInit {
             oidcCallbackUri: baseTenant.oidc.callbackUri,
           },
         });
-        await this.tenantCoreRepository.persistAndFlush(coreTenant);
       }
 
       tenant = new Tenant({
@@ -79,6 +78,7 @@ export class UsersModule implements OnModuleInit {
       });
 
       await this.tenantRepository.persistAndFlush(tenant);
+      await this.tenantCoreRepository.persistAndFlush(coreTenant);
     }
 
     let admin = await this.userRepository.findOne({ actor: { slug: adminAccount.slug } });
@@ -117,7 +117,6 @@ export class UsersModule implements OnModuleInit {
         name: 'Validation du directeur',
         order: 3,
       });
-      tenant.nApprovalSteps = 3;
 
       this.eventApprovalStepRepository.persistAndFlush([step1, step2, step3]);
       this.tenantRepository.flush();

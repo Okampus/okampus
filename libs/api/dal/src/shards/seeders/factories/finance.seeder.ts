@@ -35,11 +35,13 @@ export class TeamFinanceSeeder extends Factory<Finance> {
     const linkedEvent = Math.random() < 0.8 ? pickOneFromArray(this.events) : undefined;
 
     return {
+      description: faker.lorem.sentence(),
+      address: null,
       tenant: this.team.tenant,
       team: this.team,
       transaction: faker.finance.transactionDescription(),
       paymentDate: faker.date.future(),
-      addedBy: pickOneFromArray(this.teamMembers.filter((m) => m.role.isDirector())),
+      createdBy: pickOneFromArray(this.teamMembers.filter((m) => m.roles.getItems().some((r) => r.isDirector()))).user,
       linkedEvent,
       amountDue: +faker.finance.amount(),
       paymentMethod: randomEnum(PaymentMethod),

@@ -4,7 +4,6 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { CacheModule, Module, RequestMethod } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { EventEmitterModule } from '@nestjs/event-emitter';
 import { GraphQLModule } from '@nestjs/graphql';
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -16,9 +15,13 @@ import {
   EventApprovalStepsModule,
   EventsModule,
   FactoryModule,
+  FinancesModule,
   MeiliSearchIndexerModule,
   OIDCCacheModule,
+  OrgDocumentsModule,
   PoliciesGuard,
+  ProjectsModule,
+  TeamCategoriesModule,
   TeamsModule,
   TenantsModule,
   UploadModule,
@@ -94,7 +97,6 @@ import graphqlConfig from '../configs/graphql.config';
     // Configs
     // CaslModule,
     ConfigModule.forRoot(config, redisConnectionOptions),
-    EventEmitterModule.forRoot(),
     GraphQLModule.forRoot<MercuriusDriverConfig>(graphqlConfig),
     // TODO: Replace with .forRoot when https://github.com/lambrohan/nestjs-meilisearch/pull/5 is merged & published
     MeiliSearchModule.forRootAsync(meiliSearchConfig),
@@ -154,6 +156,10 @@ import graphqlConfig from '../configs/graphql.config';
     TeamsModule,
     EventApprovalsModule,
     EventApprovalStepsModule,
+    FinancesModule,
+    ProjectsModule,
+    TeamCategoriesModule,
+    OrgDocumentsModule,
     // ValidationsModule,
     // VotesModule,
     // WikisModule,

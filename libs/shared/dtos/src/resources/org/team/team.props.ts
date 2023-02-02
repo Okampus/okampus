@@ -1,6 +1,6 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, Float, InputType, Int } from '@nestjs/graphql';
 import { TeamType } from '@okampus/shared/enums';
-import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { IsEnum, IsInt, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
 @InputType()
 export class TeamProps {
@@ -12,7 +12,12 @@ export class TeamProps {
   @Field(() => TeamType, { nullable: true })
   @IsOptional()
   @IsEnum(TeamType)
-  type?: TeamType;
+  type: TeamType = TeamType.Club;
+
+  @Field(() => Float, { nullable: true })
+  @IsOptional()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  currentFinance?: number = 0;
 
   @Field(() => Int, { nullable: true })
   @IsOptional()

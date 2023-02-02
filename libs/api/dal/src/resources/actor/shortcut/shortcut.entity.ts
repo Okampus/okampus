@@ -1,21 +1,22 @@
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne } from '@mikro-orm/core';
+import { ShortcutType } from '@okampus/shared/enums';
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
+import { Actor } from '../actor.entity';
 import type { User } from '../user/user.entity';
 import { ShortcutOptions } from './shortcut.options';
+// eslint-disable-next-line import/no-cycle
+import { ShortcutRepository } from './shortcut.repository';
 
-@Entity()
+@Entity({ customRepository: () => ShortcutRepository })
 export class Shortcut extends TenantScopedEntity {
-  @Property({ type: 'string' })
-  name!: string;
+  @Enum(() => ShortcutType)
+  type!: ShortcutType;
 
-  @Property({ type: 'string' })
-  subroute!: string;
-
-  @Property({ type: 'string' })
-  resourceId!: string;
-
-  @ManyToOne({ type: 'User', inversedBy: 'shortcuts' })
+  @ManyToOne({ type: 'User' })
   user!: User;
+
+  @ManyToOne({ type: 'Actor' })
+  targetActor!: Actor;
 
   constructor(options: ShortcutOptions) {
     super({ tenant: options.user.tenant });

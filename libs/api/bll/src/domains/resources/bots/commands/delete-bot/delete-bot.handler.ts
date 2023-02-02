@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { BotFactory } from '../../../../factories/bots/bot.factory';
+import { BotFactory } from '../../../../factories/domains/bots/bot.factory';
 import { DeleteBotCommand } from './delete-bot.command';
 
 @CommandHandler(DeleteBotCommand)

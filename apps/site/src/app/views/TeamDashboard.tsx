@@ -1,192 +1,153 @@
-import type { ITeam, IUser } from '@okampus/shared/dtos';
-import { ActorImageType } from '@okampus/shared/enums';
-import { ReactComponent as DocIcon } from '@okampus/assets/svg/big-icons/doc.svg';
-import { Avatar } from '@okampus/ui/atoms';
+import { useQuery } from '@apollo/client';
+import { ActorImageType, Align, OrgDocumentType } from '@okampus/shared/enums';
+import {
+  actorImageBareFragment,
+  documentFragment,
+  documentUploadFragment,
+  DocumentUploadInfoFragment,
+  getFragmentData,
+  getTeamsWithMembersQuery,
+  teamMembersFragment,
+  TeamMembersInfoFragment,
+  TeamRoleKey,
+} from '@okampus/shared/graphql';
+import { FileLike } from '@okampus/shared/types';
+import { FileTypeIcon, StatusLabel } from '@okampus/ui/atoms';
+import { NavigationContext } from '@okampus/ui/hooks';
+import { AvatarGroup, UserLabel } from '@okampus/ui/molecules';
 import { Dashboard } from '@okampus/ui/organisms';
+import { useContext } from 'react';
 
-const columns = [
-  {
-    label: 'Association',
-    sortable: true,
-    render: (value: Required<ITeam>) => (
-      <div className="flex gap-2 items-center">
-        <Avatar
-          src={value.actor.actorImages?.find((actorImage) => actorImage.type === ActorImageType.Avatar)?.image?.url}
-          name={value.actor.name}
-        />
-        <div>{value.actor.name}</div>
-      </div>
-    ),
-  },
-  {
-    label: 'Président',
-    sortable: true,
-    render: (value: Required<ITeam>) => {
-      const president = value?.members?.find((member) => (member.role as unknown as string) === 'president')
-        ?.user as Required<IUser>;
+function getUserLabel(member?: { actor?: { actorImages: any[]; name: string } | null } | null) {
+  if (!member || !member.actor) return <StatusLabel status="archived" label="N/A" />;
+  const actor = member.actor;
+  const actorImages = actor.actorImages.map((actorImage) => getFragmentData(actorImageBareFragment, actorImage));
 
-      return (
-        <div className="flex gap-2 items-center">
-          <Avatar
-            src={
-              president.actor?.actorImages?.find((actorImage) => actorImage.type === ActorImageType.Avatar)?.image?.url
-            }
-            name={president.actor.name}
-          />
-          <div>{president.actor.name}</div>
-        </div>
-      );
-    },
-  },
-  {
-    label: 'Trésorier',
-    sortable: true,
-    render: (value: Required<ITeam>) => {
-      const treasurer = value?.members?.find((member) => (member.role as unknown as string) === 'treasurer')
-        ?.user as Required<IUser>;
+  return (
+    <UserLabel
+      avatar={actorImages.find((actorImage) => actorImage.type === ActorImageType.Avatar)?.image?.url}
+      name={actor.name}
+    />
+  );
+}
 
-      return (
-        <div className="flex gap-2 items-center">
-          <Avatar
-            src={
-              treasurer.actor?.actorImages?.find((actorImage) => actorImage.type === ActorImageType.Avatar)?.image?.url
-            }
-            name={treasurer.actor.name}
-          />
-          <div>{treasurer.actor.name}</div>
-        </div>
-      );
-    },
-  },
-  {
-    label: 'Statuts',
-    sortable: true,
-    center: true,
-    render: () => (
-      <div className="flex justify-center">
-        <DocIcon height={32} />
-      </div>
-    ),
-  },
-];
+function findDocument(team: TeamMembersInfoFragment, type: OrgDocumentType) {
+  const document = team.documents.find((document) => document.type === type)?.document;
+  const documentFile = document
+    ? getFragmentData(documentUploadFragment, getFragmentData(documentFragment, document).documentUpload)
+    : null;
+  return documentFile;
+}
 
-const data = [
-  {
-    actor: {
-      name: 'Horizon',
-      actorImages: [
-        {
-          type: ActorImageType.Avatar,
-          image: {
-            url: 'https://cdn.discordapp.com/icons/827518251608178728/3f066f2e311cac3391786c1b1872adc7.webp?size=96',
-          },
-        },
-      ],
-    },
-    members: [
-      {
-        role: 'president',
-        user: {
-          actor: {
-            name: 'Léo Liu',
-            actorImages: [
-              {
-                type: ActorImageType.Avatar,
-                image: {
-                  url: 'https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                },
-              },
-            ],
-          },
-        },
-      },
-      {
-        role: 'treasurer',
-        user: {
-          actor: {
-            name: 'Josselin Chauvin',
-          },
-        },
-      },
-    ],
-  },
-  {
-    actor: {
-      name: 'Efrei Picture Studio',
-    },
-    members: [
-      {
-        role: 'president',
-        user: {
-          actor: {
-            name: 'Mathis Kouam',
-          },
-        },
-      },
-      {
-        role: 'treasurer',
-        user: {
-          actor: {
-            name: 'Pia Stücker',
-          },
-        },
-      },
-    ],
-  },
-  {
-    actor: {
-      name: 'Efrei Poker',
-    },
-    members: [
-      {
-        role: 'president',
-        user: {
-          actor: {
-            name: 'Camille Lefebvre',
-          },
-        },
-      },
-      {
-        role: 'treasurer',
-        user: {
-          actor: {
-            name: 'Omar El Khatib',
-          },
-        },
-      },
-    ],
-  },
-  {
-    actor: {
-      name: 'ICE Efrei',
-    },
-    members: [
-      {
-        role: 'president',
-        user: {
-          actor: {
-            name: 'Paul Simon',
-          },
-        },
-      },
-      {
-        role: 'treasurer',
-        user: {
-          actor: {
-            name: 'Léa Martin',
-          },
-        },
-      },
-    ],
-  },
-] as unknown as Required<ITeam>[];
+function renderDocument(file: DocumentUploadInfoFragment | null, showFile: (file: FileLike) => void) {
+  if (!file) return <StatusLabel status="archived" label="Manquant" />;
 
-console.log(columns);
+  const fileLike: FileLike = {
+    name: file.name,
+    src: file.url,
+    type: file.mime,
+    size: file.size,
+  };
+
+  return (
+    <div onClick={() => showFile(fileLike)} className="cursor-pointer">
+      <FileTypeIcon file={fileLike} />
+    </div>
+  );
+}
 
 export const TeamDashboard = () => {
+  const { previewFile } = useContext(NavigationContext);
+
+  const columns = [
+    {
+      label: 'Association',
+      render: getUserLabel,
+    },
+    {
+      label: 'Président',
+      render: (value: TeamMembersInfoFragment) => {
+        const director = value.members.find((member) =>
+          member.roles.some((role) => role.key === TeamRoleKey.Director)
+        )?.user;
+        return getUserLabel(director);
+      },
+    },
+    {
+      label: 'Trésorier',
+      render: (value: TeamMembersInfoFragment) => {
+        const director = value.members.find((member) =>
+          member.roles.some((role) => role.key === TeamRoleKey.Treasurer)
+        )?.user;
+        return getUserLabel(director);
+      },
+    },
+    {
+      label: 'Secrétaire',
+      render: (value: TeamMembersInfoFragment) => {
+        const director = value.members.find((member) =>
+          member.roles.some((role) => role.key === TeamRoleKey.Secretary)
+        )?.user;
+        return getUserLabel(director);
+      },
+    },
+    {
+      label: 'Membres',
+      render: (value: TeamMembersInfoFragment) => {
+        const members = value.members.map((member) => ({
+          id: member.id,
+          name: member.user?.actor?.name,
+          avatar: member.user?.actor?.actorImages
+            .map((actorImage) => getFragmentData(actorImageBareFragment, actorImage))
+            .find((actorImage) => actorImage.type === ActorImageType.Avatar)?.image?.url,
+        }));
+
+        return <AvatarGroup avatars={members} />;
+      },
+    },
+    {
+      label: 'Trésorerie',
+      render: (value: TeamMembersInfoFragment) => {
+        return <div>{value.currentFinance}</div>;
+      },
+    },
+    {
+      label: 'Statuts',
+      render: (value: TeamMembersInfoFragment) => {
+        const file = findDocument(value, OrgDocumentType.AssociationConstitution);
+        return renderDocument(file, previewFile);
+      },
+    },
+    {
+      label: 'Récépissé de déclaration',
+      render: (value: TeamMembersInfoFragment) => {
+        const file = findDocument(value, OrgDocumentType.AssociationDeclaration);
+        return renderDocument(file, previewFile);
+      },
+    },
+    {
+      label: 'Courrier de passation',
+      render: (value: TeamMembersInfoFragment) => {
+        const file = findDocument(value, OrgDocumentType.ClubHandover);
+        return renderDocument(file, previewFile);
+      },
+    },
+    {
+      align: Align.Center,
+      label: 'Règlement intérieur',
+      render: (value: TeamMembersInfoFragment) => {
+        const file = findDocument(value, OrgDocumentType.ClubCharter);
+        return renderDocument(file, previewFile);
+      },
+    },
+  ];
+
+  const { data } = useQuery(getTeamsWithMembersQuery);
+  const teams = data?.teams.edges?.map((edge) => getFragmentData(teamMembersFragment, edge.node)) ?? [];
+
   return (
     // <div className="w-full overflow-hidden">
-    <Dashboard columns={columns} data={data} />
+    <Dashboard columns={columns} data={teams} />
     // </div>
   );
 };

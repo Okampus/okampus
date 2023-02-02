@@ -8,7 +8,7 @@ import { TenantUserinfoResponse } from '@okampus/shared/types';
 import { User } from '@okampus/api/dal';
 import { ScopeRole } from '@okampus/shared/enums';
 import { UsersService } from '../../../domains/resources/users/users.service';
-import { UserModel } from '../../../domains/factories/users/user.model';
+import { UserModel } from '../../../domains/factories/domains/users/user.model';
 
 export function tenantStrategyFactory(
   usersService: UsersService,

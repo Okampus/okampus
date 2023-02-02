@@ -1,10 +1,10 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from '@okampus/shared/dtos';
-import { PaginatedUserModel, UserModel } from '../../factories/users/user.model';
+import { PaginatedUserModel, UserModel } from '../../factories/domains/users/user.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
 import { GraphQLUpload } from 'graphql-upload-minimal';
-import { MulterFileType, UUID } from '@okampus/shared/types';
+import { MulterFileType, Snowflake } from '@okampus/shared/types';
 import { ActorImageType } from '@okampus/shared/enums';
 
 @Resolver(() => UserModel)
@@ -12,7 +12,7 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Query(() => UserModel)
-  userById(@Args('id', { type: () => String }) id: UUID) {
+  userById(@Args('id', { type: () => String }) id: Snowflake) {
     return this.usersService.findOneById(id);
   }
 
@@ -46,7 +46,7 @@ export class UsersResolver {
   }
 
   @Mutation(() => Boolean)
-  deleteUser(@Args('id', { type: () => String }) id: UUID) {
+  deleteUser(@Args('id', { type: () => String }) id: Snowflake) {
     return this.usersService.delete(id);
   }
 }

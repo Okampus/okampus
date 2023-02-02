@@ -1,8 +1,8 @@
 import { IndividualKind } from '@okampus/shared/enums';
-import { ITenantScopedEntity } from '../../tenant-scoped.interface';
+import { ITenantScoped } from '../../tenant-scoped.interface';
 import { IActor } from '../actor.interface';
 
-export type IIndividual = ITenantScopedEntity & {
-  actor?: IActor;
+export type IIndividual = ITenantScoped & {
   individualKind: IndividualKind;
+  actor?: IActor;
 };

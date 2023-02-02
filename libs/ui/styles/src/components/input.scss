@@ -1,0 +1,7 @@
+.input {
+  @apply shadow-inner hover:cursor-text rounded-lg py-2.5 px-3 font-medium bg-gray-100 text-black dark:bg-[#202020] dark:text-white placeholder:text-[#727272];
+}
+
+.file-uploader {
+  @apply border-2 border-dashed border-blue-400 border-opacity-70 hover:bg-gray-400 dark:hover:bg-gray-600 [&.dragover]:bg-gray-400 dark:[&.dragover]:bg-gray-600;
+}

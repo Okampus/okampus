@@ -1,11 +1,11 @@
 import { JoinKind, JoinState } from '@okampus/shared/enums';
 import { IIndividual } from '../actor/individual/individual.interface';
 import { IUser } from '../actor/user/user.interface';
-import { ITenantScopedEntity } from '../tenant-scoped.interface';
+import { ITenantScoped } from '../tenant-scoped.interface';
 import { IFormSubmission } from '../ugc/form-submission/form-submission.interface';
 import { JoinProps } from './join.props';
 
-export type IJoin = ITenantScopedEntity &
+export type IJoin = ITenantScoped &
   JoinProps & {
     joinKind: JoinKind;
     issuer?: IIndividual | null;

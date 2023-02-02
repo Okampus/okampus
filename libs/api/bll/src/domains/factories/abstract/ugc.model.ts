@@ -19,7 +19,7 @@ export class UgcModel extends TenantScopedModel implements IUgc {
   isAnonymous!: boolean;
 
   @Field(() => OrgModel, { nullable: true })
-  org?: IOrg | null;
+  representingOrg?: IOrg | null;
 
   @Field(() => ContentMasterModel)
   contentMaster?: IContentMaster;

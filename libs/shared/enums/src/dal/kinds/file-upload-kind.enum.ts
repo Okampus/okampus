@@ -1,5 +1,6 @@
 export enum FileUploadKind {
-  ImageUpload = 'Image',
-  DocumentUpload = 'Document',
-  VideoUpload = 'Video',
+  ImageUpload = 'ImageUpload',
+  DocumentUpload = 'DocumentUpload',
+  VideoUpload = 'VideoUpload',
+  FileUpload = 'FileUpload',
 }

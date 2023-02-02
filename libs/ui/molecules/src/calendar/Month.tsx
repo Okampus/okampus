@@ -1,7 +1,7 @@
 import { ITenantEvent } from '@okampus/shared/dtos';
 import dayjs from 'dayjs';
 import React from 'react';
-import { Day } from './Day';
+import { Day } from '@okampus/ui/atoms';
 
 type MonthProps = {
   month: dayjs.Dayjs[][];

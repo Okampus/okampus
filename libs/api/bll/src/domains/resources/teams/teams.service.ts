@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateTeamDto, UpdateTeamDto } from '@okampus/shared/dtos';
-import { UUID } from '@okampus/shared/types';
-import { RequestContext } from '../../../shards/global-request/request-context';
+import { ActorImageUploadProps } from '@okampus/api/dal';
+import { CreateOrgDocumentDto, CreateTeamDto, UpdateTeamDto } from '@okampus/shared/dtos';
+import { MulterFileType, Snowflake } from '@okampus/shared/types';
+import { RequestContext } from '../../../shards/request-context/request-context';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { TeamModel, PaginatedTeamModel } from '../../factories/teams/team.model';
+import { TeamModel, PaginatedTeamModel } from '../../factories/domains/teams/team.model';
+import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-document/create-org-document.command';
 import { CreateTeamCommand } from './commands/create-team/create-team.command';
 import { DeleteTeamCommand } from './commands/delete-team/delete-team.command';
 import { UpdateTeamCommand } from './commands/update-team/update-team.command';
@@ -20,12 +22,12 @@ export class TeamsService extends RequestContext {
     super();
   }
 
-  findOneById(id: UUID): Promise<TeamModel> {
+  findOneById(id: Snowflake): Promise<TeamModel> {
     const query = new GetTeamByIdQuery(id, this.tenant(), this.autoGqlPopulate(defaultTeamPopulate));
     return this.queryBus.execute(query);
   }
 
-  findOneBySlug(slug: UUID): Promise<TeamModel> {
+  findOneBySlug(slug: Snowflake): Promise<TeamModel> {
     const query = new GetTeamBySlugQuery(slug, this.tenant(), this.autoGqlPopulate(defaultTeamPopulate));
     return this.queryBus.execute(query);
   }
@@ -35,8 +37,13 @@ export class TeamsService extends RequestContext {
     return this.queryBus.execute(query);
   }
 
-  create(createTeam: CreateTeamDto): Promise<TeamModel> {
-    const command = new CreateTeamCommand(createTeam, this.tenant());
+  create(createTeam: CreateTeamDto, actorImages?: ActorImageUploadProps): Promise<TeamModel> {
+    const command = new CreateTeamCommand(createTeam, this.requester(), this.tenant(), actorImages);
+    return this.commandBus.execute(command);
+  }
+
+  teamAddDocument(tenantId: Snowflake, createOrgDocument: CreateOrgDocumentDto, documentFile: MulterFileType) {
+    const command = new CreateOrgDocumentCommand(tenantId, createOrgDocument, documentFile, this.tenant());
     return this.commandBus.execute(command);
   }
 
@@ -45,7 +52,7 @@ export class TeamsService extends RequestContext {
     return this.commandBus.execute(command);
   }
 
-  delete(id: UUID) {
+  delete(id: Snowflake) {
     const command = new DeleteTeamCommand(id, this.tenant());
     return this.commandBus.execute(command);
   }

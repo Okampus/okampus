@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { EventApprovalStepFactory } from '../../../../factories/events/event-approval-step.factory';
+import { EventApprovalStepFactory } from '../../../../factories/domains/events/event-approval-step.factory';
 import { DeleteEventApprovalStepCommand } from './delete-event-approval-step.command';
 
 @CommandHandler(DeleteEventApprovalStepCommand)

@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { TenantFactory } from '../../../../factories/tenants/tenant.factory';
-import { PaginatedTenantModel } from '../../../../factories/tenants/tenant.model';
+import { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
+import { PaginatedTenantModel } from '../../../../factories/domains/tenants/tenant.model';
 import { GetTenantsQuery } from './get-tenants.query';
 
 @QueryHandler(GetTenantsQuery)

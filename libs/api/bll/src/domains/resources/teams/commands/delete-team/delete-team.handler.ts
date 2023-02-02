@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { TeamFactory } from '../../../../factories/teams/team.factory';
+import { TeamFactory } from '../../../../factories/domains/teams/team.factory';
 import { DeleteTeamCommand } from './delete-team.command';
 
 @CommandHandler(DeleteTeamCommand)

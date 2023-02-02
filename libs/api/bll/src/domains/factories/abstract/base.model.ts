@@ -1,13 +1,13 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Field, GraphQLISODateTime, InterfaceType, ObjectType } from '@nestjs/graphql';
-import { IBaseEntity } from '@okampus/shared/dtos';
-import { UUID } from '@okampus/shared/types';
+import { IBase } from '@okampus/shared/dtos';
+import { Snowflake } from '@okampus/shared/types';
 
 @InterfaceType({ isAbstract: true })
 @ObjectType({ isAbstract: true })
-export abstract class BaseModel extends AggregateRoot implements IBaseEntity {
+export abstract class BaseModel extends AggregateRoot implements IBase {
   @Field(() => String)
-  id!: UUID;
+  id!: Snowflake;
 
   @Field(() => GraphQLISODateTime)
   createdAt!: Date;

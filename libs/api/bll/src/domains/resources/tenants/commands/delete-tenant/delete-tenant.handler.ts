@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { TenantFactory } from '../../../../factories/tenants/tenant.factory';
+import { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
 import { DeleteTenantCommand } from './delete-tenant.command';
 
 @CommandHandler(DeleteTenantCommand)

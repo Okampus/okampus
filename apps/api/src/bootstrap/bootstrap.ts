@@ -33,7 +33,7 @@ import fastifyCors from '@fastify/cors';
 import { Issuer } from 'openid-client';
 import helmet from 'helmet';
 import path from 'node:path';
-import { UUID } from '@okampus/shared/types';
+import { Snowflake } from '@okampus/shared/types';
 import { TenantCoreRepository } from '@okampus/api/dal';
 
 const logger = new Logger('Bootstrap');
@@ -82,8 +82,8 @@ export async function bootstrap(): Promise<INestApplication> {
   const tenantCoreRepository = app.get<TenantCoreRepository>(TenantCoreRepository);
   const usersService = app.get<UsersService>(UsersService);
 
-  fastifyPassport.registerUserSerializer(async (user: { id: UUID }, _request) => user.id);
-  fastifyPassport.registerUserDeserializer(async (id: UUID, _request) => await usersService.findBareById(id));
+  fastifyPassport.registerUserSerializer(async (user: { id: Snowflake }, _request) => user.id);
+  fastifyPassport.registerUserDeserializer(async (id: Snowflake, _request) => await usersService.findBareById(id));
 
   fastifyInstance.get(
     '/auth/:domain',
@@ -143,7 +143,10 @@ export async function bootstrap(): Promise<INestApplication> {
   );
 
   if (!config.s3.enabled)
-    app.useStaticAssets({ root: path.join(__dirname, 'apps/api', config.upload.path), prefix: '/uploads' });
+    app.useStaticAssets({
+      root: path.join(__dirname, '..', '..', '..', 'apps/api', config.upload.path),
+      prefix: `/${config.upload.path}`,
+    });
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Okampus Web API')

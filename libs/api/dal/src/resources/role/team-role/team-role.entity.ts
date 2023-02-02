@@ -1,13 +1,15 @@
 import { Entity, Enum, ManyToOne } from '@mikro-orm/core';
-import { RoleKind, TeamRoleCategory } from '@okampus/shared/enums';
+import { RoleKind, TeamRoleCategory, TeamRoleKey } from '@okampus/shared/enums';
 import { TeamPermissions } from '@okampus/shared/enums';
 import { TeamRoleOptions } from './team-role.options';
 import { Role } from '../role.entity';
 import { Team } from '../../org/team/team.entity';
+// eslint-disable-next-line import/no-cycle
+import { TeamRoleRepository } from './team-role.repository';
 
-@Entity()
+@Entity({ customRepository: () => TeamRoleRepository })
 export class TeamRole extends Role {
-  @ManyToOne({ type: 'Team' })
+  @ManyToOne({ type: 'Team', inversedBy: 'roles' })
   team!: Team;
 
   @Enum({ array: true })
@@ -15,6 +17,9 @@ export class TeamRole extends Role {
 
   @Enum(() => TeamRoleCategory)
   category!: TeamRoleCategory;
+
+  @Enum({ items: () => TeamRoleKey, nullable: true })
+  key: TeamRoleKey | null = null;
 
   public isDirector(): boolean {
     return [TeamRoleCategory.Managers, TeamRoleCategory.Directors].includes(this.category);

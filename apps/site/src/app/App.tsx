@@ -1,79 +1,119 @@
-import './App.css';
-import './styles/scrollbar.scss';
-import './styles/colors.css';
+import '@okampus/ui/styles/global/fonts.scss';
+import '@okampus/ui/styles/global/loader.scss';
+import '@okampus/ui/styles/global/scrollbar.scss';
+import '@okampus/ui/styles/components/button.scss';
+import '@okampus/ui/styles/components/input.scss';
+import '@okampus/ui/styles/components/status.scss';
+
+import './App.scss';
+import './styles/colors.scss';
 
 import { RouterProvider } from 'react-router-dom';
-import { NavigationContext } from './context/NavigationContext';
-import { useEffect, useState } from 'react';
-import { IOrg, ITenantCore, IUser } from '@okampus/shared/dtos';
+import { useState } from 'react';
 
 import { router } from './router';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-// import { SideModal } from './SideModal';
-
-import { Modal } from '../types/ModalType';
-import { ToastProps } from '@okampus/ui/atoms';
-
-const loader = document.querySelector('.global-app-loader') as HTMLDivElement;
-
-const showLoader = () => loader.classList.remove('hidden');
-const hideLoader = () => loader.classList.add('hidden');
+import { GridLoader } from '@okampus/ui/atoms';
+import { defaultSelectedMenu, FileLike, ModalProps, SelectedMenu, Snowflake, ToastProps } from '@okampus/shared/types';
+import { AnimatePresence, motion } from 'framer-motion';
+import { NavigationContext, CurrentContext } from '@okampus/ui/hooks';
 
 function App() {
-  const [user, setUser] = useLocalStorage('user', null as IUser | null);
-  const [tenant, setTenant] = useState<ITenantCore | null>(null);
-  const [org, setOrg] = useState<IOrg | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<Snowflake | null>(null);
+  const [currentTenantId, setCurrentTenantId] = useState<Snowflake | null>(null);
+  const [currentOrgId, setCurrentOrgId] = useState<Snowflake | null>(null);
+
+  const [isModalShown, setIsModalShown] = useState<boolean>(false);
+  const [modal, setModal] = useState<ModalProps | null>(null);
 
   const [isSideModalShown, setIsSideModalShown] = useState<boolean>(false);
-  const [isModalShown, setIsModalShown] = useState<boolean>(false);
-  const [sideModal, setSideModal] = useState<Modal | null>(null);
-  const [modal, setModal] = useState<Modal | null>(null);
+  const [sideModal, setSideModal] = useState<ModalProps | null>(null);
+
+  const [isFilePreviewed, setIsFilePreviewed] = useState<boolean>(false);
+  const [previewedFile, setPreviewedFile] = useState<FileLike | null>(null);
+
+  const [isSearching, setIsSearching] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<ToastProps[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [selected, setSelected] = useState<SelectedMenu>(defaultSelectedMenu);
 
-  const showSideModal = (modal: Modal | null) => {
+  const showSideModal = (modal: ModalProps | null) => {
     setSideModal(modal);
     setIsSideModalShown(true);
   };
   const hideSideModal = () => setIsSideModalShown(false);
 
-  const showModal = (modal: Modal | null) => {
+  const showModal = (modal: ModalProps | null) => {
     setModal(modal);
     setIsModalShown(true);
   };
   const hideModal = () => setIsModalShown(false);
 
-  useEffect(() => (isLoading ? showLoader() : hideLoader()), [isLoading]);
+  const previewFile = (file: FileLike | null) => {
+    setPreviewedFile(file);
+    setIsFilePreviewed(true);
+  };
+  const hideFilePreview = () => setIsFilePreviewed(false);
 
-  if (isLoading) return null;
-
-  const provide = {
-    user,
-    setUser,
-    tenant,
-    setTenant,
-    org,
-    setOrg,
-    isLoading,
-    setIsLoading,
-    showSideModal,
-    hideSideModal,
-    sideModal,
-    isSideModalShown,
+  const provideNavigationContext = {
+    isModalShown,
+    modal,
     showModal,
     hideModal,
-    modal,
-    isModalShown,
+
+    isSideModalShown,
+    sideModal,
+    showSideModal,
+    hideSideModal,
+
+    isFilePreviewed,
+    previewedFile,
+    previewFile,
+    hideFilePreview,
+
+    isLoading,
+    setIsLoading,
+    isSearching,
+    setIsSearching,
+
+    selected,
+    setSelected,
+
     notifications,
     setNotifications,
     getNotifications: () => notifications,
   };
 
+  const provideCacheContext = {
+    currentUserId,
+    setCurrentUserId,
+    currentTenantId,
+    setCurrentTenantId,
+    currentOrgId,
+    setCurrentOrgId,
+  };
+
   return (
-    <NavigationContext.Provider value={provide}>
-      <RouterProvider router={router} />
-    </NavigationContext.Provider>
+    <>
+      <NavigationContext.Provider value={provideNavigationContext}>
+        <CurrentContext.Provider value={provideCacheContext}>
+          <RouterProvider router={router} />
+        </CurrentContext.Provider>
+      </NavigationContext.Provider>
+
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            className="absolute top-0 w-full h-full bg-black z-[100]"
+          >
+            <GridLoader />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 

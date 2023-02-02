@@ -1,16 +1,16 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { EventsService } from './events.service';
 import { CreateEventDto, UpdateEventDto } from '@okampus/shared/dtos';
-import { PaginatedTenantEventModel, TenantEventModel } from '../../factories/events/event.model';
+import { PaginatedTenantEventModel, TenantEventModel } from '../../factories/domains/events/event.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { UUID } from '@okampus/shared/types';
+import { Snowflake } from '@okampus/shared/types';
 
 @Resolver(() => TenantEventModel)
 export class EventsResolver {
   constructor(private readonly eventsService: EventsService) {}
 
   @Query(() => TenantEventModel)
-  eventById(@Args('id', { type: () => String }) id: UUID) {
+  eventById(@Args('id', { type: () => String }) id: Snowflake) {
     return this.eventsService.findOneById(id);
   }
 
@@ -30,7 +30,7 @@ export class EventsResolver {
   }
 
   @Mutation(() => Boolean)
-  deleteEvent(@Args('id', { type: () => String }) id: UUID) {
+  deleteEvent(@Args('id', { type: () => String }) id: Snowflake) {
     return this.eventsService.delete(id);
   }
 }

@@ -16,7 +16,6 @@ import { FileUploadRepository } from './file-upload.repository';
   customRepository: () => FileUploadRepository,
   discriminatorColumn: 'fileUploadKind',
   discriminatorMap: FileUploadKind,
-  abstract: true,
 })
 export class FileUpload extends TenantScopedEntity {
   @Enum(() => FileUploadKind)
@@ -26,9 +25,6 @@ export class FileUpload extends TenantScopedEntity {
   uploadedBy!: Individual;
 
   @Property({ type: 'text' })
-  url!: string;
-
-  @Property({ type: 'text' })
   name!: string;
 
   @Property({ type: 'number' })
@@ -36,6 +32,9 @@ export class FileUpload extends TenantScopedEntity {
 
   @Property({ type: 'text' })
   mime!: string;
+
+  @Property({ type: 'text' })
+  url!: string;
 
   @Property({ type: 'datetime' })
   lastModifiedAt = new Date();
