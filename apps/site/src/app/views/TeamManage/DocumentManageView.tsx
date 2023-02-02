@@ -17,10 +17,16 @@ import { useContext } from 'react';
 function documentTypesByTeamType(teamType?: TeamType) {
   switch (teamType) {
     case TeamType.Club: {
-      return [OrgDocumentType.ClubCharter, OrgDocumentType.OrgGraphicCharter];
+      return [OrgDocumentType.ClubCharter, OrgDocumentType.ClubHandover, OrgDocumentType.OrgGraphicCharter];
     }
     case TeamType.Association: {
-      return [OrgDocumentType.ClubCharter, OrgDocumentType.AssociationConstitution, OrgDocumentType.OrgGraphicCharter];
+      return [
+        OrgDocumentType.AssociationConstitution,
+        OrgDocumentType.AssociationDeclaration,
+        OrgDocumentType.ClubHandover,
+        OrgDocumentType.ClubCharter,
+        OrgDocumentType.OrgGraphicCharter,
+      ];
     }
     case TeamType.Department: {
       return [OrgDocumentType.OrgGraphicCharter];
@@ -74,16 +80,9 @@ export function DocumentManageView() {
   const { showModal, hideModal } = useContext(NavigationContext);
   const [{ org }, updateCache] = useCurrentContext();
 
-  // const [currentOrgDocuments, setcurrentOrgDocuments] = useState<TeamInfoFragment['documents']>(org?.documents ?? []);
-
-  const [createOrgDocument, { error }] = useMutation(teamAddDocumentMutation, {
-    onCompleted: (data) => {
+  const [createOrgDocument] = useMutation(teamAddDocumentMutation, {
+    onCompleted: () => {
       updateCache();
-      // const documents = data.teamAddDocument.org.documents.map((orgDocument) => ({
-      //   ...orgDocument,
-      //   document: getFragmentData(documentFragment, orgDocument.document),
-      // }));
-      // setcurrentOrgDocuments(documents);
       hideModal();
     },
   });

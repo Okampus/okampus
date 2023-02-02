@@ -1,3 +1,1 @@
-export const WIP = () => {
-  <div>WIP</div>;
-};
+export const WIP = () => null;
