@@ -1,7 +1,7 @@
 import { Colors } from '@okampus/shared/enums';
 import { COLORS } from '@okampus/shared/consts';
 
-export function getColorFromData(string: string) {
+export function getColorFromData(string: string): string {
   const colors = Object.values(Colors);
 
   // eslint-disable-next-line unicorn/no-array-reduce

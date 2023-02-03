@@ -8,6 +8,7 @@ export type AvatarProps = {
 };
 
 export function Avatar({ src, name, size = 14, rounded = 50 }: AvatarProps) {
+  name = name ?? '?';
   return (
     <div
       className="flex items-center overflow-hidden shrink-0"
@@ -25,7 +26,7 @@ export function Avatar({ src, name, size = 14, rounded = 50 }: AvatarProps) {
           className="flex items-center justify-center w-full h-full"
           style={{ backgroundColor: getColorFromData(name) }}
         >
-          <span className="font-medium text-gray-300">{name?.[0] ?? '?'}</span>
+          <span className="font-medium text-gray-300">{name[0]}</span>
         </div>
       )}
     </div>
