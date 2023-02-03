@@ -167,7 +167,7 @@ function WelcomePage() {
                   />
                   {errors.password?.message && <p className="pt-1 text-red-400 text-sm">{errors.password?.message}</p>}
                 </div>
-                {(loadingError || error) && <p className="text-red-500">{parseGraphqlError(loadingError || error)}</p>}
+                {/* {(loadingError || error) && <p className="text-red-500">{parseGraphqlError(loadingError || error)}</p>} */}
               </div>
               <div className="flex items-center">
                 <input

@@ -62,6 +62,8 @@ export function Sidebar() {
     const selected = shortcutKey ? shortcutMenus[shortcutKey] : { ...defaultSelectedMenu, subSpace };
     const menu = getMenu(selected);
 
+    console.log('switchSubspace', { subSpace, shortcutKey, orgSlug, selected, menu });
+
     navigate(getLink(menu.link, { orgSlug: orgSlug ?? org?.actor?.slug }));
     if (subSpace !== MANAGE) {
       setCurrentOrgId(null);

@@ -65,6 +65,7 @@ export const TeamDashboard = () => {
       render: getUserLabel,
     },
     {
+      align: Align.Left,
       label: 'Président',
       render: (value: TeamMembersInfoFragment) => {
         const director = value.members.find((member) =>
@@ -74,6 +75,7 @@ export const TeamDashboard = () => {
       },
     },
     {
+      align: Align.Left,
       label: 'Trésorier',
       render: (value: TeamMembersInfoFragment) => {
         const director = value.members.find((member) =>
@@ -83,6 +85,7 @@ export const TeamDashboard = () => {
       },
     },
     {
+      align: Align.Left,
       label: 'Secrétaire',
       render: (value: TeamMembersInfoFragment) => {
         const director = value.members.find((member) =>
