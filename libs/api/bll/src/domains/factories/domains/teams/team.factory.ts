@@ -121,12 +121,6 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
     return team;
   }
 
-  // entityToModel(entity: Team): TeamModel | undefined {
-  //   const event = loadTeam(entity);
-  //   if (!event) return undefined;
-  //   return this.createModel(event);
-  // }
-
   modelToEntity(model: Required<TeamModel>): Team {
     return new Team({
       ...model,
