@@ -1644,12 +1644,12 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
+            "General",
             "Team",
             "TeamManage",
             "TeamManageTreasury",
             "Project",
-            "User",
-            "General"
+            "User"
           ],
           "mappedType": "enum"
         },

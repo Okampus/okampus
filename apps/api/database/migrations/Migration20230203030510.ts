@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230202203210 extends Migration {
+export class Migration20230203030510 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table "tenant_core" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "domain" text not null, "name" text not null, "oidc_info_oidc_enabled" boolean not null, "oidc_info_oidc_name" text null, "oidc_info_oidc_client_id" text null, "oidc_info_oidc_client_secret" text null, "oidc_info_oidc_discovery_url" text null, "oidc_info_oidc_scopes" text null, "oidc_info_oidc_callback_uri" text null);');
@@ -23,7 +23,7 @@ export class Migration20230202203210 extends Migration {
     this.addSql('create index "individual_individual_kind_index" on "individual" ("individual_kind");');
     this.addSql('alter table "individual" add constraint "individual_profile_id_unique" unique ("profile_id");');
 
-    this.addSql('create table "shortcut" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "type" text check ("type" in (\'Team\', \'TeamManage\', \'TeamManageTreasury\', \'Project\', \'User\', \'General\')) not null, "user_id" bigint not null, "target_actor_id" bigint not null);');
+    this.addSql('create table "shortcut" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "type" text check ("type" in (\'General\', \'Team\', \'TeamManage\', \'TeamManageTreasury\', \'Project\', \'User\')) not null, "user_id" bigint not null, "target_actor_id" bigint not null);');
 
     this.addSql('create table "session" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "ip" varchar(255) not null, "country" varchar(255) not null, "client_type" text check ("client_type" in (\'WebClient\', \'MobileClient\', \'DesktopClient\')) not null, "user_agent" jsonb not null, "refresh_token_hash" varchar(255) not null, "token_family" varchar(255) not null, "user_id" bigint not null, "last_activity_at" timestamptz(0) not null, "last_issued_at" timestamptz(0) not null, "revoked_at" timestamptz(0) null, "expired_at" timestamptz(0) null);');
 
