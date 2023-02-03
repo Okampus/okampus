@@ -28,6 +28,17 @@
         }
       }
     },
+    "build-migrations": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/api/migrate",
+        "main": "apps/api/migrate-prod.ts",
+        "tsConfig": "apps/api/tsconfig.app.json"
+      }
+    },
     "serve": {
       "executor": "@nrwl/js:node",
       "options": {
