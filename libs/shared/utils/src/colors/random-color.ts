@@ -11,5 +11,5 @@ export function getColorFromData(string: string) {
     return a & a;
   }, 0);
 
-  return COLORS[colors[((hash % colors.length) + colors.length) % colors.length]];
+  return COLORS[colors[((hash % colors.length) + colors.length) % colors.length]] ?? COLORS[Colors.Blue];
 }
