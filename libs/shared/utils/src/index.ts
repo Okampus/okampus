@@ -6,6 +6,7 @@ export * from './arrays/toggle-in-array';
 export * from './async/async-call-if-not-null';
 export * from './async/filter-promise-all';
 export * from './colors/color-string-transform';
+export * from './colors/random-color';
 export * from './dates/date-formattters';
 export * from './dates/date-utils';
 export * from './enums/enum-keys';
