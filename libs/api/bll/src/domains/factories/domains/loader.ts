@@ -270,7 +270,7 @@ export function loadTenantScopedEntity(
   const tenant = getTenantOrLoad(entity.tenant, contextStack);
 
   if (entity instanceof TeamCategory && !loadBaseClass) {
-    const baseTag = loadTenantScopedEntity(entity as Tag, contextStack);
+    const baseTag = loadTenantScopedEntity(entity as Tag, contextStack, true);
     if (!baseTag) return undefined;
     return {
       ...baseTag,
