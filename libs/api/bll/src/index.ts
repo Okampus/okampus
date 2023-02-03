@@ -12,7 +12,6 @@ export * from './domains/factories/abstract/tenant-core.model';
 export * from './domains/factories/abstract/tenant-scoped.model';
 export * from './domains/factories/abstract/ugc.model';
 export * from './domains/factories/base.factory';
-export * from './domains/factories/defaults/default-team-roles';
 export * from './domains/factories/domains/bots/bot.factory';
 export * from './domains/factories/domains/bots/bot.model';
 export * from './domains/factories/domains/contents/content.factory';

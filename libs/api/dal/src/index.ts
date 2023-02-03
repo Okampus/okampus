@@ -1,4 +1,5 @@
 // @index(['./**/*.{ts,tsx}', './*/index.{ts,tsx}'], f => `export * from '${f.path.replace(/\/index$/, '')}'`)
+export * from './defaults/default-team-roles';
 export * from './resources/actor/actor.entity';
 export * from './resources/actor/actor.options';
 export * from './resources/actor/actor.repository';

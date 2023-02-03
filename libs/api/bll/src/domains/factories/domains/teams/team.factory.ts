@@ -3,6 +3,7 @@ import { EventPublisher } from '@nestjs/cqrs';
 import {
   ActorImageUploadProps,
   ActorRepository,
+  clubDefaultRoles,
   Form,
   Individual,
   Org,
@@ -12,6 +13,7 @@ import {
   Team,
   TeamCategory,
   TeamCategoryRepository,
+  teamDefaultRoles,
   TeamMember,
   TeamMemberRepository,
   TeamOptions,
@@ -28,7 +30,6 @@ import { BaseFactory } from '../../base.factory';
 import { TeamModel } from './team.model';
 import { ActorKind, IndividualKind, ShortcutType, TeamType } from '@okampus/shared/enums';
 import { toSlug } from '@okampus/shared/utils';
-import { clubDefaultRoles, teamDefaultRoles } from '../../defaults/default-team-roles';
 import { addImagesToActor } from '../../abstract.utils';
 import { UploadService } from '../../../../features/uploads/upload.service';
 import { Snowflake, MulterFileType } from '@okampus/shared/types';
