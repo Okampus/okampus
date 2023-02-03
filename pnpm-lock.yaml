@@ -110,6 +110,7 @@ specifiers:
   '@types/set-cookie-parser': ^2.4.2
   '@types/sharp': ^0.31.0
   '@types/statuses': ^2.0.1
+  '@types/webpack-env': ^1.18.0
   '@typescript-eslint/eslint-plugin': 5.48.2
   '@typescript-eslint/parser': 5.48.2
   '@vitejs/plugin-react': ^3.0.1
@@ -440,6 +441,7 @@ devDependencies:
   '@types/react-pdf': 6.2.0
   '@types/sharp': 0.31.1
   '@types/statuses': 2.0.1
+  '@types/webpack-env': 1.18.0
   '@typescript-eslint/eslint-plugin': 5.48.2_caon6io6stgpr7lz2rtbhekxqy
   '@typescript-eslint/parser': 5.48.2_7uibuqfxkfaozanbtbziikiqje
   '@vitejs/plugin-react': 3.0.1_vite@4.0.4
