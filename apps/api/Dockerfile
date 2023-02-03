@@ -24,8 +24,8 @@ ADD --chown=api:api apps/api ./apps/api
 ADD --chown=api:api libs/api ./libs/api
 ADD --chown=api:api libs/shared ./libs/shared
 
-RUN pnpm nx run api:build
-RUN pnpm nx run api:build-migrations
+RUN pnpm nx run api:build:production
+RUN pnpm nx run api:build-migrations:production
 
 EXPOSE 8081
 
