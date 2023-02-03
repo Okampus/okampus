@@ -1,9 +1,0 @@
-<svg width="47.202mm" height="60.991mm" version="1.1" viewBox="0 0 47.202 60.991" xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(-125.28 -45.257)">
-  <path d="m130.03 45.257c-2.6342 0-4.7548 2.1205-4.7548 4.7548v51.481c0 2.6342 2.1205 4.7553 4.7548 4.7553h37.692c2.6342 0 4.7547-2.1211 4.7547-4.7553v-45.696l-10.022-10.54z" fill="#e5e7eb" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="m172.48 55.797-10.022-10.54 0.0804 10.439z" fill="#ccc"/>
- </g>
- <g transform="translate(-125.28 -45.257)">
-  <path d="m125.28 90.537v11.145c0 2.502 2.1205 4.5165 4.7548 4.5165h37.692c2.6342 0 4.7547-2.0146 4.7547-4.5165v-11.145z" fill="#faa" stroke-linecap="round" stroke-linejoin="round" stroke-width=".97457"/>
- </g>
-</svg>

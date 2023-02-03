@@ -1,0 +1,7 @@
+.accordeon .child {
+  @apply h-0;
+}
+
+.accordeon.active .child {
+  @apply h-9;
+}

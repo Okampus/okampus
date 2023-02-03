@@ -1,0 +1,12 @@
+.progress-bar {
+  @keyframes roundtime {
+    to {
+      /* More performant than animating `width` */
+      transform: scaleX(0);
+    }
+  }
+
+  transform-origin: left center;
+  animation: roundtime calc(var(--progress-bar-duration) * 1ms) forwards;
+  background: linear-gradient(to bottom, --progress-bar-start-color, progress-bar-end-color);
+}

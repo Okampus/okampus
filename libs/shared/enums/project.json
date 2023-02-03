@@ -1,0 +1,61 @@
+{
+  "name": "shared-enums",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/enums/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/enums",
+        "main": "libs/shared/enums/src/index.ts",
+        "tsConfig": "libs/shared/enums/tsconfig.lib.json",
+        "assets": ["libs/shared/enums/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "color": true,
+        "commands": [
+          {
+            "command": "nx run shared-enums:ts-check"
+          },
+          {
+            "command": "nx run shared-enums:eslint"
+          }
+        ]
+      }
+    },
+    "ts-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "tsc --pretty --noEmit -p libs/shared/enums/tsconfig.lib.json"
+          }
+        ]
+      }
+    },
+    "eslint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "eslint libs/shared/enums --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"
+          }
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/shared/enums/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:const", "layer:*"]
+}

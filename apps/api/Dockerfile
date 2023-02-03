@@ -3,22 +3,29 @@ FROM node:18
 WORKDIR /app
 RUN adduser --uid 1111 api
 
+RUN chown api:api /app
+
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
 RUN chmod +x /wait
 
-ADD ./scripts /scripts
-RUN chmod -R +x /scripts
+RUN npm --no-update-notifier --no-fund --global install pnpm@7.26.0
 
-RUN chown api:api ./
+ADD --chown=api:api package.json ./package.json
+ADD --chown=api:api pnpm-lock.yaml ./pnpm-lock.yaml
+
 USER api
+RUN pnpm i
 
-ADD --chown=api:api package*.json ./
-RUN npm install --force
+ADD --chown=api:api tsconfig.json ./tsconfig.json
+ADD --chown=api:api tsconfig.base.json ./tsconfig.base.json
+ADD --chown=api:api nx.json ./nx.json
 
-ADD --chown=api:api . ./
+ADD --chown=api:api apps/api ./apps/api
+ADD --chown=api:api libs/api ./libs/api
+ADD --chown=api:api libs/shared ./libs/shared
 
-RUN npm run build
+RUN pnpm nx run api:build
 
 EXPOSE 8081
 
-CMD /wait && /scripts/launch.sh
+CMD /wait && pnpm nx run api:migrate && node dist/apps/api/main.js

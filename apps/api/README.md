@@ -16,7 +16,7 @@ Pour lancer l'API d'Okampus localement, il faut suivre ces étapes :
 1. Installez [Redis 7].
 1. Installez les dépendences avec `npm install`.
 1. :warning: Initialisez la base de données PostgreSQL avec `npx mikro-orm migration:up`.
-    Vous devrez probablement créer la base de données (vide) auparavant. Pensez à l'appeler comme vous l'avez configuré dans le fichier `.env` : `MIKRO_ORM_DB_NAME` (par défault, `okampus`). Avec `psql`, vous pouvez créer la base de données en lançant `psql -c "CREATE DATABASE IF NOT EXISTS okampus;"` dans votre terminal.
+   Vous devrez probablement créer la base de données (vide) auparavant. Pensez à l'appeler comme vous l'avez configuré dans le fichier `.env` : `MIKRO_ORM_DB_NAME` (par défault, `okampus`). Avec `psql`, vous pouvez créer la base de données en lançant `psql -c "CREATE DATABASE IF NOT EXISTS okampus;"` dans votre terminal.
 1. Lancez l'API en mode "développement" avec `npm run dev`.
 
 ## Lancer Okampus via Docker
@@ -39,7 +39,8 @@ $ npx mikro-orm migration:up
 ```
 
 <!-- Link Dump -->
-[Node.js]: https://nodejs.org/en/download/
-[PostgreSQL 14]: https://www.postgresqltutorial.com/postgresql-getting-started/
-[Redis 7]: https://redis.io/download/
-[MeiliSearch]: https://docs.meilisearch.com/learn/getting_started/quick_start.html
+
+[node.js]: https://nodejs.org/en/download/
+[postgresql 14]: https://www.postgresqltutorial.com/postgresql-getting-started/
+[redis 7]: https://redis.io/download/
+[meilisearch]: https://docs.meilisearch.com/learn/getting_started/quick_start.html

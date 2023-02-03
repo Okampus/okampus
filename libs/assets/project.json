@@ -1,0 +1,26 @@
+{
+  "name": "assets",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/assets/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/assets",
+        "main": "libs/assets/src/index.ts",
+        "tsConfig": "libs/assets/tsconfig.lib.json",
+        "assets": ["libs/assets/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/assets/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:const", "layer:*"]
+}

@@ -43,12 +43,19 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
       - name: Install dependencies
         # if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build project
-        run: npm run build
+        run: pnpm nx run api:build
         working-directory: apps/api
 
   lint:
@@ -74,10 +81,17 @@ jobs:
         with:
           node-version: 18
 
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
       - name: Install dependencies
         # if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
-      - name: Run ESLint
-        run: npm run lint
+      - name: Run ESLint + ts-check
+        run: pnpm nx run api:lint
         working-directory: apps/api

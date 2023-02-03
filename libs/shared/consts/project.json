@@ -1,0 +1,61 @@
+{
+  "name": "shared-consts",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/consts/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/consts",
+        "main": "libs/shared/consts/src/index.ts",
+        "tsConfig": "libs/shared/consts/tsconfig.lib.json",
+        "assets": ["libs/shared/consts/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "color": true,
+        "commands": [
+          {
+            "command": "nx run shared-consts:ts-check"
+          },
+          {
+            "command": "nx run shared-consts:eslint"
+          }
+        ]
+      }
+    },
+    "ts-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "tsc --pretty --noEmit -p libs/shared/consts/tsconfig.lib.json"
+          }
+        ]
+      }
+    },
+    "eslint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "eslint libs/shared/consts --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"
+          }
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/shared/consts/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:const", "layer:*"]
+}

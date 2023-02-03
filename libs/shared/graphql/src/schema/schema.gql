@@ -1,0 +1,1480 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+interface IndividualModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  actor: ActorModel
+  individualKind: IndividualKind!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""The IndividualKind enum"""
+enum IndividualKind {
+  Bot
+  User
+}
+
+interface FileUploadModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  fileUploadKind: FileUploadKind!
+  uploadedBy: IndividualModel
+  lastModifiedAt: DateTime!
+  url: String!
+  name: String!
+  size: Int!
+  mime: String!
+}
+
+"""The FileUploadKind enum"""
+enum FileUploadKind {
+  ImageUpload
+  DocumentUpload
+  VideoUpload
+  FileUpload
+}
+
+interface ContentMasterModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  tags: [TagModel!]!
+  title: String!
+  contentMasterKind: ContentMasterKind!
+  contributors: [IndividualModel!]!
+  rootContent: UgcModel
+}
+
+"""The ContentMasterKind enum"""
+enum ContentMasterKind {
+  TenantEvent
+}
+
+interface UgcModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  ugcKind: UgcKind!
+  author: IndividualModel
+  isAnonymous: Boolean!
+  representingOrg: OrgModel
+  contentMaster: ContentMasterModel!
+}
+
+"""The UgcKind enum"""
+enum UgcKind {
+  Content
+  TenantDocument
+  Form
+  FormSubmission
+}
+
+interface OrgModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  actor: ActorModel
+  orgKind: OrgKind!
+  parent: OrgModel
+  documents: [OrgDocumentModel!]!
+}
+
+"""The OrgKind enum"""
+enum OrgKind {
+  Canteen
+  ClassGroup
+  Cohort
+  Team
+  Tenant
+}
+
+type Address {
+  name: String!
+  latitude: Float
+  longitude: Float
+  street: String
+  city: String
+  zip: Int
+  state: String
+  country: String
+}
+
+type OidcInfo {
+  oidcEnabled: Boolean!
+  oidcName: String
+  oidcClientId: String
+  oidcDiscoveryUrl: String
+  oidcScopes: String
+  oidcCallbackUri: String
+}
+
+type UserCustomization {
+  color: Colors
+  signature: String
+}
+
+"""The Colors enum"""
+enum Colors {
+  Blue
+  DeepBlue
+  DarkBlue
+  LightBlue
+  Green
+  DeepGreen
+  DarkGreen
+  LightGreen
+  Orange
+  DeepOrange
+  DarkOrange
+  LightOrange
+  Red
+  DeepRed
+  DarkRed
+  LightRed
+  Purple
+  DeepPurple
+  DarkPurple
+  LightPurple
+  Gray
+  DeepGray
+  DarkGray
+  Turquoise
+  Pink
+  Cyan
+  Brown
+  Indigo
+  Lime
+  Teal
+  Black
+}
+
+type UserNotificationSettings {
+  notificationMentionned: Int!
+  notificationBadgeUnlocked: Int!
+  notificationBlogSubscribedUpdated: Int!
+  notificationContentRemoved: Int!
+  notificationAdminReportCreated: Int!
+  notificationEventCreated: Int!
+  notificationTeamSubscribedEventCreated: Int!
+  notificationTeamManagedFormUpdated: Int!
+  notificationTeamManagedEventUpdated: Int!
+  notificationTeamManagedMembershipRequestUpdated: Int!
+  notificationTeamManagedMemberRoleUpdated: Int!
+  notificationAdminTeamSocialUpdated: Int!
+  notificationAdminTeamLegalFileUpdated: Int!
+  notificationEventSubscribedUpdated: Int!
+  notificationEventManagedApproved: Int!
+  notificationEventManagedRejected: Int!
+  notificationEventManagedRegistrationCreated: Int!
+  notificationAdminEventValidationStarted: Int!
+  notificationAdminEventValidationStep: Int!
+  notificationAdminEventValidationApproved: Int!
+  notificationAdminEventValidationRejected: Int!
+  notificationThreadSubscribedUpdated: Int!
+  notificationThreadSubscribedAnswered: Int!
+  notificationAdminThreadStale: Int!
+  notificationAdminThreadStaleThreshold: Int!
+  notificationAdminThreadAssignedStale: Int!
+  notificationAdminThreadAssignedStaleThreshold: Int!
+  notificationAdminThreadAssigned: Int!
+  notificationRoleUpdated: Int!
+  notificationAdminRoleUpdated: Int!
+}
+
+type UserSettings {
+  darkModeActivated: Boolean!
+  gdprEndOfLifeExport: Boolean!
+  gdprEndOfLifeAnonymize: Boolean!
+}
+
+type UserStats {
+  points: Int!
+  postCount: Int!
+  lastPostAt: DateTime
+  postStreak: Int!
+  replyCount: Int!
+  lastReplyAt: DateTime
+  replyStreak: Int!
+  commentCount: Int!
+  lastComment: DateTime
+  uploadCount: Int!
+  lastActionAt: DateTime
+  actionStreak: Int!
+}
+
+type PageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+  currentPage: Float!
+  countBefore: Float!
+  countCurrent: Float!
+  countAfter: Float!
+  countTotal: Float!
+}
+
+type TenantCoreModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  domain: String!
+  name: String!
+  oidcInfo: OidcInfo!
+}
+
+type ImageUploadModel implements FileUploadModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  fileUploadKind: FileUploadKind!
+  uploadedBy: IndividualModel
+  lastModifiedAt: DateTime!
+  url: String!
+  name: String!
+  size: Int!
+  mime: String!
+  width: Int
+  height: Int
+}
+
+type ImageUploadModelEdge {
+  cursor: String!
+  node: ImageUploadModel!
+}
+
+type ActorImageModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  actor: ActorModel
+  image: ImageUploadModel
+  type: ActorImageType!
+  lastActiveDate: DateTime
+}
+
+"""The ActorImageType enum"""
+enum ActorImageType {
+  Avatar
+  AvatarDarkMode
+  Banner
+  Profile
+}
+
+type ActorImageModelEdge {
+  cursor: String!
+  node: ActorImageModel!
+}
+
+type SocialModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  actor: ActorModel
+  type: SocialType!
+  url: String!
+  pseudo: String!
+}
+
+"""The SocialType enum"""
+enum SocialType {
+  Discord
+  Instagram
+  YouTube
+  TikTok
+  Twitch
+  LinkedIn
+}
+
+type SocialModelEdge {
+  cursor: String!
+  node: SocialModel!
+}
+
+type TagModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  tagKind: TagKind!
+  name: String!
+  slug: String!
+  color: Colors!
+  description: String
+  iconImage: ImageUploadModel
+  createdBy: IndividualModel
+}
+
+"""The TagKind enum"""
+enum TagKind {
+  TeamCategory
+  Tag
+}
+
+type TagModelEdge {
+  cursor: String!
+  node: TagModel!
+}
+
+type DocumentUploadModel implements FileUploadModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  fileUploadKind: FileUploadKind!
+  uploadedBy: IndividualModel
+  lastModifiedAt: DateTime!
+  url: String!
+  name: String!
+  size: Int!
+  mime: String!
+  numberOfPages: Int
+  numberOfWords: Int
+  documentType: DocumentUploadType!
+}
+
+"""The DocumentUploadType enum"""
+enum DocumentUploadType {
+  Slideshow
+  CSVLike
+  Spreadsheet
+  Code
+  Markdown
+  Text
+  Document
+}
+
+type DocumentUploadModelEdge {
+  cursor: String!
+  node: DocumentUploadModel!
+}
+
+type DocumentEditModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  yearVersion: Int
+  documentUpload: DocumentUploadModel!
+}
+
+type DocumentEditModelEdge {
+  cursor: String!
+  node: DocumentEditModel!
+}
+
+type DocumentModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  ugcKind: UgcKind!
+  author: IndividualModel
+  isAnonymous: Boolean!
+  representingOrg: OrgModel
+  contentMaster: ContentMasterModel!
+  name: String!
+  yearVersion: Int
+  documentUpload: DocumentUploadModel!
+  edits: [DocumentEditModel!]!
+}
+
+type DocumentModelEdge {
+  cursor: String!
+  node: DocumentModel!
+}
+
+type OrgDocumentModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  org: OrgModel!
+  document: DocumentModel!
+  type: OrgDocumentType!
+}
+
+"""The OrgDocumentType enum"""
+enum OrgDocumentType {
+  TenantGuide
+  AssociationConstitution
+  AssociationDeclaration
+  ClubHandover
+  ClubCharter
+  OrgMeetingTranscript
+  OrgGraphicCharter
+}
+
+type OrgDocumentModelEdge {
+  cursor: String!
+  node: OrgDocumentModel!
+}
+
+type ActorModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  tags: [TagModel!]!
+  actorKind: ActorKind!
+  individual: IndividualModel
+  org: OrgModel
+  primaryEmail: String
+  slug: String!
+  name: String!
+  bio: String!
+  ical: String!
+  actorImages: [ActorImageModel!]!
+  socials: [SocialModel!]!
+}
+
+"""The ActorKind enum"""
+enum ActorKind {
+  Individual
+  Org
+}
+
+type FormModel implements UgcModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  ugcKind: UgcKind!
+  author: IndividualModel
+  isAnonymous: Boolean!
+  representingOrg: OrgModel
+  contentMaster: ContentMasterModel!
+  name: String!
+  description: String
+  schema: JSON!
+  type: FormType!
+  isTemplate: Boolean!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+"""The FormType enum"""
+enum FormType {
+  EventJoin
+  TeamJoin
+  Internal
+  Survey
+}
+
+type FormModelEdge {
+  cursor: String!
+  node: FormModel!
+}
+
+type FormSubmissionModel implements UgcModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  ugcKind: UgcKind!
+  author: IndividualModel
+  isAnonymous: Boolean!
+  representingOrg: OrgModel
+  contentMaster: ContentMasterModel!
+  submission: JSON!
+  forForm: FormModel
+}
+
+type FormSubmissionModelEdge {
+  cursor: String!
+  node: FormSubmissionModel!
+}
+
+type ShortcutModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  type: ShortcutType!
+  targetActor: ActorModel
+  user: UserModel
+}
+
+"""The ShortcutType enum"""
+enum ShortcutType {
+  General
+  Team
+  TeamManage
+  TeamManageTreasury
+  Project
+  User
+}
+
+type UserProfileModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  customization: UserCustomization!
+  stats: UserStats!
+  settings: UserSettings!
+  notificationSettings: UserNotificationSettings!
+  finishedIntroduction: Boolean!
+  finishedOnboarding: Boolean!
+}
+
+type UserModel implements IndividualModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  actor: ActorModel
+  individualKind: IndividualKind!
+  firstName: String!
+  lastName: String!
+  middleNames: [String!]!
+  scopeRole: ScopeRole!
+  roles: [RoleType!]!
+  profile: UserProfileModel
+  shortcuts: [ShortcutModel!]!
+}
+
+"""The ScopeRole enum"""
+enum ScopeRole {
+  Student
+  Teacher
+  Admin
+}
+
+"""The RoleType enum"""
+enum RoleType {
+  User
+  Moderator
+  CafeteriaManager
+  ClubManager
+  TenantAdmin
+}
+
+type UserModelEdge {
+  cursor: String!
+  node: UserModel!
+}
+
+type PaginatedUserModel {
+  edges: [UserModelEdge!]
+  pageInfo: PageInfo
+}
+
+type MembershipModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  membershipKind: MembershipKind!
+  user: UserModel
+  startDate: DateTime!
+  endDate: DateTime
+}
+
+"""The MembershipKind enum"""
+enum MembershipKind {
+  CanteenMember
+  ClassGroupMember
+  CohortMember
+  TeamMember
+  TenantMember
+}
+
+type MembershipModelEdge {
+  cursor: String!
+  node: MembershipModel!
+}
+
+type BotModel implements IndividualModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  actor: ActorModel
+  individualKind: IndividualKind!
+  botRole: BotRole!
+  owner: ActorModel!
+}
+
+"""The BotRole enum"""
+enum BotRole {
+  Official
+  Admin
+  Moderator
+  User
+  Team
+}
+
+type BotModelEdge {
+  cursor: String!
+  node: BotModel!
+}
+
+type PaginatedBotModel {
+  edges: [BotModelEdge!]
+  pageInfo: PageInfo
+}
+
+type ContentModel implements UgcModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  ugcKind: UgcKind!
+  author: IndividualModel
+  isAnonymous: Boolean!
+  representingOrg: OrgModel
+  contentMaster: ContentMasterModel!
+  text: String!
+  attachments: [FileUploadModel!]!
+  parent: UgcModel
+}
+
+type ContentModelEdge {
+  cursor: String!
+  node: ContentModel!
+}
+
+type TenantModel implements OrgModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  actor: ActorModel
+  orgKind: OrgKind!
+  parent: OrgModel
+  documents: [OrgDocumentModel!]!
+  eventValidationForm: FormModel
+  eventApprovalSteps: [EventApprovalStepModel!]!
+}
+
+type TenantModelEdge {
+  cursor: String!
+  node: TenantModel!
+}
+
+type PaginatedTenantModel {
+  edges: [TenantModelEdge!]
+  pageInfo: PageInfo
+}
+
+type EventApprovalStepModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  tenantOrg: TenantModel
+  createdBy: IndividualModel
+  order: Int!
+  name: String!
+  validators: [IndividualModel!]!
+  notifiees: [UserModel!]!
+}
+
+type EventApprovalStepModelEdge {
+  cursor: String!
+  node: EventApprovalStepModel!
+}
+
+type PaginatedEventApprovalStepModel {
+  edges: [EventApprovalStepModelEdge!]
+  pageInfo: PageInfo
+}
+
+type TeamCategoryModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  tagKind: TagKind!
+  name: String!
+  slug: String!
+  color: Colors!
+  description: String
+  iconImage: ImageUploadModel
+  createdBy: IndividualModel
+  teams: [TeamModel!]!
+}
+
+type TeamCategoryModelEdge {
+  cursor: String!
+  node: TeamCategoryModel!
+}
+
+type PaginatedTeamCategoryModel {
+  edges: [TeamCategoryModelEdge!]
+  pageInfo: PageInfo
+}
+
+type ProjectModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  name: String!
+  description: String
+  expectedBudget: Float!
+  actualBudget: Float!
+  team: TeamModel!
+  linkedEvent: TenantEventModel
+  createdBy: IndividualModel!
+  supervisor: UserModel!
+  participants: [UserModel!]
+}
+
+type ProjectModelEdge {
+  cursor: String!
+  node: ProjectModel!
+}
+
+type PaginatedProjectModel {
+  edges: [ProjectModelEdge!]
+  pageInfo: PageInfo
+}
+
+type FinanceModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  transaction: String!
+  description: String
+  address: Address
+  paymentDate: DateTime!
+  paymentMethod: PaymentMethod!
+  amountDue: Float!
+  amountPayed: Float!
+  state: FinanceState!
+  category: FinanceCategory!
+  team: TeamModel!
+  createdBy: IndividualModel!
+  linkedEvent: TenantEventModel
+  linkedProject: ProjectModel
+  receipts: [FileUploadModel!]!
+}
+
+"""The PaymentMethod enum"""
+enum PaymentMethod {
+  Cash
+  CreditCard
+  Transfer
+  RegularTransfer
+  Check
+  MobilePayment
+  Other
+}
+
+"""The FinanceState enum"""
+enum FinanceState {
+  Canceled
+  Ongoing
+  Completed
+}
+
+"""The FinanceCategory enum"""
+enum FinanceCategory {
+  Entertainment
+  Equipement
+  Errands
+  Fees
+  MembershipFees
+  Insurance
+  Logistics
+  Marketing
+  Provider
+  Subscriptions
+  Transportation
+  Other
+}
+
+type FinanceModelEdge {
+  cursor: String!
+  node: FinanceModel!
+}
+
+type PaginatedFinanceModel {
+  edges: [FinanceModelEdge!]
+  pageInfo: PageInfo
+}
+
+type TeamModel implements OrgModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  actor: ActorModel
+  orgKind: OrgKind!
+  parent: OrgModel
+  documents: [OrgDocumentModel!]!
+  tagline: String
+  type: TeamType!
+  membershipFees: Float!
+  currentFinance: Float!
+  memberCount: Int!
+  directorsCategoryName: String!
+  managersCategoryName: String!
+  membersCategoryName: String!
+  joinForm: FormModel
+  members: [TeamMemberModel!]!
+  roles: [TeamRoleModel!]!
+  categories: [TeamCategoryModel!]!
+  finances: [FinanceModel!]!
+}
+
+"""The TeamType enum"""
+enum TeamType {
+  Association
+  Club
+  Project
+  Department
+}
+
+type TeamModelEdge {
+  cursor: String!
+  node: TeamModel!
+}
+
+type PaginatedTeamModel {
+  edges: [TeamModelEdge!]
+  pageInfo: PageInfo
+}
+
+type TeamRoleModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  roleKind: RoleKind!
+  name: String!
+  color: Colors!
+  key: TeamRoleKey
+  required: Boolean!
+  team: TeamModel!
+  permissions: [TeamPermissions!]!
+  category: TeamRoleCategory!
+}
+
+"""The RoleKind enum"""
+enum RoleKind {
+  TeamRole
+  CanteenRole
+}
+
+"""The TeamRoleKey enum"""
+enum TeamRoleKey {
+  Director
+  Treasurer
+  Secretary
+}
+
+"""The TeamPermissions enum"""
+enum TeamPermissions {
+  Admin
+  ViewTreasury
+  ManageTreasury
+  ViewRequests
+  ManageRequests
+  ManageRoles
+  ManageMembers
+  ManageTeam
+  ViewDraftEvents
+  ManageEvents
+}
+
+"""The TeamRoleCategory enum"""
+enum TeamRoleCategory {
+  Directors
+  Managers
+  Members
+}
+
+type TeamMemberModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  membershipKind: MembershipKind!
+  user: UserModel
+  startDate: DateTime!
+  endDate: DateTime
+  team: TeamModel
+  roles: [TeamRoleModel!]!
+  activities: [TeamActionModel!]!
+}
+
+type TeamMemberModelEdge {
+  cursor: String!
+  node: TeamMemberModel!
+}
+
+type TeamActionModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  name: String!
+  description: String!
+  score: Int!
+  event: TenantEventModel
+  team: TeamModel
+  user: UserModel
+  teamMember: TeamMemberModel
+}
+
+type TeamActionModelEdge {
+  cursor: String!
+  node: TeamActionModel!
+}
+
+type EventJoinModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  joinKind: JoinKind!
+  issuer: IndividualModel
+  joiner: UserModel
+  validatedBy: IndividualModel
+  validatedAt: DateTime
+  validationMessage: String
+  formSubmission: FormSubmissionModel
+  state: JoinState!
+  event: TenantEventModel
+  participated: Boolean
+  teamAction: TeamActionModel
+  presenceStatus: RegistrationStatus!
+}
+
+"""The JoinKind enum"""
+enum JoinKind {
+  EventJoin
+  TeamJoin
+}
+
+"""The JoinState enum"""
+enum JoinState {
+  Pending
+  Approved
+  Rejected
+}
+
+"""The RegistrationStatus enum"""
+enum RegistrationStatus {
+  Sure
+  Maybe
+  Absent
+}
+
+type EventJoinModelEdge {
+  cursor: String!
+  node: EventJoinModel!
+}
+
+type TenantEventModel implements ContentMasterModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  tags: [TagModel!]!
+  title: String!
+  contentMasterKind: ContentMasterKind!
+  contributors: [IndividualModel!]!
+  rootContent: UgcModel
+  start: DateTime!
+  end: DateTime!
+  location: Address!
+  price: Float!
+  regularEventInterval: String
+  image: ImageUploadModel
+  supervisor: UserModel
+  joinForm: FormModel
+  regularEvent: TenantEventModel
+  approvalSubmission: FormSubmissionModel
+  lastEventApprovalStep: EventApprovalStepModel
+  eventApprovals: [EventApprovalModel!]!
+  registrations: [EventJoinModel!]!
+  state: EventState!
+  meta: JSON!
+  private: Boolean!
+}
+
+"""The EventState enum"""
+enum EventState {
+  Template
+  Draft
+  Submitted
+  Rejected
+  Approved
+  Published
+}
+
+type TenantEventModelEdge {
+  cursor: String!
+  node: TenantEventModel!
+}
+
+type PaginatedTenantEventModel {
+  edges: [TenantEventModelEdge!]
+  pageInfo: PageInfo
+}
+
+type EventApprovalModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  event: TenantEventModel
+  createdBy: IndividualModel
+  message: String
+  approved: Boolean!
+  step: EventApprovalStepModel
+}
+
+type EventApprovalModelEdge {
+  cursor: String!
+  node: EventApprovalModel!
+}
+
+type PaginatedEventApprovalModel {
+  edges: [EventApprovalModelEdge!]
+  pageInfo: PageInfo
+}
+
+type AuthContextModel {
+  user: UserModel!
+  tenant: TenantModel!
+}
+
+input AddressInput {
+  name: String!
+  latitude: Float = null
+  longitude: Float = null
+  street: String = null
+  city: String = null
+  zip: Int = null
+  state: String = null
+  country: String = null
+}
+
+input OidcInfoInput {
+  oidcEnabled: Boolean! = false
+  oidcName: String = null
+  oidcClientId: String = null
+  oidcDiscoveryUrl: String = null
+  oidcScopes: String = null
+  oidcCallbackUri: String = null
+}
+
+type Query {
+  me: AuthContextModel!
+  userById(id: String!): UserModel!
+  userBySlug(slug: String!): UserModel!
+  users(options: PaginationOptions): PaginatedUserModel!
+  botById(id: String!): BotModel!
+  botBySlug(slug: String!): BotModel!
+  bots(options: PaginationOptions): PaginatedBotModel!
+  tenantById(id: String!): TenantModel!
+  tenantBySlug(slug: String!): TenantModel!
+  tenants(options: PaginationOptions): PaginatedTenantModel!
+  eventById(id: String!): TenantEventModel!
+  events(options: PaginationOptions): PaginatedTenantEventModel!
+  teamById(id: String!): TeamModel!
+  teamBySlug(slug: String!): TeamModel!
+  teams(options: PaginationOptions): PaginatedTeamModel!
+  eventApprovalById(id: String!): EventApprovalModel!
+  eventApprovals(options: PaginationOptions): PaginatedEventApprovalModel!
+  eventApprovalStepById(id: String!): EventApprovalStepModel!
+  eventApprovalSteps(options: PaginationOptions): PaginatedEventApprovalStepModel!
+  financeById(id: String!): FinanceModel!
+  finances(options: PaginationOptions): PaginatedFinanceModel!
+  financesByTeam(teamId: String!, options: PaginationOptions): PaginatedFinanceModel!
+  projectById(id: String!): ProjectModel!
+  projects(options: PaginationOptions): PaginatedProjectModel!
+  projectsByTeam(teamId: String!, options: PaginationOptions): PaginatedProjectModel!
+  teamCategoryById(id: String!): TeamCategoryModel!
+  teamCategoryBySlug(slug: String!): TeamCategoryModel!
+  teamCategories(options: PaginationOptions): PaginatedTeamCategoryModel!
+}
+
+input PaginationOptions {
+  limit: Int
+  after: String
+  before: String
+  offset: Int
+  orderBy: QueryOrderMap
+}
+
+"""QueryOrderMap custom scalar type"""
+scalar QueryOrderMap
+
+type Mutation {
+  login(username: String!, password: String!): AuthContextModel!
+  logout: Boolean!
+  wsToken: Boolean!
+  createUser(user: CreateUserDto!, avatar: Upload, avatarDark: Upload, banner: Upload): UserModel!
+  updateUser(updateUser: UpdateUserDto!): UserModel!
+  deleteUser(id: String!): Boolean!
+  createBot(bot: CreateBotDto!): BotModel!
+  updateBot(updateBot: UpdateDocumentDto!): BotModel!
+  deleteBot(id: String!): Boolean!
+  createTenant(tenant: CreateTenantDto!): TenantModel!
+  tenantAddDocument(tenantId: String!, createDocument: CreateDocumentDto!, documentFile: Upload!): OrgDocumentModel!
+  updateTenant(updateTenant: UpdateTenantDto!): TenantModel!
+  deleteTenant(id: String!): Boolean!
+  createEvent(event: CreateEventDto!): TenantEventModel!
+  updateEvent(updateEvent: UpdateEventDto!): TenantEventModel!
+  deleteEvent(id: String!): Boolean!
+  createTeam(team: CreateTeamDto!, avatar: Upload, avatarDark: Upload, banner: Upload): TeamModel!
+  teamAddDocument(teamId: String!, createOrgDocument: CreateOrgDocumentDto!, documentFile: Upload!): OrgDocumentModel!
+  updateTeam(updateTeam: UpdateTeamDto!): TeamModel!
+  deleteTeam(id: String!): Boolean!
+  createEventApproval(eventApproval: CreateEventApprovalDto!): EventApprovalModel!
+  updateEventApproval(updateEventApproval: UpdateEventApprovalDto!): EventApprovalModel!
+  deleteEventApproval(id: String!): Boolean!
+  createEventApprovalStep(eventApprovalStep: CreateEventApprovalStepDto!): EventApprovalStepModel!
+  updateEventApprovalStep(updateEventApprovalStep: UpdateEventApprovalStepDto!): EventApprovalStepModel!
+  deleteEventApprovalStep(id: String!): Boolean!
+  createFinance(finance: CreateFinanceDto!, receipts: [Upload!]): FinanceModel!
+  updateFinance(updateFinance: UpdateFinanceDto!): FinanceModel!
+  deleteFinance(id: String!): Boolean!
+  createProject(project: CreateProjectDto!): ProjectModel!
+  updateProject(updateProject: UpdateProjectDto!): ProjectModel!
+  deleteProject(id: String!): Boolean!
+  createTeamCategory(teamCategory: CreateTeamCategoryDto!, iconImage: Upload): TeamCategoryModel!
+  updateTeamCategory(updateTeamCategory: UpdateTeamCategoryDto!): TeamCategoryModel!
+  deleteTeamCategory(id: String!): Boolean!
+  createOrgDocument(orgId: String!, createOrgDocument: CreateOrgDocumentDto!, documentFile: Upload!): OrgDocumentModel!
+}
+
+input CreateUserDto {
+  firstName: String!
+  middleNames: [String!]
+  lastName: String!
+  roles: [RoleType!]
+  scopeRole: ScopeRole!
+  slug: String
+  bio: String
+  primaryEmail: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input UpdateUserDto {
+  firstName: String
+  middleNames: [String!]
+  lastName: String
+  roles: [RoleType!]
+  scopeRole: ScopeRole
+  slug: String
+  bio: String
+  primaryEmail: String
+  id: String!
+}
+
+input CreateBotDto {
+  botRole: BotRole!
+  slug: String
+  name: String!
+  bio: String
+  primaryEmail: String
+  ownerSlug: String!
+}
+
+input UpdateDocumentDto {
+  isAnonymous: Boolean
+  name: String
+  description: String = null
+  yearVersion: Int = null
+  id: String!
+}
+
+input CreateTenantDto {
+  slug: String
+  name: String!
+  bio: String
+  primaryEmail: String
+  tenant: TenantCoreProps!
+  eventValidationForm: JSON
+}
+
+input TenantCoreProps {
+  name: String!
+  domain: String
+  oidcInfo: OidcInfoInput
+}
+
+input CreateDocumentDto {
+  isAnonymous: Boolean
+  name: String!
+  description: String = null
+  yearVersion: Int = null
+}
+
+input UpdateTenantDto {
+  slug: String
+  name: String
+  bio: String
+  primaryEmail: String
+  tenant: TenantCoreProps
+  eventValidationForm: JSON
+  id: String!
+}
+
+input CreateEventDto {
+  start: DateTime!
+  end: DateTime!
+  price: Float
+  location: AddressInput!
+  regularEventInterval: String
+  state: EventState!
+  meta: JSON
+  private: Boolean
+  title: String!
+  description: String!
+  supervisorId: String!
+  orgId: String!
+}
+
+input UpdateEventDto {
+  start: DateTime
+  end: DateTime
+  price: Float
+  location: AddressInput
+  regularEventInterval: String
+  state: EventState
+  meta: JSON
+  private: Boolean
+  title: String
+  description: String
+  supervisorId: String
+  orgId: String
+  id: String!
+}
+
+input CreateTeamDto {
+  tagline: String
+  type: TeamType = Club
+  currentFinance: Float = 0
+  membershipFees: Int
+  directorsCategoryName: String
+  managersCategoryName: String
+  membersCategoryName: String
+  slug: String
+  name: String!
+  bio: String
+  primaryEmail: String
+  ownerId: String
+  categoriesIds: [String!] = []
+}
+
+input CreateOrgDocumentDto {
+  isAnonymous: Boolean
+  name: String!
+  description: String = null
+  yearVersion: Int = null
+  type: OrgDocumentType!
+}
+
+input UpdateTeamDto {
+  tagline: String
+  type: TeamType = Club
+  currentFinance: Float = 0
+  membershipFees: Int
+  directorsCategoryName: String
+  managersCategoryName: String
+  membersCategoryName: String
+  slug: String
+  name: String
+  bio: String
+  primaryEmail: String
+  ownerId: String
+  categoriesIds: [String!] = []
+  id: String!
+}
+
+input CreateEventApprovalDto {
+  message: String
+  approved: Boolean!
+  stepId: String!
+  eventId: String!
+}
+
+input UpdateEventApprovalDto {
+  message: String
+  approved: Boolean
+  eventId: String
+  id: String!
+}
+
+input CreateEventApprovalStepDto {
+  name: String
+  validatorsIds: [String!]!
+  notifieesIds: [String!]!
+}
+
+input UpdateEventApprovalStepDto {
+  name: String
+  validatorsIds: [String!]
+  notifieesIds: [String!]
+  id: String!
+}
+
+input CreateFinanceDto {
+  transaction: String!
+  description: String = null
+  paymentDate: DateTime!
+  address: AddressInput = null
+  amountDue: Float!
+  amountPayed: Float
+  paymentMethod: PaymentMethod!
+  state: FinanceState = Completed
+  category: FinanceCategory!
+  teamId: String!
+  linkedEventId: String = null
+  linkedProjectId: String = null
+}
+
+input UpdateFinanceDto {
+  transaction: String
+  description: String = null
+  paymentDate: DateTime
+  address: AddressInput = null
+  amountDue: Float
+  amountPayed: Float
+  paymentMethod: PaymentMethod
+  state: FinanceState = Completed
+  category: FinanceCategory
+  teamId: String
+  linkedEventId: String = null
+  linkedProjectId: String = null
+  id: String!
+}
+
+input CreateProjectDto {
+  name: String!
+  description: String = null
+  expectedBudget: Int!
+  actualBudget: String = null
+  teamId: String!
+  linkedEventId: String = null
+  supervisorId: String!
+  participantsIds: [String!] = []
+}
+
+input UpdateProjectDto {
+  name: String
+  description: String = null
+  expectedBudget: Int
+  actualBudget: String = null
+  teamId: String
+  linkedEventId: String = null
+  supervisorId: String
+  participantsIds: [String!] = []
+  id: String!
+}
+
+input CreateTeamCategoryDto {
+  slug: String
+  name: String!
+  color: Colors!
+  description: String = null
+  teamsIds: [String!] = []
+}
+
+input UpdateTeamCategoryDto {
+  slug: String
+  name: String
+  color: Colors
+  description: String = null
+  teamsIds: [String!] = []
+  id: String!
+}

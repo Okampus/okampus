@@ -1,0 +1,151 @@
+// .bg-app {
+//   @apply bg-gradient-to-br dark:from-[#101b2e] dark:to-[#0F0F0F] from-[#eee] to-[#FFF];
+// }
+.backdrop {
+  @apply absolute top-0 left-0 bottom-0 right-0 bg-black bg-[#000000cc] z-[100] flex overflow-hidden;
+}
+
+.checkered {
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.0980392) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.0980392) 75%, rgba(0, 0, 0, 0.0980392) 0), linear-gradient(45deg, rgba(0, 0, 0, 0.0980392) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.0980392) 75%, rgba(0, 0, 0, 0.0980392) 0), white;
+  background-repeat: repeat, repeat;
+  background-position: 0px 0, 5px 5px;
+  transform-origin: 0 0 0;
+  background-origin: padding-box, padding-box;
+  background-clip: border-box, border-box;
+  background-size: 10px 10px, 10px 10px;
+  box-shadow: none;
+  text-shadow: none;
+  transition: none;
+  transform: scaleX(1) scaleY(1) scaleZ(1);
+}
+
+
+.bg-dark-gradient {
+  @apply absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-b from-[#000000dd] to-transparent;
+}
+
+.bg-0 {
+  @apply bg-[#fff] dark:bg-[#000];
+}
+
+.bg-main {
+  @apply bg-[#eee] dark:bg-[#111];
+}
+
+.bg-1 {
+  @apply bg-[#f0f0f0] dark:bg-[#1C1E1F];
+}
+
+.bg-2 {
+  @apply bg-[#eaeaea] dark:bg-[#2B2B2B];
+}
+
+.bg-3 {
+  @apply bg-[#e6e8eb] dark:bg-[#2a2c2e];
+}
+
+.bg-4 {
+  @apply bg-[#ddd] dark:bg-[#444];
+}
+
+.hoverable {
+  @apply relative after:absolute after:left-0 after:top-0 after:z-[-1] after:rounded-lg after:w-full after:h-full;
+  
+  &:hover {
+    @apply after:scale-100 after:opacity-100;
+  }
+
+  &::after {
+    @apply content-[''] bg-[#dbeafc] dark:bg-[#0e1f3f] scale-0 opacity-0;
+    transition: color 0.2s, background-color 0.2s, transform 0.5s cubic-bezier(.17,.67,0,1.12), opacity 0.5s;
+  }
+}
+
+.bg-active {
+  @apply bg-[#edeff3] dark:bg-[#1C1E27];
+}
+
+.bg-hover {
+  @apply bg-[#e7e7ff] dark:bg-[#15171f];
+}
+
+.bg-opposite {
+  @apply bg-[#333] dark:bg-[#eee];
+}
+
+.bg-bubble {
+  @apply bg-[#555] [&.active]:bg-purple-500;
+}
+
+.bg-hover-1 {
+  @apply hover:bg-gray-300 dark:hover:bg-gray-800;
+}
+
+.text-0 {
+  @apply text-[#000000] dark:text-[#ffffff];
+}
+
+.text-1 {
+  @apply text-[#333] dark:text-[#ddd];
+}
+
+.text-2 {
+  @apply text-[#666] dark:text-[#bbb];
+}
+
+.text-3 {
+  @apply text-[#999] dark:text-[#999];
+}
+
+.text-4 {
+  @apply text-[#ccc] dark:text-[#666];
+}
+
+.text-opposite {
+  @apply text-[#fff] dark:text-[#4e5169];
+}
+
+.text-icon {
+  @apply text-[#4a7de2] dark:text-[#8eb3fc];
+}
+
+.text-brand {
+  @apply bg-clip-text bg-gradient-to-r from-[#B621FE] to-[#1f7df9] text-transparent;
+}
+
+.gray-button {
+  @apply rounded-lg border border-gray-300 bg-slate-100 text-gray-700 hover:bg-gray-200;
+}
+
+.border-color-1 {
+  @apply border-gray-200 dark:border-gray-600;
+}
+
+.border-color-2 {
+  @apply border-gray-300 dark:border-gray-500;
+}
+
+.border-color-3 {
+  @apply border-gray-200 dark:border-[#242c35];
+}
+
+.bg-gradient {
+  background:
+    radial-gradient(
+      100.99% 100.73% at 0% 0%,
+      rgb(0 196 204 / 72.6%) 0%,
+      #00c4cc 0.01%,
+      rgb(0 196 204 / 0%) 100%
+    ),
+    radial-gradient(68.47% 129.02% at 22.82% 97.71%, #6420ff 0%, rgb(100 32 255 / 0%) 100%),
+    radial-gradient(106.1% 249.18% at 0% 0%, #00c4cc 0%, rgb(0 196 204 / 0%) 100%),
+    radial-gradient(64.14% 115.13% at 5.49% 50%, #6420ff 0%, rgb(100 32 255 / 0%) 100%),
+    #7d2ae7;
+}
+
+html.dark .bg-gradient {
+  background:
+    linear-gradient(104.19deg, rgb(37 1 83 / 0%) 39.91%, #3b0388 77.15%),
+    linear-gradient(96.54deg, rgb(6 189 196 / 78%) 13.14%, rgb(2 214 215 / 0%) 57.93%),
+    #440496;
+}

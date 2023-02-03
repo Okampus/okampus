@@ -1,0 +1,34 @@
+html {
+  font-size: 13px;
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+#root:not(:empty) {
+  transition: opacity 0.2s ease-in-out;
+  opacity: 1;
+}
+
+#root:not(:empty) + #global-loader {
+  display: none;
+}
+
+#root * {
+  @apply transition-colors duration-[250ms] ease-in-out;
+}
