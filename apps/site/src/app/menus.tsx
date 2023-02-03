@@ -85,9 +85,9 @@ export const menus = {
     menus: [
       {
         icon: TablesIcon,
-        label: 'Dashboards',
+        label: 'Dashboard',
         link: '/admin/clubs',
-        tip: 'Dashboards des associations',
+        tip: 'Dashboard des associations',
       },
       {
         icon: DocumentIcon,
@@ -226,7 +226,7 @@ const findShortcutMenu = (subspace: SubspaceTypes, shortcutKey: ShortcutType): S
 };
 
 function matchPath(path: string, pattern: string) {
-  const regex = new RegExp(`^${pattern.replace(/:[^/]+/g, '[a-zA-Z0-9]+')}$`);
+  const regex = new RegExp(`^${pattern.replace(/:[^/]+/g, '[a-zA-Z0-9-]+')}$`);
   return regex.test(path);
 }
 
