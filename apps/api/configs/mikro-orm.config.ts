@@ -27,10 +27,10 @@ export default {
   debug: config.env.isDev(),
   highlighter: new SqlHighlighter(),
   entityRepository: BaseRepository,
-  resultCache: {
-    adapter: MemoryCacheAdapter,
-    expiration: 1000,
-  },
+  // resultCache: {
+  //   adapter: MemoryCacheAdapter,
+  //   expiration: 1000,
+  // },
   cache: {
     options: {
       cacheDir: 'apps/api/database/temp',
