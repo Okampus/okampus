@@ -1,5 +1,12 @@
+import { TeamCategoryModel } from './team-category.model';
+import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+import {
+  TeamCategory
+} from '@okampus/api/dal';
+import { S3Buckets } from '@okampus/shared/enums';
+import { asyncCallIfNotNull, toSlug } from '@okampus/shared/utils';
 import type {
   TenantCore,
   TeamCategoryRepository,
@@ -8,17 +15,10 @@ import type {
   Individual,
   TeamRepository,
   TagRepository} from '@okampus/api/dal';
-import {
-  TeamCategory
-} from '@okampus/api/dal';
 import type { CreateTeamCategoryDto, ITeamCategory } from '@okampus/shared/dtos';
 // import { loadTeamCategory } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
-import { TeamCategoryModel } from './team-category.model';
 import type { MulterFileType } from '@okampus/shared/types';
 import type { UploadService } from '../../../../features/uploads/upload.service';
-import { S3Buckets } from '@okampus/shared/enums';
-import { asyncCallIfNotNull, toSlug } from '@okampus/shared/utils';
 
 @Injectable()
 export class TeamCategoryFactory extends BaseFactory<

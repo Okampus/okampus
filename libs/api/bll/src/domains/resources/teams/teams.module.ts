@@ -1,17 +1,17 @@
-import type { OnModuleInit } from '@nestjs/common';
-import { Module } from '@nestjs/common';
 import { TeamsService } from './teams.service';
 import { TeamsResolver } from './teams.resolver';
-import { CqrsModule } from '@nestjs/cqrs';
-import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
-import type { BaseRepository} from '@okampus/api/dal';
-import { DatabaseSeeder, Team } from '@okampus/api/dal';
 import { CreateTeamHandler } from './commands/create-team/create-team.handler';
 import { GetTeamByIdHandler } from './queries/get-team-by-id/get-team-by-id.handler';
 import { GetTeamsHandler } from './queries/get-teams/get-teams.handler';
 import { UpdateTeamHandler } from './commands/update-team/update-team.handler';
 import { DeleteTeamHandler } from './commands/delete-team/delete-team.handler';
 import { GetTeamBySlugHandler } from './queries/get-team-by-slug/get-team-by-slug.handler';
+import { DatabaseSeeder, Team } from '@okampus/api/dal';
+import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
+import { CqrsModule } from '@nestjs/cqrs';
+import { Module } from '@nestjs/common';
+import type { BaseRepository} from '@okampus/api/dal';
+import type { OnModuleInit } from '@nestjs/common';
 import type { MikroORM } from '@mikro-orm/core';
 import type { ConfigService } from '../../../global/config.module';
 

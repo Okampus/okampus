@@ -1,11 +1,11 @@
+import { DocumentRepository } from './document.repository';
+import { Ugc } from '../ugc.entity';
 import { Cascade, Collection, Entity, Enum, OneToMany, OneToOne, Property } from '@mikro-orm/core';
 import { DocumentKind } from '@okampus/shared/enums';
 import { UgcKind } from '@okampus/shared/enums';
-import { Ugc } from '../ugc.entity';
 import type { DocumentUpload } from '../../file-upload/document-upload/document-upload.entity';
 import type { DocumentOptions } from './document.options';
 
-import { DocumentRepository } from './document.repository';
 import type { DocumentEdit } from '../document-edit/document-edit.entity';
 
 @Entity({

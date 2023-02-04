@@ -1,8 +1,8 @@
-import type { IQueryHandler} from '@nestjs/cqrs';
+import { GetBotByIdQuery } from './get-bot-by-id.query';
 import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler} from '@nestjs/cqrs';
 import type { BotFactory } from '../../../../factories/domains/bots/bot.factory';
 import type { BotModel } from '../../../../factories/domains/bots/bot.model';
-import { GetBotByIdQuery } from './get-bot-by-id.query';
 
 @QueryHandler(GetBotByIdQuery)
 export class GetBotByIdHandler implements IQueryHandler<GetBotByIdQuery> {

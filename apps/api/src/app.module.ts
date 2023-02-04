@@ -1,12 +1,13 @@
-import { InjectRedis, RedisModule } from '@liaoliaots/nestjs-redis';
 import { AppController } from './app.controller';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
-import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
-import { CacheModule, Module, RequestMethod } from '@nestjs/common';
-import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { GraphQLModule } from '@nestjs/graphql';
-import type { MercuriusDriverConfig } from '@nestjs/mercurius';
-import { ScheduleModule } from '@nestjs/schedule';
+import { config } from '../configs/config';
+import cacheConfig from '../configs/cache.config';
+import graphqlConfig from '../configs/graphql.config';
+import mikroOrmConfig from '../configs/mikro-orm.config';
+import meiliSearchConfig from '../configs/meilisearch.config';
+import storageConfig from '../configs/storage.config';
+import redisConfig, { redisConnectionOptions } from '../configs/redis.config';
+import { sentryConfig, sentryInterceptorConfig } from '../configs/sentry.config';
+import { ExceptionsFilter, RestLoggerMiddleware, TraceMiddleware } from '@okampus/api/shards';
 import {
   AuthGuard,
   AuthModule,
@@ -27,20 +28,19 @@ import {
   UploadModule,
   UsersModule,
 } from '@okampus/api/bll';
-import { ExceptionsFilter, RestLoggerMiddleware, TraceMiddleware } from '@okampus/api/shards';
-import * as Sentry from '@sentry/node';
-import { SentryInterceptor, SentryModule } from '@xiifain/nestjs-sentry';
-import type Redis from 'ioredis';
-import { MeiliSearchModule } from 'nestjs-meilisearch';
 import { S3Module } from 'nestjs-s3';
-import { config } from '../configs/config';
-import mikroOrmConfig from '../configs/mikro-orm.config';
-import meiliSearchConfig from '../configs/meilisearch.config';
-import cacheConfig from '../configs/cache.config';
-import redisConfig, { redisConnectionOptions } from '../configs/redis.config';
-import storageConfig from '../configs/storage.config';
-import { sentryConfig, sentryInterceptorConfig } from '../configs/sentry.config';
-import graphqlConfig from '../configs/graphql.config';
+import { MeiliSearchModule } from 'nestjs-meilisearch';
+import { SentryInterceptor, SentryModule } from '@xiifain/nestjs-sentry';
+import * as Sentry from '@sentry/node';
+import { ScheduleModule } from '@nestjs/schedule';
+import { GraphQLModule } from '@nestjs/graphql';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { CacheModule, Module, RequestMethod } from '@nestjs/common';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { InjectRedis, RedisModule } from '@liaoliaots/nestjs-redis';
+import type Redis from 'ioredis';
+import type { MercuriusDriverConfig } from '@nestjs/mercurius';
+import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 
 // import { CafeteriaModule } from '@api/canteens/canteens.module';
 // import { SubjectsModule } from '@api/modules/label/subjects/subjects.module';

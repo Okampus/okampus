@@ -1,7 +1,7 @@
 import fieldToRelations from '@banksnussman/graphql-fields-to-relations';
 import { UnauthorizedException } from '@nestjs/common';
-import type { Individual, TenantCore } from '@okampus/api/dal';
 import { requestContext } from '@fastify/request-context';
+import type { Individual, TenantCore } from '@okampus/api/dal';
 
 export abstract class RequestContext {
   public autoGqlPopulate(defaultPopulate?: string[]): never[] {

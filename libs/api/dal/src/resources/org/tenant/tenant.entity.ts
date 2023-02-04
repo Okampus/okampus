@@ -1,10 +1,10 @@
-import { Cascade, Collection, Entity, EntityRepositoryType, OneToMany, OneToOne } from '@mikro-orm/core';
-import type { TenantOptions } from './tenant.options';
+import { TenantRepository } from './tenant.repository';
 import { Org } from '../org.entity';
+import { Cascade, Collection, Entity, EntityRepositoryType, OneToMany, OneToOne } from '@mikro-orm/core';
 import { OrgKind } from '@okampus/shared/enums';
 import { TransformCollection } from '@okampus/api/shards';
+import type { TenantOptions } from './tenant.options';
 
-import { TenantRepository } from './tenant.repository';
 import type { EventApprovalStep } from '../../manage-tenant/event-approval-step/event-approval-step.entity';
 import type { Form } from '../../ugc/form/form.entity';
 

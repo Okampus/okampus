@@ -1,6 +1,6 @@
-import type { CacheModuleAsyncOptions } from '@nestjs/common';
-import { redisStore } from 'cache-manager-redis-store';
 import { config } from './config';
+import { redisStore } from 'cache-manager-redis-store';
+import type { CacheModuleAsyncOptions } from '@nestjs/common';
 
 export default {
   useFactory: async () => ({

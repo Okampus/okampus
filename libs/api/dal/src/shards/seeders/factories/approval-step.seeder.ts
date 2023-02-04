@@ -1,7 +1,7 @@
-import type { EntityManager } from '@mikro-orm/core';
-import { Factory } from '@mikro-orm/seeder';
-import type { Individual } from '../../../resources/actor/individual/individual.entity';
 import { EventApprovalStep } from '../../../resources/manage-tenant/event-approval-step/event-approval-step.entity';
+import { Factory } from '@mikro-orm/seeder';
+import type { EntityManager } from '@mikro-orm/core';
+import type { Individual } from '../../../resources/actor/individual/individual.entity';
 import type { EventApprovalStepOptions } from '../../../resources/manage-tenant/event-approval-step/event-approval-step.options';
 import type { Tenant } from '../../../resources/org/tenant/tenant.entity';
 

@@ -1,7 +1,7 @@
-import type { ICommandHandler } from '@nestjs/cqrs';
-import { CommandHandler } from '@nestjs/cqrs';
-import type { EventApprovalStepFactory } from '../../../../factories/domains/events/event-approval-step.factory';
 import { DeleteEventApprovalStepCommand } from './delete-event-approval-step.command';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import type { EventApprovalStepFactory } from '../../../../factories/domains/events/event-approval-step.factory';
 
 @CommandHandler(DeleteEventApprovalStepCommand)
 export class DeleteEventApprovalStepHandler implements ICommandHandler<DeleteEventApprovalStepCommand> {

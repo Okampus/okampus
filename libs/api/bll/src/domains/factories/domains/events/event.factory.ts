@@ -1,5 +1,10 @@
+import { TenantEventModel } from './event.model';
+import { BaseFactory } from '../../base.factory';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+import {
+  TenantEvent
+} from '@okampus/api/dal';
 import type {
   Tag,
   TenantCore,
@@ -13,14 +18,9 @@ import type {
   User,
   OrgRepository,
   UserRepository} from '@okampus/api/dal';
-import {
-  TenantEvent
-} from '@okampus/api/dal';
 import type { CreateEventDto, ITenantEvent } from '@okampus/shared/dtos';
 // import { loadEvent } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
 import type { ContentModel } from '../contents/content.model';
-import { TenantEventModel } from './event.model';
 
 @Injectable()
 export class TenantEventFactory extends BaseFactory<TenantEventModel, TenantEvent, ITenantEvent, TenantEventOptions> {

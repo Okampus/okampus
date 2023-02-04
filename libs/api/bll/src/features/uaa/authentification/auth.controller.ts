@@ -1,13 +1,13 @@
+import { Requester } from '../../../shards/request-context/requester.decorator';
 import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import type { User } from '@okampus/api/dal';
 import { Public, TenantPublic } from '@okampus/api/shards';
 import { TokenType } from '@okampus/shared/enums';
-import type { ApiConfig, Snowflake } from '@okampus/shared/types';
 import { referenceRemover } from '@okampus/shared/utils';
+import type { ApiConfig, Snowflake } from '@okampus/shared/types';
+import type { User } from '@okampus/api/dal';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { ConfigService } from '../../../global/config.module';
-import { Requester } from '../../../shards/request-context/requester.decorator';
 import type { AuthContextModel } from './auth-context.model';
 import type { AuthService } from './auth.service';
 import type { LoginDto } from './dto/login.dto';

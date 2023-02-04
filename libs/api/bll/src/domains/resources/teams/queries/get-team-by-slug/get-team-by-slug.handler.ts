@@ -1,8 +1,8 @@
-import type { IQueryHandler} from '@nestjs/cqrs';
+import { GetTeamBySlugQuery } from './get-team-by-slug.query';
 import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler} from '@nestjs/cqrs';
 import type { TeamFactory } from '../../../../factories/domains/teams/team.factory';
 import type { TeamModel } from '../../../../factories/domains/teams/team.model';
-import { GetTeamBySlugQuery } from './get-team-by-slug.query';
 
 @QueryHandler(GetTeamBySlugQuery)
 export class GetTeamBySlugHandler implements IQueryHandler<GetTeamBySlugQuery> {

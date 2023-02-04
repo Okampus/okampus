@@ -1,8 +1,8 @@
-import type { IQueryHandler} from '@nestjs/cqrs';
+import { GetFinancesByTeamQuery } from './get-finances-by-team.query';
 import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler} from '@nestjs/cqrs';
 import type { FinanceFactory } from '../../../../factories/domains/teams/finance.factory';
 import type { PaginatedFinanceModel } from '../../../../factories/domains/teams/finance.model';
-import { GetFinancesByTeamQuery } from './get-finances-by-team.query';
 
 @QueryHandler(GetFinancesByTeamQuery)
 export class GetFinancesByTeamHandler implements IQueryHandler<GetFinancesByTeamQuery> {

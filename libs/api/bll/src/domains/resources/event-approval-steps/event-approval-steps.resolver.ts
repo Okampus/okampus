@@ -1,12 +1,12 @@
+import {
+  EventApprovalStepModel,
+  PaginatedEventApprovalStepModel,
+} from '../../factories/domains/events/event-approval-step.model';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import type { EventApprovalStepsService } from './event-approval-steps.service';
 import type { CreateEventApprovalStepDto, UpdateEventApprovalStepDto } from '@okampus/shared/dtos';
 import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
 import type { Snowflake } from '@okampus/shared/types';
-import {
-  EventApprovalStepModel,
-  PaginatedEventApprovalStepModel,
-} from '../../factories/domains/events/event-approval-step.model';
 
 @Resolver(() => EventApprovalStepModel)
 export class EventApprovalStepsResolver {

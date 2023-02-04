@@ -1,5 +1,11 @@
+import { EventApprovalModel } from './event-approval.model';
+import { BaseFactory } from '../../base.factory';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+import {
+  EventApproval
+} from '@okampus/api/dal';
+import { EventState } from '@okampus/shared/enums';
 import type {
   EventApprovalOptions,
   EventApprovalRepository,
@@ -10,15 +16,9 @@ import type {
   TenantEvent,
   TenantEventRepository,
   TenantRepository} from '@okampus/api/dal';
-import {
-  EventApproval
-} from '@okampus/api/dal';
 import type { CreateEventApprovalDto, IEventApproval } from '@okampus/shared/dtos';
-import { EventState } from '@okampus/shared/enums';
 // import { loadEventApproval } from '../loader.utils';
 // eslint-disable-next-line import/no-cycle
-import { BaseFactory } from '../../base.factory';
-import { EventApprovalModel } from './event-approval.model';
 // eslint-disable-next-line import/no-cycle
 
 @Injectable()

@@ -1,8 +1,8 @@
 import { BaseRepository } from '../../../shards/abstract/base/base.repository';
 
+import { nanoid } from 'nanoid';
 import type { Tag } from './tag.entity';
 import type { Colors } from '@okampus/shared/enums';
-import { nanoid } from 'nanoid';
 
 export class TagRepository extends BaseRepository<Tag> {
   async findByColor(color: Colors): Promise<Tag[]> {

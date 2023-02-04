@@ -1,7 +1,7 @@
-import { Entity, Enum, ManyToOne } from '@mikro-orm/core';
-import type { CanteenPermissions} from '@okampus/shared/enums';
-import { RoleKind } from '@okampus/shared/enums';
 import { Role } from '../role.entity';
+import { Entity, Enum, ManyToOne } from '@mikro-orm/core';
+import { RoleKind } from '@okampus/shared/enums';
+import type { CanteenPermissions} from '@okampus/shared/enums';
 import type { Canteen } from '../../org/canteen/canteen.entity';
 import type { CanteenRoleOptions } from './canteen-role.options';
 

@@ -1,7 +1,7 @@
+import { PaginatedBotModel, BotModel } from '../../factories/domains/bots/bot.model';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import type { BotsService } from './bots.service';
 import type { CreateBotDto, UpdateDocumentDto } from '@okampus/shared/dtos';
-import { PaginatedBotModel, BotModel } from '../../factories/domains/bots/bot.model';
 import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
 import type { Snowflake } from '@okampus/shared/types';
 

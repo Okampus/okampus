@@ -1,7 +1,7 @@
+import { Address } from '../../../embeds/address.embed';
 import { Field, Float, GraphQLISODateTime, InputType } from '@nestjs/graphql';
 import { PaymentMethod, FinanceState, FinanceCategory } from '@okampus/shared/enums';
 import { IsDate, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
-import { Address } from '../../../embeds/address.embed';
 import { Type } from 'class-transformer';
 
 @InputType()

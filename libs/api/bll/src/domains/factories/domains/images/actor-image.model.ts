@@ -1,12 +1,11 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import type { IActor, IActorImage, IImageUpload, ITenantCore } from '@okampus/shared/dtos';
-import { ActorImageType } from '@okampus/shared/enums';
+import { ImageUploadModel } from './image-upload.model';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle
 import { ActorModel } from '../../abstract/actor.model';
-// eslint-disable-next-line import/no-cycle
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
-import { ImageUploadModel } from './image-upload.model';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { ActorImageType } from '@okampus/shared/enums';
+import type { IActor, IActorImage, IImageUpload, ITenantCore } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class ActorImageModel extends TenantScopedModel implements IActorImage {

@@ -1,5 +1,10 @@
+import { ContentModel } from './content.model';
+import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+import {
+  Content
+} from '@okampus/api/dal';
 import type {
   ContentMaster,
   ContentOptions,
@@ -9,14 +14,9 @@ import type {
   Org,
   TenantCore,
   Ugc} from '@okampus/api/dal';
-import {
-  Content
-} from '@okampus/api/dal';
 import type { IContent } from '@okampus/shared/dtos';
 // import { loadContent } from '../loader.utils';
 // eslint-disable-next-line import/no-cycle
-import { BaseFactory } from '../../base.factory';
-import { ContentModel } from './content.model';
 
 @Injectable()
 export class ContentFactory extends BaseFactory<ContentModel, Content, IContent, ContentOptions> {

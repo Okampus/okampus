@@ -1,7 +1,7 @@
-import type { ICommandHandler } from '@nestjs/cqrs';
-import { CommandHandler } from '@nestjs/cqrs';
-import type { UserFactory } from '../../../../factories/domains/users/user.factory';
 import { DeleteUserCommand } from './delete-user.command';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import type { UserFactory } from '../../../../factories/domains/users/user.factory';
 
 @CommandHandler(DeleteUserCommand)
 export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand> {

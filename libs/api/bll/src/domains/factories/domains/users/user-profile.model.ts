@@ -1,14 +1,14 @@
+import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 import { Field, ObjectType } from '@nestjs/graphql';
-import type {
-  ITenantCore,
-  IUserProfile} from '@okampus/shared/dtos';
 import {
   UserCustomization,
   UserNotificationSettings,
   UserSettings,
   UserStats,
 } from '@okampus/shared/dtos';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
+import type {
+  ITenantCore,
+  IUserProfile} from '@okampus/shared/dtos';
 
 @ObjectType()
 export class UserProfileModel extends TenantScopedModel implements IUserProfile {

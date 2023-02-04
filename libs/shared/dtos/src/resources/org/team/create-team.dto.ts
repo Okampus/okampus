@@ -1,8 +1,8 @@
-import { Field, InputType, IntersectionType } from '@nestjs/graphql';
-import type { Snowflake } from '@okampus/shared/types';
-import { IsOptional, IsString } from 'class-validator';
-import { ActorProps } from '../../actor/actor.props';
 import { TeamProps } from './team.props';
+import { ActorProps } from '../../actor/actor.props';
+import { Field, InputType, IntersectionType } from '@nestjs/graphql';
+import { IsOptional, IsString } from 'class-validator';
+import type { Snowflake } from '@okampus/shared/types';
 
 @InputType()
 export class CreateTeamDto extends IntersectionType(TeamProps, ActorProps) {

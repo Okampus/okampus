@@ -1,13 +1,13 @@
+import { ProjectRepository } from './project.repository';
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Collection, Entity, ManyToMany, ManyToOne, Property } from '@mikro-orm/core';
+import { TransformCollection } from '@okampus/api/shards';
 import type { Team } from '../../org/team/team.entity';
 import type { Individual } from '../../actor/individual/individual.entity';
 import type { User } from '../../actor/user/user.entity';
 import type { TenantEvent } from '../../content-master/event/event.entity';
 import type { ProjectOptions } from './project.options';
-import { TransformCollection } from '@okampus/api/shards';
 
-import { ProjectRepository } from './project.repository';
 
 @Entity({
   customRepository: () => ProjectRepository,

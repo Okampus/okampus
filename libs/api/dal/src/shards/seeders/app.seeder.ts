@@ -1,24 +1,26 @@
 /* eslint-disable object-curly-newline */
-import type { EntityManager } from '@mikro-orm/core';
-import { Seeder } from '@mikro-orm/seeder';
-import { MembershipKind, ScopeRole, ShortcutType } from '@okampus/shared/enums';
-import { randomFromArrayWithRemainder } from '@okampus/shared/utils';
-import { hash } from 'argon2';
-import { randomInt } from 'node:crypto';
-import { clubDefaultRoles } from '../../defaults/default-team-roles';
-import type { Individual } from '../../resources/actor/individual/individual.entity';
-import { Shortcut } from '../../resources/actor/shortcut/shortcut.entity';
-import type { User } from '../../resources/actor/user/user.entity';
-// import { EventJoin } from '../../resources/join/event-join/event-join.entity';
-import type { EventApprovalStep } from '../../resources/manage-tenant/event-approval-step/event-approval-step.entity';
-import { TeamMember } from '../../resources/membership/team-member/team-member.entity';
-import type { Team } from '../../resources/org/team/team.entity';
-import { Tenant } from '../../resources/org/tenant/tenant.entity';
-import { TeamRole } from '../../resources/role/team-role/team-role.entity';
 import { EventApprovalStepSeeder } from './factories/approval-step.seeder';
 import { EventSeeder } from './factories/event.seeder';
 import { TeamSeeder } from './factories/team.seeder';
 import { UserSeeder } from './factories/user.seeder';
+import { clubDefaultRoles } from '../../defaults/default-team-roles';
+import { Shortcut } from '../../resources/actor/shortcut/shortcut.entity';
+import { TeamMember } from '../../resources/membership/team-member/team-member.entity';
+import { Tenant } from '../../resources/org/tenant/tenant.entity';
+import { TeamRole } from '../../resources/role/team-role/team-role.entity';
+import { Seeder } from '@mikro-orm/seeder';
+import { MembershipKind, ScopeRole, ShortcutType } from '@okampus/shared/enums';
+import { randomFromArrayWithRemainder } from '@okampus/shared/utils';
+import { hash } from 'argon2';
+
+import { randomInt } from 'node:crypto';
+
+import type { EntityManager } from '@mikro-orm/core';
+import type { Individual } from '../../resources/actor/individual/individual.entity';
+import type { User } from '../../resources/actor/user/user.entity';
+// import { EventJoin } from '../../resources/join/event-join/event-join.entity';
+import type { EventApprovalStep } from '../../resources/manage-tenant/event-approval-step/event-approval-step.entity';
+import type { Team } from '../../resources/org/team/team.entity';
 
 const seedingConfig = {
   N_ADMINS: 10,

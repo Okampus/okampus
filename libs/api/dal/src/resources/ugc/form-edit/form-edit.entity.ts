@@ -1,5 +1,5 @@
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
+import { Entity, ManyToOne, Property } from '@mikro-orm/core';
 import type { JSONObject } from '@okampus/shared/types';
 import type { FormEditOptions } from './form-edit.options';
 import type { Form } from '../form/form.entity';

@@ -1,6 +1,6 @@
-import { Module } from '@nestjs/common';
 import { MeiliSearchIndexerService } from './meilisearch-indexer.service';
 import { SearchSubscriber } from './search.subscriber';
+import { Module } from '@nestjs/common';
 
 @Module({
   providers: [MeiliSearchIndexerService, SearchSubscriber],

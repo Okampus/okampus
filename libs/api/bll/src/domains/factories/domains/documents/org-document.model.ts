@@ -1,12 +1,12 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import type { TenantCore } from '@okampus/api/dal';
-import type { IOrg, IOrgDocument, ITenantDocument } from '@okampus/shared/dtos';
-import { OrgDocumentType } from '@okampus/shared/enums';
-import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle
+import { DocumentModel } from './document.model';
+import { Paginated } from '../../../../shards/types/paginated.type';
 import { OrgModel } from '../../abstract/org.model';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
-import { DocumentModel } from './document.model';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { OrgDocumentType } from '@okampus/shared/enums';
+import type { TenantCore } from '@okampus/api/dal';
+import type { IOrg, IOrgDocument, ITenantDocument } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class OrgDocumentModel extends TenantScopedModel implements IOrgDocument {

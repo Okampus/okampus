@@ -1,5 +1,5 @@
-import { nanoid } from 'nanoid';
 import { BaseRepository } from '../../shards/abstract/base/base.repository';
+import { nanoid } from 'nanoid';
 
 import type { Actor } from './actor.entity';
 

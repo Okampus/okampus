@@ -1,11 +1,11 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import type { IActor, IBot } from '@okampus/shared/dtos';
-import { BotRole, IndividualKind } from '@okampus/shared/enums';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle
 import { ActorModel } from '../../abstract/actor.model';
 // eslint-disable-next-line import/no-cycle
 import { IndividualModel } from '../../abstract/individual.model';
+import { BotRole, IndividualKind } from '@okampus/shared/enums';
+import { Field, ObjectType } from '@nestjs/graphql';
+import type { IActor, IBot } from '@okampus/shared/dtos';
 
 @ObjectType({ implements: () => [IndividualModel] })
 export class BotModel extends IndividualModel implements IBot {

@@ -1,10 +1,10 @@
+import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Entity, Enum, ManyToOne } from '@mikro-orm/core';
 import { InteractionKind } from '@okampus/shared/enums';
 import type { Ugc } from '../ugc/ugc.entity';
 import type { Actor } from '../actor/actor.entity';
 import type { ContentMaster } from '../content-master/content-master.entity';
 import type { InteractionOptions } from './interaction.options';
-import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 
 @Entity({
   discriminatorColumn: 'interactionKind',

@@ -1,16 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import type { CommandBus, QueryBus } from '@nestjs/cqrs';
-import type { CreateProjectDto, UpdateProjectDto } from '@okampus/shared/dtos';
-import type { Snowflake } from '@okampus/shared/types';
-import { RequestContext } from '../../../shards/request-context/request-context';
-import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import type { ProjectModel, PaginatedProjectModel } from '../../factories/domains/teams/project.model';
 import { CreateProjectCommand } from './commands/create-project/create-project.command';
 import { DeleteProjectCommand } from './commands/delete-project/delete-project.command';
 import { UpdateProjectCommand } from './commands/update-project/update-project.command';
 import { GetProjectByIdQuery } from './queries/get-project-by-id/get-project-by-id.query';
 import { GetProjectsByTeamQuery } from './queries/get-projects-by-team/get-projects-by-team.query';
 import { GetProjectsQuery } from './queries/get-projects/get-projects.query';
+import { RequestContext } from '../../../shards/request-context/request-context';
+import { Injectable } from '@nestjs/common';
+import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { CreateProjectDto, UpdateProjectDto } from '@okampus/shared/dtos';
+import type { Snowflake } from '@okampus/shared/types';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { ProjectModel, PaginatedProjectModel } from '../../factories/domains/teams/project.model';
 
 const defaultProjectPopulate = ['actor', 'actor.images', 'actor.socials', 'actor.tags'];
 

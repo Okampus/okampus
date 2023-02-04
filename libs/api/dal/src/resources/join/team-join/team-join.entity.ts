@@ -1,5 +1,5 @@
-import { Entity, ManyToOne } from '@mikro-orm/core';
 import { Join } from '../join.entity';
+import { Entity, ManyToOne } from '@mikro-orm/core';
 import { JoinKind } from '@okampus/shared/enums';
 import type { TeamRole } from '../../role/team-role/team-role.entity';
 import type { TeamJoinOptions } from './team-join.options';

@@ -1,3 +1,4 @@
+import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Entity, Enum, Property } from '@mikro-orm/core';
 // import { Paginated } from 'libs/api/dal/src/base/abstract/pagination';
 // import { TeamRole } from '@api/shards/types/enums/team-role.enum';
@@ -6,7 +7,6 @@ import { Entity, Enum, Property } from '@mikro-orm/core';
 import { RoleKind } from '@okampus/shared/enums';
 import { Colors } from '@okampus/shared/enums';
 import type { RoleOptions } from './role.options';
-import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 // import { TeamRoleOptions } from './team-role.options';
 
 // const ADMIN_ROLES = new Set([

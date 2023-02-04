@@ -1,11 +1,11 @@
-import { Field, InterfaceType } from '@nestjs/graphql';
-import type { IActor, IOrg, IOrgDocument, ITenantCore } from '@okampus/shared/dtos';
-import { OrgKind } from '@okampus/shared/enums';
-// eslint-disable-next-line import/no-cycle
-import { OrgDocumentModel } from '../domains/documents/org-document.model';
 // eslint-disable-next-line import/no-cycle
 import { ActorModel } from './actor.model';
 import { TenantScopedModel } from './tenant-scoped.model';
+// eslint-disable-next-line import/no-cycle
+import { OrgDocumentModel } from '../domains/documents/org-document.model';
+import { Field, InterfaceType } from '@nestjs/graphql';
+import { OrgKind } from '@okampus/shared/enums';
+import type { IActor, IOrg, IOrgDocument, ITenantCore } from '@okampus/shared/dtos';
 
 @InterfaceType({
   resolveType: (value) => {

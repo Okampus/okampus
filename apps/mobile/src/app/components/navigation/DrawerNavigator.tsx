@@ -1,18 +1,18 @@
+import { BottomTabNavigator } from './BottomTabNavigator';
+import { Sidebar } from './Sidebar';
+import { NotFoundScreen } from '../../screens/NotFoundScreen';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
-import { OpaqueColorValue } from 'react-native';
+import type { OpaqueColorValue } from 'react-native';
 
-import { NotFoundScreen } from '../../screens/NotFoundScreen';
-import {
+import type {
   IoniconsGlyphs,
   IoniconsWrapper,
   MaterialCommunityIconsGlyphs,
   MaterialCommunityIconsWrapper,
   TabOptions,
 } from '../../types';
-import { BottomTabNavigator } from './BottomTabNavigator';
-import { Sidebar } from './Sidebar';
 
 const Drawer = createDrawerNavigator();
 

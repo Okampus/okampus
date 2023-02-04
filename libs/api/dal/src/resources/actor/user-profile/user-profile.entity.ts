@@ -1,8 +1,8 @@
+import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Embedded, Entity, OneToOne, Property } from '@mikro-orm/core';
 import { UserCustomization, UserStats } from '@okampus/shared/dtos';
 import { UserNotificationSettings } from '@okampus/shared/dtos';
 import { UserSettings } from '@okampus/shared/dtos';
-import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import type { User } from '../user/user.entity';
 import type { UserProfileOptions } from './user-profile.options';
 

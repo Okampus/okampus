@@ -1,5 +1,5 @@
-import type { RoleProps, TeamRoleProps } from '@okampus/shared/dtos';
 import { Colors, TeamPermissions, TeamRoleCategory, TeamRoleKey } from '@okampus/shared/enums';
+import type { RoleProps, TeamRoleProps } from '@okampus/shared/dtos';
 
 type TeamRoleDefault = TeamRoleProps &
   RoleProps & {

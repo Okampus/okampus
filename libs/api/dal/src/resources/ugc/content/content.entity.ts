@@ -1,11 +1,11 @@
+import { ContentRepository } from './content.repository';
+import { Ugc } from '../ugc.entity';
 import { Collection, Entity, ManyToMany, ManyToOne, Property } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
 import { UgcKind } from '@okampus/shared/enums';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
-import { Ugc } from '../ugc.entity';
 import type { ContentOptions } from './content.options';
 
-import { ContentRepository } from './content.repository';
 
 @Entity({
   customRepository: () => ContentRepository,

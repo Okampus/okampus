@@ -1,12 +1,12 @@
+import { CreateBotCommand } from './create-bot.command';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException } from '@nestjs/common';
-import type { ICommandHandler } from '@nestjs/cqrs';
 import { CommandHandler } from '@nestjs/cqrs';
-import type { BaseRepository } from '@okampus/api/dal';
 import { Actor } from '@okampus/api/dal';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import type { BaseRepository } from '@okampus/api/dal';
 import type { BotFactory } from '../../../../factories/domains/bots/bot.factory';
 import type { BotModel } from '../../../../factories/domains/bots/bot.model';
-import { CreateBotCommand } from './create-bot.command';
 
 @CommandHandler(CreateBotCommand)
 export class CreateBotHandler implements ICommandHandler<CreateBotCommand> {

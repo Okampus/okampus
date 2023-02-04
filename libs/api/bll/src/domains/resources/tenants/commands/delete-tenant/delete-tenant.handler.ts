@@ -1,7 +1,7 @@
-import type { ICommandHandler } from '@nestjs/cqrs';
-import { CommandHandler } from '@nestjs/cqrs';
-import type { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
 import { DeleteTenantCommand } from './delete-tenant.command';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import type { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
 
 @CommandHandler(DeleteTenantCommand)
 export class DeleteTenantHandler implements ICommandHandler<DeleteTenantCommand> {

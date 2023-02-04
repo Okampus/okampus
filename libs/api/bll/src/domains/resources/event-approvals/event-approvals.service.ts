@@ -1,15 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import type { CommandBus, QueryBus } from '@nestjs/cqrs';
-import type { CreateEventApprovalDto, UpdateEventApprovalDto } from '@okampus/shared/dtos';
-import type { Snowflake } from '@okampus/shared/types';
-import { RequestContext } from '../../../shards/request-context/request-context';
-import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import type { EventApprovalModel, PaginatedEventApprovalModel } from '../../factories/domains/events/event-approval.model';
 import { CreateEventApprovalCommand } from './commands/create-event-approval/create-event-approval.command';
 import { DeleteEventApprovalCommand } from './commands/delete-event-approval/delete-event-approval.command';
 import { UpdateEventApprovalCommand } from './commands/update-event-approval/update-event-approval.command';
 import { GetEventApprovalByIdQuery } from './queries/get-event-approval-by-id/get-event-approval-by-id.query';
 import { GetEventApprovalsQuery } from './queries/get-event-approvals/get-event-approvals.query';
+import { RequestContext } from '../../../shards/request-context/request-context';
+import { Injectable } from '@nestjs/common';
+import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { CreateEventApprovalDto, UpdateEventApprovalDto } from '@okampus/shared/dtos';
+import type { Snowflake } from '@okampus/shared/types';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { EventApprovalModel, PaginatedEventApprovalModel } from '../../factories/domains/events/event-approval.model';
 
 const defaultEventPopulate = ['actor', 'actor.images', 'actor.socials'];
 

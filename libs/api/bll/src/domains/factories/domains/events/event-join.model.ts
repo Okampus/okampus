@@ -1,12 +1,11 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import type { IEventJoin, ITeamAction, ITenantEvent } from '@okampus/shared/dtos';
-import { RegistrationStatus } from '@okampus/shared/enums';
-import { Paginated } from '../../../../shards/types/paginated.type';
-import { JoinModel } from '../../abstract/join.model';
-// eslint-disable-next-line import/no-cycle
-import { TeamActionModel } from '../teams/team-action.model';
 // eslint-disable-next-line import/no-cycle
 import { TenantEventModel } from './event.model';
+import { Paginated } from '../../../../shards/types/paginated.type';
+import { JoinModel } from '../../abstract/join.model';
+import { TeamActionModel } from '../teams/team-action.model';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { RegistrationStatus } from '@okampus/shared/enums';
+import type { IEventJoin, ITeamAction, ITenantEvent } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class EventJoinModel extends JoinModel implements IEventJoin {

@@ -1,11 +1,11 @@
-import { Entity, EntityRepositoryType, Enum, ManyToOne, Property } from '@mikro-orm/core';
-import type { Actor } from '../actor.entity';
-import { BotRole } from '@okampus/shared/enums';
-import type { BotOptions } from './bot.options';
-import { Individual } from '../individual/individual.entity';
-import { IndividualKind } from '@okampus/shared/enums';
-
 import { BotRepository } from './bot.repository';
+import { Individual } from '../individual/individual.entity';
+import { Entity, EntityRepositoryType, Enum, ManyToOne, Property } from '@mikro-orm/core';
+import { BotRole } from '@okampus/shared/enums';
+import { IndividualKind } from '@okampus/shared/enums';
+import type { Actor } from '../actor.entity';
+import type { BotOptions } from './bot.options';
+
 
 @Entity({ customRepository: () => BotRepository })
 export class Bot extends Individual {

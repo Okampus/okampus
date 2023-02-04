@@ -1,11 +1,11 @@
+import { TagModel } from './tag.model';
+import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import type { TenantCore, TagRepository, TagOptions, ImageUpload } from '@okampus/api/dal';
 import { Tag } from '@okampus/api/dal';
+import type { TenantCore, TagRepository, TagOptions, ImageUpload } from '@okampus/api/dal';
 import type { ITag } from '@okampus/shared/dtos';
 // import { loadTag } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
-import { TagModel } from './tag.model';
 
 @Injectable()
 export class TagFactory extends BaseFactory<TagModel, Tag, ITag, TagOptions> {

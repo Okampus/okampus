@@ -1,7 +1,7 @@
+import { config } from './config';
 import { HttpException } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
 import type { SentryInterceptorOptions, SentryModuleOptions } from '@xiifain/nestjs-sentry';
-import { config } from './config';
 
 export const sentryConfig = {
   dsn: config.sentry.dsn,

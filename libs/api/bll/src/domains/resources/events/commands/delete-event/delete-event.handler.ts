@@ -1,7 +1,7 @@
-import type { ICommandHandler } from '@nestjs/cqrs';
-import { CommandHandler } from '@nestjs/cqrs';
-import type { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
 import { DeleteEventCommand } from './delete-event.command';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import type { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
 
 @CommandHandler(DeleteEventCommand)
 export class DeleteEventHandler implements ICommandHandler<DeleteEventCommand> {

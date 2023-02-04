@@ -1,5 +1,7 @@
+import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Collection, Entity, Enum, ManyToMany, OneToMany, OneToOne, Property } from '@mikro-orm/core';
 import { ContentMasterKind } from '@okampus/shared/enums';
+import { TransformCollection } from '@okampus/api/shards';
 import type { ContentMasterOptions } from './content-master.options';
 import type { Validation } from '../interaction/validation/validation.entity';
 import type { Reaction } from '../interaction/reaction/reaction.entity';
@@ -7,9 +9,7 @@ import type { Report } from '../interaction/report/report.entity';
 import type { Vote } from '../interaction/vote/vote.entity';
 import type { Favorite } from '../interaction/favorite/favorite.entity';
 import type { Ugc } from '../ugc/ugc.entity';
-import { TransformCollection } from '@okampus/api/shards';
 import type { Individual } from '../actor/individual/individual.entity';
-import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import type { Tag } from '../label/tag/tag.entity';
 // import { TaggableEntity } from '../../shards/abstract/taggable/taggable.entity';
 

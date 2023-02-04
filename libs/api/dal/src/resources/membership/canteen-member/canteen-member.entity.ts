@@ -1,10 +1,10 @@
+import { Membership } from '../membership.entity';
 import { Collection, Entity, ManyToMany, ManyToOne } from '@mikro-orm/core';
 import { MembershipKind } from '@okampus/shared/enums';
-import { Membership } from '../membership.entity';
+import { TransformCollection } from '@okampus/api/shards';
 import type { Canteen } from '../../org/canteen/canteen.entity';
 import type { CanteenRole } from '../../role/canteen-role/canteen-role.entity';
 import type { CanteenMemberOptions } from './canteen-member.options';
-import { TransformCollection } from '@okampus/api/shards';
 
 @Entity()
 export class CanteenMember extends Membership {

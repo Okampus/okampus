@@ -1,11 +1,11 @@
+import { FormModel } from './form.model';
+import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import type { TenantCore, FormRepository, Individual, FormOptions, ContentMaster, Org } from '@okampus/api/dal';
 import { Form } from '@okampus/api/dal';
+import type { TenantCore, FormRepository, Individual, FormOptions, ContentMaster, Org } from '@okampus/api/dal';
 import type { IForm } from '@okampus/shared/dtos';
 // import { loadForm } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
-import { FormModel } from './form.model';
 
 @Injectable()
 export class FormFactory extends BaseFactory<FormModel, Form, IForm, FormOptions> {

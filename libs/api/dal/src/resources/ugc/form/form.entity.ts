@@ -1,10 +1,10 @@
+import { FormRepository } from './form.repository';
+import { Ugc } from '../ugc.entity';
 import { Entity, Enum, Property } from '@mikro-orm/core';
 import { UgcKind } from '@okampus/shared/enums';
-import type { JSONObject } from '@okampus/shared/types';
-import { Ugc } from '../ugc.entity';
 import { FormType } from '@okampus/shared/enums';
+import type { JSONObject } from '@okampus/shared/types';
 import type { FormOptions } from './form.options';
-import { FormRepository } from './form.repository';
 
 @Entity({
   customRepository: () => FormRepository,

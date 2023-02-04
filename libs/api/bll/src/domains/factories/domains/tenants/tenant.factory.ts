@@ -1,12 +1,12 @@
+import { TenantModel } from './tenant.model';
+import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import type { Individual, Tag, TenantOptions, TenantRepository } from '@okampus/api/dal';
 import { Form, Tenant, TenantCore } from '@okampus/api/dal';
-import type { CreateDocumentDto, CreateTenantDto, ITenant } from '@okampus/shared/dtos';
 import { FormType, OrgDocumentType } from '@okampus/shared/enums';
+import type { Individual, Tag, TenantOptions, TenantRepository } from '@okampus/api/dal';
+import type { CreateDocumentDto, CreateTenantDto, ITenant } from '@okampus/shared/dtos';
 // import { loadTenant } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
-import { TenantModel } from './tenant.model';
 import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 import type { UploadService } from '../../../../features/uploads/upload.service';
 import type { OrgDocumentFactory } from '../documents/org-document.factory';

@@ -1,11 +1,11 @@
-import { Entity, Enum, ManyToOne } from '@mikro-orm/core';
+import { OrgDocumentRepository } from './org-document.repository';
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import type { OrgDocumentOptions } from './org-document.options';
 import { Org } from '../../org/org.entity';
+import { Entity, Enum, ManyToOne } from '@mikro-orm/core';
 import { OrgDocumentType } from '@okampus/shared/enums';
+import type { OrgDocumentOptions } from './org-document.options';
 import type { TenantDocument } from '../../ugc/document/document.entity';
 
-import { OrgDocumentRepository } from './org-document.repository';
 
 @Entity({
   customRepository: () => OrgDocumentRepository,

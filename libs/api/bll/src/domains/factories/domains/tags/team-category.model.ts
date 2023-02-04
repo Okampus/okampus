@@ -1,10 +1,10 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import type { ITeam, ITeamCategory } from '@okampus/shared/dtos';
-import { TagKind } from '@okampus/shared/enums';
+import { TagModel } from './tag.model';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle
 import { TeamModel } from '../teams/team.model';
-import { TagModel } from './tag.model';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { TagKind } from '@okampus/shared/enums';
+import type { ITeam, ITeamCategory } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class TeamCategoryModel extends TagModel implements ITeamCategory {

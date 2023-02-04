@@ -1,6 +1,19 @@
+import { AuthContextModel, getAuthContextPopulate } from './auth-context.model';
+import { RequestContext } from '../../../shards/request-context/request-context';
+import { addCookiesToResponse } from '../../../shards/utils/add-cookies-to-response';
+
 import fastifyCookie from '@fastify/cookie';
-// import { wrap } from '@mikro-orm/core';
 import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { Session } from '@okampus/api/dal';
+import { RequestType, SessionClientType, TokenType } from '@okampus/shared/enums';
+import { objectContains } from '@okampus/shared/utils';
+import { InjectMeiliSearch } from 'nestjs-meilisearch';
+import { hash, verify } from 'argon2';
+
+import DeviceDetector from 'device-detector-js';
+import { nanoid } from 'nanoid';
+import { JsonWebTokenError, NotBeforeError, TokenExpiredError } from 'jsonwebtoken';
+
 import type { JwtSignOptions } from '@nestjs/jwt';
 import type { JwtService } from '@nestjs/jwt';
 import type {
@@ -11,29 +24,15 @@ import type {
   TenantCoreRepository,
   TenantRepository,
   User,
-  UserRepository} from '@okampus/api/dal';
-import {
-  Session
+  UserRepository,
 } from '@okampus/api/dal';
-import { RequestType, SessionClientType, TokenType } from '@okampus/shared/enums';
 import type { ApiConfig, Cookie, Claims, Snowflake } from '@okampus/shared/types';
-import { objectContains } from '@okampus/shared/utils';
 import type MeiliSearch from 'meilisearch';
-import { InjectMeiliSearch } from 'nestjs-meilisearch';
 import type { ConfigService } from '../../../global/config.module';
-import { RequestContext } from '../../../shards/request-context/request-context';
 import type { LoginDto } from './dto/login.dto';
-// import type { PreRegisterSsoDto } from './dto/pre-register-sso.dto';
-// const cookiePublicOptions = { ...config.cookies.options, httpOnly: false };
-import { hash, verify } from 'argon2';
-import { addCookiesToResponse } from '../../../shards/utils/add-cookies-to-response';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { SessionProps } from '@okampus/shared/dtos';
-import DeviceDetector from 'device-detector-js';
-import { nanoid } from 'nanoid';
 import type { UserFactory } from '../../../domains/factories/domains/users/user.factory';
-import { JsonWebTokenError, NotBeforeError, TokenExpiredError } from 'jsonwebtoken';
-import { AuthContextModel, getAuthContextPopulate } from './auth-context.model';
 import type { TenantFactory } from '../../../domains/factories/domains/tenants/tenant.factory';
 
 type HttpOnlyTokens = TokenType.Access | TokenType.Refresh;

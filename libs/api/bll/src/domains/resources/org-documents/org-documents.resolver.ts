@@ -1,9 +1,9 @@
+import { OrgDocumentModel } from '../../factories/domains/documents/org-document.model';
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { GraphQLUpload } from 'graphql-upload-minimal';
 import type { OrgDocumentsService } from './org-documents.service';
 import type { CreateOrgDocumentDto } from '@okampus/shared/dtos';
 import type { MulterFileType } from '@okampus/shared/types';
-import { GraphQLUpload } from 'graphql-upload-minimal';
-import { OrgDocumentModel } from '../../factories/domains/documents/org-document.model';
 
 @Resolver(() => OrgDocumentModel)
 export class OrgDocumentsResolver {

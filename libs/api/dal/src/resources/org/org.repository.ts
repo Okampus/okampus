@@ -1,5 +1,5 @@
-import type { Snowflake } from '@okampus/shared/types';
 import { BaseRepository } from '../../shards/abstract/base/base.repository';
+import type { Snowflake } from '@okampus/shared/types';
 
 import type { Org } from './org.entity';
 

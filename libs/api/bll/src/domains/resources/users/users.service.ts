@@ -1,17 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import type { CommandBus, QueryBus } from '@nestjs/cqrs';
-import type { ActorImageUploadProps } from '@okampus/api/dal';
-import type { CreateUserDto, UpdateUserDto } from '@okampus/shared/dtos';
-import type { Snowflake } from '@okampus/shared/types';
-import { RequestContext } from '../../../shards/request-context/request-context';
-import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import type { PaginatedUserModel, UserModel } from '../../factories/domains/users/user.model';
 import { CreateUserCommand } from './commands/create-user/create-user.command';
 import { DeleteUserCommand } from './commands/delete-user/delete-user.command';
 import { UpdateUserCommand } from './commands/update-user/update-user.command';
 import { GetUserByIdQuery } from './queries/get-user-by-id/get-user-by-id.query';
 import { GetUserBySlugQuery } from './queries/get-user-by-slug/get-user-by-slug.query';
 import { GetUsersQuery } from './queries/get-users/get-users.query';
+import { RequestContext } from '../../../shards/request-context/request-context';
+import { Injectable } from '@nestjs/common';
+import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { ActorImageUploadProps } from '@okampus/api/dal';
+import type { CreateUserDto, UpdateUserDto } from '@okampus/shared/dtos';
+import type { Snowflake } from '@okampus/shared/types';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { PaginatedUserModel, UserModel } from '../../factories/domains/users/user.model';
 
 const defaultUserPopulate = ['actor', 'actor.images', 'actor.socials'];
 

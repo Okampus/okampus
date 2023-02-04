@@ -1,5 +1,10 @@
+import { EventApprovalStepModel } from './event-approval-step.model';
+import { BaseFactory } from '../../base.factory';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+import {
+  EventApprovalStep
+} from '@okampus/api/dal';
 import type {
   EventApprovalStepOptions,
   EventApprovalStepRepository,
@@ -10,14 +15,9 @@ import type {
   TenantRepository,
   User,
   UserRepository} from '@okampus/api/dal';
-import {
-  EventApprovalStep
-} from '@okampus/api/dal';
 import type { CreateEventApprovalStepDto, IEventApprovalStep } from '@okampus/shared/dtos';
 // import { loadEventApprovalStep } from '../loader.utils';
 // eslint-disable-next-line import/no-cycle
-import { BaseFactory } from '../../base.factory';
-import { EventApprovalStepModel } from './event-approval-step.model';
 
 @Injectable()
 export class EventApprovalStepFactory extends BaseFactory<

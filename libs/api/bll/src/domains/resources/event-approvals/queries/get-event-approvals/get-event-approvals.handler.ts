@@ -1,8 +1,8 @@
-import type { IQueryHandler} from '@nestjs/cqrs';
+import { GetEventApprovalsQuery } from './get-event-approvals.query';
 import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler} from '@nestjs/cqrs';
 import type { EventApprovalFactory } from '../../../../factories/domains/events/event-approval.factory';
 import type { PaginatedEventApprovalModel } from '../../../../factories/domains/events/event-approval.model';
-import { GetEventApprovalsQuery } from './get-event-approvals.query';
 
 @QueryHandler(GetEventApprovalsQuery)
 export class GetEventApprovalsHandler implements IQueryHandler<GetEventApprovalsQuery> {

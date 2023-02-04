@@ -1,5 +1,5 @@
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
+import { Entity, ManyToOne, Property } from '@mikro-orm/core';
 import type { DocumentEditOptions } from './document-edit.options';
 import type { DocumentUpload } from '../../file-upload/document-upload/document-upload.entity';
 import type { Individual } from '../../actor/individual/individual.entity';

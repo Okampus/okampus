@@ -1,3 +1,4 @@
+import { getExtension } from './get-extensions';
 import {
   ARCHIVE_EXTS,
   AUDIO_EXTS,
@@ -14,7 +15,6 @@ import {
 } from '@okampus/shared/consts';
 import { FileMimeCategory } from '@okampus/shared/enums';
 import type { FileMimeCheckPayload } from '@okampus/shared/types';
-import { getExtension } from './get-extensions';
 
 const documentRegex =
   /application\/((x-|vnd\.)?(tex|rtf|msword|openxmlformats-officedocument\.wordprocessingml\.document)(-.*)?)|text\/(x-|vnd\.)?markdown/;

@@ -1,6 +1,6 @@
+import { Interaction } from '../interaction.entity';
 import { Entity, Property } from '@mikro-orm/core';
 import { InteractionKind } from '@okampus/shared/enums';
-import { Interaction } from '../interaction.entity';
 import type { FavoriteOptions } from './favorite.options';
 
 @Entity()

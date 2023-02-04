@@ -1,5 +1,5 @@
-import type { FindOneOptions } from '@mikro-orm/core';
 import { BaseRepository } from '../../../shards/abstract/base/base.repository';
+import type { FindOneOptions } from '@mikro-orm/core';
 
 import type { User } from './user.entity';
 

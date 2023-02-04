@@ -1,8 +1,8 @@
-import type { ICommandHandler } from '@nestjs/cqrs';
+import { CreateTeamCommand } from './create-team.command';
 import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
 import type { TeamFactory } from '../../../../factories/domains/teams/team.factory';
 import type { TeamModel } from '../../../../factories/domains/teams/team.model';
-import { CreateTeamCommand } from './create-team.command';
 
 @CommandHandler(CreateTeamCommand)
 export class CreateTeamHandler implements ICommandHandler<CreateTeamCommand> {

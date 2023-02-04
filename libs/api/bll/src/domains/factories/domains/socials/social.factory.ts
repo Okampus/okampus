@@ -1,11 +1,11 @@
+import { SocialModel } from './social.model';
+import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import type { TenantCore, Actor, SocialRepository, SocialOptions } from '@okampus/api/dal';
 import { Social } from '@okampus/api/dal';
+import type { TenantCore, Actor, SocialRepository, SocialOptions } from '@okampus/api/dal';
 import type { ISocial } from '@okampus/shared/dtos';
 // import { loadSocial } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
-import { SocialModel } from './social.model';
 
 @Injectable()
 export class SocialFactory extends BaseFactory<SocialModel, Social, ISocial, SocialOptions> {

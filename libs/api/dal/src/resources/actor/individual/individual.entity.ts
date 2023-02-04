@@ -1,9 +1,9 @@
-import { Entity, Enum, OneToOne } from '@mikro-orm/core';
+import { IndividualRepository } from './individual.repository';
 import { Actor } from '../actor.entity';
+import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
+import { Entity, Enum, OneToOne } from '@mikro-orm/core';
 import { IndividualKind } from '@okampus/shared/enums';
 import type { IndividualOptions } from './individual.options';
-import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { IndividualRepository } from './individual.repository';
 
 @Entity({
   customRepository: () => IndividualRepository,

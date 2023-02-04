@@ -1,7 +1,3 @@
-import type {
-  BaseEntity,
-  TenantCore,
-  TenantScopedEntity} from '@okampus/api/dal';
 import {
   Actor,
   ActorImage,
@@ -42,6 +38,8 @@ import {
   UserProfile,
   VideoUpload,
 } from '@okampus/api/dal';
+import { ActorKind } from '@okampus/shared/enums';
+import { loadApply, applyModelFactory } from '@okampus/api/shards';
 import type {
   ITenant,
   ITeam,
@@ -84,8 +82,10 @@ import type {
   IDocumentEdit,
   IOrgDocument,
 } from '@okampus/shared/dtos';
-import { ActorKind } from '@okampus/shared/enums';
-import { loadApply, applyModelFactory } from '@okampus/api/shards';
+import type {
+  BaseEntity,
+  TenantCore,
+  TenantScopedEntity} from '@okampus/api/dal';
 import type { Snowflake } from '@okampus/shared/types';
 
 export function loadBase(base: BaseEntity): IBase | undefined {

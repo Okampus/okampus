@@ -1,11 +1,11 @@
+import { config } from './config';
+import { allEntities, BaseRepository } from '@okampus/api/dal';
+import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
+import { Logger, NotFoundException } from '@nestjs/common';
 import { inspect } from 'node:util';
 import type { Options } from '@mikro-orm/core';
 // import { MemoryCacheAdapter } from '@mikro-orm/core';
 // import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
-import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
-import { Logger, NotFoundException } from '@nestjs/common';
-import { config } from './config';
-import { allEntities, BaseRepository } from '@okampus/api/dal';
 // import { GlobalSubscriber } from '@api/modules/uaa/statistics/subscribers/content.subscriber';
 
 const ormLogger = new Logger('MikroORM');

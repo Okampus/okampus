@@ -1,7 +1,7 @@
-import type { ICommandHandler } from '@nestjs/cqrs';
-import { CommandHandler } from '@nestjs/cqrs';
-import type { FinanceFactory } from '../../../../factories/domains/teams/finance.factory';
 import { DeleteFinanceCommand } from './delete-finance.command';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import type { FinanceFactory } from '../../../../factories/domains/teams/finance.factory';
 
 @CommandHandler(DeleteFinanceCommand)
 export class DeleteFinanceHandler implements ICommandHandler<DeleteFinanceCommand> {

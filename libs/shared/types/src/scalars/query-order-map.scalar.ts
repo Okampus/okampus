@@ -1,5 +1,5 @@
-import type { QueryOrder } from '@mikro-orm/core';
 import { GraphQLScalarType, Kind } from 'graphql';
+import type { QueryOrder } from '@mikro-orm/core';
 
 export const QueryOrderMapScalar = new GraphQLScalarType({
   name: 'QueryOrderMap',

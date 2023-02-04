@@ -1,9 +1,9 @@
+import { customFontsToLoad } from '../constants/theme/typography';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 
-import { customFontsToLoad } from '../constants/theme/typography';
 
 export default function useCachedResources() {
   const [isLoadingComplete, setLoadingComplete] = useState(false);

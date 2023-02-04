@@ -1,11 +1,11 @@
-import { Field, InterfaceType } from '@nestjs/graphql';
-import type { IContentMaster, IIndividual, IOrg, ITenantCore, IUgc } from '@okampus/shared/dtos';
-import { UgcKind } from '@okampus/shared/enums';
 // eslint-disable-next-line import/no-cycle
 import { ContentMasterModel } from './content-master.model';
 import { IndividualModel } from './individual.model';
 import { OrgModel } from './org.model';
 import { TenantScopedModel } from './tenant-scoped.model';
+import { UgcKind } from '@okampus/shared/enums';
+import { Field, InterfaceType } from '@nestjs/graphql';
+import type { IContentMaster, IIndividual, IOrg, ITenantCore, IUgc } from '@okampus/shared/dtos';
 
 @InterfaceType()
 export class UgcModel extends TenantScopedModel implements IUgc {

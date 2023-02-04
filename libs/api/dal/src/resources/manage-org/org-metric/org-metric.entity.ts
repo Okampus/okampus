@@ -1,6 +1,6 @@
+import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Entity, Enum, Property } from '@mikro-orm/core';
 import { OrgMetricType } from '@okampus/shared/enums';
-import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import type { OrgMetricOptions } from './org-metric.options';
 
 @Entity()

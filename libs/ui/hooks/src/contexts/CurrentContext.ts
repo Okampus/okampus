@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Snowflake } from '@okampus/shared/types';
 import React from 'react';
+import type { Snowflake } from '@okampus/shared/types';
 
 export const CurrentContext = React.createContext({
   currentUserId: null as Snowflake | null,

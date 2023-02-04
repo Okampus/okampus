@@ -1,10 +1,10 @@
+import { TenantCoreRepository } from './tenant-core.repository';
+import { BaseEntity } from '../../../shards/abstract/base/base.entity';
 import { OidcInfo } from '@okampus/shared/dtos';
 import { Embedded, Entity, Property, Unique } from '@mikro-orm/core';
 import { toSlug } from '@okampus/shared/utils';
 import type { TenantCoreOptions } from './tenant-core.options';
-import { BaseEntity } from '../../../shards/abstract/base/base.entity';
 
-import { TenantCoreRepository } from './tenant-core.repository';
 
 @Entity({
   customRepository: () => TenantCoreRepository,

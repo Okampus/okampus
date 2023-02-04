@@ -1,8 +1,8 @@
-import type { ICommandHandler } from '@nestjs/cqrs';
+import { UpdateBotCommand } from './update-bot.command';
 import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
 import type { BotFactory } from '../../../../factories/domains/bots/bot.factory';
 import type { BotModel } from '../../../../factories/domains/bots/bot.model';
-import { UpdateBotCommand } from './update-bot.command';
 @CommandHandler(UpdateBotCommand)
 export class UpdateBotHandler implements ICommandHandler<UpdateBotCommand> {
   constructor(private readonly botFactory: BotFactory) {}

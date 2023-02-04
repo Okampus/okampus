@@ -1,11 +1,11 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import type { IImageUpload, ITag, ITenantCore } from '@okampus/shared/dtos';
-import { Colors, TagKind } from '@okampus/shared/enums';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle
 import { IndividualModel } from '../../abstract/individual.model';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 import { ImageUploadModel } from '../images/image-upload.model';
+import { Colors, TagKind } from '@okampus/shared/enums';
+import { Field, ObjectType } from '@nestjs/graphql';
+import type { IImageUpload, IIndividual, ITag, ITenantCore } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class TagModel extends TenantScopedModel implements ITag {
@@ -28,7 +28,7 @@ export class TagModel extends TenantScopedModel implements ITag {
   iconImage?: IImageUpload | null;
 
   @Field(() => IndividualModel, { nullable: true })
-  createdBy?: IndividualModel | null; // null for system
+  createdBy?: IIndividual | null; // null for system
 
   constructor(tag: ITag) {
     super(tag.tenant as ITenantCore);

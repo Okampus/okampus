@@ -1,6 +1,6 @@
+import { config } from './config';
 import { Logger } from '@nestjs/common';
 import type { S3ModuleOptions } from 'nestjs-s3';
-import { config } from './config';
 
 const storageLogger = new Logger('ObjectStorage');
 // See https://github.com/aws/aws-sdk-js/blob/1d56c096ae2f614a6127246269b9fac18e17bdc8/lib/event_listeners.js#L580

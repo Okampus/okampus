@@ -1,8 +1,8 @@
-import type { IQueryHandler} from '@nestjs/cqrs';
+import { GetUserBySlugQuery } from './get-user-by-slug.query';
 import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler} from '@nestjs/cqrs';
 import type { UserFactory } from '../../../../factories/domains/users/user.factory';
 import type { UserModel } from '../../../../factories/domains/users/user.model';
-import { GetUserBySlugQuery } from './get-user-by-slug.query';
 
 @QueryHandler(GetUserBySlugQuery)
 export class GetUserBySlugHandler implements IQueryHandler<GetUserBySlugQuery> {

@@ -1,8 +1,8 @@
-import type { ICommandHandler } from '@nestjs/cqrs';
+import { UpdateFinanceCommand } from './update-finance.command';
 import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
 import type { FinanceFactory } from '../../../../factories/domains/teams/finance.factory';
 import type { FinanceModel } from '../../../../factories/domains/teams/finance.model';
-import { UpdateFinanceCommand } from './update-finance.command';
 
 @CommandHandler(UpdateFinanceCommand)
 export class UpdateFinanceHandler implements ICommandHandler<UpdateFinanceCommand> {

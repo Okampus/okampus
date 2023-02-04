@@ -1,7 +1,7 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { Text, View } from '../components/Themed';
-import { RootStackScreenProps } from '../types';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import type { RootStackScreenProps } from '../types';
 
 export const NotFoundScreen: React.ComponentType<RootStackScreenProps<'NotFound'>> = (
   props: RootStackScreenProps<'NotFound'>

@@ -1,11 +1,11 @@
+import { ShortcutRepository } from './shortcut.repository';
+import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Entity, Enum, ManyToOne } from '@mikro-orm/core';
 import { ShortcutType } from '@okampus/shared/enums';
-import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import type { Actor } from '../actor.entity';
 import type { User } from '../user/user.entity';
 import type { ShortcutOptions } from './shortcut.options';
 
-import { ShortcutRepository } from './shortcut.repository';
 
 @Entity({ customRepository: () => ShortcutRepository })
 export class Shortcut extends TenantScopedEntity {

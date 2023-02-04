@@ -1,11 +1,11 @@
+import { ActorImageModel } from './actor-image.model';
+import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import type { TenantCore, ImageUpload, Actor, ActorImageRepository, ActorImageOptions } from '@okampus/api/dal';
 import { ActorImage } from '@okampus/api/dal';
+import type { TenantCore, ImageUpload, Actor, ActorImageRepository, ActorImageOptions } from '@okampus/api/dal';
 import type { IActorImage } from '@okampus/shared/dtos';
 // import { loadActorImage } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
-import { ActorImageModel } from './actor-image.model';
 
 @Injectable()
 export class ActorImageFactory extends BaseFactory<ActorImageModel, ActorImage, IActorImage, ActorImageOptions> {

@@ -1,8 +1,8 @@
-import type { IQueryHandler} from '@nestjs/cqrs';
+import { GetProjectByIdQuery } from './get-project-by-id.query';
 import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler} from '@nestjs/cqrs';
 import type { ProjectFactory } from '../../../../factories/domains/teams/project.factory';
 import type { ProjectModel } from '../../../../factories/domains/teams/project.model';
-import { GetProjectByIdQuery } from './get-project-by-id.query';
 
 @QueryHandler(GetProjectByIdQuery)
 export class GetProjectByIdHandler implements IQueryHandler<GetProjectByIdQuery> {

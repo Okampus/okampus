@@ -1,18 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import type { CommandBus, QueryBus } from '@nestjs/cqrs';
-import type { ActorImageUploadProps } from '@okampus/api/dal';
-import type { CreateOrgDocumentDto, CreateTeamDto, UpdateTeamDto } from '@okampus/shared/dtos';
-import type { MulterFileType, Snowflake } from '@okampus/shared/types';
-import { RequestContext } from '../../../shards/request-context/request-context';
-import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import type { TeamModel, PaginatedTeamModel } from '../../factories/domains/teams/team.model';
-import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-document/create-org-document.command';
 import { CreateTeamCommand } from './commands/create-team/create-team.command';
 import { DeleteTeamCommand } from './commands/delete-team/delete-team.command';
 import { UpdateTeamCommand } from './commands/update-team/update-team.command';
 import { GetTeamByIdQuery } from './queries/get-team-by-id/get-team-by-id.query';
 import { GetTeamBySlugQuery } from './queries/get-team-by-slug/get-team-by-slug.query';
 import { GetTeamsQuery } from './queries/get-teams/get-teams.query';
+import { RequestContext } from '../../../shards/request-context/request-context';
+import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-document/create-org-document.command';
+import { Injectable } from '@nestjs/common';
+import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { ActorImageUploadProps } from '@okampus/api/dal';
+import type { CreateOrgDocumentDto, CreateTeamDto, UpdateTeamDto } from '@okampus/shared/dtos';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { TeamModel, PaginatedTeamModel } from '../../factories/domains/teams/team.model';
 
 const defaultTeamPopulate = ['actor', 'actor.images', 'actor.socials', 'actor.tags'];
 

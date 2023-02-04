@@ -1,5 +1,5 @@
-import type { Strategy } from 'openid-client';
 import { Global, Injectable, Module } from '@nestjs/common';
+import type { Strategy } from 'openid-client';
 import type { User } from '@okampus/api/dal';
 
 @Injectable()

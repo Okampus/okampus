@@ -1,5 +1,5 @@
-import { MikroORM } from '@mikro-orm/core';
 import mikroOrmConfig from './configs/mikro-orm.config';
+import { MikroORM } from '@mikro-orm/core';
 
 console.log('Loading MikroORM...');
 

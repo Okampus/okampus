@@ -1,13 +1,14 @@
+import { ActorRepository } from './actor.repository';
+import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Collection, Entity, ManyToMany, OneToMany, OneToOne, Property, Unique } from '@mikro-orm/core';
 import { toSlug } from '@okampus/shared/utils';
 import { ActorKind } from '@okampus/shared/enums';
 import { nanoid } from 'nanoid';
+import { TransformCollection } from '@okampus/api/shards';
 import type { ActorOptions } from './actor.options';
 import type { Social } from '../manage-actor/social/social.entity';
 import type { ActorImage } from '../manage-actor/actor-image/actor-image.entity';
-import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import type { Tag } from '../label/tag/tag.entity';
-import { TransformCollection } from '@okampus/api/shards';
 import type { Individual } from './individual/individual.entity';
 import type { Org } from '../org/org.entity';
 import type { Validation } from '../interaction/validation/validation.entity';
@@ -16,7 +17,6 @@ import type { Report } from '../interaction/report/report.entity';
 import type { Vote } from '../interaction/vote/vote.entity';
 import type { Favorite } from '../interaction/favorite/favorite.entity';
 
-import { ActorRepository } from './actor.repository';
 
 @Entity({ customRepository: () => ActorRepository })
 export class Actor extends TenantScopedEntity {

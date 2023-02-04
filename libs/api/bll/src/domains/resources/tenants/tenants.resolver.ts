@@ -1,11 +1,11 @@
+import { PaginatedTenantModel, TenantModel } from '../../factories/domains/tenants/tenant.model';
+import { OrgDocumentModel } from '../../factories/domains/documents/org-document.model';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+import { GraphQLUpload } from 'graphql-upload-minimal';
 import type { TenantsService } from './tenants.service';
 import type { CreateDocumentDto, CreateTenantDto, UpdateTenantDto } from '@okampus/shared/dtos';
-import { PaginatedTenantModel, TenantModel } from '../../factories/domains/tenants/tenant.model';
 import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
 import type { MulterFileType, Snowflake } from '@okampus/shared/types';
-import { GraphQLUpload } from 'graphql-upload-minimal';
-import { OrgDocumentModel } from '../../factories/domains/documents/org-document.model';
 
 @Resolver(() => TenantModel)
 export class TenantsResolver {

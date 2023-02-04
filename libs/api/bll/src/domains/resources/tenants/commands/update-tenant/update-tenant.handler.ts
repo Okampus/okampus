@@ -1,8 +1,8 @@
-import type { ICommandHandler } from '@nestjs/cqrs';
+import { UpdateTenantCommand } from './update-tenant.command';
 import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
 import type { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
 import type { TenantModel } from '../../../../factories/domains/tenants/tenant.model';
-import { UpdateTenantCommand } from './update-tenant.command';
 
 @CommandHandler(UpdateTenantCommand)
 export class UpdateTenantHandler implements ICommandHandler<UpdateTenantCommand> {

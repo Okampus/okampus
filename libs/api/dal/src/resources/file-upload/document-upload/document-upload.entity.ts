@@ -1,9 +1,9 @@
-import { Entity, Enum, Property } from '@mikro-orm/core';
+import { DocumentUploadRepository } from './document-upload.repository';
 import { FileUpload } from '../file-upload.entity';
+import { Entity, Enum, Property } from '@mikro-orm/core';
 import { DocumentUploadType, FileUploadKind } from '@okampus/shared/enums';
 import type { DocumentUploadOptions } from './document-upload.options';
 
-import { DocumentUploadRepository } from './document-upload.repository';
 
 @Entity({
   customRepository: () => DocumentUploadRepository,

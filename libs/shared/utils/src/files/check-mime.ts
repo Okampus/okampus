@@ -1,6 +1,6 @@
+import { getExtension } from './get-extensions';
 import { IMAGE_EXTS } from '@okampus/shared/consts';
 import type { FileMimeCheckPayload } from '@okampus/shared/types';
-import { getExtension } from './get-extensions';
 
 export const checkPdf = ({ type }: FileMimeCheckPayload) => type === 'application/pdf';
 export const checkImage = ({ type, name }: FileMimeCheckPayload) => {

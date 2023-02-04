@@ -1,6 +1,6 @@
+import { Membership } from '../membership.entity';
 import { Entity } from '@mikro-orm/core';
 import { MembershipKind } from '@okampus/shared/enums';
-import { Membership } from '../membership.entity';
 import type { TenantMemberOptions } from './tenant-member.options';
 
 @Entity()

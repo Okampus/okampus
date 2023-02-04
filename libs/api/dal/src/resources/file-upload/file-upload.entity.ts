@@ -1,4 +1,6 @@
 // import path from 'node:path';
+import { FileUploadRepository } from './file-upload.repository';
+import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 // import mime from 'mime-types';
 // import { config } from '@api/configs/config';
@@ -7,10 +9,8 @@ import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 // import { User } from '@api/uaa/users/user.entity';
 import { FileUploadKind } from '@okampus/shared/enums';
 import type { FileUploadOptions } from './file-upload.options';
-import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import type { Individual } from '../actor/individual/individual.entity';
 
-import { FileUploadRepository } from './file-upload.repository';
 
 @Entity({
   customRepository: () => FileUploadRepository,

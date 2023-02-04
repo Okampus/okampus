@@ -1,8 +1,8 @@
-import type { IQueryHandler} from '@nestjs/cqrs';
+import { GetProjectsByTeamQuery } from './get-projects-by-team.query';
 import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler} from '@nestjs/cqrs';
 import type { ProjectFactory } from '../../../../factories/domains/teams/project.factory';
 import type { PaginatedProjectModel } from '../../../../factories/domains/teams/project.model';
-import { GetProjectsByTeamQuery } from './get-projects-by-team.query';
 
 @QueryHandler(GetProjectsByTeamQuery)
 export class GetProjectsByTeamHandler implements IQueryHandler<GetProjectsByTeamQuery> {

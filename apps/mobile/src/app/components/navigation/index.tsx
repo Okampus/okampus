@@ -3,16 +3,16 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as React from 'react';
-import { ColorSchemeName } from 'react-native';
-
+import DrawerNavigator from './DrawerNavigator';
 import ModalScreen from '../../screens/ModalScreen';
 import { NotFoundScreen } from '../../screens/NotFoundScreen';
 import LinkingConfiguration from '../../../config/LinkingConfiguration';
-import { RootStackParamList } from '../../types';
-import DrawerNavigator from './DrawerNavigator';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as React from 'react';
+import type { ColorSchemeName } from 'react-native';
+
+import type { RootStackParamList } from '../../types';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (

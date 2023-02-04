@@ -1,8 +1,8 @@
-import type { ICommandHandler } from '@nestjs/cqrs';
+import { UpdateTeamCategoryCommand } from './update-team-category.command';
 import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
 import type { TeamCategoryFactory } from '../../../../factories/domains/tags/team-category.factory';
 import type { TeamCategoryModel } from '../../../../factories/domains/tags/team-category.model';
-import { UpdateTeamCategoryCommand } from './update-team-category.command';
 
 @CommandHandler(UpdateTeamCategoryCommand)
 export class UpdateTeamCategoryHandler implements ICommandHandler<UpdateTeamCategoryCommand> {

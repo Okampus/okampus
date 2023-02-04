@@ -1,13 +1,13 @@
+import { UploadService } from './upload.service';
+import { Global } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
+import { S3Buckets } from '@okampus/shared/enums';
+import { enumKeys } from '@okampus/shared/utils';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import type { OnModuleInit } from '@nestjs/common';
-import { Global } from '@nestjs/common';
-import { Logger, Module } from '@nestjs/common';
-import { UploadService } from './upload.service';
 import type { ConfigService } from '../../global/config.module';
 import type { ApiConfig } from '@okampus/shared/types';
-import { S3Buckets } from '@okampus/shared/enums';
-import { enumKeys } from '@okampus/shared/utils';
 
 @Global()
 @Module({

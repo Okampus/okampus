@@ -1,5 +1,10 @@
+import { FormSubmissionModel } from './form-submission.model';
+import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+import {
+  FormSubmission
+} from '@okampus/api/dal';
 import type {
   ContentMaster,
   Form,
@@ -8,13 +13,8 @@ import type {
   Individual,
   Org,
   TenantCore} from '@okampus/api/dal';
-import {
-  FormSubmission
-} from '@okampus/api/dal';
 import type { IFormSubmission } from '@okampus/shared/dtos';
 // import { loadFormSubmission } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
-import { FormSubmissionModel } from './form-submission.model';
 
 @Injectable()
 export class FormSubmissionFactory extends BaseFactory<

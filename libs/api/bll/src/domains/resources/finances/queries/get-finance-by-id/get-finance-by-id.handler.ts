@@ -1,8 +1,8 @@
-import type { IQueryHandler} from '@nestjs/cqrs';
+import { GetFinanceByIdQuery } from './get-finance-by-id.query';
 import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler} from '@nestjs/cqrs';
 import type { FinanceFactory } from '../../../../factories/domains/teams/finance.factory';
 import type { FinanceModel } from '../../../../factories/domains/teams/finance.model';
-import { GetFinanceByIdQuery } from './get-finance-by-id.query';
 
 @QueryHandler(GetFinanceByIdQuery)
 export class GetFinanceByIdHandler implements IQueryHandler<GetFinanceByIdQuery> {

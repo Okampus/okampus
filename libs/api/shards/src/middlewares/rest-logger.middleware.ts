@@ -1,7 +1,7 @@
-import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { NestMiddleware } from '@nestjs/common';
 import { Injectable, Logger } from '@nestjs/common';
 import morgan from 'morgan';
+import type { IncomingMessage, ServerResponse } from 'node:http';
+import type { NestMiddleware } from '@nestjs/common';
 
 @Injectable()
 export class RestLoggerMiddleware implements NestMiddleware {

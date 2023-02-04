@@ -1,7 +1,7 @@
-import type { Collection } from '@mikro-orm/core';
 import { applyDecorators } from '@nestjs/common';
-import type { TransformFnParams } from 'class-transformer';
 import { Transform } from 'class-transformer';
+import type { Collection } from '@mikro-orm/core';
+import type { TransformFnParams } from 'class-transformer';
 
 interface Params extends TransformFnParams {
   obj: Record<string, Collection<object>>;

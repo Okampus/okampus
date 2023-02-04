@@ -1,13 +1,12 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
-import type { ITeam, ITeamAction, ITeamMember, ITenantCore, ITenantEvent, IUser } from '@okampus/shared/dtos';
-import { Paginated } from '../../../../shards/types/paginated.type';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
-// eslint-disable-next-line import/no-cycle
-import { TenantEventModel } from '../events/event.model';
-import { UserModel } from '../users/user.model';
 // eslint-disable-next-line import/no-cycle
 import { TeamMemberModel } from './team-member.model';
 import { TeamModel } from './team.model';
+import { Paginated } from '../../../../shards/types/paginated.type';
+import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
+import { TenantEventModel } from '../events/event.model';
+import { UserModel } from '../users/user.model';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import type { ITeam, ITeamAction, ITeamMember, ITenantCore, ITenantEvent, IUser } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class TeamActionModel extends TenantScopedModel implements ITeamAction {

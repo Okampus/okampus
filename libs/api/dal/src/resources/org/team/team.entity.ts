@@ -1,3 +1,5 @@
+import { TeamRepository } from './team.repository';
+import { Org } from '../org.entity';
 import {
   Collection,
   Entity,
@@ -8,16 +10,14 @@ import {
   OneToOne,
   Property,
 } from '@mikro-orm/core';
-import { Org } from '../org.entity';
 import { OrgKind, TeamRoleCategory, TeamType } from '@okampus/shared/enums';
-import type { TeamOptions } from './team.options';
 import { TransformCollection } from '@okampus/api/shards';
+import type { TeamOptions } from './team.options';
 import type { TeamCategory } from '../../label/team-category/team-category.entity';
 import type { VideoUpload } from '../../file-upload/video-upload/video-upload.entity';
 import type { Form } from '../../ugc/form/form.entity';
 import type { TeamMember } from '../../membership/team-member/team-member.entity';
 
-import { TeamRepository } from './team.repository';
 import type { TeamRole } from '../../role/team-role/team-role.entity';
 
 import type { Finance } from '../../manage-team/finance/finance.entity';

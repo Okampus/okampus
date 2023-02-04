@@ -1,5 +1,5 @@
-import type { DynamicModule} from '@nestjs/common';
 import { Module, Global, Injectable } from '@nestjs/common';
+import type { DynamicModule} from '@nestjs/common';
 import type { ApiConfig, RedisConnectionConfig } from '@okampus/shared/types';
 
 @Injectable()

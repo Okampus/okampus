@@ -1,5 +1,5 @@
-import type { MeiliModuleAsyncOptions } from 'nestjs-meilisearch';
 import { config } from './config';
+import type { MeiliModuleAsyncOptions } from 'nestjs-meilisearch';
 
 export default {
   useFactory: () => ({

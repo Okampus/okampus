@@ -1,11 +1,11 @@
+import { ActorImageRepository } from './actor-image.repository';
+import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Entity, EntityRepositoryType, Enum, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
 import { ActorImageType } from '@okampus/shared/enums';
-import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import type { Actor } from '../../actor/actor.entity';
 import type { ImageUpload } from '../../file-upload/image-upload/image-upload.entity';
 import type { ActorImageOptions } from './actor-image.options';
 
-import { ActorImageRepository } from './actor-image.repository';
 
 @Entity({ customRepository: () => ActorImageRepository })
 export class ActorImage extends TenantScopedEntity {

@@ -1,10 +1,10 @@
 import { validateFormkit } from '@okampus/shared/utils';
+import { registerDecorator, ValidatorConstraint } from 'class-validator';
 import type {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { registerDecorator, ValidatorConstraint } from 'class-validator';
 
 @ValidatorConstraint()
 export class FormKitSchemaConstraint implements ValidatorConstraintInterface {

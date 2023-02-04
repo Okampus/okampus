@@ -1,7 +1,7 @@
-import type { ICommandHandler } from '@nestjs/cqrs';
-import { CommandHandler } from '@nestjs/cqrs';
-import type { BotFactory } from '../../../../factories/domains/bots/bot.factory';
 import { DeleteBotCommand } from './delete-bot.command';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import type { BotFactory } from '../../../../factories/domains/bots/bot.factory';
 
 @CommandHandler(DeleteBotCommand)
 export class DeleteBotHandler implements ICommandHandler<DeleteBotCommand> {

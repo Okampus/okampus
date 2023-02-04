@@ -1,5 +1,11 @@
+import { ProjectModel } from './project.model';
+import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+import {
+  Project
+} from '@okampus/api/dal';
+import { asyncCallIfNotNull } from '@okampus/shared/utils';
 import type {
   TenantCore,
   ProjectRepository,
@@ -11,14 +17,8 @@ import type {
   TeamRepository,
   TenantEventRepository,
   UserRepository} from '@okampus/api/dal';
-import {
-  Project
-} from '@okampus/api/dal';
 import type { CreateProjectDto, IProject } from '@okampus/shared/dtos';
 // import { loadProject } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
-import { ProjectModel } from './project.model';
-import { asyncCallIfNotNull } from '@okampus/shared/utils';
 
 @Injectable()
 export class ProjectFactory extends BaseFactory<ProjectModel, Project, IProject, ProjectOptions> {

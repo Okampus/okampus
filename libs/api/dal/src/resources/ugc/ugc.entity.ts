@@ -1,14 +1,14 @@
+import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Cascade, Collection, Entity, Enum, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
-import type { UgcOptions } from './ugc.options';
 import { UgcKind } from '@okampus/shared/enums';
+import { TransformCollection } from '@okampus/api/shards';
+import type { UgcOptions } from './ugc.options';
 import type { Reaction } from '../interaction/reaction/reaction.entity';
 import type { Report } from '../interaction/report/report.entity';
 import type { Vote } from '../interaction/vote/vote.entity';
 import type { Favorite } from '../interaction/favorite/favorite.entity';
-import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import type { Individual } from '../actor/individual/individual.entity';
 import type { ContentMaster } from '../content-master/content-master.entity';
-import { TransformCollection } from '@okampus/api/shards';
 import type { Org } from '../org/org.entity';
 
 @Entity({

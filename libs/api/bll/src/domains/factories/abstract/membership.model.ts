@@ -1,9 +1,9 @@
-import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
-import type { IMembership, ITenantCore, IUser } from '@okampus/shared/dtos';
-import { MembershipKind } from '@okampus/shared/enums';
+import { TenantScopedModel } from './tenant-scoped.model';
 import { Paginated } from '../../../shards/types/paginated.type';
 import { UserModel } from '../domains/users/user.model';
-import { TenantScopedModel } from './tenant-scoped.model';
+import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
+import { MembershipKind } from '@okampus/shared/enums';
+import type { IMembership, ITenantCore, IUser } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class MembershipModel extends TenantScopedModel implements IMembership {

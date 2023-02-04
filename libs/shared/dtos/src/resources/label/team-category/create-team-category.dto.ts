@@ -1,7 +1,7 @@
-import { Field, InputType } from '@nestjs/graphql';
-import type { Snowflake } from '@okampus/shared/types';
-import { IsString } from 'class-validator';
 import { TeamCategoryProps } from './team-category.props';
+import { Field, InputType } from '@nestjs/graphql';
+import { IsString } from 'class-validator';
+import type { Snowflake } from '@okampus/shared/types';
 
 @InputType()
 export class CreateTeamCategoryDto extends TeamCategoryProps {

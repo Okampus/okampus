@@ -1,8 +1,8 @@
-import type { ICommandHandler } from '@nestjs/cqrs';
+import { UpdateProjectCommand } from './update-project.command';
 import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
 import type { ProjectFactory } from '../../../../factories/domains/teams/project.factory';
 import type { ProjectModel } from '../../../../factories/domains/teams/project.model';
-import { UpdateProjectCommand } from './update-project.command';
 
 @CommandHandler(UpdateProjectCommand)
 export class UpdateProjectHandler implements ICommandHandler<UpdateProjectCommand> {

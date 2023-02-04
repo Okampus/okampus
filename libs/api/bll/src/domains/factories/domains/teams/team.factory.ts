@@ -1,5 +1,20 @@
+import { TeamModel } from './team.model';
+import { BaseFactory } from '../../base.factory';
+import { addImagesToActor } from '../../abstract.utils';
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+import {
+  clubDefaultRoles,
+  Shortcut,
+  Team,
+  teamDefaultRoles,
+  TeamMember,
+  TeamRole
+} from '@okampus/api/dal';
+// import { loadTeam } from '../loader.utils';
+import { ActorKind, IndividualKind, ShortcutType, TeamType } from '@okampus/shared/enums';
+import { toSlug } from '@okampus/shared/utils';
+import type { CreateOrgDocumentDto, CreateTeamDto, ITeam } from '@okampus/shared/dtos';
 import type {
   ActorImageUploadProps,
   ActorRepository,
@@ -17,21 +32,6 @@ import type {
   TenantCore,
   User,
   UserRepository} from '@okampus/api/dal';
-import {
-  clubDefaultRoles,
-  Shortcut,
-  Team,
-  teamDefaultRoles,
-  TeamMember,
-  TeamRole
-} from '@okampus/api/dal';
-import type { CreateOrgDocumentDto, CreateTeamDto, ITeam } from '@okampus/shared/dtos';
-// import { loadTeam } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
-import { TeamModel } from './team.model';
-import { ActorKind, IndividualKind, ShortcutType, TeamType } from '@okampus/shared/enums';
-import { toSlug } from '@okampus/shared/utils';
-import { addImagesToActor } from '../../abstract.utils';
 import type { UploadService } from '../../../../features/uploads/upload.service';
 import type { Snowflake, MulterFileType } from '@okampus/shared/types';
 import type { OrgDocumentFactory } from '../documents/org-document.factory';

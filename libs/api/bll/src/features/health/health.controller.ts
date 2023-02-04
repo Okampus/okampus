@@ -1,19 +1,19 @@
-import path from 'node:path';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
-import type { RedisHealthIndicator } from '@liaoliaots/nestjs-redis-health';
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import {
+  HealthCheck
+} from '@nestjs/terminus';
+import { Public } from '@okampus/api/shards';
+import path from 'node:path';
+import type { RedisHealthIndicator } from '@liaoliaots/nestjs-redis-health';
 import type { HealthCheckResult ,
   DiskHealthIndicator,
   HealthCheckService,
   MemoryHealthIndicator,
   MikroOrmHealthIndicator} from '@nestjs/terminus';
-import {
-  HealthCheck
-} from '@nestjs/terminus';
 import type Redis from 'ioredis';
 import type { ConfigService } from '../../global/config.module';
-import { Public } from '@okampus/api/shards';
 
 @ApiTags('Health')
 @Controller({ path: 'health' })

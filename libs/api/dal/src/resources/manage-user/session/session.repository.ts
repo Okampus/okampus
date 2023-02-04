@@ -1,5 +1,5 @@
-import type { SessionProps } from '@okampus/shared/dtos';
 import { BaseRepository } from '../../../shards/abstract/base/base.repository';
+import type { SessionProps } from '@okampus/shared/dtos';
 
 import type { Session } from './session.entity';
 

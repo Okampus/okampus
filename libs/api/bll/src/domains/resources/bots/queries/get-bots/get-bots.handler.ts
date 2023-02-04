@@ -1,8 +1,8 @@
-import type { IQueryHandler} from '@nestjs/cqrs';
+import { GetBotsQuery } from './get-bots.query';
 import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler} from '@nestjs/cqrs';
 import type { BotFactory } from '../../../../factories/domains/bots/bot.factory';
 import type { PaginatedBotModel } from '../../../../factories/domains/bots/bot.model';
-import { GetBotsQuery } from './get-bots.query';
 
 @QueryHandler(GetBotsQuery)
 export class GetBotsHandler implements IQueryHandler<GetBotsQuery> {

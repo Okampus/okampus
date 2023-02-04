@@ -1,10 +1,10 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import type { IForm, IFormSubmission } from '@okampus/shared/dtos';
-import type { JSONObject } from '@okampus/shared/types';
-import { GraphQLJSON } from 'graphql-scalars';
+import { FormModel } from './form.model';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { UgcModel } from '../../abstract/ugc.model';
-import { FormModel } from './form.model';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-scalars';
+import type { IForm, IFormSubmission } from '@okampus/shared/dtos';
+import type { JSONObject } from '@okampus/shared/types';
 
 @ObjectType({ implements: () => [UgcModel] })
 export class FormSubmissionModel extends UgcModel implements IFormSubmission {

@@ -1,6 +1,6 @@
+import mikroOrmConfig from './configs/mikro-orm.config';
 import { MikroORM } from '@mikro-orm/core';
 import { basename } from 'node:path';
-import mikroOrmConfig from './configs/mikro-orm.config';
 
 console.log('Loading MikroORM...');
 

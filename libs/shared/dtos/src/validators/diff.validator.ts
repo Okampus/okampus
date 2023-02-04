@@ -1,10 +1,10 @@
+import { registerDecorator, ValidatorConstraint } from 'class-validator';
+import { validateDiff } from '@okampus/shared/utils';
 import type {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { registerDecorator, ValidatorConstraint } from 'class-validator';
-import { validateDiff } from '@okampus/shared/utils';
 
 @ValidatorConstraint()
 export class DiffConstraint implements ValidatorConstraintInterface {

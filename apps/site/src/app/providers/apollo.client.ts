@@ -1,9 +1,9 @@
+import { currentTenant } from '../utils/current-tenant';
+import { HEADER_TENANT_NAME } from '@okampus/shared/consts';
 import { ApolloClient, ApolloLink } from '@apollo/client/core';
 import { InMemoryCache } from '@apollo/client/cache';
 import { createUploadLink } from 'apollo-upload-client';
-import { HEADER_TENANT_NAME } from '@okampus/shared/consts';
 import { setContext } from '@apollo/client/link/context';
-import { currentTenant } from '../utils/current-tenant';
 
 const tenantContext = setContext((_, { headers }) => {
   return {

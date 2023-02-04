@@ -1,8 +1,8 @@
-import type { Type } from '@nestjs/common';
+import { PageInfo } from './page-info.type';
 import { Field, ObjectType } from '@nestjs/graphql';
+import type { Type } from '@nestjs/common';
 import type { AbstractConstructor } from '@okampus/shared/types';
 import type { BaseModel } from '../../domains/factories/abstract/base.model';
-import { PageInfo } from './page-info.type';
 
 export interface Edge<Model extends BaseModel> {
   cursor: string | null;

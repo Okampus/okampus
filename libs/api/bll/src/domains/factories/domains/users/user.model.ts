@@ -1,12 +1,11 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import type { IShortcut, IUser, IUserProfile } from '@okampus/shared/dtos';
-import { IndividualKind, RoleType, ScopeRole } from '@okampus/shared/enums';
-import { Paginated } from '../../../../shards/types/paginated.type';
-// eslint-disable-next-line import/no-cycle
-import { IndividualModel } from '../../abstract/individual.model';
 // eslint-disable-next-line import/no-cycle
 import { ShortcutModel } from './shortcut.model';
 import { UserProfileModel } from './user-profile.model';
+import { Paginated } from '../../../../shards/types/paginated.type';
+import { IndividualModel } from '../../abstract/individual.model';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { IndividualKind, RoleType, ScopeRole } from '@okampus/shared/enums';
+import type { IShortcut, IUser, IUserProfile } from '@okampus/shared/dtos';
 
 @ObjectType({ implements: () => [IndividualModel] })
 export class UserModel extends IndividualModel implements IUser {

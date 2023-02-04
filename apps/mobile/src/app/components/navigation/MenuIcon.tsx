@@ -1,7 +1,7 @@
+import { Ripple } from '../Ripple';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { GestureResponderEvent, TextStyle } from 'react-native';
-import { Ripple } from '../Ripple';
+import type { GestureResponderEvent, TextStyle } from 'react-native';
 
 export function MenuIcon(props: { onPress: (event: GestureResponderEvent) => void; style: TextStyle }) {
   return (
