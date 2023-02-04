@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { ITenantCore, OidcInfo } from '@okampus/shared/dtos';
+import type { ITenantCore} from '@okampus/shared/dtos';
+import { OidcInfo } from '@okampus/shared/dtos';
 import { BaseModel } from './base.model';
 
 @ObjectType()

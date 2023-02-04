@@ -1,6 +1,6 @@
 import fieldToRelations from '@banksnussman/graphql-fields-to-relations';
 import { UnauthorizedException } from '@nestjs/common';
-import { Individual, TenantCore } from '@okampus/api/dal';
+import type { Individual, TenantCore } from '@okampus/api/dal';
 import { requestContext } from '@fastify/request-context';
 
 export abstract class RequestContext {

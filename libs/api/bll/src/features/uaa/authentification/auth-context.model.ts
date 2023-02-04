@@ -1,6 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { ITenant, IUser } from '@okampus/shared/dtos';
+import type { ITenant, IUser } from '@okampus/shared/dtos';
 import { TenantModel } from '../../../domains/factories/domains/tenants/tenant.model';
 import { UserModel } from '../../../domains/factories/domains/users/user.model';
 

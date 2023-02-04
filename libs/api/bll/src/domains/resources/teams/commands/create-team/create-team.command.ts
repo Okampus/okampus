@@ -1,5 +1,5 @@
-import { CreateTeamDto } from '@okampus/shared/dtos';
-import { ActorImageUploadProps, Individual, TenantCore } from '@okampus/api/dal';
+import type { CreateTeamDto } from '@okampus/shared/dtos';
+import type { ActorImageUploadProps, Individual, TenantCore } from '@okampus/api/dal';
 
 export class CreateTeamCommand {
   constructor(

@@ -1,8 +1,8 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
-import { TeamsService } from './teams.service';
-import { CreateOrgDocumentDto, CreateTeamDto, UpdateTeamDto } from '@okampus/shared/dtos';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { TeamsService } from './teams.service';
+import type { CreateOrgDocumentDto, CreateTeamDto, UpdateTeamDto } from '@okampus/shared/dtos';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 import { TeamModel, PaginatedTeamModel } from '../../factories/domains/teams/team.model';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import { ActorImageType } from '@okampus/shared/enums';

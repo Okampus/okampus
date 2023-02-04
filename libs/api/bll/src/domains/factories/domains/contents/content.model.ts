@@ -1,5 +1,5 @@
 import { ObjectType, Field } from '@nestjs/graphql';
-import { IContent, IFileUpload, IUgc } from '@okampus/shared/dtos';
+import type { IContent, IFileUpload, IUgc } from '@okampus/shared/dtos';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { FileUploadModel } from '../../abstract/file-upload.model';
 import { UgcModel } from '../../abstract/ugc.model';

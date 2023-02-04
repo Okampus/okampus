@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IDocumentEdit, IDocumentUpload, ITenantCore } from '@okampus/shared/dtos';
+import type { IDocumentEdit, IDocumentUpload, ITenantCore } from '@okampus/shared/dtos';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 import { DocumentUploadModel } from './document-upload.model';

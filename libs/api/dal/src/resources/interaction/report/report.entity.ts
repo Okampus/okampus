@@ -2,7 +2,7 @@ import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { InteractionKind, ReportReason } from '@okampus/shared/enums';
 import { Interaction } from '../interaction.entity';
 import { Individual } from '../../actor/individual/individual.entity';
-import { ReportOptions } from './report.options';
+import type { ReportOptions } from './report.options';
 
 @Entity()
 export class Report extends Interaction {

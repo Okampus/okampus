@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ActorImageUploadProps } from '@okampus/api/dal';
-import { CreateUserDto, UpdateUserDto } from '@okampus/shared/dtos';
-import { Snowflake } from '@okampus/shared/types';
+import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { ActorImageUploadProps } from '@okampus/api/dal';
+import type { CreateUserDto, UpdateUserDto } from '@okampus/shared/dtos';
+import type { Snowflake } from '@okampus/shared/types';
 import { RequestContext } from '../../../shards/request-context/request-context';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { PaginatedUserModel, UserModel } from '../../factories/domains/users/user.model';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { PaginatedUserModel, UserModel } from '../../factories/domains/users/user.model';
 import { CreateUserCommand } from './commands/create-user/create-user.command';
 import { DeleteUserCommand } from './commands/delete-user/delete-user.command';
 import { UpdateUserCommand } from './commands/update-user/update-user.command';

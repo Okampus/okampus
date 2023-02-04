@@ -6,10 +6,10 @@ import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 // import { FileKind } from '@api/shards/types/enums/file-kind.enum';
 // import { User } from '@api/uaa/users/user.entity';
 import { FileUploadKind } from '@okampus/shared/enums';
-import { FileUploadOptions } from './file-upload.options';
+import type { FileUploadOptions } from './file-upload.options';
 import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { Individual } from '../actor/individual/individual.entity';
-// eslint-disable-next-line import/no-cycle
+import type { Individual } from '../actor/individual/individual.entity';
+
 import { FileUploadRepository } from './file-upload.repository';
 
 @Entity({

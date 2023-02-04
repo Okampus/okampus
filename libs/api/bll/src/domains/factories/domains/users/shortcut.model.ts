@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IActor, IShortcut, ITenantCore, IUser } from '@okampus/shared/dtos';
+import type { IActor, IShortcut, ITenantCore, IUser } from '@okampus/shared/dtos';
 import { ShortcutType } from '@okampus/shared/enums';
 import { ActorModel } from '../../abstract/actor.model';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';

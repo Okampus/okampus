@@ -1,9 +1,9 @@
 import { Cascade, Collection, Entity, Enum, ManyToOne, OneToMany, OneToOne } from '@mikro-orm/core';
 import { OrgKind } from '@okampus/shared/enums';
-import { OrgOptions } from './org.options';
+import type { OrgOptions } from './org.options';
 import { Actor } from '../actor/actor.entity';
 import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-// eslint-disable-next-line import/no-cycle
+
 import { OrgRepository } from './org.repository';
 import type { OrgDocument } from '../manage-org/org-document/org-document.entity';
 import { TransformCollection } from '@okampus/api/shards';

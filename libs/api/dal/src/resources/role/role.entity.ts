@@ -5,7 +5,7 @@ import { Entity, Enum, Property } from '@mikro-orm/core';
 // import { CreateTeamDto } from './dto/create-team.dto';
 import { RoleKind } from '@okampus/shared/enums';
 import { Colors } from '@okampus/shared/enums';
-import { RoleOptions } from './role.options';
+import type { RoleOptions } from './role.options';
 import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 // import { TeamRoleOptions } from './team-role.options';
 

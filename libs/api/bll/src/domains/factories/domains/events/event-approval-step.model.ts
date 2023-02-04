@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IEventApprovalStep, IIndividual, ITenant, ITenantCore, IUser } from '@okampus/shared/dtos';
+import type { IEventApprovalStep, IIndividual, ITenant, ITenantCore, IUser } from '@okampus/shared/dtos';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { IndividualModel } from '../../abstract/individual.model';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';

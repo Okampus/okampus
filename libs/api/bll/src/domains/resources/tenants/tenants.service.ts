@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateDocumentDto, CreateTenantDto, UpdateTenantDto } from '@okampus/shared/dtos';
+import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { CreateDocumentDto, CreateTenantDto, UpdateTenantDto } from '@okampus/shared/dtos';
 import { OrgDocumentType } from '@okampus/shared/enums';
-import { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 import { RequestContext } from '../../../shards/request-context/request-context';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { TenantModel, PaginatedTenantModel } from '../../factories/domains/tenants/tenant.model';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { TenantModel, PaginatedTenantModel } from '../../factories/domains/tenants/tenant.model';
 import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-document/create-org-document.command';
 import { CreateTenantCommand } from './commands/create-tenant/create-tenant.command';
 import { DeleteTenantCommand } from './commands/delete-tenant/delete-tenant.command';

@@ -1,4 +1,4 @@
-import { Snowflake } from '@okampus/shared/types';
+import type { Snowflake } from '@okampus/shared/types';
 
 export type IBase = {
   id: Snowflake;

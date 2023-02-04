@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IActor, ISocial, ITenantCore } from '@okampus/shared/dtos';
+import type { IActor, ISocial, ITenantCore } from '@okampus/shared/dtos';
 import { SocialType } from '@okampus/shared/enums';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle

@@ -1,6 +1,7 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { OrgDocumentFactory } from '../../../../factories/domains/documents/org-document.factory';
-import { OrgDocumentModel } from '../../../../factories/domains/documents/org-document.model';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { OrgDocumentFactory } from '../../../../factories/domains/documents/org-document.factory';
+import type { OrgDocumentModel } from '../../../../factories/domains/documents/org-document.model';
 import { CreateOrgDocumentCommand } from './create-org-document.command';
 
 @CommandHandler(CreateOrgDocumentCommand)

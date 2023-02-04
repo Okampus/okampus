@@ -1,7 +1,7 @@
-import { DocumentEditProps } from '@okampus/shared/dtos';
-import { TenantScopedOptions } from '../../../shards/abstract/tenant-scoped/tenant-scoped.options';
-import { Individual } from '../../actor/individual/individual.entity';
-import { DocumentUpload } from '../../file-upload/document-upload/document-upload.entity';
+import type { DocumentEditProps } from '@okampus/shared/dtos';
+import type { TenantScopedOptions } from '../../../shards/abstract/tenant-scoped/tenant-scoped.options';
+import type { Individual } from '../../actor/individual/individual.entity';
+import type { DocumentUpload } from '../../file-upload/document-upload/document-upload.entity';
 
 export type DocumentEditOptions = DocumentEditProps &
   TenantScopedOptions & {

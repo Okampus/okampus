@@ -1,8 +1,8 @@
-import { JoinProps } from '@okampus/shared/dtos';
-import { TenantScopedOptions } from '../../shards/abstract/tenant-scoped/tenant-scoped.options';
-import { Actor } from '../actor/actor.entity';
-import { Individual } from '../actor/individual/individual.entity';
-import { FormSubmission } from '../ugc/form-submission/form-submission.entity';
+import type { JoinProps } from '@okampus/shared/dtos';
+import type { TenantScopedOptions } from '../../shards/abstract/tenant-scoped/tenant-scoped.options';
+import type { Actor } from '../actor/actor.entity';
+import type { Individual } from '../actor/individual/individual.entity';
+import type { FormSubmission } from '../ugc/form-submission/form-submission.entity';
 
 export type JoinOptions = JoinProps &
   TenantScopedOptions & {

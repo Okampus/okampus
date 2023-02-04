@@ -1,4 +1,4 @@
-import { S3 } from 'aws-sdk';
+import type { S3 } from 'aws-sdk';
 import stream from 'node:stream';
 
 export function streamableS3(s3: S3, Bucket: string, Key: string, ContentType: string, ACL: string) {

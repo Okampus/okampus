@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { Tag, TenantCore, Bot, BotRepository, Actor, BotOptions } from '@okampus/api/dal';
-import { IBot } from '@okampus/shared/dtos';
+import type { Tag, TenantCore, BotRepository, Actor, BotOptions } from '@okampus/api/dal';
+import { Bot } from '@okampus/api/dal';
+import type { IBot } from '@okampus/shared/dtos';
 // import { loadBot } from '../loader.utils';
 // eslint-disable-next-line import/no-cycle
 import { BaseFactory } from '../../base.factory';

@@ -1,9 +1,9 @@
 import { Entity, Enum, ManyToOne } from '@mikro-orm/core';
 import { InteractionKind } from '@okampus/shared/enums';
-import { Ugc } from '../ugc/ugc.entity';
-import { Actor } from '../actor/actor.entity';
-import { ContentMaster } from '../content-master/content-master.entity';
-import { InteractionOptions } from './interaction.options';
+import type { Ugc } from '../ugc/ugc.entity';
+import type { Actor } from '../actor/actor.entity';
+import type { ContentMaster } from '../content-master/content-master.entity';
+import type { InteractionOptions } from './interaction.options';
 import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 
 @Entity({

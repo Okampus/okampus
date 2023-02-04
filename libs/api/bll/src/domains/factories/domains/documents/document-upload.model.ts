@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IDocumentUpload } from '@okampus/shared/dtos';
+import type { IDocumentUpload } from '@okampus/shared/dtos';
 import { DocumentUploadType, FileUploadKind } from '@okampus/shared/enums';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle

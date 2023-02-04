@@ -1,5 +1,5 @@
 import { Field, InputType, IntersectionType } from '@nestjs/graphql';
-import { Snowflake } from '@okampus/shared/types';
+import type { Snowflake } from '@okampus/shared/types';
 import { IsOptional, IsString } from 'class-validator';
 import { ActorProps } from '../../actor/actor.props';
 import { TeamProps } from './team.props';

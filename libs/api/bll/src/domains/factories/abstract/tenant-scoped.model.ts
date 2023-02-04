@@ -1,5 +1,5 @@
 import { Field, InterfaceType, ObjectType } from '@nestjs/graphql';
-import { ITenantCore, ITenantScoped } from '@okampus/shared/dtos';
+import type { ITenantCore, ITenantScoped } from '@okampus/shared/dtos';
 import { BaseModel } from './base.model';
 import { TenantCoreModel } from './tenant-core.model';
 

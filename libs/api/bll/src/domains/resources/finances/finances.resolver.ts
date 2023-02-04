@@ -1,8 +1,8 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
-import { CreateFinanceDto, UpdateFinanceDto } from '@okampus/shared/dtos';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { MulterFileType, Snowflake } from '@okampus/shared/types';
-import { FinancesService } from './finances.service';
+import type { CreateFinanceDto, UpdateFinanceDto } from '@okampus/shared/dtos';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { FinancesService } from './finances.service';
 import { FinanceModel, PaginatedFinanceModel } from '../../factories/domains/teams/finance.model';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 

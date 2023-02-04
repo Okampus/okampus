@@ -1,13 +1,13 @@
-import { EntityManager } from '@mikro-orm/core';
+import type { EntityManager } from '@mikro-orm/core';
 import type { EntityName, EventArgs, EventSubscriber } from '@mikro-orm/core';
 import { Injectable } from '@nestjs/common';
-import MeiliSearch from 'meilisearch';
+import type MeiliSearch from 'meilisearch';
 import { InjectMeiliSearch } from 'nestjs-meilisearch';
 // import { config } from '@api/configs/config';
 // import type { RequiredProp } from '@api/shards/types/types/required-prop.type';
 import type { IndexableEntities } from './meilisearch-indexer.service';
 import { MeiliSearchIndexerService } from './meilisearch-indexer.service';
-import { RequiredProp } from '@okampus/shared/types';
+import type { RequiredProp } from '@okampus/shared/types';
 
 const _isValid = (
   args: EventArgs<IndexableEntities>

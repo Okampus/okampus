@@ -1,11 +1,11 @@
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Entity, ManyToOne, Property } from '@mikro-orm/core';
-import { Team } from '../../org/team/team.entity';
-import { TeamMember } from '../../membership/team-member/team-member.entity';
-import { Individual } from '../../actor/individual/individual.entity';
-import { User } from '../../actor/user/user.entity';
+import type { Team } from '../../org/team/team.entity';
+import type { TeamMember } from '../../membership/team-member/team-member.entity';
+import type { Individual } from '../../actor/individual/individual.entity';
+import type { User } from '../../actor/user/user.entity';
 import type { TenantEvent } from '../../content-master/event/event.entity';
-import { TeamActionOptions } from './team-action.options';
+import type { TeamActionOptions } from './team-action.options';
 import type { Project } from '../project/project.entity';
 
 @Entity()

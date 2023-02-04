@@ -1,7 +1,6 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
-  EventApprovalStep,
+import type {
   EventApprovalStepOptions,
   EventApprovalStepRepository,
   Individual,
@@ -10,9 +9,11 @@ import {
   TenantCore,
   TenantRepository,
   User,
-  UserRepository,
+  UserRepository} from '@okampus/api/dal';
+import {
+  EventApprovalStep
 } from '@okampus/api/dal';
-import { CreateEventApprovalStepDto, IEventApprovalStep } from '@okampus/shared/dtos';
+import type { CreateEventApprovalStepDto, IEventApprovalStep } from '@okampus/shared/dtos';
 // import { loadEventApprovalStep } from '../loader.utils';
 // eslint-disable-next-line import/no-cycle
 import { BaseFactory } from '../../base.factory';

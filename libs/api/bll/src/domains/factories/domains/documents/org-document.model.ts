@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { TenantCore } from '@okampus/api/dal';
-import { IOrg, IOrgDocument, ITenantDocument } from '@okampus/shared/dtos';
+import type { TenantCore } from '@okampus/api/dal';
+import type { IOrg, IOrgDocument, ITenantDocument } from '@okampus/shared/dtos';
 import { OrgDocumentType } from '@okampus/shared/enums';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle

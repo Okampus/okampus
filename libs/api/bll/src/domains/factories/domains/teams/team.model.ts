@@ -1,5 +1,5 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
-import { IFinance, IForm, ITeam, ITeamCategory, ITeamMember } from '@okampus/shared/dtos';
+import type { IFinance, IForm, ITeam, ITeamCategory, ITeamMember } from '@okampus/shared/dtos';
 import { OrgKind, TeamType } from '@okampus/shared/enums';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle

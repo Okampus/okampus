@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IEventApprovalStep, IForm, ITenant } from '@okampus/shared/dtos';
+import type { IEventApprovalStep, IForm, ITenant } from '@okampus/shared/dtos';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle
 import { OrgModel } from '../../abstract/org.model';

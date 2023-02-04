@@ -1,9 +1,9 @@
 import { Entity, ManyToOne, Property } from '@mikro-orm/core';
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { JSONObject } from '@okampus/shared/types';
-import { FormEditOptions } from './form-edit.options';
-import { Form } from '../form/form.entity';
-import { Individual } from '../../actor/individual/individual.entity';
+import type { JSONObject } from '@okampus/shared/types';
+import type { FormEditOptions } from './form-edit.options';
+import type { Form } from '../form/form.entity';
+import type { Individual } from '../../actor/individual/individual.entity';
 
 @Entity()
 export class FormEdit extends TenantScopedEntity {

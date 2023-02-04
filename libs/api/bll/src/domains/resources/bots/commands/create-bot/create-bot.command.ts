@@ -1,5 +1,5 @@
-import { CreateBotDto } from '@okampus/shared/dtos';
-import { TenantCore } from '@okampus/api/dal';
+import type { CreateBotDto } from '@okampus/shared/dtos';
+import type { TenantCore } from '@okampus/api/dal';
 
 export class CreateBotCommand {
   constructor(public readonly createBot: CreateBotDto, public readonly tenant: TenantCore) {}

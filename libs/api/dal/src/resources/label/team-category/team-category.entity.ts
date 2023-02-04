@@ -1,6 +1,6 @@
 import { Collection, Entity, ManyToMany } from '@mikro-orm/core';
-import { TeamCategoryOptions } from './team-category.options';
-// eslint-disable-next-line import/no-cycle
+import type { TeamCategoryOptions } from './team-category.options';
+
 import { TeamCategoryRepository } from './team-category.repository';
 import { Tag } from '../tag/tag.entity';
 import { TransformCollection } from '@okampus/api/shards';

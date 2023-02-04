@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateOrgDocumentDto } from '@okampus/shared/dtos';
-import { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { CreateOrgDocumentDto } from '@okampus/shared/dtos';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 import { RequestContext } from '../../../shards/request-context/request-context';
-import { OrgDocumentModel } from '../../factories/domains/documents/org-document.model';
+import type { OrgDocumentModel } from '../../factories/domains/documents/org-document.model';
 import { CreateOrgDocumentCommand } from './commands/create-org-document/create-org-document.command';
 
 @Injectable()

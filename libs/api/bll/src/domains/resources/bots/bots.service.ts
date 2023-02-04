@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateBotDto, UpdateDocumentDto } from '@okampus/shared/dtos';
-import { Snowflake } from '@okampus/shared/types';
+import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { CreateBotDto, UpdateDocumentDto } from '@okampus/shared/dtos';
+import type { Snowflake } from '@okampus/shared/types';
 import { RequestContext } from '../../../shards/request-context/request-context';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { PaginatedBotModel, BotModel } from '../../factories/domains/bots/bot.model';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { PaginatedBotModel, BotModel } from '../../factories/domains/bots/bot.model';
 import { CreateBotCommand } from './commands/create-bot/create-bot.command';
 import { DeleteBotCommand } from './commands/delete-bot/delete-bot.command';
 import { UpdateBotCommand } from './commands/update-bot/update-bot.command';

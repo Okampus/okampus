@@ -1,7 +1,7 @@
 import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
 import { Org } from '../org.entity';
 import { OrgKind } from '@okampus/shared/enums';
-import { CanteenOptions } from './canteen.options';
+import type { CanteenOptions } from './canteen.options';
 import type { CanteenMember } from '../../membership/canteen-member/canteen-member.entity';
 import { TransformCollection } from '@okampus/api/shards';
 

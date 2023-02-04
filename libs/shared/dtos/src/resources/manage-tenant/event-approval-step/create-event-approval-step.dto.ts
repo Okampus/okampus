@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { Snowflake } from '@okampus/shared/types';
+import type { Snowflake } from '@okampus/shared/types';
 import { IsArray, IsString } from 'class-validator';
 import { EventApprovalStepProps } from './event-approval-step.props';
 

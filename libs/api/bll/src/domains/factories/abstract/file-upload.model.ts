@@ -1,5 +1,5 @@
-import { Field, GraphQLISODateTime, Int, InterfaceType, ObjectType } from '@nestjs/graphql';
-import { IFileUpload, IIndividual, ITenantCore } from '@okampus/shared/dtos';
+import { Field, GraphQLISODateTime, Int, InterfaceType } from '@nestjs/graphql';
+import type { IFileUpload, IIndividual, ITenantCore } from '@okampus/shared/dtos';
 import { FileUploadKind } from '@okampus/shared/enums';
 import { IndividualModel } from './individual.model';
 // eslint-disable-next-line import/no-cycle

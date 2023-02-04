@@ -1,7 +1,8 @@
 import { Entity, Enum, Index, Property } from '@mikro-orm/core';
-import { ReactionType, InteractionKind, ValidationType } from '@okampus/shared/enums';
+import type { ValidationType } from '@okampus/shared/enums';
+import { ReactionType, InteractionKind } from '@okampus/shared/enums';
 import { Interaction } from '../interaction.entity';
-import { ReportOptions } from '../report/report.options';
+import type { ReportOptions } from '../report/report.options';
 
 @Entity()
 export class Reaction extends Interaction {

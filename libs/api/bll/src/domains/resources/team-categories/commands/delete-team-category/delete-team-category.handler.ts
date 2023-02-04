@@ -1,5 +1,6 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { TeamCategoryFactory } from '../../../../factories/domains/tags/team-category.factory';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { TeamCategoryFactory } from '../../../../factories/domains/tags/team-category.factory';
 import { DeleteTeamCategoryCommand } from './delete-team-category.command';
 
 @CommandHandler(DeleteTeamCategoryCommand)

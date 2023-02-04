@@ -1,7 +1,8 @@
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { AppAbility, createAbilitiesForIndividual } from './casl/get-abilities';
+import type { Reflector } from '@nestjs/core';
+import type { AppAbility} from './casl/get-abilities';
+import { createAbilitiesForIndividual } from './casl/get-abilities';
 import { CHECK_POLICIES_KEY } from './check-policies.decorator';
 import type { PolicyHandler } from './types/policy-handler.type';
 import { requestContext } from '@fastify/request-context';

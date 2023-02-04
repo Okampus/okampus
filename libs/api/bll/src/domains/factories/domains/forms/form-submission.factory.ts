@@ -1,16 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
+import type {
   ContentMaster,
   Form,
-  FormSubmission,
   FormSubmissionOptions,
   FormSubmissionRepository,
   Individual,
   Org,
-  TenantCore,
+  TenantCore} from '@okampus/api/dal';
+import {
+  FormSubmission
 } from '@okampus/api/dal';
-import { IFormSubmission } from '@okampus/shared/dtos';
+import type { IFormSubmission } from '@okampus/shared/dtos';
 // import { loadFormSubmission } from '../loader.utils';
 import { BaseFactory } from '../../base.factory';
 import { FormSubmissionModel } from './form-submission.model';

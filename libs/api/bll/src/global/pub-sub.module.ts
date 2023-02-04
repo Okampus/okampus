@@ -1,6 +1,7 @@
 import { Global, Injectable, Module } from '@nestjs/common';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
-import { ConfigModule, ConfigService } from './config.module';
+import type { ConfigService } from './config.module';
+import { ConfigModule } from './config.module';
 
 @Injectable()
 export class PubSubService {

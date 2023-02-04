@@ -3,7 +3,7 @@ import { IsBoolean, IsDate, IsEnum, IsNumber, IsObject, IsOptional, IsString } f
 import { Address } from '../../../embeds/address.embed';
 import { EventState } from '@okampus/shared/enums';
 import { GraphQLJSON } from 'graphql-scalars';
-import { JSONObject } from '@okampus/shared/types';
+import type { JSONObject } from '@okampus/shared/types';
 import { Type } from 'class-transformer';
 
 @InputType()

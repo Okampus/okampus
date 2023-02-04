@@ -1,4 +1,4 @@
-import { TokenType } from '@okampus/shared/enums';
+import type { TokenType } from '@okampus/shared/enums';
 
 export type ApiConfig = {
   readonly nodeEnv: string;

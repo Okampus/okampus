@@ -1,16 +1,17 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { TenantPublic } from '@okampus/api/shards';
-import { Individual, User } from '@okampus/api/dal';
-import { UsersService } from '../../../domains/resources/users/users.service';
+import type { Individual} from '@okampus/api/dal';
+import { User } from '@okampus/api/dal';
+import type { UsersService } from '../../../domains/resources/users/users.service';
 import { Requester } from '../../../shards/request-context/requester.decorator';
 import { UserModel } from '../../../domains/factories/domains/users/user.model';
-import { AuthService } from './auth.service';
+import type { AuthService } from './auth.service';
 import { AuthContextModel } from './auth-context.model';
 import { UnauthorizedException } from '@nestjs/common';
-import { ConfigService } from '../../../global/config.module';
+import type { ConfigService } from '../../../global/config.module';
 import { TokenType } from '@okampus/shared/enums';
-import { ApiConfig } from '@okampus/shared/types';
+import type { ApiConfig } from '@okampus/shared/types';
 
 interface GraphQLContext {
   req: FastifyRequest;

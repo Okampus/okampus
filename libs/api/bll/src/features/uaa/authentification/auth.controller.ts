@@ -1,16 +1,16 @@
 import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { User } from '@okampus/api/dal';
+import type { User } from '@okampus/api/dal';
 import { Public, TenantPublic } from '@okampus/api/shards';
 import { TokenType } from '@okampus/shared/enums';
-import { ApiConfig, Snowflake } from '@okampus/shared/types';
+import type { ApiConfig, Snowflake } from '@okampus/shared/types';
 import { referenceRemover } from '@okampus/shared/utils';
-import { FastifyReply, FastifyRequest } from 'fastify';
-import { ConfigService } from '../../../global/config.module';
+import type { FastifyReply, FastifyRequest } from 'fastify';
+import type { ConfigService } from '../../../global/config.module';
 import { Requester } from '../../../shards/request-context/requester.decorator';
-import { AuthContextModel } from './auth-context.model';
-import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
+import type { AuthContextModel } from './auth-context.model';
+import type { AuthService } from './auth.service';
+import type { LoginDto } from './dto/login.dto';
 // import { RegisterDto } from './dto/register.dto';
 
 // TODO: manage sessions and revokable refresh tokens

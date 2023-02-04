@@ -1,21 +1,23 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
-  OrgDocument,
+import type {
   OrgDocumentOptions,
   OrgDocumentRepository,
   TenantCore,
-  TenantDocument,
   Org,
-  OrgRepository,
+  OrgRepository} from '@okampus/api/dal';
+import {
+  OrgDocument,
+  TenantDocument
 } from '@okampus/api/dal';
 // eslint-disable-next-line import/no-cycle
 import { BaseFactory } from '../../base.factory';
-import { S3Buckets, DocumentKind, OrgDocumentType } from '@okampus/shared/enums';
+import type { OrgDocumentType } from '@okampus/shared/enums';
+import { S3Buckets, DocumentKind } from '@okampus/shared/enums';
 import { addDocumentEditToDocument } from '../../abstract.utils';
-import { UploadService } from '../../../../features/uploads/upload.service';
-import { MulterFileType, Snowflake } from '@okampus/shared/types';
-import { CreateDocumentDto, CreateOrgDocumentDto, IOrgDocument } from '@okampus/shared/dtos';
+import type { UploadService } from '../../../../features/uploads/upload.service';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { CreateDocumentDto, CreateOrgDocumentDto, IOrgDocument } from '@okampus/shared/dtos';
 import { OrgDocumentModel } from './org-document.model';
 // import { loadOrgDocument } from '../loader.utils';
 

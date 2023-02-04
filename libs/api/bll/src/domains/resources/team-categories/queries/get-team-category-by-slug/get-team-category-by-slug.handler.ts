@@ -1,6 +1,7 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { TeamCategoryFactory } from '../../../../factories/domains/tags/team-category.factory';
-import { TeamCategoryModel } from '../../../../factories/domains/tags/team-category.model';
+import type { IQueryHandler} from '@nestjs/cqrs';
+import { QueryHandler } from '@nestjs/cqrs';
+import type { TeamCategoryFactory } from '../../../../factories/domains/tags/team-category.factory';
+import type { TeamCategoryModel } from '../../../../factories/domains/tags/team-category.model';
 import { GetTeamCategoryBySlugQuery } from './get-team-category-by-slug.query';
 
 @QueryHandler(GetTeamCategoryBySlugQuery)

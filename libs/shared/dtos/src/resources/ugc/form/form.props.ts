@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
 import { FormType } from '@okampus/shared/enums';
-import { JSONObject } from '@okampus/shared/types';
+import type { JSONObject } from '@okampus/shared/types';
 import { IsBoolean, IsEnum, IsOptional, IsString, Length } from 'class-validator';
 import { IsFormKitSchema } from '../../../validators/formkit-schema.validator';
 

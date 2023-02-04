@@ -1,10 +1,10 @@
 import { Entity, Enum, ManyToOne } from '@mikro-orm/core';
 import { RoleKind, TeamRoleCategory, TeamRoleKey } from '@okampus/shared/enums';
-import { TeamPermissions } from '@okampus/shared/enums';
-import { TeamRoleOptions } from './team-role.options';
+import type { TeamPermissions } from '@okampus/shared/enums';
+import type { TeamRoleOptions } from './team-role.options';
 import { Role } from '../role.entity';
-import { Team } from '../../org/team/team.entity';
-// eslint-disable-next-line import/no-cycle
+import type { Team } from '../../org/team/team.entity';
+
 import { TeamRoleRepository } from './team-role.repository';
 
 @Entity({ customRepository: () => TeamRoleRepository })

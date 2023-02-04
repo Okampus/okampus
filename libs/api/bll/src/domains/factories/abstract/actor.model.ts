@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IActor, IActorImage, IBot, ISocial, ITag, ITeam, ITenant, ITenantCore, IUser } from '@okampus/shared/dtos';
+import type { IActor, IActorImage, IBot, ISocial, ITag, ITeam, ITenant, ITenantCore, IUser } from '@okampus/shared/dtos';
 import { ActorKind } from '@okampus/shared/enums';
 // eslint-disable-next-line import/no-cycle
 import { ActorImageModel } from '../domains/images/actor-image.model';

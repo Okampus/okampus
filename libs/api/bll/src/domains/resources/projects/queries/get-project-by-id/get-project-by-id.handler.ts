@@ -1,6 +1,7 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { ProjectFactory } from '../../../../factories/domains/teams/project.factory';
-import { ProjectModel } from '../../../../factories/domains/teams/project.model';
+import type { IQueryHandler} from '@nestjs/cqrs';
+import { QueryHandler } from '@nestjs/cqrs';
+import type { ProjectFactory } from '../../../../factories/domains/teams/project.factory';
+import type { ProjectModel } from '../../../../factories/domains/teams/project.model';
 import { GetProjectByIdQuery } from './get-project-by-id.query';
 
 @QueryHandler(GetProjectByIdQuery)

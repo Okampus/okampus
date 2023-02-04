@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { ITeam, ITeamAction, ITeamMember, ITenantCore, ITenantEvent, IUser } from '@okampus/shared/dtos';
+import type { ITeam, ITeamAction, ITeamMember, ITenantCore, ITenantEvent, IUser } from '@okampus/shared/dtos';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 // eslint-disable-next-line import/no-cycle

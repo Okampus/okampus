@@ -1,7 +1,11 @@
-import { createMongoAbility as createAbility, ExtractSubjectType, InferSubjects } from '@casl/ability';
-import { MongoAbility as CaslAbility, AbilityBuilder, ForbiddenError } from '@casl/ability';
-import {
+import type { ExtractSubjectType, InferSubjects } from '@casl/ability';
+import { createMongoAbility as createAbility } from '@casl/ability';
+import type { MongoAbility as CaslAbility} from '@casl/ability';
+import { AbilityBuilder, ForbiddenError } from '@casl/ability';
+import type {
   allEntities,
+  User} from '@okampus/api/dal';
+import {
   Bot,
   Content,
   DocumentUpload,
@@ -20,8 +24,7 @@ import {
   Subject,
   Tag,
   Team,
-  Tenant,
-  User,
+  Tenant
 } from '@okampus/api/dal';
 import { Action, IndividualKind, RoleType } from '@okampus/shared/enums';
 

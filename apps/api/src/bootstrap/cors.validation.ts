@@ -1,5 +1,5 @@
 import { config } from '../../configs/config';
-import { OriginFunction } from '@fastify/cors';
+import type { OriginFunction } from '@fastify/cors';
 
 export const corsValidation: OriginFunction = (origin, cb) => {
   if (config.env.isProd()) {

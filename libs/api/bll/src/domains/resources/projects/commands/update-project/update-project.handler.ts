@@ -1,6 +1,7 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ProjectFactory } from '../../../../factories/domains/teams/project.factory';
-import { ProjectModel } from '../../../../factories/domains/teams/project.model';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { ProjectFactory } from '../../../../factories/domains/teams/project.factory';
+import type { ProjectModel } from '../../../../factories/domains/teams/project.model';
 import { UpdateProjectCommand } from './update-project.command';
 
 @CommandHandler(UpdateProjectCommand)

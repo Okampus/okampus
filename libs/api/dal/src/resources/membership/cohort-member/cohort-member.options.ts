@@ -1,4 +1,4 @@
-import { CohortMemberProps } from '@okampus/shared/dtos';
-import { MembershipOptions } from '../membership.options';
+import type { CohortMemberProps } from '@okampus/shared/dtos';
+import type { MembershipOptions } from '../membership.options';
 
 export type CohortMemberOptions = CohortMemberProps & MembershipOptions;

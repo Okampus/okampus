@@ -1,5 +1,5 @@
 import { Field, InterfaceType } from '@nestjs/graphql';
-import { IFormSubmission, IIndividual, IJoin, ITenantCore, IUser } from '@okampus/shared/dtos';
+import type { IFormSubmission, IIndividual, IJoin, ITenantCore, IUser } from '@okampus/shared/dtos';
 import { JoinKind, JoinState } from '@okampus/shared/enums';
 import { FormSubmissionModel } from '../domains/forms/form-submission.model';
 import { UserModel } from '../domains/users/user.model';

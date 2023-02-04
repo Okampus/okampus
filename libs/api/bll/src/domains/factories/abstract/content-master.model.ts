@@ -1,5 +1,5 @@
 import { Field, InterfaceType } from '@nestjs/graphql';
-import { IContentMaster, IIndividual, ITag, ITenantCore, IUgc } from '@okampus/shared/dtos';
+import type { IContentMaster, IIndividual, ITag, ITenantCore, IUgc } from '@okampus/shared/dtos';
 import { ContentMasterKind } from '@okampus/shared/enums';
 import { TagModel } from '../domains/tags/tag.model';
 import { IndividualModel } from './individual.model';

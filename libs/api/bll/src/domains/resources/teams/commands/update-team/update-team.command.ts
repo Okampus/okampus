@@ -1,5 +1,5 @@
-import { UpdateTeamDto } from '@okampus/shared/dtos';
-import { TenantCore } from '@okampus/api/dal';
+import type { UpdateTeamDto } from '@okampus/shared/dtos';
+import type { TenantCore } from '@okampus/api/dal';
 
 export class UpdateTeamCommand {
   constructor(

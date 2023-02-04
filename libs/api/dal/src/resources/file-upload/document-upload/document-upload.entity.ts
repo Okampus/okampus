@@ -1,8 +1,8 @@
 import { Entity, Enum, Property } from '@mikro-orm/core';
 import { FileUpload } from '../file-upload.entity';
 import { DocumentUploadType, FileUploadKind } from '@okampus/shared/enums';
-import { DocumentUploadOptions } from './document-upload.options';
-// eslint-disable-next-line import/no-cycle
+import type { DocumentUploadOptions } from './document-upload.options';
+
 import { DocumentUploadRepository } from './document-upload.repository';
 
 @Entity({

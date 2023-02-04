@@ -1,10 +1,9 @@
 import { Entity, Enum, Property } from '@mikro-orm/core';
 import { UgcKind } from '@okampus/shared/enums';
-import { JSONObject } from '@okampus/shared/types';
+import type { JSONObject } from '@okampus/shared/types';
 import { Ugc } from '../ugc.entity';
 import { FormType } from '@okampus/shared/enums';
-import { FormOptions } from './form.options';
-// eslint-disable-next-line import/no-cycle
+import type { FormOptions } from './form.options';
 import { FormRepository } from './form.repository';
 
 @Entity({

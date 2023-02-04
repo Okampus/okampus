@@ -1,6 +1,7 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
-import { TenantEventModel } from '../../../../factories/domains/events/event.model';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
+import type { TenantEventModel } from '../../../../factories/domains/events/event.model';
 import { UpdateEventCommand } from './update-event.command';
 
 @CommandHandler(UpdateEventCommand)

@@ -1,5 +1,5 @@
-import { IRole } from '../role.interface';
-import { CanteenRoleProps } from './canteen-role.props';
+import type { IRole } from '../role.interface';
+import type { CanteenRoleProps } from './canteen-role.props';
 
 export type ICanteenRole = IRole &
   CanteenRoleProps & {

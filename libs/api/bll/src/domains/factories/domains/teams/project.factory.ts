@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
+import type {
   TenantCore,
-  Project,
   ProjectRepository,
   ProjectOptions,
   Individual,
@@ -11,9 +10,11 @@ import {
   TenantEvent,
   TeamRepository,
   TenantEventRepository,
-  UserRepository,
+  UserRepository} from '@okampus/api/dal';
+import {
+  Project
 } from '@okampus/api/dal';
-import { CreateProjectDto, IProject } from '@okampus/shared/dtos';
+import type { CreateProjectDto, IProject } from '@okampus/shared/dtos';
 // import { loadProject } from '../loader.utils';
 import { BaseFactory } from '../../base.factory';
 import { ProjectModel } from './project.model';

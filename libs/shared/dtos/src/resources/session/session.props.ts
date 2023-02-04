@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { IsEnum, IsObject, IsString } from 'class-validator';
 import { SessionClientType } from '@okampus/shared/enums';
 import { GraphQLJSON } from 'graphql-scalars';
-import { JSONObject } from '@okampus/shared/types';
+import type { JSONObject } from '@okampus/shared/types';
 
 @InputType()
 export class SessionProps {

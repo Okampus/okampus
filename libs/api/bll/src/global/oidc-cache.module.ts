@@ -1,6 +1,6 @@
 import type { Strategy } from 'openid-client';
 import { Global, Injectable, Module } from '@nestjs/common';
-import { User } from '@okampus/api/dal';
+import type { User } from '@okampus/api/dal';
 
 @Injectable()
 export class OIDCCacheService {

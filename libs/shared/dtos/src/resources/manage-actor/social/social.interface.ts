@@ -1,6 +1,6 @@
-import { IActor } from '../../actor/actor.interface';
-import { ITenantScoped } from '../../tenant-scoped.interface';
-import { SocialProps } from './social.props';
+import type { IActor } from '../../actor/actor.interface';
+import type { ITenantScoped } from '../../tenant-scoped.interface';
+import type { SocialProps } from './social.props';
 
 export type ISocial = ITenantScoped &
   SocialProps & {

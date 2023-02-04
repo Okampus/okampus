@@ -1,5 +1,5 @@
 import type { RedisModuleOptions } from '@liaoliaots/nestjs-redis';
-import { RedisConnectionConfig } from '@okampus/shared/types';
+import type { RedisConnectionConfig } from '@okampus/shared/types';
 import { config } from './config';
 
 export const redisConnectionOptions: RedisConnectionConfig = {

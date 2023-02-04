@@ -1,4 +1,4 @@
-import { ApolloError } from '@apollo/client';
+import type { ApolloError } from '@apollo/client';
 
 export function parseGraphqlError(error: ApolloError | undefined) {
   if (!error) {

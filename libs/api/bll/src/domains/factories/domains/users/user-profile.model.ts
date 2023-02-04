@@ -1,7 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import {
+import type {
   ITenantCore,
-  IUserProfile,
+  IUserProfile} from '@okampus/shared/dtos';
+import {
   UserCustomization,
   UserNotificationSettings,
   UserSettings,

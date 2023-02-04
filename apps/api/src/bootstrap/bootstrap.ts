@@ -3,7 +3,8 @@ import './graphql/enums.register';
 
 import { MAX_FILES, MAX_FILE_SIZE } from '@okampus/shared/consts';
 
-import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
+import type { INestApplication} from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { config } from '../../configs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { processRequest } from 'graphql-upload-minimal';
@@ -12,7 +13,8 @@ import { isFileUpload } from '@okampus/shared/utils';
 import * as SentryTracing from '@sentry/tracing';
 
 import { NestFactory } from '@nestjs/core';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import type { NestFastifyApplication } from '@nestjs/platform-fastify';
+import { FastifyAdapter } from '@nestjs/platform-fastify';
 
 import { AppModule } from '../app.module';
 import { OIDCCacheService, tenantStrategyFactory, UsersService } from '@okampus/api/bll';
@@ -20,20 +22,21 @@ import { OIDCCacheService, tenantStrategyFactory, UsersService } from '@okampus/
 import { corsValidation } from './cors.validation';
 
 import fastify from 'fastify';
-import { FastifyRequest } from 'fastify/types/request';
-import { FastifyReply } from 'fastify/types/reply';
+import type { FastifyRequest } from 'fastify/types/request';
+import type { FastifyReply } from 'fastify/types/reply';
 
 import * as fastifyMulter from 'fastify-multer';
 import fastifyCookie from '@fastify/cookie';
 import fastifySecureSession from '@fastify/secure-session';
 import fastifyRequestContext from '@fastify/request-context';
 
-import fastifyPassport, { Strategy } from '@fastify/passport';
+import type { Strategy } from '@fastify/passport';
+import fastifyPassport from '@fastify/passport';
 import fastifyCors from '@fastify/cors';
 import { Issuer } from 'openid-client';
 import helmet from 'helmet';
 import path from 'node:path';
-import { Snowflake } from '@okampus/shared/types';
+import type { Snowflake } from '@okampus/shared/types';
 import { TenantCoreRepository } from '@okampus/api/dal';
 
 const logger = new Logger('Bootstrap');

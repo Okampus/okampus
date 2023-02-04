@@ -6,13 +6,13 @@ import { randomFromArrayWithRemainder } from '@okampus/shared/utils';
 import { hash } from 'argon2';
 import { randomInt } from 'node:crypto';
 import { clubDefaultRoles } from '../../defaults/default-team-roles';
-import { Individual } from '../../resources/actor/individual/individual.entity';
+import type { Individual } from '../../resources/actor/individual/individual.entity';
 import { Shortcut } from '../../resources/actor/shortcut/shortcut.entity';
-import { User } from '../../resources/actor/user/user.entity';
+import type { User } from '../../resources/actor/user/user.entity';
 // import { EventJoin } from '../../resources/join/event-join/event-join.entity';
-import { EventApprovalStep } from '../../resources/manage-tenant/event-approval-step/event-approval-step.entity';
+import type { EventApprovalStep } from '../../resources/manage-tenant/event-approval-step/event-approval-step.entity';
 import { TeamMember } from '../../resources/membership/team-member/team-member.entity';
-import { Team } from '../../resources/org/team/team.entity';
+import type { Team } from '../../resources/org/team/team.entity';
 import { Tenant } from '../../resources/org/tenant/tenant.entity';
 import { TeamRole } from '../../resources/role/team-role/team-role.entity';
 import { EventApprovalStepSeeder } from './factories/approval-step.seeder';
@@ -133,7 +133,7 @@ export class DatabaseSeeder extends Seeder {
 
     for (const team of teams) {
       const N_MEMBERS = randomInt(seedingConfig.MIN_MEMBERS, MAX_MEMBERS);
-      const MAX_REQUESTERS = Math.min(students.length - 4 - N_MEMBERS, seedingConfig.MAX_REQUESTS);
+      // const MAX_REQUESTERS = Math.min(students.length - 4 - N_MEMBERS, seedingConfig.MAX_REQUESTS);
       // const N_REQUESTERS = randomInt(seedingConfig.MIN_REQUESTS, MAX_REQUESTERS);
 
       const roles = clubDefaultRoles.map((role) => new TeamRole({ ...role, team, tenant: team.tenant }));
@@ -147,7 +147,10 @@ export class DatabaseSeeder extends Seeder {
       const [managers, rest] = randomFromArrayWithRemainder(students, 4);
       const [president, treasurer, secretary, manager] = managers;
 
-      const [members, others] = randomFromArrayWithRemainder(rest, N_MEMBERS);
+      const [
+        members,
+        // others
+      ] = randomFromArrayWithRemainder(rest, N_MEMBERS);
 
       const teamMembers = [
         createTeamMember(em, team, president, [roles[0]]),

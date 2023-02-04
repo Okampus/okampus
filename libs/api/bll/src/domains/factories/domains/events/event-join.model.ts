@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IEventJoin, ITeamAction, ITenantEvent } from '@okampus/shared/dtos';
+import type { IEventJoin, ITeamAction, ITenantEvent } from '@okampus/shared/dtos';
 import { RegistrationStatus } from '@okampus/shared/enums';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { JoinModel } from '../../abstract/join.model';

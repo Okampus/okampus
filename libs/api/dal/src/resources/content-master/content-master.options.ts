@@ -1,5 +1,5 @@
-import { ContentMasterProps } from '@okampus/shared/dtos';
-import { TaggableOptions } from '../../shards/abstract/taggable/taggable.options';
+import type { ContentMasterProps } from '@okampus/shared/dtos';
+import type { TaggableOptions } from '../../shards/abstract/taggable/taggable.options';
 import type { Individual } from '../actor/individual/individual.entity';
 import type { Ugc } from '../ugc/ugc.entity';
 

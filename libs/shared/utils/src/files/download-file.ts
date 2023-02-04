@@ -1,4 +1,4 @@
-import { FileLike } from '@okampus/shared/types';
+import type { FileLike } from '@okampus/shared/types';
 
 export const getObjectUrl = (blob: Blob) => URL.createObjectURL(blob);
 

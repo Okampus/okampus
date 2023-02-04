@@ -1,10 +1,10 @@
 import { Collection, Entity, ManyToMany, ManyToOne, Property } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
 import { UgcKind } from '@okampus/shared/enums';
-import { FileUpload } from '../../file-upload/file-upload.entity';
+import type { FileUpload } from '../../file-upload/file-upload.entity';
 import { Ugc } from '../ugc.entity';
-import { ContentOptions } from './content.options';
-// eslint-disable-next-line import/no-cycle
+import type { ContentOptions } from './content.options';
+
 import { ContentRepository } from './content.repository';
 
 @Entity({

@@ -1,6 +1,6 @@
 import { Field, InputType, IntersectionType } from '@nestjs/graphql';
 import { IsFormKitSchema } from '../../../../validators/formkit-schema.validator';
-import { JSONObject } from '@okampus/shared/types';
+import type { JSONObject } from '@okampus/shared/types';
 import { IsOptional } from 'class-validator';
 import { GraphQLJSON } from 'graphql-scalars';
 import { ActorProps } from '../../../actor/actor.props';

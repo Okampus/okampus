@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { ITeam, ITeamRole } from '@okampus/shared/dtos';
+import type { ITeam, ITeamRole } from '@okampus/shared/dtos';
 import { TeamPermissions, TeamRoleCategory } from '@okampus/shared/enums';
 // eslint-disable-next-line import/no-cycle
 import { TeamModel } from '../teams/team.model';

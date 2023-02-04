@@ -1,15 +1,15 @@
 import { Cascade, Collection, Entity, Enum, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
-import { UgcOptions } from './ugc.options';
+import type { UgcOptions } from './ugc.options';
 import { UgcKind } from '@okampus/shared/enums';
 import type { Reaction } from '../interaction/reaction/reaction.entity';
 import type { Report } from '../interaction/report/report.entity';
 import type { Vote } from '../interaction/vote/vote.entity';
 import type { Favorite } from '../interaction/favorite/favorite.entity';
 import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { Individual } from '../actor/individual/individual.entity';
+import type { Individual } from '../actor/individual/individual.entity';
 import type { ContentMaster } from '../content-master/content-master.entity';
 import { TransformCollection } from '@okampus/api/shards';
-import { Org } from '../org/org.entity';
+import type { Org } from '../org/org.entity';
 
 @Entity({
   discriminatorColumn: 'ugcKind',

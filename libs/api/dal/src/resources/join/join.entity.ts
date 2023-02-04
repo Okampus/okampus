@@ -1,11 +1,11 @@
 import { Entity, Enum, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
 import { JoinKind } from '@okampus/shared/enums';
 import { JoinState } from '@okampus/shared/enums';
-import { JoinOptions } from './join.options';
-import { Individual } from '../actor/individual/individual.entity';
+import type { JoinOptions } from './join.options';
+import type { Individual } from '../actor/individual/individual.entity';
 import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { FormSubmission } from '../ugc/form-submission/form-submission.entity';
-import { User } from '../actor/user/user.entity';
+import type { FormSubmission } from '../ugc/form-submission/form-submission.entity';
+import type { User } from '../actor/user/user.entity';
 
 @Entity({
   discriminatorColumn: 'joinKind',

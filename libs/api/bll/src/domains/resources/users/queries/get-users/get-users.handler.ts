@@ -1,6 +1,7 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { UserFactory } from '../../../../factories/domains/users/user.factory';
-import { PaginatedUserModel } from '../../../../factories/domains/users/user.model';
+import type { IQueryHandler} from '@nestjs/cqrs';
+import { QueryHandler } from '@nestjs/cqrs';
+import type { UserFactory } from '../../../../factories/domains/users/user.factory';
+import type { PaginatedUserModel } from '../../../../factories/domains/users/user.model';
 import { GetUsersQuery } from './get-users.query';
 
 @QueryHandler(GetUsersQuery)

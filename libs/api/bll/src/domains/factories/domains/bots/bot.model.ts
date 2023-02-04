@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IActor, IBot } from '@okampus/shared/dtos';
+import type { IActor, IBot } from '@okampus/shared/dtos';
 import { BotRole, IndividualKind } from '@okampus/shared/enums';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle

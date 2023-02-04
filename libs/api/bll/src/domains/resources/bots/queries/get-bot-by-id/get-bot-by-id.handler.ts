@@ -1,6 +1,7 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { BotFactory } from '../../../../factories/domains/bots/bot.factory';
-import { BotModel } from '../../../../factories/domains/bots/bot.model';
+import type { IQueryHandler} from '@nestjs/cqrs';
+import { QueryHandler } from '@nestjs/cqrs';
+import type { BotFactory } from '../../../../factories/domains/bots/bot.factory';
+import type { BotModel } from '../../../../factories/domains/bots/bot.model';
 import { GetBotByIdQuery } from './get-bot-by-id.query';
 
 @QueryHandler(GetBotByIdQuery)

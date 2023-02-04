@@ -1,8 +1,8 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
-import { CreateProjectDto, UpdateProjectDto } from '@okampus/shared/dtos';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { Snowflake } from '@okampus/shared/types';
-import { ProjectsService } from './projects.service';
+import type { CreateProjectDto, UpdateProjectDto } from '@okampus/shared/dtos';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { Snowflake } from '@okampus/shared/types';
+import type { ProjectsService } from './projects.service';
 import { ProjectModel, PaginatedProjectModel } from '../../factories/domains/teams/project.model';
 
 @Resolver(() => ProjectModel)

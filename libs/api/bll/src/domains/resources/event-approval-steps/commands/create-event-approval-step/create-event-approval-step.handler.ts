@@ -1,8 +1,9 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { TenantCore } from '@okampus/api/dal';
-import { EventApprovalStepFactory } from '../../../../factories/domains/events/event-approval-step.factory';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { TenantCore } from '@okampus/api/dal';
+import type { EventApprovalStepFactory } from '../../../../factories/domains/events/event-approval-step.factory';
 import { CreateEventApprovalStepCommand } from './create-event-approval-step.command';
-import { EventApprovalStepModel } from '../../../../factories/domains/events/event-approval-step.model';
+import type { EventApprovalStepModel } from '../../../../factories/domains/events/event-approval-step.model';
 
 @CommandHandler(CreateEventApprovalStepCommand)
 export class CreateEventApprovalStepHandler implements ICommandHandler<CreateEventApprovalStepCommand> {

@@ -1,9 +1,9 @@
 import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
-import { EventJoinOptions } from './event-join.options';
+import type { EventJoinOptions } from './event-join.options';
 import { Join } from '../join.entity';
 import { RegistrationStatus } from '@okampus/shared/enums';
 import { JoinKind } from '@okampus/shared/enums';
-import { TeamAction } from '../../manage-team/team-action/team-action.entity';
+import type { TeamAction } from '../../manage-team/team-action/team-action.entity';
 import type { TenantEvent } from '../../content-master/event/event.entity';
 
 @Entity()

@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IForm, IFormSubmission } from '@okampus/shared/dtos';
-import { JSONObject } from '@okampus/shared/types';
+import type { IForm, IFormSubmission } from '@okampus/shared/dtos';
+import type { JSONObject } from '@okampus/shared/types';
 import { GraphQLJSON } from 'graphql-scalars';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { UgcModel } from '../../abstract/ugc.model';

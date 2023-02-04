@@ -1,5 +1,5 @@
-import { RequestType, TokenType } from '@okampus/shared/enums';
-import { Snowflake } from './snowflake';
+import type { RequestType, TokenType } from '@okampus/shared/enums';
+import type { Snowflake } from './snowflake';
 
 export interface Claims {
   iss?: string;

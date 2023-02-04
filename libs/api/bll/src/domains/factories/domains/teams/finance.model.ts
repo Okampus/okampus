@@ -1,14 +1,15 @@
 import { Field, Float, ObjectType } from '@nestjs/graphql';
-import { TenantCore } from '@okampus/api/dal';
-import {
-  Address,
+import type { TenantCore } from '@okampus/api/dal';
+import type {
   IFileUpload,
   IFinance,
   IForm as Finance,
   IIndividual,
   IProject,
   ITeam,
-  ITenantEvent,
+  ITenantEvent} from '@okampus/shared/dtos';
+import {
+  Address
 } from '@okampus/shared/dtos';
 import { FinanceCategory, FinanceState, PaymentMethod } from '@okampus/shared/enums';
 import { Paginated } from '../../../../shards/types/paginated.type';

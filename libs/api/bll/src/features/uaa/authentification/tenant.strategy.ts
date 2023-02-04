@@ -4,11 +4,11 @@ import type { BaseClient, Client, TokenSet } from 'openid-client';
 import { Strategy } from 'openid-client';
 import { TenantUserDto } from './dto/tenant-user.dto';
 import { capitalize } from '@okampus/shared/utils';
-import { TenantUserinfoResponse } from '@okampus/shared/types';
-import { User } from '@okampus/api/dal';
+import type { TenantUserinfoResponse } from '@okampus/shared/types';
+import type { User } from '@okampus/api/dal';
 import { ScopeRole } from '@okampus/shared/enums';
-import { UsersService } from '../../../domains/resources/users/users.service';
-import { UserModel } from '../../../domains/factories/domains/users/user.model';
+import type { UsersService } from '../../../domains/resources/users/users.service';
+import type { UserModel } from '../../../domains/factories/domains/users/user.model';
 
 export function tenantStrategyFactory(
   usersService: UsersService,

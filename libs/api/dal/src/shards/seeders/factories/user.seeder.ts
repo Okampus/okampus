@@ -1,10 +1,10 @@
 import type { EntityManager } from '@mikro-orm/core';
 import type { Faker } from '@mikro-orm/seeder';
 import { Factory } from '@mikro-orm/seeder';
-import { Tenant } from '../../../resources/org/tenant/tenant.entity';
+import type { Tenant } from '../../../resources/org/tenant/tenant.entity';
 import { User } from '../../../resources/actor/user/user.entity';
-import { ScopeRole } from '@okampus/shared/enums';
-import { UserOptions } from '../../../resources/actor/user/user.options';
+import type { ScopeRole } from '@okampus/shared/enums';
+import type { UserOptions } from '../../../resources/actor/user/user.options';
 import { toSlug } from '@okampus/shared/utils';
 import { nanoid } from 'nanoid';
 

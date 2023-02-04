@@ -1,6 +1,7 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
-import { TenantModel } from '../../../../factories/domains/tenants/tenant.model';
+import type { IQueryHandler} from '@nestjs/cqrs';
+import { QueryHandler } from '@nestjs/cqrs';
+import type { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
+import type { TenantModel } from '../../../../factories/domains/tenants/tenant.model';
 import { GetTenantBySlugQuery } from './get-tenant-by-slug.query';
 
 @QueryHandler(GetTenantBySlugQuery)

@@ -2,11 +2,11 @@ import { Collection, Entity, ManyToMany, OneToMany, OneToOne, Property, Unique }
 import { toSlug } from '@okampus/shared/utils';
 import { ActorKind } from '@okampus/shared/enums';
 import { nanoid } from 'nanoid';
-import { ActorOptions } from './actor.options';
+import type { ActorOptions } from './actor.options';
 import type { Social } from '../manage-actor/social/social.entity';
 import type { ActorImage } from '../manage-actor/actor-image/actor-image.entity';
 import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { Tag } from '../label/tag/tag.entity';
+import type { Tag } from '../label/tag/tag.entity';
 import { TransformCollection } from '@okampus/api/shards';
 import type { Individual } from './individual/individual.entity';
 import type { Org } from '../org/org.entity';
@@ -15,7 +15,7 @@ import type { Reaction } from '../interaction/reaction/reaction.entity';
 import type { Report } from '../interaction/report/report.entity';
 import type { Vote } from '../interaction/vote/vote.entity';
 import type { Favorite } from '../interaction/favorite/favorite.entity';
-// eslint-disable-next-line import/no-cycle
+
 import { ActorRepository } from './actor.repository';
 
 @Entity({ customRepository: () => ActorRepository })

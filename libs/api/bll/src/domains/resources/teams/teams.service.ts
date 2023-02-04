@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ActorImageUploadProps } from '@okampus/api/dal';
-import { CreateOrgDocumentDto, CreateTeamDto, UpdateTeamDto } from '@okampus/shared/dtos';
-import { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { ActorImageUploadProps } from '@okampus/api/dal';
+import type { CreateOrgDocumentDto, CreateTeamDto, UpdateTeamDto } from '@okampus/shared/dtos';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 import { RequestContext } from '../../../shards/request-context/request-context';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { TeamModel, PaginatedTeamModel } from '../../factories/domains/teams/team.model';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { TeamModel, PaginatedTeamModel } from '../../factories/domains/teams/team.model';
 import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-document/create-org-document.command';
 import { CreateTeamCommand } from './commands/create-team/create-team.command';
 import { DeleteTeamCommand } from './commands/delete-team/delete-team.command';

@@ -4,7 +4,7 @@ import { UserNotificationSettings } from '@okampus/shared/dtos';
 import { UserSettings } from '@okampus/shared/dtos';
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import type { User } from '../user/user.entity';
-import { UserProfileOptions } from './user-profile.options';
+import type { UserProfileOptions } from './user-profile.options';
 
 @Entity()
 export class UserProfile extends TenantScopedEntity {

@@ -1,6 +1,6 @@
-import { CreateTeamCategoryDto } from '@okampus/shared/dtos';
-import { Individual, TenantCore } from '@okampus/api/dal';
-import { MulterFileType } from '@okampus/shared/types';
+import type { CreateTeamCategoryDto } from '@okampus/shared/dtos';
+import type { Individual, TenantCore } from '@okampus/api/dal';
+import type { MulterFileType } from '@okampus/shared/types';
 
 export class CreateTeamCategoryCommand {
   constructor(

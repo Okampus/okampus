@@ -1,5 +1,5 @@
 import { S3Buckets, TokenType } from '@okampus/shared/enums';
-import { ApiConfig } from '@okampus/shared/types';
+import type { ApiConfig } from '@okampus/shared/types';
 import * as dotenv from 'dotenv';
 
 dotenv.config({ path: 'apps/api/.env' });

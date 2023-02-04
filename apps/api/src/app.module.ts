@@ -30,7 +30,7 @@ import {
 import { ExceptionsFilter, RestLoggerMiddleware, TraceMiddleware } from '@okampus/api/shards';
 import * as Sentry from '@sentry/node';
 import { SentryInterceptor, SentryModule } from '@xiifain/nestjs-sentry';
-import Redis from 'ioredis';
+import type Redis from 'ioredis';
 import { MeiliSearchModule } from 'nestjs-meilisearch';
 import { S3Module } from 'nestjs-s3';
 import { config } from '../configs/config';

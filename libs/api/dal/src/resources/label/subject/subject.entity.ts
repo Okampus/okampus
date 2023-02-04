@@ -2,8 +2,8 @@ import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenan
 import { TransformCollection } from '@okampus/api/shards';
 import { Collection, Entity, Enum, Index, ManyToMany, Property } from '@mikro-orm/core';
 import { SubjectType } from '@okampus/shared/enums';
-import { ClassGroup } from '../../org/class-group/class-group.entity';
-import { SubjectOptions } from './subject.options';
+import type { ClassGroup } from '../../org/class-group/class-group.entity';
+import type { SubjectOptions } from './subject.options';
 
 @Entity()
 export class Subject extends TenantScopedEntity {

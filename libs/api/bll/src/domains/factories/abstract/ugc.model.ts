@@ -1,5 +1,5 @@
 import { Field, InterfaceType } from '@nestjs/graphql';
-import { IContentMaster, IIndividual, IOrg, ITenantCore, IUgc } from '@okampus/shared/dtos';
+import type { IContentMaster, IIndividual, IOrg, ITenantCore, IUgc } from '@okampus/shared/dtos';
 import { UgcKind } from '@okampus/shared/enums';
 // eslint-disable-next-line import/no-cycle
 import { ContentMasterModel } from './content-master.model';

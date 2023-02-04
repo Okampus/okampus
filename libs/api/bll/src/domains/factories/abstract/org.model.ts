@@ -1,5 +1,5 @@
 import { Field, InterfaceType } from '@nestjs/graphql';
-import { IActor, IOrg, IOrgDocument, ITenantCore } from '@okampus/shared/dtos';
+import type { IActor, IOrg, IOrgDocument, ITenantCore } from '@okampus/shared/dtos';
 import { OrgKind } from '@okampus/shared/enums';
 // eslint-disable-next-line import/no-cycle
 import { OrgDocumentModel } from '../domains/documents/org-document.model';

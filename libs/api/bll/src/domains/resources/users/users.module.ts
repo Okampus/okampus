@@ -1,22 +1,24 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import type { OnModuleInit } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersResolver } from './users.resolver';
 import { CqrsModule } from '@nestjs/cqrs';
 import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
-import {
+import type {
   BaseRepository,
+  TenantRepository,
+  UserRepository,
+  EventApprovalStepRepository} from '@okampus/api/dal';
+import {
   TenantCore,
   Tenant,
-  TenantRepository,
   User,
-  UserRepository,
   Actor,
-  EventApprovalStepRepository,
   EventApprovalStep,
 } from '@okampus/api/dal';
 import { RoleType, ScopeRole } from '@okampus/shared/enums';
 import { CreateUserHandler } from './commands/create-user/create-user.handler';
-import { ConfigService } from '../../../global/config.module';
+import type { ConfigService } from '../../../global/config.module';
 import { GetUserByIdHandler } from './queries/get-user-by-id/get-user-by-id.handler';
 import { GetUsersHandler } from './queries/get-users/get-users.handler';
 import { UpdateUserHandler } from './commands/update-user/update-user.handler';

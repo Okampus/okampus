@@ -1,10 +1,10 @@
 import { Entity, EntityRepositoryType, Enum, ManyToOne, Property } from '@mikro-orm/core';
-import { Actor } from '../actor.entity';
+import type { Actor } from '../actor.entity';
 import { BotRole } from '@okampus/shared/enums';
-import { BotOptions } from './bot.options';
+import type { BotOptions } from './bot.options';
 import { Individual } from '../individual/individual.entity';
 import { IndividualKind } from '@okampus/shared/enums';
-// eslint-disable-next-line import/no-cycle
+
 import { BotRepository } from './bot.repository';
 
 @Entity({ customRepository: () => BotRepository })

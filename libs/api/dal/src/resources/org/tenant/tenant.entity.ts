@@ -1,9 +1,9 @@
 import { Cascade, Collection, Entity, EntityRepositoryType, OneToMany, OneToOne } from '@mikro-orm/core';
-import { TenantOptions } from './tenant.options';
+import type { TenantOptions } from './tenant.options';
 import { Org } from '../org.entity';
 import { OrgKind } from '@okampus/shared/enums';
 import { TransformCollection } from '@okampus/api/shards';
-// eslint-disable-next-line import/no-cycle
+
 import { TenantRepository } from './tenant.repository';
 import type { EventApprovalStep } from '../../manage-tenant/event-approval-step/event-approval-step.entity';
 import type { Form } from '../../ugc/form/form.entity';

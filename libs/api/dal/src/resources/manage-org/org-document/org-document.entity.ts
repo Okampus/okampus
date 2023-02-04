@@ -1,10 +1,10 @@
 import { Entity, Enum, ManyToOne } from '@mikro-orm/core';
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { OrgDocumentOptions } from './org-document.options';
+import type { OrgDocumentOptions } from './org-document.options';
 import { Org } from '../../org/org.entity';
 import { OrgDocumentType } from '@okampus/shared/enums';
 import type { TenantDocument } from '../../ugc/document/document.entity';
-// eslint-disable-next-line import/no-cycle
+
 import { OrgDocumentRepository } from './org-document.repository';
 
 @Entity({

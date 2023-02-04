@@ -1,5 +1,5 @@
-import { UpdateEventApprovalDto } from '@okampus/shared/dtos';
-import { TenantCore } from '@okampus/api/dal';
+import type { UpdateEventApprovalDto } from '@okampus/shared/dtos';
+import type { TenantCore } from '@okampus/api/dal';
 
 export class UpdateEventApprovalCommand {
   constructor(

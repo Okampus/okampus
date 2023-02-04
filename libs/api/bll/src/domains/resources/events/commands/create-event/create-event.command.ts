@@ -1,6 +1,6 @@
-import { Individual } from '@okampus/api/dal';
-import { CreateEventDto } from '@okampus/shared/dtos';
-import { TenantCore } from '@okampus/api/dal';
+import type { Individual } from '@okampus/api/dal';
+import type { CreateEventDto } from '@okampus/shared/dtos';
+import type { TenantCore } from '@okampus/api/dal';
 
 export class CreateEventCommand {
   constructor(

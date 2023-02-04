@@ -1,9 +1,9 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
-import { BotsService } from './bots.service';
-import { CreateBotDto, UpdateDocumentDto } from '@okampus/shared/dtos';
+import type { BotsService } from './bots.service';
+import type { CreateBotDto, UpdateDocumentDto } from '@okampus/shared/dtos';
 import { PaginatedBotModel, BotModel } from '../../factories/domains/bots/bot.model';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { Snowflake } from '@okampus/shared/types';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { Snowflake } from '@okampus/shared/types';
 
 @Resolver(() => BotModel)
 export class BotsResolver {

@@ -1,5 +1,5 @@
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
-import { IMembership, ITenantCore, IUser } from '@okampus/shared/dtos';
+import type { IMembership, ITenantCore, IUser } from '@okampus/shared/dtos';
 import { MembershipKind } from '@okampus/shared/enums';
 import { Paginated } from '../../../shards/types/paginated.type';
 import { UserModel } from '../domains/users/user.model';

@@ -1,7 +1,7 @@
-import { TeamJoinProps } from '@okampus/shared/dtos';
-import { Team } from '../../org/team/team.entity';
-import { TeamRole } from '../../role/team-role/team-role.entity';
-import { JoinOptions } from '../join.options';
+import type { TeamJoinProps } from '@okampus/shared/dtos';
+import type { Team } from '../../org/team/team.entity';
+import type { TeamRole } from '../../role/team-role/team-role.entity';
+import type { JoinOptions } from '../join.options';
 
 export type TeamJoinOptions = TeamJoinProps &
   JoinOptions & {

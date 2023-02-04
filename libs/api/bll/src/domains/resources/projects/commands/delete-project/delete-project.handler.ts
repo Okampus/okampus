@@ -1,5 +1,6 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ProjectFactory } from '../../../../factories/domains/teams/project.factory';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { ProjectFactory } from '../../../../factories/domains/teams/project.factory';
 import { DeleteProjectCommand } from './delete-project.command';
 
 @CommandHandler(DeleteProjectCommand)

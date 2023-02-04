@@ -1,6 +1,6 @@
-import { DocumentUploadType } from '@okampus/shared/enums';
-import { FileUploadOptions } from '../file-upload.options';
-import { DocumentUploadProps } from '@okampus/shared/dtos';
+import type { DocumentUploadType } from '@okampus/shared/enums';
+import type { FileUploadOptions } from '../file-upload.options';
+import type { DocumentUploadProps } from '@okampus/shared/dtos';
 
 export type DocumentUploadOptions = DocumentUploadProps &
   FileUploadOptions & {

@@ -1,7 +1,8 @@
 import { Entity, Property } from '@mikro-orm/core';
-import { InteractionKind, ValidationType } from '@okampus/shared/enums';
+import type { ValidationType } from '@okampus/shared/enums';
+import { InteractionKind } from '@okampus/shared/enums';
 import { Interaction } from '../interaction.entity';
-import { ValidationOptions } from './validation.options';
+import type { ValidationOptions } from './validation.options';
 
 @Entity()
 export class Validation extends Interaction {

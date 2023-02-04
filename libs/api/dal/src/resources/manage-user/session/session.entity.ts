@@ -1,10 +1,10 @@
 import { Entity, Enum, JsonType, ManyToOne, Property } from '@mikro-orm/core';
 import { SessionClientType } from '@okampus/shared/enums';
-import { JSONObject } from '@okampus/shared/types';
+import type { JSONObject } from '@okampus/shared/types';
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { User } from '../../actor/user/user.entity';
-import { SessionOptions } from './session.options';
-// eslint-disable-next-line import/no-cycle
+import type { User } from '../../actor/user/user.entity';
+import type { SessionOptions } from './session.options';
+
 import { SessionRepository } from './session.repository';
 
 @Entity({

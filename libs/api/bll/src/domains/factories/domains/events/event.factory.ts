@@ -1,9 +1,8 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
+import type {
   Tag,
   TenantCore,
-  TenantEvent,
   TenantEventRepository,
   TenantEventOptions,
   Individual,
@@ -13,12 +12,14 @@ import {
   FormSubmission,
   User,
   OrgRepository,
-  UserRepository,
+  UserRepository} from '@okampus/api/dal';
+import {
+  TenantEvent
 } from '@okampus/api/dal';
-import { CreateEventDto, ITenantEvent } from '@okampus/shared/dtos';
+import type { CreateEventDto, ITenantEvent } from '@okampus/shared/dtos';
 // import { loadEvent } from '../loader.utils';
 import { BaseFactory } from '../../base.factory';
-import { ContentModel } from '../contents/content.model';
+import type { ContentModel } from '../contents/content.model';
 import { TenantEventModel } from './event.model';
 
 @Injectable()

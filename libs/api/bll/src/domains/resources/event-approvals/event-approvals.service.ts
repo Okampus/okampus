@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateEventApprovalDto, UpdateEventApprovalDto } from '@okampus/shared/dtos';
-import { Snowflake } from '@okampus/shared/types';
+import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { CreateEventApprovalDto, UpdateEventApprovalDto } from '@okampus/shared/dtos';
+import type { Snowflake } from '@okampus/shared/types';
 import { RequestContext } from '../../../shards/request-context/request-context';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { EventApprovalModel, PaginatedEventApprovalModel } from '../../factories/domains/events/event-approval.model';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { EventApprovalModel, PaginatedEventApprovalModel } from '../../factories/domains/events/event-approval.model';
 import { CreateEventApprovalCommand } from './commands/create-event-approval/create-event-approval.command';
 import { DeleteEventApprovalCommand } from './commands/delete-event-approval/delete-event-approval.command';
 import { UpdateEventApprovalCommand } from './commands/update-event-approval/update-event-approval.command';

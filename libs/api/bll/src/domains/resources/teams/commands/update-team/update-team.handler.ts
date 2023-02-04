@@ -1,6 +1,7 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { TeamFactory } from '../../../../factories/domains/teams/team.factory';
-import { TeamModel } from '../../../../factories/domains/teams/team.model';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { TeamFactory } from '../../../../factories/domains/teams/team.factory';
+import type { TeamModel } from '../../../../factories/domains/teams/team.model';
 import { UpdateTeamCommand } from './update-team.command';
 
 @CommandHandler(UpdateTeamCommand)

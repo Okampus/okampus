@@ -7,16 +7,17 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 // import { FileUpload } from './file-upload.entity';
 import { promises } from 'node:fs';
 
-import { DocumentUpload, FileUpload, FileUploadOptions, ImageUpload, TenantCore, VideoUpload } from '@okampus/api/dal';
-import { S3 } from 'aws-sdk';
+import type { FileUploadOptions, TenantCore} from '@okampus/api/dal';
+import { DocumentUpload, FileUpload, ImageUpload, VideoUpload } from '@okampus/api/dal';
+import type { S3 } from 'aws-sdk';
 import { InjectS3 } from 'nestjs-s3';
 import { DocumentUploadType, FileUploadKind, ResourceType, S3Buckets } from '@okampus/shared/enums';
-import { ApiConfig, MulterFileType } from '@okampus/shared/types';
+import type { ApiConfig, MulterFileType } from '@okampus/shared/types';
 import { checkDocument, checkImage, checkVideo, snowflake, streamableS3, streamToBuffer } from '@okampus/shared/utils';
 import { RequestContext } from '../../shards/request-context/request-context';
 import path from 'node:path';
-import { HTTPResource } from '../../shards/types/http-resource.type';
-import { ConfigService } from '../../global/config.module';
+import type { HTTPResource } from '../../shards/types/http-resource.type';
+import type { ConfigService } from '../../global/config.module';
 
 @Injectable()
 export class UploadService extends RequestContext {

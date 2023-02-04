@@ -1,21 +1,22 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
+import type {
   ActorImageUploadProps,
   Tag,
   TenantCore,
-  User,
   UserOptions,
-  UserProfile,
-  UserRepository,
+  UserRepository} from '@okampus/api/dal';
+import {
+  User,
+  UserProfile
 } from '@okampus/api/dal';
-import { IUser } from '@okampus/shared/dtos';
+import type { IUser } from '@okampus/shared/dtos';
 import { ActorKind } from '@okampus/shared/enums';
 // import { loadUser } from '../loader.utils';
 import { BaseFactory } from '../../base.factory';
 import { UserModel } from './user.model';
 import { addImagesToActor } from '../../abstract.utils';
-import { UploadService } from '../../../../features/uploads/upload.service';
+import type { UploadService } from '../../../../features/uploads/upload.service';
 
 @Injectable()
 export class UserFactory extends BaseFactory<UserModel, User, IUser, UserOptions> {

@@ -1,6 +1,6 @@
-import { IActor } from '../actor.interface';
-import { IIndividual } from '../individual/individual.interface';
-import { BotProps } from './bot.props';
+import type { IActor } from '../actor.interface';
+import type { IIndividual } from '../individual/individual.interface';
+import type { BotProps } from './bot.props';
 
 export type IBot = IIndividual &
   BotProps & {

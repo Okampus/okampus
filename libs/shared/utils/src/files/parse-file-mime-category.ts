@@ -13,7 +13,7 @@ import {
   VIDEO_EXTS,
 } from '@okampus/shared/consts';
 import { FileMimeCategory } from '@okampus/shared/enums';
-import { FileMimeCheckPayload } from '@okampus/shared/types';
+import type { FileMimeCheckPayload } from '@okampus/shared/types';
 import { getExtension } from './get-extensions';
 
 const documentRegex =

@@ -1,6 +1,7 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { BotFactory } from '../../../../factories/domains/bots/bot.factory';
-import { BotModel } from '../../../../factories/domains/bots/bot.model';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler } from '@nestjs/cqrs';
+import type { BotFactory } from '../../../../factories/domains/bots/bot.factory';
+import type { BotModel } from '../../../../factories/domains/bots/bot.model';
 import { UpdateBotCommand } from './update-bot.command';
 @CommandHandler(UpdateBotCommand)
 export class UpdateBotHandler implements ICommandHandler<UpdateBotCommand> {

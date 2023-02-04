@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IShortcut, IUser, IUserProfile } from '@okampus/shared/dtos';
+import type { IShortcut, IUser, IUserProfile } from '@okampus/shared/dtos';
 import { IndividualKind, RoleType, ScopeRole } from '@okampus/shared/enums';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle

@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { ShortcutType } from '@okampus/shared/enums';
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsEnum } from 'class-validator';
 
 @InputType()
 export class ShortcutProps {

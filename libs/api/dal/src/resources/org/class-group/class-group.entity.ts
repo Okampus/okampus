@@ -6,7 +6,7 @@ import { Entity, Enum, Property } from '@mikro-orm/core';
 import { Org } from '../org.entity';
 import { ClassGroupType } from '@okampus/shared/enums';
 import { OrgKind } from '@okampus/shared/enums';
-import { ClassGroupOptions } from './class-group.options';
+import type { ClassGroupOptions } from './class-group.options';
 
 @Entity()
 export class ClassGroup extends Org {

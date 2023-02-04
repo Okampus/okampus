@@ -1,6 +1,5 @@
 import { Field, Float, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
-import {
-  Address,
+import type {
   IEventApproval,
   IEventApprovalStep,
   IEventJoin,
@@ -8,10 +7,12 @@ import {
   IFormSubmission,
   IImageUpload,
   ITenantEvent,
-  IUser,
+  IUser} from '@okampus/shared/dtos';
+import {
+  Address
 } from '@okampus/shared/dtos';
 import { ContentMasterKind, EventState } from '@okampus/shared/enums';
-import { JSONObject } from '@okampus/shared/types';
+import type { JSONObject } from '@okampus/shared/types';
 import { GraphQLJSON } from 'graphql-scalars';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle

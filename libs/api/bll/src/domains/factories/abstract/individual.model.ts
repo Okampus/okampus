@@ -1,5 +1,5 @@
 import { Field, InterfaceType } from '@nestjs/graphql';
-import { IActor, IIndividual, ITenantCore } from '@okampus/shared/dtos';
+import type { IActor, IIndividual, ITenantCore } from '@okampus/shared/dtos';
 import { IndividualKind } from '@okampus/shared/enums';
 // eslint-disable-next-line import/no-cycle
 import { ActorModel } from './actor.model';

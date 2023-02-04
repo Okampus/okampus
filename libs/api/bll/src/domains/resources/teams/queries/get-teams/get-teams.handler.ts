@@ -1,6 +1,7 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { TeamFactory } from '../../../../factories/domains/teams/team.factory';
-import { PaginatedTeamModel } from '../../../../factories/domains/teams/team.model';
+import type { IQueryHandler} from '@nestjs/cqrs';
+import { QueryHandler } from '@nestjs/cqrs';
+import type { TeamFactory } from '../../../../factories/domains/teams/team.factory';
+import type { PaginatedTeamModel } from '../../../../factories/domains/teams/team.model';
 import { GetTeamsQuery } from './get-teams.query';
 
 @QueryHandler(GetTeamsQuery)

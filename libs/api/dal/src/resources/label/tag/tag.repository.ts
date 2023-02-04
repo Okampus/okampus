@@ -1,7 +1,7 @@
 import { BaseRepository } from '../../../shards/abstract/base/base.repository';
-// eslint-disable-next-line import/no-cycle
-import { Tag } from './tag.entity';
-import { Colors } from '@okampus/shared/enums';
+
+import type { Tag } from './tag.entity';
+import type { Colors } from '@okampus/shared/enums';
 import { nanoid } from 'nanoid';
 
 export class TagRepository extends BaseRepository<Tag> {

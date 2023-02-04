@@ -2,38 +2,39 @@ import fastifyCookie from '@fastify/cookie';
 // import { wrap } from '@mikro-orm/core';
 import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import type { JwtSignOptions } from '@nestjs/jwt';
-import { JwtService } from '@nestjs/jwt';
-import {
+import type { JwtService } from '@nestjs/jwt';
+import type {
   Bot,
   BotRepository,
-  Session,
   SessionRepository,
   TenantCore,
   TenantCoreRepository,
   TenantRepository,
   User,
-  UserRepository,
+  UserRepository} from '@okampus/api/dal';
+import {
+  Session
 } from '@okampus/api/dal';
 import { RequestType, SessionClientType, TokenType } from '@okampus/shared/enums';
-import { ApiConfig, Cookie, Claims, Snowflake } from '@okampus/shared/types';
+import type { ApiConfig, Cookie, Claims, Snowflake } from '@okampus/shared/types';
 import { objectContains } from '@okampus/shared/utils';
-import MeiliSearch from 'meilisearch';
+import type MeiliSearch from 'meilisearch';
 import { InjectMeiliSearch } from 'nestjs-meilisearch';
-import { ConfigService } from '../../../global/config.module';
+import type { ConfigService } from '../../../global/config.module';
 import { RequestContext } from '../../../shards/request-context/request-context';
 import type { LoginDto } from './dto/login.dto';
 // import type { PreRegisterSsoDto } from './dto/pre-register-sso.dto';
 // const cookiePublicOptions = { ...config.cookies.options, httpOnly: false };
 import { hash, verify } from 'argon2';
 import { addCookiesToResponse } from '../../../shards/utils/add-cookies-to-response';
-import { FastifyReply, FastifyRequest } from 'fastify';
-import { SessionProps } from '@okampus/shared/dtos';
+import type { FastifyReply, FastifyRequest } from 'fastify';
+import type { SessionProps } from '@okampus/shared/dtos';
 import DeviceDetector from 'device-detector-js';
 import { nanoid } from 'nanoid';
-import { UserFactory } from '../../../domains/factories/domains/users/user.factory';
+import type { UserFactory } from '../../../domains/factories/domains/users/user.factory';
 import { JsonWebTokenError, NotBeforeError, TokenExpiredError } from 'jsonwebtoken';
 import { AuthContextModel, getAuthContextPopulate } from './auth-context.model';
-import { TenantFactory } from '../../../domains/factories/domains/tenants/tenant.factory';
+import type { TenantFactory } from '../../../domains/factories/domains/tenants/tenant.factory';
 
 type HttpOnlyTokens = TokenType.Access | TokenType.Refresh;
 type AuthTokens = HttpOnlyTokens | TokenType.WebSocket;

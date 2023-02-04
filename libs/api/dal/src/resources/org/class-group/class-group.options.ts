@@ -1,4 +1,4 @@
-import { OrgOptions } from '../org.options';
-import { ClassGroupProps } from '@okampus/shared/dtos';
+import type { OrgOptions } from '../org.options';
+import type { ClassGroupProps } from '@okampus/shared/dtos';
 
 export type ClassGroupOptions = ClassGroupProps & OrgOptions;

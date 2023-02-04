@@ -1,10 +1,10 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
-import { UsersService } from './users.service';
-import { CreateUserDto, UpdateUserDto } from '@okampus/shared/dtos';
+import type { UsersService } from './users.service';
+import type { CreateUserDto, UpdateUserDto } from '@okampus/shared/dtos';
 import { PaginatedUserModel, UserModel } from '../../factories/domains/users/user.model';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
 import { GraphQLUpload } from 'graphql-upload-minimal';
-import { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 import { ActorImageType } from '@okampus/shared/enums';
 
 @Resolver(() => UserModel)

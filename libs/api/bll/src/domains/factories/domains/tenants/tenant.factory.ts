@@ -1,15 +1,16 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { Form, Individual, Tag, Tenant, TenantCore, TenantOptions, TenantRepository } from '@okampus/api/dal';
-import { CreateDocumentDto, CreateTenantDto, ITenant } from '@okampus/shared/dtos';
+import type { Individual, Tag, TenantOptions, TenantRepository } from '@okampus/api/dal';
+import { Form, Tenant, TenantCore } from '@okampus/api/dal';
+import type { CreateDocumentDto, CreateTenantDto, ITenant } from '@okampus/shared/dtos';
 import { FormType, OrgDocumentType } from '@okampus/shared/enums';
 // import { loadTenant } from '../loader.utils';
 import { BaseFactory } from '../../base.factory';
 import { TenantModel } from './tenant.model';
-import { MulterFileType, Snowflake } from '@okampus/shared/types';
-import { UploadService } from '../../../../features/uploads/upload.service';
-import { OrgDocumentFactory } from '../documents/org-document.factory';
-import { OrgDocumentModel } from '../documents/org-document.model';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { UploadService } from '../../../../features/uploads/upload.service';
+import type { OrgDocumentFactory } from '../documents/org-document.factory';
+import type { OrgDocumentModel } from '../documents/org-document.model';
 
 @Injectable()
 export class TenantFactory extends BaseFactory<TenantModel, Tenant, ITenant, TenantOptions> {

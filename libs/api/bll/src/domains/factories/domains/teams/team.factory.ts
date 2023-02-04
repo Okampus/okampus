@@ -1,40 +1,41 @@
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
+import type {
   ActorImageUploadProps,
   ActorRepository,
-  clubDefaultRoles,
   Form,
   Individual,
   Org,
-  Shortcut,
   ShortcutRepository,
   Tag,
-  Team,
   TeamCategory,
   TeamCategoryRepository,
-  teamDefaultRoles,
-  TeamMember,
   TeamMemberRepository,
   TeamOptions,
   TeamRepository,
-  TeamRole,
   TeamRoleRepository,
   TenantCore,
   User,
-  UserRepository,
+  UserRepository} from '@okampus/api/dal';
+import {
+  clubDefaultRoles,
+  Shortcut,
+  Team,
+  teamDefaultRoles,
+  TeamMember,
+  TeamRole
 } from '@okampus/api/dal';
-import { CreateOrgDocumentDto, CreateTeamDto, ITeam } from '@okampus/shared/dtos';
+import type { CreateOrgDocumentDto, CreateTeamDto, ITeam } from '@okampus/shared/dtos';
 // import { loadTeam } from '../loader.utils';
 import { BaseFactory } from '../../base.factory';
 import { TeamModel } from './team.model';
 import { ActorKind, IndividualKind, ShortcutType, TeamType } from '@okampus/shared/enums';
 import { toSlug } from '@okampus/shared/utils';
 import { addImagesToActor } from '../../abstract.utils';
-import { UploadService } from '../../../../features/uploads/upload.service';
-import { Snowflake, MulterFileType } from '@okampus/shared/types';
-import { OrgDocumentFactory } from '../documents/org-document.factory';
-import { OrgDocumentModel } from '../documents/org-document.model';
+import type { UploadService } from '../../../../features/uploads/upload.service';
+import type { Snowflake, MulterFileType } from '@okampus/shared/types';
+import type { OrgDocumentFactory } from '../documents/org-document.factory';
+import type { OrgDocumentModel } from '../documents/org-document.model';
 
 @Injectable()
 export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions> {

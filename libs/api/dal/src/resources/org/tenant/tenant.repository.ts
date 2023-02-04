@@ -1,6 +1,5 @@
 import { BaseRepository } from '../../../shards/abstract/base/base.repository';
-// eslint-disable-next-line import/no-cycle
-import { Tenant } from './tenant.entity';
+import type { Tenant } from './tenant.entity';
 
 export class TenantRepository extends BaseRepository<Tenant> {
   async tenantExists(domain: string) {

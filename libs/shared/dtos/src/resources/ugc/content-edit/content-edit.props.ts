@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
-import { JSONObject } from '@okampus/shared/types';
+import type { JSONObject } from '@okampus/shared/types';
 import { IsOptional, IsString } from 'class-validator';
 import { IsDiff } from '../../../validators/diff.validator';
 

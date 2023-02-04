@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import { BaseRepository } from '../../shards/abstract/base/base.repository';
-// eslint-disable-next-line import/no-cycle
-import { Actor } from './actor.entity';
+
+import type { Actor } from './actor.entity';
 
 export class ActorRepository extends BaseRepository<Actor> {
   //

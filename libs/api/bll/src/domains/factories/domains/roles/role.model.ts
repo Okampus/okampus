@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IRole, ITenantCore } from '@okampus/shared/dtos';
+import type { IRole, ITenantCore } from '@okampus/shared/dtos';
 import { Colors, RoleKind, TeamRoleKey } from '@okampus/shared/enums';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 

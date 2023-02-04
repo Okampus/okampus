@@ -1,9 +1,9 @@
-import { TeamActionProps } from '@okampus/shared/dtos';
-import { TeamMember } from '../../membership/team-member/team-member.entity';
-import { User } from '../../actor/user/user.entity';
+import type { TeamActionProps } from '@okampus/shared/dtos';
+import type { TeamMember } from '../../membership/team-member/team-member.entity';
+import type { User } from '../../actor/user/user.entity';
 import type { TenantEvent } from '../../content-master/event/event.entity';
-import { Team } from '../../org/team/team.entity';
-import { TenantScopedOptions } from '../../../shards/abstract/tenant-scoped/tenant-scoped.options';
+import type { Team } from '../../org/team/team.entity';
+import type { TenantScopedOptions } from '../../../shards/abstract/tenant-scoped/tenant-scoped.options';
 
 export type TeamActionOptions = TeamActionProps &
   TenantScopedOptions & {

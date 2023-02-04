@@ -1,7 +1,7 @@
-import { IDocumentUpload } from '../../file-upload/document-upload/document-upload.interface';
-import { IDocumentEdit } from '../document-edit/document-edit.interface';
-import { IUgc } from '../ugc.interface';
-import { DocumentProps } from './document.props';
+import type { IDocumentUpload } from '../../file-upload/document-upload/document-upload.interface';
+import type { IDocumentEdit } from '../document-edit/document-edit.interface';
+import type { IUgc } from '../ugc.interface';
+import type { DocumentProps } from './document.props';
 
 export type ITenantDocument = IUgc &
   DocumentProps & {

@@ -1,8 +1,8 @@
 import { Entity, ManyToOne } from '@mikro-orm/core';
 import { MembershipKind } from '@okampus/shared/enums';
 import { Membership } from '../membership.entity';
-import { Cohort } from '../../org/cohort/cohort.entity';
-import { CohortMemberOptions } from './cohort-member.options';
+import type { Cohort } from '../../org/cohort/cohort.entity';
+import type { CohortMemberOptions } from './cohort-member.options';
 
 @Entity()
 export class CohortMember extends Membership {

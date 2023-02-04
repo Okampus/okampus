@@ -1,5 +1,5 @@
-import { Snowflake } from '@okampus/shared/types';
-import { TenantCore } from '@okampus/api/dal';
+import type { Snowflake } from '@okampus/shared/types';
+import type { TenantCore } from '@okampus/api/dal';
 
 export class GetFinanceByIdQuery {
   constructor(

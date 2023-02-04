@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateTeamCategoryDto, UpdateTeamCategoryDto } from '@okampus/shared/dtos';
-import { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { CreateTeamCategoryDto, UpdateTeamCategoryDto } from '@okampus/shared/dtos';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 import { RequestContext } from '../../../shards/request-context/request-context';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { PaginatedTeamCategoryModel, TeamCategoryModel } from '../../factories/domains/tags/team-category.model';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { PaginatedTeamCategoryModel, TeamCategoryModel } from '../../factories/domains/tags/team-category.model';
 import { CreateTeamCategoryCommand } from './commands/create-team-category/create-team-category.command';
 import { DeleteTeamCategoryCommand } from './commands/delete-team-category/delete-team-category.command';
 import { UpdateTeamCategoryCommand } from './commands/update-team-category/update-team-category.command';

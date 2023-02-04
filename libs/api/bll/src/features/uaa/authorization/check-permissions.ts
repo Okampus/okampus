@@ -1,9 +1,10 @@
 import { ForbiddenError } from '@casl/ability';
 import { ForbiddenException, InternalServerErrorException } from '@nestjs/common';
-import { Individual } from '@okampus/api/dal';
-import { Action } from '@okampus/shared/enums';
+import type { Individual } from '@okampus/api/dal';
+import type { Action } from '@okampus/shared/enums';
 import { getErrorMessage } from '@okampus/shared/utils';
-import { createAbilitiesForIndividual, Subjects } from './casl/get-abilities';
+import type { Subjects } from './casl/get-abilities';
+import { createAbilitiesForIndividual } from './casl/get-abilities';
 
 export function assertPermissions(requester: Individual, action: Action, target: Subjects, fields: string[] = []) {
   const ability = createAbilitiesForIndividual(requester);
