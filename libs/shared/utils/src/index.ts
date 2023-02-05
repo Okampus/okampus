@@ -31,7 +31,6 @@ export * from './random/random-snowflake';
 export * from './requests/is-file-upload';
 export * from './resources/users/full-name';
 export * from './streams/stream-to-buffer';
-export * from './streams/stream-to-s3';
 export * from './strings/capitalize';
 export * from './strings/to-slug';
 export * from './validators/diff-validator';

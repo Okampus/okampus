@@ -1,20 +1,14 @@
 import { RequestContext } from '../../shards/request-context/request-context';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { DocumentUpload, FileUpload, ImageUpload, VideoUpload } from '@okampus/api/dal';
-import { InjectS3 } from 'nestjs-s3';
 import { DocumentUploadType, FileUploadKind, ResourceType, S3Buckets } from '@okampus/shared/enums';
-import { checkDocument, checkImage, checkVideo, snowflake, streamableS3, streamToBuffer } from '@okampus/shared/utils';
+import { checkDocument, checkImage, checkVideo, snowflake, streamToBuffer } from '@okampus/shared/utils';
 import { Readable } from 'node:stream';
-// import type { FileKind } from '@lib/types/enums/file-kind.enum';
-// import { streamToBuffer } from '@lib/utils/stream-to-buffer';
-// import type { Tenant } from '@tenants/tenant.entity';
-// import type { User } from '@uaa/users/user.entity';
-// import { FileUpload } from './file-upload.entity';
 import { promises } from 'node:fs';
 
 import path from 'node:path';
-import type { FileUploadOptions, TenantCore} from '@okampus/api/dal';
-import type { S3 } from 'aws-sdk';
+import type { MinioService } from '../../global/minio.module';
+import type { FileUploadOptions, TenantCore } from '@okampus/api/dal';
 import type { ApiConfig, MulterFileType } from '@okampus/shared/types';
 import type { HTTPResource } from '../../shards/types/http-resource.type';
 import type { ConfigService } from '../../global/config.module';
@@ -23,7 +17,7 @@ import type { ConfigService } from '../../global/config.module';
 export class UploadService extends RequestContext {
   config: ApiConfig;
 
-  constructor(@InjectS3() private readonly s3: S3, private readonly configService: ConfigService) {
+  constructor(private readonly minioService: MinioService, private readonly configService: ConfigService) {
     super();
     this.config = this.configService.config;
   }
@@ -43,15 +37,10 @@ export class UploadService extends RequestContext {
       };
     }
 
-    const bucketUrl = this.config.s3.buckets[bucket];
-    const { writeStream, uploadPromise } = streamableS3(this.s3, bucketUrl, key, mime, 'public-read');
+    const { etag } = await this.minioService.putObject(bucket, key, stream, { 'Content-Type': mime });
+    const { size } = await this.minioService.statObject(bucket, key);
 
-    stream.pipe(writeStream);
-    const { Location, ETag } = await uploadPromise;
-    // TODO: add ContentType?
-    const { ContentLength } = await this.s3.headObject({ Bucket: bucketUrl, Key: key }).promise();
-
-    return { url: Location, etag: ETag, size: ContentLength ?? 0 };
+    return { url: `${bucket}/${key}`, etag, size };
   }
 
   public async createFileUpload(

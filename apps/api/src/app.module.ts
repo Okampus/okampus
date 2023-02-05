@@ -4,9 +4,10 @@ import cacheConfig from '../configs/cache.config';
 import graphqlConfig from '../configs/graphql.config';
 import mikroOrmConfig from '../configs/mikro-orm.config';
 import meiliSearchConfig from '../configs/meilisearch.config';
-import storageConfig from '../configs/storage.config';
 import redisConfig, { redisConnectionOptions } from '../configs/redis.config';
+
 import { sentryConfig, sentryInterceptorConfig } from '../configs/sentry.config';
+import { MinioModule } from '@okampus/api/bll';
 import { ExceptionsFilter, RestLoggerMiddleware, TraceMiddleware } from '@okampus/api/shards';
 import {
   AuthGuard,
@@ -28,17 +29,20 @@ import {
   UploadModule,
   UsersModule,
 } from '@okampus/api/bll';
-import { S3Module } from 'nestjs-s3';
+
 import { MeiliSearchModule } from 'nestjs-meilisearch';
 import { SentryInterceptor, SentryModule } from '@xiifain/nestjs-sentry';
-import * as Sentry from '@sentry/node';
+
 import { ScheduleModule } from '@nestjs/schedule';
 import { GraphQLModule } from '@nestjs/graphql';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { CacheModule, Module, RequestMethod } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { InjectRedis, RedisModule } from '@liaoliaots/nestjs-redis';
+
+import * as Sentry from '@sentry/node';
 import type Redis from 'ioredis';
+
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 
@@ -100,15 +104,15 @@ import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
     GraphQLModule.forRoot<MercuriusDriverConfig>(graphqlConfig),
     // TODO: Replace with .forRoot when https://github.com/lambrohan/nestjs-meilisearch/pull/5 is merged & published
     MeiliSearchModule.forRootAsync(meiliSearchConfig),
+    MinioModule,
     MikroOrmModule.forRoot(mikroOrmConfig),
-    S3Module.forRoot(storageConfig),
     ScheduleModule.forRoot(),
     SentryModule.forRoot(sentryConfig),
 
     // Cache
     CacheModule.registerAsync(cacheConfig),
-    OIDCCacheModule,
     RedisModule.forRoot(redisConfig),
+    OIDCCacheModule,
 
     // MeiliSearch
     MeiliSearchIndexerModule,
