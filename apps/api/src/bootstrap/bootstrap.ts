@@ -63,7 +63,6 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
   const defaultStoreValues = { requester: null, tenant: null, gqlInfo: null, alreadyPopulated: false };
   await fastifyInstance.register(fastifyRequestContext, { hook: 'preValidation', defaultStoreValues });
 
-  /* @ts-expect-error - Conflicting types despite no errors on launch */
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(fastifyInstance));
 
   const oidcCache = app.get<OIDCCacheService>(OIDCCacheService);
