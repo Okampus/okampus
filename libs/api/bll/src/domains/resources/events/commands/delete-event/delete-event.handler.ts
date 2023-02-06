@@ -1,7 +1,10 @@
 import { DeleteEventCommand } from './delete-event.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
+
 import { CommandHandler } from '@nestjs/cqrs';
 import type { ICommandHandler } from '@nestjs/cqrs';
-import type { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
 
 @CommandHandler(DeleteEventCommand)
 export class DeleteEventHandler implements ICommandHandler<DeleteEventCommand> {

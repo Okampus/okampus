@@ -6,7 +6,6 @@ import { OrgDocumentType } from '@okampus/shared/enums';
 import type { OrgDocumentOptions } from './org-document.options';
 import type { TenantDocument } from '../../ugc/document/document.entity';
 
-
 @Entity({
   customRepository: () => OrgDocumentRepository,
 })
@@ -17,7 +16,7 @@ export class OrgDocument extends TenantScopedEntity {
   @ManyToOne({ type: 'TenantDocument' })
   document!: TenantDocument;
 
-  @Enum(() => OrgDocumentType)
+  @Enum({ items: () => OrgDocumentType, type: 'string' })
   type!: OrgDocumentType;
 
   constructor(options: OrgDocumentOptions) {

@@ -1,14 +1,17 @@
 import { createAbilitiesForIndividual } from './casl/get-abilities';
 import { CHECK_POLICIES_KEY } from './check-policies.decorator';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { Reflector } from '@nestjs/core';
+
 import { Injectable } from '@nestjs/common';
 import { requestContext } from '@fastify/request-context';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
-import type { Reflector } from '@nestjs/core';
-import type { AppAbility} from './casl/get-abilities';
+import type { AppAbility } from './casl/get-abilities';
 import type { PolicyHandler } from './types/policy-handler.type';
 
 @Injectable()
-export class PoliciesGuard implements CanActivate {
+export class PolicyGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
   public canActivate(context: ExecutionContext): boolean {

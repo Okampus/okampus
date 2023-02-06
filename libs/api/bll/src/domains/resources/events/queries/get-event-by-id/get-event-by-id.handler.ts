@@ -1,7 +1,10 @@
 import { GetEventByIdQuery } from './get-event-by-id.query';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
+
 import { QueryHandler } from '@nestjs/cqrs';
-import type { IQueryHandler} from '@nestjs/cqrs';
-import type { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
+import type { IQueryHandler } from '@nestjs/cqrs';
 import type { TenantEventModel } from '../../../../factories/domains/events/event.model';
 
 @QueryHandler(GetEventByIdQuery)

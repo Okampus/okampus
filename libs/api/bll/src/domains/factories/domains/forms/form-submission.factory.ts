@@ -2,19 +2,13 @@ import { FormSubmissionModel } from './form-submission.model';
 import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
-  FormSubmission
-} from '@okampus/api/dal';
-import type {
-  ContentMaster,
-  Form,
-  FormSubmissionOptions,
-  FormSubmissionRepository,
-  Individual,
-  Org,
-  TenantCore} from '@okampus/api/dal';
+import { FormSubmission } from '@okampus/api/dal';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { FormSubmissionRepository } from '@okampus/api/dal';
+
+import type { ContentMaster, Form, FormSubmissionOptions, Individual, Org, TenantCore } from '@okampus/api/dal';
 import type { IFormSubmission } from '@okampus/shared/dtos';
-// import { loadFormSubmission } from '../loader.utils';
 
 @Injectable()
 export class FormSubmissionFactory extends BaseFactory<
@@ -26,12 +20,6 @@ export class FormSubmissionFactory extends BaseFactory<
   constructor(@Inject(EventPublisher) ep: EventPublisher, formSubmissionRepository: FormSubmissionRepository) {
     super(ep, formSubmissionRepository, FormSubmissionModel, FormSubmission);
   }
-
-  // entityToModel(entity: FormSubmission): FormSubmissionModel | undefined {
-  //   const formSubmission = loadFormSubmission(entity);
-  //   if (!formSubmission) return undefined;
-  //   return this.createModel(formSubmission);
-  // }
 
   modelToEntity(model: Required<FormSubmissionModel>): FormSubmission {
     const entity = new FormSubmission({

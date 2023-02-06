@@ -12,7 +12,7 @@ import type { InteractionOptions } from './interaction.options';
   abstract: true,
 })
 export class Interaction extends TenantScopedEntity {
-  @Enum(() => InteractionKind)
+  @Enum({ items: () => InteractionKind, type: 'string' })
   interactionKind!: InteractionKind;
 
   @ManyToOne({ type: 'Ugc' })

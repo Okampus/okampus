@@ -8,7 +8,7 @@ export class OrgMetric extends TenantScopedEntity {
   @Property({ type: 'text' })
   value!: string;
 
-  @Enum(() => OrgMetricType)
+  @Enum({ items: () => OrgMetricType, type: 'string' })
   type!: OrgMetricType;
 
   constructor(options: OrgMetricOptions) {

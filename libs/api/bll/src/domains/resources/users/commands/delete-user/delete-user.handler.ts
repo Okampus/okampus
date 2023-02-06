@@ -1,7 +1,10 @@
 import { DeleteUserCommand } from './delete-user.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UserFactory } from '../../../../factories/domains/users/user.factory';
+
 import { CommandHandler } from '@nestjs/cqrs';
 import type { ICommandHandler } from '@nestjs/cqrs';
-import type { UserFactory } from '../../../../factories/domains/users/user.factory';
 
 @CommandHandler(DeleteUserCommand)
 export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand> {

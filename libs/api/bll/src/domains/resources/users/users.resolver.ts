@@ -1,10 +1,13 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UsersService } from './users.service';
 import { PaginatedUserModel, UserModel } from '../../factories/domains/users/user.model';
+import { PaginationOptions } from '../../../shards/types/pagination-options.type';
+
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import { ActorImageType } from '@okampus/shared/enums';
-import type { UsersService } from './users.service';
-import type { CreateUserDto, UpdateUserDto } from '@okampus/shared/dtos';
-import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import { CreateUserDto } from '@okampus/shared/dtos';
+import { UpdateUserDto } from '@okampus/shared/dtos';
 import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 
 @Resolver(() => UserModel)
@@ -22,13 +25,13 @@ export class UsersResolver {
   }
 
   @Query(() => PaginatedUserModel)
-  users(@Args('options', { nullable: true }) options: PaginationOptions) {
+  users(@Args('options', { type: () => PaginationOptions, nullable: true }) options: PaginationOptions) {
     return this.usersService.find(options);
   }
 
   @Mutation(() => UserModel)
   createUser(
-    @Args('user') user: CreateUserDto,
+    @Args('user', { type: () => CreateUserDto }) user: CreateUserDto,
     @Args('avatar', { type: () => GraphQLUpload, nullable: true }) avatar?: MulterFileType,
     @Args('avatarDark', { type: () => GraphQLUpload, nullable: true }) avatarDark?: MulterFileType,
     @Args('banner', { type: () => GraphQLUpload, nullable: true }) banner?: MulterFileType
@@ -41,7 +44,7 @@ export class UsersResolver {
   }
 
   @Mutation(() => UserModel)
-  updateUser(@Args('updateUser') updateUser: UpdateUserDto) {
+  updateUser(@Args('updateUser', { type: () => UpdateUserDto }) updateUser: UpdateUserDto) {
     return this.usersService.update(updateUser);
   }
 

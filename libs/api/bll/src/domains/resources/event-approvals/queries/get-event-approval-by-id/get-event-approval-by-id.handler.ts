@@ -1,7 +1,10 @@
 import { GetEventApprovalByIdQuery } from './get-event-approval-by-id.query';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EventApprovalFactory } from '../../../../factories/domains/events/event-approval.factory';
+
 import { QueryHandler } from '@nestjs/cqrs';
-import type { IQueryHandler} from '@nestjs/cqrs';
-import type { EventApprovalFactory } from '../../../../factories/domains/events/event-approval.factory';
+import type { IQueryHandler } from '@nestjs/cqrs';
 import type { EventApprovalModel } from '../../../../factories/domains/events/event-approval.model';
 
 @QueryHandler(GetEventApprovalByIdQuery)

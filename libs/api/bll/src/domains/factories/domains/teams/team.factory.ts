@@ -1,40 +1,44 @@
 import { TeamModel } from './team.model';
 import { BaseFactory } from '../../base.factory';
 import { addImagesToActor } from '../../abstract.utils';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { OrgDocumentFactory } from '../documents/org-document.factory';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/uploads/upload.service';
+
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+
+import { clubDefaultRoles, Shortcut, Team, teamDefaultRoles, TeamMember, TeamRole } from '@okampus/api/dal';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
-  clubDefaultRoles,
-  Shortcut,
-  Team,
-  teamDefaultRoles,
-  TeamMember,
-  TeamRole
+  ActorRepository,
+  ShortcutRepository,
+  TeamCategoryRepository,
+  TeamMemberRepository,
+  TeamRepository,
+  TeamRoleRepository,
+  UserRepository,
 } from '@okampus/api/dal';
-// import { loadTeam } from '../loader.utils';
+
 import { ActorKind, IndividualKind, ShortcutType, TeamType } from '@okampus/shared/enums';
 import { toSlug } from '@okampus/shared/utils';
 import type { CreateOrgDocumentDto, CreateTeamDto, ITeam } from '@okampus/shared/dtos';
 import type {
   ActorImageUploadProps,
-  ActorRepository,
   Form,
   Individual,
   Org,
-  ShortcutRepository,
   Tag,
   TeamCategory,
-  TeamCategoryRepository,
-  TeamMemberRepository,
   TeamOptions,
-  TeamRepository,
-  TeamRoleRepository,
   TenantCore,
   User,
-  UserRepository} from '@okampus/api/dal';
-import type { UploadService } from '../../../../features/uploads/upload.service';
+} from '@okampus/api/dal';
+
 import type { Snowflake, MulterFileType } from '@okampus/shared/types';
-import type { OrgDocumentFactory } from '../documents/org-document.factory';
 import type { OrgDocumentModel } from '../documents/org-document.model';
 
 @Injectable()

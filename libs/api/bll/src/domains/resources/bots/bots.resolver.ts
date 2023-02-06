@@ -1,8 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { BotsService } from './bots.service';
+
 import { PaginatedBotModel, BotModel } from '../../factories/domains/bots/bot.model';
+import { PaginationOptions } from '../../../shards/types/pagination-options.type';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
-import type { BotsService } from './bots.service';
-import type { CreateBotDto, UpdateDocumentDto } from '@okampus/shared/dtos';
-import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+
+import { CreateBotDto, UpdateDocumentDto } from '@okampus/shared/dtos';
 import type { Snowflake } from '@okampus/shared/types';
 
 @Resolver(() => BotModel)
@@ -20,17 +23,17 @@ export class BotsResolver {
   }
 
   @Query(() => PaginatedBotModel)
-  bots(@Args('options', { nullable: true }) options: PaginationOptions) {
+  bots(@Args('options', { type: () => PaginationOptions, nullable: true }) options: PaginationOptions) {
     return this.botsService.find(options);
   }
 
   @Mutation(() => BotModel)
-  createBot(@Args('bot') bot: CreateBotDto) {
+  createBot(@Args('bot', { type: () => CreateBotDto }) bot: CreateBotDto) {
     return this.botsService.create(bot);
   }
 
   @Mutation(() => BotModel)
-  updateBot(@Args('updateBot') updateBot: UpdateDocumentDto) {
+  updateBot(@Args('updateBot', { type: () => UpdateDocumentDto }) updateBot: UpdateDocumentDto) {
     return this.botsService.update(updateBot);
   }
 

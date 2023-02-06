@@ -17,7 +17,7 @@ export class EventJoin extends Join {
   @ManyToOne({ type: 'TeamAction', nullable: true })
   teamAction: TeamAction | null = null;
 
-  @Enum(() => RegistrationStatus)
+  @Enum({ items: () => RegistrationStatus, type: 'string' })
   presenceStatus!: RegistrationStatus;
 
   constructor(options: EventJoinOptions) {

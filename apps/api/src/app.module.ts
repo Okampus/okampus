@@ -1,13 +1,12 @@
 import { AppController } from './app.controller';
 import { config } from '../configs/config';
-import cacheConfig from '../configs/cache.config';
 import graphqlConfig from '../configs/graphql.config';
 import mikroOrmConfig from '../configs/mikro-orm.config';
 import meiliSearchConfig from '../configs/meilisearch.config';
 import redisConfig, { redisConnectionOptions } from '../configs/redis.config';
 
 import { sentryConfig, sentryInterceptorConfig } from '../configs/sentry.config';
-import { MinioModule } from '@okampus/api/bll';
+import { MinioModule, PubSubModule } from '@okampus/api/bll';
 import { ExceptionsFilter, RestLoggerMiddleware, TraceMiddleware } from '@okampus/api/shards';
 import {
   AuthGuard,
@@ -21,7 +20,7 @@ import {
   MeiliSearchIndexerModule,
   OIDCCacheModule,
   OrgDocumentsModule,
-  PoliciesGuard,
+  PolicyGuard,
   ProjectsModule,
   TeamCategoriesModule,
   TeamsModule,
@@ -40,11 +39,12 @@ import { CacheModule, Module, RequestMethod } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { InjectRedis, RedisModule } from '@liaoliaots/nestjs-redis';
 
-import * as Sentry from '@sentry/node';
+import Sentry from '@sentry/node';
+import { redisStore } from 'cache-manager-redis-store';
 import type Redis from 'ioredis';
 
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
-import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
+import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@nestjs/common';
 
 // import { CafeteriaModule } from '@api/canteens/canteens.module';
 // import { SubjectsModule } from '@api/modules/label/subjects/subjects.module';
@@ -104,13 +104,36 @@ import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
     GraphQLModule.forRoot<MercuriusDriverConfig>(graphqlConfig),
     // TODO: Replace with .forRoot when https://github.com/lambrohan/nestjs-meilisearch/pull/5 is merged & published
     MeiliSearchModule.forRootAsync(meiliSearchConfig),
-    MinioModule,
+    PubSubModule.forRoot({
+      host: config.redis.host,
+      port: config.redis.port,
+      password: config.redis.password,
+    }),
+    MinioModule.forRoot({
+      endPoint: config.s3.endpoint,
+      accessKey: config.s3.accessKeyId,
+      secretKey: config.s3.secretAccessKey,
+      region: config.s3.region,
+    }),
     MikroOrmModule.forRoot(mikroOrmConfig),
-    ScheduleModule.forRoot(),
     SentryModule.forRoot(sentryConfig),
+    ScheduleModule.forRoot(),
 
     // Cache
-    CacheModule.registerAsync(cacheConfig),
+    CacheModule.registerAsync({
+      useFactory: async () => ({
+        store: await redisStore({
+          // Store-specific configuration:
+          socket: {
+            host: config.redis.host,
+            port: config.redis.port,
+          },
+          password: config.redis.password,
+        }),
+      }),
+      isGlobal: true,
+    } as CacheModuleAsyncOptions),
+
     RedisModule.forRoot(redisConfig),
     OIDCCacheModule,
 
@@ -171,7 +194,7 @@ import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
   providers: [
     // { provide: APP_OIDC_CACHE, useValue: new OIDCStrategyCache() },
     { provide: APP_GUARD, useClass: AuthGuard },
-    { provide: APP_GUARD, useClass: PoliciesGuard },
+    { provide: APP_GUARD, useClass: PolicyGuard },
     { provide: APP_FILTER, useClass: ExceptionsFilter },
     {
       provide: APP_INTERCEPTOR,

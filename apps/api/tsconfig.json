@@ -1,6 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
-  "files": [],
+  "compilerOptions": {
+    "module": "es2022",
+    "target": "es2022",
+    "types": ["node", "vite/client", "vitest"]
+  },
   "include": [],
   "references": [
     {

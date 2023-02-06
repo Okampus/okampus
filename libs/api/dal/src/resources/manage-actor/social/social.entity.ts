@@ -5,7 +5,6 @@ import { SocialType } from '@okampus/shared/enums';
 import type { Actor } from '../../actor/actor.entity';
 import type { SocialOptions } from './social.options';
 
-
 @Entity({ customRepository: () => SocialRepository })
 export class Social extends TenantScopedEntity {
   [EntityRepositoryType]!: SocialRepository;
@@ -13,7 +12,7 @@ export class Social extends TenantScopedEntity {
   @ManyToOne({ type: 'Actor', onDelete: 'CASCADE' })
   actor!: Actor;
 
-  @Enum(() => SocialType)
+  @Enum({ items: () => SocialType, type: 'string' })
   type!: SocialType;
 
   @Property({ type: 'text' })

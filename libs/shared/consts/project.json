@@ -18,34 +18,19 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": [
-          {
-            "command": "nx run shared-consts:ts-check"
-          },
-          {
-            "command": "nx run shared-consts:eslint"
-          }
-        ]
+        "commands": ["nx run shared-consts:ts-check", "nx run shared-consts:eslint"]
       }
     },
     "ts-check": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          {
-            "command": "tsc --pretty --noEmit -p libs/shared/consts/tsconfig.lib.json"
-          }
-        ]
+        "commands": ["tsc --pretty --noEmit -p libs/shared/consts/tsconfig.lib.json"]
       }
     },
     "eslint": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          {
-            "command": "eslint libs/shared/consts --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"
-          }
-        ]
+        "commands": ["eslint libs/shared/consts --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
       }
     },
     "test": {

@@ -1,8 +1,13 @@
 import { S3Buckets, TokenType } from '@okampus/shared/enums';
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 import type { ApiConfig } from '@okampus/shared/types';
 
-dotenv.config({ path: 'apps/api/.env' });
+const _dirname = typeof __dirname === 'undefined' ? dirname(fileURLToPath(import.meta.url)) : __dirname;
+const appPath = `${_dirname}/../../../apps/api`;
+
+dotenv.config({ path: `${appPath}/.env` });
 
 // Helpers
 const parseEnvInt = (value: string | undefined, defaultValue: number): number => {
@@ -24,7 +29,7 @@ const baseDomain = process.env.BASE_DOMAIN ?? 'localhost';
 const port = parseEnvInt(process.env.PORT, 8081);
 const frontendOriginUrl = process.env.FRONTEND_ORIGIN_URL ?? 'localhost';
 
-// The config object!
+// Config object
 export const config: ApiConfig = {
   nodeEnv,
   env: {
@@ -42,7 +47,8 @@ export const config: ApiConfig = {
   },
   upload: {
     maxSize: parseEnvInt(process.env.UPLOAD_MAX_SIZE, 50_000_000),
-    path: process.env.UPLOAD_PATH ?? 'uploads',
+    localPath: `${appPath}/${process.env.UPLOAD_PATH ?? 'uploads'}`,
+    localPrefix: process.env.UPLOAD_PATH ?? 'uploads',
   },
   meilisearch: {
     enabled: parseEnvBoolean(process.env.MEILISEARCH_ENABLED, false),

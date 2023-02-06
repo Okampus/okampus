@@ -2,24 +2,19 @@ import { EventApprovalModel } from './event-approval.model';
 import { BaseFactory } from '../../base.factory';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
-  EventApproval
-} from '@okampus/api/dal';
+import { EventApproval } from '@okampus/api/dal';
 import { EventState } from '@okampus/shared/enums';
-import type {
-  EventApprovalOptions,
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import {
   EventApprovalRepository,
-  EventApprovalStep,
   EventApprovalStepRepository,
-  Individual,
-  TenantCore,
-  TenantEvent,
   TenantEventRepository,
-  TenantRepository} from '@okampus/api/dal';
+  TenantRepository,
+} from '@okampus/api/dal';
+
+import type { EventApprovalOptions, EventApprovalStep, Individual, TenantCore, TenantEvent } from '@okampus/api/dal';
 import type { CreateEventApprovalDto, IEventApproval } from '@okampus/shared/dtos';
-// import { loadEventApproval } from '../loader.utils';
-// eslint-disable-next-line import/no-cycle
-// eslint-disable-next-line import/no-cycle
 
 @Injectable()
 export class EventApprovalFactory extends BaseFactory<
@@ -48,7 +43,6 @@ export class EventApprovalFactory extends BaseFactory<
 
     const event = await this.eventRepository.findById(createEventApproval.eventId);
     if (!event) throw new BadRequestException('Invalid event id');
-    // ({ id: createEventApproval.eventId });
 
     const tenantOrg = await this.tenantRepository.findOneOrFail({ tenant }, { populate: ['eventApprovalSteps'] });
 
@@ -68,12 +62,6 @@ export class EventApprovalFactory extends BaseFactory<
       tenant,
     });
   }
-
-  // entityToModel(entity: EventApproval): EventApprovalModel | undefined {
-  //   const eventApproval = loadEventApproval(entity);
-  //   if (!eventApproval) return undefined;
-  //   return this.createModel(eventApproval);
-  // }
 
   modelToEntity(model: Required<EventApprovalModel>): EventApproval {
     return new EventApproval({

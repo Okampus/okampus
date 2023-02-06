@@ -1,7 +1,10 @@
 import { DeleteTenantCommand } from './delete-tenant.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
+
 import { CommandHandler } from '@nestjs/cqrs';
 import type { ICommandHandler } from '@nestjs/cqrs';
-import type { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
 
 @CommandHandler(DeleteTenantCommand)
 export class DeleteTenantHandler implements ICommandHandler<DeleteTenantCommand> {

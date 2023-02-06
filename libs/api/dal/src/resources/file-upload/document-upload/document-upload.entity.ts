@@ -4,7 +4,6 @@ import { Entity, Enum, Property } from '@mikro-orm/core';
 import { DocumentUploadType, FileUploadKind } from '@okampus/shared/enums';
 import type { DocumentUploadOptions } from './document-upload.options';
 
-
 @Entity({
   customRepository: () => DocumentUploadRepository,
 })
@@ -15,7 +14,7 @@ export class DocumentUpload extends FileUpload {
   @Property({ type: 'int', nullable: true })
   numberOfWords: number | null = null;
 
-  @Enum(() => DocumentUploadType)
+  @Enum({ items: () => DocumentUploadType, type: 'string' })
   documentType!: DocumentUploadType;
 
   constructor(options: DocumentUploadOptions) {

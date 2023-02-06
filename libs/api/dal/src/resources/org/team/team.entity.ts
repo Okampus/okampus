@@ -31,7 +31,7 @@ export class Team extends Org {
   @Property({ type: 'text', nullable: true })
   tagline: string | null = null;
 
-  @Enum(() => TeamType)
+  @Enum({ items: () => TeamType, type: 'string', default: TeamType.Project })
   type = TeamType.Project;
 
   @ManyToMany({ type: 'TeamCategory' })

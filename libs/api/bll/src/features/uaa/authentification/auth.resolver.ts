@@ -1,16 +1,21 @@
 import { AuthContextModel } from './auth-context.model';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { AuthService } from './auth.service';
+
 import { Requester } from '../../../shards/request-context/requester.decorator';
 import { UserModel } from '../../../domains/factories/domains/users/user.model';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ConfigService } from '../../../global/config.module';
+
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TenantPublic } from '@okampus/api/shards';
 import { User } from '@okampus/api/dal';
 import { UnauthorizedException } from '@nestjs/common';
 import { TokenType } from '@okampus/shared/enums';
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import type { Individual} from '@okampus/api/dal';
-import type { UsersService } from '../../../domains/resources/users/users.service';
-import type { AuthService } from './auth.service';
-import type { ConfigService } from '../../../global/config.module';
+import type { Individual } from '@okampus/api/dal';
 import type { ApiConfig } from '@okampus/shared/types';
 
 interface GraphQLContext {
@@ -22,11 +27,7 @@ interface GraphQLContext {
 export class AuthResolver {
   config: ApiConfig;
 
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly usersService: UsersService,
-    private readonly authService: AuthService
-  ) {
+  constructor(private readonly configService: ConfigService, private readonly authService: AuthService) {
     this.config = this.configService.config;
   }
 

@@ -17,7 +17,8 @@ export type ApiConfig = {
   };
   readonly upload: {
     readonly maxSize: number;
-    readonly path: string;
+    readonly localPath: string;
+    readonly localPrefix: string;
   };
   readonly meilisearch: {
     readonly enabled: boolean;

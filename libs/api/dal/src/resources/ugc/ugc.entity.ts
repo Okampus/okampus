@@ -17,7 +17,7 @@ import type { Org } from '../org/org.entity';
   abstract: true,
 })
 export class Ugc extends TenantScopedEntity {
-  @Enum(() => UgcKind)
+  @Enum({ items: () => UgcKind, type: 'string' })
   ugcKind!: UgcKind;
 
   @ManyToOne({ type: 'Individual', onDelete: 'CASCADE' })

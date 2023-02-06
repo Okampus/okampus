@@ -31,10 +31,10 @@ export class User extends Individual {
   passwordHash: string | null = null;
 
   // Roles
-  @Enum({ default: [RoleType.User], array: true })
+  @Enum({ items: () => RoleType, type: 'string', default: [RoleType.User], array: true })
   roles = [RoleType.User];
 
-  @Enum(() => ScopeRole)
+  @Enum({ items: () => ScopeRole, type: 'string' })
   scopeRole!: ScopeRole;
 
   @OneToOne({ type: 'UserProfile', inversedBy: 'user' })

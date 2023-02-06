@@ -1,9 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TeamCategoriesService } from './team-categories.service';
+
 import { PaginatedTeamCategoryModel, TeamCategoryModel } from '../../factories/domains/tags/team-category.model';
+import { PaginationOptions } from '../../../shards/types/pagination-options.type';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { GraphQLUpload } from 'graphql-upload-minimal';
-import type { TeamCategoriesService } from './team-categories.service';
-import type { CreateTeamCategoryDto, UpdateTeamCategoryDto } from '@okampus/shared/dtos';
-import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import { CreateTeamCategoryDto, UpdateTeamCategoryDto } from '@okampus/shared/dtos';
 import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 
 @Resolver(() => TeamCategoryModel)
@@ -21,20 +23,22 @@ export class TeamCategoriesResolver {
   }
 
   @Query(() => PaginatedTeamCategoryModel)
-  teamCategories(@Args('options', { nullable: true }) options: PaginationOptions) {
+  teamCategories(@Args('options', { type: () => PaginationOptions, nullable: true }) options: PaginationOptions) {
     return this.teamCategoriesService.find(options);
   }
 
   @Mutation(() => TeamCategoryModel)
   createTeamCategory(
-    @Args('teamCategory') teamCategory: CreateTeamCategoryDto,
+    @Args('teamCategory', { type: () => CreateTeamCategoryDto }) teamCategory: CreateTeamCategoryDto,
     @Args('iconImage', { type: () => GraphQLUpload, nullable: true }) iconImage?: MulterFileType
   ) {
     return this.teamCategoriesService.create(teamCategory, iconImage);
   }
 
   @Mutation(() => TeamCategoryModel)
-  updateTeamCategory(@Args('updateTeamCategory') updateTeamCategory: UpdateTeamCategoryDto) {
+  updateTeamCategory(
+    @Args('updateTeamCategory', { type: () => UpdateTeamCategoryDto }) updateTeamCategory: UpdateTeamCategoryDto
+  ) {
     return this.teamCategoriesService.update(updateTeamCategory);
   }
 

@@ -1,7 +1,10 @@
 import { DeleteBotCommand } from './delete-bot.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { BotFactory } from '../../../../factories/domains/bots/bot.factory';
+
 import { CommandHandler } from '@nestjs/cqrs';
 import type { ICommandHandler } from '@nestjs/cqrs';
-import type { BotFactory } from '../../../../factories/domains/bots/bot.factory';
 
 @CommandHandler(DeleteBotCommand)
 export class DeleteBotHandler implements ICommandHandler<DeleteBotCommand> {

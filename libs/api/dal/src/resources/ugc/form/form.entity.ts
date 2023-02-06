@@ -19,7 +19,7 @@ export class Form extends Ugc {
   @Property({ type: 'json' })
   schema!: JSONObject;
 
-  @Enum(() => FormType)
+  @Enum({ items: () => FormType, type: 'string' })
   type!: FormType;
 
   @Property()

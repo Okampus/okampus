@@ -6,7 +6,8 @@ import { GetTeamCategoryBySlugQuery } from './queries/get-team-category-by-slug/
 import { GetTeamCategoriesQuery } from './queries/get-team-categories/get-team-categories.query';
 import { RequestContext } from '../../../shards/request-context/request-context';
 import { Injectable } from '@nestjs/common';
-import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import type { CreateTeamCategoryDto, UpdateTeamCategoryDto } from '@okampus/shared/dtos';
 import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 import type { PaginationOptions } from '../../../shards/types/pagination-options.type';

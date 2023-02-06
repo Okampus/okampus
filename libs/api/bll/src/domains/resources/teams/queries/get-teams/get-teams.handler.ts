@@ -1,7 +1,10 @@
 import { GetTeamsQuery } from './get-teams.query';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TeamFactory } from '../../../../factories/domains/teams/team.factory';
+
 import { QueryHandler } from '@nestjs/cqrs';
-import type { IQueryHandler} from '@nestjs/cqrs';
-import type { TeamFactory } from '../../../../factories/domains/teams/team.factory';
+import type { IQueryHandler } from '@nestjs/cqrs';
 import type { PaginatedTeamModel } from '../../../../factories/domains/teams/team.model';
 
 @QueryHandler(GetTeamsQuery)

@@ -13,7 +13,7 @@ import type { User } from '../actor/user/user.entity';
   abstract: true,
 })
 export abstract class Join extends TenantScopedEntity {
-  @Enum(() => JoinKind)
+  @Enum({ items: () => JoinKind, type: 'string' })
   joinKind!: JoinKind;
 
   // If issuer is null, the joiner is the issuer and the Join is a request
@@ -36,7 +36,7 @@ export abstract class Join extends TenantScopedEntity {
   @ManyToOne({ type: 'FormSubmission', nullable: true })
   formSubmission: FormSubmission | null = null;
 
-  @Enum(() => JoinState)
+  @Enum({ items: () => JoinState, type: 'string', default: JoinState.Pending })
   state = JoinState.Pending;
 
   constructor(options: JoinOptions & { joinKind: JoinKind }) {

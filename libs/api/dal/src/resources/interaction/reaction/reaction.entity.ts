@@ -6,7 +6,7 @@ import type { ReportOptions } from '../report/report.options';
 
 @Entity()
 export class Reaction extends Interaction {
-  @Enum(() => ReactionType)
+  @Enum({ items: () => ReactionType, type: 'string' })
   @Index()
   reactionType!: ReactionType;
 

@@ -1,3 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { MinioService } from '../../global/minio.module';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ConfigService } from '../../global/config.module';
+
 import { RequestContext } from '../../shards/request-context/request-context';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { DocumentUpload, FileUpload, ImageUpload, VideoUpload } from '@okampus/api/dal';
@@ -7,11 +12,9 @@ import { Readable } from 'node:stream';
 import { promises } from 'node:fs';
 
 import path from 'node:path';
-import type { MinioService } from '../../global/minio.module';
 import type { FileUploadOptions, TenantCore } from '@okampus/api/dal';
 import type { ApiConfig, MulterFileType } from '@okampus/shared/types';
 import type { HTTPResource } from '../../shards/types/http-resource.type';
-import type { ConfigService } from '../../global/config.module';
 
 @Injectable()
 export class UploadService extends RequestContext {
@@ -27,11 +30,11 @@ export class UploadService extends RequestContext {
       const { writeFile } = promises;
 
       const buffer = await streamToBuffer(stream);
-      const fullPath = path.join(__dirname, '..', '..', '..', 'apps/api', this.config.upload.path, bucket, key);
+      const fullPath = path.join(this.config.upload.localPath, bucket, key);
       await writeFile(fullPath, buffer);
 
       return {
-        url: new URL(path.join(this.config.upload.path, bucket, key), this.config.network.apiUrl).href,
+        url: new URL(fullPath, this.config.network.apiUrl).href,
         etag: key,
         size: buffer.length,
       };

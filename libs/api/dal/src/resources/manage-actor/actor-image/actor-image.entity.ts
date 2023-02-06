@@ -6,7 +6,6 @@ import type { Actor } from '../../actor/actor.entity';
 import type { ImageUpload } from '../../file-upload/image-upload/image-upload.entity';
 import type { ActorImageOptions } from './actor-image.options';
 
-
 @Entity({ customRepository: () => ActorImageRepository })
 export class ActorImage extends TenantScopedEntity {
   [EntityRepositoryType]!: ActorImageRepository;
@@ -17,7 +16,7 @@ export class ActorImage extends TenantScopedEntity {
   @OneToOne({ type: 'ImageUpload', onDelete: 'CASCADE' })
   image!: ImageUpload;
 
-  @Enum(() => ActorImageType)
+  @Enum({ items: () => ActorImageType, type: 'string' })
   type!: ActorImageType;
 
   @Property({ type: 'datetime', nullable: true })

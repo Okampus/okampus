@@ -1,7 +1,10 @@
 import { CreateOrgDocumentCommand } from './create-org-document.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { OrgDocumentFactory } from '../../../../factories/domains/documents/org-document.factory';
+
 import { CommandHandler } from '@nestjs/cqrs';
 import type { ICommandHandler } from '@nestjs/cqrs';
-import type { OrgDocumentFactory } from '../../../../factories/domains/documents/org-document.factory';
 import type { OrgDocumentModel } from '../../../../factories/domains/documents/org-document.model';
 
 @CommandHandler(CreateOrgDocumentCommand)

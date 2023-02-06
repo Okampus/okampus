@@ -11,14 +11,13 @@ import { FileUploadKind } from '@okampus/shared/enums';
 import type { FileUploadOptions } from './file-upload.options';
 import type { Individual } from '../actor/individual/individual.entity';
 
-
 @Entity({
   customRepository: () => FileUploadRepository,
   discriminatorColumn: 'fileUploadKind',
   discriminatorMap: FileUploadKind,
 })
 export class FileUpload extends TenantScopedEntity {
-  @Enum(() => FileUploadKind)
+  @Enum({ items: () => FileUploadKind, type: 'string' })
   fileUploadKind!: FileUploadKind;
 
   @ManyToOne({ type: 'Individual', onDelete: 'CASCADE' })

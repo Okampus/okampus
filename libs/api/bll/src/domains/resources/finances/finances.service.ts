@@ -6,7 +6,8 @@ import { GetFinancesByTeamQuery } from './queries/get-finances-by-team/get-finan
 import { GetFinancesQuery } from './queries/get-finances/get-finances.query';
 import { RequestContext } from '../../../shards/request-context/request-context';
 import { Injectable } from '@nestjs/common';
-import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import type { CreateFinanceDto, UpdateProjectDto } from '@okampus/shared/dtos';
 import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 import type { PaginationOptions } from '../../../shards/types/pagination-options.type';

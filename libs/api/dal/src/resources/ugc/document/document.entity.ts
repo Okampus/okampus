@@ -14,7 +14,7 @@ import type { DocumentEdit } from '../document-edit/document-edit.entity';
   discriminatorMap: DocumentKind,
 }) // Called "TenantDocument" to avoid name collision with native JS "Document"
 export class TenantDocument extends Ugc {
-  @Enum(() => DocumentKind)
+  @Enum({ items: () => DocumentKind, type: 'string' })
   documentKind!: DocumentKind;
 
   @Property({ type: 'text' })

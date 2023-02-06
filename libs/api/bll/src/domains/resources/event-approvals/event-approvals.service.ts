@@ -5,11 +5,15 @@ import { GetEventApprovalByIdQuery } from './queries/get-event-approval-by-id/ge
 import { GetEventApprovalsQuery } from './queries/get-event-approvals/get-event-approvals.query';
 import { RequestContext } from '../../../shards/request-context/request-context';
 import { Injectable } from '@nestjs/common';
-import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import type { CreateEventApprovalDto, UpdateEventApprovalDto } from '@okampus/shared/dtos';
 import type { Snowflake } from '@okampus/shared/types';
 import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import type { EventApprovalModel, PaginatedEventApprovalModel } from '../../factories/domains/events/event-approval.model';
+import type {
+  EventApprovalModel,
+  PaginatedEventApprovalModel,
+} from '../../factories/domains/events/event-approval.model';
 
 const defaultEventPopulate = ['actor', 'actor.images', 'actor.socials'];
 

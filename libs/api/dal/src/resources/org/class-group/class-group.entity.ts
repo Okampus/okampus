@@ -14,7 +14,7 @@ export class ClassGroup extends Org {
   @Property({ type: 'text', nullable: true })
   description: string | null = null;
 
-  @Enum(() => ClassGroupType)
+  @Enum({ items: () => ClassGroupType, type: 'string' })
   type!: ClassGroupType;
 
   // TODO: class delegates

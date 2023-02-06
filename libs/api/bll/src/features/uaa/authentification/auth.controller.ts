@@ -1,3 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { AuthService } from './auth.service';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ConfigService } from '../../../global/config.module';
+
 import { Requester } from '../../../shards/request-context/requester.decorator';
 import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -7,9 +12,7 @@ import { referenceRemover } from '@okampus/shared/utils';
 import type { ApiConfig, Snowflake } from '@okampus/shared/types';
 import type { User } from '@okampus/api/dal';
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import type { ConfigService } from '../../../global/config.module';
 import type { AuthContextModel } from './auth-context.model';
-import type { AuthService } from './auth.service';
 import type { LoginDto } from './dto/login.dto';
 // import { RegisterDto } from './dto/register.dto';
 

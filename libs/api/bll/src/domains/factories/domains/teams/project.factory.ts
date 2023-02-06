@@ -2,23 +2,14 @@ import { ProjectModel } from './project.model';
 import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
-  Project
-} from '@okampus/api/dal';
 import { asyncCallIfNotNull } from '@okampus/shared/utils';
-import type {
-  TenantCore,
-  ProjectRepository,
-  ProjectOptions,
-  Individual,
-  User,
-  Team,
-  TenantEvent,
-  TeamRepository,
-  TenantEventRepository,
-  UserRepository} from '@okampus/api/dal';
+import { Project } from '@okampus/api/dal';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ProjectRepository, TeamRepository, TenantEventRepository, UserRepository } from '@okampus/api/dal';
+
+import type { TenantCore, ProjectOptions, Individual, User, Team, TenantEvent } from '@okampus/api/dal';
 import type { CreateProjectDto, IProject } from '@okampus/shared/dtos';
-// import { loadProject } from '../loader.utils';
 
 @Injectable()
 export class ProjectFactory extends BaseFactory<ProjectModel, Project, IProject, ProjectOptions> {
@@ -55,12 +46,6 @@ export class ProjectFactory extends BaseFactory<ProjectModel, Project, IProject,
       tenant,
     });
   }
-
-  // entityToModel(entity: Project): ProjectModel | undefined {
-  //   const project = loadProject(entity);
-  //   if (!project) return undefined;
-  //   return this.createModel(project);
-  // }
 
   modelToEntity(model: Required<ProjectModel>): Project {
     return new Project({

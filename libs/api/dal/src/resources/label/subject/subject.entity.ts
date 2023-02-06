@@ -20,7 +20,7 @@ export class Subject extends TenantScopedEntity {
   @Property({ type: 'text', nullable: true })
   description: string | null = null;
 
-  @Enum(() => SubjectType)
+  @Enum({ items: () => SubjectType, type: 'string' })
   type!: SubjectType;
 
   @ManyToMany({ type: 'ClassGroup' })

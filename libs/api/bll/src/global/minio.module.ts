@@ -1,8 +1,7 @@
-import { ConfigModule } from './config.module';
 import { Global, Injectable, Module } from '@nestjs/common';
 import { Client } from 'minio';
+import type { DynamicModule } from '@nestjs/common';
 import type { ClientOptions } from 'minio';
-import type { ConfigService } from './config.module';
 
 // Singleton class
 class Minio extends Client {
@@ -18,22 +17,24 @@ class Minio extends Client {
 
 @Injectable()
 export class MinioService extends Minio {
-  constructor(configService: ConfigService) {
-    const config = configService.config;
-    super({
-      endPoint: config.s3.endpoint,
-      accessKey: config.s3.accessKeyId,
-      secretKey: config.s3.secretAccessKey,
-      region: config.s3.region,
-    });
+  constructor(options: ClientOptions) {
+    super(options);
   }
 }
 
 @Global()
-@Module({
-  imports: [ConfigModule],
-  controllers: [],
-  providers: [MinioService],
-  exports: [MinioService],
-})
-export class MinioModule {}
+@Module({})
+export class MinioModule {
+  static forRoot(options: ClientOptions): DynamicModule {
+    const minioProvider = {
+      provide: MinioService,
+      useValue: new MinioService(options),
+    };
+
+    return {
+      module: MinioModule,
+      providers: [minioProvider],
+      exports: [minioProvider],
+    };
+  }
+}

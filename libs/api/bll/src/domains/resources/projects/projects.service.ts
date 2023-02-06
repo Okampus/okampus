@@ -6,7 +6,8 @@ import { GetProjectsByTeamQuery } from './queries/get-projects-by-team/get-proje
 import { GetProjectsQuery } from './queries/get-projects/get-projects.query';
 import { RequestContext } from '../../../shards/request-context/request-context';
 import { Injectable } from '@nestjs/common';
-import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import type { CreateProjectDto, UpdateProjectDto } from '@okampus/shared/dtos';
 import type { Snowflake } from '@okampus/shared/types';
 import type { PaginationOptions } from '../../../shards/types/pagination-options.type';

@@ -6,7 +6,6 @@ import { IndividualKind } from '@okampus/shared/enums';
 import type { Actor } from '../actor.entity';
 import type { BotOptions } from './bot.options';
 
-
 @Entity({ customRepository: () => BotRepository })
 export class Bot extends Individual {
   [EntityRepositoryType]!: BotRepository;
@@ -17,7 +16,7 @@ export class Bot extends Individual {
   @ManyToOne({ type: 'Actor' })
   owner!: Actor;
 
-  @Enum(() => BotRole)
+  @Enum({ items: () => BotRole, type: 'string' })
   botRole!: BotRole;
 
   constructor(options: BotOptions) {

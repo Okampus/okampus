@@ -7,7 +7,8 @@ import { GetTeamsQuery } from './queries/get-teams/get-teams.query';
 import { RequestContext } from '../../../shards/request-context/request-context';
 import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-document/create-org-document.command';
 import { Injectable } from '@nestjs/common';
-import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import type { ActorImageUploadProps } from '@okampus/api/dal';
 import type { CreateOrgDocumentDto, CreateTeamDto, UpdateTeamDto } from '@okampus/shared/dtos';
 import type { MulterFileType, Snowflake } from '@okampus/shared/types';

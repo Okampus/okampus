@@ -6,7 +6,6 @@ import type { JSONObject } from '@okampus/shared/types';
 import type { User } from '../../actor/user/user.entity';
 import type { SessionOptions } from './session.options';
 
-
 @Entity({
   customRepository: () => SessionRepository,
 })
@@ -17,7 +16,7 @@ export class Session extends TenantScopedEntity {
   @Property({ type: 'string' })
   country!: string;
 
-  @Enum(() => SessionClientType)
+  @Enum({ items: () => SessionClientType, type: 'string' })
   clientType!: SessionClientType;
 
   @Property({ type: JsonType })

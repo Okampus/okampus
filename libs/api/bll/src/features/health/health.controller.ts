@@ -1,17 +1,17 @@
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import {
-  HealthCheck
-} from '@nestjs/terminus';
+import { HealthCheck } from '@nestjs/terminus';
 import { Public } from '@okampus/api/shards';
-import path from 'node:path';
+
 import type { RedisHealthIndicator } from '@liaoliaots/nestjs-redis-health';
-import type { HealthCheckResult ,
+import type {
+  HealthCheckResult,
   DiskHealthIndicator,
   HealthCheckService,
   MemoryHealthIndicator,
-  MikroOrmHealthIndicator} from '@nestjs/terminus';
+  MikroOrmHealthIndicator,
+} from '@nestjs/terminus';
 import type Redis from 'ioredis';
 import type { ConfigService } from '../../global/config.module';
 
@@ -38,7 +38,7 @@ export class HealthController {
     const REDIS_OPTIONS = { type: 'redis', client: this.redisClient } as const;
     const MAX_HEAP_SIZE = 500 * 1024 * 1024;
     const _LOCAL_STORAGE_OPTIONS = {
-      path: path.join(__dirname, '../apps/api', this.configService.config.upload.path),
+      path: this.configService.config.upload.localPath,
       thresholdPercent: 0.75,
     };
 

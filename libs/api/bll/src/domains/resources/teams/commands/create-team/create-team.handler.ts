@@ -1,7 +1,10 @@
 import { CreateTeamCommand } from './create-team.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TeamFactory } from '../../../../factories/domains/teams/team.factory';
+
 import { CommandHandler } from '@nestjs/cqrs';
 import type { ICommandHandler } from '@nestjs/cqrs';
-import type { TeamFactory } from '../../../../factories/domains/teams/team.factory';
 import type { TeamModel } from '../../../../factories/domains/teams/team.model';
 
 @CommandHandler(CreateTeamCommand)

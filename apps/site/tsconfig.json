@@ -7,7 +7,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "module": "esnext",
-    "types": ["vite/client", "vitest"]
+    "types": ["node", "vite/client", "vitest"]
   },
   "include": [],
   "references": [

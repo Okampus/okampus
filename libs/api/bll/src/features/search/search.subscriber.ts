@@ -1,7 +1,10 @@
 import { MeiliSearchIndexerService } from './meilisearch-indexer.service';
 import { Injectable } from '@nestjs/common';
 import { InjectMeiliSearch } from 'nestjs-meilisearch';
-import type { EntityManager } from '@mikro-orm/core';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
+
 import type { EntityName, EventArgs, EventSubscriber } from '@mikro-orm/core';
 import type MeiliSearch from 'meilisearch';
 // import { config } from '@api/configs/config';

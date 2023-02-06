@@ -6,7 +6,7 @@ import { Colors } from '@okampus/shared/enums';
 @Embeddable()
 export class UserCustomization {
   @Field(() => Colors, { nullable: true })
-  @Enum({ items: () => Colors, nullable: true })
+  @Enum({ items: () => Colors, type: 'string', nullable: true })
   color: Colors | null = null;
 
   @Field(() => String, { nullable: true })

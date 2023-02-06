@@ -1,10 +1,13 @@
 import { CreateTenantCommand } from './create-tenant.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
+
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { CommandHandler } from '@nestjs/cqrs';
 import { Actor } from '@okampus/api/dal';
 import type { ICommandHandler } from '@nestjs/cqrs';
 import type { BaseRepository } from '@okampus/api/dal';
-import type { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
 import type { TenantModel } from '../../../../factories/domains/tenants/tenant.model';
 
 @CommandHandler(CreateTenantCommand)

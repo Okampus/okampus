@@ -9,7 +9,7 @@ export class Report extends Interaction {
   @ManyToOne(() => Individual)
   target!: Individual;
 
-  @Enum(() => ReportReason)
+  @Enum({ items: () => ReportReason, type: 'string' })
   type!: ReportReason;
 
   @Property({ type: 'text', nullable: true })

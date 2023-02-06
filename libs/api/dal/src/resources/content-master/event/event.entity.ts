@@ -37,7 +37,6 @@ import type { Form } from '../../ugc/form/form.entity';
 import type { FormSubmission } from '../../ugc/form-submission/form-submission.entity';
 import type { EventApproval } from '../../manage-tenant/event-approval/event-approval.entity';
 
-
 @Entity({
   customRepository: () => TenantEventRepository,
 }) // Called "TenantEvent" to avoid name collision with native JS "Event"
@@ -57,8 +56,8 @@ export class TenantEvent extends ContentMaster {
   @Embedded(() => Address)
   location!: Address;
 
-  @Enum(() => EventState)
-  state!: EventState;
+  @Enum({ items: () => EventState, type: 'string', default: EventState.Draft })
+  state = EventState.Draft;
 
   @Property({ type: 'json' })
   meta: JSONObject = {};

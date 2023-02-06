@@ -15,7 +15,7 @@ import type { OrgDocument } from '../manage-org/org-document/org-document.entity
   abstract: true,
 })
 export class Org extends TenantScopedEntity {
-  @Enum(() => OrgKind)
+  @Enum({ items: () => OrgKind, type: 'string' })
   orgKind!: OrgKind;
 
   @OneToOne({ type: 'Actor', inversedBy: 'org' })

@@ -15,7 +15,7 @@ import type { Individual } from '../../actor/individual/individual.entity';
 export class Tag extends TenantScopedEntity {
   [EntityRepositoryType]!: TagRepository;
 
-  @Enum(() => TagKind)
+  @Enum({ items: () => TagKind, type: 'string' })
   tagKind!: TagKind;
 
   @Property({ type: 'text' })
@@ -27,7 +27,7 @@ export class Tag extends TenantScopedEntity {
   @Property({ type: 'text', nullable: true })
   description: string | null = null; // TODO: switch to Content?
 
-  @Enum(() => Colors)
+  @Enum({ items: () => Colors, type: 'string' })
   color!: Colors;
 
   @ManyToOne({ type: 'Individual', nullable: true })

@@ -10,7 +10,7 @@ import type { MembershipOptions } from './membership.options';
   abstract: true,
 })
 export class Membership extends TenantScopedEntity {
-  @Enum(() => MembershipKind)
+  @Enum({ items: () => MembershipKind, type: 'string' })
   membershipKind!: MembershipKind;
 
   @ManyToOne({ type: 'User' })

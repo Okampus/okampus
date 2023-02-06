@@ -1,35 +1,37 @@
-FROM node:18
+FROM node:current-alpine
 
 WORKDIR /app
-RUN adduser --uid 1111 api
+RUN adduser -D --uid 1111 api
 
 RUN chown api:api /app
 
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
 RUN chmod +x /wait
 
-RUN npm --no-update-notifier --no-fund --global install pnpm@7.26.0
+RUN npm --no-update-notifier --no-fund --global install pnpm@7.26.3
 
 ADD --chown=api:api package.json ./package.json
 ADD --chown=api:api pnpm-lock.yaml ./pnpm-lock.yaml
 ADD --chown=api:api nx.json ./nx.json
 
-USER api
 RUN pnpm i
 
-ADD --chown=api:api . ./
+ADD --chown=api:api tsconfig.json ./tsconfig.json
+ADD --chown=api:api tsconfig.base.json ./tsconfig.base.json
+ADD --chown=api:api nx.json ./nx.json
 
-# ADD --chown=api:api tsconfig.json ./tsconfig.json
-# ADD --chown=api:api tsconfig.base.json ./tsconfig.base.json
-# ADD --chown=api:api nx.json ./nx.json
-
-# ADD --chown=api:api apps/api ./apps/api
-# ADD --chown=api:api libs/api ./libs/api
-# ADD --chown=api:api libs/shared ./libs/shared
+ADD --chown=api:api apps/api ./apps/api
+ADD --chown=api:api libs/api ./libs/api
+ADD --chown=api:api libs/shared ./libs/shared
 
 RUN pnpm nx run api:build:production
-RUN pnpm nx run api:build-migrations
+USER api
 
 EXPOSE 8081
 
-CMD /wait && node dist/apps/api/migrate/main.js && node dist/apps/api/main.js
+CMD /wait \
+  && (export MIKRO_ORM_MIGRATION=create \
+  && node dist/apps/api/main.mjs) \
+  && tsc --pretty -p apps/api/tsconfig.migrations.json \
+  && (export MIKRO_ORM_MIGRATION=up && node dist/apps/api/main.mjs) \
+  && node dist/apps/api/main.mjs

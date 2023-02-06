@@ -2,23 +2,18 @@ import { BotModel } from './bot.model';
 import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { BotRepository } from '@okampus/api/dal';
 import { Bot } from '@okampus/api/dal';
-import type { Tag, TenantCore, BotRepository, Actor, BotOptions } from '@okampus/api/dal';
+import type { Tag, TenantCore, Actor, BotOptions } from '@okampus/api/dal';
 import type { IBot } from '@okampus/shared/dtos';
-// import { loadBot } from '../loader.utils';
-// eslint-disable-next-line import/no-cycle
 
 @Injectable()
 export class BotFactory extends BaseFactory<BotModel, Bot, IBot, BotOptions> {
   constructor(@Inject(EventPublisher) ep: EventPublisher, botRepository: BotRepository) {
     super(ep, botRepository, BotModel, Bot);
   }
-
-  // entityToModel(entity: Bot): BotModel | undefined {
-  //   const bot = loadBot(entity);
-  //   if (!bot) return undefined;
-  //   return this.createModel(bot);
-  // }
 
   modelToEntity(model: Required<BotModel>): Bot {
     return new Bot({

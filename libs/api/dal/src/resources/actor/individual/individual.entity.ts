@@ -15,7 +15,7 @@ export class Individual extends TenantScopedEntity {
   @OneToOne({ type: 'Actor', inversedBy: 'individual' })
   actor!: Actor;
 
-  @Enum(() => IndividualKind)
+  @Enum({ items: () => IndividualKind, type: 'string' })
   individualKind!: IndividualKind;
 
   constructor(options: IndividualOptions & { individualKind: IndividualKind }) {

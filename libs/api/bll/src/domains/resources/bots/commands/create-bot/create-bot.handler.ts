@@ -1,11 +1,15 @@
 import { CreateBotCommand } from './create-bot.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { BotFactory } from '../../../../factories/domains/bots/bot.factory';
+
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException } from '@nestjs/common';
 import { CommandHandler } from '@nestjs/cqrs';
 import { Actor } from '@okampus/api/dal';
+
 import type { ICommandHandler } from '@nestjs/cqrs';
 import type { BaseRepository } from '@okampus/api/dal';
-import type { BotFactory } from '../../../../factories/domains/bots/bot.factory';
 import type { BotModel } from '../../../../factories/domains/bots/bot.model';
 
 @CommandHandler(CreateBotCommand)

@@ -1,8 +1,11 @@
 import { CreateEventApprovalStepCommand } from './create-event-approval-step.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EventApprovalStepFactory } from '../../../../factories/domains/events/event-approval-step.factory';
+
 import { CommandHandler } from '@nestjs/cqrs';
 import type { ICommandHandler } from '@nestjs/cqrs';
 import type { TenantCore } from '@okampus/api/dal';
-import type { EventApprovalStepFactory } from '../../../../factories/domains/events/event-approval-step.factory';
 import type { EventApprovalStepModel } from '../../../../factories/domains/events/event-approval-step.model';
 
 @CommandHandler(CreateEventApprovalStepCommand)

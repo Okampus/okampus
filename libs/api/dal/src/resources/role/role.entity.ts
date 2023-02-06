@@ -30,19 +30,13 @@ import type { RoleOptions } from './role.options';
   abstract: true,
 })
 export class Role extends TenantScopedEntity {
-  @Enum(() => RoleKind)
+  @Enum({ items: () => RoleKind, type: 'string' })
   roleKind!: RoleKind;
 
   @Property({ type: 'text' })
   name!: string;
 
-  // @Enum({ default: [], array: true })
-  // permissions: TeamPermissions[] = [];
-
-  // @Enum(() => TeamRoleCategory)
-  // category!: TeamRoleCategory;
-
-  @Enum(() => Colors)
+  @Enum({ items: () => Colors, type: 'string' })
   color!: Colors;
 
   @Property({ type: 'boolean' })

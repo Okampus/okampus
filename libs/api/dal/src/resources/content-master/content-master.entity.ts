@@ -19,7 +19,7 @@ import type { Tag } from '../label/tag/tag.entity';
   abstract: true,
 })
 export abstract class ContentMaster extends TenantScopedEntity {
-  @Enum(() => ContentMasterKind)
+  @Enum({ items: () => ContentMasterKind, type: 'string' })
   contentMasterKind!: ContentMasterKind;
 
   @ManyToMany({ type: 'Tag' })

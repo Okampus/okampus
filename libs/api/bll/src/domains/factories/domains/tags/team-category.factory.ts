@@ -1,24 +1,21 @@
 import { TeamCategoryModel } from './team-category.model';
 import { BaseFactory } from '../../base.factory';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/uploads/upload.service';
+
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
-  TeamCategory
-} from '@okampus/api/dal';
+import { TeamCategory } from '@okampus/api/dal';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TeamCategoryRepository, TeamRepository, TagRepository } from '@okampus/api/dal';
+
 import { S3Buckets } from '@okampus/shared/enums';
 import { asyncCallIfNotNull, toSlug } from '@okampus/shared/utils';
-import type {
-  TenantCore,
-  TeamCategoryRepository,
-  TeamCategoryOptions,
-  Team,
-  Individual,
-  TeamRepository,
-  TagRepository} from '@okampus/api/dal';
+import type { TenantCore, TeamCategoryOptions, Team, Individual } from '@okampus/api/dal';
 import type { CreateTeamCategoryDto, ITeamCategory } from '@okampus/shared/dtos';
-// import { loadTeamCategory } from '../loader.utils';
 import type { MulterFileType } from '@okampus/shared/types';
-import type { UploadService } from '../../../../features/uploads/upload.service';
 
 @Injectable()
 export class TeamCategoryFactory extends BaseFactory<
@@ -62,12 +59,6 @@ export class TeamCategoryFactory extends BaseFactory<
       iconImage,
     });
   }
-
-  // entityToModel(entity: TeamCategory): TeamCategoryModel | undefined {
-  //   const teamCategory = loadTeamCategory(entity);
-  //   if (!teamCategory) return undefined;
-  //   return this.createModel(teamCategory);
-  // }
 
   modelToEntity(model: Required<TeamCategoryModel>): TeamCategory {
     return new TeamCategory({

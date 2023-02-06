@@ -1456,6 +1456,13 @@
           "primary": false,
           "nullable": true,
           "default": "'{User}'",
+          "enumItems": [
+            "User",
+            "Moderator",
+            "CafeteriaManager",
+            "ClubManager",
+            "TenantAdmin"
+          ],
           "mappedType": "array"
         },
         "scope_role": {
@@ -2845,6 +2852,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "default": "'Draft'",
           "enumItems": [
             "Template",
             "Draft",
@@ -3736,6 +3744,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "default": "'Project'",
           "enumItems": [
             "Association",
             "Club",
@@ -4491,6 +4500,19 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "default": "'{}'",
+          "enumItems": [
+            "Admin",
+            "ViewTreasury",
+            "ManageTreasury",
+            "ViewRequests",
+            "ManageRequests",
+            "ManageRoles",
+            "ManageMembers",
+            "ManageTeam",
+            "ViewDraftEvents",
+            "ManageDraftEvents"
+          ],
           "mappedType": "array"
         },
         "category": {
@@ -6610,6 +6632,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "'Pending'",
           "enumItems": [
             "Pending",
             "Approved",
@@ -7020,12 +7043,12 @@
         },
         "type": {
           "name": "type",
-          "type": "varchar(255)",
+          "type": "jsonb",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "string"
+          "mappedType": "json"
         },
         "value": {
           "name": "value",

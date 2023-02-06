@@ -1,7 +1,10 @@
 import { GetUserBySlugQuery } from './get-user-by-slug.query';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UserFactory } from '../../../../factories/domains/users/user.factory';
+
 import { QueryHandler } from '@nestjs/cqrs';
-import type { IQueryHandler} from '@nestjs/cqrs';
-import type { UserFactory } from '../../../../factories/domains/users/user.factory';
+import type { IQueryHandler } from '@nestjs/cqrs';
 import type { UserModel } from '../../../../factories/domains/users/user.model';
 
 @QueryHandler(GetUserBySlugQuery)

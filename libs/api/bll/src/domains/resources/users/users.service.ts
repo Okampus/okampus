@@ -6,7 +6,8 @@ import { GetUserBySlugQuery } from './queries/get-user-by-slug/get-user-by-slug.
 import { GetUsersQuery } from './queries/get-users/get-users.query';
 import { RequestContext } from '../../../shards/request-context/request-context';
 import { Injectable } from '@nestjs/common';
-import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import type { ActorImageUploadProps } from '@okampus/api/dal';
 import type { CreateUserDto, UpdateUserDto } from '@okampus/shared/dtos';
 import type { Snowflake } from '@okampus/shared/types';

@@ -1,9 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { OrgDocumentsService } from './org-documents.service';
+
 import { OrgDocumentModel } from '../../factories/domains/documents/org-document.model';
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { GraphQLUpload } from 'graphql-upload-minimal';
-import type { OrgDocumentsService } from './org-documents.service';
-import type { CreateOrgDocumentDto } from '@okampus/shared/dtos';
-import type { MulterFileType } from '@okampus/shared/types';
+import { CreateOrgDocumentDto } from '@okampus/shared/dtos';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 
 @Resolver(() => OrgDocumentModel)
 export class OrgDocumentsResolver {
@@ -11,8 +13,8 @@ export class OrgDocumentsResolver {
 
   @Mutation(() => OrgDocumentModel)
   createOrgDocument(
-    @Args('orgId') orgId: string,
-    @Args('createOrgDocument') createOrgDocument: CreateOrgDocumentDto,
+    @Args('orgId', { type: () => String }) orgId: Snowflake,
+    @Args('createOrgDocument', { type: () => CreateOrgDocumentDto }) createOrgDocument: CreateOrgDocumentDto,
     @Args('documentFile', { type: () => GraphQLUpload }) documentFile: MulterFileType
   ) {
     return this.orgDocumentsService.create(orgId, createOrgDocument, documentFile);

@@ -2,22 +2,13 @@ import { EventApprovalStepModel } from './event-approval-step.model';
 import { BaseFactory } from '../../base.factory';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
-  EventApprovalStep
-} from '@okampus/api/dal';
-import type {
-  EventApprovalStepOptions,
-  EventApprovalStepRepository,
-  Individual,
-  IndividualRepository,
-  Tenant,
-  TenantCore,
-  TenantRepository,
-  User,
-  UserRepository} from '@okampus/api/dal';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EventApprovalStepRepository, IndividualRepository, UserRepository, TenantRepository } from '@okampus/api/dal';
+
+import { EventApprovalStep } from '@okampus/api/dal';
+import type { EventApprovalStepOptions, Individual, Tenant, TenantCore, User } from '@okampus/api/dal';
 import type { CreateEventApprovalStepDto, IEventApprovalStep } from '@okampus/shared/dtos';
-// import { loadEventApprovalStep } from '../loader.utils';
-// eslint-disable-next-line import/no-cycle
 
 @Injectable()
 export class EventApprovalStepFactory extends BaseFactory<
@@ -62,12 +53,6 @@ export class EventApprovalStepFactory extends BaseFactory<
       createdBy: requester,
     });
   }
-
-  // entityToModel(entity: EventApprovalStep): EventApprovalStepModel | undefined {
-  //   const step = loadEventApprovalStep(entity);
-  //   if (!step) return undefined;
-  //   return this.createModel(step);
-  // }
 
   modelToEntity(model: Required<EventApprovalStepModel>): EventApprovalStep {
     return new EventApprovalStep({

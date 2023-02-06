@@ -1,7 +1,10 @@
 import { DeleteEventApprovalCommand } from './delete-event-approval.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EventApprovalFactory } from '../../../../factories/domains/events/event-approval.factory';
+
 import { CommandHandler } from '@nestjs/cqrs';
 import type { ICommandHandler } from '@nestjs/cqrs';
-import type { EventApprovalFactory } from '../../../../factories/domains/events/event-approval.factory';
 
 @CommandHandler(DeleteEventApprovalCommand)
 export class DeleteEventApprovalHandler implements ICommandHandler<DeleteEventApprovalCommand> {

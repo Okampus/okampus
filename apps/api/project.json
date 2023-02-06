@@ -9,12 +9,9 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/site"
+        "outputPath": "dist/apps/api"
       },
       "configurations": {
-        "development": {
-          "mode": "development"
-        },
         "production": {
           "mode": "production"
         }
@@ -24,16 +21,12 @@
       "executor": "@nrwl/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "site:build"
+        "buildTarget": "api:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "site:build:development",
+          "buildTarget": "api:build:development",
           "hmr": true
-        },
-        "production": {
-          "buildTarget": "site:build:production",
-          "hmr": false
         }
       }
     },
@@ -41,34 +34,19 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": [
-          {
-            "command": "nx run api:ts-check"
-          },
-          {
-            "command": "nx run api:eslint"
-          }
-        ]
+        "commands": ["nx run api:ts-check", "nx run api:eslint"]
       }
     },
     "ts-check": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          {
-            "command": "tsc --pretty --noEmit -p apps/api/tsconfig.app.json"
-          }
-        ]
+        "commands": ["tsc --pretty --noEmit -p apps/api/tsconfig.app.json"]
       }
     },
     "eslint": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          {
-            "command": "eslint apps/api --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"
-          }
-        ]
+        "commands": ["eslint apps/api --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
       }
     },
     "test": {
@@ -77,12 +55,6 @@
       "options": {
         "jestConfig": "apps/api/jest.config.ts",
         "passWithNoTests": true
-      }
-    },
-    "migrate": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "ts-node apps/api/migrate.ts"
       }
     }
   },

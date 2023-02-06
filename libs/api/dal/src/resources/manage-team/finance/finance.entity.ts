@@ -26,7 +26,7 @@ export class Finance extends TenantScopedEntity {
   @Property({ type: 'datetime' })
   paymentDate!: Date;
 
-  @Enum(() => PaymentMethod)
+  @Enum({ items: () => PaymentMethod, type: 'string' })
   paymentMethod!: PaymentMethod;
 
   @Embedded(() => Address, { nullable: true })
@@ -38,10 +38,10 @@ export class Finance extends TenantScopedEntity {
   @Property({ type: 'float' })
   amountPayed!: number;
 
-  @Enum(() => FinanceState)
+  @Enum({ items: () => FinanceState, type: 'string' })
   state!: FinanceState;
 
-  @Enum(() => FinanceCategory)
+  @Enum({ items: () => FinanceCategory, type: 'string' })
   category!: FinanceCategory;
 
   @ManyToOne({ type: 'Team' })

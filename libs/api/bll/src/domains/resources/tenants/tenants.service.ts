@@ -8,7 +8,8 @@ import { RequestContext } from '../../../shards/request-context/request-context'
 import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-document/create-org-document.command';
 import { Injectable } from '@nestjs/common';
 import { OrgDocumentType } from '@okampus/shared/enums';
-import type { CommandBus, QueryBus } from '@nestjs/cqrs';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import type { CreateDocumentDto, CreateTenantDto, UpdateTenantDto } from '@okampus/shared/dtos';
 import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 import type { PaginationOptions } from '../../../shards/types/pagination-options.type';

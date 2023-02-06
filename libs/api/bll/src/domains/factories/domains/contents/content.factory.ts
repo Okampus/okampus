@@ -2,33 +2,19 @@ import { ContentModel } from './content.model';
 import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
-  Content
-} from '@okampus/api/dal';
-import type {
-  ContentMaster,
-  ContentOptions,
-  ContentRepository,
-  FileUpload,
-  Individual,
-  Org,
-  TenantCore,
-  Ugc} from '@okampus/api/dal';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ContentRepository } from '@okampus/api/dal';
+
+import { Content } from '@okampus/api/dal';
+import type { ContentMaster, ContentOptions, FileUpload, Individual, Org, TenantCore, Ugc } from '@okampus/api/dal';
 import type { IContent } from '@okampus/shared/dtos';
-// import { loadContent } from '../loader.utils';
-// eslint-disable-next-line import/no-cycle
 
 @Injectable()
 export class ContentFactory extends BaseFactory<ContentModel, Content, IContent, ContentOptions> {
   constructor(@Inject(EventPublisher) ep: EventPublisher, eventApprovalRepository: ContentRepository) {
     super(ep, eventApprovalRepository, ContentModel, Content);
   }
-
-  // entityToModel(entity: Content): ContentModel | undefined {
-  //   const content = loadContent(entity);
-  //   if (!content) return undefined;
-  //   return this.createModel(content);
-  // }
 
   modelToEntity(model: Required<ContentModel>): Content {
     return new Content({

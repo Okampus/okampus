@@ -6,10 +6,9 @@ import type { Actor } from '../actor.entity';
 import type { User } from '../user/user.entity';
 import type { ShortcutOptions } from './shortcut.options';
 
-
 @Entity({ customRepository: () => ShortcutRepository })
 export class Shortcut extends TenantScopedEntity {
-  @Enum(() => ShortcutType)
+  @Enum({ items: () => ShortcutType, type: 'string' })
   type!: ShortcutType;
 
   @ManyToOne({ type: 'User' })
