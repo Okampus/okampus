@@ -18,34 +18,19 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": [
-          {
-            "command": "nx run api-bll:ts-check"
-          },
-          {
-            "command": "nx run api-bll:eslint"
-          }
-        ]
+        "commands": ["nx run api-bll:ts-check", "nx run api-bll:eslint"]
       }
     },
     "ts-check": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          {
-            "command": "tsc --pretty --noEmit -p libs/api/bll/tsconfig.lib.json"
-          }
-        ]
+        "commands": ["tsc --pretty --noEmit -p libs/api/bll/tsconfig.lib.json"]
       }
     },
     "eslint": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          {
-            "command": "eslint libs/api/bll --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"
-          }
-        ]
+        "commands": ["eslint libs/api/bll --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
       }
     },
     "test": {

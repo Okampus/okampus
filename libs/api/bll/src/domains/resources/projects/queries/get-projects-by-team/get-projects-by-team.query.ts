@@ -1,6 +1,6 @@
-import { PaginationOptions } from '../../../../../shards/types/pagination-options.type';
-import { TenantCore } from '@okampus/api/dal';
-import { Snowflake } from '@okampus/shared/types';
+import type { PaginationOptions } from '../../../../../shards/types/pagination-options.type';
+import type { TenantCore } from '@okampus/api/dal';
+import type { Snowflake } from '@okampus/shared/types';
 
 export class GetProjectsByTeamQuery {
   constructor(

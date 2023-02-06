@@ -1,7 +1,11 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { FinanceFactory } from '../../../../factories/domains/teams/finance.factory';
-import { PaginatedFinanceModel } from '../../../../factories/domains/teams/finance.model';
 import { GetFinancesQuery } from './get-finances.query';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { FinanceFactory } from '../../../../factories/domains/teams/finance.factory';
+
+import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler } from '@nestjs/cqrs';
+import type { PaginatedFinanceModel } from '../../../../factories/domains/teams/finance.model';
 
 @QueryHandler(GetFinancesQuery)
 export class GetFinancesHandler implements IQueryHandler<GetFinancesQuery> {

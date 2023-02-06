@@ -1,7 +1,7 @@
+import { Interaction } from '../interaction.entity';
 import { Entity, Property } from '@mikro-orm/core';
 import { InteractionKind } from '@okampus/shared/enums';
-import { Interaction } from '../interaction.entity';
-import { VoteOptions } from './vote.options';
+import type { VoteOptions } from './vote.options';
 
 @Entity()
 export class Vote extends Interaction {

@@ -1,15 +1,25 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { EventPublisher } from '@nestjs/cqrs';
-import { Form, Individual, Tag, Tenant, TenantCore, TenantOptions, TenantRepository } from '@okampus/api/dal';
-import { CreateDocumentDto, CreateTenantDto, ITenant } from '@okampus/shared/dtos';
-import { FormType, OrgDocumentType } from '@okampus/shared/enums';
-// import { loadTenant } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
 import { TenantModel } from './tenant.model';
-import { MulterFileType, Snowflake } from '@okampus/shared/types';
-import { UploadService } from '../../../../features/uploads/upload.service';
+import { BaseFactory } from '../../base.factory';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { OrgDocumentFactory } from '../documents/org-document.factory';
-import { OrgDocumentModel } from '../documents/org-document.model';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/uploads/upload.service';
+
+import { Inject, Injectable } from '@nestjs/common';
+import { EventPublisher } from '@nestjs/cqrs';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TenantRepository } from '@okampus/api/dal';
+
+import { Form, Tenant, TenantCore } from '@okampus/api/dal';
+
+import { FormType, OrgDocumentType } from '@okampus/shared/enums';
+import type { Individual, Tag, TenantOptions } from '@okampus/api/dal';
+import type { CreateDocumentDto, CreateTenantDto, ITenant } from '@okampus/shared/dtos';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { OrgDocumentModel } from '../documents/org-document.model';
 
 @Injectable()
 export class TenantFactory extends BaseFactory<TenantModel, Tenant, ITenant, TenantOptions> {
@@ -27,19 +37,13 @@ export class TenantFactory extends BaseFactory<TenantModel, Tenant, ITenant, Ten
     createDocument: CreateDocumentDto,
     documentFile: MulterFileType,
     tenant: TenantCore
-    // populate: never[]
   ): Promise<OrgDocumentModel> {
-    // const tenantOrg = await this.tenantRepository.findOneOrFail(tenantId, { populate });
     return await this.orgDocumentFactory.createOrgDocument(
       tenantId,
       { ...createDocument, type: OrgDocumentType.TenantGuide },
       documentFile,
       tenant
     );
-    // this.tenantRepository.flush();
-    // const tenantModel = this.entityToModel(tenantOrg);
-    // if (!tenantModel) throw new BadRequestException(`Tenant with id ${tenantId} not found`);
-    // return tenantModel;
   }
 
   // TODO: add tenantEditDocument
@@ -75,12 +79,6 @@ export class TenantFactory extends BaseFactory<TenantModel, Tenant, ITenant, Ten
       return tenantEntity;
     });
   }
-
-  // entityToModel(entity: Tenant): TenantModel | undefined {
-  //   const tenant = loadTenant(entity);
-  //   if (!tenant) return undefined;
-  //   return this.createModel(tenant);
-  // }
 
   modelToEntity(model: Required<TenantModel>): Tenant {
     return new Tenant({

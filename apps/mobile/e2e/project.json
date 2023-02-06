@@ -84,34 +84,19 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": [
-          {
-            "command": "nx run mobile-e2e:ts-check"
-          },
-          {
-            "command": "nx run mobile-e2e:eslint"
-          }
-        ]
+        "commands": ["nx run mobile-e2e:ts-check", "nx run mobile-e2e:eslint"]
       }
     },
     "ts-check": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          {
-            "command": "tsc --pretty --noEmit -p apps/mobile/e2e/tsconfig.json"
-          }
-        ]
+        "commands": ["tsc --pretty --noEmit -p apps/mobile/e2e/tsconfig.json"]
       }
     },
     "eslint": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          {
-            "command": "eslint apps/mobile/e2e --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"
-          }
-        ]
+        "commands": ["eslint apps/mobile/e2e --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"]
       }
     }
   },

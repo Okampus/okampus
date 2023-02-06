@@ -15,10 +15,22 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": ["libs/shared/graphql/**/*.ts"]
+        "color": true,
+        "commands": ["nx run api:ts-check", "nx run api:eslint"]
+      }
+    },
+    "ts-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --pretty --noEmit -p libs/shared/graphql/tsconfig.lib.json"]
+      }
+    },
+    "eslint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["eslint libs/shared/graphql --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
       }
     },
     "test": {

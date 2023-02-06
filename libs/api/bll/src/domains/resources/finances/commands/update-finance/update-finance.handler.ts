@@ -1,7 +1,11 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { FinanceFactory } from '../../../../factories/domains/teams/finance.factory';
-import { FinanceModel } from '../../../../factories/domains/teams/finance.model';
 import { UpdateFinanceCommand } from './update-finance.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { FinanceFactory } from '../../../../factories/domains/teams/finance.factory';
+
+import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import type { FinanceModel } from '../../../../factories/domains/teams/finance.model';
 
 @CommandHandler(UpdateFinanceCommand)
 export class UpdateFinanceHandler implements ICommandHandler<UpdateFinanceCommand> {

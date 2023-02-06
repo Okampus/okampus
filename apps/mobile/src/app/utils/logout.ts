@@ -1,6 +1,6 @@
+import { emitter } from '../providers/mitt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { emitter } from '../providers/mitt';
 
 let currentLogoutPromise: NodeJS.Timeout | null = null;
 let currentFullLogoutPromise: NodeJS.Timeout | null = null;

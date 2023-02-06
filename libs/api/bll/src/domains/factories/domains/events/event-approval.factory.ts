@@ -1,24 +1,20 @@
+import { EventApprovalModel } from './event-approval.model';
+import { BaseFactory } from '../../base.factory';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+import { EventApproval } from '@okampus/api/dal';
+import { EventState } from '@okampus/shared/enums';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
-  EventApproval,
-  EventApprovalOptions,
   EventApprovalRepository,
-  EventApprovalStep,
   EventApprovalStepRepository,
-  Individual,
-  TenantCore,
-  TenantEvent,
   TenantEventRepository,
   TenantRepository,
 } from '@okampus/api/dal';
-import { CreateEventApprovalDto, IEventApproval } from '@okampus/shared/dtos';
-import { EventState } from '@okampus/shared/enums';
-// import { loadEventApproval } from '../loader.utils';
-// eslint-disable-next-line import/no-cycle
-import { BaseFactory } from '../../base.factory';
-import { EventApprovalModel } from './event-approval.model';
-// eslint-disable-next-line import/no-cycle
+
+import type { EventApprovalOptions, EventApprovalStep, Individual, TenantCore, TenantEvent } from '@okampus/api/dal';
+import type { CreateEventApprovalDto, IEventApproval } from '@okampus/shared/dtos';
 
 @Injectable()
 export class EventApprovalFactory extends BaseFactory<
@@ -47,7 +43,6 @@ export class EventApprovalFactory extends BaseFactory<
 
     const event = await this.eventRepository.findById(createEventApproval.eventId);
     if (!event) throw new BadRequestException('Invalid event id');
-    // ({ id: createEventApproval.eventId });
 
     const tenantOrg = await this.tenantRepository.findOneOrFail({ tenant }, { populate: ['eventApprovalSteps'] });
 
@@ -67,12 +62,6 @@ export class EventApprovalFactory extends BaseFactory<
       tenant,
     });
   }
-
-  // entityToModel(entity: EventApproval): EventApprovalModel | undefined {
-  //   const eventApproval = loadEventApproval(entity);
-  //   if (!eventApproval) return undefined;
-  //   return this.createModel(eventApproval);
-  // }
 
   modelToEntity(model: Required<EventApprovalModel>): EventApproval {
     return new EventApproval({

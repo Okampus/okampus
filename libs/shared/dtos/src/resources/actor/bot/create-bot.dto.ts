@@ -1,7 +1,7 @@
+import { BotProps } from './bot.props';
+import { ActorProps } from '../actor.props';
 import { Field, InputType, IntersectionType } from '@nestjs/graphql';
 import { IsString } from 'class-validator';
-import { ActorProps } from '../actor.props';
-import { BotProps } from './bot.props';
 import type {} from '@nestjs/common';
 
 @InputType()

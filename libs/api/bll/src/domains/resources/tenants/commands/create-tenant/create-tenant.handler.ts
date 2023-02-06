@@ -1,9 +1,14 @@
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Actor, BaseRepository } from '@okampus/api/dal';
-import { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
-import { TenantModel } from '../../../../factories/domains/tenants/tenant.model';
 import { CreateTenantCommand } from './create-tenant.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
+
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { CommandHandler } from '@nestjs/cqrs';
+import { Actor } from '@okampus/api/dal';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import type { BaseRepository } from '@okampus/api/dal';
+import type { TenantModel } from '../../../../factories/domains/tenants/tenant.model';
 
 @CommandHandler(CreateTenantCommand)
 export class CreateTenantHandler implements ICommandHandler<CreateTenantCommand> {

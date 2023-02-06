@@ -1,8 +1,8 @@
-import { IIndividual } from '../../actor/individual/individual.interface';
-import { ITenantScoped } from '../../tenant-scoped.interface';
-import { EventApprovalStepProps } from './event-approval-step.props';
-import { ITenant } from '../../org/tenant/tenant/tenant.interface';
-import { IUser } from '../../actor/user/user.interface';
+import type { IIndividual } from '../../actor/individual/individual.interface';
+import type { ITenantScoped } from '../../tenant-scoped.interface';
+import type { EventApprovalStepProps } from './event-approval-step.props';
+import type { ITenant } from '../../org/tenant/tenant/tenant.interface';
+import type { IUser } from '../../actor/user/user.interface';
 
 export type IEventApprovalStep = ITenantScoped &
   EventApprovalStepProps & {

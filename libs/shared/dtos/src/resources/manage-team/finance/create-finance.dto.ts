@@ -1,7 +1,7 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Snowflake } from '@okampus/shared/types';
-import { IsOptional, IsString } from 'class-validator';
 import { FinanceProps } from './finance.props';
+import { Field, InputType } from '@nestjs/graphql';
+import { IsOptional, IsString } from 'class-validator';
+import type { Snowflake } from '@okampus/shared/types';
 
 @InputType()
 export class CreateFinanceDto extends FinanceProps {

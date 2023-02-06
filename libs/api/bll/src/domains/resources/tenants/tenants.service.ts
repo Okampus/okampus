@@ -1,18 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateDocumentDto, CreateTenantDto, UpdateTenantDto } from '@okampus/shared/dtos';
-import { OrgDocumentType } from '@okampus/shared/enums';
-import { MulterFileType, Snowflake } from '@okampus/shared/types';
-import { RequestContext } from '../../../shards/request-context/request-context';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { TenantModel, PaginatedTenantModel } from '../../factories/domains/tenants/tenant.model';
-import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-document/create-org-document.command';
 import { CreateTenantCommand } from './commands/create-tenant/create-tenant.command';
 import { DeleteTenantCommand } from './commands/delete-tenant/delete-tenant.command';
 import { UpdateTenantCommand } from './commands/update-tenant/update-tenant.command';
 import { GetTenantByIdQuery } from './queries/get-tenant-by-id/get-tenant-by-id.query';
 import { GetTenantBySlugQuery } from './queries/get-tenant-by-slug/get-tenant-by-slug.query';
 import { GetTenantsQuery } from './queries/get-tenants/get-tenants.query';
+import { RequestContext } from '../../../shards/request-context/request-context';
+import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-document/create-org-document.command';
+import { Injectable } from '@nestjs/common';
+import { OrgDocumentType } from '@okampus/shared/enums';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { CreateDocumentDto, CreateTenantDto, UpdateTenantDto } from '@okampus/shared/dtos';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type { TenantModel, PaginatedTenantModel } from '../../factories/domains/tenants/tenant.model';
 
 const defaultTenantPopulate = ['actor', 'actor.images', 'actor.socials'];
 

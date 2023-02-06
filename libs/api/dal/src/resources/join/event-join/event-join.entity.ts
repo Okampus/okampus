@@ -1,9 +1,9 @@
-import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
-import { EventJoinOptions } from './event-join.options';
 import { Join } from '../join.entity';
+import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { RegistrationStatus } from '@okampus/shared/enums';
 import { JoinKind } from '@okampus/shared/enums';
-import { TeamAction } from '../../manage-team/team-action/team-action.entity';
+import type { EventJoinOptions } from './event-join.options';
+import type { TeamAction } from '../../manage-team/team-action/team-action.entity';
 import type { TenantEvent } from '../../content-master/event/event.entity';
 
 @Entity()
@@ -17,7 +17,7 @@ export class EventJoin extends Join {
   @ManyToOne({ type: 'TeamAction', nullable: true })
   teamAction: TeamAction | null = null;
 
-  @Enum(() => RegistrationStatus)
+  @Enum({ items: () => RegistrationStatus, type: 'string' })
   presenceStatus!: RegistrationStatus;
 
   constructor(options: EventJoinOptions) {

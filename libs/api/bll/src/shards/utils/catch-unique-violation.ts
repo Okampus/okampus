@@ -1,6 +1,6 @@
 import { UniqueConstraintViolationException } from '@mikro-orm/core';
 import { BadRequestException } from '@nestjs/common';
-import { BaseEntity, BaseRepository } from '@okampus/api/dal';
+import type { BaseEntity, BaseRepository } from '@okampus/api/dal';
 
 export async function catchUniqueViolation<U extends BaseEntity, T extends BaseRepository<U>>(
   repository: T,

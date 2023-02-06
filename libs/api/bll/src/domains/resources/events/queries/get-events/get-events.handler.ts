@@ -1,7 +1,11 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
-import { PaginatedTenantEventModel } from '../../../../factories/domains/events/event.model';
 import { GetEventsQuery } from './get-events.query';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TenantEventFactory } from '../../../../factories/domains/events/event.factory';
+
+import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler } from '@nestjs/cqrs';
+import type { PaginatedTenantEventModel } from '../../../../factories/domains/events/event.model';
 
 @QueryHandler(GetEventsQuery)
 export class GetEventsHandler implements IQueryHandler<GetEventsQuery> {

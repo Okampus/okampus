@@ -1,7 +1,11 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { TeamFactory } from '../../../../factories/domains/teams/team.factory';
-import { TeamModel } from '../../../../factories/domains/teams/team.model';
 import { GetTeamBySlugQuery } from './get-team-by-slug.query';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TeamFactory } from '../../../../factories/domains/teams/team.factory';
+
+import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler } from '@nestjs/cqrs';
+import type { TeamModel } from '../../../../factories/domains/teams/team.model';
 
 @QueryHandler(GetTeamBySlugQuery)
 export class GetTeamBySlugHandler implements IQueryHandler<GetTeamBySlugQuery> {

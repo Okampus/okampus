@@ -1,6 +1,6 @@
-import { CreateFinanceDto } from '@okampus/shared/dtos';
-import { Individual, TenantCore } from '@okampus/api/dal';
-import { MulterFileType } from '@okampus/shared/types';
+import type { CreateFinanceDto } from '@okampus/shared/dtos';
+import type { Individual, TenantCore } from '@okampus/api/dal';
+import type { MulterFileType } from '@okampus/shared/types';
 
 export class CreateFinanceCommand {
   constructor(

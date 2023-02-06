@@ -1,7 +1,6 @@
 import {
   Actor,
   ActorImage,
-  BaseEntity,
   Bot,
   Content,
   ContentMaster,
@@ -32,16 +31,16 @@ import {
   TeamMember,
   TeamRole,
   Tenant,
-  TenantCore,
   TenantDocument,
   TenantEvent,
-  TenantScopedEntity,
   Ugc,
   User,
   UserProfile,
   VideoUpload,
 } from '@okampus/api/dal';
-import {
+import { ActorKind } from '@okampus/shared/enums';
+import { loadApply, applyModelFactory } from '@okampus/api/shards';
+import type {
   ITenant,
   ITeam,
   IBot,
@@ -83,9 +82,11 @@ import {
   IDocumentEdit,
   IOrgDocument,
 } from '@okampus/shared/dtos';
-import { ActorKind } from '@okampus/shared/enums';
-import { loadApply, applyModelFactory } from '@okampus/api/shards';
-import { Snowflake } from '@okampus/shared/types';
+import type {
+  BaseEntity,
+  TenantCore,
+  TenantScopedEntity} from '@okampus/api/dal';
+import type { Snowflake } from '@okampus/shared/types';
 
 export function loadBase(base: BaseEntity): IBase | undefined {
   return applyModelFactory<BaseEntity, IBase>(base, (base) => ({
@@ -270,7 +271,7 @@ export function loadTenantScopedEntity(
   const tenant = getTenantOrLoad(entity.tenant, contextStack);
 
   if (entity instanceof TeamCategory && !loadBaseClass) {
-    const baseTag = loadTenantScopedEntity(entity as Tag, contextStack);
+    const baseTag = loadTenantScopedEntity(entity as Tag, contextStack, true);
     if (!baseTag) return undefined;
     return {
       ...baseTag,

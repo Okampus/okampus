@@ -234,6 +234,7 @@ export * from './features/uaa/authorization/types/policy-handler.type';
 export * from './features/uploads/upload.module';
 export * from './features/uploads/upload.service';
 export * from './global/config.module';
+export * from './global/minio.module';
 export * from './global/oidc-cache.module';
 export * from './global/pub-sub.module';
 export * from './shards/decorators/upload-interceptor.decorator';

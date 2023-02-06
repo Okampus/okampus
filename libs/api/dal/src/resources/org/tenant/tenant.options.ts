@@ -1,6 +1,6 @@
-import { TenantProps } from '@okampus/shared/dtos';
-import { Form } from '../../ugc/form/form.entity';
-import { OrgOptions } from '../org.options';
+import type { TenantProps } from '@okampus/shared/dtos';
+import type { Form } from '../../ugc/form/form.entity';
+import type { OrgOptions } from '../org.options';
 
 export type TenantOptions = TenantProps &
   OrgOptions & {

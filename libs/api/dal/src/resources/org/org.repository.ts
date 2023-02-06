@@ -1,7 +1,7 @@
-import { Snowflake } from '@okampus/shared/types';
 import { BaseRepository } from '../../shards/abstract/base/base.repository';
-// eslint-disable-next-line import/no-cycle
-import { Org } from './org.entity';
+import type { Snowflake } from '@okampus/shared/types';
+
+import type { Org } from './org.entity';
 
 export class OrgRepository extends BaseRepository<Org> {
   async findOrgById(id: Snowflake): Promise<Org | null> {

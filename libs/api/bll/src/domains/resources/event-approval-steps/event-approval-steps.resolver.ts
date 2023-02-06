@@ -1,12 +1,14 @@
-import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EventApprovalStepsService } from './event-approval-steps.service';
-import { CreateEventApprovalStepDto, UpdateEventApprovalStepDto } from '@okampus/shared/dtos';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { Snowflake } from '@okampus/shared/types';
+
 import {
   EventApprovalStepModel,
   PaginatedEventApprovalStepModel,
 } from '../../factories/domains/events/event-approval-step.model';
+import { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+import { CreateEventApprovalStepDto, UpdateEventApprovalStepDto } from '@okampus/shared/dtos';
+import type { Snowflake } from '@okampus/shared/types';
 
 @Resolver(() => EventApprovalStepModel)
 export class EventApprovalStepsResolver {
@@ -18,17 +20,22 @@ export class EventApprovalStepsResolver {
   }
 
   @Query(() => PaginatedEventApprovalStepModel)
-  eventApprovalSteps(@Args('options', { nullable: true }) options: PaginationOptions) {
+  eventApprovalSteps(@Args('options', { type: () => PaginationOptions, nullable: true }) options: PaginationOptions) {
     return this.eventApprovalStepsService.find(options);
   }
 
   @Mutation(() => EventApprovalStepModel)
-  createEventApprovalStep(@Args('eventApprovalStep') eventApprovalStep: CreateEventApprovalStepDto) {
+  createEventApprovalStep(
+    @Args('eventApprovalStep', { type: () => CreateEventApprovalStepDto }) eventApprovalStep: CreateEventApprovalStepDto
+  ) {
     return this.eventApprovalStepsService.create(eventApprovalStep);
   }
 
   @Mutation(() => EventApprovalStepModel)
-  updateEventApprovalStep(@Args('updateEventApprovalStep') updateEventApprovalStep: UpdateEventApprovalStepDto) {
+  updateEventApprovalStep(
+    @Args('updateEventApprovalStep', { type: () => UpdateEventApprovalStepDto })
+    updateEventApprovalStep: UpdateEventApprovalStepDto
+  ) {
     return this.eventApprovalStepsService.update(updateEventApprovalStep);
   }
 

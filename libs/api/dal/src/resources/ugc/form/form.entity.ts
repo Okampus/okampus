@@ -1,11 +1,10 @@
+import { FormRepository } from './form.repository';
+import { Ugc } from '../ugc.entity';
 import { Entity, Enum, Property } from '@mikro-orm/core';
 import { UgcKind } from '@okampus/shared/enums';
-import { JSONObject } from '@okampus/shared/types';
-import { Ugc } from '../ugc.entity';
 import { FormType } from '@okampus/shared/enums';
-import { FormOptions } from './form.options';
-// eslint-disable-next-line import/no-cycle
-import { FormRepository } from './form.repository';
+import type { JSONObject } from '@okampus/shared/types';
+import type { FormOptions } from './form.options';
 
 @Entity({
   customRepository: () => FormRepository,
@@ -20,7 +19,7 @@ export class Form extends Ugc {
   @Property({ type: 'json' })
   schema!: JSONObject;
 
-  @Enum(() => FormType)
+  @Enum({ items: () => FormType, type: 'string' })
   type!: FormType;
 
   @Property()

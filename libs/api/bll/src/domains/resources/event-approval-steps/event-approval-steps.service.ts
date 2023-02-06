@@ -1,18 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateEventApprovalStepDto, UpdateEventApprovalStepDto } from '@okampus/shared/dtos';
-import { Snowflake } from '@okampus/shared/types';
-import { RequestContext } from '../../../shards/request-context/request-context';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import {
-  EventApprovalStepModel,
-  PaginatedEventApprovalStepModel,
-} from '../../factories/domains/events/event-approval-step.model';
 import { CreateEventApprovalStepCommand } from './commands/create-event-approval-step/create-event-approval-step.command';
 import { DeleteEventApprovalStepCommand } from './commands/delete-event-approval-step/delete-event-approval-step.command';
 import { UpdateEventApprovalStepCommand } from './commands/update-event-approval-step/update-event-approval-step.command';
 import { GetEventApprovalStepByIdQuery } from './queries/get-event-approval-step-by-id/get-event-approval-step-by-id.query';
 import { GetEventApprovalStepsQuery } from './queries/get-event-approval-steps/get-event-approval-steps.query';
+import { RequestContext } from '../../../shards/request-context/request-context';
+import { Injectable } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { CreateEventApprovalStepDto, UpdateEventApprovalStepDto } from '@okampus/shared/dtos';
+import type { Snowflake } from '@okampus/shared/types';
+import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import type {
+  EventApprovalStepModel,
+  PaginatedEventApprovalStepModel,
+} from '../../factories/domains/events/event-approval-step.model';
 
 const defaultEventPopulate = ['actor', 'actor.images', 'actor.socials'];
 

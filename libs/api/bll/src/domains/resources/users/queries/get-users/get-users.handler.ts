@@ -1,7 +1,11 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { UserFactory } from '../../../../factories/domains/users/user.factory';
-import { PaginatedUserModel } from '../../../../factories/domains/users/user.model';
 import { GetUsersQuery } from './get-users.query';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UserFactory } from '../../../../factories/domains/users/user.factory';
+
+import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler } from '@nestjs/cqrs';
+import type { PaginatedUserModel } from '../../../../factories/domains/users/user.model';
 
 @QueryHandler(GetUsersQuery)
 export class GetUsersHandler implements IQueryHandler<GetUsersQuery> {

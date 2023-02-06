@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Field, GraphQLISODateTime, InterfaceType, ObjectType } from '@nestjs/graphql';
-import { IBase } from '@okampus/shared/dtos';
-import { Snowflake } from '@okampus/shared/types';
+import type { IBase } from '@okampus/shared/dtos';
+import type { Snowflake } from '@okampus/shared/types';
 
 @InterfaceType({ isAbstract: true })
 @ObjectType({ isAbstract: true })

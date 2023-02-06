@@ -1,20 +1,23 @@
-import type { IncomingHttpHeaders } from 'node:http';
-import type { CanActivate, ExecutionContext } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { AuthService } from './auth.service';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ConfigService } from '../../../global/config.module';
+
 import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import type { GqlContextType } from '@nestjs/graphql';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import type { FastifyReply, FastifyRequest } from 'fastify';
-import type { WebSocket } from 'graphql-ws';
-import { AuthService } from './auth.service';
 import { TokenType } from '@okampus/shared/enums';
 import { IS_PUBLIC, IS_TENANT_PUBLIC } from '@okampus/api/shards';
-import { ConfigService } from '../../../global/config.module';
-import { ApiConfig } from '@okampus/shared/types';
-import { GqlWebsocketContext } from '../../../shards/types/gql-websocket-context.type';
 import { HEADER_TENANT_NAME } from '@okampus/shared/consts';
 import { lowercaseKeys } from '@okampus/shared/utils';
 import { requestContext } from '@fastify/request-context';
+import type { IncomingHttpHeaders } from 'node:http';
+import type { CanActivate, ExecutionContext } from '@nestjs/common';
+import type { GqlContextType } from '@nestjs/graphql';
+import type { FastifyReply, FastifyRequest } from 'fastify';
+import type { WebSocket } from 'graphql-ws';
+import type { ApiConfig } from '@okampus/shared/types';
+import type { GqlWebsocketContext } from '../../../shards/types/gql-websocket-context.type';
 
 export interface GqlContext extends GqlWebsocketContext {
   req: FastifyRequest | undefined;

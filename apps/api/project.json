@@ -5,49 +5,28 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nrwl/vite:build",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
-        "target": "node",
-        "compiler": "tsc",
-        "outputPath": "dist/apps/api",
-        "main": "apps/api/src/main.ts",
-        "tsConfig": "apps/api/tsconfig.app.json"
+        "outputPath": "dist/apps/api"
       },
       "configurations": {
         "production": {
-          "optimization": false,
-          "extractLicenses": true,
-          "inspect": false
-        }
-      }
-    },
-    "build-migrations": {
-      "executor": "@nrwl/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "target": "node",
-        "compiler": "tsc",
-        "outputPath": "dist/apps/api/migrate",
-        "main": "apps/api/migrate-prod.ts",
-        "tsConfig": "apps/api/tsconfig.app.json"
-      },
-      "configurations": {
-        "production": {
-          "optimization": false,
-          "extractLicenses": true,
-          "inspect": false
+          "mode": "production"
         }
       }
     },
     "serve": {
-      "executor": "@nrwl/js:node",
+      "executor": "@nrwl/vite:dev-server",
+      "defaultConfiguration": "development",
       "options": {
         "buildTarget": "api:build"
       },
       "configurations": {
-        "production": {
-          "buildTarget": "api:build:production"
+        "development": {
+          "buildTarget": "api:build:development",
+          "hmr": true
         }
       }
     },
@@ -55,34 +34,19 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": [
-          {
-            "command": "nx run api:ts-check"
-          },
-          {
-            "command": "nx run api:eslint"
-          }
-        ]
+        "commands": ["nx run api:ts-check", "nx run api:eslint"]
       }
     },
     "ts-check": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          {
-            "command": "tsc --pretty --noEmit -p apps/api/tsconfig.app.json"
-          }
-        ]
+        "commands": ["tsc --pretty --noEmit -p apps/api/tsconfig.app.json"]
       }
     },
     "eslint": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          {
-            "command": "eslint apps/api --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"
-          }
-        ]
+        "commands": ["eslint apps/api --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
       }
     },
     "test": {
@@ -91,12 +55,6 @@
       "options": {
         "jestConfig": "apps/api/jest.config.ts",
         "passWithNoTests": true
-      }
-    },
-    "migrate": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "ts-node apps/api/migrate.ts"
       }
     }
   },

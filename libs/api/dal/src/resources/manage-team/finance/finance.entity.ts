@@ -1,17 +1,17 @@
+import { FinanceRepository } from './finance.repository';
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Collection, Embedded, Entity, Enum, ManyToMany, ManyToOne, Property } from '@mikro-orm/core';
 import { PaymentMethod, FinanceCategory, FinanceState } from '@okampus/shared/enums';
-import { Team } from '../../org/team/team.entity';
-import { TenantEvent } from '../../content-master/event/event.entity';
-import { FinanceOptions } from './finance.options';
-import { Project } from '../project/project.entity';
 import { Address } from '@okampus/shared/dtos';
 import { TransformCollection } from '@okampus/api/shards';
-// eslint-disable-next-line import/no-cycle
-import { FinanceRepository } from './finance.repository';
-import { Individual } from '../../actor/individual/individual.entity';
-import { User } from '../../actor/user/user.entity';
-import { FileUpload } from '../../file-upload/file-upload.entity';
+import type { Team } from '../../org/team/team.entity';
+import type { TenantEvent } from '../../content-master/event/event.entity';
+import type { FinanceOptions } from './finance.options';
+import type { Project } from '../project/project.entity';
+
+import type { Individual } from '../../actor/individual/individual.entity';
+import type { User } from '../../actor/user/user.entity';
+import type { FileUpload } from '../../file-upload/file-upload.entity';
 
 @Entity({
   customRepository: () => FinanceRepository,
@@ -26,7 +26,7 @@ export class Finance extends TenantScopedEntity {
   @Property({ type: 'datetime' })
   paymentDate!: Date;
 
-  @Enum(() => PaymentMethod)
+  @Enum({ items: () => PaymentMethod, type: 'string' })
   paymentMethod!: PaymentMethod;
 
   @Embedded(() => Address, { nullable: true })
@@ -38,10 +38,10 @@ export class Finance extends TenantScopedEntity {
   @Property({ type: 'float' })
   amountPayed!: number;
 
-  @Enum(() => FinanceState)
+  @Enum({ items: () => FinanceState, type: 'string' })
   state!: FinanceState;
 
-  @Enum(() => FinanceCategory)
+  @Enum({ items: () => FinanceCategory, type: 'string' })
   category!: FinanceCategory;
 
   @ManyToOne({ type: 'Team' })

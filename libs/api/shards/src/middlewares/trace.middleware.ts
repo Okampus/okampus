@@ -1,7 +1,8 @@
+import { Injectable } from '@nestjs/common';
+import { InjectSentry } from '@xiifain/nestjs-sentry';
+import type { SentryService } from '@xiifain/nestjs-sentry';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { NestMiddleware } from '@nestjs/common';
-import { Injectable } from '@nestjs/common';
-import { InjectSentry, SentryService } from '@xiifain/nestjs-sentry';
 
 @Injectable()
 export class TraceMiddleware implements NestMiddleware {

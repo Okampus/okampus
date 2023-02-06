@@ -1,7 +1,7 @@
-import { ManyToOne, Property } from '@mikro-orm/core';
-import { TenantCore } from '../../../resources/org/tenant/tenant-core.entity';
 import { BaseEntity } from '../base/base.entity';
-import { TenantScopedOptions } from './tenant-scoped.options';
+import { ManyToOne, Property } from '@mikro-orm/core';
+import type { TenantCore } from '../../../resources/org/tenant/tenant-core.entity';
+import type { TenantScopedOptions } from './tenant-scoped.options';
 
 export abstract class TenantScopedEntity extends BaseEntity {
   @ManyToOne({ type: 'TenantCore' })

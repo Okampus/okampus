@@ -1,8 +1,8 @@
+import { Membership } from '../membership.entity';
 import { Entity, ManyToOne } from '@mikro-orm/core';
 import { MembershipKind } from '@okampus/shared/enums';
-import { Membership } from '../membership.entity';
-import { ClassGroup } from '../../org/class-group/class-group.entity';
-import { ClassGroupMemberOptions } from './class-group-member.options';
+import type { ClassGroup } from '../../org/class-group/class-group.entity';
+import type { ClassGroupMemberOptions } from './class-group-member.options';
 
 @Entity()
 export class ClassGroupMember extends Membership {

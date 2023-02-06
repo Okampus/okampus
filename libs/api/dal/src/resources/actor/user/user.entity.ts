@@ -1,18 +1,18 @@
+import { UserRepository } from './user.repository';
+import { Individual } from '../individual/individual.entity';
+import { UserProfile } from '../user-profile/user-profile.entity';
+import { Actor } from '../actor.entity';
 import { Collection, Entity, EntityRepositoryType, Enum, OneToMany, OneToOne, Property } from '@mikro-orm/core';
 import { RoleType } from '@okampus/shared/enums';
 import { ScopeRole } from '@okampus/shared/enums';
-import { UserOptions } from './user.options';
-import { Individual } from '../individual/individual.entity';
 import { IndividualKind } from '@okampus/shared/enums';
+import { fullName } from '@okampus/shared/utils';
+import { TransformCollection } from '@okampus/api/shards';
+import type { UserOptions } from './user.options';
 import type { Session } from '../../manage-user/session/session.entity';
 import type { TeamMember } from '../../membership/team-member/team-member.entity';
-// eslint-disable-next-line import/no-cycle
-import { UserRepository } from './user.repository';
-import { UserProfile } from '../user-profile/user-profile.entity';
-import { Actor } from '../actor.entity';
-import { fullName } from '@okampus/shared/utils';
-import { Shortcut } from '../shortcut/shortcut.entity';
-import { TransformCollection } from '@okampus/api/shards';
+
+import type { Shortcut } from '../shortcut/shortcut.entity';
 
 @Entity({ customRepository: () => UserRepository })
 export class User extends Individual {
@@ -31,10 +31,10 @@ export class User extends Individual {
   passwordHash: string | null = null;
 
   // Roles
-  @Enum({ default: [RoleType.User], array: true })
+  @Enum({ items: () => RoleType, type: 'string', default: [RoleType.User], array: true })
   roles = [RoleType.User];
 
-  @Enum(() => ScopeRole)
+  @Enum({ items: () => ScopeRole, type: 'string' })
   scopeRole!: ScopeRole;
 
   @OneToOne({ type: 'UserProfile', inversedBy: 'user' })

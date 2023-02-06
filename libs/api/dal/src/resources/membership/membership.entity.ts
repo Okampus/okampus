@@ -1,8 +1,8 @@
+import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { MembershipKind } from '@okampus/shared/enums';
-import { User } from '../actor/user/user.entity';
-import { MembershipOptions } from './membership.options';
-import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
+import type { User } from '../actor/user/user.entity';
+import type { MembershipOptions } from './membership.options';
 
 @Entity({
   discriminatorColumn: 'membershipKind',
@@ -10,7 +10,7 @@ import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-s
   abstract: true,
 })
 export class Membership extends TenantScopedEntity {
-  @Enum(() => MembershipKind)
+  @Enum({ items: () => MembershipKind, type: 'string' })
   membershipKind!: MembershipKind;
 
   @ManyToOne({ type: 'User' })

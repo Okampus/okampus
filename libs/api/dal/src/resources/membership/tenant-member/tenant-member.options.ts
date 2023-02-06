@@ -1,4 +1,4 @@
-import { TenantMemberProps } from '@okampus/shared/dtos';
-import { MembershipOptions } from '../membership.options';
+import type { TenantMemberProps } from '@okampus/shared/dtos';
+import type { MembershipOptions } from '../membership.options';
 
 export type TenantMemberOptions = TenantMemberProps & MembershipOptions;

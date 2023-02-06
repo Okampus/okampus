@@ -1,9 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ProjectsService } from './projects.service';
+
+import { ProjectModel, PaginatedProjectModel } from '../../factories/domains/teams/project.model';
+import { PaginationOptions } from '../../../shards/types/pagination-options.type';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { CreateProjectDto, UpdateProjectDto } from '@okampus/shared/dtos';
-import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { Snowflake } from '@okampus/shared/types';
-import { ProjectsService } from './projects.service';
-import { ProjectModel, PaginatedProjectModel } from '../../factories/domains/teams/project.model';
+import type { Snowflake } from '@okampus/shared/types';
 
 @Resolver(() => ProjectModel)
 export class ProjectsResolver {
@@ -15,22 +17,25 @@ export class ProjectsResolver {
   }
 
   @Query(() => PaginatedProjectModel)
-  projects(@Args('options', { nullable: true }) options: PaginationOptions) {
+  projects(@Args('options', { type: () => PaginationOptions, nullable: true }) options: PaginationOptions) {
     return this.projectsService.find(options);
   }
 
   @Query(() => PaginatedProjectModel)
-  projectsByTeam(@Args('teamId') teamId: string, @Args('options', { nullable: true }) options: PaginationOptions) {
+  projectsByTeam(
+    @Args('teamId', { type: () => String }) teamId: Snowflake,
+    @Args('options', { type: () => PaginationOptions, nullable: true }) options: PaginationOptions
+  ) {
     return this.projectsService.findByTeam(teamId, options);
   }
 
   @Mutation(() => ProjectModel)
-  createProject(@Args('project') project: CreateProjectDto) {
+  createProject(@Args('project', { type: () => CreateProjectDto }) project: CreateProjectDto) {
     return this.projectsService.create(project);
   }
 
   @Mutation(() => ProjectModel)
-  updateProject(@Args('updateProject') updateProject: UpdateProjectDto) {
+  updateProject(@Args('updateProject', { type: () => UpdateProjectDto }) updateProject: UpdateProjectDto) {
     return this.projectsService.update(updateProject);
   }
 

@@ -1,9 +1,9 @@
-import { JoinKind, JoinState } from '@okampus/shared/enums';
-import { IIndividual } from '../actor/individual/individual.interface';
-import { IUser } from '../actor/user/user.interface';
-import { ITenantScoped } from '../tenant-scoped.interface';
-import { IFormSubmission } from '../ugc/form-submission/form-submission.interface';
-import { JoinProps } from './join.props';
+import type { JoinKind, JoinState } from '@okampus/shared/enums';
+import type { IIndividual } from '../actor/individual/individual.interface';
+import type { IUser } from '../actor/user/user.interface';
+import type { ITenantScoped } from '../tenant-scoped.interface';
+import type { IFormSubmission } from '../ugc/form-submission/form-submission.interface';
+import type { JoinProps } from './join.props';
 
 export type IJoin = ITenantScoped &
   JoinProps & {

@@ -1,9 +1,9 @@
+import { TenantDocument } from './document.entity';
 import { Entity, ManyToOne } from '@mikro-orm/core';
 import { DocumentKind } from '@okampus/shared/enums';
-import { TenantDocument } from './document.entity';
-import { InfoDocumentOptions } from './info-document.options';
-import { ClassGroup } from '../../org/class-group/class-group.entity';
-import { Cohort } from '../../org/cohort/cohort.entity';
+import type { InfoDocumentOptions } from './info-document.options';
+import type { ClassGroup } from '../../org/class-group/class-group.entity';
+import type { Cohort } from '../../org/cohort/cohort.entity';
 
 @Entity()
 export class InfoDocument extends TenantDocument {

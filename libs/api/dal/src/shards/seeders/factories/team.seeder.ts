@@ -1,11 +1,11 @@
-import type { EntityManager } from '@mikro-orm/core';
-import type { Faker } from '@mikro-orm/seeder';
+import { Team } from '../../../resources/org/team/team.entity';
 import { Factory } from '@mikro-orm/seeder';
 import { TeamType } from '@okampus/shared/enums';
 import { toSlug } from '@okampus/shared/utils';
-import { Team } from '../../../resources/org/team/team.entity';
-import { TeamOptions } from '../../../resources/org/team/team.options';
-import { Tenant } from '../../../resources/org/tenant/tenant.entity';
+import type { EntityManager } from '@mikro-orm/core';
+import type { Faker } from '@mikro-orm/seeder';
+import type { TeamOptions } from '../../../resources/org/team/team.options';
+import type { Tenant } from '../../../resources/org/tenant/tenant.entity';
 
 export class TeamSeeder extends Factory<Team> {
   tenant: Tenant;

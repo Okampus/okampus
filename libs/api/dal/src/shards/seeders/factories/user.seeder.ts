@@ -1,12 +1,12 @@
-import type { EntityManager } from '@mikro-orm/core';
-import type { Faker } from '@mikro-orm/seeder';
-import { Factory } from '@mikro-orm/seeder';
-import { Tenant } from '../../../resources/org/tenant/tenant.entity';
 import { User } from '../../../resources/actor/user/user.entity';
-import { ScopeRole } from '@okampus/shared/enums';
-import { UserOptions } from '../../../resources/actor/user/user.options';
+import { Factory } from '@mikro-orm/seeder';
 import { toSlug } from '@okampus/shared/utils';
 import { nanoid } from 'nanoid';
+import type { EntityManager } from '@mikro-orm/core';
+import type { Faker } from '@mikro-orm/seeder';
+import type { Tenant } from '../../../resources/org/tenant/tenant.entity';
+import type { ScopeRole } from '@okampus/shared/enums';
+import type { UserOptions } from '../../../resources/actor/user/user.options';
 
 export class UserSeeder extends Factory<User> {
   tenant: Tenant;

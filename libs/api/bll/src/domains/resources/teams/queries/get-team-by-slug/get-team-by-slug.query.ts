@@ -1,4 +1,4 @@
-import { TenantCore } from '@okampus/api/dal';
+import type { TenantCore } from '@okampus/api/dal';
 
 export class GetTeamBySlugQuery {
   constructor(

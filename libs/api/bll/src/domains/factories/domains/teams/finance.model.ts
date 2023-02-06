@@ -1,7 +1,15 @@
+// eslint-disable-next-line import/no-cycle
+import { ProjectModel } from './project.model';
+import { Paginated } from '../../../../shards/types/paginated.type';
+import { FileUploadModel } from '../../abstract/file-upload.model';
+import { IndividualModel } from '../../abstract/individual.model';
+import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
+import { TenantEventModel } from '../events/event.model';
+import { TeamModel } from '../teams/team.model';
+import { FinanceCategory, FinanceState, PaymentMethod } from '@okampus/shared/enums';
+import { Address } from '@okampus/shared/dtos';
 import { Field, Float, ObjectType } from '@nestjs/graphql';
-import { TenantCore } from '@okampus/api/dal';
-import {
-  Address,
+import type {
   IFileUpload,
   IFinance,
   IForm as Finance,
@@ -10,15 +18,7 @@ import {
   ITeam,
   ITenantEvent,
 } from '@okampus/shared/dtos';
-import { FinanceCategory, FinanceState, PaymentMethod } from '@okampus/shared/enums';
-import { Paginated } from '../../../../shards/types/paginated.type';
-import { FileUploadModel } from '../../abstract/file-upload.model';
-import { IndividualModel } from '../../abstract/individual.model';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
-import { TenantEventModel } from '../events/event.model';
-// eslint-disable-next-line import/no-cycle
-import { TeamModel } from '../teams/team.model';
-import { ProjectModel } from './project.model';
+import type { TenantCore } from '@okampus/api/dal';
 
 @ObjectType()
 export class FinanceModel extends TenantScopedModel implements IFinance {

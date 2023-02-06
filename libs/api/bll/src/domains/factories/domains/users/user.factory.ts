@@ -1,21 +1,21 @@
+import { UserModel } from './user.model';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/uploads/upload.service';
+
+import { BaseFactory } from '../../base.factory';
+import { addImagesToActor } from '../../abstract.utils';
+
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
-  ActorImageUploadProps,
-  Tag,
-  TenantCore,
-  User,
-  UserOptions,
-  UserProfile,
-  UserRepository,
-} from '@okampus/api/dal';
-import { IUser } from '@okampus/shared/dtos';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UserRepository } from '@okampus/api/dal';
+
+import { User, UserProfile } from '@okampus/api/dal';
 import { ActorKind } from '@okampus/shared/enums';
-// import { loadUser } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
-import { UserModel } from './user.model';
-import { addImagesToActor } from '../../abstract.utils';
-import { UploadService } from '../../../../features/uploads/upload.service';
+import type { ActorImageUploadProps, Tag, TenantCore, UserOptions } from '@okampus/api/dal';
+import type { IUser } from '@okampus/shared/dtos';
 
 @Injectable()
 export class UserFactory extends BaseFactory<UserModel, User, IUser, UserOptions> {

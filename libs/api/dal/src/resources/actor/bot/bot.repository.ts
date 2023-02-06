@@ -1,6 +1,6 @@
 import { BaseRepository } from '../../../shards/abstract/base/base.repository';
-// eslint-disable-next-line import/no-cycle
-import { Bot } from './bot.entity';
+
+import type { Bot } from './bot.entity';
 
 export class BotRepository extends BaseRepository<Bot> {
   async findByEmail(email: string): Promise<Bot | null> {

@@ -1,7 +1,11 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
-import { TenantModel } from '../../../../factories/domains/tenants/tenant.model';
 import { GetTenantBySlugQuery } from './get-tenant-by-slug.query';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
+
+import { QueryHandler } from '@nestjs/cqrs';
+import type { IQueryHandler } from '@nestjs/cqrs';
+import type { TenantModel } from '../../../../factories/domains/tenants/tenant.model';
 
 @QueryHandler(GetTenantBySlugQuery)
 export class GetTenantBySlugHandler implements IQueryHandler<GetTenantBySlugQuery> {

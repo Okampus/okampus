@@ -1,7 +1,7 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { IRole, ITenantCore } from '@okampus/shared/dtos';
-import { Colors, RoleKind, TeamRoleKey } from '@okampus/shared/enums';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Colors, RoleKind, TeamRoleKey } from '@okampus/shared/enums';
+import type { IRole, ITenantCore } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class RoleModel extends TenantScopedModel implements IRole {

@@ -1,10 +1,10 @@
+import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Collection, Entity, ManyToMany, ManyToOne, Property } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
-import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { User } from '../../actor/user/user.entity';
-import { Subject } from '../../label/subject/subject.entity';
-import { ClassGroup } from '../../org/class-group/class-group.entity';
-import { TeachClassOptions } from './teach-class.options';
+import type { User } from '../../actor/user/user.entity';
+import type { Subject } from '../../label/subject/subject.entity';
+import type { ClassGroup } from '../../org/class-group/class-group.entity';
+import type { TeachClassOptions } from './teach-class.options';
 
 @Entity()
 export class TeachClass extends TenantScopedEntity {

@@ -1,4 +1,4 @@
-import { VoteProps } from '@okampus/shared/dtos';
-import { InteractionOptions } from '../interaction.options';
+import type { VoteProps } from '@okampus/shared/dtos';
+import type { InteractionOptions } from '../interaction.options';
 
 export type VoteOptions = VoteProps & InteractionOptions;

@@ -1,5 +1,5 @@
-import { FileUploadOptions } from '../file-upload.options';
-import { ImageUploadProps } from '@okampus/shared/dtos';
+import type { FileUploadOptions } from '../file-upload.options';
+import type { ImageUploadProps } from '@okampus/shared/dtos';
 
 export type ImageUploadOptions = ImageUploadProps &
   FileUploadOptions & {

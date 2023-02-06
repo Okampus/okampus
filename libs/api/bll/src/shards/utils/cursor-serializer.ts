@@ -1,8 +1,8 @@
-import type { QueryOrder } from '@mikro-orm/core';
 import { BadRequestException } from '@nestjs/common';
-import { BaseEntity } from '@okampus/api/dal';
 import { GqlCursorTypes } from '@okampus/shared/enums';
-import { CursorColumnTypes } from '@okampus/shared/types';
+import type { QueryOrder } from '@mikro-orm/core';
+import type { BaseEntity } from '@okampus/api/dal';
+import type { CursorColumnTypes } from '@okampus/shared/types';
 
 const COL_SEPARATOR = ':';
 const METADATA_SEPARATOR = '.';

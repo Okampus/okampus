@@ -1,11 +1,11 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IDocumentEdit, IDocumentUpload, ITenantDocument } from '@okampus/shared/dtos';
-import { UgcKind } from '@okampus/shared/enums';
+import { DocumentEditModel } from './document-edit.model';
+import { DocumentUploadModel } from './document-upload.model';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle
 import { UgcModel } from '../../abstract/ugc.model';
-import { DocumentEditModel } from './document-edit.model';
-import { DocumentUploadModel } from './document-upload.model';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { UgcKind } from '@okampus/shared/enums';
+import type { IDocumentEdit, IDocumentUpload, ITenantDocument } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class DocumentModel extends UgcModel implements ITenantDocument {

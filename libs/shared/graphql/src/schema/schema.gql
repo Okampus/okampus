@@ -225,6 +225,16 @@ type UserStats {
   actionStreak: Int!
 }
 
+type TenantCoreModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  domain: String!
+  name: String!
+  oidcInfo: OidcInfo!
+}
+
 type PageInfo {
   startCursor: String
   endCursor: String
@@ -237,14 +247,55 @@ type PageInfo {
   countTotal: Float!
 }
 
-type TenantCoreModel {
+type DocumentUploadModel implements FileUploadModel {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime
-  domain: String!
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  fileUploadKind: FileUploadKind!
+  uploadedBy: IndividualModel
+  lastModifiedAt: DateTime!
+  url: String!
   name: String!
-  oidcInfo: OidcInfo!
+  size: Int!
+  mime: String!
+  numberOfPages: Int
+  numberOfWords: Int
+  documentType: DocumentUploadType!
+}
+
+"""The DocumentUploadType enum"""
+enum DocumentUploadType {
+  Slideshow
+  CSVLike
+  Spreadsheet
+  Code
+  Markdown
+  Text
+  Document
+}
+
+type DocumentUploadModelEdge {
+  cursor: String!
+  node: DocumentUploadModel!
+}
+
+type DocumentEditModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  yearVersion: Int
+  documentUpload: DocumentUploadModel!
+}
+
+type DocumentEditModelEdge {
+  cursor: String!
+  node: DocumentEditModel!
 }
 
 type ImageUploadModel implements FileUploadModel {
@@ -268,6 +319,84 @@ type ImageUploadModel implements FileUploadModel {
 type ImageUploadModelEdge {
   cursor: String!
   node: ImageUploadModel!
+}
+
+type TagModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  tagKind: TagKind!
+  name: String!
+  slug: String!
+  color: Colors!
+  description: String
+  iconImage: ImageUploadModel
+  createdBy: IndividualModel
+}
+
+"""The TagKind enum"""
+enum TagKind {
+  TeamCategory
+  Tag
+}
+
+type TagModelEdge {
+  cursor: String!
+  node: TagModel!
+}
+
+type DocumentModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  ugcKind: UgcKind!
+  author: IndividualModel
+  isAnonymous: Boolean!
+  representingOrg: OrgModel
+  contentMaster: ContentMasterModel!
+  name: String!
+  yearVersion: Int
+  documentUpload: DocumentUploadModel!
+  edits: [DocumentEditModel!]!
+}
+
+type DocumentModelEdge {
+  cursor: String!
+  node: DocumentModel!
+}
+
+type OrgDocumentModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  org: OrgModel!
+  document: DocumentModel!
+  type: OrgDocumentType!
+}
+
+"""The OrgDocumentType enum"""
+enum OrgDocumentType {
+  TenantGuide
+  AssociationConstitution
+  AssociationDeclaration
+  ClubHandover
+  ClubCharter
+  OrgMeetingTranscript
+  OrgGraphicCharter
+}
+
+type OrgDocumentModelEdge {
+  cursor: String!
+  node: OrgDocumentModel!
 }
 
 type ActorImageModel {
@@ -322,135 +451,6 @@ enum SocialType {
 type SocialModelEdge {
   cursor: String!
   node: SocialModel!
-}
-
-type TagModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  tagKind: TagKind!
-  name: String!
-  slug: String!
-  color: Colors!
-  description: String
-  iconImage: ImageUploadModel
-  createdBy: IndividualModel
-}
-
-"""The TagKind enum"""
-enum TagKind {
-  TeamCategory
-  Tag
-}
-
-type TagModelEdge {
-  cursor: String!
-  node: TagModel!
-}
-
-type DocumentUploadModel implements FileUploadModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  fileUploadKind: FileUploadKind!
-  uploadedBy: IndividualModel
-  lastModifiedAt: DateTime!
-  url: String!
-  name: String!
-  size: Int!
-  mime: String!
-  numberOfPages: Int
-  numberOfWords: Int
-  documentType: DocumentUploadType!
-}
-
-"""The DocumentUploadType enum"""
-enum DocumentUploadType {
-  Slideshow
-  CSVLike
-  Spreadsheet
-  Code
-  Markdown
-  Text
-  Document
-}
-
-type DocumentUploadModelEdge {
-  cursor: String!
-  node: DocumentUploadModel!
-}
-
-type DocumentEditModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  yearVersion: Int
-  documentUpload: DocumentUploadModel!
-}
-
-type DocumentEditModelEdge {
-  cursor: String!
-  node: DocumentEditModel!
-}
-
-type DocumentModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  ugcKind: UgcKind!
-  author: IndividualModel
-  isAnonymous: Boolean!
-  representingOrg: OrgModel
-  contentMaster: ContentMasterModel!
-  name: String!
-  yearVersion: Int
-  documentUpload: DocumentUploadModel!
-  edits: [DocumentEditModel!]!
-}
-
-type DocumentModelEdge {
-  cursor: String!
-  node: DocumentModel!
-}
-
-type OrgDocumentModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  org: OrgModel!
-  document: DocumentModel!
-  type: OrgDocumentType!
-}
-
-"""The OrgDocumentType enum"""
-enum OrgDocumentType {
-  TenantGuide
-  AssociationConstitution
-  AssociationDeclaration
-  ClubHandover
-  ClubCharter
-  OrgMeetingTranscript
-  OrgGraphicCharter
-}
-
-type OrgDocumentModelEdge {
-  cursor: String!
-  node: OrgDocumentModel!
 }
 
 type ActorModel {
@@ -749,33 +749,6 @@ type PaginatedEventApprovalStepModel {
   pageInfo: PageInfo
 }
 
-type TeamCategoryModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  tagKind: TagKind!
-  name: String!
-  slug: String!
-  color: Colors!
-  description: String
-  iconImage: ImageUploadModel
-  createdBy: IndividualModel
-  teams: [TeamModel!]!
-}
-
-type TeamCategoryModelEdge {
-  cursor: String!
-  node: TeamCategoryModel!
-}
-
-type PaginatedTeamCategoryModel {
-  edges: [TeamCategoryModelEdge!]
-  pageInfo: PageInfo
-}
-
 type ProjectModel {
   id: String!
   createdAt: DateTime!
@@ -871,50 +844,6 @@ type PaginatedFinanceModel {
   pageInfo: PageInfo
 }
 
-type TeamModel implements OrgModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  actor: ActorModel
-  orgKind: OrgKind!
-  parent: OrgModel
-  documents: [OrgDocumentModel!]!
-  tagline: String
-  type: TeamType!
-  membershipFees: Float!
-  currentFinance: Float!
-  memberCount: Int!
-  directorsCategoryName: String!
-  managersCategoryName: String!
-  membersCategoryName: String!
-  joinForm: FormModel
-  members: [TeamMemberModel!]!
-  roles: [TeamRoleModel!]!
-  categories: [TeamCategoryModel!]!
-  finances: [FinanceModel!]!
-}
-
-"""The TeamType enum"""
-enum TeamType {
-  Association
-  Club
-  Project
-  Department
-}
-
-type TeamModelEdge {
-  cursor: String!
-  node: TeamModel!
-}
-
-type PaginatedTeamModel {
-  edges: [TeamModelEdge!]
-  pageInfo: PageInfo
-}
-
 type TeamRoleModel {
   id: String!
   createdAt: DateTime!
@@ -964,6 +893,77 @@ enum TeamRoleCategory {
   Directors
   Managers
   Members
+}
+
+type TeamCategoryModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  tagKind: TagKind!
+  name: String!
+  slug: String!
+  color: Colors!
+  description: String
+  iconImage: ImageUploadModel
+  createdBy: IndividualModel
+  teams: [TeamModel!]!
+}
+
+type TeamCategoryModelEdge {
+  cursor: String!
+  node: TeamCategoryModel!
+}
+
+type PaginatedTeamCategoryModel {
+  edges: [TeamCategoryModelEdge!]
+  pageInfo: PageInfo
+}
+
+type TeamModel implements OrgModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  actor: ActorModel
+  orgKind: OrgKind!
+  parent: OrgModel
+  documents: [OrgDocumentModel!]!
+  tagline: String
+  type: TeamType!
+  membershipFees: Float!
+  currentFinance: Float!
+  memberCount: Int!
+  directorsCategoryName: String!
+  managersCategoryName: String!
+  membersCategoryName: String!
+  joinForm: FormModel
+  members: [TeamMemberModel!]!
+  roles: [TeamRoleModel!]!
+  categories: [TeamCategoryModel!]!
+  finances: [FinanceModel!]!
+}
+
+"""The TeamType enum"""
+enum TeamType {
+  Association
+  Club
+  Project
+  Department
+}
+
+type TeamModelEdge {
+  cursor: String!
+  node: TeamModel!
+}
+
+type PaginatedTeamModel {
+  edges: [TeamModelEdge!]
+  pageInfo: PageInfo
 }
 
 type TeamMemberModel {

@@ -1,9 +1,9 @@
-import type { Faker } from '@mikro-orm/seeder';
-import { Factory } from '@mikro-orm/seeder';
-import { toSlug } from '@okampus/shared/utils';
 import { TenantCore } from '../../../resources/org/tenant/tenant-core.entity';
 import { Tenant } from '../../../resources/org/tenant/tenant.entity';
-import { TenantOptions } from '../../../resources/org/tenant/tenant.options';
+import { Factory } from '@mikro-orm/seeder';
+import { toSlug } from '@okampus/shared/utils';
+import type { Faker } from '@mikro-orm/seeder';
+import type { TenantOptions } from '../../../resources/org/tenant/tenant.options';
 
 export class TenantSeeder extends Factory<Tenant> {
   model = Tenant;

@@ -1,6 +1,6 @@
-import type { RedisModuleOptions } from '@liaoliaots/nestjs-redis';
-import { RedisConnectionConfig } from '@okampus/shared/types';
 import { config } from './config';
+import type { RedisModuleOptions } from '@liaoliaots/nestjs-redis';
+import type { RedisConnectionConfig } from '@okampus/shared/types';
 
 export const redisConnectionOptions: RedisConnectionConfig = {
   host: config.redis.host,

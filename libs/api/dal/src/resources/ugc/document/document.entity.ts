@@ -1,11 +1,11 @@
+import { DocumentRepository } from './document.repository';
+import { Ugc } from '../ugc.entity';
 import { Cascade, Collection, Entity, Enum, OneToMany, OneToOne, Property } from '@mikro-orm/core';
 import { DocumentKind } from '@okampus/shared/enums';
 import { UgcKind } from '@okampus/shared/enums';
-import { Ugc } from '../ugc.entity';
-import { DocumentUpload } from '../../file-upload/document-upload/document-upload.entity';
-import { DocumentOptions } from './document.options';
-// eslint-disable-next-line import/no-cycle
-import { DocumentRepository } from './document.repository';
+import type { DocumentUpload } from '../../file-upload/document-upload/document-upload.entity';
+import type { DocumentOptions } from './document.options';
+
 import type { DocumentEdit } from '../document-edit/document-edit.entity';
 
 @Entity({
@@ -14,7 +14,7 @@ import type { DocumentEdit } from '../document-edit/document-edit.entity';
   discriminatorMap: DocumentKind,
 }) // Called "TenantDocument" to avoid name collision with native JS "Document"
 export class TenantDocument extends Ugc {
-  @Enum(() => DocumentKind)
+  @Enum({ items: () => DocumentKind, type: 'string' })
   documentKind!: DocumentKind;
 
   @Property({ type: 'text' })

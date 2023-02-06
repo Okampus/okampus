@@ -1,12 +1,12 @@
-import { join } from 'node:path';
+import { AuthModule, AuthService, UsersModule, UsersService } from '@okampus/api/bll';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 import { MercuriusDriver } from '@nestjs/mercurius';
 import { GraphQLJSON } from 'graphql-scalars';
-import { AuthModule, AuthService, UsersModule, UsersService } from '@okampus/api/bll';
 // import { GraphQLUpload } from 'graphql-upload-minimal';
 // import { GraphQLUpload as GQL } from '@okampus/shared/types';
 import { GraphQLUpload } from 'graphql-upload-minimal';
+import { join } from 'node:path';
+import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 // import { GraphQLScalarType } from 'graphql';
 // import { GraphQLUpload } from 'graphql-upload/GraphQLUpload.mjs';
 

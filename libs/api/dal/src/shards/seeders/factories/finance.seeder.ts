@@ -1,14 +1,14 @@
-import type { EntityManager } from '@mikro-orm/core';
-import type { Faker } from '@mikro-orm/seeder';
+import { Finance } from '../../../resources/manage-team/finance/finance.entity';
 import { Factory } from '@mikro-orm/seeder';
 import { FinanceCategory, FinanceState, PaymentMethod } from '@okampus/shared/enums';
 import { pickOneFromArray, randomEnum } from '@okampus/shared/utils';
-import { TenantEvent } from '../../../resources/content-master/event/event.entity';
-import { EventJoin } from '../../../resources/join/event-join/event-join.entity';
-import { Finance } from '../../../resources/manage-team/finance/finance.entity';
-import { FinanceOptions } from '../../../resources/manage-team/finance/finance.options';
-import { TeamMember } from '../../../resources/membership/team-member/team-member.entity';
-import { Team } from '../../../resources/org/team/team.entity';
+import type { EntityManager } from '@mikro-orm/core';
+import type { Faker } from '@mikro-orm/seeder';
+import type { TenantEvent } from '../../../resources/content-master/event/event.entity';
+import type { EventJoin } from '../../../resources/join/event-join/event-join.entity';
+import type { FinanceOptions } from '../../../resources/manage-team/finance/finance.options';
+import type { TeamMember } from '../../../resources/membership/team-member/team-member.entity';
+import type { Team } from '../../../resources/org/team/team.entity';
 
 export class TeamFinanceSeeder extends Factory<Finance> {
   team: Team;

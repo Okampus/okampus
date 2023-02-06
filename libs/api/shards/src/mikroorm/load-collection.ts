@@ -1,4 +1,4 @@
-import { Collection } from '@mikro-orm/core';
+import type { Collection } from '@mikro-orm/core';
 
 export function isLoaded<T extends object>(collection: Collection<T>) {
   return collection && collection.isInitialized();

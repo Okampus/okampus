@@ -1,8 +1,8 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IDocumentEdit, IDocumentUpload, ITenantCore } from '@okampus/shared/dtos';
+import { DocumentUploadModel } from './document-upload.model';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
-import { DocumentUploadModel } from './document-upload.model';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import type { IDocumentEdit, IDocumentUpload, ITenantCore } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class DocumentEditModel extends TenantScopedModel implements IDocumentEdit {

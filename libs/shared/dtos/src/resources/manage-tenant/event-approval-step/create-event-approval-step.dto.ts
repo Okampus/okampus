@@ -1,7 +1,7 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Snowflake } from '@okampus/shared/types';
-import { IsArray, IsString } from 'class-validator';
 import { EventApprovalStepProps } from './event-approval-step.props';
+import { Field, InputType } from '@nestjs/graphql';
+import { IsArray, IsString } from 'class-validator';
+import type { Snowflake } from '@okampus/shared/types';
 
 @InputType()
 export class CreateEventApprovalStepDto extends EventApprovalStepProps {

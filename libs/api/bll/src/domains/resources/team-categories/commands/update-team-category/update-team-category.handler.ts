@@ -1,7 +1,11 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { TeamCategoryFactory } from '../../../../factories/domains/tags/team-category.factory';
-import { TeamCategoryModel } from '../../../../factories/domains/tags/team-category.model';
 import { UpdateTeamCategoryCommand } from './update-team-category.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TeamCategoryFactory } from '../../../../factories/domains/tags/team-category.factory';
+
+import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import type { TeamCategoryModel } from '../../../../factories/domains/tags/team-category.model';
 
 @CommandHandler(UpdateTeamCategoryCommand)
 export class UpdateTeamCategoryHandler implements ICommandHandler<UpdateTeamCategoryCommand> {

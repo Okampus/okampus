@@ -1,11 +1,11 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IEventApprovalStep, IIndividual, ITenant, ITenantCore, IUser } from '@okampus/shared/dtos';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { IndividualModel } from '../../abstract/individual.model';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 // eslint-disable-next-line import/no-cycle
 import { TenantModel } from '../tenants/tenant.model';
 import { UserModel } from '../users/user.model';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import type { IEventApprovalStep, IIndividual, ITenant, ITenantCore, IUser } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class EventApprovalStepModel extends TenantScopedModel implements IEventApprovalStep {

@@ -1,15 +1,15 @@
-import type { EntityManager } from '@mikro-orm/core';
-import type { Faker } from '@mikro-orm/seeder';
+import { TenantEvent } from '../../../resources/content-master/event/event.entity';
 import { Factory } from '@mikro-orm/seeder';
 import { EventState } from '@okampus/shared/enums';
 import { pickOneFromArray } from '@okampus/shared/utils';
-import { randomInt } from 'node:crypto';
-import { TenantEvent } from '../../../resources/content-master/event/event.entity';
-import { TenantEventOptions } from '../../../resources/content-master/event/event.options';
-import { EventApprovalStep } from '../../../resources/manage-tenant/event-approval-step/event-approval-step.entity';
-import { TeamMember } from '../../../resources/membership/team-member/team-member.entity';
-import { Team } from '../../../resources/org/team/team.entity';
 import { Address } from '@okampus/shared/dtos';
+import { randomInt } from 'node:crypto';
+import type { EntityManager } from '@mikro-orm/core';
+import type { Faker } from '@mikro-orm/seeder';
+import type { TenantEventOptions } from '../../../resources/content-master/event/event.options';
+import type { EventApprovalStep } from '../../../resources/manage-tenant/event-approval-step/event-approval-step.entity';
+import type { TeamMember } from '../../../resources/membership/team-member/team-member.entity';
+import type { Team } from '../../../resources/org/team/team.entity';
 
 export class EventSeeder extends Factory<TenantEvent> {
   team: Team;

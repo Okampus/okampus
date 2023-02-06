@@ -6,13 +6,14 @@ import {
   Platform,
   TouchableWithoutFeedback,
   I18nManager,
-  StyleSheet,
+  StyleSheet
+} from 'react-native';
+import type {
   TouchableWithoutFeedbackProps,
   LayoutChangeEvent,
   GestureResponderEvent,
   StyleProp,
-  ViewStyle,
-} from 'react-native';
+  ViewStyle} from 'react-native';
 
 let mounted = false;
 let unique = 0;

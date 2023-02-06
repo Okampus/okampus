@@ -1,10 +1,15 @@
+import { TenantEventModel } from './event.model';
+import { BaseFactory } from '../../base.factory';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import {
+import { TenantEvent } from '@okampus/api/dal';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TenantEventRepository, OrgRepository, UserRepository } from '@okampus/api/dal';
+
+import type {
   Tag,
   TenantCore,
-  TenantEvent,
-  TenantEventRepository,
   TenantEventOptions,
   Individual,
   ImageUpload,
@@ -12,14 +17,9 @@ import {
   Form,
   FormSubmission,
   User,
-  OrgRepository,
-  UserRepository,
 } from '@okampus/api/dal';
-import { CreateEventDto, ITenantEvent } from '@okampus/shared/dtos';
-// import { loadEvent } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
-import { ContentModel } from '../contents/content.model';
-import { TenantEventModel } from './event.model';
+import type { CreateEventDto, ITenantEvent } from '@okampus/shared/dtos';
+import type { ContentModel } from '../contents/content.model';
 
 @Injectable()
 export class TenantEventFactory extends BaseFactory<TenantEventModel, TenantEvent, ITenantEvent, TenantEventOptions> {
@@ -53,12 +53,6 @@ export class TenantEventFactory extends BaseFactory<TenantEventModel, TenantEven
       org,
     });
   }
-
-  // entityToModel(entity: TenantEvent): TenantEventModel | undefined {
-  //   const event = loadEvent(entity);
-  //   if (!event) return undefined;
-  //   return this.createModel(event);
-  // }
 
   modelToEntity(model: Required<TenantEventModel> & { rootContent: Required<ContentModel> }): TenantEvent {
     return new TenantEvent({

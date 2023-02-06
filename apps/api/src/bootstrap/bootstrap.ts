@@ -1,42 +1,40 @@
 import './morgan/morgan.register';
 import './graphql/enums.register';
 
-import { MAX_FILES, MAX_FILE_SIZE } from '@okampus/shared/consts';
-
-import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
+import { corsValidation } from './cors.validation';
+import { tenantCallbackValidation, tenantStrategyValidation } from './tenant.validation';
+import { uploadPreValidation } from './upload.validation';
 import { config } from '../../configs/config';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { processRequest } from 'graphql-upload-minimal';
-import { isFileUpload } from '@okampus/shared/utils';
+import { AppModule } from '../app.module';
 
-import * as SentryTracing from '@sentry/tracing';
+import { OIDCCacheService, UsersService } from '@okampus/api/bll';
+import { TenantCoreRepository } from '@okampus/api/dal';
+
+import helmet from 'helmet';
+
+import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+import SentryTracing from '@sentry/tracing';
 
 import { NestFactory } from '@nestjs/core';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-
-import { AppModule } from '../app.module';
-import { OIDCCacheService, tenantStrategyFactory, UsersService } from '@okampus/api/bll';
-
-import { corsValidation } from './cors.validation';
+import { FastifyAdapter } from '@nestjs/platform-fastify';
 
 import fastify from 'fastify';
-import { FastifyRequest } from 'fastify/types/request';
-import { FastifyReply } from 'fastify/types/reply';
 
-import * as fastifyMulter from 'fastify-multer';
+import fastifyMulter from 'fastify-multer';
+const { contentParser } = fastifyMulter;
+
 import fastifyCookie from '@fastify/cookie';
 import fastifySecureSession from '@fastify/secure-session';
 import fastifyRequestContext from '@fastify/request-context';
-
-import fastifyPassport, { Strategy } from '@fastify/passport';
+import fastifyPassport from '@fastify/passport';
 import fastifyCors from '@fastify/cors';
-import { Issuer } from 'openid-client';
-import helmet from 'helmet';
-import path from 'node:path';
-import { Snowflake } from '@okampus/shared/types';
-import { TenantCoreRepository } from '@okampus/api/dal';
 
-const logger = new Logger('Bootstrap');
+import type { NestFastifyApplication } from '@nestjs/platform-fastify';
+import type { INestApplication, Logger } from '@nestjs/common';
+import type { Snowflake } from '@okampus/shared/types';
+
 const sessionKey = Buffer.from(config.session.secret, 'ascii');
 
 const cspConfigDevelopment = {
@@ -47,106 +45,50 @@ const cspConfigDevelopment = {
 
 const authenticateOptions = { authInfo: false, successRedirect: '/auth/oidc-callback' };
 
-export async function bootstrap(): Promise<INestApplication> {
+export async function bootstrap(logger: Logger): Promise<INestApplication> {
   if (config.sentry.enabled) SentryTracing.addExtensionMethods();
 
   const fastifyInstance = fastify({ trustProxy: false });
 
-  fastifyInstance.addHook('preValidation', async (req, reply) => {
-    if (isFileUpload(req) && req.url === '/graphql') {
-      req.body = await processRequest(req.raw, reply.raw, { maxFileSize: MAX_FILE_SIZE, maxFiles: MAX_FILES });
-    }
-  });
+  fastifyInstance.addHook('preValidation', uploadPreValidation);
 
   await fastifyInstance.register(fastifyCookie, { secret: config.cookies.signature });
   await fastifyInstance.register(fastifySecureSession, { key: sessionKey, cookie: { path: '/', httpOnly: true } });
   await fastifyInstance.register(fastifyPassport.initialize());
   await fastifyInstance.register(fastifyPassport.secureSession());
 
-  await fastifyInstance.register(fastifyMulter.contentParser);
+  await fastifyInstance.register(contentParser);
   await fastifyInstance.register(fastifyCors, { origin: corsValidation, credentials: true });
-  await fastifyInstance.register(fastifyRequestContext, {
-    hook: 'preValidation',
-    defaultStoreValues: {
-      requester: null,
-      tenant: null,
-      gqlInfo: null,
-      alreadyPopulated: false,
-    },
-  });
 
-  /* @ts-expect-error - Conflicting types despite no errors on launch */
+  const defaultStoreValues = { requester: null, tenant: null, gqlInfo: null, alreadyPopulated: false };
+  await fastifyInstance.register(fastifyRequestContext, { hook: 'preValidation', defaultStoreValues });
+
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(fastifyInstance));
 
-  const oidcStrategyCache = app.get<OIDCCacheService>(OIDCCacheService);
+  const oidcCache = app.get<OIDCCacheService>(OIDCCacheService);
   const tenantCoreRepository = app.get<TenantCoreRepository>(TenantCoreRepository);
   const usersService = app.get<UsersService>(UsersService);
 
   fastifyPassport.registerUserSerializer(async (user: { id: Snowflake }, _request) => user.id);
   fastifyPassport.registerUserDeserializer(async (id: Snowflake, _request) => await usersService.findBareById(id));
 
-  fastifyInstance.get(
-    '/auth/:domain',
-    {
-      preValidation: async (req, res) => {
-        const domain = (req.params as { tenant: string }).tenant;
-        const tenant = await tenantCoreRepository.findOneOrFail({ domain });
-        if (!tenant) return false;
+  const preValidationContext = { tenantCoreRepository, oidcCache, usersService, fastifyInstance, fastifyPassport };
 
-        if (!oidcStrategyCache.strategies.has(domain)) {
-          const oidc = tenant.oidcInfo;
-          const { oidcEnabled, oidcClientId, oidcClientSecret, oidcDiscoveryUrl, oidcScopes, oidcCallbackUri } = oidc;
-          if (
-            !oidcEnabled ||
-            !oidcClientId ||
-            !oidcClientSecret ||
-            !oidcDiscoveryUrl ||
-            !oidcScopes ||
-            !oidcCallbackUri
-          )
-            return false;
+  const tenantStrategyPreValidation = tenantStrategyValidation(preValidationContext);
+  fastifyInstance.get('/auth/:domain', { preValidation: tenantStrategyPreValidation }, () => ({}));
 
-          const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl);
-          const client = new TrustIssuer.Client({ client_id: oidcClientId, client_secret: oidcClientSecret });
-
-          const oidcConfig = { redirect_uri: oidcCallbackUri, scope: oidcScopes };
-          const strategy = tenantStrategyFactory(usersService, domain, oidcConfig, client);
-          oidcStrategyCache.strategies.set(domain, strategy);
-        }
-
-        const strategy = oidcStrategyCache.strategies.get(domain) as Strategy;
-        await fastifyPassport.authenticate(strategy, { authInfo: false }).bind(fastifyInstance)(req, res);
-
-        return true;
-      },
-    },
-    () => ({})
-  );
-
-  const tenantCallbackValidation = async (req: FastifyRequest, res: FastifyReply) => {
-    const tenantSlug = (req.params as { tenant: string }).tenant;
-    const strategy = oidcStrategyCache.strategies.get(tenantSlug) as Strategy;
-    await fastifyPassport.authenticate(strategy, authenticateOptions).bind(fastifyInstance)(req, res);
-  };
-  fastifyInstance.get('/auth/:tenant/callback', { preValidation: tenantCallbackValidation }, () => ({}));
+  const tenantCallbackPreValidation = tenantCallbackValidation({ ...preValidationContext, authenticateOptions });
+  fastifyInstance.get('/auth/:tenant/callback', { preValidation: tenantCallbackPreValidation }, () => ({}));
 
   app.use(helmet(config.env.isProd() ? {} : cspConfigDevelopment));
-
   app.enableShutdownHooks();
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      transformOptions: { enableImplicitConversion: true },
-      forbidNonWhitelisted: true,
-      whitelist: true,
-    })
-  );
+
+  const transformOptions = { enableImplicitConversion: true };
+  const validationPipeOptions = { transform: true, transformOptions, forbidNonWhitelisted: true, whitelist: true };
+  app.useGlobalPipes(new ValidationPipe(validationPipeOptions));
 
   if (!config.s3.enabled)
-    app.useStaticAssets({
-      root: path.join(__dirname, '..', '..', '..', 'apps/api', config.upload.path),
-      prefix: `/${config.upload.path}`,
-    });
+    app.useStaticAssets({ root: config.upload.localPath, prefix: `/${config.upload.localPrefix}` });
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Okampus Web API')
@@ -157,10 +99,6 @@ export async function bootstrap(): Promise<INestApplication> {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);
   logger.log('Documentation available at /docs');
-
-  await app.listen(config.network.port, '0.0.0.0');
-  const url = await app.getUrl();
-  logger.log(`API running on: ${url.replace('[::1]', 'localhost')}`);
 
   return app;
 }

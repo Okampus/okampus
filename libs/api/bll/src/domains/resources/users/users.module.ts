@@ -1,29 +1,25 @@
-import { Module, OnModuleInit } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersResolver } from './users.resolver';
-import { CqrsModule } from '@nestjs/cqrs';
-import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
-import {
-  BaseRepository,
-  TenantCore,
-  Tenant,
-  TenantRepository,
-  User,
-  UserRepository,
-  Actor,
-  EventApprovalStepRepository,
-  EventApprovalStep,
-} from '@okampus/api/dal';
-import { RoleType, ScopeRole } from '@okampus/shared/enums';
 import { CreateUserHandler } from './commands/create-user/create-user.handler';
-import { ConfigService } from '../../../global/config.module';
 import { GetUserByIdHandler } from './queries/get-user-by-id/get-user-by-id.handler';
 import { GetUsersHandler } from './queries/get-users/get-users.handler';
 import { UpdateUserHandler } from './commands/update-user/update-user.handler';
 import { DeleteUserHandler } from './commands/delete-user/delete-user.handler';
 import { GetUserBySlugHandler } from './queries/get-user-by-slug/get-user-by-slug.handler';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ConfigService } from '../../../global/config.module';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { BaseRepository, TenantRepository, UserRepository, EventApprovalStepRepository } from '@okampus/api/dal';
+
+import { RoleType, ScopeRole } from '@okampus/shared/enums';
+import { TenantCore, Tenant, User, Actor, EventApprovalStep } from '@okampus/api/dal';
+import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
+import { CqrsModule } from '@nestjs/cqrs';
+import { Module } from '@nestjs/common';
 import { BASE_TENANT } from '@okampus/shared/consts';
 import { hash } from 'argon2';
+import type { OnModuleInit } from '@nestjs/common';
 
 const commandHandlers = [CreateUserHandler, UpdateUserHandler, DeleteUserHandler];
 const queryHandlers = [GetUserByIdHandler, GetUsersHandler, GetUserBySlugHandler];

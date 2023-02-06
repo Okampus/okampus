@@ -49,34 +49,19 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": [
-          {
-            "command": "nx run site:ts-check"
-          },
-          {
-            "command": "nx run site:eslint"
-          }
-        ]
+        "commands": ["nx run site:ts-check", "nx run site:eslint"]
       }
     },
     "ts-check": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          {
-            "command": "tsc --pretty --noEmit -p apps/site/tsconfig.app.json"
-          }
-        ]
+        "commands": ["tsc --pretty --noEmit -p apps/site/tsconfig.app.json"]
       }
     },
     "eslint": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          {
-            "command": "eslint apps/site --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"
-          }
-        ]
+        "commands": ["eslint apps/site --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
       }
     }
   },

@@ -1,27 +1,22 @@
+import { FinanceModel } from './finance.model';
+import { BaseFactory } from '../../base.factory';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/uploads/upload.service';
+
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { CreateFinanceDto, IFinance } from '@okampus/shared/dtos';
-// import { loadFinance } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
-import { FinanceModel } from './finance.model';
-import {
-  FileUpload,
-  Finance,
-  FinanceOptions,
-  FinanceRepository,
-  Individual,
-  Project,
-  ProjectRepository,
-  Team,
-  TeamRepository,
-  TenantCore,
-  TenantEvent,
-  TenantEventRepository,
-} from '@okampus/api/dal';
-import { MulterFileType } from '@okampus/shared/types';
-import { UploadService } from '../../../../features/uploads/upload.service';
+
+import { Finance } from '@okampus/api/dal';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { FinanceRepository, ProjectRepository, TeamRepository, TenantEventRepository } from '@okampus/api/dal';
+
 import { ResourceType } from '@okampus/shared/enums';
 import { asyncCallIfNotNull, filterNullPromiseAll } from '@okampus/shared/utils';
+import type { CreateFinanceDto, IFinance } from '@okampus/shared/dtos';
+import type { FileUpload, FinanceOptions, Individual, Project, Team, TenantCore, TenantEvent } from '@okampus/api/dal';
+import type { MulterFileType } from '@okampus/shared/types';
 
 @Injectable()
 export class FinanceFactory extends BaseFactory<FinanceModel, Finance, IFinance, FinanceOptions> {

@@ -1,10 +1,10 @@
+import { Address } from '../../../embeds/address.embed';
 import { Field, Float, GraphQLISODateTime, InputType } from '@nestjs/graphql';
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
-import { Address } from '../../../embeds/address.embed';
 import { EventState } from '@okampus/shared/enums';
 import { GraphQLJSON } from 'graphql-scalars';
-import { JSONObject } from '@okampus/shared/types';
 import { Type } from 'class-transformer';
+import type { JSONObject } from '@okampus/shared/types';
 
 @InputType()
 export class TenantEventProps {

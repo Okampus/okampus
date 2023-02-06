@@ -1,9 +1,9 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { ITeam, ITeamRole } from '@okampus/shared/dtos';
-import { TeamPermissions, TeamRoleCategory } from '@okampus/shared/enums';
+import { RoleModel } from './role.model';
 // eslint-disable-next-line import/no-cycle
 import { TeamModel } from '../teams/team.model';
-import { RoleModel } from './role.model';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { TeamPermissions, TeamRoleCategory } from '@okampus/shared/enums';
+import type { ITeam, ITeamRole } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class TeamRoleModel extends RoleModel implements ITeamRole {

@@ -1,8 +1,9 @@
 import React from 'react';
-import { DrawerContentScrollView, DrawerContentComponentProps } from '@react-navigation/drawer';
+import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { Pressable, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 
 const drawerItemSize = 50;
 const marginHorizontal = 8;

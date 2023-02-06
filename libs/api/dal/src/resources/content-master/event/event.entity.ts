@@ -1,3 +1,6 @@
+import { TenantEventRepository } from './event.repository';
+import { ContentMaster } from '../content-master.entity';
+import { Content } from '../../ugc/content/content.entity';
 import {
   Cascade,
   Collection,
@@ -10,7 +13,6 @@ import {
   OneToOne,
   Property,
 } from '@mikro-orm/core';
-import { ContentMaster } from '../content-master.entity';
 // import { Paginated } from 'libs/api/dal/src/base/abstract/pagination';
 // import { BaseTenant } from '@api/shards/entities/base-tenant.entity';
 // import { EventState } from '@api/shards/types/enums/event-state.enum';
@@ -22,21 +24,18 @@ import { ContentMaster } from '../content-master.entity';
 // import { User } from '@api/uaa/users/user.entity';
 // import { CreateEventDto } from './dto/create-event.dto';
 import { EventState } from '@okampus/shared/enums';
-import { JSONObject } from '@okampus/shared/types';
-import { TenantEventOptions } from './event.options';
 import { ContentMasterKind } from '@okampus/shared/enums';
 import { Address } from '@okampus/shared/dtos';
-import { EventApprovalStep } from '../../manage-tenant/event-approval-step/event-approval-step.entity';
-import type { EventJoin } from '../../join/event-join/event-join.entity';
-import { ImageUpload } from '../../file-upload/image-upload/image-upload.entity';
-import { User } from '../../actor/user/user.entity';
-import { Form } from '../../ugc/form/form.entity';
-import { FormSubmission } from '../../ugc/form-submission/form-submission.entity';
 import { TransformCollection } from '@okampus/api/shards';
+import type { JSONObject } from '@okampus/shared/types';
+import type { TenantEventOptions } from './event.options';
+import type { EventApprovalStep } from '../../manage-tenant/event-approval-step/event-approval-step.entity';
+import type { EventJoin } from '../../join/event-join/event-join.entity';
+import type { ImageUpload } from '../../file-upload/image-upload/image-upload.entity';
+import type { User } from '../../actor/user/user.entity';
+import type { Form } from '../../ugc/form/form.entity';
+import type { FormSubmission } from '../../ugc/form-submission/form-submission.entity';
 import type { EventApproval } from '../../manage-tenant/event-approval/event-approval.entity';
-// eslint-disable-next-line import/no-cycle
-import { TenantEventRepository } from './event.repository';
-import { Content } from '../../ugc/content/content.entity';
 
 @Entity({
   customRepository: () => TenantEventRepository,
@@ -57,8 +56,8 @@ export class TenantEvent extends ContentMaster {
   @Embedded(() => Address)
   location!: Address;
 
-  @Enum(() => EventState)
-  state!: EventState;
+  @Enum({ items: () => EventState, type: 'string', default: EventState.Draft })
+  state = EventState.Draft;
 
   @Property({ type: 'json' })
   meta: JSONObject = {};

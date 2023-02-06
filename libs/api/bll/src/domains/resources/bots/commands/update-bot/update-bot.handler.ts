@@ -1,7 +1,11 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { BotFactory } from '../../../../factories/domains/bots/bot.factory';
-import { BotModel } from '../../../../factories/domains/bots/bot.model';
 import { UpdateBotCommand } from './update-bot.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { BotFactory } from '../../../../factories/domains/bots/bot.factory';
+
+import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import type { BotModel } from '../../../../factories/domains/bots/bot.model';
 @CommandHandler(UpdateBotCommand)
 export class UpdateBotHandler implements ICommandHandler<UpdateBotCommand> {
   constructor(private readonly botFactory: BotFactory) {}

@@ -1,7 +1,7 @@
-import { ITenantEvent } from '../../content-master/event/event.interface';
-import { ITeamAction } from '../../manage-team/team-action/team-action.interface';
-import { IJoin } from '../join.interface';
-import { EventJoinProps } from './event-join.props';
+import type { ITenantEvent } from '../../content-master/event/event.interface';
+import type { ITeamAction } from '../../manage-team/team-action/team-action.interface';
+import type { IJoin } from '../join.interface';
+import type { EventJoinProps } from './event-join.props';
 
 export type IEventJoin = IJoin &
   EventJoinProps & {

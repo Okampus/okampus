@@ -1,7 +1,7 @@
-import type { QueryOrder } from '@mikro-orm/core';
 import { Field, InputType, Int } from '@nestjs/graphql';
 import { QueryOrderMapScalar } from '@okampus/shared/types';
 import { IsInt, IsObject, IsOptional, IsString, Min } from 'class-validator';
+import type { QueryOrder } from '@mikro-orm/core';
 
 @InputType()
 export class PaginationOptions {

@@ -1,28 +1,26 @@
-import { Readable } from 'node:stream';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { MinioService } from '../../global/minio.module';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ConfigService } from '../../global/config.module';
+
+import { RequestContext } from '../../shards/request-context/request-context';
 import { BadRequestException, Injectable } from '@nestjs/common';
-// import type { FileKind } from '@lib/types/enums/file-kind.enum';
-// import { streamToBuffer } from '@lib/utils/stream-to-buffer';
-// import type { Tenant } from '@tenants/tenant.entity';
-// import type { User } from '@uaa/users/user.entity';
-// import { FileUpload } from './file-upload.entity';
+import { DocumentUpload, FileUpload, ImageUpload, VideoUpload } from '@okampus/api/dal';
+import { DocumentUploadType, FileUploadKind, ResourceType, S3Buckets } from '@okampus/shared/enums';
+import { checkDocument, checkImage, checkVideo, snowflake, streamToBuffer } from '@okampus/shared/utils';
+import { Readable } from 'node:stream';
 import { promises } from 'node:fs';
 
-import { DocumentUpload, FileUpload, FileUploadOptions, ImageUpload, TenantCore, VideoUpload } from '@okampus/api/dal';
-import { S3 } from 'aws-sdk';
-import { InjectS3 } from 'nestjs-s3';
-import { DocumentUploadType, FileUploadKind, ResourceType, S3Buckets } from '@okampus/shared/enums';
-import { ApiConfig, MulterFileType } from '@okampus/shared/types';
-import { checkDocument, checkImage, checkVideo, snowflake, streamableS3, streamToBuffer } from '@okampus/shared/utils';
-import { RequestContext } from '../../shards/request-context/request-context';
 import path from 'node:path';
-import { HTTPResource } from '../../shards/types/http-resource.type';
-import { ConfigService } from '../../global/config.module';
+import type { FileUploadOptions, TenantCore } from '@okampus/api/dal';
+import type { ApiConfig, MulterFileType } from '@okampus/shared/types';
+import type { HTTPResource } from '../../shards/types/http-resource.type';
 
 @Injectable()
 export class UploadService extends RequestContext {
   config: ApiConfig;
 
-  constructor(@InjectS3() private readonly s3: S3, private readonly configService: ConfigService) {
+  constructor(private readonly minioService: MinioService, private readonly configService: ConfigService) {
     super();
     this.config = this.configService.config;
   }
@@ -32,25 +30,20 @@ export class UploadService extends RequestContext {
       const { writeFile } = promises;
 
       const buffer = await streamToBuffer(stream);
-      const fullPath = path.join(__dirname, '..', '..', '..', 'apps/api', this.config.upload.path, bucket, key);
+      const fullPath = path.join(this.config.upload.localPath, bucket, key);
       await writeFile(fullPath, buffer);
 
       return {
-        url: new URL(path.join(this.config.upload.path, bucket, key), this.config.network.apiUrl).href,
+        url: new URL(fullPath, this.config.network.apiUrl).href,
         etag: key,
         size: buffer.length,
       };
     }
 
-    const bucketUrl = this.config.s3.buckets[bucket];
-    const { writeStream, uploadPromise } = streamableS3(this.s3, bucketUrl, key, mime, 'public-read');
+    const { etag } = await this.minioService.putObject(bucket, key, stream, { 'Content-Type': mime });
+    const { size } = await this.minioService.statObject(bucket, key);
 
-    stream.pipe(writeStream);
-    const { Location, ETag } = await uploadPromise;
-    // TODO: add ContentType?
-    const { ContentLength } = await this.s3.headObject({ Bucket: bucketUrl, Key: key }).promise();
-
-    return { url: Location, etag: ETag, size: ContentLength ?? 0 };
+    return { url: `${bucket}/${key}`, etag, size };
   }
 
   public async createFileUpload(

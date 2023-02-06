@@ -1,17 +1,24 @@
-import { Module, OnModuleInit } from '@nestjs/common';
 import { TeamsService } from './teams.service';
 import { TeamsResolver } from './teams.resolver';
-import { CqrsModule } from '@nestjs/cqrs';
-import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
-import { Actor, BaseRepository, Bot, DatabaseSeeder, Team, User } from '@okampus/api/dal';
 import { CreateTeamHandler } from './commands/create-team/create-team.handler';
 import { GetTeamByIdHandler } from './queries/get-team-by-id/get-team-by-id.handler';
 import { GetTeamsHandler } from './queries/get-teams/get-teams.handler';
 import { UpdateTeamHandler } from './commands/update-team/update-team.handler';
 import { DeleteTeamHandler } from './commands/delete-team/delete-team.handler';
 import { GetTeamBySlugHandler } from './queries/get-team-by-slug/get-team-by-slug.handler';
-import { MikroORM } from '@mikro-orm/core';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../../global/config.module';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { MikroORM } from '@mikro-orm/core';
+
+import { DatabaseSeeder, Team } from '@okampus/api/dal';
+import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
+import { CqrsModule } from '@nestjs/cqrs';
+import { Module } from '@nestjs/common';
+import type { BaseRepository } from '@okampus/api/dal';
+import type { OnModuleInit } from '@nestjs/common';
 
 const commandHandlers = [CreateTeamHandler, UpdateTeamHandler, DeleteTeamHandler];
 const queryHandlers = [GetTeamByIdHandler, GetTeamsHandler, GetTeamBySlugHandler];
@@ -32,6 +39,7 @@ export class TeamsModule implements OnModuleInit {
     this.pepper = Buffer.from(this.configService.config.crypto.pepper);
   }
 
+  // TODO: don't seed in production
   public async onModuleInit(): Promise<void> {
     const anyTeam = await this.teamRepository.find({});
 

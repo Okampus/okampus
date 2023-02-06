@@ -1,7 +1,11 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { EventApprovalStepFactory } from '../../../../factories/domains/events/event-approval-step.factory';
-import { EventApprovalStepModel } from '../../../../factories/domains/events/event-approval-step.model';
 import { UpdateEventApprovalStepCommand } from './update-event-approval-step.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EventApprovalStepFactory } from '../../../../factories/domains/events/event-approval-step.factory';
+
+import { CommandHandler } from '@nestjs/cqrs';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import type { EventApprovalStepModel } from '../../../../factories/domains/events/event-approval-step.model';
 
 @CommandHandler(UpdateEventApprovalStepCommand)
 export class UpdateEventApprovalStepHandler implements ICommandHandler<UpdateEventApprovalStepCommand> {

@@ -1,5 +1,5 @@
-import { UpdateFinanceDto } from '@okampus/shared/dtos';
-import { TenantCore } from '@okampus/api/dal';
+import type { UpdateFinanceDto } from '@okampus/shared/dtos';
+import type { TenantCore } from '@okampus/api/dal';
 
 export class UpdateFinanceCommand {
   constructor(

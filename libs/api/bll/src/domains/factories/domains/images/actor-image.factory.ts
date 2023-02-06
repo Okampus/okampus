@@ -1,22 +1,20 @@
+import { ActorImageModel } from './actor-image.model';
+import { BaseFactory } from '../../base.factory';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { TenantCore, ImageUpload, Actor, ActorImage, ActorImageRepository, ActorImageOptions } from '@okampus/api/dal';
-import { IActorImage } from '@okampus/shared/dtos';
-// import { loadActorImage } from '../loader.utils';
-import { BaseFactory } from '../../base.factory';
-import { ActorImageModel } from './actor-image.model';
+import { ActorImage } from '@okampus/api/dal';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ActorImageRepository } from '@okampus/api/dal';
+
+import type { TenantCore, ImageUpload, Actor, ActorImageOptions } from '@okampus/api/dal';
+import type { IActorImage } from '@okampus/shared/dtos';
 
 @Injectable()
 export class ActorImageFactory extends BaseFactory<ActorImageModel, ActorImage, IActorImage, ActorImageOptions> {
   constructor(@Inject(EventPublisher) ep: EventPublisher, actorImageRepository: ActorImageRepository) {
     super(ep, actorImageRepository, ActorImageModel, ActorImage);
   }
-
-  // entityToModel(entity: ActorImage): ActorImageModel | undefined {
-  //   const actorImage = loadActorImage(entity);
-  //   if (!actorImage) return undefined;
-  //   return this.createModel(actorImage);
-  // }
 
   modelToEntity(model: Required<ActorImageModel>): ActorImage {
     return new ActorImage({

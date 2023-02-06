@@ -1,7 +1,7 @@
+import { Membership } from '../membership.entity';
 import { Entity } from '@mikro-orm/core';
 import { MembershipKind } from '@okampus/shared/enums';
-import { Membership } from '../membership.entity';
-import { TenantMemberOptions } from './tenant-member.options';
+import type { TenantMemberOptions } from './tenant-member.options';
 
 @Entity()
 export class TenantMember extends Membership {

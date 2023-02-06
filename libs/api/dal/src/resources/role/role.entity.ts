@@ -1,3 +1,4 @@
+import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Entity, Enum, Property } from '@mikro-orm/core';
 // import { Paginated } from 'libs/api/dal/src/base/abstract/pagination';
 // import { TeamRole } from '@api/shards/types/enums/team-role.enum';
@@ -5,8 +6,7 @@ import { Entity, Enum, Property } from '@mikro-orm/core';
 // import { CreateTeamDto } from './dto/create-team.dto';
 import { RoleKind } from '@okampus/shared/enums';
 import { Colors } from '@okampus/shared/enums';
-import { RoleOptions } from './role.options';
-import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
+import type { RoleOptions } from './role.options';
 // import { TeamRoleOptions } from './team-role.options';
 
 // const ADMIN_ROLES = new Set([
@@ -30,19 +30,13 @@ import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-s
   abstract: true,
 })
 export class Role extends TenantScopedEntity {
-  @Enum(() => RoleKind)
+  @Enum({ items: () => RoleKind, type: 'string' })
   roleKind!: RoleKind;
 
   @Property({ type: 'text' })
   name!: string;
 
-  // @Enum({ default: [], array: true })
-  // permissions: TeamPermissions[] = [];
-
-  // @Enum(() => TeamRoleCategory)
-  // category!: TeamRoleCategory;
-
-  @Enum(() => Colors)
+  @Enum({ items: () => Colors, type: 'string' })
   color!: Colors;
 
   @Property({ type: 'boolean' })

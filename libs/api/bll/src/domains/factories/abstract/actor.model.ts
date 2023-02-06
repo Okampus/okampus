@@ -1,17 +1,26 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { IActor, IActorImage, IBot, ISocial, ITag, ITeam, ITenant, ITenantCore, IUser } from '@okampus/shared/dtos';
-import { ActorKind } from '@okampus/shared/enums';
-// eslint-disable-next-line import/no-cycle
-import { ActorImageModel } from '../domains/images/actor-image.model';
-// eslint-disable-next-line import/no-cycle
-import { SocialModel } from '../domains/socials/social.model';
-// eslint-disable-next-line import/no-cycle
-import { TagModel } from '../domains/tags/tag.model';
 import { TenantScopedModel } from './tenant-scoped.model';
 // eslint-disable-next-line import/no-cycle
 import { IndividualModel } from './individual.model';
 // eslint-disable-next-line import/no-cycle
 import { OrgModel } from './org.model';
+// eslint-disable-next-line import/no-cycle
+import { ActorImageModel } from '../domains/images/actor-image.model';
+// eslint-disable-next-line import/no-cycle
+import { SocialModel } from '../domains/socials/social.model';
+import { TagModel } from '../domains/tags/tag.model';
+import { ActorKind } from '@okampus/shared/enums';
+import { Field, ObjectType } from '@nestjs/graphql';
+import type {
+  IActor,
+  IActorImage,
+  IBot,
+  ISocial,
+  ITag,
+  ITeam,
+  ITenant,
+  ITenantCore,
+  IUser,
+} from '@okampus/shared/dtos';
 
 @ObjectType()
 export class ActorModel extends TenantScopedModel implements IActor {

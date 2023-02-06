@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
-import { defaultSelectedMenu, FileLike, ModalProps, SelectedMenu } from '@okampus/shared/types';
-import { ToastProps } from '@okampus/shared/types';
+import { defaultSelectedMenu } from '@okampus/shared/types';
+import type { FileLike, ModalProps, SelectedMenu } from '@okampus/shared/types';
+import type { ToastProps } from '@okampus/shared/types';
 
 export const NavigationContext = React.createContext({
   modal: null as ModalProps | null,

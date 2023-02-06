@@ -1,11 +1,11 @@
+import { EntityRepository } from '@mikro-orm/postgresql';
 import type { FilterQuery, FindOneOptions, FindOneOrFailOptions } from '@mikro-orm/core';
 // import { QueryOrder } from '@mikro-orm/core';
-import { EntityRepository } from '@mikro-orm/postgresql';
-import { Snowflake } from '@okampus/shared/types';
+import type { Snowflake } from '@okampus/shared/types';
 // import { CursorColumns, CursorColumnTypes } from '@okampus/shared/types';
 // import { decodeCursor, encodeCursor } from '../../../../../bll/src/shards/utils/cursor-serializer';
 // import { PageInfo, PaginatedNodes, PaginationOptions } from '../pagination';
-import { BaseEntity } from './base.entity';
+import type { BaseEntity } from './base.entity';
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   public async findById(id: Snowflake, findOptions?: FindOneOptions<T>): Promise<T | null> {

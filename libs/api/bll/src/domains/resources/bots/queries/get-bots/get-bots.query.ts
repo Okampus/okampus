@@ -1,5 +1,5 @@
-import { TenantCore } from '@okampus/api/dal';
-import { PaginationOptions } from '../../../../../shards/types/pagination-options.type';
+import type { TenantCore } from '@okampus/api/dal';
+import type { PaginationOptions } from '../../../../../shards/types/pagination-options.type';
 
 export class GetBotsQuery {
   constructor(

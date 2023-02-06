@@ -1,7 +1,7 @@
-import { Field, InputType, PartialType } from '@nestjs/graphql';
-import { Snowflake } from '@okampus/shared/types';
-import { IsString } from 'class-validator';
 import { CreateBotDto } from './create-bot.dto';
+import { Field, InputType, PartialType } from '@nestjs/graphql';
+import { IsString } from 'class-validator';
+import type { Snowflake } from '@okampus/shared/types';
 
 @InputType()
 export class UpdateBotDto extends PartialType(CreateBotDto) {

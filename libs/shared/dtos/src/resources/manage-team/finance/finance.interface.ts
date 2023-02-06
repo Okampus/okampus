@@ -1,10 +1,10 @@
-import { IIndividual } from '../../actor/individual/individual.interface';
-import { ITenantEvent } from '../../content-master/event/event.interface';
-import { IFileUpload } from '../../file-upload/file-upload.interface';
-import { ITeam } from '../../org/team/team.interface';
-import { ITenantScoped } from '../../tenant-scoped.interface';
-import { IProject } from '../project/project.interface';
-import { FinanceProps } from './finance.props';
+import type { IIndividual } from '../../actor/individual/individual.interface';
+import type { ITenantEvent } from '../../content-master/event/event.interface';
+import type { IFileUpload } from '../../file-upload/file-upload.interface';
+import type { ITeam } from '../../org/team/team.interface';
+import type { ITenantScoped } from '../../tenant-scoped.interface';
+import type { IProject } from '../project/project.interface';
+import type { FinanceProps } from './finance.props';
 
 export type IFinance = ITenantScoped &
   FinanceProps & {

@@ -1,10 +1,10 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-import { IsObject, IsOptional } from 'class-validator';
 import { UserCustomization } from '../../../embeds/user-customization.embed';
 import { UserNotificationSettings } from '../../../embeds/user-notification-settings.embed';
 import { UserSettings } from '../../../embeds/user-settings.embed';
 import { UserStats } from '../../../embeds/user-stats.embed';
+import { IsObject, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class UserProfileProps {

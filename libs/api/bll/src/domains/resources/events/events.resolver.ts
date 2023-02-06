@@ -1,9 +1,11 @@
-import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EventsService } from './events.service';
-import { CreateEventDto, UpdateEventDto } from '@okampus/shared/dtos';
+
 import { PaginatedTenantEventModel, TenantEventModel } from '../../factories/domains/events/event.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { Snowflake } from '@okampus/shared/types';
+import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+import { CreateEventDto, UpdateEventDto } from '@okampus/shared/dtos';
+import type { Snowflake } from '@okampus/shared/types';
 
 @Resolver(() => TenantEventModel)
 export class EventsResolver {
@@ -15,17 +17,17 @@ export class EventsResolver {
   }
 
   @Query(() => PaginatedTenantEventModel)
-  events(@Args('options', { nullable: true }) options: PaginationOptions) {
+  events(@Args('options', { type: () => PaginationOptions, nullable: true }) options: PaginationOptions) {
     return this.eventsService.find(options);
   }
 
   @Mutation(() => TenantEventModel)
-  createEvent(@Args('event') event: CreateEventDto) {
+  createEvent(@Args('event', { type: () => CreateEventDto }) event: CreateEventDto) {
     return this.eventsService.create(event);
   }
 
   @Mutation(() => TenantEventModel)
-  updateEvent(@Args('updateEvent') updateEvent: UpdateEventDto) {
+  updateEvent(@Args('updateEvent', { type: () => UpdateEventDto }) updateEvent: UpdateEventDto) {
     return this.eventsService.update(updateEvent);
   }
 

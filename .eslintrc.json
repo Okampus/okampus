@@ -20,6 +20,12 @@
       "rules": {
         "max-len": ["error", { "code": 120, "ignorePattern": "^\\s*<path" }],
         "import/no-cycle": ["error", { "maxDepth": 3, "ignoreExternal": true }],
+        "import/order": [
+          "error",
+          {
+            "groups": ["index", "sibling", "parent", "internal", "external", "builtin", "object", "type"]
+          }
+        ],
         "unicorn/prevent-abbreviations": "off",
         "unicorn/no-null": "off",
         "unicorn/no-array-callback-reference": "off",
@@ -159,7 +165,8 @@
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript"],
       "rules": {
-        "@typescript-eslint/no-unused-vars": "off"
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/consistent-type-imports": "warn"
       }
     },
     {

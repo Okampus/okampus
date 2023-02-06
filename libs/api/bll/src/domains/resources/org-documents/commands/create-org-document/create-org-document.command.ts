@@ -1,6 +1,6 @@
-import { CreateOrgDocumentDto } from '@okampus/shared/dtos';
-import { TenantCore } from '@okampus/api/dal';
-import { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { CreateOrgDocumentDto } from '@okampus/shared/dtos';
+import type { TenantCore } from '@okampus/api/dal';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 
 export class CreateOrgDocumentCommand {
   constructor(

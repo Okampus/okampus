@@ -1,14 +1,14 @@
+import Navigation from './app/components/navigation';
+import useCachedResources from './app/hooks/useCachedResources';
+import useColorScheme from './app/hooks/useColorScheme';
+import { client } from './app/providers/apollo';
+import { emitter } from './app/providers/mitt';
 import { useMutation } from '@apollo/client';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import Navigation from './app/components/navigation';
-import useCachedResources from './app/hooks/useCachedResources';
-import useColorScheme from './app/hooks/useColorScheme';
-import { client } from './app/providers/apollo';
-import { emitter } from './app/providers/mitt';
 import { loginMutation } from '@okampus/shared/graphql';
 
 export default function App() {

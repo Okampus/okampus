@@ -1,6 +1,21 @@
-import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { Global, Module } from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
+import { BotFactory } from './domains/bots/bot.factory';
+import { ContentFactory } from './domains/contents/content.factory';
+import { EventApprovalFactory } from './domains/events/event-approval.factory';
+import { TenantEventFactory } from './domains/events/event.factory';
+import { FormSubmissionFactory } from './domains/forms/form-submission.factory';
+import { FormFactory } from './domains/forms/form.factory';
+import { ActorImageFactory } from './domains/images/actor-image.factory';
+import { ImageUploadFactory } from './domains/images/image-upload.factory';
+import { SocialFactory } from './domains/socials/social.factory';
+import { TagFactory } from './domains/tags/tag.factory';
+import { TeamFactory } from './domains/teams/team.factory';
+import { EventApprovalStepFactory } from './domains/events/event-approval-step.factory';
+import { TenantFactory } from './domains/tenants/tenant.factory';
+import { UserFactory } from './domains/users/user.factory';
+import { FinanceFactory } from './domains/teams/finance.factory';
+import { ProjectFactory } from './domains/teams/project.factory';
+import { TeamCategoryFactory } from './domains/tags/team-category.factory';
+import { OrgDocumentFactory } from './domains/documents/org-document.factory';
 import {
   Actor,
   ActorImage,
@@ -27,24 +42,9 @@ import {
   TenantEvent,
   User,
 } from '@okampus/api/dal';
-import { BotFactory } from './domains/bots/bot.factory';
-import { ContentFactory } from './domains/contents/content.factory';
-import { EventApprovalFactory } from './domains/events/event-approval.factory';
-import { TenantEventFactory } from './domains/events/event.factory';
-import { FormSubmissionFactory } from './domains/forms/form-submission.factory';
-import { FormFactory } from './domains/forms/form.factory';
-import { ActorImageFactory } from './domains/images/actor-image.factory';
-import { ImageUploadFactory } from './domains/images/image-upload.factory';
-import { SocialFactory } from './domains/socials/social.factory';
-import { TagFactory } from './domains/tags/tag.factory';
-import { TeamFactory } from './domains/teams/team.factory';
-import { EventApprovalStepFactory } from './domains/events/event-approval-step.factory';
-import { TenantFactory } from './domains/tenants/tenant.factory';
-import { UserFactory } from './domains/users/user.factory';
-import { FinanceFactory } from './domains/teams/finance.factory';
-import { ProjectFactory } from './domains/teams/project.factory';
-import { TeamCategoryFactory } from './domains/tags/team-category.factory';
-import { OrgDocumentFactory } from './domains/documents/org-document.factory';
+import { CqrsModule } from '@nestjs/cqrs';
+import { Global, Module } from '@nestjs/common';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 const factories = [
   UserFactory,

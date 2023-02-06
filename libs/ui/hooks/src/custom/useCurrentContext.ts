@@ -1,7 +1,7 @@
-import { gql, useApolloClient } from '@apollo/client';
-import { MyInfoFragment, TeamManageInfoFragment, TenantInfoFragment } from '@okampus/shared/graphql';
-import { useCallback, useContext, useState } from 'react';
 import { CurrentContext } from '../contexts/CurrentContext';
+import { gql, useApolloClient } from '@apollo/client';
+import { useCallback, useContext, useState } from 'react';
+import type { MyInfoFragment, TeamManageInfoFragment, TenantInfoFragment } from '@okampus/shared/graphql';
 
 export function useCurrentContext(): [
   { user?: MyInfoFragment; org?: TeamManageInfoFragment; tenant?: TenantInfoFragment },

@@ -1,9 +1,9 @@
-import { Entity, EntityRepositoryType, Property } from '@mikro-orm/core';
-import { FileUpload } from '../file-upload.entity';
-import { ImageUploadOptions } from './image-upload.options';
-import { FileUploadKind } from '@okampus/shared/enums';
-// eslint-disable-next-line import/no-cycle
 import { ImageUploadRepository } from './image-upload.repository';
+import { FileUpload } from '../file-upload.entity';
+import { Entity, EntityRepositoryType, Property } from '@mikro-orm/core';
+import { FileUploadKind } from '@okampus/shared/enums';
+import type { ImageUploadOptions } from './image-upload.options';
+
 
 @Entity({ customRepository: () => ImageUploadRepository })
 export class ImageUpload extends FileUpload {

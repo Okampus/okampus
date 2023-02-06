@@ -1,10 +1,15 @@
+import { CreateUserCommand } from './create-user.command';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UserFactory } from '../../../../factories/domains/users/user.factory';
+
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException } from '@nestjs/common';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Actor, BaseRepository } from '@okampus/api/dal';
-import { UserFactory } from '../../../../factories/domains/users/user.factory';
-import { UserModel } from '../../../../factories/domains/users/user.model';
-import { CreateUserCommand } from './create-user.command';
+import { CommandHandler } from '@nestjs/cqrs';
+import { Actor } from '@okampus/api/dal';
+import type { ICommandHandler } from '@nestjs/cqrs';
+import type { BaseRepository } from '@okampus/api/dal';
+import type { UserModel } from '../../../../factories/domains/users/user.model';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {

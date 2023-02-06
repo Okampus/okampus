@@ -1,5 +1,5 @@
-import { CreateProjectDto } from '@okampus/shared/dtos';
-import { Individual, TenantCore } from '@okampus/api/dal';
+import type { CreateProjectDto } from '@okampus/shared/dtos';
+import type { Individual, TenantCore } from '@okampus/api/dal';
 
 export class CreateProjectCommand {
   constructor(

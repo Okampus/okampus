@@ -1,13 +1,15 @@
-/* eslint-disable no-await-in-loop */
-import type { FilterQuery, FindOptions } from '@mikro-orm/core';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ConfigService } from '../../global/config.module';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
+
 import { Injectable, Logger } from '@nestjs/common';
 import { Team, Tenant, User } from '@okampus/api/dal';
 import { MEILISEARCH_BATCH_SIZE, MEILISEARCH_ID_SEPARATOR } from '@okampus/shared/consts';
 import { getErrorMessage } from '@okampus/shared/utils';
-import { MeiliSearch } from 'meilisearch';
 import { InjectMeiliSearch } from 'nestjs-meilisearch';
-import { ConfigService } from '../../global/config.module';
+import type { MeiliSearch } from 'meilisearch';
+import type { FilterQuery, FindOptions } from '@mikro-orm/core';
 import type { IndexedEntity } from './indexed-entity.interface';
 
 export type IndexableEntities = Team | User;
