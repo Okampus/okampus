@@ -5,19 +5,35 @@
   "sourceRoot": "apps/strapi/src",
   "targets": {
     "serve": {
-      "executor": "@nx-extend/strapi:serve",
-      "options": {}
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["pnpm i && pnpm run develop"],
+        "cwd": "apps/strapi"
+      }
     },
     "build": {
-      "executor": "@nx-extend/strapi:build",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "options": {
-        "outputPath": "dist/apps/strapi"
-      },
-      "configurations": {
-        "production": {
-          "production": true
-        }
+        "commands": ["tsc --pretty -p apps/strapi/tsconfig.json"]
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "color": true,
+        "commands": ["nx run strapi:ts-check", "nx run strapi:eslint"]
+      }
+    },
+    "ts-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --pretty --noEmit -p apps/strapi/tsconfig.json"]
+      }
+    },
+    "eslint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["eslint apps/strapi --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
       }
     }
   },

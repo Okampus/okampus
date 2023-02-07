@@ -18,7 +18,7 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": ["nx run api:ts-check", "nx run api:eslint"]
+        "commands": ["nx run api-shards:ts-check", "nx run api-shards:eslint"]
       }
     },
     "ts-check": {
