@@ -4,7 +4,7 @@ import { UpdateTeamCommand } from './commands/update-team/update-team.command';
 import { GetTeamByIdQuery } from './queries/get-team-by-id/get-team-by-id.query';
 import { GetTeamBySlugQuery } from './queries/get-team-by-slug/get-team-by-slug.query';
 import { GetTeamsQuery } from './queries/get-teams/get-teams.query';
-import { RequestContext } from '../../../shards/request-context/request-context';
+import { RequestContext } from '../../../shards/abstract/request-context';
 import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-document/create-org-document.command';
 import { Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports

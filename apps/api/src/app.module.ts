@@ -3,11 +3,21 @@ import { config } from '../configs/config';
 import graphqlConfig from '../configs/graphql.config';
 import mikroOrmConfig from '../configs/mikro-orm.config';
 import meiliSearchConfig from '../configs/meilisearch.config';
-import redisConfig, { redisConnectionOptions } from '../configs/redis.config';
+import { redisOptions } from '../configs/redis.config';
 
-import { sentryConfig, sentryInterceptorConfig } from '../configs/sentry.config';
-import { MinioModule, PubSubModule } from '@okampus/api/bll';
-import { ExceptionsFilter, RestLoggerMiddleware, TraceMiddleware } from '@okampus/api/shards';
+import { sentryConfig } from '../configs/sentry.config';
+import {
+  HealthModule,
+  MeiliSearchModule,
+  MinioModule,
+  PubSubModule,
+  RedisModule,
+  RestLoggerMiddleware,
+  SentryInterceptor,
+  SentryModule,
+  TraceMiddleware,
+} from '@okampus/api/bll';
+import { ExceptionsFilter } from '@okampus/api/shards';
 import {
   AuthGuard,
   AuthModule,
@@ -29,19 +39,14 @@ import {
   UsersModule,
 } from '@okampus/api/bll';
 
-import { MeiliSearchModule } from 'nestjs-meilisearch';
-import { SentryInterceptor, SentryModule } from '@xiifain/nestjs-sentry';
-
 import { ScheduleModule } from '@nestjs/schedule';
 import { GraphQLModule } from '@nestjs/graphql';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { CacheModule, Module, RequestMethod } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { InjectRedis, RedisModule } from '@liaoliaots/nestjs-redis';
 
 import Sentry from '@sentry/node';
 import { redisStore } from 'cache-manager-redis-store';
-import type Redis from 'ioredis';
 
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@nestjs/common';
@@ -92,7 +97,6 @@ import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@n
 // import { UsersModule } from '@api/uaa/users/users.module';
 // import { FilesModule } from '@api/upload/files.module';
 // import { AppController } from './app.controller';
-// import { HealthModule } from './health/health.module';
 // import mikroOrmConfig from './common/configs/mikro-orm.config';
 // import { SubscribersModule } from './common/modules/subscribers/subscribers.module';
 
@@ -100,10 +104,9 @@ import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@n
   imports: [
     // Configs
     // CaslModule,
-    ConfigModule.forRoot(config, redisConnectionOptions),
+    ConfigModule.forRoot(config),
     GraphQLModule.forRoot<MercuriusDriverConfig>(graphqlConfig),
-    // TODO: Replace with .forRoot when https://github.com/lambrohan/nestjs-meilisearch/pull/5 is merged & published
-    MeiliSearchModule.forRootAsync(meiliSearchConfig),
+    MeiliSearchModule.forRoot(meiliSearchConfig),
     PubSubModule.forRoot({
       host: config.redis.host,
       port: config.redis.port,
@@ -134,7 +137,7 @@ import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@n
       isGlobal: true,
     } as CacheModuleAsyncOptions),
 
-    RedisModule.forRoot(redisConfig),
+    RedisModule.forRoot(redisOptions),
     OIDCCacheModule,
 
     // MeiliSearch
@@ -142,11 +145,6 @@ import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@n
 
     // Upload
     UploadModule,
-    // Global request context
-    // RequestContextModule.forRoot({
-    //   contextClass: GlobalRequestContext,
-    //   isGlobal: true,
-    // }),
 
     // // Subscribers module
     // SubscribersModule,
@@ -163,7 +161,7 @@ import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@n
     // ContentsModule,
     // FavoritesModule,
     // FilesModule,
-    // HealthModule,
+    HealthModule,
     // InterestsModule,
     // MetricsModule,
     // ReactionsModule,
@@ -196,16 +194,11 @@ import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@n
     { provide: APP_GUARD, useClass: AuthGuard },
     { provide: APP_GUARD, useClass: PolicyGuard },
     { provide: APP_FILTER, useClass: ExceptionsFilter },
-    {
-      provide: APP_INTERCEPTOR,
-      useFactory: (): SentryInterceptor => new SentryInterceptor(sentryInterceptorConfig),
-    },
+    { provide: APP_INTERCEPTOR, useClass: SentryInterceptor },
   ],
   controllers: [AppController],
 })
 export class AppModule implements NestModule {
-  constructor(@InjectRedis() private readonly redis: Redis) {}
-
   public configure(consumer: MiddlewareConsumer): void {
     // Setup sentry
     if (config.sentry.enabled) {

@@ -1,7 +1,6 @@
 // @index(['./**/*.{ts,tsx}', './*/index.{ts,tsx}'], f => `export * from '${f.path.replace(/\/index$/, '')}'`)
 export * from './interfaces/bll/multer-file.interface';
 export * from './interfaces/config/api-config.interface';
-export * from './interfaces/config/redis-connection-config.interface';
 export * from './interfaces/cookie';
 export * from './interfaces/cursor-columns.interface';
 export * from './interfaces/error-filter-response.interface';

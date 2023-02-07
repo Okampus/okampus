@@ -3,7 +3,7 @@ import { AuthContextModel, getAuthContextPopulate } from './auth-context.model';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../../global/config.module';
 
-import { RequestContext } from '../../../shards/request-context/request-context';
+import { RequestContext } from '../../../shards/abstract/request-context';
 import { addCookiesToResponse } from '../../../shards/utils/add-cookies-to-response';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
@@ -30,19 +30,18 @@ import {
 
 import { RequestType, SessionClientType, TokenType } from '@okampus/shared/enums';
 import { objectContains } from '@okampus/shared/utils';
-import { InjectMeiliSearch } from 'nestjs-meilisearch';
 import { hash, verify } from 'argon2';
 
 import DeviceDetector from 'device-detector-js';
 import { nanoid } from 'nanoid';
 
 import jsonwebtoken from 'jsonwebtoken';
+import type { MeiliSearchService } from '../../../global/meilisearch.module';
 const { JsonWebTokenError, NotBeforeError, TokenExpiredError } = jsonwebtoken;
 
 import type { JwtSignOptions } from '@nestjs/jwt';
 import type { Bot, TenantCore, User } from '@okampus/api/dal';
 import type { ApiConfig, Cookie, Claims, Snowflake } from '@okampus/shared/types';
-import type MeiliSearch from 'meilisearch';
 import type { LoginDto } from './dto/login.dto';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { SessionProps } from '@okampus/shared/dtos';
@@ -83,7 +82,7 @@ export class AuthService extends RequestContext {
     private readonly tenantFactory: TenantFactory,
 
     private readonly jwtService: JwtService,
-    @InjectMeiliSearch() private readonly meiliSearch: MeiliSearch
+    private readonly meiliSearchService: MeiliSearchService
   ) {
     super();
 
@@ -164,7 +163,7 @@ export class AuthService extends RequestContext {
   public async createMeilisearchToken(): Promise<Cookie> {
     // The API key is valid for the same time as the access token
     const maxAge = this.expirations.access * 1000;
-    const meiliSearchKey = await this.meiliSearch.createKey({
+    const meiliSearchKey = await this.meiliSearchService.client.createKey({
       indexes: [this.tenant().domain],
       actions: ['search'],
       expiresAt: new Date(Date.now() + maxAge),

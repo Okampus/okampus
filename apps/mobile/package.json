@@ -32,11 +32,14 @@
     "@react-native-async-storage/async-storage": "*",
     "set-cookie-parser": "*",
     "mitt": "*",
-    "expo-linking": "*"
+    "expo-linking": "*",
+    "@graphql-codegen/cli": "*",
+    "@graphql-typed-document-node/core": "*",
+    "expo-web-browser": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && cp package-lock.json ./apps/mobile/",
-    "postinstall": "rm -r node_modules && cd ../../ && npm install && npx nx sync-deps mobile && npx nx ensure-symlink mobile"
+    "postinstall": "rm -r node_modules && cd ../../ && pnpm install && pnpx nx sync-deps mobile && pnpx nx ensure-symlink mobile"
   },
   "devDependencies": {
     "@types/set-cookie-parser": "^2.4.2"

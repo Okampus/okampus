@@ -58,6 +58,7 @@ export default defineConfig({
       '@nestjs/terminus',
       '@nestjs/microservices',
       '@nestjs/websockets',
+      '@node-rs/xxhash',
       'cache-manager',
       'class-transformer',
       'class-validator',

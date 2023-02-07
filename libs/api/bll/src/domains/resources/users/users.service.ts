@@ -4,7 +4,7 @@ import { UpdateUserCommand } from './commands/update-user/update-user.command';
 import { GetUserByIdQuery } from './queries/get-user-by-id/get-user-by-id.query';
 import { GetUserBySlugQuery } from './queries/get-user-by-slug/get-user-by-slug.query';
 import { GetUsersQuery } from './queries/get-users/get-users.query';
-import { RequestContext } from '../../../shards/request-context/request-context';
+import { RequestContext } from '../../../shards/abstract/request-context';
 import { Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { CommandBus, QueryBus } from '@nestjs/cqrs';

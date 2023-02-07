@@ -4,7 +4,7 @@ import { UpdateBotCommand } from './commands/update-bot/update-bot.command';
 import { GetBotByIdQuery } from './queries/get-bot-by-id/get-bot-by-id.query';
 import { GetBotBySlugQuery } from './queries/get-bot-by-slug/get-bot-by-slug.query';
 import { GetBotsQuery } from './queries/get-bots/get-bots.query';
-import { RequestContext } from '../../../shards/request-context/request-context';
+import { RequestContext } from '../../../shards/abstract/request-context';
 import { Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { CommandBus, QueryBus } from '@nestjs/cqrs';

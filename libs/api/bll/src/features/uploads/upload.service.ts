@@ -3,7 +3,7 @@ import { MinioService } from '../../global/minio.module';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../global/config.module';
 
-import { RequestContext } from '../../shards/request-context/request-context';
+import { RequestContext } from '../../shards/abstract/request-context';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { DocumentUpload, FileUpload, ImageUpload, VideoUpload } from '@okampus/api/dal';
 import { DocumentUploadType, FileUploadKind, ResourceType, S3Buckets } from '@okampus/shared/enums';

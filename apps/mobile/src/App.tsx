@@ -9,14 +9,15 @@ import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { loginMutation } from '@okampus/shared/graphql';
+import { getFragmentData, loginMutation, meFragment } from '@okampus/shared/graphql';
+import type { MyInfoFragment } from '@okampus/shared/graphql';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
   const [firstRun, setFirstRun] = useState(true);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<MyInfoFragment | null>(null);
   const [mutateFunction, { data, loading, error }] = useMutation(loginMutation, { client });
 
   if (!isLoadingComplete) return null;
@@ -31,7 +32,7 @@ export default function App() {
     mutateFunction({
       variables: { username: 'okampus-admin', password: 'root' },
       onCompleted: (data) => {
-        setCurrentUser(data.login);
+        setCurrentUser(getFragmentData(meFragment, data.login.user));
       },
     });
     setFirstRun(false);
