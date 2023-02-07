@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../../global/config.module';
 
-import { Requester } from '../../../shards/request-context/requester.decorator';
+import { Requester } from '../../../shards/decorators/requester.decorator';
 import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Public, TenantPublic } from '@okampus/api/shards';

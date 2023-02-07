@@ -1,5 +1,5 @@
 import { CreateOrgDocumentCommand } from './commands/create-org-document/create-org-document.command';
-import { RequestContext } from '../../../shards/request-context/request-context';
+import { RequestContext } from '../../../shards/abstract/request-context';
 import { Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { CommandBus, QueryBus } from '@nestjs/cqrs';

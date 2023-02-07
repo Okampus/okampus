@@ -1,9 +1,7 @@
 import { config } from './config';
-import type { MeiliModuleAsyncOptions } from 'nestjs-meilisearch';
+import type { Config } from 'meilisearch';
 
 export default {
-  useFactory: () => ({
-    host: config.meilisearch.host,
-    apiKey: config.meilisearch.apiKey,
-  }),
-} as MeiliModuleAsyncOptions;
+  host: config.meilisearch.host,
+  apiKey: config.meilisearch.apiKey,
+} as Config;

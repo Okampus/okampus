@@ -1,7 +1,7 @@
 import { config } from './config';
 import { HttpException } from '@nestjs/common';
 import Sentry from '@sentry/node';
-import type { SentryInterceptorOptions, SentryModuleOptions } from '@xiifain/nestjs-sentry';
+import type { NodeOptions } from '@sentry/node';
 
 export const sentryConfig = {
   dsn: config.sentry.dsn,
@@ -21,6 +21,4 @@ export const sentryConfig = {
   },
   tracesSampleRate: 1,
   environment: config.nodeEnv,
-} as SentryModuleOptions;
-
-export const sentryInterceptorConfig: SentryInterceptorOptions = {};
+} as NodeOptions;

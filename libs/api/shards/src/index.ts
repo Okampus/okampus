@@ -6,10 +6,8 @@ export * from './decorators/public.decorator';
 export * from './decorators/tenant-public.decorator';
 export * from './decorators/transform-collection.decorator';
 export * from './filters/exceptions.filter';
-export * from './middlewares/rest-logger.middleware';
-export * from './middlewares/trace.middleware';
-export * from './mikroorm/load-collection';
 export * from './mikroorm/apply-model-factory';
+export * from './mikroorm/load-collection';
 export * from './mikroorm/process-populate-paginated';
 export * from './pipes/parse-date.pipe';
 // @endindex

@@ -1,7 +1,9 @@
 import { Global, Injectable, Module } from '@nestjs/common';
 import { Client } from 'minio';
+import type { S3Buckets } from '@okampus/shared/enums';
 import type { DynamicModule } from '@nestjs/common';
 import type { ClientOptions } from 'minio';
+import type { HealthIndicatorResult } from '@nestjs/terminus';
 
 // Singleton class
 class Minio extends Client {
@@ -19,6 +21,15 @@ class Minio extends Client {
 export class MinioService extends Minio {
   constructor(options: ClientOptions) {
     super(options);
+  }
+
+  async checkHealth(name: string, bucketName: S3Buckets): Promise<HealthIndicatorResult> {
+    const isAlive = await this.bucketExists(bucketName);
+    return {
+      [`${name}-${bucketName}`]: {
+        status: isAlive ? 'up' : 'down',
+      },
+    };
   }
 }
 

@@ -4,7 +4,7 @@ import { UpdateFinanceCommand } from './commands/update-finance/update-finance.c
 import { GetFinanceByIdQuery } from './queries/get-finance-by-id/get-finance-by-id.query';
 import { GetFinancesByTeamQuery } from './queries/get-finances-by-team/get-finances-by-team.query';
 import { GetFinancesQuery } from './queries/get-finances/get-finances.query';
-import { RequestContext } from '../../../shards/request-context/request-context';
+import { RequestContext } from '../../../shards/abstract/request-context';
 import { Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { CommandBus, QueryBus } from '@nestjs/cqrs';

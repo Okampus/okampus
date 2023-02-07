@@ -3,7 +3,7 @@ import { DeleteEventCommand } from './commands/delete-event/delete-event.command
 import { UpdateEventCommand } from './commands/update-event/update-event.command';
 import { GetEventByIdQuery } from './queries/get-event-by-id/get-event-by-id.query';
 import { GetEventsQuery } from './queries/get-events/get-events.query';
-import { RequestContext } from '../../../shards/request-context/request-context';
+import { RequestContext } from '../../../shards/abstract/request-context';
 import { Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { CommandBus, QueryBus } from '@nestjs/cqrs';

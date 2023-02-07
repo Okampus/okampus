@@ -4,7 +4,7 @@ import { UpdateTeamCategoryCommand } from './commands/update-team-category/updat
 import { GetTeamCategoryByIdQuery } from './queries/get-team-category-by-id/get-team-category-by-id.query';
 import { GetTeamCategoryBySlugQuery } from './queries/get-team-category-by-slug/get-team-category-by-slug.query';
 import { GetTeamCategoriesQuery } from './queries/get-team-categories/get-team-categories.query';
-import { RequestContext } from '../../../shards/request-context/request-context';
+import { RequestContext } from '../../../shards/abstract/request-context';
 import { Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { CommandBus, QueryBus } from '@nestjs/cqrs';

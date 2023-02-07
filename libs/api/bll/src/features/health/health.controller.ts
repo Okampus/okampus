@@ -1,58 +1,58 @@
-import { InjectRedis } from '@liaoliaots/nestjs-redis';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ConfigService } from '../../global/config.module';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { RedisService } from '../../global/redis.module';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { MinioService } from '../../global/minio.module';
+
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { HealthCheck } from '@nestjs/terminus';
 import { Public } from '@okampus/api/shards';
 
-import type { RedisHealthIndicator } from '@liaoliaots/nestjs-redis-health';
-import type {
-  HealthCheckResult,
+import { S3Buckets } from '@okampus/shared/enums';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import {
   DiskHealthIndicator,
   HealthCheckService,
   MemoryHealthIndicator,
   MikroOrmHealthIndicator,
 } from '@nestjs/terminus';
-import type Redis from 'ioredis';
-import type { ConfigService } from '../../global/config.module';
+import type { HealthCheckResult, HealthIndicatorResult } from '@nestjs/terminus';
 
 @ApiTags('Health')
 @Controller({ path: 'health' })
 export class HealthController {
+  checkStorageHealth: (() => Promise<HealthIndicatorResult>) | (() => Promise<HealthIndicatorResult>)[];
+
   constructor(
     private readonly configService: ConfigService,
     private readonly health: HealthCheckService,
-    private readonly redis: RedisHealthIndicator,
+    private readonly redisService: RedisService,
     private readonly database: MikroOrmHealthIndicator,
     // private readonly meilisearch: MeiliSearchHealthIndicator,
     private readonly disk: DiskHealthIndicator,
     private readonly memory: MemoryHealthIndicator,
-    // private readonly storage: StorageHealthIndicator,
-
-    @InjectRedis() private readonly redisClient: Redis
-  ) {}
+    private readonly minio: MinioService
+  ) {
+    const config = this.configService.config;
+    this.checkStorageHealth = config.s3.enabled
+      ? Object.values(S3Buckets).map((bucket) => () => this.minio.checkHealth('storage', bucket))
+      : () => this.disk.checkStorage('disk', { path: config.upload.localPath, thresholdPercent: 0.75 });
+  }
 
   @Get()
   @Public()
   @HealthCheck()
   public async check(): Promise<HealthCheckResult> {
-    const REDIS_OPTIONS = { type: 'redis', client: this.redisClient } as const;
     const MAX_HEAP_SIZE = 500 * 1024 * 1024;
-    const _LOCAL_STORAGE_OPTIONS = {
-      path: this.configService.config.upload.localPath,
-      thresholdPercent: 0.75,
-    };
-
-    const _BUCKETS = [...new Set(Object.values(this.configService.config.s3.buckets))];
 
     return await this.health.check(
       [
         () => this.database.pingCheck('database'),
-        // () => this.meilisearch.pingCheck('meilisearch'),
-        () => this.redis.checkHealth('cache', REDIS_OPTIONS),
+        () => this.redisService.checkHealth('cache'),
         () => this.memory.checkHeap('memory', MAX_HEAP_SIZE),
-        // this.configService.config.s3.enabled
-        //   ? BUCKETS.map((bucket) => () => this.storage.pingCheck('storage', bucket))
-        //   : () => this.disk.checkStorage('disk', LOCAL_STORAGE_OPTIONS),
+        this.checkStorageHealth,
       ].flat()
     );
   }

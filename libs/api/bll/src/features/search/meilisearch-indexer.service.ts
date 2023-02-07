@@ -1,14 +1,13 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../global/config.module';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { EntityManager } from '@mikro-orm/core';
 
 import { Injectable, Logger } from '@nestjs/common';
 import { Team, Tenant, User } from '@okampus/api/dal';
 import { MEILISEARCH_BATCH_SIZE, MEILISEARCH_ID_SEPARATOR } from '@okampus/shared/consts';
 import { getErrorMessage } from '@okampus/shared/utils';
-import { InjectMeiliSearch } from 'nestjs-meilisearch';
-import type { MeiliSearch } from 'meilisearch';
+import type { MeiliSearchService } from '../../global/meilisearch.module';
+import type { EntityManager } from '@mikro-orm/core';
 import type { FilterQuery, FindOptions } from '@mikro-orm/core';
 import type { IndexedEntity } from './indexed-entity.interface';
 
@@ -23,8 +22,8 @@ export class MeiliSearchIndexerService {
 
   constructor(
     private readonly configModule: ConfigService,
-    private readonly em: EntityManager,
-    @InjectMeiliSearch() private readonly meiliSearch: MeiliSearch
+    private readonly meiliSearchService: MeiliSearchService,
+    private readonly em: EntityManager
   ) {}
 
   public static async entitiesToIndexedEntities(
@@ -53,7 +52,7 @@ export class MeiliSearchIndexerService {
 
     for (const tenant of tenants) {
       try {
-        const index = this.meiliSearch.index(tenant.actor.slug);
+        const index = this.meiliSearchService.client.index(tenant.actor.slug);
         const response = await index.search('', { facets: ['metaType'] });
 
         const facetDistribution: Record<string, number> = {};
@@ -84,15 +83,15 @@ export class MeiliSearchIndexerService {
   public async reindex(tenant: Tenant): Promise<boolean> {
     this.logger.log(`Reindexing for tenant ${tenant.actor.slug}...`);
 
-    if (!(await this.meiliSearch.isHealthy())) {
+    if (!(await this.meiliSearchService.client.isHealthy())) {
       this.logger.warn('MeiliSearch is not healthy');
       return false;
     }
 
-    await this.meiliSearch.deleteIndexIfExists(tenant.actor.slug);
-    await this.meiliSearch.createIndex(tenant.actor.slug);
+    await this.meiliSearchService.client.deleteIndexIfExists(tenant.actor.slug);
+    await this.meiliSearchService.client.createIndex(tenant.actor.slug);
 
-    const index = this.meiliSearch.index(tenant.actor.slug);
+    const index = this.meiliSearchService.client.index(tenant.actor.slug);
     await index.updateSettings({ filterableAttributes: this.filterables });
 
     const counts = await Promise.all(

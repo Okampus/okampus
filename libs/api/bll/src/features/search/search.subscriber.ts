@@ -1,12 +1,11 @@
 import { MeiliSearchIndexerService } from './meilisearch-indexer.service';
 import { Injectable } from '@nestjs/common';
-import { InjectMeiliSearch } from 'nestjs-meilisearch';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
+import type { MeiliSearchService } from '../../global/meilisearch.module';
 
 import type { EntityName, EventArgs, EventSubscriber } from '@mikro-orm/core';
-import type MeiliSearch from 'meilisearch';
 // import { config } from '@api/configs/config';
 // import type { RequiredProp } from '@api/shards/types/types/required-prop.type';
 import type { IndexableEntities } from './meilisearch-indexer.service';
@@ -23,7 +22,7 @@ const _isValid = (
 
 @Injectable()
 export class SearchSubscriber implements EventSubscriber {
-  constructor(private readonly em: EntityManager, @InjectMeiliSearch() private readonly meiliSearch: MeiliSearch) {
+  constructor(private readonly em: EntityManager, private readonly meiliSearchService: MeiliSearchService) {
     this.em.getEventManager().registerSubscriber(this);
   }
 

@@ -7,19 +7,23 @@ import { exit } from 'node:process';
 
 const logger = new Logger('Bootstrap');
 
+const MIGRATION_CREATE = 'create';
+const MIGRATION_UP = 'up';
+const MIGRATION_DOWN = 'down';
+
 const initApp = async () => {
   if (process.env.MIKRO_ORM_MIGRATION) {
     logger.log('Initializing MikroORM..');
     let orm;
     switch (process.env.MIKRO_ORM_MIGRATION) {
-      case 'create': {
+      case MIGRATION_CREATE: {
         logger.log('Creating migration..');
         orm = await MikroORM.init(mikroOrmConfig);
         const migrator = orm.getMigrator();
         await migrator.createMigration();
         break;
       }
-      case 'up': {
+      case MIGRATION_UP: {
         logger.log('Migrating up..');
         orm = await MikroORM.init({
           ...mikroOrmConfig,
@@ -29,7 +33,7 @@ const initApp = async () => {
         await migrator.up();
         break;
       }
-      case 'down': {
+      case MIGRATION_DOWN: {
         logger.log('Migrating down..');
         orm = await MikroORM.init(mikroOrmConfig);
         const migrator = orm.getMigrator();

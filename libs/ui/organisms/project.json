@@ -18,7 +18,7 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": ["nx run api:ts-check", "nx run api:eslint"]
+        "commands": ["nx run ui-organisms:ts-check", "nx run ui-organisms:eslint"]
       }
     },
     "ts-check": {

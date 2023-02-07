@@ -3,7 +3,7 @@ import { DeleteEventApprovalCommand } from './commands/delete-event-approval/del
 import { UpdateEventApprovalCommand } from './commands/update-event-approval/update-event-approval.command';
 import { GetEventApprovalByIdQuery } from './queries/get-event-approval-by-id/get-event-approval-by-id.query';
 import { GetEventApprovalsQuery } from './queries/get-event-approvals/get-event-approvals.query';
-import { RequestContext } from '../../../shards/request-context/request-context';
+import { RequestContext } from '../../../shards/abstract/request-context';
 import { Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { CommandBus, QueryBus } from '@nestjs/cqrs';

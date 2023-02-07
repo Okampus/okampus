@@ -4,7 +4,7 @@ import { UpdateTenantCommand } from './commands/update-tenant/update-tenant.comm
 import { GetTenantByIdQuery } from './queries/get-tenant-by-id/get-tenant-by-id.query';
 import { GetTenantBySlugQuery } from './queries/get-tenant-by-slug/get-tenant-by-slug.query';
 import { GetTenantsQuery } from './queries/get-tenants/get-tenants.query';
-import { RequestContext } from '../../../shards/request-context/request-context';
+import { RequestContext } from '../../../shards/abstract/request-context';
 import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-document/create-org-document.command';
 import { Injectable } from '@nestjs/common';
 import { OrgDocumentType } from '@okampus/shared/enums';

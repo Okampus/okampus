@@ -4,7 +4,7 @@ import { UpdateProjectCommand } from './commands/update-project/update-project.c
 import { GetProjectByIdQuery } from './queries/get-project-by-id/get-project-by-id.query';
 import { GetProjectsByTeamQuery } from './queries/get-projects-by-team/get-projects-by-team.query';
 import { GetProjectsQuery } from './queries/get-projects/get-projects.query';
-import { RequestContext } from '../../../shards/request-context/request-context';
+import { RequestContext } from '../../../shards/abstract/request-context';
 import { Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { CommandBus, QueryBus } from '@nestjs/cqrs';

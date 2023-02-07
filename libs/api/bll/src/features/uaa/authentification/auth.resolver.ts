@@ -3,12 +3,12 @@ import { AuthContextModel } from './auth-context.model';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { AuthService } from './auth.service';
 
-import { Requester } from '../../../shards/request-context/requester.decorator';
 import { UserModel } from '../../../domains/factories/domains/users/user.model';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../../global/config.module';
 
+import { Requester } from '../../../shards/decorators/requester.decorator';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TenantPublic } from '@okampus/api/shards';
 import { User } from '@okampus/api/dal';
