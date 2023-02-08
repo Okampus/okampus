@@ -16,7 +16,7 @@ import {
 } from '@okampus/shared/consts';
 import { SearchableEntities } from '@okampus/shared/enums';
 
-import MeiliSearch from 'meilisearch';
+import { MeiliSearch } from 'meilisearch';
 
 import type { SearchEntity, SearchableEntity } from '@okampus/api/dal';
 import type { Snowflake } from '@okampus/shared/types';
