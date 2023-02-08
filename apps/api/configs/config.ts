@@ -55,6 +55,7 @@ export const config: ApiConfig = {
     apiKey: process.env.MEILISEARCH_API_KEY ?? 'api-key',
   },
   database: {
+    seed: parseEnvBoolean(process.env.MIKRO_ORM_SEED, false),
     name: process.env.DB_NAME ?? 'db-name',
     user: process.env.DB_USER ?? 'user',
     password: process.env.DB_PASSWORD ?? 'secret-db-user',

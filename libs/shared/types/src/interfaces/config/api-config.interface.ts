@@ -25,6 +25,7 @@ export type ApiConfig = {
     readonly apiKey: string;
   };
   readonly database: {
+    readonly seed: boolean;
     readonly name: string;
     readonly user: string;
     readonly password: string;

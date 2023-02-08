@@ -43,7 +43,7 @@ export class TeamsModule implements OnModuleInit {
   public async onModuleInit(): Promise<void> {
     const anyTeam = await this.teamRepository.find({});
 
-    if (anyTeam.length === 0) {
+    if (anyTeam.length === 0 && this.configService.config.database.seed) {
       DatabaseSeeder.pepper = this.pepper;
       const seeder = this.orm.getSeeder();
       await seeder.seed(DatabaseSeeder);
