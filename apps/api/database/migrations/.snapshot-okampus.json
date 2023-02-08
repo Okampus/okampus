@@ -2717,6 +2717,15 @@
           ],
           "mappedType": "enum"
         },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "title": {
           "name": "title",
           "type": "text",
@@ -3185,6 +3194,15 @@
           ],
           "mappedType": "enum"
         },
+        "text": {
+          "name": "text",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "author_id": {
           "name": "author_id",
           "type": "bigint",
@@ -3283,15 +3301,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
-        },
-        "text": {
-          "name": "text",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
         },
         "parent_id": {
           "name": "parent_id",
