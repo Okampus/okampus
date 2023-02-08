@@ -33,20 +33,22 @@ export class TeamFinanceSeeder extends Factory<Finance> {
 
   public definition(faker: Faker): FinanceOptions {
     const linkedEvent = Math.random() < 0.8 ? pickOneFromArray(this.events) : undefined;
+    const amount = +faker.finance.amount();
 
     return {
-      description: faker.lorem.sentence(),
-      address: null,
-      tenant: this.team.tenant,
-      team: this.team,
       transaction: faker.finance.transactionDescription(),
+      description: faker.lorem.sentence(),
       paymentDate: faker.date.future(),
-      createdBy: pickOneFromArray(this.teamMembers.filter((m) => m.roles.getItems().some((r) => r.isDirector()))).user,
-      linkedEvent,
-      amountDue: +faker.finance.amount(),
+      address: null,
+      amountDue: amount,
+      amountPayed: amount,
       paymentMethod: randomEnum(PaymentMethod),
       state: randomEnum(FinanceState),
       category: randomEnum(FinanceCategory),
+      linkedEvent,
+      team: this.team,
+      createdBy: pickOneFromArray(this.teamMembers.filter((m) => m.roles.getItems().some((r) => r.isDirector()))).user,
+      tenant: this.team.tenant,
     };
   }
 }

@@ -1,7 +1,7 @@
 import { TenantEvent } from '../../../resources/content-master/event/event.entity';
 import { Factory } from '@mikro-orm/seeder';
 import { EventState } from '@okampus/shared/enums';
-import { pickOneFromArray } from '@okampus/shared/utils';
+import { pickOneFromArray, toSlug } from '@okampus/shared/utils';
 import { Address } from '@okampus/shared/dtos';
 import { randomInt } from 'node:crypto';
 import type { EntityManager } from '@mikro-orm/core';
@@ -44,11 +44,12 @@ export class EventSeeder extends Factory<TenantEvent> {
     }
 
     const user = pickOneFromArray(this.teamMembers.filter((m) => m.roles.getItems().some((r) => r.canManage()))).user;
+    const title = faker.lorem.words(randomInt(3, 10));
 
     return {
+      slug: toSlug(title),
+      title,
       description: faker.lorem.paragraphs(3),
-      tenant: this.team.tenant,
-      title: faker.lorem.words(randomInt(3, 10)),
       start,
       end,
       price: randomInt(0, 100),
@@ -61,6 +62,7 @@ export class EventSeeder extends Factory<TenantEvent> {
       state,
       lastEventApprovalStep: step,
       createdBy: user,
+      tenant: this.team.tenant,
     };
   }
 }
