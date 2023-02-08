@@ -214,7 +214,6 @@ export * from './features/health/health.module';
 export * from './features/search/indexed-entity.interface';
 export * from './features/search/meilisearch-indexer.module';
 export * from './features/search/meilisearch-indexer.service';
-export * from './features/search/search.subscriber';
 export * from './features/uaa/authentification/auth-context.model';
 export * from './features/uaa/authentification/auth.controller';
 export * from './features/uaa/authentification/auth.guard';

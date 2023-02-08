@@ -1,13 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../global/config.module';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { MeiliSearchService } from '../../global/meilisearch.module';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
 
 import { Injectable, Logger } from '@nestjs/common';
 import { Team, Tenant, User } from '@okampus/api/dal';
 import { MEILISEARCH_BATCH_SIZE, MEILISEARCH_ID_SEPARATOR } from '@okampus/shared/consts';
 import { getErrorMessage } from '@okampus/shared/utils';
-import type { MeiliSearchService } from '../../global/meilisearch.module';
-import type { EntityManager } from '@mikro-orm/core';
 import type { FilterQuery, FindOptions } from '@mikro-orm/core';
 import type { IndexedEntity } from './indexed-entity.interface';
 

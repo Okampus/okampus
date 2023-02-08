@@ -1,11 +1,10 @@
 import { MeiliSearchIndexerService } from './meilisearch-indexer.service';
-import { SearchSubscriber } from './search.subscriber';
 import { ConfigModule } from '../../global/config.module';
 import { Module } from '@nestjs/common';
 
 @Module({
   imports: [ConfigModule],
-  providers: [MeiliSearchIndexerService, SearchSubscriber],
+  providers: [MeiliSearchIndexerService],
   exports: [MeiliSearchIndexerService],
 }) // implements OnModuleInit
 export class MeiliSearchIndexerModule {

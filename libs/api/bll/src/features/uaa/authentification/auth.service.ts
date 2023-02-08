@@ -2,6 +2,8 @@ import { AuthContextModel, getAuthContextPopulate } from './auth-context.model';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../../global/config.module';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { MeiliSearchService } from '../../../global/meilisearch.module';
 
 import { RequestContext } from '../../../shards/abstract/request-context';
 import { addCookiesToResponse } from '../../../shards/utils/add-cookies-to-response';
@@ -36,7 +38,6 @@ import DeviceDetector from 'device-detector-js';
 import { nanoid } from 'nanoid';
 
 import jsonwebtoken from 'jsonwebtoken';
-import type { MeiliSearchService } from '../../../global/meilisearch.module';
 const { JsonWebTokenError, NotBeforeError, TokenExpiredError } = jsonwebtoken;
 
 import type { JwtSignOptions } from '@nestjs/jwt';
