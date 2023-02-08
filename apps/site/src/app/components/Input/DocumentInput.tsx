@@ -1,11 +1,14 @@
 /* eslint-disable unicorn/explicit-length-check */
-import { DocumentProps } from '@okampus/shared/dtos';
 import { ReactComponent as UploadFileicon } from '@okampus/assets/svg/icons/upload-file.svg';
-import { ChangeEvent, useRef } from 'react';
-import { clsx } from 'clsx';
-import { FileLike } from '@okampus/shared/types';
 import { FileTypeIcon } from '@okampus/ui/atoms';
-import { bytes, formatDateDayOfWeek, formatDateStandard } from '@okampus/shared/utils';
+import { bytes, formatDateStandard } from '@okampus/shared/utils';
+
+import { useRef } from 'react';
+import { clsx } from 'clsx';
+
+import type { FileLike } from '@okampus/shared/types';
+import type { ChangeEvent } from 'react';
+import type { DocumentProps } from '@okampus/shared/dtos';
 
 export type BaseDocumentType = DocumentProps & {
   createdAt: string;

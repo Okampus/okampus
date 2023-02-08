@@ -1326,8 +1326,8 @@ input CreateEventDto {
   state: EventState!
   meta: JSON
   private: Boolean
+  slug: String
   title: String!
-  slug: String!
   description: String!
   supervisorId: String!
   orgId: String!
@@ -1342,8 +1342,8 @@ input UpdateEventDto {
   state: EventState
   meta: JSON
   private: Boolean
-  title: String
   slug: String
+  title: String
   description: String
   supervisorId: String
   orgId: String

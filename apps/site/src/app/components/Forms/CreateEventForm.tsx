@@ -1,18 +1,19 @@
-import { z } from 'zod';
-import { useMutation, useQuery } from '@apollo/client';
 import {
   createEventMutation,
   eventFragment,
-  EventInfoFragment,
   getFragmentData,
   getTeamWithMembersQuery,
   teamMembersFragment,
 } from '@okampus/shared/graphql';
-import { Address } from '@okampus/shared/dtos';
 import { EventState } from '@okampus/shared/enums';
-import { DynamicFieldData, DynamicForm } from '@okampus/ui/organisms';
-import { SelectItem } from '@okampus/ui/molecules';
+import { DynamicForm } from '@okampus/ui/organisms';
 import { useCurrentContext } from '@okampus/ui/hooks';
+import { useMutation, useQuery } from '@apollo/client';
+import { z } from 'zod';
+import type { SelectItem } from '@okampus/ui/molecules';
+import type { DynamicFieldData } from '@okampus/ui/organisms';
+import type { Address } from '@okampus/shared/dtos';
+import type { EventInfoFragment } from '@okampus/shared/graphql';
 
 type CreateEventFormData = {
   title: string;
@@ -70,9 +71,6 @@ export function CreateEventForm({ onSubmit }: CreateEventFormProps) {
     onCompleted: (data) => {
       const event = getFragmentData(eventFragment, data.createEvent);
       onSubmit(event);
-    },
-    onError: () => {
-      // setIsLoading(false);
     },
   });
 
