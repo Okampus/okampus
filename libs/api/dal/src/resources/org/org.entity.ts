@@ -24,6 +24,10 @@ export class Org extends TenantScopedEntity {
   @ManyToOne({ type: 'Org', nullable: true, cascade: [Cascade.ALL] })
   parent: Org | null = null;
 
+  @OneToMany({ type: 'Org', mappedBy: 'parent' })
+  @TransformCollection()
+  children = new Collection<Org>(this);
+
   @OneToMany({ type: 'OrgDocument', mappedBy: 'org', cascade: [Cascade.ALL] })
   @TransformCollection()
   documents = new Collection<OrgDocument>(this);

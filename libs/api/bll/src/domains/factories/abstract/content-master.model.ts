@@ -13,6 +13,9 @@ export class ContentMasterModel extends TenantScopedModel implements IContentMas
   tags!: ITag[];
 
   @Field(() => String)
+  slug!: string;
+
+  @Field(() => String)
   title!: string;
 
   @Field(() => ContentMasterKind)

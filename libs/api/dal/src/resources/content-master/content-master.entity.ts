@@ -27,6 +27,9 @@ export abstract class ContentMaster extends TenantScopedEntity {
   tags = new Collection<Tag>(this);
 
   @Property({ type: 'text' })
+  slug!: string;
+
+  @Property({ type: 'text' })
   title!: string;
 
   @OneToOne({ type: 'Ugc', onDelete: 'CASCADE' })

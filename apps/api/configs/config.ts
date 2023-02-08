@@ -5,7 +5,7 @@ import { dirname } from 'node:path';
 import type { ApiConfig } from '@okampus/shared/types';
 
 const _dirname = typeof __dirname === 'undefined' ? dirname(fileURLToPath(import.meta.url)) : __dirname;
-const appPath = `${_dirname}/../../../apps/api`;
+export const appPath = `${_dirname}/../../../apps/api`;
 
 dotenv.config({ path: `${appPath}/.env` });
 
@@ -46,7 +46,6 @@ export const config: ApiConfig = {
     frontendUrl: nodeEnv === 'development' ? 'http://localhost:5173' : `https://${frontendOriginUrl}`,
   },
   upload: {
-    maxSize: parseEnvInt(process.env.UPLOAD_MAX_SIZE, 50_000_000),
     localPath: `${appPath}/${process.env.UPLOAD_PATH ?? 'uploads'}`,
     localPrefix: process.env.UPLOAD_PATH ?? 'uploads',
   },
@@ -125,23 +124,8 @@ export const config: ApiConfig = {
   session: {
     secret: process.env.SESSION_SECRET ?? 'session_secret',
   },
-  crypto: {
-    pepper: process.env.CRYPTO_PEPPER_SECRET ?? 'CRYPTO_PEPPER_SECRET',
-  },
-  adminAccount: {
-    slug: process.env.ADMIN_ACCOUNT_USERNAME ?? 'okampus-admin',
-    email: process.env.ADMIN_ACCOUNT_EMAIL ?? 'admin@okampus.fr',
-    firstName: process.env.ADMIN_ACCOUNT_FIRST_NAME ?? 'Okampus',
-    lastName: process.env.ADMIN_ACCOUNT_LAST_NAME ?? 'Admin',
-    password: process.env.ADMIN_ACCOUNT_PASSWORD ?? 'root',
-  },
-  anonAccount: {
-    slug: process.env.ANON_ACCOUNT_USERNAME ?? 'okampus-anon',
-    email: process.env.ANON_ACCOUNT_EMAIL ?? 'anon@okampus.fr',
-    firstName: process.env.ANON_ACCOUNT_FIRST_NAME ?? 'Anonyme',
-    lastName: process.env.ANON_ACCOUNT_LAST_NAME ?? '',
-    password: process.env.ANON_ACCOUNT_PASSWORD ?? 'root',
-  },
+  cryptoSecret: process.env.CRYPTO_PEPPER_SECRET ?? 'CRYPTO_PEPPER_SECRET',
+  adminAccountPassword: process.env.ADMIN_ACCOUNT_PASSWORD ?? 'root',
   baseTenant: {
     name: process.env.BASE_TENANT_NAME ?? 'Demo Tenant',
     oidc: {

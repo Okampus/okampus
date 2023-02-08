@@ -1,27 +1,35 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { MinioService } from '../../global/minio.module';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../global/config.module';
-
 import { RequestContext } from '../../shards/abstract/request-context';
+
+import { Client } from 'minio';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { DocumentUpload, FileUpload, ImageUpload, VideoUpload } from '@okampus/api/dal';
 import { DocumentUploadType, FileUploadKind, ResourceType, S3Buckets } from '@okampus/shared/enums';
 import { checkDocument, checkImage, checkVideo, snowflake, streamToBuffer } from '@okampus/shared/utils';
+
 import { Readable } from 'node:stream';
 import { promises } from 'node:fs';
 
-import path from 'node:path';
 import type { FileUploadOptions, TenantCore } from '@okampus/api/dal';
 import type { ApiConfig, MulterFileType } from '@okampus/shared/types';
 import type { HTTPResource } from '../../shards/types/http-resource.type';
 
 @Injectable()
 export class UploadService extends RequestContext {
+  minioClient: Client | null;
   config: ApiConfig;
 
-  constructor(private readonly minioService: MinioService, private readonly configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     super();
+    this.minioClient = this.configService.config.s3.enabled
+      ? new Client({
+          endPoint: this.configService.config.s3.endpoint,
+          accessKey: this.configService.config.s3.accessKeyId,
+          secretKey: this.configService.config.s3.secretAccessKey,
+          region: this.configService.config.s3.region,
+        })
+      : null;
     this.config = this.configService.config;
   }
 
@@ -30,7 +38,7 @@ export class UploadService extends RequestContext {
       const { writeFile } = promises;
 
       const buffer = await streamToBuffer(stream);
-      const fullPath = path.join(this.config.upload.localPath, bucket, key);
+      const fullPath = `${this.config.upload.localPath}/${bucket}/${key}`;
       await writeFile(fullPath, buffer);
 
       return {
@@ -40,8 +48,10 @@ export class UploadService extends RequestContext {
       };
     }
 
-    const { etag } = await this.minioService.putObject(bucket, key, stream, { 'Content-Type': mime });
-    const { size } = await this.minioService.statObject(bucket, key);
+    if (!this.minioClient) throw new BadRequestException('Minio client is not initialized');
+
+    const { etag } = await this.minioClient.putObject(bucket, key, stream, { 'Content-Type': mime });
+    const { size } = await this.minioClient.statObject(bucket, key);
 
     return { url: `${bucket}/${key}`, etag, size };
   }

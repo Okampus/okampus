@@ -8,6 +8,7 @@ import type { TenantOptions } from './tenant.options';
 import type { EventApprovalStep } from '../../manage-tenant/event-approval-step/event-approval-step.entity';
 import type { Form } from '../../ugc/form/form.entity';
 
+// TODO: add official locations/addresses
 @Entity({ customRepository: () => TenantRepository })
 export class Tenant extends Org {
   [EntityRepositoryType]!: TenantRepository;

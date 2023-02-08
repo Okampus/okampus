@@ -1,14 +1,13 @@
+import { appPath } from './config';
 import { AuthModule, AuthService, UsersModule, UsersService } from '@okampus/api/bll';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { MercuriusDriver } from '@nestjs/mercurius';
 import { GraphQLJSON } from 'graphql-scalars';
-// import { GraphQLUpload } from 'graphql-upload-minimal';
-// import { GraphQLUpload as GQL } from '@okampus/shared/types';
 import { GraphQLUpload } from 'graphql-upload-minimal';
-import { join } from 'node:path';
+
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
-// import { GraphQLScalarType } from 'graphql';
-// import { GraphQLUpload } from 'graphql-upload/GraphQLUpload.mjs';
+
+export const schemaFilePath = `${appPath}/../../libs/shared/graphql/src/schema/schema.gql`;
 
 export default {
   imports: [JwtModule, UsersModule, AuthModule],
@@ -21,46 +20,12 @@ export default {
       Object.defineProperty(error, 'extensions', { enumerable: true });
       return error;
     });
+
     log.info({ err: executionResult.errors }, 'Argument Validation Error');
-    return {
-      statusCode: 201,
-      response: {
-        data: executionResult.data,
-        errors,
-      },
-    };
+    const response = { data: executionResult.data, errors };
+    return { statusCode: 201, response };
   },
-  // buildSchemaOptions: {
-  //   scalarsMap: [{ type: GQL, scalar: GraphQLUpload }],
-  // },
-  // definitions: {
-  //   customScalarTypeMapping: {
-  //     Upload: 'Upload',
-  //   },
-  // },
-  autoSchemaFile: join(process.cwd(), 'libs', 'shared', 'graphql', 'src', 'schema', 'schema.gql'),
-  resolvers: {
-    JSON: GraphQLJSON,
-    Upload: GraphQLUpload,
-    // UUID: CustomUuidScalar,
-    // Upload: GraphQLUpload,
-    // JSON2: GraphQLJSON,
-    //   Upload: new GraphQLScalarType({
-    //     name: "Upload",
-    //     description: "The `Upload` scalar type represents a file upload.",
-    //     parseValue(value) {
-    //         if (value instanceof Upload) return value.promise;
-    //         throw new GraphQLError("Upload value invalid.");
-    //     },
-    //     parseLiteral(node) {
-    //         throw new GraphQLError("Upload literal unsupported.", { nodes: node });
-    //     },
-    //     serialize() {
-    //         throw new GraphQLError("Upload serialization unsupported.");
-    //     },
-    // });,
-  },
-  subscription: {
-    'graphql-ws': true,
-  },
+  autoSchemaFile: schemaFilePath, // TODO: DX fix, schema file is doubled loaded when shared lib modified in vite dev mode
+  resolvers: { JSON: GraphQLJSON, Upload: GraphQLUpload },
+  subscription: { 'graphql-ws': true },
 } as MercuriusDriverConfig;

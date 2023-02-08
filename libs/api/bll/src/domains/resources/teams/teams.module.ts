@@ -36,7 +36,7 @@ export class TeamsModule implements OnModuleInit {
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     private readonly configService: ConfigService
   ) {
-    this.pepper = Buffer.from(this.configService.config.crypto.pepper);
+    this.pepper = Buffer.from(this.configService.config.cryptoSecret);
   }
 
   // TODO: don't seed in production

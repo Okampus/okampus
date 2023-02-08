@@ -1,19 +1,15 @@
 import { ContentRepository } from './content.repository';
 import { Ugc } from '../ugc.entity';
-import { Collection, Entity, ManyToMany, ManyToOne, Property } from '@mikro-orm/core';
+import { Collection, Entity, ManyToMany, ManyToOne } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
 import { UgcKind } from '@okampus/shared/enums';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { ContentOptions } from './content.options';
 
-
 @Entity({
   customRepository: () => ContentRepository,
 })
 export class Content extends Ugc {
-  @Property({ type: 'text' })
-  text!: string;
-
   @ManyToMany({ type: 'FileUpload' })
   @TransformCollection()
   attachments = new Collection<FileUpload>(this);

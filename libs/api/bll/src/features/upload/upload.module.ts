@@ -21,7 +21,7 @@ export class UploadModule implements OnModuleInit {
 
   public async onModuleInit(): Promise<void> {
     const { mkdir } = promises;
-    const logger = new Logger('Files');
+    const logger = new Logger('Upload');
 
     if (this.configService.config.s3.enabled) {
       logger.log(`Distant storage is enabled, uploading to ${this.configService.config.s3.endpoint}`);
@@ -31,9 +31,8 @@ export class UploadModule implements OnModuleInit {
     logger.log('Distant storage is disabled, uploading to local file system.');
     const base = this.configService.config.upload.localPath;
 
-    const dirs: Array<Promise<string | undefined>> = [];
-    for (const value of enumKeys(S3Buckets)) dirs.push(mkdir(path.join(base, S3Buckets[value]), { recursive: true }));
-
-    await Promise.all(dirs);
+    await Promise.all(
+      enumKeys(S3Buckets).map((value) => mkdir(path.join(base, S3Buckets[value]), { recursive: true }))
+    );
   }
 }

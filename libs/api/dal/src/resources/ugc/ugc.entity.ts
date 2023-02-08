@@ -20,6 +20,9 @@ export class Ugc extends TenantScopedEntity {
   @Enum({ items: () => UgcKind, type: 'string' })
   ugcKind!: UgcKind;
 
+  @Property({ type: 'text' })
+  text!: string;
+
   @ManyToOne({ type: 'Individual', onDelete: 'CASCADE' })
   author!: Individual;
 

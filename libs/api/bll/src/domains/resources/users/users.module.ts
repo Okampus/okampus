@@ -17,7 +17,17 @@ import { TenantCore, Tenant, User, Actor, EventApprovalStep } from '@okampus/api
 import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
 import { CqrsModule } from '@nestjs/cqrs';
 import { Module } from '@nestjs/common';
-import { BASE_TENANT } from '@okampus/shared/consts';
+import {
+  ADMIN_ACCOUNT_EMAIL,
+  ADMIN_ACCOUNT_FIRST_NAME,
+  ADMIN_ACCOUNT_LAST_NAME,
+  ADMIN_ACCOUNT_SLUG,
+  ANON_ACCOUNT_EMAIL,
+  ANON_ACCOUNT_FIRST_NAME,
+  ANON_ACCOUNT_LAST_NAME,
+  ANON_ACCOUNT_SLUG,
+  BASE_TENANT,
+} from '@okampus/shared/consts';
 import { hash } from 'argon2';
 import type { OnModuleInit } from '@nestjs/common';
 
@@ -39,11 +49,11 @@ export class UsersModule implements OnModuleInit {
     private readonly eventApprovalStepRepository: EventApprovalStepRepository,
     private readonly configService: ConfigService
   ) {
-    this.pepper = Buffer.from(this.configService.config.crypto.pepper);
+    this.pepper = Buffer.from(this.configService.config.cryptoSecret);
   }
 
   public async onModuleInit(): Promise<void> {
-    const { baseTenant, adminAccount, anonAccount } = this.configService.config;
+    const { baseTenant, adminAccountPassword } = this.configService.config;
 
     let coreTenant: TenantCore | null = null;
     let tenant = await this.tenantRepository.findOne({ tenant: { domain: BASE_TENANT } });
@@ -77,19 +87,19 @@ export class UsersModule implements OnModuleInit {
       await this.tenantCoreRepository.persistAndFlush(coreTenant);
     }
 
-    let admin = await this.userRepository.findOne({ actor: { slug: adminAccount.slug } });
+    let admin = await this.userRepository.findOne({ actor: { slug: ADMIN_ACCOUNT_SLUG } });
     if (!admin) {
       admin = new User({
         tenant: coreTenant,
-        slug: adminAccount.slug,
-        firstName: adminAccount.firstName,
-        lastName: adminAccount.lastName,
-        primaryEmail: adminAccount.email,
+        slug: ADMIN_ACCOUNT_SLUG,
+        firstName: ADMIN_ACCOUNT_FIRST_NAME,
+        lastName: ADMIN_ACCOUNT_LAST_NAME,
+        primaryEmail: ADMIN_ACCOUNT_EMAIL,
         scopeRole: ScopeRole.Admin,
         roles: [RoleType.Moderator, RoleType.TenantAdmin],
       });
 
-      admin.passwordHash = await hash(adminAccount.password, { secret: this.pepper });
+      admin.passwordHash = await hash(adminAccountPassword, { secret: this.pepper });
       await this.userRepository.persistAndFlush(admin);
 
       const step1 = new EventApprovalStep({
@@ -117,19 +127,15 @@ export class UsersModule implements OnModuleInit {
       this.eventApprovalStepRepository.persistAndFlush([step1, step2, step3]);
       this.tenantRepository.flush();
     }
-    // else if (!(await admin.validatePassword(adminAccount.password))) { // TODO: change password on env pwd change
-    //   await admin.setPassword(adminAccount.password);
-    //   await this.userRepository.persistAndFlush(admin);
-    // }
 
-    const anon = await this.userRepository.count({ actor: { slug: anonAccount.slug } });
+    const anon = await this.userRepository.count({ actor: { slug: ANON_ACCOUNT_SLUG } });
     if (!anon) {
       const anonUser = new User({
         tenant: coreTenant,
-        slug: anonAccount.slug,
-        firstName: anonAccount.firstName,
-        lastName: anonAccount.lastName,
-        primaryEmail: anonAccount.email,
+        slug: ANON_ACCOUNT_SLUG,
+        firstName: ANON_ACCOUNT_FIRST_NAME,
+        lastName: ANON_ACCOUNT_LAST_NAME,
+        primaryEmail: ANON_ACCOUNT_EMAIL,
         scopeRole: ScopeRole.Admin,
       });
 

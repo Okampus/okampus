@@ -7,4 +7,9 @@ export class ContentMasterProps {
   @Length(1, 100)
   @IsString()
   title!: string;
+
+  @Field(() => String)
+  @Length(1, 100)
+  @IsString()
+  slug!: string;
 }

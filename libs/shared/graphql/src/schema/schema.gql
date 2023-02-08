@@ -56,6 +56,7 @@ interface ContentMasterModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   tags: [TagModel!]!
+  slug: String!
   title: String!
   contentMasterKind: ContentMasterKind!
   contributors: [IndividualModel!]!
@@ -75,6 +76,7 @@ interface UgcModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
+  text: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
@@ -356,6 +358,7 @@ type DocumentModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
+  text: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
@@ -487,6 +490,7 @@ type FormModel implements UgcModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
+  text: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
@@ -524,6 +528,7 @@ type FormSubmissionModel implements UgcModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
+  text: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
@@ -685,11 +690,11 @@ type ContentModel implements UgcModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
+  text: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
   contentMaster: ContentMasterModel!
-  text: String!
   attachments: [FileUploadModel!]!
   parent: UgcModel
 }
@@ -1062,6 +1067,7 @@ type TenantEventModel implements ContentMasterModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   tags: [TagModel!]!
+  slug: String!
   title: String!
   contentMasterKind: ContentMasterKind!
   contributors: [IndividualModel!]!
@@ -1271,6 +1277,7 @@ input CreateBotDto {
 
 input UpdateDocumentDto {
   isAnonymous: Boolean
+  text: String
   name: String
   description: String = null
   yearVersion: Int = null
@@ -1294,6 +1301,7 @@ input TenantCoreProps {
 
 input CreateDocumentDto {
   isAnonymous: Boolean
+  text: String!
   name: String!
   description: String = null
   yearVersion: Int = null
@@ -1319,6 +1327,7 @@ input CreateEventDto {
   meta: JSON
   private: Boolean
   title: String!
+  slug: String!
   description: String!
   supervisorId: String!
   orgId: String!
@@ -1334,6 +1343,7 @@ input UpdateEventDto {
   meta: JSON
   private: Boolean
   title: String
+  slug: String
   description: String
   supervisorId: String
   orgId: String
@@ -1358,6 +1368,7 @@ input CreateTeamDto {
 
 input CreateOrgDocumentDto {
   isAnonymous: Boolean
+  text: String!
   name: String!
   description: String = null
   yearVersion: Int = null

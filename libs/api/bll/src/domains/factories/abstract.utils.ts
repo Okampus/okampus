@@ -1,8 +1,4 @@
-import {
-  ActorImage,
-  DocumentEdit,
-  DocumentUpload,
-} from '@okampus/api/dal';
+import { ActorImage, DocumentEdit, DocumentUpload } from '@okampus/api/dal';
 import { ActorKind, S3Buckets, ActorImageType } from '@okampus/shared/enums';
 import type {
   Actor,
@@ -10,10 +6,11 @@ import type {
   TenantCore,
   ImageUpload,
   TenantDocument,
-  Individual} from '@okampus/api/dal';
+  Individual,
+} from '@okampus/api/dal';
 import type { CreateDocumentDto } from '@okampus/shared/dtos';
 import type { MulterFileType } from '@okampus/shared/types';
-import type { UploadService } from '../../features/uploads/upload.service';
+import type { UploadService } from '../../features/upload/upload.service';
 
 export async function addImagesToActor(
   actor: Actor,

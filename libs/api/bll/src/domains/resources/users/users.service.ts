@@ -58,6 +58,7 @@ export class UsersService extends RequestContext {
     return this.commandBus.execute(command);
   }
 
+  // TODO: reimplement this
   // async findBare(slugOrEmail: string) {
   //   return this.userRepository.findOneByQuery(slugOrEmail);
   //   // return this.userRepository.findOne({ $or: [{ slug: slugOrEmail }, { primaryEmail: slugOrEmail }] });

@@ -1,6 +1,18 @@
 // .bg-app {
 //   @apply bg-gradient-to-br dark:from-[#101b2e] dark:to-[#0F0F0F] from-[#eee] to-[#FFF];
 // }
+//
+// .bg-app-gradient {
+//   @apply relative z-10 bg-gradient-to-br from-[#edf0f7] to-[#ffffff];
+// }
+//
+// .bg-app-gradient::before {
+//   @apply absolute top-0 right-0 bottom-0 left-0 content-[""] 
+//     bg-gradient-to-br from-[#081120] to-[#0F0F0F] z-[-1] 
+//     transition-opacity duration-[250ms] ease-in-out opacity-0;
+// }
+
+
 .backdrop {
   @apply absolute top-0 left-0 bottom-0 right-0 bg-black bg-[#000000cc] z-[100] flex overflow-hidden;
 }

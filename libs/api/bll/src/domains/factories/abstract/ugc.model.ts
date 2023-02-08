@@ -12,6 +12,9 @@ export class UgcModel extends TenantScopedModel implements IUgc {
   @Field(() => UgcKind)
   ugcKind!: UgcKind;
 
+  @Field(() => String)
+  text!: string;
+
   @Field(() => IndividualModel, { nullable: true })
   author?: IIndividual;
 

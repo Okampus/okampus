@@ -10,23 +10,43 @@ import {
   OneToOne,
   Property,
 } from '@mikro-orm/core';
-import { OrgKind, TeamRoleCategory, TeamType } from '@okampus/shared/enums';
-import { TransformCollection } from '@okampus/api/shards';
+import { ActorImageType, OrgKind, TeamRoleCategory, TeamType } from '@okampus/shared/enums';
+import { load, TransformCollection } from '@okampus/api/shards';
+
+import type { BaseSearchEntity, SearchableEntity } from '../../../types/search-entity.type';
 import type { TeamOptions } from './team.options';
 import type { TeamCategory } from '../../label/team-category/team-category.entity';
 import type { VideoUpload } from '../../file-upload/video-upload/video-upload.entity';
 import type { Form } from '../../ugc/form/form.entity';
 import type { TeamMember } from '../../membership/team-member/team-member.entity';
-
 import type { TeamRole } from '../../role/team-role/team-role.entity';
-
 import type { Finance } from '../../manage-team/finance/finance.entity';
 
 @Entity({
   customRepository: () => TeamRepository,
 })
-export class Team extends Org {
+export class Team extends Org implements SearchableEntity {
   [EntityRepositoryType]!: TeamRepository;
+
+  toIndexed(): BaseSearchEntity {
+    return {
+      slug: this.actor.slug,
+      title: this.actor.name,
+      thumbnail: load(this.actor.actorImages).find((image) => image.type === ActorImageType.Avatar)?.image?.url ?? null,
+      description: this.actor.bio,
+      categories: load(this.categories).map((category) => category.name),
+      createdAt: this.createdAt.getTime(),
+      updatedAt: this.updatedAt.getTime(),
+      linkedUsers: [],
+      linkedEvents: [],
+      linkedTeams: [
+        load(this.children)
+          .map((org) => org.actor.name)
+          .join(','),
+      ],
+      tags: [],
+    };
+  }
 
   @Property({ type: 'text', nullable: true })
   tagline: string | null = null;
