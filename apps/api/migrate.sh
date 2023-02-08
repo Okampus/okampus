@@ -1,0 +1,1 @@
+(export MIKRO_ORM_MIGRATION=create && node dist/apps/api/main.mjs) && pnpm tsc --pretty -p apps/api/tsconfig.migrations.json && (export MIKRO_ORM_MIGRATION=up && node dist/apps/api/main.mjs)
