@@ -3,6 +3,7 @@ import { TeamActionModel } from './team-action.model';
 // eslint-disable-next-line import/no-cycle
 import { TeamModel } from './team.model';
 import { Paginated } from '../../../../shards/types/paginated.type';
+// eslint-disable-next-line import/no-cycle
 import { MembershipModel } from '../../abstract/membership.model';
 import { TeamRoleModel } from '../roles/team-role.model';
 import { Field, ObjectType } from '@nestjs/graphql';
