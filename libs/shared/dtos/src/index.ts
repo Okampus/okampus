@@ -73,7 +73,6 @@ export * from './resources/manage-team/project/create-project.dto';
 export * from './resources/manage-team/project/project.interface';
 export * from './resources/manage-team/project/project.props';
 export * from './resources/manage-team/project/update-project.dto';
-export * from './resources/manage-team/regular-event/regular-event.props';
 export * from './resources/manage-team/team-action/team-action.interface';
 export * from './resources/manage-team/team-action/team-action.props';
 export * from './resources/manage-tenant/event-approval-step/create-event-approval-step.dto';
