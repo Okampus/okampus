@@ -7,7 +7,7 @@ import type { ContentMasterProps } from './content-master.props';
 
 export type IContentMaster = ITenantScoped &
   ITaggableEntity &
-  ContentMasterProps & {
+  Required<ContentMasterProps> & {
     contentMasterKind: ContentMasterKind;
     rootContent?: IUgc;
     contributors: IIndividual[];

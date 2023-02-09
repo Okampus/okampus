@@ -109,6 +109,7 @@ export function loadTenantCore(tenant: TenantCore): ITenantCore | undefined {
 // REFACTOR ALL THE ABOVE CODE INTO ONE FUNCTION
 
 export type AllInterfaces =
+  | ITenantCore
   | IActor
   | IActorImage
   | IBot
@@ -490,7 +491,7 @@ export function loadTenantScopedEntity(
     if (entity.id in contextStack) return contextStack[entity.id];
 
     const actor = base as IActor;
-    contextStack[actor.id] = base;
+    contextStack[actor.id] = actor;
 
     actor.actorKind = entity.actorKind();
     actor.name = entity.name;
@@ -677,7 +678,7 @@ export function loadTenantScopedEntity(
     if (!baseJoin) return undefined;
 
     return {
-      ...base,
+      ...baseJoin,
       team: (contextStack.org ?? loadTenantScopedEntity(entity.team, contextStack)) as ITeam,
       askedRole: loadTenantScopedEntity(entity.askedRole, contextStack),
       receivedRole: entity.receivedRole ? loadTenantScopedEntity(entity.receivedRole, contextStack) : null,
@@ -818,5 +819,5 @@ export function loadTenantScopedEntity(
     };
   }
 
-  return base;
+  throw new Error(`Unknown entity type ${entity.constructor.name}`);
 }

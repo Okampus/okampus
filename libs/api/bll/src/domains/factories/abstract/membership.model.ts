@@ -1,5 +1,6 @@
 import { TenantScopedModel } from './tenant-scoped.model';
 import { Paginated } from '../../../shards/types/paginated.type';
+// eslint-disable-next-line import/no-cycle
 import { UserModel } from '../domains/users/user.model';
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
 import { MembershipKind } from '@okampus/shared/enums';

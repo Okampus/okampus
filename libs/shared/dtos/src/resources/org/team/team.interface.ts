@@ -6,7 +6,7 @@ import type { IForm } from '../../ugc/form/form.interface';
 import type { IOrg } from '../org.interface';
 import type { TeamProps } from './team.props';
 
-export interface ITeam extends IOrg, TeamProps {
+export interface ITeam extends IOrg, Required<TeamProps> {
   memberCount: number;
   joinForm?: IForm | null;
   members: ITeamMember[];

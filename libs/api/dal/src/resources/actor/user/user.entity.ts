@@ -3,41 +3,21 @@ import { Individual } from '../individual/individual.entity';
 import { UserProfile } from '../user-profile/user-profile.entity';
 import { Actor } from '../actor.entity';
 import { Collection, Entity, EntityRepositoryType, Enum, OneToMany, OneToOne, Property } from '@mikro-orm/core';
-import { ActorImageType, RoleType } from '@okampus/shared/enums';
+import { RoleType } from '@okampus/shared/enums';
 import { ScopeRole } from '@okampus/shared/enums';
 import { IndividualKind } from '@okampus/shared/enums';
 import { fullName } from '@okampus/shared/utils';
-import { load, TransformCollection } from '@okampus/api/shards';
+import { TransformCollection } from '@okampus/api/shards';
 
-import type { BaseSearchEntity, SearchableEntity } from '../../../types/search-entity.type';
+import type { Searchable } from '../../../types/search-entity.type';
 import type { UserOptions } from './user.options';
 import type { Session } from '../../manage-user/session/session.entity';
 import type { TeamMember } from '../../membership/team-member/team-member.entity';
 import type { Shortcut } from '../shortcut/shortcut.entity';
 
 @Entity({ customRepository: () => UserRepository })
-export class User extends Individual implements SearchableEntity {
+export class User extends Individual implements Searchable {
   [EntityRepositoryType]!: UserRepository;
-
-  toIndexed(): BaseSearchEntity {
-    return {
-      slug: this.actor.slug,
-      title: this.actor.name,
-      thumbnail: load(this.actor.actorImages).find((image) => image.type === ActorImageType.Avatar)?.image?.url ?? null,
-      description: this.actor.bio,
-      categories: [this.scopeRole],
-      createdAt: this.createdAt.getTime(),
-      updatedAt: this.updatedAt.getTime(),
-      linkedUsers: [],
-      linkedEvents: [],
-      linkedTeams: [
-        load(this.teamMemberships)
-          .map((teamMember) => teamMember.team.actor.name)
-          .join(','),
-      ],
-      tags: [],
-    };
-  }
 
   @Property({ type: 'text' })
   firstName!: string;

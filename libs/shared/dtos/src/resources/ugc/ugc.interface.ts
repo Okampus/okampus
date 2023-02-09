@@ -6,7 +6,7 @@ import type { ITenantScoped } from '../tenant-scoped.interface';
 import type { UgcProps } from './ugc.props';
 
 export type IUgc = ITenantScoped &
-  UgcProps & {
+  Required<UgcProps> & {
     ugcKind: UgcKind;
     isAnonymous: boolean;
     author?: IIndividual;

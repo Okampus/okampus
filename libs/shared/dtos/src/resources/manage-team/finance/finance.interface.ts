@@ -7,7 +7,7 @@ import type { IProject } from '../project/project.interface';
 import type { FinanceProps } from './finance.props';
 
 export type IFinance = ITenantScoped &
-  FinanceProps & {
+  Required<FinanceProps> & {
     team?: ITeam;
     createdBy?: IIndividual;
     linkedEvent?: ITenantEvent | null;

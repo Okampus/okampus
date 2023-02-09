@@ -9,7 +9,7 @@ import type { IEventApproval } from '../../manage-tenant/event-approval/event-ap
 import type { IEventJoin } from '../../join/event-join/event-join.interface';
 
 export type ITenantEvent = IContentMaster &
-  TenantEventProps & {
+  Required<TenantEventProps> & {
     image?: IImageUpload | null;
     supervisor?: IUser;
     joinForm?: IForm | null;

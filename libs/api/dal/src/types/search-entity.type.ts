@@ -1,8 +1,7 @@
-import type { TenantScopedEntity } from '../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import type { MEILISEARCH_TYPE_FIELD } from '@okampus/shared/consts';
 import type { Snowflake } from '@okampus/shared/types';
 
-export interface BaseSearchEntity {
+export interface BaseSearchable {
   slug: string;
   title: string;
   thumbnail: string | null;
@@ -17,13 +16,13 @@ export interface BaseSearchEntity {
   [key: string]: unknown;
 }
 
-export interface SearchEntity extends BaseSearchEntity {
+export interface SearchableIndexed extends BaseSearchable {
   id: Snowflake;
   entityId: Snowflake;
   [MEILISEARCH_TYPE_FIELD]: string;
 }
 
-export interface SearchableEntity extends TenantScopedEntity {
+export interface Searchable {
   id: Snowflake;
-  toIndexed(): BaseSearchEntity | Promise<BaseSearchEntity>;
+  tenant: { id: Snowflake };
 }

@@ -16,8 +16,8 @@ import {
 import { EventState } from '@okampus/shared/enums';
 import { ContentMasterKind } from '@okampus/shared/enums';
 import { Address } from '@okampus/shared/dtos';
-import { load, TransformCollection } from '@okampus/api/shards';
-import type { BaseSearchEntity, SearchableEntity } from '../../../types/search-entity.type';
+import { TransformCollection } from '@okampus/api/shards';
+import type { Searchable } from '../../../types/search-entity.type';
 import type { JSONObject } from '@okampus/shared/types';
 import type { TenantEventOptions } from './event.options';
 import type { EventApprovalStep } from '../../manage-tenant/event-approval-step/event-approval-step.entity';
@@ -31,23 +31,7 @@ import type { EventApproval } from '../../manage-tenant/event-approval/event-app
 @Entity({
   customRepository: () => TenantEventRepository,
 }) // Called "TenantEvent" to avoid name collision with native JS "Event"
-export class TenantEvent extends ContentMaster implements SearchableEntity {
-  toIndexed(): BaseSearchEntity {
-    return {
-      slug: this.slug,
-      title: this.title,
-      thumbnail: this.image?.url ?? null,
-      description: this.rootContent.text,
-      categories: [this.state, ...(this.location.city ? [this.location.city] : [])],
-      createdAt: this.createdAt.getTime(),
-      updatedAt: this.updatedAt.getTime(),
-      linkedUsers: [],
-      linkedEvents: [],
-      linkedTeams: this.rootContent.representingOrg ? [this.rootContent.representingOrg?.actor.name] : [],
-      tags: load(this.tags).map((tag) => tag.name),
-    };
-  }
-
+export class TenantEvent extends ContentMaster implements Searchable {
   // TODO: add co-organisers as prop
 
   @Property({ type: 'datetime' })

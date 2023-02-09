@@ -4,7 +4,7 @@ import type { IUgc } from '../ugc.interface';
 import type { DocumentProps } from './document.props';
 
 export type ITenantDocument = IUgc &
-  DocumentProps & {
+  Required<DocumentProps> & {
     documentUpload?: IDocumentUpload;
     edits: IDocumentEdit[];
   };

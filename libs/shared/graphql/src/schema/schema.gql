@@ -227,16 +227,6 @@ type UserStats {
   actionStreak: Int!
 }
 
-type TenantCoreModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  domain: String!
-  name: String!
-  oidcInfo: OidcInfo!
-}
-
 type PageInfo {
   startCursor: String
   endCursor: String
@@ -247,6 +237,16 @@ type PageInfo {
   countCurrent: Float!
   countAfter: Float!
   countTotal: Float!
+}
+
+type TenantCoreModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  domain: String!
+  name: String!
+  oidcInfo: OidcInfo!
 }
 
 type DocumentUploadModel implements FileUploadModel {
@@ -482,174 +482,6 @@ enum ActorKind {
   Org
 }
 
-type FormModel implements UgcModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  ugcKind: UgcKind!
-  text: String!
-  author: IndividualModel
-  isAnonymous: Boolean!
-  representingOrg: OrgModel
-  contentMaster: ContentMasterModel!
-  name: String!
-  description: String
-  schema: JSON!
-  type: FormType!
-  isTemplate: Boolean!
-}
-
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
-
-"""The FormType enum"""
-enum FormType {
-  EventJoin
-  TeamJoin
-  Internal
-  Survey
-}
-
-type FormModelEdge {
-  cursor: String!
-  node: FormModel!
-}
-
-type FormSubmissionModel implements UgcModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  ugcKind: UgcKind!
-  text: String!
-  author: IndividualModel
-  isAnonymous: Boolean!
-  representingOrg: OrgModel
-  contentMaster: ContentMasterModel!
-  submission: JSON!
-  forForm: FormModel
-}
-
-type FormSubmissionModelEdge {
-  cursor: String!
-  node: FormSubmissionModel!
-}
-
-type ShortcutModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  type: ShortcutType!
-  targetActor: ActorModel
-  user: UserModel
-}
-
-"""The ShortcutType enum"""
-enum ShortcutType {
-  General
-  Team
-  TeamManage
-  TeamManageTreasury
-  Project
-  User
-}
-
-type UserProfileModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  customization: UserCustomization!
-  stats: UserStats!
-  settings: UserSettings!
-  notificationSettings: UserNotificationSettings!
-  finishedIntroduction: Boolean!
-  finishedOnboarding: Boolean!
-}
-
-type UserModel implements IndividualModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  actor: ActorModel
-  individualKind: IndividualKind!
-  firstName: String!
-  lastName: String!
-  middleNames: [String!]!
-  scopeRole: ScopeRole!
-  roles: [RoleType!]!
-  profile: UserProfileModel
-  shortcuts: [ShortcutModel!]!
-}
-
-"""The ScopeRole enum"""
-enum ScopeRole {
-  Student
-  Teacher
-  Admin
-}
-
-"""The RoleType enum"""
-enum RoleType {
-  User
-  Moderator
-  CafeteriaManager
-  ClubManager
-  TenantAdmin
-}
-
-type UserModelEdge {
-  cursor: String!
-  node: UserModel!
-}
-
-type PaginatedUserModel {
-  edges: [UserModelEdge!]
-  pageInfo: PageInfo
-}
-
-type MembershipModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  membershipKind: MembershipKind!
-  user: UserModel
-  startDate: DateTime!
-  endDate: DateTime
-}
-
-"""The MembershipKind enum"""
-enum MembershipKind {
-  CanteenMember
-  ClassGroupMember
-  CohortMember
-  TeamMember
-  TenantMember
-}
-
-type MembershipModelEdge {
-  cursor: String!
-  node: MembershipModel!
-}
-
 type BotModel implements IndividualModel {
   id: String!
   createdAt: DateTime!
@@ -704,6 +536,44 @@ type ContentModelEdge {
   node: ContentModel!
 }
 
+type FormModel implements UgcModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  ugcKind: UgcKind!
+  text: String!
+  author: IndividualModel
+  isAnonymous: Boolean!
+  representingOrg: OrgModel
+  contentMaster: ContentMasterModel!
+  name: String!
+  description: String
+  schema: JSON!
+  type: FormType!
+  isTemplate: Boolean!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+"""The FormType enum"""
+enum FormType {
+  EventJoin
+  TeamJoin
+  Internal
+  Survey
+}
+
+type FormModelEdge {
+  cursor: String!
+  node: FormModel!
+}
+
 type TenantModel implements OrgModel {
   id: String!
   createdAt: DateTime!
@@ -729,28 +599,183 @@ type PaginatedTenantModel {
   pageInfo: PageInfo
 }
 
-type EventApprovalStepModel {
+type ShortcutModel {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
-  tenantOrg: TenantModel
+  type: ShortcutType!
+  targetActor: ActorModel
+  user: UserModel
+}
+
+"""The ShortcutType enum"""
+enum ShortcutType {
+  General
+  Team
+  TeamManage
+  TeamManageTreasury
+  Project
+  User
+}
+
+type UserProfileModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  customization: UserCustomization!
+  stats: UserStats!
+  settings: UserSettings!
+  notificationSettings: UserNotificationSettings!
+  finishedIntroduction: Boolean!
+  finishedOnboarding: Boolean!
+}
+
+type EventApprovalModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  event: TenantEventModel
   createdBy: IndividualModel
-  order: Int!
-  name: String!
-  validators: [IndividualModel!]!
-  notifiees: [UserModel!]!
+  message: String
+  approved: Boolean!
+  step: EventApprovalStepModel
 }
 
-type EventApprovalStepModelEdge {
+type EventApprovalModelEdge {
   cursor: String!
-  node: EventApprovalStepModel!
+  node: EventApprovalModel!
 }
 
-type PaginatedEventApprovalStepModel {
-  edges: [EventApprovalStepModelEdge!]
+type PaginatedEventApprovalModel {
+  edges: [EventApprovalModelEdge!]
+  pageInfo: PageInfo
+}
+
+type FormSubmissionModel implements UgcModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  ugcKind: UgcKind!
+  text: String!
+  author: IndividualModel
+  isAnonymous: Boolean!
+  representingOrg: OrgModel
+  contentMaster: ContentMasterModel!
+  submission: JSON!
+  forForm: FormModel
+}
+
+type FormSubmissionModelEdge {
+  cursor: String!
+  node: FormSubmissionModel!
+}
+
+type EventJoinModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  joinKind: JoinKind!
+  issuer: IndividualModel
+  joiner: UserModel
+  validatedBy: IndividualModel
+  validatedAt: DateTime
+  validationMessage: String
+  formSubmission: FormSubmissionModel
+  state: JoinState!
+  event: TenantEventModel
+  participated: Boolean
+  teamAction: TeamActionModel
+  presenceStatus: RegistrationStatus!
+}
+
+"""The JoinKind enum"""
+enum JoinKind {
+  EventJoin
+  TeamJoin
+}
+
+"""The JoinState enum"""
+enum JoinState {
+  Pending
+  Approved
+  Rejected
+}
+
+"""The RegistrationStatus enum"""
+enum RegistrationStatus {
+  Sure
+  Maybe
+  Absent
+}
+
+type EventJoinModelEdge {
+  cursor: String!
+  node: EventJoinModel!
+}
+
+type TenantEventModel implements ContentMasterModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  tags: [TagModel!]!
+  slug: String!
+  title: String!
+  contentMasterKind: ContentMasterKind!
+  contributors: [IndividualModel!]!
+  rootContent: UgcModel
+  start: DateTime!
+  end: DateTime!
+  location: Address!
+  price: Float!
+  regularEventInterval: String
+  image: ImageUploadModel
+  supervisor: UserModel
+  joinForm: FormModel
+  regularEvent: TenantEventModel
+  approvalSubmission: FormSubmissionModel
+  lastEventApprovalStep: EventApprovalStepModel
+  eventApprovals: [EventApprovalModel!]!
+  registrations: [EventJoinModel!]!
+  state: EventState!
+  meta: JSON!
+  private: Boolean!
+}
+
+"""The EventState enum"""
+enum EventState {
+  Template
+  Draft
+  Submitted
+  Rejected
+  Approved
+  Published
+}
+
+type TenantEventModelEdge {
+  cursor: String!
+  node: TenantEventModel!
+}
+
+type PaginatedTenantEventModel {
+  edges: [TenantEventModelEdge!]
   pageInfo: PageInfo
 }
 
@@ -971,27 +996,6 @@ type PaginatedTeamModel {
   pageInfo: PageInfo
 }
 
-type TeamMemberModel {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  tenant: TenantCoreModel
-  lastHiddenAt: DateTime
-  membershipKind: MembershipKind!
-  user: UserModel
-  startDate: DateTime!
-  endDate: DateTime
-  team: TeamModel
-  roles: [TeamRoleModel!]!
-  activities: [TeamActionModel!]!
-}
-
-type TeamMemberModelEdge {
-  cursor: String!
-  node: TeamMemberModel!
-}
-
 type TeamActionModel {
   id: String!
   createdAt: DateTime!
@@ -1013,124 +1017,121 @@ type TeamActionModelEdge {
   node: TeamActionModel!
 }
 
-type EventJoinModel {
+type MembershipModel {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
-  joinKind: JoinKind!
-  issuer: IndividualModel
-  joiner: UserModel
-  validatedBy: IndividualModel
-  validatedAt: DateTime
-  validationMessage: String
-  formSubmission: FormSubmissionModel
-  state: JoinState!
-  event: TenantEventModel
-  participated: Boolean
-  teamAction: TeamActionModel
-  presenceStatus: RegistrationStatus!
+  membershipKind: MembershipKind!
+  user: UserModel
+  startDate: DateTime!
+  endDate: DateTime
 }
 
-"""The JoinKind enum"""
-enum JoinKind {
-  EventJoin
-  TeamJoin
+"""The MembershipKind enum"""
+enum MembershipKind {
+  CanteenMember
+  ClassGroupMember
+  CohortMember
+  TeamMember
+  TenantMember
 }
 
-"""The JoinState enum"""
-enum JoinState {
-  Pending
-  Approved
-  Rejected
-}
-
-"""The RegistrationStatus enum"""
-enum RegistrationStatus {
-  Sure
-  Maybe
-  Absent
-}
-
-type EventJoinModelEdge {
+type MembershipModelEdge {
   cursor: String!
-  node: EventJoinModel!
+  node: MembershipModel!
 }
 
-type TenantEventModel implements ContentMasterModel {
+type TeamMemberModel {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
-  tags: [TagModel!]!
-  slug: String!
-  title: String!
-  contentMasterKind: ContentMasterKind!
-  contributors: [IndividualModel!]!
-  rootContent: UgcModel
-  start: DateTime!
-  end: DateTime!
-  location: Address!
-  price: Float!
-  regularEventInterval: String
-  image: ImageUploadModel
-  supervisor: UserModel
-  joinForm: FormModel
-  regularEvent: TenantEventModel
-  approvalSubmission: FormSubmissionModel
-  lastEventApprovalStep: EventApprovalStepModel
-  eventApprovals: [EventApprovalModel!]!
-  registrations: [EventJoinModel!]!
-  state: EventState!
-  meta: JSON!
-  private: Boolean!
+  membershipKind: MembershipKind!
+  user: UserModel
+  startDate: DateTime!
+  endDate: DateTime
+  team: TeamModel
+  roles: [TeamRoleModel!]!
+  activities: [TeamActionModel!]!
 }
 
-"""The EventState enum"""
-enum EventState {
-  Template
-  Draft
-  Submitted
-  Rejected
-  Approved
-  Published
-}
-
-type TenantEventModelEdge {
+type TeamMemberModelEdge {
   cursor: String!
-  node: TenantEventModel!
+  node: TeamMemberModel!
 }
 
-type PaginatedTenantEventModel {
-  edges: [TenantEventModelEdge!]
+type UserModel implements IndividualModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  actor: ActorModel
+  individualKind: IndividualKind!
+  firstName: String!
+  lastName: String!
+  middleNames: [String!]!
+  scopeRole: ScopeRole!
+  roles: [RoleType!]!
+  profile: UserProfileModel
+  shortcuts: [ShortcutModel!]!
+  teamMemberships: [TeamMemberModel!]!
+}
+
+"""The ScopeRole enum"""
+enum ScopeRole {
+  Student
+  Teacher
+  Admin
+}
+
+"""The RoleType enum"""
+enum RoleType {
+  User
+  Moderator
+  CafeteriaManager
+  ClubManager
+  TenantAdmin
+}
+
+type UserModelEdge {
+  cursor: String!
+  node: UserModel!
+}
+
+type PaginatedUserModel {
+  edges: [UserModelEdge!]
   pageInfo: PageInfo
 }
 
-type EventApprovalModel {
+type EventApprovalStepModel {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
-  event: TenantEventModel
+  tenantOrg: TenantModel
   createdBy: IndividualModel
-  message: String
-  approved: Boolean!
-  step: EventApprovalStepModel
+  order: Int!
+  name: String!
+  validators: [IndividualModel!]!
+  notifiees: [UserModel!]!
 }
 
-type EventApprovalModelEdge {
+type EventApprovalStepModelEdge {
   cursor: String!
-  node: EventApprovalModel!
+  node: EventApprovalStepModel!
 }
 
-type PaginatedEventApprovalModel {
-  edges: [EventApprovalModelEdge!]
+type PaginatedEventApprovalStepModel {
+  edges: [EventApprovalStepModelEdge!]
   pageInfo: PageInfo
 }
 
