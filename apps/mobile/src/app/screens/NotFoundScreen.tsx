@@ -1,4 +1,3 @@
-
 import { Text, View } from '../components/Themed';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import type { RootStackScreenProps } from '../types';

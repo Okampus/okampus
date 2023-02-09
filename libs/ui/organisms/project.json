@@ -18,13 +18,44 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": ["nx run ui-organisms:ts-check", "nx run ui-organisms:eslint"]
+        "commands": [
+          "nx run ui-organisms:ts-check",
+          "nx run ui-organisms:eslint",
+          "nx run ui-organisms:prettier",
+          "nx run site:stylelint"
+        ]
+      }
+    },
+    "lint:fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "color": true,
+        "commands": [
+          "nx run ui-organisms:eslint --fix",
+          "prettier --write libs/ui/organisms",
+          "nx run site:stylelint --fix"
+        ],
+        "parallel": false
       }
     },
     "ts-check": {
       "executor": "nx:run-commands",
       "options": {
         "commands": ["tsc --pretty --noEmit -p libs/ui/organisms/tsconfig.lib.json"]
+      }
+    },
+    "prettier": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["prettier --check libs/ui/organisms"]
+      }
+    },
+    "stylelint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "stylelint libs/ui/organisms/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
+        ]
       }
     },
     "eslint": {

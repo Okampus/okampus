@@ -1,20 +1,11 @@
 import { logout } from '../utils/logout';
-import {
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache,
-  ApolloLink
-} from '@apollo/client';
+import { ApolloClient, createHttpLink, InMemoryCache, ApolloLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { asyncMap } from '@apollo/client/utilities';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { parse } from 'set-cookie-parser';
-import type {
-  Operation,
-  NextLink,
-  ServerError} from '@apollo/client';
-
+import type { Operation, NextLink, ServerError } from '@apollo/client';
 
 const httpLink = createHttpLink({
   uri: 'http://10.0.2.2:8081/graphql',

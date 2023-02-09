@@ -1,7 +1,6 @@
-import { ITenantEvent } from '@okampus/shared/dtos';
-
 import { clsx } from 'clsx';
 import dayjs from 'dayjs';
+import type { ITenantEvent } from '@okampus/shared/dtos';
 // import React, { useContext, useState, useEffect } from 'react';
 // import GlobalContext from './GlobalContext';
 // import { EventType } from './types';

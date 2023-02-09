@@ -213,12 +213,9 @@ specifiers:
   slugify: ^1.6.5
   statuses: ^2.0.1
   stylelint: ^14.16.1
+  stylelint-config-clean-order: ^2.3.1
   stylelint-config-css-modules: ^4.1.0
   stylelint-config-prettier: ^9.0.4
-  stylelint-config-recess-order: ^3.1.0
-  stylelint-config-recommended: ^9.0.0
-  stylelint-config-recommended-scss: ^8.0.0
-  stylelint-config-standard: ^29.0.0
   stylelint-config-standard-scss: ^6.1.0
   swc-loader: 0.2.3
   tailwindcss: ^3.2.4
@@ -461,12 +458,9 @@ devDependencies:
   react-native-storybook-loader: 2.0.5
   react-test-renderer: 18.1.0_react@18.1.0
   stylelint: 14.16.1
+  stylelint-config-clean-order: 2.3.1_stylelint@14.16.1
   stylelint-config-css-modules: 4.1.0_stylelint@14.16.1
   stylelint-config-prettier: 9.0.4_stylelint@14.16.1
-  stylelint-config-recess-order: 3.1.0_stylelint@14.16.1
-  stylelint-config-recommended: 9.0.0_stylelint@14.16.1
-  stylelint-config-recommended-scss: 8.0.0_w5gtdy6oq4ictd5o4eu6befejy
-  stylelint-config-standard: 29.0.0_stylelint@14.16.1
   stylelint-config-standard-scss: 6.1.0_w5gtdy6oq4ictd5o4eu6befejy
   swc-loader: 0.2.3_znbwujaiv7gogdh4hyqgd4li6e
   tailwindcss: 3.2.4_aesdjsunmf4wiehhujt67my7tu
@@ -25873,6 +25867,15 @@ packages:
       postcss: 8.4.21
       postcss-selector-parser: 6.0.11
 
+  /stylelint-config-clean-order/2.3.1_stylelint@14.16.1:
+    resolution: {integrity: sha512-4pja7gI5cQ+U92RDQcivGhx7dLn1lTWZ8Wc46od6YBrWPAG8Kas8hHCtGIG3F0k5/1LHtbCzKaOQ0depnp6HlQ==}
+    peerDependencies:
+      stylelint: '>=14'
+    dependencies:
+      stylelint: 14.16.1
+      stylelint-order: 5.0.0_stylelint@14.16.1
+    dev: true
+
   /stylelint-config-css-modules/4.1.0_stylelint@14.16.1:
     resolution: {integrity: sha512-w6d552NscwvpUEaUcmq8GgWXKRv6lVHLbDj6QIHSM2vCWr83qRqRvXBJCfXDyaG/J3Zojw2inU9VvU99ZlXuUw==}
     peerDependencies:
@@ -25891,15 +25894,6 @@ packages:
       stylelint: '>=11.0.0'
     dependencies:
       stylelint: 14.16.1
-    dev: true
-
-  /stylelint-config-recess-order/3.1.0_stylelint@14.16.1:
-    resolution: {integrity: sha512-LXR6zD5O9cS1a9gbLbuKvWLs7qmHj4xm5MQ5KhhwZPMhtQP9da3F6Jsp/NAUdsAwDQEnT1ShU16YVdgN6p4a/w==}
-    peerDependencies:
-      stylelint: '>=14'
-    dependencies:
-      stylelint: 14.16.1
-      stylelint-order: 5.0.0_stylelint@14.16.1
     dev: true
 
   /stylelint-config-recommended-scss/8.0.0_w5gtdy6oq4ictd5o4eu6befejy:

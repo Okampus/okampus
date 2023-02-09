@@ -14,10 +14,10 @@ import { AvatarGroup, UserLabel } from '@okampus/ui/molecules';
 import { Dashboard } from '@okampus/ui/organisms';
 import { useQuery } from '@apollo/client';
 import { useContext } from 'react';
-
 import type { FileLike } from '@okampus/shared/types';
 import type { DocumentUploadInfoFragment, TeamMembersInfoFragment } from '@okampus/shared/graphql';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getUserLabel(member?: { actor?: { actorImages: any[]; name: string } | null } | null) {
   if (!member || !member.actor) return <StatusLabel status="archived" label="N/A" />;
   const actor = member.actor;

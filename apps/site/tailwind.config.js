@@ -1,6 +1,6 @@
 const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
 const { join } = require('node:path');
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -12,12 +12,12 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        'xxs': '.625rem',
-        'modest': '0.925rem',
+        xxs: '.625rem',
+        modest: '0.925rem',
       },
       screens: {
-        'xxs': '361px',
-        'xs': '408px',
+        xxs: '361px',
+        xs: '408px',
         ...defaultTheme.screens,
         '3xl': '1800px',
         'xxs-max': { max: '360px' },
@@ -28,9 +28,9 @@ module.exports = {
         'xl-max': { max: '1279px' },
         '2xl-max': { max: '1535px' },
         '3xl-max': { max: '1799px' },
-        'short': { 'raw': '(max-height: 500px)' },
-        'tall': { 'raw': '(min-height: 500px)' },
-    },
+        short: { raw: '(max-height: 500px)' },
+        tall: { raw: '(min-height: 500px)' },
+      },
     },
   },
   plugins: [require('@tailwindcss/line-clamp')],

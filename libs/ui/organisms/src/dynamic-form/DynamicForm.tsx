@@ -24,11 +24,7 @@ export interface DynamicFormProps {
 }
 
 export function DynamicForm({ fields, onSubmit }: DynamicFormProps) {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { control, handleSubmit } = useForm();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 text-0">

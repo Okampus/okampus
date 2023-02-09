@@ -80,6 +80,7 @@ export function MultiFileInput({ onFileAdd, onFileRemove, onFileClick }: DropFil
           <div className="flex flex-wrap gap-4">
             {renderedFileList.map((renderedFile, idx) => (
               <FileCardPreview
+                onClick={() => onFileClick?.(renderedFile)}
                 onRemove={() => {
                   fileRemove(renderedFile);
                 }}

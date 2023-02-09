@@ -1,9 +1,5 @@
 // setup from https://github.com/wix/Detox/blob/master/docs/Guide.Jest.md#e2eenvironmentjs
-const {
-  DetoxCircusEnvironment,
-  SpecReporter,
-  WorkerAssignReporter,
-} = require('detox/runners/jest-circus');
+const { DetoxCircusEnvironment, SpecReporter, WorkerAssignReporter } = require('detox/runners/jest-circus');
 
 class CustomDetoxEnvironment extends DetoxCircusEnvironment {
   constructor(config, context) {
