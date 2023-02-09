@@ -9,7 +9,7 @@ import type { IOrg } from '../org/org.interface';
 
 export type IActor = ITenantScoped &
   ITaggableEntity &
-  ActorProps & {
+  Required<ActorProps> & {
     individual?: IIndividual | null;
     org?: IOrg | null;
     actorKind: ActorKind;

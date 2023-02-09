@@ -4,7 +4,7 @@ import type { ITenantScoped } from '../../tenant-scoped.interface';
 import type { DocumentEditProps } from './document-edit.props';
 
 export type IDocumentEdit = ITenantScoped &
-  DocumentEditProps & {
+  Required<DocumentEditProps> & {
     documentUpload?: IDocumentUpload;
     editedBy?: IIndividual;
   };

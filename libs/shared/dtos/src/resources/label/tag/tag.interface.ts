@@ -5,7 +5,7 @@ import type { ITenantScoped } from '../../tenant-scoped.interface';
 import type { TagProps } from './tag.props';
 
 export type ITag = ITenantScoped &
-  TagProps & {
+  Required<TagProps> & {
     tagKind: TagKind;
     iconImage?: IImageUpload | null;
     createdBy?: IIndividual | null; // null for system

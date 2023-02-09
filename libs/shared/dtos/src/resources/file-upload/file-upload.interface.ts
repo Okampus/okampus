@@ -4,7 +4,7 @@ import type { ITenantScoped } from '../tenant-scoped.interface';
 import type { FileUploadProps } from './file-upload.props';
 
 export type IFileUpload = ITenantScoped &
-  FileUploadProps & {
+  Required<FileUploadProps> & {
     fileUploadKind: FileUploadKind;
     uploadedBy?: IIndividual;
     lastModifiedAt: Date;

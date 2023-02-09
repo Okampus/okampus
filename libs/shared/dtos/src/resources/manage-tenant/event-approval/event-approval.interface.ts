@@ -5,7 +5,7 @@ import type { IIndividual } from '../../actor/individual/individual.interface';
 import type { IEventApprovalStep } from '../event-approval-step/event-approval-step.interface';
 
 export type IEventApproval = ITenantScoped &
-  EventApprovalProps & {
+  Required<EventApprovalProps> & {
     event?: ITenantEvent;
     createdBy?: IIndividual;
     step?: IEventApprovalStep;
