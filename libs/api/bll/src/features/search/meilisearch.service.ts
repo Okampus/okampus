@@ -1,3 +1,4 @@
+import { toSearchable } from './to-searchable';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../global/config.module';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
@@ -18,14 +19,14 @@ import { SearchableEntities } from '@okampus/shared/enums';
 
 import { MeiliSearch } from 'meilisearch';
 
-import type { SearchEntity, SearchableEntity } from '@okampus/api/dal';
+import type { SearchableIndexed, Searchable } from '@okampus/api/dal';
 import type { Snowflake } from '@okampus/shared/types';
 import type { HealthIndicatorResult } from '@nestjs/terminus';
 
-async function toIndexedEntities(entities: SearchableEntity[], type: string): Promise<SearchEntity[]> {
+async function toIndexed(entities: Searchable[], type: string): Promise<SearchableIndexed[]> {
   return await Promise.all(
     entities.map(async (entity) => {
-      const indexedEntity = await entity.toIndexed();
+      const indexedEntity = await toSearchable(entity);
       return {
         ...indexedEntity,
         id: MeiliSearchService.getEntityId(entity, type),
@@ -62,7 +63,7 @@ export class MeiliSearchService {
     return { [name]: { status: isAlive ? 'up' : 'down' } };
   }
 
-  canBeIndexed(entity: SearchableEntity): boolean {
+  canBeIndexed(entity: Searchable): boolean {
     if (entity instanceof User && entity.actor.slug === ANON_ACCOUNT_SLUG) return false;
     return true;
   }
@@ -72,7 +73,7 @@ export class MeiliSearchService {
   private readonly logger = new ConsoleLogger('MeiliSearch');
   private readonly filterables = ['category', 'tags', 'score', 'entityType'];
 
-  public static getEntityId(entity: SearchableEntity, type: string): string {
+  public static getEntityId(entity: Searchable, type: string): string {
     return [entity.tenant.id, type, entity.id.toString()]
       .join(MEILISEARCH_ID_SEPARATOR)
       .replaceAll(MEILISEARCH_DISALLOWED_ID_REGEX, (x) => x.codePointAt(0)?.toString() ?? '');
@@ -124,7 +125,7 @@ export class MeiliSearchService {
       this.logger.log(`Reindexing ${type} (${count} entities)`);
 
       for (let offset = 0; offset < count; offset += MEILISEARCH_BATCH_SIZE) {
-        const entities = await toIndexedEntities(await this.getEntities(type as SearchableEntities, tenantId), type);
+        const entities = await toIndexed(await this.getEntities(type as SearchableEntities, tenantId), type);
         const upper = Math.min(offset + MEILISEARCH_BATCH_SIZE, count);
         this.logger.log(`Reindexing ${offset} to ${upper}, found ${entities.length} entities`);
         const response = await index.addDocuments(entities);
@@ -134,23 +135,19 @@ export class MeiliSearchService {
     return true;
   }
 
-  public async create(entity: SearchableEntity): Promise<void> {
+  public async create(entity: Searchable): Promise<void> {
     if (this.canBeIndexed(entity)) {
-      await this.client
-        .index(entity.tenant.id)
-        .addDocuments(await toIndexedEntities([entity], entity.constructor.name));
+      await this.client.index(entity.tenant.id).addDocuments(await toIndexed([entity], entity.constructor.name));
     }
   }
 
-  public async update(entity: SearchableEntity): Promise<void> {
+  public async update(entity: Searchable): Promise<void> {
     if (this.canBeIndexed(entity)) {
-      await this.client
-        .index(entity.tenant.id)
-        .updateDocuments(await toIndexedEntities([entity], entity.constructor.name));
+      await this.client.index(entity.tenant.id).updateDocuments(await toIndexed([entity], entity.constructor.name));
     }
   }
 
-  public async delete(entity: SearchableEntity): Promise<void> {
+  public async delete(entity: Searchable): Promise<void> {
     await this.client
       .index(entity.tenant.id)
       .deleteDocument(MeiliSearchService.getEntityId(entity, entity.constructor.name));
@@ -163,10 +160,10 @@ export class MeiliSearchService {
       return [type, await this.userRepository.count(filter)];
     }
 
-    return [type, await this.em.count<SearchableEntity>(type, query)];
+    return [type, await this.em.count<Searchable>(type, query)];
   }
 
-  private async getEntities(entityName: SearchableEntities, tenantId: Snowflake): Promise<SearchableEntity[]> {
+  private async getEntities(entityName: SearchableEntities, tenantId: Snowflake): Promise<Searchable[]> {
     if (entityName === SearchableEntities.User) return await this.userRepository.findSearchable(tenantId);
     if (entityName === SearchableEntities.Team) return await this.teamRepository.findSearchable(tenantId);
     if (entityName === SearchableEntities.TenantEvent) return await this.tenantEventRepository.findSearchable(tenantId);
