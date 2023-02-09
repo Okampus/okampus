@@ -1,9 +1,12 @@
-import { Variants, motion } from 'framer-motion';
-import { forwardRef, Ref, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { forwardRef, useEffect, useState } from 'react';
 import { ReactComponent as ArrowDropdown } from '@okampus/assets/svg/icons/arrow-dropdown.svg';
 import { clsx } from 'clsx';
 import { useOutsideClick } from '@okampus/ui/hooks';
 import { mergeRefs } from 'react-merge-refs';
+
+import type { Ref } from 'react';
+import type { Variants } from 'framer-motion';
 
 const itemVariants: Variants = {
   open: {

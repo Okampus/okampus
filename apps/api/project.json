@@ -34,7 +34,15 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": ["nx run api:ts-check", "nx run api:eslint"]
+        "commands": ["nx run api:ts-check", "nx run api:ts-check-spec", "nx run api:eslint", "nx run api:prettier"]
+      }
+    },
+    "lint:fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "color": true,
+        "commands": ["nx run api:eslint --fix", "prettier --write apps/api"],
+        "parallel": false
       }
     },
     "ts-check": {
@@ -43,10 +51,22 @@
         "commands": ["tsc --pretty --noEmit -p apps/api/tsconfig.app.json"]
       }
     },
+    "ts-check-spec": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --pretty --noEmit -p apps/api/tsconfig.spec.json"]
+      }
+    },
     "eslint": {
       "executor": "nx:run-commands",
       "options": {
         "commands": ["eslint apps/api --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
+      }
+    },
+    "prettier": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["prettier --check apps/api"]
       }
     },
     "test": {

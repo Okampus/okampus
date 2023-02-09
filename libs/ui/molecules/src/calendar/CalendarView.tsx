@@ -1,4 +1,3 @@
-import React, { useState, useContext, useEffect } from 'react';
 import './Calendar.css';
 
 import { getMonth } from './util';
@@ -7,7 +6,10 @@ import Sidebar from './Sidebar';
 import Month from './Month';
 import GlobalContext from './GlobalContext';
 import EventModal from './EventModal';
-import { ITenantEvent } from '@okampus/shared/dtos';
+
+import React, { useState, useContext, useEffect } from 'react';
+
+import type { ITenantEvent } from '@okampus/shared/dtos';
 
 export function CalendarView({ events }: { events: ITenantEvent[] }) {
   const [currentMonth, setCurrentMonth] = useState(getMonth());

@@ -6,9 +6,6 @@ import type { IContent, IFileUpload, IUgc } from '@okampus/shared/dtos';
 
 @ObjectType({ implements: () => [UgcModel] })
 export class ContentModel extends UgcModel implements IContent {
-  @Field(() => String)
-  text!: string;
-
   @Field(() => [FileUploadModel])
   attachments!: IFileUpload[];
 

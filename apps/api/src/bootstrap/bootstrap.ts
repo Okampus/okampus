@@ -4,27 +4,23 @@ import './graphql/enums.register';
 import { corsValidation } from './cors.validation';
 import { tenantCallbackValidation, tenantStrategyValidation } from './tenant.validation';
 import { uploadPreValidation } from './upload.validation';
-import { config } from '../../configs/config';
+
 import { AppModule } from '../app.module';
+import { config } from '../../configs/config';
 
 import { OIDCCacheService, UsersService } from '@okampus/api/bll';
 import { TenantCoreRepository } from '@okampus/api/dal';
 
-import helmet from 'helmet';
-
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-
-import SentryTracing from '@sentry/tracing';
-
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 
+import SentryTracing from '@sentry/tracing';
+
+import helmet from 'helmet';
 import fastify from 'fastify';
-
 import fastifyMulter from 'fastify-multer';
-const { contentParser } = fastifyMulter;
-
 import fastifyCookie from '@fastify/cookie';
 import fastifySecureSession from '@fastify/secure-session';
 import fastifyRequestContext from '@fastify/request-context';
@@ -44,23 +40,20 @@ const cspConfigDevelopment = {
 };
 
 const authenticateOptions = { authInfo: false, successRedirect: '/auth/oidc-callback' };
+const defaultStoreValues = { requester: null, tenant: null, gqlInfo: null, alreadyPopulated: false };
 
 export async function bootstrap(logger: Logger): Promise<INestApplication> {
   if (config.sentry.enabled) SentryTracing.addExtensionMethods();
 
   const fastifyInstance = fastify({ trustProxy: false });
-
   fastifyInstance.addHook('preValidation', uploadPreValidation);
 
   await fastifyInstance.register(fastifyCookie, { secret: config.cookies.signature });
   await fastifyInstance.register(fastifySecureSession, { key: sessionKey, cookie: { path: '/', httpOnly: true } });
   await fastifyInstance.register(fastifyPassport.initialize());
   await fastifyInstance.register(fastifyPassport.secureSession());
-
-  await fastifyInstance.register(contentParser);
+  await fastifyInstance.register(fastifyMulter.contentParser);
   await fastifyInstance.register(fastifyCors, { origin: corsValidation, credentials: true });
-
-  const defaultStoreValues = { requester: null, tenant: null, gqlInfo: null, alreadyPopulated: false };
   await fastifyInstance.register(fastifyRequestContext, { hook: 'preValidation', defaultStoreValues });
 
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(fastifyInstance));
@@ -69,8 +62,8 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
   const tenantCoreRepository = app.get<TenantCoreRepository>(TenantCoreRepository);
   const usersService = app.get<UsersService>(UsersService);
 
-  fastifyPassport.registerUserSerializer(async (user: { id: Snowflake }, _request) => user.id);
-  fastifyPassport.registerUserDeserializer(async (id: Snowflake, _request) => await usersService.findBareById(id));
+  fastifyPassport.registerUserSerializer(async (user: { id: Snowflake }) => user.id);
+  fastifyPassport.registerUserDeserializer(async (id: Snowflake) => await usersService.findBareById(id));
 
   const preValidationContext = { tenantCoreRepository, oidcCache, usersService, fastifyInstance, fastifyPassport };
 

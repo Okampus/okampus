@@ -21,12 +21,12 @@ export class EventApprovalStepSeeder extends Factory<EventApprovalStep> {
   public definition(): EventApprovalStepOptions {
     return {
       order: this.order,
-      tenant: this.tenant.tenant,
       name: `Validation step #${this.order}`,
       validators: [],
       notifiees: [],
       tenantOrg: this.tenant,
       createdBy: this.createdBy,
+      tenant: this.tenant.tenant,
     };
   }
 }

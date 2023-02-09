@@ -1,18 +1,20 @@
 // import { useQuery } from '@apollo/client';
 // import { IPaginated, ITenantEvent } from '@okampus/shared/dtos';
 // import { getEventsQuery } from '@okampus/shared/graphql';
+import { CreateEventForm } from '../../components/Forms/CreateEventForm';
+
 import { SmallCalendar } from '@okampus/ui/molecules';
+import { getEventsQuery } from '@okampus/shared/graphql';
+import { NavigationContext } from '@okampus/ui/hooks';
+
 import { motion } from 'framer-motion';
 import { nanoid } from 'nanoid';
 // import { useContext, useState } from 'react';
 // import { NavigationContext } from './NavigationContext';
 // import { EventCard } from '@okampus/ui/molecules';
-import { CreateEventForm } from '../../components/Forms/CreateEventForm';
 import { useContext } from 'react';
 // import { ITenantEvent } from '@okampus/shared/dtos';
 import { useQuery } from '@apollo/client';
-import { getEventsQuery } from '@okampus/shared/graphql';
-import { NavigationContext } from '@okampus/ui/hooks';
 
 // type EventManageType = {
 //   events: IPaginated<ITenantEvent>;

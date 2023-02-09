@@ -9,7 +9,9 @@ import { ReactComponent as CalendarUpcomingIcon } from '@okampus/assets/svg/icon
 import { ReactComponent as TablesIcon } from '@okampus/assets/svg/icons/tables.svg';
 import { ReactComponent as WalletIcon } from '@okampus/assets/svg/icons/wallet.svg';
 import { ShortcutType } from '@okampus/shared/enums';
-import { defaultSelectedMenu, SelectedMenu, SubspaceTypes } from '@okampus/shared/types';
+
+import { defaultSelectedMenu, SubspaceTypes } from '@okampus/shared/types';
+import type { SelectedMenu } from '@okampus/shared/types';
 
 export enum ResourceRouteType {
   Org = 'Org',

@@ -11,8 +11,8 @@ export class TenantSeeder extends Factory<Tenant> {
   public definition(faker: Faker): TenantOptions {
     const name = faker.company.name();
     return {
-      name,
       slug: toSlug(name),
+      name,
       tenant: new TenantCore({ name, domain: `${toSlug(name)}.fr` }),
     };
   }

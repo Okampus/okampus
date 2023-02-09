@@ -18,7 +18,24 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": ["nx run ui-templates:ts-check", "nx run ui-templates:eslint"]
+        "commands": [
+          "nx run ui-templates:ts-check",
+          "nx run ui-templates:eslint",
+          "nx run ui-templates:prettier",
+          "nx run site:stylelint"
+        ]
+      }
+    },
+    "lint:fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "color": true,
+        "commands": [
+          "nx run ui-templates:eslint --fix",
+          "prettier --write libs/ui/templates",
+          "nx run site:stylelint --fix"
+        ],
+        "parallel": false
       }
     },
     "ts-check": {
@@ -30,7 +47,23 @@
     "eslint": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["eslint libs/ui/templates --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
+        "commands": [
+          "eslint libs/ui/templates --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"
+        ]
+      }
+    },
+    "prettier": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["prettier --check libs/ui/templates"]
+      }
+    },
+    "stylelint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "stylelint libs/ui/templates/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
+        ]
       }
     },
     "test": {

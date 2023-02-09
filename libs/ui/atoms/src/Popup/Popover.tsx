@@ -1,4 +1,7 @@
-import * as React from 'react';
+import React from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { clsx } from 'clsx';
+
 import {
   useFloating,
   autoUpdate,
@@ -10,14 +13,11 @@ import {
   useRole,
   useInteractions,
   useMergeRefs,
-  Placement,
   FloatingPortal,
   FloatingFocusManager,
   arrow,
-  // useId,
 } from '@floating-ui/react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { clsx } from 'clsx';
+import type { Placement } from '@floating-ui/react';
 
 interface PopoverOptions {
   initialOpen?: boolean;

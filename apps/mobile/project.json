@@ -113,7 +113,21 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": ["nx run mobile:ts-check", "nx run mobile:eslint"]
+        "commands": [
+          "nx run mobile:ts-check",
+          "nx run mobile:ts-check-spec",
+          "nx run mobile:eslint",
+          "nx run mobile:prettier",
+          "nx run mobile:stylelint"
+        ]
+      }
+    },
+    "lint:fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "color": true,
+        "commands": ["nx run mobile:eslint --fix", "prettier --write apps/mobile", "nx run mobile:stylelint --fix"],
+        "parallel": false
       }
     },
     "ts-check": {
@@ -122,10 +136,30 @@
         "commands": ["tsc --pretty --noEmit -p apps/mobile/tsconfig.app.json"]
       }
     },
+    "ts-check-spec": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --pretty --noEmit -p apps/mobile/tsconfig.spec.json"]
+      }
+    },
     "eslint": {
       "executor": "nx:run-commands",
       "options": {
         "commands": ["eslint apps/mobile --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"]
+      }
+    },
+    "prettier": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["prettier --check apps/mobile"]
+      }
+    },
+    "stylelint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "stylelint apps/mobile/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
+        ]
       }
     },
     "test": {

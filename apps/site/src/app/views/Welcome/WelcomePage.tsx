@@ -1,25 +1,16 @@
 import { ReactComponent as ArrowDownRightIcon } from '@okampus/assets/svg/icons/arrow-down-right.svg';
 
+import { getFragmentData, getMe, loginMutation, meFragment, tenantFragment } from '@okampus/shared/graphql';
+import { CurrentContext, NavigationContext, useCurrentContext, useTheme } from '@okampus/ui/hooks';
+import { DarkModeToggle } from '@okampus/ui/atoms';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { useMutation, useQuery } from '@apollo/client';
-import {
-  getFragmentData,
-  getMe,
-  LoginMutation,
-  loginMutation,
-  meFragment,
-  MeQuery,
-  tenantFragment,
-} from '@okampus/shared/graphql';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
-import { CurrentContext, NavigationContext, useCurrentContext, useLocalStorage, useTheme } from '@okampus/ui/hooks';
-import { DarkModeToggle } from '@okampus/ui/atoms';
-
-import { parseGraphqlError } from '@okampus/shared/utils';
+import type { LoginMutation, MeQuery } from '@okampus/shared/graphql';
 
 const OAuthSrcLink =
   'https://media.discordapp.net/attachments/965927279643488297/1060235625623732244/logo-efrei-print-efrei-web.png';
@@ -39,7 +30,7 @@ const schema = z.object({
   password: z.string().min(1, { message: "N'oubliez pas d'entrer votre mot de passe." }),
 });
 
-function WelcomePage() {
+export function WelcomePage() {
   const navigate = useNavigate();
 
   const {
@@ -72,14 +63,14 @@ function WelcomePage() {
     setTimeout(() => setIsLoading(false), 450);
   };
 
-  const { loading: initialLoading, error: loadingError } = useQuery(getMe, {
+  const { loading: initialLoading } = useQuery(getMe, {
     onCompleted: onLoggedIn,
     onError: () => {
       setIsLoading(false);
     },
   });
 
-  const [login, { error, loading: loginLoading }] = useMutation(loginMutation, {
+  const [login, { loading: loginLoading }] = useMutation(loginMutation, {
     onCompleted: onLoggedIn,
     onError: () => {
       setIsLoading(false);
@@ -94,6 +85,7 @@ function WelcomePage() {
     if ((initialLoading || loginLoading) && !isLoading) {
       setIsLoading(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialLoading, loginLoading]);
 
   return (
@@ -187,5 +179,3 @@ function WelcomePage() {
     </div>
   );
 }
-
-export default WelcomePage;

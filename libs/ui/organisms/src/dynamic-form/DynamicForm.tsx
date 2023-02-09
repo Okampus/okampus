@@ -1,6 +1,8 @@
-import { referenceRemover } from '@okampus/shared/utils';
-import { SelectItem, SelectMenu, SingleFileInput } from '@okampus/ui/molecules';
-import { Controller, RegisterOptions, useForm } from 'react-hook-form';
+import { SelectMenu, SingleFileInput } from '@okampus/ui/molecules';
+import { Controller, useForm } from 'react-hook-form';
+
+import type { SelectItem } from '@okampus/ui/molecules';
+import type { RegisterOptions } from 'react-hook-form';
 
 export type ControlType = 'text' | 'single-file' | 'select' | 'number' | 'checkbox' | 'datetime-local';
 export interface DynamicFieldData {
@@ -22,11 +24,7 @@ export interface DynamicFormProps {
 }
 
 export function DynamicForm({ fields, onSubmit }: DynamicFormProps) {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { control, handleSubmit } = useForm();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 text-0">

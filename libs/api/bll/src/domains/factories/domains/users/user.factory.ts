@@ -1,7 +1,7 @@
 import { UserModel } from './user.model';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { UploadService } from '../../../../features/uploads/upload.service';
+import { UploadService } from '../../../../features/upload/upload.service';
 
 import { BaseFactory } from '../../base.factory';
 import { addImagesToActor } from '../../abstract.utils';

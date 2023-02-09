@@ -21,8 +21,8 @@ body {
 }
 
 #root:not(:empty) {
-  transition: opacity 0.2s ease-in-out;
   opacity: 1;
+  transition: opacity 0.2s ease-in-out;
 }
 
 #root:not(:empty) + #global-loader {

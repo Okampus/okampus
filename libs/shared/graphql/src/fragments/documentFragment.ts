@@ -5,6 +5,8 @@ export const documentFragment = gql(`
     __typename
     id
     createdAt
+    updatedAt
+    text
     name
     yearVersion
     documentUpload {

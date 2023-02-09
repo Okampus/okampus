@@ -16,7 +16,6 @@ export type ApiConfig = {
     readonly frontendUrl: string;
   };
   readonly upload: {
-    readonly maxSize: number;
     readonly localPath: string;
     readonly localPrefix: string;
   };
@@ -26,6 +25,7 @@ export type ApiConfig = {
     readonly apiKey: string;
   };
   readonly database: {
+    readonly seed: boolean;
     readonly name: string;
     readonly user: string;
     readonly password: string;
@@ -93,23 +93,8 @@ export type ApiConfig = {
   readonly session: {
     readonly secret: string;
   };
-  readonly crypto: {
-    readonly pepper: string;
-  };
-  readonly adminAccount: {
-    readonly slug: string;
-    readonly email: string;
-    readonly firstName: string;
-    readonly lastName: string;
-    readonly password: string;
-  };
-  readonly anonAccount: {
-    readonly slug: string;
-    readonly email: string;
-    readonly firstName: string;
-    readonly lastName: string;
-    readonly password: string;
-  };
+  readonly cryptoSecret: string;
+  readonly adminAccountPassword: string;
   readonly baseTenant: {
     readonly name: string;
     readonly oidc: {

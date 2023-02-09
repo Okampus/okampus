@@ -1,9 +1,9 @@
 import { PrimaryText } from '../PrimaryText';
 import { Ripple } from '../Ripple';
+
 import React from 'react';
 import { View } from 'react-native';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-
 
 export function BottomBar(props: BottomTabBarProps) {
   const { state, descriptors, navigation } = props;

@@ -27,9 +27,9 @@ import GenericUnknownIcon from '@okampus/assets/svg/mimetypes/generic/generic-un
 
 import { FileMimeCategory } from '@okampus/shared/enums';
 // import { FunctionComponent, SVGProps } from 'react';
-import { FileMimeCheckPayload } from '@okampus/shared/types';
 import { getExtension, parseFileMimeCategory } from '@okampus/shared/utils';
 import { EXCEL_EXTS, POWERPOINT_EXTS, WORD_EXTS } from '@okampus/shared/consts';
+import type { FileMimeCheckPayload } from '@okampus/shared/types';
 
 const fileTypeIcons: { [key in FileMimeCategory]: string } = {
   [FileMimeCategory.Archive]: GenericArchive,

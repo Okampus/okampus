@@ -1,5 +1,7 @@
-import * as React from 'react';
-import { motion, Transition, Variants } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
+
+import type { Transition, Variants } from 'framer-motion';
 
 const transition: Transition = { type: 'spring', stiffness: 100, duration: 0.2 };
 

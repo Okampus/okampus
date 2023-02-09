@@ -1,5 +1,6 @@
 import { OrgDocumentType } from '@okampus/shared/enums';
-import { DynamicFieldData, DynamicForm } from '@okampus/ui/organisms';
+import { DynamicForm } from '@okampus/ui/organisms';
+import type { DynamicFieldData } from '@okampus/ui/organisms';
 
 export type CreateOrgDocumentFormProps = {
   file?: File;

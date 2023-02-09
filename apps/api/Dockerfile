@@ -8,7 +8,7 @@ RUN chown api:api /app
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
 RUN chmod +x /wait
 
-RUN npm --no-update-notifier --no-fund --global install pnpm@7.26.3 typescript@4.9.5
+RUN npm --no-update-notifier --no-fund --global install pnpm@7.26.3
 RUN mkdir -p /app/dist/apps/api/database && chown -R api:api /app/dist
 
 ADD --chown=api:api package.json ./package.json
@@ -29,8 +29,4 @@ USER api
 
 EXPOSE 8081
 
-CMD /wait \
-  && (export MIKRO_ORM_MIGRATION=create && node dist/apps/api/main.mjs) \
-  && tsc --pretty -p apps/api/tsconfig.migrations.json \
-  && (export MIKRO_ORM_MIGRATION=up && node dist/apps/api/main.mjs) \
-  && node dist/apps/api/main.mjs
+CMD /wait && sh apps/api/migrate.sh && node dist/apps/api/main.mjs

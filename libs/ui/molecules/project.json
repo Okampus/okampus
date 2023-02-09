@@ -18,7 +18,24 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": ["nx run ui-molecules:ts-check", "nx run ui-molecules:eslint"]
+        "commands": [
+          "nx run ui-molecules:ts-check",
+          "nx run ui-molecules:eslint",
+          "nx run ui-molecules:prettier",
+          "nx run site:stylelint"
+        ]
+      }
+    },
+    "lint:fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "color": true,
+        "commands": [
+          "nx run ui-molecules:eslint --fix",
+          "prettier --write libs/ui/molecules",
+          "nx run site:stylelint --fix"
+        ],
+        "parallel": false
       }
     },
     "ts-check": {
@@ -30,7 +47,23 @@
     "eslint": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["eslint libs/ui/molecules --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
+        "commands": [
+          "eslint libs/ui/molecules --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"
+        ]
+      }
+    },
+    "prettier": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["prettier --check libs/ui/molecules"]
+      }
+    },
+    "stylelint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "stylelint libs/ui/molecules/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
+        ]
       }
     },
     "test": {

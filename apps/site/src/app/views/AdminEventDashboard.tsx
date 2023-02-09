@@ -1,18 +1,15 @@
-import { useMutation, useQuery } from '@apollo/client';
-import {
-  createEventApprovalMutation,
-  eventFragment,
-  EventInfoFragment,
-  getEventsQuery,
-  getFragmentData,
-} from '@okampus/shared/graphql';
+import { createEventApprovalMutation, eventFragment, getEventsQuery, getFragmentData } from '@okampus/shared/graphql';
 import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/close.svg';
+import { formatDateDayOfWeek } from '@okampus/shared/utils';
+import { NavigationContext } from '@okampus/ui/hooks';
+
 import { createRef, useContext, useState } from 'react';
 // import { motion } from 'framer-motion';
-import { formatDateDayOfWeek } from '@okampus/shared/utils';
 // import { EventState } from '@okampus/shared/enums';
 import { nanoid } from 'nanoid';
-import { NavigationContext } from '@okampus/ui/hooks';
+import { useMutation, useQuery } from '@apollo/client';
+
+import type { EventInfoFragment } from '@okampus/shared/graphql';
 // import { EventCard } from '@okampus/ui/molecules';
 // import { TabsView } from '@okampus/ui/templates';
 
@@ -37,8 +34,8 @@ export const AdminEventDashboard = () => {
   const message = createRef<HTMLTextAreaElement>();
   const { notifications, setNotifications } = useContext(NavigationContext);
 
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const { data, refetch } = useQuery(getEventsQuery);
+  const [_selectedId, setSelectedId] = useState<string | null>(null);
+  const { data: _, refetch } = useQuery(getEventsQuery);
 
   const [createEventApproval] = useMutation(createEventApprovalMutation, {
     onCompleted: (data) => {
@@ -163,7 +160,7 @@ export const AdminEventDashboard = () => {
   //   },
   // ];
 
-  const renderEventValidation = (selectedEvent: EventInfoFragment) => {
+  const _renderEventValidation = (selectedEvent: EventInfoFragment) => {
     // const events = data.events;
 
     // const selectedEvent = data.events.edges.find((event: { node: ITenantEvent }) => event.node.id === selectedId)

@@ -1,10 +1,11 @@
-import { useQuery } from '@apollo/client';
 import { COLORS } from '@okampus/shared/consts';
 import { getFragmentData, getTeamCategoriesQuery, teamCategoryFragment } from '@okampus/shared/graphql';
 import { CategoryCard } from '@okampus/ui/molecules';
 
+import { useQuery } from '@apollo/client';
+
 export function TeamList() {
-  const { loading, error, data } = useQuery(getTeamCategoriesQuery);
+  const { data } = useQuery(getTeamCategoriesQuery);
 
   if (!data || !data.teamCategories.edges) {
     return null;

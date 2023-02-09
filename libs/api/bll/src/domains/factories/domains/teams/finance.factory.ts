@@ -2,7 +2,7 @@ import { FinanceModel } from './finance.model';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { UploadService } from '../../../../features/uploads/upload.service';
+import { UploadService } from '../../../../features/upload/upload.service';
 
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';

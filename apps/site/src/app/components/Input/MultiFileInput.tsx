@@ -1,9 +1,12 @@
 import { checkImage } from '@okampus/shared/utils';
 import { getFileTypeIcon } from '@okampus/ui/atoms';
-import { ChangeEvent, useRef, useState } from 'react';
 import { ReactComponent as CloudIcon } from '@okampus/assets/svg/icons/cloud.svg';
-import { clsx } from 'clsx';
 import { FileCardPreview } from '@okampus/ui/molecules';
+
+import { useRef, useState } from 'react';
+import { clsx } from 'clsx';
+
+import type { ChangeEvent } from 'react';
 
 type RenderedFile = {
   file: File;
@@ -77,6 +80,7 @@ export function MultiFileInput({ onFileAdd, onFileRemove, onFileClick }: DropFil
           <div className="flex flex-wrap gap-4">
             {renderedFileList.map((renderedFile, idx) => (
               <FileCardPreview
+                onClick={() => onFileClick?.(renderedFile)}
                 onRemove={() => {
                   fileRemove(renderedFile);
                 }}

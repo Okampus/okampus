@@ -1,9 +1,9 @@
-import { ITenantEvent } from '@okampus/shared/dtos';
 import { EventState } from '@okampus/shared/enums';
 import { formatDateRange } from '@okampus/shared/utils';
 import { Avatar } from '@okampus/ui/atoms';
 
 import { clsx } from 'clsx';
+import type { ITenantEvent } from '@okampus/shared/dtos';
 
 type EventCardProps = {
   event: ITenantEvent;

@@ -1,6 +1,7 @@
 import { Embeddable, Property } from '@mikro-orm/core';
 import { Field, Float, InputType, Int, ObjectType } from '@nestjs/graphql';
 
+// TODO: add database/api of French adresses
 @InputType('AddressInput')
 @ObjectType('Address')
 @Embeddable()

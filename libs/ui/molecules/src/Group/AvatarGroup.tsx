@@ -1,6 +1,8 @@
-import { Avatar, AvatarProps } from '@okampus/ui/atoms';
-import { UserLabel } from '../Label/UserLabel';
 import { ItemGroup } from './ItemGroup';
+import { UserLabel } from '../Label/UserLabel';
+import { Avatar } from '@okampus/ui/atoms';
+
+import type { AvatarProps } from '@okampus/ui/atoms';
 
 export type UserItem = AvatarProps & { id: string };
 

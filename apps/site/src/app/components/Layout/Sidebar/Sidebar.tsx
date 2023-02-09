@@ -1,26 +1,32 @@
 import './Sidebar.css';
 
-import { useContext } from 'react';
+import { HOME, SEARCH, ADMIN, MANAGE } from './Sidebar.types';
+import { SideShortcut } from './SideShortcut';
+import { SidebarMenu } from './SidebarMenu';
+
+import { menus, shortcutMenus } from '../../../menus';
 
 import { ReactComponent as ShieldAccountIcon } from '@okampus/assets/svg/icons/shield-account.svg';
 import { ReactComponent as HomeIcon } from '@okampus/assets/svg/icons/home.svg';
 import { ReactComponent as LogoutIcon } from '@okampus/assets/svg/icons/logout.svg';
 import { ReactComponent as SearchIcon } from '@okampus/assets/svg/icons/search.svg';
 
-import { useNavigate } from 'react-router-dom';
 import { Bubble, DarkModeToggle } from '@okampus/ui/atoms';
 import { CurrentContext, NavigationContext, useCurrentContext, useTheme } from '@okampus/ui/hooks';
-import { menus, shortcutMenus, Menu } from '../../../menus';
 import { getLink } from '#site/app/utils/get-link';
-import { ActorImageType, ScopeRole, ShortcutType } from '@okampus/shared/enums';
-import { SideShortcut } from './SideShortcut';
+import { ActorImageType, ScopeRole } from '@okampus/shared/enums';
 
-import { SideBubble, HOME, SEARCH, ADMIN, MANAGE } from './Sidebar.types';
-import { SidebarMenu } from './SidebarMenu';
 import { actorImageBareFragment, getFragmentData, logoutMutation } from '@okampus/shared/graphql';
-import { useApolloClient, useMutation } from '@apollo/client';
-import { defaultSelectedMenu, SelectedMenu, SubspaceTypes } from '@okampus/shared/types';
+import { defaultSelectedMenu } from '@okampus/shared/types';
 import { UserLabel } from '@okampus/ui/molecules';
+import { useApolloClient, useMutation } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+
+import type { SelectedMenu, SubspaceTypes } from '@okampus/shared/types';
+import type { SideBubble } from './Sidebar.types';
+import type { ShortcutType } from '@okampus/shared/enums';
+import type { Menu } from '../../../menus';
 
 const getMenu = (selected: SelectedMenu): Menu => {
   const menu = menus[selected.subSpace].menus[selected.menu];
@@ -38,7 +44,7 @@ const adminBubbles: SideBubble[] = [{ subSpace: ADMIN, icon: ShieldAccountIcon }
 export function Sidebar() {
   const client = useApolloClient();
   const navigate = useNavigate();
-  const { isSearching, setIsSearching, selected, setSelected } = useContext(NavigationContext);
+  const { isSearching, setIsSearching, selected } = useContext(NavigationContext);
   const { setCurrentOrgId, setCurrentUserId, setCurrentTenantId } = useContext(CurrentContext);
 
   const [{ org, user, tenant }, updateCache] = useCurrentContext();
@@ -159,8 +165,6 @@ export function Sidebar() {
     </div>
   );
 }
-
-export default Sidebar;
 
 if (import.meta.vitest) {
   // add tests related to your file here

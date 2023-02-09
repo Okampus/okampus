@@ -1,12 +1,15 @@
 import { getLink } from '#site/app/utils/get-link';
 
+import { SelectMenu } from '@okampus/ui/molecules';
+import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
+
 import { clsx } from 'clsx';
-import { SelectMenu, SelectMenuProps } from '@okampus/ui/molecules';
-import { Menu } from '#site/app/menus';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
+
+import type { Menu } from '#site/app/menus';
+import type { SelectMenuProps } from '@okampus/ui/molecules';
 
 export type SidebarMenuLinkProps = {
   icon: Menu['icon'];

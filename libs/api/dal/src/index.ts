@@ -171,4 +171,5 @@ export * from './shards/seeders/factories/team.seeder';
 export * from './shards/seeders/factories/tenant.seeder';
 export * from './shards/seeders/factories/user.seeder';
 export * from './types/actor-entities.type';
+export * from './types/search-entity.type';
 // @endindex

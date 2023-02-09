@@ -1,10 +1,10 @@
 import { BottomTabNavigator } from './BottomTabNavigator';
 import { Sidebar } from './Sidebar';
 import { NotFoundScreen } from '../../screens/NotFoundScreen';
+
+import React from 'react';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import React from 'react';
-import type { OpaqueColorValue } from 'react-native';
 
 import type {
   IoniconsGlyphs,
@@ -13,6 +13,7 @@ import type {
   MaterialCommunityIconsWrapper,
   TabOptions,
 } from '../../types';
+import type { OpaqueColorValue } from 'react-native';
 
 const Drawer = createDrawerNavigator();
 

@@ -6,6 +6,7 @@ export const eventFragment = gql(`
     id
     createdAt
     updatedAt
+    slug
     title
     start
     end

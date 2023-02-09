@@ -18,7 +18,15 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": ["nx run ui-hooks:ts-check", "nx run ui-hooks:eslint"]
+        "commands": ["nx run ui-hooks:ts-check", "nx run ui-hooks:eslint", "nx run ui-hooks:prettier"]
+      }
+    },
+    "lint:fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "color": true,
+        "commands": ["nx run ui-hooks:eslint --fix", "prettier --write libs/ui/hooks"],
+        "parallel": false
       }
     },
     "ts-check": {
@@ -31,6 +39,12 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": ["eslint libs/ui/hooks --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
+      }
+    },
+    "prettier": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["prettier --check libs/ui/hooks"]
       }
     },
     "test": {

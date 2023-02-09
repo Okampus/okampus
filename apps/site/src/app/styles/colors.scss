@@ -1,24 +1,53 @@
-// .bg-app {
+/* .bg-app {
 //   @apply bg-gradient-to-br dark:from-[#101b2e] dark:to-[#0F0F0F] from-[#eee] to-[#FFF];
 // }
+//
+// .bg-app-gradient {
+//   @apply relative z-10 bg-gradient-to-br from-[#edf0f7] to-[#ffffff];
+// }
+//
+// .bg-app-gradient::before {
+//   @apply absolute top-0 right-0 bottom-0 left-0 content-[""]
+//     bg-gradient-to-br from-[#081120] to-[#0F0F0F] z-[-1]
+//     transition-opacity duration-[250ms] ease-in-out opacity-0;
+// } */
+
 .backdrop {
   @apply absolute top-0 left-0 bottom-0 right-0 bg-black bg-[#000000cc] z-[100] flex overflow-hidden;
 }
 
 .checkered {
-  background: linear-gradient(45deg, rgba(0, 0, 0, 0.0980392) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.0980392) 75%, rgba(0, 0, 0, 0.0980392) 0), linear-gradient(45deg, rgba(0, 0, 0, 0.0980392) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.0980392) 75%, rgba(0, 0, 0, 0.0980392) 0), white;
-  background-repeat: repeat, repeat;
-  background-position: 0px 0, 5px 5px;
   transform-origin: 0 0 0;
-  background-origin: padding-box, padding-box;
+  transform: scaleX(1) scaleY(1) scaleZ(1);
+
+  text-shadow: none;
+
+  background: linear-gradient(
+      45deg,
+      rgb(0 0 0 / 9.8%) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgb(0 0 0 / 9.8%) 75%,
+      rgb(0 0 0 / 9.8%) 0
+    ),
+    linear-gradient(
+      45deg,
+      rgb(0 0 0 / 9.8%) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgb(0 0 0 / 9.8%) 75%,
+      rgb(0 0 0 / 9.8%) 0
+    ),
+    white;
+  background-repeat: repeat, repeat;
+  background-position: 0 0, 5px 5px;
   background-clip: border-box, border-box;
+  background-origin: padding-box, padding-box;
   background-size: 10px 10px, 10px 10px;
   box-shadow: none;
-  text-shadow: none;
-  transition: none;
-  transform: scaleX(1) scaleY(1) scaleZ(1);
-}
 
+  transition: none;
+}
 
 .bg-dark-gradient {
   @apply absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-b from-[#000000dd] to-transparent;
@@ -49,16 +78,17 @@
 }
 
 .hoverable {
-  @apply relative after:absolute after:left-0 after:top-0 after:z-[-1] after:rounded-lg after:w-full after:h-full;
-  
+  &::after {
+    @apply content-[""] bg-[#dbeafc] dark:bg-[#0e1f3f] scale-0 opacity-0;
+
+    transition: color 0.2s, background-color 0.2s, transform 0.5s cubic-bezier(0.17, 0.67, 0, 1.12), opacity 0.5s;
+  }
+
   &:hover {
     @apply after:scale-100 after:opacity-100;
   }
 
-  &::after {
-    @apply content-[''] bg-[#dbeafc] dark:bg-[#0e1f3f] scale-0 opacity-0;
-    transition: color 0.2s, background-color 0.2s, transform 0.5s cubic-bezier(.17,.67,0,1.12), opacity 0.5s;
-  }
+  @apply relative after:absolute after:left-0 after:top-0 after:z-[-1] after:rounded-lg after:w-full after:h-full;
 }
 
 .bg-active {
@@ -130,8 +160,7 @@
 }
 
 .bg-gradient {
-  background:
-    radial-gradient(
+  background: radial-gradient(
       100.99% 100.73% at 0% 0%,
       rgb(0 196 204 / 72.6%) 0%,
       #00c4cc 0.01%,
@@ -139,13 +168,10 @@
     ),
     radial-gradient(68.47% 129.02% at 22.82% 97.71%, #6420ff 0%, rgb(100 32 255 / 0%) 100%),
     radial-gradient(106.1% 249.18% at 0% 0%, #00c4cc 0%, rgb(0 196 204 / 0%) 100%),
-    radial-gradient(64.14% 115.13% at 5.49% 50%, #6420ff 0%, rgb(100 32 255 / 0%) 100%),
-    #7d2ae7;
+    radial-gradient(64.14% 115.13% at 5.49% 50%, #6420ff 0%, rgb(100 32 255 / 0%) 100%), #7d2ae7;
 }
 
 html.dark .bg-gradient {
-  background:
-    linear-gradient(104.19deg, rgb(37 1 83 / 0%) 39.91%, #3b0388 77.15%),
-    linear-gradient(96.54deg, rgb(6 189 196 / 78%) 13.14%, rgb(2 214 215 / 0%) 57.93%),
-    #440496;
+  background: linear-gradient(104.19deg, rgb(37 1 83 / 0%) 39.91%, #3b0388 77.15%),
+    linear-gradient(96.54deg, rgb(6 189 196 / 78%) 13.14%, rgb(2 214 215 / 0%) 57.93%), #440496;
 }

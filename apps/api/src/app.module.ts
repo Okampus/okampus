@@ -2,14 +2,12 @@ import { AppController } from './app.controller';
 import { config } from '../configs/config';
 import graphqlConfig from '../configs/graphql.config';
 import mikroOrmConfig from '../configs/mikro-orm.config';
-import meiliSearchConfig from '../configs/meilisearch.config';
 import { redisOptions } from '../configs/redis.config';
 
 import { sentryConfig } from '../configs/sentry.config';
 import {
   HealthModule,
   MeiliSearchModule,
-  MinioModule,
   PubSubModule,
   RedisModule,
   RestLoggerMiddleware,
@@ -27,7 +25,6 @@ import {
   EventsModule,
   FactoryModule,
   FinancesModule,
-  MeiliSearchIndexerModule,
   OIDCCacheModule,
   OrgDocumentsModule,
   PolicyGuard,
@@ -42,7 +39,7 @@ import {
 import { ScheduleModule } from '@nestjs/schedule';
 import { GraphQLModule } from '@nestjs/graphql';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { CacheModule, Module, RequestMethod } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import Sentry from '@sentry/node';
@@ -106,17 +103,10 @@ import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@n
     // CaslModule,
     ConfigModule.forRoot(config),
     GraphQLModule.forRoot<MercuriusDriverConfig>(graphqlConfig),
-    MeiliSearchModule.forRoot(meiliSearchConfig),
     PubSubModule.forRoot({
       host: config.redis.host,
       port: config.redis.port,
       password: config.redis.password,
-    }),
-    MinioModule.forRoot({
-      endPoint: config.s3.endpoint,
-      accessKey: config.s3.accessKeyId,
-      secretKey: config.s3.secretAccessKey,
-      region: config.s3.region,
     }),
     MikroOrmModule.forRoot(mikroOrmConfig),
     SentryModule.forRoot(sentryConfig),
@@ -138,12 +128,9 @@ import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@n
     } as CacheModuleAsyncOptions),
 
     RedisModule.forRoot(redisOptions),
+
+    MeiliSearchModule,
     OIDCCacheModule,
-
-    // MeiliSearch
-    MeiliSearchIndexerModule,
-
-    // Upload
     UploadModule,
 
     // // Subscribers module
@@ -201,11 +188,7 @@ import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@n
 export class AppModule implements NestModule {
   public configure(consumer: MiddlewareConsumer): void {
     // Setup sentry
-    if (config.sentry.enabled) {
-      consumer
-        .apply(Sentry.Handlers.requestHandler(), TraceMiddleware)
-        .forRoutes({ path: '*', method: RequestMethod.ALL });
-    }
+    if (config.sentry.enabled) consumer.apply(Sentry.Handlers.requestHandler(), TraceMiddleware).forRoutes('*');
 
     // Setup loggers
     consumer.apply(RestLoggerMiddleware).exclude('/graphql').forRoutes('*');

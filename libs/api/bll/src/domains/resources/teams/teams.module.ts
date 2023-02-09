@@ -36,14 +36,14 @@ export class TeamsModule implements OnModuleInit {
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     private readonly configService: ConfigService
   ) {
-    this.pepper = Buffer.from(this.configService.config.crypto.pepper);
+    this.pepper = Buffer.from(this.configService.config.cryptoSecret);
   }
 
   // TODO: don't seed in production
   public async onModuleInit(): Promise<void> {
     const anyTeam = await this.teamRepository.find({});
 
-    if (anyTeam.length === 0) {
+    if (anyTeam.length === 0 && this.configService.config.database.seed) {
       DatabaseSeeder.pepper = this.pepper;
       const seeder = this.orm.getSeeder();
       await seeder.seed(DatabaseSeeder);

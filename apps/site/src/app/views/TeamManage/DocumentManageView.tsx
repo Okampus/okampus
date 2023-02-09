@@ -1,18 +1,18 @@
 import { CreateOrgDocumentForm } from '#site/app/components/Forms/CreateOrgDocumentForm';
-import { DocumentInput, DocumentWithEdits } from '#site/app/components/Input/DocumentInput';
+import { DocumentInput } from '#site/app/components/Input/DocumentInput';
 import { orgDocumentLabel, orgDocumentTitle } from '#site/app/misc/org-document-utils';
-import { useMutation } from '@apollo/client';
 import { OrgDocumentType, TeamType } from '@okampus/shared/enums';
 import {
   documentFragment,
-  DocumentInfoFragment,
   documentUploadFragment,
   getFragmentData,
   teamAddDocumentMutation,
-  TeamManageInfoFragment,
 } from '@okampus/shared/graphql';
 import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
+import { useMutation } from '@apollo/client';
 import { useContext } from 'react';
+import type { DocumentInfoFragment, TeamManageInfoFragment } from '@okampus/shared/graphql';
+import type { DocumentWithEdits } from '#site/app/components/Input/DocumentInput';
 
 function documentTypesByTeamType(teamType?: TeamType) {
   switch (teamType) {
@@ -42,6 +42,7 @@ function getDocumentWithEdits(document: DocumentInfoFragment): DocumentWithEdits
   return {
     current: {
       createdAt: document.createdAt,
+      text: document.text,
       name: document.name,
       yearVersion: document.yearVersion,
       file: {
@@ -56,6 +57,7 @@ function getDocumentWithEdits(document: DocumentInfoFragment): DocumentWithEdits
       const documentUpload = getFragmentData(documentUploadFragment, edit.documentUpload);
       return {
         createdAt: edit.createdAt,
+        text: document.text,
         name: documentUpload.name,
         yearVersion: edit.yearVersion,
         file: {
@@ -114,10 +116,12 @@ export function DocumentManageView() {
                       file={file}
                       onSubmit={(document) => {
                         if (org) {
+                          const name = document.name ?? documentName(type, org);
                           createOrgDocument({
                             variables: {
                               createOrgDocument: {
-                                name: document.name ?? documentName(type, org),
+                                text: name,
+                                name,
                                 description: document.description,
                                 type,
                               },

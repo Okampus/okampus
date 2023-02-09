@@ -82,10 +82,7 @@ import type {
   IDocumentEdit,
   IOrgDocument,
 } from '@okampus/shared/dtos';
-import type {
-  BaseEntity,
-  TenantCore,
-  TenantScopedEntity} from '@okampus/api/dal';
+import type { BaseEntity, TenantCore, TenantScopedEntity } from '@okampus/api/dal';
 import type { Snowflake } from '@okampus/shared/types';
 
 export function loadBase(base: BaseEntity): IBase | undefined {
@@ -662,6 +659,7 @@ export function loadTenantScopedEntity(
     contextStack[entity.id] = contentMaster;
 
     contentMaster.contentMasterKind = entity.contentMasterKind;
+    contentMaster.slug = entity.slug;
     contentMaster.title = entity.title;
     contentMaster.tags = loadApply(entity.tags, (tag) => loadTenantScopedEntity(tag, contextStack));
     contentMaster.contributors = loadApply(
@@ -770,7 +768,6 @@ export function loadTenantScopedEntity(
 
     return {
       ...baseUgc,
-      text: entity.text,
       parent: entity.parent ? loadTenantScopedEntity(entity, contextStack) : null,
       attachments: loadApply(entity.attachments, (attachment) => loadTenantScopedEntity(attachment, contextStack)),
     };
@@ -780,6 +777,7 @@ export function loadTenantScopedEntity(
     return {
       ...base,
       ugcKind: entity.ugcKind,
+      text: entity.text,
       isAnonymous: entity.isAnonymous,
       contentMaster: entity.contentMaster
         ? ((contextStack.contentMaster ?? loadTenantScopedEntity(entity.contentMaster, contextStack)) as IContentMaster)

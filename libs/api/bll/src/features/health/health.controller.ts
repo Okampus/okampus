@@ -3,21 +3,23 @@ import { ConfigService } from '../../global/config.module';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { RedisService } from '../../global/redis.module';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { MinioService } from '../../global/minio.module';
+import { UploadService } from '../upload/upload.service';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { MeiliSearchService } from '../search/meilisearch.service';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import {
+  HealthCheckService,
+  DiskHealthIndicator,
+  MemoryHealthIndicator,
+  MikroOrmHealthIndicator,
+} from '@nestjs/terminus';
 
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { HealthCheck } from '@nestjs/terminus';
 import { Public } from '@okampus/api/shards';
-
 import { S3Buckets } from '@okampus/shared/enums';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import {
-  DiskHealthIndicator,
-  HealthCheckService,
-  MemoryHealthIndicator,
-  MikroOrmHealthIndicator,
-} from '@nestjs/terminus';
+
 import type { HealthCheckResult, HealthIndicatorResult } from '@nestjs/terminus';
 
 @ApiTags('Health')
@@ -26,18 +28,27 @@ export class HealthController {
   checkStorageHealth: (() => Promise<HealthIndicatorResult>) | (() => Promise<HealthIndicatorResult>)[];
 
   constructor(
-    private readonly configService: ConfigService,
     private readonly health: HealthCheckService,
+    private readonly configService: ConfigService,
     private readonly redisService: RedisService,
-    private readonly database: MikroOrmHealthIndicator,
-    // private readonly meilisearch: MeiliSearchHealthIndicator,
+    private readonly uploadService: UploadService,
     private readonly disk: DiskHealthIndicator,
-    private readonly memory: MemoryHealthIndicator,
-    private readonly minio: MinioService
+    private readonly meilisearchService: MeiliSearchService,
+    private readonly database: MikroOrmHealthIndicator,
+    private readonly memory: MemoryHealthIndicator
   ) {
     const config = this.configService.config;
     this.checkStorageHealth = config.s3.enabled
-      ? Object.values(S3Buckets).map((bucket) => () => this.minio.checkHealth('storage', bucket))
+      ? Object.values(S3Buckets).map((bucket) => {
+          return async () => {
+            if (!this.uploadService.minioClient) {
+              return { [`s3-${bucket}`]: { status: 'down' } } as HealthIndicatorResult;
+            }
+
+            const isAlive = await this.uploadService.minioClient.bucketExists(bucket);
+            return { [`s3-${bucket}`]: { status: isAlive ? 'up' : 'down' } } as HealthIndicatorResult;
+          };
+        })
       : () => this.disk.checkStorage('disk', { path: config.upload.localPath, thresholdPercent: 0.75 });
   }
 
@@ -49,10 +60,11 @@ export class HealthController {
 
     return await this.health.check(
       [
-        () => this.database.pingCheck('database'),
         () => this.redisService.checkHealth('cache'),
-        () => this.memory.checkHeap('memory', MAX_HEAP_SIZE),
         this.checkStorageHealth,
+        () => this.meilisearchService.checkHealth('search'),
+        () => this.database.pingCheck('database'),
+        () => this.memory.checkHeap('memory', MAX_HEAP_SIZE),
       ].flat()
     );
   }

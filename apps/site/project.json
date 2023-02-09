@@ -37,19 +37,25 @@
         }
       }
     },
-    "test": {
-      "executor": "@nrwl/vite:test",
-      "outputs": ["coverage/apps/site"],
-      "options": {
-        "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/apps/site"
-      }
-    },
     "lint": {
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": ["nx run site:ts-check", "nx run site:eslint"]
+        "commands": [
+          "nx run site:ts-check",
+          "nx run site:ts-check-spec",
+          "nx run site:eslint",
+          "nx run site:prettier",
+          "nx run site:stylelint"
+        ]
+      }
+    },
+    "lint:fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "color": true,
+        "commands": ["nx run site:eslint --fix", "prettier --write apps/site", "nx run site:stylelint --fix"],
+        "parallel": false
       }
     },
     "ts-check": {
@@ -58,10 +64,38 @@
         "commands": ["tsc --pretty --noEmit -p apps/site/tsconfig.app.json"]
       }
     },
+    "ts-check-spec": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --pretty --noEmit -p apps/site/tsconfig.spec.json"]
+      }
+    },
     "eslint": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["eslint apps/site --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
+        "commands": ["eslint apps/site --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"]
+      }
+    },
+    "prettier": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["prettier --check apps/site"]
+      }
+    },
+    "stylelint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "stylelint apps/site/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/vite:test",
+      "outputs": ["coverage/apps/site"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/apps/site"
       }
     }
   },

@@ -3,7 +3,7 @@ import { AuthContextModel, getAuthContextPopulate } from './auth-context.model';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../../global/config.module';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { MeiliSearchService } from '../../../global/meilisearch.module';
+import { MeiliSearchService } from '../../search/meilisearch.service';
 
 import { RequestContext } from '../../../shards/abstract/request-context';
 import { addCookiesToResponse } from '../../../shards/utils/add-cookies-to-response';
@@ -101,7 +101,7 @@ export class AuthService extends RequestContext {
     };
     this.cookieOptions = configService.config.cookies.options;
     this.cookieNames = configService.config.cookies.names;
-    this.pepper = Buffer.from(this.configService.config.crypto.pepper);
+    this.pepper = Buffer.from(this.configService.config.cryptoSecret);
   }
 
   public async findCoreTenant(domain: string) {

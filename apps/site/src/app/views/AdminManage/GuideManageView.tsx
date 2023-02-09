@@ -1,15 +1,18 @@
 import { MultiFileInput } from '#site/app/components/Input/MultiFileInput';
-import { useMutation } from '@apollo/client';
-import { CreateDocumentDto, tenantAddDocumentMutation } from '@okampus/shared/graphql';
+import { tenantAddDocumentMutation } from '@okampus/shared/graphql';
 import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
-import { DynamicFieldData, DynamicForm } from '@okampus/ui/organisms';
+import { DynamicForm } from '@okampus/ui/organisms';
+import { useMutation } from '@apollo/client';
 import { useContext } from 'react';
+
+import type { DynamicFieldData } from '@okampus/ui/organisms';
+import type { CreateDocumentDto } from '@okampus/shared/graphql';
 
 export function GuideManageView() {
   const { previewFile, showModal, hideModal } = useContext(NavigationContext);
   const [{ tenant }] = useCurrentContext();
 
-  const [tenantAddDocument, { loading }] = useMutation(tenantAddDocumentMutation, {
+  const [tenantAddDocument] = useMutation(tenantAddDocumentMutation, {
     onCompleted: () => {
       hideModal();
     },

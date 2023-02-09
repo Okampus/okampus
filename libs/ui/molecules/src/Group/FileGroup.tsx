@@ -1,6 +1,6 @@
-import { FileLike } from '@okampus/shared/types';
-import { FileTypeIcon } from '@okampus/ui/atoms';
 import { ItemGroup } from './ItemGroup';
+import { FileTypeIcon } from '@okampus/ui/atoms';
+import type { FileLike } from '@okampus/shared/types';
 
 export type FileGroupProps = {
   files: FileLike[];
