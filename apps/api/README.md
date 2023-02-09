@@ -5,6 +5,8 @@
 
 <h3 align="center">Backend & API</h1>
 
+// TODO: Rewrite READMEs
+
 ## Lancer Okampus — API localement
 
 Pour lancer l'API d'Okampus localement, il faut suivre ces étapes :
