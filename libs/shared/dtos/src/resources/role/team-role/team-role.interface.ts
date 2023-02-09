@@ -1,3 +1,4 @@
+import type { TeamRoleKey } from '@okampus/shared/enums';
 import type { ITeam } from '../../org/team/team.interface';
 import type { IRole } from '../role.interface';
 import type { TeamRoleProps } from './team-role.props';
@@ -5,4 +6,5 @@ import type { TeamRoleProps } from './team-role.props';
 export type ITeamRole = IRole &
   TeamRoleProps & {
     team?: ITeam;
+    key: TeamRoleKey | null;
   };
