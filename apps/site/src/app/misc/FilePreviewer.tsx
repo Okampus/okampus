@@ -13,27 +13,17 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 import { motion } from 'framer-motion';
-import { FileLike } from '@okampus/shared/types';
+import type { FileLike } from '@okampus/shared/types';
 
 export type FilePreviewerProps = {
   file: FileLike;
   onClose: () => void;
 };
 
-function removeTextLayerOffset() {
-  // const textLayers = document.querySelectorAll('.react-pdf__Page__textContent');
-  // for (const layer of textLayers) {
-  //   const { style } = layer as HTMLElement;
-  //   style.top = '0';
-  //   style.left = '0';
-  //   style.transform = '';
-  // }
-}
-
 export function FilePreviewer({ file, onClose }: FilePreviewerProps) {
   const [preview, setPreview] = useState<JSX.Element | null>(null);
   const [numPages, setNumPages] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
+  // const [pageNumber, setPageNumber] = useState(1);
 
   const [fileSrc, setFileSrc] = useState<string | ArrayBuffer | null>(null);
 

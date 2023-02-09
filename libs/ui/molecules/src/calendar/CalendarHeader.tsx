@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
-
 import GlobalContext from './GlobalContext';
 
+import { useContext } from 'react';
 import dayjs from 'dayjs';
 
 import { ReactComponent as ChevronLeftIcon } from '@okampus/assets/svg/icons/chevron-left.svg';

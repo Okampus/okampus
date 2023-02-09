@@ -1,15 +1,15 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
-import { Modal, Toast } from '@okampus/ui/atoms';
 import { Backdrop } from '../components/Layout/Backdrop';
-import Sidebar from '../components/Layout/Sidebar/Sidebar';
+import { Sidebar } from '../components/Layout/Sidebar/Sidebar';
 import { SideModal } from '../components/Layout/SideModal';
 import { FilePreviewer } from '../misc/FilePreviewer';
-import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
 import { selectedMenuFromPath } from '../menus';
+import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
+import { Modal, Toast } from '@okampus/ui/atoms';
+import { AnimatePresence } from 'framer-motion';
+import { useContext, useEffect } from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-function TenantApp() {
+export function TenantApp() {
   const {
     isModalShown,
     modal,
@@ -70,8 +70,6 @@ function TenantApp() {
     </div>
   );
 }
-
-export default TenantApp;
 
 if (import.meta.vitest) {
   // add tests related to your file here

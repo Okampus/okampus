@@ -1,20 +1,23 @@
-import { useMutation } from '@apollo/client';
-import { CreateFinanceDto } from '@okampus/shared/dtos';
 import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
 import {
   createFinanceMutation,
   documentUploadFragment,
   financeFragment,
-  FinanceInfoFragment,
   getFragmentData,
 } from '@okampus/shared/graphql';
-import { Dashboard, DynamicFieldData, DynamicForm } from '@okampus/ui/organisms';
-import { useContext } from 'react';
+import { Dashboard, DynamicForm } from '@okampus/ui/organisms';
 
-import { clsx } from 'clsx';
 import { FileGroup } from '@okampus/ui/molecules';
 import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
-import { FileLike } from '@okampus/shared/types';
+
+import { useMutation } from '@apollo/client';
+import { clsx } from 'clsx';
+import { useContext } from 'react';
+
+import type { FileLike } from '@okampus/shared/types';
+import type { DynamicFieldData } from '@okampus/ui/organisms';
+import type { FinanceInfoFragment } from '@okampus/shared/graphql';
+import type { CreateFinanceDto } from '@okampus/shared/dtos';
 
 const columns = [
   {

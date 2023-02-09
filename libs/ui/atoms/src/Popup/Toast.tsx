@@ -1,10 +1,12 @@
+import './Toast.scss';
+
 import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/close.svg';
 
 import { clsx } from 'clsx'; // import { useContext } from 'react';
 // import { NavigationContext } from './context/NavigationContext';
-import './Toast.scss';
 import { motion } from 'framer-motion';
-import { ToastProps } from '@okampus/shared/types';
+
+import type { ToastProps } from '@okampus/shared/types';
 
 export function Toast({ id, type, message, timeout = 2000, onTimeout, onClose }: ToastProps) {
   // const { getNotifications, setNotifications } = useContext(NavigationContext);

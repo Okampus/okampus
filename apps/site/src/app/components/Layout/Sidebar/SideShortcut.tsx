@@ -4,15 +4,16 @@ import {
   ActorImageType,
   getFragmentData,
   getTeamManageQuery,
-  MyInfoFragment,
-  ShortcutType,
   teamFragment,
   teamMembersFragment,
 } from '@okampus/shared/graphql';
 import { Avatar, Bubble } from '@okampus/ui/atoms';
+import { SubspaceTypes } from '@okampus/shared/types';
+
 import { useContext } from 'react';
 import { useLazyQuery } from '@apollo/client';
-import { SubspaceTypes } from '@okampus/shared/types';
+
+import type { MyInfoFragment, ShortcutType } from '@okampus/shared/graphql';
 
 type SideShortcutProps = {
   shortcut: MyInfoFragment['shortcuts'][number];

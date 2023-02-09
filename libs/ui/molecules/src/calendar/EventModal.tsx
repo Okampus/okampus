@@ -1,5 +1,6 @@
-import React, { useContext, useState, MouseEventHandler } from 'react';
 import GlobalContext from './GlobalContext';
+import { useContext, useState } from 'react';
+import type { MouseEventHandler } from 'react';
 
 const labelsClasses = ['indigo', 'gray', 'green', 'blue', 'red', 'purple'];
 

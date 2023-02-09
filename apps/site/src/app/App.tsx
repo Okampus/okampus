@@ -8,14 +8,15 @@ import '@okampus/ui/styles/components/status.scss';
 import './App.scss';
 import './styles/colors.scss';
 
-import { RouterProvider } from 'react-router-dom';
-import { useState } from 'react';
-
 import { router } from './router';
 import { GridLoader } from '@okampus/ui/atoms';
-import { defaultSelectedMenu, FileLike, ModalProps, SelectedMenu, Snowflake, ToastProps } from '@okampus/shared/types';
-import { AnimatePresence, motion } from 'framer-motion';
+import { defaultSelectedMenu } from '@okampus/shared/types';
 import { NavigationContext, CurrentContext } from '@okampus/ui/hooks';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
+import { RouterProvider } from 'react-router-dom';
+
+import type { FileLike, ModalProps, SelectedMenu, Snowflake, ToastProps } from '@okampus/shared/types';
 
 function App() {
   const [currentUserId, setCurrentUserId] = useState<Snowflake | null>(null);

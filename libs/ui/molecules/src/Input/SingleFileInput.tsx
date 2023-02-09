@@ -1,10 +1,13 @@
 import { ReactComponent as UploadFileicon } from '@okampus/assets/svg/icons/upload-file.svg';
 import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/close.svg';
 import { FileTypeIcon } from '@okampus/ui/atoms';
-import React, { ChangeEvent, useRef } from 'react';
 import { bytes } from '@okampus/shared/utils';
+
+import React, { useRef } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 import clsx from 'clsx';
+
+import type { ChangeEvent } from 'react';
 
 export type SingleFileInputProps = {
   value: File | null;

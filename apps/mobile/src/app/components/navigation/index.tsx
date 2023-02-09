@@ -9,10 +9,11 @@ import { NotFoundScreen } from '../../screens/NotFoundScreen';
 import LinkingConfiguration from '../../../config/LinkingConfiguration';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as React from 'react';
-import type { ColorSchemeName } from 'react-native';
+
+import React from 'react';
 
 import type { RootStackParamList } from '../../types';
+import type { ColorSchemeName } from 'react-native';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (

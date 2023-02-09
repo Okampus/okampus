@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import dayjs from 'dayjs';
 import React from 'react';
 
-import { EventType, Label, ReduceEvent } from './types';
+import type { EventType, Label, ReduceEvent } from './types';
+import type dayjs from 'dayjs';
 
 const GlobalContext = React.createContext({
   monthIndex: 0 as number,

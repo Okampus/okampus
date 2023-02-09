@@ -1,22 +1,22 @@
-import { useQuery } from '@apollo/client';
 import { ActorImageType, Align, OrgDocumentType } from '@okampus/shared/enums';
 import {
   actorImageBareFragment,
   documentFragment,
   documentUploadFragment,
-  DocumentUploadInfoFragment,
   getFragmentData,
   getTeamsWithMembersQuery,
   teamMembersFragment,
-  TeamMembersInfoFragment,
   TeamRoleKey,
 } from '@okampus/shared/graphql';
-import { FileLike } from '@okampus/shared/types';
 import { FileTypeIcon, StatusLabel } from '@okampus/ui/atoms';
 import { NavigationContext } from '@okampus/ui/hooks';
 import { AvatarGroup, UserLabel } from '@okampus/ui/molecules';
 import { Dashboard } from '@okampus/ui/organisms';
+import { useQuery } from '@apollo/client';
 import { useContext } from 'react';
+
+import type { FileLike } from '@okampus/shared/types';
+import type { DocumentUploadInfoFragment, TeamMembersInfoFragment } from '@okampus/shared/graphql';
 
 function getUserLabel(member?: { actor?: { actorImages: any[]; name: string } | null } | null) {
   if (!member || !member.actor) return <StatusLabel status="archived" label="N/A" />;

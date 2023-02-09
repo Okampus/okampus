@@ -1,11 +1,4 @@
-import { useQuery } from '@apollo/client';
-import {
-  documentFragment,
-  documentUploadFragment,
-  getFragmentData,
-  getTenantDocumentsQuery,
-  tenantFragment,
-} from '@okampus/shared/graphql';
+import { documentFragment, documentUploadFragment, getFragmentData } from '@okampus/shared/graphql';
 import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
 import { DocumentCard } from '@okampus/ui/molecules';
 import { useContext } from 'react';
@@ -27,6 +20,8 @@ export function GuideView() {
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4">
       {tenant.documents.map((orgDocument) => {
+        if (!orgDocument.document) return null;
+
         const document = getFragmentData(documentFragment, orgDocument.document);
         const documentUpload = getFragmentData(documentUploadFragment, document.documentUpload);
 

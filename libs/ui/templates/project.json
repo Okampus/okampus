@@ -30,7 +30,9 @@
     "eslint": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["eslint libs/ui/templates --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
+        "commands": [
+          "eslint libs/ui/templates --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"
+        ]
       }
     },
     "test": {

@@ -1,9 +1,9 @@
 // import { useContext } from 'react';
 // import { NavigationContext } from '../../../../../apps/site/src/app/context/NavigationContext';
 // import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/close.svg';
+import { HeadingSeparated } from '../Heading/HeadingSeparated';
 import { motion } from 'framer-motion';
 // import { clsx } from 'clsx';
-import { HeadingSeparated } from '../Heading/HeadingSeparated';
 
 type SideModalProps = {
   title?: React.ReactNode;

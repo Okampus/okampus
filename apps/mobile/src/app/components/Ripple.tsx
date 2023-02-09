@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Animated,
-  Easing,
-  Platform,
-  TouchableWithoutFeedback,
-  I18nManager,
-  StyleSheet
-} from 'react-native';
+import { View, Animated, Easing, Platform, TouchableWithoutFeedback, I18nManager, StyleSheet } from 'react-native';
+
 import type {
   TouchableWithoutFeedbackProps,
   LayoutChangeEvent,
   GestureResponderEvent,
   StyleProp,
-  ViewStyle} from 'react-native';
+  ViewStyle,
+} from 'react-native';
 
 let mounted = false;
 let unique = 0;

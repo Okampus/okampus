@@ -1,9 +1,11 @@
 import { BottomBar } from './BottomBar';
 import { MenuIcon } from './MenuIcon';
 import { PrimaryText } from '../PrimaryText';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import React from 'react';
-import type { BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import type { DrawerScreenProps } from '@react-navigation/drawer';
 import type { ParamListBase } from '@react-navigation/native';
 

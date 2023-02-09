@@ -25,7 +25,8 @@ type CreateEventFormData = {
   private: boolean;
 };
 
-const schema = z
+// TODO: fix schema with custom DynamicFrom
+const _schema = z
   .object({
     title: z.string().min(3, { message: "Le nom de l'événement doit faire au moins 3 caractères." }),
     start: z.string().refine((date) => new Date(Date.parse(date)) > new Date(), {

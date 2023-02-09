@@ -61,7 +61,7 @@
     "eslint": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["eslint apps/site --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
+        "commands": ["eslint apps/site --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"]
       }
     }
   },

@@ -1,9 +1,10 @@
-import { StrictMode } from 'react';
-import * as ReactDOM from 'react-dom/client';
 import App from './app/App';
+import { apolloClient } from './app/providers/apollo.client';
+
+import { StrictMode } from 'react';
+import ReactDOM from 'react-dom/client';
 
 import { ApolloProvider } from '@apollo/client';
-import { apolloClient } from './app/providers/apollo.client';
 
 import 'dayjs/locale/fr';
 import { locale } from 'dayjs';
