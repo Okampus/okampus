@@ -113,13 +113,19 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": ["nx run mobile:ts-check", "nx run mobile:eslint"]
+        "commands": ["nx run mobile:ts-check", "nx run mobile:ts-check-spec", "nx run mobile:eslint"]
       }
     },
     "ts-check": {
       "executor": "nx:run-commands",
       "options": {
         "commands": ["tsc --pretty --noEmit -p apps/mobile/tsconfig.app.json"]
+      }
+    },
+    "ts-check-spec": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --pretty --noEmit -p apps/mobile/tsconfig.spec.json"]
       }
     },
     "eslint": {
