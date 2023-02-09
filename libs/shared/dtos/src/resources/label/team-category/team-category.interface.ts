@@ -3,6 +3,6 @@ import type { ITenantScoped } from '../../tenant-scoped.interface';
 import type { TeamCategoryProps } from './team-category.props';
 
 export type ITeamCategory = ITenantScoped &
-  TeamCategoryProps & {
+  Required<TeamCategoryProps> & {
     teams?: ITeam[];
   };
