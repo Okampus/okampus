@@ -31,7 +31,7 @@ import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import type { INestApplication, Logger } from '@nestjs/common';
 import type { Snowflake } from '@okampus/shared/types';
 
-const sessionKey = Buffer.from(config.session.secret, 'ascii');
+const sessionKey = Buffer.from(config.session.secret, 'ascii').subarray(0, 32);
 
 const cspConfigDevelopment = {
   contentSecurityPolicy: false,
