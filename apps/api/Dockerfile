@@ -24,9 +24,11 @@ ADD --chown=api:api apps/api ./apps/api
 ADD --chown=api:api libs/api ./libs/api
 ADD --chown=api:api libs/shared ./libs/shared
 
+RUN pnpm tsc --pretty -p apps/api/tsconfig.migrations.json
 RUN pnpm nx run api:build:production
+
 USER api
 
 EXPOSE 8081
 
-CMD /wait && sh apps/api/migrate.sh && node dist/apps/api/main.mjs
+CMD /wait && MIKRO_ORM_MIGRATION=up node dist/apps/api/main.mjs && node dist/apps/api/main.mjs

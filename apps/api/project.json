@@ -17,6 +17,20 @@
         }
       }
     },
+    "migration:create": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "commands": ["MIKRO_ORM_MIGRATION=create node dist/apps/api/main.mjs"]
+      }
+    },
+    "migration:up": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["migration:create"],
+      "options": {
+        "commands": ["sh apps/api/migrate.sh"]
+      }
+    },
     "serve": {
       "executor": "@nrwl/vite:dev-server",
       "defaultConfiguration": "development",
