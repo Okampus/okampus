@@ -1,7 +1,7 @@
+import type { Snowflake } from '../../../snowflake';
 import type { RequestType, TokenType } from '@okampus/shared/enums';
-import type { Snowflake } from './snowflake';
 
-export interface Claims {
+export interface AuthTokenClaims {
   iss?: string;
   sub: Snowflake;
   exp?: number;
