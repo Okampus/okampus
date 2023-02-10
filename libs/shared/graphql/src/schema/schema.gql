@@ -364,6 +364,7 @@ type DocumentModel {
   representingOrg: OrgModel
   contentMaster: ContentMasterModel!
   name: String!
+  description: String
   yearVersion: Int
   documentUpload: DocumentUploadModel!
   edits: [DocumentEditModel!]!
