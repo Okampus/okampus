@@ -181,9 +181,6 @@ export * from './features/uaa/authentification/auth.module';
 export * from './features/uaa/authentification/auth.resolver';
 export * from './features/uaa/authentification/auth.service';
 export * from './features/uaa/authentification/dto/login.dto';
-export * from './features/uaa/authentification/dto/pre-register-sso.dto';
-export * from './features/uaa/authentification/dto/register.dto';
-export * from './features/uaa/authentification/dto/tenant-user.dto';
 export * from './features/uaa/authentification/tenant.strategy';
 export * from './features/uaa/authorization/casl/get-abilities';
 export * from './features/uaa/authorization/check-permissions';
@@ -212,5 +209,4 @@ export * from './shards/types/pagination-options.type';
 export * from './shards/utils/add-cookies-to-response';
 export * from './shards/utils/catch-unique-violation';
 export * from './shards/utils/cursor-serializer';
-export * from './shards/utils/user-creation-options.interface';
 // @endindex

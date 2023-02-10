@@ -4,14 +4,13 @@ import { AuthContextModel, getAuthContextPopulate } from './auth-context.model';
 import { ConfigService } from '../../../global/config.module';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { MeiliSearchService } from '../../search/meilisearch.service';
-
-import { RequestContext } from '../../../shards/abstract/request-context';
-import { addCookiesToResponse } from '../../../shards/utils/add-cookies-to-response';
-
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UserFactory } from '../../../domains/factories/domains/users/user.factory';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TenantFactory } from '../../../domains/factories/domains/tenants/tenant.factory';
+
+import { RequestContext } from '../../../shards/abstract/request-context';
+import { addCookiesToResponse } from '../../../shards/utils/add-cookies-to-response';
 
 import fastifyCookie from '@fastify/cookie';
 import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
@@ -42,7 +41,7 @@ const { JsonWebTokenError, NotBeforeError, TokenExpiredError } = jsonwebtoken;
 
 import type { JwtSignOptions } from '@nestjs/jwt';
 import type { Bot, TenantCore, User } from '@okampus/api/dal';
-import type { ApiConfig, Cookie, Claims, Snowflake } from '@okampus/shared/types';
+import type { ApiConfig, Cookie, AuthTokenClaims, Snowflake } from '@okampus/shared/types';
 import type { LoginDto } from './dto/login.dto';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { SessionProps } from '@okampus/shared/dtos';
@@ -111,18 +110,18 @@ export class AuthService extends RequestContext {
     return tenant;
   }
 
-  public findBareUserOrFail(id: Snowflake) {
-    return this.sessionRepository.findOneOrFail({ id }, { populate: ['user'] });
-  }
-
-  public async processToken(token: string, claims: Partial<Claims>, options: JwtSignOptions): Promise<Claims> {
+  public async processToken(
+    token: string,
+    expectedClaims: Partial<AuthTokenClaims>,
+    options: JwtSignOptions
+  ): Promise<AuthTokenClaims> {
     if (!token) throw new UnauthorizedException('Token not provided');
 
     const unsignedToken = fastifyCookie.unsign(token, this.configService.config.cookies.signature);
     if (!unsignedToken.valid || !unsignedToken.value) throw new BadRequestException('Invalid cookie signature');
 
     try {
-      await this.jwtService.verifyAsync<Claims>(unsignedToken.value, options);
+      await this.jwtService.verifyAsync<AuthTokenClaims>(unsignedToken.value, options);
     } catch (error) {
       if (error instanceof TokenExpiredError) throw new UnauthorizedException('Token expired');
       if (error instanceof JsonWebTokenError) throw new UnauthorizedException('Invalid token');
@@ -130,10 +129,10 @@ export class AuthService extends RequestContext {
       throw new InternalServerErrorException('Token could not be verified');
     }
 
-    const decoded = this.jwtService.decode(unsignedToken.value) as Claims;
+    const decoded = this.jwtService.decode(unsignedToken.value) as AuthTokenClaims;
     if (!decoded) throw new BadRequestException('Failed to decode JWT');
 
-    if (!objectContains(decoded, { ...claims, iss: this.configService.config.tokens.issuer }) || !decoded.sub)
+    if (!objectContains(decoded, { ...expectedClaims, iss: this.configService.config.tokens.issuer }) || !decoded.sub)
       throw new UnauthorizedException('Invalid token claims');
 
     return decoded;
@@ -177,7 +176,7 @@ export class AuthService extends RequestContext {
     };
   }
 
-  public async createJwt(claims: Partial<Claims>, tokenType: AuthTokens): Promise<CookieWithMaxAge> {
+  public async createJwt(claims: Partial<AuthTokenClaims>, tokenType: AuthTokens): Promise<CookieWithMaxAge> {
     const { secrets, issuer, expirations } = this.configService.config.tokens;
 
     const secret = secrets[tokenType];
@@ -193,7 +192,7 @@ export class AuthService extends RequestContext {
   }
 
   /* Creates an HttpOnly token with an "expiration" token making the token expiration accessible to JS */
-  public async createHttpOnlyJwt(claims: Claims, tokenType: HttpOnlyTokens): Promise<Cookie[]> {
+  public async createHttpOnlyJwt(claims: AuthTokenClaims, tokenType: HttpOnlyTokens): Promise<Cookie[]> {
     const token = await this.createJwt({ ...claims, req: RequestType.Http, tok: tokenType }, tokenType);
 
     const expirationToken = {
@@ -318,13 +317,16 @@ export class AuthService extends RequestContext {
       return this.userFactory.entityToModelOrFail(user);
     };
 
-    const [userModel, tenantModel] = await Promise.all([
-      getUser(),
-      this.tenantRepository.findOneOrFail({ tenant: { id: user.tenant.id } }, { populate: populate.tenant }),
-    ]);
+    const getTenant = async () => {
+      const where = { tenant: { id: user.tenant.id } };
+      const tenant = await this.tenantRepository.findOneOrFail(where, { populate: populate.tenant });
+      return this.tenantFactory.entityToModelOrFail(tenant);
+    };
+
+    const [userModel, tenantModel] = await Promise.all([getUser(), getTenant()]);
 
     await this.addTokensOnAuth(req, res, user.id);
-    return new AuthContextModel(userModel, this.tenantFactory.entityToModelOrFail(tenantModel));
+    return new AuthContextModel(userModel, tenantModel);
   }
 
   public async login(body: LoginDto, req: FastifyRequest, res: FastifyReply): Promise<AuthContextModel> {
@@ -336,15 +338,4 @@ export class AuthService extends RequestContext {
 
     return this.getAuthContext(user, req, res);
   }
-
-  // public async createOrUpdate(userInfo: PreRegisterSsoDto, forTenant: string): Promise<User> {
-  //   const user = await this.usersService.findBare(userInfo.id);
-  //   if (!user) return await this.usersService.createBare(userInfo, forTenant);
-
-  //   // if (!user.hasChanged({ ...userInfo })) return user;
-
-  //   wrap(user).assign(userInfo);
-  //   await this.userRepository.flush();
-  //   return user;
-  // }
 }

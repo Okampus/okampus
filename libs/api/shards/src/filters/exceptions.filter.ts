@@ -1,7 +1,12 @@
 import { Catch, HttpException } from '@nestjs/common';
-import type { ErrorFilterResponse } from '@okampus/shared/types';
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
 import type { GqlContextType } from '@nestjs/graphql';
+
+export interface ErrorFilterResponse {
+  statusCode: number;
+  error: string;
+  message: string;
+}
 
 @Catch(HttpException)
 export class ExceptionsFilter implements ExceptionFilter {
