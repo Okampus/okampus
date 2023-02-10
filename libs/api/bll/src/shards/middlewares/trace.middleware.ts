@@ -1,6 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { SentryService } from '../../global/sentry.module';
 import { Injectable } from '@nestjs/common';
 
-import type { SentryService } from '../../global/sentry.module';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { NestMiddleware } from '@nestjs/common';
 
