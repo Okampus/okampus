@@ -7,6 +7,7 @@ on:
       - master
     paths:
       - 'apps/api/**'
+      - 'libs/api/**'
       - '!*/**/*.md'
       - '.github/workflows/backend-build.yml'
 

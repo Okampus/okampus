@@ -1,11 +1,12 @@
 name: Update production chart version
 
 on:
-  push: 
+  push:
     branches:
       - master
     paths:
       - 'apps/api/**'
+      - 'libs/api/**'
       - '!*/**/*.md'
       - '.github/workflows/backend-deploy-prod.yml'
 
@@ -15,34 +16,33 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        repository: 'Okampus/chart'
-        token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
-        
-    - name: Install PyBump
-      run: |
-        python3 -m pip install pybump
-      shell: bash
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: 'Okampus/chart'
+          token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
 
-    - name: Automated Version Bump
-      id: version-bump
-      run: |
-        pybump bump --file charts/okampus/Chart.yaml --level patch
-      shell: bash
-    
-    - name: Set version and save file
-      uses: mikefarah/yq@master
-      with:
-        cmd: yq -i '.appVersion = "${{ github.sha }}"' 'charts/okampus/Chart.yaml'
-    
-    - run: |
-        git config user.name github-actions
-        git config user.email github-actions@github.com
-        git add .
-        git commit -m 'Updated chart version to ${{ github.sha }}
-        
-        https://github.com/Okampus/okampus/tree/${{ github.sha }}'
-        git push
-    
+      - name: Install PyBump
+        run: |
+          python3 -m pip install pybump
+        shell: bash
+
+      - name: Automated Version Bump
+        id: version-bump
+        run: |
+          pybump bump --file charts/okampus/Chart.yaml --level patch
+        shell: bash
+
+      - name: Set version and save file
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq -i '.appVersion = "${{ github.sha }}"' 'charts/okampus/Chart.yaml'
+
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m 'Updated chart version to ${{ github.sha }}
+
+          https://github.com/Okampus/okampus/tree/${{ github.sha }}'
+          git push

@@ -8,11 +8,13 @@ on:
       - ci/*
     paths:
       - 'apps/api/**'
+      - 'libs/api/**'
       - '!*/**/*.md'
       - '.github/workflows/backend-test.yml'
   pull_request:
     paths:
       - 'apps/api/**'
+      - 'libs/api/**'
       - '!*/**/*.md'
       - '.github/workflows/backend-test.yml'
 
