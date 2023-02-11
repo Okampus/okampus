@@ -45,8 +45,13 @@ export class HealthController {
               return { [`s3-${bucket}`]: { status: 'down' } } as HealthIndicatorResult;
             }
 
-            const isAlive = await this.uploadService.minioClient.bucketExists(bucket);
-            return { [`s3-${bucket}`]: { status: isAlive ? 'up' : 'down' } } as HealthIndicatorResult;
+            let bucketExists = false;
+            try {
+              bucketExists = await this.uploadService.minioClient.bucketExists(bucket);
+              return { [`s3-${bucket}`]: { status: bucketExists ? 'up' : 'down' } } as HealthIndicatorResult;
+            } catch {
+              return { [`s3-${bucket}`]: { status: 'down' } } as HealthIndicatorResult;
+            }
           };
         })
       : () => this.disk.checkStorage('disk', { path: config.upload.localPath, thresholdPercent: 0.75 });
