@@ -16,7 +16,6 @@ import type { AuthContextModel } from './auth-context.model';
 import type { LoginDto } from './dto/login.dto';
 // import { RegisterDto } from './dto/register.dto';
 
-// TODO: manage sessions and revokable refresh tokens
 @ApiTags('Authentication')
 @Controller({ path: 'auth' })
 export class AuthController {
@@ -46,18 +45,6 @@ export class AuthController {
   ): Promise<AuthContextModel> {
     return referenceRemover(await this.authService.login(body, req, res));
   }
-
-  // @CheckPolicies((ability) => ability.can(Action.Create, User))
-  // @Post('register')
-  // public async register(@Body() dto: RegisterDto): Promise<User> {
-  //   return await this.usersService.create(dto);
-  // }
-
-  // @CheckPolicies((ability) => ability.can(Action.Create, User))
-  // @Post('pre-register-sso')
-  // public async preRegisterSso(@Body() dto: PreRegisterSsoDto, @ForTenant() tenant: TenantCore): Promise<User> {
-  //   return await this.authService.createOrUpdate(dto, tenant.domain);
-  // }
 
   @Public()
   @Get('logout')

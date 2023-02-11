@@ -1,7 +1,6 @@
 import { MeiliSearchService } from './meilisearch.service';
-import { ConfigModule } from '../../global/config.module';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ConfigService } from '../../global/config.module';
+import { ConfigModule, ConfigService } from '../../global/config.module';
 
 import { Global, Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
