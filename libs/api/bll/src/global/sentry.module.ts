@@ -1,21 +1,29 @@
-import { Global, Injectable, Module } from '@nestjs/common';
-import Sentry from '@sentry/node';
-import { exit } from 'node:process';
-import type { ClientOptions, Client } from '@sentry/types';
-import type { NodeOptions } from '@sentry/node';
-import type { DynamicModule } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ConfigModule, ConfigService } from '../global/config.module';
 
-const runOrGet = (value: unknown) => (typeof value === 'function' ? value() : value);
+import { Global, HttpException, Injectable, Module } from '@nestjs/common';
+import Sentry from '@sentry/node';
+
+import { exit } from 'node:process';
+import type { NodeOptions } from '@sentry/node';
+
+import type { ClientOptions, Client } from '@sentry/types';
 
 @Injectable()
 export class SentryService {
-  sentry: typeof Sentry;
-  constructor(public readonly options: NodeOptions) {
+  sentry: typeof Sentry | null = null;
+
+  constructor(private readonly configService: ConfigService) {}
+
+  async init() {
     this.sentry = Sentry;
-    const { integrations = [], ...sentryOptions } = options;
-    this.sentry.init({
-      ...sentryOptions,
+    const sentryOptions: NodeOptions = {
+      dsn: this.configService.config.sentry.dsn,
+      debug: false,
+      enabled: this.configService.config.sentry.enabled,
+      release: this.configService.config.release,
       integrations: [
+        new Sentry.Integrations.Http({ tracing: true }),
         new Sentry.Integrations.OnUncaughtException({
           onFatalError: async (error) => {
             if (error.name === 'SentryError') {
@@ -28,29 +36,38 @@ export class SentryService {
           },
         }),
         new Sentry.Integrations.OnUnhandledRejection({ mode: 'warn' }),
-        ...runOrGet(integrations),
       ],
-    });
+      beforeSend: (event, hint) => {
+        if (
+          hint !== undefined &&
+          hint.originalException instanceof HttpException &&
+          hint.originalException.getStatus() < 500
+        )
+          return null;
+
+        return event;
+      },
+      tracesSampleRate: 1,
+      environment: this.configService.config.nodeEnv,
+    };
+
+    this.sentry.init(sentryOptions);
   }
 
   async onApplicationShutdown() {
-    await Sentry.close(1000);
+    if (this.sentry) await this.sentry.close(1000);
   }
 }
 
 @Global()
-@Module({})
+@Module({
+  imports: [ConfigModule],
+  providers: [SentryService],
+  exports: [SentryService],
+})
 export class SentryModule {
-  static forRoot(options: NodeOptions): DynamicModule {
-    const sentryProvider = {
-      provide: SentryService,
-      useValue: new SentryService(options),
-    };
-
-    return {
-      module: SentryModule,
-      providers: [sentryProvider],
-      exports: [sentryProvider],
-    };
+  constructor(private readonly configService: ConfigService, private readonly sentryService: SentryService) {}
+  public async onModuleInit(): Promise<void> {
+    if (this.configService.config.redis.enabled) await this.sentryService.init();
   }
 }

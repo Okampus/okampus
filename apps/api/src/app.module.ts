@@ -1,10 +1,9 @@
 import { AppController } from './app.controller';
 import { config } from '../configs/config';
+
 import graphqlConfig from '../configs/graphql.config';
 import mikroOrmConfig from '../configs/mikro-orm.config';
-import { redisOptions } from '../configs/redis.config';
 
-import { sentryConfig } from '../configs/sentry.config';
 import {
   HealthModule,
   MeiliSearchModule,
@@ -103,33 +102,40 @@ import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@n
     // CaslModule,
     ConfigModule.forRoot(config),
     GraphQLModule.forRoot<MercuriusDriverConfig>(graphqlConfig),
-    PubSubModule.forRoot({
-      host: config.redis.host,
-      port: config.redis.port,
-      password: config.redis.password,
-    }),
     MikroOrmModule.forRoot(mikroOrmConfig),
-    SentryModule.forRoot(sentryConfig),
     ScheduleModule.forRoot(),
 
+    SentryModule,
+    RedisModule,
+    MeiliSearchModule,
+
     // Cache
-    CacheModule.registerAsync({
-      useFactory: async () => ({
-        store: await redisStore({
-          // Store-specific configuration:
-          socket: {
+    ...(config.redis.enabled
+      ? [
+          PubSubModule.forRoot({
             host: config.redis.host,
             port: config.redis.port,
-          },
-          password: config.redis.password,
-        }),
-      }),
-      isGlobal: true,
-    } as CacheModuleAsyncOptions),
+            password: config.redis.password,
+          }),
+          CacheModule.registerAsync({
+            useFactory: async () => ({
+              store: await redisStore({
+                // Store-specific configuration:
+                socket: {
+                  host: config.redis.host,
+                  port: config.redis.port,
+                },
+                password: config.redis.password,
+              }),
+            }),
+            isGlobal: true,
+          } as CacheModuleAsyncOptions),
+        ]
+      : [
+          // TODO: add fallback pubsub if redis is disabled
+          CacheModule.register(),
+        ]),
 
-    RedisModule.forRoot(redisOptions),
-
-    MeiliSearchModule,
     OIDCCacheModule,
     UploadModule,
 
