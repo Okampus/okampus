@@ -19,12 +19,13 @@ import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { HealthCheck } from '@nestjs/terminus';
 import { Public } from '@okampus/api/shards';
-import { S3Buckets } from '@okampus/shared/enums';
+import { kebabize } from '@okampus/shared/utils';
 
+import { S3Buckets } from '@okampus/shared/enums';
 import type { HealthCheckResult, HealthIndicatorResult } from '@nestjs/terminus';
 
 function getBucketStatus(bucket: string, isOk: boolean): HealthIndicatorResult {
-  return { [`s3-${bucket}`]: { status: isOk ? 'up' : 'down' } };
+  return { [`s3-${kebabize(bucket)}`]: { status: isOk ? 'up' : 'down' } };
 }
 
 @ApiTags('Health')
@@ -54,7 +55,7 @@ export class HealthController {
           return async () => {
             if (!this.uploadService.minioClient) return getBucketStatus(bucket, false);
             return await this.uploadService.minioClient
-              .bucketExists(bucket)
+              .bucketExists(config.s3.buckets[bucket])
               .then((exists) => getBucketStatus(bucket, exists))
               .catch(() => getBucketStatus(bucket, false));
           };
