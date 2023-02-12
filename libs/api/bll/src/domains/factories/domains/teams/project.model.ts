@@ -1,10 +1,11 @@
 // eslint-disable-next-line import/no-cycle
 import { TeamModel } from './team.model';
-import { Paginated } from '../../../../shards/types/paginated.type';
-import { IndividualModel } from '../../abstract/individual.model';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
+// eslint-disable-next-line import/no-cycle
 import { TenantEventModel } from '../events/event.model';
 import { UserModel } from '../users/user.model';
+import { IndividualModel } from '../../abstract/individual.model';
+import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
+import { Paginated } from '../../../../shards/types/paginated.type';
 import { ObjectType, Field, Float } from '@nestjs/graphql';
 import type { IIndividual, IProject, ITeam, ITenantCore, ITenantEvent, IUser } from '@okampus/shared/dtos';
 
