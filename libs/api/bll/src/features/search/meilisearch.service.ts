@@ -58,6 +58,9 @@ export class MeiliSearchService {
     });
   }
 
+  private readonly logger = new ConsoleLogger('MeiliSearch');
+  private readonly filterables = ['category', 'tags', 'score', 'entityType'];
+
   async checkHealth(name: string): Promise<HealthIndicatorResult> {
     const isAlive = await this.client.isHealthy();
     return { [name]: { status: isAlive ? 'up' : 'down' } };
@@ -69,9 +72,6 @@ export class MeiliSearchService {
   }
 
   public static indexedEntities = [TenantEvent, Team, User] as const;
-
-  private readonly logger = new ConsoleLogger('MeiliSearch');
-  private readonly filterables = ['category', 'tags', 'score', 'entityType'];
 
   public static getEntityId(entity: Searchable, type: string): string {
     return [entity.tenant.id, type, entity.id.toString()]

@@ -1005,12 +1005,23 @@ type TeamActionModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   name: String!
-  description: String!
+  description: String
+  state: ApprovalState!
   score: Int!
-  event: TenantEventModel
   team: TeamModel
   user: UserModel
   teamMember: TeamMemberModel
+  linkedEvent: TenantEventModel
+  linkedProject: ProjectModel
+  createdBy: IndividualModel
+  validatedBy: TeamMemberModel
+}
+
+"""The ApprovalState enum"""
+enum ApprovalState {
+  Pending
+  Approved
+  Rejected
 }
 
 type TeamActionModelEdge {

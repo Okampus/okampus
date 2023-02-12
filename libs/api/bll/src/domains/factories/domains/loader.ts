@@ -241,7 +241,24 @@ const getTenantOrLoad = (
   return tenantCore;
 };
 
-function getEntityFromStackOrLoad(entity: TenantScopedEntity, contextStack: Record<Snowflake, AllInterfaces>) {
+export function getEntityFromStackOrLoad<T extends TenantScopedEntity>(
+  entity: T,
+  contextStack: Record<Snowflake, AllInterfaces>
+): LoadInterface<T> | undefined;
+
+export function getEntityFromStackOrLoad<T extends TenantScopedEntity>(
+  entity: T | null,
+  contextStack: Record<Snowflake, AllInterfaces>,
+  nullable: true
+): LoadInterface<T> | null | undefined;
+
+export function getEntityFromStackOrLoad(
+  entity: TenantScopedEntity,
+  contextStack: Record<Snowflake, AllInterfaces>,
+  nullable = false
+) {
+  if (nullable && !entity) return null;
+
   const entityFromStack = contextStack[entity.id];
   if (entityFromStack) return entityFromStack;
 
@@ -273,7 +290,7 @@ export function loadTenantScopedEntity(
     if (!baseTag) return undefined;
     return {
       ...baseTag,
-      teams: loadApply(entity.teams, (team) => getEntityFromStackOrLoad(team, contextStack) as ITeam),
+      teams: loadApply(entity.teams, (team) => getEntityFromStackOrLoad(team, contextStack)),
     };
   }
 
@@ -296,7 +313,7 @@ export function loadTenantScopedEntity(
       type: entity.type,
       url: entity.url,
       pseudo: entity.pseudo,
-      actor: getEntityFromStackOrLoad(entity.actor, contextStack) as IActor,
+      actor: getEntityFromStackOrLoad(entity.actor, contextStack),
       tenant,
     };
   }
@@ -352,7 +369,7 @@ export function loadTenantScopedEntity(
       lastActiveDate: entity.lastActiveDate,
       type: entity.type,
       image: loadTenantScopedEntity(entity.image, contextStack),
-      actor: getEntityFromStackOrLoad(entity.actor, contextStack) as IActor,
+      actor: getEntityFromStackOrLoad(entity.actor, contextStack),
       tenant,
     };
   }
@@ -361,8 +378,8 @@ export function loadTenantScopedEntity(
     return {
       ...base,
       type: entity.type,
-      targetActor: getEntityFromStackOrLoad(entity.targetActor, contextStack) as IActor,
-      user: getEntityFromStackOrLoad(entity.user, contextStack) as IUser,
+      targetActor: getEntityFromStackOrLoad(entity.targetActor, contextStack),
+      user: getEntityFromStackOrLoad(entity.user, contextStack),
       tenant,
     };
   }
@@ -395,7 +412,7 @@ export function loadTenantScopedEntity(
     user.roles = entity.roles;
     user.shortcuts = loadApply(entity.shortcuts, (shortcut) => loadTenantScopedEntity(shortcut, contextStack));
     user.profile = loadTenantScopedEntity(entity.profile, contextStack);
-    user.actor = getEntityFromStackOrLoad(entity.actor, contextStack) as IActor;
+    user.actor = getEntityFromStackOrLoad(entity.actor, contextStack);
 
     return user;
   }
@@ -423,7 +440,7 @@ export function loadTenantScopedEntity(
     contextStack[individual.id] = individual;
 
     individual.individualKind = entity.individualKind;
-    individual.actor = getEntityFromStackOrLoad(entity.actor, contextStack) as IActor;
+    individual.actor = getEntityFromStackOrLoad(entity.actor, contextStack);
 
     return individual;
   }
@@ -505,9 +522,11 @@ export function loadTenantScopedEntity(
     actor.socials = loadApply(entity.socials, (social) => loadTenantScopedEntity(social, contextStack));
 
     if (actor.actorKind === ActorKind.Individual && entity.individual) {
-      actor.individual = getEntityFromStackOrLoad(entity.individual, contextStack) as IIndividual;
+      actor.individual = getEntityFromStackOrLoad(entity.individual, contextStack);
+      actor.org = null;
     } else if (actor.actorKind === ActorKind.Org && entity.org) {
-      actor.org = getEntityFromStackOrLoad(entity.org, contextStack) as IOrg;
+      actor.org = getEntityFromStackOrLoad(entity.org, contextStack);
+      actor.individual = null;
     }
 
     return actor;
@@ -518,7 +537,7 @@ export function loadTenantScopedEntity(
       ...base,
       type: entity.type,
       document: loadTenantScopedEntity(entity.document, contextStack),
-      org: getEntityFromStackOrLoad(entity.org, contextStack) as IOrg,
+      org: getEntityFromStackOrLoad(entity.org, contextStack),
       tenant: loadTenantCore(entity.tenant),
     };
   }
@@ -533,7 +552,7 @@ export function loadTenantScopedEntity(
       category: entity.category,
       key: entity.key,
       tenant,
-      team: getEntityFromStackOrLoad(entity.team, contextStack) as ITeam,
+      team: getEntityFromStackOrLoad(entity.team, contextStack),
     };
   }
 
@@ -554,7 +573,7 @@ export function loadTenantScopedEntity(
 
     return {
       ...baseMember,
-      team: getEntityFromStackOrLoad(entity.team, contextStack) as ITeam,
+      team: getEntityFromStackOrLoad(entity.team, contextStack),
       roles: loadApply(entity.roles, (role) => loadTenantScopedEntity(role, contextStack)),
       activities: loadApply(entity.activities, (activity) => loadTenantScopedEntity(activity, contextStack)),
     };
@@ -563,7 +582,7 @@ export function loadTenantScopedEntity(
   if (entity instanceof Membership) {
     return {
       ...base,
-      user: getEntityFromStackOrLoad(entity.user, contextStack) as IUser,
+      user: getEntityFromStackOrLoad(entity.user, contextStack),
       membershipKind: entity.membershipKind,
       startDate: entity.startDate,
       endDate: entity.endDate,
@@ -577,7 +596,10 @@ export function loadTenantScopedEntity(
       name: entity.name,
       score: entity.score,
       description: entity.description,
-      team: getEntityFromStackOrLoad(entity.team, contextStack) as ITeam,
+      team: getEntityFromStackOrLoad(entity.team, contextStack),
+      user: getEntityFromStackOrLoad(entity.user, contextStack),
+      teamMember: getEntityFromStackOrLoad(entity.teamMember, contextStack, true),
+      state: entity.state,
       tenant,
     };
   }
@@ -589,12 +611,11 @@ export function loadTenantScopedEntity(
       description: entity.description,
       expectedBudget: entity.expectedBudget,
       actualBudget: entity.actualBudget,
-      team: getEntityFromStackOrLoad(entity.team, contextStack) as ITeam,
+      team: getEntityFromStackOrLoad(entity.team, contextStack),
       linkedEvent: entity.linkedEvent ? loadTenantScopedEntity(entity.linkedEvent, contextStack) : null,
       createdBy: loadTenantScopedEntity(entity.createdBy, contextStack),
-      participants: loadApply(
-        entity.participants,
-        (participant) => getEntityFromStackOrLoad(participant, contextStack) as IUser
+      participants: loadApply(entity.participants, (participant) =>
+        getEntityFromStackOrLoad(participant, contextStack)
       ),
       tenant,
     };
@@ -612,11 +633,11 @@ export function loadTenantScopedEntity(
       paymentDate: entity.paymentDate,
       paymentMethod: entity.paymentMethod,
       state: entity.state,
-      createdBy: getEntityFromStackOrLoad(entity.createdBy, contextStack) as IUser,
+      createdBy: getEntityFromStackOrLoad(entity.createdBy, contextStack),
       linkedEvent: entity.linkedEvent ? loadTenantScopedEntity(entity.linkedEvent, contextStack) : null,
       linkedProject: entity.linkedProject ? loadTenantScopedEntity(entity.linkedProject, contextStack) : null,
       receipts: loadApply(entity.receipts, (receipt) => loadTenantScopedEntity(receipt, contextStack)),
-      team: getEntityFromStackOrLoad(entity.team, contextStack) as ITeam,
+      team: getEntityFromStackOrLoad(entity.team, contextStack),
       tenant,
     };
   }
@@ -639,7 +660,7 @@ export function loadTenantScopedEntity(
     event.private = entity.private;
     event.regularEventInterval = entity.regularEventInterval;
     event.regularEvent = entity.regularEvent ? loadTenantScopedEntity(entity.regularEvent, contextStack) : null;
-    event.supervisor = getEntityFromStackOrLoad(entity.supervisor, contextStack) as IUser;
+    event.supervisor = getEntityFromStackOrLoad(entity.supervisor, contextStack);
     event.eventApprovals = loadApply(entity.eventApprovals, (approval) =>
       loadTenantScopedEntity(approval, contextStack)
     );
@@ -663,12 +684,11 @@ export function loadTenantScopedEntity(
     contentMaster.slug = entity.slug;
     contentMaster.title = entity.title;
     contentMaster.tags = loadApply(entity.tags, (tag) => loadTenantScopedEntity(tag, contextStack));
-    contentMaster.contributors = loadApply(
-      entity.contributors,
-      (contributor) => getEntityFromStackOrLoad(contributor, contextStack) as IIndividual
+    contentMaster.contributors = loadApply(entity.contributors, (contributor) =>
+      getEntityFromStackOrLoad(contributor, contextStack)
     );
     contentMaster.tenant = tenant;
-    contentMaster.rootContent = getEntityFromStackOrLoad(entity.rootContent, contextStack) as IUgc;
+    contentMaster.rootContent = getEntityFromStackOrLoad(entity.rootContent, contextStack);
 
     return contentMaster;
   }
@@ -679,7 +699,7 @@ export function loadTenantScopedEntity(
 
     return {
       ...baseJoin,
-      team: (contextStack.org ?? loadTenantScopedEntity(entity.team, contextStack)) as ITeam,
+      team: getEntityFromStackOrLoad(entity.team, contextStack),
       askedRole: loadTenantScopedEntity(entity.askedRole, contextStack),
       receivedRole: entity.receivedRole ? loadTenantScopedEntity(entity.receivedRole, contextStack) : null,
     };
@@ -693,7 +713,7 @@ export function loadTenantScopedEntity(
       ...baseJoin,
       presenceStatus: entity.presenceStatus,
       participated: entity.participated,
-      event: loadTenantScopedEntity(entity.event, contextStack),
+      linkedEvent: loadTenantScopedEntity(entity.event, contextStack),
       teamAction: entity.teamAction ? loadTenantScopedEntity(entity.teamAction, contextStack) : null,
     };
   }
@@ -706,11 +726,9 @@ export function loadTenantScopedEntity(
       validatedAt: entity.validatedAt,
       validationMessage: entity.validationMessage,
       formSubmission: entity.formSubmission ? loadTenantScopedEntity(entity.formSubmission, contextStack) : null,
-      validatedBy: entity.validatedBy
-        ? (getEntityFromStackOrLoad(entity.validatedBy, contextStack) as IIndividual)
-        : null,
-      issuer: entity.issuer ? (getEntityFromStackOrLoad(entity.issuer, contextStack) as IUser) : null,
-      joiner: getEntityFromStackOrLoad(entity.joiner, contextStack) as IUser,
+      validatedBy: getEntityFromStackOrLoad(entity.validatedBy, contextStack, true),
+      issuer: getEntityFromStackOrLoad(entity.issuer, contextStack, true),
+      joiner: getEntityFromStackOrLoad(entity.joiner, contextStack),
       tenant,
     };
   }
@@ -733,7 +751,7 @@ export function loadTenantScopedEntity(
       ...base,
       yearVersion: entity.yearVersion,
       documentUpload: loadTenantScopedEntity(entity.documentUpload, contextStack),
-      editedBy: getEntityFromStackOrLoad(entity.editedBy, contextStack) as IIndividual,
+      editedBy: getEntityFromStackOrLoad(entity.editedBy, contextStack),
       tenant,
     };
   }
@@ -780,13 +798,9 @@ export function loadTenantScopedEntity(
       ugcKind: entity.ugcKind,
       text: entity.text,
       isAnonymous: entity.isAnonymous,
-      contentMaster: entity.contentMaster
-        ? ((contextStack.contentMaster ?? loadTenantScopedEntity(entity.contentMaster, contextStack)) as IContentMaster)
-        : null,
-      author: getEntityFromStackOrLoad(entity.author, contextStack) as IIndividual,
-      representingOrg: entity.representingOrg
-        ? (getEntityFromStackOrLoad(entity.representingOrg, contextStack) as IOrg)
-        : null,
+      contentMaster: getEntityFromStackOrLoad(entity.contentMaster, contextStack, true),
+      author: getEntityFromStackOrLoad(entity.author, contextStack),
+      representingOrg: getEntityFromStackOrLoad(entity.representingOrg, contextStack, true),
       tenant,
     };
   }
@@ -797,8 +811,8 @@ export function loadTenantScopedEntity(
       approved: entity.approved,
       message: entity.message,
       step: loadTenantScopedEntity(entity.step, contextStack),
-      createdBy: getEntityFromStackOrLoad(entity.createdBy, contextStack) as IIndividual,
-      event: loadTenantScopedEntity(entity.event, contextStack),
+      createdBy: getEntityFromStackOrLoad(entity.createdBy, contextStack),
+      linkedEvent: loadTenantScopedEntity(entity.event, contextStack),
       tenant,
     };
   }
@@ -808,13 +822,10 @@ export function loadTenantScopedEntity(
       ...base,
       order: entity.order,
       name: entity.name,
-      notifiees: loadApply(entity.notifiees, (notifiee) => getEntityFromStackOrLoad(notifiee, contextStack) as IUser),
-      validators: loadApply(
-        entity.validators,
-        (validator) => getEntityFromStackOrLoad(validator, contextStack) as IIndividual
-      ),
-      tenantOrg: getEntityFromStackOrLoad(entity.tenantOrg, contextStack) as ITenant,
-      createdBy: entity.createdBy ? (getEntityFromStackOrLoad(entity.createdBy, contextStack) as IIndividual) : null,
+      notifiees: loadApply(entity.notifiees, (notifiee) => getEntityFromStackOrLoad(notifiee, contextStack)),
+      validators: loadApply(entity.validators, (validator) => getEntityFromStackOrLoad(validator, contextStack)),
+      tenantOrg: getEntityFromStackOrLoad(entity.tenantOrg, contextStack),
+      createdBy: getEntityFromStackOrLoad(entity.createdBy, contextStack, true),
       tenant,
     };
   }

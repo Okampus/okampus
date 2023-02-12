@@ -23,6 +23,12 @@ const parseEnvBoolean = (value: string | undefined, defaultValue: boolean): bool
 if (process.env.NODE_ENV && !['production', 'development', 'test'].includes(process.env.NODE_ENV))
   throw new TypeError('NODE_ENV is not set to a valid value');
 
+const getEnabled = (enabledValue?: string, fallbackVariable?: string): boolean => {
+  const enabled = parseEnvBoolean(enabledValue, true);
+  if (enabled && !fallbackVariable) return false;
+  return enabled;
+};
+
 // Shortcuts
 const nodeEnv = process.env.NODE_ENV ?? 'development';
 const baseDomain = process.env.BASE_DOMAIN ?? 'localhost';
@@ -50,7 +56,7 @@ export const config: ApiConfig = {
     localPrefix: process.env.UPLOAD_PATH ?? 'uploads',
   },
   meilisearch: {
-    enabled: parseEnvBoolean(process.env.MEILISEARCH_ENABLED, false),
+    enabled: getEnabled(process.env.MEILISEARCH_ENABLED, process.env.MEILISEARCH_HOST),
     host: process.env.MEILISEARCH_HOST ?? 'localhost:7700',
     apiKey: process.env.MEILISEARCH_API_KEY ?? 'api-key',
   },
@@ -75,6 +81,7 @@ export const config: ApiConfig = {
     },
   },
   redis: {
+    enabled: getEnabled(process.env.REDIS_ENABLED, process.env.REDIS_HOST),
     host: process.env.REDIS_HOST ?? 'localhost',
     port: parseEnvInt(process.env.REDIS_PORT, 6379),
     password: process.env.REDIS_PASSWORD ?? '',

@@ -32,6 +32,7 @@ export * from './requests/is-file-upload';
 export * from './resources/users/full-name';
 export * from './streams/stream-to-buffer';
 export * from './strings/capitalize';
+export * from './strings/kebabize';
 export * from './strings/to-slug';
 export * from './validators/diff-validator';
 export * from './validators/formkit-schema-validator';

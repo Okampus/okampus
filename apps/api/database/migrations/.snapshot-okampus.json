@@ -6234,6 +6234,47 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Pending",
+            "Approved",
+            "Rejected"
+          ],
+          "mappedType": "enum"
+        },
+        "score": {
+          "name": "score",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "team_id": {
           "name": "team_id",
           "type": "bigint",
@@ -6260,33 +6301,6 @@
           "primary": false,
           "nullable": true,
           "mappedType": "bigint"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "score": {
-          "name": "score",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
         },
         "linked_event_id": {
           "name": "linked_event_id",
@@ -6315,13 +6329,13 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "supervisor_id": {
-          "name": "supervisor_id",
+        "validated_by_id": {
+          "name": "validated_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "bigint"
         }
       },
@@ -6427,16 +6441,17 @@
           "referencedTableName": "public.individual",
           "updateRule": "cascade"
         },
-        "team_action_supervisor_id_foreign": {
-          "constraintName": "team_action_supervisor_id_foreign",
+        "team_action_validated_by_id_foreign": {
+          "constraintName": "team_action_validated_by_id_foreign",
           "columnNames": [
-            "supervisor_id"
+            "validated_by_id"
           ],
           "localTableName": "public.team_action",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.individual",
+          "referencedTableName": "public.membership",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -6729,33 +6744,6 @@
           "keyName": "join_join_kind_index",
           "primary": false,
           "unique": false
-        },
-        {
-          "columnNames": [
-            "issuer_id"
-          ],
-          "composite": false,
-          "keyName": "join_issuer_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "columnNames": [
-            "joiner_id"
-          ],
-          "composite": false,
-          "keyName": "join_joiner_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "columnNames": [
-            "validated_by_id"
-          ],
-          "composite": false,
-          "keyName": "join_validated_by_id_unique",
-          "primary": false,
-          "unique": true
         },
         {
           "keyName": "join_pkey",

@@ -12,20 +12,26 @@ import {
   DiskHealthIndicator,
   MemoryHealthIndicator,
   MikroOrmHealthIndicator,
+  HealthIndicatorFunction,
 } from '@nestjs/terminus';
 
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { HealthCheck } from '@nestjs/terminus';
 import { Public } from '@okampus/api/shards';
-import { S3Buckets } from '@okampus/shared/enums';
+import { kebabize } from '@okampus/shared/utils';
 
+import { S3Buckets } from '@okampus/shared/enums';
 import type { HealthCheckResult, HealthIndicatorResult } from '@nestjs/terminus';
+
+function getBucketStatus(bucket: string, isOk: boolean): HealthIndicatorResult {
+  return { [`s3-${kebabize(bucket)}`]: { status: isOk ? 'up' : 'down' } };
+}
 
 @ApiTags('Health')
 @Controller({ path: 'health' })
 export class HealthController {
-  checkStorageHealth: (() => Promise<HealthIndicatorResult>) | (() => Promise<HealthIndicatorResult>)[];
+  healthChecks: HealthIndicatorFunction[] = [];
 
   constructor(
     private readonly health: HealthCheckService,
@@ -38,39 +44,39 @@ export class HealthController {
     private readonly memory: MemoryHealthIndicator
   ) {
     const config = this.configService.config;
-    this.checkStorageHealth = config.s3.enabled
-      ? Object.values(S3Buckets).map((bucket) => {
-          return async () => {
-            if (!this.uploadService.minioClient) {
-              return { [`s3-${bucket}`]: { status: 'down' } } as HealthIndicatorResult;
-            }
 
-            let bucketExists = false;
-            try {
-              bucketExists = await this.uploadService.minioClient.bucketExists(bucket);
-              return { [`s3-${bucket}`]: { status: bucketExists ? 'up' : 'down' } } as HealthIndicatorResult;
-            } catch {
-              return { [`s3-${bucket}`]: { status: 'down' } } as HealthIndicatorResult;
-            }
+    if (config.redis.enabled) this.healthChecks.push(() => this.redisService.checkHealth('cache'));
+    if (config.meilisearch.enabled) this.healthChecks.push(() => this.meilisearchService.checkHealth('meilisearch'));
+
+    // S3 storage or local storage
+    if (config.s3.enabled) {
+      this.healthChecks.push(
+        ...Object.values(S3Buckets).map((bucket) => {
+          return async () => {
+            if (!this.uploadService.minioClient) return getBucketStatus(bucket, false);
+            return await this.uploadService.minioClient
+              .bucketExists(config.s3.buckets[bucket])
+              .then((exists) => getBucketStatus(bucket, exists))
+              .catch(() => getBucketStatus(bucket, false));
           };
         })
-      : () => this.disk.checkStorage('disk', { path: config.upload.localPath, thresholdPercent: 0.75 });
+      );
+    } else {
+      this.healthChecks.push(() =>
+        this.disk.checkStorage('disk', { path: config.upload.localPath, thresholdPercent: 0.75 })
+      );
+    }
+
+    this.healthChecks.push(
+      () => this.database.pingCheck('database'),
+      () => this.memory.checkHeap('memory', 500 * 1024 * 1024) // 500MB max heap size
+    );
   }
 
   @Get()
   @Public()
   @HealthCheck()
   public async check(): Promise<HealthCheckResult> {
-    const MAX_HEAP_SIZE = 500 * 1024 * 1024;
-
-    return await this.health.check(
-      [
-        () => this.redisService.checkHealth('cache'),
-        this.checkStorageHealth,
-        () => this.meilisearchService.checkHealth('search'),
-        () => this.database.pingCheck('database'),
-        () => this.memory.checkHeap('memory', MAX_HEAP_SIZE),
-      ].flat()
-    );
+    return await this.health.check(this.healthChecks);
   }
 }

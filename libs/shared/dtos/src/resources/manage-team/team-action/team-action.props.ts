@@ -1,5 +1,6 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { IsInt, IsOptional, IsString, Length } from 'class-validator';
+import { ApprovalState } from '@okampus/shared/enums';
+import { IsEnum, IsInt, IsOptional, IsString, Length } from 'class-validator';
 
 @InputType()
 export class TeamActionProps {
@@ -12,7 +13,11 @@ export class TeamActionProps {
   @IsOptional()
   @Length(1, 20_000)
   @IsString()
-  description: string | null = null;
+  description?: string | null = null;
+
+  @Field(() => ApprovalState)
+  @IsEnum(ApprovalState)
+  state!: ApprovalState;
 
   @Field(() => Int)
   @IsInt()

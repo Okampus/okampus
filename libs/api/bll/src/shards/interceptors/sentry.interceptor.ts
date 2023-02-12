@@ -24,7 +24,7 @@ export class SentryInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap({
         error: (exception: HttpException) => {
-          if (this.shouldReport(exception)) {
+          if (this.shouldReport(exception) && this.sentryService.sentry) {
             this.sentryService.sentry.withScope((scope) => {
               return this.captureException(context, scope, exception);
             });
@@ -36,6 +36,7 @@ export class SentryInterceptor implements NestInterceptor {
   }
 
   protected captureException(context: ExecutionContext, scope: Scope, exception: HttpException) {
+    if (!this.sentryService.sentry) return;
     switch (context.getType<ContextType>()) {
       case 'http': {
         return this.captureHttpException(scope, context.switchToHttp(), exception);
@@ -50,6 +51,7 @@ export class SentryInterceptor implements NestInterceptor {
   }
 
   private captureHttpException(scope: Scope, http: HttpArgumentsHost, exception: HttpException): void {
+    if (!this.sentryService.sentry) return;
     const data = addRequestDataToEvent({}, http.getRequest(), {});
 
     scope.setExtra('req', data.request);
@@ -61,12 +63,14 @@ export class SentryInterceptor implements NestInterceptor {
   }
 
   private captureRpcException(scope: Scope, rpc: RpcArgumentsHost, exception: unknown): void {
+    if (!this.sentryService.sentry) return;
     scope.setExtra('rpc_data', rpc.getData());
 
     this.sentryService.sentry.captureException(exception);
   }
 
   private captureWsException(scope: Scope, ws: WsArgumentsHost, exception: unknown): void {
+    if (!this.sentryService.sentry) return;
     scope.setExtra('ws_client', ws.getClient());
     scope.setExtra('ws_data', ws.getData());
 

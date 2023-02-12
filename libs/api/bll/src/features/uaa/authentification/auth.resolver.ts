@@ -1,19 +1,18 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { AuthService } from './auth.service';
 import { AuthContextModel } from './auth-context.model';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { AuthService } from './auth.service';
-
-import { UserModel } from '../../../domains/factories/domains/users/user.model';
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../../global/config.module';
-
+import { UserModel } from '../../../domains/factories/domains/users/user.model';
 import { Requester } from '../../../shards/decorators/requester.decorator';
+
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TenantPublic } from '@okampus/api/shards';
 import { User } from '@okampus/api/dal';
 import { UnauthorizedException } from '@nestjs/common';
 import { TokenType } from '@okampus/shared/enums';
+
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { Individual } from '@okampus/api/dal';
 import type { ApiConfig } from '@okampus/shared/types';
@@ -31,7 +30,6 @@ export class AuthResolver {
     this.config = this.configService.config;
   }
 
-  // TODO: Add permission checks
   @TenantPublic()
   @Mutation(() => AuthContextModel)
   public async login(

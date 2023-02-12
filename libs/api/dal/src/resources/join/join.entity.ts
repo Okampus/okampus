@@ -1,5 +1,5 @@
 import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { Entity, Enum, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { JoinKind } from '@okampus/shared/enums';
 import { JoinState } from '@okampus/shared/enums';
 import type { JoinOptions } from './join.options';
@@ -18,13 +18,13 @@ export abstract class Join extends TenantScopedEntity {
 
   // If issuer is null, the joiner is the issuer and the Join is a request
   // If issuer is not null, the Join is an invitation
-  @OneToOne({ type: 'Individual', nullable: true })
+  @ManyToOne({ type: 'Individual', nullable: true })
   issuer: Individual | null = null;
 
-  @OneToOne({ type: 'User' })
+  @ManyToOne({ type: 'User' })
   joiner!: User;
 
-  @OneToOne({ type: 'Individual', nullable: true })
+  @ManyToOne({ type: 'Individual', nullable: true })
   validatedBy: Individual | null = null;
 
   @Property({ type: 'datetime', nullable: true })

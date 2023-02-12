@@ -45,6 +45,7 @@ export type ApiConfig = {
     };
   };
   readonly redis: {
+    readonly enabled: boolean;
     readonly host: string;
     readonly port: number;
     readonly password: string;

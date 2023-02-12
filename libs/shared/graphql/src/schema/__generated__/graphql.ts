@@ -100,6 +100,13 @@ export type AddressInput = {
   zip?: InputMaybe<Scalars['Int']>;
 };
 
+/** The ApprovalState enum */
+export enum ApprovalState {
+  Approved = 'Approved',
+  Pending = 'Pending',
+  Rejected = 'Rejected',
+}
+
 export type AuthContextModel = {
   __typename?: 'AuthContextModel';
   tenant: TenantModel;
@@ -1357,18 +1364,22 @@ export type TagModelEdge = {
 export type TeamActionModel = {
   __typename?: 'TeamActionModel';
   createdAt: Scalars['DateTime'];
+  createdBy?: Maybe<IndividualModel>;
   deletedAt?: Maybe<Scalars['DateTime']>;
-  description: Scalars['String'];
-  event?: Maybe<TenantEventModel>;
+  description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
+  linkedEvent?: Maybe<TenantEventModel>;
+  linkedProject?: Maybe<ProjectModel>;
   name: Scalars['String'];
   score: Scalars['Int'];
+  state: ApprovalState;
   team?: Maybe<TeamModel>;
   teamMember?: Maybe<TeamMemberModel>;
   tenant?: Maybe<TenantCoreModel>;
   updatedAt: Scalars['DateTime'];
   user?: Maybe<UserModel>;
+  validatedBy?: Maybe<TeamMemberModel>;
 };
 
 export type TeamActionModelEdge = {
