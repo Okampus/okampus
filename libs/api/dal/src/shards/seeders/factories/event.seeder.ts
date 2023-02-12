@@ -63,6 +63,7 @@ export class EventSeeder extends Factory<TenantEvent> {
       lastEventApprovalStep: step,
       createdBy: user,
       tenant: this.team.tenant,
+      org: this.team,
     };
   }
 }

@@ -17,6 +17,8 @@ import { DatabaseSeeder, Team } from '@okampus/api/dal';
 import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
 import { CqrsModule } from '@nestjs/cqrs';
 import { Module } from '@nestjs/common';
+import { BASE_TENANT } from '@okampus/shared/consts';
+
 import type { BaseRepository } from '@okampus/api/dal';
 import type { OnModuleInit } from '@nestjs/common';
 
@@ -39,12 +41,13 @@ export class TeamsModule implements OnModuleInit {
     this.pepper = Buffer.from(this.configService.config.cryptoSecret);
   }
 
-  // TODO: don't seed in production
   public async onModuleInit(): Promise<void> {
-    const anyTeam = await this.teamRepository.find({});
+    const anyTeam = await this.teamRepository.find({ tenant: { domain: BASE_TENANT } });
 
     if (anyTeam.length === 0 && this.configService.config.database.seed) {
       DatabaseSeeder.pepper = this.pepper;
+      DatabaseSeeder.targetTenant = BASE_TENANT;
+
       const seeder = this.orm.getSeeder();
       await seeder.seed(DatabaseSeeder);
     }
