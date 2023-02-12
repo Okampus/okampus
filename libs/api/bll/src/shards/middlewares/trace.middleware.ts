@@ -10,7 +10,7 @@ export class TraceMiddleware implements NestMiddleware {
   constructor(private readonly sentryService: SentryService) {}
 
   public use(req: IncomingMessage, res: ServerResponse, next: () => never): void {
-    if (!this.sentryService.sentry) return;
+    if (!this.sentryService.sentry) return next();
 
     const transaction = this.sentryService.sentry.startTransaction({
       op: 'request',
