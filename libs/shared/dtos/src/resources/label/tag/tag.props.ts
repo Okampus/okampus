@@ -16,9 +16,10 @@ export class TagProps {
   @IsString()
   name!: string;
 
-  @Field(() => Colors)
+  @Field(() => Colors, { nullable: true })
+  @IsOptional()
   @IsEnum(Colors)
-  color!: Colors;
+  color?: Colors;
 
   @Field(() => String, { nullable: true })
   @IsOptional()

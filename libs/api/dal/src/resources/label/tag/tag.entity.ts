@@ -2,6 +2,7 @@ import { TagRepository } from './tag.repository';
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Entity, EntityRepositoryType, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { Colors, TagKind } from '@okampus/shared/enums';
+import { getColorFromData } from '@okampus/shared/utils';
 import type { TagOptions } from './tag.options';
 
 import type { ImageUpload } from '../../file-upload/image-upload/image-upload.entity';
@@ -39,5 +40,6 @@ export class Tag extends TenantScopedEntity {
   constructor(options: TagOptions) {
     super({ tenant: options.tenant });
     this.assign(options);
+    this.color = getColorFromData(this.name);
   }
 }
