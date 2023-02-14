@@ -38,6 +38,7 @@ export class Org extends TenantScopedEntity {
     this.actor = new Actor({
       org: this,
       name: options.name,
+      bio: options.bio,
       tenant: options.tenant,
       primaryEmail: options.primaryEmail,
       slug: options.slug,

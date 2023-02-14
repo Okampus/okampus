@@ -1,7 +1,6 @@
 import { UserRepository } from './user.repository';
 import { Individual } from '../individual/individual.entity';
 import { UserProfile } from '../user-profile/user-profile.entity';
-import { Actor } from '../actor.entity';
 import { Collection, Entity, EntityRepositoryType, Enum, OneToMany, OneToOne, Property } from '@mikro-orm/core';
 import { RoleType } from '@okampus/shared/enums';
 import { ScopeRole } from '@okampus/shared/enums';
@@ -70,23 +69,7 @@ export class User extends Individual implements Searchable {
 
     super({ ...options, name, individualKind: IndividualKind.User });
     this.assign({ ...options, individualKind: IndividualKind.User });
-    this.actor = new Actor({
-      individual: this,
-      name,
-      tenant: options.tenant,
-      primaryEmail: options.primaryEmail,
-      slug: options.slug,
-      tags: options.tags,
-    });
   }
-  // public async setPassword(password: string): Promise<void> {
-  //   this.password = await hash(password, { secret });
-  // }
-
-  // public async validatePassword(password: string): Promise<boolean> {
-  //   if (!this.password) return false;
-  //   return await verify(password, this.password);
-  // }
 
   public getFullName(): string {
     return `${this.actor.name} ${this.lastName}`;

@@ -2,15 +2,16 @@
 import { FinanceModel } from './finance.model';
 // eslint-disable-next-line import/no-cycle
 import { TeamMemberModel } from './team-member.model';
-import { Paginated } from '../../../../shards/types/paginated.type';
-import { OrgModel } from '../../abstract/org.model';
-import { FormModel } from '../forms/form.model';
 // eslint-disable-next-line import/no-cycle
 import { TeamRoleModel } from '../roles/team-role.model';
 // eslint-disable-next-line import/no-cycle
 import { TeamCategoryModel } from '../tags/team-category.model';
+import { Paginated } from '../../../../shards/types/paginated.type';
+import { OrgModel } from '../../abstract/org.model';
+import { FormModel } from '../forms/form.model';
 import { OrgKind, TeamType } from '@okampus/shared/enums';
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
+
 import type { IFinance, IForm, ITeam, ITeamCategory, ITeamMember, ITeamRole } from '@okampus/shared/dtos';
 
 @ObjectType({ implements: () => [OrgModel] })

@@ -23,14 +23,4 @@ export class Bot extends Individual {
     super({ ...options, individualKind: IndividualKind.Bot });
     this.assign({ ...options, individualKind: IndividualKind.Bot });
   }
-
-  // public async resetToken(token: string): Promise<string> {
-  //   this.token = await hash(token, 10);
-  //   return token;
-  // }
-
-  // public async validateToken(token: string): Promise<boolean> {
-  //   if (!this.token) return false;
-  //   return await compare(token, this.token);
-  // }
 }
