@@ -1,6 +1,6 @@
 const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
-const { join } = require('node:path');
 const defaultTheme = require('tailwindcss/defaultTheme');
+const { join } = require('node:path');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -14,6 +14,10 @@ module.exports = {
       fontSize: {
         xxs: '.625rem',
         modest: '0.925rem',
+      },
+      fontFamily: {
+        sans: ['HarmonyOS', ...defaultTheme.fontFamily.sans],
+        mono: ['SpaceMono', ...defaultTheme.fontFamily.mono],
       },
       screens: {
         xxs: '361px',
