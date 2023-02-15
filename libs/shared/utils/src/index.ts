@@ -27,6 +27,7 @@ export * from './objects/object-contains';
 export * from './objects/remove-circular';
 export * from './random/random-digits';
 export * from './random/random-enum';
+export * from './random/random-int';
 export * from './random/random-snowflake';
 export * from './requests/is-file-upload';
 export * from './resources/users/full-name';
