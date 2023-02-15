@@ -1,22 +1,25 @@
-import { getColorFromData } from '@okampus/shared/utils';
+import { getColorHexFromData } from '@okampus/shared/utils';
+import clsx from 'clsx';
 
 export type AvatarProps = {
   src?: string;
   name?: string;
   size?: number;
   rounded?: number;
+  className?: string;
+  active?: boolean;
 };
 
-export function Avatar({ src, name, size = 14, rounded = 50 }: AvatarProps) {
+export function Avatar({ src, name, size = 14, rounded = 50, className, active }: AvatarProps) {
   name = name ?? '?';
   return (
     <div
-      className="flex items-center overflow-hidden shrink-0"
+      className={clsx('flex items-center overflow-hidden shrink-0 font-title', className, active && 'ring-4')}
       style={{
         width: `${size / 6}rem`,
         height: `${size / 6}rem`,
         borderRadius: `${rounded}%`,
-        fontSize: `${size / 14}rem`,
+        fontSize: `${size / 12}rem`,
       }}
     >
       {src ? (
@@ -24,9 +27,9 @@ export function Avatar({ src, name, size = 14, rounded = 50 }: AvatarProps) {
       ) : (
         <div
           className="flex items-center justify-center w-full h-full"
-          style={{ backgroundColor: getColorFromData(name) }}
+          style={{ backgroundColor: getColorHexFromData(name) }}
         >
-          <span className="font-medium text-gray-300">{name[0]}</span>
+          <span className="font-medium text-white">{name[0]}</span>
         </div>
       )}
     </div>

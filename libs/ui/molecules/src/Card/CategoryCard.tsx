@@ -1,21 +1,28 @@
+import clsx from 'clsx';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 export type CategoryCardProps = {
+  link: string;
   name: string;
   color: string;
   image?: string;
+  className?: string;
 };
 
-export function CategoryCard({ name, color, image }: CategoryCardProps) {
+export function CategoryCard({ link, name, color, image, className }: CategoryCardProps) {
   return (
     <motion.div
       initial="rest"
       whileHover="hover"
       animate="rest"
-      className="rounded-lg min-w-[12rem] aspect-square p-3 relative overflow-hidden"
+      className={clsx(
+        'card-sm min-w-[12rem] aspect-square p-3 relative overflow-hidden cursor-pointer contrast-125',
+        className
+      )}
       style={{ backgroundColor: color }}
     >
-      <h1 className="font-bold text-white text-2xl">{name}</h1>
+      <div className="font-semibold text-white text-2xl">{name}</div>
       {image && (
         <motion.img
           src={image}
@@ -28,6 +35,7 @@ export function CategoryCard({ name, color, image }: CategoryCardProps) {
           }}
         />
       )}
+      <Link to={link} className="card-link z-20" />
     </motion.div>
   );
 }

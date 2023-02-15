@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { HeadingSeparated } from '@okampus/ui/atoms';
 
 export type VerticalListProps = {
-  title?: string;
+  title?: React.ReactNode | React.ReactNode[];
   className?: string;
   nColumns?: number;
   minWidth?: string;

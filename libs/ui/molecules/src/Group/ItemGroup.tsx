@@ -51,7 +51,13 @@ export function ItemGroup<T>({
             {/* <PopoverHeading>My popover heading</PopoverHeading> */}
             {/* <PopoverDescription> */}
             {VerticalList({
-              title: showNumberInTitle ? `${title ?? 'Tous les éléments'} (${items.length})` : title,
+              title: showNumberInTitle ? (
+                <div className="flex gap-2 items-center">
+                  {`${title ?? 'Tous les éléments'}`} <div className="text-sm text-3 pt-px">({items.length})</div>
+                </div>
+              ) : (
+                title
+              ),
               children: items.map((item, idx) => <div key={idx}>{renderListElement(item)}</div>),
               nColumns: 2,
             })}
