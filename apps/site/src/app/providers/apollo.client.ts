@@ -15,7 +15,7 @@ const tenantContext = setContext((_, { headers }) => {
 });
 
 const uploadLink = createUploadLink({
-  uri: `https://api.okampus.fr/graphql`,
+  uri: `${import.meta.env.VITE_API_URL ?? 'https://api.okampus.fr'}/graphql`,
   credentials: 'include',
 });
 
