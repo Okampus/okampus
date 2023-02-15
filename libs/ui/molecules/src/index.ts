@@ -18,8 +18,6 @@ export * from './Card/DocumentCard';
 export * from './Card/EventCard';
 export * from './Card/FileCardPreview';
 export * from './Card/TeamCard';
-export * from './Card/TeamCardV1';
-export * from './Card/TeamCardV2';
 export * from './Group/AvatarGroup';
 export * from './Group/FileGroup';
 export * from './Group/ImageGroup';
