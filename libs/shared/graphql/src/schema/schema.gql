@@ -464,7 +464,6 @@ type ActorModel {
   deletedAt: DateTime
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
-  tags: [TagModel!]!
   actorKind: ActorKind!
   individual: IndividualModel
   org: OrgModel
@@ -474,6 +473,7 @@ type ActorModel {
   bio: String!
   ical: String!
   actorImages: [ActorImageModel!]!
+  tags: [TagModel!]!
   socials: [SocialModel!]!
 }
 
@@ -1173,7 +1173,6 @@ input OidcInfoInput {
 }
 
 type Query {
-  me: AuthContextModel!
   userById(id: String!): UserModel!
   userBySlug(slug: String!): UserModel!
   users(options: PaginationOptions): PaginatedUserModel!
@@ -1187,7 +1186,7 @@ type Query {
   events(options: PaginationOptions): PaginatedTenantEventModel!
   teamById(id: String!): TeamModel!
   teamBySlug(slug: String!): TeamModel!
-  teams(options: PaginationOptions): PaginatedTeamModel!
+  teams(options: PaginationOptions, filter: TeamFilterOptions): PaginatedTeamModel!
   eventApprovalById(id: String!): EventApprovalModel!
   eventApprovals(options: PaginationOptions): PaginatedEventApprovalModel!
   eventApprovalStepById(id: String!): EventApprovalStepModel!
@@ -1201,6 +1200,7 @@ type Query {
   teamCategoryById(id: String!): TeamCategoryModel!
   teamCategoryBySlug(slug: String!): TeamCategoryModel!
   teamCategories(options: PaginationOptions): PaginatedTeamCategoryModel!
+  me: AuthContextModel!
 }
 
 input PaginationOptions {
@@ -1214,10 +1214,12 @@ input PaginationOptions {
 """QueryOrderMap custom scalar type"""
 scalar QueryOrderMap
 
+input TeamFilterOptions {
+  categories: [String!]
+  types: [TeamType!]
+}
+
 type Mutation {
-  login(username: String!, password: String!): AuthContextModel!
-  logout: Boolean!
-  wsToken: Boolean!
   createUser(user: CreateUserDto!, avatar: Upload, avatarDark: Upload, banner: Upload): UserModel!
   updateUser(updateUser: UpdateUserDto!): UserModel!
   deleteUser(id: String!): Boolean!
@@ -1251,6 +1253,9 @@ type Mutation {
   updateTeamCategory(updateTeamCategory: UpdateTeamCategoryDto!): TeamCategoryModel!
   deleteTeamCategory(id: String!): Boolean!
   createOrgDocument(orgId: String!, createOrgDocument: CreateOrgDocumentDto!, documentFile: Upload!): OrgDocumentModel!
+  login(username: String!, password: String!): AuthContextModel!
+  logout: Boolean!
+  wsToken: Boolean!
 }
 
 input CreateUserDto {
@@ -1489,7 +1494,7 @@ input UpdateProjectDto {
 input CreateTeamCategoryDto {
   slug: String
   name: String!
-  color: Colors!
+  color: Colors
   description: String = null
   teamsIds: [String!] = []
 }
