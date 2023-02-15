@@ -40,7 +40,7 @@ export function EventManageView() {
   };
 
   return (
-    <div className="w-full h-full flex gap-10">
+    <div className="view flex gap-10">
       <div className="flex-shrink-0 w-64 flex flex-col gap-4">
         <SmallCalendar />
         <button

@@ -156,7 +156,7 @@ export function FinanceManageView() {
   // if (data) finances = data.financesByTeam.edges?.map?.((edge) => getFragmentData(financeFragment, edge.node)) ?? [];
 
   return (
-    <div className="flex flex-col text-2 gap-10 h-full pb-4">
+    <div className="view flex flex-col text-2 gap-10 pb-4">
       <div>
         <div className="flex justify-between items-center">
           <pre className="text-4xl font-semibold text-0 tracking-tight pt-2">{org?.currentFinance} €</pre>

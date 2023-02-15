@@ -105,7 +105,7 @@ export const TeamDashboard = () => {
             .find((actorImage) => actorImage.type === ActorImageType.Avatar)?.image?.url,
         }));
 
-        return <AvatarGroup avatars={members} />;
+        return <AvatarGroup users={members} />;
       },
     },
     {
@@ -149,8 +149,8 @@ export const TeamDashboard = () => {
   const teams = data?.teams.edges?.map((edge) => getFragmentData(teamMembersFragment, edge.node)) ?? [];
 
   return (
-    // <div className="w-full overflow-hidden">
-    <Dashboard columns={columns} data={teams} />
-    // </div>
+    <div className="view">
+      <Dashboard columns={columns} data={teams} />
+    </div>
   );
 };

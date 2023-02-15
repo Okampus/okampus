@@ -43,7 +43,7 @@ export function GuideManageView() {
   if (!tenant) return null;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="view flex flex-col gap-4">
       <MultiFileInput
         onFileClick={(renderedFile) => previewFile(renderedFile.file)}
         onFileAdd={(files) =>

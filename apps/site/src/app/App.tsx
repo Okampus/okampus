@@ -6,6 +6,7 @@ import '@okampus/ui/styles/components/card.scss';
 import '@okampus/ui/styles/components/container.scss';
 import '@okampus/ui/styles/components/input.scss';
 import '@okampus/ui/styles/components/status.scss';
+import '@okampus/ui/styles/components/view.scss';
 
 import './App.scss';
 import './styles/colors.scss';
