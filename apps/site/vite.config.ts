@@ -14,6 +14,9 @@ export default defineConfig({
   server: {
     port: 4200,
     host: 'localhost',
+    fs: {
+      allow: ['../../libs/assets/src'],
+    },
   },
 
   plugins: [

@@ -1,7 +1,7 @@
 import { Colors } from '@okampus/shared/enums';
 import { COLORS } from '@okampus/shared/consts';
 
-export function getColorFromData(string: string): string {
+export function getColorFromData(string: string): Colors {
   const colors = Object.values(Colors);
 
   // eslint-disable-next-line unicorn/no-array-reduce
@@ -11,5 +11,9 @@ export function getColorFromData(string: string): string {
     return a & a;
   }, 0);
 
-  return COLORS[colors[((hash % colors.length) + colors.length) % colors.length]] ?? COLORS[Colors.Blue];
+  return colors[((hash % colors.length) + colors.length) % colors.length];
+}
+
+export function getColorHexFromData(string?: string | null): string {
+  return string ? COLORS[getColorFromData(string)] : COLORS[Colors.Blue];
 }

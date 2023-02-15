@@ -24,9 +24,6 @@ import type {
 
 @ObjectType()
 export class ActorModel extends TenantScopedModel implements IActor {
-  @Field(() => [TagModel])
-  tags!: ITag[];
-
   @Field(() => ActorKind)
   actorKind!: ActorKind;
 
@@ -53,6 +50,9 @@ export class ActorModel extends TenantScopedModel implements IActor {
 
   @Field(() => [ActorImageModel])
   actorImages!: IActorImage[];
+
+  @Field(() => [TagModel])
+  tags!: ITag[];
 
   @Field(() => [SocialModel])
   socials!: ISocial[];

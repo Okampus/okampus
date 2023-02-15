@@ -3,6 +3,7 @@ import { EventApprovalStepSeeder } from './factories/approval-step.seeder';
 import { EventSeeder } from './factories/event.seeder';
 import { TeamSeeder } from './factories/team.seeder';
 import { UserSeeder } from './factories/user.seeder';
+import { TagSeeder } from './factories/tag.seeder';
 import { clubDefaultRoles } from '../../defaults/default-team-roles';
 import { Shortcut } from '../../resources/actor/shortcut/shortcut.entity';
 import { TeamMember } from '../../resources/membership/team-member/team-member.entity';
@@ -11,9 +12,11 @@ import { TeamRole } from '../../resources/role/team-role/team-role.entity';
 import { TeamJoin } from '../../resources/join/team-join/team-join.entity';
 import { EventJoin } from '../../resources/join/event-join/event-join.entity';
 import { TeamAction } from '../../resources/manage-team/team-action/team-action.entity';
+import { TeamCategory } from '../../resources/label/team-category/team-category.entity';
 
 import {
   ApprovalState,
+  Colors,
   JoinKind,
   JoinState,
   MembershipKind,
@@ -21,12 +24,17 @@ import {
   ScopeRole,
   ShortcutType,
 } from '@okampus/shared/enums';
-import { pickOneFromArray, randomEnum, randomFromArray, randomFromArrayWithRemainder } from '@okampus/shared/utils';
+import {
+  pickOneFromArray,
+  randomEnum,
+  randomFromArray,
+  randomFromArrayWithRemainder,
+  randomInt,
+} from '@okampus/shared/utils';
 
 import { Seeder } from '@mikro-orm/seeder';
 import { ConsoleLogger } from '@nestjs/common';
 import { hash } from 'argon2';
-import { randomInt } from 'node:crypto';
 
 import type { EntityManager } from '@mikro-orm/core';
 import type { Individual } from '../../resources/actor/individual/individual.entity';
@@ -53,6 +61,24 @@ const seedingConfig = {
 
   MIN_EVENTS_BY_CLUB: 5,
   MAX_EVENTS_BY_CLUB: 10,
+
+  DEFAULT_CATEGORIES: [
+    { name: 'Art/Savoir-faire', slug: 'arts', color: Colors.DarkPurple },
+    { name: 'Technologie', slug: 'tech', color: Colors.DeepRed },
+    { name: 'Sport', slug: 'sports', color: Colors.Green },
+    { name: 'Jeux', slug: 'games', color: Colors.Black },
+    { name: 'Compétition inter-école', slug: 'competition', color: Colors.LightPurple },
+    { name: 'Ouverture culturelle', slug: 'culture', color: Colors.Pink },
+    { name: 'Événementiel', slug: 'events', color: Colors.Lime },
+    { name: 'Projets encadrés', slug: 'projects', color: Colors.Turquoise },
+    { name: 'Formation', slug: 'learning', color: Colors.DeepGreen },
+    { name: 'Solidarité', slug: 'solidarity', color: Colors.LightGreen },
+    { name: 'Communauté', slug: 'community', color: Colors.Gray },
+    { name: 'Professionnel', slug: 'pro', color: Colors.Teal },
+  ],
+
+  MIN_TAGS: 20,
+  MAX_TAGS: 50,
 
   EXAMPLE_RECEIPT_URL: 'https://bucket-team-receipts.okampus.fr/facture_exemple.pdf',
 };
@@ -147,9 +173,15 @@ export class DatabaseSeeder extends Seeder {
 
     const approvalSteps = await Promise.all(approvalStepsPromises);
 
+    const categories = seedingConfig.DEFAULT_CATEGORIES.map(
+      (category) => new TeamCategory({ ...category, tenant: tenant.tenant })
+    );
+
+    const tags = await new TagSeeder(em, tenant).create(randomInt(seedingConfig.MIN_TAGS, seedingConfig.MAX_TAGS));
+
     const MAX_MEMBERS = Math.min(students.length - 4, seedingConfig.MAX_MEMBERS);
 
-    const teams = await new TeamSeeder(em, tenant).create(seedingConfig.N_TEAMS);
+    const teams = await new TeamSeeder(em, tenant, categories, tags).create(seedingConfig.N_TEAMS);
     const teamPromises = [];
 
     for (const team of teams) {
@@ -176,9 +208,8 @@ export class DatabaseSeeder extends Seeder {
       };
 
       for (const member of Object.values(teamMembers)) {
-        member.user.shortcuts.add(
-          new Shortcut({ type: ShortcutType.TeamManage, targetActor: team.actor, user: member.user })
-        );
+        const shortcut = new Shortcut({ type: ShortcutType.TeamManage, targetActor: team.actor, user: member.user });
+        member.user.shortcuts.add(shortcut);
       }
 
       const requesters = randomFromArray(others, N_REQUESTERS);

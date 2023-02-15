@@ -9,6 +9,7 @@ import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-d
 import { Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import type { TeamFilterOptions } from './team-filter-options.type';
 import type { ActorImageUploadProps } from '@okampus/api/dal';
 import type { CreateOrgDocumentDto, CreateTeamDto, UpdateTeamDto } from '@okampus/shared/dtos';
 import type { MulterFileType, Snowflake } from '@okampus/shared/types';
@@ -33,8 +34,13 @@ export class TeamsService extends RequestContext {
     return this.queryBus.execute(query);
   }
 
-  find(paginationOptions: PaginationOptions): Promise<PaginatedTeamModel> {
-    const query = new GetTeamsQuery(paginationOptions, this.tenant(), this.autoGqlPopulate(defaultTeamPopulate));
+  find(paginationOptions: PaginationOptions, filterOptions: TeamFilterOptions): Promise<PaginatedTeamModel> {
+    const query = new GetTeamsQuery(
+      filterOptions,
+      paginationOptions,
+      this.tenant(),
+      this.autoGqlPopulate(defaultTeamPopulate)
+    );
     return this.queryBus.execute(query);
   }
 

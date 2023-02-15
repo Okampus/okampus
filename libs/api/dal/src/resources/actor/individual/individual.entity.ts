@@ -25,6 +25,7 @@ export class Individual extends TenantScopedEntity {
     this.actor = new Actor({
       individual: this,
       name: options.name,
+      bio: options.bio,
       tenant: options.tenant,
       primaryEmail: options.primaryEmail,
       slug: options.slug,

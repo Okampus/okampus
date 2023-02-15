@@ -1,0 +1,15 @@
+.card-link {
+  @apply after:z-[20] after:absolute after:inset-0 after:w-full;
+
+  &:hover {
+    @apply underline;
+  }
+
+  .card-hover:hover & {
+    @apply underline;
+  }
+}
+
+.card-sm {
+  @apply rounded-2xl px-3.5 py-3 shadow-lg overflow-hidden;
+}

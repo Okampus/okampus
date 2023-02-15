@@ -14,7 +14,13 @@ export class GetTeamsHandler implements IQueryHandler<GetTeamsQuery> {
   async execute(query: GetTeamsQuery): Promise<PaginatedTeamModel> {
     return await this.teamFactory.findWithPagination(
       query.paginationOptions,
-      { tenant: { id: query.tenant.id } },
+      {
+        tenant: { id: query.tenant.id },
+        ...(query.filterOptions?.types?.length ? { type: { $in: query.filterOptions.types } } : {}),
+        ...(query.filterOptions?.categories?.length
+          ? { categories: { slug: { $in: query.filterOptions.categories } } }
+          : {}),
+      },
       { populate: query.populate }
     );
   }
