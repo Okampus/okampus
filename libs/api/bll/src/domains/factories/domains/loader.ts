@@ -411,6 +411,7 @@ export function loadTenantScopedEntity(
     user.scopeRole = entity.scopeRole;
     user.roles = entity.roles;
     user.shortcuts = loadApply(entity.shortcuts, (shortcut) => loadTenantScopedEntity(shortcut, contextStack));
+    user.teamMemberships = loadApply(entity.teamMemberships, (member) => loadTenantScopedEntity(member, contextStack));
     user.profile = loadTenantScopedEntity(entity.profile, contextStack);
     user.actor = getEntityFromStackOrLoad(entity.actor, contextStack);
 
