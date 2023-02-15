@@ -1,41 +1,41 @@
 import { Colors } from '@okampus/shared/enums';
 
-export const BLUE = '#0055FF';
-export const DEEP_BLUE = '#001144';
-export const DARK_BLUE = '#001092';
-export const LIGHT_BLUE = '#509BFF';
+export const DEEP_BLUE = '#001060';
+export const DARK_BLUE = '#0010a0';
+export const BLUE = '#1044cc';
+export const LIGHT_BLUE = '#2070e0';
 
-export const GREEN = '#4CAF50';
-export const DEEP_GREEN = '#002200';
-export const DARK_GREEN = '#1B5E20';
-export const LIGHT_GREEN = '#00D8A8';
+export const DEEP_GREEN = '#023002';
+export const DARK_GREEN = '#114411';
+export const GREEN = '#008820';
+export const LIGHT_GREEN = '#48cc48';
 
-export const ORANGE = '#FF9800';
-export const DEEP_ORANGE = '#B62305';
-export const DARK_ORANGE = '#E65100';
-export const LIGHT_ORANGE = '#FFB74D';
+export const DEEP_ORANGE = '#703010';
+export const DARK_ORANGE = '#bb5000';
+export const ORANGE = '#ff8000';
+export const LIGHT_ORANGE = '#ffa600';
 
-export const RED = '#F44336';
-export const DEEP_RED = '#991C1C';
-export const DARK_RED = '#660202';
-export const LIGHT_RED = '#FF7070';
+export const DEEP_RED = '#660000';
+export const DARK_RED = '#992020';
+export const RED = '#ff0000';
+export const LIGHT_RED = '#a04040';
 
-export const PURPLE = '#8C08F6';
-export const DEEP_PURPLE = '#2A046C';
-export const DARK_PURPLE = '#500079';
-export const LIGHT_PURPLE = '#EA80FC';
+export const DEEP_PURPLE = '#201070';
+export const DARK_PURPLE = '#500080';
+export const PURPLE = '#8800ff';
+export const LIGHT_PURPLE = '#aa33bb';
 
-export const GRAY = '#8E8E8E';
-export const DEEP_GRAY = '#212121';
-export const DARK_GRAY = '#424242';
+export const DEEP_GRAY = '#222222';
+export const DARK_GRAY = '#333333';
+export const GRAY = '#666666';
 
-export const TURQUOISE = '#00B5AD';
-export const PINK = '#E91E63';
-export const CYAN = '#00BCD4';
-export const BROWN = '#795548';
-export const INDIGO = '#3F51C5';
-export const LIME = '#CDDC39';
-export const TEAL = '#009688';
+export const TURQUOISE = '#007777';
+export const PINK = '#aa3366';
+export const CYAN = '#1b6ec0';
+export const BROWN = '#805555';
+export const INDIGO = '#5060d0';
+export const LIME = '#77aa00';
+export const TEAL = '#008080';
 
 export const BLACK = '#000000';
 
