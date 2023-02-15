@@ -25,8 +25,12 @@ export function SidebarMenuLink({ icon, label, link, isSubmenu, orgSlug, classNa
   return (
     // TODO: this should be refreshed quicker just after the subspace changes (to avoid error getLink calls)
     <Link to={getLink(link, { orgSlug })} className={clsx('flex items-center gap-4 rounded-lg', className)}>
-      {icon && icon({ className: 'lg:w-7 w-8' })}
-      {isSubmenu ? <h3 className="lg-max:hidden">{label}</h3> : <h2 className="lg-max:hidden">{label}</h2>}
+      {icon && icon({ className: 'lg:w-6 w-7' })}
+      {isSubmenu ? (
+        <div className="lg-max:hidden font-title font-semibold tracking-wide text-[0.95rem]">{label}</div>
+      ) : (
+        <div className="lg-max:hidden font-title font-semibold tracking-wide text-[0.95rem]">{label}</div>
+      )}
     </Link>
   );
 }

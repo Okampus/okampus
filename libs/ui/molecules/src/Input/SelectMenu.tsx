@@ -72,11 +72,6 @@ function SelectMenuInner<T>(
   return (
     <motion.div
       ref={mergeRefs([ref, propRef])}
-      // ref={(el) => {
-      //   if (ref)
-      //     ref.current = el ;
-      //   propRef?.current = el;
-      // }}
       initial={false}
       animate={isOpen ? 'open' : 'closed'}
       className={clsx('relative', fullWidth ? 'w-full' : 'w-fit')}
