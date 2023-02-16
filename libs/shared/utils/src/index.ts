@@ -10,6 +10,7 @@ export * from './colors/random-color';
 export * from './cookies/set-cookie-header-parser';
 export * from './dates/date-formattters';
 export * from './dates/date-utils';
+export * from './dates/duration-utils';
 export * from './enums/enum-keys';
 export * from './errors/get-error-message';
 export * from './errors/parse-graphql-error';
