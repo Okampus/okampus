@@ -14,6 +14,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // TODO: make avatar active when popper is open
+// TODO: improve popover
 
 export function Topbar() {
   const navigate = useNavigate();

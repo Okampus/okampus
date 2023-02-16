@@ -75,13 +75,13 @@ export function TeamCard({ team, link }: TeamCardProps) {
         </div>
         <div className="text-2 text-sm">{team.tagline}</div>
       </div>
-      {tags?.length && (
+      {tags?.length && tags?.length > 0 ? (
         <div className="flex gap-1.5 flex-wrap mt-2">
           <TagGroup
             tags={tags.map((tag) => ({ label: tag.name, backgroundColor: COLORS[tag.color], slug: tag.slug }))}
           />
         </div>
-      )}
+      ) : null}
     </motion.div>
     // <div className="relative rounded-xl bg-2 overflow-hidden">
     //   <div className="absolute h-[3.5rem] inset-x-0 z-0 bg-green-400 card">

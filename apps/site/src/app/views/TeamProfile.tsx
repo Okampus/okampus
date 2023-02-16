@@ -49,7 +49,7 @@ export function TeamProfile() {
   return (
     <div className="view flex flex-col gap-4 centered-container">
       <div className="flex justify-between my-4">
-        <div className="text-0 text-4xl font-medium">{team?.actor?.name}</div>
+        <div className="text-0 text-4xl font-semibold">{team?.actor?.name}</div>
         <div className="flex gap-4">
           <div className="button text-opposite bg-opposite">Suivre</div>
           <div className="button text-white bg-green-600">Rejoindre</div>

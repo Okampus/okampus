@@ -8,11 +8,11 @@ export type TagGroupProps = {
   size?: number;
 };
 
-export function TagGroup({ tags: users, limit = 2, size = 14 }: TagGroupProps) {
+export function TagGroup({ tags, limit = 2, size = 14 }: TagGroupProps) {
   return (
     <ItemGroup
       className="flex gap-1 flex-wrap"
-      items={users}
+      items={tags}
       limit={limit}
       size={size}
       render={(item) => <Tag {...item} />}

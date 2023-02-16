@@ -9,7 +9,7 @@ export type InstagramCardProps = {
 
 export function InstagramCard({ className, name, slug }: InstagramCardProps) {
   return (
-    <div className={clsx('card-sm bg-1 flex flex-col gap-2', className)}>
+    <div className={clsx('card-sm bg-2 flex flex-col gap-2', className)}>
       <div className="flex gap-2 items-center">
         <InstagramIcon className="h-4 rounded-[50%]" />
         <div className="text-2 opacity-70 text-sm">Instagram</div>

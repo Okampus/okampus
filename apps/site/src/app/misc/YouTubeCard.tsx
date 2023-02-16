@@ -10,7 +10,7 @@ export type YouTubeCardProps = {
 
 export function YouTubeCard({ className, name, slug }: YouTubeCardProps) {
   return (
-    <div className={clsx('card-sm !p-0 bg-1', className)}>
+    <div className={clsx('card-sm !p-0 bg-2', className)}>
       <div className="h-[40%] relative">
         <PlayIcon className="text-white absolute translate top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] h-10 w-10 p-2 rounded-[50%] bg-black opacity-70 flex items-center justify-center" />
         <div className="absolute bottom-2 left-4 rounded-full px-2 text-white opacity-80 bg-black text-sm">12:08</div>
