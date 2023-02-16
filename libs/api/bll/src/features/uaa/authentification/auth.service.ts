@@ -41,7 +41,7 @@ const { JsonWebTokenError, NotBeforeError, TokenExpiredError } = jsonwebtoken;
 
 import type { JwtSignOptions } from '@nestjs/jwt';
 import type { Bot, TenantCore, User } from '@okampus/api/dal';
-import type { ApiConfig, Cookie, AuthTokenClaims, Snowflake } from '@okampus/shared/types';
+import type { Cookie, AuthTokenClaims, Snowflake } from '@okampus/shared/types';
 import type { LoginDto } from './dto/login.dto';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { SessionProps } from '@okampus/shared/dtos';
@@ -53,6 +53,7 @@ type CookieWithMaxAge = Cookie & { options: { maxAge: number } };
 
 @Injectable()
 export class AuthService extends RequestContext {
+  pepper: Buffer;
   deviceDetector = new DeviceDetector();
   signOptions: {
     access: JwtSignOptions;
@@ -65,9 +66,6 @@ export class AuthService extends RequestContext {
     refresh: number;
     websocket: number;
   };
-  cookieOptions: ApiConfig['cookies']['options'];
-  cookieNames: ApiConfig['cookies']['names'];
-  pepper: Buffer;
 
   constructor(
     private readonly configService: ConfigService,
@@ -86,6 +84,7 @@ export class AuthService extends RequestContext {
   ) {
     super();
 
+    this.pepper = Buffer.from(this.configService.config.cryptoSecret);
     const issuer = this.configService.config.tokens.issuer;
     this.signOptions = {
       access: { issuer, secret: this.configService.config.tokens.secrets[TokenType.Access] },
@@ -98,9 +97,6 @@ export class AuthService extends RequestContext {
       refresh: this.configService.config.tokens.expirations[TokenType.Refresh],
       websocket: this.configService.config.tokens.expirations[TokenType.WebSocket],
     };
-    this.cookieOptions = configService.config.cookies.options;
-    this.cookieNames = configService.config.cookies.names;
-    this.pepper = Buffer.from(this.configService.config.cryptoSecret);
   }
 
   public async findCoreTenant(domain: string) {
@@ -169,36 +165,39 @@ export class AuthService extends RequestContext {
       expiresAt: new Date(Date.now() + maxAge),
     });
 
+    const { names, options } = this.configService.config.cookies;
     return {
-      name: this.configService.config.cookies.names[TokenType.MeiliSearch],
+      name: names[TokenType.MeiliSearch],
       value: meiliSearchKey.key,
-      options: { ...this.cookieOptions, httpOnly: false, maxAge },
+      options: { ...options, httpOnly: false, maxAge },
     };
   }
 
   public async createJwt(claims: Partial<AuthTokenClaims>, tokenType: AuthTokens): Promise<CookieWithMaxAge> {
     const { secrets, issuer, expirations } = this.configService.config.tokens;
+    const { names, options: cookieOptions } = this.configService.config.cookies;
 
     const secret = secrets[tokenType];
     const expiresIn = +expirations[tokenType];
 
     const token = await this.jwtService.signAsync(claims, { secret, issuer, expiresIn });
-    const options = { ...this.cookieOptions, maxAge: expiresIn * 1000 };
+    const options = { ...cookieOptions, maxAge: expiresIn * 1000 };
 
     // WebSocket token is public, must be accessed by the frontend and passed as Authorization header later
     if (tokenType === TokenType.WebSocket) options.httpOnly = false;
 
-    return { value: token, name: this.cookieNames[tokenType], options };
+    return { value: token, name: names[tokenType], options };
   }
 
   /* Creates an HttpOnly token with an "expiration" token making the token expiration accessible to JS */
   public async createHttpOnlyJwt(claims: AuthTokenClaims, tokenType: HttpOnlyTokens): Promise<Cookie[]> {
+    const { names, options } = this.configService.config.cookies;
     const token = await this.createJwt({ ...claims, req: RequestType.Http, tok: tokenType }, tokenType);
 
     const expirationToken = {
       value: (Date.now() + token.options.maxAge).toString(),
-      name: this.cookieNames[`${tokenType}Expiration`],
-      options: { ...this.cookieOptions, httpOnly: false, maxAge: token.options.maxAge },
+      name: names[`${tokenType}Expiration`],
+      options: { ...options, httpOnly: false, maxAge: token.options.maxAge },
     };
 
     return [token, expirationToken];

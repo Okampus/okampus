@@ -9,16 +9,15 @@ import type { ScopeRole } from '@okampus/shared/enums';
 import type { UserOptions } from '../../../resources/actor/user/user.options';
 
 export class UserSeeder extends Factory<User> {
-  tenant: Tenant;
-  scopeRole: ScopeRole;
-  passwordHash: string;
   model = User;
 
-  constructor(em: EntityManager, tenant: Tenant, scopeRole: ScopeRole, passwordHash: string) {
+  constructor(
+    em: EntityManager,
+    private readonly tenant: Tenant,
+    private readonly scopeRole: ScopeRole,
+    private readonly passwordHash: string
+  ) {
     super(em);
-    this.tenant = tenant;
-    this.scopeRole = scopeRole;
-    this.passwordHash = passwordHash;
   }
 
   public definition(faker: Faker): UserOptions {

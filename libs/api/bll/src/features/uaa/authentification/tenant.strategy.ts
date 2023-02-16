@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'openid-client';
 import { capitalize } from '@okampus/shared/utils';
 import { ScopeRole } from '@okampus/shared/enums';
-import type { BaseClient, Client, TokenSet } from 'openid-client';
+import type { Client, TokenSet } from 'openid-client';
 import type { TenantUserResponse } from '@okampus/shared/types';
 import type { User } from '@okampus/api/dal';
 import type { UsersService } from '../../../domains/resources/users/users.service';
@@ -16,19 +16,12 @@ export function tenantStrategyFactory(
   oidcClient: Client
 ): Strategy<User> {
   const TenantStrategy = class extends PassportStrategy(Strategy, tenantSlug) {
-    private readonly client: BaseClient;
-
     constructor(
       private readonly usersService: UsersService,
-      params: { redirect_uri: string; scope: string },
-      client: Client
+      private readonly client: Client,
+      params: { redirect_uri: string; scope: string }
     ) {
-      super({
-        client,
-        params,
-        usePKCE: false,
-      });
-      this.client = client;
+      super({ client, params, usePKCE: false });
     }
 
     public async validate(tokenset: TokenSet): Promise<UserModel> {
@@ -55,5 +48,5 @@ export function tenantStrategyFactory(
     }
   };
 
-  return new TenantStrategy(usersService, paramsOptions, oidcClient);
+  return new TenantStrategy(usersService, oidcClient, paramsOptions);
 }
