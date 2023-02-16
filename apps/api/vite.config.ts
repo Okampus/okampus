@@ -1,21 +1,26 @@
 import { defineConfig } from 'vite';
 import { VitePluginNode } from 'vite-plugin-node';
+
 import viteTsConfigPaths from 'vite-tsconfig-paths';
+import path from 'node:path';
+
+const _ = (dir: string) => path.resolve(path.resolve(__dirname, '../../'), dir);
 
 export default defineConfig({
-  server: { port: 8081 },
+  server: { port: 8081, open: true, hmr: true },
+  build: { outDir: _('dist/apps/api') },
   plugins: [
     viteTsConfigPaths({
       projects: [
-        '../../apps/api',
-        '../../tsconfig.base.json',
-        '../../libs/api/dal',
-        '../../libs/api/bll',
-        '../../libs/shared/consts',
-        '../../libs/shared/dtos',
-        '../../libs/shared/enums',
-        '../../libs/shared/types',
-        '../../libs/shared/utils',
+        _('apps/api'),
+        _('tsconfig.base.json'),
+        _('libs/api/dal'),
+        _('libs/api/bll'),
+        _('libs/shared/consts'),
+        _('libs/shared/dtos'),
+        _('libs/shared/enums'),
+        _('libs/shared/types'),
+        _('libs/shared/utils'),
       ],
     }),
     ...VitePluginNode({
@@ -25,10 +30,8 @@ export default defineConfig({
       adapter: 'nest',
 
       // tell the plugin where is your project entry
-      appPath: './src/main.ts',
-
+      appPath: _('apps/api/src/main.ts'),
       exportName: 'viteNodeApp',
-
       tsCompiler: 'swc',
 
       // swc configs, see [swc doc](https://swc.rs/docs/configuration/swcrc)
@@ -63,6 +66,7 @@ export default defineConfig({
       'class-transformer',
       'class-validator',
       'fastify-swagger',
+      'fsevents', // Can cause bug on macOS
     ],
   },
 });

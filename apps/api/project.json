@@ -5,44 +5,19 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "outputPath": "dist/apps/api"
-      },
-      "configurations": {
-        "production": {
-          "mode": "production"
-        }
-      }
+      "command": "vite build --config apps/api/vite.config.ts --mode production"
     },
     "migration:create": {
-      "executor": "nx:run-commands",
-      "dependsOn": ["build"],
-      "options": {
-        "commands": ["MIKRO_ORM_MIGRATION=create node dist/apps/api/main.mjs"]
-      }
+      "command": "MIKRO_ORM_MIGRATION=create node dist/apps/api/main.mjs",
+      "dependsOn": ["build"]
     },
     "migration:up": {
-      "executor": "nx:run-commands",
-      "dependsOn": ["migration:create"],
-      "options": {
-        "commands": ["sh apps/api/migrate.sh"]
-      }
+      "command": "sh apps/api/migrate.sh",
+      "dependsOn": ["migration:create"]
     },
     "serve": {
-      "executor": "@nrwl/vite:dev-server",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "api:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "api:build:development",
-          "hmr": true
-        }
-      }
+      "command": "vite serve --config apps/api/vite.config.ts --mode development",
+      "dependsOn": ["migration:up"]
     },
     "lint": {
       "executor": "nx:run-commands",
@@ -60,22 +35,13 @@
       }
     },
     "ts-check": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["tsc --pretty --noEmit -p apps/api/tsconfig.app.json"]
-      }
+      "command": "tsc --pretty --noEmit -p apps/api/tsconfig.app.json"
     },
     "ts-check-spec": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["tsc --pretty --noEmit -p apps/api/tsconfig.spec.json"]
-      }
+      "command": "tsc --pretty --noEmit -p apps/api/tsconfig.spec.json"
     },
     "eslint": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["eslint apps/api --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
-      }
+      "command": "eslint apps/api --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"
     },
     "prettier": {
       "executor": "nx:run-commands",

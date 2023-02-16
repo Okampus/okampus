@@ -131,22 +131,13 @@
       }
     },
     "ts-check": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["tsc --pretty --noEmit -p apps/mobile/tsconfig.app.json"]
-      }
+      "command": "tsc --pretty --noEmit -p apps/mobile/tsconfig.app.json"
     },
     "ts-check-spec": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["tsc --pretty --noEmit -p apps/mobile/tsconfig.spec.json"]
-      }
+      "command": "tsc --pretty --noEmit -p apps/mobile/tsconfig.spec.json"
     },
     "eslint": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["eslint apps/mobile --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"]
-      }
+      "command": "eslint apps/mobile --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"
     },
     "prettier": {
       "executor": "nx:run-commands",
@@ -155,12 +146,7 @@
       }
     },
     "stylelint": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          "stylelint apps/mobile/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
-        ]
-      }
+      "command": "stylelint apps/mobile/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
     },
     "test": {
       "executor": "@nrwl/jest:jest",

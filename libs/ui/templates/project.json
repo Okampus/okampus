@@ -39,10 +39,7 @@
       }
     },
     "ts-check": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["tsc --pretty --noEmit -p libs/ui/templates/tsconfig.lib.json"]
-      }
+      "command": "tsc --pretty --noEmit -p libs/ui/templates/tsconfig.lib.json"
     },
     "eslint": {
       "executor": "nx:run-commands",
@@ -59,12 +56,7 @@
       }
     },
     "stylelint": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          "stylelint libs/ui/templates/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
-        ]
-      }
+      "command": "stylelint libs/ui/templates/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
     },
     "test": {
       "executor": "@nrwl/jest:jest",

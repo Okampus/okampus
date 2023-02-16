@@ -5,37 +5,13 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "outputPath": "dist/apps/site"
-      },
-      "configurations": {
-        "development": {
-          "mode": "development"
-        },
-        "production": {
-          "mode": "production"
-        }
-      }
+      "command": "vite build --config apps/site/vite.config.ts --mode production"
     },
     "serve": {
-      "executor": "@nrwl/vite:dev-server",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "site:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "site:build:development",
-          "hmr": true
-        },
-        "production": {
-          "buildTarget": "site:build:production",
-          "hmr": false
-        }
-      }
+      "command": "vite --config apps/site/vite.config.ts"
+    },
+    "test": {
+      "command": "vitest --config apps/site/vite.config.ts"
     },
     "lint": {
       "executor": "nx:run-commands",
@@ -59,22 +35,13 @@
       }
     },
     "ts-check": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["tsc --pretty --noEmit -p apps/site/tsconfig.app.json"]
-      }
+      "command": "tsc --pretty --noEmit -p apps/site/tsconfig.app.json"
     },
     "ts-check-spec": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["tsc --pretty --noEmit -p apps/site/tsconfig.spec.json"]
-      }
+      "command": "tsc --pretty --noEmit -p apps/site/tsconfig.spec.json"
     },
     "eslint": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["eslint apps/site --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"]
-      }
+      "command": "eslint apps/site --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"
     },
     "prettier": {
       "executor": "nx:run-commands",
@@ -83,20 +50,7 @@
       }
     },
     "stylelint": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          "stylelint apps/site/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
-        ]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/vite:test",
-      "outputs": ["coverage/apps/site"],
-      "options": {
-        "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/apps/site"
-      }
+      "command": "stylelint apps/site/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
     }
   },
   "tags": ["scope:site", "type:app"]
