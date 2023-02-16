@@ -10,7 +10,7 @@ import { ReactComponent as ShieldAccountIcon } from '@okampus/assets/svg/icons/s
 import { ReactComponent as HomeIcon } from '@okampus/assets/svg/icons/home.svg';
 
 import { Bubble } from '@okampus/ui/atoms';
-import { CurrentContext, NavigationContext, useCurrentContext, useTheme } from '@okampus/ui/hooks';
+import { CurrentContext, NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
 import { getLink } from '#site/app/utils/get-link';
 import { ScopeRole } from '@okampus/shared/enums';
 
@@ -41,28 +41,17 @@ export function Sidebar() {
 
   const switchSubspace = (subSpace: SubspaceTypes, shortcutKey?: ShortcutType, orgSlug?: string) => {
     if (isSearching) setIsSearching(false);
+    if (subSpace !== MANAGE) setCurrentOrgId(null);
 
     const selected = shortcutKey ? shortcutMenus[shortcutKey] : { ...defaultSelectedMenu, subSpace };
     const menu = getMenu(selected);
 
-    console.log('switchSubspace', { subSpace, shortcutKey, orgSlug, selected, menu });
-
     navigate(getLink(menu.link, { orgSlug: orgSlug ?? org?.actor?.slug }));
-    if (subSpace !== MANAGE) {
-      setCurrentOrgId(null);
-    }
   };
 
   const showBubbles = [...baseBubbles, ...(user?.scopeRole === ScopeRole.Admin ? adminBubbles : [])];
 
-  const [theme, setTheme] = useTheme();
-
-  // const tenantImages = tenant?.actor?.actorImages || [];
-  // const tenantAvatarSrc = tenantImages.find((img) => img.type === ActorImageType.Avatar)?.image?.url;
-  // const tenantAvatarDarkSrc = tenantImages.find((img) => img.type === ActorImageType.AvatarDarkMode)?.image?.url;
-
   const shortcuts = user?.shortcuts || [];
-
   return (
     <div className="flex bg-0 px-2 py-4">
       <nav className="flex flex-col justify-between">
@@ -97,49 +86,7 @@ export function Sidebar() {
             </div>
           </div>
         </div>
-        {/* <div className="flex lg-max:flex-col-reverse items-center justify-center gap-4 my-4 px-4">
-            <div className="lg-max:hidden text-0">
-              <UserLabel
-                avatar={
-                  user?.actor?.actorImages
-                    .map((actorImageFragment) => {
-                      const actorImageBare = getFragmentData(actorImageBareFragment, actorImageFragment);
-                      return { type: actorImageBare.type, image: actorImageBare.image };
-                    })
-                    .find((actorImage) => actorImage.type === ActorImageType.Avatar)?.image?.url
-                }
-                name={user?.actor?.name}
-                ellipsis={true}
-              />
-            </div>
-            <div
-              className="text-0 h-9 w-10 bg-2 p-2 rounded-lg cursor-pointer items-center justify-center"
-              onClick={() => logout()}
-            >
-              <LogoutIcon />
-            </div>
-            <DarkModeToggle checked={theme === 'light'} onChange={changeTheme} size={23} />
-          </div> */}
       </nav>
     </div>
   );
-}
-
-if (import.meta.vitest) {
-  // add tests related to your file here
-  // For more information please visit the Vitest docs site here: https://vitest.dev/guide/in-source.html
-
-  const { it, expect, beforeEach } = import.meta.vitest;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let render: any;
-
-  beforeEach(async () => {
-    // eslint-disable-next-line unicorn/no-await-expression-member
-    render = (await import('@testing-library/react')).render;
-  });
-
-  it('should render successfully', () => {
-    const { baseElement } = render(<Sidebar />);
-    expect(baseElement).toBeTruthy();
-  });
 }

@@ -5,3 +5,4 @@
 /node_modules
 /tmp
 **/migrations
+pnpm-lock.yaml

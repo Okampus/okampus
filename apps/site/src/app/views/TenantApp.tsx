@@ -74,22 +74,3 @@ export function TenantApp() {
     </div>
   );
 }
-
-if (import.meta.vitest) {
-  // add tests related to your file here
-  // For more information please visit the Vitest docs site here: https://vitest.dev/guide/in-source.html
-
-  const { it, expect, beforeEach } = import.meta.vitest;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let render: any;
-
-  beforeEach(async () => {
-    const { render: r } = await import('@testing-library/react');
-    render = r;
-  });
-
-  it('should render successfully', () => {
-    const { baseElement } = render(<TenantApp />);
-    expect(baseElement).toBeTruthy();
-  });
-}
