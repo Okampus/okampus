@@ -84,7 +84,6 @@ specifiers:
   '@types/mime-types': ^2.1.0
   '@types/minio': ^7.0.0
   '@types/morgan': ^1.9.0
-  '@types/multer': ^1.4.5
   '@types/node': ^18.13.0
   '@types/react': ^18.0.0
   '@types/react-dom': ^18.0.0
@@ -98,7 +97,6 @@ specifiers:
   '@vitejs/plugin-react': ^3.1.0
   '@vitest/coverage-c8': ^0.28.5
   '@vitest/ui': ^0.28.5
-  '@webundsoehne/nest-fastify-file-upload': ^2.1.0
   apollo-link-scalars: ^4.0.0
   apollo-upload-client: ^17.0.0
   argon2: ^0.30.0
@@ -250,7 +248,6 @@ dependencies:
   '@sentry/node': 7.37.2
   '@sentry/tracing': 7.37.2
   '@sentry/types': 7.37.2
-  '@webundsoehne/nest-fastify-file-upload': 2.1.0_lalmgtth7rjniy2ta44zcprzda
   apollo-link-scalars: 4.0.1_nrridtldauxlckw5ksrihzcr2m
   apollo-upload-client: 17.0.0_nrridtldauxlckw5ksrihzcr2m
   argon2: 0.30.3
@@ -345,7 +342,6 @@ devDependencies:
   '@types/mime-types': 2.1.1
   '@types/minio': 7.0.15
   '@types/morgan': 1.9.4
-  '@types/multer': 1.4.7
   '@types/node': 18.13.0
   '@types/react': 18.0.28
   '@types/react-dom': 18.0.11
@@ -7746,12 +7742,6 @@ packages:
       '@types/node': 18.13.0
     dev: true
 
-  /@types/multer/1.4.7:
-    resolution: {integrity: sha512-/SNsDidUFCvqqcWDwxv2feww/yqhNeTRL5CVoL3jU4Goc4kKEL10T7Eye65ZqPNi4HRx8sAEX59pV1aEH7drNA==}
-    dependencies:
-      '@types/express': 4.17.17
-    dev: true
-
   /@types/node-fetch/2.6.2:
     resolution: {integrity: sha512-DHqhlq5jeESLy19TYhLakJ07kNumXWjcDdxXsLUMJZ6ue8VZJj4kLPQVE/2mdHh3xZziNF1xppu5lwmS53HR+A==}
     dependencies:
@@ -8438,20 +8428,6 @@ packages:
       '@webassemblyjs/wast-parser': 1.9.0
       '@xtuc/long': 4.2.2
     dev: true
-
-  /@webundsoehne/nest-fastify-file-upload/2.1.0_lalmgtth7rjniy2ta44zcprzda:
-    resolution: {integrity: sha512-VtxfqG4WGW3fG1MD///HQRizYQNuY8YByeJdVKroFFZizXmj8XgLNAaTWDO/ff9hx2sPXF3vm6J8erq//DAODg==}
-    engines: {node: '>=12'}
-    peerDependencies:
-      '@nestjs/common': '>= 7 < 10'
-      '@nestjs/core': '>= 7 < 10'
-      '@nestjs/platform-fastify': '>= 7 < 10'
-    dependencies:
-      '@nestjs/common': 9.3.9_dvrujxroetdtfe56hbaridt2dy
-      '@nestjs/core': 9.3.9_jrq2rdgfp2sx67wmylmrqliwxe
-      '@nestjs/platform-fastify': 9.3.9_77foi4w27ghy47yutmnzv7krjy
-      fastify-multer: 2.0.3
-    dev: false
 
   /@whatwg-node/events/0.0.2:
     resolution: {integrity: sha512-WKj/lI4QjnLuPrim0cfO7i+HsDSXHxNv1y0CrJhdntuO3hxWZmnXCwNDnwOvry11OjRin6cgWNF+j/9Pn8TN4w==}
