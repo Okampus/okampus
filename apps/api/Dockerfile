@@ -25,10 +25,10 @@ ADD --chown=api:api libs/api ./libs/api
 ADD --chown=api:api libs/shared ./libs/shared
 
 RUN pnpm tsc --pretty -p apps/api/tsconfig.migrations.json
-RUN pnpm nx run api:build:production
+RUN pnpm vite build --config apps/api/vite.config.ts --mode production
 
 USER api
 
 EXPOSE 8081
 
-CMD /wait && MIKRO_ORM_MIGRATION=up node dist/apps/api/main.mjs && node dist/apps/api/main.mjs
+CMD /wait && pnpm cross-env MIKRO_ORM_MIGRATION=up node dist/apps/api/main.mjs && node dist/apps/api/main.mjs

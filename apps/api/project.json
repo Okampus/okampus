@@ -12,7 +12,13 @@
       "dependsOn": ["build"]
     },
     "migration:up": {
-      "command": "sh apps/api/migrate.sh",
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --pretty -p apps/api/tsconfig.migrations.json",
+          "cross-env MIKRO_ORM_MIGRATION=up node dist/apps/api/main.mjs"
+        ]
+      },
       "dependsOn": ["migration:create"]
     },
     "serve": {
