@@ -96,7 +96,6 @@
     "rimraf": "^4.0.0",
     "rxjs": "^7.8.0",
     "sharp": "^0.31.0",
-    "statuses": "^2.0.0",
     "zod": "^3.20.0"
   },
   "devDependencies": {
@@ -159,7 +158,6 @@
     "@types/react-pdf": "^6.2.0",
     "@types/set-cookie-parser": "^2.4.0",
     "@types/sharp": "^0.31.0",
-    "@types/statuses": "^2.0.0",
     "@types/webpack-env": "^1.18.0",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",

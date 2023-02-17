@@ -1,10 +1,12 @@
+import { statuses } from '@okampus/shared/consts';
 import morgan from 'morgan';
-import status from 'statuses';
+import type { ANSI_BLUE, ANSI_CYAN, ANSI_RED, ANSI_WHITE, ANSI_YELLOW } from '@okampus/shared/consts';
 
-const getColoredStatus = (color: 31 | 33 | 34 | 36 | 37, statusCode: number) =>
-  `\u001B[${color}m${statusCode}\u001B[32m`;
+type StatusColor = typeof ANSI_RED | typeof ANSI_YELLOW | typeof ANSI_BLUE | typeof ANSI_CYAN | typeof ANSI_WHITE;
 
-morgan.token('status-text', (_req, { statusCode }) => status(statusCode).toString());
+const getColoredStatus = (color: StatusColor, statusCode: number) => `\u001B[${color}m${statusCode}\u001B[32m`;
+
+morgan.token('status-text', (_req, { statusCode }) => statuses[statusCode] || `Unknown (${statusCode})`);
 morgan.token('status-colored', (_req, { statusCode }) => {
   if (statusCode >= 500) return getColoredStatus(31, statusCode); // Red - Server Error
   if (statusCode >= 400) return getColoredStatus(33, statusCode); // Yellow - Client Error
