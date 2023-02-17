@@ -8,7 +8,7 @@
       "command": "vite build --config apps/api/vite.config.ts --mode production"
     },
     "migration:create": {
-      "command": "MIKRO_ORM_MIGRATION=create node dist/apps/api/main.mjs",
+      "command": "cross-env MIKRO_ORM_MIGRATION=create node dist/apps/api/main.mjs",
       "dependsOn": ["build"]
     },
     "migration:up": {
