@@ -33,14 +33,13 @@ import type { Snowflake } from '@okampus/shared/types';
 
 const sessionKey = Buffer.from(config.session.secret, 'ascii').subarray(0, 32);
 
-const cspConfigDevelopment = {
-  contentSecurityPolicy: false,
-  crossOriginResourcePolicy: false,
-  crossOriginEmbedderPolicy: false,
-};
+const defaultCsp = { contentSecurityPolicy: false, crossOriginResourcePolicy: false, crossOriginEmbedderPolicy: false };
+const defaultStoreValues = { requester: null, tenant: null, gqlInfo: null, alreadyPopulated: false };
 
 const authenticateOptions = { authInfo: false, successRedirect: '/auth/oidc-callback' };
-const defaultStoreValues = { requester: null, tenant: null, gqlInfo: null, alreadyPopulated: false };
+
+const transformOptions = { enableImplicitConversion: true };
+const validationPipeOptions = { transform: true, transformOptions, forbidNonWhitelisted: true, whitelist: true };
 
 export async function bootstrap(logger: Logger): Promise<INestApplication> {
   if (config.sentry.enabled) SentryTracing.addExtensionMethods();
@@ -73,11 +72,8 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
   const tenantCallbackPreValidation = tenantCallbackValidation({ ...preValidationContext, authenticateOptions });
   fastifyInstance.get('/auth/:tenant/callback', { preValidation: tenantCallbackPreValidation }, () => ({}));
 
-  app.use(helmet(config.env.isProd() ? {} : cspConfigDevelopment));
   app.enableShutdownHooks();
-
-  const transformOptions = { enableImplicitConversion: true };
-  const validationPipeOptions = { transform: true, transformOptions, forbidNonWhitelisted: true, whitelist: true };
+  app.use(helmet(config.env.isProd() ? {} : defaultCsp));
   app.useGlobalPipes(new ValidationPipe(validationPipeOptions));
 
   if (!config.s3.enabled)
