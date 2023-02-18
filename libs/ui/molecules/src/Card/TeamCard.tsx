@@ -1,7 +1,7 @@
 import { AvatarGroup } from '../Group/AvatarGroup';
 
 import { TagGroup } from '../Group/TagGroup';
-import { Avatar } from '@okampus/ui/atoms';
+import { Avatar, Banner } from '@okampus/ui/atoms';
 import { actorImageBareFragment, ActorImageType, getFragmentData } from '@okampus/shared/graphql';
 import { ReactComponent as ArrowRightIcon } from '@okampus/assets/svg/icons/arrow-right-alt.svg';
 
@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { COLORS } from '@okampus/shared/consts';
 import { motion } from 'framer-motion';
 
+import { getAvatar, getBanner } from '@okampus/ui/utils';
 import type { UserItem } from '../Group/AvatarGroup';
 import type { TeamMembersInfoFragment } from '@okampus/shared/graphql';
 
@@ -19,10 +20,6 @@ type TeamCardProps = {
 };
 
 export function TeamCard({ team, link }: TeamCardProps) {
-  const avatar = team.actor?.actorImages
-    ?.map((actorImage) => getFragmentData(actorImageBareFragment, actorImage))
-    .find((image) => image.type === ActorImageType.Avatar)?.image?.url;
-
   const users: UserItem[] = team.members
     .filter((member) => member.user && member.user.actor && member.user.actor.id)
     .map((member) => {
@@ -45,12 +42,18 @@ export function TeamCard({ team, link }: TeamCardProps) {
     >
       <Link to={link} className="card-link" />
       <div className="relative">
-        <img
+        <Banner src={getBanner(team.actor?.actorImages)} name={team.actor?.name} />
+        {/* <img
           src="https://cdn.dribbble.com/users/1343667/screenshots/14899708/media/137661847b31e4430435573a33a36c97.png?compress=1&resize=1000x750&vertical=top"
           alt=""
           className="rounded-xl w-full aspect-[16/10] object-cover"
+        /> */}
+        <Avatar
+          name={team.actor?.name}
+          src={getAvatar(team.actor?.actorImages)}
+          className="absolute bottom-[0.5rem] left-[0.5rem]"
+          size={18}
         />
-        <Avatar name={team.actor?.name} src={avatar} className="absolute bottom-[0.5rem] left-[0.5rem]" size={18} />
         <motion.i
           variants={{
             rest: {

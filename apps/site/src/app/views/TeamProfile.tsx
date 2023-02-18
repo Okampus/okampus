@@ -1,18 +1,13 @@
 import { InstagramCard } from '../misc/InstagramCard';
 import { YouTubeCard } from '../misc/YouTubeCard';
-import {
-  actorImageBareFragment,
-  getFragmentData,
-  getTeamDetailsQuery,
-  teamMembersFragment,
-} from '@okampus/shared/graphql';
+
+import { getFragmentData, getTeamDetailsQuery, teamMembersFragment } from '@okampus/shared/graphql';
 import { ImageGroup, MemberLabel } from '@okampus/ui/molecules';
-import { randomInt } from '@okampus/shared/utils';
 import { FactCard, Tag } from '@okampus/ui/atoms';
-import { ActorImageType } from '@okampus/shared/enums';
 import { PaginationSwiper } from '@okampus/ui/organisms';
 import { COLORS } from '@okampus/shared/consts';
 
+import { getAvatar, getProfileImages } from '@okampus/ui/utils';
 import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 
@@ -22,27 +17,12 @@ export function TeamProfile() {
   const { data } = useQuery(getTeamDetailsQuery, { variables: { slug: clubSlug } });
   const team = getFragmentData(teamMembersFragment, data?.teamBySlug);
 
-  // const images = team?.actor?.actorImages
-  //   .map((actorImage) => {
-  //     return getFragmentData(actorImageBareFragment, actorImage);
-  //   })
-  //   .filter((actorImage) => actorImage.type === ActorImageType.Profile);
-
-  const images = Array.from({ length: randomInt(1, 10) }).map((_, i) => {
-    return `https://loremflickr.com/600/400/fun,event?random=${i + randomInt(1, 10_000)}`;
-  });
-
   const teamMembers =
     team?.members?.map((member) => {
-      const actorImages = member?.user?.actor?.actorImages
-        .map((actorImage) => {
-          return getFragmentData(actorImageBareFragment, actorImage);
-        })
-        .filter((actorImage) => actorImage.type === ActorImageType.Avatar);
       return {
         name: member?.user?.firstName,
         role: member?.roles.map((role) => role.name).join(' / '),
-        avatar: actorImages?.[0]?.image?.url,
+        avatar: getAvatar(member?.user?.actor?.actorImages),
       };
     }) ?? [];
 
@@ -56,7 +36,7 @@ export function TeamProfile() {
         </div>
       </div>
       <div className="grid grid-cols-8 grid-rows-2 gap-4">
-        <ImageGroup images={images} className="col-span-4 row-span-2 max-h-80" />
+        <ImageGroup images={getProfileImages(team?.actor?.actorImages)} className="col-span-4 row-span-2 max-h-80" />
         <YouTubeCard name={team?.actor?.name} slug={team?.actor?.slug} className="col-span-2 row-span-2" />
         <InstagramCard name={team?.actor?.name} slug={team?.actor?.slug} className="col-span-2" />
         <FactCard title="Membres" information={team?.members?.length} className="bg-purple-600" />

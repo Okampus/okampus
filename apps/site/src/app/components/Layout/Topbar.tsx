@@ -7,8 +7,7 @@ import { Avatar, Bubble, Popover, PopoverContent, PopoverTrigger } from '@okampu
 import { CurrentContext, NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
 import { logoutMutation } from '@okampus/shared/graphql';
 
-import { getAvatar } from '#site/app/utils/get-avatar';
-
+import { getAvatar } from '@okampus/ui/utils';
 import { useApolloClient, useMutation } from '@apollo/client';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';

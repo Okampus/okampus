@@ -34,7 +34,7 @@ export default defineConfig({
         _('libs/ui/molecules'),
         _('libs/ui/organisms'),
         _('libs/ui/templates'),
-        _('libs/site/shards'),
+        _('libs/ui/utils'),
       ],
     }),
     svgr(),

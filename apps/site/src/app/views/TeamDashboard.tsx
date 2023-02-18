@@ -1,6 +1,5 @@
-import { ActorImageType, Align, OrgDocumentType } from '@okampus/shared/enums';
+import { Align, OrgDocumentType } from '@okampus/shared/enums';
 import {
-  actorImageBareFragment,
   documentFragment,
   documentUploadFragment,
   getFragmentData,
@@ -8,27 +7,23 @@ import {
   teamMembersFragment,
   TeamRoleKey,
 } from '@okampus/shared/graphql';
+
 import { FileTypeIcon, StatusLabel } from '@okampus/ui/atoms';
 import { NavigationContext } from '@okampus/ui/hooks';
 import { AvatarGroup, UserLabel } from '@okampus/ui/molecules';
 import { Dashboard } from '@okampus/ui/organisms';
+import { getAvatar } from '@okampus/ui/utils';
 import { useQuery } from '@apollo/client';
 import { useContext } from 'react';
+
 import type { FileLike } from '@okampus/shared/types';
 import type { DocumentUploadInfoFragment, TeamMembersInfoFragment } from '@okampus/shared/graphql';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getUserLabel(member?: { actor?: { actorImages: any[]; name: string } | null } | null) {
   if (!member || !member.actor) return <StatusLabel status="archived" label="N/A" />;
-  const actor = member.actor;
-  const actorImages = actor.actorImages.map((actorImage) => getFragmentData(actorImageBareFragment, actorImage));
 
-  return (
-    <UserLabel
-      avatar={actorImages.find((actorImage) => actorImage.type === ActorImageType.Avatar)?.image?.url}
-      name={actor.name}
-    />
-  );
+  return <UserLabel avatar={getAvatar(member.actor.actorImages)} name={member.actor.name} />;
 }
 
 function findDocument(team: TeamMembersInfoFragment, type: OrgDocumentType) {
@@ -100,9 +95,7 @@ export const TeamDashboard = () => {
         const members = value.members.map((member) => ({
           id: member.id,
           name: member.user?.actor?.name,
-          avatar: member.user?.actor?.actorImages
-            .map((actorImage) => getFragmentData(actorImageBareFragment, actorImage))
-            .find((actorImage) => actorImage.type === ActorImageType.Avatar)?.image?.url,
+          avatar: getAvatar(member.user?.actor?.actorImages),
         }));
 
         return <AvatarGroup users={members} />;

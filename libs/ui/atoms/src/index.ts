@@ -1,11 +1,12 @@
 // @index(['./**/*.{ts,tsx}', './*/index.{ts,tsx}'], f => `export * from '${f.path.replace(/\/index$/, '')}'`)
 export * from './Calendar/Day';
 export * from './Card/FactCard';
-export * from './Circle/Avatar';
 export * from './Circle/Badge';
 export * from './Circle/Bubble';
 export * from './Heading/HeadingSeparated';
 export * from './Icon/FileTypeIcon';
+export * from './Image/Avatar';
+export * from './Image/Banner';
 export * from './Image/ImageGradient';
 export * from './Image/ImageHorizontal';
 export * from './Label/StatusLabel';
