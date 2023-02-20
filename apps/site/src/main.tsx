@@ -15,7 +15,10 @@ const htmlRoot = window.document.documentElement;
 const initTheme = localStorage.getItem('theme') === 'dark';
 if (initTheme) htmlRoot.classList.add('dark');
 
-const appRoot = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement);
+const root = document.querySelector('#root');
+if (!root) throw new Error('Root element not found');
+
+const appRoot = ReactDOM.createRoot(root);
 appRoot.render(
   <ApolloProvider client={apolloClient}>
     <StrictMode>

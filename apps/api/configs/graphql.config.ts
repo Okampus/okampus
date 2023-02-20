@@ -1,6 +1,4 @@
 import { appPath } from './config';
-import { AuthModule, AuthService, UsersModule, UsersService } from '@okampus/api/bll';
-import { JwtModule, JwtService } from '@nestjs/jwt';
 import { MercuriusDriver } from '@nestjs/mercurius';
 import { GraphQLJSON } from 'graphql-scalars';
 import { GraphQLUpload } from 'graphql-upload-minimal';
@@ -9,9 +7,7 @@ import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 
 export const schemaFilePath = `${appPath}/../../libs/shared/graphql/src/schema/schema.gql`;
 
-export default {
-  imports: [JwtModule, UsersModule, AuthModule],
-  inject: [JwtService, UsersService, AuthService],
+const mercuriusConfig: MercuriusDriverConfig = {
   driver: MercuriusDriver,
   errorFormatter: (executionResult, context) => {
     const log = context.reply ? context.reply.log : context.app.log;
@@ -27,5 +23,7 @@ export default {
   },
   autoSchemaFile: schemaFilePath, // TODO: DX fix, schema file is doubled loaded when shared lib modified in vite dev mode
   resolvers: { JSON: GraphQLJSON, Upload: GraphQLUpload },
-  subscription: { 'graphql-ws': true },
-} as MercuriusDriverConfig;
+  subscription: true,
+};
+
+export default mercuriusConfig;

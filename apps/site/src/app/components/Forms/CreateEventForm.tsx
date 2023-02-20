@@ -6,7 +6,7 @@ import {
   teamMembersFragment,
 } from '@okampus/shared/graphql';
 import { EventState } from '@okampus/shared/enums';
-import { DynamicForm } from '@okampus/ui/organisms';
+import { ControlType, DynamicForm } from '@okampus/ui/organisms';
 import { useCurrentContext } from '@okampus/ui/hooks';
 import { useMutation, useQuery } from '@apollo/client';
 import { z } from 'zod';
@@ -102,14 +102,14 @@ export function CreateEventForm({ onSubmit }: CreateEventFormProps) {
   const fields: DynamicFieldData[] = [
     {
       fieldName: 'title',
-      inputType: 'text',
+      inputType: ControlType.Text,
       label: "Nom de l'événement",
       defaultValue: '',
       placeholder: "Nom de l'événement",
     },
     {
       fieldName: 'supervisorId',
-      inputType: 'select',
+      inputType: ControlType.Select,
       label: 'Superviseur',
       options: members,
       fullWidth: true,
@@ -117,24 +117,24 @@ export function CreateEventForm({ onSubmit }: CreateEventFormProps) {
     },
     {
       fieldName: 'start',
-      inputType: 'datetime-local',
+      inputType: ControlType.DatetimeLocal,
       label: "Début de l'événement",
       placeholder: 'Date et heure de début',
     },
     {
       fieldName: 'end',
-      inputType: 'datetime-local',
+      inputType: ControlType.DatetimeLocal,
       label: "Fin de l'événement",
       placeholder: 'Date et heure de fin',
     },
     {
       fieldName: 'private',
-      inputType: 'checkbox',
+      inputType: ControlType.Checkbox,
       label: 'Événement privé ?',
     },
     {
       fieldName: 'description',
-      inputType: 'text',
+      inputType: ControlType.Text,
       label: 'Description',
       placeholder: 'Description',
     },

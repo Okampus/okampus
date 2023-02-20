@@ -40,6 +40,7 @@ export class Tag extends TenantScopedEntity {
   constructor(options: TagOptions) {
     super({ tenant: options.tenant });
     this.assign(options);
+
     this.color = getColorFromData(this.name);
   }
 }

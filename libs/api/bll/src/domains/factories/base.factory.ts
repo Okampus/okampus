@@ -3,29 +3,30 @@ import { assertPermissions, checkPermissions } from '../../features/uaa/authoriz
 import { RequestContext } from '../../shards/abstract/request-context';
 import { PageInfo } from '../../shards/types/page-info.type';
 import { decodeCursor, encodeCursor, getCursorColumns, makeCursor } from '../../shards/utils/cursor-serializer';
-import { QueryOrder } from '@mikro-orm/core';
+
 import { BadRequestException } from '@nestjs/common';
-import { DEFAULT_PAGINATION_LIMIT } from '@okampus/shared/consts';
-import { Action } from '@okampus/shared/enums';
 import { processPopulatePaginated } from '@okampus/api/shards';
+import { DEFAULT_PAGINATION_LIMIT } from '@okampus/shared/consts';
+import { Action, QueryOrder } from '@okampus/shared/enums';
+
+import { isNotNull } from '@okampus/shared/utils';
+import type { BaseModel } from './abstract/base.model';
+import type { Subjects } from '../../features/uaa/authorization/casl/get-abilities';
+import type { PaginatedNodes } from '../../shards/types/paginated.type';
+import type { PaginationOptions } from '../../shards/types/pagination-options.type';
 import type {
   AssignOptions,
-  Constructor,
-  EntityData,
   FilterQuery,
-  // FindOneOptions,
-  FindOneOrFailOptions,
   FindOptions,
+  FindOneOptions,
+  FindOneOrFailOptions,
   Populate,
+  EntityData,
 } from '@mikro-orm/core';
 import type { EventPublisher } from '@nestjs/cqrs';
 import type { ActorEntityType, BaseEntity, BaseRepository, FlatActorData, TenantScopedEntity } from '@okampus/api/dal';
 import type { IBase } from '@okampus/shared/dtos';
-import type { CursorColumns, CursorColumnTypes } from '@okampus/shared/types';
-import type { Subjects } from '../../features/uaa/authorization/casl/get-abilities';
-import type { Edge, PaginatedNodes } from '../../shards/types/paginated.type';
-import type { PaginationOptions } from '../../shards/types/pagination-options.type';
-import type { BaseModel } from './abstract/base.model';
+import type { Constructor, CursorColumns, CursorColumnTypes } from '@okampus/shared/types';
 
 type PaginationFindOptions<T extends BaseEntity, P extends string> = Omit<
   FindOptions<T, P>,
@@ -34,6 +35,7 @@ type PaginationFindOptions<T extends BaseEntity, P extends string> = Omit<
 
 const forbiddenKeys = ['id', 'createdAt', 'updatedAt', 'deletedAt'];
 
+// TODO: fix types
 export abstract class BaseFactory<
   Model extends BaseModel,
   Entity extends TenantScopedEntity,
@@ -63,10 +65,10 @@ export abstract class BaseFactory<
     return model;
   }
 
-  // public async findOne(where: FilterQuery<Entity>, findOptions?: FindOneOptions<Entity>): Promise<Model | null> {
-  //   const entity = await this.repository.findOne(where, findOptions);
-  //   return entity ? this.entityToModel(entity) : null;
-  // }
+  public async findOne(where: FilterQuery<Entity>, findOptions?: FindOneOptions<Entity>): Promise<Model | null> {
+    const entity = await this.repository.findOne(where, findOptions);
+    return entity ? this.entityToModel(entity) ?? null : null;
+  }
 
   public async findOneOrFail(where: FilterQuery<Entity>, findOptions?: FindOneOrFailOptions<Entity>): Promise<Model> {
     const entity = await this.repository.findOneOrFail(where, findOptions);
@@ -83,8 +85,10 @@ export abstract class BaseFactory<
   ): Promise<PaginatedNodes<Model>> {
     let columns: CursorColumns | null = null;
 
-    const { populate: pop, ...options } = baseOptions ?? {};
-    const { getCursor, getPageInfo, populate } = processPopulatePaginated((pop ?? []) as never[]);
+    const { populate: populatePaginated, ...options } = baseOptions ?? {};
+    if (typeof populatePaginated === 'boolean') throw new BadRequestException('Populate must be an array of strings');
+
+    const { getCursor, getPageInfo, populate } = processPopulatePaginated(populatePaginated ?? []);
 
     const limit = paginationOptions?.limit ?? DEFAULT_PAGINATION_LIMIT;
     const offset: number = paginationOptions?.offset ?? 0;
@@ -153,13 +157,7 @@ export abstract class BaseFactory<
     const items = await this.repository.find(
       columns ? ({ $or: [where, getWhereFind(columns)] } as FilterQuery<Entity>) : where,
       // eslint-disable-next-line unicorn/no-array-method-this-argument
-      {
-        ...options,
-        populate,
-        orderBy,
-        limit,
-        offset,
-      }
+      { ...options, populate, orderBy, limit, offset }
     );
 
     if (items.length === 0) return { edges: [], pageInfo: null };
@@ -170,22 +168,20 @@ export abstract class BaseFactory<
     const requester = this.requester();
 
     const edges = items
-      .map((value) => ({
-        node: this.entityToModel(value),
-        cursor: getCursor ? makeCursor(value, orderBy) : null,
-      }))
-      .filter((value) => {
-        if (!value.node) return false;
-        if (!requester) return true;
-        return checkPermissions(requester, Action.Read, value.node as unknown as Subjects);
-      }) as Edge<Model>[];
+      .map((value) => {
+        const node = this.entityToModel(value);
+        return node ? { entity: value, node } : null;
+      })
+      .filter(isNotNull)
+      .filter((value) => requester || checkPermissions(requester, Action.Read, value.entity))
+      .map((value) => ({ node: value.node, cursor: getCursor ? makeCursor(value.entity, orderBy) : null }));
 
     let pageInfo: PageInfo | null = null;
     if (getPageInfo) {
       const nEdges = edges.length;
       if (nEdges > 0) {
-        const startCusorColumns = getCursorColumns(first, orderBy) as CursorColumns;
-        const endCursorColumns = getCursorColumns(last, orderBy) as CursorColumns;
+        const startCusorColumns = getCursorColumns(first, orderBy);
+        const endCursorColumns = getCursorColumns(last, orderBy);
 
         const [countBefore, countAfter] = await Promise.all([
           startCusorColumns
@@ -268,7 +264,7 @@ export abstract class BaseFactory<
     const entity = await this.repository.findOneOrFail(where, { populate });
 
     const requester = this.requester();
-    if (requester) assertPermissions(requester, Action.Update, entity as unknown as Subjects, Object.keys(data));
+    if (requester) assertPermissions(requester, Action.Update, entity, Object.keys(data));
     // if (entity.deletedAt || entity.lastHiddenAt) {
     //   throw new BadRequestException(`${this.EntityClass.name} has been deleted`);
     // }
@@ -276,8 +272,8 @@ export abstract class BaseFactory<
     if (forbiddenKeys.some((key) => key in data))
       throw new BadRequestException(`Cannot update forbidden key on ${this.EntityClass.name}`);
 
-    const partialEntity = (await transform(data, entity)) as unknown as EntityData<Entity>;
-    this.repository.assign(entity, partialEntity, options);
+    const partialEntity = await transform(data, entity);
+    this.repository.assign(entity, partialEntity as unknown as EntityData<Entity>, options);
     await this.repository.flush();
 
     return this.entityToModelOrFail(entity);
@@ -294,12 +290,12 @@ export abstract class BaseFactory<
     const assignData = {
       actor: { name, bio, primaryEmail, slug },
       ...entityProps,
-    } as unknown as Partial<Entity>;
+    };
 
     return this.update(
       where as FilterQuery<Entity>,
       populate,
-      assignData,
+      assignData as unknown as Partial<Entity>,
       { ...options, updateByPrimaryKey: false },
       transformData as unknown as (data: Partial<Entity>, entity: Entity) => Promise<Partial<Entity>>
     );

@@ -1,5 +1,7 @@
 import { ActorImage, DocumentEdit, DocumentUpload } from '@okampus/api/dal';
 import { ActorKind, S3Buckets, ActorImageType } from '@okampus/shared/enums';
+import { isNotNull } from '@okampus/shared/utils';
+
 import type {
   Actor,
   ActorImageUploadProps,
@@ -23,13 +25,15 @@ export async function addImagesToActor(
   type ImageTypes = ActorImageType.Avatar | ActorImageType.AvatarDarkMode | ActorImageType.Banner;
   const imageKeys: ImageTypes[] = [ActorImageType.Avatar, ActorImageType.AvatarDarkMode, ActorImageType.Banner];
 
-  const wrapPromise = (key: ActorImageType, image: MulterFileType) =>
-    uploadService.createImageUpload(tenant, image, bucket).then((upload) => [key, upload] as [ImageTypes, ImageUpload]);
+  const wrapPromise = (key: ImageTypes, image: MulterFileType): Promise<[key: ImageTypes, upload: ImageUpload]> =>
+    uploadService.createImageUpload(tenant, image, bucket).then((upload) => [key, upload]);
 
   const uploadPromises: Promise<[ImageTypes, ImageUpload]>[] = [];
 
-  // @ts-expect-error - TS doesn't know that the keys are in the array
-  for (const key of imageKeys) if (images[key]) uploadPromises.push(wrapPromise(key as ImageTypes, images[key]));
+  for (const key of imageKeys) {
+    const image = images[key];
+    if (isNotNull(image)) uploadPromises.push(wrapPromise(key, image));
+  }
 
   const imageUploads = await Promise.all(uploadPromises);
   imageUploads.map(([key, upload]) =>

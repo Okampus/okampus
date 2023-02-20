@@ -1,4 +1,4 @@
-export function processPopulatePaginated(populate: never[]): {
+export function processPopulatePaginated(populatePaginated: readonly string[]): {
   getPageInfo: boolean;
   getCursor: boolean;
   populate: never[];
@@ -6,31 +6,12 @@ export function processPopulatePaginated(populate: never[]): {
   let getCursor = false;
   let getPageInfo = false;
 
-  const pop = (populate as string[])
-    .filter((str) => {
-      if (str.includes('pageInfo')) {
-        getPageInfo = true;
-        return false;
-      }
+  const populate: never[] = [];
+  for (const str of populatePaginated) {
+    if (str.includes('pageInfo')) getPageInfo = true;
+    else if (str.includes('edges.cursor')) getCursor = true;
+    else if (str.startsWith('edges.node.')) populate.push(<never>str.replace('edges.node.', ''));
+  }
 
-      if (str.includes('edges.cursor')) {
-        getCursor = true;
-        return false;
-      }
-
-      if (str === 'edges.node' || str === 'edges' || str === 'node') return false;
-      return true;
-    })
-    .map((str) => {
-      if (str.includes('edges.node.')) {
-        return str.replace('edges.node.', '');
-      }
-      return str;
-    }) as never[];
-
-  return {
-    getPageInfo,
-    getCursor,
-    populate: pop,
-  };
+  return { getPageInfo, getCursor, populate };
 }

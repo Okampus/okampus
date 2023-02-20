@@ -6,7 +6,7 @@ import type { TenantEvent } from './event.entity';
 
 export class TenantEventRepository extends BaseRepository<TenantEvent> {
   async findSearchable(tenantId: Snowflake, findOptions: FindOptions<TenantEvent> = {}) {
-    const eventPopulate = ['tags', 'image', 'rootContent', 'rootContent.representingOrg.actor'] as never[];
-    return this.find({ tenant: { id: tenantId } }, { ...findOptions, populate: eventPopulate });
+    const populate = ['tags', 'image', 'rootContent', 'rootContent.representingOrg.actor'] as const;
+    return this.find<(typeof populate)[number]>({ tenant: { id: tenantId } }, { ...findOptions, populate });
   }
 }

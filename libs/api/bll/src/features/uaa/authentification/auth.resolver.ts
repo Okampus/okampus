@@ -15,7 +15,6 @@ import { TokenType } from '@okampus/shared/enums';
 
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { Individual } from '@okampus/api/dal';
-import type { ApiConfig } from '@okampus/shared/types';
 
 interface GraphQLContext {
   req: FastifyRequest;
@@ -24,11 +23,7 @@ interface GraphQLContext {
 
 @Resolver(() => UserModel)
 export class AuthResolver {
-  config: ApiConfig;
-
-  constructor(private readonly configService: ConfigService, private readonly authService: AuthService) {
-    this.config = this.configService.config;
-  }
+  constructor(private readonly configService: ConfigService, private readonly authService: AuthService) {}
 
   @TenantPublic()
   @Mutation(() => AuthContextModel)
@@ -43,16 +38,19 @@ export class AuthResolver {
   @TenantPublic()
   @Mutation(() => Boolean)
   public async logout(@Context() ctx: GraphQLContext): Promise<boolean> {
+    const { names, options } = this.configService.config.cookies;
+
     const res = ctx.reply;
-    const cookiePublicOptions = { ...this.config.cookies.options, httpOnly: false };
+    const cookiePublicOptions = { ...options, httpOnly: false };
+
     try {
       void res
-        .clearCookie(this.config.cookies.names[TokenType.Access], this.config.cookies.options)
-        .clearCookie(this.config.cookies.names[TokenType.Refresh], this.config.cookies.options)
-        .clearCookie(this.config.cookies.names.AccessExpiration, cookiePublicOptions)
-        .clearCookie(this.config.cookies.names.RefreshExpiration, cookiePublicOptions)
-        .clearCookie(this.config.cookies.names[TokenType.WebSocket], cookiePublicOptions)
-        .clearCookie(this.config.cookies.names[TokenType.MeiliSearch], cookiePublicOptions);
+        .clearCookie(names[TokenType.Access], options)
+        .clearCookie(names[TokenType.Refresh], options)
+        .clearCookie(names.AccessExpiration, cookiePublicOptions)
+        .clearCookie(names.RefreshExpiration, cookiePublicOptions)
+        .clearCookie(names[TokenType.WebSocket], cookiePublicOptions)
+        .clearCookie(names[TokenType.MeiliSearch], cookiePublicOptions);
       return true;
     } catch {
       return false;

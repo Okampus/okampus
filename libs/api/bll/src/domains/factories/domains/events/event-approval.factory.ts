@@ -1,9 +1,10 @@
 import { EventApprovalModel } from './event-approval.model';
 import { BaseFactory } from '../../base.factory';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { EventApproval } from '@okampus/api/dal';
-import { EventState } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
@@ -11,9 +12,12 @@ import {
   EventApprovalStepRepository,
   TenantEventRepository,
   TenantRepository,
+  EventApprovalStep,
 } from '@okampus/api/dal';
+import { EventApproval, Individual, TenantCore, TenantEvent } from '@okampus/api/dal';
+import { EventState } from '@okampus/shared/enums';
 
-import type { EventApprovalOptions, EventApprovalStep, Individual, TenantCore, TenantEvent } from '@okampus/api/dal';
+import type { EventApprovalOptions } from '@okampus/api/dal';
 import type { CreateEventApprovalDto, IEventApproval } from '@okampus/shared/dtos';
 
 @Injectable()
@@ -24,13 +28,14 @@ export class EventApprovalFactory extends BaseFactory<
   EventApprovalOptions
 > {
   constructor(
-    @Inject(EventPublisher) ep: EventPublisher,
+    @Inject(EventPublisher) eventPublisher: EventPublisher,
+    eventApprovalRepository: EventApprovalRepository,
+    private readonly em: EntityManager,
     private readonly eventApprovalStepRepository: EventApprovalStepRepository,
     private readonly eventRepository: TenantEventRepository,
-    private readonly tenantRepository: TenantRepository,
-    eventApprovalRepository: EventApprovalRepository
+    private readonly tenantRepository: TenantRepository
   ) {
-    super(ep, eventApprovalRepository, EventApprovalModel, EventApproval);
+    super(eventPublisher, eventApprovalRepository, EventApprovalModel, EventApproval);
   }
 
   async createEventApproval(
@@ -45,7 +50,6 @@ export class EventApprovalFactory extends BaseFactory<
     if (!event) throw new BadRequestException('Invalid event id');
 
     const tenantOrg = await this.tenantRepository.findOneOrFail({ tenant }, { populate: ['eventApprovalSteps'] });
-
     event.lastEventApprovalStep = step;
 
     if (!createEventApproval.approved) {
@@ -66,10 +70,10 @@ export class EventApprovalFactory extends BaseFactory<
   modelToEntity(model: Required<EventApprovalModel>): EventApproval {
     return new EventApproval({
       ...model,
-      tenant: { id: model.tenant.id } as TenantCore,
-      event: { id: model.event.id } as TenantEvent,
-      createdBy: { id: model.createdBy.id } as Individual,
-      step: { id: model.step.id } as EventApprovalStep,
+      event: this.em.getReference(TenantEvent, model.event.id),
+      createdBy: this.em.getReference(Individual, model.createdBy.id),
+      step: this.em.getReference(EventApprovalStep, model.step.id),
+      tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }
 }

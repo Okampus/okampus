@@ -10,16 +10,7 @@ import { IndividualModel } from '../../abstract/individual.model';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { ApprovalState } from '@okampus/shared/enums';
 
-import type {
-  IIndividual,
-  IProject,
-  ITeam,
-  ITeamAction,
-  ITeamMember,
-  ITenantCore,
-  ITenantEvent,
-  IUser,
-} from '@okampus/shared/dtos';
+import type { IIndividual, IProject, ITeam, ITeamAction, ITeamMember, ITenantEvent, IUser } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class TeamActionModel extends TenantScopedModel implements ITeamAction {
@@ -57,7 +48,8 @@ export class TeamActionModel extends TenantScopedModel implements ITeamAction {
   validatedBy?: ITeamMember | null;
 
   constructor(teamAction: ITeamAction) {
-    super(teamAction.tenant as ITenantCore);
+    if (!teamAction.tenant) throw new Error('TeamAction must have a tenant');
+    super(teamAction.tenant);
     this.assign(teamAction);
   }
 }

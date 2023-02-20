@@ -1,41 +1,20 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import viteTsConfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
+import react from '@vitejs/plugin-react';
+
+import viteTsConfigPaths from 'vite-tsconfig-paths';
 import path from 'node:path';
 
+const _ = (dir: string) => path.resolve(path.resolve(__dirname, '../../'), dir);
+
+const allow = [_('libs/assets/src'), _('apps/site/src')];
+
 export default defineConfig({
-  resolve: {
-    alias: {
-      '@assets': path.resolve(__dirname, '../../libs/assets/src'),
-    },
-  },
-
-  server: {
-    port: 4200,
-    host: 'localhost',
-    fs: {
-      allow: ['../../libs/assets/src'],
-    },
-  },
-
-  plugins: [
-    react(),
-    viteTsConfigPaths({
-      projects: [
-        '../../apps/site',
-        '../../tsconfig.base.json',
-        '../../libs/ui/atoms',
-        '../../libs/ui/hooks',
-        '../../libs/ui/molecules',
-        '../../libs/ui/organisms',
-        '../../libs/ui/templates',
-        '../../libs/site/shards',
-      ],
-    }),
-    svgr(),
-  ],
-
+  root: _('apps/site'),
+  resolve: { alias: { '@assets': _('libs/assets/src') } },
+  server: { port: 4200, fs: { allow }, open: true, hmr: true },
+  build: { outDir: _('dist/apps/site') },
+  define: { 'import.meta.vitest': undefined },
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [
@@ -44,17 +23,29 @@ export default defineConfig({
   //    }),
   //  ],
   // },
-
-  define: {
-    'import.meta.vitest': undefined,
-  },
+  plugins: [
+    react(),
+    viteTsConfigPaths({
+      projects: [
+        _('tsconfig.base.json'),
+        _('apps/site'),
+        _('libs/ui/atoms'),
+        _('libs/ui/hooks'),
+        _('libs/ui/molecules'),
+        _('libs/ui/organisms'),
+        _('libs/ui/templates'),
+        _('libs/ui/utils'),
+      ],
+    }),
+    svgr(),
+  ],
   test: {
+    environment: 'happy-dom',
     globals: true,
-    cache: {
-      dir: '../../node_modules/.vitest',
-    },
-    environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    includeSource: ['src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    passWithNoTests: true,
+    cache: { dir: _('node_modules/.vitest') },
+    coverage: { reportsDirectory: _('coverage/apps/site') },
+    include: [_('apps/site/src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}')],
+    includeSource: [_('apps/site/src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}')],
   },
 });

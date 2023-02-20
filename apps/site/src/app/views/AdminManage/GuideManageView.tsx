@@ -1,12 +1,11 @@
 import { MultiFileInput } from '#site/app/components/Input/MultiFileInput';
 import { tenantAddDocumentMutation } from '@okampus/shared/graphql';
 import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
-import { DynamicForm } from '@okampus/ui/organisms';
+import { ControlType, DynamicForm } from '@okampus/ui/organisms';
 import { useMutation } from '@apollo/client';
 import { useContext } from 'react';
 
 import type { DynamicFieldData } from '@okampus/ui/organisms';
-import type { CreateDocumentDto } from '@okampus/shared/graphql';
 
 export function GuideManageView() {
   const { previewFile, showModal, hideModal } = useContext(NavigationContext);
@@ -21,20 +20,20 @@ export function GuideManageView() {
   const fields: DynamicFieldData[] = [
     {
       fieldName: 'name',
-      inputType: 'text',
+      inputType: ControlType.Text,
       label: 'Nom du guide',
       defaultValue: '',
       placeholder: 'Nom du guide',
     },
     {
       fieldName: 'yearVersion',
-      inputType: 'number',
+      inputType: ControlType.Number,
       label: "Année d'édition du document",
       placeholder: 'Année de versionnage du document',
     },
     {
       fieldName: 'description',
-      inputType: 'text',
+      inputType: ControlType.Text,
       label: 'Description',
       placeholder: 'Description du document',
     },
@@ -43,7 +42,7 @@ export function GuideManageView() {
   if (!tenant) return null;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="view flex flex-col gap-4">
       <MultiFileInput
         onFileClick={(renderedFile) => previewFile(renderedFile.file)}
         onFileAdd={(files) =>
@@ -54,8 +53,8 @@ export function GuideManageView() {
                 fields={fields}
                 onSubmit={(values) => {
                   const createDocument = {
-                    ...(values as CreateDocumentDto),
-                    yearVersion: Number.parseInt((values as { yearVersion: string }).yearVersion),
+                    ...values,
+                    yearVersion: Number.parseInt(values.yearVersion),
                   };
                   tenantAddDocument({
                     variables: {

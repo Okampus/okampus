@@ -35,16 +35,10 @@
       }
     },
     "ts-check": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["tsc --pretty --noEmit -p libs/ui/atoms/tsconfig.lib.json"]
-      }
+      "command": "tsc --pretty --noEmit -p libs/ui/atoms/tsconfig.lib.json"
     },
     "eslint": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["eslint libs/ui/atoms --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"]
-      }
+      "command": "eslint libs/ui/atoms --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"
     },
     "prettier": {
       "executor": "nx:run-commands",
@@ -53,12 +47,7 @@
       }
     },
     "stylelint": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          "stylelint libs/ui/atoms/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
-        ]
-      }
+      "command": "stylelint libs/ui/atoms/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
     },
     "test": {
       "executor": "@nrwl/jest:jest",

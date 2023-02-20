@@ -5,7 +5,6 @@ import { ConfigService } from '../../global/config.module';
 import { Global } from '@nestjs/common';
 import { Logger, Module } from '@nestjs/common';
 import { S3Buckets } from '@okampus/shared/enums';
-import { enumKeys } from '@okampus/shared/utils';
 
 import { promises } from 'node:fs';
 import path from 'node:path';
@@ -31,8 +30,6 @@ export class UploadModule implements OnModuleInit {
     logger.log('Distant storage is disabled, uploading to local file system.');
     const base = this.configService.config.upload.localPath;
 
-    await Promise.all(
-      enumKeys(S3Buckets).map((value) => mkdir(path.join(base, S3Buckets[value]), { recursive: true }))
-    );
+    await Promise.all(Object.keys(S3Buckets).map((value) => mkdir(path.join(base, value), { recursive: true })));
   }
 }

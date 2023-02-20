@@ -35,6 +35,7 @@ export class Org extends TenantScopedEntity {
   constructor(options: OrgOptions & { orgKind: OrgKind }) {
     super({ tenant: options.tenant });
     this.assign(options);
+
     this.actor = new Actor({
       org: this,
       name: options.name,

@@ -10,7 +10,7 @@ export type ImageGradientProps = {
   imageClassName?: string;
   onClick?: () => void;
 };
-// <div className={classNames('image-gradient', className)} style={{ backgroundImage: `url(${src})` }} />
+
 export function ImageGradient({
   onClick,
   className = 'checkered',

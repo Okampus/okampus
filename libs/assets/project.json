@@ -13,13 +13,6 @@
         "tsConfig": "libs/assets/tsconfig.lib.json",
         "assets": ["libs/assets/*.md"]
       }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/assets/**/*.ts"]
-      }
     }
   },
   "tags": ["scope:shared", "type:const", "layer:*"]

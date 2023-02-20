@@ -33,18 +33,11 @@ export function useCurrentContext(): [
           actorImages {
             __typename
             id
-            createdAt
-            updatedAt
+            type
             image {
               __typename
               id
-              createdAt
-              updatedAt
               url
-              width
-              height
-              size
-              mimeType
             }
           }
         }
@@ -65,18 +58,11 @@ export function useCurrentContext(): [
             actorImages {
               __typename
               id
-              createdAt
-              updatedAt
+              type
               image {
                 __typename
                 id
-                createdAt
-                updatedAt
                 url
-                width
-                height
-                size
-                mimeType
               }
             }
             org {
@@ -102,23 +88,6 @@ export function useCurrentContext(): [
                       id
                       url
                     }
-                  }
-                }
-                categories {
-                  __typename
-                  id
-                  createdAt
-                  updatedAt
-                  name
-                  description
-                  color
-                  slug
-                  iconImage {
-                    __typename
-                    id
-                    createdAt
-                    updatedAt
-                    url
                   }
                 }
                 documents {
@@ -196,23 +165,6 @@ export function useCurrentContext(): [
               id
               url
             }
-          }
-        }
-        categories {
-          __typename
-          id
-          createdAt
-          updatedAt
-          name
-          description
-          color
-          slug
-          iconImage {
-            __typename
-            id
-            createdAt
-            updatedAt
-            url
           }
         }
         documents {

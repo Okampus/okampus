@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
+import type { RefObject, Dispatch, SetStateAction } from 'react';
 
 interface ValidRefTarget {
   contains(target: EventTarget | null): unknown;
 }
 
-export function useOutsideClick<T extends ValidRefTarget>(initialIsVisible: boolean) {
+export function useOutsideClick<T extends ValidRefTarget>(
+  initialIsVisible: boolean
+): [RefObject<T>, boolean, Dispatch<SetStateAction<boolean>>] {
   const [isComponentVisible, setIsComponentVisible] = useState<boolean>(initialIsVisible);
   const ref = useRef<T>(null);
 
@@ -21,9 +24,5 @@ export function useOutsideClick<T extends ValidRefTarget>(initialIsVisible: bool
     };
   }, []);
 
-  return [ref, isComponentVisible, setIsComponentVisible] as [
-    typeof ref,
-    typeof isComponentVisible,
-    typeof setIsComponentVisible
-  ];
+  return [ref, isComponentVisible, setIsComponentVisible];
 }

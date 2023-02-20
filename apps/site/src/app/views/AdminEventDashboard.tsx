@@ -88,7 +88,7 @@ export const AdminEventDashboard = () => {
   //     content: (
   //       <div className="grid grid-cols-2 gap-4">
   //         {step1Events?.length > 0 &&
-  //           (step1Events as ITenantEvent[]).map((event, idx) => (
+  //           (step1Events).map((event, idx) => (
   //             <motion.div layoutId={event.id ?? idx.toString()}>
   //               <EventCard
   //                 key={idx}
@@ -107,7 +107,7 @@ export const AdminEventDashboard = () => {
   //     content: (
   //       <div className="grid grid-cols-2 gap-4">
   //         {step2Events?.length > 0 &&
-  //           (step2Events as ITenantEvent[]).map((event, idx) => (
+  //           (step2Events).map((event, idx) => (
   //             <motion.div layoutId={event.id ?? idx.toString()}>
   //               <EventCard
   //                 key={idx}
@@ -126,7 +126,7 @@ export const AdminEventDashboard = () => {
   //     content: (
   //       <div className="grid grid-cols-2 gap-4">
   //         {step3Events?.length > 0 &&
-  //           (step3Events as ITenantEvent[]).map((event, idx) => (
+  //           (step3Events).map((event, idx) => (
   //             <motion.div layoutId={event.id ?? idx.toString()}>
   //               <EventCard
   //                 key={idx}
@@ -145,7 +145,7 @@ export const AdminEventDashboard = () => {
   //     content: (
   //       <div className="grid grid-cols-2 gap-4">
   //         {validatedEvents?.length > 0 &&
-  //           (validatedEvents as ITenantEvent[]).map((event, idx) => (
+  //           (validatedEvents).map((event, idx) => (
   //             <motion.div layoutId={event.id ?? idx.toString()}>
   //               <EventCard
   //                 key={idx}
@@ -163,8 +163,7 @@ export const AdminEventDashboard = () => {
   const _renderEventValidation = (selectedEvent: EventInfoFragment) => {
     // const events = data.events;
 
-    // const selectedEvent = data.events.edges.find((event: { node: ITenantEvent }) => event.node.id === selectedId)
-    //   ?.node as ITenantEvent;
+    // const selectedEvent = data.events.edges.find((event: { node: ITenantEvent }) => event.node.id === selectedId)?.node;
     return (
       <div className="flex flex-col gap-8 p-2">
         <div className="flex justify-between">
@@ -182,7 +181,7 @@ export const AdminEventDashboard = () => {
             <h1 className="text-1">{formatDateDayOfWeek(selectedEvent.start)}</h1>
             <h1 className="text-1">{formatDateDayOfWeek(selectedEvent.end)}</h1>
             <h1 className="text-1">{printAddress(selectedEvent.location)}</h1>
-            {/* <h1 className="text-1">{(selectedEvent?.rootContent as IContent).text}</h1> */}
+            {/* <h1 className="text-1">{(selectedEvent?.rootContent.text}</h1> */}
           </div>
         </div>
         <div>

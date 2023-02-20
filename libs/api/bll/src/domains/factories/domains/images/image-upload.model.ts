@@ -15,9 +15,7 @@ export class ImageUploadModel extends FileUploadModel implements IImageUpload {
 
   constructor(image: IImageUpload) {
     super(image);
-
-    this.width = image.width;
-    this.height = image.height;
+    this.assign(image);
 
     this.fileUploadKind = FileUploadKind.ImageUpload;
   }

@@ -1,15 +1,16 @@
 import { logout } from '../utils/logout';
+
 import { ApolloClient, createHttpLink, InMemoryCache, ApolloLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { asyncMap } from '@apollo/client/utilities';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { parse } from 'set-cookie-parser';
-import type { Operation, NextLink, ServerError } from '@apollo/client';
 
-const httpLink = createHttpLink({
-  uri: 'http://10.0.2.2:8081/graphql',
-});
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { parseSetCookieHeader } from '@okampus/shared/utils';
+
+import type { Operation, NextLink } from '@apollo/client';
+
+const httpLink = createHttpLink({ uri: 'http://10.0.2.2:8081/graphql' });
 
 export interface AuthCookies {
   access_exp: {
@@ -85,7 +86,7 @@ const withToken = setContext(async (req, { headers }) => {
 });
 
 const resetToken = onError(({ networkError, graphQLErrors }) => {
-  if (networkError && networkError.name === 'ServerError' && (networkError as ServerError).statusCode === 401) {
+  if (networkError && 'statusCode' in networkError && networkError.statusCode === 401) {
     userToken = null;
     logout();
   } else {
@@ -103,9 +104,7 @@ const authResLink = new ApolloLink((operation: Operation, forward: NextLink) =>
     const cookies: string[] = context.response.headers.get('set-cookie')?.split(', ');
 
     if (cookies && !(await AsyncStorage.getItem('accessToken'))) {
-      const parsedCookies = Object.fromEntries(
-        cookies.map((cookie) => parse(cookie)[0]).map((value) => [value.name, value])
-      ) as unknown as AuthCookies;
+      const parsedCookies = parseSetCookieHeader(cookies);
 
       await AsyncStorage.setItem('accessToken', parsedCookies.access_token.value);
       await AsyncStorage.setItem('refreshToken', parsedCookies.refresh_token.value);

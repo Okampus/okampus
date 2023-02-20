@@ -1,5 +1,3 @@
-export function exclude<T, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
-  return Object.fromEntries(
-    Object.entries(obj as Record<K, unknown>).filter(([key, _]) => !keys.includes(key as K))
-  ) as Omit<T, K>;
+export function exclude<T extends Record<K, unknown>, K extends keyof T>(obj: T, ...keys: string[]): Omit<T, K> {
+  return Object.fromEntries(Object.entries(obj).filter(([key, _]) => !keys.includes(key))) as Omit<T, K>;
 }

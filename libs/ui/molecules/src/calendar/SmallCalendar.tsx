@@ -76,7 +76,7 @@ export function SmallCalendar() {
                   setSmallCalendarMonth(currentMonthIdx);
                   setSelectedDate(day);
                 }}
-                className={`py-1 w-full ${getDayClass(day as unknown as number)}`}
+                className={`py-1 w-full ${getDayClass(day.toDate().getDay())}`}
               >
                 <span className="text-sm">{day.format('D')}</span>
               </button>

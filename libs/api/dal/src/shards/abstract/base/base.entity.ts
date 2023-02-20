@@ -1,5 +1,5 @@
 import { PrimaryKey, Property, t } from '@mikro-orm/core';
-import { snowflake } from '@okampus/shared/utils';
+import { isIn, snowflake } from '@okampus/shared/utils';
 
 export abstract class BaseEntity {
   @PrimaryKey({ type: t.bigint })
@@ -16,7 +16,7 @@ export abstract class BaseEntity {
 
   protected assign<T extends object>(options: T): void {
     for (const [key, value] of Object.entries(options)) {
-      if (value !== undefined) this[key as keyof typeof this] = value;
+      if (value !== undefined && isIn(key, this)) this[key] = value;
     }
   }
 }

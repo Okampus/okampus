@@ -58,7 +58,11 @@
 }
 
 .bg-main {
-  @apply bg-[#eee] dark:bg-[#111];
+  @apply bg-[#eee] dark:bg-[#1a1a1a];
+}
+
+.bg-topbar {
+  @apply bg-[#ddd] dark:bg-[#111];
 }
 
 .bg-1 {

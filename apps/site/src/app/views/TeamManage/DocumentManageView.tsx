@@ -100,7 +100,7 @@ export function DocumentManageView() {
   );
 
   return (
-    <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(20rem,1fr))]">
+    <div className="view grid gap-6 grid-cols-[repeat(auto-fill,minmax(20rem,1fr))]">
       {documents.map(([type, document]) => (
         <div className="flex flex-col gap-4" key={type}>
           <label className="block text-xl font-medium text-2">{orgDocumentLabel(type)}</label>

@@ -38,11 +38,10 @@ export class UploadService extends RequestContext {
       const { writeFile } = promises;
 
       const buffer = await streamToBuffer(stream);
-      const fullPath = `${this.config.upload.localPath}/${bucket}/${key}`;
-      await writeFile(fullPath, buffer);
+      await writeFile(`${this.config.upload.localPath}/${bucket}/${key}`, buffer);
 
       return {
-        url: new URL(fullPath, this.config.network.apiUrl).href,
+        url: `${this.config.network.apiUrl}/uploads/${bucket}/${key}`,
         etag: key,
         size: buffer.length,
       };
@@ -50,10 +49,11 @@ export class UploadService extends RequestContext {
 
     if (!this.minioClient) throw new BadRequestException('Minio client is not initialized');
 
-    const { etag } = await this.minioClient.putObject(bucket, key, stream, { 'Content-Type': mime });
-    const { size } = await this.minioClient.statObject(bucket, key);
+    const bucketName = this.config.s3.buckets[bucket];
+    const { etag } = await this.minioClient.putObject(bucketName, key, stream, { 'Content-Type': mime });
+    const { size } = await this.minioClient.statObject(bucketName, key);
 
-    return { url: `${bucket}/${key}`, etag, size };
+    return { url: `${bucketName}/${key}`, etag, size };
   }
 
   public async createFileUpload(

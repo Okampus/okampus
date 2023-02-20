@@ -75,6 +75,7 @@ export class Ugc extends TenantScopedEntity {
   constructor(options: UgcOptions & { ugcKind: UgcKind }) {
     super({ tenant: options.tenant });
     this.assign(options);
+
     // TODO: deal with isAnonymous case
     this.author = options.realAuthor;
   }

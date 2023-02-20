@@ -22,16 +22,10 @@
       }
     },
     "ts-check": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["tsc --pretty --noEmit -p libs/shared/consts/tsconfig.lib.json"]
-      }
+      "command": "tsc --pretty --noEmit -p libs/shared/consts/tsconfig.lib.json"
     },
     "eslint": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["eslint libs/shared/consts --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"]
-      }
+      "command": "eslint libs/shared/consts --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"
     },
     "test": {
       "executor": "@nrwl/jest:jest",

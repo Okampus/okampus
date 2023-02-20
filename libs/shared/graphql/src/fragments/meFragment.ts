@@ -46,5 +46,23 @@ export const meFragment = gql(`
         }
       }
     }
+    teamMemberships {
+      __typename
+      id
+      roles {
+        __typename
+        id
+        name
+        color
+        required
+        permissions
+        category
+        key
+      }
+      team {
+        __typename
+        id
+      }
+    }
   }
 `);

@@ -2,29 +2,31 @@ import { UserModel } from './user.model';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
-
-import { BaseFactory } from '../../base.factory';
 import { addImagesToActor } from '../../abstract.utils';
+import { BaseFactory } from '../../base.factory';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UserRepository } from '@okampus/api/dal';
-
-import { User, UserProfile } from '@okampus/api/dal';
+import { TenantCore, User, UserProfile, Tag } from '@okampus/api/dal';
 import { ActorKind } from '@okampus/shared/enums';
-import type { ActorImageUploadProps, Tag, TenantCore, UserOptions } from '@okampus/api/dal';
+
+import type { ActorImageUploadProps, UserOptions } from '@okampus/api/dal';
 import type { IUser } from '@okampus/shared/dtos';
 
 @Injectable()
 export class UserFactory extends BaseFactory<UserModel, User, IUser, UserOptions> {
   constructor(
-    @Inject(EventPublisher) ep: EventPublisher,
-    private readonly uploadService: UploadService,
-    userRepository: UserRepository
+    @Inject(EventPublisher) eventPublisher: EventPublisher,
+    userRepository: UserRepository,
+    private readonly em: EntityManager,
+    private readonly uploadService: UploadService
   ) {
-    super(ep, userRepository, UserModel, User);
+    super(eventPublisher, userRepository, UserModel, User);
   }
 
   async createUser(options: UserOptions, images?: ActorImageUploadProps): Promise<UserModel> {
@@ -41,25 +43,19 @@ export class UserFactory extends BaseFactory<UserModel, User, IUser, UserOptions
     });
   }
 
-  // entityToModel(entity: User): UserModel | undefined {
-  //   const user = loadUser(entity);
-  //   if (!user) return undefined;
-  //   return this.createModel(user);
-  // }
-
   modelToEntity(model: Required<UserModel>): User {
     const user = new User({
+      bio: model.actor.bio,
       firstName: model.firstName,
       lastName: model.lastName,
       middleNames: model.middleNames,
-      scopeRole: model.scopeRole,
-      bio: model.actor.bio,
       name: model.actor.name,
       primaryEmail: model.actor.primaryEmail,
-      slug: model.actor.slug,
       roles: model.roles,
-      tags: model.actor.tags.map((tag) => ({ id: tag.id } as Tag)),
-      tenant: { id: model.tenant.id } as TenantCore,
+      scopeRole: model.scopeRole,
+      slug: model.actor.slug,
+      tags: model.actor.tags.map((tag) => this.em.getReference(Tag, tag.id)),
+      tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
 
     user.profile = new UserProfile({

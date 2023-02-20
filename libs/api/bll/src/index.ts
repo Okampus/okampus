@@ -197,7 +197,6 @@ export * from './global/sentry.module';
 export * from './shards/abstract/request-context';
 export * from './shards/decorators/current-tenant.decorator';
 export * from './shards/decorators/requester.decorator';
-export * from './shards/decorators/upload-interceptor.decorator';
 export * from './shards/interceptors/sentry.interceptor';
 export * from './shards/middlewares/rest-logger.middleware';
 export * from './shards/middlewares/trace.middleware';

@@ -1,6 +1,7 @@
 // @index(['./**/*.{ts,tsx}', './*/index.{ts,tsx}'], f => `export * from '${f.path.replace(/\/index$/, '')}'`)
 export * from './api/api';
 export * from './api/shared';
+export * from './global/ansi-codes';
 export * from './global/colors';
 export * from './global/dates';
 export * from './global/files/archive-exts';
@@ -14,4 +15,5 @@ export * from './global/files/presentation-exts';
 export * from './global/files/spreadsheet-exts';
 export * from './global/files/tabular-exts';
 export * from './global/files/video-exts';
+export * from './global/statuses';
 // @endindex

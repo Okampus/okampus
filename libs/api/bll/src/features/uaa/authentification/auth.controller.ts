@@ -9,21 +9,17 @@ import { ApiTags } from '@nestjs/swagger';
 import { Public, TenantPublic } from '@okampus/api/shards';
 import { TokenType } from '@okampus/shared/enums';
 import { referenceRemover } from '@okampus/shared/utils';
-import type { ApiConfig, Snowflake } from '@okampus/shared/types';
+
+import type { Snowflake } from '@okampus/shared/types';
 import type { User } from '@okampus/api/dal';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { AuthContextModel } from './auth-context.model';
 import type { LoginDto } from './dto/login.dto';
-// import { RegisterDto } from './dto/register.dto';
 
 @ApiTags('Authentication')
 @Controller({ path: 'auth' })
 export class AuthController {
-  config: ApiConfig;
-
-  constructor(private readonly configService: ConfigService, private readonly authService: AuthService) {
-    this.config = this.configService.config;
-  }
+  constructor(private readonly configService: ConfigService, private readonly authService: AuthService) {}
 
   @Public()
   @Get('oidc-callback')
@@ -33,7 +29,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: FastifyReply
   ): Promise<void> {
     await this.authService.addTokensOnAuth(req, res, user.id);
-    res.redirect(303, `${this.config.network.frontendUrl}/auth`);
+    res.redirect(303, `${this.configService.config.network.frontendUrl}/auth`);
   }
 
   @TenantPublic()
@@ -49,14 +45,15 @@ export class AuthController {
   @Public()
   @Get('logout')
   public logout(@Res({ passthrough: true }) res: FastifyReply): void {
-    const cookiePublicOptions = { ...this.config.cookies.options, httpOnly: false };
+    const { names, options } = this.configService.config.cookies;
+    const cookiePublicOptions = { ...options, httpOnly: false };
     void res
-      .clearCookie(this.config.cookies.names[TokenType.Access], this.config.cookies.options)
-      .clearCookie(this.config.cookies.names[TokenType.Refresh], this.config.cookies.options)
-      .clearCookie(this.config.cookies.names.AccessExpiration, cookiePublicOptions)
-      .clearCookie(this.config.cookies.names.RefreshExpiration, cookiePublicOptions)
-      .clearCookie(this.config.cookies.names[TokenType.WebSocket], cookiePublicOptions)
-      .clearCookie(this.config.cookies.names[TokenType.MeiliSearch], cookiePublicOptions);
+      .clearCookie(names[TokenType.Access], options)
+      .clearCookie(names[TokenType.Refresh], options)
+      .clearCookie(names.AccessExpiration, cookiePublicOptions)
+      .clearCookie(names.RefreshExpiration, cookiePublicOptions)
+      .clearCookie(names[TokenType.WebSocket], cookiePublicOptions)
+      .clearCookie(names[TokenType.MeiliSearch], cookiePublicOptions);
   }
 
   @Post('ws-token')

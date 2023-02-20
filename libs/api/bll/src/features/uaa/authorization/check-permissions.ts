@@ -9,10 +9,7 @@ import type { Subjects } from './casl/get-abilities';
 export function assertPermissions(requester: Individual, action: Action, target: Subjects, fields: string[] = []) {
   const ability = createAbilitiesForIndividual(requester);
   try {
-    if (fields.length === 0) {
-      ForbiddenError.from(ability).throwUnlessCan(action, target);
-    }
-
+    if (fields.length === 0) ForbiddenError.from(ability).throwUnlessCan(action, target);
     const error = ForbiddenError.from(ability);
     for (const field of fields) error.throwUnlessCan(action, target, field);
   } catch (error) {

@@ -1,49 +1,66 @@
-export function referenceRemover<T extends object>(
-  src: T,
-  identify: (obj1: object, obj2: object) => boolean = (obj1, obj2) => obj1 === obj2
-): T {
+import { isObject } from './is-object';
+
+type IdentifyFunc = (obj1: object, obj2: object) => boolean;
+const equals = (obj1: object, obj2: object) => obj1 === obj2;
+
+export function referenceRemover<T extends object>(src: T, identify: IdentifyFunc = equals): T {
   const weakReferenceValue = new WeakRef({ value: undefined });
 
-  function internalRemover(target: object, src: object, references: object[]) {
-    for (const key in src) {
-      const srcValue = src[key as keyof typeof src] as object;
-
-      if ('object' === typeof srcValue) {
-        let referenceFound = false;
-
-        for (const reference of references) {
-          if (identify(srcValue, reference)) {
-            target[key as keyof typeof target] = weakReferenceValue.deref()?.value as never;
-            referenceFound = true;
-            break;
-          }
+  function internalReferenceCheck<T extends object>(
+    references: object[],
+    target: T,
+    value: unknown,
+    key?: string
+  ): void {
+    const applyToTarget = Array.isArray(target)
+      ? <T>(value: T) => {
+          target.push(value);
+          return value;
         }
-
-        if (!referenceFound) {
-          if (!srcValue) {
-            target[key as keyof typeof target] = srcValue;
-            continue;
-          } else if (Array.isArray(srcValue)) {
-            target[key as keyof typeof target] = [...srcValue] as never;
-            internalRemover(target[key as keyof typeof target], srcValue, [...references, srcValue]);
-          } else if (srcValue instanceof Map) {
-            const entries = [...srcValue];
-            target[key as keyof typeof target] = entries as never;
-            internalRemover(entries, entries, [...references, entries]);
-          } else if (srcValue instanceof Date) {
-            target[key as keyof typeof target] = srcValue as never;
-            continue;
-          } else {
-            target[key as keyof typeof target] = { ...srcValue } as never;
-            internalRemover(target[key as keyof typeof target], srcValue, [...references, srcValue]);
-          }
+      : typeof target === 'object' && key !== undefined
+      ? <T>(value: T) => {
+          // @ts-expect-error - object supports key
+          target[key] = value;
+          return value;
         }
-      } else {
-        target[key as keyof typeof target] = srcValue;
-        continue;
+      : () => {
+          return;
+        };
+
+    if (isObject(value)) {
+      let referenceFound = false;
+
+      for (const reference of references) {
+        if (identify(value, reference)) {
+          applyToTarget(weakReferenceValue.deref()?.value);
+          referenceFound = true;
+          break;
+        }
       }
+
+      if (!referenceFound) {
+        let ref;
+        if (!value || value instanceof Date) {
+          applyToTarget(value);
+          return;
+        } else if (Array.isArray(value) || value instanceof Set || value instanceof Map) {
+          ref = applyToTarget<object>([...value]);
+        } else {
+          ref = applyToTarget({ ...value });
+        }
+        if (ref) internalRemover(ref, value, [...references, value]);
+      }
+    } else {
+      applyToTarget(value);
     }
+  }
+
+  function internalRemover<T extends object>(target: T, src: T, references: object[]): T {
+    if (Array.isArray(src)) for (const value of src) internalReferenceCheck(references, target, value);
+    else for (const [key, value] of Object.entries(src)) internalReferenceCheck(references, target, value, key);
     return target;
   }
-  return internalRemover({}, src, [src]) as T;
+
+  // @ts-expect-error - initial call
+  return internalRemover({}, src, [src]);
 }

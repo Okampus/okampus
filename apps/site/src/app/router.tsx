@@ -2,7 +2,7 @@ import { AdminEventDashboard } from './views/AdminEventDashboard';
 import { ErrorPage } from './views/ErrorPage';
 import { EventManageView } from './views/TeamManage/EventManageView';
 import { TeamDashboard } from './views/TeamDashboard';
-import { TeamList } from './views/TeamList';
+import { TeamCategoryList } from './views/TeamCategoryList';
 import { WelcomePage } from './views/Welcome/WelcomePage';
 import { TenantApp } from './views/TenantApp';
 import { FinanceManageView } from './views/TeamManage/FinanceManageView';
@@ -10,6 +10,9 @@ import { WIP } from './views/WIP';
 import { GuideManageView } from './views/AdminManage/GuideManageView';
 import { GuideView } from './views/GuideView';
 import { DocumentManageView } from './views/TeamManage/DocumentManageView';
+import { TeamList } from './views/TeamList';
+import { TeamProfile } from './views/TeamProfile';
+
 import { FullCalendar } from '@okampus/ui/molecules';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -29,7 +32,15 @@ export const router = createBrowserRouter([
       },
       {
         path: '/clubs',
+        element: <TeamCategoryList />,
+      },
+      {
+        path: '/clubs/:categorySlug',
         element: <TeamList />,
+      },
+      {
+        path: '/club/:clubSlug',
+        element: <TeamProfile />,
       },
       {
         path: '/guides',

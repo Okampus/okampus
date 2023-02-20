@@ -12,16 +12,15 @@ import type { TeamMember } from '../../../resources/membership/team-member/team-
 import type { Team } from '../../../resources/org/team/team.entity';
 
 export class EventSeeder extends Factory<TenantEvent> {
-  team: Team;
-  steps: EventApprovalStep[];
-  teamMembers: TeamMember[];
   model = TenantEvent;
 
-  constructor(em: EntityManager, team: Team, steps: EventApprovalStep[], teamMembers: TeamMember[]) {
+  constructor(
+    em: EntityManager,
+    private readonly team: Team,
+    private readonly steps: EventApprovalStep[],
+    private readonly teamMembers: TeamMember[]
+  ) {
     super(em);
-    this.team = team;
-    this.steps = steps;
-    this.teamMembers = teamMembers;
   }
 
   public definition(faker: Faker): TenantEventOptions {

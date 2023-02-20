@@ -1,6 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
-import { GqlCursorTypes } from '@okampus/shared/enums';
-import type { QueryOrder } from '@mikro-orm/core';
+import { GqlCursorTypes, QueryOrder } from '@okampus/shared/enums';
+import { enumChecker, isIn } from '@okampus/shared/utils';
+
 import type { BaseEntity } from '@okampus/api/dal';
 import type { CursorColumnTypes } from '@okampus/shared/types';
 
@@ -15,39 +16,43 @@ const columnTypes = {
   null: GqlCursorTypes.Null,
 };
 
-const serializers = {
-  [GqlCursorTypes.String]: (value: string): string => value,
-  [GqlCursorTypes.Number]: (value: number): string => value.toString(),
-  [GqlCursorTypes.Date]: (value: Date): string => value.toISOString(),
-  [GqlCursorTypes.Boolean]: (value: boolean): string => Number(value).toString(),
-  [GqlCursorTypes.Null]: (): string => 'NULL',
+const serialize = (value: CursorColumnTypes): string => {
+  if (value === null) return 'NULL';
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number') return value.toString();
+  if (value instanceof Date) return value.toISOString();
+  if (typeof value === 'boolean') return Number(value).toString();
+  throw new Error(`Cannot serialize value ${JSON.stringify(value)}`);
 };
 
-const deserializers = {
-  [GqlCursorTypes.String]: (value: string): string => value,
-  [GqlCursorTypes.Number]: Number,
-  [GqlCursorTypes.Date]: (value: string): Date => new Date(value),
-  [GqlCursorTypes.Boolean]: (value: string): boolean => Boolean(Number(value)),
-  [GqlCursorTypes.Null]: (): null => null,
+const deserialize = (value: string, type: GqlCursorTypes): CursorColumnTypes => {
+  if (type === GqlCursorTypes.Null) return null;
+  if (type === GqlCursorTypes.String) return value;
+  if (type === GqlCursorTypes.Number) return Number(value);
+  if (type === GqlCursorTypes.Date) return new Date(value);
+  if (type === GqlCursorTypes.Boolean) return Boolean(Number(value));
+  throw new Error(`Cannot deserialize value ${JSON.stringify(value)} to type ${type}`);
 };
+
+const isCursorColumnTypes = enumChecker(GqlCursorTypes);
+const isQueryOrder = enumChecker(QueryOrder);
 
 function encodeColumn(colName: string, value: CursorColumnTypes, order: QueryOrder): string {
-  const colType =
-    value == null ? GqlCursorTypes.Null : Object.entries(columnTypes).find(([type, _]) => typeof value === type)?.[1];
-  if (!colType) throw new Error(`Cannot encode column ${colName} with value ${value}`);
+  let colType;
+  const type = typeof value;
+  if (value === null) colType = GqlCursorTypes.Null;
+  else if (value instanceof Date) colType = GqlCursorTypes.Date;
+  else if (isIn(type, columnTypes)) colType = columnTypes[type];
+  else throw new Error(`Cannot encode column ${colName} with value ${value}`);
 
-  return [colName, colType, Buffer.from(serializers[colType](value as never)).toString('base64'), order].join(
-    METADATA_SEPARATOR
-  );
+  return [colName, colType, Buffer.from(serialize(value)).toString('base64'), order].join(METADATA_SEPARATOR);
 }
 
 function decodeColumn(column: string): [name: string, value: CursorColumnTypes, order: QueryOrder] {
   const [colName, colType, value, order] = column.split(METADATA_SEPARATOR);
-  return [
-    colName,
-    deserializers[colType as GqlCursorTypes](Buffer.from(value, 'base64').toString('ascii')),
-    order as QueryOrder,
-  ];
+  if (!isCursorColumnTypes(colType)) throw new Error(`Invalid column type ${colType}`);
+  if (!isQueryOrder(order)) throw new Error(`Invalid order ${order}`);
+  return [colName, deserialize(Buffer.from(value, 'base64').toString('ascii'), colType), order];
 }
 
 export function encodeCursor(columns: Record<string, [value: CursorColumnTypes, order: QueryOrder]>): string {
@@ -69,15 +74,22 @@ export function decodeCursor(cursor: string): Record<string, [value: CursorColum
   }
 }
 
-export function getCursorColumns<T>(
+export function getCursorColumns<T extends BaseEntity>(
   entity: T,
   orderBy: Record<string, QueryOrder>
 ): Record<string, [value: CursorColumnTypes, order: QueryOrder]> {
   return Object.fromEntries(
-    Object.entries(orderBy).map(([colName, order]) => [
-      colName,
-      [entity[colName as keyof T] as CursorColumnTypes, order],
-    ])
+    Object.entries(orderBy)
+      .map(([colName, order]) => {
+        if (isIn(colName, entity)) {
+          const value = entity[colName];
+          if (typeof value === 'string' && isCursorColumnTypes(value)) {
+            return [colName, [value, order]];
+          }
+        }
+        return [];
+      })
+      .filter((arr) => arr.length > 0)
   );
 }
 

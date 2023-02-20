@@ -5,7 +5,7 @@ import { OrgModel } from './org.model';
 import { TenantScopedModel } from './tenant-scoped.model';
 import { UgcKind } from '@okampus/shared/enums';
 import { Field, InterfaceType } from '@nestjs/graphql';
-import type { IContentMaster, IIndividual, IOrg, ITenantCore, IUgc } from '@okampus/shared/dtos';
+import type { IContentMaster, IIndividual, IOrg, IUgc } from '@okampus/shared/dtos';
 
 @InterfaceType()
 export class UgcModel extends TenantScopedModel implements IUgc {
@@ -28,7 +28,8 @@ export class UgcModel extends TenantScopedModel implements IUgc {
   contentMaster?: IContentMaster;
 
   constructor(ugc: IUgc) {
-    super(ugc.tenant as ITenantCore);
+    if (!ugc.tenant) throw new Error('Ugc must have a tenant');
+    super(ugc.tenant);
     this.assign(ugc);
   }
 }

@@ -12,10 +12,18 @@ export const teamMembersFragment = gql(`
     actor {
       __typename
       id
+      bio
       name
       slug
       actorImages {
         ...ActorImageBareInfo
+      }
+      tags {
+        __typename
+        id
+        name
+        slug
+        color
       }
     }
     documents {
@@ -40,6 +48,7 @@ export const teamMembersFragment = gql(`
             ...ActorImageBareInfo
           }
         }
+        firstName
       }
       roles {
         __typename

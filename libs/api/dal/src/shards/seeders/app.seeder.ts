@@ -20,6 +20,7 @@ import {
   JoinKind,
   JoinState,
   MembershipKind,
+  OrgKind,
   RegistrationStatus,
   ScopeRole,
   ShortcutType,
@@ -35,6 +36,7 @@ import {
 import { Seeder } from '@mikro-orm/seeder';
 import { ConsoleLogger } from '@nestjs/common';
 import { hash } from 'argon2';
+import type { Org } from '../../resources/org/org.entity';
 
 import type { EntityManager } from '@mikro-orm/core';
 import type { Individual } from '../../resources/actor/individual/individual.entity';
@@ -141,6 +143,7 @@ function createTeamMember(createdAt: Date, em: EntityManager, team: Team, user: 
 }
 
 // TODO: refactor awaits out of loops
+const isTeam = (team: Org): team is Team => team.orgKind === OrgKind.Team;
 export class DatabaseSeeder extends Seeder {
   public static pepper: Buffer;
   public static targetTenant: string;
@@ -242,19 +245,21 @@ export class DatabaseSeeder extends Seeder {
                   status === RegistrationStatus.Maybe || status === RegistrationStatus.Sure
                     ? Math.random() > 0.5
                     : false;
-                const teamAction = participated
-                  ? new TeamAction({
-                      createdBy: event.supervisor,
-                      name: `Participation à l'événement ${event.title}`,
-                      score: randomInt(1, 10),
-                      team: event.rootContent.representingOrg as Team,
-                      tenant: team.tenant,
-                      user,
-                      teamMember: teamMembers[user.id] ?? null,
-                      validatedBy: teamMembers[event.supervisor.id],
-                      state: ApprovalState.Approved,
-                    })
-                  : null;
+
+                const teamAction =
+                  participated && event.rootContent.representingOrg && isTeam(event.rootContent.representingOrg)
+                    ? new TeamAction({
+                        createdBy: event.supervisor,
+                        name: `Participation à l'événement ${event.title}`,
+                        score: randomInt(1, 10),
+                        team: event.rootContent.representingOrg,
+                        tenant: team.tenant,
+                        user,
+                        teamMember: teamMembers[user.id] ?? null,
+                        validatedBy: teamMembers[event.supervisor.id],
+                        state: ApprovalState.Approved,
+                      })
+                    : null;
 
                 return em.create(EventJoin, {
                   createdAt,

@@ -19,7 +19,6 @@ export class TeamSeeder extends Factory<Team> {
     private readonly tags: Tag[]
   ) {
     super(em);
-    this.tenant = tenant;
   }
 
   public definition(faker: Faker): TeamOptions {

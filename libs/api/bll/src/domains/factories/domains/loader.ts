@@ -81,6 +81,7 @@ import type {
   ITenantDocument,
   IDocumentEdit,
   IOrgDocument,
+  ITenantScoped,
 } from '@okampus/shared/dtos';
 import type { BaseEntity, TenantCore, TenantScopedEntity } from '@okampus/api/dal';
 import type { Snowflake } from '@okampus/shared/types';
@@ -147,7 +148,8 @@ export type AllInterfaces =
   | IUgc
   | IUser
   | IUserProfile
-  | IVideoUpload;
+  | IVideoUpload
+  | ITenantScoped;
 
 export type LoadInterface<T> = T extends Actor
   ? IActor
@@ -225,14 +227,20 @@ export type LoadInterface<T> = T extends Actor
   ? IUserProfile
   : T extends VideoUpload
   ? IVideoUpload
+  : T extends TenantScopedEntity
+  ? ITenantScoped
   : never;
+
+const isTenantCore = (tenantFromStack: AllInterfaces): tenantFromStack is ITenantCore => {
+  return !!tenantFromStack;
+};
 
 const getTenantOrLoad = (
   tenant: TenantCore,
   contextStack: Record<Snowflake, AllInterfaces>
 ): ITenantCore | undefined => {
   const tenantFromStack = contextStack[tenant.id];
-  if (tenantFromStack) return tenantFromStack as ITenantCore;
+  if (isTenantCore(tenantFromStack)) return tenantFromStack;
 
   const tenantCore = loadTenantCore(tenant);
   if (!tenantCore) return;
@@ -262,7 +270,7 @@ export function getEntityFromStackOrLoad(
   const entityFromStack = contextStack[entity.id];
   if (entityFromStack) return entityFromStack;
 
-  const loadedEntity = loadTenantScopedEntity(entity, contextStack) as unknown as AllInterfaces;
+  const loadedEntity = loadTenantScopedEntity(entity, contextStack);
   if (!loadedEntity) return;
 
   contextStack[loadedEntity.id] = loadedEntity;
@@ -286,7 +294,7 @@ export function loadTenantScopedEntity(
   const tenant = getTenantOrLoad(entity.tenant, contextStack);
 
   if (entity instanceof TeamCategory && !loadBaseClass) {
-    const baseTag = loadTenantScopedEntity(entity as Tag, contextStack, true);
+    const baseTag = loadTenantScopedEntity(entity, contextStack, true);
     if (!baseTag) return undefined;
     return {
       ...baseTag,
@@ -400,7 +408,7 @@ export function loadTenantScopedEntity(
   if (entity instanceof User && !loadBaseClass) {
     if (entity.id in contextStack) return contextStack[entity.id];
 
-    const user = loadTenantScopedEntity(entity, contextStack, true) as IUser;
+    const user = loadTenantScopedEntity(entity, contextStack, true);
     if (!user) return undefined;
 
     contextStack[user.id] = user;
@@ -421,7 +429,7 @@ export function loadTenantScopedEntity(
   if (entity instanceof Bot && !loadBaseClass) {
     if (entity.id in contextStack) return contextStack[entity.id];
 
-    const bot = loadTenantScopedEntity(entity, contextStack, true) as IBot;
+    const bot = loadTenantScopedEntity(entity, contextStack, true);
     if (!bot) return undefined;
 
     contextStack[bot.id] = bot;
@@ -435,12 +443,13 @@ export function loadTenantScopedEntity(
   if (entity instanceof Individual) {
     if (entity.id in contextStack) return contextStack[entity.id];
 
-    const individual = base as IIndividual;
-    if (!individual) return undefined;
+    const individual: IIndividual = {
+      ...base,
+      individualKind: entity.individualKind,
+      tenant,
+    };
 
     contextStack[individual.id] = individual;
-
-    individual.individualKind = entity.individualKind;
     individual.actor = getEntityFromStackOrLoad(entity.actor, contextStack);
 
     return individual;
@@ -449,7 +458,7 @@ export function loadTenantScopedEntity(
   if (entity instanceof Team && !loadBaseClass) {
     if (entity.id in contextStack) return contextStack[entity.id];
 
-    const team = loadTenantScopedEntity(entity, contextStack, true) as ITeam;
+    const team = loadTenantScopedEntity(entity, contextStack, true);
     if (!team) return undefined;
 
     contextStack[team.id] = team;
@@ -474,7 +483,7 @@ export function loadTenantScopedEntity(
   if (entity instanceof Tenant && !loadBaseClass) {
     if (entity.id in contextStack) return contextStack[entity.id];
 
-    const tenant = loadTenantScopedEntity(entity, contextStack, true) as ITenant;
+    const tenant = loadTenantScopedEntity(entity, contextStack, true);
     if (!tenant) return undefined;
 
     contextStack[tenant.id] = tenant;
@@ -493,14 +502,18 @@ export function loadTenantScopedEntity(
   if (entity instanceof Org) {
     if (entity.id in contextStack) return contextStack[entity.id];
 
-    const org = base as IOrg;
+    const org: IOrg = {
+      ...base,
+      orgKind: entity.orgKind,
+      documents: [],
+      tenant,
+    };
+
     contextStack[org.id] = org;
 
-    org.orgKind = entity.orgKind;
     org.documents = loadApply(entity.documents, (document) => loadTenantScopedEntity(document, contextStack));
     org.parent = entity.parent ? loadTenantScopedEntity(entity.parent, contextStack) : null;
     org.actor = loadTenantScopedEntity(entity.actor, contextStack);
-    org.tenant = tenant;
 
     return org;
   }
@@ -508,18 +521,24 @@ export function loadTenantScopedEntity(
   if (entity instanceof Actor) {
     if (entity.id in contextStack) return contextStack[entity.id];
 
-    const actor = base as IActor;
+    const actor: IActor = {
+      ...base,
+      actorKind: entity.actorKind(),
+      name: entity.name,
+      ical: entity.ical,
+      bio: entity.bio,
+      primaryEmail: entity.primaryEmail,
+      slug: entity.slug,
+      actorImages: [],
+      tags: [],
+      socials: [],
+      tenant,
+    };
+
     contextStack[actor.id] = actor;
 
-    actor.actorKind = entity.actorKind();
-    actor.name = entity.name;
-    actor.ical = entity.ical;
-    actor.bio = entity.bio;
-    actor.primaryEmail = entity.primaryEmail;
-    actor.slug = entity.slug;
-    actor.tags = loadApply(entity.tags, (tag) => loadTenantScopedEntity(tag, contextStack));
-    actor.tenant = tenant;
     actor.actorImages = loadApply(entity.actorImages, (actorImage) => loadTenantScopedEntity(actorImage, contextStack));
+    actor.tags = loadApply(entity.tags, (tag) => loadTenantScopedEntity(tag, contextStack));
     actor.socials = loadApply(entity.socials, (social) => loadTenantScopedEntity(social, contextStack));
 
     if (actor.actorKind === ActorKind.Individual && entity.individual) {

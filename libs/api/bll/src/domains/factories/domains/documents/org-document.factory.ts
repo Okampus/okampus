@@ -5,30 +5,32 @@ import { addDocumentEditToDocument } from '../../abstract.utils';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { OrgDocument, TenantDocument } from '@okampus/api/dal';
 import { S3Buckets, DocumentKind } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { OrgDocumentRepository, OrgRepository } from '@okampus/api/dal';
+import { Org, OrgDocument, TenantDocument, TenantCore } from '@okampus/api/dal';
 
-import type { OrgDocumentOptions, TenantCore, Org } from '@okampus/api/dal';
-import type { OrgDocumentType } from '@okampus/shared/enums';
-
-import type { MulterFileType, Snowflake } from '@okampus/shared/types';
+import type { OrgDocumentOptions } from '@okampus/api/dal';
 import type { CreateDocumentDto, CreateOrgDocumentDto, IOrgDocument } from '@okampus/shared/dtos';
+import type { OrgDocumentType } from '@okampus/shared/enums';
+import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 
 @Injectable()
 export class OrgDocumentFactory extends BaseFactory<OrgDocumentModel, OrgDocument, IOrgDocument, OrgDocumentOptions> {
   constructor(
-    @Inject(EventPublisher) ep: EventPublisher,
+    @Inject(EventPublisher) eventPublisher: EventPublisher,
+    OrgDocumentRepository: OrgDocumentRepository,
+    private readonly em: EntityManager,
     private readonly orgDocumentRepository: OrgDocumentRepository,
     private readonly orgRepository: OrgRepository,
-    private readonly uploadService: UploadService,
-    OrgDocumentRepository: OrgDocumentRepository
+    private readonly uploadService: UploadService
   ) {
-    super(ep, OrgDocumentRepository, OrgDocumentModel, OrgDocument);
+    super(eventPublisher, OrgDocumentRepository, OrgDocumentModel, OrgDocument);
   }
 
   async createOrgDocument(
@@ -101,32 +103,14 @@ export class OrgDocumentFactory extends BaseFactory<OrgDocumentModel, OrgDocumen
       throw new InternalServerErrorException(`Error converting org document ${orgDocumentId} to model`);
 
     return orgDocumentModel;
-    // return this.m;
-    // const document = await addDocumentEditToDocument(
-    //   orgDocument.document,
-    //   createEdit,
-    //   newDocument,
-    //   tenant,
-    //   this.requester(),
-    //   this.uploadService
-    // );
-
-    // orgDocument.document = document;
-    // await this.orgDocumentRepository.flush();
   }
-
-  // entityToModel(entity: OrgDocument): OrgDocumentModel | undefined {
-  //   const step = loadOrgDocument(entity);
-  //   if (!step) return undefined;
-  //   return this.createModel(step);
-  // }
 
   modelToEntity(model: Required<OrgDocumentModel>): OrgDocument {
     return new OrgDocument({
       type: model.type,
-      org: { id: model.org.id } as Org,
-      document: { id: model.document.id } as TenantDocument,
-      tenant: { id: model.tenant.id } as TenantCore,
+      org: this.em.getReference(Org, model.org.id),
+      document: this.em.getReference(TenantDocument, model.document.id),
+      tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }
 }

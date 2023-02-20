@@ -5,7 +5,7 @@ import { ActorModel } from '../../abstract/actor.model';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { ActorImageType } from '@okampus/shared/enums';
-import type { IActor, IActorImage, IImageUpload, ITenantCore } from '@okampus/shared/dtos';
+import type { IActor, IActorImage, IImageUpload } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class ActorImageModel extends TenantScopedModel implements IActorImage {
@@ -22,7 +22,8 @@ export class ActorImageModel extends TenantScopedModel implements IActorImage {
   lastActiveDate!: Date | null;
 
   constructor(actorImage: IActorImage) {
-    super(actorImage.tenant as ITenantCore);
+    if (!actorImage.tenant) throw new Error('ActorImage must have a tenant');
+    super(actorImage.tenant);
     this.assign(actorImage);
   }
 }

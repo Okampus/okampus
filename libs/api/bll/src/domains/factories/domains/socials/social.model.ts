@@ -1,10 +1,11 @@
-import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle
 import { ActorModel } from '../../abstract/actor.model';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
-import { SocialType } from '@okampus/shared/enums';
+import { Paginated } from '../../../../shards/types/paginated.type';
+
 import { Field, ObjectType } from '@nestjs/graphql';
-import type { IActor, ISocial, ITenantCore } from '@okampus/shared/dtos';
+import { SocialType } from '@okampus/shared/enums';
+import type { IActor, ISocial } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class SocialModel extends TenantScopedModel implements ISocial {
@@ -21,7 +22,8 @@ export class SocialModel extends TenantScopedModel implements ISocial {
   pseudo!: string;
 
   constructor(social: ISocial) {
-    super(social.tenant as ITenantCore);
+    if (!social.tenant) throw new Error('Social must have a tenant');
+    super(social.tenant);
     Object.assign(social);
   }
 }

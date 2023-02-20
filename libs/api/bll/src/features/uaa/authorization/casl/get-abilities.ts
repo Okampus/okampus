@@ -19,17 +19,19 @@ import {
   Subject,
   Tag,
   Team,
-  Tenant
+  Tenant,
 } from '@okampus/api/dal';
 import { Action, IndividualKind, RoleType } from '@okampus/shared/enums';
-import type {
-  allEntities,
-  User} from '@okampus/api/dal';
-import type { MongoAbility as CaslAbility} from '@casl/ability';
+
+import type { allEntities, TenantScopedEntity, User } from '@okampus/api/dal';
+import type { MongoAbility as CaslAbility, AnyAbility } from '@casl/ability';
 import type { ExtractSubjectType, InferSubjects } from '@casl/ability';
 
-export type Subjects = InferSubjects<(typeof allEntities)[number]> | 'all';
+export type Subjects = InferSubjects<(typeof allEntities)[number]> | TenantScopedEntity | 'all';
 export type AppAbility = CaslAbility<[action: Action, subjects: Subjects]>;
+
+const errorMessage = (error: ForbiddenError<AnyAbility>) =>
+  `You do not have permission to ${error.action.toLowerCase()} a ${error.subjectType.toLowerCase()}`;
 
 // TODO: all this class needs a MAJOR refactor
 export function createAbilitiesForIndividual(individual: Individual): AppAbility {
@@ -39,110 +41,39 @@ export function createAbilitiesForIndividual(individual: Individual): AppAbility
   // TODO: rules for modifying specific fields of User, Team, etc.
 
   const isAuthor = { realAuthor: { id: individual.id } } as const;
+  const isUser = (user: Individual): user is User => user.individualKind === IndividualKind.User;
 
-  if (individual.individualKind === IndividualKind.User && (individual as User).roles.includes(RoleType.TenantAdmin)) {
-    allow(Action.Read, 'all');
-    allow(Action.Manage, 'all');
-    allow(Action.Create, 'all');
-  } else {
-    allow(Action.Read, 'all');
-    forbid(Action.Read, [
-      Tenant,
-      Report,
-      OrgMetric,
-      //Announcement,
-    ]);
+  allow(Action.Read, 'all');
+  allow(Action.Report, 'all');
+  allow(Action.Interact, Content);
+  forbid(Action.Report, Content, isAuthor).because('Cannot report your own content');
 
-    forbid(Action.Manage, [EventApprovalStep, EventApproval]);
+  forbid(Action.Update, Individual).because('Not the individual');
+  allow(Action.Update, Individual, { id: individual.id }).because('Is the individual');
+  allow(Action.Update, Bot, { owner: { id: individual.id } }).because('Is bot owner');
 
-    allow([Action.Read, Action.Update], Report, { actor: { id: individual.id } });
-
-    // allow(Action.Read, Announcement, {
-    //   state: AnnouncementState.Committed,
-    //   displayFrom: { $lte: new Date() },
-    // });
-
-    allow(Action.Create, [
-      DocumentUpload,
-      Content,
-      Favorite,
-      Tag,
-      // Thread,
-    ]);
-    allow(Action.Report, 'all');
-    forbid(Action.Report, Content, isAuthor).because('Cannot report your own content');
-    allow(Action.Interact, Content);
-
-    // This is all managed manually inside the services.
-    allow(Action.Manage, [Team, TenantEvent, OrgDocument, Finance, Form]);
-
-    forbid(Action.Update, Individual).because('Not the individual');
-    allow(Action.Update, Individual, { id: individual.id }).because('Is the individual');
-    allow(Action.Update, Bot, { owner: { id: individual.id } }).because('Is bot owner');
-
-    if (individual.individualKind === IndividualKind.User && (individual as User).roles.includes(RoleType.Moderator)) {
-      allow(Action.Read, 'all');
+  if (isUser(individual)) {
+    if (individual.roles.includes(RoleType.TenantAdmin)) {
+      allow(Action.Manage, 'all');
       allow(Action.Update, 'all');
-      forbid(Action.Update, [
-        EventApproval,
-        // Badge,
-      ]);
+      allow(Action.Create, 'all');
+    } else if (individual.roles.includes(RoleType.Moderator)) {
+      allow(Action.Manage, [Content, InfoDocument, StudyDocument, Report, Subject, Tag]);
       forbid(Action.Manage, [Tenant, EventApprovalStep]);
-      allow(Action.Manage, [
-        Content,
-        InfoDocument,
-        StudyDocument,
-        Report,
-        Subject,
-        Tag,
-        // Announcement,
-        // Blog,
-        // Thread,
-        // Wiki,
-      ]);
+      allow(Action.Update, 'all');
     } else {
       forbid(Action.Manage, Content, { lastHiddenAt: null }).because('Content has been removed');
       allow(Action.Update, Content, ['body', 'hidden'], isAuthor).because('Not the author');
-      allow(Action.Delete, Content, isAuthor).because('Not the author');
-
-      // forbid(Action.Manage, [Blog, Thread], {
-      //   'post.isVisible': false,
-      // }).because('Content has been removed');
-      // forbid(Action.Manage, Wiki, { hidden: true }).because('Content has been removed');
-      // forbid(Action.Manage, [Attachment, Favorite, Report], {
-      //   'content.isVisible': false,
-      // }).because('Content has been removed');
-
-      // allow(Action.Update, Thread, ['opValidated', 'tags', 'title', 'type'], isAuthor).because('Not the author');
-
       allow([Action.Update, Action.Delete], [StudyDocument, InfoDocument], isAuthor).because('Not the author');
-
-      // forbid([Action.Update, Action.Delete, Action.Interact], Thread, {
-      //   locked: true,
-      // }).because('Thread is locked');
-
-      // TODO: create lock entity
-      // forbid(
-      //   [Action.Create, Action.Update, Action.Delete, Action.Interact],
-      //   Content,
-      //   { 'contentMaster.locked': true }
-      // ).because('Thread is locked');
+      allow(Action.Delete, Content, isAuthor).because('Not the author');
     }
-
-    // if (individual.roles.includes(Role.CafeteriaManager)) allow(Action.Manage, [Menu, Food]);
-
-    // if (individual.roles.includes(Role.ClubManager)) {
-    //   allow(Action.Manage, Team, isClub);
-    //   allow(Action.Manage, [Event, TeamFile], { 'team.kind': TeamKind.Club });
-    //   allow(Action.Manage, [Metric, Tenant, ApprovalStep, EventApproval]);
-    // }
+  } else {
+    allow(Action.Create, [DocumentUpload, Content, Favorite, Tag]);
+    forbid(Action.Read, [Tenant, Report, OrgMetric]);
+    allow([Action.Read, Action.Update], Report, { actor: { id: individual.id } });
+    forbid(Action.Manage, [EventApprovalStep, EventApproval, Team, TenantEvent, OrgDocument, Finance, Form]);
   }
 
-  ForbiddenError.setDefaultMessage(
-    (error) => `You do not have permission to ${error.action.toLowerCase()} a ${error.subjectType.toLowerCase()}`
-  );
-
-  return build({
-    detectSubjectType: (item) => item.constructor as ExtractSubjectType<Subjects>,
-  });
+  ForbiddenError.setDefaultMessage(errorMessage);
+  return build({ detectSubjectType: (item) => item.constructor as ExtractSubjectType<Subjects> });
 }

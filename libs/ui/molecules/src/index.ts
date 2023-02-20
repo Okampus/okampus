@@ -20,9 +20,13 @@ export * from './Card/FileCardPreview';
 export * from './Card/TeamCard';
 export * from './Group/AvatarGroup';
 export * from './Group/FileGroup';
+export * from './Group/ImageGroup';
 export * from './Group/ItemGroup';
+export * from './Group/TagGroup';
 export * from './Group/VerticalList';
+export * from './Input/CategorySelector';
 export * from './Input/SelectMenu';
 export * from './Input/SingleFileInput';
-export * from './Label/UserLabel';
+export * from './Labeled/LabeledMember';
+export * from './Labeled/LabeledUser';
 // @endindex

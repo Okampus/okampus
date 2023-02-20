@@ -39,10 +39,7 @@
       }
     },
     "ts-check": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["tsc --pretty --noEmit -p libs/ui/organisms/tsconfig.lib.json"]
-      }
+      "command": "tsc --pretty --noEmit -p libs/ui/organisms/tsconfig.lib.json"
     },
     "prettier": {
       "executor": "nx:run-commands",
@@ -51,12 +48,7 @@
       }
     },
     "stylelint": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          "stylelint libs/ui/organisms/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
-        ]
-      }
+      "command": "stylelint libs/ui/organisms/**/*.{css,scss} --cache --cache-location node_modules/.cache/.stylelintcache --allow-empty-input"
     },
     "eslint": {
       "executor": "nx:run-commands",

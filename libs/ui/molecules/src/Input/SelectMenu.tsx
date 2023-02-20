@@ -72,11 +72,6 @@ function SelectMenuInner<T>(
   return (
     <motion.div
       ref={mergeRefs([ref, propRef])}
-      // ref={(el) => {
-      //   if (ref)
-      //     ref.current = el ;
-      //   propRef?.current = el;
-      // }}
       initial={false}
       animate={isOpen ? 'open' : 'closed'}
       className={clsx('relative', fullWidth ? 'w-full' : 'w-fit')}
@@ -163,6 +158,4 @@ function SelectMenuInner<T>(
   );
 }
 
-export const SelectMenu = forwardRef(SelectMenuInner) as <T>(
-  props: SelectMenuProps<T> & { propRef?: React.ForwardedRef<HTMLDivElement> }
-) => ReturnType<typeof SelectMenuInner>;
+export const SelectMenu = forwardRef(SelectMenuInner);

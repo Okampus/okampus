@@ -4,6 +4,6 @@ export class GetTeamBySlugQuery {
   constructor(
     public readonly slug: string,
     public readonly tenant: TenantCore,
-    public readonly populate: never[] = ['tenant'] as never[]
+    public readonly populate: never[] = <never[]>['tenant']
   ) {}
 }

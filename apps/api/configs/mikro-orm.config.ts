@@ -8,7 +8,7 @@ import type { Options } from '@mikro-orm/core';
 
 const ormLogger = new Logger('MikroORM');
 
-export default {
+const mikroOrmConfig: Options = {
   type: 'postgresql',
   entities: allEntities,
   discovery: { disableDynamicFileAccess: true },
@@ -34,4 +34,6 @@ export default {
   allowGlobalContext: true,
   logger: ormLogger.log.bind(ormLogger),
   findOneOrFailHandler: (entityName, where) => new NotFoundException(`${entityName} not found at ${inspect(where)}`),
-} as Options;
+};
+
+export default mikroOrmConfig;

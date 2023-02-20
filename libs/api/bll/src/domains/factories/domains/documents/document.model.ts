@@ -26,6 +26,8 @@ export class DocumentModel extends UgcModel implements ITenantDocument {
 
   constructor(document: ITenantDocument) {
     super(document);
+    this.assign(document);
+
     this.ugcKind = UgcKind.TenantDocument;
   }
 }

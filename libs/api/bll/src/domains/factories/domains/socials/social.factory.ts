@@ -1,26 +1,33 @@
 import { SocialModel } from './social.model';
 import { BaseFactory } from '../../base.factory';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
-import { Social } from '@okampus/api/dal';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { SocialRepository } from '@okampus/api/dal';
+import { Social, TenantCore, Actor } from '@okampus/api/dal';
 
-import type { TenantCore, Actor, SocialOptions } from '@okampus/api/dal';
+import type { SocialOptions } from '@okampus/api/dal';
 import type { ISocial } from '@okampus/shared/dtos';
 
 @Injectable()
 export class SocialFactory extends BaseFactory<SocialModel, Social, ISocial, SocialOptions> {
-  constructor(@Inject(EventPublisher) ep: EventPublisher, socialRepository: SocialRepository) {
-    super(ep, socialRepository, SocialModel, Social);
+  constructor(
+    @Inject(EventPublisher) eventPublisher: EventPublisher,
+    socialRepository: SocialRepository,
+    private readonly em: EntityManager
+  ) {
+    super(eventPublisher, socialRepository, SocialModel, Social);
   }
 
   modelToEntity(model: Required<SocialModel>): Social {
     return new Social({
       ...model,
-      tenant: { id: model.tenant.id } as TenantCore,
-      actor: { id: model.actor.id } as Actor,
+      actor: this.em.getReference(Actor, model.actor.id),
+      tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }
 }

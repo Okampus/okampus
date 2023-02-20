@@ -17,7 +17,7 @@ export function Bubble({ children, onClick, selected, showBg }: BubbleProps) {
         <div
           className={clsx(
             showBg ? 'bg-bubble' : '',
-            'cursor-pointer h-12 w-12 text-gray-300 [&.active]:text-white shrink-0 rounded-[35%] outline-offset-2 flex justify-center items-center overflow-hidden',
+            'cursor-pointer h-11 w-11 text-gray-300 [&.active]:text-white shrink-0 rounded-[35%] outline-offset-2 flex justify-center items-center overflow-hidden',
             selected ? 'active' : ''
           )}
         >

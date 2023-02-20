@@ -8,15 +8,11 @@ export abstract class RequestContext {
     const info = requestContext.get('gqlInfo');
     if (info && !requestContext.get('alreadyPopulated')) {
       requestContext.set('alreadyPopulated', true);
-      const populate = [
-        ...fieldToRelations(info),
-        ...(info.operation.loc?.source?.body?.includes?.('cursor') ? ['edges.cursor'] : []),
-        // TODO: don't rely on the source body to find if the cursor is queried
-      ];
-      return populate as never[];
+      const cursor = info.operation.loc?.source?.body?.includes?.('cursor') ? ['edges.cursor'] : [];
+      return <never[]>[...fieldToRelations(info), ...cursor];
     }
 
-    return (defaultPopulate ?? []) as never[];
+    return <never[]>defaultPopulate ?? [];
   }
 
   public requester(): Individual {

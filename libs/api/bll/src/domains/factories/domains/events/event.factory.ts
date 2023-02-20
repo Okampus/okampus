@@ -1,35 +1,39 @@
 import { TenantEventModel } from './event.model';
 import { BaseFactory } from '../../base.factory';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { TenantEvent } from '@okampus/api/dal';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TenantEventRepository, OrgRepository, UserRepository } from '@okampus/api/dal';
-
-import type {
-  Tag,
-  TenantCore,
-  TenantEventOptions,
-  Individual,
-  ImageUpload,
+import {
   EventApprovalStep,
   Form,
   FormSubmission,
+  ImageUpload,
+  Individual,
+  Tag,
+  TenantCore,
+  TenantEvent,
   User,
 } from '@okampus/api/dal';
+
+import type { TenantEventOptions } from '@okampus/api/dal';
 import type { CreateEventDto, ITenantEvent } from '@okampus/shared/dtos';
 import type { ContentModel } from '../contents/content.model';
 
 @Injectable()
 export class TenantEventFactory extends BaseFactory<TenantEventModel, TenantEvent, ITenantEvent, TenantEventOptions> {
   constructor(
-    @Inject(EventPublisher) ep: EventPublisher,
+    @Inject(EventPublisher) eventPublisher: EventPublisher,
+    eventRepository: TenantEventRepository,
+    private readonly em: EntityManager,
     private readonly userRepository: UserRepository,
-    private readonly orgRepository: OrgRepository,
-    eventRepository: TenantEventRepository
+    private readonly orgRepository: OrgRepository
   ) {
-    super(ep, eventRepository, TenantEventModel, TenantEvent);
+    super(eventPublisher, eventRepository, TenantEventModel, TenantEvent);
   }
 
   // TODO: refactor with similar logic as in update with a callback
@@ -57,18 +61,20 @@ export class TenantEventFactory extends BaseFactory<TenantEventModel, TenantEven
   modelToEntity(model: Required<TenantEventModel> & { rootContent: Required<ContentModel> }): TenantEvent {
     return new TenantEvent({
       ...model,
-      tenant: { id: model.tenant.id } as TenantCore,
-      contributors: model.contributors.map((contributor) => ({ id: contributor.id } as Individual)),
-      image: model.image ? ({ id: model.image.id } as ImageUpload) : null,
+      contributors: model.contributors.map((contributor) => this.em.getReference(Individual, contributor.id)),
+      image: model.image ? this.em.getReference(ImageUpload, model.image.id) : null,
       lastEventApprovalStep: model.lastEventApprovalStep
-        ? ({ id: model.lastEventApprovalStep.id } as EventApprovalStep)
+        ? this.em.getReference(EventApprovalStep, model.lastEventApprovalStep.id)
         : null,
-      tags: model.tags.map((tag) => ({ id: tag.id } as Tag)),
-      joinForm: model.joinForm ? ({ id: model.joinForm.id } as Form) : null,
-      regularEvent: model.regularEvent ? ({ id: model.regularEvent.id } as TenantEvent) : null,
-      supervisor: { id: model.supervisor.id } as User,
-      approvalSubmission: model.approvalSubmission ? ({ id: model.approvalSubmission.id } as FormSubmission) : null,
-      createdBy: { id: model.rootContent.author.id } as Individual, // TODO: check if this is correct in every case
+      tags: model.tags.map((tag) => this.em.getReference(Tag, tag.id)),
+      joinForm: model.joinForm ? this.em.getReference(Form, model.joinForm.id) : null,
+      regularEvent: model.regularEvent ? this.em.getReference(TenantEvent, model.regularEvent.id) : null,
+      supervisor: this.em.getReference(User, model.supervisor.id),
+      approvalSubmission: model.approvalSubmission
+        ? this.em.getReference(FormSubmission, model.approvalSubmission.id)
+        : null,
+      createdBy: this.em.getReference(Individual, model.rootContent.author.id), // TODO: check if this is correct in every case
+      tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }
 }

@@ -18,10 +18,7 @@ export class DocumentUploadModel extends FileUploadModel implements IDocumentUpl
 
   constructor(document: IDocumentUpload) {
     super(document);
-
-    this.numberOfPages = document.numberOfPages;
-    this.numberOfWords = document.numberOfWords;
-    this.documentType = document.documentType;
+    this.assign(document);
 
     this.fileUploadKind = FileUploadKind.DocumentUpload;
   }

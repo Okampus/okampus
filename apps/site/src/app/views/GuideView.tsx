@@ -18,7 +18,7 @@ export function GuideView() {
   if (!tenant) return null;
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4">
+    <div className="view grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4">
       {tenant.documents.map((orgDocument) => {
         if (!orgDocument.document) return null;
 

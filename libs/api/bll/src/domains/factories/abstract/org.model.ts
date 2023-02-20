@@ -5,7 +5,7 @@ import { TenantScopedModel } from './tenant-scoped.model';
 import { OrgDocumentModel } from '../domains/documents/org-document.model';
 import { Field, InterfaceType } from '@nestjs/graphql';
 import { OrgKind } from '@okampus/shared/enums';
-import type { IActor, IOrg, IOrgDocument, ITenantCore } from '@okampus/shared/dtos';
+import type { IActor, IOrg, IOrgDocument } from '@okampus/shared/dtos';
 
 @InterfaceType({
   resolveType: (value) => {
@@ -32,7 +32,8 @@ export abstract class OrgModel extends TenantScopedModel implements IOrg {
   documents!: IOrgDocument[];
 
   constructor(org: IOrg) {
-    super(org.tenant as ITenantCore);
+    if (!org.tenant) throw new Error('Org must have a tenant');
+    super(org.tenant);
     this.assign(org);
   }
 }

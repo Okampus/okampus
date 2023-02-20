@@ -26,13 +26,19 @@ interface PopoverOptions {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   arrowSize?: number;
+  useArrow?: boolean;
+  forcePlacement?: boolean;
+  placementOffset?: number;
 }
 
 export function usePopover({
   initialOpen = false,
   placement = 'bottom',
   modal,
-  arrowSize = 8,
+  arrowSize = 14,
+  useArrow = true,
+  forcePlacement = false,
+  placementOffset = 0,
   open: controlledOpen,
   onOpenChange: setControlledOpen,
 }: PopoverOptions = {}) {
@@ -53,12 +59,11 @@ export function usePopover({
     onOpenChange: setOpen,
     whileElementsMounted: autoUpdate,
     middleware: [
-      offset(floatingOffset),
-      flip({
-        fallbackAxisSideDirection: 'end',
-      }),
-      shift({ padding: 5 }),
-      arrow({ element: arrowRef }),
+      flip({ fallbackAxisSideDirection: forcePlacement ? 'none' : 'end' }),
+      shift({ padding: 10 }),
+      ...(useArrow
+        ? [offset(floatingOffset + placementOffset), arrow({ element: arrowRef })]
+        : [offset(placementOffset)]),
     ],
   });
 
@@ -84,6 +89,7 @@ export function usePopover({
       descriptionId,
       setLabelId,
       setDescriptionId,
+      useArrow,
       arrowRef,
     }),
     [open, setOpen, interactions, data, modal, labelId, descriptionId]
@@ -122,6 +128,7 @@ interface PopoverTriggerProps {
   asChild?: boolean;
 }
 
+// TODO: fix types
 export const PopoverTrigger = React.forwardRef<HTMLElement, React.HTMLProps<HTMLElement> & PopoverTriggerProps>(
   function PopoverTrigger({ children, asChild = false, ...props }, propRef) {
     const context = usePopoverContext();
@@ -159,11 +166,15 @@ export const PopoverTrigger = React.forwardRef<HTMLElement, React.HTMLProps<HTML
   }
 );
 
-export const PopoverContent = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(function PopoverContent(
+export const PopoverContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLProps<HTMLDivElement> & { backgroundClass?: string; popoverClassName?: string }
+>(function PopoverContent(
   {
-    backgroundClass = 'bg-2 border border-color-2',
+    backgroundClass = 'bg-2 border-4 border-color-2 !border-opacity-30',
+    popoverClassName = '',
     ...props
-  }: React.HTMLProps<HTMLDivElement> & { backgroundClass?: string },
+  }: React.HTMLProps<HTMLDivElement> & { backgroundClass?: string; popoverClassName?: string },
   propRef
 ) {
   const { context: floatingContext, ...context } = usePopoverContext();
@@ -182,6 +193,8 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, React.HTMLProps<H
   const arrowY = context.middlewareData.arrow?.y;
 
   const offsetSize = Math.sqrt(2 * context.arrowSize ** 2);
+  const staticOffset =
+    staticSide === 'top' || staticSide === 'bottom' ? `-${offsetSize / 2}px` : `-${context.arrowSize}px`;
 
   return (
     <FloatingPortal>
@@ -189,15 +202,16 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, React.HTMLProps<H
         {context.open && (
           <FloatingFocusManager context={floatingContext} modal={context.modal}>
             <motion.div
-              initial={{ opacity: 0, scale: 0.6 }}
+              initial={{ opacity: 0.5, scale: 0.9, y: -20 }}
               animate={{
                 opacity: 1,
                 scale: 1,
+                y: 0,
               }}
-              exit={{ opacity: 0, scale: 0.2 }}
+              exit={{ opacity: 0, scale: 0.7, y: -20 }}
               transition={{ type: 'spring', duration: 0.35 }}
               ref={ref}
-              className={clsx('rounded-lg text-1 shadow-lg pb-4 px-5 pt-3 z-10', props.className, backgroundClass)}
+              className={clsx('card-sm text-1 z-10 !overflow-visible', popoverClassName, backgroundClass)}
               style={{
                 position: context.strategy,
                 top: context.y ?? 0,
@@ -210,32 +224,33 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, React.HTMLProps<H
               {...context.getFloatingProps(props)}
             >
               <div>{props.children}</div>
-              <div
-                ref={context.arrowRef}
-                style={{
-                  position: 'absolute',
-                  width: `${offsetSize}px`,
-                  height: `${offsetSize / 2}px`,
-                  overflow: 'hidden',
-                  left: arrowX == null ? '' : `${arrowX}px`,
-                  top: arrowY == null ? '' : `${arrowY}px`,
-                  right: '',
-                  bottom: '',
-                  [staticSide as 'top' | 'bottom' | 'left' | 'right']: `-${offsetSize / 2}px`,
-                  pointerEvents: 'none',
-                }}
-              >
+              {context.useArrow && staticSide && ['top', 'bottom', 'left', 'right'].includes(staticSide) && (
                 <div
-                  className={backgroundClass}
+                  ref={context.arrowRef}
                   style={{
-                    margin: (offsetSize - context.arrowSize) / 2,
-                    boxSizing: 'border-box',
-                    width: `${context.arrowSize}px`,
-                    height: `${context.arrowSize}px`,
-                    transform: 'rotate(45deg)',
+                    position: 'absolute',
+                    width: `${offsetSize}px`,
+                    height: `${offsetSize / 2}px`,
+                    overflow: 'hidden',
+                    left: arrowX == null ? '' : `${arrowX}px`,
+                    top: arrowY == null ? '' : `${arrowY}px`,
+                    [staticSide]: staticOffset,
+                    pointerEvents: 'none',
+                    transform: `rotate(${{ top: 180, right: 270, bottom: 0, left: 90 }[side]}deg)`,
                   }}
-                ></div>
-              </div>
+                >
+                  <div
+                    className={backgroundClass}
+                    style={{
+                      margin: (offsetSize - context.arrowSize) / 2,
+                      boxSizing: 'border-box',
+                      width: `${context.arrowSize}px`,
+                      height: `${context.arrowSize}px`,
+                      transform: 'rotate(45deg)',
+                    }}
+                  ></div>
+                </div>
+              )}
             </motion.div>
           </FloatingFocusManager>
         )}

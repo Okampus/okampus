@@ -5,6 +5,6 @@ export class GetEventApprovalsQuery {
   constructor(
     public readonly paginationOptions: PaginationOptions,
     public readonly tenant: TenantCore,
-    public readonly populate: never[] = ['tenant'] as never[]
+    public readonly populate: never[] = <never[]>['tenant']
   ) {}
 }

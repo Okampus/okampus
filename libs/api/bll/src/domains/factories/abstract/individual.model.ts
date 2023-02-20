@@ -3,7 +3,7 @@ import { ActorModel } from './actor.model';
 import { TenantScopedModel } from './tenant-scoped.model';
 import { Field, InterfaceType } from '@nestjs/graphql';
 import { IndividualKind } from '@okampus/shared/enums';
-import type { IActor, IIndividual, ITenantCore } from '@okampus/shared/dtos';
+import type { IActor, IIndividual } from '@okampus/shared/dtos';
 
 @InterfaceType({
   resolveType: (value) => {
@@ -24,7 +24,8 @@ export class IndividualModel extends TenantScopedModel implements IIndividual {
   individualKind!: IndividualKind;
 
   constructor(individual: IIndividual) {
-    super(individual.tenant as ITenantCore);
+    if (!individual.tenant) throw new Error('Individual must have a tenant');
+    super(individual.tenant);
     this.assign(individual);
   }
 }

@@ -1,3 +1,4 @@
+import { isNotNull } from '@okampus/shared/utils';
 import type { Collection } from '@mikro-orm/core';
 
 export function isLoaded<T extends object>(collection: Collection<T>) {
@@ -11,5 +12,5 @@ export function load<T extends object>(collection: Collection<T>): T[] {
 export function loadApply<T extends object, U>(collection: Collection<T>, apply: (item: T) => U): NonNullable<U>[] {
   return load(collection)
     .map((elem) => apply(elem))
-    .filter((elem) => !!elem) as NonNullable<U>[];
+    .filter(isNotNull);
 }

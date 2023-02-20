@@ -6,16 +6,15 @@ import type { EventApprovalStepOptions } from '../../../resources/manage-tenant/
 import type { Tenant } from '../../../resources/org/tenant/tenant.entity';
 
 export class EventApprovalStepSeeder extends Factory<EventApprovalStep> {
-  tenant: Tenant;
-  order: number;
-  createdBy: Individual;
   model = EventApprovalStep;
 
-  constructor(em: EntityManager, tenant: Tenant, order: number, createdBy: Individual) {
+  constructor(
+    em: EntityManager,
+    private readonly tenant: Tenant,
+    private readonly order: number,
+    private readonly createdBy: Individual
+  ) {
     super(em);
-    this.tenant = tenant;
-    this.order = order;
-    this.createdBy = createdBy;
   }
 
   public definition(): EventApprovalStepOptions {

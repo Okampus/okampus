@@ -1,7 +1,9 @@
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
+
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Colors, RoleKind, TeamRoleKey } from '@okampus/shared/enums';
-import type { IRole, ITenantCore } from '@okampus/shared/dtos';
+
+import type { IRole } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class RoleModel extends TenantScopedModel implements IRole {
@@ -21,7 +23,8 @@ export class RoleModel extends TenantScopedModel implements IRole {
   required!: boolean;
 
   constructor(role: IRole) {
-    super(role.tenant as ITenantCore);
+    if (!role.tenant) throw new Error('Role must have a tenant');
+    super(role.tenant);
     this.assign(role);
   }
 }
