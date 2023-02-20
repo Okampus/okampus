@@ -448,7 +448,6 @@ export function loadTenantScopedEntity(
       individualKind: entity.individualKind,
       tenant,
     };
-    if (!individual) return undefined;
 
     contextStack[individual.id] = individual;
     individual.actor = getEntityFromStackOrLoad(entity.actor, contextStack);
@@ -509,7 +508,6 @@ export function loadTenantScopedEntity(
       documents: [],
       tenant,
     };
-    if (!org) return undefined;
 
     contextStack[org.id] = org;
 
@@ -536,7 +534,7 @@ export function loadTenantScopedEntity(
       socials: [],
       tenant,
     };
-    if (!actor) return undefined;
+
     contextStack[actor.id] = actor;
 
     actor.actorImages = loadApply(entity.actorImages, (actorImage) => loadTenantScopedEntity(actorImage, contextStack));

@@ -1173,7 +1173,6 @@ input OidcInfoInput {
 }
 
 type Query {
-  me: AuthContextModel!
   userById(id: String!): UserModel!
   userBySlug(slug: String!): UserModel!
   users(options: PaginationOptions): PaginatedUserModel!
@@ -1201,6 +1200,7 @@ type Query {
   teamCategoryById(id: String!): TeamCategoryModel!
   teamCategoryBySlug(slug: String!): TeamCategoryModel!
   teamCategories(options: PaginationOptions): PaginatedTeamCategoryModel!
+  me: AuthContextModel!
 }
 
 input PaginationOptions {
@@ -1220,9 +1220,6 @@ input TeamFilterOptions {
 }
 
 type Mutation {
-  login(username: String!, password: String!): AuthContextModel!
-  logout: Boolean!
-  wsToken: Boolean!
   createUser(user: CreateUserDto!, avatar: Upload, avatarDark: Upload, banner: Upload): UserModel!
   updateUser(updateUser: UpdateUserDto!): UserModel!
   deleteUser(id: String!): Boolean!
@@ -1256,6 +1253,9 @@ type Mutation {
   updateTeamCategory(updateTeamCategory: UpdateTeamCategoryDto!): TeamCategoryModel!
   deleteTeamCategory(id: String!): Boolean!
   createOrgDocument(orgId: String!, createOrgDocument: CreateOrgDocumentDto!, documentFile: Upload!): OrgDocumentModel!
+  login(username: String!, password: String!): AuthContextModel!
+  logout: Boolean!
+  wsToken: Boolean!
 }
 
 input CreateUserDto {
