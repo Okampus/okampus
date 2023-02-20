@@ -1,5 +1,5 @@
+import { QueryOrder } from '@okampus/shared/enums';
 import { GraphQLScalarType, Kind } from 'graphql';
-import { QueryOrder } from '@mikro-orm/core';
 
 const isQueryOrder = (value: string): value is QueryOrder =>
   Object.values(QueryOrder)

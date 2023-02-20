@@ -4,11 +4,10 @@ import { RequestContext } from '../../shards/abstract/request-context';
 import { PageInfo } from '../../shards/types/page-info.type';
 import { decodeCursor, encodeCursor, getCursorColumns, makeCursor } from '../../shards/utils/cursor-serializer';
 
-import { QueryOrder } from '@mikro-orm/core';
 import { BadRequestException } from '@nestjs/common';
 import { processPopulatePaginated } from '@okampus/api/shards';
 import { DEFAULT_PAGINATION_LIMIT } from '@okampus/shared/consts';
-import { Action } from '@okampus/shared/enums';
+import { Action, QueryOrder } from '@okampus/shared/enums';
 
 import { isNotNull } from '@okampus/shared/utils';
 import type { BaseModel } from './abstract/base.model';

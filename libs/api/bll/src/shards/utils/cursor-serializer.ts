@@ -1,6 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { GqlCursorTypes } from '@okampus/shared/enums';
-import { QueryOrder } from '@mikro-orm/core';
+import { GqlCursorTypes, QueryOrder } from '@okampus/shared/enums';
 import { enumChecker, isIn } from '@okampus/shared/utils';
 
 import type { BaseEntity } from '@okampus/api/dal';
