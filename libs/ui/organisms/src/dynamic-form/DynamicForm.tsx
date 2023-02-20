@@ -4,7 +4,15 @@ import { Controller, useForm } from 'react-hook-form';
 import type { SelectItem } from '@okampus/ui/molecules';
 import type { RegisterOptions } from 'react-hook-form';
 
-export type ControlType = 'text' | 'single-file' | 'select' | 'number' | 'checkbox' | 'datetime-local';
+export enum ControlType {
+  Text = 'text',
+  SingleFile = 'single-file',
+  Select = 'select',
+  Number = 'number',
+  Checkbox = 'checkbox',
+  DatetimeLocal = 'datetime-local',
+}
+
 export interface DynamicFieldData {
   label: string;
   inputType: ControlType;
@@ -37,7 +45,7 @@ export function DynamicForm({ fields, onSubmit }: DynamicFormProps) {
           rules={dynamicField.config}
           render={({ field }) => {
             switch (dynamicField.inputType) {
-              case 'select': {
+              case ControlType.Select: {
                 return (
                   <div className="flex flex-col gap-1.5">
                     <label htmlFor={field.name} className="font-medium text-[#BDBDBD]">
@@ -52,7 +60,7 @@ export function DynamicForm({ fields, onSubmit }: DynamicFormProps) {
                   </div>
                 );
               }
-              case 'single-file': {
+              case ControlType.SingleFile: {
                 return (
                   <div className="flex flex-col gap-1.5">
                     <label htmlFor={field.name} className="font-medium text-[#BDBDBD]">
@@ -62,7 +70,7 @@ export function DynamicForm({ fields, onSubmit }: DynamicFormProps) {
                   </div>
                 );
               }
-              case 'number': {
+              case ControlType.Number: {
                 return (
                   <div className="flex flex-col gap-1.5">
                     <label htmlFor={field.name} className="font-medium text-[#BDBDBD]">
@@ -72,7 +80,7 @@ export function DynamicForm({ fields, onSubmit }: DynamicFormProps) {
                   </div>
                 );
               }
-              case 'checkbox': {
+              case ControlType.Checkbox: {
                 return (
                   <div className="flex gap-1.5 px-2">
                     <input type="checkbox" {...field} id={field.name} />
@@ -83,7 +91,7 @@ export function DynamicForm({ fields, onSubmit }: DynamicFormProps) {
                   </div>
                 );
               }
-              case 'datetime-local': {
+              case ControlType.DatetimeLocal: {
                 return (
                   <div className="flex flex-col gap-1.5">
                     <label htmlFor={field.name} className="font-medium text-[#BDBDBD]">

@@ -42,10 +42,10 @@ import { CacheModule, Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import Sentry from '@sentry/node';
-import { redisStore } from 'cache-manager-redis-store';
+import { redisStore } from 'cache-manager-redis-yet';
 
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
-import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@nestjs/common';
+import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 
 // import { CafeteriaModule } from '@api/canteens/canteens.module';
 // import { SubjectsModule } from '@api/modules/label/subjects/subjects.module';
@@ -117,6 +117,12 @@ import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@n
             port: config.redis.port,
             password: config.redis.password,
           }),
+          // CacheModule.register({
+          //   store: redisStore,
+          //   host: config.redis.host,
+          //   port: config.redis.port,
+          //   pas
+          // })
           CacheModule.registerAsync({
             useFactory: async () => ({
               store: await redisStore({
@@ -129,7 +135,7 @@ import type { MiddlewareConsumer, NestModule, CacheModuleAsyncOptions } from '@n
               }),
             }),
             isGlobal: true,
-          } as CacheModuleAsyncOptions),
+          }),
         ]
       : [
           // TODO: add fallback pubsub if redis is disabled

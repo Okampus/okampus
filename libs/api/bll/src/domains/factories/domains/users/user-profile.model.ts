@@ -1,14 +1,7 @@
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 import { Field, ObjectType } from '@nestjs/graphql';
-import {
-  UserCustomization,
-  UserNotificationSettings,
-  UserSettings,
-  UserStats,
-} from '@okampus/shared/dtos';
-import type {
-  ITenantCore,
-  IUserProfile} from '@okampus/shared/dtos';
+import { UserCustomization, UserNotificationSettings, UserSettings, UserStats } from '@okampus/shared/dtos';
+import type { IUserProfile } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class UserProfileModel extends TenantScopedModel implements IUserProfile {
@@ -31,7 +24,8 @@ export class UserProfileModel extends TenantScopedModel implements IUserProfile 
   finishedOnboarding = false;
 
   constructor(profile: IUserProfile) {
-    super(profile.tenant as ITenantCore);
+    if (!profile.tenant) throw new Error('UserProfile must have a tenant');
+    super(profile.tenant);
     Object.assign(this, profile);
   }
 }

@@ -1,26 +1,30 @@
 import { ProjectModel } from './project.model';
 import { BaseFactory } from '../../base.factory';
+import { asyncCallIfNotNull } from '@okampus/shared/utils';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { asyncCallIfNotNull } from '@okampus/shared/utils';
-import { Project } from '@okampus/api/dal';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ProjectRepository, TeamRepository, TenantEventRepository, UserRepository } from '@okampus/api/dal';
+import { Project, TenantCore, Individual, User, Team, TenantEvent } from '@okampus/api/dal';
 
-import type { TenantCore, ProjectOptions, Individual, User, Team, TenantEvent } from '@okampus/api/dal';
+import type { ProjectOptions } from '@okampus/api/dal';
 import type { CreateProjectDto, IProject } from '@okampus/shared/dtos';
 
 @Injectable()
 export class ProjectFactory extends BaseFactory<ProjectModel, Project, IProject, ProjectOptions> {
   constructor(
-    @Inject(EventPublisher) ep: EventPublisher,
+    @Inject(EventPublisher) eventPublisher: EventPublisher,
     projectRepository: ProjectRepository,
+    private readonly em: EntityManager,
     private readonly teamRepository: TeamRepository,
     private readonly userRepository: UserRepository,
     private readonly tenantEventRepository: TenantEventRepository
   ) {
-    super(ep, projectRepository, ProjectModel, Project);
+    super(eventPublisher, projectRepository, ProjectModel, Project);
   }
 
   async createProject(
@@ -50,12 +54,12 @@ export class ProjectFactory extends BaseFactory<ProjectModel, Project, IProject,
   modelToEntity(model: Required<ProjectModel>): Project {
     return new Project({
       ...model,
-      team: { id: model.team.id } as Team,
-      createdBy: { id: model.createdBy.id } as Individual,
-      linkedEvent: model.linkedEvent ? ({ id: model.linkedEvent.id } as TenantEvent) : null,
-      participants: model.participants.map((user) => ({ id: user.id } as User)),
-      supervisor: { id: model.supervisor.id } as User,
-      tenant: { id: model.tenant.id } as TenantCore,
+      team: this.em.getReference(Team, model.team.id),
+      createdBy: this.em.getReference(Individual, model.createdBy.id),
+      linkedEvent: model.linkedEvent ? this.em.getReference(TenantEvent, model.linkedEvent.id) : null,
+      participants: model.participants.map((user) => this.em.getReference(User, user.id)),
+      supervisor: this.em.getReference(User, model.supervisor.id),
+      tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }
 }

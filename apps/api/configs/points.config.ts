@@ -7,4 +7,4 @@ export default {
   upload: 10,
   validatedUpload: 10,
   finishedOnboarding: 10,
-} as const;
+};

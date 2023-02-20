@@ -1,26 +1,39 @@
 import { GraphQLScalarType, Kind } from 'graphql';
-import type { QueryOrder } from '@mikro-orm/core';
+import { QueryOrder } from '@mikro-orm/core';
+
+const isQueryOrder = (value: string): value is QueryOrder =>
+  Object.values(QueryOrder)
+    .map((v) => v.toString())
+    .includes(value);
+
+const isQueryOrderMap = (value: unknown): value is Record<string, QueryOrder> => {
+  if (typeof value !== 'object' || value === null) return false;
+  return Object.values(value).every(isQueryOrder);
+};
 
 export const QueryOrderMapScalar = new GraphQLScalarType({
   name: 'QueryOrderMap',
   description: 'QueryOrderMap custom scalar type',
   serialize(value: unknown): Record<string, QueryOrder> {
-    return value as Record<string, QueryOrder>;
+    if (!isQueryOrderMap(value)) throw new Error('QueryOrderMap values must be QueryOrder');
+    return value;
   },
   parseValue(value: unknown): Record<string, QueryOrder> {
-    return value as Record<string, QueryOrder>;
+    if (!isQueryOrderMap(value)) throw new Error('QueryOrderMap values must be QueryOrder');
+    return value;
   },
   parseLiteral(ast): Record<string, QueryOrder> | null {
     if (ast.kind === Kind.OBJECT) {
-      // eslint-disable-next-line unicorn/no-array-reduce
-      return ast.fields.reduce<Record<string, QueryOrder>>((acc, field) => {
-        if (field.value.kind !== Kind.STRING && field.value.kind !== Kind.ENUM)
+      const map: Record<string, QueryOrder> = {};
+
+      for (const field of ast.fields) {
+        if ((field.value.kind !== Kind.STRING && field.value.kind !== Kind.ENUM) || !isQueryOrder(field.value.value))
           throw new Error('QueryOrderMap values must be QueryOrder');
 
-        acc[field.name.value.toString()] = field.value.value as QueryOrder;
-        return acc;
-      }, {});
+        map[field.name.value.toString()] = field.value.value;
+      }
     }
+
     // Invalid hard-coded value (not an object)
     return null;
   },

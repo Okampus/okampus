@@ -1,4 +1,4 @@
-export const statuses = {
+export const statuses: Record<number, string> = {
   100: 'Continue',
   101: 'Switching Protocols',
   102: 'Processing',
@@ -86,4 +86,4 @@ export const statuses = {
   527: 'Railgun Error',
   598: 'Network read timeout error',
   599: 'Network connect timeout error',
-} as Record<number, string>;
+};

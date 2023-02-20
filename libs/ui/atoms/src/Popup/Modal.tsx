@@ -1,9 +1,5 @@
-// import { useContext } from 'react';
-// import { NavigationContext } from '../../../../../apps/site/src/app/context/NavigationContext';
-// import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/close.svg';
 import { HeadingSeparated } from '../Heading/HeadingSeparated';
 import { motion } from 'framer-motion';
-// import { clsx } from 'clsx';
 
 type SideModalProps = {
   title?: React.ReactNode;
@@ -12,7 +8,6 @@ type SideModalProps = {
 };
 
 export function Modal({ title, children }: SideModalProps) {
-  // const { hideModal } = useContext(NavigationContext);
   return (
     <motion.div
       initial={{ scale: 0.8, opacity: 0 }}

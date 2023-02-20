@@ -6,7 +6,7 @@ import type { Team } from './team.entity';
 
 export class TeamRepository extends BaseRepository<Team> {
   async findSearchable(tenantId: Snowflake, findOptions: FindOptions<Team> = {}) {
-    const teamPopulate = ['actor', 'actor.actorImages', 'actor.actorImages.image', 'children.actor'] as never[];
-    return this.find({ tenant: { id: tenantId } }, { ...findOptions, populate: teamPopulate });
+    const populate = ['actor', 'actor.actorImages', 'actor.actorImages.image', 'children.actor'] as const;
+    return this.find<(typeof populate)[number]>({ tenant: { id: tenantId } }, { populate, ...findOptions });
   }
 }

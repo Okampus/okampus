@@ -4,7 +4,7 @@
 import { CreateEventForm } from '../../components/Forms/CreateEventForm';
 
 import { SmallCalendar } from '@okampus/ui/molecules';
-import { getEventsQuery } from '@okampus/shared/graphql';
+// import { getEventsQuery } from '@okampus/shared/graphql';
 import { NavigationContext } from '@okampus/ui/hooks';
 
 import { motion } from 'framer-motion';
@@ -14,7 +14,7 @@ import { nanoid } from 'nanoid';
 // import { EventCard } from '@okampus/ui/molecules';
 import { useContext } from 'react';
 // import { ITenantEvent } from '@okampus/shared/dtos';
-import { useQuery } from '@apollo/client';
+// import { useQuery } from '@apollo/client';
 
 // type EventManageType = {
 //   events: IPaginated<ITenantEvent>;
@@ -29,7 +29,7 @@ export function EventManageView() {
   // const [newEvents, setNewEvents] = useState<(ITenantEvent & { key: string })[]>([]);
   const { showModal, hideModal, setNotifications, notifications } = useContext(NavigationContext);
 
-  const { data } = useQuery(getEventsQuery);
+  // const { data } = useQuery(getEventsQuery);
   const addNotification = (notification: {
     id: string;
     type: 'success' | 'error';

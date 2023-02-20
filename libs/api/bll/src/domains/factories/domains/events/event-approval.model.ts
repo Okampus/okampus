@@ -5,7 +5,7 @@ import { Paginated } from '../../../../shards/types/paginated.type';
 import { IndividualModel } from '../../abstract/individual.model';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 import { Field, ObjectType } from '@nestjs/graphql';
-import type { IEventApproval, IEventApprovalStep, IIndividual, ITenantCore, ITenantEvent } from '@okampus/shared/dtos';
+import type { IEventApproval, IEventApprovalStep, IIndividual, ITenantEvent } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class EventApprovalModel extends TenantScopedModel implements IEventApproval {
@@ -25,7 +25,8 @@ export class EventApprovalModel extends TenantScopedModel implements IEventAppro
   step?: IEventApprovalStep;
 
   constructor(approval: IEventApproval) {
-    super(approval.tenant as ITenantCore);
+    if (!approval.tenant) throw new Error('Approval must have a tenant');
+    super(approval.tenant);
     this.assign(approval);
   }
 }

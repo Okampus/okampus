@@ -48,7 +48,7 @@ export function EventCard({ event, classes, onClick }: EventCardProps) {
           <div>{'Ivan STEPANIAN'}</div>
         </div>
       </div>
-      {/* <div className="text-1">{(event.rootContent as IContent).text}</div> */}
+      {/* <div className="text-1">{event.rootContent.text}</div> */}
     </div>
   );
 }

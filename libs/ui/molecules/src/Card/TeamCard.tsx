@@ -1,16 +1,18 @@
 import { AvatarGroup } from '../Group/AvatarGroup';
-
 import { TagGroup } from '../Group/TagGroup';
-import { Avatar, Banner } from '@okampus/ui/atoms';
-import { actorImageBareFragment, ActorImageType, getFragmentData } from '@okampus/shared/graphql';
-import { ReactComponent as ArrowRightIcon } from '@okampus/assets/svg/icons/arrow-right-alt.svg';
 
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-import { COLORS } from '@okampus/shared/consts';
-import { motion } from 'framer-motion';
+import { ReactComponent as ArrowRightIcon } from '@okampus/assets/svg/icons/arrow-right-alt.svg';
 
+import { COLORS } from '@okampus/shared/consts';
+import { Avatar, Banner } from '@okampus/ui/atoms';
 import { getAvatar, getBanner } from '@okampus/ui/utils';
+import { notEmpty } from '@okampus/shared/utils';
+
+import { actorImageBareFragment, ActorImageType, getFragmentData } from '@okampus/shared/graphql';
+
 import type { UserItem } from '../Group/AvatarGroup';
 import type { TeamMembersInfoFragment } from '@okampus/shared/graphql';
 
@@ -21,9 +23,10 @@ type TeamCardProps = {
 
 export function TeamCard({ team, link }: TeamCardProps) {
   const users: UserItem[] = team.members
-    .filter((member) => member.user && member.user.actor && member.user.actor.id)
     .map((member) => {
-      const user = member.user as typeof member.user & { id: string; actor: { name: string } };
+      const user = member.user;
+      if (!user || !user.actor) return null;
+
       return {
         id: user.id,
         name: user.actor.name,
@@ -31,7 +34,8 @@ export function TeamCard({ team, link }: TeamCardProps) {
           .map((actorImage) => getFragmentData(actorImageBareFragment, actorImage))
           .find((image) => image.type === ActorImageType.Avatar)?.image?.url,
       };
-    });
+    })
+    .filter(notEmpty);
 
   const tags = team.actor?.tags;
   return (

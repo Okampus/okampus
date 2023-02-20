@@ -44,7 +44,7 @@ export type Subspace = {
   menus: Menu[];
 };
 
-export const menus = {
+export const menus: { [key in SubspaceTypes]: Subspace } = {
   [SubspaceTypes.Home]: {
     isResourceRoute: null,
     manageView: SubspaceTypes.Admin,
@@ -171,46 +171,61 @@ export const menus = {
         icon: CalendarUpcomingIcon,
         label: 'Événements',
         link: '/:orgId/manage/events',
-        sub: {
-          past: {
+        sub: [
+          {
             label: 'Rétrospectives',
             link: '/:orgId/manage/events',
             tip: 'Événements passés',
           },
-          pending: {
+          {
             label: 'En attente',
             link: '/:orgId/manage/events',
             tip: 'Événements en attente de validation',
           },
-          soon: {
+          {
             label: 'À venir',
             link: '/:orgId/manage/events',
             tip: 'Événements à venir',
           },
-        },
+        ],
         tip: 'Liste des événements',
       },
       {
         icon: SettingsIcon,
         label: 'Paramètres',
         link: '/:orgId/manage/settings',
-        sub: {
-          general: {
+        sub: [
+          {
             label: "Vue d'ensemble",
             link: '/:orgId/manage/settings',
             tip: "Informations générales de l'association",
           },
-          roles: {
+          {
             label: 'Rôles',
             link: '/:orgId/manage/roles',
             tip: 'Gestion des rôles',
           },
-        },
+        ],
         tip: "Paramètres de l'association",
       },
     ],
   },
-} as { [key in SubspaceTypes]: Subspace };
+  [SubspaceTypes.Me]: {
+    isResourceRoute: {
+      idString: ':userId',
+      noIdRedirect: '/home/explore/people',
+    },
+    manageView: null,
+    menus: [
+      {
+        icon: PeopleIcon,
+        label: 'Profil',
+        link: '/:userId/me',
+        tip: 'Informations générales',
+      },
+    ],
+  },
+};
 
 const findShortcutMenu = (subspace: SubspaceTypes, shortcutKey: ShortcutType): SelectedMenu => {
   const menu = menus[subspace].menus.findIndex((m) => m.shortcutKey === shortcutKey);
@@ -234,14 +249,13 @@ function matchPath(path: string, pattern: string) {
 
 // TODO: ugly, should be refactored
 export function selectedMenuFromPath(path: string): SelectedMenu {
-  for (const [subSpaceName, subSpace] of Object.entries(menus)) {
+  for (const subSpaceType of Object.values(SubspaceTypes)) {
+    const subSpace = menus[subSpaceType];
     for (const [menuIdx, menu] of subSpace.menus.entries()) {
-      if (!menu.sub && matchPath(path, menu.link))
-        return { subSpace: subSpaceName as SubspaceTypes, menu: menuIdx, subMenu: 0 };
+      if (!menu.sub && matchPath(path, menu.link)) return { subSpace: subSpaceType, menu: menuIdx, subMenu: 0 };
       if (menu.sub) {
         for (const [subMenuIdx, [, subMenu]] of Object.entries(menu.sub).entries()) {
-          if (matchPath(path, subMenu.link))
-            return { subSpace: subSpaceName as SubspaceTypes, menu: menuIdx, subMenu: subMenuIdx };
+          if (matchPath(path, subMenu.link)) return { subSpace: subSpaceType, menu: menuIdx, subMenu: subMenuIdx };
         }
       }
     }

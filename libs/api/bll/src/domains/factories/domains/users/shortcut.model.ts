@@ -2,9 +2,11 @@
 import { UserModel } from './user.model';
 import { ActorModel } from '../../abstract/actor.model';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
+
 import { Field, ObjectType } from '@nestjs/graphql';
 import { ShortcutType } from '@okampus/shared/enums';
-import type { IActor, IShortcut, ITenantCore, IUser } from '@okampus/shared/dtos';
+
+import type { IActor, IShortcut, IUser } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class ShortcutModel extends TenantScopedModel implements IShortcut {
@@ -18,7 +20,8 @@ export class ShortcutModel extends TenantScopedModel implements IShortcut {
   user!: IUser;
 
   constructor(shortcut: IShortcut) {
-    super(shortcut.tenant as ITenantCore);
+    if (!shortcut.tenant) throw new Error('Shortcut must have a tenant');
+    super(shortcut.tenant);
     this.assign(shortcut);
   }
 }

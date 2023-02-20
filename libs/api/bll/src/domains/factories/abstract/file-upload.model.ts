@@ -2,7 +2,7 @@ import { IndividualModel } from './individual.model';
 import { TenantScopedModel } from './tenant-scoped.model';
 import { Field, GraphQLISODateTime, Int, InterfaceType } from '@nestjs/graphql';
 import { FileUploadKind } from '@okampus/shared/enums';
-import type { IFileUpload, IIndividual, ITenantCore } from '@okampus/shared/dtos';
+import type { IFileUpload, IIndividual } from '@okampus/shared/dtos';
 // eslint-disable-next-line import/no-cycle
 
 @InterfaceType({
@@ -42,7 +42,8 @@ export abstract class FileUploadModel extends TenantScopedModel implements IFile
   mime!: string;
 
   constructor(fileUpload: IFileUpload) {
-    super(fileUpload.tenant as ITenantCore);
+    if (!fileUpload.tenant) throw new Error('FileUpload must have a tenant');
+    super(fileUpload.tenant);
     this.assign(fileUpload);
   }
 }

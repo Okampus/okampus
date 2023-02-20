@@ -2,13 +2,24 @@
 import React from 'react';
 import type { Snowflake } from '@okampus/shared/types';
 
-export const CurrentContext = React.createContext({
-  currentUserId: null as Snowflake | null,
-  setCurrentUserId: (_user: Snowflake | null) => {},
+type CurrentContextProps = {
+  currentUserId: Snowflake | null;
+  setCurrentUserId: (user: Snowflake | null) => void;
 
-  currentTenantId: null as Snowflake | null,
-  setCurrentTenantId: (_tenant: Snowflake | null) => {},
+  currentTenantId: Snowflake | null;
+  setCurrentTenantId: (tenant: Snowflake | null) => void;
 
-  currentOrgId: null as Snowflake | null,
-  setCurrentOrgId: (_org: Snowflake | null) => {},
+  currentOrgId: Snowflake | null;
+  setCurrentOrgId: (org: Snowflake | null) => void;
+};
+
+export const CurrentContext = React.createContext<CurrentContextProps>({
+  currentUserId: null,
+  setCurrentUserId: () => {},
+
+  currentTenantId: null,
+  setCurrentTenantId: () => {},
+
+  currentOrgId: null,
+  setCurrentOrgId: () => {},
 });

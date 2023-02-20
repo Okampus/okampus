@@ -3,6 +3,8 @@ import type { FilterQuery, FindOneOptions, FindOneOrFailOptions } from '@mikro-o
 import type { Snowflake } from '@okampus/shared/types';
 import type { BaseEntity } from './base.entity';
 
+// TODO: fix types
+
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   public async findById(id: Snowflake, findOptions?: FindOneOptions<T>): Promise<T | null> {
     return this.findOne({ id } as FilterQuery<T>, findOptions);

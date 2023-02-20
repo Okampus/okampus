@@ -4,7 +4,7 @@ import { Paginated } from '../../../shards/types/paginated.type';
 import { UserModel } from '../domains/users/user.model';
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
 import { MembershipKind } from '@okampus/shared/enums';
-import type { IMembership, ITenantCore, IUser } from '@okampus/shared/dtos';
+import type { IMembership, IUser } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class MembershipModel extends TenantScopedModel implements IMembership {
@@ -21,7 +21,8 @@ export class MembershipModel extends TenantScopedModel implements IMembership {
   endDate!: Date | null;
 
   constructor(membership: IMembership) {
-    super(membership.tenant as ITenantCore);
+    if (!membership.tenant) throw new Error('Membership must have a tenant');
+    super(membership.tenant);
     this.assign(membership);
   }
 }

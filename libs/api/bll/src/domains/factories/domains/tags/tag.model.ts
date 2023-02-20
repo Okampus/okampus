@@ -5,7 +5,7 @@ import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 import { ImageUploadModel } from '../images/image-upload.model';
 import { Colors, TagKind } from '@okampus/shared/enums';
 import { Field, ObjectType } from '@nestjs/graphql';
-import type { IImageUpload, IIndividual, ITag, ITenantCore } from '@okampus/shared/dtos';
+import type { IImageUpload, IIndividual, ITag } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class TagModel extends TenantScopedModel implements ITag {
@@ -31,7 +31,8 @@ export class TagModel extends TenantScopedModel implements ITag {
   createdBy?: IIndividual | null; // null for system
 
   constructor(tag: ITag) {
-    super(tag.tenant as ITenantCore);
+    if (!tag.tenant) throw new Error('Tag must have a tenant');
+    super(tag.tenant);
     this.assign(tag);
   }
 }

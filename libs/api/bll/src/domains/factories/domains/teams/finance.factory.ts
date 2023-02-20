@@ -4,31 +4,34 @@ import { BaseFactory } from '../../base.factory';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
-import { Finance } from '@okampus/api/dal';
-
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { FinanceRepository, ProjectRepository, TeamRepository, TenantEventRepository } from '@okampus/api/dal';
+import { Finance, FileUpload, Individual, Project, Team, TenantCore, TenantEvent } from '@okampus/api/dal';
 
 import { ResourceType } from '@okampus/shared/enums';
 import { asyncCallIfNotNull, filterNullPromiseAll } from '@okampus/shared/utils';
+
 import type { CreateFinanceDto, IFinance } from '@okampus/shared/dtos';
-import type { FileUpload, FinanceOptions, Individual, Project, Team, TenantCore, TenantEvent } from '@okampus/api/dal';
 import type { MulterFileType } from '@okampus/shared/types';
+import type { FinanceOptions } from '@okampus/api/dal';
 
 @Injectable()
 export class FinanceFactory extends BaseFactory<FinanceModel, Finance, IFinance, FinanceOptions> {
   constructor(
-    @Inject(EventPublisher) ep: EventPublisher,
+    @Inject(EventPublisher) eventPublisher: EventPublisher,
     financeRepository: FinanceRepository,
+    private readonly em: EntityManager,
     private readonly uploadService: UploadService,
     private readonly teamRepository: TeamRepository,
     private readonly projectRepository: ProjectRepository,
     private readonly tenantEventRepository: TenantEventRepository
   ) {
-    super(ep, financeRepository, FinanceModel, Finance);
+    super(eventPublisher, financeRepository, FinanceModel, Finance);
   }
 
   async createFinance(
@@ -70,21 +73,15 @@ export class FinanceFactory extends BaseFactory<FinanceModel, Finance, IFinance,
     );
   }
 
-  // entityToModel(entity: Finance): FinanceModel | undefined {
-  //   const form = loadFinance(entity);
-  //   if (!form) return undefined;
-  //   return this.createModel(form);
-  // }
-
   modelToEntity(model: Required<FinanceModel>): Finance {
     return new Finance({
       ...model,
-      createdBy: { id: model.createdBy.id } as Individual,
-      team: { id: model.team.id } as Team,
-      linkedProject: model.linkedProject ? ({ id: model.linkedProject.id } as Project) : null,
-      linkedEvent: model.linkedEvent ? ({ id: model.linkedEvent.id } as TenantEvent) : null,
-      receipts: model.receipts.map((file) => ({ id: file.id } as FileUpload)),
-      tenant: { id: model.tenant.id } as TenantCore,
+      createdBy: this.em.getReference(Individual, model.createdBy.id),
+      team: this.em.getReference(Team, model.team.id),
+      linkedProject: model.linkedProject ? this.em.getReference(Project, model.linkedProject.id) : null,
+      linkedEvent: model.linkedEvent ? this.em.getReference(TenantEvent, model.linkedEvent.id) : null,
+      receipts: model.receipts.map((file) => this.em.getReference(FileUpload, file.id)),
+      tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }
 }

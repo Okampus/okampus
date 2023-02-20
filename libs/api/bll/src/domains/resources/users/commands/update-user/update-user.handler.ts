@@ -9,9 +9,11 @@ import type { ICommandHandler } from '@nestjs/cqrs';
 import type { User } from '@okampus/api/dal';
 import type { UserModel } from '../../../../factories/domains/users/user.model';
 
-async function updateFullName(data: Partial<User>, user: User) {
+async function updateFullName(data: Partial<User>, user: User): Promise<Partial<User>> {
   const name = fullName(data.firstName ?? user.firstName, data.lastName ?? user.lastName);
-  return { ...data, actor: { ...data.actor, name } } as Partial<User>;
+  if (!data.actor) throw new Error('Actor is not defined');
+  data.actor.name = name;
+  return data;
 }
 
 @CommandHandler(UpdateUserCommand)

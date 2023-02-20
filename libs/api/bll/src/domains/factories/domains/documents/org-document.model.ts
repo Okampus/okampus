@@ -5,7 +5,6 @@ import { OrgModel } from '../../abstract/org.model';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { OrgDocumentType } from '@okampus/shared/enums';
-import type { TenantCore } from '@okampus/api/dal';
 import type { IOrg, IOrgDocument, ITenantDocument } from '@okampus/shared/dtos';
 
 @ObjectType()
@@ -20,7 +19,8 @@ export class OrgDocumentModel extends TenantScopedModel implements IOrgDocument 
   type!: OrgDocumentType;
 
   constructor(orgDocument: IOrgDocument) {
-    super(orgDocument.tenant as TenantCore);
+    if (!orgDocument.tenant) throw new Error('OrgDocument must have a tenant');
+    super(orgDocument.tenant);
     this.assign(orgDocument);
   }
 }

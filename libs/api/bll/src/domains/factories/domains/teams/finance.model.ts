@@ -6,19 +6,12 @@ import { IndividualModel } from '../../abstract/individual.model';
 import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 import { TenantEventModel } from '../events/event.model';
 import { TeamModel } from '../teams/team.model';
+
 import { FinanceCategory, FinanceState, PaymentMethod } from '@okampus/shared/enums';
 import { Address } from '@okampus/shared/dtos';
 import { Field, Float, ObjectType } from '@nestjs/graphql';
-import type {
-  IFileUpload,
-  IFinance,
-  IForm as Finance,
-  IIndividual,
-  IProject,
-  ITeam,
-  ITenantEvent,
-} from '@okampus/shared/dtos';
-import type { TenantCore } from '@okampus/api/dal';
+
+import type { IFileUpload, IFinance, IIndividual, IProject, ITeam, ITenantEvent } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class FinanceModel extends TenantScopedModel implements IFinance {
@@ -64,8 +57,9 @@ export class FinanceModel extends TenantScopedModel implements IFinance {
   @Field(() => [FileUploadModel])
   receipts: IFileUpload[] = [];
 
-  constructor(finance: Finance) {
-    super(finance.tenant as TenantCore);
+  constructor(finance: IFinance) {
+    if (!finance.tenant) throw new Error('Finance must have a tenant');
+    super(finance.tenant);
     this.assign(finance);
   }
 }

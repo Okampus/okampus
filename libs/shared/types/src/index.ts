@@ -15,6 +15,7 @@ export * from './interfaces/ui/selected-menu.interface';
 export * from './interfaces/ui/toast.props';
 export * from './scalars/query-order-map.scalar';
 export * from './types/abstract-constructor.type';
+export * from './types/constructor.type';
 export * from './types/deep-partial.type';
 export * from './types/exact.type';
 export * from './types/json.type';

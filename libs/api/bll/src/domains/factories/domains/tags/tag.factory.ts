@@ -1,19 +1,26 @@
 import { TagModel } from './tag.model';
 import { BaseFactory } from '../../base.factory';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { Tag } from '@okampus/api/dal';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TagRepository } from '@okampus/api/dal';
+import { ImageUpload, Tag, TenantCore } from '@okampus/api/dal';
 
-import type { TenantCore, TagOptions, ImageUpload } from '@okampus/api/dal';
+import type { TagOptions } from '@okampus/api/dal';
 import type { ITag } from '@okampus/shared/dtos';
 
 @Injectable()
 export class TagFactory extends BaseFactory<TagModel, Tag, ITag, TagOptions> {
-  constructor(@Inject(EventPublisher) ep: EventPublisher, tagRepository: TagRepository) {
-    super(ep, tagRepository, TagModel, Tag);
+  constructor(
+    @Inject(EventPublisher) eventPublisher: EventPublisher,
+    tagRepository: TagRepository,
+    private readonly em: EntityManager
+  ) {
+    super(eventPublisher, tagRepository, TagModel, Tag);
   }
 
   modelToEntity(model: Required<TagModel>): Tag {
@@ -22,8 +29,8 @@ export class TagFactory extends BaseFactory<TagModel, Tag, ITag, TagOptions> {
       name: model.name,
       slug: model.slug,
       description: model.description,
-      iconImage: { id: model.iconImage?.id } as ImageUpload,
-      tenant: { id: model.tenant.id } as TenantCore,
+      iconImage: model.iconImage ? this.em.getReference(ImageUpload, model.iconImage.id) : null,
+      tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }
 }

@@ -1,5 +1,5 @@
 import { OrgDocumentType } from '@okampus/shared/enums';
-import { DynamicForm } from '@okampus/ui/organisms';
+import { DynamicForm, ControlType } from '@okampus/ui/organisms';
 import type { DynamicFieldData } from '@okampus/ui/organisms';
 
 export type CreateOrgDocumentFormProps = {
@@ -12,7 +12,7 @@ export function CreateOrgDocumentForm({ file, type, onSubmit }: CreateOrgDocumen
   const fields: DynamicFieldData[] = [
     {
       fieldName: 'documentFile',
-      inputType: 'single-file',
+      inputType: ControlType.SingleFile,
       label: 'Document',
       defaultValue: file,
     },
@@ -20,7 +20,7 @@ export function CreateOrgDocumentForm({ file, type, onSubmit }: CreateOrgDocumen
       ? [
           {
             fieldName: 'name',
-            inputType: 'text',
+            inputType: ControlType.Text,
             label: 'Nom du guide',
             defaultValue: '',
             placeholder: 'Nom du guide',
@@ -29,17 +29,17 @@ export function CreateOrgDocumentForm({ file, type, onSubmit }: CreateOrgDocumen
       : []),
     {
       fieldName: 'yearVersion',
-      inputType: 'number',
+      inputType: ControlType.Number,
       label: "Année d'édition du document",
       placeholder: 'Année de versionnage du document',
     },
     {
       fieldName: 'description',
-      inputType: 'text',
+      inputType: ControlType.Text,
       label: 'Description',
       placeholder: 'Description',
     },
-  ] as DynamicFieldData[];
+  ];
 
   return (
     // <div>

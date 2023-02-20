@@ -5,19 +5,18 @@ import {
   financeFragment,
   getFragmentData,
 } from '@okampus/shared/graphql';
-import { Dashboard, DynamicForm } from '@okampus/ui/organisms';
+import { ControlType, Dashboard, DynamicForm } from '@okampus/ui/organisms';
 
 import { FileGroup } from '@okampus/ui/molecules';
 import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
 
+import { isNotNull } from '@okampus/shared/utils';
 import { useMutation } from '@apollo/client';
 import { clsx } from 'clsx';
 import { useContext } from 'react';
 
-import type { FileLike } from '@okampus/shared/types';
 import type { DynamicFieldData } from '@okampus/ui/organisms';
 import type { FinanceInfoFragment } from '@okampus/shared/graphql';
-import type { CreateFinanceDto } from '@okampus/shared/dtos';
 
 const columns = [
   {
@@ -49,20 +48,18 @@ const columns = [
           'Manquant'
         ) : (
           <FileGroup
-            files={
-              value.receipts
-                .map((document) => {
-                  if (!document || document.__typename !== 'DocumentUploadModel') return null;
-                  const file = getFragmentData(documentUploadFragment, document);
-                  return {
-                    name: file.name,
-                    size: file.size,
-                    type: file.mime,
-                    src: file.url,
-                  };
-                })
-                .filter(Boolean) as FileLike[]
-            }
+            files={value.receipts
+              .map((document) => {
+                if (!document || document.__typename !== 'DocumentUploadModel') return null;
+                const file = getFragmentData(documentUploadFragment, document);
+                return {
+                  name: file.name,
+                  size: file.size,
+                  type: file.mime,
+                  src: file.url,
+                };
+              })
+              .filter(isNotNull)}
           />
         )}
       </div>
@@ -105,35 +102,35 @@ export function FinanceManageView() {
   const fields: DynamicFieldData[] = [
     {
       fieldName: 'transaction',
-      inputType: 'text',
+      inputType: ControlType.Text,
       label: 'Nom de la transaction',
       defaultValue: '',
       placeholder: 'Nom de la transaction',
     },
     {
       fieldName: 'paymentDate',
-      inputType: 'datetime-local',
+      inputType: ControlType.DatetimeLocal,
       label: 'Début de paiement',
       placeholder: 'Date de paiement',
     },
     {
       fieldName: 'amountDue',
-      inputType: 'number',
+      inputType: ControlType.Number,
       label: 'Montant dû',
       placeholder: 'Montant dû',
     },
     {
       fieldName: 'amountPayed',
-      inputType: 'number',
+      inputType: ControlType.Number,
       label: 'Montant payé',
       placeholder: 'Montant payé',
     },
     {
       fieldName: 'paymentMethod',
-      inputType: 'select',
+      inputType: ControlType.Select,
       label: 'Méthode de paiement',
-      options: Object.keys(PaymentMethod).map((key) => ({
-        element: PaymentMethod[key as keyof typeof PaymentMethod],
+      options: Object.entries(PaymentMethod).map(([key, value]) => ({
+        element: value,
         value: key,
       })),
       fullWidth: true,
@@ -141,10 +138,10 @@ export function FinanceManageView() {
     },
     {
       fieldName: 'category',
-      inputType: 'select',
+      inputType: ControlType.Select,
       label: 'Catégorie de dépense',
-      options: Object.keys(FinanceCategory).map((key) => ({
-        element: FinanceCategory[key as keyof typeof FinanceCategory],
+      options: Object.entries(FinanceCategory).map(([key, value]) => ({
+        element: value,
         value: key,
       })),
       fullWidth: true,
@@ -184,9 +181,9 @@ export function FinanceManageView() {
                     createFinance({
                       variables: {
                         finance: {
-                          ...(data as CreateFinanceDto),
-                          amountDue: Number.parseInt((data as { amountDue: string }).amountDue as string, 10),
-                          amountPayed: Number.parseInt((data as { amountPayed: string }).amountPayed as string, 10),
+                          ...data,
+                          amountDue: Number.parseInt(data.amountDue, 10),
+                          amountPayed: Number.parseInt(data.amountPayed, 10),
                           teamId: org.id,
                         },
                       },

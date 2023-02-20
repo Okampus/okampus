@@ -1,13 +1,22 @@
 import { EventApprovalStepModel } from './event-approval-step.model';
 import { BaseFactory } from '../../base.factory';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { EventApprovalStepRepository, IndividualRepository, UserRepository, TenantRepository } from '@okampus/api/dal';
+import {
+  EventApprovalStepRepository,
+  IndividualRepository,
+  UserRepository,
+  TenantRepository,
+  TenantCore,
+} from '@okampus/api/dal';
+import { EventApprovalStep, Individual, Tenant, User } from '@okampus/api/dal';
 
-import { EventApprovalStep } from '@okampus/api/dal';
-import type { EventApprovalStepOptions, Individual, Tenant, TenantCore, User } from '@okampus/api/dal';
+import type { EventApprovalStepOptions } from '@okampus/api/dal';
 import type { CreateEventApprovalStepDto, IEventApprovalStep } from '@okampus/shared/dtos';
 
 @Injectable()
@@ -18,13 +27,14 @@ export class EventApprovalStepFactory extends BaseFactory<
   EventApprovalStepOptions
 > {
   constructor(
-    @Inject(EventPublisher) ep: EventPublisher,
+    @Inject(EventPublisher) eventPublisher: EventPublisher,
+    eventApprovalStepRepository: EventApprovalStepRepository,
+    private readonly em: EntityManager,
     private readonly individualRepository: IndividualRepository,
     private readonly userRepository: UserRepository,
-    private readonly tenantRepository: TenantRepository,
-    eventApprovalStepRepository: EventApprovalStepRepository
+    private readonly tenantRepository: TenantRepository
   ) {
-    super(ep, eventApprovalStepRepository, EventApprovalStepModel, EventApprovalStep);
+    super(eventPublisher, eventApprovalStepRepository, EventApprovalStepModel, EventApprovalStep);
   }
 
   async createEventApprovalStep(
@@ -57,11 +67,11 @@ export class EventApprovalStepFactory extends BaseFactory<
   modelToEntity(model: Required<EventApprovalStepModel>): EventApprovalStep {
     return new EventApprovalStep({
       ...model,
-      tenant: { id: model.tenantOrg.id } as TenantCore,
-      tenantOrg: { id: model.tenantOrg.id } as Tenant,
-      notifiees: model.notifiees.map((notifiee) => ({ id: notifiee.id } as User)),
-      validators: model.validators.map((validator) => ({ id: validator.id } as Individual)),
-      createdBy: model.createdBy ? ({ id: model.createdBy.id } as Individual) : null,
+      tenantOrg: this.em.getReference(Tenant, model.tenantOrg.id),
+      notifiees: model.notifiees.map((notifiee) => this.em.getReference(User, notifiee.id)),
+      validators: model.validators.map((validator) => this.em.getReference(Individual, validator.id)),
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
+      tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }
 }

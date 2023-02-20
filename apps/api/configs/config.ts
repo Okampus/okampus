@@ -150,4 +150,4 @@ export const config: ApiConfig = {
   settings: {
     metricsCron: process.env.METRICS_CRON ?? '*/15 * * * *',
   },
-} as const;
+};

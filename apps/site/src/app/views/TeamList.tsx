@@ -13,7 +13,15 @@ import { useState } from 'react';
 import type { TeamMembersInfoFragment } from '@okampus/shared/graphql';
 
 export function TeamList() {
-  const { categorySlug } = useParams() as { categorySlug: string };
+  const { categorySlug } = useParams();
+  if (!categorySlug) {
+    return null;
+  }
+
+  return <TeamListWrapping categorySlug={categorySlug} />;
+}
+
+export function TeamListWrapping({ categorySlug }: { categorySlug: string }) {
   const { data } = useQuery(getTeamsByCategoryQuery, { variables: { categorySlug } });
   const { data: categoryData } = useQuery(getTeamCategoryBySlugQuery, { variables: { slug: categorySlug } });
   const [filteredTeams, setFilteredTeams] = useState<TeamMembersInfoFragment[]>([]);

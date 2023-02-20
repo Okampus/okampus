@@ -128,6 +128,7 @@ interface PopoverTriggerProps {
   asChild?: boolean;
 }
 
+// TODO: fix types
 export const PopoverTrigger = React.forwardRef<HTMLElement, React.HTMLProps<HTMLElement> & PopoverTriggerProps>(
   function PopoverTrigger({ children, asChild = false, ...props }, propRef) {
     const context = usePopoverContext();
@@ -223,7 +224,7 @@ export const PopoverContent = React.forwardRef<
               {...context.getFloatingProps(props)}
             >
               <div>{props.children}</div>
-              {context.useArrow && (
+              {context.useArrow && staticSide && ['top', 'bottom', 'left', 'right'].includes(staticSide) && (
                 <div
                   ref={context.arrowRef}
                   style={{
@@ -233,7 +234,7 @@ export const PopoverContent = React.forwardRef<
                     overflow: 'hidden',
                     left: arrowX == null ? '' : `${arrowX}px`,
                     top: arrowY == null ? '' : `${arrowY}px`,
-                    [staticSide as 'top' | 'bottom' | 'left' | 'right']: staticOffset,
+                    [staticSide]: staticOffset,
                     pointerEvents: 'none',
                     transform: `rotate(${{ top: 180, right: 270, bottom: 0, left: 90 }[side]}deg)`,
                   }}

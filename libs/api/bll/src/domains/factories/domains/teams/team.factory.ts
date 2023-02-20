@@ -7,10 +7,25 @@ import { OrgDocumentFactory } from '../documents/org-document.factory';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
+
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
-import { clubDefaultRoles, Shortcut, Team, teamDefaultRoles, TeamMember, TeamRole } from '@okampus/api/dal';
+import {
+  clubDefaultRoles,
+  Shortcut,
+  Team,
+  teamDefaultRoles,
+  TeamMember,
+  TeamRole,
+  Form,
+  Org,
+  Tag,
+  TeamCategory,
+  TenantCore,
+} from '@okampus/api/dal';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
@@ -25,27 +40,18 @@ import {
 
 import { ActorKind, IndividualKind, ShortcutType, TeamType } from '@okampus/shared/enums';
 import { toSlug } from '@okampus/shared/utils';
-import type { CreateOrgDocumentDto, CreateTeamDto, ITeam } from '@okampus/shared/dtos';
-import type {
-  ActorImageUploadProps,
-  Form,
-  Individual,
-  Org,
-  Tag,
-  TeamCategory,
-  TeamOptions,
-  TenantCore,
-  User,
-} from '@okampus/api/dal';
 
-import type { Snowflake, MulterFileType } from '@okampus/shared/types';
 import type { OrgDocumentModel } from '../documents/org-document.model';
+import type { ActorImageUploadProps, Individual, TeamOptions, User } from '@okampus/api/dal';
+import type { CreateOrgDocumentDto, CreateTeamDto, ITeam } from '@okampus/shared/dtos';
+import type { Snowflake, MulterFileType } from '@okampus/shared/types';
 
 @Injectable()
 export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions> {
   constructor(
-    @Inject(EventPublisher) ep: EventPublisher,
-    private readonly teamRepository: TeamRepository,
+    @Inject(EventPublisher) eventPublisher: EventPublisher,
+    teamRepository: TeamRepository,
+    private readonly em: EntityManager,
     private readonly userRepository: UserRepository,
     private readonly actorRepository: ActorRepository,
     private readonly teamMemberRepository: TeamMemberRepository,
@@ -55,7 +61,7 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
     private readonly orgDocumentFactory: OrgDocumentFactory,
     private readonly uploadService: UploadService
   ) {
-    super(ep, teamRepository, TeamModel, Team);
+    super(eventPublisher, teamRepository, TeamModel, Team);
   }
 
   async teamAddDocument(
@@ -82,10 +88,12 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
     requester: Individual,
     images?: ActorImageUploadProps
   ) {
+    const isUser = (user: Individual): user is User => user.individualKind === IndividualKind.User;
+
     /* Get team owner */
     let user: User;
-    if (requester.individualKind === IndividualKind.User) {
-      user = requester as User;
+    if (isUser(requester)) {
+      user = requester;
     } else if (createTeam.ownerId) {
       user = await this.userRepository.findOneOrFail({ id: createTeam.ownerId });
     } else {
@@ -130,11 +138,11 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
     return new Team({
       ...model,
       ...model.actor,
-      parent: model.parent ? ({ id: model.parent.id } as Org) : null,
-      joinForm: model.joinForm ? ({ id: model.joinForm.id } as Form) : null,
-      tenant: { id: model.tenant.id } as TenantCore,
-      tags: model.actor.tags.map((tag) => ({ id: tag.id } as Tag)),
-      categories: model.categories.map((category) => ({ id: category.id } as TeamCategory)),
+      parent: model.parent ? this.em.getReference(Org, model.parent.id) : null,
+      joinForm: model.joinForm ? this.em.getReference(Form, model.joinForm.id) : null,
+      tags: model.actor.tags.map((tag) => this.em.getReference(Tag, tag.id)),
+      categories: model.categories.map((category) => this.em.getReference(TeamCategory, category.id)),
+      tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }
 }

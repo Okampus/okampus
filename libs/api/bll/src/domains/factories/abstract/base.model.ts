@@ -1,5 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Field, GraphQLISODateTime, InterfaceType, ObjectType } from '@nestjs/graphql';
+import { isIn } from '@okampus/shared/utils';
+
 import type { IBase } from '@okampus/shared/dtos';
 import type { Snowflake } from '@okampus/shared/types';
 
@@ -20,15 +22,15 @@ export abstract class BaseModel extends AggregateRoot implements IBase {
 
   protected assign<T extends object>(options: T): void {
     for (const [key, value] of Object.entries(options)) {
-      if (value !== undefined) this[key as keyof typeof this] = value;
+      if (isIn(key, this)) this[key] = value;
     }
   }
 
   toJSON(): Record<string, unknown> {
-    // eslint-disable-next-line unicorn/no-array-reduce
-    return Object.entries(this).reduce((acc, [key, value]) => {
-      if (value !== undefined) acc[key] = value;
-      return acc;
-    }, {} as Record<string, unknown>);
+    const data: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(this)) {
+      if (value !== undefined) data[key] = value;
+    }
+    return data;
   }
 }

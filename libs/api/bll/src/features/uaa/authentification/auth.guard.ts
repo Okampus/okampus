@@ -24,7 +24,7 @@ export interface GqlContext extends GqlWebsocketContext {
   res: FastifyReply | undefined;
   request: FastifyRequest | undefined;
   socket: WebSocket | undefined;
-  connectionParams: Record<string, unknown>;
+  connectionParams: Record<string, string | string[] | undefined>;
 }
 
 const getTokenFromAuthHeader = (authHeader: string): string => {
@@ -87,12 +87,12 @@ export class AuthGuard implements CanActivate {
 
         // WebSocket case
         if (socket && connectionParams) {
-          const headers = lowercaseKeys(connectionParams) as IncomingHttpHeaders;
+          const headers = lowercaseKeys(connectionParams);
           return { headers, cookies: null, res: null, req: null };
         }
         // GraphQL case
         if (req) {
-          const res = host.getArgByIndex(1) as FastifyReply;
+          const res = host.getArgByIndex<FastifyReply>(1);
           return { headers: req.headers, cookies: req.cookies, res, req };
         }
 
@@ -133,7 +133,7 @@ export class AuthGuard implements CanActivate {
     const tenantDomain = headers[HEADER_TENANT_NAME] as string | undefined;
     if (!tenantDomain) throw new UnauthorizedException('No tenant name provided');
 
-    // TODO: optimize with caching for tenant
+    // TODO: optimize with caching for tenant & individual
 
     const tenant = await this.authService.findCoreTenant(tenantDomain);
 
@@ -143,10 +143,8 @@ export class AuthGuard implements CanActivate {
     const isTenantPublic = this.reflector.getAllAndOverride<boolean>(IS_TENANT_PUBLIC, targets);
     if (isTenantPublic) return true;
 
-    /* Get user */
+    /* Get individual */
     const { token, tokenType } = this.getAuthInfo(headers, cookies);
-
-    // TODO: optimize with caching for individual
 
     /* Bot token case */
     if (tokenType === TokenType.Bot) {
@@ -154,7 +152,8 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    const user = await this.authService.validateUserToken(token, tokenType, req as FastifyRequest, res as FastifyReply);
+    if (!req || !res) throw new InternalServerErrorException('No request provided in GraphQL context');
+    const user = await this.authService.validateUserToken(token, tokenType, req, res);
     requestContext.set('requester', user);
     return true;
   }

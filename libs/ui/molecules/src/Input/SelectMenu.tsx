@@ -158,6 +158,4 @@ function SelectMenuInner<T>(
   );
 }
 
-export const SelectMenu = forwardRef(SelectMenuInner) as <T>(
-  props: SelectMenuProps<T> & { propRef?: React.ForwardedRef<HTMLDivElement> }
-) => ReturnType<typeof SelectMenuInner>;
+export const SelectMenu = forwardRef(SelectMenuInner);

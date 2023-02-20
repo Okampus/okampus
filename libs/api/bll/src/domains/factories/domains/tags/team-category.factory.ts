@@ -4,16 +4,18 @@ import { BaseFactory } from '../../base.factory';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { TeamCategory } from '@okampus/api/dal';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TeamCategoryRepository, TeamRepository, TagRepository } from '@okampus/api/dal';
-
+import { Team, TeamCategory, TenantCore } from '@okampus/api/dal';
 import { S3Buckets } from '@okampus/shared/enums';
 import { asyncCallIfNotNull, toSlug } from '@okampus/shared/utils';
-import type { TenantCore, TeamCategoryOptions, Team, Individual } from '@okampus/api/dal';
+
+import type { TeamCategoryOptions, Individual } from '@okampus/api/dal';
 import type { CreateTeamCategoryDto, ITeamCategory } from '@okampus/shared/dtos';
 import type { MulterFileType } from '@okampus/shared/types';
 
@@ -25,13 +27,14 @@ export class TeamCategoryFactory extends BaseFactory<
   TeamCategoryOptions
 > {
   constructor(
-    @Inject(EventPublisher) ep: EventPublisher,
+    @Inject(EventPublisher) eventPublisher: EventPublisher,
+    teamCategoryRepository: TeamCategoryRepository,
+    private readonly em: EntityManager,
     private readonly teamRepository: TeamRepository,
     private readonly tagRepository: TagRepository,
-    private readonly uploadService: UploadService,
-    teamCategoryRepository: TeamCategoryRepository
+    private readonly uploadService: UploadService
   ) {
-    super(ep, teamCategoryRepository, TeamCategoryModel, TeamCategory);
+    super(eventPublisher, teamCategoryRepository, TeamCategoryModel, TeamCategory);
   }
 
   async createTeamCategory(
@@ -66,8 +69,8 @@ export class TeamCategoryFactory extends BaseFactory<
       name: model.name,
       slug: model.slug,
       description: model.description,
-      teams: model.teams.map((team) => ({ id: team.id } as Team)),
-      tenant: { id: model.tenant.id } as TenantCore,
+      teams: model.teams.map((team) => this.em.getReference(Team, team.id)),
+      tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }
 }

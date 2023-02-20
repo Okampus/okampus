@@ -1,7 +1,7 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'openid-client';
-import { capitalize } from '@okampus/shared/utils';
+import { capitalize, enumChecker } from '@okampus/shared/utils';
 import { ScopeRole } from '@okampus/shared/enums';
 import type { Client, TokenSet } from 'openid-client';
 import type { TenantUserResponse } from '@okampus/shared/types';
@@ -28,7 +28,7 @@ export function tenantStrategyFactory(
       const data: TenantUserResponse = await this.client.userinfo(tokenset);
       const role = capitalize(data.role);
 
-      if (!Object.values<string>(ScopeRole).includes(role)) throw new UnauthorizedException('Invalid role');
+      if (!enumChecker(ScopeRole)(role)) throw new UnauthorizedException('Invalid role');
 
       const [firstName, ...middleNames] = data.given_name.split(' ');
       const createUser = {
@@ -37,7 +37,7 @@ export function tenantStrategyFactory(
         middleNames,
         lastName: data.family_name,
         primaryEmail: data.email,
-        scopeRole: role as ScopeRole,
+        scopeRole: role,
       };
 
       try {

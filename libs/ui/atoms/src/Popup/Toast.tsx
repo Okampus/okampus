@@ -35,7 +35,8 @@ export function Toast({ id, type, message, timeout = 2000, onTimeout, onClose }:
     >
       <div
         className={clsx('absolute top-0 left-0 h-1 w-full progress-bar')}
-        style={{ '--progress-bar-duration': timeout } as React.CSSProperties}
+        // @ts-expect-error --progress-bar-duration is a custom property
+        style={{ '--progress-bar-duration': timeout }}
       />
       <div className="text-lg">{message}</div>
       <CloseIcon

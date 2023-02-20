@@ -1,13 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigModule, ConfigService } from '../global/config.module';
-
 import { ConsoleLogger, Global, HttpException, Injectable, Module } from '@nestjs/common';
 import Sentry from '@sentry/node';
-
 import { exit } from 'node:process';
-import type { NodeOptions } from '@sentry/node';
 
-import type { ClientOptions, Client } from '@sentry/types';
+import type { NodeOptions } from '@sentry/node';
 
 @Injectable()
 export class SentryService {
@@ -31,7 +28,8 @@ export class SentryService {
             if (error.name === 'SentryError') {
               this.logger.error(error);
             } else {
-              const client = Sentry.getCurrentHub().getClient() as Client<ClientOptions>;
+              const client = Sentry.getCurrentHub().getClient();
+              if (!client) throw new Error('Sentry client is not initialized');
               client.captureException(error);
               exit(1);
             }

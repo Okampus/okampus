@@ -4,23 +4,42 @@ import React from 'react';
 import type { EventType, Label, ReduceEvent } from './types';
 import type dayjs from 'dayjs';
 
-const GlobalContext = React.createContext({
-  monthIndex: 0 as number,
-  setMonthIndex: (_index: number) => {},
-  smallCalendarMonth: 0 as number,
-  setSmallCalendarMonth: (_index: number) => {},
-  selectedDate: null as dayjs.Dayjs | null,
-  setSelectedDate: (_day: dayjs.Dayjs) => {},
+type GlobalContextType = {
+  monthIndex: number;
+  setMonthIndex: (index: number) => void;
+  smallCalendarMonth: number;
+  setSmallCalendarMonth: (index: number) => void;
+  selectedDate: dayjs.Dayjs | null;
+  setSelectedDate: (day: dayjs.Dayjs) => void;
+  showEventModal: boolean;
+  setShowEventModal: (show: boolean) => void;
+  dispatchCalEvent: (event: ReduceEvent) => void;
+  savedEvents: EventType[];
+  selectedEvent: EventType | null;
+  setSelectedEvent: (evt: EventType) => void;
+  setLabels: (labels: Label[]) => void;
+  labels: Label[];
+  updateLabel: (label: Label) => void;
+  filteredEvents: EventType[];
+};
+
+const GlobalContext = React.createContext<GlobalContextType>({
+  monthIndex: 0,
+  setMonthIndex: () => {},
+  smallCalendarMonth: 0,
+  setSmallCalendarMonth: () => {},
+  selectedDate: null,
+  setSelectedDate: () => {},
   showEventModal: false,
-  setShowEventModal: (_show: boolean) => {},
-  dispatchCalEvent: ({ type: _type, payload: _payload }: ReduceEvent) => {},
-  savedEvents: [] as EventType[],
-  selectedEvent: null as EventType | null,
-  setSelectedEvent: (_evt: EventType) => {},
-  setLabels: (_labels: Label[]) => {},
-  labels: [] as Label[],
-  updateLabel: (_label: Label) => {},
-  filteredEvents: [] as EventType[],
+  setShowEventModal: () => {},
+  dispatchCalEvent: () => {},
+  savedEvents: [],
+  selectedEvent: null,
+  setSelectedEvent: () => {},
+  setLabels: () => {},
+  labels: [],
+  updateLabel: () => {},
+  filteredEvents: [],
 });
 
 export default GlobalContext;

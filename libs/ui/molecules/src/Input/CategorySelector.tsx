@@ -13,7 +13,7 @@ export type CategorySelectorProps<T> = {
 };
 
 function getFilteredItems<T>(items: T[], selectedCategories: Category[], itemToCategory: (item: T) => Category[]) {
-  const filteredItems = [] as T[];
+  const filteredItems: T[] = [];
   for (const item of items) {
     const categories = itemToCategory(item);
     if (selectedCategories.every((category) => categories.includes(category))) {
@@ -24,7 +24,7 @@ function getFilteredItems<T>(items: T[], selectedCategories: Category[], itemToC
 }
 
 function getCategories<T>(items: T[], itemToCategory: (item: T) => Category[], selected: Category[]) {
-  const categoriesCounts = {} as { [key: Category]: number };
+  const categoriesCounts: { [key: Category]: number } = {};
   for (const item of items) {
     const categories = itemToCategory(item);
     for (const category of categories) {

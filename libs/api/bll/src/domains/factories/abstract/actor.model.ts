@@ -10,17 +10,7 @@ import { SocialModel } from '../domains/socials/social.model';
 import { TagModel } from '../domains/tags/tag.model';
 import { ActorKind } from '@okampus/shared/enums';
 import { Field, ObjectType } from '@nestjs/graphql';
-import type {
-  IActor,
-  IActorImage,
-  IBot,
-  ISocial,
-  ITag,
-  ITeam,
-  ITenant,
-  ITenantCore,
-  IUser,
-} from '@okampus/shared/dtos';
+import type { IActor, IActorImage, IBot, ISocial, ITag, ITeam, ITenant, IUser } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class ActorModel extends TenantScopedModel implements IActor {
@@ -58,7 +48,8 @@ export class ActorModel extends TenantScopedModel implements IActor {
   socials!: ISocial[];
 
   constructor(actor: IActor) {
-    super(actor.tenant as ITenantCore);
+    if (!actor.tenant) throw new Error('Actor must have a tenant');
+    super(actor.tenant);
     this.assign(actor);
   }
 }

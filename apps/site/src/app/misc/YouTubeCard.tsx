@@ -8,7 +8,7 @@ export type YouTubeCardProps = {
   slug?: string;
 };
 
-export function YouTubeCard({ className, name, slug }: YouTubeCardProps) {
+export function YouTubeCard({ className, slug }: YouTubeCardProps) {
   return (
     <div className={clsx('card-sm !p-0 bg-2', className)}>
       <div className="h-[40%] relative">

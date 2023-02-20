@@ -5,6 +5,6 @@ export class GetTeamByIdQuery {
   constructor(
     public readonly id: Snowflake,
     public readonly tenant: TenantCore,
-    public readonly populate: never[] = ['tenant'] as never[]
+    public readonly populate: never[] = <never[]>['tenant']
   ) {}
 }

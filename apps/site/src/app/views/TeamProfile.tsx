@@ -12,8 +12,15 @@ import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 
 export function TeamProfile() {
-  const { clubSlug } = useParams() as { clubSlug: string };
+  const { clubSlug } = useParams<{ clubSlug: string }>();
+  if (!clubSlug) {
+    return null;
+  }
 
+  return <TeamProfileWrapping clubSlug={clubSlug} />;
+}
+
+export function TeamProfileWrapping({ clubSlug }: { clubSlug: string }) {
   const { data } = useQuery(getTeamDetailsQuery, { variables: { slug: clubSlug } });
   const team = getFragmentData(teamMembersFragment, data?.teamBySlug);
 

@@ -4,21 +4,26 @@ import { AuthContextModel, getAuthContextPopulate } from './auth-context.model';
 import { ConfigService } from '../../../global/config.module';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { MeiliSearchService } from '../../search/meilisearch.service';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { UserFactory } from '../../../domains/factories/domains/users/user.factory';
+
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TenantFactory } from '../../../domains/factories/domains/tenants/tenant.factory';
-
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UserFactory } from '../../../domains/factories/domains/users/user.factory';
 import { RequestContext } from '../../../shards/abstract/request-context';
 import { addCookiesToResponse } from '../../../shards/utils/add-cookies-to-response';
 
+import { hash, verify } from 'argon2';
+import DeviceDetector from 'device-detector-js';
+import jsonwebtoken from 'jsonwebtoken';
 import fastifyCookie from '@fastify/cookie';
-import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+
+import { nanoid } from 'nanoid';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
+import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { JwtService } from '@nestjs/jwt';
-
-import { Session } from '@okampus/api/dal';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
@@ -28,23 +33,21 @@ import {
   UserRepository,
   SessionRepository,
 } from '@okampus/api/dal';
+import { Session } from '@okampus/api/dal';
 
 import { RequestType, SessionClientType, TokenType } from '@okampus/shared/enums';
-import { objectContains } from '@okampus/shared/utils';
-import { hash, verify } from 'argon2';
+import { isNotNull, objectContains } from '@okampus/shared/utils';
 
-import DeviceDetector from 'device-detector-js';
-import { nanoid } from 'nanoid';
-
-import jsonwebtoken from 'jsonwebtoken';
-const { JsonWebTokenError, NotBeforeError, TokenExpiredError } = jsonwebtoken;
-
-import type { JwtSignOptions } from '@nestjs/jwt';
-import type { Bot, TenantCore, User } from '@okampus/api/dal';
-import type { Cookie, AuthTokenClaims, Snowflake } from '@okampus/shared/types';
+import { User } from '@okampus/api/dal';
+import type { Bot, TenantCore } from '@okampus/api/dal';
 import type { LoginDto } from './dto/login.dto';
+
 import type { FastifyReply, FastifyRequest } from 'fastify';
+import type { JwtSignOptions } from '@nestjs/jwt';
 import type { SessionProps } from '@okampus/shared/dtos';
+import type { Cookie, AuthTokenClaims, Snowflake } from '@okampus/shared/types';
+
+const { JsonWebTokenError, NotBeforeError, TokenExpiredError } = jsonwebtoken;
 
 type HttpOnlyTokens = TokenType.Access | TokenType.Refresh;
 type AuthTokens = HttpOnlyTokens | TokenType.WebSocket;
@@ -69,6 +72,7 @@ export class AuthService extends RequestContext {
 
   constructor(
     private readonly configService: ConfigService,
+    private readonly em: EntityManager,
 
     private readonly tenantCoreRepository: TenantCoreRepository,
     private readonly sessionRepository: SessionRepository,
@@ -125,13 +129,16 @@ export class AuthService extends RequestContext {
       throw new InternalServerErrorException('Token could not be verified');
     }
 
-    const decoded = this.jwtService.decode(unsignedToken.value) as AuthTokenClaims;
+    const decoded = this.jwtService.decode(unsignedToken.value);
     if (!decoded) throw new BadRequestException('Failed to decode JWT');
 
-    if (!objectContains(decoded, { ...expectedClaims, iss: this.configService.config.tokens.issuer }) || !decoded.sub)
-      throw new UnauthorizedException('Invalid token claims');
+    const claims = { ...expectedClaims, iss: this.configService.config.tokens.issuer };
 
-    return decoded;
+    if (objectContains(decoded, claims)) {
+      const sub = decoded.sub;
+      if (isNotNull(sub)) return { ...decoded, sub };
+    }
+    throw new UnauthorizedException('Invalid token claims');
   }
 
   public async validateBotToken(token: string): Promise<Bot> {
@@ -267,7 +274,7 @@ export class AuthService extends RequestContext {
     tokenFamily: string,
     sub: Snowflake
   ): Promise<Session> {
-    const user = { id: sub } as User;
+    const user = this.em.getReference(User, sub);
     const refreshTokenHash = await hash(token, { secret: this.pepper });
     const session = new Session({ ...userSession, user, tenant, refreshTokenHash, tokenFamily });
 
@@ -304,7 +311,7 @@ export class AuthService extends RequestContext {
     if (!session) throw new UnauthorizedException('No active session found');
 
     // Refresh token case (access token is absent) - validate refresh token and auto-refresh tokens
-    if (tok === TokenType.Refresh) await this.addTokensOnAuth(req as FastifyRequest, res as FastifyReply, decoded.sub);
+    if (tok === TokenType.Refresh) await this.addTokensOnAuth(req, res, decoded.sub);
 
     return session.user;
   }
@@ -317,8 +324,11 @@ export class AuthService extends RequestContext {
     };
 
     const getTenant = async () => {
-      const where = { tenant: { id: user.tenant.id } };
-      const tenant = await this.tenantRepository.findOneOrFail(where, { populate: populate.tenant });
+      const tenant = await this.tenantRepository.findOneOrFail(
+        { tenant: { id: user.tenant.id } },
+        { populate: populate.tenant }
+      );
+
       return this.tenantFactory.entityToModelOrFail(tenant);
     };
 
