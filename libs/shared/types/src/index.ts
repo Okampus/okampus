@@ -12,6 +12,7 @@ export * from './interfaces/global/file-mime-check-payload.interface';
 export * from './interfaces/snowflake';
 export * from './interfaces/ui/modal.props';
 export * from './interfaces/ui/selected-menu.interface';
+export * from './interfaces/ui/side-bubble.interface';
 export * from './interfaces/ui/toast.props';
 export * from './scalars/query-order-map.scalar';
 export * from './types/abstract-constructor.type';

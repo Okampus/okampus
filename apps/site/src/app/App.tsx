@@ -1,3 +1,4 @@
+import '@okampus/ui/styles/global/colors.scss';
 import '@okampus/ui/styles/global/fonts.scss';
 import '@okampus/ui/styles/global/loader.scss';
 import '@okampus/ui/styles/global/scrollbar.scss';
@@ -9,7 +10,7 @@ import '@okampus/ui/styles/components/status.scss';
 import '@okampus/ui/styles/components/view.scss';
 
 import './App.scss';
-import './styles/colors.scss';
+import './styles/layout.scss';
 
 import { router } from './router';
 import { GridLoader } from '@okampus/ui/atoms';

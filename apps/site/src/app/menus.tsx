@@ -1,13 +1,42 @@
-import { ReactComponent as CalendarIcon } from '@okampus/assets/svg/icons/calendar.svg';
-import { ReactComponent as PeopleIcon } from '@okampus/assets/svg/icons/people.svg';
-import { ReactComponent as SiteMapIcon } from '@okampus/assets/svg/icons/sitemap.svg';
-import { ReactComponent as DocumentIcon } from '@okampus/assets/svg/icons/document.svg';
-import { ReactComponent as TeamsIcon } from '@okampus/assets/svg/icons/team.svg';
-import { ReactComponent as GaugeIcon } from '@okampus/assets/svg/icons/gauge.svg';
-import { ReactComponent as SettingsIcon } from '@okampus/assets/svg/icons/settings.svg';
-import { ReactComponent as CalendarUpcomingIcon } from '@okampus/assets/svg/icons/calendar-upcoming.svg';
-import { ReactComponent as TablesIcon } from '@okampus/assets/svg/icons/tables.svg';
-import { ReactComponent as WalletIcon } from '@okampus/assets/svg/icons/wallet.svg';
+import { ReactComponent as ExploreFilledIcon } from '@okampus/assets/svg/icons/filled/explore.svg';
+import { ReactComponent as ExploreOutlinedIcon } from '@okampus/assets/svg/icons/outlined/explore.svg';
+import { ReactComponent as ArticleFilledIcon } from '@okampus/assets/svg/icons/filled/article.svg';
+import { ReactComponent as EventFilledIcon } from '@okampus/assets/svg/icons/filled/event.svg';
+import { ReactComponent as EventOutlinedIcon } from '@okampus/assets/svg/icons/outlined/event.svg';
+import { ReactComponent as ArticleOutlinedIcon } from '@okampus/assets/svg/icons/outlined/article.svg';
+import { ReactComponent as AtSignFilledIcon } from '@okampus/assets/svg/icons/filled/at-sign.svg';
+import { ReactComponent as AtSignOutlinedIcon } from '@okampus/assets/svg/icons/outlined/at-sign.svg';
+import { ReactComponent as TenancyFilledIcon } from '@okampus/assets/svg/icons/filled/tenancy.svg';
+import { ReactComponent as TenancyOutlinedIcon } from '@okampus/assets/svg/icons/outlined/tenancy.svg';
+import { ReactComponent as DashboardFilledIcon } from '@okampus/assets/svg/icons/filled/dashboard.svg';
+import { ReactComponent as DashboardOutlinedIcon } from '@okampus/assets/svg/icons/outlined/dashboard.svg';
+import { ReactComponent as AddArticleFilledIcon } from '@okampus/assets/svg/icons/filled/article-add.svg';
+import { ReactComponent as AddArticleOutlinedIcon } from '@okampus/assets/svg/icons/outlined/article-add.svg';
+import { ReactComponent as CalendarMonthFilledIcon } from '@okampus/assets/svg/icons/filled/event-month.svg';
+import { ReactComponent as CalendarMonthOutlinedIcon } from '@okampus/assets/svg/icons/outlined/event-month.svg';
+import { ReactComponent as OverviewFilledIcon } from '@okampus/assets/svg/icons/filled/overview.svg';
+import { ReactComponent as OverviewOutlinedIcon } from '@okampus/assets/svg/icons/outlined/overview.svg';
+import { ReactComponent as SettingsFilledIcon } from '@okampus/assets/svg/icons/filled/settings.svg';
+import { ReactComponent as SettingsOutlinedIcon } from '@okampus/assets/svg/icons/outlined/settings.svg';
+import { ReactComponent as PaletteFilledIcon } from '@okampus/assets/svg/icons/filled/palette.svg';
+import { ReactComponent as PaletteOutlinedIcon } from '@okampus/assets/svg/icons/outlined/palette.svg';
+import { ReactComponent as GroupFilledIcon } from '@okampus/assets/svg/icons/filled/group.svg';
+import { ReactComponent as GroupOutlinedIcon } from '@okampus/assets/svg/icons/outlined/group.svg';
+import { ReactComponent as ValidateStepFilledIcon } from '@okampus/assets/svg/icons/filled/validate.svg';
+import { ReactComponent as ValidateStepOutlinedIcon } from '@okampus/assets/svg/icons/outlined/validate.svg';
+import { ReactComponent as FolderFilledIcon } from '@okampus/assets/svg/icons/filled/folder-open.svg';
+import { ReactComponent as FolderOutlinedIcon } from '@okampus/assets/svg/icons/outlined/folder-open.svg';
+import { ReactComponent as WalletFilledIcon } from '@okampus/assets/svg/icons/filled/wallet.svg';
+import { ReactComponent as WalletOutlinedIcon } from '@okampus/assets/svg/icons/outlined/wallet.svg';
+import { ReactComponent as EditEventFilledIcon } from '@okampus/assets/svg/icons/filled/event-edit.svg';
+import { ReactComponent as EditEventOutlinedIcon } from '@okampus/assets/svg/icons/outlined/event-edit.svg';
+import { ReactComponent as EventPendingFilledIcon } from '@okampus/assets/svg/icons/filled/event-repeat.svg';
+import { ReactComponent as EventPendingOutlinedIcon } from '@okampus/assets/svg/icons/outlined/event-repeat.svg';
+import { ReactComponent as EventUpcomingFilledIcon } from '@okampus/assets/svg/icons/filled/event-upcoming.svg';
+import { ReactComponent as EventUpcomingOutlinedIcon } from '@okampus/assets/svg/icons/outlined/event-upcoming.svg';
+import { ReactComponent as CameraFilledIcon } from '@okampus/assets/svg/icons/filled/camera.svg';
+import { ReactComponent as CameraOutlinedIcon } from '@okampus/assets/svg/icons/outlined/camera.svg';
+
 import { ShortcutType } from '@okampus/shared/enums';
 
 import { defaultSelectedMenu, SubspaceTypes } from '@okampus/shared/types';
@@ -31,6 +60,7 @@ export type ResourceRoute = {
 
 export type Menu = {
   icon?: React.FC;
+  iconSelected?: React.FC;
   label: string;
   link: string;
   tip?: string;
@@ -50,31 +80,36 @@ export const menus: { [key in SubspaceTypes]: Subspace } = {
     manageView: SubspaceTypes.Admin,
     menus: [
       {
-        icon: TeamsIcon,
+        icon: ExploreOutlinedIcon,
+        iconSelected: ExploreFilledIcon,
         label: 'Associations',
         link: '/clubs',
         tip: 'Toutes les associations',
       },
       {
-        icon: DocumentIcon,
+        icon: ArticleOutlinedIcon,
+        iconSelected: ArticleFilledIcon,
         label: 'Guides',
         link: '/guides',
         tip: 'Guides & tutoriels',
       },
       {
-        icon: CalendarIcon,
+        icon: EventOutlinedIcon,
+        iconSelected: EventFilledIcon,
         label: 'Événements',
         link: '/events',
         tip: 'Événements, sorties et activités',
       },
       {
-        icon: PeopleIcon,
+        icon: AtSignOutlinedIcon,
+        iconSelected: AtSignFilledIcon,
         label: 'Annuaire',
         link: '/people',
         tip: 'Contacts et profils',
       },
       {
-        icon: SiteMapIcon,
+        icon: TenancyOutlinedIcon,
+        iconSelected: TenancyFilledIcon,
         label: 'Staff',
         link: '/staff',
         tip: "Découvre le staff de l'école",
@@ -86,50 +121,56 @@ export const menus: { [key in SubspaceTypes]: Subspace } = {
     manageView: null,
     menus: [
       {
-        icon: TablesIcon,
+        icon: DashboardOutlinedIcon,
+        iconSelected: DashboardFilledIcon,
         label: 'Dashboard',
         link: '/admin/clubs',
         tip: 'Dashboard des associations',
       },
       {
-        icon: DocumentIcon,
+        icon: AddArticleOutlinedIcon,
+        iconSelected: AddArticleFilledIcon,
         label: 'Guides',
         link: '/admin/guides',
         tip: 'Guides & tutoriels',
       },
       {
-        icon: CalendarIcon,
+        icon: CalendarMonthOutlinedIcon,
+        iconSelected: CalendarMonthFilledIcon,
         label: 'Événements',
         link: '/admin/events',
         tip: 'Gestion des événements',
       },
       {
-        icon: GaugeIcon,
+        icon: OverviewOutlinedIcon,
+        iconSelected: OverviewFilledIcon,
         label: "Vue d'ensemble",
         link: '/admin',
         tip: 'KPIs et alertes',
       },
       {
-        icon: SettingsIcon,
+        icon: SettingsOutlinedIcon,
+        iconSelected: SettingsFilledIcon,
         label: 'Portail',
         link: '/admin/settings',
         sub: [
           {
+            icon: PaletteOutlinedIcon,
+            iconSelected: PaletteFilledIcon,
             label: 'Apparence',
             link: '/admin/settings',
             tip: 'Personnalisation graphique du portail',
           },
           {
+            icon: GroupOutlinedIcon,
+            iconSelected: GroupFilledIcon,
             label: 'Rôles',
             link: '/admin/roles',
             tip: 'Accès et permissions',
           },
           {
-            label: 'Équipes',
-            link: '/admin/staff',
-            tip: 'Gestion des équipes du staff',
-          },
-          {
+            icon: ValidateStepOutlinedIcon,
+            iconSelected: ValidateStepFilledIcon,
             label: 'Processus',
             link: '/admin/validations',
             tip: 'Étapes de validations & processus',
@@ -147,42 +188,52 @@ export const menus: { [key in SubspaceTypes]: Subspace } = {
     manageView: null,
     menus: [
       {
-        icon: TeamsIcon,
-        label: 'Association',
+        icon: PaletteOutlinedIcon,
+        iconSelected: PaletteFilledIcon,
+        label: 'Profil public',
         link: '/:orgId/manage',
         tip: 'Informations générales',
         shortcutKey: ShortcutType.TeamManage,
       },
       {
-        icon: DocumentIcon,
+        icon: FolderOutlinedIcon,
+        iconSelected: FolderFilledIcon,
         label: 'Documents',
         link: '/:orgId/manage/documents',
         tip: 'Informations générales',
         shortcutKey: ShortcutType.TeamManage,
       },
       {
-        icon: WalletIcon,
+        icon: WalletOutlinedIcon,
+        iconSelected: WalletFilledIcon,
         label: 'Trésorerie',
         link: '/:orgId/manage/treasury',
         tip: 'Gestion des membres et invitations',
         shortcutKey: ShortcutType.TeamManageTreasury,
       },
       {
-        icon: CalendarUpcomingIcon,
+        icon: EditEventOutlinedIcon,
+        iconSelected: EditEventFilledIcon,
         label: 'Événements',
         link: '/:orgId/manage/events',
         sub: [
           {
+            icon: CameraOutlinedIcon,
+            iconSelected: CameraFilledIcon,
             label: 'Rétrospectives',
             link: '/:orgId/manage/events',
             tip: 'Événements passés',
           },
           {
+            icon: EventPendingOutlinedIcon,
+            iconSelected: EventPendingFilledIcon,
             label: 'En attente',
             link: '/:orgId/manage/events',
             tip: 'Événements en attente de validation',
           },
           {
+            icon: EventUpcomingOutlinedIcon,
+            iconSelected: EventUpcomingFilledIcon,
             label: 'À venir',
             link: '/:orgId/manage/events',
             tip: 'Événements à venir',
@@ -191,16 +242,21 @@ export const menus: { [key in SubspaceTypes]: Subspace } = {
         tip: 'Liste des événements',
       },
       {
-        icon: SettingsIcon,
+        icon: SettingsOutlinedIcon,
+        iconSelected: SettingsFilledIcon,
         label: 'Paramètres',
         link: '/:orgId/manage/settings',
         sub: [
           {
+            icon: OverviewOutlinedIcon,
+            iconSelected: OverviewFilledIcon,
             label: "Vue d'ensemble",
             link: '/:orgId/manage/settings',
             tip: "Informations générales de l'association",
           },
           {
+            icon: GroupOutlinedIcon,
+            iconSelected: GroupFilledIcon,
             label: 'Rôles',
             link: '/:orgId/manage/roles',
             tip: 'Gestion des rôles',
@@ -218,10 +274,10 @@ export const menus: { [key in SubspaceTypes]: Subspace } = {
     manageView: null,
     menus: [
       {
-        icon: PeopleIcon,
-        label: 'Profil',
+        icon: PaletteOutlinedIcon,
+        iconSelected: PaletteFilledIcon,
+        label: 'Mon profil',
         link: '/:userId/me',
-        tip: 'Informations générales',
       },
     ],
   },

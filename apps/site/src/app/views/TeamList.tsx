@@ -34,10 +34,8 @@ export function TeamListWrapping({ categorySlug }: { categorySlug: string }) {
 
   return (
     <div className="flex flex-col">
-      <div className="bg-gradient-to-b from-[#222] to-[#1a1a1a]">
-        <div className="view text-8xl font-extrabold text-0 font-title pt-20">
-          {getFragmentData(teamCategoryFragment, categoryData?.teamCategoryBySlug)?.name}
-        </div>
+      <div className="view bg-topbar-to-main text-8xl font-extrabold text-0 font-title pt-20">
+        {getFragmentData(teamCategoryFragment, categoryData?.teamCategoryBySlug)?.name}
       </div>
       <div className="view flex flex-col gap-6">
         <div className="flex gap-2">
@@ -46,28 +44,11 @@ export function TeamListWrapping({ categorySlug }: { categorySlug: string }) {
             itemToCategories={(team) => team.actor?.tags.map((tag) => tag.name) ?? []}
             onChangeFilteredItems={(filteredItems) => setFilteredTeams(filteredItems)}
           />
-          {/* {tags.map((tag) => (
-            <div className="text-white bg-gray-700 px-4 py-1 text-lg rounded-full">{tag.name}</div>
-          ))} */}
         </div>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4">
           {filteredTeams.map((team) => (
             <TeamCard key={team.id} team={team} link={`/club/${team.actor?.slug}`} />
           ))}
-          {/* {data?.teams?.edges?.map((teamEdge) => {
-            const team = getFragmentData(teamFragment, teamEdge.node);
-            return (
-              <TeamCard
-                key={team.id}
-                name={team.actor?.name ?? ''}
-                description={team.tagline}
-                // tags={[
-                //   { name: club.tag_1, color: club.tag_1_color },
-                //   ...(club.tag_2 ? [{ name: club.tag_2, color: club.tag_2_color }] : []),
-                // ]}
-              />
-            );
-          })} */}
         </div>
       </div>
     </div>

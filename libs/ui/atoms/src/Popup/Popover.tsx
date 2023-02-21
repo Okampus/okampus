@@ -211,7 +211,7 @@ export const PopoverContent = React.forwardRef<
               exit={{ opacity: 0, scale: 0.7, y: -20 }}
               transition={{ type: 'spring', duration: 0.35 }}
               ref={ref}
-              className={clsx('card-sm text-1 z-10 !overflow-visible', popoverClassName, backgroundClass)}
+              className={clsx('card-sm text-1 z-[100] !overflow-visible', popoverClassName, backgroundClass)}
               style={{
                 position: context.strategy,
                 top: context.y ?? 0,

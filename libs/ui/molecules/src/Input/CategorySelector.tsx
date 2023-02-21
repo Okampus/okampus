@@ -70,7 +70,7 @@ export function CategorySelector<T extends object>({
         <div
           key={category}
           className={`flex items-center gap-2 px-2 py-1 rounded-md cursor-pointer ${
-            selected.includes(category) ? 'bg-gray-500' : 'hover:bg-gray-500 bg-gray-800'
+            selected.includes(category) ? 'bg-2' : 'bg-hover-2 bg-1'
           }`}
           onClick={() => toggleCategory(category)}
         >

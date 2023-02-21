@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/explicit-length-check */
-import { ReactComponent as UploadFileicon } from '@okampus/assets/svg/icons/upload-file.svg';
+import { ReactComponent as UploadFileicon } from '@okampus/assets/svg/icons/filled/upload.svg';
 import { FileTypeIcon } from '@okampus/ui/atoms';
 import { bytes, formatDateStandard } from '@okampus/shared/utils';
 

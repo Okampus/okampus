@@ -26,8 +26,9 @@ export type SelectMenuProps<T> = {
   onClick?: () => void;
   dropdown?: React.ReactNode | null;
   contentClassName?: string;
+  contentPadding?: string;
   placeholderClassName?: string;
-  placeholderBackgroundClass?: string;
+  placeholderBackgroundClass?: string | boolean;
   itemClassName?: string;
   fullWidth?: boolean;
   showSelected?: boolean;
@@ -44,9 +45,10 @@ function SelectMenuInner<T>(
     onClick,
     dropdown,
     contentClassName,
+    contentPadding = '0.5rem',
     placeholderClassName,
     placeholderBackgroundClass = 'bg-0',
-    itemClassName = 'px-4 py-2.5',
+    itemClassName = 'hoverable px-4 py-2.5',
     fullWidth,
     isContentAbsolute = true,
     showSelected = true,
@@ -72,7 +74,7 @@ function SelectMenuInner<T>(
   return (
     <motion.div
       ref={mergeRefs([ref, propRef])}
-      initial={false}
+      initial={'closed'}
       animate={isOpen ? 'open' : 'closed'}
       className={clsx('relative', fullWidth ? 'w-full' : 'w-fit')}
     >
@@ -84,10 +86,10 @@ function SelectMenuInner<T>(
           onClick?.();
         }}
         className={clsx(
-          'flex gap-4 items-center px-4 py-2.5 rounded-lg text-0 medium',
-          fullWidth ? 'w-full justify-between' : 'w-fit',
           placeholderClassName,
-          placeholderBackgroundClass
+          placeholderBackgroundClass,
+          'flex gap-4 items-center px-4 py-2.5 rounded-lg text-0 medium',
+          fullWidth ? 'w-full justify-between' : 'w-fit'
         )}
       >
         {selected && showSelected ? selected.element : name}
@@ -108,42 +110,48 @@ function SelectMenuInner<T>(
       </motion.button>
       <motion.ul
         className={clsx(
-          'mt-1 min-w-full w-fit rounded-lg text-modest p-2 text-0 gap-1 flex flex-col bg-0 z-20',
+          'min-w-full w-fit rounded-xl text-modest text-0 gap-1 flex-col bg-0 z-20',
           contentClassName,
-          isContentAbsolute ? 'absolute h-max-[20rem]' : ''
+          isOpen ? 'mt-1 flex' : '!hidden',
+          isContentAbsolute && 'absolute h-max-[20rem]'
         )}
         variants={{
           open: {
-            ...(isContentAbsolute ? { scale: 1 } : { height: 'auto' }),
+            display: 'block',
+            height: 'auto',
             opacity: 1,
             transformOrigin: 'top',
             transition: {
               type: 'spring',
               bounce: 0,
               duration: 0.7,
-              delayChildren: 0.15,
-              staggerChildren: 0.05,
+              delayChildren: 0.1,
+              staggerChildren: 0.1,
             },
           },
           closed: {
-            ...(isContentAbsolute ? { scale: 0 } : { height: 0 }),
-            opacity: 0,
-            transformOrigin: 'top',
+            height: 0,
+            opacity: 0.1,
+            transformOrigin: 'bottom',
             transition: {
               type: 'spring',
               bounce: 0,
-              duration: 0.2,
+              duration: 0.4,
             },
           },
         }}
-        style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
+        style={{
+          pointerEvents: isOpen ? 'auto' : 'none',
+          paddingLeft: contentPadding,
+          paddingRight: contentPadding,
+        }}
       >
         {items &&
           items.map((item, index) => (
             <motion.li
               key={index}
               variants={itemVariants}
-              className={clsx('hoverable cursor-pointer', itemClassName)}
+              className={clsx('cursor-pointer', itemClassName)}
               onClick={() => {
                 setSelected(item);
                 if (!isControlled) setIsOpen(false);

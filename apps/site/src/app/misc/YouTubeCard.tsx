@@ -1,5 +1,5 @@
 import { ReactComponent as YouTubeIcon } from '@okampus/assets/svg/brands/youtube.svg';
-import { ReactComponent as PlayIcon } from '@okampus/assets/svg/icons/play.svg';
+import { ReactComponent as PlayIcon } from '@okampus/assets/svg/icons/filled/play.svg';
 import { clsx } from 'clsx';
 
 export type YouTubeCardProps = {

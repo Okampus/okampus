@@ -43,34 +43,32 @@ export function TenantApp() {
   }
 
   return (
-    <div className="w-full h-full overflow-hidden flex flex-col">
-      <Topbar />
-      <div className="flex h-[calc(100%-3.75rem)]">
-        <Sidebar />
-        <div className="w-full h-full overflow-x-hidden scrollbar-none bg-main">
-          <Outlet />
-        </div>
-        <AnimatePresence>
-          {isSideModalShown && sideModal && (
-            <Backdrop onClick={hideSideModal} classes="justify-end">
-              <SideModal hideModal={hideModal}>{sideModal.content}</SideModal>
-            </Backdrop>
-          )}
-          {isModalShown && modal && (
-            <Backdrop onClick={hideModal} classes="items-center justify-center">
-              <Modal title={modal.title}>{modal.content}</Modal>
-            </Backdrop>
-          )}
-          {isFilePreviewed && previewedFile && <FilePreviewer file={previewedFile} onClose={hideFilePreview} />}
-          {notifications.length > 0 && (
-            <ul className="absolute top-4 right-0 flex flex-col gap-2 overflow-hidden px-10 z-[101]">
-              {notifications.map((notification) => (
-                <Toast {...notification} key={notification.id} />
-              ))}
-            </ul>
-          )}
-        </AnimatePresence>
+    <div className="flex h-full">
+      <Sidebar />
+      <div className="relative w-content h-full overflow-x-hidden scrollbar-none bg-main">
+        <Topbar />
+        <Outlet />
       </div>
+      <AnimatePresence>
+        {isSideModalShown && sideModal && (
+          <Backdrop onClick={hideSideModal} classes="justify-end">
+            <SideModal hideModal={hideModal}>{sideModal.content}</SideModal>
+          </Backdrop>
+        )}
+        {isModalShown && modal && (
+          <Backdrop onClick={hideModal} classes="items-center justify-center">
+            <Modal title={modal.title}>{modal.content}</Modal>
+          </Backdrop>
+        )}
+        {isFilePreviewed && previewedFile && <FilePreviewer file={previewedFile} onClose={hideFilePreview} />}
+        {notifications.length > 0 && (
+          <ul className="absolute top-4 right-0 flex flex-col gap-2 overflow-hidden px-10 z-[101]">
+            {notifications.map((notification) => (
+              <Toast {...notification} key={notification.id} />
+            ))}
+          </ul>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

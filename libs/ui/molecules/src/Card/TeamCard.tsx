@@ -39,11 +39,7 @@ export function TeamCard({ team, link }: TeamCardProps) {
 
   const tags = team.actor?.tags;
   return (
-    <motion.div
-      initial="rest"
-      whileHover="hover"
-      className="card-sm relative bg-2 cursor-pointer hover:bg-gray-600 dark:hover:bg-gray-600"
-    >
+    <motion.div initial="rest" whileHover="hover" className="card-sm relative cursor-pointer bg-hover-1 bg-2">
       <Link to={link} className="card-link" />
       <div className="relative">
         <Banner src={getBanner(team.actor?.actorImages)} name={team.actor?.name} />

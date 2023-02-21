@@ -1,0 +1,42 @@
+:root {
+  --topbar-height: 5rem;
+  --sidebar-width-lg: 19rem;
+  --sidebar-width-sm: 9rem;
+  --inner-padding: 0.75rem;
+  --padding-bubble: 0.125rem;
+}
+
+.w-sidebar {
+  @apply lg:w-[var(--sidebar-width-lg)] w-[var(--sidebar-width-sm)];
+}
+
+.w-content {
+  @apply lg:w-[calc(100%-var(--sidebar-width-lg))] w-[calc(100%-var(--sidebar-width-sm))];
+}
+
+.h-topbar {
+  height: var(--topbar-height);
+}
+
+.h-content {
+  height: calc(100% - var(--topbar-height));
+}
+
+.h-bubble {
+  height: calc(var(--topbar-height) - var(--inner-padding) * 2 - var(--padding-bubble) * 4);
+}
+
+.p-bubble {
+  padding: var(--padding-bubble);
+}
+
+.p-inner {
+  padding: var(--inner-padding);
+  /* stylelint-disable-next-line scss/operator-no-unspaced */
+  @apply lg:pr-[calc(var(--inner-padding)*2)] pr-[var(--inner-padding)];
+}
+
+.gap-inner {
+  /* stylelint-disable-next-line scss/operator-no-unspaced */
+  @apply gap-x-[calc(var(--inner-padding)*1.25)];
+}

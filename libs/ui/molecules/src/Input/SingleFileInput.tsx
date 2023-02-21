@@ -1,4 +1,4 @@
-import { ReactComponent as UploadFileicon } from '@okampus/assets/svg/icons/upload-file.svg';
+import { ReactComponent as UploadFileicon } from '@okampus/assets/svg/icons/outlined/upload.svg';
 import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/close.svg';
 import { FileTypeIcon } from '@okampus/ui/atoms';
 import { bytes } from '@okampus/shared/utils';

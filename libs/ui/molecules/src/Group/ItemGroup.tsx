@@ -48,8 +48,6 @@ export function ItemGroup<T>({
         <Popover>
           <PopoverTrigger>{renderMore(items.length - limit, size)}</PopoverTrigger>
           <PopoverContent>
-            {/* <PopoverHeading>My popover heading</PopoverHeading> */}
-            {/* <PopoverDescription> */}
             {VerticalList({
               title: showNumberInTitle ? (
                 <div className="flex gap-2 items-center">
@@ -61,16 +59,8 @@ export function ItemGroup<T>({
               children: items.map((item, idx) => <div key={idx}>{renderListElement(item)}</div>),
               nColumns: 2,
             })}
-            {/* </PopoverDescription> */}
-            {/* <PopoverClose>Close</PopoverClose> */}
           </PopoverContent>
         </Popover>
-        // <Popover
-        //   content={VerticalList({ title, children: items.map((item) => renderListElement(item)), nColumns: 2 })}
-        //   direction="bottom"
-        // >
-        //
-        // </Popover>
       )}
     </div>
   );
