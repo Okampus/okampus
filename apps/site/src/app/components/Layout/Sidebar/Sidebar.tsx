@@ -98,15 +98,16 @@ export function Sidebar() {
               </Bubble>
             ))}
             <hr className="m-2 border-color-3" />
-            <div className="overflow-scroll scrollbar-none flex flex-col rounded-t-2xl">
+            <div className="overflow-scroll scrollbar flex flex-col rounded-t-2xl">
               {shortcuts
                 .map((shortcut, idx) => <SideShortcut shortcut={shortcut} switchSubspace={switchSubspace} key={idx} />)
                 .filter((shortcut) => shortcut !== null)}
             </div>
           </div>
         </div>
+
         {/* Menus */}
-        <div className="h-full w-full relative pt-2 overflow-scroll">
+        <div className="overflow-scroll scrollbar h-full w-full relative pt-2">
           {Object.entries(menus[selected.subSpace].menus).map(([_, menu]: [string, Menu], idx) => (
             <SidebarMenu idx={idx} menu={menu} key={idx} />
           ))}

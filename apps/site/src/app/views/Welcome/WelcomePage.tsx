@@ -45,7 +45,7 @@ export function WelcomePage() {
   const [theme, setTheme] = useTheme();
 
   useEffect(() => {
-    user && navigate(localStorage.getItem('next') ?? '/clubs');
+    user && navigate(localStorage.getItem('next') ?? '/clubs', { replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 

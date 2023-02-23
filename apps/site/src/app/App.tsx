@@ -20,12 +20,16 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
 
-import type { FileLike, ModalProps, SelectedMenu, Snowflake, ToastProps } from '@okampus/shared/types';
+import type { FileLike, ModalProps, SelectedMenu, Snowflake, ToastProps, Route } from '@okampus/shared/types';
 
+const startRoute = { idx: 0, path: window.location.pathname, key: 'default' };
 function App() {
   const [currentUserId, setCurrentUserId] = useState<Snowflake | null>(null);
   const [currentTenantId, setCurrentTenantId] = useState<Snowflake | null>(null);
   const [currentOrgId, setCurrentOrgId] = useState<Snowflake | null>(null);
+
+  const [history, setHistory] = useState<Route[]>([startRoute]);
+  const [previousRoute, setPreviousRoute] = useState<Route | null>(startRoute);
 
   const [isModalShown, setIsModalShown] = useState<boolean>(false);
   const [modal, setModal] = useState<ModalProps | null>(null);
@@ -61,6 +65,11 @@ function App() {
   const hideFilePreview = () => setIsFilePreviewed(false);
 
   const provideNavigationContext = {
+    history,
+    setHistory,
+    previousRoute,
+    setPreviousRoute,
+
     isModalShown,
     modal,
     showModal,

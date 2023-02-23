@@ -2,10 +2,15 @@
 import React from 'react';
 import { defaultSelectedMenu } from '@okampus/shared/types';
 
-import type { FileLike, ModalProps, SelectedMenu } from '@okampus/shared/types';
+import type { FileLike, ModalProps, SelectedMenu, Route } from '@okampus/shared/types';
 import type { ToastProps } from '@okampus/shared/types';
 
 type NavigationContextProps = {
+  history: Route[];
+  setHistory: (route: Route[]) => void;
+  previousRoute: Route | null;
+  setPreviousRoute: (route: Route | null) => void;
+
   modal: ModalProps | null;
   isModalShown: boolean;
   showModal: (modal: ModalProps | null) => void;
@@ -34,6 +39,11 @@ type NavigationContextProps = {
 };
 
 export const NavigationContext = React.createContext<NavigationContextProps>({
+  history: [],
+  setHistory: () => {},
+  previousRoute: null,
+  setPreviousRoute: () => {},
+
   modal: null,
   isModalShown: false,
   showModal: () => {},

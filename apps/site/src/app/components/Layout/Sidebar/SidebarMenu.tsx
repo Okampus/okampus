@@ -69,7 +69,7 @@ export function SidebarMenu({ menu, idx }: SidebarMenuProps) {
       open={selected.menu === idx}
       placeholderClassName={'!p-0'}
       contentClassName={'bg-2 !p-0'}
-      itemClassName="p-0"
+      itemClassName=""
     />
   );
 }

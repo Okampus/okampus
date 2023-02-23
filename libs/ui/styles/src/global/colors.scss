@@ -62,7 +62,7 @@
 }
 
 .bg-topbar {
-  @apply bg-[#fafafa] dark:bg-[#111];
+  @apply bg-[#fafafa] dark:bg-[#0a0a0a];
 }
 
 .bg-topbar-to-main {
@@ -79,11 +79,13 @@
   @apply bg-[#eaeaea] dark:bg-[#2B2B2B];
 }
 
-.bg-3 {
+.bg-3,
+.bg-hover-3:hover {
   @apply bg-[#e6e8eb] dark:bg-[#2a2c2e];
 }
 
-.bg-4 {
+.bg-4,
+.bg-hover-4:hover {
   @apply bg-[#ddd] dark:bg-[#444];
 }
 
