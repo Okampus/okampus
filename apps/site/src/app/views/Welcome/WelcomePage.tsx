@@ -78,7 +78,7 @@ export function WelcomePage() {
   });
 
   const onLogin = (variables: LoginForm) => {
-    login({ variables });
+    login({ variables: { username: variables.username.trim(), password: variables.password } });
   };
 
   useEffect(() => {
