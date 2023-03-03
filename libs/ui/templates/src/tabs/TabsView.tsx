@@ -1,5 +1,4 @@
-import { clsx } from 'clsx';
-import { NumberBadge } from '@okampus/ui/atoms';
+import { NumberBadge, TabButton } from '@okampus/ui/atoms';
 import { useState } from 'react';
 
 type Tab = {
@@ -11,32 +10,30 @@ type Tab = {
 
 type TabsViewProps = {
   tabs: Tab[];
+  tabColor?: string;
 };
 
-export function TabsView({ tabs }: TabsViewProps) {
+export function TabsView({ tabs, tabColor }: TabsViewProps) {
   const [activeTab, setActiveTab] = useState(0);
   return (
-    <div className="flex flex-col h-full w-full gap-2">
+    <div className="flex flex-col h-full w-full gap-10">
       {/* Tabs (header) */}
-      <div className="flex">
+      <div className="flex gap-2">
         {tabs.map((tab, index) => (
-          <div
+          <TabButton
             key={index}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer ${
-              index === activeTab ? 'bg-2' : 'bg-1'
-            }`}
+            backgroundColor={tabColor}
             onClick={() => setActiveTab(index)}
+            active={index === activeTab}
           >
-            <div className={index === activeTab ? 'text-0' : 'text-1'}>{tab.title}</div>
+            {tab.title}
             {tab.number ? <NumberBadge number={tab.number} /> : ''}
-          </div>
+          </TabButton>
         ))}
       </div>
 
       {/* Content */}
-      <div className={clsx('h-full w-full border border-color-3 rounded-lg', tabs[activeTab].noPad ? '' : 'p-6')}>
-        {tabs[activeTab].content}
-      </div>
+      <div>{tabs[activeTab].content}</div>
     </div>
   );
 }
